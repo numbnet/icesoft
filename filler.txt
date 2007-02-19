@@ -1,3 +1,3 @@
 procs                      memory      swap          io     system         cpu
  r  b   swpd   free   buff  cache   si   so    bi    bo   in    cs us sy id wa
- 0  0 335480  76820 102988 1420140    1    2     2     0    2     2  1  0  2  0
+ 0  0 335480  76824 102988 1420148    1    2     2     0    2     2  1  0  2  0
