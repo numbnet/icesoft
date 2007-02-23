@@ -1,7 +1,6 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.application.D2DViewHandler;
-import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.el.ELContextImpl;
@@ -32,10 +31,11 @@ import java.util.Vector;
 //for now extend BridgeFacesContext since there are so many bloody 'instanceof' tests
 public class ServletFacesContext extends BridgeFacesContext {
 
-    public ServletFacesContext(ExternalContext externalContext, String view) {
+    public ServletFacesContext(ExternalContext externalContext, String view, String icefacesID) {
         setCurrentInstance(this);
         setExternalContext(externalContext);
         this.viewNumber = view;
+        this.iceFacesId = icefacesID;
     }
 
     public void setCurrentInstance() {
@@ -230,10 +230,6 @@ public class ServletFacesContext extends BridgeFacesContext {
     String iceFacesId;
 
     public String getIceFacesId() {
-        if (iceFacesId == null) {
-            iceFacesId = (String) ((BridgeExternalContext) externalContext)
-                    .getApplicationSessionMap().get("icefacesID");
-        }
         return iceFacesId;
     }
 

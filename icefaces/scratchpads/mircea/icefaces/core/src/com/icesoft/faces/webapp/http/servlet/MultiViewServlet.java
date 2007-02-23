@@ -15,11 +15,12 @@ public class MultiViewServlet extends AdapterServlet {
     private HttpSession session;
     private ResponseStateManager responseStateManager;
     private Map views;
+    private String sessionID;
 
     public MultiViewServlet(HttpSession session, IdGenerator idGenerator, ResponseStateManager responseStateManager, Map views) {
         super(new PageServer());
 
-        String sessionID = idGenerator.newIdentifier();
+        sessionID = idGenerator.newIdentifier();
         //ContextEventRepeater needs this
         session.setAttribute(ResponseStateManager.ICEFACES_ID_KEY, sessionID);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
@@ -35,13 +36,13 @@ public class MultiViewServlet extends AdapterServlet {
         String redirectViewNumber = request.getParameter("rvn");
         if (redirectViewNumber == null) {
             String viewNumber = String.valueOf(++viewCount);
-            view = new ServletView(viewNumber, request, response, responseStateManager);
+            view = new ServletView(viewNumber, sessionID, request, response, responseStateManager);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, Integer.parseInt(viewNumber));
         } else {
             view = (ServletView) views.get(redirectViewNumber);
             if (view == null || view.differentURI(request)) {
-                view = new ServletView(redirectViewNumber, request, response, responseStateManager); 
+                view = new ServletView(redirectViewNumber, sessionID, request, response, responseStateManager); 
                 views.put(redirectViewNumber, view);
                 ContextEventRepeater.viewNumberRetrieved(session, Integer.parseInt(redirectViewNumber));
             } else {

@@ -17,11 +17,12 @@ public class SingleViewServlet extends AdapterServlet {
 
     private ResponseStateManager responseStateManager;
     private Map views;
+    private String sessionID;
 
     public SingleViewServlet(HttpSession session, IdGenerator idGenerator, ResponseStateManager responseStateManager, Map views) {
         super(new PageServer());
 
-        String sessionID = idGenerator.newIdentifier();
+        sessionID = idGenerator.newIdentifier();
         //ContextEventRepeater needs this
         session.setAttribute(ResponseStateManager.ICEFACES_ID_KEY, sessionID);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
@@ -37,7 +38,7 @@ public class SingleViewServlet extends AdapterServlet {
         //create single view or re-create view if the request is the result of a redirect 
         ServletView view = (ServletView) views.get(viewNumber);
         if (view == null || view.differentURI(request)) {
-            view = new ServletView(viewNumber, request, response, responseStateManager);
+            view = new ServletView(viewNumber, sessionID, request, response, responseStateManager);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, Integer.parseInt(viewNumber));
         }

@@ -21,12 +21,12 @@ public class ServletView {
     private Map bundles;
     private ServletEnvironmentRequest wrappedRequest;
                                                                        
-    public ServletView(String viewIdentifier, HttpServletRequest request, HttpServletResponse response, ResponseStateManager responseStateManager) {
+    public ServletView(String viewIdentifier, String sessionID, HttpServletRequest request, HttpServletResponse response, ResponseStateManager responseStateManager) {
         HttpSession session = request.getSession();
         ServletContext servletContext = session.getServletContext();
         wrappedRequest = new ServletEnvironmentRequest(request);
         externalContext = new ServletExternalContext(servletContext, wrappedRequest, response);
-        facesContext = new ServletFacesContext(externalContext, viewIdentifier);
+        facesContext = new ServletFacesContext(externalContext, viewIdentifier, sessionID);
         //the call has the side effect of creating and setting up the state
         //todo: make this concept more visible and less subversive
         responseState = (BlockingResponseState) responseStateManager.getState(session, viewIdentifier);
