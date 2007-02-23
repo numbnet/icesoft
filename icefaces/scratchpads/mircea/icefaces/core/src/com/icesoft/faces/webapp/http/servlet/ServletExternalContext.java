@@ -60,6 +60,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
 
         this.updateRequest(this.request);
+        this.setupSeamEnvironment();
     }
 
     public Object getSession(boolean create) {
@@ -300,27 +301,11 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public void setupSeamEnvironment() {
-        doClearSeamContexts();
-        checkSeamRequestParameters();
-    }
-
-    /**
-     * Any request handled by the PersistentFacesServlet should have the Seam
-     * PageContext removed from our internal context complex. But we cannot do
-     * it here, since the machinery is not yet in place, so put a flag into
-     * the external context, allowing someone else to do it later.
-     */
-    private void doClearSeamContexts() {
+        //Any request handled by the PersistentFacesServlet should have the Seam
+        //PageContext removed from our internal context complex. But we cannot do
+        //it here, since the machinery is not yet in place, so put a flag into
+        //the external context, allowing someone else to do it later.
         requestMap.put(PersistentFacesCommonlet.REMOVE_SEAM_CONTEXTS, Boolean.TRUE);
-    }
-
-    /**
-     * Check to see if Seam specific keywords are in the request. If so,
-     * then flag that a new ViewRoot is to be constructed.
-     *
-     * @param externalContextMap Map to insert Flag
-     */
-    private void checkSeamRequestParameters() {
         // Always on a GET request, create a new ViewRoot. New theory.
         // This works now that the ViewHandler only calls restoreView once,
         // as opposed to calling it again from createView

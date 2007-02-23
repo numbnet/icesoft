@@ -33,7 +33,6 @@ public class ServletView {
         persistentFacesState = new PersistentFacesState(facesContext, responseState);
         //collect bundles put by Tag components when the page is parsed
         bundles = externalContext.collectBundles();
-        externalContext.setupSeamEnvironment();
     }
 
     public void setAsCurrentDuring(HttpServletRequest request) {

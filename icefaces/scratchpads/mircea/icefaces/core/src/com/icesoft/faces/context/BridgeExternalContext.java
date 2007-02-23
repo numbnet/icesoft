@@ -103,7 +103,4 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public abstract Cookie[] getResponseCookies();
 
     public abstract Map collectBundles();
-
-    //todo: create a SeamExternalEnvironment instead
-    public abstract void setupSeamEnvironment();
 }
