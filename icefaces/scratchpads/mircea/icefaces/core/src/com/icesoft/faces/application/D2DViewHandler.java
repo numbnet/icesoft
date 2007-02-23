@@ -298,7 +298,7 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     private static Map getContextServletTables(FacesContext context) {
-        Map sessionMap = getSessionMap(context);
+        Map sessionMap = context.getExternalContext().getSessionMap();
         String viewNumber = "-";
         if (context instanceof BridgeFacesContext) {
             viewNumber = ((BridgeFacesContext) context).getViewNumber();
@@ -482,10 +482,6 @@ public class D2DViewHandler extends ViewHandler {
             try {
                 viewInput = new InputStreamReader(
                         viewConnection.getInputStream(), CHAR_ENCODING);
-
-                if (null == viewInput) {
-                    throw new NullPointerException();
-                }
                 if (viewId.endsWith(".jsp")) {
                     viewInput = JspPageToDocument.transform(viewInput);
                 } else if (viewId.endsWith(".jspx")) {
@@ -598,19 +594,6 @@ public class D2DViewHandler extends ViewHandler {
         contextServletTable.remove(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE);
         contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
         contextServletTable.remove(DOMResponseWriter.RESPONSE_DOM);
-        contextServletTable.remove(DOMResponseWriter.RESPONSE_MODIFIED_NODES);
-    }
-
-    private static Map getSessionMap(FacesContext context) {
-        if (null == context) {
-            context = FacesContext.getCurrentInstance();
-        }
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        if (null == sessionMap) {
-            context.getExternalContext().getSession(true);
-            sessionMap = context.getExternalContext().getSessionMap();
-        }
-        return sessionMap;
     }
 
     public void writeState(FacesContext context) throws IOException {
@@ -654,9 +637,6 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public static boolean isValueReference(String value) {
-        if (value == null) {
-            throw new NullPointerException();
-        }
         if ((value.indexOf("#{") != -1) &&
                 (value.indexOf("#{") < value.indexOf('}'))) {
             return true;
@@ -672,17 +652,8 @@ public class D2DViewHandler extends ViewHandler {
      *
      * @param clientId
      * @param base
-     * @throws NullPointerException {@inheritDoc}
      */
     public static UIComponent findComponent(String clientId, UIComponent base) {
-
-        if (clientId == null) {
-            throw new NullPointerException();
-        }
-        if (base == null) {
-            throw new NullPointerException();
-        }
-
         // Set base, the parent component whose children are searched, to be the
         // nearest parent that is either 1) the view root if the id expression
         // is absolute (i.e. starts with the delimiter) or 2) the nearest parent
@@ -740,66 +711,6 @@ public class D2DViewHandler extends ViewHandler {
         return input.substring(0, input.length() - remove.length());
     }
 
-    public void setActionURLSuffix(String param) {
-        actionURLSuffix = param;
-    }
-
-
-    public void setDelegateNonIface(String param) {
-        delegateNonIface = D2DViewHandler
-                .getStringAsBoolean(param, delegateNonIfaceDefault);
-    }
-
-    public void setReloadInterval(String param) {
-        reloadInterval = getStringAsLong(
-                param, reloadIntervalDefault);
-        if (-1 != reloadInterval) {
-            //convert user input in seconds into milliseconds internally
-            reloadInterval = reloadInterval * 1000;
-        }
-    }
-
-    private static boolean getStringAsBoolean(String value,
-                                              boolean defaultValue) {
-
-        if (value == null) {
-            return defaultValue;
-        }
-
-        if (value.equalsIgnoreCase("false") ||
-                value.equalsIgnoreCase("off") ||
-                value.equalsIgnoreCase("no")) {
-            return false;
-        }
-
-        if (value.equalsIgnoreCase("true") ||
-                value.equalsIgnoreCase("on") ||
-                value.equalsIgnoreCase("yes")) {
-            return true;
-        }
-
-        return defaultValue;
-    }
-
-    private static long getStringAsLong(String param, long defaultValue) {
-        if (param == null) {
-            return defaultValue;
-        }
-
-        long value = defaultValue;
-
-        try {
-            value = Long.parseLong(param);
-        } catch (NumberFormatException e) {
-            if (log.isWarnEnabled()) {
-                log.warn("Unable to parse string as long " + param);
-            }
-        }
-
-        return value;
-
-    }
-
     //Determine whether handling of the view should be delegated to
     //the delegate ViewHandler
     private boolean delegateView(String viewId) {
@@ -822,16 +733,18 @@ public class D2DViewHandler extends ViewHandler {
             return;
         }
 
-        ExternalContext externalContext = context.getExternalContext();
-        setDelegateNonIface(externalContext.getInitParameter(
-                DELEGATE_NONIFACE));
-        setActionURLSuffix(externalContext.getInitParameter(
-                ACTION_URL_SUFFIX));
-        setReloadInterval(externalContext.getInitParameter(
-                RELOAD_INTERVAL));
-        jsfStateManagement = Boolean.valueOf(
-                externalContext.getInitParameter(DO_JSF_STATE_MANAGEMENT))
-                .booleanValue();
+        ExternalContext ec = context.getExternalContext();
+        String delegateNonIfaceParameter = ec.getInitParameter(DELEGATE_NONIFACE);
+        String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
+        String jsfStateManagementParameter = ec.getInitParameter(DO_JSF_STATE_MANAGEMENT);
+        actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
+        delegateNonIface = delegateNonIfaceParameter == null ? delegateNonIfaceDefault : Boolean.valueOf(delegateNonIfaceParameter).booleanValue();
+        try {
+            reloadInterval = Long.parseLong(reloadIntervalParameter) * 1000;
+        } catch (NumberFormatException e) {
+            reloadInterval = reloadIntervalDefault * 1000;
+        }
+        jsfStateManagement = Boolean.valueOf(jsfStateManagementParameter).booleanValue();
         if (!jsfStateManagement) {
             log.debug("JSF State Management not provided");
         }

@@ -74,8 +74,7 @@ import java.util.Map;
  */
 public class DOMResponseWriter extends ResponseWriter {
     private static final Log log = LogFactory.getLog(DOMResponseWriter.class);
-    public static final String STREAM_WRITING =
-            "com.icesoft.faces.streamWriting";
+    public static final String STREAM_WRITING = "com.icesoft.faces.streamWriting";
     //DOM and current node being written to for this ResponseWriter
     public static final String DOCTYPE_PUBLIC = "com.icesoft.doctype.public";
     public static final String DOCTYPE_SYSTEM = "com.icesoft.doctype.system";
@@ -93,13 +92,6 @@ public class DOMResponseWriter extends ResponseWriter {
     //Hashtable of DOMContext objects associated with each component
     public static final String RESPONSE_CONTEXTS_TABLE =
             "com.icesoft.domResponseContexts";
-    //Hashtable of DOMContext tables to be cached per page in each session
-    public static final String RESPONSE_CONTEXT_SERVLET_TABLE =
-            "com.icesoft.domResponseContextServlet";
-    //Set of nodes that have changed since the last rendering pass
-    public static final String RESPONSE_MODIFIED_NODES =
-            "com.icesoft.domResponseContextModNodes";
-    public static final String USE_DOM_DIFF = "com.icesoft.faces.useDOMDiff";
     private static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
