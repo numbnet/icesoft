@@ -9,9 +9,11 @@ public interface Command {
 
     Command coallesceWith(Macro macro);
 
-    Command coallesceWith(Updates updates);
+    Command coallesceWith(UpdateElements updateElements);
 
     Command coallesceWith(Redirect redirect);
+
+    Command coallesceWith(SetCookie setCookie);
 
     void serializeTo(Writer writer) throws IOException;
 }

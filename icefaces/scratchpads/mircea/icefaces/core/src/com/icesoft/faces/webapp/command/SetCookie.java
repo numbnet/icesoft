@@ -1,18 +1,14 @@
 package com.icesoft.faces.webapp.command;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URI;
 
-public class Redirect implements Command {
-    private URI uri;
+public class SetCookie implements Command {
+    private Cookie cookie;
 
-    public Redirect(URI uri) {
-        this.uri = uri;
-    }
-
-    public Redirect(String uri) {
-        this.uri = URI.create(uri);
+    public SetCookie(Cookie cookie) {
+        this.cookie = cookie;
     }
 
     public Command coallesceWith(Command command) {
@@ -20,15 +16,16 @@ public class Redirect implements Command {
     }
 
     public Command coallesceWith(Macro macro) {
-        return this;
+        macro.addCommand(this);
+        return macro;
     }
 
     public Command coallesceWith(UpdateElements updateElements) {
-        return this;
+        return new Macro(updateElements, this);
     }
 
     public Command coallesceWith(Redirect redirect) {
-        return this;
+        return new Macro(redirect, this);
     }
 
     public Command coallesceWith(SetCookie setCookie) {
@@ -36,6 +33,6 @@ public class Redirect implements Command {
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<redirect url=\"" + uri + "\"/>");
+        writer.write("<set-cookie>" + cookie.toString() + "</set-cookie>");
     }
 }

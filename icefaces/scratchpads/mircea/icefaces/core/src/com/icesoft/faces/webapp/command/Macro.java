@@ -18,8 +18,8 @@ public class Macro implements Command {
         return command.coallesceWith(this);
     }
 
-    public Command coallesceWith(Updates updates) {
-        commands.add(updates);
+    public Command coallesceWith(UpdateElements updateElements) {
+        commands.add(updateElements);
         return this;
     }
 
@@ -30,6 +30,15 @@ public class Macro implements Command {
 
     public Command coallesceWith(Macro macro) {
         commands.addAll(macro.commands);
+        return this;
+    }
+
+    public void addCommand(Command command) {
+        commands.add(command);        
+    }
+
+    public Command coallesceWith(SetCookie setCookie) {
+        commands.add(setCookie);
         return this;
     }
 

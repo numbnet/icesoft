@@ -11,18 +11,18 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class Updates implements Command {
+public class UpdateElements implements Command {
     private final static Pattern START_CDATA = Pattern.compile("<\\!\\[CDATA\\[");
     private final static Pattern END_CDATA = Pattern.compile("\\]\\]>");
     private Element[] updates;
 
-    public Updates(Element[] updates) {
+    public UpdateElements(Element[] updates) {
         this.updates = updates;
     }
 
-    public Command coallesceWith(Updates updatesCommand) {
+    public Command coallesceWith(UpdateElements updateElementsCommand) {
         Set coallescedUpdates = new HashSet();
-        Element[] previousUpdates = updatesCommand.updates;
+        Element[] previousUpdates = updateElementsCommand.updates;
         
         for (int i = 0; i < previousUpdates.length; i++) {
             Element previousUpdate = previousUpdates[i];
@@ -38,7 +38,7 @@ public class Updates implements Command {
         }
         coallescedUpdates.addAll(Arrays.asList(updates));
 
-        return new Updates((Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
+        return new UpdateElements((Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
     }
 
     public Command coallesceWith(Command command) {
@@ -51,6 +51,10 @@ public class Updates implements Command {
 
     public Command coallesceWith(Redirect redirect) {
         return new Macro(redirect, this);
+    }
+
+    public Command coallesceWith(SetCookie setCookie) {
+        return new Macro(setCookie, this);
     }
 
     public void serializeTo(Writer writer) throws IOException {
