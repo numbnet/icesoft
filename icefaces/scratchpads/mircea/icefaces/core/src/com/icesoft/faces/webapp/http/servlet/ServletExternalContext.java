@@ -42,10 +42,10 @@ public class ServletExternalContext extends BridgeExternalContext {
     private Map requestCookieMap;
     private Collection responseCookies;
 
-    public ServletExternalContext(Object context, Object request, Object response) {
-        this.context = (ServletContext) context;
-        this.request = (HttpServletRequest) request;
-        this.response = (HttpServletResponse) response;
+    public ServletExternalContext(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        this.context = context;
+        this.request = request;
+        this.response = response;
         this.session = this.request.getSession();
         this.requestMap = new ServletRequestMap(this.request);
         this.applicationMap = new ServletApplicationMap(this.context);
