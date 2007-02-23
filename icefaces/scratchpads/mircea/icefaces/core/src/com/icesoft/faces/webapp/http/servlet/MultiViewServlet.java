@@ -20,7 +20,7 @@ public class MultiViewServlet extends AdapterServlet {
     public MultiViewServlet(HttpSession session, IdGenerator idGenerator, ResponseStateManager responseStateManager, Map views) {
         super(new PageServer());
 
-        sessionID = idGenerator.newIdentifier();
+        this.sessionID = idGenerator.newIdentifier();
         //ContextEventRepeater needs this
         session.setAttribute(ResponseStateManager.ICEFACES_ID_KEY, sessionID);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
