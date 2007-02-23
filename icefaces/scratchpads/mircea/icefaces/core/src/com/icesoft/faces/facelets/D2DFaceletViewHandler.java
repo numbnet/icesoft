@@ -34,6 +34,7 @@
 package com.icesoft.faces.facelets;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.sun.facelets.Facelet;
 import com.sun.facelets.FaceletFactory;
 import com.sun.facelets.compiler.Compiler;
@@ -238,13 +239,14 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
     }
 
 
-    protected void renderResponse(FacesContext context) throws IOException {
+    protected void renderResponse(FacesContext facesContext) throws IOException {
         if (log.isTraceEnabled()) {
             log.trace("renderResponse(FC)");
         }
+        BridgeFacesContext context= (BridgeFacesContext) facesContext;
         try {
             clearSession(context);
-	        ResponseWriter responseWriter = createAndSetResponseWriter(context);
+	        ResponseWriter responseWriter = context.createAndSetResponseWriter();
 
             UIViewRoot viewToRender = context.getViewRoot();
             String renderedViewId =

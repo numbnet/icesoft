@@ -36,7 +36,6 @@ package com.icesoft.faces.application;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
-import com.icesoft.faces.env.CommonEnvironmentResponse;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
@@ -56,15 +55,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKitFactory;
-import javax.portlet.RenderResponse;
-import javax.servlet.ServletResponse;
 import java.beans.Beans;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -87,8 +82,6 @@ public class D2DViewHandler extends ViewHandler {
         }
     }
 
-    private static final String CURRENT_VIEW_ROOT =
-            "javax.faces.webapp.CURRENT_VIEW_ROOT";
     private final static String DELEGATE_NONIFACE =
             "com.icesoft.faces.delegateNonIface";
     private final static String ACTION_URL_SUFFIX =
@@ -407,7 +400,8 @@ public class D2DViewHandler extends ViewHandler {
         return time;
     }
 
-    protected synchronized void renderResponse(FacesContext context) throws IOException {
+    protected synchronized void renderResponse(FacesContext facesContext) throws IOException {
+        BridgeFacesContext context = (BridgeFacesContext) facesContext; 
         UIComponent root = context.getViewRoot();
         String viewId = ((UIViewRoot) root).getViewId();
 
@@ -417,7 +411,7 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         clearSession(context);
-        ResponseWriter responseWriter = createAndSetResponseWriter(context);
+        ResponseWriter responseWriter = context.createAndSetResponseWriter();
 
         boolean reloadView = false;
         URLConnection viewConnection = null;
@@ -506,8 +500,6 @@ public class D2DViewHandler extends ViewHandler {
             try {
                 //TODO: pass viewInput as an InputStream in order to give to the XML parser a chance to
                 //TODO: read the encoding type declared in the xml processing instruction (<?xml version="1.0" charset="..."?>)
-                context.getExternalContext().getRequestMap()
-                        .remove(CURRENT_VIEW_ROOT);
                 parser.parse(viewInput, context);
                 root.getAttributes().put(LAST_LOADED_KEY,
                         new Long(System.currentTimeMillis()));
@@ -607,52 +599,6 @@ public class D2DViewHandler extends ViewHandler {
         contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
         contextServletTable.remove(DOMResponseWriter.RESPONSE_DOM);
         contextServletTable.remove(DOMResponseWriter.RESPONSE_MODIFIED_NODES);
-    }
-
-    protected ResponseWriter createAndSetResponseWriter(FacesContext context)
-            throws IOException {
-        // TODO
-        // Workaround to support running in both ICEfaces and plain Faces modes
-        Object obj = context.getExternalContext().getResponse();
-        Writer writer = null;
-
-        // If the response is null, don't bother trying to do anything with it.
-        // If it's a CommonEnvironmentResponse, then we are running ICEfaces with the
-        // PersistentFacesServlet.  If not, we're likely running in plain Faces mode and just
-        // have a ServletResponse or a RenderReponse (portlets).
-        //TODO: detect and pick one of the browser's preferred character sets.
-        if (obj != null) {
-            if (obj instanceof CommonEnvironmentResponse) {
-                CommonEnvironmentResponse response =
-                        (CommonEnvironmentResponse) obj;
-                response.setContentType(HTML_CONTENT_TYPE);
-                try {
-                    writer = new OutputStreamWriter(response.getStream(),
-                            CHAR_ENCODING);
-                } catch (IllegalStateException e) {
-                    //jsp inclusion seems to have already called getWriter
-                    writer = response.getWriter();
-                }
-            } else if (obj instanceof ServletResponse) {
-                ServletResponse response = (ServletResponse) obj;
-                response.setContentType(HTML_CONTENT_TYPE);
-                response.setCharacterEncoding(CHAR_ENCODING);
-                writer = response.getWriter();
-            } else if (obj instanceof RenderResponse) {
-                RenderResponse response = (RenderResponse) obj;
-                response.setContentType(HTML_CONTENT_TYPE);
-                writer = new OutputStreamWriter(
-                        response.getPortletOutputStream(),
-                        CHAR_ENCODING);
-            } else {
-                throw new FacesException("unknown type of response: " + obj);
-            }
-        }
-
-        DOMResponseWriter responseWriter = new DOMResponseWriter(writer, context, HTML_CONTENT_TYPE, CHAR_ENCODING);
-        context.setResponseWriter(responseWriter);
-
-        return responseWriter;
     }
 
     private static Map getSessionMap(FacesContext context) {
@@ -918,7 +864,6 @@ public class D2DViewHandler extends ViewHandler {
                                              String componentId) {
         UIComponent component = null;
         UIComponent child = null;
-        ;
 
         if (componentId.equals(uiComponent.getId())) {
             return uiComponent;

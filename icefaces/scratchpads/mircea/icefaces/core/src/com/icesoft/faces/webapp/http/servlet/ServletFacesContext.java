@@ -1,31 +1,33 @@
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.el.ELContextImpl;
-import com.icesoft.faces.context.DOMResponseWriter;
-import com.icesoft.faces.context.BridgeFacesContext;
-import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.DOMResponseWriter;
+import com.icesoft.faces.el.ELContextImpl;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.faces.context.FacesContext;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.ResponseStream;
-import javax.faces.context.ResponseWriter;
+import javax.el.ELContext;
+import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
-import javax.faces.FactoryFinder;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseStream;
+import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-import javax.faces.component.UIViewRoot;
-import javax.el.ELContext;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Vector;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Vector;
 
 //for now extend BridgeFacesContext since there are so many bloody 'instanceof' tests
 public class ServletFacesContext extends BridgeFacesContext {
@@ -36,11 +38,9 @@ public class ServletFacesContext extends BridgeFacesContext {
         this.viewNumber = view;
     }
 
-
     public void setCurrentInstance() {
         setCurrentInstance(this);
     }
-
 
     private Application application;
 
@@ -173,7 +173,6 @@ public class ServletFacesContext extends BridgeFacesContext {
         this.responseStream = responseStream;
     }
 
-
     private ResponseWriter responseWriter;
 
     public ResponseWriter getResponseWriter() {
@@ -184,6 +183,19 @@ public class ServletFacesContext extends BridgeFacesContext {
         this.responseWriter = responseWriter;
     }
 
+    public ResponseWriter createAndSetResponseWriter() throws IOException {
+        ServletResponse response = (ServletResponse) externalContext.getResponse();
+        // If the response is null, don't bother trying to do anything with it.
+        Writer writer = null;
+        if (response != null) {
+            //TODO: detect and pick one of the browser's preferred character sets.
+            response.setContentType(D2DViewHandler.HTML_CONTENT_TYPE);
+            response.setCharacterEncoding(D2DViewHandler.CHAR_ENCODING);
+            writer = response.getWriter();
+        }
+
+        return responseWriter = new DOMResponseWriter(writer, this, D2DViewHandler.HTML_CONTENT_TYPE, D2DViewHandler.CHAR_ENCODING);
+    }
 
     private UIViewRoot viewRoot;
 
@@ -231,11 +243,7 @@ public class ServletFacesContext extends BridgeFacesContext {
      * Return the unique identifier associated with each browser window
      * associated with a single user.
      */
-    public String getViewNumber() {
-        if (null == viewNumber) {
-            viewNumber = (String) externalContext.getRequestParameterMap()
-                    .get("viewNumber");
-        }
+    public String getViewNumber() {        
         return viewNumber;
     }
 
