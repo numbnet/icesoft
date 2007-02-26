@@ -59,7 +59,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             initParameterMap.put(key, this.context.getInitParameter(key));
         }
 
-        this.updateRequest(this.request);
+        this.update(this.request, this.response);
         this.setupSeamEnvironment();
     }
 
@@ -95,7 +95,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         return requestMap;
     }
 
-    public void updateRequest(HttpServletRequest request) {
+    public void update(HttpServletRequest request, HttpServletResponse response) {
         //update parameters
         requestParameterMap = new HashMap();
         requestParameterValuesMap = new HashMap();
@@ -113,6 +113,8 @@ public class ServletExternalContext extends BridgeExternalContext {
                 requestCookieMap.put(cookie.getName(), cookie);
             }
         }
+
+        this.response = response;
     }
 
     public Map getRequestParameterMap() {
@@ -265,10 +267,6 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     public boolean isUserInRole(String role) {
         return request.isUserInRole(role);
-    }
-
-    public void updateResponse(HttpServletResponse response) {
-        this.response = response;
     }
 
     public void addCookie(Cookie cookie) {

@@ -36,8 +36,7 @@ public class ServletView {
     }
 
     public void setAsCurrentDuring(HttpServletRequest request, HttpServletResponse response) {
-        externalContext.updateRequest(request);
-        externalContext.updateResponse(response);
+        externalContext.update(request, response);
         externalContext.getRequestMap().putAll(bundles);
         persistentFacesState.setCurrentInstance();
         facesContext.setCurrentInstance();
