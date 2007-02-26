@@ -101,7 +101,7 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
         if (context instanceof ServletContext) {
             BridgeExternalContext externalContext =
                 new ServletExternalContext((ServletContext) context, (HttpServletRequest) request, (HttpServletResponse) response);
-            return new ServletFacesContext(externalContext, null, null);
+            return new ServletFacesContext(externalContext, null, null, null);
         } else {
             throw new IllegalStateException("Unknown environment");
         }

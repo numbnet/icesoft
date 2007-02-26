@@ -43,8 +43,8 @@ public class SingleViewServlet extends AdapterServlet {
             ContextEventRepeater.viewNumberRetrieved(session, Integer.parseInt(viewNumber));
         }
 
-        view.setAsCurrentDuring(request);
-        view.switchToImmediateMode(response);
+        view.setAsCurrentDuring(request, response);
+        view.switchToNormalMode();
         super.service(request, response);
         view.redirectIfRequired();
         view.switchToPushMode();

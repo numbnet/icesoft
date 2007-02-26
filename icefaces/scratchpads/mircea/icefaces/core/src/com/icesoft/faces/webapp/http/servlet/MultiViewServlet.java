@@ -46,8 +46,8 @@ public class MultiViewServlet extends AdapterServlet {
                 views.put(redirectViewNumber, view);
                 ContextEventRepeater.viewNumberRetrieved(session, Integer.parseInt(redirectViewNumber));
             } else {
-                view.setAsCurrentDuring(request);
-                view.switchToImmediateMode(response);
+                view.setAsCurrentDuring(request, response);
+                view.switchToNormalMode();
             }
         }
 

@@ -26,30 +26,31 @@ public class ServletView {
         ServletContext servletContext = session.getServletContext();
         wrappedRequest = new ServletEnvironmentRequest(request);
         externalContext = new ServletExternalContext(servletContext, wrappedRequest, response);
-        facesContext = new ServletFacesContext(externalContext, viewIdentifier, sessionID);
         //the call has the side effect of creating and setting up the state
         //todo: make this concept more visible and less subversive
         responseState = (BlockingResponseState) responseStateManager.getState(session, viewIdentifier);
+        facesContext = new ServletFacesContext(externalContext, viewIdentifier, sessionID, responseState);
         persistentFacesState = new PersistentFacesState(facesContext, responseState);
         //collect bundles put by Tag components when the page is parsed
         bundles = externalContext.collectBundles();
     }
 
-    public void setAsCurrentDuring(HttpServletRequest request) {
+    public void setAsCurrentDuring(HttpServletRequest request, HttpServletResponse response) {
         externalContext.updateRequest(request);
+        externalContext.updateResponse(response);
         externalContext.getRequestMap().putAll(bundles);
         persistentFacesState.setCurrentInstance();
         facesContext.setCurrentInstance();
     }
 
-    public void switchToImmediateMode(HttpServletResponse response) {
-        externalContext.updateResponse(response);        
+    public void switchToNormalMode() {
+        facesContext.switchToNormalMode();
+        externalContext.switchToNormalMode();
     }
 
     public void switchToPushMode() {
-        //by making the request null DOMResponseWriter will redirect its output to the coresponding ResponseState
-        //todo: find better (less subversive) solution -- like creating two different implementions for DOMResponseWriter
-        externalContext.updateResponse(null);
+        facesContext.switchToPushMode();
+        externalContext.switchToPushMode();
     }
 
     public void redirectIfRequired() throws IOException {

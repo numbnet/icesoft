@@ -3,7 +3,11 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
+import com.icesoft.faces.context.DOMSerializer;
+import com.icesoft.faces.context.NormalModeSerializer;
+import com.icesoft.faces.context.PushModeSerializer;
 import com.icesoft.faces.el.ELContextImpl;
+import com.icesoft.faces.webapp.xmlhttp.ResponseState;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -19,8 +23,9 @@ import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,12 +35,16 @@ import java.util.Vector;
 
 //for now extend BridgeFacesContext since there are so many bloody 'instanceof' tests
 public class ServletFacesContext extends BridgeFacesContext {
+    private DOMSerializer domSerializer;
+    private ResponseState commandQueue;
 
-    public ServletFacesContext(ExternalContext externalContext, String view, String icefacesID) {
+    public ServletFacesContext(ExternalContext externalContext, String view, String icefacesID, ResponseState commandQueue) {
         setCurrentInstance(this);
         setExternalContext(externalContext);
         this.viewNumber = view;
         this.iceFacesId = icefacesID;
+        this.commandQueue = commandQueue;
+        this.switchToNormalMode();
     }
 
     public void setCurrentInstance() {
@@ -173,28 +182,33 @@ public class ServletFacesContext extends BridgeFacesContext {
         this.responseStream = responseStream;
     }
 
-    private ResponseWriter responseWriter;
+    private DOMResponseWriter responseWriter;
 
     public ResponseWriter getResponseWriter() {
         return (responseWriter);
     }
 
     public void setResponseWriter(ResponseWriter responseWriter) {
-        this.responseWriter = responseWriter;
+        //do nothing.
     }
 
     public ResponseWriter createAndSetResponseWriter() throws IOException {
-        ServletResponse response = (ServletResponse) externalContext.getResponse();
-        // If the response is null, don't bother trying to do anything with it.
-        Writer writer = null;
-        if (response != null) {
-            //TODO: detect and pick one of the browser's preferred character sets.
-            response.setContentType(D2DViewHandler.HTML_CONTENT_TYPE);
-            response.setCharacterEncoding(D2DViewHandler.CHAR_ENCODING);
-            writer = response.getWriter();
-        }
+        return responseWriter = new DOMResponseWriter(this, domSerializer);
+    }
 
-        return responseWriter = new DOMResponseWriter(writer, this, D2DViewHandler.HTML_CONTENT_TYPE, D2DViewHandler.CHAR_ENCODING);
+    public void switchToNormalMode() {
+        try {
+            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+            Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
+            domSerializer = new NormalModeSerializer(this, writer);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void switchToPushMode() {
+        //todo: pull document in this class
+        domSerializer = new PushModeSerializer(responseWriter.getDocument(), commandQueue);
     }
 
     private UIViewRoot viewRoot;

@@ -45,10 +45,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Properties;
 
-public class DOMSerializer {
+public class JAXPSerializer implements DOMSerializer {
     private static final TransformerFactory transformerFactory =
             TransformerFactory.newInstance();
     private static Transformer PrettyPrintingTransformer;
@@ -58,11 +59,11 @@ public class DOMSerializer {
         try {
             PrettyPrintingTransformer = transformerFactory
                     .newTransformer(new StreamSource(
-                            DOMSerializer.class.getResourceAsStream(
+                            JAXPSerializer.class.getResourceAsStream(
                                     "pretty-printing.xslt")));
             NormalPrintingTransformer = transformerFactory
                     .newTransformer(new StreamSource(
-                            DOMSerializer.class.getResourceAsStream(
+                            JAXPSerializer.class.getResourceAsStream(
                                     "normal-printing.xslt")));
         } catch (TransformerConfigurationException e) {
             throw new RuntimeException(e);
@@ -73,25 +74,33 @@ public class DOMSerializer {
     private Properties properties = new Properties();
     private Transformer transformer = NormalPrintingTransformer;
 
-    public DOMSerializer(Writer writer) {
+    public JAXPSerializer(Writer writer) {
         this.result = new StreamResult(writer);
     }
 
-    public DOMSerializer(Writer writer, String publicId, String systemId) {
+    public JAXPSerializer(Writer writer, String publicId, String systemId) {
         this.result = new StreamResult(writer);
         properties.setProperty(OutputKeys.DOCTYPE_PUBLIC, publicId);
         properties.setProperty(OutputKeys.DOCTYPE_SYSTEM, systemId);
         properties.setProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
     }
 
-    public void serialize(Document document) throws TransformerException {
-        transformer.setOutputProperties(properties);
-        transformer.transform(new DOMSource(document), result);
+    public void serialize(Document document) throws IOException {
+        try {
+            transformer.setOutputProperties(properties);
+            transformer.transform(new DOMSource(document), result);
+        } catch (TransformerException e) {
+            throw new IOException(e.getMessage());
+        }
     }
 
-    public void serialize(Node node) throws TransformerException {
-        transformer.setOutputProperties(properties);
-        transformer.transform(new DOMSource(node), result);
+    public void serialize(Node node) throws IOException {
+        try {
+            transformer.setOutputProperties(properties);
+            transformer.transform(new DOMSource(node), result);
+        } catch (TransformerException e) {
+            throw new IOException(e.getMessage());
+        }
     }
 
     public void printPretty() {

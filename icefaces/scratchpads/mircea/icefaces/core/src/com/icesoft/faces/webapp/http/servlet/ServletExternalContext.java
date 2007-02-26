@@ -315,4 +315,12 @@ public class ServletExternalContext extends BridgeExternalContext {
                     Boolean.TRUE);
         }
     }
+
+    public void switchToNormalMode() {
+
+    }
+
+    public void switchToPushMode() {
+
+    }
 }

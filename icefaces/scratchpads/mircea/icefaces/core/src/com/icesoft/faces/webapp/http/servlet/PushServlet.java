@@ -33,7 +33,7 @@ public class PushServlet implements ServerServlet {
             response.setContentLength(content.length);
             response.getOutputStream().write(content);
         } else {
-            view.setAsCurrentDuring(request);
+            view.setAsCurrentDuring(request, response);
             server.service(request, response);
             view.release();
         }
