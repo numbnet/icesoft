@@ -66,4 +66,6 @@ public abstract class BridgeFacesContext extends FacesContext
     public abstract void setFocusId(String focusId);
 
     public abstract ResponseWriter createAndSetResponseWriter() throws IOException;
+
+    public abstract void applyBrowserDOMChanges();
 }

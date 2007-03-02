@@ -1,18 +1,20 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.xmlhttp.ResponseState;
+import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.command.UpdateElements;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PushModeSerializer implements DOMSerializer {
     private Document oldDocument;
-    private ResponseState commandQueue;
+    private CommandQueue commandQueue;
 
-    public PushModeSerializer(Document currentDocument, ResponseState commandQueue) {
+    public PushModeSerializer(Document currentDocument, CommandQueue commandQueue) {
         this.oldDocument = currentDocument;
         this.commandQueue = commandQueue;
     }
@@ -43,17 +45,15 @@ public class PushModeSerializer implements DOMSerializer {
             changed[i] = changeRoot;
         }
 
-//        ArrayList elementList = new ArrayList(changed.length);
+        ArrayList elementList = new ArrayList(changed.length);
         for (int i = 0; i < changed.length; i++) {
             Element element = (Element) changed[i];
             if (null != element) {
-//                elementList.add(element);
-                commandQueue.writeElement(element);
+                elementList.add(element);
             }
         }
-        commandQueue.flush();
-//        Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
-//        commandQueue.put(new UpdateElements(elements));
+        Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
+        commandQueue.put(new UpdateElements(elements));
 
         oldDocument = document;
     }

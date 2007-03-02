@@ -20,7 +20,7 @@ public class UpdateElements implements Command {
         this.updates = updates;
     }
 
-    public Command coallesceWith(UpdateElements updateElementsCommand) {
+    public Command coalesceWith(UpdateElements updateElementsCommand) {
         Set coallescedUpdates = new HashSet();
         Element[] previousUpdates = updateElementsCommand.updates;
         
@@ -41,23 +41,28 @@ public class UpdateElements implements Command {
         return new UpdateElements((Element[]) coallescedUpdates.toArray(new Element[coallescedUpdates.size()]));
     }
 
-    public Command coallesceWith(Command command) {
-        return command.coallesceWith(this);
+    public Command coalesceWith(Command command) {
+        return command.coalesceWith(this);
     }
 
-    public Command coallesceWith(Macro macro) {
+    public Command coalesceWith(Macro macro) {
         return new Macro(macro, this);
     }
 
-    public Command coallesceWith(Redirect redirect) {
+    public Command coalesceWith(Redirect redirect) {
         return new Macro(redirect, this);
     }
 
-    public Command coallesceWith(SetCookie setCookie) {
+    public Command coalesceWith(SetCookie setCookie) {
         return new Macro(setCookie, this);
     }
 
+    public Command coalesceWith(NOOP noop) {
+        return this;
+    }
+
     public void serializeTo(Writer writer) throws IOException {
+        writer.write("<updates>");
         for (int i = 0; i < updates.length; i++) {
             Element update = updates[i];
             if (update == null) continue;
@@ -70,6 +75,7 @@ public class UpdateElements implements Command {
             writer.write(content);
             writer.write("]]></update>");
         }
+        writer.write("</updates>");
     }
 
     public String toString() {

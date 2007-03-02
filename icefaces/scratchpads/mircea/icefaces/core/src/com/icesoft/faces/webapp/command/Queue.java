@@ -42,33 +42,11 @@ package com.icesoft.faces.webapp.command;
  */
 public interface Queue {
 
-    boolean isNotEmpty();
+    void put(Object object);
 
-    boolean isEmpty();
+    Object take();
 
-    void queue(Command command);
+    void onPut(Runnable listener);
 
-    Command dequeue();
-
-    Command[] dequeueAll();
-
-    public interface Listener {
-
-        void queued(String view, Queue queue);
-
-        void dequeued(String view, Queue queue);
-    }
-    
-    public interface Manager {
-
-        Queue create(String view);
-
-        void emptyQueues();
-
-        void listenWith(Listener listener);
-
-        Command[] collectFrom(String[] views);
-
-        void broadcast(Command command);
-    }
+    void onTake(Runnable listener);
 }

@@ -1,9 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.application.StartupTime;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.faces.webapp.xmlhttp.ResponseStateManager;
-import com.icesoft.faces.application.StartupTime;
 import com.icesoft.util.IdGenerator;
 
 import javax.servlet.ServletConfig;
@@ -18,8 +17,6 @@ import java.io.IOException;
 public class MainServlet extends HttpServlet {
     private PathDispatcher dispatcher = new PathDispatcher();
 
-
-
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
         StartupTime.started();
@@ -27,11 +24,10 @@ public class MainServlet extends HttpServlet {
             ServletContext servletContext = servletConfig.getServletContext();
             final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", servletContext);
             final IdGenerator idGenerator = new IdGenerator(servletContext.getResource("/").getPath());
-            final ResponseStateManager responseStateManager = ResponseStateManager.getResponseStateManager(servletContext);
 
             ServerServlet sessionServer = new SessionDispatcher() {
                 protected ServerServlet newServlet(HttpSession session) {
-                    return new MainSessionBoundServlet(session, idGenerator, responseStateManager, configuration);
+                    return new MainSessionBoundServlet(session, idGenerator, configuration);
                 }
             };
             AdapterServlet resourceServer = new AdapterServlet(new ResourceServer(configuration));

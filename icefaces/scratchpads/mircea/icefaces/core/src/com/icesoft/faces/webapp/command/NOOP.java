@@ -2,44 +2,35 @@ package com.icesoft.faces.webapp.command;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URI;
 
-public class Redirect implements Command {
-    private URI uri;
-
-    public Redirect(URI uri) {
-        this.uri = uri;
-    }
-
-    public Redirect(String uri) {
-        this.uri = URI.create(uri);
-    }
+public class NOOP implements Command {
 
     public Command coalesceWith(Command command) {
         return command.coalesceWith(this);
     }
 
     public Command coalesceWith(Macro macro) {
-        return this;
+        return macro;
     }
 
     public Command coalesceWith(UpdateElements updateElements) {
-        return this;
+        return updateElements;
     }
 
     public Command coalesceWith(Redirect redirect) {
-        return this;
+        return redirect;
     }
 
     public Command coalesceWith(SetCookie setCookie) {
-        return new Macro(setCookie, this);
+        return setCookie;
     }
-    
+
+
     public Command coalesceWith(NOOP noop) {
-        return this;
+        return noop;
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<redirect url=\"" + uri + "\"/>");
+        //do nothing!
     }
 }

@@ -1,8 +1,9 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.xmlhttp.ResponseStateManager;
 import com.icesoft.util.IdGenerator;
+import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,15 +14,16 @@ import java.util.Map;
 public class MainSessionBoundServlet implements ServerServlet {
     private PathDispatcher dispatcher = new PathDispatcher();
     private Map views = new HashMap();
+    private BlockingQueue allUpdatedViews = new LinkedBlockingQueue();
 
-    public MainSessionBoundServlet(HttpSession session, IdGenerator idGenerator, ResponseStateManager stateManager, Configuration configuration) {
+    public MainSessionBoundServlet(HttpSession session, IdGenerator idGenerator, Configuration configuration) {
         final ServerServlet viewServer;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServer = new MultiViewServlet(session, idGenerator, stateManager, views);
+            viewServer = new MultiViewServlet(session, idGenerator, views, allUpdatedViews);
         } else {
-            viewServer = new SingleViewServlet(session, idGenerator, stateManager, views);
+            viewServer = new SingleViewServlet(session, idGenerator, views, allUpdatedViews);
         }
-        final ServerServlet pushServer = new PushServlet(session, views);
+        final ServerServlet pushServer = new PushServlet(views, allUpdatedViews);
 
         dispatcher.dispatchOn(".*block\\/.*", pushServer);
         dispatcher.dispatchOn(".*", viewServer);

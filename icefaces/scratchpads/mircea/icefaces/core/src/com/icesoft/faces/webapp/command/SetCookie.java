@@ -11,25 +11,29 @@ public class SetCookie implements Command {
         this.cookie = cookie;
     }
 
-    public Command coallesceWith(Command command) {
-        return command.coallesceWith(this);
+    public Command coalesceWith(Command command) {
+        return command.coalesceWith(this);
     }
 
-    public Command coallesceWith(Macro macro) {
+    public Command coalesceWith(Macro macro) {
         macro.addCommand(this);
         return macro;
     }
 
-    public Command coallesceWith(UpdateElements updateElements) {
+    public Command coalesceWith(UpdateElements updateElements) {
         return new Macro(updateElements, this);
     }
 
-    public Command coallesceWith(Redirect redirect) {
+    public Command coalesceWith(Redirect redirect) {
         return new Macro(redirect, this);
     }
 
-    public Command coallesceWith(SetCookie setCookie) {
+    public Command coalesceWith(SetCookie setCookie) {
         return new Macro(setCookie, this);
+    }
+    
+    public Command coalesceWith(NOOP noop) {
+        return this;
     }
 
     public void serializeTo(Writer writer) throws IOException {

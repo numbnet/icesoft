@@ -14,21 +14,21 @@ public class Macro implements Command {
         commands.add(commandB);
     }
 
-    public Command coallesceWith(Command command) {
-        return command.coallesceWith(this);
+    public Command coalesceWith(Command command) {
+        return command.coalesceWith(this);
     }
 
-    public Command coallesceWith(UpdateElements updateElements) {
+    public Command coalesceWith(UpdateElements updateElements) {
         commands.add(updateElements);
         return this;
     }
 
-    public Command coallesceWith(Redirect redirect) {
+    public Command coalesceWith(Redirect redirect) {
         commands.add(redirect);
         return this;
     }
 
-    public Command coallesceWith(Macro macro) {
+    public Command coalesceWith(Macro macro) {
         commands.addAll(macro.commands);
         return this;
     }
@@ -37,8 +37,12 @@ public class Macro implements Command {
         commands.add(command);        
     }
 
-    public Command coallesceWith(SetCookie setCookie) {
+    public Command coalesceWith(SetCookie setCookie) {
         commands.add(setCookie);
+        return this;
+    }
+
+    public Command coalesceWith(NOOP noop) {
         return this;
     }
 

@@ -34,13 +34,13 @@
 package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.http.core.UpdateManager;
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
@@ -48,8 +48,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.regex.Pattern;
-
-import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 
 /**
  * Originally this class was named BlockingServletState and was an inner class
@@ -87,7 +85,7 @@ public class BlockingResponseState implements ResponseState, Serializable {
             throw new IllegalArgumentException(
                     "iceID and viewNumber must be set");
         }
-        this.semaphore = (Semaphore) session.getAttribute(UpdateManager.class.toString());
+        this.semaphore = (Semaphore) session.getAttribute(null);
         if (semaphore == null) {
             System.out.println("BlockingServlet needs to be registered as a listener class.");
             System.out.println("Add this lines to your web.xml:");

@@ -33,8 +33,6 @@
 
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
-import com.icesoft.faces.webapp.http.servlet.ServletFacesContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -44,8 +42,6 @@ import javax.faces.context.FacesContextFactory;
 import javax.faces.lifecycle.Lifecycle;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
 /**
@@ -99,9 +95,7 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
         // BridgeExternalContext is responsible for differentiating the type of environment
         // and delegating the calls appropriately.
         if (context instanceof ServletContext) {
-            BridgeExternalContext externalContext =
-                new ServletExternalContext((ServletContext) context, (HttpServletRequest) request, (HttpServletResponse) response);
-            return new ServletFacesContext(externalContext, null, null, null);
+            return null;
         } else {
             throw new IllegalStateException("Unknown environment");
         }

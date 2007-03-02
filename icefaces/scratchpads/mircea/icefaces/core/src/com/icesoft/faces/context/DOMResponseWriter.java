@@ -46,7 +46,6 @@ import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -435,70 +434,6 @@ public class DOMResponseWriter extends ResponseWriter {
      */
     protected void setCursorParent(Node cursorParent) {
         this.cursor = cursorParent;
-    }
-    
-    //With multiple browser windows, there will be one old DOM per window,
-    //hence keyed by viewNumber
-    String getOldDOMKey() {
-        return getOldDOMKey(context.getViewNumber());
-    }
-
-    public static String getOldDOMKey(String viewNumber) {
-        return viewNumber + "/" + DOMResponseWriter.OLD_DOM;
-    }
-
-    public static void applyBrowserDOMChanges(BridgeFacesContext facesContext) {
-        ExternalContext externalContext = facesContext.getExternalContext();
-        Document document = (Document) externalContext.getSessionMap()
-                .get(DOMResponseWriter.getOldDOMKey(
-                        facesContext.getViewNumber()));
-        if (document == null) return;
-        Map parameters = externalContext.getRequestParameterValuesMap();
-
-        NodeList inputElements = document.getElementsByTagName("input");
-        int inputElementsLength = inputElements.getLength();
-        for (int i = 0; i < inputElementsLength; i++) {
-            Element inputElement = (Element) inputElements.item(i);
-            String id = inputElement.getAttribute("id");
-            if (parameters.containsKey(id)) {
-                String value = ((String[]) parameters.get(id))[0];
-                inputElement.setAttribute("value", value);
-            }
-        }
-
-        NodeList textareaElements = document.getElementsByTagName("textarea");
-        int textareaElementsLength = textareaElements.getLength();
-        for (int i = 0; i < textareaElementsLength; i++) {
-            Element textareaElement = (Element) textareaElements.item(i);
-            String id = textareaElement.getAttribute("id");
-            if (parameters.containsKey(id)) {
-                String value = ((String[]) parameters.get(id))[0];
-                textareaElement.getFirstChild()
-                        .setNodeValue(value);//set value on the Text node
-            }
-        }
-
-        NodeList selectElements = document.getElementsByTagName("select");
-        int selectElementsLength = selectElements.getLength();
-        for (int i = 0; i < selectElementsLength; i++) {
-            Element selectElement = (Element) selectElements.item(i);
-            String id = selectElement.getAttribute("id");
-            if (parameters.containsKey(id)) {
-                List values = Arrays.asList((String[]) parameters.get(id));
-
-                NodeList optionElements =
-                        selectElement.getElementsByTagName("option");
-                int optionElementsLength = optionElements.getLength();
-                for (int j = 0; j < optionElementsLength; j++) {
-                    Element optionElement = (Element) optionElements.item(j);
-                    if (values.contains(optionElement.getAttribute("value"))) {
-                        optionElement.setAttribute("selected", "selected");
-                    } else {
-                        optionElement.removeAttribute("selected");
-                    }
-                }
-            }
-        }
     }
 
     public static boolean isStreamWriting() {

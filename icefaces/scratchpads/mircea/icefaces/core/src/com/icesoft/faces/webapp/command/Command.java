@@ -5,15 +5,17 @@ import java.io.Writer;
 
 public interface Command {
 
-    Command coallesceWith(Command command);
+    Command coalesceWith(Command command);
 
-    Command coallesceWith(Macro macro);
+    Command coalesceWith(Macro macro);
 
-    Command coallesceWith(UpdateElements updateElements);
+    Command coalesceWith(UpdateElements updateElements);
 
-    Command coallesceWith(Redirect redirect);
+    Command coalesceWith(Redirect redirect);
 
-    Command coallesceWith(SetCookie setCookie);
+    Command coalesceWith(SetCookie setCookie);
+
+    Command coalesceWith(NOOP noop);
 
     void serializeTo(Writer writer) throws IOException;
 }
