@@ -1,9 +1,9 @@
 package com.icesoft.faces.webapp.http.core;
 
+import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
-import com.icesoft.faces.webapp.http.servlet.ServletView;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -28,8 +28,8 @@ public class SendUpdates implements Server {
                     String viewIdentifier = viewIdentifiers[i];
                     //cancel asynchronous update for these view since it is served synchronously
                     allUpdatedViews.remove(viewIdentifier);
-                    ServletView view = (ServletView) commandQueues.get(viewIdentifier);
-                    view.take().serializeTo(writer);
+                    CommandQueue commandQueue = (CommandQueue) commandQueues.get(viewIdentifier);
+                    commandQueue.take().serializeTo(writer);
                 }
             }
         });
