@@ -42,6 +42,8 @@ public class MainServlet extends HttpServlet {
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             dispatcher.service(request, response);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new ServletException(e);
         }

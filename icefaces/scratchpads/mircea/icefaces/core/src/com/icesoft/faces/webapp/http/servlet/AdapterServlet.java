@@ -1,6 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +15,16 @@ public class AdapterServlet implements ServerServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        server.service(new ServletRequestResponse(request, response));
+        final Semaphore semaphore = new Semaphore(1);
+        semaphore.acquire();
+        server.service(new ServletRequestResponse(request, response) {
+            public void respondWith(ResponseHandler handler) throws Exception {
+                super.respondWith(handler);
+                semaphore.release();
+            }
+        });
+        semaphore.acquire();
+        semaphore.release();
     }
 
     public void shutdown() {

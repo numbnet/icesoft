@@ -1,9 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,7 @@ import java.util.Map;
 public class MainSessionBoundServlet implements ServerServlet {
     private PathDispatcher dispatcher = new PathDispatcher();
     private Map views = new HashMap();
-    private BlockingQueue allUpdatedViews = new LinkedBlockingQueue();
+    private ViewQueue allUpdatedViews = new ViewQueue();
 
     public MainSessionBoundServlet(HttpSession session, IdGenerator idGenerator, Configuration configuration) {
         final ServerServlet viewServer;

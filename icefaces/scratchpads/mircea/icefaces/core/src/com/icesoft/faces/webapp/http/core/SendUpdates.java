@@ -7,7 +7,10 @@ import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 
 public class SendUpdates implements Server {
@@ -23,14 +26,14 @@ public class SendUpdates implements Server {
         request.respondWith(new FixedXMLContentHandler() {
 
             public void writeTo(Writer writer) throws IOException {
-                String[] viewIdentifiers = request.getParameterAsStrings("viewNumber");
-                for (int i = 0; i < viewIdentifiers.length; i++) {
-                    String viewIdentifier = viewIdentifiers[i];
-                    //cancel asynchronous update for these view since it is served synchronously
-                    allUpdatedViews.remove(viewIdentifier);
-                    CommandQueue commandQueue = (CommandQueue) commandQueues.get(viewIdentifier);
+                HashSet viewIdentifiers = new HashSet(Arrays.asList(request.getParameterAsStrings("viewNumber")));
+                System.out.println("SendUpdates " + viewIdentifiers);
+                Iterator i = viewIdentifiers.iterator();
+                while (i.hasNext()) {
+                    CommandQueue commandQueue = (CommandQueue) commandQueues.get(i.next());
                     commandQueue.take().serializeTo(writer);
                 }
+                allUpdatedViews.removeAll(viewIdentifiers);
             }
         });
     }

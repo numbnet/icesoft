@@ -1,9 +1,12 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -12,36 +15,51 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SendUpdatedViews implements Server {
-    private Collection synchronouslyUpdatedViews;
-    private BlockingQueue allUpdatedViews;
+    private static final ResponseHandler EmptyResponseHandler = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+        }
+    };
+    private BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
 
-    public SendUpdatedViews(Collection synchronouslyUpdatedViews, final BlockingQueue allUpdatedViews) {
-        this.synchronouslyUpdatedViews = synchronouslyUpdatedViews;
-        this.allUpdatedViews = allUpdatedViews;
+    public SendUpdatedViews(final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews) {
+        allUpdatedViews.onPut(new Runnable() {
+            public void run() {
+                try {
+                    allUpdatedViews.removeAll(synchronouslyUpdatedViews);
+                    synchronouslyUpdatedViews.clear();
+                    Set viewIdentifiers = new HashSet(allUpdatedViews);
+                    if (!viewIdentifiers.isEmpty()) {
+                        Request request = (Request) pendingRequest.take();
+                        request.respondWith(new UpdatedViewsHandler((String[]) viewIdentifiers.toArray(new String[viewIdentifiers.size()])));
+                    } else {
+                        System.out.println("no views to update");
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void service(final Request request) throws Exception {
-        //todo: refactor this!
-        while (true) {
+        respondToPreviousRequest();
+        pendingRequest.put(request);
+    }
+
+    private void respondToPreviousRequest() {
+        Request previousRequest = (Request) pendingRequest.poll();
+        if (previousRequest != null) {
+            System.out.println("closing previous in " + new Exception().getStackTrace()[1]);
             try {
-                Set viewIdentifiers = new HashSet();
-                viewIdentifiers.add(allUpdatedViews.take());
-                allUpdatedViews.drainTo(viewIdentifiers);
-                viewIdentifiers.removeAll(synchronouslyUpdatedViews);
-                synchronouslyUpdatedViews.clear();
-                if (!viewIdentifiers.isEmpty()) {
-                    request.respondWith(new UpdatedViewsHandler((String[]) viewIdentifiers.toArray(new String[viewIdentifiers.size()])));
-                    return;
-                }
-            } catch (InterruptedException e) {
-                continue;
+                previousRequest.respondWith(EmptyResponseHandler);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }
 
     public void shutdown() {
+        respondToPreviousRequest();
     }
 
     private class UpdatedViewsHandler extends FixedXMLContentHandler {

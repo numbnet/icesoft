@@ -2,9 +2,9 @@ package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.core.PageServer;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.xmlhttp.ResponseStateManager;
 import com.icesoft.util.IdGenerator;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,10 +15,10 @@ public class MultiViewServlet extends AdapterServlet {
     private int viewCount = 0;
     private HttpSession session;
     private Map views;
-    private BlockingQueue asynchronouslyUpdatedViews;
+    private ViewQueue asynchronouslyUpdatedViews;
     private String sessionID;
 
-    public MultiViewServlet(HttpSession session, IdGenerator idGenerator, Map views, BlockingQueue asynchronouslyUpdatedViews) {
+    public MultiViewServlet(HttpSession session, IdGenerator idGenerator, Map views, ViewQueue asynchronouslyUpdatedViews) {
         super(new PageServer());
 
         this.sessionID = idGenerator.newIdentifier();

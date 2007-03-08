@@ -4,7 +4,6 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +15,7 @@ import java.util.Map;
 public class PushServer implements Server {
     private Server server;
 
-    public PushServer(Map commandQueues, BlockingQueue allUpdatedViews) {
+    public PushServer(Map commandQueues, ViewQueue allUpdatedViews) {
         PathDispatcherServer dispatcher = new PathDispatcherServer();
         Collection synchronouslyUpdatedViews = new HashSet();
         dispatcher.dispatchOn(".*send\\-receive\\-updates$", new ReceiveSendUpdates(commandQueues, synchronouslyUpdatedViews));

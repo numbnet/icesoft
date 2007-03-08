@@ -2,10 +2,10 @@ package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.core.PageServer;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet;
 import com.icesoft.faces.webapp.xmlhttp.ResponseStateManager;
 import com.icesoft.util.IdGenerator;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +17,9 @@ public class SingleViewServlet extends AdapterServlet {
     private HttpSession session;
     private Map views;
     private String sessionID;
-    private BlockingQueue allUpdatedViews;
+    private ViewQueue allUpdatedViews;
 
-    public SingleViewServlet(HttpSession session, IdGenerator idGenerator, Map views, BlockingQueue allUpdatedViews) {
+    public SingleViewServlet(HttpSession session, IdGenerator idGenerator, Map views, ViewQueue allUpdatedViews) {
         super(new PageServer());
 
         this.sessionID = idGenerator.newIdentifier();

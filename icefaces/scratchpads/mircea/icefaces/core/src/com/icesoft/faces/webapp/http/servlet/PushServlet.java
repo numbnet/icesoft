@@ -1,8 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.webapp.http.core.PushServer;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,7 @@ public class PushServlet implements ServerServlet {
     private Map views;
     private ServerServlet server;
 
-    public PushServlet(Map views, BlockingQueue allUpdatedViews) {
+    public PushServlet(Map views, ViewQueue allUpdatedViews) {
         this.server = new AdapterServlet(new PushServer(views, allUpdatedViews));
         this.views = views;
     }

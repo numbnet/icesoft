@@ -4,8 +4,8 @@ import com.icesoft.faces.env.ServletEnvironmentRequest;
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
@@ -21,14 +21,14 @@ public class ServletView implements CommandQueue {
     private Lock lock = new ReentrantLock();
     private ServletExternalContext externalContext;
     private ServletFacesContext facesContext;
-    private BlockingQueue allServedViews;
+    private ViewQueue allServedViews;
     private PersistentFacesState persistentFacesState;
     private Map bundles;
     private ServletEnvironmentRequest wrappedRequest;
     private Command currentCommand = NOOP;
     private String viewIdentifier;
 
-    public ServletView(final String viewIdentifier, String sessionID, HttpServletRequest request, HttpServletResponse response, BlockingQueue allServedViews) {
+    public ServletView(final String viewIdentifier, String sessionID, HttpServletRequest request, HttpServletResponse response, ViewQueue allServedViews) {
         HttpSession session = request.getSession();
         ServletContext servletContext = session.getServletContext();
         this.wrappedRequest = new ServletEnvironmentRequest(request);
@@ -85,6 +85,6 @@ public class ServletView implements CommandQueue {
 
     public void release() {
         facesContext.release();
-        persistentFacesState.release();        
+        persistentFacesState.release();
     }
 }

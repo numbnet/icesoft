@@ -90,7 +90,7 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.reloadInterval";
     private final static String DO_JSF_STATE_MANAGEMENT =
             "com.icesoft.faces.doJSFStateManagement";
-    public final static String INCLUDE_OPEN_AJAX_HUB = 
+    public final static String INCLUDE_OPEN_AJAX_HUB =
             "com.icesoft.faces.openAjaxHub";
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
@@ -400,8 +400,8 @@ public class D2DViewHandler extends ViewHandler {
         return time;
     }
 
-    protected synchronized void renderResponse(FacesContext facesContext) throws IOException {
-        BridgeFacesContext context = (BridgeFacesContext) facesContext; 
+    protected void renderResponse(FacesContext facesContext) throws IOException {
+        BridgeFacesContext context = (BridgeFacesContext) facesContext;
         UIComponent root = context.getViewRoot();
         String viewId = ((UIViewRoot) root).getViewId();
 
