@@ -34,7 +34,7 @@ public class Macro implements Command {
     }
 
     public void addCommand(Command command) {
-        commands.add(command);        
+        commands.add(command);
     }
 
     public Command coalesceWith(SetCookie setCookie) {
@@ -48,9 +48,11 @@ public class Macro implements Command {
 
     public void serializeTo(Writer writer) throws IOException {
         Iterator i = commands.iterator();
+        writer.write("<macro>");
         while (i.hasNext()) {
             Command command = (Command) i.next();
             command.serializeTo(writer);
         }
+        writer.write("</macro>");
     }
 }
