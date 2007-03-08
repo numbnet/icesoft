@@ -31,8 +31,6 @@ public class SendUpdatedViews implements Server {
                     if (!viewIdentifiers.isEmpty()) {
                         Request request = (Request) pendingRequest.take();
                         request.respondWith(new UpdatedViewsHandler((String[]) viewIdentifiers.toArray(new String[viewIdentifiers.size()])));
-                    } else {
-                        System.out.println("no views to update");
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -49,7 +47,6 @@ public class SendUpdatedViews implements Server {
     private void respondToPreviousRequest() {
         Request previousRequest = (Request) pendingRequest.poll();
         if (previousRequest != null) {
-            System.out.println("closing previous in " + new Exception().getStackTrace()[1]);
             try {
                 previousRequest.respondWith(EmptyResponseHandler);
             } catch (Exception e) {
