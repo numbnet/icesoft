@@ -1,5 +1,6 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.PushServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet;
@@ -12,8 +13,8 @@ public class PushServlet implements ServerServlet {
     private Map views;
     private ServerServlet server;
 
-    public PushServlet(Map views, ViewQueue allUpdatedViews) {
-        this.server = new AdapterServlet(new PushServer(views, allUpdatedViews));
+    public PushServlet(Map views, ViewQueue allUpdatedViews, Configuration configuration) {
+        this.server = new EnvironmentAdaptingServlet(new PushServer(views, allUpdatedViews), configuration);
         this.views = views;
     }
 

@@ -27,7 +27,6 @@ public class SendUpdates implements Server {
 
             public void writeTo(Writer writer) throws IOException {
                 HashSet viewIdentifiers = new HashSet(Arrays.asList(request.getParameterAsStrings("viewNumber")));
-                System.out.println("SendUpdates " + viewIdentifiers);
                 Iterator i = viewIdentifiers.iterator();
                 while (i.hasNext()) {
                     CommandQueue commandQueue = (CommandQueue) commandQueues.get(i.next());

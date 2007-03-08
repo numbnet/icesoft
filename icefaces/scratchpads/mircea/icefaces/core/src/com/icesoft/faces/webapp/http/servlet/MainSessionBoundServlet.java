@@ -22,7 +22,7 @@ public class MainSessionBoundServlet implements ServerServlet {
         } else {
             viewServer = new SingleViewServlet(session, idGenerator, views, allUpdatedViews);
         }
-        final ServerServlet pushServer = new PushServlet(views, allUpdatedViews);
+        final ServerServlet pushServer = new PushServlet(views, allUpdatedViews, configuration);
 
         dispatcher.dispatchOn(".*block\\/.*", pushServer);
         dispatcher.dispatchOn(".*", viewServer);

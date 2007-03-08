@@ -30,7 +30,7 @@ public class MainServlet extends HttpServlet {
                     return new MainSessionBoundServlet(session, idGenerator, configuration);
                 }
             };
-            AdapterServlet resourceServer = new AdapterServlet(new ResourceServer(configuration));
+            ThreadBlockingAdaptingServlet resourceServer = new ThreadBlockingAdaptingServlet(new ResourceServer(configuration));
 
             dispatcher.dispatchOn(".*xmlhttp\\/.*", resourceServer);
             dispatcher.dispatchOn(".*", sessionServer);

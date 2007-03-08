@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class SingleViewServlet extends AdapterServlet {
+public class SingleViewServlet extends ThreadBlockingAdaptingServlet {
     private static final String viewNumber = "1";
     private HttpSession session;
     private Map views;

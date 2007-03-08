@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class MultiViewServlet extends AdapterServlet {
+public class MultiViewServlet extends ThreadBlockingAdaptingServlet {
     private int viewCount = 0;
     private HttpSession session;
     private Map views;
