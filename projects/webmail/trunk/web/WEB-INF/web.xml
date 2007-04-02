@@ -6,10 +6,10 @@
 
 <web-app>
 
-   <display-name>webmail</display-name>
+   <display-name>Webmail</display-name>
 
     <description>
-        webmail Application
+        Webmail Application
     </description>
 
     <context-param>
@@ -35,26 +35,18 @@
         </description>
     </context-param>
     
-    <!-- concurrent DOM views -->
     <context-param>
         <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
         <param-value>true</param-value>
     </context-param>
-    <!-- Asynchronous Updates -->
-    <context-param>
-        <param-name>com.icesoft.faces.synchronousUpdate</param-name>
-        <param-value>false</param-value>
-    </context-param>
-   
-	<listener>
-		<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-	</listener>
+    
+    <listener>
+        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+    </listener>
    
     <listener>
-        <!-- UserAccountPool listens for HttpSessionListener session created and destroyed -->
         <listener-class>com.icesoft.applications.faces.webmail.WebmailMediator</listener-class>
     </listener>
-
 
     <!-- Faces Servlet -->
     <servlet>
@@ -75,7 +67,7 @@
         <load-on-startup> 1 </load-on-startup>
     </servlet>
 
-    <!-- extension mapping -->
+    <!-- Extension mapping -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
@@ -101,10 +93,6 @@
         <url-pattern>/block/*</url-pattern>
     </servlet-mapping>
 
-    <session-config>
-      <session-timeout>10</session-timeout>
-    </session-config>
-    
     <!-- Welcome files -->
     <welcome-file-list>
         <welcome-file>index.jsf</welcome-file>
@@ -112,7 +100,7 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <!-- all error should jump back to the login screen -->
+    <!-- All errors should jump back to the login screen -->
     <error-page>
         <exception-type>java.lang.ClassNotFoundException</exception-type>
         <location>/error.html</location>
@@ -133,5 +121,10 @@
         <error-code>500</error-code>
         <location>/error.html</location>
     </error-page>
+    
+    <!-- Session timeout configuration -->
+    <session-config>
+      <session-timeout>10</session-timeout>
+    </session-config>    
 
 </web-app>
