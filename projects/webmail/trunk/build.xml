@@ -37,6 +37,9 @@
         <javac debug="on" srcdir="${src.dir}" destdir="${build.classes.dir}">
             <classpath refid="compile.classpath"/>
         </javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.dir}"/>
+        </copy>
     </target>
 
     <!-- Main target for building the project -->

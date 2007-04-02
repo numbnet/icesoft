@@ -16,7 +16,6 @@
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
-    <!-- Managed Bean for dynamic style examples -->
     <managed-bean>
         <managed-bean-name>styleBean</managed-bean-name>
         <managed-bean-class>
@@ -24,11 +23,10 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-
     <managed-bean>
     	<managed-bean-name>HibernateUtil</managed-bean-name>
     	<managed-bean-class>
-    		com.icesoft.ifaces.samples.util.db.HibernateUtil
+    		com.icesoft.applications.faces.webmail.util.db.HibernateUtil
     	</managed-bean-class>
     	<managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
@@ -86,7 +84,6 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <!-- DEMO_SURVEY_JAVASCRIPT BEGIN -->
     <managed-bean>
         <description>
             The AnonymousLoginBean, used for anonymous users.
@@ -97,7 +94,6 @@
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-    <!-- DEMO_SURVEY_JAVASCRIPT END -->
 
     <managed-bean>
         <description>
@@ -108,17 +104,14 @@
             com.icesoft.applications.faces.webmail.login.LoginBeanFactory
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-        <!-- DEMO_SURVEY_JAVASCRIPT BEGIN -->
         <managed-property>
             <property-name>registerLoginBean</property-name>
             <value>#{anonymousLoginBean}</value>
         </managed-property>
-        <!-- sets the default login mode to ANONYMOUS_MODE, only for demo version -->
         <managed-property>
             <property-name>loginMode</property-name>
             <value>0</value>
         </managed-property>
-        <!-- DEMO_SURVEY_JAVASCRIPT END -->
     </managed-bean>
 
     <managed-bean>
@@ -183,7 +176,8 @@
     <converter>
             <converter-id>longString</converter-id>
             <converter-class>
-                com.icesoft.applications.faces.util.converter.LongStringConverter</converter-class>
+                com.icesoft.applications.faces.webmail.util.converter.LongStringConverter
+            </converter-class>
     </converter>
 
     <!--

@@ -77,9 +77,9 @@ public class MailAccountControl {
             Class sunSecurityProviderClass =
                     Class.forName("com.sun.net.ssl.internal.ssl.Provider");
             Constructor sunSecurityConstructor =
-                    sunSecurityProviderClass.getConstructor(null);
+                    sunSecurityProviderClass.getConstructor((Class[])null);
             java.security.Provider sunSecurityProvider =
-                    (java.security.Provider) sunSecurityConstructor.newInstance(null);
+                    (java.security.Provider) sunSecurityConstructor.newInstance((Object[])null);
             java.security.Security.addProvider(sunSecurityProvider);
             loadedSecurityProvider = true;
         }
@@ -94,9 +94,9 @@ public class MailAccountControl {
                 Class sunSecurityProviderClass =
                         Class.forName("com.ibm.jsse.IBMJSSEProvider");
                 Constructor sunSecurityConstructor =
-                        sunSecurityProviderClass.getConstructor(null);
+                        sunSecurityProviderClass.getConstructor((Class[])null);
                 java.security.Provider sunSecurityProvider =
-                        (java.security.Provider) sunSecurityConstructor.newInstance(null);
+                        (java.security.Provider) sunSecurityConstructor.newInstance((Object[])null);
                 java.security.Security.addProvider(sunSecurityProvider);
                 loadedSecurityProvider = true;
             }
