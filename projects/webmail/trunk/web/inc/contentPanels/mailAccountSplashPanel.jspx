@@ -1,0 +1,49 @@
+<!--
+The mail account splash page is responsible for providing command links
+that the user can click on to use and manager there account:
+   Email
+    - read messages
+    - write a new message
+   Accounts
+    - view setting for this account
+    - create a new account
+   Advanced
+    - search
+-->
+<ice:form
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:panelGrid
+            styleClass="contentLayoutGridStyle"
+            columnClasses="contentLayoutGridColumn"
+            columns="1" border="0">
+
+        
+
+            <ice:outputText value="The is the mail account Splash Page" />
+            <f:verbatim><br/></f:verbatim>
+            <ice:outputText value="Email" />
+            
+            <ice:commandLink value="read messages" 
+             action="#{mailManager.navigateToSelectedAccountInbox}"    
+            />
+            <ice:commandLink value="write a new message" 
+             actionListener="#{mailManager.createNewMessage}"
+             action="#{mailManager.navigateToEditMessage}"
+            />
+            
+       <!--
+       <f:verbatim>
+            <p>Accounts</p>
+            <ul>
+                <li>view setting for this account</li>
+                <li>create a new account</li>
+            </ul>
+
+        </f:verbatim>
+        -->
+
+    </ice:panelGrid>
+</ice:form>
+

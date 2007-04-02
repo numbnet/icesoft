@@ -1,0 +1,208 @@
+<!--
+The settings management page, which allows a user to control their mail accounts
+-->
+<ice:form id="settingsForm"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:panelGrid
+        styleClass="contentLayoutGridStyle"
+        columnClasses="contentLayoutGridColumn"
+        columns="1">
+
+
+<ice:panelTabSet styleClass="settingPanelTab">
+
+    <ice:panelTab label="#{msgs['webmail.settings.userInformation.title']}">
+        <!-- User Information -->
+        <ice:panelGrid columns="1"
+                       styleClass="contentLayoutGridStyle"
+                       columnClasses="contentLayoutGridColumn">
+            <ice:panelGrid columns="1">
+                <ice:panelGrid>
+                    <ice:panelGrid columns="2">
+                        <ice:outputText value="#{msgs['webmail.settings.userName']}"/>
+                        <ice:outputText
+                                value="#{loginManager.loginBean.verifiedUser.userName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.firstName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.verifiedUser.firstName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.lastName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.verifiedUser.lastName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.company']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.verifiedUser.company}"/>
+                        <br/><br/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.passwordInstruction']}"/>
+                        <br/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.oldPassword']}"/>
+                        <ice:inputSecret partialSubmit="true" redisplay="true"
+                                         value="#{loginManager.loginBean.verifiedUser.oldPassword}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.newPassword']}"/>
+                        <ice:inputSecret partialSubmit="true" redisplay="true"
+                                         value="#{loginManager.loginBean.verifiedUser.newPassword}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.retypePassword']}"/>
+                        <ice:inputSecret partialSubmit="true" redisplay="true"
+                                         value="#{loginManager.loginBean.verifiedUser.verifiedPassword}"/>
+                    </ice:panelGrid>
+                    <ice:panelGrid columns="3">
+                        <ice:commandButton
+                                value="#{msgs['webmail.settings.label.update']}"
+                                actionListener="#{loginManager.loginBean.updateUser}"/>
+                        <ice:commandButton
+                                value="#{msgs['webmail.settings.label.cancel']}"
+                                actionListener="#{loginManager.loginBean.cancelUser}"/>
+                        <ice:commandButton
+                                value="#{msgs['webmail.settings.label.addNewUser']}"
+                                rendered="#{loginManager.loginBean.authorized}"
+                                actionListener="#{loginManager.loginBean.newUser}"/>
+                    </ice:panelGrid>
+                </ice:panelGrid>
+
+                <ice:panelGrid rendered="#{loginManager.loginBean.newMode}">
+                    <ice:panelGrid columns="2">
+                        <ice:outputText value="#{msgs['webmail.settings.userName']}"/>
+                        <ice:inputText
+                                value="#{loginManager.loginBean.newUser.userName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.firstName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.newUser.firstName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.lastName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.newUser.lastName}"/>
+                        <ice:outputText value="#{msgs['webmail.settings.company']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{loginManager.loginBean.newUser.company}"/>
+                        <br/><br/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.newPassword']}"/>
+                        <ice:inputSecret partialSubmit="true" redisplay="true"
+                                         value="#{loginManager.loginBean.newUser.newPassword}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.retypePassword']}"/>
+                        <ice:inputSecret partialSubmit="true" redisplay="true"
+                                         value="#{loginManager.loginBean.newUser.verifiedPassword}"/>
+                    </ice:panelGrid>
+                    <ice:panelGrid columns="2">
+                        <ice:commandButton value="#{msgs['webmail.settings.label.add']}"
+                                           actionListener="#{loginManager.loginBean.addUser}"/>
+                        <ice:commandButton
+                                value="#{msgs['webmail.settings.label.cancel']}"
+                                actionListener="#{loginManager.loginBean.cancelAddUser}"/>
+                    </ice:panelGrid>
+                </ice:panelGrid>
+
+            </ice:panelGrid>
+
+        </ice:panelGrid>
+    </ice:panelTab>
+
+    <ice:panelTab label="#{msgs['webmail.settings.mailAccount.title']}">
+
+        <!-- Mail account settings.  -->
+        <ice:panelGrid columns="1" width="100%">
+
+            <ice:panelTabSet var="tab"
+                             selectedIndex="#{mailManager.settingsBean.selectedIndex}"
+                             value="#{mailManager.settingsBean.tabList}"
+                             tabPlacement="top" width="100%" >
+                <ice:panelTab label="#{tab.email}">
+
+                    <ice:panelGrid columns="2" cellpadding="0" cellspacing="0"
+                                   styleClass="accountSettingsTabLayout">
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.hostName']}"/>
+                        <ice:inputText partialSubmit="true" value="#{tab.host}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.protocol']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.protocol}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.userName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.mailUsername}"/>
+
+                        <ice:outputText value="#{msgs['webmail.settings.account.password']}" />
+                        <ice:inputSecret partialSubmit="true"
+                                         value="#{tab.password}"
+                                         redisplay="true"/>
+                    
+                    <!-- incoming server data -->
+                   
+
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.incomingHostName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.incomingHost}"/>
+
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.incomingPort']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.incomingPort}"/>
+
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.incomingSSL']}"/>
+                        <ice:selectBooleanCheckbox partialSubmit="true"
+                                                   value="#{tab.incomingSsl}"/>
+
+                   
+
+                    <!-- outgoing server data -->
+                    
+
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.outgoingHostName']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.outgoingHost}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.outgoingPort']}"/>
+                        <ice:inputText partialSubmit="true"
+                                       value="#{tab.outgoingPort}"/>
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.outgoingSSL']}"/>
+                        <ice:selectBooleanCheckbox partialSubmit="true"
+                                                   value="#{tab.outgoingSsl}"/>
+
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.verification']}"/>
+                        <ice:selectBooleanCheckbox partialSubmit="true"
+                                                   value="#{tab.outgoingVerification}"/>
+                    </ice:panelGrid>
+
+                    <ice:panelGrid columns="2">
+                        <ice:outputText
+                                value="#{msgs['webmail.settings.account.selectToRemove']}"/>
+                        <ice:selectBooleanCheckbox partialSubmit="true"
+                                                   value="#{tab.selected}"/>
+                    </ice:panelGrid>
+                </ice:panelTab>
+            </ice:panelTabSet>
+
+        </ice:panelGrid>
+        <ice:panelGrid columns="3">
+            <ice:commandButton id="updateButton"
+                               action="#{mailManager.settingsBean.update}"
+                               value="#{msgs['webmail.settings.label.update']}"/>
+            <ice:commandButton id="cancelButton"
+                               actionListener="#{mailManager.settingsBean.cancel}"
+                               value="#{msgs['webmail.settings.label.cancel']}"/>
+            <ice:commandButton id="addButton"
+                               value="#{msgs['webmail.settings.label.addNewAccount']}"
+                               actionListener="#{mailManager.settingsBean.addNewAccount}"/>
+        </ice:panelGrid>
+
+    </ice:panelTab>
+
+</ice:panelTabSet>
+<!-- validation error messages -->
+<ice:inputHidden id="errorMessage"/>
+<ice:message for="errorMessage" style="color:red"/>
+</ice:panelGrid>
+
+</ice:form>

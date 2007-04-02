@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.icesoft.applications.faces.webmail.contacts.ContactModel"
+           table="contacts">
+
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <discriminator>
+            <column name="discriminator"/>
+        </discriminator>
+
+        <property name="initials" column="initials"/>
+        <property name="userName" column="user_name"/>
+        <property name="last" column="last"/>
+        <property name="first" column="first"/>
+        <property name="middle" column="middle"/>
+        <property name="displayName" column="display_name"/>
+        <property name="nickName" column="nick_name"/>
+        <property name="note" column="note"/>
+        <property name="primaryEmail" column="primary_email"/>
+        <property name="primaryPhone" column="primary_phone"/>
+
+        <list name="emails" table="emails" lazy="false" inverse="true"
+              cascade="all,delete-orphan">
+            <key column="contact_id" not-null="true"/>
+            <list-index column="id"/>
+            <one-to-many
+                    class="com.icesoft.applications.faces.webmail.contacts.EmailModel"/>
+        </list>
+
+        <list name="addresses" table="addresses" lazy="false" inverse="true"
+              cascade="all,delete-orphan">
+            <key column="contact_id"/>
+            <list-index column="id"/>
+            <one-to-many
+                    class="com.icesoft.applications.faces.webmail.contacts.AddressModel"/>
+        </list>
+
+        <list name="phones" table="phones" lazy="false" inverse="true"
+              cascade="all,delete-orphan">
+            <key column="contact_id"/>
+            <list-index column="id"/>
+            <one-to-many
+                    class="com.icesoft.applications.faces.webmail.contacts.PhoneModel"/>
+        </list>
+
+        <list name="webpages" table="webpages" lazy="false" inverse="true"
+              cascade="all,delete-orphan">
+            <key column="contact_id"/>
+            <list-index column="id"/>
+            <one-to-many
+                    class="com.icesoft.applications.faces.webmail.contacts.WebpageModel"/>
+        </list>
+
+        <subclass
+                name="com.icesoft.applications.faces.webmail.contacts.ContactBean"
+                discriminator-value="ContactBean"/>
+
+    </class>
+
+    <class name="com.icesoft.applications.faces.webmail.contacts.EmailModel"
+           table="emails">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="contact"
+                     class="com.icesoft.applications.faces.webmail.contacts.ContactModel"
+                     column="contact_id" not-null="true"/>
+        <property name="type" column="type"/>
+        <property name="value" column="value"/>
+    </class>
+
+    <class name="com.icesoft.applications.faces.webmail.contacts.AddressModel"
+           table="addresses">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="contact"
+                     class="com.icesoft.applications.faces.webmail.contacts.ContactModel"
+                     column="contact_id" not-null="true"/>
+        <property name="type" column="type"/>
+        <property name="country" column="country"/>
+        <property name="province" column="province"/>
+        <property name="city" column="city"/>
+        <property name="street" column="street"/>
+        <property name="postcode" column="postcode"/>
+    </class>
+
+    <class name="com.icesoft.applications.faces.webmail.contacts.PhoneModel"
+           table="phones">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="contact"
+                     class="com.icesoft.applications.faces.webmail.contacts.ContactModel"
+                     column="contact_id" not-null="true"/>
+        <property name="type" column="type"/>
+        <property name="value" column="value"/>
+    </class>
+
+    <class name="com.icesoft.applications.faces.webmail.contacts.WebpageModel"
+           table="webpages">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="contact"
+                     class="com.icesoft.applications.faces.webmail.contacts.ContactModel"
+                     column="contact_id" not-null="true"/>
+        <property name="type" column="type"/>
+        <property name="value" column="value"/>
+    </class>
+
+
+</hibernate-mapping>

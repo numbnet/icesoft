@@ -1,0 +1,107 @@
+<!--
+The controls include contains the following functions:
+ - email checking
+
+- applications settings
+- logoff
+
+-->
+<ice:form id="controlsForm"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:panelGrid columns="2" width="100%" border="0" cellpadding="8" cellspacing="2">
+
+        <ice:panelGroup >
+            <!--
+                Refresh mail accounts, recursibly checks every mail accounts folder
+                and refreshes the message list
+            -->
+            <ice:panelGroup styleClass="commandButtonBorder" >
+                <ice:commandLink
+                        id="refreshAccounts"
+                        title="#{msgs['webmail.controls.checkMail']}"
+                        disabled="#{mailManager.mailAccountSize == 0}"
+                        actionListener="#{mailManager.refreshMailAccounts}"
+                        styleClass="commandLink">
+                    <ice:graphicImage
+                            rendered="#{mailManager.mailAccountSize != 0}"
+                            alt="#{msgs['webmail.controls.checkMail']}"
+                            url="images/mailsync_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            rendered="#{mailManager.mailAccountSize == 0}"
+                            url="images/mailsync_d.gif"
+                            alt="#{msgs['webmail.controls.checkMail']}"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:outputText value="#{msgs['webmail.controls.checkMail']}"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!--
+                New message button, users can select the account when composing the message
+            -->
+            <ice:panelGroup styleClass="commandButtonBorder" >
+                <ice:commandLink
+                    id="newMailMessage"
+                    title="#{msgs['webmail.controls.newMail']}"
+                    disabled="#{mailManager.mailAccountSize == 0}"
+                    action="#{mailManager.navigateToEditMessage}"
+                    actionListener="#{mailManager.createNewMessage}"
+                    styleClass="commandLink">
+                    <ice:graphicImage
+                            rendered="#{mailManager.mailAccountSize != 0}"
+                            alt="#{msgs['webmail.controls.newMail']}"
+                            url="images/newmail_n.gif"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:graphicImage
+                            rendered="#{mailManager.mailAccountSize == 0}"
+                            url="images/newmail_d.gif"
+                            alt="#{msgs['webmail.controls.newMail']}"
+                            width="30" height="30" styleClass="noborder"/>
+                    <ice:outputText value="#{msgs['webmail.controls.newMail']}"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!--
+                New tasks button, navigates to new task panel view
+            -->
+            <ice:panelGroup styleClass="commandButtonBorder" >
+                <ice:commandLink
+                        id="newTask"
+                        title="#{msgs['webmail.controls.newTask']}"
+                        action="#{tasksManager.navigateToEditTask}"
+                        actionListener="#{tasksManager.tasksBean.createNewTask}"
+                        styleClass="commandLink">
+                    <ice:graphicImage url="images/task_new_n.gif"
+                                      width="30" height="30"
+                                      alt="#{msgs['webmail.controls.newTask']}"
+                                      styleClass="noborder"/>
+                    <ice:outputText value="#{msgs['webmail.controls.newTask']}"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+
+            <!--
+                New contacts button, navigates to new task panel view
+            -->
+            <ice:panelGroup styleClass="commandButtonBorder" >
+                <ice:commandLink
+                        id="newContacts"
+                        title="#{msgs['webmail.controls.newContact']}"
+                        action="#{contactManager.navigateToEditContact}"
+                        actionListener="#{contactManager.contactListBean.addContact}"
+                        styleClass="commandLink">
+                    <ice:graphicImage url="images/contact_new_n.gif"
+                                      width="30" height="30"
+                                      alt="#{msgs['webmail.controls.newContact']}"
+                                      styleClass="noborder"/>
+                    <ice:outputText value="#{msgs['webmail.controls.newContact']}"/>
+                </ice:commandLink>
+            </ice:panelGroup>
+        </ice:panelGroup>
+
+        <!-- connection status -->
+        <ice:outputConnectionStatus  styleClass="outputConnectionStatus" />  
+
+    </ice:panelGrid>
+</ice:form>
