@@ -104,12 +104,17 @@ script has two main execution tasks: the first is to create the database
 "webmail" and propagate it with default data; the second is to create a
 new user named "webmail" and grant it access to modify the "webmail" database.
 
+Note: You will want to edit the script if you want default anonymous accounts
+setup. If you do, just modify the mail server settings and password for each
+account. Otherwise ignore it and just manage users through the default admin
+account.
+
   1. The lib/ folder of the Webmail example contains the file "webmailDB.sql".
      This file is the default creation script for the tables and data needed
      by the Webmail backing beans. You can run this script with the following
      command:
 
-     mysql --user='root'  --password='' < '/webmail/inc/webmailDB.sql'
+     mysql --user='root'  --password='' < '/webmail/lib/webmailDB.sql'
   
   2. To add a new user to the Webmail database, log in as "admin" and click
      "settings". Clicking "Add new user" will bring up the Add New User panel.
