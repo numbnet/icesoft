@@ -1,2 +1,8 @@
-Usage: seam COMMAND
-Try `seam help' for more information.
+edit build.xml file in this directory for path to icefaces libraries (jar files).
+
+look for :-
+	<property name="icefacesLibDirectory" value="c:/icefaces1.6.0/lib" /> 
+to change the value to show where your icefaces jars are.
+
+Usage: ant COMMAND
+Try `ant help' for more information or view README file in this directory.
