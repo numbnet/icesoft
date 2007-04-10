@@ -5,26 +5,22 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
-                xmlns:a="https://ajax4jsf.dev.java.net/ajax"
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
+    <h1>@pageName@</h1>
+    <p>Generated action page</p>
+
     <h:messages globalOnly="true" styleClass="message"/>
-
-    <rich:panel>
-        <f:facet name="header">@pageName@</f:facet>
     
-        <h:form id="@componentName@Form">
-        
+    <h:form id="@componentName@">
+        <div>
             <h:commandButton id="@methodName@" value="@methodName@!" 
-                             action="#{@componentName@.@methodName@}"/>     			  
-        
-        </h:form>
-        
-    </rich:panel>
-
+                action="#{@componentName@.@methodName@}"/>     			  
+        </div>
+    </h:form>
+    
 </ui:define>
 
 </ui:composition>

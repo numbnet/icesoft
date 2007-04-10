@@ -12,42 +12,43 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
+
+    <h1>${entityName} search</h1>
+    <p>Generated search page</p>
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
-    <h:form id="${componentName}Search" styleClass="edit">
+    <h:form id="${componentName}" styleClass="edit">
     
-        <rich:simpleTogglePanel label="${entityName} search parameters" switchType="ajax">
-        
+        <div class="dialog">
+            <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">${componentProperty.name}</ui:define>
-                <h:inputText id="${componentProperty.name}" value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"/>
-            </s:decorate>
+                <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
+                <h:inputText id="${componentProperty.name}" 
+                          value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"/>
 
 </#if>
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
-            <s:decorate template="layout/display.xhtml">
-                <ui:define name="label">${property.name}</ui:define>
-                <h:inputText id="${property.name}" value="${'#'}{${listName}.${componentName}.${property.name}}"/>
-            </s:decorate>
+                <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
+                <h:inputText id="${property.name}" 
+                          value="${'#'}{${listName}.${componentName}.${property.name}}"/>
 
 </#if>
 </#if>
 </#if>
 </#foreach>
-        
-        </rich:simpleTogglePanel>
+            </h:panelGrid>
+        </div>
         
         <div class="actionButtons">
             <h:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
@@ -55,14 +56,14 @@
         
     </h:form>
     
-    <rich:panel>
-        <f:facet name="header">${entityName} search results</f:facet>
-    <div class="results" id="${componentName}List">
+    <div class="results" id="${componentName}ListDiv">
+
+    <h3>search results</h3>
 
     <h:outputText value="No ${componentName} exists" 
                rendered="${'#'}{empty ${listName}.resultList}"/>
                
-    <rich:dataTable id="${listName}" 
+    <h:dataTable id="${listName}" 
                 var="${componentName}"
               value="${'#'}{${listName}.resultList}" 
            rendered="${'#'}{not empty ${listName}.resultList}">
@@ -132,11 +133,10 @@
 </#if>
             </s:link>
         </h:column>
-    </rich:dataTable>
+    </h:dataTable>
 
     </div>
-    </rich:panel>
-    
+
     <div class="tableControl">
       
         <s:link view="/${listPageName}.xhtml" 

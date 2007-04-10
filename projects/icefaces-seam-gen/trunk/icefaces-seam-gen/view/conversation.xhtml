@@ -5,24 +5,21 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
+    <h1>@pageName@</h1>
+    <p>Generated conversation page.</p>
+    
     <h:messages globalOnly="true" styleClass="message"/>
     
-    <rich:panel>
-        <f:facet name="header">@pageName@</f:facet>
-            
-        <div class="dialog">
-            <div class="prop">
-                <span class="name">Value</span>
-                <span class="value">#{@componentName@.value}</span>
-            </div>
+    <div class="dialog">
+        <div class="prop">
+            <span class="name">Value</span>
+            <span class="value">#{@componentName@.value}</span>
         </div>
-    
-    </rich:panel>
+    </div>
     
     <h:form id="@componentName@">
         <div class="actionButtons">

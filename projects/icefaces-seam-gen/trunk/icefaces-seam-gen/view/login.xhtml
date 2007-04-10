@@ -5,41 +5,36 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
                 template="layout/template.xhtml">
 
 <ui:define name="body">
+
+    <h1>Login</h1>
+    <p>Please login using any username and password</p>
     
     <h:messages styleClass="message"/>
     
     <h:form id="login">
     
-        <rich:panel>
-            <f:facet name="header">Login</f:facet>
-    
-            <p>Please login using any username and password</p>
-        
-            <div class="dialog">
-                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-                    <h:outputLabel for="username">Username</h:outputLabel>
-                    <h:inputText id="username" 
-                              value="#{identity.username}"/>
-                    <h:outputLabel for="password">Password</h:outputLabel>
-                    <h:inputSecret id="password" 
-                                value="#{identity.password}"/>
-                    <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
-                    <h:selectBooleanCheckbox id="rememberMe" 
-                                          value="#{identity.rememberMe}"/>
-                </h:panelGrid>
-            </div>
-                
-        </rich:panel>
+        <div class="dialog">
+        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+            <h:outputLabel for="username">Username</h:outputLabel>
+            <h:inputText id="username" 
+                      value="#{identity.username}"/>
+            <h:outputLabel for="password">Password</h:outputLabel>
+            <h:inputSecret id="password" 
+                        value="#{identity.password}"/>
+            <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
+            <h:selectBooleanCheckbox id="rememberMe" 
+                                  value="#{identity.rememberMe}"/>
+        </h:panelGrid>
+        </div>
             
         <div class="actionButtons">
             <h:commandButton value="Login" action="#{identity.login}"/>
         </div>
           
     </h:form>
-
- </ui:define> 
+        
+</ui:define> 
 </ui:composition>
