@@ -5,13 +5,12 @@
 
 <faces-config>
 
+
    <application>
-      <message-bundle>messages</message-bundle>
-      <!-- Disabled when using Ajax4JSF -->
-      <!--
-      <view-handler>org.jboss.seam.ui.facelet.SeamFaceletViewHandler</view-handler>
-      -->
+   <message-bundle>messages</message-bundle>
+      <view-handler>com.icesoft.faces.facelets.D2DSeamFaceletViewHandler</view-handler>
    </application>
+
 
    <!-- Seam transaction management -->
    <lifecycle>

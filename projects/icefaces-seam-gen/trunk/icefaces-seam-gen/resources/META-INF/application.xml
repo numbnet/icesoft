@@ -58,5 +58,19 @@
    <module>
       <java>stringtemplate-2.3b6.jar</java>
    </module>
-    
+    <module>
+        <java>icefaces.jar</java>
+    </module>
+        <module>
+        <java>icefaces-comps.jar</java>
+    </module>
+    <module>
+        <java>icefaces-facelets.jar</java>
+    </module>
+    <module>
+        <java>commons-fileupload.jar</java>
+    </module>
+        <module>
+        <java>backport-util-concurrent.jar</java>
+    </module>   
 </application>
