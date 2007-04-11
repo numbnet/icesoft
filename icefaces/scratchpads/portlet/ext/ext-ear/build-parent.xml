@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<project name="ext-ear-parent">
+	<import file="../build-common.xml" />
+
+	<target name="clean">
+		<delete>
+			<fileset dir="." includes="*.ear,*.jar,*.war" />
+		</delete>
+	</target>
+
+	<target name="deploy">
+		<antcall target="deploy-ejb-jar">
+			<param name="jar.file" value="counter-ejb" />
+		</antcall>
+
+		<antcall target="deploy-ejb-jar">
+			<param name="jar.file" value="documentlibrary-ejb" />
+		</antcall>
+
+		<antcall target="deploy-ejb-jar">
+			<param name="jar.file" value="lock-ejb" />
+		</antcall>
+
+		<antcall target="deploy-ejb-jar">
+			<param name="jar.file" value="mail-ejb" />
+		</antcall>
+
+		<antcall target="deploy-ejb-jar">
+			<param name="jar.file" value="portal-ejb" />
+		</antcall>
+
+		<antcall target="deploy-war">
+			<param name="war.file" value="cms-web" />
+		</antcall>
+
+		<antcall target="deploy-war">
+			<param name="war.file" value="laszlo-web" />
+		</antcall>
+
+		<antcall target="deploy-war">
+			<param name="war.file" value="tunnel-web" />
+		</antcall>
+
+		<if>
+			<or>
+				<equals arg1="${app.server.type}" arg2="glassfish" />
+				<and>
+					<or>
+						<equals arg1="${app.server.type}" arg2="jboss-jetty" />
+						<equals arg1="${app.server.type}" arg2="jboss-tomcat" />
+					</or>
+					<equals arg1="${app.server.deploy.archive.type}" arg2="ear" />
+				</and>
+				<equals arg1="${app.server.type}" arg2="jonas-jetty" />
+				<equals arg1="${app.server.type}" arg2="jonas-tomcat" />
+				<equals arg1="${app.server.type}" arg2="pramati" />
+			</or>
+			<then>
+				<copy todir="${app.server.portal.dir}">
+					<fileset
+						dir="modules"
+						includes="*.xml,*/**.xml"
+					/>
+				</copy>
+			</then>
+		</if>
+	</target>
+
+	<target name="deploy-ejb-jar">
+		<antcall target="ext-common.deploy-ejb-jar">
+			<param name="modules.dir" value="modules/" />
+		</antcall>
+	</target>
+
+	<target name="deploy-war">
+		<antcall target="ext-common.deploy-war">
+			<param name="modules.dir" value="modules/" />
+		</antcall>
+	</target>
+</project>

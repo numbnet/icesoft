@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<project name="themes-parent">
+	<import file="../build-common.xml" />
+
+	<target name="deploy">
+		<java
+			classname="com.liferay.portal.tools.ThemeDeployer"
+			classpathref="project.classpath"
+			fork="true"
+			newenvironment="true">
+
+				<!-- Required Arguments -->
+
+				<jvmarg value="-Ddeployer.base.dir=./" />
+				<jvmarg value="-Ddeployer.dest.dir=${app.server.deploy.dir}" />
+				<jvmarg value="-Ddeployer.app.server.type=${app.server.type}" />
+				<jvmarg value="-Ddeployer.theme.taglib.dtd=${project.dir}/web-sites/liferay.com-web/docroot/WEB-INF/tld/liferay-theme.tld" />
+				<jvmarg value="-Ddeployer.util.taglib.dtd=${project.dir}/web-sites/liferay.com-web/docroot/WEB-INF/tld/liferay-util.tld" />
+				<jvmarg value="-Ddeployer.unpack.war=true" />
+
+				<!-- Optional Arguments -->
+
+				<jvmarg value="-Ddeployer.tomcat.lib.dir=${app.server.tomcat.lib.global.dir}" />
+
+				<!-- Dependent Libraries -->
+
+				<arg value="${project.dir}/lib/util-java.jar" />
+				<arg value="${project.dir}/web-sites/liferay.com-web/docroot/WEB-INF/lib/util-taglib.jar" />
+
+				<!-- Specific WARs -->
+
+				<arg line="${deploy.specific.wars}" />
+		</java>
+	</target>
+</project>

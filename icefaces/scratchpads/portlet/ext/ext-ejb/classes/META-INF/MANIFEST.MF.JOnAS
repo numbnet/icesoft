@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.6.5
+Created-By: 1.4.2_13-b06 (Sun Microsystems Inc.)
+Genic-Jonas-Version: ${app.server.ejbgen.version}
+Genic-Jonas-protocols: ${app.server.ejbgen.protocols}
+Class-Path: lib/compression-filter.jar lib/secure-filter.jar lib/sso-f
+ ilter.jar lib/strip-filter.jar lib/util-java.jar lib/util-wsrp.jar li
+ b/activemq.jar lib/alfresco-client.jar lib/ant.jar lib/antlr.jar lib/
+ aopalliance.jar lib/asm.jar lib/asm-attrs.jar lib/backport-concurrent
+ .jar lib/bcprov-jdk15.jar lib/burlap.jar lib/casclient.jar lib/cglib.
+ jar lib/commons-beanutils.jar lib/commons-codec.jar lib/commons-colle
+ ctions.jar lib/commons-configuration.jar lib/commons-dbcp.jar lib/com
+ mons-digester.jar lib/commons-discovery.jar lib/commons-email.jar lib
+ /commons-fileupload.jar lib/commons-httpclient.jar lib/commons-id.jar
+  lib/commons-io.jar lib/commons-lang.jar lib/commons-logging.jar lib/
+ commons-pool.jar lib/commons-validator.jar lib/compass.jar lib/concur
+ rent.jar lib/displaytag.jar lib/dom4j.jar lib/easyconf.jar lib/ehcach
+ e.jar lib/friki.jar lib/gif89.jar lib/google.jar lib/hessian.jar lib/
+ hibernate3.jar lib/icq.jar lib/ical4j.jar lib/j2ee-management.jar lib
+ /jackrabbit-api.jar lib/jackrabbit-core.jar lib/jackrabbit-index-filt
+ ers.jar lib/jackrabbit-jcr-commons.jar lib/jaim.jar lib/jaxen.jar lib
+ /jaxrpc.jar lib/jazzy.jar lib/jcommon.jar lib/jcr.jar lib/jdom.jar li
+ b/jfreechart.jar lib/jgroups.jar lib/jmx-remote.jar lib/jmx-ri.jar li
+ b/jsonrpc.jar lib/jstl.jar lib/jstl-impl.jar lib/log4j.jar lib/lucene
+ .jar lib/msnm.jar lib/nekohtml.jar lib/odmg.jar lib/opensaml.jar lib/
+ oro.jar lib/oscache.jar lib/pdfbox.jar lib/poi.jar lib/poi-contrib.ja
+ r lib/poi-scratchpad.jar lib/portals-bridges.jar lib/portletbridge-co
+ re.jar lib/portletbridge-portlet.jar lib/quartz.jar lib/rome.jar lib/
+ saaj.jar lib/simplecaptcha.jar lib/slf4j-log4j12.jar lib/smack.jar li
+ b/smackx.jar lib/soap.jar lib/spring.jar lib/struts.jar lib/struts-el
+ .jar lib/subetha-smtp.jar lib/textmining.jar lib/trove.jar lib/veloci
+ ty.jar lib/wsdl4j.jar lib/wss4j.jar lib/xalan.jar lib/xercesImpl.jar 
+ lib/xml-apis.jar lib/xmlsec.jar lib/xpp3.jar lib/xstream.jar lib/ym.jar
+
