@@ -7,7 +7,7 @@
 		<portlet-class>com.icesoft.faces.webapp.xmlhttp.FacesPortlet</portlet-class>
         <init-param>
 			<name>default-view</name>
-			<value>/index.jsp</value>
+			<value>/index.iface</value>
 		</init-param>
 		<supports>
 			<mime-type>text/html</mime-type>
