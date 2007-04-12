@@ -12,6 +12,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -21,8 +22,8 @@
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
-    <h:form id="${componentName}" styleClass="edit">
-    
+    <ice:form id="${componentName}" styleClass="edit">
+      <ice:panelAccordion label="ContactSearch" open="true" styleClass="accordion2" >
         <div class="dialog">
             <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 
@@ -53,8 +54,8 @@
         <div class="actionButtons">
             <h:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
         </div>
-        
-    </h:form>
+      </ice:panelAccordion>
+    </ice:form>
     
     <div class="results" id="${componentName}ListDiv">
 
