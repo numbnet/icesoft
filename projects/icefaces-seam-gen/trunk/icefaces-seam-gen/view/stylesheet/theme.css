@@ -1,14 +1,7 @@
-a:active, a:link, a:visited {
-	color: #0D5798;    
-}
-a:hover {
-	color: #8CAFCD;
-}
-
 .menuButtons {
-   background-color: #0066cc;
-   padding-bottom: 10px;
-   padding-top: 15px
+   background-color: #a4bdd2;
+   padding-bottom: 5px;
+   padding-top: 5px
 }
 .menuButtons a {
     font-weight: bold;
@@ -17,7 +10,7 @@ a:hover {
 	padding-right: 25px;
 }
 .menuButtons a:active, .menuButtons a:link, .menuButtons a:visited {
-   background-color: #000033;
+   background-color: #578BB8;
    border-right: 1px solid white;
    color: white;
    font-family: Arial,sans-serif
@@ -253,3 +246,68 @@ td {
     border: 1px solid #AAAAAA;
     font-weight: bold;
 }
+.contentLayoutGridStyleLogin {
+    width: 280px; /* fixed height of content demos*/  
+}
+
+.accordion1Header{
+            border:1px solid black;
+            font-family:tahoma,arial, san-serif;
+            font-weight:bold;
+            font-size:12px;
+            font-weight : bold;
+            background-color:#a4bdd2;
+ }
+ 
+ .accordion1Content{
+   background: url("../images/fruits.jpg");
+   border-bottom: 1px solid black;
+   border-left: 1px solid black;
+   border-right: 1px solid black;
+   color: #4C7EA7;
+   font-family: tahoma,arial, san-serif;
+   font-size: 12px;
+   font-weight: bold;   
+}
+
+.accordion1Container{
+   width: 300px        
+ }
+ 
+.accordion2Header{
+    border:1px solid black;
+    font-family:tahoma,arial, san-serif;
+    font-weight:bold;
+    font-size:12px;
+    background-color:#a4bdd2;
+  }
+  
+.accordion2Content{
+     border-bottom:1px solid black;
+     border-left:1px solid black;
+     border-right:1px solid black;
+     font-family:tahoma,arial, san-serif;
+     font-size:12px;            
+  }
+
+
+.accordionHeader{
+      border:1px solid black;
+      font-family:tahoma,arial, san-serif;
+      font-weight:bold;
+      font-size:12px;
+      background-color:#a4bdd2;
+  }
+  
+ .accordionContent{              
+      border-bottom:1px solid black;
+      border-left:1px solid black;
+      border-right:1px solid black;
+      font-family:tahoma,arial, san-serif;
+      font-size:12px;         
+ }
+ 
+.accordionContainer{
+      width: 300px        
+ }
+
