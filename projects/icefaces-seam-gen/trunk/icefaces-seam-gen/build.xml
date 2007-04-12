@@ -108,7 +108,15 @@
     <fileset id="seam" dir="../">
        <include name="jboss-seam*.jar"/>
        <exclude name="jboss-seam-gen.jar"/>
-   </fileset>
+    </fileset>
+
+
+    <fileset id="source" dir="${basedir}/src"> 
+       <include name="Authenticator.java"/>
+       <include name="TimerBean.java"/>
+       <include name="TimerBeanImpl.java"/>
+    </fileset>
+	
 
 	
 	<!-- targets -->
@@ -615,16 +623,11 @@
             <fileset refid="view"/>
             <filterset refid="project"/>
         </copy>
-        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/Authenticator.java">
+
+        <copy todir="${project.home}/src/${action.dir}" >
+	    <fileset refid="source"/> 
             <filterset refid="filters"/>
-        </copy>
-        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBean.java">
-            <filterset refid="filters"/>
-        </copy>    
-         <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBeanImpl.java">
-            <filterset refid="filters"/>
-        </copy>
-    	
+        </copy>       
  
         
         <copy todir="${project.home}">

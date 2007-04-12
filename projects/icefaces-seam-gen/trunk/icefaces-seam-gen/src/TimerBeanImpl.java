@@ -1,4 +1,4 @@
-package @actionPackage@;
+package org.icesoft.testProject;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Destroy;
@@ -10,8 +10,6 @@ import org.jboss.seam.core.Manager;
 import javax.faces.context.FacesContext;
 import javax.ejb.Stateful;
 import javax.ejb.Remove;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Date;
 import java.text.DateFormat;
 
@@ -30,7 +28,8 @@ import com.icesoft.faces.async.render.Renderable;
 public class TimerBeanImpl implements Renderable, TimerBean {
 
     private DateFormat dateFormatter;
-    
+
+    @In
     private RenderManager renderManager;
 
     private boolean doneSetup;
@@ -39,35 +38,22 @@ public class TimerBeanImpl implements Renderable, TimerBean {
 
     private PersistentFacesState state = PersistentFacesState.getInstance();
 
+    private String synchronous;
+
+
     public PersistentFacesState getState() {
         return state;
     }
 
     public void renderingException( RenderingException re) {
         System.out.println("Exception in rendering: " + re);
-    } 
+        if (ir != null) {
+            ir.requestStop();
+        }
+    }
 
 
     public TimerBeanImpl() {
-        
-        System.out.println("xxxxxxxxxx       TimerBean Constructed");
-
-//          tt = new TimerTask() {
-//            public void run() {
-//
-//                PersistentFacesState state = PersistentFacesState.getInstance();
-//
-//                try {
-//                    state.execute();
-//                    state.render();
-//                } catch (Exception e) {
-//                    System.out.println("Exception during lifecycle: " + e);
-//                    e.printStackTrace();
-//                    t.cancel();
-//                }
-//            }
-//        };
-//        t.scheduleAtFixedRate( tt, 2000, 5000 );
         dateFormatter =  DateFormat.getDateTimeInstance();
     }
 
@@ -75,28 +61,31 @@ public class TimerBeanImpl implements Renderable, TimerBean {
     
     public String getCurrentTime() {
 
-       //        if (!doneSetup) {
-//            renderManager.
-       //     ir = renderManager.getIntervalRenderer("Temp renderer");
-       //     ir.setInterval(5000);
-       //     ir.add(this);
+        state = PersistentFacesState.getInstance();
 
-       //     ir.requestRender();
-       //     doneSetup = true; 
-       // }
+        if (!doneSetup) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            synchronous = (String) fc.getExternalContext().getInitParameterMap().
+                    get( "com.icesoft.faces.synchronousUpdate" );
+            boolean timed = Boolean.valueOf( (String) fc.getExternalContext().getInitParameterMap().
+                    get("org.icesoft.examples.serverClock"));
 
-
+            if (timed) {
+                ir = renderManager.getIntervalRenderer("Temp renderer");
+                ir.setInterval(5000);
+                ir.add(this);
+                ir.requestRender();
+            }
+        }
+        
+        doneSetup = true;
         return dateFormatter.format( new Date( System.currentTimeMillis() ) );
     }
 
-    public String getRenderMode() {
 
-        FacesContext fc = FacesContext.getCurrentInstance();
-        boolean isSynchronous = Boolean.valueOf((String)
-                fc.getExternalContext().getInitParameterMap().get( "com.icesoft.faces.synchronousUpdate" ));
-        
-        return  isSynchronous? "Synchronous mode": "Asynchronous mode";
-        
+
+    public String getRenderMode() {
+        return  synchronous;
         
     }
 
@@ -113,6 +102,8 @@ public class TimerBeanImpl implements Renderable, TimerBean {
     @Remove
     @Destroy
     public void remove() {
-        ir.requestStop();
-    } 
+        if (ir != null) {
+            ir.requestStop();
+        } 
+    }
 }
