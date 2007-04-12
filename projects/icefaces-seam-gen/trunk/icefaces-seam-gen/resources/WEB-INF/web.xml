@@ -80,6 +80,11 @@
 	<param-value>true</param-value>
     </context-param> 
 
+    <context-param>
+        <param-name>org.icesoft.examples.serverClock</param-name>
+        <param-value>false</param-value>
+    </context-param>
+
  <servlet>
     <servlet-name>Main Dispatch Servlet</servlet-name>
     <servlet-class>com.icesoft.faces.webapp.http.servlet.MainServlet</servlet-class>

@@ -12,6 +12,8 @@
 
    <core:init debug="true" jndi-pattern="@jndiPattern@"/>
      
+   <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" />
+
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
                  conversation-id-parameter="cid" 
