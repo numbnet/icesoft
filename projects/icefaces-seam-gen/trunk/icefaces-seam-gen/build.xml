@@ -108,15 +108,7 @@
     <fileset id="seam" dir="../">
        <include name="jboss-seam*.jar"/>
        <exclude name="jboss-seam-gen.jar"/>
-    </fileset>
-
-
-    <fileset id="source" dir="${basedir}/src"> 
-       <include name="Authenticator.java"/>
-       <include name="TimerBean.java"/>
-       <include name="TimerBeanImpl.java"/>
-    </fileset>
-	
+   </fileset>
 
 	
 	<!-- targets -->
@@ -150,7 +142,7 @@
               defaultvalue="${workspace.home}"/>
     	<pathFixer property="workspace.home.new" />
         
-        <property name="jboss.home" value="C:/Servers/jboss-4.0.5.GA"/>
+        <property name="jboss.home" value="C:/Servers/EJB3jboss-4.0.5.GA"/>
         <input addproperty="jboss.home.new" 
                    message="Enter your JBoss home directory [${jboss.home}]" 
               defaultvalue="${jboss.home}"/>
@@ -623,11 +615,17 @@
             <fileset refid="view"/>
             <filterset refid="project"/>
         </copy>
-
-        <copy todir="${project.home}/src/${action.dir}" >
-	    <fileset refid="source"/> 
+        
+        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/Authenticator.java">
             <filterset refid="filters"/>
-        </copy>       
+        </copy>
+        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBean.java">
+            <filterset refid="filters"/>
+        </copy>    
+         <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBeanImpl.java">
+            <filterset refid="filters"/>
+        </copy>
+    	
  
         
         <copy todir="${project.home}">
