@@ -1,4 +1,4 @@
-package org.icesoft.testProject;
+package @actionPackage@;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Destroy;
