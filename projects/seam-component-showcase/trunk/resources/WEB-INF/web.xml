@@ -3,7 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
-
+             
+   <display-name>ICEfaces Component Showcase using Seam</display-name>
+    <description>
+        ICEfaces Component Showcase was designed to make developers aware
+        of the rich set of features available in the custom and extended
+        components.  This version uses jboss-Seam application framework.
+    </description>          
+    
+   <!-- listeners required for this application --> 
    <listener>
       <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
    </listener>
@@ -19,7 +27,8 @@
     <listener>
         <listener-class>com.icesoft.faces.webapp.http.servlet.SessionDispatcher$Listener</listener-class>
     </listener>
-    
+   
+    <!-- context parameters -->
    <context-param>
       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
       <param-value>client</param-value>
@@ -55,42 +64,27 @@
         <param-value>true</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>com.icesoft.faces.uploadDirectory</param-name>
+        <param-value>/</param-value>
+    </context-param>
+
+    <!-- filters -->
    <filter>
       <filter-name>Seam Exception Filter</filter-name>
       <filter-class>org.jboss.seam.servlet.SeamExceptionFilter</filter-class>
    </filter>
 
-<!-- 
-   <filter>
-      <filter-name>Seam Redirect Filter</filter-name>
-      <filter-class>org.jboss.seam.servlet.SeamRedirectFilter</filter-class>
-   </filter>
---> 
    <filter-mapping>
       <filter-name>Seam Exception Filter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-    
-<!-- 
-   <filter-mapping>
-      <filter-name>Seam Redirect Filter</filter-name>
-      <url-pattern>*.seam</url-pattern>
-   </filter-mapping>
---> 
 
  <!-- Source Code reader servlet-->
  <servlet>
      <servlet-name>SourceCode Reader</servlet-name>
      <servlet-class>com.icesoft.icefaces.samples.showcase.util.SourceCodeLoaderServlet</servlet-class>
  </servlet>
-    
-
-  <servlet>
-      <servlet-name>Main Dispatch Servlet</servlet-name>
-      <servlet-class>com.icesoft.faces.webapp.http.servlet.MainServlet</servlet-class>
-      <load-on-startup> 1 </load-on-startup>
-   </servlet>
-
 
     <!-- file upload Servlet -->
   <servlet>
@@ -99,39 +93,51 @@
          <load-on-startup> 1 </load-on-startup>
   </servlet>
     
-  <servlet-mapping>
-     <servlet-name>SourceCode Reader</servlet-name>
-     <url-pattern>/sourcecodeStream.html</url-pattern>
-  </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>/xmlhttp/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>*.iface</url-pattern>
-  </servlet-mapping>
-
-  <!-- Blocking Servlet Mapping -->
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>/block/*</url-pattern>
-  </servlet-mapping>
-
-    <!-- Faces Servlet Mapping -->
-    <servlet-mapping>
-        <servlet-name>Main Dispatch Servlet</servlet-name>
-        <url-pattern>*.seam</url-pattern>
-    </servlet-mapping>
-
+  <servlet>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
+        <load-on-startup> 1 </load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>Blocking Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
+        <load-on-startup> 1 </load-on-startup>
+    </servlet>  
+    
+  <!-- servlet mapping -->
+  
   <!-- file upload Mapping -->
     <servlet-mapping>
          <servlet-name>uploadServlet</servlet-name>
          <url-pattern>/uploadHtml</url-pattern>
     </servlet-mapping>  
-    
+   
+    <servlet-mapping>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
+        <url-pattern>*.seam</url-pattern>
+     </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
+        <url-pattern>/xmlhttp/*</url-pattern>
+    </servlet-mapping>
+    <!-- Blocking Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Blocking Servlet</servlet-name>
+        <url-pattern>/block/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SourceCode Reader</servlet-name>
+        <url-pattern>/sourcecodeStream.html</url-pattern>
+    </servlet-mapping>
+
+  <servlet-mapping>
+     <servlet-name>SourceCode Reader</servlet-name>
+     <url-pattern>/sourcecodeStream.html</url-pattern>
+  </servlet-mapping>
+  
+ 
    <security-constraint> 
        <display-name>Restrict raw XHTML Documents</display-name>
        <web-resource-collection>
