@@ -24,7 +24,7 @@
 	<property name="javac.debug" value="true" />
 	<property name="javac.deprecation" value="false" />
 	<property name="profile" value="dev" />
-	<property name="icefacesSourceDirectory" value="C:/ossrepoTrunk/lib" />
+<!--	<property name="icefacesSourceDirectory" value="C:/ossrepoTrunk/lib" />-->
  
 
 	<fileset id="lib" dir="${lib.dir}">
@@ -83,9 +83,9 @@
 		<copy tofile="${jar.dir}/META-INF/persistence.xml" 
 			    file="${basedir}/resources/META-INF/persistence-${profile}.xml"
 		   overwrite="true"/>
-		<copy tofile="${jar.dir}/import.sql" 
+<!--	no database stuff to copy	<copy tofile="${jar.dir}/import.sql" 
 			    file="${basedir}/resources/import-${profile}.sql"
-		   overwrite="true"/>
+		   overwrite="true"/> -->
 		   
 		   
 	</target>
@@ -298,13 +298,29 @@
 	    <fileset dir="${icefacesSourceDirectory}">
 		<include name="icefaces*.jar" />
 		<include name="backport-util-concurrent.jar" />
-		<include name="commons-fileupload.jar"/> 	
-		<include name="krysalis-jCharts-1.0.0-alpha-1.jar"/> 		
+		<include name="commons-fileupload.jar"/> 
+                <include name="commons-logging*.jar"/>
+		<include name="krysalis-jCharts-1.0.0-alpha-1.jar"/> 
+                <include name="myfaces*.jar"/>
+                <include name="servlet-api.jar"/>
   	    </fileset>
 	    <fileset dir="${jboss.seam.lib}">
 		<include name="jboss-seam*.jar"/>
-                <include name="jboss-ejb3-all.jar"/>
 	    </fileset>
+            <fileset dir="${jboss.seam.lib}/lib">
+                <include name="jboss-ejb3-all.jar"/>
+                <include name="antlr-2.7.6.jar"/>
+                <include name="el-api.jar"/>
+                <include name="el-ri.jar"/>
+                <include name="jbpm-3.1.4.jar"/>
+            </fileset>
+            <fileset dir="${jboss.seam.lib}/drools/lib">
+                <include name="antlr-3.0ea8.jar"/>
+                <include name="drools*.jar"/>
+                <include name="janino*.jar"/>
+                <include name="stringtemplate-2.3b6.jar"/>
+                <include name="commons-jci-*.jar"/>
+            </fileset>
 	</copy>
 	</target>
 	
