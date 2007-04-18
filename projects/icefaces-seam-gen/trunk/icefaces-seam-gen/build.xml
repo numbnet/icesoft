@@ -101,7 +101,7 @@
         <include name="index.html"/>
         <include name="layout/*"/>
         <include name="stylesheet/*"/>
-    	<include name="img/*"/>
+    	<include name="img/*.gif"/>
     	<exclude name="**/*.ftl"/>
     </fileset>
 	
