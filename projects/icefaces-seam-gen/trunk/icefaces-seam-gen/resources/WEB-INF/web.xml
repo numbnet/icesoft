@@ -5,16 +5,37 @@
          version="2.4">
 
   
-    <!-- Seam -->
+    <!-- Seam (using Icefaces) generated project-->
     
+    <!-- listeners required for this application --> 
    <listener>
       <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
    </listener>
+    
+   <listener>
+      <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+   </listener>
 
+   <listener>
+      <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+   </listener>
+ 
     <listener>
         <listener-class>com.icesoft.faces.webapp.http.servlet.SessionDispatcher$Listener</listener-class>
     </listener>
+
     
+ <!-- filters -->
+   <filter>
+      <filter-name>Seam Exception Filter</filter-name>
+      <filter-class>org.jboss.seam.servlet.SeamExceptionFilter</filter-class>
+   </filter>
+
+   <filter-mapping>
+      <filter-name>Seam Exception Filter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+
     <filter>
         <filter-name>Seam Filter</filter-name>
         <filter-class>org.jboss.seam.web.SeamFilter</filter-class>
@@ -24,46 +45,23 @@
         <filter-name>Seam Filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-        
-   <servlet>
-      <servlet-name>Seam Resource Servlet</servlet-name>
-      <servlet-class>org.jboss.seam.servlet.ResourceServlet</servlet-class>
-   </servlet>
-    
-   <servlet-mapping>
-      <servlet-name>Seam Resource Servlet</servlet-name>
-      <url-pattern>/seam/resource/*</url-pattern>
-   </servlet-mapping>
-   
-   <!-- MyFaces -->   
-
-   <listener>
-      <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-   </listener>
+     
    
    <!-- Facelets development mode (disable in production) -->
-   
+   <context-param>
+      <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+      <param-value>client</param-value>
+   </context-param>
+    
    <context-param>
       <param-name>facelets.DEVELOPMENT</param-name>
       <param-value>true</param-value>
-   </context-param>
-    
-   <!-- JSF -->
-    
-   <context-param>
-      <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-      <param-value>server</param-value>
    </context-param>
     
    <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
       <param-value>.xhtml</param-value>
    </context-param>
-
-   <context-param>
-        <param-name>com.icesoft.faces.standardRequestScope</param-name>
-        <param-value>true</param-value>
-    </context-param>
 
     <context-param>
         <param-name>com.icesoft.faces.actionURLSuffix</param-name>
@@ -79,42 +77,57 @@
         <param-name>com.icesoft.faces.doJSFStateManagement</param-name>
 	<param-value>true</param-value>
     </context-param> 
+    
+    <context-param>
+        <param-name>org.jboss.seam.core.init.debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
     <context-param>
         <param-name>org.icesoft.examples.serverClock</param-name>
         <param-value>false</param-value>
     </context-param>
 
- <servlet>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <servlet-class>com.icesoft.faces.webapp.http.servlet.MainServlet</servlet-class>
-    <load-on-startup> 1 </load-on-startup>
+ <!-- servlets -->   
+  <servlet>
+      <servlet-name>Seam Resource Servlet</servlet-name>
+      <servlet-class>org.jboss.seam.servlet.ResourceServlet</servlet-class>
   </servlet>
+    
+  <servlet>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
+        <load-on-startup> 1 </load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>Blocking Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
+        <load-on-startup> 1 </load-on-startup>
+    </servlet>  
+    
 
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>/xmlhttp/*</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>*.iface</url-pattern>
-  </servlet-mapping>
-
-  <!-- Blocking Servlet Mapping -->
-  <servlet-mapping>
-    <servlet-name>Main Dispatch Servlet</servlet-name>
-    <url-pattern>/block/*</url-pattern>
-  </servlet-mapping>
-
-    <!-- Faces Servlet Mapping -->
-    <servlet-mapping>
-        <servlet-name>Main Dispatch Servlet</servlet-name>
+<!-- servlet mappings -->
+   <servlet-mapping>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
         <url-pattern>*.seam</url-pattern>
+     </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>Persistent Faces Servlet</servlet-name>
+        <url-pattern>/xmlhttp/*</url-pattern>
     </servlet-mapping>
-
-
-                  
+    
+    <!-- Blocking Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>Blocking Servlet</servlet-name>
+        <url-pattern>/block/*</url-pattern>
+    </servlet-mapping>
+             
+    <servlet-mapping>
+      <servlet-name>Seam Resource Servlet</servlet-name>
+      <url-pattern>/seam/resource/*</url-pattern>
+    </servlet-mapping>
+ 
    <security-constraint> 
        <display-name>Restrict raw XHTML Documents</display-name>
        <web-resource-collection>
@@ -127,3 +140,4 @@
    </security-constraint>
    
 </web-app>
+
