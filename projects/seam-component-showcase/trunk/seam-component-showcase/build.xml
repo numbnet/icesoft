@@ -24,9 +24,7 @@
 	<property name="javac.debug" value="true" />
 	<property name="javac.deprecation" value="false" />
 	<property name="profile" value="dev" />
- 	<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
- 
-
+        <property name="icefacesSourcedirectory" value="c:/ossrepoTrunk"/>
 	<fileset id="lib" dir="${lib.dir}">
 		<include name="*.jar" />
 	</fileset>
@@ -35,11 +33,28 @@
 		<fileset refid="lib" />
 	</path>
 
-	<target name="init" description="Initialize the build">
+		<!-- check to see if the source for icefaces is available -->
+	<target name="resource-check" description="check for component docs directory">
+		<available file="${icefacesSourceDirectory}/component/doc" type="dir" property="source.present"/> 
+               <echo message="source directory is installed ${source.present}"/>
+ 	</target>	
+
+	<target name="pre-init1" description="set component-docs directory to source" unless="${source.present}">
+		<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
+                <echo message="source directory is installed"/>
+	</target>
+
+	<target name="pre-init2" description="set component-docs dir to binaries" if="${source.present}">
+		<property name="component.docs.dir" value="${icefacesSourceDirectory}/docs/component"/>
+                <echo message="only binary is available"/>
+	</target>
+	
+	<target name="init" description="Initialize the build" depends="resource-check,pre-init1,pre-init2">
 		<mkdir dir="${jar.dir}" />
 		<mkdir dir="${ear.dir}" />
 		<mkdir dir="${war.dir}" />
 		<mkdir dir="${dist.dir}" />
+                <echo message=" component docs dir is ${component.docs.dir}"/>
 	</target>
 
 	<target name="compile" depends="init" 
