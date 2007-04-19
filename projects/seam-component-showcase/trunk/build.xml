@@ -24,7 +24,7 @@
 	<property name="javac.debug" value="true" />
 	<property name="javac.deprecation" value="false" />
 	<property name="profile" value="dev" />
-<!--	<property name="icefacesSourceDirectory" value="C:/ossrepoTrunk/lib" />-->
+ 	<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
  
 
 	<fileset id="lib" dir="${lib.dir}">
@@ -295,7 +295,7 @@
 
 	<target name="freshen" description="grab fresh icefaces and Seam jars">
 	<copy todir="${lib.dir}">
-	    <fileset dir="${icefacesSourceDirectory}">
+	    <fileset dir="${icefacesSourceDirectory}/lib">
 		<include name="icefaces*.jar" />
 		<include name="backport-util-concurrent.jar" />
 		<include name="commons-fileupload.jar"/> 
@@ -304,17 +304,17 @@
                 <include name="myfaces*.jar"/>
                 <include name="servlet-api.jar"/>
   	    </fileset>
-	    <fileset dir="${jboss.seam.lib}">
+	    <fileset dir="${jboss.seam.home}">
 		<include name="jboss-seam*.jar"/>
 	    </fileset>
-            <fileset dir="${jboss.seam.lib}/lib">
+            <fileset dir="${jboss.seam.home}/lib">
                 <include name="jboss-ejb3-all.jar"/>
                 <include name="antlr-2.7.6.jar"/>
                 <include name="el-api.jar"/>
                 <include name="el-ri.jar"/>
                 <include name="jbpm-3.1.4.jar"/>
             </fileset>
-            <fileset dir="${jboss.seam.lib}/drools/lib">
+            <fileset dir="${jboss.seam.home}/drools/lib">
                 <include name="antlr-3.0ea8.jar"/>
                 <include name="drools*.jar"/>
                 <include name="janino*.jar"/>

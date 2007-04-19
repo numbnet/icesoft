@@ -10,9 +10,8 @@ libraries exist on your machine.
 	(an example follows or you can just look at the build.properties file in this folder)
 
 	jboss.home = C:/work/webserver/jboss-4.0.5.GA
-	icefacesSourceDirectory = C:/../icesfaces/lib  
-	component.docs.dir = c:/icefaces/component/doc 
-	jboss.seam.lib = C:/Seam/jboss-seam-1.2.1.GA
+	icefacesSourceDirectory = C:/../icesfaces/  
+	jboss.seam.home = C:/Seam/jboss-seam-1.2.1.GA
 
 run> ant freshen 
 and this will place the libraries where they are required in your seam-componentShowcase/lib
