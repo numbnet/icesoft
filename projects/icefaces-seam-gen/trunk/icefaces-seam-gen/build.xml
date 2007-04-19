@@ -33,7 +33,7 @@
     <!-- Give user a chance to override without editing this file or typing -D -->
     <property file="${basedir}/build.properties" />
 
- <property name="icefacesLibDirectory" value="c:/ossrepoTrunk/lib" /> 
+ <!-- <property name="icefacesLibDirectory" value="c:/ossrepoTrunk/lib" /> -->
     
     <packageDirectory property="action.dir" package="${action.package}"/>
     <packageDirectory property="model.dir" package="${model.package}"/>
@@ -101,7 +101,7 @@
         <include name="index.html"/>
         <include name="layout/*"/>
         <include name="stylesheet/*"/>
-    	<include name="img/*.gif"/>
+    	<include name="img/*"/>
     	<exclude name="**/*.ftl"/>
     </fileset>
 	
@@ -148,6 +148,12 @@
               defaultvalue="${jboss.home}"/>
     	<pathFixer property="jboss.home.new" />
         
+	<property name="icefaces.home" value="C:/ossrepoTrunk"/>
+        <input addproperty="icefaces.home.new" 
+                   message="Enter your icefaces home directory [${icefaces.home}]" 
+              defaultvalue="${icefaces.home}"/>
+    	<pathFixer property="icefaces.home.new" />
+
         <property name="project.name" value="myproject"/>
         <input addproperty="project.name.new" 
                    message="Enter the project name [${project.name}]" 
@@ -349,6 +355,7 @@
             <entry key="project.name" value="${project.name.new}"/>
         	<entry key="project.type" value="${project.type.new}"/>
             <entry key="jboss.home" value="${jboss.home.new}"/>
+		<entry key="icesfaces.home" value="${icefaces.home.new}"/>
             <entry key="action.package" value="${action.package.new}"/>
             <entry key="model.package" value="${model.package.new}"/>
             <entry key="test.package" value="${test.package.new}"/>
@@ -369,7 +376,7 @@
     	<echo message="Installing JDBC driver jar to JBoss server"/>
     	<copy file="${driver.jar.new}" todir="${jboss.home.new}/server/default/lib"/>
         
-    	<echo message="Type 'seam new-project' to create the new project"/>
+    	<echo message="Type 'ant new-project' to create the new project"/>
     </target>
     
     <target name="action-input">
@@ -476,7 +483,7 @@
 	        <exclude name="ajax4jsf.jar" />
 	    </fileset> 
             <fileset dir="../drools/lib"/>
-	    <fileset dir="${icefacesLibDirectory}"> 
+	    <fileset dir="${icefaces.home}/lib"> 
 	             <include name="icefaces*.jar" /> 
 		     <include name="backport-util-concurrent.jar" /> 
 		     <include name="commons-fileupload.jar" />
@@ -648,7 +655,7 @@
     </target>
     
     <target name="validate-project" depends="validate-workspace">
-        <fail message="No project name specified (run 'seam new-project' first)">
+        <fail message="No project name specified (run 'ant new-project' first)">
             <condition>
                 <or>
                     <not><isset property="project.name"/></not>
@@ -659,7 +666,7 @@
     </target>
 
     <target name="validate-workspace">
-        <fail message="No eclipse workspace specified (run 'seam setup' first)">
+        <fail message="No eclipse workspace specified (run 'ant setup' first)">
             <condition>
                 <or>
                     <not><isset property="workspace.home"/></not>
@@ -672,7 +679,7 @@
     <target name="new-project" depends="validate-project,copy-lib,file-copy"
             description="Create a new project">
         <echo message="A new Seam project named '${project.name}' was created in the ${workspace.home} directory"/>
-    	<echo message="Type 'seam explode' and go to http://localhost:8080/${project.name}"/>
+    	<echo message="Type 'ant explode' and go to http://localhost:8080/${project.name}"/>
     	<echo message="Eclipse Users: Add the project as a new Java project from inside Eclipse"/>
     	<echo message="NetBeans Users: Open the project in NetBeans"/>
     </target>
@@ -680,7 +687,7 @@
     <target name="update-project" depends="validate-project,copy-lib"
         description="Update project dependencies">
         <echo message="Updated project '${project.name}' with the latest Seam jars" />
-    	<echo message="Type 'seam restart' to update the exploded deployment"/>
+    	<echo message="Type 'ant restart' to update the exploded deployment"/>
     </target>
 
     <target name="delete-project" depends="validate-project"
@@ -711,7 +718,7 @@
         <copy file="view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-action-war" depends="validate-project,action-input,setup-filters" if="project.war">
@@ -728,7 +735,7 @@
         <copy file="view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-form-war" depends="validate-project,action-input,setup-filters" if="project.war">
@@ -745,7 +752,7 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-form-ear" depends="validate-project,action-input,setup-filters" unless="project.war">
@@ -765,7 +772,7 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-query" depends="validate-project,query-input,setup-filters">
@@ -778,7 +785,7 @@
             <filterset refid="filters"/>
         </copy>
 
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-conversation" depends="validate-project,action-input,setup-filters">
@@ -792,7 +799,7 @@
         <copy file="view/conversation.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-entity" depends="validate-project,entity-input,setup-filters"
@@ -813,7 +820,7 @@
         <copy file="view/list.xhtml" tofile="${masterPage.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
     </target>
 
 	<target name="generate-entities" depends="validate-project"
@@ -894,7 +901,7 @@
 		  </fileset>
 		</javaformatter>
 
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}"/>
 
     </target>
 	
@@ -963,3 +970,4 @@
     </target>
 
 </project>
+
