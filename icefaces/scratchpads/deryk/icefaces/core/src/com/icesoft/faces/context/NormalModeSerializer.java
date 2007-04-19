@@ -97,18 +97,18 @@ public class NormalModeSerializer implements DOMSerializer {
         //path.
 
         String frag = (String) requestMap.get(Constants.INC_REQUEST_URI);
+        if( log.isInfoEnabled() ){
+            log.info( Constants.INC_REQUEST_URI + " = " + frag );
+        }
         if( frag != null ){
-            if( log.isInfoEnabled() ){
-                log.info( Constants.INC_REQUEST_URI + " = " + frag );
-            }
             return true;
         }
 
         frag = (String)requestMap.get(Constants.INC_SERVLET_PATH);
+        if( log.isInfoEnabled() ){
+            log.info( Constants.INC_SERVLET_PATH + " = " + frag );
+        }
         if( frag != null ){
-            if( log.isInfoEnabled() ){
-                log.info( Constants.INC_SERVLET_PATH + " = " + frag );
-            }
             return true;
         }
 
