@@ -354,7 +354,7 @@
             <entry key="project.name" value="${project.name.new}"/>
         	<entry key="project.type" value="${project.type.new}"/>
             <entry key="jboss.home" value="${jboss.home.new}"/>
-		<entry key="icesfaces.home" value="${icefaces.home.new}"/>
+		<entry key="icefaces.home" value="${icefaces.home.new}"/>
             <entry key="action.package" value="${action.package.new}"/>
             <entry key="model.package" value="${model.package.new}"/>
             <entry key="test.package" value="${test.package.new}"/>
