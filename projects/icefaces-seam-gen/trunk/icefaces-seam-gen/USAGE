@@ -12,6 +12,8 @@ Use ant freshen to update your icefaces jars when new binaries become available.
 
 Use ant generate-entities to reverse-engineer from an existing database.
 
+If you are using a database, ensure that your database-connection driver is also in your server libraries. (or generate-entities will work fine as this file is in your project/lib, but you won't be able to deploy your project).
+
 
 plus many more....
 
