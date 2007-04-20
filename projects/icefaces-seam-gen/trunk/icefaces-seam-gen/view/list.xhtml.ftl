@@ -50,7 +50,7 @@
 </#if>
 </#if>
 </#foreach>
-            </h:panelGrid>
+            </ice:panelGrid>
         </div>
         
         <div class="actionButtons">
