@@ -2,6 +2,8 @@
 2.  Download icefaces jars  (you will require them in a folder with a /lib)
 3.  This folder gets placed in the jboss-seam-1.2.1.GA folder (alongside reqular seam-gen folder)
 
+It is recommended to use the JBoss Application Server 4.x.x server but like regular seam-gen the Apache Tomcat may be used with extra configuration (see the jboss-seam tutorial/documentation for this).
+
 Use ant-setup to begin a new project.  This is identical to regular seam-gen(without icefaces) except for the addition of a prompt which requires you to enter the location of your icefaces home directory (must have a child that is /lib containing the icefaces jars).
 
 Use ant new-project to create the new project directory with icefaces libraries and jars
