@@ -101,8 +101,7 @@
         <include name="index.html"/>
         <include name="layout/*"/>
         <include name="stylesheet/*"/>
-    	<include name="img/*"/>
-    	<exclude name="**/*.ftl"/>
+      	<exclude name="**/*.ftl"/>
     </fileset>
 	
     <fileset id="seam" dir="../">
@@ -651,8 +650,14 @@
             <fileset dir="${basedir}/nbproject" />
             <filterset refid="project"/>
         </copy>
-
     </target>
+
+	<target name="copy-images" >
+	   <copy todir="${project.home}/view/img">
+		<fileset file="${basedir}/view/img/*"/>
+	   </copy>
+	</target>
+
     
     <target name="validate-project" depends="validate-workspace">
         <fail message="No project name specified (run 'ant new-project' first)">
@@ -676,7 +681,7 @@
         </fail>
     </target>
 
-    <target name="new-project" depends="validate-project,copy-lib,file-copy"
+    <target name="new-project" depends="validate-project,copy-lib,file-copy,copy-images"
             description="Create a new project">
         <echo message="A new Seam project named '${project.name}' was created in the ${workspace.home} directory"/>
     	<echo message="Type 'ant explode' and go to http://localhost:8080/${project.name}"/>
