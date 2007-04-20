@@ -1,8 +1,17 @@
-edit build.xml file in this directory for path to icefaces libraries (jar files).
+1.  Download jboss-seam (current version is 1.2.1.GA)
+2.  Download icefaces jars  (you will require them in a folder with a /lib)
+3.  This folder gets placed in the jboss-seam-1.2.1.GA folder (alongside reqular seam-gen folder)
 
-look for :-
-	<property name="icefacesLibDirectory" value="c:/icefaces1.6.0/lib" /> 
-to change the value to show where your icefaces jars are.
+Use ant-setup to begin a new project.  This is identical to regular seam-gen(without icefaces) except for the addition of a prompt which requires you to enter the location of your icefaces home directory (must have a child that is /lib containing the icefaces jars).
+
+Use ant new-project to create the new project directory with icefaces libraries and jars
+
+Use ant freshen to update your icefaces jars when new binaries become available.
+
+Use ant generate-entities to reverse-engineer from an existing database.
+
+
+plus many more....
 
 Usage: ant COMMAND
 Try `ant help' for more information or view README file in this directory.

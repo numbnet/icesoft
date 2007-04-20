@@ -16,68 +16,68 @@ SEAM PROJECT SETUP/DEPLOYMENT COMMANDS
       If you select 'Y' for WTP, then some build tasks, like "compile",
       "build", "deploy" will not work.
 	   
-      Example: seam setup
+      Example: ant setup
 	     
    new-project
       Create a new eclipse project that has all dependencies and basic
       configuration. Refers to build.properties for project attributes.
 	     
-      Example: seam new-project
+      Example: ant new-project
          
    update-project
       Update the eclipse project with the latest dependencies.
 	     
-      Example: seam update-project
+      Example: ant update-project
          
    delete-project
       Delete the entire eclipse project.
 	     
-      Example: seam delete-project
+      Example: ant delete-project
          
    deploy
       Deploy the project EAR and datasource to JBoss. This command
       will not work if you created a WTP project.
 	     
-      Example: seam deploy
+      Example: ant deploy
 
    undeploy
       Undeploy the project EAR and datasource. This command
       will not work if you created a WTP project.
 	     
-      Example: seam undeploy
+      Example: ant undeploy
 
    explode
       Deploy the project and datasource to JBoss as an exploded
       directory structure. This command will not work if you created 
       a WTP project.
 	     
-      Example: seam explode
+      Example: ant explode
 
    restart
       Restart the project that was deployed as an exploded directory 
       structure. This command will not work if you created a WTP 
       project.
 	     
-      Example: seam restart
+      Example: ant restart
 
    unexplode
       Undeploy the exploded directory and datasource. This command
       will not work if you created a WTP project.
 	     
-      Example: seam unexplode
+      Example: ant unexplode
 
 SEAM CODE GENERATION COMMANDS
    new-action
       Create a new Java interface and SLSB with key Seam/EJB3 
       annotations.
 	     
-      Example: seam new-action
+      Example: ant new-action
 	     
    new-form
       Create a new Java interface and SFSB with key Seam/EJB3 
       annotations.
 	     
-      Example: seam new-form
+      Example: ant new-form
 	     
    new-conversation
       Create a new Java interface and SFSB with key Seam/EJB3 
@@ -86,16 +86,16 @@ SEAM CODE GENERATION COMMANDS
       can be used to simulate a JSF request/response and standard 
       JUnit type tests.
 	     
-      Example: seam new-conversation
+      Example: ant new-conversation
 	
    new-entity
       Create a new entity bean with key Seam/EJB3 annotations
       with example attributes.
 	     
-      Example: seam new-entity
+      Example: ant new-entity
       
    generate-entities
       Generate entity beans from an existing data model in the
       database.
 
-      Example: seam generate-entities
+      Example: ant generate-entities
