@@ -25,7 +25,7 @@
     <ice:form id="${componentName}" styleClass="edit">
       <ice:panelAccordion label="ContactSearch" open="true" styleClass="accordion2" >
         <div class="dialog">
-            <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+            <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
@@ -33,16 +33,18 @@
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
                 <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
-                <h:inputText id="${componentProperty.name}" 
-                          value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"/>
+                <ice:inputText id="${componentProperty.name}" 
+                          value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
+				partialSubmit="true"/>
 
 </#if>
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
                 <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
-                <h:inputText id="${property.name}" 
-                          value="${'#'}{${listName}.${componentName}.${property.name}}"/>
+                <ice:inputText id="${property.name}" 
+                          value="${'#'}{${listName}.${componentName}.${property.name}}"
+				  partialSubmit="true"/>
 
 </#if>
 </#if>
