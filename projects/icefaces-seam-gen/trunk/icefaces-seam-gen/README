@@ -1,3 +1,5 @@
+see USAGE file first!!
+
 NAME
    ant - execute seam code generation. There are seam.bat (Windows) and 
    seam (Linux/Unix) scripts that make calls to Ant targets for seam project 
