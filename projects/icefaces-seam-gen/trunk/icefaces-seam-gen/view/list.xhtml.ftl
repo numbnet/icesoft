@@ -18,7 +18,7 @@
 <ui:define name="body">
 
     <h1>${entityName} search</h1>
-    <p>Generated search page</p>
+ <!--   <p>Generated search page</p> -->
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
