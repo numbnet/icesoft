@@ -54,7 +54,7 @@
         </div>
         
         <div class="actionButtons">
-            <h:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
+            <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
         </div>
       </ice:panelAccordion>
     </ice:form>
@@ -63,8 +63,9 @@
 
     <h3>search results</h3>
 
-    <h:outputText value="No ${componentName} exists" 
-               rendered="${'#'}{empty ${listName}.resultList}"/>
+    <ice:outputText value="No ${componentName} exists" 
+               rendered="${'#'}{empty ${listName}.resultList}"
+		   partialSubmit="true"/>
                
     <h:dataTable id="${listName}" 
                 var="${componentName}"
