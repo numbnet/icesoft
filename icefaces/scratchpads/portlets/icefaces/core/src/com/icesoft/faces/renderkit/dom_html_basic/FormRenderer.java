@@ -91,22 +91,23 @@ public class FormRenderer extends DomBasicRenderer {
             Element root = domContext.createElement("form");
 
             // Used for JSP includes - START
-            String includeServletPath =
-                    (String) facesContext.getExternalContext()
-                            .getRequestMap()
-                            .get(Constants.INC_SERVLET_PATH);
-            if (includeServletPath != null) {
-                Element d2dJSElement = domContext.getDocument()
-                        .createElement(HTML.SCRIPT_ELEM);
-                String base = LocationUtil.getAppBase(facesContext);
-
-                d2dJSElement.setAttribute(HTML.SRC_ATTR,
-                                          base + "xmlhttp/icefaces-d2d.js?");
-                d2dJSElement.setAttribute("type", "text/javascript");
-                root.appendChild(d2dJSElement);
-
-            }
+//            String includeServletPath =
+//                    (String) facesContext.getExternalContext()
+//                            .getRequestMap()
+//                            .get(Constants.INC_SERVLET_PATH);
+//            if (includeServletPath != null) {
+//                Element d2dJSElement = domContext.getDocument()
+//                        .createElement(HTML.SCRIPT_ELEM);
+//                String base = LocationUtil.getAppBase(facesContext);
+//
+//                d2dJSElement.setAttribute(HTML.SRC_ATTR,
+//                                          base + "xmlhttp/icefaces-d2d.js?");
+//                d2dJSElement.setAttribute("type", "text/javascript");
+//                root.appendChild(d2dJSElement);
+//
+//            }
             // Used for JSP includes - END
+
             domContext.setRootNode(root);
             String formClientId = uiComponent.getClientId(facesContext);
             root.setAttribute("id", formClientId);
