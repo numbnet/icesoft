@@ -1,19 +1,65 @@
+a:active, a:link, a:visited {
+	color: #0D5798;    
+}
+
+a:hover {
+	color: #8CAFCD;
+}
+
+input, textarea {
+	border: 1px solid #BBBBBB;
+	font-size: 10px;
+	background: #F0F8FF;
+	color: black;
+}
+
+input[type='submit'], input[type='button'] {
+	background: #4477AA;
+	color: white;
+	margin: 5px;
+	border-color: gray;
+}
+
+.formBorderHighlight{
+    vertical-align: top; /*width: 100%;*/
+    border: 1px solid #bed6f8;
+    padding: 5px;
+}
 .menuButtons {
-   background-color: #a4bdd2;
-   padding-bottom: 5px;
-   padding-top: 5px
+   font-size: 12px;
+   font-weight: bold;
+   border-colour: #bed6f8;
+   background-color: #BED6F8;
+   background-position: top left;
+  
 }
 .menuButtons a {
+    font-size: 11px;
+    colour: #000000;
     font-weight: bold;
+    font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
-	padding-left: 25px;
-	padding-right: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
 }
-.menuButtons a:active, .menuButtons a:link, .menuButtons a:visited {
-   background-color: #578BB8;
-   border-right: 1px solid white;
-   color: white;
-   font-family: Arial,sans-serif
+
+.searchResults {
+      border-bottom:1px solid #bed6f8;
+     border-left:1px solid #bed6f8;
+     border-right:1px solid #bed6f8;
+
+}
+.leftMenu {
+   padding: 5px;
+   vertical-align: middle;
+   text-align: left;
+  background-color: transparent;
+}
+.rightMenu{
+    padding: 5px;
+   vertical-align: middle;
+   text-align: right;
+background-color: transparent;
 }
 .menuButtons a:hover {
 	font-family: Arial,sans-serif;
@@ -39,14 +85,20 @@
 
 .actionButtons {
 	width: 100%;
-	text-align: center;
+	text-align: left;
 	padding-top: 10px;
 }
-.tableControl {
+
+.tableControl, .actionButtons {
+	width: 100%;
+}
+
+.tableControl{
 	width: 100%;
 	text-align: right;
 	padding-top: 15px;
 }
+/*
 .actionButtons a, .tableControl a {
 	font-family: Arial,sans-serif;
 	font-weight: bold;
@@ -60,7 +112,9 @@
 	color: white;
 	background-color: #578BB8;
 	margin: 5px;
-}
+}*/
+
+
 
 h1 {
 	font-family: Arial,sans-serif;
@@ -84,14 +138,14 @@ table {
 	width: 100%;
 }
 th {
-	background-color: #578BB8;
+	background-color: #bed6f8;
 	color: white;
 	font-family: Arial,sans-serif;
 	padding: 5px;
 	
 }
 td {
-	background-color: #F0F0F0;
+	background-color: transparent;
 	text-align: center;
 }
 .narrow {
@@ -120,13 +174,14 @@ td {
 
 .columnHeader:link, .columnHeader:visited, .columnHeader:active
 {
-	color: white;
+       font-size: 11px;
+	color: #578BB8;
 	text-decoration: none;
 }
 
 .columnHeader:hover
 {
-    color: #FF6600;
+    color: white;
 }
 
 .message {
@@ -249,65 +304,50 @@ td {
 .contentLayoutGridStyleLogin {
     width: 280px; /* fixed height of content demos*/  
 }
-
-.accordion1Header{
-            border:1px solid black;
+.accordion2Container, .accordion2Container_collapsed{
+  border:1px solid #bed6f8;
+    font-family:tahoma,arial, san-serif;
+    font-weight:bold;
+    font-size:11px;
+    background-color:#bed6f8;
+}
+ 
+.accordion2Header, .accordion2Header_collapsed{
+    border:1px solid #bed6f8;
+    font-family:tahoma,arial, san-serif;
+    font-weight:bold;
+    font-size:11px;
+    background-color:#bed6f8;
+  }
+  
+.accordion2Content, .accordion2Content_collapsed{
+     border-bottom:1px solid #bed6f8;
+     border-left:1px solid #bed6f8;
+     border-right:1px solid #bed6f8;
+     font-family:tahoma,arial, san-serif;
+     font-size:11px;            
+  }
+.accordionHeader, .accordionHeader_collapsed{
+            border:1px solid #bed6f8;
             font-family:tahoma,arial, san-serif;
             font-weight:bold;
             font-size:12px;
             font-weight : bold;
+
             background-color:#a4bdd2;
- }
- 
- .accordion1Content{
-   background: url("../images/fruits.jpg");
-   border-bottom: 1px solid black;
-   border-left: 1px solid black;
-   border-right: 1px solid black;
-   color: #4C7EA7;
-   font-family: tahoma,arial, san-serif;
-   font-size: 12px;
-   font-weight: bold;   
 }
 
-.accordion1Container{
-   width: 300px        
- }
- 
-.accordion2Header{
-    border:1px solid black;
-    font-family:tahoma,arial, san-serif;
-    font-weight:bold;
-    font-size:12px;
-    background-color:#a4bdd2;
-  }
-  
-.accordion2Content{
-     border-bottom:1px solid black;
-     border-left:1px solid black;
-     border-right:1px solid black;
-     font-family:tahoma,arial, san-serif;
-     font-size:12px;            
-  }
-
-
-.accordionHeader{
-      border:1px solid black;
-      font-family:tahoma,arial, san-serif;
-      font-weight:bold;
-      font-size:12px;
-      background-color:#a4bdd2;
-  }
-  
- .accordionContent{              
-      border-bottom:1px solid black;
-      border-left:1px solid black;
-      border-right:1px solid black;
-      font-family:tahoma,arial, san-serif;
-      font-size:12px;         
- }
- 
-.accordionContainer{
-      width: 300px        
- }
+.accordionContent, .accordionContent_collapsed{
+   border-bottom: 1px solid #bed6f8;
+   border-left: 1px solid #bed6f8;
+   border-right: 1px solid #bed6f8;
+   color: transparent;
+   font-family: tahoma,arial, san-serif;
+   font-size: 11px;
+   font-weight: bold;
+   
+}
+.accordionContainer, .accordionContainer_collapsed{
+      
+} 
 
