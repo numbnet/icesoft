@@ -87,7 +87,7 @@
 
     <h3>${componentName}  search results</h3>
 
-    <div class="results" id="contactgroupListResults">
+    <div class="searchResults" id="contactgroupListResults">
     <ice:outputText value="No ${componentName} exists" 
                rendered="${'#'}{empty ${listName}.resultList}"/>
                
