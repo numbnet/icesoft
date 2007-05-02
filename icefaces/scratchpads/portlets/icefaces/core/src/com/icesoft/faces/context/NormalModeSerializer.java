@@ -43,7 +43,7 @@ public class NormalModeSerializer implements DOMSerializer {
                 //views on one page
                 String base = LocationUtil.getAppBase(context);
                 writer.write("<script language='javascript' src='" + base +
-                        "xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js'></script>");
+                        "xmlhttp" + StartupTime.getStartupInc() + "icefaces-bootstrap.js'></script>");
                 writer.write(DOMUtils.childrenToString(body));
             }
         } else {

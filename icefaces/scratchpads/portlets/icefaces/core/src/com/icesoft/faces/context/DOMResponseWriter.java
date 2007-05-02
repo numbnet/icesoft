@@ -377,7 +377,8 @@ public class DOMResponseWriter extends ResponseWriter {
         if (context.getExternalContext().getInitParameter(D2DViewHandler.INCLUDE_OPEN_AJAX_HUB) != null) {
             libs.add("xmlhttp/openajax.js");
         }
-        libs.add("xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
+//        libs.add("xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
+        libs.add("xmlhttp" + StartupTime.getStartupInc() + "icefaces-bootstrap.js");
         //todo: refactor how extral libraries are loaded into the bridge; always include extra libraries for now
         libs.add("xmlhttp" + StartupTime.getStartupInc() + "ice-extras.js");
         if (context.getExternalContext().getRequestMap().get(Constants.INC_SERVLET_PATH) == null) {
