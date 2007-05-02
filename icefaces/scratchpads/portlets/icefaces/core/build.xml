@@ -61,6 +61,8 @@
     <property name="bridge.build.dir" location="${bridge.dir}/build"/>
     <property name="bridge.collate.dir"
               location="${build.classes.dir}/com/icesoft/faces/webapp/xmlhttp"/>
+    <property name="bootstrap.script"
+              location="${bridge.collate.dir}/icefaces-bootstrap.js"/>
     <property name="bridge.script"
               location="${bridge.collate.dir}/icefaces-d2d.js"/>
     <property name="bridge-extras.script"
@@ -101,7 +103,7 @@
                     <include name="com/icesoft/faces/context/*.xslt"/>
                 </fileset>
                 <zipfileset dir="${bridge.dir}/build"
-                            includes="icefaces-d2d.js, ice-extras.js, openajax.js"
+                            includes="icefaces-bootstrap.js, icefaces-d2d.js, ice-extras.js, openajax.js"
                             prefix="com/icesoft/faces/webapp/xmlhttp"
                         />
                 <manifest>
@@ -169,6 +171,7 @@
             <target name="build"/>
             <target name="build.extras"/>
             <target name="build.open.ajax"/>
+            <property name="bootstrap" location="${bridge.dir}/build/icefaces-bootstrap.js"/>
             <property name="script" location="${bridge.dir}/build/icefaces-d2d.js"/>
             <property name="extras.script" location="${bridge.dir}/build/ice-extras.js"/>
             <property name="open.ajax.script" location="${bridge.dir}/build/openajax.js"/>

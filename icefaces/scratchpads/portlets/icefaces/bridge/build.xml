@@ -50,6 +50,7 @@
     <property name="script.open.ajax" location="${lib.dir}/openajax/bridge.open.ajax.js"/>
     <property name="extras.script" location="${build.dir}/bridge.extras.js"/>
     <property name="open.ajax.script" location="${build.dir}/openajax.js"/>
+    <property name="bootstrap.script" location="${src.dir}/icefaces-bootstrap.js"/>
     <macrodef name="compress">
         <attribute name="src" description="The source file"/>
         <attribute name="dest" default="@{src}" description="The destination file"/>
@@ -171,11 +172,13 @@
                 <file name="application.js"/>
             </filelist>
         </concat>
-        <compress src="${script}"/>
+        <!-- compress src="${script}"/ -->
         <echo message="Appending open ajax script"/>
          <concat destfile="${script}" append="yes" fixlastline="yes" >
              <path location="${script.open.ajax}"/>
          </concat>
+
+          <copy file="${bootstrap.script}" todir="${build.dir}"/> 
     </target>
 
     <target name="build.test" depends="build.base,build.extras" description="Collate code for tests">
@@ -228,7 +231,7 @@
 		        <file name="menu.js"/>
             </filelist>
         </concat>
-        <compress src="${extras.script}"/>
+        <!-- compress src="${extras.script}"/ -->
         <echo message="Appending open ajax extras script"/>
          <concat destfile="${extras.script}" append="yes" fixlastline="yes" >
              <path location="${extras.script.open.ajax}"/>
