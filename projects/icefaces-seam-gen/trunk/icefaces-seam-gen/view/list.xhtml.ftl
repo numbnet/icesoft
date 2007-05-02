@@ -59,15 +59,16 @@
       </ice:panelAccordion>
     </ice:form>
     
-    <div class="results" id="${componentName}ListDiv">
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-    <h3>search results</h3>
+    <h3>${componentName}  search results</h3>
 
+    <div class="results" id="contactgroupListResults">
     <ice:outputText value="No ${componentName} exists" 
                rendered="${'#'}{empty ${listName}.resultList}"
 		   partialSubmit="true"/>
                
-    <h:dataTable id="${listName}" 
+    <ice:dataTable id="${listName}" 
                 var="${componentName}"
               value="${'#'}{${listName}.resultList}" 
            rendered="${'#'}{not empty ${listName}.resultList}">
@@ -75,13 +76,13 @@
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if pojo.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
-        <h:column>
+        <ice:column>
             <f:facet name="header">${componentProperty.name}</f:facet>
             ${'#'}{${componentName}.${property.name}.${componentProperty.name}}
-        </h:column>
+        </ice:column>
 </#foreach>
 <#else>
-        <h:column>
+        <ice:column>
             <f:facet name="header">
                 <s:link styleClass="columnHeader"
                              value="${property.name} ${'#'}{${listName}.order=='${property.name} asc' ? messages.down : ( ${listName}.order=='${property.name} desc' ? messages.up : '' )}">
@@ -89,14 +90,14 @@
                 </s:link>
             </f:facet>
             ${'#'}{${componentName}.${property.name}}
-        </h:column>
+        </ice:column>
 </#if>
 </#if>
 <#if c2h.isManyToOne(property)>
 <#assign parentPojo = c2j.getPOJOClass(cfg.getClassMapping(property.value.referencedEntityName))>
 <#if parentPojo.isComponent(parentPojo.identifierProperty)>
 <#foreach componentProperty in parentPojo.identifierProperty.value.propertyIterator>
-        <h:column>
+        <ice:column>
             <f:facet name="header">
 <#assign propertyPath = property.name + '.' + parentPojo.identifierProperty.name + '.' + componentProperty.name>
                 <s:link styleClass="columnHeader"
@@ -105,10 +106,10 @@
                 </s:link>
             </f:facet>
             ${'#'}{${componentName}.${propertyPath}}
-        </h:column>
+        </ice:column>
 </#foreach>
 <#else>
-        <h:column>
+        <ice:column>
             <f:facet name="header">
 <#assign propertyPath = property.name + '.' + parentPojo.identifierProperty.name>
                 <s:link styleClass="columnHeader"
@@ -117,13 +118,13 @@
                 </s:link>
             </f:facet>
             ${'#'}{${componentName}.${propertyPath}}
-        </h:column>
+        </ice:column>
 </#if>
 </#if>
 </#foreach>
-        <h:column>
+        <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link view="/${'#'}{empty from ? '${pageName}' : from}.xhtml" 
+            <s:link view="/${'#'}{empty from ? '${pageName}' : from[0]}.xhtml" 
                    value="Select" 
                       id="${componentName}">
 <#if pojo.isComponent(pojo.identifierProperty)>
@@ -136,10 +137,11 @@
                         value="${'#'}{${componentName}.${pojo.identifierProperty.name}}"/>
 </#if>
             </s:link>
-        </h:column>
-    </h:dataTable>
+        </ice:column>
+    </ice:dataTable>
 
     </div>
+</ice:panelGroup>
 
     <div class="tableControl">
       
