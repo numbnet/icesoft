@@ -16,47 +16,66 @@
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
-
-    <h1>${entityName} search</h1>
- <!--   <p>Generated search page</p> -->
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
-    <ice:form id="${componentName}" styleClass="edit">
-      <ice:panelAccordion label="ContactSearch" open="true" styleClass="accordion2" >
-        <div class="dialog">
-            <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+    <ice:form id="${componentName}Form" styleClass="edit">
+	<ice:panelAccordion styleClass="accordion2" >
+	  <f:facet name="header">
+		<ice:outputText value="${entityName} search"/>
+	  </f:facet>        
+        <ice:panelGroup styleClass="edit">
+	    <ice:panelBorder styleClass="edit"
+				renderNorth="true" renderSouth="true">
+		<f:facet name="north">
+              <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+		     <ice:outputText value="Select fields to search"/>
+			<ice:panelGroup>
+				<ice:selectManyCheckbox value="${'#'}{${listName}.selectedFields}"
+						partialSubmit="true">
+					<f:selectItems value="${'#'}{${listName}.fieldsList}"/>
+				</ice:selectManyCheckbox>
+			</ice:panelGroup>
 
+		 </ice:panelGrid>
+	    </f:facet>
+	    <f:facet name="south">
+		 <ice:panelGrid rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-                <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
-                <ice:inputText id="${componentProperty.name}" 
+		   <ice:panelGroup rendered="${'#'}{${listName}.${componentProperty.name}Select}">
+                  <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
+                  <ice:inputText id="${componentProperty.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
 				partialSubmit="true"/>
-
+	         </ice:panelGroup>
 </#if>
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
+		  <ice:panelGroup rendered="${'#'}{${listName}.${property.name}Select}">
                 <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
                 <ice:inputText id="${property.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}}"
 				  partialSubmit="true"/>
-
+		  </ice:panelGroup>
 </#if>
 </#if>
 </#if>
 </#foreach>
             </ice:panelGrid>
-        </div>
+         </f:facet>
+        </ice:panelBorder>
+	</ice:panelGroup>
+	</ice:panelAccordion>
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
         </div>
-      </ice:panelAccordion>
+      
     </ice:form>
     
     <ice:panelGroup styleClass="formBorderHighlight">
@@ -65,8 +84,7 @@
 
     <div class="results" id="contactgroupListResults">
     <ice:outputText value="No ${componentName} exists" 
-               rendered="${'#'}{empty ${listName}.resultList}"
-		   partialSubmit="true"/>
+               rendered="${'#'}{empty ${listName}.resultList}"/>
                
     <ice:dataTable id="${listName}" 
                 var="${componentName}"
