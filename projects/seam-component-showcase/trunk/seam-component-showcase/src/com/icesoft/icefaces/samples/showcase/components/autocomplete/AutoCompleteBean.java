@@ -72,7 +72,6 @@ public class AutoCompleteBean {
 
 
     public AutoCompleteBean() {
-//        System.out.println("AutoCompleteBean: constructor");
         setDictionary(new AutoCompleteDictionary().getDictionary());
     }
     /**
