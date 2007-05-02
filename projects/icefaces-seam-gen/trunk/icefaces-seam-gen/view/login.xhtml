@@ -5,36 +5,39 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
 <ui:define name="body">
-
-    <h1>Login</h1>
-    <p>Please login using any username and password</p>
     
     <h:messages styleClass="message"/>
     
-    <h:form id="login">
-    
-        <div class="dialog">
-        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-            <h:outputLabel for="username">Username</h:outputLabel>
-            <h:inputText id="username" 
-                      value="#{identity.username}"/>
-            <h:outputLabel for="password">Password</h:outputLabel>
-            <h:inputSecret id="password" 
-                        value="#{identity.password}"/>
-            <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
-            <h:selectBooleanCheckbox id="rememberMe" 
-                                  value="#{identity.rememberMe}"/>
-        </h:panelGrid>
-        </div>
-            
-        <div class="actionButtons">
+ <ice:form id="login">
+       <ice:panelAccordion styleClass="accordion" >
+       	<f:facet name="header">
+			<ice:outputText value="Login"/>
+		</f:facet>
+            <p>Please login using any username and password</p>
+
+                    <div class="dialog">
+                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+                            <h:outputLabel for="username">Username</h:outputLabel>
+                            <h:inputText id="username" 
+                                      value="#{identity.username}"/>
+                            <h:outputLabel for="password">Password</h:outputLabel>
+                            <h:inputSecret id="password" 
+                                        value="#{identity.password}"/>
+                            <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
+                            <h:selectBooleanCheckbox id="rememberMe" 
+                                                  value="#{identity.rememberMe}"/>
+                        </h:panelGrid>
+                    </div>
+
+        </ice:panelAccordion>
+         <div class="actionButtons">
             <h:commandButton value="Login" action="#{identity.login}"/>
         </div>
           
-    </h:form>
-        
+    </ice:form>      
 </ui:define> 
 </ui:composition>

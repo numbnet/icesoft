@@ -2,7 +2,6 @@
                              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <#assign entityName = pojo.shortName>
 <#assign componentName = util.lower(entityName)>
-<#assign componentPage = util.upper(entityName)>
 <#assign homeName = componentName + "Home">
 <#assign masterPageName = entityName + "List">
 <#assign editPageName = entityName + "Edit">
@@ -12,52 +11,63 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"   
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
-
-    <h1>${entityName}</h1>
-    <p>Generated view page</p>
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
-    <div id="${componentName}" class="dialog">
-        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+
+    <ice:panelAccordion styleClass="accordion"> 
+	<f:facet name="header">
+		<ice:outputText value="${entityName}" />
+	</f:facet>   
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#include "viewproperty.xhtml.ftl">
 </#if>
 </#foreach>
 
-        </h:panelGrid>
-    </div>
-    
+        <div style="clear:both"/>
+
+     </ice:panelAccordion>
+
     <div class="actionButtons">      
 
         <s:button view="/${editPageName}.xhtml" 
                     id="edit" 
                  value="Edit"/>
 
-     <!--   <s:button view="/${'#'}{empty ${componentName}From ? '${masterPageName}' : ${componentName}From}.xhtml"-->
-		<s:button view="/${componentPage}.xhtml"
+        <s:button view="/${'#'}{empty ${componentName}From ? '${masterPageName}' : ${componentName}From}.xhtml"
                     id="done"
                  value="Done"/>
 
     </div>
+<#assign hasAssociations=false>
+<#foreach property in pojo.allPropertiesIterator>
+<#if c2h.isManyToOne(property) || c2h.isOneToManyCollection(property)>
+<#assign hasAssociations=true>
+</#if>
+</#foreach>
+
+<#if hasAssociations>
+    <ice:form>
+       <ice:panelTabSet styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+</#if>
 <#foreach property in pojo.allPropertiesIterator>
 <#if c2h.isManyToOne(property)>
 <#assign parentPojo = c2j.getPOJOClass(cfg.getClassMapping(property.value.referencedEntityName))>
 <#assign parentPageName = parentPojo.shortName>
 <#assign parentName = util.lower(parentPojo.shortName)>
 
-    <div class="association" id="${property.name}Parent">
-    
-        <h3>${property.name}</h3>
+	<ice:panelTab label="${property.name}">
+   		<div class="association" id="${property.name}Parent">
         
-        <h:outputText value="No ${property.name}" 
+       		 <h:outputText value="No ${property.name}" 
                    rendered="${'#'}{${homeName}.instance.${property.name} == null}"/>
-        
-        <h:dataTable var="${parentName}" 
+   
+        	<ice:dataTable  var="${parentName}" 
                    value="${'#'}{${homeName}.instance.${property.name}}" 
                 rendered="${'#'}{${homeName}.instance.${property.name} != null}"
               rowClasses="rvgRowOne,rvgRowTwo"
@@ -66,36 +76,36 @@
 <#if !c2h.isCollection(parentProperty) && !c2h.isManyToOne(parentProperty)>
 <#if parentPojo.isComponent(parentProperty)>
 <#foreach componentProperty in parentProperty.value.propertyIterator>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">${componentProperty.name}</f:facet>
                 ${'#'}{${parentName}.${parentProperty.name}.${componentProperty.name}}
-            </h:column>
+            </ice:column>
 </#foreach>
 <#else>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">${parentProperty.name}</f:facet>
                 ${'#'}{${parentName}.${parentProperty.name}}
-            </h:column>
+            </ice:column>
 </#if>
 </#if>
 <#if c2h.isManyToOne(parentProperty)>
 <#assign parentParentPojo = c2j.getPOJOClass(cfg.getClassMapping(parentProperty.value.referencedEntityName))>
 <#if parentParentPojo.isComponent(parentParentPojo.identifierProperty)>
 <#foreach componentProperty in parentParentPojo.identifierProperty.value.propertyIterator>
-            <h:column>
+            <ice:column>
 	    	    <f:facet name="header">${parentProperty.name} ${componentProperty.name}</f:facet>
 		    	${'#'}{${parentName}.${parentProperty.name}.${parentParentPojo.identifierProperty.name}.${componentProperty.name}}
-            </h:column>
+            </ice:column>
 </#foreach>
 <#else>
-            <h:column>
+            <ice:column>
 	    	    <f:facet name="header">${parentProperty.name} ${parentParentPojo.identifierProperty.name}</f:facet>
 		    	${'#'}{${parentName}.${parentProperty.name}.${parentParentPojo.identifierProperty.name}}
-            </h:column>
+            </ice:column>
 </#if>
 </#if>
 </#foreach>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">action</f:facet>
                 <s:link id="view${parentName}" 
                      value="View" 
@@ -110,16 +120,16 @@
                            value="${'#'}{${parentName}.${parentPojo.identifierProperty.name}}"/>
 </#if>
                 </s:link>
-            </h:column>
-        </h:dataTable>
-        
+            </ice:column>
+       </ice:dataTable>
+       
     </div>
+    </ice:panelTab>
 </#if>
 <#if c2h.isOneToManyCollection(property)>
 
+   <ice:panelTab label="${property.name}">
     <div class="association" id="${property.name}Children">
-    
-        <h3>${property.name}</h3>
         
 <#assign childPojo = c2j.getPOJOClass(property.value.element.associatedClass)>
 <#assign childPageName = childPojo.shortName>
@@ -129,7 +139,7 @@
         <h:outputText value="No ${property.name}" 
                    rendered="${'#'}{empty ${homeName}.${property.name}}"/>
         
-        <h:dataTable value="${'#'}{${homeName}.${property.name}}" 
+        <ice:dataTable value="${'#'}{${homeName}.${property.name}}" 
                        var="${childName}" 
                   rendered="${'#'}{not empty ${homeName}.${property.name}}" 
                 rowClasses="rvgRowOne,rvgRowTwo"
@@ -138,20 +148,20 @@
 <#if !c2h.isCollection(childProperty) && !c2h.isManyToOne(childProperty)>
 <#if childPojo.isComponent(childProperty)>
 <#foreach componentProperty in childProperty.value.propertyIterator>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">${componentProperty.name}</f:facet>
                 ${'#'}{${childName}.${childProperty.name}.${componentProperty.name}}
-            </h:column>
+            </ice:column>
 </#foreach>
 <#else>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">${childProperty.name}</f:facet>
                 <h:outputText value="${'#'}{${childName}.${childProperty.name}}"/>
-            </h:column>
+            </ice:column>
 </#if>
 </#if>
 </#foreach>
-            <h:column>
+            <ice:column>
                 <f:facet name="header">action</f:facet>
                 <s:link id="select${childName}" 
                      value="Select" 
@@ -167,11 +177,11 @@
 </#if>
                     <f:param name="${childName}From" value="${entityName}"/>
                 </s:link>
-            </h:column>
-        </h:dataTable>
+            </ice:column>
+        </ice:dataTable>
         
-    </div>
-
+     </div>
+    
     <div class="actionButtons">
         <s:button id="add${childName}" 
                value="Add ${childName}"
@@ -181,9 +191,14 @@
             <f:param name="${childName}From" value="${entityName}"/>
         </s:button>
     </div>        
+   </ice:panelTab>
 </#if>
 </#foreach>
-    
+<#if hasAssociations>
+</ice:panelTabSet>
+</ice:form>
+</#if> 
 </ui:define>
 
 </ui:composition>
+
