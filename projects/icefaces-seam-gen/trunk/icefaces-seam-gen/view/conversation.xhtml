@@ -5,23 +5,27 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
-    <h1>@pageName@</h1>
-    <p>Generated conversation page.</p>
-    
     <h:messages globalOnly="true" styleClass="message"/>
     
-    <div class="dialog">
-        <div class="prop">
-            <span class="name">Value</span>
-            <span class="value">#{@componentName@.value}</span>
+    <ice:panelAccordion styleClass="accordion2" >
+        <f:facet name="header">
+		<ice:outputText value=="@pageName@" />
+	  </f:facet>
+        <div class="dialog">
+            <div class="prop">
+                <span class="name">Value</span>
+                <span class="value">#{@componentName@.value}</span>
+            </div>
         </div>
-    </div>
     
-    <h:form id="@componentName@">
+    </ice:panelAccordion>
+    
+    <ice:form id="@componentName@Form">
         <div class="actionButtons">
             <h:commandButton id="begin" value="Begin" 
                 action="#{@componentName@.begin}"/>     			  
@@ -30,9 +34,11 @@
             <h:commandButton id="end" value="End" 
                 action="#{@componentName@.end}"/>     			  
         </div>
-    </h:form>
+    </ice:form>
     
 </ui:define>
 
 </ui:composition>
+
+
 

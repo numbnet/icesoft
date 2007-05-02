@@ -5,15 +5,29 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:ice="http://www.icesoft.com/icefaces/component"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
 <ui:define name="body">
 
-    <h:messages globalOnly="true" styleClass="message"/>
-   
-	<h2>This is an ICEfaces 1.6.0 + Seam 1.2.1 enabled Application</h2>
-
-
+     <h:messages globalOnly="true" styleClass="message"/>
+    
+        <ice:panelGrid columns="2" columnClasses="leftMenu,leftMenu">
+             <img src="img/ICEfaces-logo.gif" alt="Icefaces and Seam: framework demo"/>   
+             <ice:panelGroup >
+                    <p>This ICEfaces 1.6.DR3 + Seam 1.2.1 enabled Application includes:</p>
+                        <ul>
+                            <li>Ant build script</li>
+                            <li>Deployment to JBoss AS</li>
+                            <li>Integration testing using TestNG and JBoss Embeddable EJB3</li>
+                            <li>EJB 3.0 Seam components</li>
+                            <li>Templated Facelets views with Icefaces components</li>
+                            <li>HSQL (or MySQL) Datasource</li>
+                            <li>Default CSS stylesheet</li>
+                            <li>Internationalization support</li>
+                        </ul>
+            </ice:panelGroup>
+        </ice:panelGrid>
+    
 </ui:define> 
 </ui:composition>

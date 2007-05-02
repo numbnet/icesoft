@@ -5,34 +5,34 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
-
-    <h1>@pageName@</h1>
-    <p>Generated form page</p>
     
     <h:messages globalOnly="true" styleClass="message"/>
     
-    <h:form id="@componentName@">
-        <div class="dialog">
-        <s:validateAll>
-            <div class="prop">
-                <span class="name">Value</span>
-                <span class="value">
-                    <s:decorate>
-                        <h:inputText id="value" required="true"
-                            value="#{@componentName@.value}"/>
-                    </s:decorate>
-                </span>
-            </div>
-        </s:validateAll>
-        </div>
+    <ice:form id="@componentName@form">
+
+	 <ice:accordionPanel  styleClass="accordion2">
+		<f:facet name="header">
+			<ice:outputText value="@pageName@"/>
+		</f:facet>
+           <s:decorate id="valueDecoration" template="layout/edit.xhtml">
+                <ui:define name="label">Value</ui:define>
+                <h:inputText id="value" required="true"
+                             value="#{@componentName@.value}"/>
+            </s:decorate>
+            
+            <div style="clear:both"/>
+
+        </ice:accordionPanel>
+
         <div class="actionButtons">
             <h:commandButton id="@methodName@" value="@methodName@" 
                 action="#{@componentName@.@methodName@}"/>     			  
         </div>
-    </h:form>
+    </ice:form>
     
 </ui:define>
 

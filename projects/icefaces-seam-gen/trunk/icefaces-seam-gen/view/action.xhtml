@@ -5,23 +5,28 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
-    <h1>@pageName@</h1>
-    <p>Generated action page</p>
-
     <h:messages globalOnly="true" styleClass="message"/>
-    
-    <h:form id="@componentName@">
-        <div>
+
+     <ice:panelAccordion styleClass="accordion" >
+    	  <f:facet name="header">
+		<ice:outputText value="@pageName@" />
+	  </f:facet>
+        <ice:form id="@componentName@Form">
+        
             <h:commandButton id="@methodName@" value="@methodName@!" 
-                action="#{@componentName@.@methodName@}"/>     			  
-        </div>
-    </h:form>
-    
+                             action="#{@componentName@.@methodName@}"/>     			  
+        
+        </ice:form>
+        
+    </ice:panelAccordion>
+
 </ui:define>
 
 </ui:composition>
+
 
