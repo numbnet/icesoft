@@ -29,8 +29,8 @@ public class NormalModeSerializer implements DOMSerializer {
         Map requestMap = context.getExternalContext().getRequestMap();
 
         if( isFragment(requestMap) ){
-            if( log.isInfoEnabled() ){
-                log.info( "treating request as a fragment" );
+            if( log.isTraceEnabled() ){
+                log.trace( "treating request as a fragment" );
             }
 
             Node body = DOMUtils.getChildByNodeName(
@@ -47,8 +47,8 @@ public class NormalModeSerializer implements DOMSerializer {
                 writer.write(DOMUtils.childrenToString(body));
             }
         } else {
-            if (log.isInfoEnabled()) {
-                log.info("treating request as a whole page (not a fragment)");
+            if (log.isTraceEnabled()) {
+                log.trace("treating request as a whole page (not a fragment)");
             }
 
             String publicID =
