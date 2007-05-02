@@ -29,7 +29,8 @@ function retrieveBridge(url) {
 function processStateChange() {
     if (bridgeRequest.readyState == 4) {
         if (bridgeRequest.status == 200) {
-            eval(bridgeRequest.responseText);
+            //Bridge must be evaluated in the window's context
+            window.eval(bridgeRequest.responseText);
             //alert( "bridge evaluated");
         } else {
             alert("problem retrieving the data:\n" +
