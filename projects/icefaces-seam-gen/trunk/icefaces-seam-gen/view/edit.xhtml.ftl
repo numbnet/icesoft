@@ -21,7 +21,7 @@
     <ice:form id="${componentName}editForm" styleClass="edit">
     
 	  <ice:panelAccordion styleClass="accordion" >
-		<f:facet name="header>
+		<f:facet name="header">
 			<ice:outputText value="Edit ${entityName}"/>
 		</f:facet>
 <#foreach property in pojo.allPropertiesIterator>

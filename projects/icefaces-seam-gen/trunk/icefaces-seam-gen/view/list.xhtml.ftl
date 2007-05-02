@@ -20,9 +20,14 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}Form" styleClass="edit">
-	<ice:panelAccordion styleClass="accordion2" >
-	  <f:facet name="header">
-		<ice:outputText value="${entityName} search"/>
+	<ice:panelAccordion expanded="${'#'}{${listName}.open}" styleClass="accordion2"
+				valueChangeListener="${'#'}{${listName}.toggle}" >
+	   <f:facet name="header">
+           <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
+                  <ice:outputText value="${entityName} search"/>
+                  <ice:graphicImage value="img/contract.gif" rendered="${'#'}{${listName}.open}"/> 
+	  		<ice:graphicImage value="img/expand.gif" rendered="${'#'}{${listName}.close}"/> 
+		</ice:panelGrid>
 	  </f:facet>        
         <ice:panelGroup styleClass="edit">
 	    <ice:panelBorder styleClass="edit"
