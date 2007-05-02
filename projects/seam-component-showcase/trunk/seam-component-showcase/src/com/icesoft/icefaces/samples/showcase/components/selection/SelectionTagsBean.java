@@ -100,8 +100,7 @@ public class SelectionTagsBean {
             new SelectItem("Vancouver"),
             new SelectItem("Toronto"),
             new SelectItem("Montreal"),
-            new SelectItem("Ottawa"),
-            new SelectItem("Sudbury")};
+            new SelectItem("Ottawa")};
 
     private static final SelectItem[] CITIES_USA = new SelectItem[]{
             new SelectItem("Seattle"),
