@@ -59,18 +59,18 @@ import org.jboss.seam.annotations.Name;
 public class DynamicPieChart{
     
     //list of labels for the chart
-    public static List labels = new ArrayList();
+    public List labels = new ArrayList();
     
     //list of the data used by the chart
-    public static List data = new ArrayList();
+    public List data = new ArrayList();
     
     
     //list of the colors used in the pie chart
-    private static List paints = new ArrayList();
+    private List paints = new ArrayList();
     
     
     //a map of the sales data
-    private static Map salesMap;
+    private Map salesMap;
     
     
     //a temporary string for the current label
@@ -79,7 +79,7 @@ public class DynamicPieChart{
     private float value;
     
     //flag to determine if the chart is a 3D pie
-    public static boolean is3D = false;
+    public boolean is3D = false;
     
     //flag to determine if the graph needs rendering
     private boolean pieNeedsRendering = false;
@@ -168,8 +168,8 @@ public class DynamicPieChart{
         }
     }
     
-    public static void setIs3D(boolean i3D) {
-        is3D = i3D;
+    public void setIs3D(boolean i3D) {
+        this.is3D = i3D;
     }
     
     /**
@@ -177,7 +177,7 @@ public class DynamicPieChart{
      *
      * @return boolean
      */
-    public static boolean is3D() {
+    public boolean is3D() {
         return is3D;
     }
     
@@ -188,7 +188,7 @@ public class DynamicPieChart{
     
     
     /**
-     * Mehtod to listen for the change in color in the graph
+     * Method to listen for the change in color in the graph
      *
      * @param event JSF value changed event
      */
@@ -232,10 +232,6 @@ public class DynamicPieChart{
         labels.add(label);
         
         data.add(new Double(value));
-        
-        Sales[] newEntry = {new Sales(1, "New Product", label)};
-        
-        salesMap.put(label, newEntry);
         
         pieNeedsRendering = true;
         

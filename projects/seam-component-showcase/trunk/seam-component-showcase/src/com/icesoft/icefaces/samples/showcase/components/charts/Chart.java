@@ -100,7 +100,7 @@ public class Chart {
         
         if(type.equals(OutputChart.PIE2D_CHART_TYPE)||type.equals(OutputChart.PIE3D_CHART_TYPE)) {
             
-            PieChartBean.buildSales();
+            //PieChartBean.buildSales();
             
             data = PieChartBean.data;
             labels = PieChartBean.labels;
