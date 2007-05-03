@@ -94,7 +94,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     
 
     public Participant() {
-         super();
+        super();
+        state = PersistentFacesState.getInstance();
     }
 
     /**
