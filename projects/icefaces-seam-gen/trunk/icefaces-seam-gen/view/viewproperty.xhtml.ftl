@@ -4,15 +4,15 @@
 <#assign propertyType = componentProperty.value.typeName>
 
         <s:decorate id="${componentProperty.name}" >
-            <ice:outputLabel value="${componentProperty.name}"/>
+            <h:outputLabel for="${'#'}{${componentProperty.name}">${componentProperty.name}</h:outputLabel>
 <#if propertyType == "date">
-            <h:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+            <ice:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                 <s:convertDateTime type="date" dateStyle="short"/>
-            </h:outputText>
+            </ice:outputText>
 <#elseif propertyType == "time">
-            <h:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+            <ice:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                 <s:convertDateTime type="time"/>
-            </h:outputText>
+            </ice:outputText>
 <#elseif propertyType == "timestamp">
             <h:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                 <s:convertDateTime type="both" dateStyle="short"/>
@@ -34,7 +34,7 @@
 <#assign propertyType = property.value.typeName>
 
         <s:decorate id="${property.name}">
-            <ice:outputLabel value="${property.name}"/>
+            <h:outputLabel for="${'#'}{${property.name}}">${property.name}</h:outputLabel>
 <#if propertyType == "date">
             <h:outputText value="${'#'}{${homeName}.instance.${property.name}}">
                 <s:convertDateTime type="date" dateStyle="short"/>
