@@ -30,7 +30,7 @@
 		</ice:panelGrid>
 	  </f:facet>        
         <ice:panelGroup styleClass="edit">
-		 <ice:panelGrid rowClasses="prop" columnClasses="name,value">
+		 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if c2j.isComponent(property)>
@@ -131,7 +131,7 @@
 </#foreach>
         <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link view="/${'#'}{empty from ? '${pageName}' : from[0]}.xhtml" 
+            <s:link view="/${'#'}{empty from ? '${pageName}' : from}.xhtml" 
                    value="Select" 
                       id="${componentName}">
 <#if pojo.isComponent(pojo.identifierProperty)>
