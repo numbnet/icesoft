@@ -33,35 +33,126 @@
 
 package com.icesoft.faces.renderkit;
 
-import javax.faces.context.FacesContext;
+import com.icesoft.jasper.Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.faces.context.ExternalContext;
-import javax.faces.application.ViewHandler;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class LocationUtil {
 
+    private static Log log = LogFactory.getLog(LocationUtil.class);
+
     public static String getAppBase(FacesContext facesContext) {
-
         ExternalContext extCtxt = facesContext.getExternalContext();
-
-        //Don't believe that this is a useful strategy.  We should do it
-        //in a more JSF-approved way.
-        //String base = extCtxt.getInitParameter("war-name");
-//        if (base != null) {
-//            return base;
-//        }
-        
         String base = extCtxt.getRequestContextPath();
-
-        //This was the 1.5 version and is no longer valid
-//        if (base == null) {
-//            base = extCtxt.getRequestMap().get(PersistentFacesCommonlet.REQUEST_PATH_KEY) + "/";
-//        }
-
         return base + "/";
     }
 
-    public static String getResourcePath(FacesContext facesContext, String resource){
-        ViewHandler handler = facesContext.getApplication().getViewHandler();
-        return handler.getResourceURL(facesContext, resource);
+    public static String getResourcePath(FacesContext facesContext,
+                                         String resource) {
+
+        //Context and resource must be non-null
+        if (facesContext == null) {
+            throw new NullPointerException("context cannot be null");
+        }
+
+        if (resource == null) {
+            throw new NullPointerException("path cannot be null");
+        }
+
+        ExternalContext extCtxt = facesContext.getExternalContext();
+
+        //dumpInfo(extCtxt, resource);
+
+        // Components that render out links to resources like images, CSS,
+        // JavaScript, etc. must do it correctly.  In a normal web app, there
+        // isn't much to do but in a portlet environment, we have to resolve
+        // these with a bit of work.
+        if (isPortlet(extCtxt)) {
+            resource = resolveFully(extCtxt, resource);
+//            if (log.isInfoEnabled()) {
+//                log.info("resolved resource: " + resource);
+//            }
+        }
+
+        //Encoding may or may not be strictly necessary but we'll do it to
+        //be safe.
+        resource = extCtxt.encodeResourceURL(resource);
+//        if (log.isInfoEnabled()) {
+//            log.info("encoded resource: " + resource);
+//        }
+
+        return resource;
+    }
+
+    public static boolean isPortlet(ExternalContext extCtxt) {
+        return extCtxt.getRequestMap().get(Constants.PORTLET_KEY) != null;
+    }
+
+    /**
+     * Resolves references fragements to the full resource reference including
+     * the context path and the servlet path.
+     */
+    private static String resolveFully(ExternalContext extCtxt,
+                                       String resource) {
+
+        String base = extCtxt.getRequestContextPath() +
+                              extCtxt.getRequestServletPath();
+
+        try {
+            URI baseURI = new URI(base);
+            URI resourceURI = new URI(resource);
+            URI resolvedURI = baseURI.resolve(resourceURI);
+            return resolvedURI.toString();
+
+        } catch (URISyntaxException e) {
+            if( log.isWarnEnabled() ){
+                log.warn( "could not resolve URI's based on" + 
+                          "\n  context : " + extCtxt.getRequestContextPath() +
+                          "\n  path    : " + extCtxt.getRequestServletPath() +
+                          "\n  resource: " + resource, e );
+            }
+            return resource;
+        }
+
+
+    }
+
+    private static void dumpInfo(ExternalContext extCtxt, String resource) {
+        String encodedResource = extCtxt.encodeResourceURL(resource);
+
+        URI resourceURI = null;
+        try {
+            resourceURI = new URI(resource);
+        } catch (URISyntaxException e) {
+        }
+
+        URL resourceURL = null;
+        try {
+            resourceURL = extCtxt.getResource(resource);
+        } catch (MalformedURLException e) {
+        }
+
+        if (log.isInfoEnabled()) {
+            log.info("RESOURCE INFO" +
+                     "\n  resource    : " + resource +
+                     "\n  encoded     : " + encodedResource +
+                     "\n  context path: " + extCtxt.getRequestContextPath() +
+                     "\n  path info   : " + extCtxt.getRequestPathInfo() +
+                     "\n  servlet path: " + extCtxt.getRequestServletPath() +
+                     "\n  resource URL: " + resourceURL +
+                     "\n  resource URI: " + resourceURI +
+                     "\n  is portlet  : " + isPortlet(extCtxt) +
+                     "\n  request uri : " +
+                     ((HttpServletRequest) extCtxt.getRequest()).getRequestURI()
+            );
+        }
     }
 }
