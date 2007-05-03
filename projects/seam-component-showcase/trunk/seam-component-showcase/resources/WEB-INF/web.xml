@@ -24,10 +24,6 @@
       <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
    </listener>
  
-    <listener>
-        <listener-class>com.icesoft.faces.webapp.http.servlet.SessionDispatcher$Listener</listener-class>
-    </listener>
-   
     <!-- context parameters -->
    <context-param>
       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>

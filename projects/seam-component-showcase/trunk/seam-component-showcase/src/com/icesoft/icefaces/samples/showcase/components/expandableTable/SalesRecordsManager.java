@@ -35,7 +35,8 @@ package com.icesoft.icefaces.samples.showcase.components.expandableTable;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -53,6 +54,7 @@ import org.jboss.seam.annotations.Name;
  * application /lib/sytle.css file can be edited to change the style properties
  * of the table.</p>
  */
+@Scope(PAGE)
 @Name("salesRecordsManager")
 public class SalesRecordsManager {
 

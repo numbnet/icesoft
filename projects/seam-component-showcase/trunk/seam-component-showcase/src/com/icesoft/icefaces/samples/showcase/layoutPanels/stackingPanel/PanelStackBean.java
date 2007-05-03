@@ -36,7 +36,8 @@ package com.icesoft.icefaces.samples.showcase.layoutPanels.stackingPanel;
 import javax.faces.event.ValueChangeEvent;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The PanelStackBean class is a backing bean for the PanelStack showcase
  * demonstration and is used to store the selected panel state of the
@@ -44,6 +45,7 @@ import org.jboss.seam.annotations.Name;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("panelStack")
 public class PanelStackBean {
 

@@ -48,13 +48,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * The DynamicPieChartBean is responsible for holding all the backing information and
  * data for the dynamic pie chart
  *
  * @since 1.5
  */
+@Scope(PAGE)
 @Name("dynamicPieChart")
 public class DynamicPieChart{
     

@@ -39,12 +39,17 @@
                <echo message="source directory is installed ${source.present}"/>
  	</target>	
 
-	<target name="pre-init1" description="set component-docs directory to source" unless="${source.present}">
+<!--	<target name="pre-init1" description="set component-docs directory to source" unless="${source.present}">
+		<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
+                <echo message="source directory is installed"/>
+	</target> -->
+
+        <target name="pre-init1" description="set component-docs directory to source" depends="resource-check" unless="${source.present}">
 		<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
                 <echo message="source directory is installed"/>
 	</target>
-
-	<target name="pre-init2" description="set component-docs dir to binaries" if="${source.present}">
+        
+	<target name="pre-init2" description="set component-docs dir to binaries" depends="resource-check" if="${source.present}">
 		<property name="component.docs.dir" value="${icefacesSourceDirectory}/docs/component"/>
                 <echo message="only binary is available"/>
 	</target>

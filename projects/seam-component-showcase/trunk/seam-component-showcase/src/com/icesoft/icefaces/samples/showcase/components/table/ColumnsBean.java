@@ -36,7 +36,8 @@ package com.icesoft.icefaces.samples.showcase.components.table;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
  *
  * @since 1.5
  */
+@Scope(PAGE)
 @Name("columnsBean")
 public class ColumnsBean {
     // row columna data map

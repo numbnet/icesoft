@@ -49,7 +49,7 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The PanelTabSetBean class is a backing bean for the TabbedPane showcase
  * demonstration and is used to store the various states of the the
@@ -58,6 +58,7 @@ import org.jboss.seam.annotations.Scope;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("tabbedPaneExample")
 public class PanelTabSetBean implements TabChangeListener {
 

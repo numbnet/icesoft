@@ -36,7 +36,8 @@ package com.icesoft.icefaces.samples.showcase.components.menuBar;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 import java.util.Map;
@@ -46,6 +47,7 @@ import java.util.Map;
  * stores the modified id information in a String. MenuBarBean also controls the
  * orientation of the Menu Bar.</p>
  */
+@Scope(PAGE)
 @Name("menuBar")
 public class MenuBarBean {
 

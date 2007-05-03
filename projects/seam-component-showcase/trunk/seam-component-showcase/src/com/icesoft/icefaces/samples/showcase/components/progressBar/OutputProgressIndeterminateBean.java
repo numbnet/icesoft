@@ -42,10 +42,13 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 
 /**
  * Backs the indeterminate mode of the outputProgress component.
  */
+@Scope(PAGE)
 @Name("progressIndeterminate")
 public class OutputProgressIndeterminateBean implements Renderable {
 

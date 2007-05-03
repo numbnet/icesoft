@@ -42,7 +42,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.SESSION;
 import java.util.Enumeration;
 
 /**
@@ -57,6 +58,7 @@ import java.util.Enumeration;
  *
  * @since 0.3.0
  */
+@Scope(SESSION)    
 @Name("treeNavigation")
 public class TreeNavigation {
 

@@ -47,6 +47,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.ScopeType;
+import static org.jboss.seam.ScopeType.PAGE;
 
 /**
  * <p>The OutputProgressRenderBean backs the determinate mode of the
@@ -55,6 +56,7 @@ import org.jboss.seam.ScopeType;
  * @see OutputProgressPropertyBean
  * @since 1.0
  */
+@Scope(PAGE)
 @Name("progress")
 public class OutputProgressRenderBean {
 

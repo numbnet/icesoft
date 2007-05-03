@@ -38,13 +38,15 @@ import com.icesoft.faces.component.panelpositioned.PanelPositionedEvent;
 import java.util.ArrayList;
 import java.util.List;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * Simple bean which holds a list of objects which is manipulated by the
  * position panel
  *
  * @since 1.5
  */
+@Scope(PAGE)
 @Name("panelPositioned")
 public class PositionedPanelBean {
 

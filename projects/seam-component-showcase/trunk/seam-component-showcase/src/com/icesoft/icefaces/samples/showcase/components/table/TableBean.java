@@ -40,7 +40,8 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ import java.util.List;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("table")
 public class TableBean {
 

@@ -38,7 +38,8 @@ import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -51,6 +52,7 @@ import org.jboss.seam.annotations.Name;
  * and cart list and available items in the Drag and Drop store demo. It also
  * handles the store's drag and drop functionality via listeners.</p>
  */
+@Scope(PAGE)
 @Name("cart")
 public class CartBean {
     // store and cart data structures

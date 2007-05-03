@@ -34,13 +34,15 @@
 package com.icesoft.icefaces.samples.showcase.components.textEntry;
 
 import javax.faces.context.FacesContext;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 /**
  * <p>The TextFieldsBean class is the backing bean for the Text Entry
  * demonstration. It is used to store the values of the input fields.</p>
  */
+@Scope(PAGE)
 @Name("textFields")
 public class TextFieldsBean {
     /**

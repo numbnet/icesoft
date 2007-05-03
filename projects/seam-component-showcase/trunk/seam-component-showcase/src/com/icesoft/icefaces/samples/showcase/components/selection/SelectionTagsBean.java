@@ -35,7 +35,8 @@ package com.icesoft.icefaces.samples.showcase.components.selection;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -43,6 +44,7 @@ import org.jboss.seam.annotations.Name;
  * components demonstration. It is used to store the options and selected values
  * of the various selection components.<p>
  */
+@Scope(PAGE)
 @Name("selectionTags")
 public class SelectionTagsBean {
 

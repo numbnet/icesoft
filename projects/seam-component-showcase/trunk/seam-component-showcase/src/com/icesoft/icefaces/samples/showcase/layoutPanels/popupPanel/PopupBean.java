@@ -36,7 +36,8 @@ package com.icesoft.icefaces.samples.showcase.layoutPanels.popupPanel;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Fade;
 import com.icesoft.faces.context.effects.Highlight;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Name;
 
@@ -44,6 +45,7 @@ import org.jboss.seam.annotations.Name;
  * <p>The PopupBean class is the backing bean that manages the Popup Panel
  * state.</p>
  */
+@Scope(PAGE)
 @Name("popup")
 public class PopupBean {
 

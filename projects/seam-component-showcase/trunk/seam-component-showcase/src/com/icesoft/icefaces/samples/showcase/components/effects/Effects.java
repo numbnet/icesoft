@@ -34,7 +34,8 @@
 package com.icesoft.icefaces.samples.showcase.components.effects;
 
 import com.icesoft.faces.context.effects.*;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.model.SelectItem;
 import org.jboss.seam.annotations.Name;
 
@@ -42,6 +43,7 @@ import org.jboss.seam.annotations.Name;
  * <p>The Effects class is used to swap the effects used for the
  * "effect-specific attributes" and "results" panelStacks.</p>
  */
+@Scope(PAGE)
 @Name("effects")
 public class Effects {
 

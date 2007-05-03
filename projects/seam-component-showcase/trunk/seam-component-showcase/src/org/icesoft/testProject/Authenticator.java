@@ -5,8 +5,10 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Identity;
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.APPLICATION;
 
-
+@Scope(APPLICATION)
 @Name("authenticator")
 public class Authenticator
 {

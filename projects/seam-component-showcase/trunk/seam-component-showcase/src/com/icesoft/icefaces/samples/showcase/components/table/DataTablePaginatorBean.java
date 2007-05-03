@@ -37,7 +37,8 @@ import com.icesoft.icefaces.samples.showcase.common.Person;
 
 import java.util.Arrays;
 import java.util.Comparator;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -47,6 +48,7 @@ import org.jboss.seam.annotations.Name;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("scrollerList")
 public class DataTablePaginatorBean extends SortableList {
 

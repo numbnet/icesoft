@@ -38,7 +38,8 @@ import com.icesoft.icefaces.samples.showcase.navigation.TreeNavigation;
 import javax.faces.model.SelectItem;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,7 @@ import java.util.List;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("styleBean")
 public class StyleBean {
 

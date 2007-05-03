@@ -34,13 +34,15 @@
 package com.icesoft.icefaces.samples.showcase.navigation;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The NavigationBean class is responsible for storing the state of the two
  * panel stacks which display dynamic content.  </p>
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("navigation")
 public class NavigationBean {
 

@@ -36,11 +36,13 @@ package com.icesoft.icefaces.samples.showcase.layoutPanels.seriesPanel;
 import java.util.ArrayList;
 import java.util.List;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The Cashier Class is used to back the List (panelSeries) Component
  * example.</p>
  */
+@Scope(PAGE)
 @Name("cashier")
 public class Cashier {
 

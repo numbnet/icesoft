@@ -81,7 +81,8 @@ import org.krysalis.jcharts.properties.LineChartProperties;
 import org.krysalis.jcharts.properties.PointChartProperties;
 import org.krysalis.jcharts.test.TestDataGenerator;
 import org.krysalis.jcharts.types.ChartType;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.event.ActionEvent;
 import java.awt.*;
 
@@ -89,6 +90,7 @@ import java.awt.*;
  * CombinedChartBean class. this class holds the backing information for the
  * combined chart component of the showcase.
  */
+@Scope(PAGE)
 @Name("combinedChart")
 public class CombinedChartBean {
 

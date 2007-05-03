@@ -41,7 +41,10 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 
+@Scope(PAGE)
 @Name("accordionBean")
 public class AccordionBean {
 

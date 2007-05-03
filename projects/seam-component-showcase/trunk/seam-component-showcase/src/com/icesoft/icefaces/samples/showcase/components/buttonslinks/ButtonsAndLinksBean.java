@@ -36,13 +36,15 @@ package com.icesoft.icefaces.samples.showcase.components.buttonslinks;
 import javax.faces.event.ActionEvent;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The ButtonsAndLinksBean class is the backing bean for the buttons and
  * links demonstration. It is used to store the input submitted by buttons and
  * links that trigger submits. It also has action listeners to record which
  * button or link was clicked</p>
  */
+@Scope(PAGE)
 @Name("buttonsAndLinks")
 public class ButtonsAndLinksBean {
 

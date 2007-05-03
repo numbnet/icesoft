@@ -34,7 +34,8 @@
 package com.icesoft.icefaces.samples.showcase.components.progressBar;
 
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.event.ValueChangeEvent;
 
 /**
@@ -46,6 +47,7 @@ import javax.faces.event.ValueChangeEvent;
  * @see OutputProgressRenderBean
  * @since 1.0
  */
+@Scope(PAGE)
 @Name("progressProperty")
 public class OutputProgressPropertyBean {
 

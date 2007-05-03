@@ -35,7 +35,8 @@ package com.icesoft.icefaces.samples.showcase.layoutPanels.borderPanel;
 
 import javax.faces.event.ValueChangeEvent;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The BorderLayoutBean class is the backing bean for the BorderLayout
  * showcase demonstration. It is used to store the layout options and the
@@ -43,6 +44,7 @@ import org.jboss.seam.annotations.Name;
  *
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("borderLayout")
 public class BorderLayoutBean {
 

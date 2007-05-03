@@ -40,7 +40,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.util.Enumeration;
 import org.jboss.seam.annotations.Name;
-
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 /**
  * <p>The TreeBean class is the backing bean for the Tree Component showcase
  * demonstration. It is used to store and display the selected tree node</p>
@@ -48,6 +49,7 @@ import org.jboss.seam.annotations.Name;
  * @see NodeUserObject
  * @since 0.3.0
  */
+@Scope(PAGE)
 @Name("treeExample")
 public class TreeBean {
 
