@@ -40,6 +40,7 @@ public class MainPortlet implements Portlet {
 
     private static Log log = LogFactory.getLog(MainPortlet.class);
 
+    private static final String PORTLET_MARKER = "portlet";
     private PortletConfig portletConfig;
 
     public void init(PortletConfig portletConfig)
@@ -83,13 +84,11 @@ public class MainPortlet implements Portlet {
         //JSF uses the ExternalContext.encodeNamespace() method to do this.
         //Because we are dispatching, we have to ensure that we make this
         //setting available to the ICEfaces framework.
-        String namespace = renderResponse.getNamespace();
-        if (namespace != null) {
-            renderRequest.setAttribute(Constants.NAMESPACE_KEY, namespace);
-            if (log.isTraceEnabled()) {
-                log.trace("portlet namespace: " + renderResponse.getNamespace());
-            }
-        }
+        addAttribute(renderRequest,Constants.NAMESPACE_KEY,renderResponse.getNamespace());
+
+        //General marker attribute that shows that this request originated from
+        //a portlet environment.
+        addAttribute(renderRequest,Constants.PORTLET_KEY, PORTLET_MARKER);
 
         //Get the inital view that is configured in the portlet.xml file
         String defaultView = portletConfig.getInitParameter(Constants.VIEW_KEY);
@@ -118,6 +117,16 @@ public class MainPortlet implements Portlet {
         renderResponse.setContentType("text/html");
         disp.include(renderRequest, renderResponse);
 
+    }
+
+
+    private static void addAttribute(RenderRequest req, String key, String value){
+        if (key != null && value != null) {
+            req.setAttribute(key, value);
+        }
+        if (log.isTraceEnabled()) {
+            log.trace( key + ": " + value);
+        }
     }
 
 

@@ -133,6 +133,7 @@ public class Constants {
              INC_REQUEST_URI,
              INC_SERVLET_PATH};
 
+    public static final String PORTLET_KEY = "com.icesoft.faces.PORTLET";
     public static final String VIEW_KEY = "com.icesoft.faces.VIEW";
     public static final String NAMESPACE_KEY = "com.icesoft.faces.NAMESPACE";
 
