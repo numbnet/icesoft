@@ -56,15 +56,15 @@ Once the file is uploaded, information about the file is displayed.
                     <ice:panelGroup styleClass="formBorderHighlight"
                                     style="text-align:left">
                         <ice:inputFile
-                            progressListener="#{inputFile.progressMonitor.progress}"
-                            actionListener="#{inputFile.actionMonitor.action}"/>
+                            progressListener="#{inputFileBackerBean.progressMonitor.progress}"
+                            actionListener="#{inputFileBackerBean.actionMonitor.action}"/>
                         <ice:outputProgress id="pro"
-                                            value="#{inputFile.percent}"/>
+                                            value="#{inputFileBackerBean.percent}"/>
                         <ice:outputText
-                                value="File Name: #{inputFile.fileName}"/>
+                                value="File Name: #{inputFileBackerBean.fileName}"/>
                         <br/>
                         <ice:outputText
-                                value="Content Type: #{inputFile.contentType}"/>
+                                value="Content Type: #{inputFileBackerBean.contentType}"/>
                         <ice:messages/>
                     </ice:panelGroup>
                 </ice:panelGrid>
