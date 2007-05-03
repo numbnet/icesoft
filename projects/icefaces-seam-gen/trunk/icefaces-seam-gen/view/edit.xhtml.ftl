@@ -20,10 +20,17 @@
     
     <ice:form id="${componentName}editForm" styleClass="edit">
     
-	  <ice:panelAccordion styleClass="accordion" >
+	  <ice:panelAccordion expanded="${'#'}{${homeName}.open}" styleClass="accordion2"
+				valueChangeListener="${'#'}{${homeName}.toggle}" >
 		<f:facet name="header">
-			<ice:outputText value="Edit ${entityName}"/>
-		</f:facet>
+ 			<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
+			    <ice:outputText value="Edit ${componentName}"/>
+                      <ice:graphicImage value="img/contract.gif" rendered="${'#'}{${homeName}.open}"/> 
+	  		    <ice:graphicImage value="img/expand.gif" rendered="${'#'}{${homeName}.close}"/> 
+		      </ice:panelGrid>
+	     </f:facet>        
+           <ice:panelGroup styleClass="edit">
+		 <ice:panelGrid rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#include "editproperty.xhtml.ftl">
 </#foreach>
@@ -31,6 +38,8 @@
                 <span class="required">*</span> 
                 required fields
             </div>
+		</ice:panelGrid>
+          </ice:panelGroup>
 	  </ice:panelAccordion>
                   
         <div class="actionButtons">
