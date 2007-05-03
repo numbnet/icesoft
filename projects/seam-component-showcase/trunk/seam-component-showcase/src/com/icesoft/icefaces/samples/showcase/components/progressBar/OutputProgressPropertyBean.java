@@ -36,7 +36,10 @@ package com.icesoft.icefaces.samples.showcase.components.progressBar;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import org.jboss.seam.ScopeType;
+
 import javax.faces.event.ValueChangeEvent;
+import java.io.Serializable;
 
 /**
  * <p>The OutputProgressPropertyBean class manages the customizable aspects of
@@ -47,9 +50,9 @@ import javax.faces.event.ValueChangeEvent;
  * @see OutputProgressRenderBean
  * @since 1.0
  */
-@Scope(PAGE)
+@Scope(ScopeType.SESSION)
 @Name("progressProperty")
-public class OutputProgressPropertyBean {
+public class OutputProgressPropertyBean implements Serializable {
 
     // value passed into component for progress label
     private String progressLabel = null;

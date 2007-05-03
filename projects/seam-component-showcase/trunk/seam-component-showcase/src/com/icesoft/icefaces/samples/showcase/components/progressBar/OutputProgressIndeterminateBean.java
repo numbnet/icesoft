@@ -44,13 +44,16 @@ import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import org.jboss.seam.ScopeType;
+
+import java.io.Serializable;
 
 /**
  * Backs the indeterminate mode of the outputProgress component.
  */
-@Scope(PAGE)
+@Scope(ScopeType.SESSION)
 @Name("progressIndeterminate")
-public class OutputProgressIndeterminateBean implements Renderable {
+public class OutputProgressIndeterminateBean implements Renderable, Serializable {
 
     private static Log log =
             LogFactory.getLog(OutputProgressIndeterminateBean.class);

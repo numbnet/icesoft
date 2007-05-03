@@ -49,6 +49,8 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.ScopeType;
 import static org.jboss.seam.ScopeType.PAGE;
 
+import java.io.Serializable;
+
 /**
  * <p>The OutputProgressRenderBean backs the determinate mode of the
  * outputProgress component.</p>
@@ -56,9 +58,9 @@ import static org.jboss.seam.ScopeType.PAGE;
  * @see OutputProgressPropertyBean
  * @since 1.0
  */
-@Scope(PAGE)
+@Scope(ScopeType.SESSION)
 @Name("progress")
-public class OutputProgressRenderBean {
+public class OutputProgressRenderBean implements Serializable {
 
     /**
      * Renderable Interface
@@ -70,8 +72,6 @@ public class OutputProgressRenderBean {
 
 
     public OutputProgressRenderBean() {
-
-        state = PersistentFacesState.getInstance();
 
     } 
 
@@ -127,6 +127,7 @@ public class OutputProgressRenderBean {
      * @return percent complete of progress bar
      */
     public int getPercent() {
+        state = PersistentFacesState.getInstance();
         return percent;
     }
 
