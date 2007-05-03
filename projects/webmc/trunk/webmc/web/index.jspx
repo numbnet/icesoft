@@ -1,0 +1,551 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+-->
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:outputDeclaration doctypeRoot="HTML"
+                       doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+
+<html>
+<head>
+    <title>
+        <ice:outputText value="WebMC - #{participant.presentation.name}"/>
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/styles.css"/>
+
+    <script>
+        function showMedium(sUrl) {
+            window.open(sUrl, '', 'width=800, height=600, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
+        }
+    </script>
+</head>
+
+<body>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       class="height100">
+<tr>
+    <td class="bgTOPBLUE">
+        <img src="resources/images/spacer.gif" width="1" height="12"/>
+    </td>
+</tr>
+<tr>
+    <td class="bgTOPWHITE" height="28" style="padding-left: 30px;">
+        <ice:form>
+            <ice:menuBar orientation="horizontal">
+                <ice:menuItem value="File" rendered="#{participant.moderator}">
+                    <ice:menuItem value="Open"
+                                  actionListener="#{participant.presentation.newDocument}"/>
+                    <ice:menuItem value="Save Chat"
+                                  link="javascript: showMedium('chatlog.html')"/>
+                    <ice:menuItem value="Mail Chat"
+                                  action="#{participant.emailMessageLog}"/>
+                    <ice:menuItem value="Logout"
+                                  action="#{participant.confirmLogout}"/>
+                </ice:menuItem>
+                <ice:menuItem value="File"
+                              rendered="#{not participant.moderator}">
+                    <ice:menuItem value="Save Chat"
+                                  link="javascript: showMedium('chatlog.html')"/>
+                    <ice:menuItem value="Mail Chat"
+                                  action="#{participant.emailMessageLog}"/>
+                    <ice:menuItem value="Logout"
+                                  action="#{participant.confirmLogout}"/>
+                </ice:menuItem>
+                <ice:menuItem value="View" rendered="#{participant.moderator}">
+                    <ice:menuItem value="Next Page"
+                                  actionListener="#{participant.presentation.forwardOne}"
+                                  disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+                    <ice:menuItem value="Previous Page"
+                                  actionListener="#{participant.presentation.backOne}"
+                                  disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+                    <ice:menuItem value="First Page"
+                                  actionListener="#{participant.presentation.backAll}"
+                                  disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+                    <ice:menuItem value="Last Page"
+                                  actionListener="#{participant.presentation.forwardAll}"
+                                  disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+                </ice:menuItem>
+                <ice:menuItem value="Help">
+                    <ice:menuItem value="About WebMC"
+                                  action="#{participant.toggleSlideTypeTwo}"/>
+                    <ice:menuItem value="About ICEfaces"
+                                  link="http://www.icefaces.org"
+                                  target="_blank"/>
+                    <ice:menuItem value="About ICEsoft"
+                                  link="http://www.icesoft.com"
+                                  target="_blank"/>
+                </ice:menuItem>
+            </ice:menuBar>
+        </ice:form>
+    </td>
+</tr>
+<tr>
+<td class="bgNAV">
+<ice:form>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td style="padding-left: 23px;">
+<table border="0" cellspacing="0" cellpadding="0" align="left">
+<tr>
+<ice:panelGroup rendered="#{participant.moderator}">
+    <td>
+        <ice:commandButton image="resources/images/nav_arrow_beg_#{participant.presentation.imageLoaded}.gif"
+                           actionListener="#{participant.presentation.backAll}"
+                           alt="Start"
+                           title="Move to the start of the presentation"
+                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+    </td>
+    <td>
+        <ice:commandButton image="resources/images/nav_arrow_back_#{participant.presentation.imageLoaded}.gif"
+                           actionListener="#{participant.presentation.backOne}"
+                           alt="Back"
+                           title="Move backward one slide"
+                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+    </td>
+</ice:panelGroup>
+<td style="padding: 0 10px 0 10px;">
+    <strong>Page</strong>
+</td>
+<ice:panelGroup rendered="#{participant.moderator}">
+    <td style="padding: 0 6px 0 6px;" align="right">
+        <ice:inputText partialSubmit="true"
+                       valueChangeListener="#{participant.presentation.specificSlideNumberChanged}"
+                       value="#{participant.presentation.specificSlideNumber}"
+                       title="Move to a specific slide"
+                       styleClass="inputPAGENUM"
+                       maxlength="4"
+                       size="2"
+                       disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+    </td>
+</ice:panelGroup>
+<ice:panelGroup rendered="#{not participant.moderator}">
+    <td style="padding-left: 6px; padding-right: 6px;" align="right">
+        <ice:outputText
+                value="#{participant.presentation.specificSlideNumber}"/>
+    </td>
+</ice:panelGroup>
+<td style="padding: 0 10px 0 10px;">
+    <ice:outputText value="of #{participant.presentation.lastSlideNumber}"
+                    rendered="#{participant.presentation.loaded}"/>
+    <ice:outputText value="of ?"
+                    rendered="#{not participant.presentation.loaded}"/>
+</td>
+<ice:panelGroup rendered="#{participant.moderator}">
+    <td>
+        <ice:commandButton image="resources/images/nav_arrow_forward_#{participant.presentation.imageLoaded}.gif"
+                           actionListener="#{participant.presentation.forwardOne}"
+                           title="Move forward one slide" alt="Forward"
+                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+    </td>
+    <td>
+        <ice:commandButton image="resources/images/nav_arrow_end_#{participant.presentation.imageLoaded}.gif"
+                           actionListener="#{participant.presentation.forwardAll}"
+                           title="Move to the end of the presentation" alt="End"
+                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+    </td>
+    <td>
+        <table>
+            <tr>
+                <td valign="middle">
+                    <ice:outputText value="Slideshow"
+                                    style="font-weight: bold;"/>
+                </td>
+                <td valign="middle">
+                    <ice:selectBooleanCheckbox
+                            value="#{participant.presentation.autoPlay}"
+                            partialSubmit="true"
+                            valueChangeListener="#{participant.presentation.autoPlayChange}"
+                            title="Automatically present the slideshow"
+                            disabled="#{not participant.presentation.loaded}"/>
+                </td>
+                <td>
+                    <ice:outputText value="Delay"
+                                    style="font-weight: bold; margin-left: 5px;"/>
+                </td>
+                <td>
+                    <ice:selectOneMenu partialSubmit="true"
+                                       value="#{participant.presentation.timer.changeDelay}"
+                                       valueChangeListener="#{participant.presentation.timer.changeDelayListener}"
+                                       disabled="#{not participant.presentation.autoPlay}">
+                        <f:selectItems
+                                value="#{participant.presentation.timer.changeDelayItems}"/>
+                    </ice:selectOneMenu>
+                </td>
+            </tr>
+        </table>
+    </td>
+    <td>
+        <ice:graphicImage value="resources/images/nav_div.gif" width="30"
+                          height="33"/>
+    </td>
+    <td>
+        <ice:commandButton image="resources/images/nav_open.gif" alt="Open"
+                           actionListener="#{participant.presentation.newDocument}"
+                           title="Load a new presentation"/>
+    </td>
+</ice:panelGroup>
+<td>
+    <ice:commandButton image="resources/images/nav_logout.gif"
+                       action="#{participant.confirmLogout}"
+                       alt="Logout"
+                       style="text-align: right;"
+                       title="Leave #{participant.presentation.name} presentation"/>
+</td>
+</tr>
+</table>
+</td>
+<td align="right">
+    <img src="resources/images/logo.jpg" style="width: 266px; height: 72px"/>
+</td>
+</tr>
+</table></ice:form></td>
+</tr>
+<tr>
+<td class="bgMAIN">
+<ice:form>
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       class="height100">
+<tr>
+<td class="mainPRES" valign="top">
+
+    <table cellspacing="0" cellpadding="0" border="0" class="height100">
+        <tr>
+            <td valign="bottom"
+                style="width: 35%; text-align: left; padding: 0;">
+                <table cellspacing="0" cellpadding="0" border="0"
+                       style="text-align: left; width: 248px; height: 29px;">
+                    <tr>
+                        <td>
+                            <ice:commandButton
+                                    action="#{participant.toggleSlideTypeOne}"
+                                    image="resources/images/main_tab_pres_#{participant.slideTypePres}.gif"
+                                    alt="Presentation"/>
+                        </td>
+                        <td>
+                            <ice:commandButton
+                                    action="#{participant.toggleSlideTypeTwo}"
+                                    image="resources/images/main_tab_info_#{not participant.slideTypePres}.gif"
+                                    alt="Information"/>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 65%;">
+                <ice:panelGroup style="text-align: right;">
+                    <ice:outputText value="#{participant.statusMessage}"
+                                    effect="#{participant.statusEffect}"
+                                    escape="false"
+                                    style="background-color: #C7DFEF; color: #2D6387;"/>
+                </ice:panelGroup>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" valign="top">
+                <ice:graphicImage
+                        value="#{participant.presentation.infoSlide.location}"
+                        styleClass="presentationImage"
+                        rendered="#{not participant.slideTypePres}"/>
+                <ice:panelGroup styleClass="presentationImage"
+                                rendered="#{participant.slideTypePres}">
+                    <ice:graphicImage
+                            value="#{participant.currentSlide.location}"
+                            width="720" height="540"/>
+                </ice:panelGroup>
+                <ice:dataTable value="#{participant.presentation.preloadSlides}"
+                               var="loopSlide">
+                    <h:column>
+                        <ice:graphicImage value="#{loopSlide.location}"
+                                          style="visibility: hidden; height: 0; width: 0;"/>
+                    </h:column>
+                </ice:dataTable>
+            </td>
+        </tr>
+    </table>
+
+</td>
+<td class="mainCHAT" valign="top" width="270" style="margin-bottom: 30px;">
+<img src="resources/images/logo_reflection.jpg" align="right"
+     style="width: 266px; height: 30px; vertical-align: top; text-align: right;"/>
+<img src="resources/images/part_tab.jpg" style="vertical-align: bottom;"/>
+
+<table width="240" border="0" cellspacing="0" cellpadding="0"
+       style="border: 1px solid #90B1C9;">
+<tr>
+    <td class="bgBARBLUE" style="padding-left: 13px;">
+        <ice:outputText
+                value="#{participant.presentation.numberChatParticipants}"/>
+    </td>
+    <td class="bgBARBLUE" align="right">
+        <ice:commandButton immediate="true" alt="Scroll Up"
+                           image="resources/images/part_arrow_up_#{participant.participantView.participantScrollUpDisabled}.gif"
+                           title="Scroll the participant list up one page"
+                           actionListener="#{participant.participantView.moveParticipantViewUp}"
+                           style="vertical-align: bottom;"
+                           disabled="#{participant.participantView.participantScrollUpDisabled}"/>
+
+        <ice:commandButton immediate="true" alt="Scroll Down"
+                           image="resources/images/part_arrow_down_#{participant.participantView.participantScrollDownDisabled}.gif"
+                           title="Scroll the participant list down one page"
+                           actionListener="#{participant.participantView.moveParticipantViewDown}"
+                           style="vertical-align: bottom;"
+                           disabled="#{participant.participantView.participantScrollDownDisabled}"/>
+    </td>
+</tr>
+<tr>
+<td class="participant" colspan="2"
+    style="border-top: 1px solid #90B1C9; padding: 13px 13px 5px 13px;"
+    valign="top">
+
+<ul>
+    <ice:dataTable binding="#{participant.participantsTable}"
+                   value="#{participant.participantViewList}" width="100%"
+                   var="list" cellspacing="0" cellpadding="0">
+        <ice:column>
+            <li>
+                <ice:graphicImage visible="#{not empty list and list.moderator}"
+                                  value="resources/images/bullet_orange.gif"
+                                  style="vertical-align: bottom;"
+                                  title="#{list.firstName} #{list.lastName} is currently moderator"/>
+                <ice:graphicImage visible="#{not empty list and not list.moderator}"
+                                  value="resources/images/bullet_grey.gif"
+                                  style="vertical-align: bottom;"/>
+                &amp;nbsp;
+                <strong>
+                    <ice:commandLink value="#{list.firstName} #{list.lastName}"
+                                     title="Click to make #{list.firstName} the moderator"
+                                     rendered="#{participant.moderator}"
+                                     actionListener="#{participant.passModerators}"
+                                     style="vertical-align: top;"/>
+                    <ice:outputText value="#{list.firstName} #{list.lastName}"
+                                    title="Email Address: #{list.email}"
+                                    rendered="#{not participant.moderator}"
+                                    style="vertical-align: top;"/>
+                </strong>
+                <ice:outputText value="(Moderator)"
+                                rendered="#{not empty list and list.moderator}"
+                                style="vertical-align: top;"/>
+            </li>
+        </ice:column>
+    </ice:dataTable>
+</ul>
+
+<ice:panelPopup visible="#{participant.uploadDialog}" modal="true"
+                style="position: absolute; background-color: #FFFFFF; width: 500px; height: 235px; z-index:1001; top: 30%; left: 30%; border: 1px solid #104675;">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="cellBGglossyDARK">
+            <strong>Upload a New Presentation (.zip file only)</strong>
+        </ice:panelGroup>
+    </f:facet>
+    <f:facet name="body">
+        <ice:panelGrid columns="1">
+            <center>
+                <div style="text-align: left; padding: 7px;">
+                    <ice:outputText
+                            value="Please upload the presentation ZIP file. Select the Browse button below to navigate your file system and select the ZIP file created for this presentation.  Once the file has been selected, choose the Upload button."/>
+                </div>
+                <ice:inputFile uniqueFolder="false"
+                               actionListener="#{participant.presentation.load}"
+                               progressListener="#{participant.presentation.progressChange}"
+                               buttonClass="none"
+                               action="#{participant.presentation.closeUploadDialog}"/>
+                <ice:panelGroup>
+                    <ice:outputText value="Upload Progress:"
+                                    style="font-size: smaller;"/>
+                    <ice:outputProgress
+                            value="#{participant.presentation.progress}"/>
+                </ice:panelGroup>
+                <ice:commandButton image="resources/images/butt_cancel.gif"
+                                   action="#{participant.presentation.closeUploadDialog}"
+                                   alt="Cancel"/>
+            </center>
+        </ice:panelGrid>
+    </f:facet>
+</ice:panelPopup>
+
+<ice:panelPopup visible="#{participant.moderatorDialog}" modal="true"
+                style="position: absolute; background-color: #FFFFFF; width: 300px; height: 125px; z-index:1001; top: 35%; left: 35%; border: 1px solid #104675;">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="cellBGglossyDARK">
+            <strong>Confirm Moderator Change</strong>
+        </ice:panelGroup>
+    </f:facet>
+    <f:facet name="body">
+        <ice:panelGroup
+                style="padding: 10px; text-align: center; vertical-align: middle;">
+            <ice:outputText
+                    value="Are you sure you want to pass your moderator status?"/>
+            <ice:panelGroup style="padding-top: 10px;">
+                <ice:commandButton image="resources/images/butt_yes.gif"
+                                   action="#{participant.switchModeratorsYes}"
+                                   alt="Yes"/>
+                <ice:commandButton image="resources/images/butt_no.gif"
+                                   action="#{participant.switchModeratorsNo}"
+                                   alt="No"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
+    </f:facet>
+</ice:panelPopup>
+
+<ice:panelPopup visible="#{participant.confirmDialog}" modal="true"
+                style="position: absolute; background-color: #FFFFFF; width: 300px; height: 110px; z-index:1001; top: 35%; left: 35%; border: 1px solid #104675;">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="cellBGglossyDARK">
+            <strong>Confirm Logout</strong>
+        </ice:panelGroup>
+    </f:facet>
+    <f:facet name="body">
+        <ice:panelGroup
+                style="padding: 10px; text-align: center; vertical-align: middle;">
+            <ice:outputText value="Are you sure you want to logout?"/>
+            <ice:panelGroup style="padding-top: 10px;">
+                <ice:commandButton image="resources/images/butt_yes.gif"
+                                   action="#{participant.confirmLogoutYes}"
+                                   alt="Yes"/>
+                <ice:commandButton image="resources/images/butt_no.gif"
+                                   action="#{participant.confirmLogoutNo}"
+                                   alt="No"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
+    </f:facet>
+</ice:panelPopup>
+
+</td>
+</tr>
+</table>
+
+<ice:panelGroup style="padding-top: 15px;">
+    <img src="resources/images/chat_tab.gif" style="vertical-align: bottom;"/>
+    <ice:commandButton alt="Save Chat"
+                       image="resources/images/chat_save.gif"
+                       title="View the unformatted chat log"
+                       onclick="javascript: showMedium('chatlog.html');"/>
+    <ice:commandButton alt="Mail Chat"
+                       image="resources/images/butt_send.gif"
+                       title="Mail the chat log to #{participant.email}"
+                       action="#{participant.emailMessageLog}"/>
+</ice:panelGroup>
+
+<table width="240" border="0" cellspacing="0" cellpadding="0"
+       style="border: 1px solid #90B1C9;">
+    <tr>
+        <td class="bgBARBLUE" style="padding-left: 13px;">
+            <ice:outputText
+                    value="#{participant.presentation.numberChatParticipants}"/>
+        </td>
+        <td class="bgBARBLUE" align="right">
+            <ice:commandButton immediate="true" alt="Scroll Up"
+                               image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
+                               title="Scroll the chat log up one page"
+                               actionListener="#{participant.chatView.moveChatViewUp}"
+                               style="vertical-align: bottom;"
+                               disabled="#{participant.chatView.chatScrollUpDisabled}"/>
+
+            <ice:commandButton immediate="true" alt="Scroll Down"
+                               image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
+                               title="Scroll the chat log down one page"
+                               actionListener="#{participant.chatView.moveChatViewDown}"
+                               style="vertical-align: bottom;"
+                               disabled="#{participant.chatView.chatScrollDownDisabled}"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="chat" colspan="2"
+            style="border-top: 1px solid #90B1C9; border-bottom: 1px solid #90B1C9; vertical-align: middle; margin-bottom: 10px;">
+            <ul>
+                <ice:dataTable value="#{participant.chatViewList}"
+                               rows="#{participant.chatView.viewSize}"
+                               var="page"
+                               style="text-align: left; width: 100%; padding: 13px 10px 5px 10px;">
+                    <ice:column>
+                        <li>
+                            <ice:outputText value="#{page.senderFormatted}"
+                                            style="font-weight: bold;"/>
+                            <ice:outputText value="#{page.message}" escape="false"/>
+                            &amp;nbsp;
+                        </li>
+                    </ice:column>
+                </ice:dataTable>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td class="bgBARBLUE" width="179" style="padding: 0 5px 0 5px;">
+            <ice:inputText binding="#{participant.chatMessageField}"
+                           value="#{participant.chatMessage}"
+                           maxlength="150" styleClass="inputCHAT"
+                           actionListener="#{participant.addChatMessage}"/>
+        </td>
+        <td class="bgBARBLUE" align="right">
+            <ice:commandButton image="resources/images/chat_send.gif"
+                               actionListener="#{participant.addChatMessage}"
+                               alt="Send"/>
+        </td>
+    </tr>
+</table>
+</td>
+</tr>
+</table>
+</ice:form>
+
+</td>
+</tr>
+<tr>
+    <td class="bgFOOTER">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0"
+               class="height100">
+            <tr>
+                <td align="left" class="textWHITE" style="padding: 0 0 0 30px;">
+                    <strong>&amp;copy; COPYRIGHT 2006</strong> ICESOFT
+                    TECHNOLOGIES INC.
+                </td>
+                <td align="right" class="textWHITE"
+                    style="padding: 0 20px 0 0;">POWERED BY <a
+                        href="http://www.icefaces.org" target="_blank"
+                        class="linkORANGE"><strong>ICEfaces</strong></a></td>
+                <td align="right" width="121"><img
+                        src="resources/images/footer_faces.jpg"/></td>
+            </tr>
+        </table>
+
+    </td>
+</tr>
+</table>
+
+</body>
+</html>
+</f:view>

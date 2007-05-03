@@ -1,0 +1,372 @@
+/*
+* Version: MPL 1.1/GPL 2.0/LGPL 2.1
+*
+* "The contents of this file are subject to the Mozilla Public License
+* Version 1.1 (the "License"); you may not use this file except in
+* compliance with the License. You may obtain a copy of the License at
+* http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific language governing rights and limitations under
+* the License.
+*
+* The Original Code is ICEfaces 1.5 open source software code, released
+* November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+* Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+* 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+*
+* Contributor(s): _____________________.
+*
+* Alternatively, the contents of this file may be used under the terms of
+* the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+* License), in which case the provisions of the LGPL License are
+* applicable instead of those above. If you wish to allow use of your
+* version of this file only under the terms of the LGPL License and not to
+* allow others to use your version of this file under the MPL, indicate
+* your decision by deleting the provisions above and replace them with
+* the notice and other provisions required by the LGPL License. If you do
+* not delete the provisions above, a recipient may use your version of
+* this file under either the MPL or the LGPL License."
+*
+*/
+/* MAIN STYLES */
+html {
+    overflow: scroll;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+
+}
+
+.height100 {
+    height: 100%;
+}
+
+img {
+    border: 0;
+}
+
+/* for some reson IE things a form should have dimensions, */
+form {
+    padding: 0;
+    margin: 0;
+}
+
+/* BGT STYLES */
+.bgTOPBLUE {
+    background: url( '../images/bgslice_topbar_blue.jpg' ) repeat-x top left;
+}
+
+.bgTOPWHITE {
+    background: url( '../images/bgslice_topbar_white.jpg' ) repeat-x top left;
+}
+
+.bgNAV {
+    background: url( '../images/bgslice_navbar.jpg' ) repeat-x top left;
+}
+
+.bgMAIN {
+    background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
+}
+
+.bgFOOTER {
+    background: url( '../images/bgslice_footer.jpg' ) repeat-x top left;
+}
+
+.bgBARBLUE {
+    background: url( '../images/bgslice_bluebar.jpg' ) repeat-x top left;
+}
+
+/* TEXT STYLES */
+td {
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;
+}
+
+.textWHITE {
+    font: 10px tahoma, arial, sans-serif;
+    color: #C1D3DF;
+}
+
+/* LINK STYLES */
+a {
+    color: #4878A1;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #5F9ED4;
+    text-decoration: underline;
+}
+
+a.linkORANGE {
+    color: #F2830C;
+    text-decoration: none;
+}
+
+a.linkORANGE:hover {
+    color: #F2830C;
+    text-decoration: underline;
+}
+
+.presentationImage {
+    border: thick groove #96B2CF;
+    width: 720px;
+    height: 540px;
+}
+
+/* FORM STYLES */
+.inputPAGENUM {
+    color: #4878A1;
+}
+
+.inputCHAT {
+    border: 1px solid #B4CEE1;
+    padding: 2px;
+    font: 11px tahoma, arial, sans-serif;
+    width: 95%;
+    color: #4878A1;
+    text-align: left;
+}
+
+/* LIST STYLES */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+    margin-top: 0;
+}
+
+li {
+    list-style: none;
+    padding-left: 0;
+    padding-bottom: 7px;
+    margin-bottom: 7px;
+    border-bottom: 1px dashed #B4C7D4;
+    width: 100%;
+}
+
+.mainPRES {
+    background-color: #FFFFFF;
+    padding: 30px 10px 30px 10px;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+}
+
+.mainCHAT {
+    background-color: #FFFFFF;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+}
+
+.formInput, .inputField {
+    width: 140px;
+}
+
+.chat, .participant {
+    background: #FFFFFF url('../images/part_bg.jpg') no-repeat bottom right;
+}
+
+.chat a {
+    text-decoration: underline;
+}
+
+.cellBGglossyDARK {
+    background: #FFFFFF url( '../images/bgslice_glossydarkblue.jpg' ) repeat-x top left;
+    padding: 10px 10px 10px 10px;
+    font: 10px tahoma, arial, sans-serif;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+/* MENU BAR STYLES */
+.iceMenuBar {
+    padding: 0;
+    white-space: nowrap;
+}
+
+.iceMenu {
+    float: left;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.iceMenu a {
+    background-color: transparent;
+    height: auto;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: 1px solid transparent;
+    margin: 0;
+    width: auto;
+    float: left;
+    display: block;
+    margin-right: 1px;
+    text-decoration: none;
+}
+
+.iceMenu a:hover {
+    height: auto;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 0;
+    border: 1px solid #dedede;
+    width: auto;
+    float: left;
+    display: block;
+    margin-right: 1px;
+    text-decoration: none;
+    background-color: #FFFFFF;
+    color: #F78208;
+}
+
+.iceMenu hr, .subiceMenu hr {
+    border: none 0;
+    border-top: 1px solid #FFFFFF;
+    width: 100%;
+    height: 1px;
+    margin-top: 3px;
+    padding: 0;
+    text-align: left;
+}
+
+.iceSubMenu {
+    position: absolute;
+    background-color: #efefef;
+    width: 160px;
+    border-top: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    border-right: 1px solid #aaa;
+    padding: 0;
+    height: auto;
+    display: block;
+}
+
+.iceSubMenuRow {
+    /*border: 1px solid #666666;*/
+    padding: 2px;
+    vertical-align: middle;
+    display: block;
+}
+
+.iceSubMenuRow a {
+    /*display: block;*/
+    text-decoration: none;
+}
+
+.iceSubMenuRow:hover {
+    background-color: #cdcdcd;
+}
+
+.iceSubMenuRowImage {
+    padding: 0;
+    width: 1px;
+    vertical-align: top;
+}
+
+.iceSubMenuRowLabel {
+    font-family: Arial, Helvetica, sans-serif;
+    /*padding-top: 4px;*/
+    font-size: 1.0em;
+    /*display: block;*/
+}
+
+.iceSubMenuRowSubMenuIndicator {
+    /*padding-top: 3px;*/
+    width: 20px;
+}
+
+.iceMenu_vertical {
+    float: left;
+    padding: 0;
+    white-space: nowrap;
+    border: 10px solid #AAAAAA;
+}
+
+.iceMenu_verticalItem {
+    width: 130px;
+    display: block;
+}
+
+.iceMenu_verticalItem a {
+    background-color: #efefef;
+    height: auto;
+    padding-left: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+    float: none;
+    display: block;
+    text-decoration: none;
+    margin-bottom: 1px;
+    width: 100%;
+}
+
+.iceMenu_verticalItem a:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+    text-decoration: none;
+    border: 1px solid #efefef;
+}
+
+.iceSubMenu_vertical {
+    padding: 1px;
+    width: 160px;
+    position: absolute;
+    height: auto;
+    display: block;
+}
+
+.iceMenu_vertical_subItem a {
+    padding: 1px;
+    padding-left: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    width: auto;
+    display: block;
+    text-decoration: none;
+    border: 0;
+}
+
+.iceMenu_vertical_subItem a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+    border: 0;
+}
+
+.iceSubMenuDividerVert {
+    height: auto;
+    float: left;
+    width: 100%;
+}
+
+/* PROGRESS BAR STYLES */
+.iceOutputProgress {
+    margin-bottom: 10px;
+}
+
+.iceOutputProgressBackground {
+    border: 1px solid #ABABAB;
+    width: 300px;
+    height: 15px;
+}
+
+.iceOutputProgressFill {
+    background-color: #4878A1;
+    background-position: top left;
+    background-repeat: repeat-x;
+    display: block;
+    height: 15px;
+}
+
+.iceOutputProgressText {
+    vertical-align: middle;
+    color: black;
+}
