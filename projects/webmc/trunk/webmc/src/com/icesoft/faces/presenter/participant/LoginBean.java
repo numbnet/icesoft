@@ -42,6 +42,7 @@ import com.icesoft.faces.component.ext.HtmlForm;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectOne;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
@@ -331,6 +332,10 @@ public class LoginBean {
         clearSingleField(parentForm, "viewPassword");
         clearSingleField(parentForm, "newPresentationName");
         clearSingleField(parentForm, "moderatorPassword");
+        
+        // Clear the select boxes
+        clearSingleField(parentForm, "maxParticipantSelect");
+        clearSingleField(parentForm, "existingPresentationName");
 
         // Reset available variables
         clearFields();
@@ -345,7 +350,7 @@ public class LoginBean {
     }
 
     /**
-     * Convience method to reset the value of a component
+     * Convience method to reset the value of a UIInput component
      *
      * @param parent of the component to reset
      * @param id of the component to reset
@@ -358,7 +363,7 @@ public class LoginBean {
             /* Intentionally ignored - if this fails the one value won't be cleared */
         }
     }
-
+    
     /**
      * Convience method to start a safety net rendering cycle. This is done on
      * the transition from logging in to actually being in a presentation.

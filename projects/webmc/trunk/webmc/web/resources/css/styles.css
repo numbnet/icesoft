@@ -112,10 +112,12 @@ a.linkORANGE:hover {
     text-decoration: underline;
 }
 
-.presentationImage {
-    border: thick groove #96B2CF;
+.presentationImageTable {
     width: 720px;
     height: 540px;
+    border: thick groove #96B2CF;
+    text-align: center;
+    vertical-align: middle;
 }
 
 /* FORM STYLES */

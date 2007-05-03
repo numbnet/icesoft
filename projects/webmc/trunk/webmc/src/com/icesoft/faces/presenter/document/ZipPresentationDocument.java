@@ -35,6 +35,7 @@ package com.icesoft.faces.presenter.document;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
+import com.icesoft.faces.presenter.util.ImageScaler;
 import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -257,6 +258,11 @@ public class ZipPresentationDocument implements PresentationDocument {
                                                                 baseDirectory +
                                                                 toAdd.getName())));
                                 toAdd.deleteOnExit();
+                                
+                                // Scale the image as needed
+                                ImageScaler.aspectScaleImage(
+                                            new File(baseDirectory, toAdd.getName()));
+                                
                                 generatedFiles.add(toAdd);
                             }
                         }

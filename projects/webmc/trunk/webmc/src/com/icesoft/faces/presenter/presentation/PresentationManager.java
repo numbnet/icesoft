@@ -107,6 +107,7 @@ public class PresentationManager {
                                         participant, Integer.parseInt(
                                          participant.getLoginBean().getPresentationMaxString()),
                                         renderer);
+            
 
             toReturn.setSessionId(sessionId);
             toReturn.addChatMessage("Notice", "New Presentation.");

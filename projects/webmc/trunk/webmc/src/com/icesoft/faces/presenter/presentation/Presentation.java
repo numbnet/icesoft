@@ -75,6 +75,8 @@ public class Presentation extends PresentationInfo {
     private Hashtable preloadedTable;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
     private long creationDate = System.currentTimeMillis();
+    
+    private ArrayList skypeList = new ArrayList();
 
     public Presentation() {
     }
@@ -444,6 +446,44 @@ public class Presentation extends PresentationInfo {
         if (!participants.contains(participant)) {
             participants.add(participant);
         }
+        skypeList.add(participant.getSkype());
+    }
+    
+    /**
+     * Method to return the array list of skype names as a string that skype can use
+     *@return String
+     */
+    public String getSkypeNames()
+    {
+        String names = "";
+        for (int i = 1;i<skypeList.size();i++)
+        {
+            if(skypeList.get(i).equals(""))
+            {
+                
+            }
+            
+            
+            else if(i == (skypeList.size()-1))
+            {
+                names = names+skypeList.get(i);
+            }
+            else
+            {
+            names = names+skypeList.get(i)+";";
+            }
+            
+        }
+        return names;
+    }
+    
+    /**
+     * Method to remove a participants skype name from the call list
+     *@param entry to remove
+     */
+    public void deleteSkypeEntry(String entry)
+    {
+        skypeList.remove(entry);
     }
 
     /**
@@ -784,7 +824,12 @@ public class Presentation extends PresentationInfo {
         addChatMessage(moderator.getFirstName(), "Moderation passed off to " +
                                                  newModerator.getFirstName());
 
+        skypeList.add(moderator.getSkype());
+        
         moderator = newModerator;
+        
+        skypeList.remove(moderator.getSkype());
+        
     }
 
     /**

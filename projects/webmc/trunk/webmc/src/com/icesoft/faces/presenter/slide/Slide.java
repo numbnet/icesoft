@@ -37,6 +37,8 @@ package com.icesoft.faces.presenter.slide;
  * page location
  */
 public class Slide {
+    public static final int MAX_WIDTH = 720;
+    public static final int MAX_HEIGHT = 540;
     private static final String INFO_LOCATION = "resources/images/infopage.png";
     private static final Slide DEFAULT_SLIDE_VIEWER =
             new Slide("resources/images/titlepage-view.png");
@@ -98,5 +100,13 @@ public class Slide {
      */
     public void setLocation(String location) {
         this.location = location;
+    }
+    
+    public int getMaxHeight() {
+        return MAX_HEIGHT;
+    }
+    
+    public int getMaxWidth() {
+        return MAX_WIDTH;
     }
 }

@@ -67,11 +67,14 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Participant extends ParticipantInfo implements Renderable, HttpSessionListener {
     private static final int HIGHLIGHT_TIME = 4000;
+    private static final int MAXIMUM_TRANSIENT_EXCEPTIONS = 50;
 
     private static Log log = LogFactory.getLog(Participant.class);
 
     private int role = ParticipantInfo.ROLE_VIEWER;
     private int moderatorSelection;
+    private int transientExceptionCount = 0;
+    private long lastTransientException = -1;
     private LoginBean loginBean = new LoginBean(this);
     private PresentationManagerBean presentationManager;
     private Presentation presentation;
@@ -88,9 +91,10 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     private boolean confirmDialog = false;
     private boolean uploadDialog = false;
     private boolean slideTypePres = true;
+    
 
     public Participant() {
-        state = PersistentFacesState.getInstance();
+         super();
     }
 
     /**
@@ -200,6 +204,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return statusMessage
      */
     public String getStatusMessage() {
+        state = PersistentFacesState.getInstance();
         return statusMessage;
     }
 
@@ -424,6 +429,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      */
     public void setRole(int role) {
         this.role = role;
+        
     }
     
     /**
@@ -474,6 +480,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 
         return "failed";
     }
+    
+   
 
     /**
      * Method to logout from the current presentation If the participant is a
@@ -506,11 +514,15 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         } catch (Exception failedLogout1) { }
 
         try {
+            presentation.deleteSkypeEntry(this.getSkype());
+        } catch (Exception failedLogout2) { }
+        
+        try {
             presentation.removeParticipant(this);
             presentation = null;
 
             loginBean.addRenderable();
-        } catch (Exception failedLogout2) { }
+        } catch (Exception failedLogout3) { }
 
         try {
             // Reset the various fields
@@ -518,8 +530,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
             this.clearFields();
             role = ParticipantInfo.ROLE_VIEWER;
             toggleSlideTypeOne();
-        } catch (Exception failedLogout3) { }
-
+        } catch (Exception failedLogout4) { }
+        
         return "logout";
     }
 
@@ -609,7 +621,17 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         moderatorDialog = false;
         return "switchModeratorsNo";
     }
-
+    
+   /**
+    * Method to return whether or not the participant has entered a skype name
+    *
+    *@return boolean true if name was entered otherwise false
+    */
+    public boolean isHasSkype()
+    {
+        return !getSkype().equals("");
+    }
+    
     /**
      * Method called when any level of rendering exception happens In the case
      * of a non-transient (ie: fatal) rendering exception, the user will be
@@ -621,11 +643,38 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         if (log.isErrorEnabled()) {
             log.error("Rendering exception for " + firstName, renderingException);
         }
-
-        if (!(renderingException instanceof TransientRenderingException)) {
+        
+        // This is a failsafe created after it was noticed (on the live server) that
+        // there is a possibility of continuous transient exceptions being thrown, without
+        // a fatal exception eventually be thrown (as should happen)
+        // This meant some users would close their browser, and their session would
+        // fail to be properly destroyed on timeout, so instead they would be left in a
+        // sort of 'limbo' of continuous transient exceptions
+        // So now we keep track of transient exceptions, if MAXIMUM_TRANSIENT_EXCEPTIONS
+        // occur within 10 seconds (or less) of each other, it is assumed that something has
+        // gone wrong and the user will be logged out
+        if (renderingException instanceof TransientRenderingException) {
+            if ((System.currentTimeMillis() - lastTransientException) >= 10000) {
+                transientExceptionCount++;
+                lastTransientException = System.currentTimeMillis();
+            }
+            else {
+                transientExceptionCount = 0;
+            }
+        }
+        else {
             if (log.isErrorEnabled()) {
                 if ((firstName != null) && (!firstName.equals(""))) {
                     log.error("Rendering exception was fatal, going to log " + firstName + " out");
+                }
+            }
+            logout();
+        }
+        
+        if (transientExceptionCount > MAXIMUM_TRANSIENT_EXCEPTIONS) {
+            if (log.isErrorEnabled()) {
+                if ((firstName != null) && (!firstName.equals(""))) {
+                    log.error("The maximum transient exceptions (" + MAXIMUM_TRANSIENT_EXCEPTIONS + " has been reached for " + firstName + ", going to log them out");
                 }
             }
             logout();
@@ -710,5 +759,9 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         }
 
         PresentationManager.getInstance().destroySessionId(destroyedId);
+    }
+
+    public String getSkype() {
+        return skype;
     }
 }

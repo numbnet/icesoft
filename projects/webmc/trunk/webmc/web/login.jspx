@@ -207,6 +207,21 @@
                 <ice:message for="email" errorClass="inputError"/>
             </td>
         </tr>
+            <tr>
+                <td class="loginLabel"  >Skype Name:</td>
+                <td>
+                    <ice:inputText  
+                                    id = "skype"
+                                   value="#{participant.skype}"
+                                   required="false"
+                                   tabindex="3"
+                                   maxlength="35"
+                                   styleClass="loginInput"
+                                   partialSubmit="true">
+                    </ice:inputText>
+                </td>
+            
+        </tr>
         <tr>
             <td colspan="2">&amp;nbsp;</td>
         </tr>
@@ -250,19 +265,19 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">&amp;nbsp;</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right">
-                    <ice:commandButton image="resources/images/butt_reset.gif"
-                                       actionListener="#{participant.loginBean.resetButton}"
-                                       immediate="true"
-                                       tabindex="6"
-                                       alt="Reset"/>
-                    <ice:commandButton image="resources/images/butt_join_present.gif"
-                                       action="#{participant.login}"
-                                       tabindex="7"
-                                       alt="Join Presentation"/>
+                <td>&amp;nbsp;</td>
+                <td align="right">
+                        <ice:commandButton image="resources/images/butt_reset.gif"
+                                           actionListener="#{participant.loginBean.resetButton}"
+                                           immediate="true"
+                                           tabindex="6"
+                                           style="text-align: right;"
+                                           alt="Reset"/>
+                        <ice:commandButton image="resources/images/butt_join_present.gif"
+                                           action="#{participant.login}"
+                                           tabindex="7"
+                                           style="text-align: right;"
+                                           alt="Join Presentation"/>
                 </td>
             </tr>
         </table>
@@ -306,7 +321,8 @@
             <tr>
                 <td class="loginLabel">Max Participants:</td>
                 <td>
-                    <ice:selectOneMenu partialSubmit="true"
+                    <ice:selectOneMenu id="maxParticipantSelect"
+                                       partialSubmit="true"
                                        tabindex="6"
                                        value="#{participant.loginBean.presentationMaxString}"
                                        styleClass="loginInput">
@@ -316,15 +332,18 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" align="right">
+                <td>&amp;nbsp;</td>
+                <td align="right">
                     <ice:commandButton image="resources/images/butt_reset.gif"
                                        actionListener="#{participant.loginBean.resetButton}"
                                        immediate="true"
                                        tabindex="7"
+                                       style="text-align: right;"
                                        alt="Reset"/>
                     <ice:commandButton image="resources/images/butt_start_present.gif"
                                        action="#{participant.login}"
                                        tabindex="8"
+                                       style="text-align: right;"
                                        alt="Start Presentation"/>
                 </td>
             </tr>

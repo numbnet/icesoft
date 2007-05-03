@@ -45,6 +45,8 @@ public class ParticipantInfo {
     protected String firstName = "";
     protected String lastName = "";
     protected String email = "";
+    protected String skype = "";
+    protected boolean hasSkype = false;
 
     /**
      * Method to get the first name
@@ -108,4 +110,20 @@ public class ParticipantInfo {
         lastName = "";
         email = "";
     }
+    
+    public void setSkype(String skype)
+    {
+        this.skype = skype;
+        if(!skype.equals(""))
+        {
+            hasSkype = true;
+        }
+    }
+    
+    public String getSkype()
+    {
+        return skype;
+    }
+    
+
 }

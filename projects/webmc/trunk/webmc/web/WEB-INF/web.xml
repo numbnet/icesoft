@@ -59,13 +59,13 @@
         <param-value>true</param-value>
     </context-param>
 
+    <!-- Asynchronous Updates -->
+    <context-param>
+        <param-name>com.icesoft.faces.async.server</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
     <!-- Listener Declarations -->
-    <listener>
-        <listener-class>
-            com.icesoft.faces.util.event.servlet.ContextEventRepeater
-        </listener-class>
-    </listener>
-
     <listener>
         <listener-class>
             com.icesoft.faces.presenter.participant.Participant

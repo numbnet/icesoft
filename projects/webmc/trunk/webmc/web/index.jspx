@@ -224,7 +224,19 @@
                        alt="Logout"
                        style="text-align: right;"
                        title="Leave #{participant.presentation.name} presentation"/>
+                       
+       
 </td>
+    <td>
+        
+        <ice:outputLink rendered="#{participant.moderator}"
+                        value="skype:#{participant.presentation.skypeNames}?call"
+                        title="Start Skype conference call">
+            <img src="resources/images/call_blue_transparent_34x34.png"/>
+        </ice:outputLink>
+        
+        
+    </td>
 </tr>
 </table>
 </td>
@@ -241,7 +253,13 @@
        class="height100">
 <tr>
 <td class="mainPRES" valign="top">
-
+    <ice:dataTable value="#{participant.presentation.preloadSlides}"
+                   var="loopSlide">
+        <h:column>
+            <ice:graphicImage value="#{loopSlide.location}"
+                              style="visibility: hidden; height: 0; width: 0;"/>
+        </h:column>
+    </ice:dataTable>
     <table cellspacing="0" cellpadding="0" border="0" class="height100">
         <tr>
             <td valign="bottom"
@@ -275,23 +293,14 @@
         </tr>
         <tr>
             <td colspan="2" valign="top">
-                <ice:graphicImage
-                        value="#{participant.presentation.infoSlide.location}"
-                        styleClass="presentationImage"
-                        rendered="#{not participant.slideTypePres}"/>
-                <ice:panelGroup styleClass="presentationImage"
-                                rendered="#{participant.slideTypePres}">
-                    <ice:graphicImage
-                            value="#{participant.currentSlide.location}"
-                            width="720" height="540"/>
-                </ice:panelGroup>
-                <ice:dataTable value="#{participant.presentation.preloadSlides}"
-                               var="loopSlide">
-                    <h:column>
-                        <ice:graphicImage value="#{loopSlide.location}"
-                                          style="visibility: hidden; height: 0; width: 0;"/>
-                    </h:column>
-                </ice:dataTable>
+                <ice:panelGrid styleClass="presentationImageTable"
+                               cellspacing="0" cellpadding="0"
+                               valign="middle" align="center">
+                    <ice:graphicImage value="#{participant.currentSlide.location}"
+                                      rendered="#{participant.slideTypePres}"/>
+                    <ice:graphicImage value="#{participant.presentation.infoSlide.location}"
+                                      rendered="#{not participant.slideTypePres}"/>
+                </ice:panelGrid>
             </td>
         </tr>
     </table>
@@ -358,6 +367,9 @@
                 <ice:outputText value="(Moderator)"
                                 rendered="#{not empty list and list.moderator}"
                                 style="vertical-align: top;"/>
+                <ice:outputText value="(Skype)"
+                                rendered="#{not empty list and list.hasSkype}"
+                                style=" verical-align: top;"/>
             </li>
         </ice:column>
     </ice:dataTable>
