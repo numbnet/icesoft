@@ -185,8 +185,9 @@ public class InputFileBackerBean implements InputFileBacker, Renderable, Seriali
                 InputFileBackerBean.this.setContentType(inputFile.getFileInfo().getContentType());
                 InputFileBackerBean.this.setFile(inputFile.getFile());
 
-                System.out.println("Got File: " + inputFile.getFileInfo().getFileName());
-
+                if (log.isDebugEnabled()) {
+                    log.debug("File uploaded: " + inputFile.getFileInfo().getFileName());
+                }
             }
 
             if (inputFile.getStatus() == com.icesoft.faces.component.inputfile.InputFile
