@@ -35,6 +35,10 @@ package com.icesoft.icefaces.samples.showcase.components.fileUpload;
 
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.async.render.OnDemandRenderer;
+import com.icesoft.faces.async.render.RenderManager;
+import com.icesoft.icefaces.samples.showcase.components.progressBar.OutputProgressIndeterminateBean;
 
 import javax.faces.event.ActionEvent;
 import java.io.File;
@@ -44,9 +48,10 @@ import java.util.EventObject;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.Intercept;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.InterceptionType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.ejb.Stateful;
 import javax.ejb.Remove;
@@ -54,7 +59,7 @@ import javax.ejb.Remove;
 
 
 /**
- * <p>The InputFileBean class is the backing bean for the inputfile showcase
+ * <p>The InputFileBackerBean class is the backing bean for the inputfile showcase
  * demonstration. It is used to store the state of the file uploading
  * operation.</p>
  *
@@ -63,16 +68,19 @@ import javax.ejb.Remove;
 @Stateful
 
 /*
- InterceptionType.NEVER obviously has the side effect of preventing @Injection
- but it also prevents IllegalStateExceptions due to Seam not being initialized
- during requests to this bean from the current implementation of the FileUploadManager. As the
- FileUploadServlet gets integrated into the normal Servlet mechanism,
- this will go away. 
+ Now (as of 1.6 Beta) that the FileUploadServlet has been integrated into the
+ mainstream Servlet environment, the calls to this bean are inside a JSF lifecycle.
+ This changes the behaviour of this class in several ways. <ol>
+ <li>Turning off interception isn't necessary. </li>
+ <li>Directly calling execute() on the PFState object is no longer allowed, since
+     we're already inside a lifecycle, and they can't be nested. </li>
+ <li>Therefore, we need to use the renderManager to request a render pass later.
+ </ol> 
 */
-@Intercept(InterceptionType.NEVER)
-@Name("inputFile")
+//@Intercept(InterceptionType.NEVER)
+@Name("inputFileBackerBean")
 @Scope(ScopeType.SESSION)
-public class InputFileBean  implements  InputFile {
+public class InputFileBackerBean implements InputFileBacker, Renderable, Serializable {
 
     private int percent = -1;
     private File file = null;
@@ -82,11 +90,29 @@ public class InputFileBean  implements  InputFile {
     private String contentType = "";
 
     private InnerProgressMonitor pmImpl;
+    private OnDemandRenderer renderer;
+
+    private static Log log =
+            LogFactory.getLog(InputFileBackerBean.class);
+
+    @In
+    private RenderManager renderManager;
+
+    private boolean isSetup; 
 
 
-    public InputFileBean() {
+    public InputFileBackerBean() {
         pmImpl = new InnerProgressMonitor();
         state = PersistentFacesState.getInstance();
+
+    }
+
+    public PersistentFacesState getState() {
+        return state;
+    }
+
+    public void renderingException (RenderingException re) {
+        log.error("Rendering exception " , re);
     }
 
 
@@ -95,6 +121,11 @@ public class InputFileBean  implements  InputFile {
     }
 
     public int getPercent() {
+        if (!isSetup) {
+            renderer = renderManager.getOnDemandRenderer("FileUpload renderer");
+            renderer.add(this);
+            isSetup = true;
+        }
         return percent;
     }
 
@@ -151,19 +182,15 @@ public class InputFileBean  implements  InputFile {
 
             com.icesoft.faces.component.inputfile.InputFile file =
                     (com.icesoft.faces.component.inputfile.InputFile) event.getSource();
-            InputFileBean.this.setPercent( file.getFileInfo().getPercent());
-            InputFileBean.this.setFile( file.getFile() );
+            int percent = file.getFileInfo().getPercent();
+            InputFileBackerBean.this.setPercent( percent );
+            InputFileBackerBean.this.setFile( file.getFile() );
 
-            try {
-                // execute the lifecycle to initialize Seam to prevent
-                // IllegalStateExceptions, and render. 
-                state.execute();
-                state.render();
+            if (log.isDebugEnabled()) {
+                log.debug("Progress - Percent: " + percent);
+            } 
 
-            } catch (RenderingException re ) {
-                System.out.println("Rendering exception : " + re);
-                re.printStackTrace();
-            }
+            renderer.requestRender();
         }
 
 
@@ -174,9 +201,12 @@ public class InputFileBean  implements  InputFile {
             com.icesoft.faces.component.inputfile.InputFile inputFile = (com.icesoft.faces.component.inputfile.InputFile) event.getSource();
             if (inputFile.getStatus() == com.icesoft.faces.component.inputfile.InputFile
                     .SAVED) {
-                InputFileBean.this.setFileName(inputFile.getFileInfo().getFileName());
-                InputFileBean.this.setContentType(inputFile.getFileInfo().getContentType());
-                InputFileBean.this.setFile(inputFile.getFile());
+                InputFileBackerBean.this.setFileName(inputFile.getFileInfo().getFileName());
+                InputFileBackerBean.this.setContentType(inputFile.getFileInfo().getContentType());
+                InputFileBackerBean.this.setFile(inputFile.getFile());
+
+                System.out.println("Got File: " + inputFile.getFileInfo().getFileName());
+
             }
 
             if (inputFile.getStatus() == com.icesoft.faces.component.inputfile.InputFile

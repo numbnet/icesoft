@@ -41,10 +41,10 @@ import javax.faces.event.ActionEvent;
 /**
  * @author ICEsoft Technologies, Inc.
  *
- * Example of converting the InputFile managed bean to a Seam component.
+ * Example of converting the InputFileCapture managed bean to a Seam component.
  */
 @Local
-public interface InputFile {
+public interface InputFileBacker {
 
 
     public void setFile(File file);
