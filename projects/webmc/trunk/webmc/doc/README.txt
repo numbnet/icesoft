@@ -26,10 +26,8 @@ without the use of special browser plugins.
 Webmc uses the Javamail libraries which must be properly configured before
 running the web application. Each required JAR file should be placed in the
 ./lib/ directory of your Webmc checkout. The Javamail jars are not provided by
-default because of licensing differences, and because the only mail capability
-used is to send the chat message log to a participant. If you do not require
-this functionality, ignore the following section. Otherwise, acquire the
-necessary jars from the links provided.
+default because of licensing differences. To ensure the application will
+compile, acquire the necessary jars from the links provided.
 
  dsn.jar  imap.jar  mail.jar  mailapi.jar  pop3.jar  smtp.jar
   JavaMail API implementation (version 1.3 or greater)
