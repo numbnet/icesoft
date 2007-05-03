@@ -22,6 +22,7 @@
             	rendered="#{empty @listName@.resultList}"/>
     		<ice:dataTable id="@listName@" var="@componentName@"
            			 value="#{@listName@.resultList}" 
+				columnClasses="allCols"
            			rendered="#{not empty @listName@.resultList}">
         		<ice:column>
             		<f:facet name="header">Id</f:facet>

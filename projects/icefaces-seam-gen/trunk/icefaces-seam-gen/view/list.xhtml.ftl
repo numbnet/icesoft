@@ -78,6 +78,7 @@
     <ice:dataTable id="${listName}" 
                 var="${componentName}"
               value="${'#'}{${listName}.resultList}" 
+		columnClasses="allCols"
            rendered="${'#'}{not empty ${listName}.resultList}">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>

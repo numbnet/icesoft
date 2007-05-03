@@ -105,6 +105,7 @@
                    value="${'#'}{${homeName}.instance.${property.name}}" 
                 rendered="${'#'}{${homeName}.instance.${property.name} != null}"
               rowClasses="rvgRowOne,rvgRowTwo"
+		  columnClasses="allCols"
                       id="${property.name}Table">
 <#foreach parentProperty in parentPojo.allPropertiesIterator>
 <#if !c2h.isCollection(parentProperty) && !c2h.isManyToOne(parentProperty)>
@@ -183,6 +184,7 @@
                            var="${childName}" 
                       rendered="${'#'}{not empty ${homeName}.${property.name}}" 
                     rowClasses="rvgRowOne,rvgRowTwo"
+			  columnClasses="allCols"
                             id="${property.name}Table">
 <#foreach childProperty in childPojo.allPropertiesIterator>
 <#if !c2h.isCollection(childProperty) && !c2h.isManyToOne(childProperty)>
