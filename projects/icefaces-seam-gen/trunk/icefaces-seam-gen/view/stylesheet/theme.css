@@ -44,6 +44,7 @@ input[type='submit'], input[type='button'] {
 }
 
 .searchResults {
+     border-top: 1px solid #bed6f8;
       border-bottom:1px solid #bed6f8;
      border-left:1px solid #bed6f8;
      border-right:1px solid #bed6f8;
