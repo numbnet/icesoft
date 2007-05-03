@@ -6,6 +6,8 @@ ${pojo.packageDeclaration}
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
 {
+    private boolean open = true;
+    private boolean close = false;	
 
 <#foreach property in pojo.allPropertiesIterator>
 <#if c2h.isManyToOne(property)>
@@ -107,6 +109,19 @@ public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framewo
     }
 </#if>
 </#foreach>
+  public void setOpen(boolean input){
+       if (input){
+               open=true;
+               close=false;
+       }else{
+               open=false;
+               close=true;
+       }
+    }
+        
+        public boolean getOpen(){ return open; }    
+        public boolean getClose(){ return close;}
+
 
 }
 </#assign>
