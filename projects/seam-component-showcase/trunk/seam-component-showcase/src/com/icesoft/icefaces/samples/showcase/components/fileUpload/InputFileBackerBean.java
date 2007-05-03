@@ -36,9 +36,6 @@ package com.icesoft.icefaces.samples.showcase.components.fileUpload;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.async.render.Renderable;
-import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.icefaces.samples.showcase.components.progressBar.OutputProgressIndeterminateBean;
 
 import javax.faces.event.ActionEvent;
 import java.io.File;
@@ -48,7 +45,6 @@ import java.util.EventObject;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.In;
 import org.jboss.seam.ScopeType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,44 +63,25 @@ import javax.ejb.Remove;
  */
 @Stateful
 
-/*
- Now (as of 1.6 Beta) that the FileUploadServlet has been integrated into the
- mainstream Servlet environment, the calls to this bean are inside a JSF lifecycle.
- This changes the behaviour of this class in several ways. <ol>
- <li>Turning off interception isn't necessary. </li>
- <li>Directly calling execute() on the PFState object is no longer allowed, since
-     we're already inside a lifecycle, and they can't be nested. </li>
- <li>Therefore, we need to use the renderManager to request a render pass later.
- </ol> 
-*/
-//@Intercept(InterceptionType.NEVER)
 @Name("inputFileBackerBean")
 @Scope(ScopeType.SESSION)
 public class InputFileBackerBean implements InputFileBacker, Renderable, Serializable {
 
     private int percent = -1;
     private File file = null;
-    private PersistentFacesState state;
+    private transient PersistentFacesState state;
 
     private String fileName = "";
     private String contentType = "";
 
     private InnerProgressMonitor pmImpl;
-    private OnDemandRenderer renderer;
 
     private static Log log =
             LogFactory.getLog(InputFileBackerBean.class);
 
-    @In
-    private RenderManager renderManager;
-
-    private boolean isSetup; 
-
-
     public InputFileBackerBean() {
         pmImpl = new InnerProgressMonitor();
         state = PersistentFacesState.getInstance();
-
     }
 
     public PersistentFacesState getState() {
@@ -121,11 +98,6 @@ public class InputFileBackerBean implements InputFileBacker, Renderable, Seriali
     }
 
     public int getPercent() {
-        if (!isSetup) {
-            renderer = renderManager.getOnDemandRenderer("FileUpload renderer");
-            renderer.add(this);
-            isSetup = true;
-        }
         return percent;
     }
 
@@ -188,9 +160,17 @@ public class InputFileBackerBean implements InputFileBacker, Renderable, Seriali
 
             if (log.isDebugEnabled()) {
                 log.debug("Progress - Percent: " + percent);
-            } 
+            }
+              try {
+                // execute the lifecycle to initialize Seam to prevent
+                // IllegalStateExceptions, and render.
+                state.execute();
+                state.render();
 
-            renderer.requestRender();
+            } catch (RenderingException re ) {
+                System.out.println("Rendering exception : " + re);
+                re.printStackTrace();
+            }
         }
 
 
