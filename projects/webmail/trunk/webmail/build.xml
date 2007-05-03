@@ -1,10 +1,8 @@
 <project name="webmail" default="build.war">
 
-    <!-- Make sure to set the base.dir property to your icefaces distribution
-         See doc/README.txt for more details -->
-    <property name="base.dir"          location="set/this/path/to/icefaces"/>
-    
+    <property file="build.properties"/>
     <property name="demo.name"         value="${ant.project.name}"/>
+    <property name="base.dir"          location="."/>
     <property name="build.dir"         location="build"/>
     <property name="build.demo.dir"    location="${build.dir}/${demo.name}"/>
     <property name="build.classes.dir" location="${build.demo.dir}/WEB-INF/classes"/>

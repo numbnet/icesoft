@@ -142,11 +142,10 @@ database and comment out settings for the other database systems.
 --------------------------------------------------------------------------------
 6. ICEfaces Location
 
-Set the ${base.dir} property in the build.xml file to point to the path of your
-ICEfaces library folder. For example, if you downloaded the release of ICEfaces
-1.5.3 you would use "ICEfaces-1.5.3-bin/icefaces/lib" as the directory. By
-default the ${base.dir} property is set to "set/this/path/to/icefaces", so
-Webmail will not compile until you have set the location properly.
+Set the base.dir property in the build.properties file to point to the path of
+your ICEfaces library folder. For example, if you downloaded the release of
+ICEfaces 1.5.3 you would use "ICEfaces-1.5.3-bin/icefaces/lib" as the directory.
+By default the base.dir property is set to build from the local ossrepo trunk.
 
 --------------------------------------------------------------------------------
 7. Building Webmail
