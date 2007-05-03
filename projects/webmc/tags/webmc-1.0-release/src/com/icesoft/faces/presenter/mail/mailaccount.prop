@@ -1,0 +1,16 @@
+# General
+protocol=imap
+host=your.mail.host
+user=mail
+password=secret
+
+# Incoming
+incomingHost=your.incoming.host
+incomingPort=888
+incomingSSL=false
+
+# Outgoing
+outgoingHost=your.outgoing.host
+outgoingPort=888
+outgoingSSL=false
+outgoingVerification=false

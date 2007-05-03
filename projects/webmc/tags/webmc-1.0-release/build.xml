@@ -1,0 +1,85 @@
+<project name="webmc" default="build.war">
+
+    <!-- Make sure to set the base.dir property to your icefaces distribution
+         See doc/README.txt for more details -->
+    <property name="base.dir"          location="set/this/path/to/icefaces"/>
+
+    <property name="demo.name"         value="${ant.project.name}"/>
+    <property name="build.dir"         location="build"/>
+    <property name="build.demo.dir"    location="${build.dir}/${demo.name}"/>
+    <property name="build.classes.dir" location="${build.demo.dir}/WEB-INF/classes"/>
+    <property name="lib.dir"           location="${base.dir}/"/>
+    <property name="locallib.dir"      location="lib/"/>
+    <property name="dist.dir"          location="dist"/>
+    <property name="src.dir"           location="src"/>
+    <property name="icefaces.jar"      location="${base.dir}/icefaces.jar"/>
+    <property name="components.jar"    value="${base.dir}/icefaces-comps.jar"/>
+    <property environment="env"/>
+
+    <!-- Classpath declarations for all the included jar files -->
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        <fileset dir="${locallib.dir}" includes="**/*.jar"/>
+        <pathelement location="${icefaces.jar}"/>
+        <pathelement location="${components.jar}"/>
+    </path>
+
+    <!-- Classpath declarations for standard libraries -->
+    <path id="taskdef.classpath">
+        <fileset dir="${lib.dir}" includes="catalina-ant.jar, jasper-compiler.jar, servlet-api.jar, jasper-runtime.jar, commons-logging.jar"/>
+    </path>
+    <taskdef resource="org/apache/catalina/ant/catalina.tasks" classpathref="taskdef.classpath"/>
+
+    <!-- Target for compiling the source code -->
+    <target name="compile">
+        <delete dir="${build.classes.dir}"/>
+        <mkdir  dir="${build.classes.dir}"/>
+        <javac debug="on" srcdir="${src.dir}" destdir="${build.classes.dir}">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.dir}"/>
+        </copy>
+    </target>
+
+    <!-- Main target for building the project -->
+    <target name="build.war" depends="compile">
+        <delete file="${dist.dir}/${demo.name}.war"/>
+        <mkdir dir="${dist.dir}"/>
+        <war destfile="${dist.dir}/${demo.name}.war" basedir="web" webxml="web/WEB-INF/web.xml" duplicate="fail">
+
+            <classes dir="${build.classes.dir}"/>
+            <lib dir="${lib.dir}">
+                <include name="commons-beanutils.jar"/>
+                <include name="commons-collections.jar"/>
+                <include name="commons-digester.jar"/>
+                <include name="commons-discovery.jar"/>
+                <include name="commons-el.jar"/>
+                <include name="commons-logging.jar"/>
+                <include name="commons-fileupload.jar"/>
+                <include name="jsf-api.jar"/>
+                <include name="backport-util-concurrent.jar"/>
+                <include name="jsf-impl.jar"/>
+                <include name="jstl.jar"/>
+                <include name="standard.jar"/>
+                <include name="xercesImpl.jar"/>
+                <include name="xml-apis.jar"/>
+                <include name="el-api.jar"/>
+                <include name="el-ri.jar"/>
+            </lib>
+            <lib dir="${locallib.dir}" includes="*.jar"/>
+            <lib file="${icefaces.jar}"/>
+            <lib file="${components.jar}"/>
+        </war>
+        
+        <delete dir="${build.demo.dir}"/>
+        <unwar src="${dist.dir}/${demo.name}.war" dest="${build.demo.dir}"/>
+    </target>
+    
+    <!-- Target for cleaning up a built copy -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+</project>

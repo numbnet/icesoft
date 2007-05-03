@@ -1,0 +1,348 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+-->
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<html>
+<head>
+    <link href="resources/css/login.css" rel="stylesheet" type="text/css"/>
+    <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
+                  var="msgs"/>
+    <title>
+        <ice:outputText value="WebMC - Login"/>
+    </title>
+</head>
+
+<body>
+
+<ice:panelGroup styleClass="mainPRES">
+
+<ice:panelGroup styleClass="facesBox">
+
+<center>
+
+<ice:panelGroup styleClass="loginBox">
+
+<ice:form>
+
+<ice:graphicImage value="resources/images/login_logo.gif" alt="Welcome to WebMC"
+                  style="padding-bottom: 15px;"/>
+<ice:panelGroup styleClass="headerMessage">
+    <b>To join a presentation, please login as a Viewer<br/>
+    To start a new presentation, please login as the Moderator<br/>
+    View addition information in the <a href="faq.html" target="_blank"><u>WebMC FAQ</u></a></b>
+</ice:panelGroup>
+
+<div style="text-align: left;">
+    <table cellspacing="0" cellpadding="0" border="0"
+           style="text-align: left; padding: 0; width: 248px; height: 29px;">
+        <tr>
+            <td>
+                <ice:commandButton
+                        action="#{participant.loginBean.toggleRoleTypeViewer}"
+                        alt="Viewer"
+                        immediate="true"
+                        image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
+            </td>
+            <td>
+                <ice:commandButton
+                        action="#{participant.loginBean.toggleRoleTypeModerator}"
+                        alt="Moderator"
+                        immediate="true"
+                        image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<ice:panelPopup visible="#{participant.loginBean.noSlotsLeft}"
+                modal="true"
+                style="background-color: #FFFFFF; width: 450px; height: 150px; z-index:1001; top: 35%; left: 30%; border: 1px solid #104675;">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="cellBGglossyDARK">
+            <strong>Presentation Full</strong>
+        </ice:panelGroup>
+    </f:facet>
+    <f:facet name="body">
+        <ice:panelGroup
+                style="padding: 10px; text-align: center; vertical-align: middle;">
+            <div style="text-align: left; padding: 7px;">
+                <ice:outputText
+                        value="The maximum number of viewers for presentation '#{participant.loginBean.presentationName}', as specified by the moderator, has been reached."/>
+                <br/>
+                <ice:outputText
+                        value="Please contact the moderator of this presentation or try again later."/>
+            </div>
+            <ice:panelGroup style="padding-top: 10px;">
+                <ice:commandButton image="resources/images/butt_cancel.gif"
+                                   alt="Cancel"
+                                   action="#{participant.loginBean.closeNoSlotsDialog}"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
+    </f:facet>
+</ice:panelPopup>
+
+<table cellspacing="2" cellpadding="5"
+       style="border: 1px solid #94B3CB; padding: 4px; padding-bottom: 12px; text-align: left;">
+<tr>
+    <td colspan="2">
+        <ice:panelGroup rendered="#{not participant.moderator}">
+            <ol>
+                <li>
+                    <ice:outputText value="Choose Presentation"
+                                    style="font-weight: bold;"/>
+                    <br/>
+                    <ice:outputText
+                            value="If you have been invited by a moderator to attend a WebMC presentation, login to that presentation now by filling in the registration form below.  Select the presentation name from the drop down menu and type in the the valid password to join the presentation."/>
+                </li>
+                <br/>
+                <li>
+                    <ice:outputText
+                            value="Complete the following form to join a presentation:"
+                            style="font-weight: bold;"/>
+                </li>
+            </ol>
+        </ice:panelGroup>
+        <ice:panelGroup rendered="#{participant.moderator}">
+            <ol>
+                <li>
+                    <ice:outputText value="Create and Save your Slides"
+                                    style="font-weight: bold;"/>
+                    <br/>
+                    <ice:outputText
+                            value="Save your PowerPoint presentation to an image format (.jpg, .gif, or .png).  PowerPoint will automatically create a folder including individual image files for all the slides, and automatically name them slide1.jpg (in the case of a JPEG file) to slide x.jpg."/>
+                    <br/><br/>
+                    <ice:outputText
+                            value="Once the presentation has been saved, ZIP the folder containing all the slides in image format.  Remember where the ZIP file is located so it can be uploaded to WebMC after login."/>
+                </li>
+                <br/>
+                <li>
+                    <ice:outputText value="Moderator Login"
+                                    style="font-weight: bold;"/>
+                    <br/>
+                    <ice:outputText
+                            value="As the moderator of the presentation, you must give the presentation a title and a password.  Use your email to invite attendees to attend your presentation by sending the web address to WebMC, the presentation name and the password."/>
+                </li>
+                <br/>
+                <li>
+                    <ice:outputText
+                            value="Complete the following form to start a new presentation:"
+                            style="font-weight: bold;"/>
+                </li>
+            </ol>
+        </ice:panelGroup>
+    </td>
+</tr>
+<tr>
+<td>
+    <table class="loginTable">
+        <tr>
+            <td class="loginLabel">First Name:</td>
+            <td>
+                <ice:inputText id="firstName"
+                               value="#{participant.firstName}"
+                               converter="fixCaps" required="true"
+                               partialSubmit="true" maxlength="20"
+                               tabindex="1"
+                               styleClass="loginInput"
+                               binding="#{participant.loginBean.firstNameField}"/>
+                <ice:message for="firstName" errorClass="inputError"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="loginLabel">Last Name:</td>
+            <td>
+                <ice:inputText id="lastName"
+                               value="#{participant.lastName}"
+                               tabindex="2"
+                               styleClass="loginInput"
+                               converter="fixCaps" required="true"
+                               partialSubmit="true" maxlength="20"/>
+                <ice:message for="lastName" errorClass="inputError"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="loginLabel">Email:</td>
+            <td>
+                <ice:inputText id="email"
+                               value="#{participant.email}"
+                               required="true"
+                               tabindex="3"
+                               maxlength="35"
+                               styleClass="loginInput"
+                               partialSubmit="true">
+                    <f:validator validatorId="EmailValidator"/>
+                </ice:inputText>
+                <ice:message for="email" errorClass="inputError"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&amp;nbsp;</td>
+        </tr>
+    </table>
+</td>
+<td>
+    <ice:panelGroup rendered="#{not participant.moderator}">
+        <table class="loginTable">
+            <tr>
+                <td class="loginLabel">Presentation:</td>
+                <td>
+                    <ice:selectOneMenu id="existingPresentationName"
+                                       partialSubmit="true"
+                                       tabindex="4"
+                                       value="#{participant.loginBean.presentationName}"
+                                       styleClass="loginInput"
+                                       valueChangeListener="#{participant.loginBean.selectPresentation}">
+                        <f:validator validatorId="NameValidator"/>
+                        <f:selectItems
+                                value="#{presentationMgr.presentationItems}"/>
+                    </ice:selectOneMenu>
+                    <ice:message for="existingPresentationName"
+                                 errorClass="inputError"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="loginLabel">Password:</td>
+                <td>
+                    <ice:inputSecret id="viewPassword"
+                                     value="#{participant.loginBean.presentationPassword}"
+                                     required="true"
+                                     tabindex="5"
+                                     redisplay="true" partialSubmit="true"
+                                     maxlength="20"
+                                     styleClass="loginInput"
+                                     action="#{participant.login}">
+                        <f:validator validatorId="PasswordValidator"/>
+                        <f:param value="#{participant.loginBean.presentationName}"/>
+                    </ice:inputSecret>
+                    <ice:message for="viewPassword" errorClass="inputError"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&amp;nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <ice:commandButton image="resources/images/butt_reset.gif"
+                                       actionListener="#{participant.loginBean.resetButton}"
+                                       immediate="true"
+                                       tabindex="6"
+                                       alt="Reset"/>
+                    <ice:commandButton image="resources/images/butt_join_present.gif"
+                                       action="#{participant.login}"
+                                       tabindex="7"
+                                       alt="Join Presentation"/>
+                </td>
+            </tr>
+        </table>
+    </ice:panelGroup>
+
+    <ice:panelGroup rendered="#{participant.moderator}">
+        <table class="loginTable">
+            <tr>
+                <td class="loginLabel">Presentation:</td>
+                <td>
+                    <ice:inputText id="newPresentationName"
+                                   required="true"
+                                   maxlength="50"
+                                   tabindex="4"
+                                   styleClass="loginInput"
+                                   value="#{participant.loginBean.presentationName}"
+                                   partialSubmit="true">
+                        <f:validator validatorId="NameValidator"/>
+                    </ice:inputText>
+                    <ice:message for="newPresentationName"
+                                 errorClass="inputError"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="loginLabel">Password:</td>
+                <td>
+                    <ice:inputSecret id="moderatorPassword"
+                                     value="#{participant.loginBean.presentationPassword}"
+                                     required="true"
+                                     maxlength="20"
+                                     tabindex="5"
+                                     styleClass="loginInput"
+                                     redisplay="true" partialSubmit="true"
+                                     action="#{participant.login}">
+                        <f:validator validatorId="PasswordValidator"/>
+                    </ice:inputSecret>
+                    <ice:message for="moderatorPassword"
+                                 errorClass="inputError"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="loginLabel">Max Participants:</td>
+                <td>
+                    <ice:selectOneMenu partialSubmit="true"
+                                       tabindex="6"
+                                       value="#{participant.loginBean.presentationMaxString}"
+                                       styleClass="loginInput">
+                        <f:selectItems
+                                value="#{presentationMgr.maxParticipantList}"/>
+                    </ice:selectOneMenu>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <ice:commandButton image="resources/images/butt_reset.gif"
+                                       actionListener="#{participant.loginBean.resetButton}"
+                                       immediate="true"
+                                       tabindex="7"
+                                       alt="Reset"/>
+                    <ice:commandButton image="resources/images/butt_start_present.gif"
+                                       action="#{participant.login}"
+                                       tabindex="8"
+                                       alt="Start Presentation"/>
+                </td>
+            </tr>
+        </table>
+    </ice:panelGroup>
+</td>
+</tr>
+</table>
+<ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
+    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
+    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" style="font-weight: bold;"/>
+</ice:panelGroup>
+
+</ice:form>
+</ice:panelGroup>
+</center>
+</ice:panelGroup>
+</ice:panelGroup>
+</body>
+</html>
+</f:view>
