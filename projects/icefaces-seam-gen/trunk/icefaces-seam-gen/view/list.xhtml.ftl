@@ -30,28 +30,13 @@
 		</ice:panelGrid>
 	  </f:facet>        
         <ice:panelGroup styleClass="edit">
-	    <ice:panelBorder styleClass="edit"
-				renderNorth="true" renderSouth="true">
-		<f:facet name="north">
-              <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-		     <ice:outputText value="Select fields to search"/>
-			<ice:panelGroup>
-				<ice:selectManyCheckbox value="${'#'}{${listName}.selectedFields}"
-						partialSubmit="true">
-					<f:selectItems value="${'#'}{${listName}.fieldsList}"/>
-				</ice:selectManyCheckbox>
-			</ice:panelGroup>
-
-		 </ice:panelGrid>
-	    </f:facet>
-	    <f:facet name="south">
 		 <ice:panelGrid rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-		   <ice:panelGroup rendered="${'#'}{${listName}.${componentProperty.name}Select}">
+		   <ice:panelGroup >
                   <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
                   <ice:inputText id="${componentProperty.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
@@ -61,7 +46,7 @@
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
-		  <ice:panelGroup rendered="${'#'}{${listName}.${property.name}Select}">
+		  <ice:panelGroup >
                 <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
                 <ice:inputText id="${property.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}}"
@@ -72,10 +57,9 @@
 </#if>
 </#foreach>
             </ice:panelGrid>
-         </f:facet>
-        </ice:panelBorder>
+   
 	</ice:panelGroup>
-	</ice:panelAccordion>
+   </ice:panelAccordion>
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
