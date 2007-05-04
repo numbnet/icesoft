@@ -33,28 +33,18 @@
 		<fileset refid="lib" />
 	</path>
 
-		<!-- check to see if the source for icefaces is available -->
+		<!-- check to see if the source for icefaces is available to get component docs-->
 	<target name="resource-check" description="check for component docs directory">
 		<available file="${icefacesSourceDirectory}/component/doc" type="dir" property="source.present"/> 
                <echo message="source directory is installed ${source.present}"/>
+               <condition property="component.docs.dir" value="${icefacesSourceDirectory}/component/doc" 
+                        else="${icefacesSourceDirectory}/docs/component">
+                        <istrue value="${source.present}"/>
+               </condition>
+               <echo message=" component docs dir is ${component.docs.dir}"/>
  	</target>	
-
-<!--	<target name="pre-init1" description="set component-docs directory to source" unless="${source.present}">
-		<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
-                <echo message="source directory is installed"/>
-	</target> -->
-
-        <target name="pre-init1" description="set component-docs directory to source" depends="resource-check" unless="${source.present}">
-		<property name="component.docs.dir" value="${icefacesSourceDirectory}/component/doc"/>
-                <echo message="source directory is installed"/>
-	</target>
-        
-	<target name="pre-init2" description="set component-docs dir to binaries" depends="resource-check" if="${source.present}">
-		<property name="component.docs.dir" value="${icefacesSourceDirectory}/docs/component"/>
-                <echo message="only binary is available"/>
-	</target>
 	
-	<target name="init" description="Initialize the build" depends="resource-check,pre-init1,pre-init2">
+	<target name="init" description="Initialize the build" depends="resource-check">
 		<mkdir dir="${jar.dir}" />
 		<mkdir dir="${ear.dir}" />
 		<mkdir dir="${war.dir}" />
