@@ -1171,5 +1171,6 @@ background-image: url("../images/accordion/produce.jpg" );
 /* added this for proper rendering in IE */
 .iceFileUpload {
  height: 50px;
+ overflow:hidden;
 }
 
