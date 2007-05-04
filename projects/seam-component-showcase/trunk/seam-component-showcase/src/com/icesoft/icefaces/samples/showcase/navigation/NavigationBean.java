@@ -32,7 +32,7 @@
  */
 
 package com.icesoft.icefaces.samples.showcase.navigation;
-
+import java.io.Serializable;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.ScopeType;
@@ -45,7 +45,7 @@ import org.jboss.seam.ScopeType;
  */
 @Scope(ScopeType.SESSION)
 @Name("navigation")
-public class NavigationBean {
+public class NavigationBean implements Serializable{
 
     // selected page content bean.
     private PageContentBean selectedPanel;

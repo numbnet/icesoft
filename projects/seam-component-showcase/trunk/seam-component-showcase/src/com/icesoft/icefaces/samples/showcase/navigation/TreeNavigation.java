@@ -45,7 +45,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.SESSION;
 import java.util.Enumeration;
-
+import java.io.Serializable;
 /**
  * <p>The TreeNavigation class is the backing bean for the showcase navigation
  * tree on the left hand side of the application. Each node in the tree is made
@@ -60,7 +60,7 @@ import java.util.Enumeration;
  */
 @Scope(SESSION)    
 @Name("treeNavigation")
-public class TreeNavigation {
+public class TreeNavigation implements Serializable{
 
     // binding to component
     private Tree treeComponent;
