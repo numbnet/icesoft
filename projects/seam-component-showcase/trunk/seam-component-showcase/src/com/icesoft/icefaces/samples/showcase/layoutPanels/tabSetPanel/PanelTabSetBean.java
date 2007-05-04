@@ -58,7 +58,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  *
  * @since 0.3.0
  */
-@Scope(PAGE)
+@Scope(ScopeType.SESSION)
 @Name("tabbedPaneExample")
 public class PanelTabSetBean implements TabChangeListener {
 
