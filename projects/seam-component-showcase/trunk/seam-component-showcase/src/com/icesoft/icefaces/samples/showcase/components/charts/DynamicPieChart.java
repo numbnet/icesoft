@@ -50,6 +50,7 @@ import java.util.Map;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * The DynamicPieChartBean is responsible for holding all the backing information and
  * data for the dynamic pie chart
@@ -58,7 +59,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("dynamicPieChart")
-public class DynamicPieChart{
+public class DynamicPieChart implements Serializable{
     
     //list of labels for the chart
     public List labels = new ArrayList();

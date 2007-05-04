@@ -52,6 +52,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
+
 
 /**
  * The chart factory is responsible for returning a Chart fo rthe given
@@ -61,7 +63,7 @@ import org.jboss.seam.annotations.Name;
  * @version 1.5
  */
 @Name("chartMediator")
-public class ChartMediator {
+public class ChartMediator implements Serializable{
     
     //List of charts that the user can seleect from the drop down menu
     private static SelectItem[] chartList = new SelectItem[]{

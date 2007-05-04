@@ -85,6 +85,7 @@ import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.event.ActionEvent;
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * CombinedChartBean class. this class holds the backing information for the
@@ -92,7 +93,7 @@ import java.awt.*;
  */
 @Scope(PAGE)
 @Name("combinedChart")
-public class CombinedChartBean {
+public class CombinedChartBean implements Serializable{
 
     //flag to determine if initialized
     private boolean initialzed = false;
