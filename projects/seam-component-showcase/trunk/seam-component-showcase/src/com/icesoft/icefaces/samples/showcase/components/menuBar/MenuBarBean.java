@@ -39,6 +39,7 @@ import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 import java.util.Map;
 
@@ -49,7 +50,7 @@ import java.util.Map;
  */
 @Scope(PAGE)
 @Name("menuBar")
-public class MenuBarBean {
+public class MenuBarBean implements Serializable{
 
     // records which menu item fired the event
     private String actionFired;
