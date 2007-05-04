@@ -20,13 +20,12 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}Form" styleClass="edit">
-	<ice:panelAccordion expanded="${'#'}{${listName}.open}" styleClass="accordion2"
+	<ice:panelAccordion expanded="${'#'}{${listName}.openStatus}" styleClass="accordion2"
 				valueChangeListener="${'#'}{${listName}.toggle}" >
 	   <f:facet name="header">
            <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
                   <ice:outputText value="${entityName} search"/>
-                  <ice:graphicImage value="img/contract.gif" rendered="${'#'}{${listName}.open}"/> 
-	  		<ice:graphicImage value="img/expand.gif" rendered="${'#'}{${listName}.close}"/> 
+                   <ice:graphicImage value="img/expand_${'#'}{${listName}.openStatus}.gif" /> 
 		</ice:panelGrid>
 	  </f:facet>        
         <ice:panelGroup styleClass="edit">
@@ -97,7 +96,7 @@
                     <f:param name="order" value="${'#'}{${listName}.order=='${property.name} asc' ? '${property.name} desc' : '${property.name} asc'}"/>
                 </s:link>
             </f:facet>
-            ${'#'}{${componentName}.${property.name}}
+            ${'#'}{${componentName}.${property.name}}&amp;nbsp;
         </ice:column>
 </#if>
 </#if>
@@ -113,7 +112,7 @@
                     <f:param name="order" value="${'#'}{${listName}.order=='${propertyPath} asc' ? '${propertyPath} desc' : '${propertyPath} asc'}"/>
                 </s:link>
             </f:facet>
-            ${'#'}{${componentName}.${propertyPath}}
+            ${'#'}{${componentName}.${propertyPath}}&amp;nbsp;
         </ice:column>
 </#foreach>
 <#else>
