@@ -3,11 +3,12 @@ ${pojo.packageDeclaration}
 <#assign entityName = pojo.shortName>
 <#assign componentName = util.lower(entityName)>
 <#assign homeName = componentName + "Home">
+import javax.faces.event.ActionEvent;
+
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
 {
-    private boolean open = true;
-    private boolean close = false;	
+    private boolean openStatus = true;
 
 <#foreach property in pojo.allPropertiesIterator>
 <#if c2h.isManyToOne(property)>
@@ -109,20 +110,18 @@ public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framewo
     }
 </#if>
 </#foreach>
-  public void setOpen(boolean input){
-       if (input){
-               open=true;
-               close=false;
-       }else{
-               open=false;
-               close=true;
-       }
-    }
-        
-        public boolean getOpen(){ return open; }    
-        public boolean getClose(){ return close;}
 
+ 	public void toggle(ActionEvent event) {
+             openStatus=!openStatus;
+        }
 
+	public void setOpenStatus(boolean input) {
+            this.openStatus=input;
+	}
+
+	public boolean getOpenStatus() {
+		return openStatus;
+	}
 }
 </#assign>
 

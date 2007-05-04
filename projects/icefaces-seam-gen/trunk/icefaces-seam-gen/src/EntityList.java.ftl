@@ -9,14 +9,13 @@ import org.jboss.seam.framework.EntityQuery;
 import javax.faces.model.SelectItem;
 import java.util.List;
 import java.util.Arrays;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ActionEvent;
 
 @Name("${listName}")
 public class ${entityName}List extends EntityQuery
 {
     private String[] selectedFields;
-    private boolean open = true;
-    private boolean close = false;	
+    private boolean openStatus = true;
     private static final String[] RESTRICTIONS = {
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
@@ -137,20 +136,18 @@ private static final SelectItem[] FIELDS = new SelectItem[]{
 </#if>
 </#if>
 </#foreach>
-    
-   public void setOpen(boolean input){
-       if (input){
-               open=true;
-               close=false;
-       }else{
-               open=false;
-               close=true;
-       }
-    }
-        
-        public boolean getOpen(){ return open; }    
-        public boolean getClose(){ return close;}
 
+ 	public void toggle(ActionEvent event) {
+             openStatus=!openStatus;
+        }
+
+	public void setOpenStatus(boolean input) {
+            this.openStatus=input;
+	}
+
+	public boolean getOpenStatus() {
+		return openStatus;
+	}
 
 
 }

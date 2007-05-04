@@ -4,6 +4,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.RequestParameter;
 import org.jboss.seam.framework.EntityHome;
+import javax.faces.event.ValueChangeEvent;
 
 import @modelPackage@.@entityName@;
 
