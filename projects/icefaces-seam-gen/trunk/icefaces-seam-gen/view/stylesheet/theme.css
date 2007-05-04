@@ -20,6 +20,32 @@ input[type='submit'], input[type='button'] {
 	border-color: gray;
 }
 
+.prop .errors {
+	color: red;
+	text-align: left;
+    padding: .4em;
+    margin: 10px
+}
+
+.errorImg {
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+}
+.errorMsg {
+  display: block;
+  margin: 5px;
+  padding: .1em;
+}
+
+
+.error {
+  color: red;
+  border: solid red;
+  padding: .4em;
+  margin: 10px
+}
+
 .formBorderHighlight{
     vertical-align: top; /*width: 100%;*/
     border: 1px solid #bed6f8;
@@ -100,7 +126,16 @@ background-color: transparent;
 	text-align: right;
 	padding-top: 15px;
 }
-
+.iceTblHeader {
+  font-size:11px;
+   color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
 .allcols{
    font-size:11px;
    color: #000000;
