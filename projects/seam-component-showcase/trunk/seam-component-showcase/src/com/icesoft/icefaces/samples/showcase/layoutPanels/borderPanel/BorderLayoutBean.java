@@ -37,6 +37,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * <p>The BorderLayoutBean class is the backing bean for the BorderLayout
  * showcase demonstration. It is used to store the layout options and the
@@ -46,7 +47,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("borderLayout")
-public class BorderLayoutBean {
+public class BorderLayoutBean  implements Serializable {
 
     private boolean renderNorth = true;
     private boolean renderSouth = true;
