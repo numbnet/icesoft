@@ -258,6 +258,7 @@ public class DynamicPieChart implements Serializable{
         return labels.size() > 2;
     }
     
+    
     /**
      * Method to listen for an action to delete from the chart
      *
