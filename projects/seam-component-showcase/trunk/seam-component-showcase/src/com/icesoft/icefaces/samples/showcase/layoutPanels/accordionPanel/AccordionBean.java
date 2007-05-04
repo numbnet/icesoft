@@ -43,10 +43,11 @@ import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 
 @Scope(PAGE)
 @Name("accordionBean")
-public class AccordionBean {
+public class AccordionBean implements Serializable{
 
     private List data = new ArrayList();
     private boolean open = true;
