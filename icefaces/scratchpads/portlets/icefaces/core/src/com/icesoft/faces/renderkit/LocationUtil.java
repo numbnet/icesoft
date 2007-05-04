@@ -69,6 +69,7 @@ public class LocationUtil {
 
         ExternalContext extCtxt = facesContext.getExternalContext();
 
+        //Purely for debugging purposes
         //dumpInfo(extCtxt, resource);
 
         // Components that render out links to resources like images, CSS,
@@ -77,19 +78,11 @@ public class LocationUtil {
         // these with a bit of work.
         if (isPortlet(extCtxt)) {
             resource = resolveFully(extCtxt, resource);
-//            if (log.isInfoEnabled()) {
-//                log.info("resolved resource: " + resource);
-//            }
         }
 
         //Encoding may or may not be strictly necessary but we'll do it to
         //be safe.
-        resource = extCtxt.encodeResourceURL(resource);
-//        if (log.isInfoEnabled()) {
-//            log.info("encoded resource: " + resource);
-//        }
-
-        return resource;
+        return extCtxt.encodeResourceURL(resource);
     }
 
     public static boolean isPortlet(ExternalContext extCtxt) {
@@ -139,6 +132,24 @@ public class LocationUtil {
             resourceURL = extCtxt.getResource(resource);
         } catch (MalformedURLException e) {
         }
+
+        StringBuffer buff = new StringBuffer("RESOURCE INFO");
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  encoded     : ");
+        buff.append(encodedResource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
+        buff.append("\n  resource    : ");
+        buff.append(resource);
 
         if (log.isInfoEnabled()) {
             log.info("RESOURCE INFO" +
