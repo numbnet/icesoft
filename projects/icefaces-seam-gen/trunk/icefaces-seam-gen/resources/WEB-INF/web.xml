@@ -74,11 +74,6 @@
     </context-param> 
 
     <context-param>
-        <param-name>com.icesoft.faces.standardRequestScope</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    
-    <context-param>
         <param-name>org.jboss.seam.core.init.debug</param-name>
         <param-value>true</param-value>
     </context-param>
@@ -86,6 +81,11 @@
     <context-param>
         <param-name>org.icesoft.examples.serverClock</param-name>
         <param-value>false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>com.icesoft.faces.standardRequestScope</param-name>
+        <param-value>true</param-value>
     </context-param>
 
  <!-- servlets -->   
