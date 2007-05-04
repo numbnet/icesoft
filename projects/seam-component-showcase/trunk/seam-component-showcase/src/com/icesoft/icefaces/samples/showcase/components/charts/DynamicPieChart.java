@@ -254,6 +254,9 @@ public class DynamicPieChart implements Serializable{
         this.deleteList = deleteList;
     }
     
+    public boolean isDeleteAllowed() {
+        return labels.size() > 2;
+    }
     
     /**
      * Method to listen for an action to delete from the chart
@@ -272,7 +275,7 @@ public class DynamicPieChart implements Serializable{
      * @param event JSF action event
      */
     public void deleteChart(ActionEvent event) {
-        if (deletInex >= 0 && labels.size() > 1) {
+        if (deletInex >= 0 && labels.size() > 2) {
             labels.remove(deletInex);
             data.remove(deletInex);
             paints.remove(deletInex);
