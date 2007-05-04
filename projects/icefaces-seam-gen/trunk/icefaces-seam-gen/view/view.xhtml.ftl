@@ -28,9 +28,8 @@
 	  		    <ice:graphicImage value="img/expand.gif" rendered="${'#'}{${homeName}.close}"/> 
 		</ice:panelGrid>
 	</f:facet>        
-      <ice:panelGroup styleClass="edit">
-         <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-
+      <ice:panelGroup styleClass="prop">
+          <ice:panelGrid columns="2" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#include "viewproperty.xhtml.ftl">
@@ -38,8 +37,8 @@
 </#foreach>
 
         <div style="clear:both"/>
-		</ice:panelGrid>
-          </ice:panelGroup>
+	    </ice:panelGrid>
+       </ice:panelGroup>
      </ice:panelAccordion>
 
     <div class="actionButtons">      

@@ -36,22 +36,22 @@
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-		   <ice:panelGroup >
+	
                   <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
                   <ice:inputText id="${componentProperty.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
 				partialSubmit="true"/>
-	         </ice:panelGroup>
+	         
 </#if>
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
-		  <ice:panelGroup >
+	
                 <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
                 <ice:inputText id="${property.name}" 
                           value="${'#'}{${listName}.${componentName}.${property.name}}"
 				  partialSubmit="true"/>
-		  </ice:panelGroup>
+	
 </#if>
 </#if>
 </#if>

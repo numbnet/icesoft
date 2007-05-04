@@ -30,15 +30,28 @@
 		      </ice:panelGrid>
 	     </f:facet>        
            <ice:panelGroup styleClass="edit">
-		 <ice:panelGrid rowClasses="prop" columnClasses="name,value">
+		 
+                     <f:facet name="beforeInvalidField">
+                                <ice:graphicImage styleClass="errorImg" value="img/error.png"/>
+                        </f:facet>
+                        <f:facet name="afterInvalidField">
+                                    <s:message styleClass="errorMsg" />
+                        </f:facet>
+                        <f:facet name="aroundInvalidField">
+                                <s:div styleClass="error"/>
+                    </f:facet> 
+			<s:validateAll>
+			 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#include "editproperty.xhtml.ftl">
 </#foreach>
-          <div style="clear:both">
-                <span class="required">*</span> 
-                required fields
-            </div>
+                  <div style="clear:both">
+                     <span class="required">*</span> 
+                                    required fields
+                  </div>
+  		  
 		</ice:panelGrid>
+		</s:validateAll>
           </ice:panelGroup>
 	  </ice:panelAccordion>
                   
