@@ -39,9 +39,10 @@ import javax.faces.model.SelectItem;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.PAGE;
+import static org.jboss.seam.ScopeType.SESSION;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * <p>The StyleBean class is the backing bean which manages the demonstrations'
@@ -54,9 +55,9 @@ import java.util.List;
  *
  * @since 0.3.0
  */
-@Scope(PAGE)
+@Scope(SESSION)
 @Name("styleBean")
-public class StyleBean {
+public class StyleBean implements Serializable{
 
     // possible theme choices
     private final String XP = "xp";
