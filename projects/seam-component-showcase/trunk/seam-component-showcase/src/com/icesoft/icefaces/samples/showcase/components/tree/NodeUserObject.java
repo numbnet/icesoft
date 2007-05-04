@@ -86,7 +86,7 @@ public class NodeUserObject extends IceUserObject {
         ResourceBundle messages = ResourceBundle.getBundle(
                 "com.icesoft.icefaces.samples.showcase.resources.messages",
                 locale, Thread.currentThread()
-                .getContextClassLoader());
+                .getContextClassLoader()); 
 
         // assign labels
         try {
@@ -244,17 +244,7 @@ public class NodeUserObject extends IceUserObject {
      */
     public String generateValues()
     {
-        Integer comp = this.getComponentType();
-        if(comp.equals(new Integer(1))){
-            return "OutputText";
-        }
-        else if(comp.equals(new Integer(2))){
-            return "InputText";
-        }
-        else {
-            return "Button";
-        }
-                   
+	  return "label";              
     }
     
     
