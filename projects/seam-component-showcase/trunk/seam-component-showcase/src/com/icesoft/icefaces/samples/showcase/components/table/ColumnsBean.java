@@ -39,6 +39,7 @@ import javax.faces.model.ListDataModel;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ import java.util.ArrayList;
  */
 @Scope(PAGE)
 @Name("columnsBean")
-public class ColumnsBean {
+public class ColumnsBean implements Serializable{
     // row columna data map
     private DataModel columnDataModel;
     private DataModel rowDataModel;
