@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The TextFieldsBean class is the backing bean for the Text Entry
@@ -44,7 +45,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("textFields")
-public class TextFieldsBean {
+public class TextFieldsBean implements Serializable{
     /**
      * The different kinds of text input fields.
      */
