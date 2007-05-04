@@ -19,14 +19,13 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
 
-    <ice:panelAccordion expanded="${'#'}{${homeName}.open}" styleClass="accordion2"
+    <ice:panelAccordion expanded="${'#'}{${homeName}.openStatus}" styleClass="accordion2"
 				valueChangeListener="${'#'}{${homeName}.toggle}" >
 	<f:facet name="header">
 		<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
 			    <ice:outputText value="${homeName}"/>
-                      <ice:graphicImage value="img/contract.gif" rendered="${'#'}{${homeName}.open}"/> 
-	  		    <ice:graphicImage value="img/expand.gif" rendered="${'#'}{${homeName}.close}"/> 
-		</ice:panelGrid>
+ 				<ice:graphicImage value="img/expand_${'#'}{${homeName}.openStatus}.gif" /> 
+   		</ice:panelGrid>
 	</f:facet>        
       <ice:panelGroup styleClass="prop">
           <ice:panelGrid columns="2" columnClasses="name,value">
