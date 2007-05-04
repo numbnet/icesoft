@@ -125,8 +125,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         return "com.icesoft.faces.File";
     }
 
-    public void upload(FileItemStream stream, String defaultFolder, long maxSize) throws IOException {
-        this.fileInfo.reset();
+    public void upload(FileItemStream stream, String defaultFolder, long maxSize, BridgeFacesContext bfc) throws IOException {
         this.uploadException = null;
         this.status = UPLOADING;
         this.sizeMax = maxSize;
@@ -135,6 +134,10 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         folder = folder == null ? defaultFolder : folder;
         String namePattern = getFileNamePattern().trim();
         String fileName = stream.getName();
+        // IE gives us the whole path on the client, but we just
+        //  want the client end file name, not the path
+        File tempFileName = new File(fileName);
+        fileName = tempFileName.getName();
         fileInfo.setFileName(fileName);
         fileInfo.setContentType(stream.getContentType());
         try {
@@ -147,7 +150,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 Streams.copy(stream.openStream(), output, true);
                 status = SAVED;
                 fileInfo.setPhysicalPath(file.getAbsolutePath());
-                notifyDone();
+                notifyDone(bfc);
             } else {
                 status = INVALID_NAME_PATTERN;
                 context.addMessage(null, MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[] { fileName, namePattern }));
@@ -167,7 +170,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             }
             fileInfo.setException(uploadException);
             file.delete();
-            notifyDone();
+            notifyDone(bfc);
             throw uploadException;
         }
         catch(IOException e) { // Eg: If creating the saved file fails
@@ -175,27 +178,35 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             status = INVALID;
             fileInfo.setException(e);
             file.delete();
-            notifyDone();
+            notifyDone(bfc);
             throw e;
         }
         
         PersistentFacesState.getInstance().renderLater();
     }
     
-    protected void notifyDone() {
+    protected void notifyDone(BridgeFacesContext bfc) {
+        ActionEvent event = new ActionEvent(this);
+
+        bfc.setCurrentInstance();
+
         //this is true for JSF 1.1 only
         MethodBinding actionListener = getActionListener();
         if(actionListener != null) {
             actionListener.invoke(
                 FacesContext.getCurrentInstance(),
-                new Object[] {new ActionEvent(this)} );
+                new Object[] {event} );
         }
         
         //this is true for JSF 1.2 only
-       ActionListener[] actionListeners = getActionListeners();
-       for (int i=0; i< actionListeners.length; i++) {
-                new ActionEvent(this).processListener(actionListeners[i]);
-       }
+        ActionListener[] actionListeners = getActionListeners();
+        for (int i=0; i< actionListeners.length; i++) {
+            actionListeners[i].processAction(event);
+        }
+        MethodBinding action = getAction();
+        if(action != null) {
+            action.invoke(FacesContext.getCurrentInstance(), null);
+        }
     }
     
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
@@ -663,6 +674,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
 
     public void setProgress(int i){
+
         progress = i;
         fileInfo.setPercent(i);
         if( getProgressListener() != null )

@@ -42,55 +42,16 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-
+/**
+ *This class is the backing bean for the accordionPanel example. It handles all the 
+ *methods required to operate the accordion panel and its content.
+ */
 public class AccordionBean {
 
-    private List data = new ArrayList();
-    private boolean open = true;
     private Highlight effectOutputText = new Highlight("#a4bdd2");
-    private boolean infoBoolean = false;
-    private String name;
-    private String status;
     private String selectedPanel = "";
 
     public AccordionBean() {
-
-        data.add(new AccordionItem("Fruits"));
-        data.add(new AccordionItem("Vegetables"));
-
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List getData() {
-        return data;
-    }
-
-    public void setData(List data) {
-        this.data = data;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-
-    public boolean isOpen() {
-        return open;
-    }
-
-    public void setOpen(boolean open) {
-        this.open = open;
     }
 
     public Effect getEffectOutputText() {
@@ -105,25 +66,6 @@ public class AccordionBean {
         this.effectOutputText = (Highlight) effectOutputText;
     }
 
-    public void setInfoBoolean(boolean bool) {
-        infoBoolean = bool;
-    }
-
-    public boolean getInfoBoolean() {
-        return infoBoolean;
-    }
-
-    public void loginActionListener(ActionEvent event) {
-        setInfoBoolean(true);
-        setStatus("Logged In");
-    }
-
-    public void registerActionListener(ActionEvent event) {
-        setInfoBoolean(true);
-        setStatus("Registered");
-
-    }
-
     /**
      * Used in the accordion panel example to change between the selected
      * panels.
@@ -136,7 +78,7 @@ public class AccordionBean {
         selectedPanel = (String) map.get("products");
 
     }
-
+    
     /**
      * Sets the selected panel name to the specified panel name.
      *

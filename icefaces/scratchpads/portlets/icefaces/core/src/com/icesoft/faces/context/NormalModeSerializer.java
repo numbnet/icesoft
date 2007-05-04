@@ -103,7 +103,6 @@ public class NormalModeSerializer implements DOMSerializer {
         }
 
         frag = (String)requestMap.get(Constants.INC_SERVLET_PATH);
-
         if( frag != null ){
             return true;
         }
