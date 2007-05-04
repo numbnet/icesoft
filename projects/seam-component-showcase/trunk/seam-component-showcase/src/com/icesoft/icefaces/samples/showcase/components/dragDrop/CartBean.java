@@ -46,6 +46,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Random;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The CartBean class is used as a bean for each user to maintain their store
@@ -54,7 +55,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("cart")
-public class CartBean {
+public class CartBean implements Serializable{
     // store and cart data structures
     private ArrayList purchasedList = new ArrayList(0);
     private StoreTable storeTable = new StoreTable();
