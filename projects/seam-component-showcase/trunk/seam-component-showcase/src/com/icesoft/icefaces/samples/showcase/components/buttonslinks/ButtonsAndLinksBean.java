@@ -38,6 +38,7 @@ import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * <p>The ButtonsAndLinksBean class is the backing bean for the buttons and
  * links demonstration. It is used to store the input submitted by buttons and
@@ -46,7 +47,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("buttonsAndLinks")
-public class ButtonsAndLinksBean {
+public class ButtonsAndLinksBean implements Serializable{
 
     /**
      * Variables to store the button clicked and the input submitted.
