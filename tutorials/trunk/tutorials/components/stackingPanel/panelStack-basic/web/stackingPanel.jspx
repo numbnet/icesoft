@@ -1,0 +1,46 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<ice:outputDeclaration doctypeRoot="HTML"
+		doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+		doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+	<title>Stacking Panel Component Tutorial</title>
+	<link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+	<h2>Basic Panel Stack Example</h2>
+	<p>Use the radio buttons to select which panelGroup to display.</p>
+	<ice:form>
+
+		<ice:selectOneRadio value="#{stackingPanel.selectedGroup}"
+			partialSubmit="true">
+			<f:selectItem itemLabel="Group One" itemValue="groupOne" />
+			<f:selectItem itemLabel="Group Two" itemValue="groupTwo" />
+			<f:selectItem itemLabel="Group Three" itemValue="groupThree" />
+		</ice:selectOneRadio>
+
+		<ice:panelStack selectedPanel="#{stackingPanel.selectedGroup}">
+
+			<ice:panelGroup id="groupOne">
+				<ice:outputText value="Group 1" />
+			</ice:panelGroup>
+			
+			<ice:panelGroup id="groupTwo">
+				<ice:outputText value="Group 2" />
+			</ice:panelGroup>
+
+			<ice:panelGroup id="groupThree">
+				<ice:outputText value="Group 3" />
+			</ice:panelGroup>
+
+		</ice:panelStack>
+
+	</ice:form>
+	</body>
+	</html>
+</f:view>

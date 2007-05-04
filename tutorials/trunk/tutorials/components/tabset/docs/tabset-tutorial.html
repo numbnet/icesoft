@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Panel Tabset Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the panelTabSet component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Panel Tabset Component</h1>
+
+<p>
+    The <span class="object-name">panelTabSet</span> component can be used to display
+    a series of tabs, either with repeating content or unique elements inside each tab.
+    The <span class="object-name">panelTabSet</span> component is similar to a dataTable,
+    except <span class="object-name">ice:panelTab</span> is used instead of <span class="object-name">h:column</span>.
+    In addition to iterative components, <span class="object-name">panelTabSet</span> supports specific elements inside
+    each tab. The following screen shot is of the <span class="object-name">ice:panelTabSet</span> component using the CSS XP theme
+    in the Acronym Game login screen.
+</p>
+
+<div class="screenshot">
+    <img src="images/acronym_screenshot.png"
+       title="panelTabSet component in Acronym Game application"
+         alt="panelTabSet component in Acronym Game application" width="595" height="527"/>
+</div>
+
+<p>
+    The <span class="object-name">panelTabSet</span> does not require any beans specific to the application.
+    For example, static text can be used inside each tab using only page level tools, which removes the complexity
+    of bean setup. In the case of each example in this tutorial, a backing bean will be used to allow
+    greater flexibility in the content and labels of tabs.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#creationSpecific">Creating a Specific Panel Tabset</a></li>
+    <li><a href="#creationIterative">Creating an Iterative Panel Tabset</a></li>
+    <li><a href="#customizingStyle">Customizing Panel Tabset Styles</a></li>
+    <li><a href="#dynamicAddRemove">Dynamically Adding or Removing Tabs</a></li>
+    <li><a href="#dynamicPlacement">Dynamically Changing Tab Placement</a></li>
+    <li><a href="#exampleTabsets">Examples Using Panel Tabsets</a></li>
+</ul>
+
+<!-- tutorial: tabset-basic (using Specific approach) -->
+<a name="creationSpecific"><h2>Creating a Specific Panel Tabset</h2></a>
+
+<p>
+The easiest Panel Tabset setup is to use specific components and elements inside of each <span class="object-name">ice:panelTab</span>.
+In this next example the page contains an <span class="object-name">ice:panelTabSet</span> and 3 generic <span class="object-name">ice:panelTab</span>
+components inside each tab. Although the text content and labels of each tab could be hardcoded on the page, we will setup 2 backing beans.
+The first is a basic session bean that generates the default tabs and allows for future extensibility. The second bean is Tab.java, which stores the labels
+and content for a single tab. The following screenshot shows what the page looks like once the beans are properly setup.
+</p>
+    
+<div class="screenshot">
+    <img src="images/tabset-basic_screenshot.png"
+       title="Basic Panel Tabset Example"
+         alt="Basic Panel Tabset Example" width="482" height="450"/>
+</div>
+
+<p>To bind the beans to the page, a simple <span class="object-name">ice:panelTabSet</span> must first be created.</p>
+<pre>   &lt;ice:panelTabSet&gt;</pre>
+<p>
+For now we do not specify any attributes for the Panel Tabset, and so the tag is very bare and simple. The next step is to add each tab inside of the
+<span class="object-name">ice:panelTabSet</span> we just created. This will also be the first bean interaction so far.
+</p>
+<pre>
+    &lt;ice:panelTab label="#{tabset.tabs[0].label}"&gt;
+        &lt;ice:outputText value="#{tabset.tabs[0].content}"/&gt;
+    &lt;/ice:panelTab&gt;
+</pre>
+<p>
+This will create a single tab with the label and content matching the first item in <span class="object-name">tabset.tabs</span> list. Once 3 such tabs
+have been added to the <span class="object-name">ice:panelTabSet</span>, and all necessary JSF setup code, the page will be similar to <span class="code-jsf">
+<a href="/tabset-basic-tutorial/basicTabset.iface" target="_blank">basicTabset.jspx</a></span>
+</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tabset-basic demo for your self by clicking
+            <a href="/tabset-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the tabset-basic source code <a href="tabset-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+As you may have noticed, the list based setup of TabsetBean.javalends itself
+to an iterator on the page. The next section will show how to use the built in iterator functionality of <span class="object-name">panelTabSet</span>.
+</p>
+
+<!-- tutorial: tabset-basic (using Iterative approach) -->
+<a name="creationIterative"><h2>Creating an Iterative Panel Tabset</h2></a>
+
+<p>
+The similarities to a dataTable are even more prevalent when the <span class="object-name">panelTabSet</span> iterator functionality is used.
+As with dataTable, a <span class="object-name">value</span> and <span class="object-name">var</span> attribute are set for the
+<span class="object-name">ice:panelTabSet</span> tag, as shown below.
+</p>
+
+<pre>
+    &lt;ice:panelTabSet var="currentTab" value="#{tabset.tabs}"&gt;
+</pre>
+
+<p>
+This will bind the <span class="object-name">ice:panelTabSet</span> to the backing bean list of <span class="object-name">tabs</span>. The
+<span class="object-name">currentTab</span> name can then be used inside of the <span class="object-name">panelTabSet</span> tag instead of hardcoding
+an index (as was done in the <a href="#creationSpecific">previous example</a>). Instead of requiring 3 specific tabs, a single <span class="object-name">
+ice:panelTab</span> can be used to outline the content that will be displayed on each iteration. The <span class="object-name">ice:panelTab</span> therefore is:
+</p>
+
+<pre>
+    &lt;ice:panelTab label="#{currentTab.label}"&gt;
+        &lt;ice:outputText value="#{currentTab.content}"/&gt;
+    &lt;/ice:panelTab&gt;
+</pre>
+
+<p>The iterative approach to Panel Tabset is used in the <a href="#dynamicAddRemove">Dynamically Adding or Removing Tabs</a> example below.</p>
+
+<p>
+The appearance of these 2 examples is rather generic and may not suit your application. The next section will demonstrate how to
+customize the CSS for <span class="object-name">panelTabSet</span>.
+</p>
+
+<!-- tutorial: tabset-style -->
+<a name="customizingStyle"><h2>Customizing Panel Tabset Styles</h2></a>
+
+<p>
+The tab styles can be customized by overriding the default CSS values. The first step is to create a new stylesheet and link to it in <span class="code-jsf">
+<a href="/tabset-style-tutorial/styleTabset.iface" target="_blank">styleTabset.jspx</a></span>, as shown in the line below:
+</p>
+
+<pre>
+    &lt;link href="./override.css" rel="stylesheet" type="text/css"/&gt;
+</pre>
+
+<p>
+Next the default tab styles should be copied into the override sheet. To find the default styles, look inside the CSS normally linked to, which is
+./xmlhttp/css/xp/xp.css. Copy all tab related styles into a new sheet, in our case <span class="code-jsf">
+<a href="/tabset-style-tutorial/override.css" target="_blank">override.css</a></span>.
+</p>
+
+<p>
+The current implementation of Panel Tabset uses a series of images to create the illusion of a tab. Because of this, the image files in the <span class="code-jsf">
+<a href="/tabset-style-tutorial/css-images/" target="_blank">css-images</a></span> folder must be copied over. Of course this could be changed to use colors,
+gradients, or anything the designer wants. 
+</p>
+
+<p>
+After this is done, you can begin customizing the styles. This demonstration changes the top border colors to blue (selected tab),
+red (mouse over), and green (deselected tab), as shown below:
+</p>
+
+<div class="screenshot">
+    <img src="images/tabset-style_screenshot.png"
+       title="Style Panel Tabset Example"
+         alt="Style Panel Tabset Example" width="482" height="450"/>
+</div>
+
+<p>
+For the above example, changing the <span class="object-name">iceTabSetTabOn</span> class to the following resulted in a blue highlight for the
+selected tab.
+</p>
+
+<pre>
+.iceTabSetTabOn .MiddleTop{
+    background-color:#0000FF;
+    background-repeat:repeat-x;
+    text-align:center;
+    padding-top:5px;
+    border:none;
+}
+</pre>
+
+<p>
+Other CSS changes were done to help display the possibilities, and since all the relevant classes are accessible the tab style can be completely changed.
+</p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tabset-style demo for your self by clicking
+            <a href="/tabset-style-tutorial/"
+               target="_blank">here</a>,
+            or download the tabset-style source code <a href="tabset-style-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>Interaction with the demos has so far been rather static. In the next section the dynamic addition and removal of tabs will be covered.</p>
+
+<!-- tutorial: tabset-dynamic -->
+<a name="dynamicAddRemove"><h2>Dynamically Adding or Removing Tabs</h2></a>
+
+<p>
+Now we will look at how the iterative support of <span class="object-name">panelTabSet</span> allows
+for dynamically adding and removing tabs. From a code point of view this functionality is merely
+manipulation of the backing bean list. To use the dynamic add / remove code, an iterative
+<span class="object-name">panelTabSet</span> must be used, and a simple add and remove method must
+be added.
+</p>
+
+<p>
+For this example, the add method will append a generic tab to the end of the <span class="object-name">panelTabSet</span>.
+The code should be similar to the following:
+</p>
+
+<pre>
+    public void addTab() {
+        tabs.add(new Tab("Label " + (tabs.size()+1), "Content " + (tabs.size()+1)));
+    }
+</pre>
+
+<p>
+This will create a new tab with the label and content as the next available integer based on the current number of tabs.
+With the automatic rendering capabilities of ICEfaces, the page would be updated to display a new tab appended to the end
+of the <span class="object-name">ice:panelTabSet</span>.
+</p>
+
+<p>
+The remove method for this example is also simple, and deletes the last tab from the <span class="object-name">panelTabSet</span>.
+Remember that this could easily be extended to allow the removal of specific tabs, or groups of tabs, etc. Basically anything
+possible in a list can be performed on the backing bean for a <span class="object-name">panelTabSet</span>. An example of the simple
+remove method follows:
+</p>
+
+<pre>
+    public void removeTab() {
+        if (tabs.size() > 0) {
+            tabs.remove(tabs.size()-1);
+        }
+    }
+</pre>
+
+<p>
+The method ensures that a tab remains to remove, and deletes the last tab in the list. As with addition, the page will automatically update
+to reflect the fewer tabs.
+</p>
+
+<p>The screenshot below displays how the dynamic-tabset demo appears initially (before any tabs are added or removed).</p>
+
+<div class="screenshot">
+    <img src="images/tabset-dynamic_screenshot.png"
+       title="Dynamic Panel Tabset Example"
+         alt="Dynamic Panel Tabset Example" width="482" height="450"/>
+</div>
+
+<p>
+This demo uses the same backing bean setup as the basic-tabset demo above. The only difference is the add / remove methods, which can be viewed
+in the modified TabsetBean.java.
+</p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tabset-dynamic demo for your self by clicking
+            <a href="/tabset-dynamic-tutorial/"
+               target="_blank">here</a>,
+            or download the tabset-dynamic source code <a href="tabset-dynamic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+    In summary, the use of a list (either ArrayList or Vector is recommended) and iterative
+    <span class="object-name">panelTabSet</span> allows for great control over the addition
+    and removal of tabs. In addition to this dynamic functionality, the placement of tabs can
+    also be seemlessly changed, as the next example will demonstrate.
+</p>
+
+<!-- tutorial: tabset-placement -->
+<a name="dynamicPlacement"><h2>Dynamically Changing Tab Placement</h2></a>
+
+<p>
+In this next example we are going to dynamically toggle the position of the
+<span class="object-name">panelTabSet</span> between the top and bottom. This is achieved by adding
+a set of radio buttons to the page, which tie into a <span class="object-name">setPlacement</span>
+method in the backing bean. The placement is applied as an attribute on the <span class="object-name">
+ice:panelTabSet</span> tag, as shown below.
+</p>
+
+<pre>
+    &lt;ice:panelTabSet tabPlacement="#{tabset.placement}"&gt;
+</pre>
+
+<p>The radio buttons have a <i>top</i> and <i>bottom</i> option available, the code for which follows.</p>
+
+<pre>
+    &lt;ice:selectOneRadio value="#{tabset.placement}" partialSubmit="true"&gt;
+        &lt;f:selectItem itemLabel="Top" itemValue="top"/&gt;
+        &lt;f:selectItem itemLabel="Bottom" itemValue="bottom"/&gt;
+    &lt;/ice:selectOneRadio&gt;
+</pre>
+
+<p>
+By using <span class="object-name">partialSubmit="true"</span> in the <span class="object-name">selectOneRadio</span>
+tag, the selected option will update the backing bean immediately. This in turn will cause the page to rerender with
+the tabs displaying at the correct location. The backing bean needs to be changed to have a <span class="object-name">
+String</span> placement variable, as well as related getters and setters. These changes can be seen in TabsetBean.java.
+The following screenshot displays how the tabset-placement demo looks by default.
+</p> 
+
+<div class="screenshot">
+    <img src="images/tabset-placement_screenshot.png"
+       title="Placement Panel Tabset Example"
+         alt="Placement Panel Tabset Example" width="482" height="450"/>
+</div>
+
+<p>Note that the only placement options available are <i>top</i> and <i>bottom</i>.</p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tabset-placement demo for your self by clicking
+            <a href="/tabset-placement-tutorial/"
+               target="_blank">here</a>,
+            or download the tabset-placement source code <a href="tabset-placement-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<!-- links to examples -->
+<a name="exampleTabsets"><h2>Examples Using Panel Tabsets</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Panel Tabset example which includes tab visibility, selection, adding and removing, and placement.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Tabs are integrated into the settings for a user, allowing form data to be categorized and streamlined.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Acronym Game</td>
+            <td class="bodySource">Available on the demo site</td>
+            <td class="bodyNotes">The login page uses tabs to seperate the creation and joining of games.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tabset-basic</td>
+            <td class="bodySource"><a href="tabset-basic-tutorial.zip" >tabset-basic source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup a basic panelTabSet component and backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tabset-style</td>
+            <td class="bodySource"><a href="tabset-style-tutorial.zip" >tabset-style source code</a></td>
+            <td class="bodyNotes">Demonstration of how easily and fully a panelTabSet can be styled with custom CSS.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tabset-placement</td>
+            <td class="bodySource"><a href="tabset-placement-tutorial.zip" >tabset-placement source code</a></td>
+            <td class="bodyNotes">Example showing the dynamic switching of tab placement.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tabset-dynamic</td>
+            <td class="bodySource"><a href="tabset-dynamic-tutorial.zip" >tabset-dynamic source code</a></td>
+            <td class="bodyNotes">This example allows the dynamic addition and removal of generic tabs.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>

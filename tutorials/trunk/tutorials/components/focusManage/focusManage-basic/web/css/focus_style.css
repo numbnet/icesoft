@@ -1,0 +1,117 @@
+/* borrowed from showcase_style.css */
+
+/*
+ Generic site wide changes
+ */
+body {
+    background-color: #FFFFFF;
+    color: #666666;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* demo titles */
+h2 {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    font-size: 1.5em;
+}
+
+/* description of each component example */
+h3 {
+    font-size: 1em;
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+/* sub-description used directly underneath h3 */
+h4 {
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 0px;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+/* table labels in examples */
+h5 {
+    margin: 5px;
+    margin-left: 0px;
+    padding: 0px;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+/* table header labels */
+h6 {
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    font-size: 1em;
+}
+
+.componentLayoutRootTable {
+    table-layout: fixed;
+    vertical-align: top;
+}
+
+.contentLayoutGridColumn {
+    vertical-align: top;
+}
+
+
+/*
+  Panel Border 
+*/
+
+.panelBorderDemoLayoutMain {
+    text-align: center;
+    width: 400px;
+}
+
+.panelBorderDemoLayoutMain td {
+    vertical-align: middle;
+}
+
+.panelBorderDemoLayoutMain .icePageCenter {
+    background-color: #EAEDE6
+}
+
+.panelBorderDemoLayoutMain .icePageNorth {
+    height: 40px;
+    background-color: #D7D7D1;
+}
+
+.panelBorderDemoLayoutMain .icePageEast {
+    width: 50px;
+    background-color: #BCE0D9;
+}
+
+.panelBorderDemoLayoutMain .icePageSouth {
+    height: 40px;
+    background-color: #DEE7D5;
+    border-top-width:0px;
+}
+
+.panelBorderDemoLayoutMain .icePageWest {
+    width: 50px;
+    background-color: #F1EED5;
+}
+
+/* Panel stack example */
+.panelGroupColor{
+    padding: 10px;
+    border: 1px solid;
+    width: 380px;
+}
+
+.panelGroupColor {
+    background-color: whitesmoke;
+}
+

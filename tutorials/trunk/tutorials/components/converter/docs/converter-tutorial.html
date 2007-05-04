@@ -1,0 +1,593 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+  <head>
+    <title>ICEfaces JSF Converter Tutorial</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+      <!-- header section -->
+      <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html"> Table of Contents</a>
+      </p>
+      <hr/>
+      
+      <p>
+          <b>Lesson:</b> Using JSF converters with ICEfaces components
+      </p>
+      
+      <!-- tutorial content section -->
+      
+      <h1>How to use JSF Converters with ICEfaces Components</h1>
+      
+      <p>
+          Why is conversion important?  Conversion is the process of ensuring
+          data is of the right object or type.  This can be very helpful by 
+          eliminating erroneous information from getting into your system.  In 
+          the JSF lifecycle, conversion occurs in the apply request values phase.
+          This is before component data is bound to your backing bean model.  By 
+          having it occur in the apply request values phase you can make certain 
+          assumptions that the data being sent into the backing bean will be of 
+          the correct type.  This helps you to focus on business login rather 
+          than qualifications of input data.
+      </p>
+      
+      <p>
+          For this tutorial we will be using a simple JSF application to 
+          demonstrate how to use JSF converters.  The following screen shot 
+	    is a screen shot of the application:
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/converter-basic-main.png"
+                title="JSF Converters in Registration Application"
+                alt="JSF Converters in Registration Application" width="783"
+                height="565"/>
+      </div>
+      
+      <p>
+          This tutorial will discuss the following topics related to the use of 
+          JSF converters:
+      </p>
+      <ul>
+            <li><a href="#partialsubmitandimmediate">Partial Submit and 
+                 Immediate Attributes</a></li>
+            <li><a href="#usingconverters">How to Use Standard JSF Converters</a></li>
+            <li><a href="#customeconverters">How to Write Custom Converters</a></li>
+            <li><a href="#messageandmessages">Message and Messages Tags</a></li>
+            <li><a href="#examplesthatuseconverters">Examples that Use JSF Converters</a></li>
+      </ul>
+      
+      <a name="partialsubmitandimmediate">&nbsp;</a>
+      
+      <h2>Partial Submit and Immediate Attributes</h2>
+      
+      <p>
+          The partial submit attribute enables a component to perform a partial 
+          submit in the appropriate event for the component.  This can be useful 
+          when it comes to conversion.  By performing a partial submit after the 
+          component loses focus it will attempt to convert the data at that 
+          moment, if the data is not of the correct type an error message is 
+          displayed.  This is opposed to the user cliking a submit command 
+          button.  The following JSF code shows how to set the patial submit on
+          a component:
+      </p>
+      <pre>
+          &lt;ice:inputText partialSubmit="true"/&gt;
+      </pre>
+      
+      <p>
+          The immediate attribute can be used to acheive the following effects:
+          <ul>
+              <li>Allow a commandLink or commandButton to navigate the user to 
+                  another page without processing any data currently in input 
+                  fields of the scuurent screen.  In particular, this allows
+                  navigation to occur even when there are currently validation
+                  errors. Ex: a "Cancel" button.
+              </li>
+              <li>Allows a commandLink or commandButton to trigger back-end
+                      logic while ignoring validation for some of the fields on 
+                      the screen.
+              </li>
+              <li>
+                  Makes one or more input components "high priority" for validation, 
+                  so that if any of these are invalid then validation is not 
+                  performed for any "low priority" components on the same page.  
+                  This can reduce the number of error messages shown.
+              </li>
+          </ul>
+      </p>
+      
+      <p>
+          Using the immediate attribute on a component means its value will be 
+          validated during the apply request values phase in the JSF lifecycle.  
+          Since conversion already occurs in this phase the use of this attribute 
+          when conversion is concerned is not needed.  The immediate attribute 
+          is used more in validation instead of conversion.
+      </p>
+      
+      <a name="usingconverters">&nbsp;</a>
+      
+      <h2>How to User Standard JSF Converters</h2>
+      
+      <p>
+          There are three standard JSF converters.  The following is a list of 
+          the converters with their attributes:
+          <ul>
+              <li><code>&lt;f:converter/&gt;</code>: Adds an arbitrary converter to a component.</li>
+              <ul>
+                  <li>converterId: The id of the converter.</li>
+              </ul>
+              <li><code>&lt;f:convertDateTime&gt;</code>: Adds a date/time converter to a component.</li>
+              <ul>
+                  <li>type: date(default), time, or both.</li>
+                  <li>dateStyle: default, short, medium, long, or full.</li>
+                  <li>timeStyle: default, short, medium, long, or full.</li>
+                  <li>pattern: Formatting pattern as defined in <code>java.text.SimpleDateFormat.</code></li>
+                  <li>locale: Locale whose preferences are to be used for parsing and formatting.</li>
+                  <li>timeZone: Time zone to use for parsing and formatting.</li>
+              </ul>
+              <li><code>&lt;f:convertNumber&gt;</code>:Adds a number converter to a component.</li>
+              <ul>
+                  <li>type: number(default), currency, percent.</li>
+                  <li>pattern: Formatting pattern, defined by <code>java.text.DecimalFormat.</code></li>
+                  <li>maxFractionDigits: Max number of digits in the fraction part.</li>
+                  <li>minFractionDigits: Min number of digits in the fraction part.</li>
+                  <li>maxIntegerDigits: Max number of digits in the integer part.</li>
+                  <li>minIntegerDigits: min number of digits in the integer part.</li>
+                  <li>integerOnly: True if only the integer part is parsed.</li>
+                  <li>groupingUsed: True if grouping separators are used.</li>
+                  <li>locale: Locale whose preferences are to be used for parsing and formatting.</li>
+                  <li>currencyCode: ISO 4217 currency code to use when converting currency values.</li>
+                  <li>currencySymbol: Currency symbol to use when converting currency values.</li>
+              </ul>
+          </ul>
+      </p>
+      
+      <p>
+          For the standard converter tag, <code>&lt;f:converter/&gt;</code>, JSF 
+          has many standard data converters.  The following is a sample of the 
+          id's of the data converters available:
+          <ul>
+              <li><code>javax.faces.Double</code></li>
+              <li><code>javax.faces.Integer</code></li>
+              <li><code>javax.faces.Float</code></li>
+              <li><code>javax.faces.Boolean</code></li>
+          </ul>
+      </p>
+      
+      <p>
+          To use the converter with a component, the converter must be nesting 
+          inside the components tag.  The following JSF code shows how to add 
+          a standard converter for an inputText component:
+      </p>
+      
+      <pre>
+          ...
+          &lt;ice:inputText id="age" value="#{user.age}" partialSubmit="true&gt;
+                &lt;f:converter converterId="javax.faces.Integer"/&gt;
+          &lt;/ice:inputText&gt;
+          ...
+      </pre>
+      
+      <p>
+          This will now ensure that only integer values can be sent into the 
+          backing bean and not something else such as a character.  In the screen shot below,
+          you can see what happens when a non-integer value is entered.
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/converter-basic-error.png"
+                title="Standard JSF Converter Error"
+                alt="Standard JSF Converter Error"
+                width="783" height="565"/>
+      </div>
+      
+      <p>
+          When dealing with date data you must use the <code>&lt;f:convertDateTime/&gt;</code>
+          converter tag.  This will convert a string to a proper Date object.  
+          If the string entered in is not convertable then an error message will 
+          be displayed.  The following JSF code is an example on how to implement 
+          a date converter:
+      </p>
+      
+      <pre>
+          ...
+          &lt;ice:inputText id="birthdate" value="#{user.birthDate}"&gt;
+                &lt;f:convertDateTime dateStyle="short"/&gt;
+          &lt;/ice:inputText&gt;
+          ...
+      </pre>
+      
+      <p>
+          This will convert the entered in string to a short Date format.  The 
+          following table displays all the standard formats available and what 
+          they look like:
+      </p>
+      <dl>
+          <dt>
+              <dd>
+              <table border="1">
+                  <tr>
+                      <th>Style</th>
+                      <th>Format</th>
+                  </tr>
+                  <tr>
+                      <td>DEFAULT</td>
+                      <td>26-Apr-99</td>
+                  </tr>
+                  <tr>
+                      <td>SHORT</td>
+                      <td>4/26/99</td>
+                  </tr>
+                  <tr>
+                      <td>MEDIUM</td>
+                      <td>26-Apr-99</td>
+                  </tr>
+                  <tr>
+                      <td>LONG</td>
+                      <td>April 26, 1999</td>
+                  </tr>
+                  <tr>
+                      <td>FULL</td>
+                      <td>Monday, April 26, 1999</td>
+                  </tr>
+                  
+              </table>
+              </dd>
+          </dt>
+      </dl>
+      
+      <p>
+          In addition to converters for primatives, date, and time data types, 
+          JSF provides another converter for dealing with numbers such as 
+          percentages and currency.  This converter deals with grouping, number 
+          of decimal digits, currency symbols, ect.  The following JSF code 
+          shows how to add a number converter for dealing with currency:
+      </p>
+      
+      <pre>
+          ...
+          &lt;ice:inputText id="salary" value="#{user.salary}"&gt;
+                &lt;f:convertNumber maxFractionDigits="2"
+                                    groupingUsed="true"
+                                    currencySymbol="$"
+                                    maxIntegerDigits="7"
+                                    type="currency"/*&gt;
+          &lt;/ice:inputText&gt;
+          ...
+      </pre>
+      
+      <p>
+          This will allow only whole numbers entered with a dollar sign and up 
+          to seven digits can only be entered at a time.  Anything that breaches
+          these conditions will cause a Conversion Error to be thrown.
+      </p>
+      
+      <div class="demo-instruction">
+          <h3>Download the Demo Source:</h3>
+          <ul>
+              <li>
+                  Download the converter-basic source code
+                  <a href="converter-basic-tutorial.zip">here</a>.
+              </li>
+              <li>
+                  The demo application shows how to use converters to convert 
+                  data to a proper type.
+              </li>
+          </ul>
+          
+      </div>
+      
+      <a name="customeconverters">&nbsp;</a>
+      
+      <h2>How to Write a Custom Converters</h2>
+      
+      <p>
+          Custom converters are nessesary if you need to convert field data into 
+          an application-specific object.  There are five main steps in creating 
+          a custom converter.
+      </p>
+      <ol>
+          <li>Implement the Converter instance(<code>javax.faces.convert.Converter.</code></li>
+          <li>Implement the getAsObject method, which converts a field (String) to an object.</li>
+          <li>Implement the getAsString method, which converts an object to a String</li>
+          <li>Register your custom converter in the faces context (faces-config.xml).</li>
+          <li>Insert the converter into your JSP's with the <code>&lt;f:converter/&gt;</code> tag.</li>
+      </ol>
+      
+      <p>
+          The following is a step-by-step walkthrough on how to create a custom 
+          converter.
+      </p>
+      
+      <h3>Step 1: Implement the Converter interface</h3>
+      
+      <p>
+          Create a utility class that will handle all of the conversion duties.  
+          This class must implement the Converter interfaces as shown below:
+      </p>
+      
+      <pre>
+          import javax.faces.convert.Converter
+          
+          public class PhoneConverter implements Converter {
+                ...
+          }
+      </pre>
+      
+      <h3>Step 2: Implement the getAsObject Method</h3>
+      
+      <p>
+          Here the getAsObject method converts a string to a <code>PhoneNumber</code> object
+      </p>
+      
+      <pre>
+          public class PhoneConverter implements Converter {
+                
+                public Object getAsObject(FacesContext context, UIComponent component, String value){
+                        if(StringUtils.isEmpty(value)){
+                            return null;
+                        }
+                        
+                        PhoneNumber phone = new PhoneNumber();
+                        
+                        String [] phoneComps = StringUtils.split(value," ,()-");
+                        
+                        String countryCode = phoneComps[0];
+                        
+                        phone.setCountryCode(countryCode);
+                        
+                        if(countryCode.equals("1")){
+                            String areaCode = phoneComps[1];
+                            String prefix = phoneComps[2];
+                            String number = phoneComps[3];
+                            phone.setAreaCode(areaCode);
+                            phone.setPrefix(prefix);
+                            phone.setNumber(number);
+                        }
+                        else {
+                            phone.setNumber(value);
+                        }
+                        
+                        return phone;
+               }
+          }
+      </pre>
+      
+      <h3>Step 3: Implement the getAsString method</h3>
+      
+      <p>
+          Here the getAsString method converts a <code>PhoneNumber</code> object 
+          to a String.
+      </p>
+      
+      <pre>
+          public class PhoneConverter implements Converter {
+                ...
+                public String getAsString(FacesContext context, UIComponent component, Object value){
+                        return value.toString();
+                }
+          }
+      </pre>
+      
+      <p>
+          For the above code to work you must implement the objects 
+          (<code>PhoneNumber</code>) toString() method accordingly.  For example:
+      </p>
+      
+      <pre>
+          public class PhoneNumber {
+                ...
+                public String toString(){
+                    if(countryCode.equals("1")){
+                        return countryCode + "-" + areaCode + "-" + prefix + "-" + number;
+                    }
+                    else {
+                        return number;
+                    }
+                }
+           }
+      </pre>
+      
+      <h3>Step 4: Register Custome Converter with Faces Context</h3>
+      
+      <p>
+          This step can be executed in two ways.  Option one is to register the
+          <code>PhoneConverter</code> class with a user defined id 
+          (<code>icefaces.PhoneConverter</code>).  This id is used by 
+          <code>&lt;f:converter/&gt;</code> tags converterId attribute.  To 
+          implement this, insert the following code into your faces-config.xml 
+          file:
+      </p>
+      
+      <pre>
+          &lt;converter&gt;
+                &lt;converter-id&gt;icefaces.PhoneConverter&lt;/converter-id&gt;
+                &lt;converter-class&gt;
+                    com.icesoft.icefaces.tutorial.component.converter.custom.PhoneConverter
+                &lt;/converter-class&gt;
+          &lt;/converter&gt;
+      </pre>
+      
+      <p>
+          The other option is to register the <code>PhoneConverter</code> class 
+          to handle all <code>PhoneNumber</code> opbjects automaically.  To do 
+          this insert the following code into your faces-config.xml file:
+      </p>
+      
+      <pre>
+          &lt;converter&gt;
+                &lt;converter-for-class&gt;
+                    com.icesoft.icefaces.tutorial.component.converter.custom.PhoneNumber
+                &lt;/converter-for-class&gt;
+                &lt;converter-class&gt;
+                    com.icesoft.icefaces.tutorial.component.converter.custom.PhoneConverter
+                &lt;/converter-class&gt;
+          &lt;/converter&gt;
+      </pre>
+      
+      <h3>Step 5:Use the Converter Tag in your JSP</h3>
+      
+      <p>
+          The last step is using the converter.  This is very similar to using 
+          the standard JSF <code>&lt;f:converter&gt;</code> tag.  For the first 
+          option from step four:
+      </p>
+      
+      <pre>
+          &lt;ice:inputText id="phone" value="#{user.phone}"&gt;
+                &lt;f:converter converterId="icefaces.PhoneConverter"/&gt;
+          &lt;/ice:inputText&gt;
+      </pre>
+      
+      <p>
+          For the second option from step 4, there is no need to use the 
+          <code>&lt;f:converter/&gt;</code> tag since the 
+          <code>PhoneConverter</code> class handles all <code>PhoneNumber</code>
+          objects automatically.
+      </p>
+      
+      <div class="demo-instruction">
+          <h3>Download the Demo Source:</h3>
+          <ul>
+              <li>
+                  Download the  converter-custom  source code
+                  <a href="converter-custom-tutorial.zip">here</a>.
+              </li>
+              <li>
+                  The demo application shows how to use converters to convert
+                  data to a proper type.
+              </li>
+          </ul>
+      </div>
+      
+      <a name="messageandmessages">&nbsp;</a>
+      
+      <h2>Message and Messages Tags</h2>
+      
+      <p>
+          So far we have been using the <code>&lt;ice:messages/&gt;</code> tag 
+          to display all error messages at the bottom of the form.  Now take for 
+          example if you enter more than one field incorrectly.  There would 
+          only be one error message displayed and its not evident what input 
+          field the error occured in.  To fix this we can use the 
+          <code>&lt;ice:message/&gt;</code> tag.  By assigning this tag to a 
+          component with the <code>for</code> attribute, it will only display 
+          error messages for that component.  Further more if we tie it in beside 
+          that component then it will be evident to the user if they have made a 
+          mistake in that input field.  The following shows how to implement 
+          this to an <code>inputTExt</code> component:
+      </p>
+      
+      <pre>
+           &lt;ice:inputText id="age" value="#{user.age}"&gt;
+                &lt;f:converter converterId="javax.faces.Integer"/&gt;
+           &lt;/ice:inputText&gt;
+           &lt;ice:message style="color:red;" id="ageError" for="age"/&gt;
+      </pre>
+      
+      <p>
+          The screen shot below shows how it will look:
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/converter-custom-age-error.png"
+                title="Error Message Tag"
+                alt="Error Message Tag"
+                width="783" height="565"/>
+      </div>
+      
+      <h3>Custom Messages</h3>
+      
+      <p>
+          The default messages that are supplies by JSF can be quite verbose and 
+          could couse confusion for end users.  For conversion the default error
+          message is "Conversion error occured" this could create confusion as to 
+          what exactly happened.  To change the default message you can create 
+          your own message.properties file and switch out the message resource 
+          bundle in the faces context.  The following code shows how to add the 
+          properties file to the faces context:
+      </p>
+      
+      <pre>
+          &lt;application&gt;
+                &lt;locale-config&gt;
+                    &lt;default-locale&gt;en&lt;/default-locale&gt;
+                &lt;/locale-config&gt;
+                &lt;message-bundle&gt;
+                    com.icesoft.icefaces.tutorial.component.converter.basic.messages
+                &lt;/message-bundle&gt;
+          &lt;/application&gt;
+      </pre>
+          
+      <p>
+          The following is the entry in the <code>messages.properties</code> file 
+          that will overide the default converter error message:
+      </p>
+      
+      <pre>
+          ...
+          javax.faces.component.UIInput.CONVERSION=invalid input
+          ...
+      </pre>
+      
+      <p>
+          This will now display the message "invalid input" beside the field that 
+          is causing the error shown in the screen shot below.
+      </p>
+
+	<div class="screenshot">
+          <img src="./images/converter-custom-error-message.png"
+                title="Custom Error Message"
+                alt="Custom Error Message"
+                width="783" height="565"/>
+      </div>
+
+      
+      <a name="examplesthatuseconverters">&nbsp;</a>
+      
+      <h3>Examples that Use JSF Converters</h3>
+      
+      <table cellpadding="1" cellspacing="0" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">converter-basic</td>
+                  <td class="bodySource"><a href="converter-basic-tutorial.zip">
+                      converter-basic source code
+                  </a></td>
+                  <td class="bodyNotes">
+                      Simple example of how to use the standard JSF converters.
+                  </td>
+              </tr>
+              <tr>
+                  <td class="bodyExample">converter-custom</td>
+                  <td class="bodySource"><a href="converter-custom-tutorial.zip">
+                      converter-custom source code
+                  </a></td>
+                  <td class="bodyNotes">
+                      A custom converter is added to the converter-basic application.
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- footer section -->
+      <hr/>
+      
+      <p class="tutorialFooterText">
+          The ICEfaces Tutorial
+          <br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      
+      <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+        
+  </body>
+</html>

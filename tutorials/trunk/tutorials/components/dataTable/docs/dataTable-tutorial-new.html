@@ -1,0 +1,1008 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Data Table Component Tutorials</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Lesson:</b> Using the data table component
+</p>
+
+<!-- tutorial content section -->
+
+<h1>How to Use the ICEfaces Data Table Components</h1>
+
+<p>
+    The <span class="object-name">dataTable</span> component can display Objects
+    in a Collection or an Array where each Object represents one row in the
+    table and columns match instance variables in the Object. This mapping is
+    achieved through the JSF attribute iterator pattern of
+    <span class="object-attribute">value</span> and
+    <span class="object-attribute">var</span> and introspection. The
+    <span class="object-name">dataTable</span> can limit the number of rows it
+    displays and CSS styles can be applied to both rows and columns. The
+    following is a screen shot of a fully implemented <span class="object-name">dataTable</span>
+    within the Webmail application:
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-webmail_screenshot.png"
+         title="Data Table component in Webmail Application"
+         alt="Data Table component in Webmail Application" width="783"
+         height="565"/>
+</div>
+
+<p>
+    <span class="object-name">DataTable</span> functionality can be greatly
+    extended
+    when combined with the
+    <span class="object-name">commandSortHeader</span> and
+    <span class="object-name">dataPaginator</span> components. The
+    <span class="object-name">commandSortHeader</span> component allows column
+    based sorting by clicking on a column header. The
+    <span class="object-name">dataPaginator</span> component allows the
+    display of only a small portion of a large dataset. The
+    <span class="object-name">dataPaginator</span> also provides methods for
+    navigating through the dataset while maintaining the same view size.
+    The <span class="object-name">dataTable</span> renders an HTML table and the
+    underlying <span class="object-name">DataTable</span> model can define
+    table header, body and footers which map to theader, tbody and tfooter HTML
+    tags.
+</p>
+
+<p>This tutorial will discuss the following topics related to the use of the
+    <span class="object-name">dataTable</span> component:</p>
+<ul>
+    <li><a href="#creatingasimpletable">Creating a Simple Table</a></li>
+    <li><a href="#addingadatapaginator">Adding a Data Paginator</a></li>
+    <li><a href="#addingasortableheader">Adding a Sortable Header</a></li>
+    <li><a href="#addingascroll">Adding a Scroll</a></li>
+    <li><a href="#addingcolumns">Adding a Column Controll Component</a></li>
+    <li><a href="#addingrowselections">Adding Row Selections</a></li>
+    <li><a href="#customisingthedatatablecsssytle">Customising the Data Table
+        CSS style</a></li>
+    <li><a href="#examplesthatusedatatables">Examples that Use Data Tables</a>
+    </li>
+</ul>
+
+<a name="creatingasimpletable">&nbsp;</a>
+
+<h2>Creating a Simple Table</h2>
+
+<p>Creating a <span class="object-name">dataTable</span> is fairly straight
+    forward process, all that is needed
+    is a backing been containing a Collection or Array. Here is a picture of a
+    rendered <span class="object-name">dataTable</span> in the dataTable-basic
+    demo. </p>
+
+<div class="screenshot">
+    <img src="images/dataTable-basic_screenshot.png"
+         title="Basic dataTable Example"
+         alt="Basic dataTable Example" width="595" height="493"/>
+</div>
+<br/>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-basic demo for your self by click
+            <a href="/dataTable-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-basic source code <a
+                href="dataTable-basic-tutorial.zip">here</a>.</li>
+        <li>The dataTable shows all the inventory object stored in the
+            <span class="object-name">TableBean</span> object.</li>
+    </ul>
+</div>
+
+<p>The backing bean in this example contains an array of nineteen
+    <span class="object-name">InventoryItem</span> objects. Each
+    <span class="object-name">InventoryItem</span> object represents one row in
+    the rendered <span class="object-name">dataTable</span> component. Each
+    column in the rendered <span class="object-name">dataTable</span> component
+    represents an instance variable in the <span class="object-name">InventoryItem</span>
+    object. The following
+    code shows how the inventory array constructor in the Table bean class:</p>
+
+<pre>
+    // List of sample inventory data.
+    private InventoryItem[] carInventory = new InventoryItem[]{
+    new InventoryItem(58285, "Dodge Grand Caravan", " Sto&Go/Keyless", 43500,
+    21695),
+    ...
+    new InventoryItem(58275, "Dodge Dakota Q.C. SLT", "4x4/Loaded/Alloys",
+    22500, 27995),
+    new InventoryItem(58265, "Chrysler 300 Touring", "Heated Leather", 40500,
+    26495)
+    };
+</pre>
+
+<p>
+    The <span class="object-name">dataTable</span> components <span
+        class="object-attribute">value</span>
+    attribute is assigned to the <span class="object-name">carInventorty</span>
+    Object.
+    This is important as the assigned <span
+        class="object-name">carInventory</span> Array will
+    iterated by the variable defined by the <span
+        class="object-attribute">var</span>
+    attribute in the <span class="object-name">dataTable</span> component. The
+    following JSF code shows how the inventory list is assigned to the
+    <span class="object-name">dataTable</span>:
+</p>
+
+<pre>
+    &lt;ice:dataTable
+    value="#{inventoryList.carInventory}"
+    var="item" &gt;
+    ...
+    &lt;/ice:dataTable&gt;
+</pre>
+
+<p>
+    Columns in a <span class="object-name">dataTable</span> are defined by the
+    <span class="object-name">column</span> component. Each
+    <span class="object-name">column</span> can be bound to a instance variable
+    defined by the <span class="object-attribute">var</span> attribute in the
+    <span class="object-name">dataTable</span> declaration. The following JSF
+    code shows how the first column of the table will be defined:
+</p>
+
+<pre>
+    ...
+    &lt;!-- Stock number -->
+    &lt;h:column>
+        &lt;f:facet name="header">
+            &lt;ice:outputText value="Stock #"/>
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{item.stock}"/>
+    &lt;/h:column>
+    ...
+</pre>
+
+<p>The column declaration in the above code block has an optional facet
+    declaration.
+    This facet can be named either ?footer? or ?header? and renders the child
+    components in either a theader or tfooter in the rendered HTML table.
+    Any column subcomponents that are not in the named facet will be rendered as
+    row data for the particular column being rendered. In this example we
+    saw how the <span class="object-name">dataTable</span> component can be used
+    to quickly display data collections. In the next section a
+    <span class="object-name">dataPaginator</span> component will be added to
+    the
+    <span class="object-name">dataTable</span>. </p>
+
+
+<a name="addingadatapaginator">&nbsp;</a>
+
+<h2>Adding a Data Paginator</h2>
+
+<p>
+    The <span class="object-name">dataTable</span> component is good at
+    displaying large set of data but there are many user interface (UI)
+    scenarios
+    where only a limited subset of the data can or should be shown. The
+    <span class="object-name">dataPaginator</span> component work in conjunction
+    with the <span class="object-name">dataTable</span> component allows for the
+    manipulation and view of the <span class="object-name">dataTable</span> data
+    model.
+    The following screen shot shows two <span
+        class="object-name">dataPaginator</span> components;
+    the first provides paging navigation control and the other show the current
+    state of the
+    <span class="object-name">dataTable</span> model.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-paginator_screenshot.png"
+         title="Paginator dataTable Example"
+         alt="Paginator dataTable Example" width="595" height="454"/>
+</div>
+
+<p>The first step in adding a <span class="object-name">dataPaginator</span>
+    control
+    component for a <span class="object-name">dataTable</span> is to ensure that
+    the <span class="object-name">dataTable</span> has a unique
+    <span class="object-attribute">id</span> attributes assigned to it and that
+    the number of rows in a page view is set via the
+    <span class="object-name">rows</span> attribute. The
+    <span class="object-name">dataPaginator</span> components <span
+        class="object-attribute">for</span>
+    attribute is then set to the <span class="object-name">dataTable</span> id
+    value,
+    this binds the <span class="object-name">dataPaginator</span> to the
+    <span class="object-name">dataTables</span> model. The next step in adding
+    a <span class="object-name">dataPaginator</span> is to set the attribute
+    <span class="object-attribute">paginator</span> to true, this insures that
+    the control links around defined facet controls will be rendered.
+    The following JSF code snippet is of a <span class="object-name">dataPaginator</span>
+    control where the fastforward and fastrewind facets will move ahead three
+    pages and the maxim number of pages controls that are shown at the same time
+    is set to four:
+
+<pre>
+    &lt;ice:dataPaginator id="dataScroll_3"
+        for="inventoryList"
+        paginator="true"
+        fastStep="3"
+        paginatorMaxPages="4">
+            ...
+            &lt;ice:dataTable
+                rows="5"
+                id="inventoryList"
+                value="#{inventoryList.carInventory}"
+                var="item">
+    		...
+</pre>
+
+<p>
+    The next step in adding a <span class="object-name">dataPaginator</span>
+    is to is to define the facets which will add control links to their
+    child components. There are are six facets which can be optionally
+    implemented; first, last, previous, next, fastforward and fastrewind.
+    The following is the JSF code needed add a ?first? facet which will
+    allow users to click on an image graphic to move to the first page
+    of the dataTable model:</p>
+
+<pre>
+    &lt;f:facet name="first">
+        &lt;ice:graphicImage
+            url="./xmlhttp/css/xp/css-images/arrow-first.gif"
+            style="border:none;"
+            title="First Page"/>
+    &lt;/f:facet>
+</pre>
+
+<p>
+    The <span class="object-name">dataPaginator</span> can also be used for
+    displaying information about the <span class="object-name">dataTables</span>
+    model by setting the <span class="object-attribute">paginator</span>
+    attribute
+    to false (default value). There are several attributes on the <span
+        class="object-name">dataPaginator</span>
+    component which allow a developer to bind user defined variables names to
+    the
+    <span class="object-name">dataTable</span> model. The data biddable
+    attributes
+    are as follows:
+</p>
+<ul>
+    <li><span class="object-attribute">rowsCountVar</span> - number of rows in
+        the dataTable view model.</li>
+    <li><span class="object-attribute">displayedRowsCountVar</span> ? number of
+        rows in shown in this dataTable view model.</li>
+    <li><span class="object-attribute">firstRowIndexVar</span> ? index of first
+        row displayed in this dataTable view model.</li>
+    <li><span class="object-attribute">lastRowIndexVar</span> ? index of the
+        last row displayed in this dataTable view model.</li>
+    <li><span class="object-attribute">pageCountVar</span> ? number of pages
+        that make up dataTable view model.</li>
+    <li><span class="object-attribute">pageIndexVar</span> ? current page number
+        in the dataTable view model.</li>
+</ul>
+
+<p>
+    The following code shows how bound user defined variables can be used to
+    display the
+    <span class="object-name">dataTables</span> model state:
+</p>
+
+<pre>
+    &lt;ice:dataPaginator id="dataScroll_2" for="inventoryList"
+            rowsCountVar="rowsCount"
+            displayedRowsCountVar="displayedRowsCount"
+            firstRowIndexVar="firstRowIndex"
+            lastRowIndexVar="lastRowIndex"
+            pageCountVar="pageCount"
+            pageIndexVar="pageIndex">
+        &lt;ice:outputFormat
+                styleClass="standard"
+                value="{0} cars found, displaying {1} car(s), from {2} to {3}. Page {4} / {5}.">
+            &lt;f:param value="#{rowsCount}"/>
+            &lt;f:param value="#{displayedRowsCount}"/>
+            &lt;f:param value="#{firstRowIndex}"/>
+            &lt;f:param value="#{lastRowIndex}"/>
+            &lt;f:param value="#{pageIndex}"/>
+            &lt;f:param value="#{pageCount}"/>
+        &lt;/ice:outputFormat>
+    &lt;/ice:dataPaginator>
+</pre>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-paginator demo for your self by click
+            <a href="/dataTable-paginator-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-paginator source code <a
+                href="dataTable-paginator-tutorial.zip">here</a>.
+        </li>
+        <li>The top <span class="object-name">dataPaginator</span> provides
+            controls
+            for stepping through the <span class="object-name">dataTable</span>
+            data.</li>
+        <li>The bottom <span class="object-name">dataPaginator</span> provides
+            no UI controls but instead displays
+            information about the current state of the <span
+                class="object-name">dataTable</span> model.</li>
+    </ul>
+</div>
+
+<a name="addingasortableheader">&nbsp;</a>
+
+<h2>Adding a Sortable Header</h2>
+
+<p>
+    This tutorial has already show how easy it is to use the
+    <span class="object-name">dataTable</span> with the
+    <span class="object-name">dataPaginator</span> component. It is also
+    possible to add sorting support to the
+    <span class="object-name">dataTable</span> via the
+    <span class="object-name">commandSortHeader</span>. The
+    <span class="object-name">commandSortHeader</span> component adds a
+    <span class="object-name">commandLink</span> to the
+    <span class="object-name">dataTable</span> header which
+    when clicked will toggle the ordering of the parent column data.
+    The <span class="object-name">commandSortHeader</span> can be added to all
+    or just of few <span class="object-name">dataTable</span> headers. The
+    following screen shot shows the <span
+        class="object-name">commSortHeader</span>
+    being used in the dataTable-sortable example to sort the inventory by stock
+    number.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-sortable_screenshot.png"
+         title="Sortable dataTable Example"
+         alt="Sortable dataTable Example" width="611" height="476"/>
+</div>
+
+<p>
+    In this section we will add a <span
+        class="object-name">commandSortHeader</span>
+    component to each inventory column shown in the previous examples. The first
+    step in this process is to modify the <span
+        class="object-name">TableBean</span>
+    backing bean by extending the
+        SortableList.java.
+    The <span class="object-name">SortableList</span> class is provided for
+    convenience but its functionally could just as easily be added to the base
+    class.
+</p>
+
+<p>
+    The first step in adding a <span
+        class="object-name">commandSortHeader</span>
+    is to add the attributes <span class="object-attribute">sortColumn</span>
+    and
+    <span class="object-attribute">sortAscending</span> to the
+    <span class="object-name">dataTable</span> component. These two attributes
+    provide bindings which are manipulated when a
+    <span class="object-name">commandSortHeader</span> is activated. The
+    <span class="object-attribute">sortColumn</span> attribute is updated to the
+    column name of the selected
+    <span class="object-name">commandSortHeader</span> and the
+    <span class="object-attribute">sortAscending</span> attributes boolean value
+    is toggled if the same <span class="object-name">commandSortHeader</span> is
+    activated. The following JSF code snip snows the modified
+    <span class="object-name">dataTable</span> decoration:
+</p>
+
+<pre>
+    &lt;ice:dataTable
+        id="dataSortData"
+        sortColumn="#{inventoryList.sortColumnName}"
+        sortAscending="#{inventoryList.ascending}"
+        value="#{inventoryList.carInventory}"
+        var="item">
+</pre>
+
+<p>The next step in updating the <span class="object-name">dataTable</span> for
+    the
+    <span class="object-name">commandSortHeader</span> component
+    is to add the component to the a column header facet. The following code
+    shows the addition of a
+    <span class="object-name">commandSortHeader</span> component to the first
+    column.
+</p>
+
+<pre>
+    &lt;!-- Stock number -->
+    &lt;ice:column>
+        &lt;f:facet name="header">
+            &lt;ice:commandSortHeader
+                    columnName="#{inventoryList.stockColumnName}"
+                    arrow="true" >
+                &lt;ice:outputText value="#{inventoryList.stockColumnName}"/>
+            &lt;/ice:commandSortHeader>
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{item.stock}"/>
+    &lt;/ice:column>
+</pre>
+
+<p>The <span class="object-name">commandSotHeader</span> in this example wraps
+    the output text for the header
+    and adds an arrow which will indicated the ordering applied to the table
+    date.
+    To help avoid typing errors the column Name is bound to the backing bean,
+    the column name is used to specify which column should be sorted.
+</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-sortable demo for your self by click
+            <a href="/dataTable-sortable-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-sortable source code <a
+                href="dataTable-sortable-tutorial.zip">here</a>.
+        </li>
+        <li>Click on a column headers to sort the dataTable data.</li>
+        <li>Click the same column again to reverse the sort ordering.</li>
+    </ul>
+</div>
+
+<p>
+    Now that all the JSF code is in place there is still a little work to be
+    done
+    to the backing bean to get the data sorted. As mentioned earlier the
+    <span class="object-name">commandSortHeader</span> component only
+    manipulates
+    the <span class="object-name">dataTable</span> components
+    <span class="object-attribute">sortColumn</span> and <span
+        class="object-attribute">sortAscending</span>
+    attributes and as a result it is up to the tables backing bean to use this
+    information to provide a sorted data. The following sort method show how we
+    sort the <span class="object-name">dataTable</span> data, remember that
+    <span class="object-attribute">sortCoumn</span> is bound the
+    <span class="object-name">sortColumnName</span> Bean value and the
+    <span class="object-attribute">sortAscending</span> is bound to the
+    <span class="object-name">ascending</span> Bean in the
+    <span class="object-name">TableBean</span> class.
+</p>
+
+<pre>
+    protected void sort() {
+        Comparator comparator = new Comparator() {
+            public int compare(Object o1, Object o2) {
+                InventoryItem c1 = (InventoryItem) o1;
+                InventoryItem c2 = (InventoryItem) o2;
+                if (sortColumnName == null) {
+                    return 0;
+                }
+                if (sortColumnName.equals(stockColumnName)) {
+                    return ascending ?
+                    Integer.valueOf(c1.getStock()).compareTo(Integer.valueOf(c2.getStock())) :
+                    Integer.valueOf(c2.getStock()).compareTo(Integer.valueOf(c1.getStock()));
+                } else if (sortColumnName.equals(modelColumnName)) {
+                    return ascending ? c1.getModel().compareTo(c2.getModel()) :
+                    c2.getModel().compareTo(c1.getModel());
+                } else if (sortColumnName.equals(descriptionColumnName)) {
+                    return ascending ? c1.getDescription().compareTo(c2.getDescription()) :
+                    c2.getDescription().compareTo(c1.getDescription());
+                } else if (sortColumnName.equals(odometerColumnName)) {
+                    return ascending ?
+                    Integer.valueOf(c1.getOdometer()).compareTo(Integer.valueOf(c2.getOdometer()))
+                    :
+                    Integer.valueOf(c2.getOdometer()).compareTo(Integer.valueOf(c1.getOdometer()));
+                } else if (sortColumnName.equals(priceColumnName)) {
+                    return ascending ?
+                    Integer.valueOf(c1.getPrice()).compareTo(Integer.valueOf(c2.getPrice())) :
+                    Integer.valueOf(c2.getPrice()).compareTo(Integer.valueOf(c1.getPrice()));
+                }  else return 0;
+            }
+        };
+        Arrays.sort(carInventory, comparator);
+    }
+</pre>
+
+<p>
+    When a <span class="object-name">commandSortHeader</span> is selected form
+    the JSF lifecycle is called and the <span
+        class="object-name">dataTable</span>
+    values will be retrieved from the backing bean. It is during this
+    <span class="object-name">dataTable</span> retrieval that the data should be
+    sorted but only if the sortColumnName and sortAscending values have changd.
+    The following code snippet shows the getCarInventory() method has been
+    modified
+    to only sort the array data when required:
+</p>
+
+<pre>
+    public InventoryItem[] getCarInventory() {
+        // we only want to sortColumnName if the column or ordering has changed.
+        if (!oldSort.equals(sortColumnName) ||
+            oldAscending != ascending){
+            sort();
+            oldSort = sortColumnName;
+            oldAscending = ascending;
+        }
+        return carInventory;
+    }
+</pre>
+
+<p>
+    In this tutorial we have show how to add sortable data columns to a
+    <span class="object-name">dataTable</span> and when combined with the
+    <span class="object-name">comandSortHeader</span> the
+    <span class="object-name">dataTable</span> becomes a very flexible and
+    powerful component. The next and last section of this tutorial will take a
+    look at how to customized the <span class="object-name">dataTable</span>
+    with CSS.
+</p>
+
+<!-- Adding a scrollable feature -->
+<a name="addingascroll">&nbsp;</a>
+
+<h2>Adding a Scroll</h2>
+
+<p>Except using <span class="object-name">dataPaginator</span> to display a limited subset of the data, Icesoft provides another option, adding a scrollable component to the <span class="object-name">dataTable</span>. In this section, we illustrate the steps to a scrollable <span class="object-name">dataTable</span>. The following screen shot shows two <span class="object-name">dataScrollable</span> components; the second component take control of the scrollable feature, allowing you to adjust the height of the <span class="object-name">dataTable</span> and to enable/disable the scrollable feature.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-scrollable-screenshot.jpg"
+         title="Scrollable dataTable Example"
+         alt=" Scrollable dataTable Example" width="867" height="519"/>
+</div>
+
+<p>Now we go to the first step, to enable the icefaces scrollable feature on your JSF page.
+</p>
+
+<pre>
+                &lt;ice:dataTable
+                    value="#{inventoryList.carInventory}"
+                    var="item"
+                    ...
+                    scrollable="#{inventoryList.scrollable}"
+                    scrollHeight="#{inventoryList.scrollableHeight}"
+                ...&gt
+</pre>
+
+<p>In defining your <span class="object-name">dataTable</span> tag, the "scrollable" attribute tells the browser to enable or disable the scrollable feature for this <span class="object-name">dataTable</span>. By default, it is false. The "scrollHeight" defines the height of the <span class="object-name">dataTable</span> to be displayed.
+</p>
+
+<p>The next step is to set up the control panel, giving you full control of the scrollable feature. The panel group component is positioned behind the <span class="object-name">dataTable</span> in this tutorial. Two essential elements are designed in this component, inputText field and Checkbox. With partalSubmit attribute enabled, the change on each element affect the display of the <span class="object-name">dataTable</span> directly. </p>
+<pre>
+                &lt;ice:panelGroup&gt;
+                    &lt;ice:outputText
+                        value="scrollable height: "/&gt;
+                    &lt;ice:inputText
+                        size="10"
+                        value="#{inventoryList.scrollableHeight}" /&gt;
+
+                    &lt;ice:selectBooleanCheckbox value="#{inventoryList.scrollable}"
+                                               partialSubmit="true"/&gt;
+                    &lt;ice:outputText
+                        value="scrollable"/&gt;
+                &lt;/ice:panelGroup&gt;
+</pre>
+
+<p>The height of the <span class="object-name">dataTable</span> will reflect to the input value in the text field. Marking the checkbox, we could enable the scrollable feature and vice versa.</p>
+<ul>
+</ul>
+
+<p> In order to make the application working, we need one more step, to bind your page to backing bean class. In our example, we defined two variables the backing bean, "TableBean", for the binding.</p>
+
+<pre>
+    // scrollable height property
+    private String scrollableHeight = "100px";
+    // enable scrollable property
+    private boolean scrollable = true;
+</pre>
+<p>Note that the names of the two variables have to be the same as the ones you define in your JSP page. In this case, they are scrollableHeight and scrollable. Before we complete this section, we also need to define the getter and setter respectively.</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-scrollable demo for your self by click
+            <a href="/dataTable-scrollable-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-scrollable source code <a
+                href="dataTable-scrollable-tutorial.zip">here</a>.
+        </li>
+        <li>Click the "scrollable" checkbox to disable/enable the scrollable feature.</li>
+        <li>Fill in an integer value in the text field to adjust the height of the <span class="object-name">dataTable</span>. (note that the change is in px.)</li>
+    </ul>
+</div>
+
+<!-- End of adding a scrollable feature -->
+
+<!-- Adding/Reducing columns -->
+<a name="addingcolumns">&nbsp;</a>
+
+<h2>Adding a Column Controll Component</h2>
+
+<p>In addition to the display features above, another easy-to-use feature, changing columns of the displayed table, is available to pick up. The benefit of this feature is to give users the opportunity to focus on particular information of the <span class="object-name">dataTable</span>. In this tutorial, the <span class="object-name">dataColumn</span> component also comprises two component, the pure <span class="object-name">dataTable</span> and the control panel.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-column-screenshot.jpg "
+         title="Column Controlled dataTable Example"
+         alt=" Column Controlled dataTable Example" width="706" height="855"/>
+</div>
+
+<p>There is no need to add any extra attribute to the <span class="object-name">dataTable</span>, since it does nothing but displays the data content. The operations are handled by the column control panel and the backing bean. We investigate the process in two aspects. The first aspect is the control panel.
+</p>
+
+<pre>
+                    &lt;ice:panelGroup id="columnsInputGroup"&gt;
+                        &lt;ice:outputLabel id="columnsOutputLabel"
+                                         for="columnsInput"
+                                         value="Columns: "/&gt;
+                        &lt;ice:inputText id="columnsInput" maxlength="3"
+                                       size="5"
+                                       valueChangeListener="#{columnsBean.updateTableColumns}"
+                                       value="#{columnsBean.columns}"
+                                       partialSubmit="true"&gt;
+                            &lt;f:validateLongRange minimum="1" maximum="255"/&gt;
+                        &lt;/ice:inputText&gt;
+                        &lt;ice:message id="columnsInputMessage"
+                                     for="columnsInput"/&gt;
+                    &lt;/ice:panelGroup&gt;
+</pre>
+
+<p>In this component, The inputText field binds to the "columns" variable in the backing bean. The "valueChangeListener" attribute transmits the changed "column" value to the backing bean. With partalSubmit attribute enabled, the number of columns in the <span class="object-name">dataTable</span> immediately reflects to the change.
+</p>
+<p>While the value in the inputText field is modified, the "updateTableColumns" binded to "valueChangeListener" is fired up. It reset the value of the "column" variable to the new value. The <span class="object-name">dataTable</span> reflects to the changes by updating the displayed columns. The following code shows how the "updateTableColumns" method works in the backing bean.
+</p>
+
+<pre>
+    public void updateTableColumns(ValueChangeEvent event) {
+       if (event != null && event.getNewValue() != null &&
+            event.getNewValue() instanceof Integer) {
+            // get the new column count
+            columns = ((Integer) event.getNewValue()).intValue();
+        }
+		...
+    }
+</pre>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-column-control demo for your self by click
+            <a href="/dataTable-column-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-column-control source code <a
+                href="dataTable-column-tutorial.zip">here</a>.
+        </li>
+        <li>Enter an integer value in the text field to change the number of columns.</li>
+    </ul>
+</div>
+
+<!-- End of adding/reducing columns -->
+
+<!-- Adding Row selections -->
+<a name="addingrowselections">&nbsp;</a>
+
+<h2>Adding a Row Selection Component</h2>
+
+<p>The Row Selection Component consists of three parts, the main <span class="object-name">dataTable</span>, the control panel, and the <span class="object-name">dataTable</span> for selected items. The following instructions illustrate the process of adding this feature to your <span class="object-name">dataTable</span>.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-selection-screenshot.jpg"
+         title="Row Selection dataTable Example"
+         alt="Row Selection dataTable Example" width="946" height="959"/>
+</div>
+
+<p>First, we illustrate the important points in each component in the JSF page. You may benefit these points in designing your own JSF page using ICEFaces technology. The <span class="object-name">dataTable</span> component contains constant data, which will never be changed in this tutorial. </p>
+
+<pre>
+                        &lt;!-- Stock number --&gt;
+                        &lt;ice:column&gt;
+                            &lt;ice:rowSelector value="#{item.selected}"
+                            	multiple="#{inventoryList.multipleSelection}"
+                            	selectionListener="#{inventoryList.rowSelection}"/&gt;
+                            &lt;f:facet name="header"&gt;
+                                &lt;ice:outputText value="Stock #"/&gt;
+                            &lt;/f:facet&gt;
+                            &lt;ice:outputText value="#{item.stock}"/&gt;
+                        &lt;/ice:column&gt;
+</pre>
+
+<p>The "rowSelectior" tag is key to invoke the selection feature. This tag only needs to be declared once in the first column of the table. Since it is designed to be transparent to external users, the users could not see the tag from visual view and client-side source code. The attributes in the code are listed for details.</p>
+<ul>
+<li>value - a boolean attribute to switch row selection on/off</li>
+<li>multiple - a boolean attribute to enable/disable mulit-selection</li>
+<li>selectionListener - on each selection event, this invokes the binding operations in the backing bean, marking which row is selected and which row is deselected..</li>
+</ul>
+
+<p>The selected <span class="object-name">dataTable</span> component displays the selected items. It reads data from an object, "selectedRows", in this case. This object updates its list of items according to the changes on the JSF page. The code below shows the binding in the JSF page to the backing bean.
+</p>
+<pre>
+				&lt;ice:panelGroup&gt;
+					...
+					&lt;ice:dataTable var="selecteditem"
+					   ...
+					   value="#{inventoryList.selectedRows}"&gt;
+					   ...
+					&lt;/ice:dataTable&gt;
+
+				&lt;/ice:panelGroup&gt;
+</pre>
+
+<p>The control panel component gives you full control to enable/disable multi-selection feature and clear the selected <span class="object-name">dataTable</span>. With partialSubmit enabled, the backing bean could be immediately fired up after your change on the JSF page.
+</p>
+<pre>
+                &lt;ice:panelGroup&gt;
+                    &lt;ice:selectBooleanCheckbox value="#{inventoryList.multipleSelection}"
+                                               partialSubmit="true"
+                                               id="check1"
+valueChangeListener="#{inventoryList.selectionChanged}"/&gt;
+                    &lt;ice:message for="check1" showDetail="true"/&gt;
+                    &lt;ice:outputText value="multiple selection"/&gt;
+                    &lt;br/&gt;
+                    &lt;ice:commandButton value="clear" actionListener="#{inventoryList.clearSelections}"/&gt;
+                &lt;/ice:panelGroup&gt;
+</pre>
+
+<p>In the backing bean, "TableBean", the bindings are done by creating two variables, "multipleSelection" and "selectedRows", where "multipleSelection" switches multi-selection feature on and off and "selectedRows" is considered an object, containing selected items.
+</p>
+
+<pre>
+	...
+    private boolean multipleSelection = true;
+    private List selectedRows = new ArrayList();
+	...
+    public void rowSelection(RowSelectorEvent event) {
+        selectedRows.clear();
+        for (int i=carInventory.length-1; i >=0; i--){
+            if (carInventory[i].getSelected().booleanValue()) {
+                selectedRows.add(carInventory[i]);
+            }
+        }
+    }
+	...
+    public void selectionChanged(ValueChangeEvent event) {
+        selectedRows.clear();
+        for(int i=carInventory.length-1; i>=0; i--){
+            carInventory[i].setSelected(Boolean.FALSE);
+        }
+    }
+    public void clearSelections(ActionEvent event) {
+        selectedRows.clear();
+        for(int i=carInventory.length-1; i>=0; i--){
+            carInventory[i].setSelected(Boolean.FALSE);
+        }
+    }
+</pre>
+<p>The rowSelection method listens to the selection event on the main <span class="object-name">dataTable</span>. Any selection fires up the rowSelection method to modify the "selectedRows" object. The changes on the "selectedRows" object are immediately updated on the JSF page. In addition to the rowSelection method, the "selectionChanged" method and the "clearSelections" method manage the options in the control panel. Each time, the switch between multi-selection and single-selection invokes the "selectionChanged" method, which cleans up the selectedRows object and initializes all items’ selected properties whereas the "clearSelections" method does the same but passing through the different event object. </p>
+<p>There is one more thing we want to mention. That is the "selected" property in InventoryItem, the class creating an object for each item. The "selected" property is a flag to help the backing bean to recognize selected items.
+</p>
+
+<pre>
+    public class InventoryItem {
+		...
+        // flag for selection
+        private Boolean selected = Boolean.FALSE;
+</pre>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-selection demo for your self by click
+            <a href="/dataTable-selection-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-selection source code <a
+                href="dataTable-selection-tutorial.zip">here</a>.
+        </li>
+        <li>Click on the rows to select items. The selected items will be highlighted.</li>
+        <li>Click on the highlighted row to deselect.</li>
+        <li>Check off the "multiple selection" checkbox to disable multi-selection feature. Check on to enable it.</li>
+        <li>Click "clear" button to clear the selected dataTable.</li>
+    </ul>
+</div>
+
+<!-- End of adding row selections -->
+
+<a name="customisingthedatatablecsssytle">&nbsp;</a>
+
+<h2>Customising the Data Table CSS style</h2>
+
+<p>
+    The <span class="object-name">dataTable</span> like most JSF components can
+    be
+    styled using CSS. If now style classes are specified, the component will
+    use a set of default names that are defined in the XP or Royale CSS sheets.
+    The default style sheet implementation provides header background images and
+    basic border colours. In this part of the tutorial will will focus on two
+    style attributes, <span class="object-attribute">columnClasses</span> and
+    <span class="object-attribute">rowClasses</span>.
+</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dataTable-style demo for your self by click
+            <a href="/dataTable-style-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-style source code <a
+                href="dataTable-style-tutorial.zip">here</a>.</li>
+        <li>The <span class="object-name">dataTable</span> rows alternate over
+            two predefined CSS style classes.</li>
+        <li>The <span class="object-name">dataTable</span> columns are specified
+            by five predefine CSS style classes. </li>
+    </ul>
+</div>
+
+<p>
+    The <span class="object-attribute">columnClasses</span> attribute can take
+    one or more CSS class names separated
+    by commas. These classes are then iterated over the total number of columns
+    in the table. For example, if there are six columns in a table and two CSS
+    style class defined in the <span
+        class="object-attribute">columnClasses</span> attribute then the first
+    column
+    will be given the first defined column style, the second column will be
+    given the second defined column, the third column will be given first
+    defined style and so on an so forth. The iterative style assignment can be
+    quite useful for applying column specific styles to either highlight even
+    and odd columns are to give a particular column specialized styling such as
+    text-alignment. The following code snippet shows how we will define the
+    <span class="object-attribute">columnClasses</span> attribute for this
+    example.
+</p>
+
+<pre>
+    columnClasses="stockColumn, modelColumn, desriptionColumn, odometerColumn,
+    priceColumn"
+</pre>
+
+<p>We will be specifying a custom style for each of the five columns. The
+    following
+    code is the CSS that defines the five column styles. </p>
+
+<pre>
+    /* common to all columns*/
+    .stockColumn, .modelColumn, .desriptionColumn, .odometerColumn,
+    .priceColumn{
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+    }
+
+    .stockColumn{
+    width: 60px;
+    }
+
+    .modelColumn{
+    width: 225px;
+    }
+
+    .desriptionColumn{
+    width: 150px;
+    }
+
+    .odometerColumn{
+    width: 75px;
+    }
+
+    .priceColumn{
+    width: 75px;
+    }
+</pre>
+
+<p>
+    The <span class="object-attribute">rowClasses</span> attribute is used the
+    same
+    way as the<span class="object-attribute">columnClasses</span> attribute by
+    the
+    <span class="object-name">dataTable</span> render. Instead of specifying a
+    style class for each row we will specify two style classes which will be
+    applied to every odd then even row of the <span class="object-name">dataTable</span>.
+    The following screen shot shows what the <span class="object-name">dataTable</span> looks like with both
+    <span class="object-attribute">columnClasses</span> and <span
+        class="object-attribute">rowClasses</span> decorations.
+</p>
+
+<div class="screenshot">
+    <img src="images/dataTable-style_screenshot.png"
+         alt="Styled dataTable Example" title="Styled dataTable Example" width="635" height="475"/>
+</div>
+
+<p>
+    The <span class="object-name">dataTable</span>  renders a HTML table as the main construct for the rendered
+    <span class="object-name">dataTable</span> component.  The
+    <span class="object-attribute">styleClass</span> attribute value will be rendered as a class
+    attribute for the rendered table.  If you wish to change the default header
+    styles you must override predefined CSS names.  These names are as follows:
+</p>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable" width="100%" >
+    <thead>
+        <tr>
+            <td class="headerTitle">CSS Class Name</td>
+            <td class="headerTitle">Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">iceTblHeader</td>
+            <td class="bodyExample">Default CSS class name applied to all table header cells.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">iceTblHeader a</td>
+            <td class="bodyExample">Default CSS style applied anchor tags in a table header cell.</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<a name="examplesthatusedatatables">&nbsp;</a>
+
+<h2>Examples that Use DataTables</h2>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable" width="100%" >
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Contains three basic dataTable examples.  Also
+            contains an example of a colapsible table that uses a dataTable</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">DataTable is used to display email messages contained
+            in a folder.  Also used to dispaly task and contact data.  </td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dataTable-basic</td>
+            <td class="bodySource"><a
+                    href="dataTable-basic-tutorial.zip">dataTable-basic
+                source code</a></td>
+            <td class="bodyNotes">Simple example of how to dispaly data uses a
+            dataTable component.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dataTable-paginator</td>
+            <td class="bodySource"><a
+                    href="dataTable-paginator-tutorial.zip">dataTable-paginator
+                source code</a></td>
+            <td class="bodyNotes"> A dataPaginator is added to the dataTable used
+            in dataTable-basic<./td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dataTable-sortable</td>
+            <td class="bodySource"><a
+                    href="dataTable-sortable-tutorial.zip">dataTable-sortable
+                source code</a></td>
+            <td class="bodyNotes">CommandSortHeaders are added to each column in
+                a data table.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dataTable-style</td>
+            <td class="bodySource"><a
+                    href="dataTable-style-tutorial.zip">dataTable-style
+                source code</a></td>
+            <td class="bodyNotes">The row and column classes are altered with CSS.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

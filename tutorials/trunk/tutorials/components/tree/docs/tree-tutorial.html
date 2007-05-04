@@ -1,0 +1,539 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Tree Component tutorials</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Lesson:</b> Using the tree component
+</p>
+
+<!-- tutorial content section -->
+
+<h1>How to Use the ICEfaces Tree Component</h1>
+
+<p>
+    The <span class="object-name">tree</span> component can be used to display
+    hierarchical data.
+    The <span class="object-name">tree</span> component renders its view using a
+    <span class="object-name">javax.swing.tree.DefaultTreeModel</span>
+    Object as a model. Client side Swing developers who are familiar with
+    the <span class="object-name">DefaultTreeModel</span> and the
+    <span class="object-name">DefaultMutableTreeNode</span> class will find
+    an easy migration path to the ice:tree component. The following
+    screen shot is of the ice:tree component using the CSS XP theme.
+</p>
+
+<div class="screenshot">
+    <img src="images/tree-webmail_screenshot.png"
+         alt="Tree component in Webmail Application" width="569" height="440"/>
+</div>
+
+<p>
+    The <span class="object-name">tree</span> displays its data vertically where
+    every node of the tree is represented by a <span class="object-name">DefaultMutableTreeNode</span>.
+    A node can either be a leaf or branch depending if it has zero or more child
+    nodes.
+    A user can click on the branch expand/contract icon to toggle the visibility
+    of child nodes. The root tree node visibility can be togged by setting the
+    the <span class="object-name">tree</span> <span class="object-attribute">hideRootNode</span>
+    attribute to false.
+    Each <span class="object-name">DefaultMutableTreeNode</span>
+    wraps an <span class="object-name">IceUserObject</span> which contains
+    instance variables for common tree
+    node node properties such as icon paths, tool tips, display text and
+    expanded state.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#creatingatree">Creating a Tree</a></li>
+    <li><a href="#customisingtheiceuserobject">Customising the IceUserObject</a>
+    </li>
+    <li><a href="#respondingtonodeselection">Responding to Node Selection</a>
+    </li>
+    <li><a href="#customizingatreesdisplay">Customizing a Tree's Display</a>
+    </li>
+    <li><a href="#dynamicallychangingatree">Dynamically Changing a Tree</a></li>
+    <li><a href="#otherexamplesthatusetrees">Examples that Use Trees</a>
+    </li>
+</ul>
+
+<a name="creatingatree">&nbsp;</a>
+<h2>Creating a Tree</h2>
+
+<p>Creating a basic tree component is a pretty standard process comprising of
+    two parts. The first part consists of building a backing bean which will
+    contain the <span class="object-name">DefaultTreeModel</span>. The second
+    part is to add the<span class="object-name">tree</span>
+    component to your ICEfaces application. Here is a picture of a rendered tree
+    which will be created. </p>
+
+<div class="screenshot">
+    <img src="images/tree-basic_screenshot.png"
+         alt="Basic Tree Example" width="603" height="353"/>
+</div>
+
+<p>The following code, is taken from TreeBean.java which builds a simple
+    <span class="object-name">DefaultTreeModel</span>, one root node with three
+    child nodes.
+    The <span class="object-name">TreeBean</span> must
+    expose the <span class="object-name">DefaultTreeModel</span> instance
+    variable as it must be linked
+    to the <span class="object-name">tree</span>
+    components' value attributes. </p>
+
+<pre>
+    // create root node with its children expanded
+    DefaultMutableTreeNode rootTreeNode = new DefaultMutableTreeNode();
+    IceUserObject rootObject = new IceUserObject(rootTreeNode);
+    rootObject.setText("Root Node");
+    rootObject.setExpanded(true);
+    rootTreeNode.setUserObject(rootObject);
+
+    // model is accessed by by the ice:tree component via a getter method
+    model = new DefaultTreeModel(rootTreeNode);
+
+    // add some child nodes
+    for (int i = 0; i <3; i++) {
+        DefaultMutableTreeNode branchNode = new DefaultMutableTreeNode();
+        IceUserObject branchObject = new IceUserObject(branchNode);
+        branchObject.setText("node-" + i);
+        branchNode.setUserObject(branchObject);
+        rootTreeNode.add(branchNode);
+    }
+</pre>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tree-basic demo for your self by click
+            <a href="/tree-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the tree-basic source code <a href="tree-basic-tutorial.zip">here</a>.</li>
+        <li>Expand one or more nodes by clicking on the small square with a plus
+            sign.</li>
+        <li>Collapse a node by by clicking on the small square with a minus
+            sign.</li>
+    </ul>
+</div>
+
+<p>
+    The TreeBean must be instantiated in the <span class="code-xml">faces-config.xml</span>
+    so that we can use it in our JSF application. Here is the JSF code that is
+    needed to render the <span class="object-name">DefaultTreeModel</span> defined in <span
+        class="code-java">TreeBean</span>:
+</p>
+<pre>
+    &lt;ice:tree id="tree"
+        value="#{tree.model}"
+        var="item"
+        hideRootNode="false"
+        hideNavigation="false"
+        imageDir="./xmlhttp/css/xp/css-images/" &gt;
+    &lt;ice:treeNode&gt;
+        &lt;f:facet name="content"&gt;
+            &lt;ice:panelGroup style="display: inline"&gt;
+                &lt;ice:outputText value="#{item.userObject.text}" /&gt;
+            &lt;/ice:panelGroup&gt;
+        &lt;/f:facet&gt;
+    &lt;/ice:treeNode&gt;
+    &lt;/ice:tree&gt;
+</pre>
+
+<p>
+    Notice how the <span class="object-name">tree</span> component has a
+    <span class="object-name">treeNode</span> child component.  This child
+    component is sub-child further with a facets named content.  The facet
+    name is self descriptive and allows for any type of JSF component to be
+    added to them.  There is also an icon facet which should be used to
+    hold components related to a tree node icon. The content facet
+    should be used to hold components related to a tree nodes text label.
+    The <span class="object-name">tree</span> tag is iterative and will apply its
+    child component hierarchy to all of the <span class="object-name">DefaultMutableTreeNode</span>
+    found in the <span class="object-name">DefaultTreeModel</span>.
+</p>
+
+<p>To summaries the <span class="object-name">tree</span> component can be
+    created
+    with a simple binding to a backing bean which contains a
+    <span class="object-name">DefaultTreeModel</span>. You do not have to
+    write any code to make the tree nodes expand and contract. </p>
+
+
+<a name="customisingtheiceuserobject">&nbsp;</a>
+<h2>Customising the IceUserObject</h2>
+
+<p>The <span class="object-name">IceUserObject</span> object was designed to
+    have a bare minimum of instance
+    variables needed to display a basic tree node. In this next example the
+    <span class="object-name">IceUserObject</span> will be extended so that it
+    can store a String representing
+    a URL. The following code is taken from UrlNodeUserObject.java.
+    private String url;</p>
+
+<pre>
+    public UrlNodeUserObject(DefaultMutableTreeNode wrapper) {
+        super(wrapper);
+    }
+
+    public String getUrl() {
+        return url;
+    }
+</pre>
+
+<p>Now that every node can have a unique URL we need to update the JSF code in
+    the <span class="code-jsf"><a
+        href="/tree-links-tutorial/linkTree.iface" target="_blank">linkTree.jspx</a></span> file.
+    The following code shows how to add a
+    <span class="object-name">commandLink</span> to an <span
+        class="object-name">treeNode</span>
+    which takes advantage of our new
+    <span class="object-name">UrlNodeUserObject</span> object.</p>
+
+<pre>
+    &lt;ice:treeNode&gt;
+        &lt;f:facet name="content"&gt;
+            &lt;ice:panelGroup style="display: inline"&gt;
+                &lt;ice:outputLink value="#{item.userObject.url}" target="_blank"&gt;
+                    &lt;ice:outputText value="#{item.userObject.text}" /&gt;
+                &lt;/ice:outputLink&gt;
+           &lt;/ice:panelGroup&gt;
+        &lt;/f:facet&gt;
+    &lt;/ice:treeNode&gt;
+</pre>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tree-link demo for your self by click
+            <a href="/tree-links-tutorial/"
+               target="_blank">here</a>,
+            or download the tree-link source code <a href="tree-links-tutorial.zip">here</a>.</li>
+        <li>1.Click on a tree node nodes' text, a new browser window will open
+            with the corresponding URL set in the in the
+             <span class="object-name">UrlNodeUserObject</span> object. </li>
+    </ul>
+</div>
+
+<p>Customising the <span class="object-name">IceUserObject</span> is quite
+    simple and when it is combined with
+    the iterative nature of the <span class="object-name">tree</span> component,
+    it can be quite a powerful
+    tool. The next section will show how to respond to node selection. </p>
+
+<a name="respondingtonodeselection">&nbsp;</a>
+<h2>Responding to Node Selection</h2>
+<p>
+    In this next example the <span class="object-name">IceUserObject</span> will be extended so that it can
+    respond to node selection and change the selected panel in a <span class="object-name">panelStack</span>
+    component.  The <span class="object-name">tree</span> component does not have a selected node event listener,
+    instead the <span class="object-name">commandLink</span> component will be use to respond to a users mouse click.
+    The following code shows how the <span class="object-name">PanelSelectUserObject</span> default constructor has been modified to
+    get a reference to the <span class="object-name">PanelStackBean</span> responsible for
+    selecting the <span class="object-name">PanelStack</span> components selected panel:
+</p>
+
+<pre>
+    public PanelSelectUserObject(DefaultMutableTreeNode wrapper) {
+        super(wrapper);
+        // get a reference to the PanelStackBean from the faces context
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Object panelStackObject =
+                facesContext.getApplication()
+                        .createValueBinding("#{panelStack}")
+                        .getValue(facesContext);
+        if (panelStackObject instanceof PanelStackBean){
+            panelStack = (PanelStackBean)panelStackObject;
+        }
+    }
+</pre>
+
+<p>The  <span class="object-name">PanelSelectUserObject</span> needs to be able to respond to a user click and
+    update the the internal state of the backing beans. The user clicks are
+    handled by binding a method to the tree nodes action listener. Here is the
+    code needed to respond to a users click.</p>
+
+<pre>
+    public void selectPanelStackPanel(ActionEvent action){
+        if (panelStack != null){
+            panelStack.setSelectedPanel(displayPanel);
+        }
+    }
+</pre>
+
+<p>The <span class="object-name">PanelStackBean</span> object is introduced in
+    this code block which is
+    responsible for maintaining the state of selected panel stack in the
+    <span class="object-name">panelStack</span> component. The full source for
+    this simple class is available
+    with the tree-selection demo source code. </p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tree-selection demo for your self by click
+            <a href="/tree-selection-tutorial/"
+               target="_blank">here</a>,
+            or download the tree-selection source code <a href="tree-selection-tutorial.zip">here</a>.</li>
+        <li>Click on a tree node, the panel stack will show the corresponding panel content. </li>
+    </ul>
+</div>
+
+<p>
+    Setting up a <span class="object-name">tree</span> component for user interaction is a relatively simple
+    process which utilizes action listener mechanisms in the JSF framework. Each
+    tree node's backing bean is responsible for setting a selected panel in the
+    <span class="object-name">panelStack</span> component. The component nature of JSF allows for easy
+    encapsulation of application logic which makes application quick to build
+    and debug.  The follow is a screen shot of the tree-selection demo.
+</p>
+
+<div class="screenshot">
+    <img src="images/tree-selection_screenshot.png"
+         alt="Tree Selection Example" width="605" height="400"/>
+</div>
+<br />
+
+<a name="customizingatreesdisplay">&nbsp;</a>
+<h2>Customizing a Tree's Display</h2>
+
+<p>
+    In preceding section we have seen how the tree component iterates over a
+    <span class="object-name">DefaultTreeModel</span> binding and applies a
+    template to each node in the model.
+    The template in previous examples used <span class="object-name">commandLinks</span>
+    but the template
+    could have used any of the ICEfaces components. In this section we will
+    apply the full Xp theme to a tree with multiple children.
+</p>
+
+<div class="screenshot">
+    <img src="images/tree-style_screenshot.png"
+         alt="Tree Style Example" width="582" height="341"/>
+</div>
+
+<p>
+    The ICEfaces framework comes preconfigured with two distinctly different CSS
+    based themes for all components. The style sheets for these two themes, Xp
+    and Royale, are available in the resources folder of the ICEfaces bundle. In
+    order apply the Xp theme the following include is needed in your jspx page:
+</p>
+
+<pre>
+    &lt;link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/&gt;
+</pre>
+
+<p>
+    For most ICEfaces component added the above CSS file include is all that is
+    needed. The tree component requires slightly more configuration to fully
+    apply the theme. First, the tree component requires that that a <span
+        class="object-attribute">imageDir</span>
+    attribute is set which points to a location where the expand and contract
+    control images can be found. Lastly, the node state icons must be set for
+    each <span class="object-name">IceUserObject</span>; branch contracted icon,
+    branch expanded icon and finally
+    a leaf icon. This may seem like a lot of work but it allows for a tree that
+    can have multiple variations of branch and leaf icons . The following is an
+    updated <span class="object-name">tree</span> component declaration which is
+    fully styled:
+</p>
+
+<pre>
+    &lt;ice:tree id="tree"
+              value="#{tree.model}"
+              var="item"
+              hideRootNode="false"
+              hideNavigation="false"
+              imageDir="./xmlhttp/css/xp/css-images/"&gt;
+        &lt;ice:treeNode&gt;
+            &lt;f:facet name="icon"&gt;
+                &lt;ice:panelGroup style="display: inline"&gt;
+                     &lt;h:graphicImage value="#{item.userObject.icon}"/&gt;
+                &lt;/ice:panelGroup&gt;
+            &lt;/f:facet&gt;
+            &lt;f:facet name="content"&gt;
+                &lt;ice:panelGroup style="display: inline"&gt;
+                    &lt;ice:commandLink
+                            actionListener="#{item.userObject.selectPanelStackPanel}"
+                            value="#{item.userObject.text}"/&gt;
+                &lt;/ice:panelGroup&gt;
+            &lt;/f:facet&gt;
+        &lt;/ice:treeNode&gt;
+    &lt;/ice:tree&gt;
+</pre>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tree-selection demo for your self by click
+            <a href="/tree-style-tutorial/"
+               target="_blank">here</a>,
+            or download the tree-selection source code <a href="tree-style-tutorial.zip">here</a>.</li>
+        <li>The tree should now have branch and leaf icons</li>
+    </ul>
+</div>
+
+<p>
+    In summary, the ICEfaces components can easily styled using CSS and in some
+    cases by specifying image directories like the <span class="object-name">tree</span>
+    component is
+    necessary. In the next example we are going to dynamically change an
+    <span class="object-name">tree</span>'s <span class="object-name">DefaultTreeModel</span>
+    which will automatically reflected in the view.
+</p>
+<br />
+
+<h2><a name="dynamicallychangingatree">Dynamically Changing a Tree</a></h2>
+
+<p>In this next example we are going to dynamically remove and add nodes from
+    the tree. When a user selects a tree node they will optionally have a choice
+    to copy the selected node or remove it from the tree model. The following is
+    a screen capture of this application. </p>
+
+<div class="screenshot">
+    <img src="images/tree-dynamic_screenshot.png"
+         alt="Tree Style Example" width="573" height="384"/>
+</div>
+
+<p>This demo will start with the same <span class="object-name">tree</span>
+    that we used in the tree style demo.
+    We must first add an action listener to the the <span class="object-name">treeNode</span>
+    <span class="object-name">commandLink</span> component to listen for user clicks.
+    Next we add a panel which will display the
+    selected node and have add/remove controls when a node is selected. This JSF
+    code for dynamically changing a tree node is as follows:</p>
+
+<pre>
+    &lt;ice:panelGroup&gt;
+        &lt;p>Dynamic Tree Node Control:&lt;/p&gt;
+        &lt;ice:commandButton
+            actionListener="#{tree.copySelectedNode}"
+            disabled="#{tree.copyDisabled}" value="Copy" /&gt;
+
+        &lt;ice:commandButton
+            actionListener="#{tree.deleteSelectedNode}"
+            disabled="#{tree.deleteDisabled}" value="Delete" /&gt;
+        &lt;p/&gt;
+        &lt;ice:outputText
+            value="Selected Node: #{tree.selectedNodeObject.text}"
+            escape="false" /&gt;
+    &lt;/ice:panelGroup&gt;
+</pre>
+
+<p>The <span class="object-name">ActionListeners</span> for the add and remove
+    node controls can be added to the
+    <span class="object-name">TreeBean</span> class. When a node in the tree is
+    clicked an instance variable in
+    <span class="object-name">TreeBean</span> references the source of the
+    click. The reference to the selected
+    node can them be used to copy or remove the selected node from the
+    <span class="object-name">DefaultTreeModel</span> when one of the
+    corresponding
+    <span class="object-name">commandButtons</span> is pressed.
+    Note that the root node is treated as a special case, if it is removed no
+    more nodes can be added to the tree. </p>
+
+<pre>
+    public void deleteSelectedNode(ActionEvent event){
+        if (selectedNodeObject != null && !selectedNode.equals(ROOT_NODE_TEXT)){
+            selectedNodeObject.deleteNode(event);
+            selectedNodeObject = null;
+        }
+     }
+
+    public void copySelectedNode(ActionEvent event){
+            if (selectedNodeObject != null)
+                selectedNodeObject.copyNode(event);
+    }
+</pre>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the tree-dynamic demo for your self by click
+            <a href="/tree-dynamic-tutorial/"
+               target="_blank">here</a>,
+            or download the tree-dynamic source code <a href="tree-dynamic-tutorial.zip">here</a>.</li>
+        <li>Select a node in the tree, the copy and delete button should become
+            enabled. Click on add or remove to manipulate the tree model
+            dynamically. </li>
+    </ul>
+</div>
+
+<a name="otherexamplesthatusetrees">&nbsp;</a>
+<h2>Examples that Use Trees</h2>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Tree example where a tree that responds to
+                user selection. It also has controls for removing and adding
+                nodes. Navigation tree which manipulates a panel stack selected
+                item. </td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Tree component used for navigation. Nodes are
+                dynamically created depending on the number of mail accounts and
+                subsequent child mail folders. </td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tree-basic</td>
+            <td class="bodySource"><a href="tree-basic-tutorial.zip" >tree-basic source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup a basic tree component and backing bean</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tree-links</td>
+            <td class="bodySource"><a href="tree-links-tutorial.zip" >tree-links source code</a></td>
+            <td class="bodyNotes">Tree component which has commandLink components as nodes.  When a node is
+            clicked a new browser window is launched with the respective URL. </td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tree-selection</td>
+            <td class="bodySource"><a href="tree-selection-tutorial.zip" >tree-selection source code</a></td>
+            <td class="bodyNotes">Tree component is used to manipulate the selected panel in a panel stack.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tree-style</td>
+            <td class="bodySource"><a href="tree-style-tutorial.zip" >tree-style source code</a></td>
+            <td class="bodyNotes">The XP theme is fully applied to a tree component producing a fully styled tree.  </td>
+        </tr>
+        <tr>
+            <td class="bodyExample">tree-dynamic</td>
+            <td class="bodySource"><a href="tree-style-tutorial.zip" >tree-dynamic source code</a></td>
+            <td class="bodyNotes">A tree components default tree model is manipulated by other Java Beans.  This
+            applicaiton shows how the Tree component can be dynamically changed. </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

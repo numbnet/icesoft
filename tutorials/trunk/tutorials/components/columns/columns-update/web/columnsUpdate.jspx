@@ -1,0 +1,38 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Columns Component Tutorial</title>
+        <link href="./override.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Update Columns Component</h2>
+        <p>This demo shows a columns component with seamless data updates upon user interaction.</p>
+        <ice:form style="width: 45%;">
+            <ice:dataTable value="#{backing.rowModel}" 
+            			   var="index" 
+            			   style="border: medium solid #555555; width: 200px;" >
+               
+                <ice:column>
+                    <ice:outputText value="#{index}" style="font-weight: bold;"/>
+                </ice:column>
+                
+                <ice:columns value="#{backing.columnsModel}" var="headings">                                        
+                	<f:facet name="header">
+                    	<h:outputText value="#{headings}" />
+                	</f:facet>
+                    <ice:outputText value="#{backing.startFrom}"/>
+                </ice:columns>
+            </ice:dataTable>
+            <ice:commandButton value="Update" actionListener="#{backing.next}"/>    
+        </ice:form>
+    </body>
+    </html>
+</f:view>

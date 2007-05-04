@@ -1,0 +1,107 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>ICEfaces Focus Management Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        <link href="./css/focus_style.css" rel="stylesheet" type="text/css" />        
+    </head>
+    <body>
+        <h2>ICEfaces Focus Management Tutorial</h2>
+        <p>The following sample demonstrates basic focus management.</p>
+        <ice:form>
+
+                 <ice:panelGrid
+                        styleClass="componentLayoutRootTable"
+                        columns="1" >
+
+                    <ice:panelGrid
+                            columnClasses="contentLayoutGridColumn"
+                            columns="1">
+                    <!-- Panel Focus Control -->
+                    <ice:panelGrid
+                            styleClass="formBorderHighlight"
+                            columnClasses="contentLayoutGridColumn"
+                            columns="1">
+                       <h3><ice:outputText value="Select Focus Target"/></h3>
+
+                        <ice:panelGrid columns="5" styleClass="panelGroupColor" >
+                        
+                            <ice:selectOneRadio
+                                   value="#{focusBean.selectedText}"
+                                   styleClass="selectOneMenu"
+                                   valueChangeListener="#{focusBean.selectedTextChanged}"
+                                   partialSubmit="true">
+                                <f:selectItem itemValue="#{focusBean.NORTH}"   itemLabel="North" />
+                                <f:selectItem itemValue="#{focusBean.WEST}"   itemLabel="West" />
+                                <f:selectItem itemValue="#{focusBean.CENTER}"   itemLabel="Center" />
+                                <f:selectItem itemValue="#{focusBean.EAST}"   itemLabel="East" />
+                                <f:selectItem itemValue="#{focusBean.SOUTH}"   itemLabel="South" />                                
+                            </ice:selectOneRadio>
+                        
+                        </ice:panelGrid>
+                        <br/>
+
+                                                    
+                   </ice:panelGrid>
+
+                    <!-- Panel Layout -->
+                   <ice:panelBorder id="page" 
+                    styleClass="panelBorderDemoLayoutMain" 
+                    renderNorth="true"
+                    renderSouth="true"
+                    renderCenter="true"
+                    renderWest="true"
+                    renderEast="true"                                                                                
+                    
+                    >
+                        <f:facet name="north">
+                            <ice:inputText value="North"
+                            binding="#{focusBean.northText}" 
+                            />
+                        </f:facet>
+
+                        <f:facet name="west">
+                            <ice:panelGrid columns="1">
+                                <ice:inputText value="West"
+                                binding="#{focusBean.westText}" 
+                                />
+                            </ice:panelGrid>
+                        </f:facet>
+
+                        <f:facet name="east">
+                            <ice:panelGrid columns="1">
+                                <ice:inputText value="East"
+                                binding="#{focusBean.eastText}" 
+                                />
+                            </ice:panelGrid>
+                        </f:facet>
+
+                        <f:facet name="center">
+                            <ice:inputText value="Center" 
+                            binding="#{focusBean.centerText}" 
+                            />
+                        </f:facet>
+
+                        <f:facet name="south">
+                            <ice:inputText value="South"
+                            binding="#{focusBean.southText}" 
+                            />
+                        </f:facet>
+                   </ice:panelBorder>
+
+                </ice:panelGrid>
+              
+              </ice:panelGrid>
+
+        </ice:form>
+    </body>
+    </html>
+</f:view>

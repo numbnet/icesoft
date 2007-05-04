@@ -1,0 +1,42 @@
+/* 
+    Document   : __NAME__
+    Created on : __DATE__, __TIME__
+    Author     : __USER__
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+.acc{
+  background-image :url("tab_fruits.jpg") ;
+}
+
+.accordion1Header{
+            
+            font-family:tahoma,arial, san-serif;
+            font-weight:bold;
+            font-size:12px;
+            font-weight : bold;
+background-image :url("tab_fruits.jpg") ;
+            background-color:#a4bdd2;
+  height :25px ;
+        }
+        .accordion1Content{
+   background-color: #1e587e;
+   
+   color: #4C7EA7;
+   font-family: tahoma,arial, san-serif;
+   font-size: 12px;
+   font-weight: bold
+}
+        .accordion1Container{
+        width: 170px
+        
+        }

@@ -1,0 +1,36 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Tabset Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Dynamic Tabset Component</h2>
+        <p>Click to add a new tab or remove the last tab dynamically.</p>
+        <!--
+        This demo shows the iterative characteristics of panelTabSet
+        As well the dynamic add / remove capabilities (in a simple form)
+        -->
+        <ice:form style="width: 45%;">
+            <ice:commandButton value="Add Tab" action="#{tabset.addTab}"/>
+            <ice:commandButton value="Remove Tab" action="#{tabset.removeTab}"/>
+            <br/><br/>
+            
+            <ice:panelTabSet var="currentTab" value="#{tabset.tabs}">
+                <ice:panelTab label="#{currentTab.label}">
+                    <ice:outputText value="#{currentTab.content}"/>
+                </ice:panelTab>
+            </ice:panelTabSet>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+

@@ -1,0 +1,23 @@
+.icePanelPopup {
+    color: #666666;
+    background-color: #000000;
+    padding: 0px;
+    z-index: 1000;
+    top: 20%;
+    left: 10%;
+    position: absolute;
+    width: 500px;
+    height: 200px;
+}
+
+.icePanelPopupHeader {
+    background-color: #FF0000;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.icePanelPopupBody {
+    background-color: #DDDDDD;
+    padding: 10px;
+}
+

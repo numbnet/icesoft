@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/icefaces"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/icefaces-components"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/backport-util-concurrent.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-collections.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-digester.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-el.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-fileupload.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/commons-validator-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/el-ri.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/informa.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jasper-compiler.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jasper-compiler-jdt.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jasper-runtime.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jdom.jar"/>
+	<classpathentry sourcepath="C:/projects/jsf/3rd/javaserverfaces-sources/jsf-api/src" kind="lib" path="C:/projects/jsf/lib/jsf-api.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jsf-facelets.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jsf-impl.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/junit.3.8.1.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/myfaces-api.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/myfaces-impl.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/oro-gump-28042006.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/portlet.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/standard.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/tlddoc.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/tomahawk.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/webui.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="C:/projects/jsf/lib/xml-apis.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

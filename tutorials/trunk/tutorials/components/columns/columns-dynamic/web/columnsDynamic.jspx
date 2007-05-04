@@ -1,0 +1,35 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Columns Component Tutorial</title>
+        <link href="./override.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Dynamic Columns Component</h2>
+        <p>This demo shows a dynamic columns layout with the ability to modify the number of columns.</p>
+        <ice:form style="width: 45%;">
+            <ice:dataTable value="#{backing.rowModel}" var="index"
+            			   style="border: medium solid #555555; width: 200px;" >
+                <ice:columns value="#{backing.columnsModel}" var="headings">                                        
+                	<f:facet name="header">
+                    	<h:outputText value="#{headings}"/>
+                	</f:facet>
+                    <ice:outputText value="#{backing.cellValue}"/>
+                </ice:columns>
+            </ice:dataTable>
+            <h:messages/>
+            <ice:outputText value="Enter the number of columns to display (between 1 to 8)"/>
+            <br/>
+            <ice:inputText value="#{backing.numberOfColumns}" valueChangeListener="#{backing.change}"/>
+        </ice:form>
+    </body>
+    </html>
+</f:view>

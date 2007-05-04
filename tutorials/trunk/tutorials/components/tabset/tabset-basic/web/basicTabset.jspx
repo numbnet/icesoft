@@ -1,0 +1,39 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Tabset Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Basic Tabset Component</h2>
+        <p>Click on a tab to change to it and enable viewing of the contents.</p>
+        <!--
+        This demo shows a very basic tab set with 3 generic tabs and no styling or interaction
+        -->
+        <ice:form style="width: 45%;">
+            <ice:panelTabSet>
+                <ice:panelTab label="#{tabset.tabs[0].label}">
+                    <ice:outputText value="#{tabset.tabs[0].content}"/>
+                </ice:panelTab>
+                
+                <ice:panelTab label="#{tabset.tabs[1].label}">
+                    <ice:outputText value="#{tabset.tabs[1].content}"/>
+                </ice:panelTab>
+                
+                <ice:panelTab label="#{tabset.tabs[2].label}">
+                    <ice:outputText value="#{tabset.tabs[2].content}"/>
+                </ice:panelTab>
+            </ice:panelTabSet>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+  <application>
+    <locale-config>
+      <default-locale>en_US</default-locale>
+    </locale-config>
+  </application>
+  
+   <managed-bean>
+    <description>
+            Backing bean for tree example.
+        </description>
+    <managed-bean-name>treeBean</managed-bean-name>
+    <managed-bean-class>
+            com.icesoft.icefaces.resource.tutorial.component.tree.treeBean
+        </managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  
+  <managed-bean>
+        <managed-bean-name>panelStack</managed-bean-name>
+        <managed-bean-class>com.icesoft.icefaces.resource.tutorial.component.tree.PanelStackBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+</faces-config>

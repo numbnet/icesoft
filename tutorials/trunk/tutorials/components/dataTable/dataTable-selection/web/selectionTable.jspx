@@ -1,0 +1,123 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+    
+    <html>
+        <head>
+            <meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1"></meta>
+            <title>DataTable Component Tutorial</title>
+            <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+        </head>
+        
+        <body>
+            <h2>Selection Component and  dataTable Component</h2>
+            
+            <p>In this case, we use the Selection Component to enable/disable the multi-selection features.</p>
+            <ice:form>
+                <!--
+                This is a selection table comprising five columns. Each
+                row represents an inventory item. Each column represents a
+                inventory item property. 
+        -->
+                <ice:panelGroup draggable="true"></ice:panelGroup>
+                <ice:panelGrid columns="2" styleClass="formBorderHighlight"
+                               style="valign: top; align: right"
+                               columnClasses="contentLayoutGridColumn">
+                    
+                    <ice:dataTable 
+                        value="#{inventoryList.carInventory}"
+                        var="item"
+                        width="700px"
+
+                        columnWidths="150px, 200px, 150px, 100px, 100px">
+                        
+                        <!-- Stock number -->
+                        <ice:column>
+                            <ice:rowSelector value="#{item.selected}" multiple="#{inventoryList.multipleSelection}"
+                                             selectionListener="#{inventoryList.rowSelection}"/>   
+                            <f:facet name="header">
+                                <ice:outputText value="Stock #"/>
+                            </f:facet>
+                            <ice:outputText value="#{item.stock}"/>
+                        </ice:column>
+                        
+                        <!-- Model number -->
+                        <ice:column>
+                            <f:facet name="header">
+                                <ice:outputText value="Model"/>
+                            </f:facet>
+                            <ice:outputText value="#{item.model}"/>
+                        </ice:column>
+                        
+                        <!-- Description  -->
+                        <ice:column>
+                            <f:facet name="header">
+                                <ice:outputText value="Description"/>
+                            </f:facet>
+                            <ice:outputText value="#{item.description}"/>
+                        </ice:column>
+                        
+                        <!-- Odometer reading -->
+                        <ice:column>
+                            <f:facet name="header">
+                                <ice:outputText value="Odometer"/>
+                            </f:facet>
+                            <ice:outputText value="#{item.odometer}"/>
+                        </ice:column>
+                        
+                        <!-- Price number -->
+                        <ice:column>
+                            <f:facet name="header">
+                                <ice:outputText value="Price"/>
+                            </f:facet>
+                            <ice:outputText value="#{item.price}"/>
+                        </ice:column>
+                        
+                    </ice:dataTable>
+                    
+                    
+                    
+                    <!-- selected item table -->
+                    <ice:panelGroup>
+                        <ice:outputText value="Selected Items: "/>
+                        <ice:dataTable var="selecteditem" 
+                                       rows="21"
+
+                                       value="#{inventoryList.selectedRows}">
+                            <ice:column>
+                                <f:facet name="header">
+                                    <ice:outputText value="Stock"/>
+                                </f:facet>
+                                <ice:outputText value="#{selecteditem.stock}"/>
+                            </ice:column>
+                            <ice:column>
+                                <f:facet name="header">
+                                    <ice:outputText value="Price"/>
+                                </f:facet>
+                                <ice:outputText value="#{selecteditem.price}"/>
+                            </ice:column>
+                        </ice:dataTable>
+                        
+                    </ice:panelGroup>       
+                    
+                </ice:panelGrid>
+                
+                <ice:panelGroup>
+                    <ice:selectBooleanCheckbox value="#{inventoryList.multipleSelection}"
+                                               partialSubmit="true"
+                                               id="check1"
+                                               valueChangeListener="#{inventoryList.selectionChanged}"/>
+                    <ice:message for="check1" showDetail="true"/>
+                    <ice:outputText value="multiple selection"/>
+                    <br/>
+                    <ice:commandButton value="clear" actionListener="#{inventoryList.clearSelections}"/>
+                </ice:panelGroup>
+            </ice:form>
+        </body>
+    </html>
+</f:view>

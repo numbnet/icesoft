@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>InputFile Component Tutorials</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Lesson:</b> Using the InputFile component
+</p>
+
+<!-- tutorial content section -->
+
+<h1>How to Use the ICEfaces InputFile Component</h1>
+
+<p>
+    The <span class="object-name">inputFile</span> component can upload a file
+    from a client machine to the server.  The inputFile component renders an
+    file input HTML element. Users specify a file to upload either by entering
+    the path to a file directly, or by clicking the Browse button to open a
+    file-system navigation dialog window. Clicking the Upload button uploads
+    the specified file to the server.
+</p>
+
+<p>This tutorial will discuss the following topics related to the use of the
+    <span class="object-name">inputFile</span> component:</p>
+<ul>
+    <li><a href="#basicinputfilecomponent">Basic InputFile Component</a></li>
+    <li><a href="#progressinputfilecomponent">InputFile Component with OutputProgress Component</a>
+    </li>
+    <li><a href="#advancedinputfilecomponent">Advanced InputFile Component</a></li>
+    <li><a href="#examplesthatuseinputfile">Examples that use InputFile Component</a></li>
+</ul>
+
+<a name="basicinputfilecomponent"><h2>Basic InputFile Component</h2></a>
+
+    <p>There are three things you must keep in mind before using the ice:inputFile
+        component.  You need to have the file-upload.jar on your classpath (please
+        note: the name of the jar changed from commons-fileupload-1.0.jar in
+        ICEfaces 1.0 to file-upload.jar in ICEfaces 1.01).  The ice:inputFile
+        component must be inside a form element and you must add the following to
+        your web.xml file:
+    <pre>
+    &lt;!-- file upload Servlet --&gt;
+    &lt;servlet&gt;
+         &lt;servlet-name&gt;uploadServlet&lt;/servlet-name&gt;
+         &lt;servlet-class&gt;com.icesoft.faces.component.inputfile.FileUploadServlet&lt;/servlet-class&gt;
+         &lt;load-on-startup&gt; 1 &lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+         &lt;servlet-name&gt;uploadServlet&lt;/servlet-name&gt;
+         &lt;url-pattern&gt;/uploadHtml&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    </pre>
+    </p>
+    <p>In our demo, a bean named user has been defined in the faces.config file as a session
+        scope bean.  The ice:inputFile component will upload a file and save a reference to it
+        in the user bean via the following attribute: file="#{user.file}".
+    </p>
+    <p>If you attempt to upload an invalid entry, or a file greater in size than
+        10 MB (the default limit for this component), you should see an appropriate
+        error message output via an ice:message component.  The inputFile component
+        sends exception information to the client using FacesMessage, so it is
+        a good idea to have an instance of ice:message or ice:messages on your page.
+    </p>
+    <p>In the demo, we have added an ice:outputText component at the bottom, to show the location of the file
+        on the server after it has been uploaded.
+    </p>
+<br/>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the inputFile-basic demo for your self by clicking
+            <a href="/inputFile-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the dataTable-basic source code <a
+                href="inputFile-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<a name="progressinputfilecomponent"><h2>InputFile Component with OutputProgress Component</h2></a>
+
+    <p>In order to see the progress of a file as it uploads, we must place an ice:outputProgress
+       component on the page and add a progressListener to the ice:inputFile component.  The
+       progressListener on the inputFile component sets the value of an integer in the backing
+       bean that in turn, is bound to the value attribute of the ice:outputProgress component.
+       This integer lets the ice:outputProgress component know the percentage progress of the
+       file as it is being uploaded.
+    </p>
+    <p>Here are some things to consider when implementing the progressListener, you can see the
+       implementation in the source code:<br />
+       The method must take a single argument of type java.util.EventObject.<br />
+       Beans which implement the progressListener must be in session scope.<br />
+       The PersistentFacesState must be set in the constructor of the implementing session bean.<br />
+       The developer must invoke a render() call on this PersistentFacesState instance.
+    </p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the inputFile-progress demo for your self by clicking
+            <a href="/inputFile-progress-tutorial/"
+               target="_blank">here</a>,
+            or download the inputFile-progress source code <a
+                href="inputFile-progress-tutorial.zip">here</a>.
+        </li>
+    </ul>
+</div>
+
+<a name="advancedinputfilecomponent"><h2>Advanced InputFile Component</h2></a>
+
+    <h4>Maximum File Size</h4>
+
+    <p>If you want to change the maximum file size that can be uploaded with the
+        ice:inputFile component, you must add a context parameter to the web.xml
+        file.  The default maximum is 10 MB, we will change the maximum to 2 MB in
+        the advanced demos by adding the following:</p>
+    <pre>
+    &lt;context-param&gt;
+        &lt;param-name&gt;com.icesoft.faces.uploadMaxFileSize&lt;/param-name&gt;
+        &lt;param-value&gt;2097152&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    </pre>
+
+    <h4>ActionListener Attribute</h4>
+
+    <p>An actionListener is invoked when the uploaded file is saved, or on any
+        exception. This means the developer can perform an operation when the
+        component reaches one of the following four InputFile states:  [SAVED,
+        INVALID, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE].</p>
+    <p> The advanced demo removes the ice:message component we used previously to
+        output error messages.  Now we will use the actionListener method to query
+        the component for its state and output the state with an ice:outputText
+        component.  When using the demo, try uploading a file greater than 2 MB in size
+        to confirm we have changed the maximum file size with the addition of the context
+        parameter above.</p>
+
+    <h4>UniqueFile Attribute</h4>
+
+    <p>The ice:inputFile component features an attribute that lets you manipulate
+        where the file will be saved.  The default behaviour of the component is to
+        create a folder at the root of your context with the session id as its name.
+        This allows you to easily associate files to a specific session.  If you add
+        the attribute uniqueFolder="false" to the component, files will be uploaded
+        to the context root and a folder will not be created.
+    </p>
+    <p>The advanced demo has two components under the heading UniqueFile Attribute, both of them
+       have an outputText component underneath to show the location of the file after it has been
+       uploaded.  The first component shows the default behaviour of creating a folder in the
+       context root with the session id for a name and placing the file in that folder.  The
+       second component has the attribute uniqueFolder="false" which means the file will be uploaded
+       directly to the context root.
+    </p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the inputFile-advanced demo for your self by clicking
+            <a href="/inputFile-advanced-tutorial/"
+               target="_blank">here</a>,
+            or download the inputFile-advanced source code <a
+                href="inputFile-advanced-tutorial.zip">here</a>.
+        </li>
+    </ul>
+</div>
+
+<a name="examplesthatuseinputfile"><h2>Examples that Use InputFile</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable" width="100%" >
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Contains basic inputFile example.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">inputFile-basic</td>
+            <td class="bodySource"><a
+                    href="inputFile-basic-tutorial.zip">inputFile-basic
+                source code</a></td>
+            <td class="bodyNotes">Simple example of how to use inputFile component.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">inputFile-progress</td>
+            <td class="bodySource"><a
+                    href="inputFile-progress-tutorial.zip">inputFile-progress
+                source code</a></td>
+            <td class="bodyNotes"> An outputProgress component is added to the page and
+            connected to the progress of the uploading file<./td>
+        </tr>
+        <tr>
+            <td class="bodyExample">inputFile-advanced</td>
+            <td class="bodySource"><a
+                    href="inputFile-advanced-tutorial.zip">inputFile-advanced
+                source code</a></td>
+            <td class="bodyNotes">The maximum file size is altered.  The ActionListener and
+            UniqueFile attributes are explained.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

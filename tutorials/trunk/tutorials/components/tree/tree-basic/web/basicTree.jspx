@@ -1,0 +1,43 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Tree Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Basic Tree Component</h2>
+        <p>Click on the plus and minus icons to expand and contract tree nodes.</p>
+        <ice:form>
+            <ice:panelGroup styleClass="treeContainer">
+                <!--
+                    This is a very basic tree comprising of only text nodes.  The
+                    expand and contract images are rendered because the "imageDir"
+                    attribute on the tree component has been set to a known path.
+                -->
+                <ice:tree id="tree"
+                        value="#{tree.model}"
+                        var="item"
+                        hideRootNode="false"
+                        hideNavigation="false"
+                        imageDir="./xmlhttp/css/xp/css-images/" >
+                    <ice:treeNode>
+                        <f:facet name="content">
+                            <ice:panelGroup style="display: inline">
+                                <ice:outputText value="#{item.userObject.text}" />
+                            </ice:panelGroup>
+                        </f:facet>
+                    </ice:treeNode>
+                </ice:tree>
+            </ice:panelGroup>
+        </ice:form>
+    </body>
+    </html>
+</f:view>

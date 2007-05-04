@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Panel Tabset Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the panelSeries component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Panel Series Component</h1>
+
+<p>
+    The <span class="object-name">panelSeries</span> component provides a mechanism for
+    dynamically generating a series of repeating child-components within a panel.
+    The <span class="object-name">panelSeries</span> component renders its child
+    components in an iterative fashion similar to way the <span class="object-name">dataTable</span>
+    component renders data rows. However, the <span class="object-name">panelSeries</span>
+    component is more flexibile in that it can render a series of arbitrarily complex child components.
+    The <span class="object-name">panelSeries</span> component can be used whre JSP forEach
+    tag might have been used.
+
+</p>
+
+<div class="screenshot">
+    <img src="images/showcase-seriesPanel.png"
+       title="panelSeries component in Component Showcase application"
+         alt="panelSeries component in Componnet Showcase application" width="591" height="540"/>
+</div>
+
+<p>
+    The <span class="object-name">panelSeries</span> component can be binded to an array, an instance
+    of java.util.List, an instance of java.sql.ResultSet, an instance of java.servlet.jsp.jstl.sql.Result,
+    or an instance of javax.faces.model.DataModel in the backing bean by specifing
+    <span class="object-name">value</span> attribute of the component and <span class="object-name">var</span>
+    attribute represents the name of current item and is used to iterate through the collection of items.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#creationBasic">Creating a Basic Series Panel</a></li>
+    <li><a href="#creationCustom">Creating a Series Panel with Customized Objects</a></li>
+</ul>
+
+<!-- tutorial: panelSeries-basic -->
+<a name="creationBasic"><h2>Creating a Basic Series Panel</h2></a>
+
+<p>
+The simplest example of Series Panel is to hava a <span class="object-name">panelSeries</span> component
+binded to an array of Strings and display them one by one on the page. We first create a backing bean that
+stores an array of Strings (see BasicPanelSeriesBean.java)
+and then create a page with the following fragment (see <a href="/panelSeries-basic-tutorial/basicPanelSeries.iface" target="_blank">basicPanelSeries.jspx</a>):
+</P>
+
+
+<pre>
+	&lt;ice:panelSeries var="color" value="#{basicPanelSeriesBean.colorList}"&gt;
+			&lt;ice:outputText value="#{color}" /&gt;
+	&lt;/ice:panelSeries&gt;
+</pre>
+
+<p>
+The following screenshot shows what the page looks like once the beans are properly setup.
+</p>
+
+<div class="screenshot">
+    <img src="images/seriesPanel-basic.png"
+       title="Basic Panel Series Example"
+         alt="Basic Panel Series Example" width="381" height="315"/>
+</div>
+
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelSeries-basic demo for your self by clicking
+            <a href="/panelSeries-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the panelSeries-basic source code <a href="panelSeries-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+
+<!-- tutorial: panelSeries-custom -->
+<a name="creationCustom"><h2>Creating a Series Panel with Customized Objects</h2></a>
+
+<p>
+In this advanced example, we will show how to use <span class="object-name">panelSeries</span>
+component by binding it to a Java List of custom objects. This custom class has several member variables
+to represents some personal information and it also has some methods which can be binded to <span class="object-name">commandButton</span>
+component in the panel of each custom object. Click here for this custom class. We also need a backing bean and this time,
+it stores a Java List of these custom objects. (see CustomPanelSeriesBean.java)
+</p>
+
+
+<p>
+Inside a <span class="object-name">panelSeries</span> component, you can put any valid JSF/Icefaces components and
+these components will be repeated for each item in the collection, which you specified as <span class="object-name">value</span> attribute
+of <span class="object-name">panelSeries</span> component. In our advanced example, the code inside <span class="object-name">panelSeries</span>
+component will look similar to the following:
+</p>
+
+<pre>
+	&lt;ice:panelSeries var="customObject" value="#{customPanelSeriesBean.customObjectList}"&gt;
+		&lt;ice:panelGrid columns="2"&gt;
+			&lt;ice:outputText value="Name:" /&gt;
+			&lt;ice:outputText value="#{customObject.name}" /&gt;
+			&lt;ice:outputText value="Age:" /&gt;
+			&lt;ice:outputText value="#{customObject.age}" /&gt;
+			&lt;ice:outputText value="Email Address:" /&gt;
+			&lt;ice:outputText value="#{customObject.emailAddress}" /&gt;
+			&lt;ice:outputText value="Phone Number:" /&gt;
+			&lt;ice:outputText value="#{customObject.phoneNumber}" /&gt;
+			&lt;ice:outputText value="Anonymous Message?" /&gt;
+			&lt;ice:selectBooleanCheckbox value="#{customObject.anonymous}"/&gt;
+
+			......
+
+		&lt;/ice:panelGrid&gt;
+		&lt;br/&gt;
+	&lt;/ice:panelSeries&gt;
+</pre>
+
+<p>
+The following screenshot shows what the page looks like once the beans are properly setup.
+</p>
+
+<div class="screenshot">
+    <img src="images/seriesPanel-custom.png"
+       title="Custom Panel Series Example"
+         alt="Custom Panel Series Example" width="821" height="695"/>
+</div>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelSeries-custom demo for your self by clicking
+            <a href="/panelSeries-custom-tutorial/"
+               target="_blank">here</a>,
+            or download the panelSeries-custom source code <a href="panelSeries-custom-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<!-- links to examples -->
+<a name="exampleTabsets"><h2>Examples Using Panel Series</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Panel Series example</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Panel Series is used for Contact section under Address tab</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelSeries-basic</td>
+            <td class="bodySource"><a href="panelSeries-basic-tutorial.zip" >panelSeries-basic source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup a basic panelSeries component and backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelSeries-custom</td>
+            <td class="bodySource"><a href="panelSeries-custom-tutorial.zip" >panelSeries-cutom source code</a></td>
+            <td class="bodyNotes">Demonstration of how panelSeries component can be used with other components and custom objects.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>

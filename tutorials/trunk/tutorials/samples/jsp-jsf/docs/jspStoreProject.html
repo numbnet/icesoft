@@ -1,0 +1,467 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>JSP Store</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Project:</b> Including ICEfaces content in a hybrid JSF/JSP application
+</p>
+
+<!-- tutorial content section -->
+<h1>Migrating a JSP Store</h1>
+<p>
+The premise of the JSP Store is to build an application wherein JSP and JSF share a backing bean and are used in varying roles for the application view. It will begin with purely JSP and migrate part-by-part to Ajax functionality by adding ICEfaces via includes until all of the JSP code is removed. Familiarity with ICEfaces and JSP is assumed.
+</p>
+<p>
+This project consists primarily of four stages. First, building a simplified store with an inventory and shopping cart, with the ability to add and remove items using only JSP.
+Second, replacing the cart section of the store with a single ICEfaces include for a hybrid JSP/ICEfaces application. Third, replacing the shop with a second include, making the entire web application "rich". Finally, applying the ICEfaces server-initiated rendering to intelligently update both includes when an action event is fired by the user.
+</p>
+
+<ul>
+  <li><a href="#projectSetup">Project Setup Notes</a>
+  <ul>
+  <li><a href="#setupXML">Faces-Config & Web.xml</a>
+  <li><a href="#setupCSS">CSS</a>
+  </ul>
+  </li>
+    <li><a href="#part1">Part I: Basic JSP</a></li>
+
+    <li><a href="#part2">Part II: An ICEfaces Include</a>
+    </li>
+    <li><a href="#part3">Part III: Multiple ICEfaces Includes</a>
+    </li>
+    <li><a href="#part4">Part IV: Server-Initiated Rendering</a>
+    </li>
+</ul>
+
+<p>The store application after the completion of Part I:</p>
+<div class="screenshot">
+    <img src="images/part1screenshot.png"
+         alt="JSP"/>
+</div>
+<a  name="projectSetup"></a>
+<h2>Project Setup Notes</h2>
+<p>
+For the JSP to function properly, the &lt;web-app> tag in <span class="code-xml">web.xml</span> must include the appropriate namespace:
+</p>
+<pre>
+&lt;web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+   version="2.4">
+</pre>
+<a  name="setupXML" ></a>
+<p>
+Onwards of Part III, <em>Multiple ICEfaces Includes</em>, Concurrent DOM Views must be enabled in <span class="code-xml">web.xml</span>:
+</p>
+
+<pre>
+&lt;context-param>
+     &lt;param-name>com.icesoft.faces.concurrentDOMViews&lt;/param-name>
+     &lt;param-value>true&lt;/param-value>
+&lt;/context-param>
+</pre>
+
+<a  name="setupCSS" ></a>
+<p>
+The store uses a very simple external CSS sheet, <span class="code-xml">store.css</span> to enhance readability. It is attached to the page using the standard (X)HTML &lt;link&gt; tag.
+<pre>
+table {
+  width:500px;
+  border:1px solid grey;
+}
+td {
+  text-align:center;
+  padding:5px;
+}
+th {
+  font-weight:bold;
+}
+</pre>
+</p>
+
+<a  name="part1" ></a>
+<h2>Part I: Basic JSP</h2>
+<p>To start the project, a store based entirely on JSP will be constructed. The back-end for the rest of the tutorial will also be coded at this point.</p>
+<p>
+The JSP store requires two simple classes: Store.java, which has a Hashtable containing items for sale; and StoreItem.java,
+an item for sale. <span class="object-name">Store</span>'s constructor also instantiates a set of default items.
+</p>
+
+<p>
+The <span class="object-name">Store</span> class is used for the bean with which JSP and eventually JSF will interact. It is instantiated with session scope via the &lt;jsp:usebean> tag. Using this bean we can retrieve <span class="object-name">StoreItem</span>'s and their properties.
+</p>
+
+<pre>
+&lt;jsp:useBean id="store" class="com.icesoft.icefaces.samples.jspStore.Store" scope="session"/>
+</pre>
+
+<p>The basic functionality of the Store is handled using specially crafted URIs and interpreting request parameters upon page reload. The &lt;c:forEach&gt; tag iterates over the array of <span class="object-name">StoreItem</span>'s. Each <span class="object-name">StoreItem</span> appears as a separate row in a table, with its own form and separate URI, corresponding to its sku stored internally. This URI identifies which particular item to increase or decrease in quantity.</p>
+
+<pre>
+
+&lt;%@page contentType="text/html"%&gt;
+&lt;%@page pageEncoding="UTF-8"%&gt;
+
+&lt;%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt; 
+
+&lt;%@ page import="com.icesoft.icefaces.samples.jspStore.Store" %&gt;
+&lt;jsp:useBean id="store" class="com.icesoft.icefaces.samples.jspStore.Store" scope="session"/&gt;
+&lt;jsp:setProperty name="store" property="*"/&gt;
+
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd"&gt;
+
+&lt;html&gt;
+    &lt;head&gt;
+      &lt;link href="store.css" rel="stylesheet" type="text/css"/&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+        &lt;title&gt;JSP Store&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;h1&gt;JSP Store&lt;/h1&gt;
+
+        &lt;% if (request.getParameter("add") != null) 
+        store.purchase(request.getParameter("add")); %&gt;
+    
+        &lt;% if (request.getParameter("remove") != null) 
+        store.remove(request.getParameter("remove")); %&gt;
+    
+    &lt;h2&gt;Store&lt;/h2&gt;
+    &lt;table&gt;
+     &lt;tr&gt;
+     &lt;th&gt;Quantity&lt;/th&gt;
+     &lt;th&gt;Item&lt;/th&gt;
+     &lt;th&gt;Price&lt;/th&gt;
+     &lt;th&gt;Remove&lt;/th&gt;
+     &lt;/tr&gt;
+    
+    <strong>&lt;c:forEach var="item" items="${store.items}"&gt;</strong>
+        &lt;tr&gt;
+        &lt;td&gt;${item.quantity}&lt;/td&gt;
+        &lt;td&gt;${item.label}&lt;/td&gt;
+        &lt;td&gt;${item.price}&lt;/td&gt;
+        &lt;td&gt;<strong>&lt;form action="main.jsp?add=${item.sku}" method="post"&gt;&lt;input type="submit" value="Add" /&gt;&lt;/form&gt;</strong>&lt;/td&gt;   
+        &lt;/tr&gt;
+    <strong>&lt;/c:forEach&gt;</strong>
+    &lt;/table&gt;
+    
+     &lt;h2&gt;Cart&lt;/h2&gt;
+     &lt;table&gt;
+     &lt;tr&gt;
+     &lt;th&gt;Quantity&lt;/th&gt;
+     &lt;th&gt;Item&lt;/th&gt;
+     &lt;th&gt;Subtotal&lt;/th&gt;
+     &lt;th&gt;Remove&lt;/th&gt;
+     &lt;/tr&gt;
+         <strong>&lt;c:forEach var="item" items="${store.items}"&gt;</strong>
+                     &lt;tr&gt;
+        &lt;td&gt;${item.purchasedQuantity}&lt;/td&gt;
+        &lt;td&gt; ${item.label}&lt;/td&gt;
+        &lt;td&gt;${item.subTotal}&lt;/td&gt;
+        &lt;td&gt;<strong>&lt;form action="main.jsp?remove=${item.sku}" method="post"&gt;&lt;input type="submit" value="Remove" /&gt;&lt;/form&gt;</strong>&lt;/td&gt;
+        &lt;/tr&gt;
+    <strong>&lt;/c:forEach&gt;</strong>
+     &lt;/table&gt;
+
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>The scriptlet contained in main.jsp handles the request parameters and calls the appropriate methods on the store bean as necessary:</p>
+<pre>
+&lt;% if (request.getParameter("add") != null) 
+store.purchase(request.getParameter("add")); %>
+    
+&lt;% if (request.getParameter("remove") != null) 
+store.remove(request.getParameter("remove")); %>
+</pre>
+
+<p>The page is completely refreshed upon the addition or removal of each item. </p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the jspStorePart1 demo for your self by clicking
+            <a href="/jspStorePart1/" target="_blank">here</a>.
+        </li>
+    </ul>
+</div>
+
+<a  name="part2" ></a>
+<h2>Part II: Partial ICEfaces Inclusion</h2>
+
+<p>Using ICEfaces we can dramatically improve the experience of the Store with minimal change to the back end. Instead of refreshing the page and parsing request parameters, we can assign this communication requirement to the ICEfaces bridge. With <span class="code-xml">faces-config.xml</span> configured properly, the ICEfaces components will automatically use the bridge.</p>
+
+<p>To access the store bean with JSF in an ICEfaces include, it must be declared in <span class="code-xml">faces-config.xml</span> as a managed bean:</p>
+
+<pre>
+&lt;managed-bean>
+   &lt;managed-bean-name><strong>store</strong>&lt;/managed-bean-name>
+        &lt;managed-bean-class>
+        <strong>com.icesoft.icefaces.samples.jspStore.Store</strong>
+        &lt;/managed-bean-class>
+   &lt;managed-bean-scope>session&lt;/managed-bean-scope>
+&lt;/managed-bean>
+</pre>
+
+<p>
+Previously, the store was instantiated via the JSP page's &lt;jsp:usebean> tag. This tag checks in the session see if the bean has already been instantiated. Unlike in Part I, the bean does exist in the session as JSF instantiated it. By declaring the bean in the <span class="code-xml">faces-config.xml</span>, both JSF and JSP can share the same session <span class="object-name">Store</span> object.
+</p>
+<p>
+Remove the cart table and replace it with a &lt;jsp:include> tag.
+</p>
+
+</p>
+<pre>
+...
+&lt;h2&gt;Cart&lt;/h2&gt;
+<strong>&lt;jsp:include page="inc/cart.iface" /&gt;</strong>  
+...
+</pre>
+
+<p>
+Now we will use a new file, cart.jsp, for an ICEfaces include. Since we are using ICEfaces, we can use the robust Data Table component, which can handle table properties and iteration. We will use the same property binding, {store.items} that the previous table used:</p>
+<pre>
+&lt;f:view xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ice="http://www.icesoft.com/icefaces/component">
+  &lt;html>
+  &lt;body>
+  &lt;ice:form id="cart">
+
+    <strong>&lt;ice:dataTable value="#{store.items}" var="storeItem"></strong>
+    
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Item" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.label}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Price" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.price}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Quantity" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.purchasedQuantity}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Remove from Cart" />
+        &lt;/f:facet>
+        &lt;ice:commandButton value="Remove"
+          actionListener="#{storeItem.directRemove}" />
+      &lt;/ice:column>
+      
+    <strong>&lt;/ice:dataTable></strong>
+  &lt;/ice:form>
+  &lt;/body>
+  &lt;/html>
+&lt;/f:view>
+</pre>
+
+<p>The only design difference between this Data Table implementation and the table created by the &lt;c:forEach&gt; tag is the way in which the buttons work. With the JSP example, a simple form was used on each row that passed along a URI that identified the object via its hash key. With the Data Table component we can simply reference a method on the StoreItem itself to indicate purchases and removals.</p>
+
+<p>The cart portion will now update without a page refresh, updating its values via the ICEfaces bridge. The shop will still require a page refresh to reflect the changes made by the cart.</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the jspStorePart2 demo for your self by clicking
+            <a href="/jspStorePart2/" target="_blank">here</a>.
+        </li>
+    </ul>
+</div>
+
+<a  name="part3" ></a>
+<h2>Part III: Multiple ICEfaces Includes</h2>
+<p>
+With all of the configuration already in place for the first include, the addition of another is straightforward. Create a new file, shop.jsp, to be used for the second include.
+Replace the remainder of the JSP table generating code in main.jsp with another &lt;jsp:include> tag, this time referencing shop.jsp.
+</p>
+<p>
+The contents of cart.jsp is almost identical to the new file shop.jsp. Instead of Purchased Quantity, Subtotal, and Remove columns, however, we will require Quantity, Price, and Add columns.
+</p>
+
+<pre>
+&lt;f:view xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ice="http://www.icesoft.com/icefaces/component">
+  &lt;html>
+  &lt;body>
+  &lt;ice:form id="shop">
+
+    &lt;ice:dataTable value="#{store.items}" var="storeItem">
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Item" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.label}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Price" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.price}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Quantity" />
+        &lt;/f:facet>
+        &lt;ice:outputText value="#{storeItem.quantity}" />
+      &lt;/ice:column>
+
+      &lt;ice:column>
+        &lt;f:facet name="header">
+          &lt;ice:outputText value="Add to Cart" />
+        &lt;/f:facet>
+        &lt;ice:commandButton value="Add"
+          actionListener="#{storeItem.directPurchase}" />
+      &lt;/ice:column>
+
+    &lt;/ice:dataTable>
+  &lt;/ice:form>
+  &lt;/body>
+  &lt;/html>
+&lt;/f:view>
+
+</pre>
+
+<p>With the page updates handled by the ICEfaces bridge, the JSP scriptlets are no longer required. The main.jsp page contains precious little code after the scriptlets are removed:</p>
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+&lt;html>
+&lt;head>
+  &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  &lt;title>JSP Store&lt;/title>
+&lt;/head>
+    &lt;body>
+        &lt;h1>JSP Store&lt;/h1>
+  
+        &lt;h2>Shop&lt;/h2>
+        &lt;jsp:include page="shop.iface" />
+    
+        &lt;h2>Cart&lt;/h2>
+        &lt;jsp:include page="cart.iface" />
+  
+    &lt;/body>
+&lt;/html>
+</pre>
+
+<p>The store is now entirely fueled by ICEfaces. Addition and removal of items results in flicker-free page updates without refreshing.</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the jspStorePart3 demo for your self by clicking
+            <a href="/jspStorePart3/" target="_blank">here</a>.
+        </li>
+    </ul>
+</div>
+
+<a  name="part4" ></a>
+<h2>Part IV: Server-Initiated Rendering</h2>
+
+<p>Although both includes are functioning, they update only themselves when an action within them is fired. To make both of the includes to update in sync, we can use ICEfaces' Server-Initiated Rendering API. A Render Manager must be declared in <span class="code-xml">faces-config.xml</span>.
+In addition, a new request-scope bean, RenderBean.java, is required for each page to be distinguishable by the Render Manager.</p>
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<pre>
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd"&gt;
+
+&lt;faces-config&gt;
+
+<strong>&lt;managed-bean&gt; 
+    &lt;managed-bean-name&gt;renderMgr&lt;/managed-bean-name&gt; 
+    &lt;managed-bean-class&gt;
+      com.icesoft.faces.async.render.RenderManager
+    &lt;/managed-bean-class&gt; 
+    &lt;managed-bean-scope&gt;application&lt;/managed-bean-scope&gt; 
+&lt;/managed-bean&gt; </strong>
+
+&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;store&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;
+      com.icesoft.icefaces.samples.jspStore.Store
+    &lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
+   <strong> &lt;managed-property&gt; 
+    &lt;property-name&gt;renderManager&lt;/property-name&gt; 
+    &lt;value&gt;#{renderMgr}&lt;/value&gt; 
+  &lt;/managed-property&gt; </strong>
+&lt;/managed-bean&gt;
+  
+<strong>&lt;managed-bean&gt;
+    &lt;managed-bean-name&gt;renderBean&lt;/managed-bean-name&gt;
+    &lt;managed-bean-class&gt;
+      com.icesoft.icefaces.samples.jspStore.RenderBean
+    &lt;/managed-bean-class&gt;
+    &lt;managed-bean-scope&gt;request&lt;/managed-bean-scope&gt;
+&lt;/managed-bean&gt;</strong>
+  
+&lt;/faces-config&gt;
+</pre>
+
+<p>From the Render Manager we will retrieve an On Demand Renderer, which will allow us to request a render pass when needed; for the purpose of the store application, we will request a render whenever an item is purchased or returned. <span class="object-name">RenderBean</span> will implement Renderable, which will allow us to add it to the On Demand Renderer's map. When requestRender() is called on the On Demand Renderer, the <span class="object-name">RenderBean</span>'s in its map will update, causing both includes to execute the JSF lifecycle and update the values on the page. </p>
+
+<p><span class="object-name">RenderBean</span>s can get access to the store by accessing its JSF value binding. Upon construction, the <span class="object-name">RenderBean</span>s will create this binding and then add themselves indirectly to Store's On Demand Renderer using a public method addRenderBean(RenderBean renderBean). Also during construction, the <span class="object-name">RenderBean</span> will call PersistentFacesState.getInstance() to be used by the Render Manager when a render request is processed.</p>
+
+<pre>
+// get the JSF binding to the store bean
+Application application = FacesContext.getCurrentInstance().getApplication();
+Store storeBean = ((Store) application.createValueBinding("#{store}").getValue(FacesContext.getCurrentInstance()));
+    
+// used for rendering
+state = PersistentFacesState.getInstance();
+    
+// add the bean to store's onDemandRenderer
+storeBean.addRenderBean(this);
+</pre>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the jspStorePart4 demo for your self by clicking
+            <a href="/jspStorePart4/" target="_blank">here</a>.
+        </li>
+    </ul>
+</div>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

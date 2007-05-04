@@ -1,0 +1,294 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Drag & Drop tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+
+<p>
+    <b>Lesson:</b> Using Drag & Drop functionality
+</p>
+
+<!-- tutorial content section -->
+
+<h1>How to Use the ICEfaces Drag & Drop Functionality</h1>
+
+<p>
+Drag and Drop can be used in ICEfaces to provide GUI features previously only available in traditional desktop applications. In this tutorial we will begin with making a simple Panel Group draggable and attaching a dragListener to communicate with a simple backing bean. We can then make use of Drag and Drop values to record specific data to the backing bean. Drag and Drop masks will reduce unnecessary communication over the ICEfaces bridge and improve efficiency. Drag and Drop options affect the behaviour of the dragging and dropping itself.
+</p>
+
+<div class="screenshot">
+    <img src="images/dndBasics.png"
+         alt="Drag and Drop">
+</div>
+
+<p>
+Drag and Drop functionality can be added to any Panel Group. These Panel Groups can contain arbitrary ICEfaces components, but simply using images or text is typical.
+</p>
+
+<p>A note about the Z-Index:
+for typical purposes, Draggable Panel Groups should not be obscured by other elements on a page. To avoid this, you can set the Z-Index in the component's CSS style to an arbitrary high number.</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#creatingDraggablePanel">Creating a Draggable Panel</a></li>
+    <li><a href="#dragDropValues">Drag Values and Drop Values</a>
+    </li>
+    <li><a href="#dragDropMasks">Using Drag and Drop Masks</a>
+    </li>
+    <li><a href="#dragDropOptions">Drag and Drop Options</a>
+    </li>
+</ul>
+
+<a name="creatingDraggablePanel">&nbsp;</a>
+<h2>Creating a Draggable Panel</h2>
+
+<p>To make a Panel Group draggable, set its draggable attribute to "true".</p>
+<pre>
+&lt;ice:panelGroup draggable="true">
+&lt;/ice:panelGroup>
+</pre>
+
+<p>We can add some style information and fix the size of the panel to avoid scrollbars introduced with moving a Panel Group that is 100% of the page width. Setting Z-Index ensures that the Draggable Panel is not obscured by other block elements. A background colour makes the outline of the Draggable Panel easily identifiable and distinct from other elements. Finally, the addition of cursor:move to the style will change the mouse cursor to indicate that the Panel can be dragged.</p>
+
+<pre>
+&lt;ice:panelGroup
+style="z-index:10; width:100px; height: 100px; background-color:silver; cursor:move;"
+draggable="true"
+dragListener="#{dragDropBean.dropPanelListener}"&gt;
+&lt;h3&gt;Drag&lt;/h3&gt;
+&lt;/ice:panelGroup&gt;
+</pre>
+<p>A dragListener will receive each and every <span class="object-name">DragEvent</span> by default (see <em>Using Drag and Drop Masks</em>). We can record each event's type and append it to a String, using an outputText to display it.</p>
+
+<pre>
+&lt;h2&gt;Drag message:&lt;/h2&gt;
+&lt;ice:outputText value="#{dragDropBean.dragMessage}" /&gt;
+</pre>
+
+<p>The following code is taken from <span class="code-java">
+    DragDropBean.java</span> which uses a simple dragListener method to record the event types to a String.
+<pre>
+import com.icesoft.faces.component.dragdrop.DragEvent;
+
+...
+
+private String dragMessage = "";
+
+public void dragListener(DragEvent dragEvent){
+        dragMessage += ", " + DragEvent.getEventName(dragEvent.getEventType());
+}
+
+...
+
+public String getDragMessage () {
+        return dragMessage;
+}
+</pre>
+
+<p>In addition to a Draggable Panel, we can add Drop Target Panels. When a Draggable Panel is dropped on a Drop Target Panel, the "dropped" DragEvent will occur. These Drop Targets will also allow the remaining DragEvent's to occur.</p>
+
+<pre>
+&lt;!-- Drop Target 1 --&gt;
+    &lt;ice:panelGroup
+        style="margin:10px; padding:10px; width:300px; height:200px; background-color:orange; color:white;" <strong>dropTarget="true"&gt;</strong>
+    &lt;em&gt;Drop Target 1&lt;/em&gt;
+    &lt;/ice:panelGroup&gt;
+
+&lt;!-- Drop Target 2 --&gt;
+    &lt;ice:panelGroup"
+        style="margin:10px; padding:10px; width:300px; height:200px; background-color:blue; color:white;" <strong>dropTarget="true"&gt;</strong>
+    &lt;em&gt;Drop Target 2&lt;/em&gt;
+&lt;/ice:panelGroup&gt;
+</pre>
+
+
+
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dragDrop-basic demo for your self by clicking
+            <a href="/dragDrop-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the dragDrop-basic source code <a href="dragDrop-basic-tutorial.zip">here</a>.</li>
+        <li>Drag the square to cause Drag and Drop events to occur.</li>
+        <li>Each event type will be appended to the message displayed at the bottom of the page.</li>
+    </ul>
+</div>
+
+<a name="dragDropValues">&nbsp;</a>
+<h2>Drag Values and Drop Values</h2>
+<p>Draggable panels can be assigned values. These values will be contained in the DragEvent received by a dragListener in the Backing Bean. Although they support value binding expressions for their values, a simple String will provide an adequate demonstration of their use.</p>
+
+<p>We can assign each of the Drop Targets the values "Target 1" and "Target 2" for their Drop values. An outputText element on the Draggable Panel itself will display the stored String.</p>
+
+<pre>
+&lt;!-- Drop Target 1 --&gt;
+    &lt;ice:panelGroup <strong>dropValue="Target 1"</strong>
+        style="margin:10px; padding:10px; width:300px; height:200px; background-color:orange; color:white;" dropTarget="true"&gt;
+    &lt;em&gt;Drop Target 1&lt;/em&gt;
+    &lt;/ice:panelGroup&gt;
+
+&lt;!-- Drop Target 2 --&gt;
+    &lt;ice:panelGroup <strong>dropValue="Target 2"</strong>
+        style="margin:10px; padding:10px; width:300px; height:200px; background-color:blue; color:white;" dropTarget="true"&gt;
+    &lt;em&gt;Drop Target 2&lt;/em&gt;
+&lt;/ice:panelGroup&gt;
+</pre>
+
+<div class="screenshot">
+    <img src="images/dndValues.png"
+         alt="Drag and Drop">
+</div>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dragDrop-values demo for your self by clicking
+            <a href="/dragDrop-options-tutorial/"
+               target="_blank">here</a>,
+            or download the dragDrop-values source code <a href="dragDrop-values-tutorial.zip">here</a>.</li>
+<li>Dropping the Draggable Panel on the Drop Targets will assign the stored value.</li>
+<li>The stored value will display on the Draggable Panel</li>
+    </ul>
+</div>
+
+<a name="dragDropMasks">&nbsp;</a>
+<h2>Drag and Drop Masks</h2>
+<p>Drag and Drop masks can be used to prevent certain Drag and Drop events from initiating a server round-trip. By masking unnecessary events, the application will make more efficient use of resources and increase performance.</p>
+
+<p>The attributes dropMask and dragMask of a Panel Group can be assigned a comma-separated list of values corresponding to the different event masks.</p>
+
+<ul>
+<li><strong>hover_start:</strong> started to hover over a drop target</li>
+<li><strong>hover_end</strong> stopped hovering over a drop target</li>
+<li><strong>dragged</strong> is being dragged (not necessarily moving)</li>
+<li><strong>dropped</strong> has been dropped on a drop target</li>
+<li><strong>drag_cancel</strong> has been dropped but not on a drop target</li>
+</ul>
+
+<p>Typically, we will only want to listen for only one or two of these events. In this tutorial we're only interested in "dropped" events.</p>
+
+<pre>
+&lt;!-- Draggable Panel --&gt;
+&lt;ice:panelGroup
+        style="z-index:10; width:100px; height: 100px; background-color:silver; cursor:move;"
+        draggable="true" dragMask="hover_start, dragging, hover_end, drag_cancel"
+        dragListener="#{dragDrop.dragListener}"&gt;
+&lt;h3&gt;Drag Me&lt;/h3&gt;
+&lt;ice:outputText value="#{dragDrop.dropValue}" /&gt;
+ &lt;/ice:panelGroup&gt;
+</pre>
+
+
+<div class="screenshot">
+    <img src="images/dndMasks.png"
+         alt="Drag and Drop">
+</div>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dragDrop-options demo for your self by clicking
+            <a href="/dragDrop-masks-tutorial/"
+               target="_blank">here</a>,
+            or download the dragDrop-masks source code <a href="dragDrop-masks-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<a name="dragDropOptions">&nbsp;</a>
+<h2>Drag and Drop Options</h2>
+
+<p>Similar to the Drag and Drop masks, Drag and Drop options are defined in a comma-separated list of values for the attribute dragOptions. These options affect the visual nature of the dragging itself:</p>
+
+<ul>
+<li><strong>revert</strong> - when a draggable is dropped the draggable will move back to it's starting position.</li>
+<li><strong>ghosting</strong> - when a draggable is dragged a ghost copy is left in the original position.</li>
+<li><strong>solid</strong> - do not make the panel transparent when dragging.</li>
+</ul>
+
+<div class="screenshot">
+    <img src="images/dndOptions.png"
+         alt="Drag and Drop">
+</div>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the dragDrop-options demo for your self by clicking
+            <a href="/dragDrop-options-tutorial/"
+               target="_blank">here</a>,
+            or download the dragDrop-options source code <a href="dragDrop-options-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+
+<a name="otherDragDropExamples">&nbsp;</a>
+<h2>Examples that Use Drag and Drop</h2>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Drag and Drop example illustrated by a store where items can be dragged to an icon to add them to a cart.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Messages can be dragged and dropped to folders.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dragDrop2</td>
+            <td class="bodySource">Available in release bundles (tutorial)</td>
+            <td class="bodyNotes">Simple drag and drop example.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dragDrop-basic</td>
+            <td class="bodySource"><a href="dragDrop-basic-tutorial.zip" >dragDrop-basic source code</a></td>
+            <td class="bodyNotes">Basic example of how to setup a Draggable Panel and its backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dragDrop-values</td>
+            <td class="bodySource"><a href="dragDrop-values-tutorial.zip" >dragDrop-values source code</a></td>
+            <td class="bodyNotes">Drag and Drop values are used to assign a String in a backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dragDrop-masks</td>
+            <td class="bodySource"><a href="dragDrop-masks-tutorial.zip" >dragDrop-masks source code</a></td>
+            <td class="bodyNotes">Drag and Drop masks are used to prevent unneccessary DragEvent's from firing.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">dragDrop-options</td>
+            <td class="bodySource"><a href="dragDrop-options-tutorial.zip" >dragDrop-options source code</a></td>
+            <td class="bodyNotes">Different Drag and Drop options are shown (ghosting, revert, etc.).</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+</body>
+</html>

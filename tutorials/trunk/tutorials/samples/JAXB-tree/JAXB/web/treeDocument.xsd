@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            >
+
+  <xs:element name="Fleet">
+      <xs:complexType>
+          <xs:sequence>
+              <xs:element name="ships">
+                  <xs:complexType>
+                      <xs:sequence>
+                          <xs:element name="ship" type="shipType" minOccurs="1" maxOccurs="unbounded"/>
+                      </xs:sequence>
+                  </xs:complexType>
+              </xs:element>
+          </xs:sequence>
+       </xs:complexType>   
+  </xs:element>
+  
+  <xs:complexType name="shipType">
+      <xs:sequence>
+          <xs:element name="name" type="xs:string"/>
+          <xs:element name="registry" type="xs:long"/>
+          <xs:element name="crewSize" type="xs:long"/>
+          <xs:element name="description" type="xs:string"/>
+          <xs:element name="shipFleetType"> 
+	         <xs:simpleType>
+	           <xs:restriction base="xs:NCName">
+	             <xs:enumeration value="defense" />
+	             <xs:enumeration value="science" />
+	             
+	           </xs:restriction>
+	          </xs:simpleType>
+     </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string"/>
+  </xs:complexType>
+  
+  <xs:simpleType name="shipFleetType">
+      <xs:restriction base = "xs:string">
+          <xs:enumeration value="defense"/>
+          <xs:enumeration value= "science"/>
+      </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

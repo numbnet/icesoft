@@ -1,0 +1,336 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+    <head>
+        <title>Validator Tutorials</title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body>
+        <!-- header section -->
+        <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+            <a href="index.html"> Table of Contents</a>
+        </p>
+        <hr/>
+
+        <p>
+            <b>Lesson:</b> Using the Validator component
+        </p>
+
+        <!-- tutorial content section -->
+
+        <h1>How to Use Validators</h1>
+
+        <p>
+            The <span class="object-name">validator</span> component is used to verify that
+            certain data is within the specified parameters set by the developer.
+
+            There are 3 different types of validators:
+            <ul>
+                <li>DoubleRangeValidators</li>
+                <li>LengthValidators</li>
+                <li>LongRangeValidators</li>
+            </ul>
+            These will be explained in a bit.
+        </p>
+
+        <p>This tutorial will also discuss the four forms of Validation:</p>
+        <ul>
+            <li><a href="#built-invalidation">Built-In Validation</a></li>
+            <li><a href="#applevelvalidation">Application Level Validation</a>
+            </li>
+            <li><a href="#customvalidation">Custom Validation</a></li>
+            <li><a href="#backingbeanvalidation">Validation Methods in Backing Beans</a></li>
+        </ul>
+        <p>As well as sections on:</p>
+        <ul>
+            <li><a href="#messages">Messages</a></li>
+            <li><a href="#partialsubmit">PartialSubmit</a></li>
+        </ul>
+
+        <p>
+            First, we will explain the three types of validators.
+            <ul>
+                <li>DoubleRangeValidators - checks whether the local value of a component is within a certain
+                    range. The value must be  a floating point, or be convertable to
+                a floating point.</li>
+                <li>LengthValidators - checks whether the local value of a component is within a certain range.
+                The value must be a String.</li>
+                <li>LongRangeValidator - checks whether the local value of a component is within a certain range.
+                The value must be any numeric type or String that can be converted to a long.</li>
+            </ul>
+
+        </p>
+
+        <a name="built-invalidation"><h2>Built-In Validation(Standard)</h2></a>
+
+        <p>With the built-in validation(or standard validation) it uses the default
+            JSF validation messages which is good for fast validation, but may lack in
+            terms of being specific to your applicaiton. For this you may want to use
+            custom validation which is discussed later on.
+
+        </p>
+        <p>In our demo, a bean named user has been defined in the faces.config file as a session
+            scope bean.  The ice:inputText component will take the users age.
+        </p>
+        <p>If you attempt to input an age that is less than 1 or greater than 120 you will get the
+            standard JSF error message.
+        </p>
+        <p>In the demo, we have added an ice:outputText component at the bottom, to show the age you input.
+        </p>
+        <p> The following is the basic code snippet used for the standard validation:</p>
+        <pre>
+        &lt;!-- age validator --&gt;
+
+         &lt;ice:inputText id="age" value="#{user.age}"&gt;
+            &lt;f:validateLongRange maximum="120" minimum="1"/&gt;
+         &lt;/ice:inputText&gt;
+         &lt;ice:message style="color: red;" id="ageError" for="age"/&gt;
+
+
+        </pre>
+        <br/>
+
+        <div class="demo-instruction">
+            <h3>Download the Demo:</h3>
+            <ul>
+                <li>Download the validators-standard source code <a
+                    href="validators-standard-tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
+
+        <a name="applevelvalidation"><h2>Application Level Validation</h2></a>
+
+        <p>This type of validation is a little more custom than the standard validation.
+            With this type of validation, the message and validation is actually done in one
+            of the methods in the backing bean(usually the action method).
+        </p>
+        <p>eg. The user clicks the 'Register' button which uses the register() method.
+        </p>
+        <pre>
+    public String register(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(StringUtils.isEmpty(user.getName())){
+            FacesMessage message = new FacesMessage();
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            message.setSummary("Name Field is Blank");
+            message.setDetail("Name Field is Blank..");
+            context.addMessage("tutorialForm:name",message);
+            return "error"
+        }
+        return "success"
+    }
+
+
+        </pre>
+
+        <div class="demo-instruction">
+            <h3>Download the Demo:</h3>
+            <ul>
+                <li>Download the validator-app-level source code <a
+                    href="validators-app-level-tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
+
+        <a name="customvalidation"><h2>Custom Validation Components</h2></a>
+
+        <h4>Four Steps:</h4>
+
+        <p><li>1) Create a class that implements the Validator interface</li>
+            <li>2) Implement the validate() method</li>
+            <li>3) Register your custom validator in the faces.config</li>
+        <li>4) Use the &lt;f:validator/&gt; tag in your JSP's</li></p>
+
+        <h5>Implement the Validator interface</h5>
+        <pre>
+    public class PhoneNumberValidator implements Validator{
+    /** phone number in form of xxx-xxxx*/
+    private static final String PHONE_NUM = "[0-9]{3}[-]{1}[0-9]{4}";
+
+    ...
+    }
+
+        </pre>
+        <h5>Implement the validate() method</h5>
+        <pre>
+        public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException{
+
+            /* create a mask*/
+            Pattern mask = Pattern.compile(PHONE_NUM);
+
+            /* retrieve the string value of the field*/
+            String phoneNumber = (String)value;
+
+            /*check to ensure that the value is a phone number*/
+            Matcher matcher = mask.matcher(phoneNumber);
+
+            if(!matcher.matches()){
+
+                FacesMessqage msg = new FacesMessage();
+                message.setDetail(" Phone number not in valid format");
+                message.setSumamry("Phone number not in valid format");
+                message.setSeverity(FacesMessage.SEVEROTY_ERROR);
+                throw new ValidatorException(message);
+            }
+        }
+
+
+        </pre>
+        <h5>Register the Validator in the faces.config</h5>
+        <pre>
+        &lt;validator&gt;
+            &lt;validator-id&gt;phoneNumberValidator&lt;/validator-id&gt;
+            &lt;validator-class&gt;com.icesoft.icefaces.tutorial.validators.custom.PhoneNumberValidator&lt;/validator-class&gt;
+        &lt;/validator&gt;
+        </pre>
+
+        <h5>Use the Tag in your JSP</h5>
+
+        <pre>
+        &lt;ice:inputText id=phoneNumber value="#{user.phoneNumber}"&gt;
+            &lt;f:validator validatorId="phoneNumberValidator"/&gt;
+        &lt;/ice:inputText&gt;
+        </pre>
+
+        <div class="demo-instruction">
+            <h3>Download the Demo:</h3>
+            <ul>
+                <li>Download the validators-custom source code <a
+                    href="vvalidators-custom-tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
+
+        <a name="backingbeanvalidation"><h2>Validation in Backing Beans</h2></a>
+
+        <p>
+            Instead of having a seperate validator class, you can also set up custom validator methods
+            within your backing bean.
+
+            eg.
+        </p>
+        <pre>
+    public void validateEmail(FacesContext context, UIComponent validate, Object value){
+        String email = (String)value;
+
+        if(email.indexOf('@')==-1){
+            ((UIInput)validate).setValid(false);
+            FacesMessage msg = new FacesMessage("Invalid Email");
+            context.addMessage(validate.getClientId(context), msg);
+        }
+    }
+        </pre>
+        <h5>JSP Tag</h5>
+        <pre>
+    &lt;ice:inputText id="email" value="#{user.email}" validator="#{user.validateEmail}" required="true"/&gt;
+        </pre>
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>See the validators-backing-beans demo for your self by clicking
+                    <a href="../validators-backing-bean/web/validators-backing-bean.iface"
+                       target="_blank">here</a>,
+                    or download the validators-backing-beans source code <a
+                        href="validators-backing-bean-tutorial.zip">here</a>.
+                </li>
+            </ul>
+        </div>
+
+        <a name="messages"><h2>Messages</h2></a>
+        <p>
+            All of the above demos include a message of some sorts needing to tie into the page
+            from the backing bean. Below is a simple eg. from the Backing Bean Validator demo on how
+            the messages were implemented.
+
+        </p>
+        <h5>
+            Backing Bean Code
+        </h5>
+        <pre>
+             if(email.indexOf('@')==-1){
+            ((UIInput)validate).setValid(false);
+            <SPAN style="BACKGROUND-COLOR:#a4bdd2">FacesMessage msg = new FacesMessage("Invalid Email");</SPAN>
+            <SPAN style="BACKGROUND-COLOR:#a4bdd2">context.addMessage(validate.getClientId(context), msg);</SPAN>
+            }
+
+
+        </pre>
+        <h5>JSP Tag</h5>
+        <pre>
+            &lt;ice:inputText id="email" value="#{user.email}" validator="#{user.validateEmail}" required="true"/&gt;
+
+                <SPAN style="BACKGROUND-COLOR:#a4bdd2">&lt;ice:message id="emailError" for="email"/&gt;</SPAN>
+        </pre>
+        <p>
+            The message tag comes AFTER the component you want to tie it to, with a 'for'
+            reference to the components id.
+
+
+        </p>
+        <a name="partialsubmit"><h2>Partial Submit</h2></a>
+        <p>
+            In the code for the Standard(or Built-In) Validation demo, we implemented the partialSubmit.
+            This allows for the error message to be see as soon as the focus is off the inputText component,
+            not just when the submit button is clicked. This allows for 'real-time' validation without having to
+            submit the form to check if everything valid. We implemented this simply by adding a partialSubmit
+            attribute to the ice: inputText. As shown below:
+
+        </p>
+        <pre>
+             &lt;ice:inputText id="age" value="#{user.age}" <SPAN style="BACKGROUND-COLOR:#a4bdd2">partialSubmit="true"</SPAN>&gt;
+                    &lt;f:validateLongRange maximum="120" minimum="1"/&gt;
+                &lt;/ice:inputText&gt;
+        </pre>
+
+<!-- links to examples -->
+<a name="exampleTabsets"><h2>Examples Using Panel Tabsets</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td class="bodyExample">WebMC</td>
+            <td class="bodySource">Available on the demo site</td>
+            <td class="bodyNotes">Validators are integrated into the fields for email and password.</td>
+        </tr>
+
+        <tr>
+            <td class="bodyExample">validators-standard</td>
+            <td class="bodySource"><a href="validators-standard-tutorial.zip" >validators-standard source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup standard validators.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">validators-custom</td>
+            <td class="bodySource"><a href="validators-custom-tutorial.zip" >validators-custom source code</a></td>
+            <td class="bodyNotes">Demonstration of how to setup custom validators.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">validators-backing-bean</td>
+            <td class="bodySource"><a href="validators-backing-bean-tutorial.zip" >validators-backing-bean source code</a></td>
+            <td class="bodyNotes">Example showing to set up a validator in the backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">validators-app-level</td>
+            <td class="bodySource"><a href="validators-app-level-tutorial.zip" >validators-app-level source code</a></td>
+            <td class="bodyNotes">This example explains how to set up validators at the application level.</td>
+        </tr>
+    </tbody>
+</table>
+
+
+        <!-- footer section -->
+        <hr/>
+
+        <p class="tutorialFooterText">The ICEfaces Tutorial
+            <br/>
+            <a href="index.html"> Table of Contents</a>
+        </p>
+
+        <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+    </body>
+</html>

@@ -1,0 +1,106 @@
+<project name="tutorial" default="build.war">
+
+    <!-- The basic build.properties file for customization -->
+    <property file="build.properties"/>
+
+    <!-- list of properties -->
+    <property name="build-common.xml"
+              value="../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+
+    <property name="build.dir" location="build"/>
+    <property name="src.dir" location="src"/>
+    <property name="web.content.dir" location="web"/>
+
+    <property name="web.inf.dir" location="${build.dir}/WEB-INF"/>
+    <property name="classes.dir" location="${web.inf.dir}/classes"/>
+    <property name="app.lib.dir" location="${web.inf.dir}/lib"/>
+
+    <property name="dist.dir" location="dist"/>
+    <property name="deploys.dir" location="deploys"/>
+    <property name="src.dir" location="src"/>
+
+    <!-- Copy downloadables from examples  -->
+    <target name="build.war" depends="build.examples, copy.project.examples">
+
+        <mkdir dir="${dist.dir}" />
+
+        <war basedir="${build.dir}"
+             destfile="${dist.dir}/${ant.project.name}.war"
+             duplicate="fail"
+             webxml="${web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
+
+        </war>
+    </target>
+
+    <!-- Copy web from examples  -->
+    <target name="clean" depends="clean.examples">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <!-- Copy downloadables from examples  -->
+    <target name="copy.project.examples">
+
+        <!-- copy tutorial web project -->
+        <copy todir="${build.dir}" overwrite="true">
+            <!-- copy images -->
+            <fileset dir="${web.content.dir}" includes="**/*"/>
+        </copy>
+
+        <!-- copy src zips and wars -->
+        <copy todir="${build.dir}" flatten="true" overwrite="true">
+            <!-- copy src zips-->
+            <fileset dir=".">
+                <include name="*/*/*/dist/*.zip"/>
+            </fileset>
+
+            <!-- copy html docs-->
+            <fileset dir="components/" includes="*/**/*.html"/>
+            <fileset dir="samples/" includes="*/**/*.html"/>
+        </copy>
+
+        <!-- copy deployable wars -->
+        <copy todir="${dist.dir}" flatten="true" overwrite="true">
+            <!-- copy deployable wars -->
+            <fileset dir=".">
+                <include name="*/*/*/dist/*.war"/>
+            </fileset>
+        </copy>
+
+        <!-- copy images to image folder -->
+        <copy todir="${build.dir}/images" flatten="true" overwrite="true">
+            <!-- copy images -->
+            <fileset dir="components/" includes="*/docs/images/*.*p*"/>
+            <fileset dir="samples/" includes="*/docs/images/*.*p*"/>
+        </copy>
+
+    </target>
+
+    <!--
+        builds the examples
+    -->
+    <target name="build.examples" >
+        <subant target="build.examples">
+            <property name="build-common.xml" value="${build-common.xml}"/>
+            <fileset dir="." includes="*/*/build.xml" />
+        </subant>
+    </target>
+
+    <!--
+       Cleans only the copied wars from build.examples.
+    -->
+    <target name="clean.examples" >
+        <subant target="clean">
+            <property name="build-common.xml" value="${build-common.xml}"/>
+            <fileset dir="." includes="*/*/build.xml" />
+        </subant>
+    </target>
+
+
+</project>
+
+
+

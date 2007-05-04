@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Columns Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the columns component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Columns Component</h1>
+
+<p>
+The <span class="object-name">columns</span> component can be used to display
+unique or repeating information backed by a row and column model in a dataTable.
+Basically by linking the front end columns component directly to a bean level model,
+the developer has greater control over the contents of their tables.
+</p><p>
+The columns component can be used as a replacement for the standard <span class="object-name">h:column</span> child
+of a standard dataTable. The following screenshot is of the <span class="object-name">ice:columns</span> component demo
+in the component-showcase. Notice the ability to increase or decrease the number of columns displayed.
+</p>
+
+<div class="screenshot">
+    <img src="images/columns_showcase_screenshot.png"
+       title="columns component in Component Showcase application"
+         alt="columns component in Component Showcase application" width="751" height="593"
+         border="1"/>
+</div>
+
+<p>
+To use the full potential of the <span class="object-name">columns</span> component, a DataModel for the rows and columns should be
+specified in a backing bean. Through the DataModels, the developer can specify the information that will be present in the table.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#columnsBasic">Creating a Basic Columns table</a></li>
+    <li><a href="#columnsCross">Creating a Cross Columns table</a></li>
+    <li><a href="#columnsUpdate">Creating an Updating Columns table</a></li>
+    <li><a href="#columnsDynamic">Creating a Dynamic Columns table</a></li>
+    <li><a href="#exampleColumns">Examples Using Columns</a></li>
+</ul>
+
+<!-- tutorial: columns-basic -->
+<a name="columnsBasic"><h2>Creating a Basic Columns table</h2></a>
+
+<p>
+The creation of a basic <span class="object-name">columns</span> component with custom non-changing data is a simple 3 step process.<br/>
+<ol><li>Create a String list for rows and columns</li>
+<li>Wrap each list in a DataModel</li>
+<li>Bind the DataModels to the page level dataTable and columns</li></ol>
+In this next example the page contains a numbered list of repeating <i>Odd</i> and <i>Even</i> values.
+</p><p>
+The backend DataModels are created through the above process. Example code from the demo bean would be similar to:</p>
+
+<pre>
+    private String[] index = {"1.", "2.", "3.", "4."};
+    private String[] heading = {"Odd", "Even"};
+    private DataModel rowModel = new ArrayDataModel(index);
+    private DataModel columnsModel = new ArrayDataModel(heading);
+</pre>
+
+<p>
+Once the backend objects have been created, they must be bound to the page level dataTable and columns. This is done through the <span class="object-name">value</span>
+attribute of the component, as shown below:</p>
+
+<pre>
+    &lt;ice:dataTable value="#{backing.rowModel}" var="row"&gt;
+        &lt;ice:column&gt;
+            &lt;ice:outputText value="#{row}"/&gt;
+        &lt;/ice:column&gt;
+        &lt;ice:columns value="#{backing.columnsModel}" var="col"&gt;                                        
+            &lt;ice:outputText value="#{col}"/&gt;
+        &lt;/ice:columns&gt;
+    &lt;/ice:dataTable&gt;
+</pre>
+
+<p>
+As you can see, the row DataModel is assigned to the parent dataTable, and the columns DataModel as a value of the ice:columns component.
+By using a var declaration, we can output the current value of the DataModel as the component is iterated through during the rendering process.
+</p>
+
+<p>
+The example page uses the above data for the rows and columns, as well as some minor styling. When viewed, it appears similar to:</p>
+    
+<div class="screenshot">
+    <img src="images/basic-tutorial_screenshot.png"
+       title="Basic Columns Example"
+         alt="Basic Columns Example" width="420" height="179"
+         border="1"/>
+</div>
+
+<div class="demo-instruction">
+    <h3>Download demo:</h3>
+    <ul>
+        <li>Download the columns-basic source code <a href="columns-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+The DataModels used in the backing are simple to create, and the next tutorial will demonstrate calculating page level information from the status
+of the backend objects.
+</p>
+
+<!-- tutorial: columns-cross -->
+<a name="columnsCross"><h2>Creating a Cross Columns table</h2></a>
+
+<p>
+This example will create another columns component, but without the use of static data. Instead the each row will be filled with color coded true / false
+values for each web browser. The finished product will look similar to:</p>
+
+<div class="screenshot">
+    <img src="images/cross-tutorial_screenshot.png"
+       title="Cross Columns Example"
+         alt="Cross Columns Example" width="556" height="172"
+         border="1"/>
+</div>
+
+<p>
+The page level changes are minimal, the main addition is of the color coded value instead of a plain row / column output. This is achieved through a
+situational outputText, as shown below:</p>
+
+<pre>
+    &lt;ice:outputText value="#{backing.supportInfo}" style="color:#{backing.supportInfo eq 'true'?'green':'red'};"/&gt;
+</pre>
+
+<p>
+Basically we apply either a red or green CSS font color depending on the status of the supportInfo variable in the backing bean. When we look at the
+backing bean for this example, the power of linking the columns component to a DataModel becomes apparent. The getSupportInfo method is the main change
+since the last example, and contains code similar to the following:</p>
+
+<pre>
+    public Object getSupportInfo(){
+        DataModel rowDataModel = getRowModel();
+        if (rowDataModel.isRowAvailable())
+        {
+          Object event = getRowModel().getRowData();
+          DataModel columnsDataModel = getColumnsModel();
+          if (columnsDataModel.isRowAvailable())
+          {
+            Object browser = columnsDataModel.getRowData();
+            return eventSupport.get(event+browser.toString());
+          }
+        }
+        return null;
+    }
+</pre>
+
+<p>
+The above method will use the current row and column DataModel to retrieve the support information for that index. Basically we get the current
+row, ensure it is available (which means the page has loaded it, the component is rendered, etc.), and then do the same for the column. With the
+combined row / column data, we can check the support info string and return a proper result to the page.
+</p>
+
+<div class="demo-instruction">
+    <h3>Download the demo:</h3>
+    <ul>
+        <li>Download the columns-cross source code <a href="columns-cross-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+So far the examples use static data that does not change one generated. The next tutorial will detail how columns data can be updated from the backend.
+</p>
+
+<!-- tutorial: columns-update -->
+<a name="columnsUpdate"><h2>Creating an Updating Columns table</h2></a>
+
+<p>
+Similar to the previous examples, an updating columns component uses the same initial approach to the setup of pages and beans. The only difference
+is we will add a commandButton that will cause variables in the backing bean to change. This is reflected on the page as:</p>
+
+<pre>
+    &lt;ice:commandButton value="Update" actionListener="#{backing.next}"/&gt;
+</pre>
+
+<p>
+Then the method called from this page level commandButton will need to be added to the backing bean. The goal of the button was to force the data
+in the columns component to update, and so the next() method will simply increase an integer (which will later be added to the page so the changes
+can be seen).
+</p>
+
+<pre>
+    public void next(ActionEvent event) {
+        startFrom += 1+randomizer.nextInt(4);
+    }
+</pre>
+
+<p>
+As you can see the created method is very simple, basically adding a small random number to the startFrom integer. To allow the user to see the changes
+when they press the 'Update' button, the startFrom value will be displayed inside a columns component in the page, as shown below:
+</p>
+
+<pre>
+    &lt;ice:columns value="#{backing.columnsModel}" var="headings"&gt;                                        
+        &lt;f:facet name="header"&gt;
+            &lt;h:outputText value="#{headings}" /&gt;
+        &lt;/f:facet&gt;
+        &lt;ice:outputText value="#{backing.startFrom}"/&gt;
+    &lt;/ice:columns&gt;
+</pre>
+
+<p>
+The end result is that when the user presses the 'Update' button, the next() method is called, which updates an integer. The changed value is automatically
+displayed as the contents of a column component. Using this basic understanding, it's possible for a developer to update statistics from a real time persistence
+layer, etc.
+</p>
+
+<p>
+When the above elements have been added, a page similar to the following is created:
+</p>
+
+<div class="screenshot">
+    <img src="images/update-tutorial_screenshot.png"
+       title="Updating Columns Example"
+         alt="Updating Columns Example" width="631" height="202"
+         border="1"/>
+</div>
+
+<div class="demo-instruction" >
+    <h3>Download the demo:</h3>
+    <ul>
+        <li>Download the columns-update source code <a href="columns-update-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>As was shown, updating the data contents of a columns component was simple. But a developer may also wish to modify the attributes of the columns
+on the fly, which will be demonstrated in the next example.</p>
+
+<!-- tutorial: columns-dynamic -->
+<a name="columnsDynamic"><h2>Creating a Dynamic Columns table</h2></a>
+
+<p>
+Due to the coupling of a flexible DataModel and powerful front end columns component, a developer has the option to dynamically modify not
+only the contents of the table, but also the attributes of the component. To demonstrate this, we will look in detail at allowing the user to
+increase or decrease the number of columns present on the page.
+</p>
+
+<p>
+The first step is to add a friendly message and input field for the new number of columns. Alternatively a select input component or similar element
+could be used on the page. In addition standard JSF validators could be attached to the input, as compared to the rudimentary method of performing
+backend level checks. An example of the use prompt and input field used is given below:
+</p>
+
+<pre>
+    &lt;ice:outputText value="Enter the number of columns to display (between 1 to 8)"/&gt;
+    &lt;ice:inputText value="#{backing.numberOfColumns}" valueChangeListener="#{backing.change}"/&gt;
+</pre>
+
+<p>
+Next we will need to fill in the change() method that will be called when the value inside the inputText component is changed. The overall purpose of
+this method is to ensure a valid number of columns was entered, and if present then update the existing columns component to reflect the new count.
+This update will be done through modifying the backend DataModel, which will be shown in detail later. For now, an example of what the change() method
+would look like follows:
+</p>
+
+<pre>
+    public void change(ValueChangeEvent event) {
+        int columnValue = (event.getNewValue() != null ?
+            Integer.parseInt(event.getNewValue().toString()) : 7);
+            
+        if ((columnValue &gt;= 1) && (columnValue &lt;= 8)) {
+            numberOfColumns = columnValue;
+            updateModel();
+        }
+    }
+</pre>
+
+<p>
+As you can see, the bean handles validation instead of the page (again, this is just for simplicity). If the new number of columns is valid, we store it in
+the session bean and update the DataModel, through the self explanator updateModel() method. The contents of this method would be similar to the following:
+</p>
+
+<pre>
+    public void updateModel() {
+        String[] array = new String[numberOfColumns];
+        for (int i = 0; i &lt; numberOfColumns; i++) {
+            array[i] = String.valueOf(i+1);
+        }
+        columnsModel = new ArrayDataModel(array);
+    }
+</pre>
+
+<p>
+Basically, we take the newly updated numberOfColumns variable and recreate the columns DataModel, with numbers inserted for each line of header text.
+</p>
+
+<p>
+When the above steps have been implemented, an application similar in appearance to the following would be produced:
+</p>
+
+<div class="screenshot">
+    <img src="images/dynamic-tutorial_screenshot.png"
+       title="Dynamic Columns Example"
+         alt="Dynamic Columns Example" width="644" height="235"
+         border="1"/>
+</div>
+
+<p>
+You may have noticed a very nice benefit of using the columns component in this way is that the backend is all that needs to be modified, the page level
+component itself hasn't changed much beyond the first example. This makes the many available changes to the DataModel a useful option to avoid having to
+update several pages.
+</p>
+
+<div class="demo-instruction" >
+    <h3>Download the demo:</h3>
+    <ul>
+        <li>Download the columns-dynamic source code <a href="columns-dynamic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<!-- links to examples -->
+<a name="exampleColumns"><h2>Examples Using Columns</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Columns example which with alphabetical data in a dynamically sizeable columns based table.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">columns-basic</td>
+            <td class="bodySource"><a href="columns-basic-tutorial.zip" >columns-basic source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup a basic hard coded columns component.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">columns-cross</td>
+            <td class="bodySource"><a href="columns-cross-tutorial.zip" >columns-cross source code</a></td>
+            <td class="bodyNotes">Example showing how to insert custom on the fly data into a columns component.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">columns-dynamic</td>
+            <td class="bodySource"><a href="columns-dynamic-tutorial.zip" >columns-dynamic source code</a></td>
+            <td class="bodyNotes">Demonstration of how the size and number of columns can be dynamic modified.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">columns-update</td>
+            <td class="bodySource"><a href="columns-update-tutorial.zip" >columns-update source code</a></td>
+            <td class="bodyNotes">This example shows how the data inside a columns component can be updated to reflect user initiated changes.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>

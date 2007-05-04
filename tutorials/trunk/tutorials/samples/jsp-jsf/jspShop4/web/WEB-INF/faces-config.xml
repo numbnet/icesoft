@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+
+<managed-bean> 
+  <managed-bean-name>renderMgr</managed-bean-name> 
+  <managed-bean-class>com.icesoft.faces.async.render.RenderManager
+  </managed-bean-class> 
+  <managed-bean-scope>application</managed-bean-scope> 
+</managed-bean> 
+
+  <managed-bean>
+    <managed-bean-name>store</managed-bean-name>
+    <managed-bean-class>
+      com.icesoft.icefaces.samples.jspStore.Store
+    </managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+    <managed-property> 
+    <property-name>renderManager</property-name> 
+    <value>#{renderMgr}</value> 
+  </managed-property> 
+  </managed-bean>
+  
+    <managed-bean>
+    <managed-bean-name>renderBean</managed-bean-name>
+    <managed-bean-class>
+      com.icesoft.icefaces.samples.jspStore.RenderBean
+    </managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  
+</faces-config>

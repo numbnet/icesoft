@@ -1,0 +1,113 @@
+
+<!--authored by Darren Northcott-->
+<f:view 
+        
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:c="http://java.sun.com/jstl/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <html>
+        
+        <head>
+            
+            <link href="./xmlhttp/css/royale/royale.css" rel="stylesheet" type="text/css" />
+        </head>
+        <body>
+            <ice:form>
+                <ice:panelGroup>
+                    <ice:outputText value="JAXB" style="font-weight:bold; border: 1px solid black; background-color: #a4bdd2; padding-right:2px; padding-left:2px"/>
+                    <ice:outputText value="Tree Tutorial" style="border:1px solid black; padding-right:2px; padding-left:2px; background-color:#ccd269"/>
+                    <br/>
+                   <br/>
+                   
+                    <ice:outputText value=" This tutorial populates a tree using JAXB to unmarshal the data in the xml file"
+                                    style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                </ice:panelGroup>
+                <br/>
+                <ice:panelGrid style="width:210px; border:0px" columns="2"  border="1">
+                    <ice:panelGroup style="background-color:#a4bdd2; width:150px; height:200px">    
+                        
+                        <ice:panelGroup styleClass="treeContainer">      
+                            
+                            <ice:tree id="tree"
+                                      value="#{treeBean.model}"
+                                      var="item"
+                                      hideRootNode="false"
+                                      hideNavigation="false"
+                                      imageDir="./xmlhttp/css/xp/css-images/" >
+                                <ice:treeNode>
+                                    <f:facet name="content">
+                                        <ice:panelGroup style="display: inline">
+                                            
+                                        <ice:commandLink value="#{item.userObject.text}" actionListener="#{panelStack.selectedPanelChangedAction}" style="font-weight:bold; border:1px solid black; padding-right:2px; padding-left:2px;background-color:#ccd269" >
+                                            <f:param value="#{item.userObject.text}" name="ships"/>
+                                        </ice:commandLink>
+                                            
+                                        </ice:panelGroup>
+                                    </f:facet>
+                                </ice:treeNode>
+                            </ice:tree>
+                            
+                        </ice:panelGroup>
+                        
+                    </ice:panelGroup>
+                    
+                    <ice:panelGroup style="background-color:#ccd269; width:350px; height:200px">
+                        
+                        <ice:panelStack selectedPanel="#{panelStack.selectedPanel}" >
+                            
+                            <ice:panelGroup id="Fleet">
+                               <ice:outputText value="The 31st Exploratory Fleet" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/> 
+                               <br/><br/>
+                                <ice:panelGroup style=" border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px">
+                                    <ice:outputText value="This Fleet contains 2 ships: the USS-JAXB and the USS-ICE.
+                                                    Both are highly advanced and useful in many different scenarios. Use the tree links on the left to
+                                                    see the details of the different ships." />
+                                </ice:panelGroup>
+                            </ice:panelGroup>
+                            
+                            <ice:panelGroup id="USS-JAXB">
+                                <ice:outputText value="Name:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship1.name}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Registry:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship1.registry}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Crew Size:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship1.crewSize}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Description:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship1.description}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Ship Type:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship1.shipFleetType}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                            </ice:panelGroup>
+                            <ice:panelGroup id="USS-ICE">
+                                <ice:outputText value="Name:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship2.name}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Registry:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship2.registry}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Crew Size:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship2.crewSize}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Description:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship2.description}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                                <br/><br/>
+                                <ice:outputText value="Ship Type:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; padding-left:2px"/>
+                                <ice:outputText value="#{treeBean.ship2.shipFleetType}" style="border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"/>
+                            </ice:panelGroup>
+                        </ice:panelStack>
+                        
+                    </ice:panelGroup>
+                    
+                </ice:panelGrid>
+                
+                
+                
+            </ice:form>
+        </body>
+    </html>
+</f:view>

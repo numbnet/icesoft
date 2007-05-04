@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Panel Popup Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the panelPopup component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Panel Popup Component</h1>
+
+<p>
+The <span class="object-name">panelPopup</span> component can be used to display
+various types of content inside a draggable or modal dialog. These dialogs can be
+used on pages to display important information and options to the user in a manner
+similar to a standalone offline application.
+</p><p>
+The draggable popup panel can be moved around the page while still allowing interaction
+with the underlying page. The modal popup panel cannot be moved, and prevents page
+interaction by applying a partially transparent gray overlay. The following screenshot is
+of the <span class="object-name">ice:panelPopup</span> component demo in component-showcase. Notice
+the draggable dialog covered by the modal popup.
+</p>
+
+<div class="screenshot">
+    <img src="images/popup_showcase_screenshot.png"
+       title="panelPopup component in Component Showcase application"
+         alt="panelPopup component in Component Showcase application" width="788" height="816"/>
+</div>
+
+<p>
+The <span class="object-name">panelPopup</span> does not require any beans specific to the application.
+For example, static text can be used inside the body using only page level tools, which removes the complexity
+of bean setup. In the case of each example in this tutorial, a backing bean will only be used for the advanced demo.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#draggableBasic">Creating a Draggable Panel Popup</a></li>
+    <li><a href="#modalBasic">Creating a Modal Panel Popup</a></li>
+    <li><a href="#customizingStyle">Customizing Panel Popup Styles</a></li>
+    <li><a href="#draggableAdvanced">Advanced Draggable Panel Popup</a></li>
+    <li><a href="#examplePanelPopups">Examples Using Panel Popups</a></li>
+</ul>
+
+<!-- tutorial: panelPopup-draggable -->
+<a name="draggableBasic"><h2>Creating a Draggable Panel Popup</h2></a>
+
+<p>
+The creation of a draggable <span class="object-name">panelPopup</span> is simple and does not require any backend code or beans.
+In this next example the page contains a single draggable <span class="object-name">panelPopup</span> with 2 <span class="object-name">
+outputText</span> components inside the body.
+</p><p>
+The <span class="object-name">panelPopup</span> component has 2 available facets (header and body) that can be filled and styled with content. The general
+layout of the <span class="object-name">panelPopup</span> code is therefore similar to:
+</p>
+
+<pre>
+    &lt;f:facet name="header"&gt;
+        &lt;!-- header content would go here --&gt;
+    &lt;/f:facet&gt;
+    
+    &lt;f:facet name="body"&gt;
+        &lt;!-- body content would go here --&gt;
+    &lt;/f:facet&gt;
+</pre>
+
+<p>
+In this tutorial both facets contain <span class="object-name">outputText</span> components, although it is possible to place other extended or
+custom components inside the popup panel. It is recommended that anything inside the facet be wrapped in either an <span class="object-name">ice:panelGroup
+</span> or <span class="object-name">ice:panelGrid</span>.
+</p>
+<p>
+The facets would then be placed inside the <span class="object-name">ice:panelPopup</span> tag. Because this section is demonstrating a draggable
+<span class="object-name">panelPopup</span>, the <span class="object-name">draggable="true"</span> attribute is added to the tag. This results in
+the following code:
+</p>
+
+<pre>
+    &lt;ice:panePopup draggable="true"&gt;
+        &lt;f:facet name="header"/&gt;
+        &lt;f:facet name="body"/&gt;
+    &lt;/ice:panelPopup&gt;
+</pre>
+
+<p>
+The example page has added content inside the facets, as well as some minor styling to each component. Once completed, the draggable example looks similar
+to:
+</p>
+    
+<div class="screenshot">
+    <img src="images/draggable-tutorial_screenshot.png"
+       title="Draggable Panel Popup Example"
+         alt="Draggable Panel Popup Example" width="511" height="479"/>
+</div>
+
+<p>
+The creation of this draggable dialog was very simple, as the <span class="code-jsf">
+<a href="/panelPopup-draggable-tutorial/draggablePanelPopup.iface" target="_blank">draggablePanelPopup.jspx</a></span> shows.
+</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelPopup-draggable demo for your self by clicking
+            <a href="/panelPopup-draggable-tutorial/"
+               target="_blank">here</a>,
+            or download the panelPopup-draggable source code <a href="panelPopup-draggable-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+The modal <span class="object-name">panelPopup</span> is implemented in a similar manner to the draggable version, as the next tutorial will demonstrate.
+</p>
+
+<!-- tutorial: panelPopup-modal -->
+<a name="modalBasic"><h2>Creating a Modal Panel Popup</h2></a>
+
+<p>
+The second option for a <span class="object-name">panelPopup</span> is a modal approach. The modal dialog displays a partially transparent gray overlay
+around the <span class="object-name">panelPopup</span>, which disables interaction with the page. This can be used to display critical messages that
+the user must acknowledge before continuing. The guidelines for a modal <span class="object-name">panelPopup</span> are the same as the <a href="#draggableBasic">
+draggable</a> version above. The only difference is the <span class="object-name">modal="true"</span> attribute which must be set in the
+<span class="object-name">panelPopup</span> tag, as shown below:
+</p>
+
+<pre>
+    &lt;ice:panelPopup modal="true"/&gt;
+</pre>
+
+<p>
+Using the draggable page as a basis, the new page <span class="code-jsf">
+<a href="/panelPopup-modal-tutorial/modalPanelPopup.iface" target="_blank">modalPanelPopup.jspx</a></span> can be created easily. When viewed, the page appears similar to:
+</p>
+
+<div class="screenshot">
+    <img src="images/modal-tutorial_screenshot.png"
+       title="Modal Panel Popup Example"
+         alt="Modal Panel Popup Example" width="640" height="446"/>
+</div>
+
+<p>Notice the blocking mechanism of the modal dialog, and also how the <span class="object-name">panelPopup</span> cannot be dragged.</p>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelPopup-modal demo for your self by clicking
+            <a href="/panelPopup-modal-tutorial/"
+               target="_blank">here</a>,
+            or download the panelPopup-modal source code <a href="panelPopup-modal-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+The appearance of these 2 examples is rather generic and may not suit your application. The next section will demonstrate how to
+customize the CSS for <span class="object-name">panelPopup</span>.
+</p>
+
+<!-- tutorial: panelPopup-style -->
+<a name="customizingStyle"><h2>Customizing Panel Popup Styles</h2></a>
+
+<p>
+The popup styles can be customized by overriding the default CSS values. The first step is to create a new stylesheet and link to it in <span class="code-jsf">
+<a href="/panelPopup-style-tutorial/stylePanelPopup.iface" target="_blank">stylePanelPopup.jspx</a></span>, as shown in the line below:
+</p>
+
+<pre>
+    &lt;link href="./override.css" rel="stylesheet" type="text/css"/&gt;
+</pre>
+
+<p>
+Next the default panel styles should be copied into the override sheet. To find the default styles, look inside the CSS normally linked to, which is
+./xmlhttp/css/xp/xp.css. Copy all tab related styles into a new sheet, in our case <span class="code-jsf">
+<a href="/panelPopup-style-tutorial/override.css" target="_blank">override.css</a></span>.
+</p>
+
+<p>
+After this is done, you can begin customizing the styles. This demonstration changes the colors and borders of the header and body facet, as well
+as the <span class="object-name">panelPopup</span> itself. The result is similar to the following: 
+</p>
+
+<div class="screenshot">
+    <img src="images/style-tutorial_screenshot.png"
+       title="Style Panel Popup Example"
+         alt="Style Panel Popup Example" width="671" height="532"/>
+</div>
+
+<p>
+To achieve the color change of the <span class="object-name">panelPopup</span> header, the following CSS changes were used: 
+</p>
+
+<pre>
+.icePanelPopupHeader {
+    background-color: #FF0000;
+    color: #FFFFFF;
+    text-align: center;
+}
+</pre>
+
+<p>
+Other CSS changes were done to help display the possibilities, and since all the relevant classes are accessible the <span class="object-name">
+panelPopup</span> style can be completely changed.
+</p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelPopup-style demo for your self by clicking
+            <a href="/panelPopup-style-tutorial/"
+               target="_blank">here</a>,
+            or download the panelPopup-style source code <a href="panelPopup-style-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>As was mentioned earlier, complex components can be used inside of the <span class="object-name">panelPopup</span>, and backing beans
+can be added to increase the functionality. The next tutorial will demonstrate both of these functions.</p>
+
+<!-- tutorial: panelPopup-advanced -->
+<a name="draggableAdvanced"><h2>Advanced Draggable Panel Popup</h2></a>
+
+<p>
+This tutorial will focus on 2 features of <span class="object-name">panelPopup</span> not previously covered. The first is the
+ability to have complex components inside the dialog, and the second is adding a backing bean and dynamic functionality.
+</p>
+
+<p>
+Placing a new component inside the <span class="object-name">panelPopup</span> is done by adding their tags, as shown below.
+</p>
+
+<pre>
+    &lt;f:facet name="body"&gt;
+        &lt;ice:inputText value="Input Text"/&gt;
+        &lt;ice:selectBooleanCheckbox value="true"/&gt;
+        &lt;ice:outputLink value=""&gt;
+            &lt;ice:outputText value="Output Link"/&gt;
+        &lt;/ice:outputLink&gt;
+        &lt;ice:selectInputDate/&gt;
+    &lt;/f:facet&gt;
+</pre>
+
+<p>
+This would result in the dialog body containing an inputText, checkbox, link, and calendar. This demonstrates how flexible the contents of the popup panel
+can be. With this set of components inside the <span class="object-name">panelPopup</span>, the page appears similar to:
+</p>
+
+<div class="screenshot">
+    <img src="images/advanced-tutorial_screenshot.png"
+       title="Advanced Panel Popup Example"
+         alt="Advanced Panel Popup Example" width="635" height="623"/>
+</div>
+
+<p>
+This section also demonstrates how to use backing beans with this component. As you can see from the screenshot, a close button
+(appears as <img src="../panelPopup-advanced/web/images/close.gif"/>) has been added. This close button acts as a toggle to change
+the visibility of the <span class="object-name">panelPopup</span>.
+</p>
+
+<p>
+The bean PopupBean.java is used, and is bound in <span class="object-name">faces-config</span> in the standard way (shown below for reference):
+</p>
+
+<pre>
+    &lt;managed-bean&gt;
+        &lt;managed-bean-name&gt;popup&lt;/managed-bean-name&gt;
+        &lt;managed-bean-class&gt;
+            com.icesoft.icefaces.tutorial.component.panelPopup.advanced.PopupBean
+        &lt;/managed-bean-class&gt;
+        &lt;managed-bean-scope&gt;session&lt;/managed-bean-scope&gt;
+    &lt;/managed-bean&gt;
+</pre>
+
+<p>
+Once this is done, a <span class="object-name">visible</span> attribute is added to the <span class="object-name">panelPopup</span>, which uses the
+backing bean value, as shown below.
+</p>
+
+<pre>
+&lt;ice:panelPopup draggable="true" visible="#{popup.visible}"/&gt;
+</pre>
+
+<p>
+The next step is to add 2 buttons to the page; one for opening a popup and one for closing the popup. These would be similar to the following:
+</p>
+
+<pre>
+&lt;ice:commandButton image="images/close.gif" action="#{popup.closePopup}"/&gt;
+&lt;ice:commandButton value="Open a Popup" action="#{popup.openPopup}"/&gt;
+</pre>
+
+<p>
+The backing bean methods for these buttons and visibility attribute must now be written. The code for this is simple; the open method would
+toggle the visibility to true, and the close method would set it to false. For completeness, this is demonstrated below.
+</p>
+
+<pre>
+    public void closePopup() {
+        visible = false;
+    }
+    
+    public void openPopup() {
+        visible = true;
+    }
+</pre>
+
+<p>
+When these bindings and methods are complete, the page will allow opening and closing of the popup dialog, as can be seen in <span class="code-jsf">
+<a href="/panelPopup-advanced-tutorial/advancedPanelPopup.iface" target="_blank">advancedPanelPopup.jspx</a></span>
+</p>
+
+<div class="demo-instruction" >
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the panelPopup-advanced demo for your self by clicking
+            <a href="/panelPopup-advanced-tutorial/"
+               target="_blank">here</a>,
+            or download the panelPopup-advanced source code <a href="panelPopup-advanced-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+As you can see it is trivial to add complex components and dynamic functionality to a popup panel.
+</p>
+
+<!-- links to examples -->
+<a name="examplePanelPopups"><h2>Examples Using Panel Popups</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Panel Popup example which includes draggable and modal, as well as closing and opening a dialog.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Presenter</td>
+            <td class="bodySource">Available on the demo site</td>
+            <td class="bodyNotes">A panelPopup is used to confirm a user who wishes to pass moderator status.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelPopup-draggable</td>
+            <td class="bodySource"><a href="panelPopup-draggable-tutorial.zip" >panelPopup-draggable source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup a basic draggable panelPopup component.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelPopup-modal</td>
+            <td class="bodySource"><a href="panelPopup-modal-tutorial.zip" >panelPopup-modal source code</a></td>
+            <td class="bodyNotes">Example showing the modal type of panelPopup and the difference between a draggable dialog.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelPopup-style</td>
+            <td class="bodySource"><a href="panelPopup-style-tutorial.zip" >panelPopup-style source code</a></td>
+            <td class="bodyNotes">Demonstration of how easily and fully a panelPopup can be styled with custom CSS.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">panelPopup-advanced</td>
+            <td class="bodySource"><a href="panelPopup-advanced-tutorial.zip" >panelPopup-advanced source code</a></td>
+            <td class="bodyNotes">This example shows how complex components can be used, and how to tie a backing bean to the panelPopup.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>

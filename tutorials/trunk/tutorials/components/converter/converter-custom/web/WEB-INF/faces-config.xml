@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+
+<faces-config>
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+        </locale-config>
+        
+        <message-bundle>
+            com.icesoft.icefaces.tutorial.component.converter.custom.messages
+        </message-bundle>
+        
+    </application>
+    <managed-bean>
+        <managed-bean-name>user</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.tutorial.component.converter.custom.User
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>registerBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.tutorial.component.converter.custom.RegisterBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/register.iface</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/registered.iface</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <converter>
+        <converter-id>icefaces.PhoneConverter</converter-id>
+        <converter-class>
+            com.icesoft.icefaces.tutorial.component.converter.custom.PhoneConverter
+        </converter-class>
+    </converter>
+    <!-- Registers the PhoneConverter class  to handle all PhoneNumber objects automatically
+    <converter>
+        <converter-for-class>
+            com.icesoft.icefaces.tutorial.component.converter.custome.PhoneNumber
+        </converter-for-class>
+        <converter-class>
+            com.icesoft.icefaces.tutorial.component.converter.custom.PhoneConverter
+        </converter-class>
+    </converter>
+    -->
+</faces-config>

@@ -1,0 +1,737 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+  <head>
+    <title>Hibernate Tutorial</title>
+    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+      <!-- header section -->
+      <p class="tutoralHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      <hr/>
+      
+      <p>
+          <b>Lesson:</b>Hibernate
+      </p>
+      
+      <!-- tutorial content section -->
+      
+      <h1>How to Create an Application Using Hibernate</h1>
+      
+      <p>
+          Hibernate is a powerful, high performance object/relational 
+          persistence and query service. Hibernate lets you develop persistent 
+          classes following object-oriented idiom - including association, 
+          inheritance, polymorphism, composition, and collections. Hibernate 
+          allows you to express queries in its own portable SQL extension (HQL),
+          as well as in native SQL, or with an object-oriented Criteria and 
+          Example API. 
+      </p>
+      
+      <p>
+          For this tutorial we will be using the Student Registration example 
+          application.  This applications main function is to add, update, and 
+          delete students from the database.  Additional functionality includes 
+          being able to register courses to a student, this will help to show 
+          how Hibernate treats relationships between classes in the database.  
+      </p>
+      
+      <p>
+          This tutorial gives a basic idea on how to connect and use Hibernate 
+          with a database.  Hibernate has many other functions and uses that go 
+          beyond this tutorial.  A good resource is the Hibernate web site's 
+          documentation.
+      </p>
+      
+      <p>
+          NOTE: This application uses a MySQL database therefore an up-to-date 
+          instance of MySQL is needed to run.  The sql script to create and 
+          populate the database is included in the /sqlScripts directory.
+      </p>
+      
+      <p>
+          This tutorial will discuss the following topics related to using 
+          Hibernate:
+      </p>
+      <ul>
+          <li><a href="#stepstocreate">Steps to Create a Hibernate Application</a></li>
+          <ul>
+              <li><a href="#stepone">Step 1: Create the Java Objects</a></li>
+              <li><a href="#steptwo">Step 2: Create the Mapping Files for the Java Objects</a></li>
+              <li><a href="#stepthree">Step 3: Create the Configuration File for Hibernate</a></li>
+              <li><a href="#stepfour">Step 4: Create the HibernateUtil Helper File</a></li>
+              <li><a href="#stepfive">Step5: Create a Class to use the Persistence Objects</a></li>
+          </ul>
+          <li><a href="#othermappings">Other Mapping Elements</a></li>
+          <li><a href="#classassociations">Class Associations In Hibernate</a></li>
+          <li><a href="#examples">Example that Uses Hibernate</a></li>
+      </ul>
+      
+      <a name="stepstocreate">&nbsp;</a>
+      
+      <h2>Steps to Create a Hibernate Application</h2>
+      
+      <p>
+          The following steps will guide you on how to create a 
+          Hibernate application.  We will be using the Student Register 
+          application to demonstrate the major steps.  Before you begin you 
+          should or will have to download the latest Hibernate release  from
+          <a href="http://www.hibernate.org" target="_blank">www.hibernate.org</a> 
+          and include the jar files in the /lib directory of 
+          the download to your projects /lib directory.
+      </p>
+      
+      <a name="stepone">&nbsp;</a>
+      
+      <h3>Step 1: Create the Java Objects</h3>
+      
+      <p>
+          The great feature about using Hibernate is that your java objects do 
+          not need any special treatment to become persistent.  Below is and 
+          example of the code used for the Student object in the Student 
+          Register application.
+      </p>
+      
+      <pre>
+            package com.icesoft.icefaces.tutorial.crud.hibernate;
+
+            import java.util.HashSet;
+            import java.util.Set;
+            
+            /**
+             * Represents a student object in the hibernate tutorial
+             * Student Register example.
+             */
+            public class Student {
+                // unique student id
+                private int studentId;
+                // first name of the student
+                private String firstName;
+                // last name of the student
+                private String lastName;
+                // address of the student
+                private String address;
+                // set of courses that the student is related/registered for
+                private Set courses = new HashSet();
+
+                public Student() {
+                }
+
+                /**
+                 * Creates a new instance of Student.
+                 * @param firstName first name.
+                 * @param lastName last name.
+                 * @param address address.
+                 */
+                public Student(String firstName, String lastName, String address){
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    this.address = address;
+                }
+
+                public int getStudentId(){
+                    return studentId;
+                }
+
+                public void setStudentId(int studentId){
+                    this.studentId = studentId;
+                }
+
+                public String getFirstName(){
+                    return firstName;
+                }
+
+                public void setFirstName(String firstName){
+                    this.firstName = firstName;
+                }
+
+                public String getLastName(){
+                    return lastName;
+                }
+
+                public void setLastName(String lastName){
+                    this.lastName = lastName;
+                }
+
+                public String getAddress(){
+                    return address;
+                }
+
+                public void setAddress(String address){
+                    this.address = address;
+                }
+
+                public Set getCourses(){
+                    return courses;
+                }
+                
+                public void setCourses(Set courses){
+                    this.courses = courses;
+                }
+
+                public String clear(){
+                    firstName="";
+                    lastName="";
+                    address="";
+                    return "clear";
+                }
+            }
+
+      </pre>
+      
+      <p>
+          As you can see it is pretty straight forward.
+      </p>
+      
+      <a name="steptwo">&nbsp;</a>
+      
+      <h3>Step 2: Create the Mapping Files for the Java Objects</h3>
+      
+      <p>
+          For an object to be persisted to a database, Hibernate needs a mapping 
+          file for all of the objects that are to be persisted.  This XML file 
+          lets Hibernate know how to load and store objects, what table in the 
+          database it has to access, and what columns in the table it should 
+          use.  The following is an example mapping file from the Student 
+          Register application.
+      </p>
+      
+      <pre>
+            &lt;?xml version="1.0"?&gt;
+            &lt;!DOCTYPE hibernate-mapping PUBLIC
+                "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"&gt;
+
+            &lt;hibernate-mapping&gt;
+                &lt;class name="com.icesoft.icefaces.tutorial.crud.hibernate.Student" table="students"&gt;
+                    &lt;id name="studentId" column="student_id"&gt;
+                        &lt;generator class="increment"/&gt;
+                    &lt;/id>
+
+                    &lt;property name="firstName" column="first_name"/&gt;
+                    &lt;property name="lastName" column="last_name"/&gt;
+                    &lt;property name="address"/>
+                    &lt;set name="courses" table="student_courses"&gt;
+                        &lt;key column="student_id"/&gt;
+                        &lt;many-to-many column="course_id" class="com.icesoft.icefaces.tutorial.crud.hibernate.Course"/&gt;
+                    &lt;/set&gt;
+                &lt;/class&gt;
+
+            &lt;/hibernate-mapping&gt;
+      </pre>
+      
+      <p>
+          The file must be saved with the hbm.xml extension.  This lets 
+          Hibernate know that this is a mapping file.  The file location must 
+          be in the same directory as the java file it is related to.  Also be 
+          sure to add the Hibernate DTD at the top of the page for all mapping 
+          files.
+      </p>
+      
+      <p>
+          Inside the hibernate-mapping tags is where all the mapping information
+          will be included.  The first element to be added is the class element.
+          This will map a persistent class to a table in the database.  With the
+          class element you must define the name and table attributes.  The name
+          attribute will let Hibernate know the name of the Java class that you want 
+          to be persisted.  The table attribute specifies the name of the table 
+          to be used in the database when persisting the Java object for this mapping.  
+      </p>
+      
+      <p>
+          Inside the class element is where you define the attributes of your 
+          Java object to columns in the database.  The following is a 
+          description of the commonly used ones and their attributes:
+      </p>
+      
+      <ul>
+          <li>
+              <b>&lt;id&gt;</b> - When your mapping a Java object to a database an 
+              ID is required.  This helps to eliminate any duplicate entries.
+          </li>
+          <ul>
+              <li><i>name</i> - Specifies the name of the id.</li>
+              <li><i>column</i> - The name of the database column for the id.</li>
+          </ul>
+          <li>
+              <b>&lt;generator&gt;</b> - This element is actually a sub-element 
+              of the <i>id</i> element.  It is used to generate a unique id every time 
+              an object is persisted to the database.  It also specifies how the
+              id element will be created by using the following built in 
+              generators:
+          </li>
+          <ul>
+              <li>
+                  <i>increment</i> - Used most often, each time the generator 
+                  needs a new id it performs a select on the database to 
+                  determine the current largest id and increments it to the 
+                  next value.
+              </li>
+              <li>
+                  <i>native</i> - Picks the best strategy depending on the 
+                  configured database.
+              </li>
+              <li>
+                  <i>assigned</i> - Used if you need to assign the id yourself 
+                  in your application.  Set the id by using the 
+                  set&lt;identifier&gt; method of the Java class.  The 
+                  application assumes responsibility on keeping the id unique.
+              </li>
+          </ul>
+          <li>
+              <b>&lt;property&gt;</b> - For every attribute in your Java class 
+              that you want persisted you need to define one of these tags for 
+              each one.  The following are some commonly used attributes for 
+              the <i>property</i> element:
+          </li>
+          <ul>
+              <li>
+                  <i>name</i> - Specifies the name of the property.  The first 
+                  character must be lowercase.
+              </li>
+              <li>
+                  <i>column</i> - Specifies the name of the column in the 
+                  database that the attribute will be saved.
+              </li>
+          </ul>
+          <li>
+              <b>&lt;set&gt;</b> - The most common collection mapping used in 
+              Hibernate.  
+          </li>
+          <ul>
+              <li>
+                  <i>name</i> - Specifies the name of the set used in the Java 
+                  class.
+              </li>
+              <li>
+                  <i>table</i> - Specifies the name of the table to be used for 
+                  the collection.  In our example we have a many-to-many 
+                  relationship with Student and Course.  Therefore an 
+                  association table needs to be used.
+              </li>
+          </ul>
+          <li>
+              <b>&lt;key&gt;</b> - Sub-element of <i>set</i>. Used to indicate the property of the class.
+          </li>
+          <ul>
+              <i>column</i> - Specifies the foreign key column.
+          </ul>
+          <li>
+              <b>&lt;many-to-many&gt;</b> - Sub-element of <i>set</i>.  Used to define 
+              the other class in the many-to-many relationship. 
+          </li>
+          <ul>
+              <li>
+                  <i>column</i> - Specifies the column name of the other class.
+              </li>
+              <li>
+                  <i>class</i> - Specifies the path of the other class.
+              </li>
+          </ul>
+      </ul>
+      
+      <p>
+          There are of course many more elements and attributes that can be 
+          used.  A few of them will be explain in brief detail later in the 
+          tutorial.  
+      </p>
+      
+      <a name="stepthree">&nbsp;</a>
+      
+      <h3>Step 3: Create the Hibernate Configuration File</h3>
+      
+      <p>
+          Once the mapping files for the persistent objects have been completed,
+          its now time to configure Hibernate.  This will have all the 
+          information to connect Hibernate to a database.  First we will need a 
+          database.  For our example we used MySQL but there are many other 
+          databases that will work with Hibernate including:
+      </p>
+      
+      <ul>
+          <li>MySQL</li>
+          <li>HSQL DB</li>
+          <li>Oracle</li>
+          <li>MS SQL Server</li>
+      </ul>
+      
+      <p>Consult with the Hibernate website to find an up-to-date listing.</p>
+      
+      <p>
+          To configure Hibernate there are a few ways that it can be done, you
+          can use a simple hibernate.properties file, a more sophisticated 
+          hibernate.cfg.xml file, or a complete programmatic setup.  For our 
+          application we will use the XML configuration file.
+      </p>
+      
+      <pre>
+          &lt;!DOCTYPE hibernate-configuration PUBLIC
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;
+        
+            &lt;hibernate-configuration&gt;
+
+                &lt;session-factory&gt;
+
+                    &lt;!-- Database connection settings --&gt;
+                    &lt;property name="connection.driver_class"&gt;org.gjt.mm.mysql.Driver&lt;/property&gt;
+                    &lt;property name="connection.url"&gt;jdbc:mysql://localhost/register&lt;/property&gt;
+                    &lt;property name="connection.username"&gt;test&lt;/property&gt;
+                    &lt;property name="connection.password"&gt;test&lt;/property&gt;
+
+                    &lt;!-- SQL dialect -->
+                    &lt;property name="dialect"&gt;org.hibernate.dialect.MySQLInnoDBDialect&lt;/property&gt;
+
+                    &lt;!-- Echo all executed SQL to stdout --&gt;
+                    &lt;property name="show_sql"&gt;true&lt;/property&gt;
+
+                    &lt;property name="current_session_context_class"&gt;thread&lt;/property&gt;
+
+                    &lt;mapping resource="com/icesoft/icefaces/tutorial/crud/hibernate/Course.hbm.xml"/&gt;
+                    &lt;mapping resource="com/icesoft/icefaces/tutorial/crud/hibernate/Student.hbm.xml"/&gt;
+
+                &lt;/session-factory&gt;
+
+            &lt;/hibernate-configuration&gt;        
+      </pre>
+      
+      <p>
+          Note that this configuration uses a different DTD than the mapping 
+          files.  All of the properties are inside the session-factory tags.  
+          The first four property elements contain the configuration for the 
+          MySQL connection.  The dialect property element specifies the 
+          particular SQL variant Hibernate generates.  The show_sql property 
+          element will, when set to true, output all the SQL commands to the 
+          console window.  At the end is where the mapping files are included 
+          to the configuration.  
+      </p>
+      
+      <p>
+          The location of the file must be at the source directories root, 
+          Hibernate automatically looks for a file called hibernate.cfg.xml in 
+          the root of the class path on startup.
+      </p>
+      
+      <a name="stepfour">&nbsp;</a>
+      
+      <h3>Step 4: Create the HibernateUtil Helper Class</h3>
+      
+      <p>
+          Now a helper class is needed to get Hibernate up and running.  This 
+          class creates a SessionFactory object which in turn can open up new 
+          Session's.  A session is a single-threaded unit of work, the 
+          SessionFactory is a thread-safe global object instantiated once.  For 
+          our application the HibernateUtil class is implemented below:
+      </p>
+      
+      <pre>
+          package com.icesoft.icefaces.tutorial.crud.hibernate.util;
+
+          import org.hibernate.SessionFactory;
+          import org.hibernate.cfg.Configuration;
+
+          public class HibernateUtil {
+    
+                private static final SessionFactory sessionFactory;
+
+                static {
+                    try {
+                        // Create the SessionFactory from hibernate.cfg.xml
+                        sessionFactory = new Configuration().configure().buildSessionFactory();
+                    } catch (Throwable ex) {
+                        // Make sure you log the exception, as it might be swallowed
+                        System.err.println("Initial SessionFactory creation failed." + ex);
+                        throw new ExceptionInInitializerError(ex);
+                    }
+                }
+
+                public static SessionFactory getSessionFactory() {
+                    return sessionFactory;
+                }
+
+          }
+      </pre>
+      
+      <p>
+          Place HibernateUtil.java in a util package next to your main class package(s).
+      </p>
+      
+      <a name="stepfive">&nbsp;</a>
+      
+      <h3>Step 5: Create a Class to use Persistence Objects</h3>
+      
+      <p>
+          Now that the mapping and configuration files have been written its 
+          time to use the persistent objects in our application.  Using 
+          Hibernate you can add, edit, delete objects to and from a database.  
+          In the Student Register example we use one class that facilitates all 
+          the functionality called RegisterManager.java.  The following code 
+          portion from the RegisterManager class shows how we add a student to 
+          the database:
+      </p>
+      
+      <pre>
+          public void addStudent(ActionEvent event){
+                Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+                session.beginTransaction();
+        
+                Student s = newStudent;
+        
+                session.save(s);
+        
+                session.getTransaction().commit();
+        
+                s.clear();
+                init();
+         }
+      </pre>
+      
+      <p>
+          First off we create a new Session instance which is returned from our 
+          helper class HibernateUtil.  By getting it from the helper class we 
+          can be sure that only one thread is running at one time.  You can, if 
+          your application deems it needed, create one or more Sessions with 
+          each one representing a single unit of work.  The Hibernate Session 
+          object has many different methods that can be used to manipulate data 
+          to and from a database.  In our addStudent() method we use the 
+          session.save(s) method.  This actually creates an SQL command to 
+          insert the new student object into the database.  After the object is 
+          saved the Session is then committed and closed.  
+      </p>
+      
+      <p>
+          How do read values from the database?  Below is an example from the 
+          Student Register application:
+      </p>
+      
+      <pre>
+          private synchronized void init(){
+                ...
+                Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+                session.beginTransaction();
+        
+                List studentResult = session.createQuery("select s.studentId from " +
+                        "Student as s").list();
+                List courseResult = session.createQuery("select c.courseName from " +
+                        "Course as c").list();        
+                session.getTransaction().commit();
+                studentItems.add(new SelectItem(""));
+                ...
+         }
+      </pre>
+      
+      <p>
+          The init() method creates a new session just like the addStudent() 
+          method, the only difference is that it uses the createQuery() method.  
+          This method is used to send SQL/HQL commands to the database.  It then
+          returns a list of the information that it found in the database 
+          leaving it open to be used how you please.
+      </p>
+      
+      <p>
+          So far we have touched on how to use Session's methods to 
+          automatically add an object to the database without needing to write 
+          any sql commands.  Also how to write your own SQL command to access 
+          the database.  Another subject that we will touch on is using a named 
+          parameter.  In our example application we use this a few times.  The 
+          following code is from the RegisterManager class's deleteStudent() 
+          method:
+      </p>
+      
+      <pre>
+          public void deleteStudent(ActionEvent event){
+                if(currentStudent != null){
+                    int id = currentStudent.getStudentId();
+                    Session session = HibernateUtil.getSessionFactory()
+                                                    .getCurrentSession();
+                    session.beginTransaction();
+                    Query q = session.createQuery("delete from Student as s where " +
+                            "s.studentId =:id");
+                    q.setInteger("id",id);
+                    int rowCount = q.executeUpdate();
+                    session.getTransaction().commit();
+                    System.out.println("Rows affected: " + rowCount);
+                    currentStudent.clear();
+                    studentItems.clear();
+                    init();
+                }
+          }
+      </pre>
+      
+      <p>
+          The method gets a Session like before but we now want to delete the 
+          student that has the value of id that was set before we created the 
+          Session object.  To include a named parameter it must start with the 
+          colon character (<b>:</b>).  As you can see in the above code we create a 
+          Query object to execute the SQL command.  With the Query we set the 
+          named parameter so that Hibernate can use it.
+      </p>
+      
+      <p>
+          Note that we call the executeUpdate() method to execute an update or 
+          delete statement.  It also returns the row count of affected rows, 
+          which can help in debugging.
+      </p>
+      
+      <div class="demo-instruction">
+          <h3>See the demo:</h3>
+          <ul>
+              <li>
+                  Download the Student Register source code <a href="studentRegister.zip">here</a>.
+              </li>
+              <li>The Student Register example shows how to use Hibernate using ICEfaces components</li>
+          </ul>
+      </div>
+      
+      <a name="othermappings">&nbsp;</a>
+      
+      <h2>Other Mapping Elements</h2>
+      
+      <p>
+          The following is a short listing of some other Hibernate mapping 
+          elements and a brief description of what they do:
+      </p>
+      
+      <ul>
+          <li><b>&lt;composite-id&gt;</b> - Used with a table with a composite key id.</li>
+          <li><b>&lt;version&gt;</b> - Used on tables that contain versioned data.</li>
+          <li><b>&lt;timestamp&gt;</b> - Used on tables that contain timestamped data.</li>
+          <li><b>&lt;join&gt;</b> - Makes it possible to map properties of one class to several tables.</li>
+      </ul>
+      
+      <p>
+          These are only a small portion of the many mapping elements available.
+          To see the full list and description goto 
+          <a href="www.hibernate.org/hib_docs/v3/reference/en/html/mapping.html">Basic O/R Mapping</a>
+      </p>
+      
+      <a name="classassociations">&nbsp;</a>
+          
+      <h2>Class Associations In Hibernate</h2>
+      
+      <p>
+          In our Student Register example the Student holds a set of Course 
+          objects.  These Course objects are the courses that the student has 
+          registered for.  Also each Course object also holds a set of Student 
+          objects which is made up of the Students that are registered in each 
+          course.  This relationship is called a many-to-many relationship.  
+      </p>
+      
+      <p>
+          In a many-to-many relationship an association table is needed to hold 
+          the values for the relationship.  This table is mapped in the Student 
+          and Course mapping files with the following code:
+      </p>
+      
+      <p>
+          Student.hbm.xml
+      </p>
+      
+      <pre>
+          ...
+          &lt;set name="courses" table="student_courses"&gt;
+             &lt;key column="student_id"/&gt;
+             &lt;many-to-many column="course_id" class="com.icesoft.icefaces.tutorial.crud.hibernate.Course"/&gt;
+          &lt;/set&gt;
+          ...
+      </pre>
+      
+      <p>
+          Course.hbm.xml
+      </p>
+      
+      <pre>
+          ...
+          &lt;set name="students" table="student_courses"  inverse="true"&gt;
+             &lt;key column="course_id"/&gt;
+             &lt;many-to-many column="student_id" class="com.icesoft.icefaces.tutorial.crud.hibernate.Student"/&gt;
+          &lt;/set&gt;
+          ...
+      </pre>
+      
+      <p>
+          Once the mapping of the association table has been completed, we will 
+          now need to use these values.  In our example we can add and remove 
+          courses assigned to a student.  This data is saved in the association 
+          table under the students id and the course id.  The following is the 
+          code used to add and remove a course from a student:
+      </p>
+      
+      <pre>
+          ...
+          public void addCourseToStudent(ActionEvent event){
+                Session session = HibernateUtil.getSessionFactory().
+                                                    getCurrentSession();
+                session.beginTransaction();
+
+                Student s = (Student)session.load(Student.class, 
+                                            currentStudent.getStudentId());
+                Course c = (Course)session.load(Course.class, 
+                                            currentCourse.getCourseId());
+
+                s.getCourses().add(c);
+                setStudentCourses();
+                session.getTransaction().commit();
+         }
+         ...
+         public void removeCourseFromStudent(ActionEvent event){
+                Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+                session.beginTransaction();
+        
+                Student s = (Student)session.load(Student.class, 
+                                            currentStudent.getStudentId());
+                Course c = (Course)session.load(Course.class, 
+                                            currentCourse.getCourseId());
+                s.getCourses().remove(c);
+                setStudentCourses();
+                session.getTransaction().commit();
+        }
+        ...
+      </pre>
+      
+      <p>
+          As you can see we start the methods like our other ones.  The only 
+          major difference is we load the current Student and Course objects.  
+          Once they are loaded we then get the set of courses and now can use 
+          its add() or remove() methods.  Hibernate automatically detects that 
+          the collection has been modified and needs to be updated, meaning we 
+          do not have to call an update() or save() method.  This is called 
+          automatic dirty checking.  The only catch is that the objects need to 
+          be loaded in the current session.
+      </p>
+      
+      <a name="examples">&nbsp;</a>
+      
+      <h2>Example That Uses Hibernate</h2>
+      
+      <table cellpadding="1" cellspacing="0" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">Student Register</td>
+                  <td class="bodySource"><a href="studentRegister.zip">studentRegister source code</a></td>
+                  <td class="bodyNotes">Connects to a MySQL database through Hibernate.</td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- footer section -->
+      
+      <hr/>
+      
+      <p class="tutorialFoortText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      
+      <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+
+  </body>
+</html>

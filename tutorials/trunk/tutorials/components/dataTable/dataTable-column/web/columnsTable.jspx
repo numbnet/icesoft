@@ -1,0 +1,81 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+    
+    <html>
+        <head>
+            <meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1"></meta>
+            <title>DataTable Component Tutorial</title>
+            <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+        </head>
+        
+        <body>
+            <h2>Column Control Component and dataTable Component</h2>
+            
+            <p>This is a table initially comprising five columns. Each
+                column represents a series of ASCII code. </p>
+            <p>Enter a column number in the text field. 
+            The number of displayed columns reflects to the entered value.</p>
+            <ice:form>
+                <!--
+            <p>This is a table initially comprising five columns. Each
+                column represents a series of ASCII code. </p>
+            <p>Enter a column number in the text field. 
+            The number of displayed columns reflects to the entered value.</p>
+        -->
+                <ice:panelGrid>
+                    
+                    <!-- TODO: modify the column values to real person -->
+
+                    <!-- input field -->            
+
+                    <ice:panelGroup id="columnsInputGroup">
+                        <ice:outputLabel id="columnsOutputLabel"
+                                         for="columnsInput"
+                                         value="Columns: "/>
+                        <ice:inputText id="columnsInput" maxlength="3"
+                                       size="5"
+                                       valueChangeListener="#{columnsBean.updateTableColumns}"
+                                       value="#{columnsBean.columns}"
+                                       partialSubmit="true">
+                            <f:validateLongRange minimum="1" maximum="255"/>
+                        </ice:inputText>
+                        <ice:message id="columnsInputMessage"
+                                     for="columnsInput"/>
+                    </ice:panelGroup>
+                    
+                    <ice:panelGroup>
+                        <ice:dataTable var="item"
+                                       value="#{columnsBean.rowDataModel}"
+                                       columnClasses="columnsColumn"
+                                       rows="#{columnsBean.rows}">
+                            
+                            <ice:columns value="#{columnsBean.columnDataModel}"
+                                         var="column">
+                                <f:facet name="header">
+                                    <ice:panelGroup >
+                                        <ice:outputText value="#{column}"/>
+                                    </ice:panelGroup>
+                                </f:facet>
+                                <!-- display the table cell values-->
+                                <ice:panelGroup style="text-align: center; white-space: nowrap;" >
+                                    <ice:outputText
+                                        value="#{columnsBean.cellValue}"/>
+                                    
+                                </ice:panelGroup>
+                                
+                            </ice:columns>
+                            
+                        </ice:dataTable>
+                        
+                    </ice:panelGroup>
+                </ice:panelGrid>
+            </ice:form>
+        </body>
+    </html>
+</f:view>

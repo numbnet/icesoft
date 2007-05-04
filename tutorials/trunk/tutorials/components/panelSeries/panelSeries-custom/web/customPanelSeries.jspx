@@ -1,0 +1,56 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Series Panel Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        <style type="text/css" media="screen">
+	 	.first{width:200px;}
+	 	.second{width:600px;}
+	</style>
+    </head>
+    <body>
+        <h2>Custom Series Panel Component</h2>
+        <p>
+        The following shows the list of personals. Try enter something in message box and
+        select a date. Press "Done" when finished.
+        </p>
+        <ice:form>
+            <ice:panelSeries var="customObject" value="#{customPanelSeriesBean.customObjectList}">
+            	<ice:panelGrid columns="2" style="border:1px solid silver;" width="800px" columnClasses="first,second">
+            		<ice:outputText value="Name:" />
+            		<ice:outputText value="#{customObject.name}" />
+            		<ice:outputText value="Age:" />
+            		<ice:outputText value="#{customObject.age}" />
+            		<ice:outputText value="Email Address:" />
+            		<ice:outputText value="#{customObject.emailAddress}" />
+            		<ice:outputText value="Phone Number:" />
+            		<ice:outputText value="#{customObject.phoneNumber}" />
+            		<ice:outputText value="Anonymous Message?" />
+            		<ice:selectBooleanCheckbox value="#{customObject.anonymous}" partialSubmit="true"/>
+            		<ice:outputText value="Message to #{customObject.name}:" />
+            		<ice:inputText value="#{customObject.inputMessage}" partialSubmit="true" />
+            		<ice:outputText value="Pick a Day:" />
+            		<ice:selectInputDate value="#{customObject.selectedDate}" partialSubmit="true"
+            				     renderAsPopup="true"/>
+            		
+            		<ice:commandButton value="Done" actionListener="#{customObject.showMessage}" />
+            		<ice:outputText value="You have Left following message to #{customObject.name} at 
+            					#{customObject.selectedDate}:" rendered="#{customObject.done}" />
+            		<br/>
+            		<ice:outputText value="#{customObject.inputMessage}" escape="false" rendered="#{customObject.done}"/>
+            	
+            	</ice:panelGrid>
+            	<br/>
+            </ice:panelSeries>
+        </ice:form>
+    </body>
+    </html>
+</f:view>

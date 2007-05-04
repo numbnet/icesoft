@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Fleet>
+    <ships>
+        <ship id="999">
+            <name>USS-JAXB</name>
+            <registry>1701</registry>
+            <crewSize>465</crewSize>
+            <description>The 2nd fastest ship in the fleet</description>
+            <shipFleetType>science</shipFleetType>
+        </ship>
+        <ship id="888">
+            <name>USS-ICE</name>
+            <registry>1702</registry>
+            <crewSize>500</crewSize>
+            <description>The fastest ship in the fleet</description>
+            <shipFleetType>defense</shipFleetType>
+        </ship>
+    </ships>
+</Fleet>
