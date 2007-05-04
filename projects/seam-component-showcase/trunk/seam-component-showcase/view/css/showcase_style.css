@@ -499,15 +499,12 @@ em {
     height: 80px;
     width: 120px;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .cartDropZonText1 {
     font-weight: bold;
-}
-
-.cartDropZonText1 {
-
+    text-align: left;
 }
 
 .dragDropImage {
@@ -1171,5 +1168,8 @@ background-image: url("../images/accordion/produce.jpg" );
     width: 210px; /* fixed height of content demos*/
     vertical-align: top;
 }
-
+/* added this for proper rendering in IE */
+.iceFileUpload {
+ height: 50px;
+}
 
