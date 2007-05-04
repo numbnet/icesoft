@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import static org.jboss.seam.ScopeType.SESSION;
-
+import java.io.Serializable;
 /**
  * Stores the values picked from the AutoCompleteDictionary (different scope to
  * avoid memory hole). The showcase stores one static copy of the actual
@@ -56,7 +56,7 @@ import static org.jboss.seam.ScopeType.SESSION;
  */
 @Scope(SESSION)
 @Name("autoCompleteBean")
-public class AutoCompleteBean {
+public class AutoCompleteBean implements Serializable{
 
     private static Log log = LogFactory.getLog(AutoCompleteBean.class);
 
