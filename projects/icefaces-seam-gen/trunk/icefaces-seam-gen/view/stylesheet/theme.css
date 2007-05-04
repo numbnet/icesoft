@@ -119,12 +119,16 @@ background-color: transparent;
 
 .tableControl, .actionButtons {
 	width: 100%;
+    font-size:11px;
 }
 
 .tableControl{
 	width: 100%;
 	text-align: right;
 	padding-top: 15px;
+}
+.iceDataTblOutline {
+    width: 98%;
 }
 .iceTblHeader {
   font-size:11px;
@@ -135,8 +139,18 @@ background-color: transparent;
     padding-bottom: 3px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
+    white-space: nowrap;
+
 }
-.allcols{
+/* data tables are rendered with alternating row colors */
+.iceTblRow1 {
+    background-color: #FFFFFF;
+}
+
+.iceTblRow2 {
+    background-color: #eeeeee;
+}
+.allcols, .column1, .column2, .column3, .column4, .column5, .column6, .column7, .column8, .column9, .column10{
    font-size:11px;
    color: #000000;
     padding-left: 5px;
@@ -145,6 +159,10 @@ background-color: transparent;
     padding-bottom: 3px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
+    white-space:nowrap;
+   }
+.dataScrollerTable {
+  
 }
 /*
 .actionButtons a, .tableControl a {
@@ -262,92 +280,190 @@ td {
 	border: 1px solid red;
 }
 
-/* Seam Date Picker */
-
-/* the div that holds the date picker calendar */
-.seam-date {
-    width: 300px;
+/* date picker style */
+div.seam-date 
+{
+  margin-top: 5px;
+  border: 1px solid #AAAAAA;
+  background-color: #FFFFFF;  
+  color: #505050;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 
-
-/* the table (within the div) that holds the date picker calendar */
-.seam-date table {
-   background: #fff url(../img/input.bg.gif) 0 0 repeat-x;
-   background-color: #FFFFFF;
-   border: 1px solid #AAAAAA;
-   color: #505050;
-   font-family: Tahoma, Arial, Helvetica, sans-serif;
-   font-size: 12px;
-   margin-top: 5px;
-   text-align: center
+table.seam-date td {
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: 12px; 
 }
 
-
-.seam-date-title div {
-    font-size: 12px;
-    color: gray;
-    font-weight: bold;
+.seam-date-monthNames
+{
+  width: 70px;
+  border: 1px solid #dddddd;
+  border-right: 3px solid #444444;
+  border-bottom: 3px solid #444444;
+  background-color: #ffffff; 
+  font-size: 12px;
+  cursor: pointer;	
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: normal;
 }
 
-
-/* the forward/backward buttons at the top */
-.seam-date-title button{
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    color: gray;
-    background: #FFFFFF;
-    font-weight: bold;
-    padding: 0px;
-    border: 1px solid #AAAAAA;
+a.seam-date-monthNameLink, a.seam-date-monthNameLink:visited
+{
+  text-align: center;
+  display: block;
+  color: #555555;  
 }
 
-
-/* the "This Month" and "Close" buttons at the bottom */
-.seam-date-footer {
-	display: none;
+a.seam-date-monthNameLink:hover
+{ 
+  background-color: #CCCCCC;
+  color: red;  
 }
 
-.seam-date-footer button {
-    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    color: gray;
-    background: #FFFFFF;
-    font-weight: bold;
-    border: 1px solid #AAAAAA;
+.seam-date-years
+{
+  height: 10em;
+  overflow: auto;
+  width: 60px;
+  border: 1px solid #dddddd;
+  border-right: 3px solid #444444;
+  border-bottom: 3px solid #444444;
+  background-color: #ffffff; 
+  font-size: 12px;
+  cursor: pointer;	
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: normal;
 }
 
-
-
-/* a table cell that holds the names of days of the week (Mo, Tu, We, etc.) */
-.seam-date-header td {
-    background-color: #CCCCCC;
-    border: 1px solid #AAAAAA;
-    color: white;
-    width: 14%;
+a.seam-date-yearLink, a.seam-date-yearLink:visited
+{
+  text-align: center;
+  display: block;
+  color: #555555;    
 }
 
+a.seam-date-yearLink:hover
+{
+  background-color: #CCCCCC;
+  color: red;    
+}  
 
-
-/* a table cell that holds a date number (either blank or 1-31) */
-.seam-date-week td.seam-date-day {
-    border: 1px solid #ece9d8;
-    width: 14%;
+tr.seam-date-header
+{
+  padding: 2px 0px 2px 0px;
+}
+  
+td.seam-date-header
+{
+  padding: 0px 8px 0px 8px;
+  text-align: center;
+  color: gray;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 12px;  
 }
 
-/* the date number table cell that the mouse pointer is currently over (you can use contrasting colors to make it apparent which cell is being hovered over) */
-.seam-date-week td.seam-date-hover  {
-    background-color: #CCCCCC;
-    border: 1px solid #AAAAAA;
-    cursor: pointer;
-    color: red;
+td.seam-date-header-prevMonth
+{
+  background-image: url("../img/cal-prev.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 0px 2px 0px 2px;
+  width: 17px;
+  height: 16px;
+  margin-left: 2px;
 }
 
+td.seam-date-header-nextMonth
+{
+  background-image: url("../img/cal-next.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 0px 2px 0px 2px;
+  width: 17px;
+  height: 16px;
+  margin-right: 2px;
+}
 
-/* additional style information for the cell that holds a highlighted day (usually either today's date or the current date field value) */ 
-.seam-date-week td.seam-date-selected {
-    background-color: #CCCCCC;        
-    border: 1px solid #AAAAAA;
-    font-weight: bold;
+tr.seam-date-headerDays
+{
+  color: white;
+  font-weight: normal;
+}
+
+tr.seam-date-headerDays > td
+{
+  background-color: #CCCCCC;
+  border: 1px solid #AAAAAA;
+  color: white;
+  text-align: center;
+  width: 26px;   
+}
+
+tr.seam-date-footer
+{
+  background-color: white; 
+  color: #505050;
+  font-weight: bold;
+}
+
+tr.seam-date-footer > td
+{
+  text-align: center;
+}
+
+td.seam-date-inMonth
+{
+  background-color: white; 
+  color: black;
+  font-weight: normal;
+  cursor: pointer;
+  border: 1px solid #ece9d8;
+}
+
+td.seam-date-outMonth
+{
+  background-color: white; 
+  color: #999999;
+  font-weight: normal;
+  cursor: pointer;
+  border: 1px solid #ece9d8;
+}
+
+td.seam-date-selected
+{
+  background-color: #CCCCCC;        
+  border: 1px solid #AAAAAA; 
+  color: black;
+  font-weight: normal;
+}
+
+td.seam-date-dayOff-inMonth
+{
+  background-color: #efefef;
+  color: black;
+  font-weight: normal;
+  cursor: pointer;
+  border: 1px solid #ece9d8;
+}
+
+td.seam-date-dayOff-outMonth
+{
+  background-color: #efefef;
+  color: #999999;
+  font-weight: normal;
+  cursor: pointer;
+  border: 1px solid #ece9d8;
+}
+
+td.seam-date-hover 
+{
+  background-color: #CCCCCC;
+  border: 1px solid #AAAAAA;
+  cursor: pointer;
+  color: red;
 }
 .contentLayoutGridStyleLogin {
     width: 280px; /* fixed height of content demos*/  
