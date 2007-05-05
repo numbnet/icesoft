@@ -79,13 +79,13 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 styleEle.setAttribute(HTML.HREF_ATTR, outputStyle.getHref());
                 domContext.setRootNode(styleEle);
                 int browserType = browserType(facesContext, uiComponent);
-                String href = LocationUtil.getResourcePath(facesContext, outputStyle.getHref());
+                String href = outputStyle.getHref();
+                Element ieStyleEle = buildCssElement(domContext);
                 if (browserType != DEFAULT_TYPE) {
                     if (href.endsWith(CSS_EXTENTION)) {
                         int i = href.indexOf(CSS_EXTENTION);
                         if (i > 0) {
                             String start = href.substring(0, i);
-                            Element ieStyleEle = buildCssElement(domContext);
                             String extention = IE_EXTENTION;
                             if (browserType == SAFARI) {
                                 extention = SAFARI_EXTENTION;
@@ -97,9 +97,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                                 extention = IE_7_EXTENTION;
                             }
 
-                            String resource = start + extention + CSS_EXTENTION;
-                            ieStyleEle.setAttribute(HTML.HREF_ATTR, resource);
-                            styleEle.getParentNode().appendChild(ieStyleEle);
+                            href = start + extention + CSS_EXTENTION;
                         } else {
                             throw new RuntimeException(
                                     "OutputStyle file attribute is too short. " +
@@ -114,6 +112,10 @@ public class OutputStyleRenderer extends DomBasicRenderer {
 
 
                 }
+                ieStyleEle.setAttribute(HTML.HREF_ATTR,
+                                        LocationUtil.getResourcePath(facesContext,href));
+                styleEle.getParentNode().appendChild(ieStyleEle);
+
 
             }
             domContext.stepOver();
