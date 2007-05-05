@@ -79,8 +79,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 styleEle.setAttribute(HTML.HREF_ATTR, outputStyle.getHref());
                 domContext.setRootNode(styleEle);
                 int browserType = browserType(facesContext, uiComponent);
+                String href = LocationUtil.getResourcePath(facesContext, outputStyle.getHref());
                 if (browserType != DEFAULT_TYPE) {
-                    String href = outputStyle.getHref();
                     if (href.endsWith(CSS_EXTENTION)) {
                         int i = href.indexOf(CSS_EXTENTION);
                         if (i > 0) {
@@ -98,7 +98,6 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             }
 
                             String resource = start + extention + CSS_EXTENTION;
-                            resource = LocationUtil.getResourcePath(facesContext,resource);
                             ieStyleEle.setAttribute(HTML.HREF_ATTR, resource);
                             styleEle.getParentNode().appendChild(ieStyleEle);
                         } else {
