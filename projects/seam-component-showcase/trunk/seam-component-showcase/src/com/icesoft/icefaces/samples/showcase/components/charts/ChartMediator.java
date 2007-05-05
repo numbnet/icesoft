@@ -52,6 +52,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import static org.jboss.seam.ScopeType.PAGE;
 import java.io.Serializable;
 
 
@@ -62,6 +64,7 @@ import java.io.Serializable;
  * @author dnorthcott
  * @version 1.5
  */
+@Scope(PAGE)
 @Name("chartMediator")
 public class ChartMediator implements Serializable{
     
