@@ -35,6 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.renderkit.LocationUtil;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UICommand;

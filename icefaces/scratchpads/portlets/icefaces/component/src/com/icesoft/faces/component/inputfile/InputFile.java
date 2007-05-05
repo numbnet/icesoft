@@ -204,16 +204,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         
         //this is true for JSF 1.2 only
-<<<<<<< .working
-        ActionListener[] actionListeners = getActionListeners();
-        for (int i=0; i< actionListeners.length; i++) {
-            actionListeners[i].processAction(event);
-        }
-        MethodBinding action = getAction();
-        if(action != null) {
-            action.invoke(FacesContext.getCurrentInstance(), null);
-        }
-=======
         ActionListener[] actionListeners = getActionListeners();
         for (int i=0; i< actionListeners.length; i++) {
             actionListeners[i].processAction(event);
@@ -225,7 +215,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         
         if(fileInfo != null)
             fileInfo.reset();
->>>>>>> .merge-right.r13865
     }
     
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
