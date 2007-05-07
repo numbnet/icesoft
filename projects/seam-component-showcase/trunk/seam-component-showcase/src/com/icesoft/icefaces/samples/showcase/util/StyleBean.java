@@ -148,10 +148,10 @@ public class StyleBean implements Serializable{
         currentStyle = tempStyle;
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
 
-        // manually update the icons in the navigation tree
+        // manually update the icons in the navigation tree don't really need this though
         treeNav.refreshIcons(currentStyle);
 
-        return "reload";
+       return "/showcase.xhtml";
     }
 
     /**

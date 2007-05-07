@@ -13,18 +13,6 @@
     </locale-config>
    </application>
 
-   <navigation-rule>
-        <description>Theme Reload</description>
-        <from-view-id>/showcase.seam</from-view-id>
-        <navigation-case>
-
-            <from-outcome>reload</from-outcome>
-            <to-view-id>/showcase.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-
-
    <!-- Seam transaction management -->
    <lifecycle>
       <phase-listener>org.jboss.seam.jsf.TransactionalSeamPhaseListener</phase-listener>
