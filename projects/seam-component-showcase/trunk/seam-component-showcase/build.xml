@@ -38,7 +38,7 @@
 		<available file="${icefacesSourceDirectory}/component/doc" type="dir" property="source.present"/> 
                <echo message="source directory is installed ${source.present}"/>
                <condition property="component.docs.dir" value="${icefacesSourceDirectory}/component/doc" 
-                        else="${icefacesSourceDirectory}/docs/component">
+                        else="${icefacesSourceDirectory}/docs/components">
                         <istrue value="${source.present}"/>
                </condition>
                <echo message=" component docs dir is ${component.docs.dir}"/>
