@@ -35,6 +35,7 @@ package @actionPackage@;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.core.Manager;
@@ -44,6 +45,7 @@ import javax.ejb.Stateful;
 import javax.ejb.Remove;
 import java.util.Date;
 import java.text.DateFormat;
+import java.io.Serializable;
 
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
@@ -57,7 +59,7 @@ import com.icesoft.faces.async.render.Renderable;
 
 @Name("timer")
 @Scope(ScopeType.SESSION)
-public class TimerBeanImpl implements Renderable, TimerBean {
+public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
 
     private DateFormat dateFormatter;
 
@@ -121,6 +123,7 @@ public class TimerBeanImpl implements Renderable, TimerBean {
         
     }
 
+    @Begin(join=true)
     public String getCurrentConversation() {
         Manager m = Manager.instance();
         return m.getCurrentConversationId();
