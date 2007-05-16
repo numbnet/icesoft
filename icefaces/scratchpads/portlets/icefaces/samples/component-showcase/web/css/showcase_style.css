@@ -435,6 +435,17 @@ em {
     width: 90px;
 }
 
+.weekend a{
+    background-color:#93AD90;
+}
+
+weekend{
+    background-color:#93AD90;
+}
+.august a{
+   font-weight: bold;
+}
+
 .progressBarColumn {
     vertical-align: top;
     text-align: left;
@@ -1108,7 +1119,7 @@ em {
     border: 1px solid black;
     width: 500px;
     height: 400px;
-    background-image: url("../images/accordion/produce.jpg" );
+background-image: url("../images/accordion/produce.jpg" );
 }
 .applesPanel {
     background-image: url( "../images/accordion/apples.jpg" );

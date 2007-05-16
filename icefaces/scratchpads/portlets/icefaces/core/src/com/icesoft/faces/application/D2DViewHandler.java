@@ -37,7 +37,6 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
-import com.icesoft.faces.component.NamespacingViewRoot;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
@@ -175,8 +174,7 @@ public class D2DViewHandler extends ViewHandler {
             return delegate.createView(context, viewId);
         }
 
-        UIViewRoot root = new NamespacingViewRoot(context);
-//        UIViewRoot root = new UIViewRoot();
+        UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
 
         Map contextServletTable =
@@ -371,7 +369,23 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public String getResourceURL(FacesContext context, String path) {
-        return LocationUtil.getResourcePath(context,path);
+
+        String resourcePath = path;
+
+        if ( path != null ){
+            int startIndex = 0;
+            if (path.startsWith("/") ){
+                startIndex = 1;
+            }
+            resourcePath = LocationUtil.getAppBase(context) +
+                           path.substring(startIndex);
+        }
+
+        if( log.isTraceEnabled() ){
+            log.trace( "\n  original path is " + path +
+                       "\n  new resource path " + resourcePath );
+        }
+        return resourcePath;
     }
 
     protected long getTimeAttribute(UIComponent root, String key) {

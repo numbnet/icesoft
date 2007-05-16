@@ -29,8 +29,8 @@ public class NormalModeSerializer implements DOMSerializer {
         Map requestMap = context.getExternalContext().getRequestMap();
 
         if( isFragment(requestMap) ){
-            if( log.isTraceEnabled() ){
-                log.trace( "treating request as a fragment" );
+            if( log.isDebugEnabled() ){
+                log.debug( "treating request as a fragment" );
             }
 
             Node body = DOMUtils.getChildByNodeName(
@@ -43,12 +43,12 @@ public class NormalModeSerializer implements DOMSerializer {
                 //views on one page
                 String base = LocationUtil.getAppBase(context);
                 writer.write("<script language='javascript' src='" + base +
-                        "xmlhttp" + StartupTime.getStartupInc() + "icefaces-bootstrap.js'></script>");
+                        "xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js'></script>");
                 writer.write(DOMUtils.childrenToString(body));
             }
         } else {
-            if (log.isTraceEnabled()) {
-                log.trace("treating request as a whole page (not a fragment)");
+            if (log.isDebugEnabled()) {
+                log.debug("treating request as a whole page (not a fragment)");
             }
 
             String publicID =
@@ -97,12 +97,17 @@ public class NormalModeSerializer implements DOMSerializer {
         //path.
 
         String frag = (String) requestMap.get(Constants.INC_REQUEST_URI);
-
+        if( log.isDebugEnabled() ){
+            log.debug( Constants.INC_REQUEST_URI + " = " + frag );
+        }
         if( frag != null ){
             return true;
         }
 
         frag = (String)requestMap.get(Constants.INC_SERVLET_PATH);
+        if( log.isDebugEnabled() ){
+            log.debug( Constants.INC_SERVLET_PATH + " = " + frag );
+        }
         if( frag != null ){
             return true;
         }

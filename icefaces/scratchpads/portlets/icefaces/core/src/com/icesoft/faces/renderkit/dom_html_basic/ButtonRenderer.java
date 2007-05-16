@@ -144,7 +144,7 @@ public class ButtonRenderer extends DomBasicRenderer {
             //Paths to resources can be dependent on the environment so
             //we should use proper JSF techniques to resolve them.
             String pathToImage = LocationUtil.getResourcePath(facesContext, imageAttribute);
-
+            
             root.setAttribute("src", pathToImage);
             root.removeAttribute("value");
         } else {
