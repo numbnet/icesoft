@@ -21,7 +21,7 @@
     
     <ice:form id="${componentName}Form" styleClass="edit">
 	<ice:panelAccordion expanded="${'#'}{${listName}.openStatus}" styleClass="accordion2"
-				valueChangeListener="${'#'}{${listName}.toggle}" >
+				actionListener="${'#'}{${listName}.toggle}" >
 	   <f:facet name="header">
            <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
                   <ice:outputText value="${entityName} search"/>

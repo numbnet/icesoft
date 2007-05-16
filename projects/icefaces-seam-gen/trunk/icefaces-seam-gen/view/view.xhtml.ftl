@@ -20,7 +20,7 @@
     
 
     <ice:panelAccordion expanded="${'#'}{${homeName}.openStatus}" styleClass="accordion2"
-				valueChangeListener="${'#'}{${homeName}.toggle}" >
+				actionListener="${'#'}{${homeName}.toggle}" >
 	<f:facet name="header">
 		<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
 			    <ice:outputText value="${homeName}"/>

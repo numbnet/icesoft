@@ -46,12 +46,14 @@ import javax.ejb.Remove;
 import java.util.Date;
 import java.text.DateFormat;
 import java.io.Serializable;
+import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.IntervalRenderer;
 import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.component.accordion.PanelAccordion;
 
 /**
  * @author ICEsoft Technologies, Inc.
@@ -67,7 +69,7 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
     private RenderManager renderManager;
 
     private boolean doneSetup;
-
+    private boolean openStatus;
     private IntervalRenderer ir;
 
     private PersistentFacesState state = PersistentFacesState.getInstance();
@@ -133,6 +135,19 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
         Manager m = Manager.instance();
         return Boolean.toString( m.isLongRunningConversation() );
     } 
+
+    public void toggle(ActionEvent event) {
+          PanelAccordion component1 = (PanelAccordion)event.getSource();
+          openStatus = component1.getExpanded().booleanValue();
+    }
+
+    public void setOpenStatus(boolean input) {
+		this.openStatus = input;
+    }
+
+    public boolean getOpenStatus() {
+		return openStatus;
+    }
 
     @Remove
     @Destroy

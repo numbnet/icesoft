@@ -4,6 +4,7 @@ ${pojo.packageDeclaration}
 <#assign componentName = util.lower(entityName)>
 <#assign homeName = componentName + "Home">
 import javax.faces.event.ActionEvent;
+import com.icesoft.faces.component.accordion.PanelAccordion;
 
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
@@ -112,7 +113,8 @@ public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framewo
 </#foreach>
 
  	public void toggle(ActionEvent event) {
-             openStatus=!openStatus;
+          PanelAccordion component1 = (PanelAccordion)event.getSource();
+          openStatus = component1.getExpanded().booleanValue();
         }
 
 	public void setOpenStatus(boolean input) {

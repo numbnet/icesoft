@@ -481,7 +481,7 @@ td.seam-date-hover
     font-family:tahoma,arial, san-serif;
     font-weight:bold;
     font-size:11px;
-  
+    height: 20px;
   }
   
 .accordion2Content, .accordion2Content_collapsed{
