@@ -15,7 +15,6 @@ public class ResourceServer implements Server {
         pathDispatcher.dispatchOn(".*xmlhttp\\/javascript-blocked$", new RedirectOnJSBlocked(configuration));
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/icefaces\\-d2d\\.js$", new CacheControlledServer(new ServeBridgeJSCode(configuration)));
         pathDispatcher.dispatchOn(".*xmlhttp\\/icefaces\\-d2d\\.js$", new CacheControlledServer(new ServeBridgeJSCode(configuration)));
-        pathDispatcher.dispatchOn(".*xmlhttp\\/icefaces\\-bootstrap\\.js$", new CacheControlledServer(new ServeBootstrapJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/.*\\.js$", new CacheControlledServer(new ServeExtraJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/css\\/.*", new CacheControlledServer(new ServeCSSResource()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/blank\\.iface$", new ServeBlankPage());

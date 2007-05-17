@@ -3,8 +3,7 @@ package com.icesoft.faces.application;
 public class StartupTime {
 
     private static long started = System.currentTimeMillis();;
-//    private static String inc = "/" + started + "/";
-    private static String inc = "/";
+    private static String inc = "/" + started + "/";
 
     public static long getStartupTime() {
         return started;
