@@ -1,231 +1,184 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
 <html>
-<head>
-    <title>JAXB Tree Tutorial</title>
-    <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
-</head>
+    <head>
+        <title>JAXB Tree Tutorial</title>
+        <LINK href="css/styles.css" rel="stylesheet" type="text/css"/>
+    </head>
 
-<body>
-<!-- header section -->
-<p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
-    <a href="index.html"> Table of Contents</a>
-</p>
-<hr/>
+    <body>
+        <!-- header section -->
+        <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+            <a href="index.html"> Table of Contents</a>
+        </p>
+        <hr/>
 
-<p>
-    <b>Lesson:</b> Creating a Tree Using JAXB
-</p>
+        <p>
+            <b>Lesson:</b> Creating a Tree Using JAXB
+        </p>
 
-<!-- tutorial content section -->
+        <!-- tutorial content section -->
 
-<h1>How to Create a Tree Using JAXB</h1>
-
-
-<a name="whatisjaxb"><h2>First Off, What is JAXB?</h2></a>
-
-<p>
-    JAXB stands for Java Architecture for XML Binding. It allows for the
-    coupling of Java and XML. This means you can access data from XML documents
-    from applications written in Java.
-
-    This particularly comes in handy for creating schema driven UI's. It allows
-    you to set up all the information in your UI within the XML document, which
-    allows for easier changing of your content.
-</p>
-
-<p>This tutorial will also discuss the four forms of Validation:</p>
-<ul>
-    <li><a href="#built-invalidation">Built-In Validation</a></li>
-    <li><a href="#applevelvalidation">Application Level Validation</a>
-    </li>
-    <li><a href="#customvalidation">Custom Validation</a></li>
-    <li><a href="#backingbeanvalidation">Validation Methods in Backing Beans</a>
-    </li>
-</ul>
+        <h1>How to Create a Tree Using JAXB</h1>
 
 
-<a name="thetree"><h2>The Tree</h2></a>
+        <a name="whatisjaxb"><h2>First Off, What is JAXB?</h2></a>
 
-<p>One of the more versatile and appealing components in ICEFaces is the tree
-    component. This tutorial will show you how to set up a tree \
-    to use as a menu based on information derived from an XML document. We will
-    use the information in the XML to not only create our tree,
-    but will also use the tree to display the information contained in the XML
-    document.
+        <p>
+            JAXB stands for Java Architecture for XML Binding. It allows for the coupling of Java and XML. This means you can access data from XML documents from applications written in Java.
 
-</p>
+            This particularly comes in handy for creating schema driven UI's. It allows you to set up all the information in your UI within the XML document, which allows for easier changing of your content.
+        </p>
 
-<a name="thetree"><h2>Accessing the XML Document</h2></a>
 
-<p>In this tutorial we will create a web application to access and display the
-    data in treeDocument.xml. This document contains information about
-    a fleet of ships, such as name, registry, crew size, and ship type.
-</p>
 
-<a name="schema"><h3>Schema</h3>
 
-<p>First you have to have an accompanying schema. An xml schema is in the form
-    of an .sxd document and s an XML specification that governs the
-    allowable components of an XML document and the relationships between the
-    components. Basically, it outlines the elements that can appear in
-    an xml document and in which order they can appear, what attributes they can
-    have, and which elements are subordinate. JAXB requires that the
-    schema document be written in the WC3 Schema Language.
+        <a name="thetree"><h2>The Tree</h2></a>
 
-    The schema we will be using for this tutorial is treeDocument.xsd. It
-    defines a <span class="object-name">&lt;Fleet&gt;</span> as an element that
-    has a complex type. This means that it has
-    child elements, in this case <span class="object-name">&lt;ship&gt;</span>
-    elements. Each <span class="object-name">&lt;ship&gt;</span> also has a
-    complex type named <span class="object-name">&lt;shipType&gt;</span>. The
-    <ship> element has child elements sucha s <span class="object-name">&lt;name&gt;</span>,
-        <span class="object-name">&lt;registry&gt;</span>, and <span
-            class="object-name">&lt;crewSize&gt;</span>.
-</p>
+        <p>One of the more versatile and appealing components in ICEFaces is the tree component. This tutorial will show you how to set up a tree
+        to use as a menu based on information derived from an XML document. We will use the information in the XML to not only create our tree,
+        but will also use the tree to display the information contained in the XML document.
 
-<a nema="bindingtheschema"><h3>Binding the Schema</h3>
+        </p>
 
-<p>Binding a schema involves generating a set of java classes that represent the
-    schema. All JAXB implementations provide a tool to bind the schema. This
-    tool is can invoked a number of different ways depending on the
-    implementation.
+        <a name="thetree"><h2>Accessing the XML Document</h2></a>
 
-    For this tutorial we will use the command line to execute the jar method(for
-    other methods see the help files that come with jaxb).
+        <p>In this tutorial we will create a web application to access and display the data in treeDocument.xml. This document contains information about
+        a fleet of ships, such as name, registry, crew size, and ship type.
+        </p>
 
-    There are different ways to complete the binding process, you may copy your
-    entire JAXB directory into your project directory, or as we will do for this
-    tutorial, place a copy of your schema file in the JAXB/lib folder and run
-    the following from the command line(you can copy the java files to your
-    project directory after).
+        <a name="schema"><h3>Schema</h3>
 
-</p>
-        
+        <p>First you have to have an accompanying schema. An xml schema is in the form of an .sxd document and s an XML specification that governs the
+        allowable components of an XML document and the relationships between the components. Basically, it outlines the elements that can appear in
+        an xml document and in which order they can appear, what attributes they can have, and which elements are subordinate. JAXB requires that the
+        schema document be written in the WC3 Schema Language.
+
+        The schema we will be using for this tutorial is treeDocument.xsd. It defines a <span class="object-name">&lt;Fleet&gt;</span> as an element that has a complex type. This means that it has
+        child elements, in this case <span class="object-name">&lt;ship&gt;</span> elements. Each <span class="object-name">&lt;ship&gt;</span> also has a complex type named <span class="object-name">&lt;shipType&gt;</span>. The <ship> element has child elements sucha s <span class="object-name">&lt;name&gt;</span>,
+        <span class="object-name">&lt;registry&gt;</span>, and <span class="object-name">&lt;crewSize&gt;</span>.
+        </p>
+
+        <a nema="bindingtheschema"><h3>Binding the Schema</h3>
+        <p>Binding a schema involves generating a set of java classes that represent the schema. All JAXB implementations provide a tool to bind the schema. This tool is can invoked a number of different ways depending on the implementation.
+
+        For this tutorial we will use the command line to execute the jar method (for other methods see the help files that come with JAXB).
+
+        There are different ways to complete the binding process, you may copy your entire JAXB directory into your project directory, or as we will do for this tutorial, place a copy of your schema file in the JAXB/lib folder and run the following from the command line (you can copy the java files to your project directory after).
+
+        </p>
+
         <pre>
         Prompt:> java -jar jaxb-xjc.jar -p com.icesoft.icefaces.resource.tutorial.component.jaxb treeDocument.xsd -d src
         </pre>
-<p>
-    The -p identifies the a package for the generated classes, and the -d option
-    identifies a target directory. So for this tutorial the classes are packaged
-    in com.icesoft.icefaces.resource.tutorial.componet.jaxb within the src
-    directory.
+        <p>
+            The -p identifies the a package for the generated classes, and the -d option identifies a target directory. So for this tutorial the classes are packaged in com.icesoft.icefaces.resource.tutorial.componet.jaxb within the src directory.
 
-    Once the command is executed, the compiler generates the following classes
-    based on the treeDocument.xsd schema:
-</p>
+            Once the command is executed, the compiler generates the following classes based on the treeDocument.xsd schema:
+        </p>
         <pre>
-            Fleet.java 
+            Fleet.java
             ObjectFactory.java
             ShipFleetType.java
             ShipType.java
         </pre>
-<br/>
+        <br/>
 
-<div class="demo-instruction">
-    <h3>Download the Source:</h3>
-    <ul>
-        <li>Download the source code by clicking <a
-                href="JAXB-tree.zip">here</a>.
-        </li>
-    </ul>
-</div>
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>See the JAXB-Tree demo for your self by clicking
+                    <a href="/web/JAXBTutorial.iface"
+                       target="_blank">here</a>,
+                    or download the source code <a
+                    href="JAXB-Tree-Tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
 
-<a name="unmarhsalling"><h2>Unmarshalling the Document</h2></a>
+        <a name="unmarhsalling"><h2>Unmarshalling the Document</h2></a>
 
-<p>Unamrshalling the document means creating a tree of content objects that
-    represents the organization of the document.
-</p>
-
-<p>To unmarshal a document you:</p>
+        <p>Unamrshalling the document means creating a tree of content objects that represents the organization of the document.
+        </p>
+        <p>To unmarshal a document you:</p>
 
 
-<p>
-    Create a JAXBContext object. This provides the entry point to the JAXB API.
-    When you create this object you must identify a context path, which defines
-    the packages where the classes generated by the compiler are contained.
-</p>
+        <p>
+        Create a JAXBContext object. This provides the entry point to the JAXB API. When you create this object you must identify a context path, which defines the packages where the classes generated by the compiler are contained.
+        </p>
         <pre>
             Import. Javax.xml.bind.JAXBContext;
 
-            JAXBContext jc = JAXBContext,newInstance(?com.icesoft.icefaces.resource.tutorial.component.jaxb?);
+            JAXBContext jc = JAXBContext,newInstance(“com.icesoft.icefaces.resource.tutorial.component.jaxb”);
         </pre>
 
-<p>
-    Create an Unmarshaller object. This object contains methods that perform the
-    the actual unmarshalling operation.
-</p>
+            <p>
+                Create an Unmarshaller object. This object contains methods that perform the the actual unmarshalling operation.
+            </p>
             <pre>
-            Import javax.sml.bind.Unmarshaller;
+            import javax.sml.bind.Unmarshaller;
 
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             </pre>
-<p>
-    Call the unmarshal() method. This method is what actually unmarshalls the
-    xml document.
-</p>
+            <p>
+                Call the unmarshal() method. This method is what actually unmarshalls the xml document.
+            </p>
             <pre>
-            Fleet fleet = (Fleet)unmarshaller.unmarshal(new File(?treeDocument.xml?));
+            Fleet fleet = (Fleet)unmarshaller.unmarshal(new File(“treeDocument.xml”));
 
         </pre>
 
-<p>
-    You have a choice as making a separate class to be used as a JAXB manager,
-    or you can insert this code straight into your programs main bean. For the
-    purposes of this tutorial, we will insert it in the treeBean class as a
-    static block.
-</p>
+        <p>
+            You have a choice as making a separate class to be used as a JAXB manager, or you can insert this code straight into your programs main bean. For the purposes of this tutorial, we will insert it in the treeBean class as a static block.
+        </p>
         <pre>
             static{
                 try {
-      
+
                     jc = JAXBContext.newInstance("com.icesoft.icefaces.resource.tutorial.component.jaxb");
-           
+
                     unmarshaller = (Unmarshaller)jc.createUnmarshaller();
-            
+
                     fleet = (Fleet)unmarshaller.unmarshal(new File("treeDocument.xml"));
-           
+
                 } catch (JAXBException ex) {
                     ex.printStackTrace();
                     }
-       
+
             }
         </pre>
 
-<div class="demo-instruction">
-    <h3>Download the Source Code:</h3>
-    <ul>
-        <li>Download the source code <a
-                href="JAXB-tree.zip">here</a>.
-        </li>
-    </ul>
-</div>
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>See the JAXB-Tree demo for your self by clicking
+                    <a href="/web/JAXBTutorial.iface"
+                       target="_blank">here</a>,
+                    or download the source code <a
+                    href="JAXB-Tree-Tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
 
-<a name="backingbean"><h2>Backing Bean and Tree Setup</h2></a>
+        <a name="backingbean"><h2>Backing Bean and Tree Setup</h2></a>
 
-<p>
-    Once the unmarshalling is complete, you can access the data using standard
-    getters that were created by the compiler. For this tutorial, we create 2
-    ship objects from a list of ships gathered from the data:
-</p>
-        
+        <p>
+            Once the unmarshalling is complete, you can access the data using standard getters that were created by the compiler. For this tutorial, we create 2 ship objects from a list of ships gathered from the data:
+        </p>
+
         <pre>
              public treeBean() {
-        
+
                 Fleet.Ships shipType = fleet.getShips();
                 ArrayList shipList = (ArrayList)shipType.getShip();
                 ship1 = (ShipType)shipList.get(0);
                 ship2 = (ShipType)shipList.get(1);
-	
+
                 ....
             }
         </pre>
 
-<p>
-    Once you have created the Ship objects, its time to put them into nodes on
-    the tree. We start by creating a root node names ?Fleet? (be sure to create
-    your UrlNodeUserObject class first ? see source code):
-</p>
-        
+        <p>
+            Once you have created the Ship objects, its time to put them into nodes on the tree. We start by creating a root node names “Fleet” (be sure to create your UrlNodeUserObject class first – see source code):
+        </p>
+
         <pre>
             public treeBean(){
                 ....
@@ -242,10 +195,10 @@
             }
         </pre>
 
-<p>
-    Then, add each ship as a new node:
-</p>
-        
+        <p>
+            Then, add each ship as a new node:
+        </p>
+
         <pre>
             public treeBean(){
 
@@ -273,82 +226,73 @@
             }
         </pre>
 
-<div class="demo-instruction">
-    <h3>See the demo:</h3>
-    <ul>
-        <li>Download the source code <a
-                href="JAXB-tree.zip">here</a>.
-        </li>
-    </ul>
-</div>
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>See the JAXB-Tree demo for your self by clicking
+                    <a href="/web/JAXBTutorial.iface"
+                       target="_blank">here</a>,
+                    or download the source code <a
+                    href="JAXB-Tree-Tutorial.zip">here</a>.</li>
+            </ul>
+        </div>
 
-<a name="jspsetup"><h2>JSP Page and Tree Setup</h2></a>
+        <a name="jspsetup"><h2>JSP Page and Tree Setup</h2></a>
 
-<p>
-    Now its time to create the tree in the JSP page. Since our tree will be
-    controlling a <span class="object-name">panelStack</span>, we are going to
-    use <span class="object-name">commandLinks</span> as the nodes, and insert a
-    <spane class="object-name">param
-</p>
-tag in order to reference the different panels.
+            <p>
+            Now its time to create the tree in the JSP page. Since our tree will be controlling a <span class="object-name">panelStack</span>, we are going to use <span class="object-name">commandLinks</span> as the nodes, and insert a <spane class="object-name">param</p> tag in order to reference the different panels.
 
-The code snippet looks something like such:
-</p>
+            The code snippet looks something like such:
+        </p>
         <pre>
-    &lt;ice:panelGroup styleClass="treeContainer"&gt;      
-                            
-                            &lt;ice:tree id="tree"
-                                      value="#{treeBean.model}"
-                                      var="item"
-                                      hideRootNode="false"
-                                      hideNavigation="false"
-                                      imageDir="./xmlhttp/css/xp/css-images/" &gt;
-                                &lt;ice:treeNode&gt;
-                                    &lt;f:facet name="content"&gt;
-                                        &lt;ice:panelGroup style="display: inline"&gt;
-                                            
-                                        &lt;ice:<SPAN
-                style="BACKGROUND-COLOR:#a4bdd2">commandLink</SPAN> value="#{item.userObject.text}"
-                                        actionListener="#{panelStack.selectedPanelChangedAction}" style="font-weight:bold; 
-                                        border:1px solid black; padding-right:2px; padding-left:2px;background-color:#ccd269" &gt;
-                                            <SPAN style="BACKGROUND-COLOR:#a4bdd2">&lt;f:param value="#{item.userObject.text}" name="ships"/&gt;</SPAN>
-                                        &lt;/ice:commandLink&gt;
-                                            
-                                        &lt;/ice:panelGroup&gt;
-                                    &lt;/f:facet&gt;
-                                &lt;/ice:treeNode&gt;
-                            &lt;/ice:tree&gt;
-                            
+    &lt;ice:panelGroup styleClass="treeContainer"&gt;
+
+    	&lt;ice:tree id="tree"
+        	value="#{treeBean.model}"
+        	var="item"
+        	hideRootNode="false"
+        	hideNavigation="false"
+        	imageDir="./xmlhttp/css/xp/css-images/" &gt;
+        	&lt;ice:treeNode&gt;
+        		&lt;f:facet name="content"&gt;
+        			&lt;ice:panelGroup style="display: inline"&gt;
+
+        				&lt;ice:<SPAN style="BACKGROUND-COLOR:#a4bdd2">commandLink</SPAN> value="#{item.userObject.text}"
+        					actionListener="#{panelStack.selectedPanelChangedAction}" style="font-weight:bold;
+        					border:1px solid black; padding-right:2px; padding-left:2px;background-color:#ccd269" &gt;
+        						<SPAN style="BACKGROUND-COLOR:#a4bdd2">&lt;f:param value="#{item.userObject.text}" name="ships"/&gt;</SPAN>
+        				&lt;/ice:commandLink&gt;
+
+        			&lt;/ice:panelGroup&gt;
+        		&lt;/f:facet&gt;
+        	&lt;/ice:treeNode&gt;
+        &lt;/ice:tree&gt;
+
     &lt;/ice:panelGroup&gt;
         </pre>
-<p>
-    Now you must also tie this in with the panelStack backing bean(see source
-    code) using the selectedPanelChangedAction() method:
-</p>
+        <p>
+            Now you must also tie this in with the panelStack backing bean(see source code) using the selectedPanelChangedAction() method:
+        </p>
         <pre>
             public void selectedPanelChangedAction(ActionEvent event){
-        
+
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map map = context.getExternalContext().getRequestParameterMap();
-                selectedPanel = (String) map.get("ships"); 
-       
+                selectedPanel = (String) map.get("ships");
+
             }
         </pre>
-<p>
-    Our next step is to create the panel stack. This is where we will use the
-    Ship objects in the treeBean to display their data to the user.
+        <p>
+            Our next step is to create the panel stack. This is where we will use the Ship objects in the treeBean to display their data to the user.
 
-    We will only show you the Fleet panel and the USS-JAXB panel, but subsequent
-    panels are set up in the same matter. Notice for the values we wish to
-    display, we can simply call the getter methods from the Ship objects we
-    created in the treeBean.
-</p>
+            We will only show you the Fleet panel and the USS-JAXB panel, but subsequent panels are set up in the same matter. Notice for the values we wish to display, we can simply call the getter methods from the Ship objects we created in the treeBean.
+        </p>
         <pre>
             &lt;ice:panelStack selectedPanel="#{panelStack.selectedPanel}" &gt;
-                            
+
                  &lt;ice:panelGroup id="Fleet"&gt;
                     &lt;ice:outputText value="The 31st Exploratory Fleet" style="font-weight:bold; border:1px solid black;
-                         background-color:#a4bdd2; padding-right:2px; padding-left:2px"/&gt; 
+                         background-color:#a4bdd2; padding-right:2px; padding-left:2px"/&gt;
                     &lt;br/&gt;&lt;br/&gt;
                     &lt;ice:panelGroup style=" border:1px solid black; background-color:#a6a7a9; padding-right:2px; padding-left:2px"&gt;
                         &lt;ice:outputText value="This Fleet contains 2 ships: the USS-JAXB and the USS-ICE.
@@ -356,14 +300,14 @@ The code snippet looks something like such:
                                                     see the details of the different ships." /&gt;
                     &lt;/ice:panelGroup&gt;
                  &lt;/ice:panelGroup&gt;
-                            
+
                  &lt;ice:panelGroup id="USS-JAXB"&gt;
                     &lt;ice:outputText value="Name:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2;
                         padding-right:2px; padding-left:2px"/&gt;
                     &lt;ice:outputText <SPAN style="BACKGROUND-COLOR:#a4bdd2">value="#{treeBean.ship1.name}"</SPAN> style="border:1px solid black; background-color:#a6a7a9;
                         padding-right:2px; padding-left:2px"/&gt;
                     &lt;br/&gt;&lt;br/&gt;
-                    &lt;ice:outputText value="Registry:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; 
+                    &lt;ice:outputText value="Registry:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px;
                         padding-left:2px"/&gt;
                     &lt;ice:outputText <SPAN style="BACKGROUND-COLOR:#a4bdd2">value="#{treeBean.ship1.registry}"</SPAN> style="border:1px solid black; background-color:#a6a7a9;
                         padding-right:2px; padding-left:2px"/&gt;
@@ -378,23 +322,28 @@ The code snippet looks something like such:
                     &lt;ice:outputText <SPAN style="BACKGROUND-COLOR:#a4bdd2">value="#{treeBean.ship1.description}"</SPAN> style="border:1px solid black; background-color:#a6a7a9;
                         padding-right:2px; padding-left:2px"/&gt;
                     &lt;br/&gt;&lt;br/&gt;
-                    &lt;ice:outputText value="Ship Type:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px; 
+                    &lt;ice:outputText value="Ship Type:" style="font-weight:bold; border:1px solid black; background-color:#a4bdd2; padding-right:2px;
                         padding-left:2px"/&gt;
                     &lt;ice:outputText <SPAN style="BACKGROUND-COLOR:#a4bdd2">value="#{treeBean.ship1.shipFleetType}"</SPAN> style="border:1px solid black; background-color:#a6a7a9;
                         padding-right:2px;  padding-left:2px"/&gt;
                 &lt;/ice:panelGroup&gt;
         </pre>
-        <div class="demo-instruction">
+         <div class="demo-instruction">
             <h3>See the demo:</h3>
             <ul>
-                <li>Download the source code <a
-                        href="JAXB-tree.zip">here</a>.
-                </li>
+                <li>See the JAXB-Tree demo for your self by clicking
+                    <a href="/web/JAXBTutorial.iface"
+                       target="_blank">here</a>,
+                    or download the source code <a
+                    href="JAXB-Tree-Tutorial.zip">here</a>.</li>
             </ul>
         </div>
 
         <a name="finally"><h2>Conclusion</h2></a>
         <p>
+            As you can see from this tutorial schema driven UI's are very favourable due to the fact that the data is so easy to change and manipulate.
+            JAXB provides the perfect bridge to create a schema UI in java.
+
             Ensure your treeDocument.xml is in the path you specified in the treeBean:
 
         </p>
@@ -403,20 +352,22 @@ The code snippet looks something like such:
              fleet = (Fleet)unmarshaller.unmarshal(new File("treeDocument.xml"));
         </pre>
 
-<p>
-    You should be good to go! Note that now you can change the data displayed
-    and in your tree by simply changing the information in the treeDocument.xml
-    file.
-</p>
+        <p>
+            You should be good to go! Note that now you can change the data displayed and the content of your tree by simply changing the information in the treeDocument.xml file.
 
-<!-- footer section -->
-<hr/>
 
-<p class="tutorialFooterText">The ICEfaces Tutorial
-    <br/>
-    <a href="index.html"> Table of Contents</a>
-</p>
 
-<p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
-</body>
+        </p>
+
+
+        <!-- footer section -->
+        <hr/>
+
+        <p class="tutorialFooterText">The ICEfaces Tutorial
+            <br/>
+            <a href="index.html"> Table of Contents</a>
+        </p>
+
+        <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+    </body>
 </html>
