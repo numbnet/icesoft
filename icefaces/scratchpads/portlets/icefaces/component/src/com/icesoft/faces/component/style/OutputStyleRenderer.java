@@ -36,7 +36,6 @@ package com.icesoft.faces.component.style;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.LocationUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -46,7 +45,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Beans;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA. User: rmayhew Date: May 30, 2006 Time: 3:59:37 PM
@@ -112,8 +110,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
 
 
                 }
-                ieStyleEle.setAttribute(HTML.HREF_ATTR,
-                                        LocationUtil.getResourcePath(facesContext,href));
+                ieStyleEle.setAttribute(HTML.HREF_ATTR, getResourceURL(facesContext,href));
                 styleEle.getParentNode().appendChild(ieStyleEle);
 
 
