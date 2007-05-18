@@ -212,6 +212,7 @@ public class ZipPresentationDocument implements PresentationDocument {
                 int indexOfFileFormat =
                         externalConverterFile.getName().lastIndexOf(".");
                 String baseDirectory;
+                long ourTimestamp = System.currentTimeMillis();
 
                 // Setup the base directory, which can be based on two cases
                 // The first is a user uploaded file, which goes right into web/
@@ -222,12 +223,15 @@ public class ZipPresentationDocument implements PresentationDocument {
                     baseDirectory = externalConverterFile.getParentFile()
                             .getParentFile() +
                                              File.separator + EXTRACTED_FOLDER +
-                                             File.separator + presentation.getPrefix() + File.separator;
+                                             File.separator + presentation.getPrefix() +
+                                             ourTimestamp + File.separator;
                 } else {
                     baseDirectory = externalConverterFile.getParentFile() +
                                     File.separator + EXTRACTED_FOLDER + File.separator +
-                                    presentation.getPrefix() + File.separator;
+                                    presentation.getPrefix() + ourTimestamp + File.separator;
                 }
+                
+                System.out.println("BASE DIRECTORY: " + baseDirectory);
                 
                 // Ensure the extraction directories exist
                 File directoryStructure = new File(baseDirectory);
@@ -245,7 +249,9 @@ public class ZipPresentationDocument implements PresentationDocument {
                     if (!currentEntry.isDirectory()) {
                         loopIndex++;
                         File toAdd = new File(
-                                baseDirectory + replaceUserFilename(currentEntry.getName(), loopIndex));
+                                baseDirectory, replaceUserFilename(currentEntry.getName(), loopIndex));
+                                
+                        System.out.println("Add: " + toAdd.getAbsolutePath());
                         if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
                             // Make sure to only deal with image files
                             if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
@@ -254,13 +260,11 @@ public class ZipPresentationDocument implements PresentationDocument {
                                 copyInputStream(zf.getInputStream(currentEntry),
                                                 new BufferedOutputStream(
                                                         new FileOutputStream(
-                                                                baseDirectory +
-                                                                toAdd.getName())));
+                                                                toAdd)));
                                 toAdd.deleteOnExit();
                                 
                                 // Scale the image as needed
-                                ImageScaler.aspectScaleImage(
-                                            new File(baseDirectory, toAdd.getName()));
+                                ImageScaler.aspectScaleImage(toAdd);
                                 
                                 generatedFiles.add(toAdd);
                             }
@@ -284,7 +288,7 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // Generate a list of Slide objects from the extracted files
                 // This list can then be used by the presentation
                 baseDirectory = EXTRACTED_FOLDER + URL_SLASH +
-                                presentation.getPrefix() + URL_SLASH;
+                                presentation.getPrefix() + ourTimestamp + URL_SLASH;
                 externalConverterFilePages = generatedFiles.size();
                 ArrayList slideArray = new ArrayList(0);
                 File currentFile;
