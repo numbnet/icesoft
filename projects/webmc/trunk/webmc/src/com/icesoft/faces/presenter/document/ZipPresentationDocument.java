@@ -211,8 +211,6 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // Make any necessary parent directories
                 int indexOfFileFormat =
                         externalConverterFile.getName().lastIndexOf(".");
-                String fileNameWithoutType = externalConverterFile.getName()
-                        .substring(0, indexOfFileFormat);
                 String baseDirectory;
 
                 // Setup the base directory, which can be based on two cases
@@ -224,14 +222,13 @@ public class ZipPresentationDocument implements PresentationDocument {
                     baseDirectory = externalConverterFile.getParentFile()
                             .getParentFile() +
                                              File.separator + EXTRACTED_FOLDER +
-                                             File.separator + presentation.getPrefix() +
-                                             "-" + fileNameWithoutType + File.separator;
+                                             File.separator + presentation.getPrefix() + File.separator;
                 } else {
                     baseDirectory = externalConverterFile.getParentFile() +
                                     File.separator + EXTRACTED_FOLDER + File.separator +
-                                    presentation.getPrefix() + "-" + fileNameWithoutType + File.separator;
+                                    presentation.getPrefix() + File.separator;
                 }
-
+                
                 // Ensure the extraction directories exist
                 File directoryStructure = new File(baseDirectory);
                 if (!directoryStructure.exists()) {
@@ -241,12 +238,14 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // Loop through all entries in the zip and extract as necessary
                 ArrayList generatedFiles = new ArrayList(0);
                 ZipEntry currentEntry;
+                int loopIndex = 0;
                 for (Enumeration entries = zf.entries();
                      entries.hasMoreElements();) {
                     currentEntry = (ZipEntry) entries.nextElement();
                     if (!currentEntry.isDirectory()) {
+                        loopIndex++;
                         File toAdd = new File(
-                                baseDirectory + currentEntry.getName());
+                                baseDirectory + replaceUserFilename(currentEntry.getName(), loopIndex));
                         if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
                             // Make sure to only deal with image files
                             if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
@@ -285,8 +284,7 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // Generate a list of Slide objects from the extracted files
                 // This list can then be used by the presentation
                 baseDirectory = EXTRACTED_FOLDER + URL_SLASH +
-                                presentation.getPrefix() + "-" +
-                                fileNameWithoutType + URL_SLASH;
+                                presentation.getPrefix() + URL_SLASH;
                 externalConverterFilePages = generatedFiles.size();
                 ArrayList slideArray = new ArrayList(0);
                 File currentFile;
@@ -313,6 +311,14 @@ public class ZipPresentationDocument implements PresentationDocument {
                 }
             }
         }
+    }
+    
+    private String replaceUserFilename(String name, int slideNumber) {
+        if (name.indexOf(".") != -1) {
+            return "Slide" + slideNumber + name.substring(name.indexOf("."));
+        }
+        
+        return "Slide" + slideNumber;
     }
 
     /**
