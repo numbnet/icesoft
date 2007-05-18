@@ -231,8 +231,6 @@ public class ZipPresentationDocument implements PresentationDocument {
                                     presentation.getPrefix() + ourTimestamp + File.separator;
                 }
                 
-                System.out.println("BASE DIRECTORY: " + baseDirectory);
-                
                 // Ensure the extraction directories exist
                 File directoryStructure = new File(baseDirectory);
                 if (!directoryStructure.exists()) {
@@ -250,8 +248,6 @@ public class ZipPresentationDocument implements PresentationDocument {
                         loopIndex++;
                         File toAdd = new File(
                                 baseDirectory, replaceUserFilename(currentEntry.getName(), loopIndex));
-                                
-                        System.out.println("Add: " + toAdd.getAbsolutePath());
                         if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
                             // Make sure to only deal with image files
                             if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
