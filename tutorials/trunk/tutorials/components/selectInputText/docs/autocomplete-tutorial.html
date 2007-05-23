@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+
+<html>
+  <head>
+    <title>ICEfaces Auto-Complete Tutorial</title>
+    <LINK href="css/style.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+      <!-- header section -->
+      <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      <hr/>
+      
+      <p>
+          <b>Lesson:</b> Using the autocomplete component
+      </p>
+      
+      <!-- tutorial content section -->
+      
+      <h1>How to Use the ICEfaces Auto-Complete Component</h1>
+      
+      <p>
+          The auto-complete component is actually the ice:selectInputText 
+          component.  This component provides an input text component enhanced 
+          with auto-complete functionality.  As the user enters text into the 
+          component it provides a pop-up list of possible matching values that 
+          the user may select from. 
+      </p>
+      
+      <p>
+          The component predicts a word of phrase that a user wants to type in 
+          without the user actually completely typing it in.  The component 
+          requires developers to implement the matching search algorithm in the 
+          backing bean.  
+      </p>
+      
+      <p>
+          For this tutorial a simple application has been developed.  The 
+          application consists of a text box for cities in the United States of 
+          America.
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/autocomplete-main.png"
+                title="Auto Complete Applictaion"
+                alt="Auto Complete Application" width="668"
+                height="427"/>
+      </div>
+      
+      <p>
+          This tutorial will discuss the following topic related to the use of 
+          the auto-complete/selectInputText component:
+      </p>
+      
+      <ul>
+          <li><a href="#addthecomponent">Adding the Component</a></li>
+          <li><a href="#createbeans">Create the Backing Beans</a></li>
+          <li><a href="#createdictionary">Create the Dictionary</a></li>
+          <li><a href="#examplethatuses">Example that use Auto-Complete</a></li>
+      </ul>
+      
+      <a name="addthecomponent">&nbsp;</a>
+      
+      <h2>Adding the Component</h2>
+      
+      <p>
+          To get auto-complete functionality we will use the selectInputText 
+          component.  This component is displayed like a regular input text 
+          component but adds the ability to auto-complete the text. 
+      </p>
+      
+      <p>
+          The selectInputText component can generate one of two types of lists:
+      </p>
+      
+      <ol>
+          <li>A list of String data</li>
+          <li>A list of arbitrary complex child components</li>
+      </ol>
+      
+      <p>
+          The following code sample is how to use the component to generate 
+          a list of String data:
+      </p>
+      
+      <pre>
+          &lt;ice:selectInputText rows="10" width="300" valueChangeListener="#{autoCompleteBean.updateList}"&gt;
+                &lt;f:selectItems value="#{autoCompleteBean.list}"/&gt;
+          &lt;/ice:selectInputText&gt;
+      </pre>
+      
+      <p>
+          This will display a drop-down list of cities that match the text 
+          inputed.  The <i>rows</i> attribute defines how many results will be 
+          returned when text is entered.  The <i>width</i> attribute sets the 
+          width of the input text box and the drop-down list.  The 
+          <i>valueChangeListener</i> attribute links to a backing bean that 
+          controls the changing of the associated list when a value is changed.  
+      </p>
+      
+      <p>
+          Embedded in the selectInputText component tag is a selectItems JSF 
+          tag.  This is the link to the backing beans list of available options. 
+          The screen shot below shows the component in action:
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/autocomplete-action.png"
+                title="Auto Complete Applictaion in Action"
+                alt="Auto Complete Application in Action" width="666"
+                height="556"/>
+      </div>
+      
+      <p>
+          The following code sample is how to use the component to generate 
+          a list of arbitrary complex child components:
+      </p>
+      
+      <pre>
+          &lt;ice:selectInputText rows="6" width="300"
+                        listVar="city"
+                        valueChangeListener="#{autoCompleteBean.updateList}"
+                        listValue="#{autoCompleteBean.list}"&gt;
+              &lt;f:facet name="selectInputText"&gt;
+                   &lt;ice:panelGrid columns="3" style="margin-bottom:-20px;"
+                                  columnClasses="cityCol,stateCol,zipCol"&gt;
+                         &lt;ice:outputText value="#{city.city}"/&gt;
+                         &lt;ice:outputText value="#{city.state}"/&gt;
+                         &lt;ice:outputText value="#{city.zip}"/&gt;
+                   &lt;/ice:panelGrid&gt;
+              &lt;/f:facet&gt;
+          &lt;/ice:selectInputText&gt;
+      </pre>
+      
+      <p>
+          This will display values similar to the first way but adds more 
+          information to the drop down menu, such as state and zip, in addtion 
+          to the city.  The screen shot below shows this method in action:
+      </p>
+      
+      <div class="screenshot">
+          <img src="images/autocomplete-action2.png"
+                title="Auto Complete Applictaion Child Components"
+                alt="Auto Complete Application Child Components" width="315"
+                height="156"/>
+      </div>
+      
+      <a name="createbeans">&nbsp;</a>
+      
+      <h2>Create the Backing Beans</h2>
+      
+      <p>
+          For our example application we use cities but you can use anything 
+          that you want auto-completed in a form.  In the application we use 
+          three main backing beans:
+      </p>
+      
+      <ul>
+          <li>
+              <i>AutoCompleteBean</i>: Stores the values gathered from the 
+              <i>AutoCompleteDictionary</i> class.  Also contains utility methods
+              for updating the list and getting the matches from the dictionary
+              list.
+          </li>
+          <li>
+              <i>AutoCompleteDictionary</i>: Gets the dictionary list from a 
+              file in the file system.  Also sorts the dictionary appropriately.
+          </li>
+          <li>
+              <i>City</i>: Basic class used as an object in the dictionary list.
+          </li>
+      </ul>
+      
+      <p>
+          How each classes methods and what attributes each one will have will 
+          be dependent on what information will be used and what you wish to 
+          accomplish with your application.
+      </p>
+      
+      <a name="createdictionary">&nbsp;</a>
+      
+      <h2>Create the Dictionary</h2>
+      
+      <p>
+          For the auto-complete component to work the application must have a 
+          dictionary that the backing beans can look at and get an appropriate 
+          list of viable options.  The creation of this should follow a similar 
+          format as shown below:
+      </p>
+      
+      <pre>
+          &lt;java version="1.4.2_08" class="java.beans.XMLDecoder"&gt; 
+            &lt;object class="java.util.ArrayList"&gt; 
+              &lt;void method="add"&gt; 
+                &lt;object class="com.icesoft.icefaces.tutorial.component.autocomplete.City"&gt; 
+                  &lt;void property="areaCode"&gt; 
+                    &lt;string&gt;631&lt;/string&gt; 
+                  &lt;/void&gt; 
+                  &lt;void property="city"&gt; 
+                    &lt;string&gt;Holtsville&lt;/string&gt; 
+                  &lt;/void&gt; 
+                  &lt;void property="country"&gt; 
+                    &lt;string&gt;Suffolk&lt;/string&gt; 
+                  &lt;/void> 
+                  &lt;void property="state"&gt; 
+                    &lt;string&gt;New York&lt;/string&gt; 
+                  &lt;/void&gt; 
+                  &lt;void property="stateCode"&gt; 
+                    &lt;string&gt;NY&lt;/string&gt; 
+                  &lt;/void&gt; 
+                  &lt;void property="zip"&gt; 
+                    &lt;string&gt;00501&lt;/string&gt; 
+                  &lt;/void&gt; 
+               &lt;/object&gt; 
+             &lt;/void&gt; 
+           &lt;/object&gt;
+         &lt;/java&gt;
+      </pre>
+      
+      <p>
+          Each option you want available for the user needs to be added, for 
+          this reason the file can get fairly large and therefore we zip the xml
+          file to help reduce the space taken up by the file.  As with the beans
+          the contents of the file may differ depending on what you need.  
+      </p>
+      
+      <a name="examplethatuses">&nbsp;</a>
+      
+      <h2>Example That Uses Auto-Complete</h2>
+      
+      <table cellpadding="1" cellspacing="0" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">autocomplete-tutorial</td>
+                  <td class="bodySource"><a href="autocomplete-tutorial.zip">
+                      autocomplete-tutorial source code
+                  </a></td>
+                  <td class="bodyNotes">
+                      Simple example on how to use the Auto-Complete component.
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- footer section -->
+      <hr/>
+      
+      <p class="tutorialFooterText">
+          The ICEfaces Tutorial
+          <br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      
+      <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+        
+  </body>
+</html>
