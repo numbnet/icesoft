@@ -23,14 +23,6 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
-    <managed-bean>
-    	<managed-bean-name>HibernateUtil</managed-bean-name>
-    	<managed-bean-class>
-    		com.icesoft.applications.faces.webmail.util.db.HibernateUtil
-    	</managed-bean-class>
-    	<managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
     <!--
         The mediator is responsible for the initialization of the applications
         classes.  It also tries to keep each of the managers from having to
@@ -86,17 +78,6 @@
 
     <managed-bean>
         <description>
-            The AnonymousLoginBean, used for anonymous users.
-        </description>
-        <managed-bean-name>anonymousLoginBean</managed-bean-name>
-        <managed-bean-class>
-            com.icesoft.applications.faces.webmail.login.AnonymousLoginBean
-        </managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
-        <description>
             The LoginBeanFactory is responsible for generating login beans.
         </description>
         <managed-bean-name>loginBeanFactory</managed-bean-name>
@@ -104,14 +85,6 @@
             com.icesoft.applications.faces.webmail.login.LoginBeanFactory
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
-        <managed-property>
-            <property-name>registerLoginBean</property-name>
-            <value>#{anonymousLoginBean}</value>
-        </managed-property>
-        <managed-property>
-            <property-name>loginMode</property-name>
-            <value>0</value>
-        </managed-property>
     </managed-bean>
 
     <managed-bean>

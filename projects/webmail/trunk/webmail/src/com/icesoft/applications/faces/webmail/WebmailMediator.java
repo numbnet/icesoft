@@ -385,11 +385,6 @@ public class WebmailMediator implements
      *                         clean up the respective SeasonBean.
      */
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        /* <!-- DEMO_SURVEY_JAVASCRIPT BEGIN --> */
-        // unlock the anonymous user account
-        com.icesoft.applications.faces.webmail.login.UserAccountPool.releaseAnonUserAccount(
-                httpSessionEvent.getSession());
-        /* <!-- DEMO_SURVEY_JAVASCRIPT END --> */
         
         // remove all timers associated with this session
         MailAccountTimerCache.releaseMailAccountTimers(httpSessionEvent.getSession());
