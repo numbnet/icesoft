@@ -43,6 +43,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +69,12 @@ public class PieChartBean extends Chart{
     //list of the colors used in the pie chart
     private List paints;
     
+    //all sales
+    private static List allSales = new ArrayList();
+    
     //list of the saled data from the sales class
     private static final List sales = buildSales();
-    
+        
     //a map of the sales data
     private static Map salesMap;
     
@@ -116,9 +120,9 @@ public class PieChartBean extends Chart{
      *
      * @return list of sales items for charting.
      */
-    public static ArrayList buildSales() {
-        
+    public static List buildSales() {
         ArrayList salesTemp = new ArrayList();
+        
         salesMap = Sales.getSales();
         
         Iterator it = salesMap.values().iterator();
@@ -133,15 +137,14 @@ public class PieChartBean extends Chart{
                 price += (yearSale[i]).getPrice();
                 label = (yearSale[i]).getYear();
                 salesTemp.add(yearSale[i]);
+                allSales.add(yearSale[i]);
+           
             }
             labels.add(label);
             data.add(new Double(price));
             
         }
-        
-        
         return salesTemp;
-        
     }
     
     
