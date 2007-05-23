@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://www.icesoft.com/icefaces/component" >
+    
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+    <head>
+        <ui:insert name="faceletHeader">Headers </ui:insert>
+    </head>
+    <body>
+        <table border="0" cellpadding="0"
+               cellspacing="0" width="100%">
+            <tr>
+                <td colspan="3">
+                    <ui:insert name="header">
+                        <h1>
+                            <ice:outputText value="ICEfaces Facelets Dynamic Include Tutorial"/>
+                        </h1>
+                        <ice:outputText>
+                            The following application uses a tree navigation menu 
+                            that is created using a dynamic ui:include tag.
+                        </ice:outputText>
+                        
+                        <hr/>
+                    </ui:insert>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" width="150px" style="border-right:1px solid #999999;">
+                    <ui:insert name="navigation">
+                        <ui:include src="./navigation.jspx" />
+                    </ui:insert>
+                </td>
+                <td valign="top" style="padding-left:10px;">
+                    <ui:insert name="content">
+                        <ui:include src="./content-facelet.jspx" />
+                    </ui:insert>
+                </td>
+                <td></td>
+            </tr>
+        </table> 
+    </body>
+</html>

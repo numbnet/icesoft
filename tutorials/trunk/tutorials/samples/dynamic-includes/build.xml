@@ -1,11 +1,11 @@
-<project name="hibernate-tutorial" default="build.examples">
+<project name="dynamic-includes-tutorial" default="build.examples">
 
     <description>
         Builds child projects
     </description>
 
     <property name="build-common.xml"
-              value="../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+              value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
 
     <!--
         builds the examples
