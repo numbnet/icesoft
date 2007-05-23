@@ -14,10 +14,8 @@
                     </h:outputLabel>
                     <s:decorate id="${componentProperty.name}Decoration">
 <#if propertyType == "date">
-                        <ice:inputText id="${componentProperty.name}" 
-                              maxlength="10"
-                                   size="10"
-					  partialSubmit="true"
+                        <ice:selectInputDate id="${componentProperty.name}" 
+                              renderAsPopup="true"
 <#if propertyIsId>
                                       disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -25,12 +23,9 @@
                                       required="true"
 </#if>
                                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                                   <s:convertDateTime type="date" dateStyle="short" pattern="MM/dd/yyyy"/>
-                           </ice:inputText>
-                               <s:selectDate for="${property.name}">
-                                   <h:graphicImage url="img/dtpick.gif" style="margin-left:5px"/>
-                               </s:selectDate>
-<#elseif propertyType == "time">
+                                
+                           </ice:selectInputDate>
+                      <#elseif propertyType == "time">
                         <ice:inputText id="${componentProperty.name}" 
                                    size="5"
 <#if !column.nullable>
@@ -138,10 +133,9 @@
                     </h:outputLabel>
                     <s:decorate id="${property.name}Decoration">
 <#if propertyType == "date">
-                        <ice:inputText id="${property.name}" 
-                              maxlength="10"
-                                   size="10"
-					partialSubmit="true"
+                           <ice:selectInputDate id="${property.name}" 
+                              renderAsPopup="true"
+
 <#if propertyIsId>
                                disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -149,11 +143,7 @@
                                required="true"
 </#if>
                                   value="${'#'}{${homeName}.instance.${property.name}}">
-                            <s:convertDateTime type="date" dateStyle="short" pattern="MM/dd/yyyy"/>
-                        </ice:inputText>
-                        <s:selectDate for="${property.name}">
-                            <h:graphicImage url="img/dtpick.gif" style="margin-left:5px"/>
-                        </s:selectDate>
+                         </ice:selectInputDate>
 <#elseif propertyType == "time">
                         <ice:inputText id="${property.name}" 
                                    size="5"
