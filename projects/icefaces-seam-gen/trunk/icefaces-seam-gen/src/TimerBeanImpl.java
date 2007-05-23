@@ -54,27 +54,41 @@ import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.IntervalRenderer;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.accordion.PanelAccordion;
+import com.icesoft.faces.context.ViewListener;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 /**
  * @author ICEsoft Technologies, Inc.
+ * 
  */
 
+
 @Name("timer")
-@Scope(ScopeType.SESSION)
-public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
+@Scope(ScopeType.PAGE)
+public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
 
     private DateFormat dateFormatter;
+
+    private static Log log = LogFactory.getLog(TimerBeanImpl.class);
 
     @In
     private RenderManager renderManager;
 
     private boolean doneSetup;
     private boolean openStatus;
+
     private IntervalRenderer ir;
 
     private PersistentFacesState state = PersistentFacesState.getInstance();
 
     private String synchronous;
+
+    private int myId; 
+
+    private static int id;
 
 
     public PersistentFacesState getState() {
@@ -82,15 +96,18 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
     }
 
     public void renderingException( RenderingException re) {
-        System.out.println("Exception in rendering: " + re);
-        if (ir != null) {
-            ir.requestStop();
-        }
+//        System.out.println("Exception in rendering: " + re);
+//        re.printStackTrace();
+        if(log.isTraceEnabled() ) { 
+           log.trace("*** View obsoleted: " + myId );
+        } 
+        cleanup();
     }
 
 
     public TimerBeanImpl() {
         dateFormatter =  DateFormat.getDateTimeInstance();
+        myId = ++id;         
     }
 
 
@@ -100,6 +117,12 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
         state = PersistentFacesState.getInstance();
 
         if (!doneSetup) {
+
+            if(log.isTraceEnabled() ) { 
+                log.trace("*** new TimerBean renderable... " + myId );
+            } 
+
+            state.addViewListener(this );
             FacesContext fc = FacesContext.getCurrentInstance();
             synchronous = (String) fc.getExternalContext().getInitParameterMap().
                     get( "com.icesoft.faces.synchronousUpdate" );
@@ -107,7 +130,7 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
                     get("org.icesoft.examples.serverClock"));
 
             if (timed) {
-                ir = renderManager.getIntervalRenderer("Temp renderer");
+                ir = renderManager.getIntervalRenderer("org.icesoft.clock.clockRenderer");
                 ir.setInterval(5000);
                 ir.add(this);
                 ir.requestRender();
@@ -118,14 +141,15 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
         return dateFormatter.format( new Date( System.currentTimeMillis() ) );
     }
 
-
-
     public String getRenderMode() {
-        return  synchronous;
-        
+        return  synchronous + " " + myId;        
     }
 
-    @Begin(join=true)
+    // Don't make this begin a conversation as this class is 
+    // intended to be used in a footer. 
+    // If this method starts a conversation 
+    // it can't be added to the foot of applications that don't 
+    // expect conversations to already be in progress
     public String getCurrentConversation() {
         Manager m = Manager.instance();
         return m.getCurrentConversationId();
@@ -152,8 +176,31 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
     @Remove
     @Destroy
     public void remove() {
-        if (ir != null) {
-            ir.requestStop();
+        if(log.isTraceEnabled() ) { 
+           log.trace("*** View removed: " + myId );
         } 
+        cleanup(); 
     }
+
+    public void viewCreated() {
+    }
+
+    public void viewDisposed() {
+        if(log.isTraceEnabled() ) { 
+           log.trace("*** View disposed: " + myId );
+        } 
+        cleanup();
+    }
+
+    private void cleanup() {
+        if (ir != null) {
+            ir.remove(this);
+            if (ir.isEmpty() ) {
+                if(log.isTraceEnabled() ) { 
+                   log.trace("*** IntervalRenderer Stopped " );
+                } 
+                ir.requestStop();
+            }
+        }
+    } 
 }
