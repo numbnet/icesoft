@@ -435,6 +435,17 @@ em {
     width: 90px;
 }
 
+.weekend a{
+    background-color:#93AD90;
+}
+
+weekend{
+    background-color:#93AD90;
+}
+.august span{
+   font-weight: bold;
+}
+
 .progressBarColumn {
     vertical-align: top;
     text-align: left;
@@ -505,6 +516,11 @@ em {
 .cartDropZonText1 {
     font-weight: bold;
     text-align: left;
+}
+
+
+.cartDropZonText1 {
+
 }
 
 .dragDropImage {
@@ -1105,7 +1121,6 @@ em {
     height: 400px;
 background-image: url("../images/accordion/produce.jpg" );
 }
-
 .applesPanel {
     background-image: url( "../images/accordion/apples.jpg" );
 }
