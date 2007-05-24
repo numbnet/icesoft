@@ -111,9 +111,6 @@
     <target name="build.war" depends="compile">
         
         <copy todir="${app.lib.dir}" preservelastmodified="true">
-            <fileset dir="${icefaces.lib.dir}">
-                <patternset refid="facelets.jars"/>
-            </fileset>
             <fileset dir="${proj.lib.dir}">
                 <patternset refid="hibernate.jars"/>
                 <patternset refid="validation.jars"/>
