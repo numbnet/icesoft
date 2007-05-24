@@ -66,7 +66,7 @@ public class StaticTabSetBean implements TabChangeListener{
      * The demo contains three tabs and thus we need three variables to store
      * their respective rendered states.
      */
-    private boolean tabbedPane1Visible;
+    private boolean tabbedPane1Visible=true;
     private boolean tabbedPane2Visible;
     private boolean tabbedPane3Visible;
     private HtmlSelectOneRadio selectedTabObject;
