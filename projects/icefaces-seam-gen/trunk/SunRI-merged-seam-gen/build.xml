@@ -527,6 +527,7 @@
 	             <include name="icefaces*.jar" /> 
 		     <include name="backport-util-concurrent.jar" /> 
 		     <include name="commons-fileupload.jar" />
+		     <include name="commons-digester.jar"/>
 	    </fileset> 
             <fileset refid="seam"/>
             <fileset file="${driver.jar}"/>
