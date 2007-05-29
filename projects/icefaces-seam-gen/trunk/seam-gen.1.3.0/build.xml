@@ -112,7 +112,7 @@
     </fileset>
     
     <!-- have to define a fileset for icefaces-view jag 25-05-07 -->
-    <fileset id="icefaces-view" dir="${basedir}/Icefaces/view">
+    <fileset id="icefaces-view" dir="${basedir}/icefaces/view">
         <include name="home.xhtml"/>
     	<include name="error.xhtml"/>
     	<include name="login.xhtml"/>
@@ -154,8 +154,8 @@
     <target name="setup"
     	description="Prompt for settings">
         <!-- next 2 lines new jag May 25-07 -->
-        <echo message="Welcome to seam-gen with Icefaces option:-)"/>
-        <echo message="     (leave Icefaces directory blank if non-Icefaces application)"/>
+        <echo message="Welcome to seam-gen with ICEFaces option:-)"/>
+        <echo message="     (leave icefaces directory blank if non-ICEFaces application)"/>
         <property name="workspace.home" value="C:/Projects"/>
         <input addproperty="workspace.home.new" 
                    message="Enter your Java project workspace (the directory that contains your Seam projects) [${workspace.home}]" 
@@ -689,14 +689,14 @@
     
     <!-- next 2 targets new jag 25-05-07 -->
     <target name="file-copy-icefaces" depends="icefacesCheck, copy-images" if="icefaces.property">
-        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/Icefaces/src/TimerBean.java" >
+        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/icefaces/src/TimerBean.java" >
             <filterset refid="filters"/>
         </copy>    
-        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/Icefaces/src/TimerBeanImpl.java">
+        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/icefaces/src/TimerBeanImpl.java">
             <filterset refid="filters"/>
         </copy>
         <copy todir="${project.home}/resources" overwrite="true">
-              <fileset dir="${basedir}/Icefaces/resources/">
+              <fileset dir="${basedir}/icefaces/resources/">
                 <include name="components.properties"/>
             	<include name="META-INF/application.xml"/>
             	<include name="WEB-INF/components.xml"/>
@@ -707,7 +707,7 @@
             <filterset refid="jdbc"/>
         </copy>
         <copy todir="${project.home}" overwrite="true">
-            <fileset dir="${basedir}/Icefaces/build-scripts">
+            <fileset dir="${basedir}/icefaces/build-scripts">
             	<include name="build*.xml"/>
             </fileset>
             <filterset refid="project"/>
@@ -721,7 +721,7 @@
     
     <target name="copy-images" if="icefaces.property">
 	   <copy todir="${project.home}/view/img" overwrite="true">
-		<fileset file="${basedir}/Icefaces/view/img/*"/>
+		<fileset file="${basedir}/icefaces/view/img/*"/>
 	   </copy>
     </target>
         
@@ -1053,7 +1053,7 @@
         <echo message=" icefaces.property is ${icefaces.property}"/>
    </target>
     <target name="cond-if" depends="check-icefaces" if="icefaces.property">
-        <property name="view.dir" value="Icefaces/."/>
+        <property name="view.dir" value="icefaces/."/>
         <echo message="is icefaces and view.dir is ${view.dir}"/>
     </target>
     <target name="cond-else" depends="check-icefaces" unless="icefaces.property">
