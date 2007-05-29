@@ -99,35 +99,32 @@
 		   
 		   
 	</target>
-
-	<target name="war" depends="compile" 
-			description="Build the distribution .war file">
-		<copy todir="${war.dir}">
+        <target name="war-base" depends="compile">
+            	<copy todir="${war.dir}">
 			<fileset dir="${basedir}/view" />
 		</copy>
-		<copy todir="${war.dir}/WEB-INF">
-			<fileset dir="${basedir}/resources/WEB-INF">
-				<include name="*.*"/>
-				<include name="classes/**/*.*"/>
-				<exclude name="classes/**/*.class"/>
-			</fileset>
-			<filterset>
-				<filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
-				<filter token="embeddedEjb" value="false" />
-			</filterset>
+                <copy todir="${war.dir}/WEB-INF">
+                    <fileset dir="${basedir}/resources/WEB-INF">
+			<include name="*.*"/>
+			<include name="classes/**/*.*"/>
+			<exclude name="classes/**/*.class"/>
+                    </fileset>
+                    <filterset>
+			<filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
+			<filter token="embeddedEjb" value="false" />
+                    </filterset>
 		</copy>		
 		<copy todir="${war.dir}/WEB-INF">
-			<fileset dir="${basedir}/resources/WEB-INF">
-				<include name="lib/*.*"/>
-				<include name="classes/**/*.class"/>
-			</fileset>
+                    <fileset dir="${basedir}/resources/WEB-INF">
+			<include name="lib/*.*"/>
+			<include name="classes/**/*.class"/>
+                    </fileset>
 		</copy>		
 		<copy todir="${war.dir}/WEB-INF/lib">
-			<fileset dir="${lib.dir}">
-<!-- 	don't use this one <include name="jsf-facelets.jar" /> --> 
-				<include name="jboss-seam-*.jar" />
-				<exclude name="jboss-seam-gen.jar" />
-			</fileset>
+                    <fileset dir="${lib.dir}">
+                        <include name="jboss-seam-*.jar" />
+			<exclude name="jboss-seam-gen.jar" />
+                    </fileset>
 		</copy>
 		<copy todir="${war.dir}/WEB-INF/classes/com/icesoft/icefaces/samples/showcase/resources">
 			<fileset dir="${basedir}/resources"> 
@@ -145,8 +142,19 @@
 			</fileset>
         	</copy>	
         	
+        </target>
+        
+	<target name="war" depends="freshen, war-base" 
+			description="Build the distribution .war file">
+             <copy file="${basedir}/resources/WEB-INF/web-myfaces.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
 	</target>
 
+        <target name="war-glassFish" depends="freshen-glassFish, war-base" description="Builds the war file for jsf1.2">
+             <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
+        </target>
+        
+        
+        
 	<target name="ear" description="Build the EAR">
 		<copy todir="${ear.dir}">
 			<fileset dir="${basedir}/resources">
@@ -169,20 +177,21 @@
 				<include name="icefaces*.jar" />
 				<include name="backport-util-concurrent.jar" />
                                 <include name="krysalis-jCharts-1.0.0-alpha-1.jar" />
-				<include name="commons-fileupload.jar"/> 			
+				<include name="commons-fileupload.jar"/> 
+                <include name="commons-digester.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="${ear.dir}/META-INF">
 			<fileset dir="${basedir}/resources/META-INF">
-				<include name="application.xml" />
 				<include name="jboss-app.xml" />
 			</fileset>
 		</copy>
+               <copy file="${basedir}/resources/META-INF/application-myfaces.xml" tofile="${ear.dir}/META-INF/application.xml" 
+                            preservelastmodified="true" overwrite="true"/>
 	</target>
 	
-	<target name="archive" depends="jar,war,ear" 
-			description="Package the archives">
-		<jar jarfile="${dist.dir}/${project.name}.jar" basedir="${jar.dir}"/>
+        <target name="archive" description="Package the archives">
+                <jar jarfile="${dist.dir}/${project.name}.jar" basedir="${jar.dir}"/>
 		<jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
 		<jar jarfile="${dist.dir}/${project.name}.ear">
 			<fileset dir="${ear.dir}"/>
@@ -191,8 +200,17 @@
 				<include name="${project.name}.war"/>
 			</fileset>
 		</jar>
+        </target>
+            
+	<target name="buildMyFaces" depends="jar,war,ear,archive" 
+			description="Package the archives">
+               <echo message="run deploy target to deploy (myfaces app) ear file to server"/>
 	</target>
-	
+	<target name="buildGlassFish" depends="jar,war-glassFish,ear-glassFish, archive" 
+			description="Package the archives">
+                <echo message="run deploy target to deploy (jsf1.2 app) ear file to server"/>
+	</target>	
+        
 	<target name="datasource">
 		<fail unless="jboss.home">jboss.home not set</fail>
 		<copy todir="${deploy.dir}">
@@ -302,21 +320,28 @@
 		</testng>
 	</target>
 
-
-	<target name="freshen" description="grab fresh icefaces and Seam jars">
+        <target name="freshen-base" description="copying of common libraries">
+            <copy todir="${lib.dir}">
+                <fileset dir="${icefacesSourceDirectory}/lib">
+                    <include name="icefaces*.jar" />
+                    <include name="backport-util-concurrent.jar" />
+                    <include name="commons-fileupload.jar"/> 
+                    <include name="commons-logging*.jar"/>
+                    <include name="krysalis-jCharts-1.0.0-alpha-1.jar"/>
+                    <include name="servlet-api.jar"/>
+                </fileset>
+                <fileset dir="${jboss.seam.home}">
+                    <include name="jboss-seam*.jar"/>
+                </fileset>
+            </copy>
+        </target>
+        
+	<target name="freshen" depends="freshen-base"
+                description="grab fresh icefaces and Seam jars for myfaces deployment">
 	<copy todir="${lib.dir}">
 	    <fileset dir="${icefacesSourceDirectory}/lib">
-		<include name="icefaces*.jar" />
-		<include name="backport-util-concurrent.jar" />
-		<include name="commons-fileupload.jar"/> 
-                <include name="commons-logging*.jar"/>
-		<include name="krysalis-jCharts-1.0.0-alpha-1.jar"/> 
                 <include name="myfaces*.jar"/>
-                <include name="servlet-api.jar"/>
   	    </fileset>
-	    <fileset dir="${jboss.seam.home}">
-		<include name="jboss-seam*.jar"/>
-	    </fileset>
             <fileset dir="${jboss.seam.home}/lib">
                 <include name="jboss-ejb3-all.jar"/>
                 <include name="antlr-2.7.6.jar"/>
@@ -333,5 +358,58 @@
             </fileset>
 	</copy>
 	</target>
-	
+	<target name="freshen-glassFish" depends="freshen-base"
+                    description="grab fresh icefaces jars for jsf1.2*">
+            <copy todir="${lib.dir}">
+              <fileset dir="${icefacesSourcedirectory}/lib">
+                <include name="jsf*.jar"/>
+  	    </fileset>
+            <fileset dir="${jboss.seam.home}/lib">
+                <include name="jboss*.jar"/>
+                 <include name="jbpm*.jar" />
+                 <include name="jboss-el.jar" />
+                 <include name="janino-*.jar"/>
+                 <include name="antlr-*.jar"/>
+            </fileset>
+            <fileset dir="${jboss.seam.home}/drools/lib">
+                <include name="antlr-*.jar"/>
+                <include name="mvel*.jar"/>
+                <include name="drools-*.jar"/>
+            </fileset>
+	</copy>
+	</target>
+	<target name="ear-glassFish" depends="freshen-glassFish" description="Build the EAR for jsf1.2">  
+                <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="web.xml" preservelastmodified="true" overwrite="true"/>
+		<copy todir="${ear.dir}">
+			<fileset dir="${basedir}/resources">
+				<include name="*jpdl.xml" />
+				<include name="hibernate.cfg.xml" />
+				<include name="jbpm.cfg.xml" />
+				<include name="security.drl" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="jboss-seam.jar" />
+                                <include name="jbpm*.jar" />
+                                <include name="jboss-el.jar" />
+                                <include name="drools-*.jar"/>
+                                <include name="janino-*.jar"/>
+                                <include name="antlr-*.jar"/>
+                                <include name="mvel*.jar"/>
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="icefaces*.jar" />
+				<include name="backport-util-concurrent.jar" />
+                                <include name="krysalis-jCharts-1.0.0-alpha-1.jar" />
+				<include name="commons-fileupload.jar"/> 
+                                <include name="commons-digester.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="${ear.dir}/META-INF">
+			<fileset dir="${basedir}/resources/META-INF">
+				<include name="jboss-app.xml" />
+			</fileset>
+		</copy>
+             <copy file="${basedir}/resources/META-INF/application-Glassfish.xml" tofile="${ear.dir}/META-INF/application.xml" 
+                            preservelastmodified="true" overwrite="true"/>
+	</target>
 </project>
