@@ -298,7 +298,7 @@ td {
     font-weight:bold;
     font-size:11px;
     height: 20px;
-    background-image:url("../img/expand_false.gif");
+    background-image:url("../img/expand_true.gif");
     background-repeat : no-repeat;
    background-position : right;
  } 
@@ -308,7 +308,7 @@ td {
     font-weight:bold;
     font-size:11px;
     height: 20px;
-    background-image:url("../img/expand_true.gif");
+    background-image:url("../img/expand_false.gif");
     background-repeat : no-repeat;
    background-position : right;
  }
