@@ -1,0 +1,1408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<!-- saved from url=(0022)http://internet.e-mail -->
+  <meta http-equiv="content-type"
+ content="text/html; charset=iso-8859-1">
+  <title>ICEfaces&#8482; V1.6.0 Release Notes</title>
+</head>
+<body style="font-family: helvetica,arial,sans-serif;">
+<table border="0" width="100%">
+  <tbody>
+    <tr>
+      <td width="78%">
+      <h1>ICEfaces&#8482; <br>
+      </h1>
+      <h1>V1.6 DR#5 Release Notes</h1>
+      <p><strong><em>May 24th, 2007</em></strong></p>
+      </td>
+      <td align="center" valign="top" width="22%"><img
+ alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<h2 style="font-style: italic;"><a name="Overview"></a>Overview</h2>
+This document contains the following sections:<br>
+<ul>
+  <li><a href="#Understanding_ICEfaces">Understanding ICEfaces </a></li>
+  <li><a href="ReleaseNotes.html#Changes_160_DR5">Changes in v1.6.0
+DR#5 (this
+release)</a></li>
+  <li><a href="ReleaseNotes.html#Changes_160_DR4">Changes in v1.6.0
+DR#4<br>
+    </a></li>
+  <li><a href="#Changes_160_DR3">Changes in v1.6.0 DR#3</a></li>
+  <li><a href="#Changes_160_DR2">Changes in v1.6.0 DR#2</a></li>
+  <li><a href="#Changes_160_DR1">Changes in v1.6.0 DR#1</a></li>
+  <li><a href="#Supported_Platforms">Supported
+browsers, application servers, and tools</a></li>
+  <li><a href="#Known_Issues">Known issues with this release</a></li>
+  <li><a href="#Support">Getting support for ICEfaces</a></li>
+  <li><a href="#License_Management">License information</a></li>
+</ul>
+For release note information for earlier ICEfaces releases, refer to
+the <a
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
+Knowledge Base</a>.<br>
+<br>
+<hr>
+<h2 style="font-style: italic;"><a name="Understanding_ICEfaces"></a>Understanding
+ICEfaces<br>
+</h2>
+<p>ICEfaces delivers extensions to Java ServerFaces (JSF) that provide
+an
+AJAX-enabled rich presentation environment for JSF applications.
+ICEfaces
+brings value to any J2EE development project that needs to provide
+superior
+presentation capabilities to the web application user. In particular,
+ICEfaces provides the following features:</p>
+<ul>
+  <li>Smooth, incremental page updates that do not require a full page
+refresh to achieve presentation changes in the application.</li>
+  <li>Server-initiated asynchronous presentation updates for dynamic
+instantaneous data push.</li>
+  <li>The ICEfaces Component Suite, a complete rich JSF component suite
+that fully leverages ICEfaces capabilities. </li>
+  <li>Intelligent form processing that facilitates fine-grained
+interactions with the user as they manipulate a form.</li>
+  <li>API support for rapid development of group-aware and
+collaborative applications, such as Chat, Webcast, social apps., etc.</li>
+  <li>JSP or Facelets based development.</li>
+  <li>Tool integrations for leading Java IDEs.<br>
+  </li>
+</ul>
+<h3>Learn More</h3>
+<p>This ICEfaces release comes with extensive documentation that will
+help you
+understand the product thoroughly. Documentation for this release is
+located
+in your installation directory at <span style="font-weight: bold;">.../<span
+ style="font-style: italic;">install_dir</span>/ICEfaces-1.5/icefaces/docs/</span>.
+The
+following documents are provided in PDF format:</p>
+<ol>
+  <li><span style="font-style: italic;">ICEfaces Getting Started Guide</span>:
+This guide takes you through product installation, environment
+configuration, demo app installation, and a basic 5-stage tutorial.
+This guide also contains information related to support for different
+application server environments and development tools.</li>
+  <li><span style="font-style: italic;">ICEfaces Developer's Guide</span>:
+This guide contains information relevant to developing applications
+with ICEfaces. It describes the ICEfaces architecture, and explains key
+concepts that the ICEfaces developer should be aware of. It also
+provides a complete reference guide that covers APIs, configuration,
+components (including the ICEfaces Component Suite) and TLDs, and
+covers advanced topics like server-initiated rendering.</li>
+</ol>
+Additionally, all ICEfaces documentation is also available on-line
+at<span style="text-decoration: underline;"> </span><a
+ class="moz-txt-link-freetext" href="http://documentation.icefaces.org/">http://documentation.icefaces.org/.</a><br>
+<br>
+<br>
+<hr>
+<h2 style="font-style: italic;"><a name="Changes_160_DR5"></a>Changes
+in v1.6.0 DR#5<br>
+</h2>
+<p>ICEfaces v1.6.0 DR#5 is a Development Build that provides
+an early-access preview of new features, enhancements, and fixes that
+will be included in the upcoming ICEfaces v1.6.0 release. This build
+has only been lightly tested and is
+unsuitable for Production use.<br>
+</p>
+<p>Please review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> prior to
+using this release.&nbsp; You may report any issues with this build
+to
+the <a target="_blank" href="http://www.icefaces.org/JForum/">forum</a>
+or <a target="_blank" href="http://jira.icefaces.org/">JIRA</a> issue
+tracker.<br>
+<br>
+</p>
+<p><b>Notable Enhancements</b><br>
+</p>
+<ul>
+  <li><b>Preliminary support for ICEfaces portlets</b><br>
+  </li>
+  <ul>
+    <li>ICEfaces can now be used to develop and deploy rich portlets
+using Liferay Portal 4.3.0.<br>
+    </li>
+    <li>For detailed information&nbsp; on using ICEfaces with Liferay
+Portal, see the <a target="_blank" href="http://www.liferay.com/">Liferay
+Portal</a> 4.3.0 documentation.</li>
+  </ul>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">Tomcat 6.0 support&nbsp;</span></li>
+  <ul>
+    <li>See the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> for required configuration instructions.</li>
+    <li>There is now experimental support for ICEfaces to use the
+asynchronous communication capabilities provided in Tomcat v6.0. For
+details see <a class="moz-txt-link-freetext"
+ href="http://jira.icefaces.org/browse/ICE-1255">http://jira.icefaces.org/browse/ICE-1255</a>.</li>
+  </ul>
+</ul>
+<ul>
+  <li><b>selectInputDate component enhancements</b></li>
+  <ul>
+    <li>Can now highlight sets of dates in the calendar. See <a
+ target="_blank" href="http://jira.icefaces.org//browse/ICE-1596">http://jira.icefaces.org//browse/ICE-1596</a>
+for more information.</li>
+  </ul>
+</ul>
+<ul>
+  <li><b>rowSelector enhancement</b></li>
+  <ul>
+    <li>The rowSelector has been enhanced to permit full application
+control over
+the selected state of rows. This provides the ability for applications
+to use the rowSelector on dataTables that also include
+editable/clickable components in them, such as selectOneMenu, etc. See <a
+ target="_blank" href="http://jira.icefaces.org/browse/ICE-1442">http://jira.icefaces.org/browse/ICE-1442</a>
+for details.</li>
+  </ul>
+</ul>
+<ul>
+  <li><b>inputFile styling changes</b></li>
+  <ul>
+    <li>Improved default styling behavior for the inputFile component.</li>
+  </ul>
+</ul>
+
+<h2>Bug</h2>
+<ul>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1014'>ICE-1014</a>] - rowSelector prohibits use of selectOneMenus in a dataTable</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1083'>ICE-1083</a>] - Portlets: ice-extras.js not loading in portlets</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1126'>ICE-1126</a>] - Required Attribute not Working on ice:SelectOneMenu Initialized to Empty String</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1173'>ICE-1173</a>] - inputFile validation issues</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1219'>ICE-1219</a>] - 3D Chart component Image Map is incorrect</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1251'>ICE-1251</a>] - Highlight dates in ice:selectInputDate</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1255'>ICE-1255</a>] - Tomcat 6 asynchronous features</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1267'>ICE-1267</a>] - Portlets: rationalize resource URLs for portlet compatibility</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1470'>ICE-1470</a>] - Seam: Conversation management using pages.xml not working</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1553'>ICE-1553</a>] - column rendering with scroller bar - renders header columns and body columns separately and offsets columns --need a default setting for seam-gen</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1572'>ICE-1572</a>] - missing backport-util-concurrent.jar fails silently</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1580'>ICE-1580</a>] - Can not use inputFile in subdirectory</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1587'>ICE-1587</a>] - scrollable dataTable only renders well in component-showcase demo</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1590'>ICE-1590</a>] - h:panelGrid under ICEfaces appends index counter infront of column classes</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1596'>ICE-1596</a>] - <ice:selectInputDate/> popup candender not rendering back/next icons in Liferay Portal 4.3.0 (pre-release)</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1597'>ICE-1597</a>] - Comp. Showcase: Panel Tab Set demo doesn't adjust selectedTab index when removing tabs</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1598'>ICE-1598</a>] - PanelPopup + Modal causes blank.iface not found</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1599'>ICE-1599</a>] - Typo in main servlet name within BlockingServlet.java</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1600'>ICE-1600</a>] - ice:inputFile does not respect the uploadDirectoryAbsolute context-param in web.xml and new "downloadFolder" attribute not documented</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1601'>ICE-1601</a>] - ice:inputFile does not set the "file" or "fileInfo" attributes via ValueBinding</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1603'>ICE-1603</a>] - ice:inputFile rendered iframe is not transparent and only looks good on a white background</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1604'>ICE-1604</a>] - ice:inputFile has too much margin around it and does not fit tightly with sibling components</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1606'>ICE-1606</a>] - ice:outputStyle resource problem when rendering link elements under Liferay Portal</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1611'>ICE-1611</a>] - ice:inputFile does not create a session-specific folder for the uploaded file</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1612'>ICE-1612</a>] - Updates not working at all in any browser</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1613'>ICE-1613</a>] - Redeploying ICEfaces applications leaks Perm gen</li>
+</ul>
+
+<h2>Improvement</h2>
+<ul>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1300'>ICE-1300</a>] - Horizontal bar chart support</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1546'>ICE-1546</a>] - Component Showcase: Panel Tab Set Example - Enhancements</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1577'>ICE-1577</a>] - Create and configure objects at page load time</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1592'>ICE-1592</a>] - Need versions file in the icefaces/lib folder to ease developer pain with JAR versions</li>
+<li>[<a href='http://jira.icefaces.org//browse/ICE-1617'>ICE-1617</a>] - Component Showcase: Charts Horizontal Improvement</li>
+</ul><br>
+<hr>
+<h2 style="font-style: italic;"><a name="Changes_160_DR4"></a>Changes
+in v1.6.0 DR#4<br>
+</h2>
+<p>ICEfaces v1.6.0 DR#4 is a Development Build that provides
+an early-access preview of new features, enhancements, and fixes that
+will be included in the upcoming ICEfaces v1.6.0 release. This build
+has only been lightly tested and should be considered unstable - it is
+unsuitable for Production use. Please report any issues with this build
+to
+the <a target="_blank" href="http://www.icefaces.org/JForum/">forum</a>
+or <a target="_blank" href="http://jira.icefaces.org/">JIRA</a> issue
+tracker.<br>
+</p>
+<p><span style="font-weight: bold;">Notable Enhancements<br>
+</span></p>
+<ul>
+  <li style="font-weight: bold;">Complete support for using ICEfaces
+with JBoss Seam v1.2.1.</li>
+  <ul>
+    <li>Note that there are important considerations required when
+using
+ICEfaces with a Seam project. Please refer to the <a target="_blank"
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=71">Using
+ICEfaces with
+JBoss Seam</a> topic in the ICEfaces Knowledge Base for important
+information regarding configuring your Seam application to work with
+ICEfaces.</li>
+    <li>It is
+recommended that you <a target="_blank"
+ href="http://www.icefaces.org/main/downloads/project-downloads.iface">download</a>
+and explore the ICEfaces/Seam Component Showcase sample project bundle
+as it provides a working application that illustrates using all the
+ICEfaces Component Suite components successfully with Seam. Please see
+the ReadMe.html file in that bundle for instructions.</li>
+    <li>There is also a Seam Gen tool available for <a target="_blank"
+ href="http://www.icefaces.org/main/downloads/project-downloads.iface">download</a>
+which you can use to rapidly create new ICEfaces + Seam projects.<br>
+    </li>
+  </ul>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">Apache MyFaces</span> <span
+ style="font-weight: bold;">Tomahawk
+component integration
+with ICEfaces applications</span>. You can now use Tomahawk components
+along
+with ICEfaces Component Suite components in the same page, form, etc.
+For for more information including a detailed list of compatible
+components and known issues, refer to the <a target="_blank"
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=78">Using
+MyFaces Tomahawk Components with ICEfaces</a> topic in the ICEfaces
+Knowledge Base.</li>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">ICEfaces compatibility with JSF
+1.2 runtimes and Facelets</span>. See the <a
+ href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> for limitations.</li>
+</ul>
+<p>Please review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> prior to
+using this release.<br>
+</p>
+<h2>Bug</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-556">ICE-556</a>]
+- Request-scoped bean remain in memory until the session expires</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-728">ICE-728</a>]
+- Creator: Page Navigation Created with Navigation Editor Not Working</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-803">ICE-803</a>]
+- Component Showcase: outputProgress.jsp uses non-existing rows attr
+for Panel Grid</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-894">ICE-894</a>]
+- ServletEnvironmentRequest inadvertently clears HttpServletRequest
+headers</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1053">ICE-1053</a>]
+- iframe connection problem in IE6</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1112">ICE-1112</a>]
+- Problem with Effects and draggable attribute on ice:panelPopup and
+ice:panelGroup</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1173">ICE-1173</a>]
+- Facelets component-showcase file upload error disappears</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1191">ICE-1191</a>]
+- JspPageToDocument.getTldInputStream() needs support for relative URIs</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1192">ICE-1192</a>]
+- popup calendar doesn't cover the underlying select boxes in IE</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1195">ICE-1195</a>]
+- MenuBar tld should not have actionListener attribute</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1218">ICE-1218</a>]
+- dataTable not updating data when placed in panelPopup</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1247">ICE-1247</a>]
+- UIInput.requestFocus() not working in IE 6 &amp; 7 when moving from
+unrendered to rendered</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1256">ICE-1256</a>]
+- ice:inputFile not working</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1265">ICE-1265</a>]
+- Need to put exact version #'s for dependencies in Getting Started
+Guide</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1274">ICE-1274</a>]
+- Accessiblity: Trivial Accessibility fixes</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1280">ICE-1280</a>]
+- TableRenderer calling UIData.setRowIndex one too many times when
+paging.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1285">ICE-1285</a>]
+- uiData.setRowIndex() being called for 0 index even if there is no
+data associated with the dataModel</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1289">ICE-1289</a>]
+- Modal Dialogs do not disable offscreen space when window is resized</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1346">ICE-1346</a>]
+- The InputFile Component with OutputProgress Component demo doesn't
+update/rerender in the browser with fast HTTP connections</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1383">ICE-1383</a>]
+- org.w3c.dom.DOMException: HIERARCHY_REQUEST_ERR: An attempt was made
+to insert a node where it is not permitted. </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1388">ICE-1388</a>]
+- Setting attribute "bgcolor" of PanelTabSet doesn't pass to the root
+element</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1396">ICE-1396</a>]
+- Tree problem: some attributes don't work (or should be removed from
+TLD)</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1399">ICE-1399</a>]
+- SessionExpiry exception attempting to connect to application</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1400">ICE-1400</a>]
+- generated
+    <div> in SelectInputText omits z-index </div>
+  </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1403">ICE-1403</a>]
+- Cannot use inner class as a listener in WebSphere.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1420">ICE-1420</a>]
+- Modal dialog doesn't work with absolute positioning + docytype</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1433">ICE-1433</a>]
+- Specific use cases break selectInputText</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1434">ICE-1434</a>]
+- Menus broken with JSF RI 1.2 + Facelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1436">ICE-1436</a>]
+- ice:outputProgress does not show 100% with Facelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1440">ICE-1440</a>]
+- ice:inputFile and ice:messages problem with JSF RI 1.1 + Facelets or
+JSP</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1441">ICE-1441</a>]
+- ice:inputFile and ice:messages additional problems with JSF RI 1.2 +
+Facelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1443">ICE-1443</a>]
+- ice:outputChart clicking doesn't work with JSF RI 1.2 + Facelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1444">ICE-1444</a>]
+- Round-up of issues with component-showcase</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1456">ICE-1456</a>]
+- Seam-componentShowcase:- problem loading message in properties bundle
+existing in icefaces-comp (for FileUpload)</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1460">ICE-1460</a>]
+- RowSelector doesn't work correctly with the GlassFish implementation
+of JSF 1.2</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1468">ICE-1468</a>]
+- inputFile silently fails in some cases</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1471">ICE-1471</a>]
+- com.sun.rave.faces.data.CachedRowSetDataModel is causing none of the
+row to be rendered</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1473">ICE-1473</a>]
+- cpu overload from fetching CSS resources with gzip encoding</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1487">ICE-1487</a>]
+- safari styling shows grey boxes in component-showcase</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1489">ICE-1489</a>]
+- ServletEnvironmentRequest is instantiated twice on first request</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1496">ICE-1496</a>]
+- Updates for multiple views on a page are not returned in proper XML
+format</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1502">ICE-1502</a>]
+- SelectInputText not escaping text</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1504">ICE-1504</a>]
+- Fix Action and ActionListener handling for JSF 1.2</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1507">ICE-1507</a>]
+- Messages rendered multiple times on asynchronous updates </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1508">ICE-1508</a>]
+- WebLogic 9.2: UIInput in iframe will not allow direct focus in IE</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1513">ICE-1513</a>]
+- dataTable inserting selection_spacer on table that does not have
+scrolling enabled</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1515">ICE-1515</a>]
+- The selection list of selectInputText component does not show any
+border as the class attribute is being rendered as styleClass</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1517">ICE-1517</a>]
+- component-showcase Accordion Panel header facet doesn't style nicely
+any more</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1520">ICE-1520</a>]
+- Component-showcase: tree component text problem</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1521">ICE-1521</a>]
+- Chat problem in auction monitor appl.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1522">ICE-1522</a>]
+- Component showcase chart and dynamic chart scope issues</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1523">ICE-1523</a>]
+- ice:inputFile not invoking Action MethodBinding</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1530">ICE-1530</a>]
+- RenderManager throws a NullPointerException if state is null.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1532">ICE-1532</a>]
+- If running ICEfaces under WebLogic the dom update always the "form"
+element level</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1534">ICE-1534</a>]
+- Server side leak of auctionMonitor clock bean threads</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1538">ICE-1538</a>]
+- Memory leak in IE, Safari browsers</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1540">ICE-1540</a>]
+- inputFile should discard IE client file path</li>
+</ul>
+<h2>Improvement</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1177">ICE-1177</a>]
+- Accordion Panel</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1291">ICE-1291</a>]
+- Component Showcase: Add accordion sample </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1416">ICE-1416</a>]
+- Timezone: Time zones and map colors are not aligned</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1442">ICE-1442</a>]
+- Make rowSelector auto-row selection configurable</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1475">ICE-1475</a>]
+- Update outputStyle TLD doc for IE7 support enhancement</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1525">ICE-1525</a>]
+- effects2 should include small instructions on what to do to invoke
+the effect</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1529">ICE-1529</a>]
+- Add accessibility to the Address Demo</li>
+</ul>
+<h2>Task</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1463">ICE-1463</a>]
+- Remove unused classes</li>
+</ul>
+<p><br>
+</p>
+<hr>
+<h2 style="font-style: italic;"><a name="Changes_160_DR3"></a>Changes
+in v1.6.0 DR#3<br>
+</h2>
+<p>ICEfaces v1.6.0 DR#3 is a Development Build that provides
+an early-access preview of new features, enhancements, and fixes that
+will be included in the upcoming ICEfaces v1.6.0 release. This build
+has only been lightly tested and should be considered unstable - it is
+unsuitable for Production use. Please report any issues with this build
+to
+the <a target="_blank" href="http://www.icefaces.org/JForum/">forum</a>
+or <a target="_blank" href="http://jira.icefaces.org/">JIRA</a> issue
+tracker.<br>
+</p>
+<p><span style="font-weight: bold;">Notable Enhancements<br>
+</span></p>
+<ul>
+  <li style="font-weight: bold;">Complete support for using ICEfaces
+with JBoss Seam v1.2.1.</li>
+  <ul>
+    <li>Note that there are important considerations required when
+using
+ICEfaces with a Seam project. Please refer to the <a target="_blank"
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=71">Using
+ICEfaces with
+JBoss Seam</a> topic in the ICEfaces Knowledge Base for important
+information regarding configuring your Seam application to work with
+ICEfaces.</li>
+    <li>It is
+recommended that you <a target="_blank"
+ href="http://www.icefaces.org/main/downloads/">download</a>
+and explore the ICEfaces/Seam Component Showcase sample project bundle
+as it provides a working application that illustrates using all the
+ICEfaces Component Suite components successfully with Seam. Please see
+the ReadMe.html file in that bundle for instructions.</li>
+  </ul>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">Apache MyFaces</span> <span
+ style="font-weight: bold;">Tomahawk
+component integration
+with ICEfaces applications</span>. You can now use Tomahawk components
+along
+with ICEfaces Component Suite components in the same page, form, etc.
+For for more information including a detailed list of compatible
+components and known issues, refer to the <a target="_blank"
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=78">Using
+MyFaces Tomahawk Components with ICEfaces</a> topic in the ICEfaces
+Knowledge Base.</li>
+</ul>
+<ul>
+  <li><span style="font-weight: bold;">ICEfaces compatibility with JSF
+1.2 runtimes and Facelets</span>. See the <a
+ href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> for limitations.</li>
+</ul>
+<p>Please review the <a href="#Known_Issues">Known Issues</a> prior to
+using this release.<br>
+</p>
+<span style="font-weight: bold;"></span>
+<h2>Bug</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-814">ICE-814</a>]
+- Rendering compatibility of Tomahawk's and Myfaces' extended
+components with ICEFaces (using stream writing)</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-964">ICE-964</a>]
+- ice:outputStyle or ServletEnvironmentRequest header exception</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-997">ICE-997</a>]
+- selectInputText: action and actionListener's aren't working</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-999">ICE-999</a>]
+- TLD Docs: tree docs refer to non-existent
+com.icesoft.faces.component.custom.treeView.TreeModel </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1071">ICE-1071</a>]
+- Error Messaging: when trying to do ajax push when
+synchronousUpdate="true"</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1084">ICE-1084</a>]
+- Seam: sample seam app produces an NPE when using debug.seam</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1090">ICE-1090</a>]
+- Tomahawk Component-integration</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1096">ICE-1096</a>]
+- chart component not properly resolving web-context root of an app
+with a non-slash ending web-uri</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1108">ICE-1108</a>]
+- InputFile: upload resets other components in the form</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1129">ICE-1129</a>]
+- fastforward &amp; fastrewind facets of dataPaginator don't display
+when horizontal</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1134">ICE-1134</a>]
+- SelectOneRadio valueChangeListener is fired before any selection is
+made</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1140">ICE-1140</a>]
+- ice:columns Sticking to First Column</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1141">ICE-1141</a>]
+- Seam: PersistentFacesState.render() causes IllegalStateException "No
+page context active"</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1227">ICE-1227</a>]
+- <f:loadbundle> gets cleaned up when using standardRequestScope="true"</f:loadbundle></li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1228">ICE-1228</a>]
+- Seam: need to support @DataModelSelectionIndex</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1256">ICE-1256</a>]
+- ice:inputFile not working</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1259">ICE-1259</a>]
+- rowSelector makes dataTable disappear in Safari</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1283">ICE-1283</a>]
+- iceextras.js not loaded on pages arrived to via jsf-navigation
+without redirect</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1296">ICE-1296</a>]
+- Seam EventContext lifespan is not correct </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1308">ICE-1308</a>]
+- Seam: "No phase id bound to current thread" when resolving 'identity'
+component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1330">ICE-1330</a>]
+- Seam: Identity.logout causes problems. </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1348">ICE-1348</a>]
+- AbstractChart shouldn't cast Paint to a Color</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1352">ICE-1352</a>]
+- TLD XML fails validation</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1358">ICE-1358</a>]
+- ClassCastException in SeamExamples</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1362">ICE-1362</a>]
+- Generated <span> inside selectInputText adds height to suggestion
+cells</span></li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1363">ICE-1363</a>]
+- Problem setting some attributes of InputText via component binding</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1365">ICE-1365</a>]
+- Threads used by RenderManager have incorrect context classloader.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1372">ICE-1372</a>]
+- Exception thrown when showing Seam debug page</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1373">ICE-1373</a>]
+- .css and .js files are not being injected to the head of the document
+for myfaces' components</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1375">ICE-1375</a>]
+- Deadlock for persistent connections</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1377">ICE-1377</a>]
+- Seam: RenderManager not calling execute() before render()</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1379">ICE-1379</a>]
+- Blocking connection not re-initialized on page reload</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1380">ICE-1380</a>]
+- required="true" does not have any effect</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1381">ICE-1381</a>]
+- BeanInfo Code Generator</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1382">ICE-1382</a>]
+- undeploying application causes infinite loop</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1384">ICE-1384</a>]
+- Thread prevents application server shutdown</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1385">ICE-1385</a>]
+- Seam: PageFlow navigation not applied correctly</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1397">ICE-1397</a>]
+- NullPointerException when using ServletEnvironmentRequest.getHeader()
+method</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1401">ICE-1401</a>]
+- SelectBooleanCheckbox clears when switching panels</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1404">ICE-1404</a>]
+- There are no comments in generated TLDdocs.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1411">ICE-1411</a>]
+- Safari incorrectly handles redirect URLs containing ampersand</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1412">ICE-1412</a>]
+- Seam: method encodeConversationId now takes viewId parameter</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1418">ICE-1418</a>]
+- Required attribute valueBinding unset when using partialSubmit</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1424">ICE-1424</a>]
+- JSP include leads to response.getWriter() and IllegalStateException
+upon getOutputStream()</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1425">ICE-1425</a>]
+- Page refresh causes all .css and .js files to be cleaned up [Myfaces,
+Tomahawk]</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1426">ICE-1426</a>]
+- Accordion Panel can't be used in Tab Set</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1428">ICE-1428</a>]
+- Tomahawk's t:tree2 component throws classCast exception under
+icefaces.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1430">ICE-1430</a>]
+- Content-Type not set correctly on bundled resources</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1446">ICE-1446</a>]
+- typo 'partialSumbit' valueBinding</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1448">ICE-1448</a>]
+- Seam: ice:inputFile file upload not working</li>
+</ul>
+<h2>Improvement</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-605">ICE-605</a>]
+- Runtime compatibility for JSF 1.2 implementations with Facelets (See
+Known Issues for limitations)<br>
+  </li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1359">ICE-1359</a>]
+- Merge EPS Bridge implementation into the CE edition.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1137">ICE-1137</a>]
+- add renderedOnUserRole to MenuItem</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1279">ICE-1279</a>]
+- Error Messaging: when using jsp tags in a Facelets environment</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1305">ICE-1305</a>]
+- Intercept form submits and replace with iceSubmits</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1357">ICE-1357</a>]
+- Bring file upload into the refactored http package</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1374">ICE-1374</a>]
+- Component outputStyle not used in sample WebApplications</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1416">ICE-1416</a>]
+- Timezone: Time zones and map colors are not aligned</li>
+</ul>
+<h2>Task</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1356">ICE-1356</a>]
+- Investigate Tomahawk comp. submit technique changes</li>
+</ul>
+<br>
+<hr style="width: 100%; height: 2px;">
+<h2 style="font-style: italic;"><a name="Changes_160_DR2"></a>Changes
+in v1.6.0 DR#2<br>
+</h2>
+<p>ICEfaces v1.6.0 DR#2 is an unstable Development Build that provides
+an early-access preview of new features, enhancements, and fixes that
+will be included in the upcoming ICEfaces v1.6.0 release. This build
+has only been lightly tested and should be considered unstable. It is
+completely unsuitable for Production use. Use this build only if you
+are prepared to deal with problems and are willing to report them to
+the <a target="_blank" href="http://www.icefaces.org/JForum/">forum</a>
+or <a target="_blank" href="http://jira.icefaces.org/">JIRA</a> issue
+tracker.<br>
+</p>
+<p>Please review the <a href="#Known_Issues">Known Issues</a> prior to
+using this release.<br>
+</p>
+<span style="font-weight: bold;">Note: Support for JBoss Seam has been
+greatly improved in this release.</span> However, there are substantial
+considerations required when using ICEfaces with a Seam project. It is
+strongly recommended that anyone wishing to use ICEfaces with Seam
+<a target="_blank" href="http://www.icefaces.org/main/downloads/">download</a>
+and explore the ICEfaces/Seam Component Showcase sample bundle
+as it provides a working application that illustrates using all the
+ICEfaces Component Suite components successfully with Seam. Please see
+the ReadMe.html file in that bundle for critical information on using
+ICEfaces with Seam.<br>
+<br>
+<span style="font-weight: bold;">Note: Portlets are currently
+unsupported</span> in this build due to incomplete and ongoing internal
+refactoring required to better accomodate integration with Seam,
+Portlets, and to resolve ICE-1089.&nbsp; Portlet support will return in
+future builds.
+<h2>Bug</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-877">ICE-877</a>]
+- ICEfaces doesn't support Facelets dynamic ui:include</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1131">ICE-1131</a>]
+- Seam: RowSelector reported to not be working</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1288">ICE-1288</a>]
+- CLONE -Seam: PersistentFacesState.render() causes
+IllegalStateException "No page context active"</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1302">ICE-1302</a>]
+- renderer-type field for RowSelectorRenderer entry in component
+FacesConfig.xml file is wrong</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1303">ICE-1303</a>]
+- RE:action and actionListener attribute missing on ice:inputSecret
+component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1304">ICE-1304</a>]
+- NullPointerException thrown by
+"com.icesoft.faces.webapp.http.common.standard.CompressingServer" class.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1322">ICE-1322</a>]
+- TldLocationsCache.getUriFromTld() throws an NPE trying to load struts
+jars</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1328">ICE-1328</a>]
+- OBJECT element within FORM causes proble</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1331">ICE-1331</a>]
+- Script tag link to ice-extras.js is broken</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1335">ICE-1335</a>]
+- icefaces-extras.js not loaded on subsequent page renders</li>
+</ul>
+<h2>Improvement</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1287">ICE-1287</a>]
+- CLONE -Effects don't work in seam, Develop effects tag to contain
+effects to the JSP</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1295">ICE-1295</a>]
+- Left Mouse Clicks need to fire Value Change and Action Events</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1315">ICE-1315</a>]
+- Coalesce updates for elements with same ID.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1336">ICE-1336</a>]
+- Update Facelets component-showcase to use dynamic ui:include</li>
+</ul>
+<br>
+<hr>
+<h2 style="font-style: italic;"><a name="Changes_160_DR1"></a>Changes
+in v1.6.0 DR#1<br>
+</h2>
+<p>ICEfaces V1.6.0 DR#1 includes the following fixes and enhancements: </p>
+<h2>Improvements</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1089">ICE-1089</a>]
+- Support multi-window asynchronous connectivity to same host (overcome
+XMLHttpRequest 2-connection limit)</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1177">ICE-1177</a>]
+- New panelAccordion component.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1231">ICE-1231</a>]
+- Add optional support for the Open Ajax Alliance JavaScript hub</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-560">ICE-560</a>]&nbsp;&nbsp;
+- Add versioning to JavaScript files (was "Old Javascript not replaced
+in a new release")</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1261">ICE-1261</a>]
+- Add a Focus effect</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1277">ICE-1277</a>]
+- Effects don't work in seam, Develop effects tag to contain effects to
+the JSP</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1284">ICE-1284</a>]
+- InputFile needs I18N and message customization review</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1080">ICE-1080</a>]
+- Feature request: InputFile needs
+&lt;ice:acceptedFileTypesValidator/&gt;</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1210">ICE-1210</a>]
+- Width and Height attribute need to be added to the inputFile component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1269">ICE-1269</a>]
+- Add frequency , and minChars options to selectInputText</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-906">ICE-906</a>]&nbsp;&nbsp;
+- AuctionMonitor: Selection of font colors for Chatters' name.</li>
+</ul>
+<h2>Bugs</h2>
+<ul>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-565">ICE-565</a>]
+- Tutorial: DragDrop2: the 'DropValue' did not update if moved outside
+the box.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-604">ICE-604</a>]
+- standardRequestScope clears too much from the request map</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-657">ICE-657</a>]
+- Component-showcase buttons and hyperlinks</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-825">ICE-825</a>]
+- Concurrent DOM views not working properly</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-860">ICE-860</a>]
+- Address demo crashes on Complete Address</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-866">ICE-866</a>]
+- Component Demo: TREE: Summarized list of problems</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-871">ICE-871</a>]
+- Component Demo: No application demo for 'selectManyMenu' component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-879">ICE-879</a>]
+- Component: Progress Bar: User Interface issues</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-880">ICE-880</a>]
+- Component: Charts: Summarized Chart Component Issues</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-935">ICE-935</a>]
+- Facelets: Using onmouseovereffect causes exception</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-955">ICE-955</a>]
+- Using <ice:columns> without a header facet doesn't work</ice:columns></li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-958">ICE-958</a>]
+- Columns component demo under component-showcase does two
+render/update cycle</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-996">ICE-996</a>]
+- TabChangeListeners/TabChangeEvents proliferate</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1005">ICE-1005</a>]
+- selectInputText not passing through js events</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1022">ICE-1022</a>]
+- Facelet bugs</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1026">ICE-1026</a>]
+- checkbox horizontal label alignment not pretty</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1027">ICE-1027</a>]
+- chart component cannot run headless</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1049">ICE-1049</a>]
+- InputFile tld doc: uniqueFolder attribute missing from the tld docs</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1064">ICE-1064</a>]
+- table header only spans first column of dataTable when using <ice:columns></ice:columns></li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1070">ICE-1070</a>]
+- opening multiple windows (concurrentDOMViews) through window.open
+causes problems</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1075">ICE-1075</a>]
+- Validator not called on inputFile component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1076">ICE-1076</a>]
+- InputFile: styleClass has no effect on iframe in IE</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1078">ICE-1078</a>]
+- InputFile: size attribute has no effect</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1092">ICE-1092</a>]
+- Make ICE Facelets more like stock Facelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1095">ICE-1095</a>]
+- Using any components with <f:facet>s inside a PanelSeries breaks</f:facet></li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1097">ICE-1097</a>]
+- Anonymous account not being unlocked on JBoss servlet container</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1101">ICE-1101</a>]
+- DataTable throws NullPointerException in autoBeansFacelets</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1110">ICE-1110</a>]
+- SelectInputText generates js error when typing an apostrophe</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1179">ICE-1179</a>]
+- Building requires online DTD files</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1183">ICE-1183</a>]
+- Component generation problem</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1188">ICE-1188</a>]
+- outputCharts component has missing and incomplete TLD documentation</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1189">ICE-1189</a>]
+- Rewrite Component Showcase Chart Examples</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1211">ICE-1211</a>]
+- inputTextClass attribute is missing on inputFile component</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1220">ICE-1220</a>]
+- Component -showcase removal of "CITY_HACK" from selection example</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1222">ICE-1222</a>]
+- Component Showcase font size too large</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1230">ICE-1230</a>]
+- Update Prototype and Scriptaculous</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1258">ICE-1258</a>]
+- Effect durations &gt; 999 don't work</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1262">ICE-1262</a>]
+- Popup Panel isn't draggable</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1263">ICE-1263</a>]
+- SelectInputText.populateItemList() needs to check for NULL list</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1280">ICE-1280</a>]
+- TableRenderer calling UIData.setRowIndex one too many times when
+paging.</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1281">ICE-1281</a>]
+- Error Messaging: Print less unsettling debug messages when
+classloading</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1285">ICE-1285</a>]
+- uiData.setRowIndex() being called for 0 index even if there is no
+data associated with the dataModel</li>
+</ul>
+<br>
+<hr>
+<h2 style="font-style: italic;"><a name="Supported_Platforms"></a>Supported
+Browsers, Application Servers, and Tools<br>
+</h2>
+<h3>Browsers</h3>
+This release of ICEfaces has been certified on the following
+Browsers:
+<br>
+<br>
+<table style="text-align: left; width: 717px; height: 179px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Vendor<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Product<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Version<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Microsoft<br>
+      </td>
+      <td style="vertical-align: top;">Internet Explorer<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">6.x+, 7<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Mozilla<br>
+      </td>
+      <td style="vertical-align: top;">Firefox<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">1.x+, 2.0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Mozilla<br>
+      </td>
+      <td style="vertical-align: top;">Mozilla<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">1.7.x+<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Apple<br>
+      </td>
+      <td style="vertical-align: top;">Safari<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">1.3+<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Netscape<br>
+      </td>
+      <td style="vertical-align: top;">Netscape<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">7.x+</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h3>J2EE Application Servers</h3>
+This release of ICEfaces has been certified on the following
+Application Servers:
+<br>
+<br>
+<table style="text-align: left; width: 717px; height: 179px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Vendor<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Product<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Version<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Apache<br>
+      </td>
+      <td style="vertical-align: top;">Tomcat<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">5.0.28, 5.5,
+6.0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">JBoss Inc.<br>
+      </td>
+      <td style="vertical-align: top;">JBoss Application Server<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">4.0.x<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">BEA Systems Inc.<br>
+      </td>
+      <td style="vertical-align: top;">Weblogic Server<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">8.1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Sun Microsystems<br>
+      </td>
+      <td style="vertical-align: top;">GlassFish <br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">v1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Sun Microsystems<br>
+      </td>
+      <td style="vertical-align: top;">Sun Java System Application
+Server<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">8.1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Oracle<br>
+      </td>
+      <td style="vertical-align: top;">Oracle Application Server
+Container for J2EE (OC4J)<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">10.1.3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">IBM<br>
+      </td>
+      <td style="vertical-align: top;">Websphere Application Server<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">6.0.0.1, 6.1<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h3>J2EE Integrated Development Environments (IDEs)<br>
+</h3>
+ICEfaces includes IDE integration bundles for the following
+development
+tools:<br>
+<br>
+<table style="text-align: left; width: 592px; height: 108px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Vendor<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Product<br>
+      </td>
+      <td
+ style="vertical-align: top; font-weight: bold; text-align: center;">Version<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Eclipse<br>
+      </td>
+      <td style="vertical-align: top;">Eclipse/Web Tools Platform<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">3.1.1/1.0,
+3.2/1.5<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Eclipse<br>
+      </td>
+      <td style="vertical-align: top;">Eclipse/Web Tools Platform with
+JSF tools<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">3.2/1.5<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">IBM<br>
+      </td>
+      <td style="vertical-align: top;">Rational Application Developer<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">6.0.1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Oracle<br>
+      </td>
+      <td style="vertical-align: top;">JDeveloper 10g Studio Edition<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">10.1.3<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">BEA<br>
+      </td>
+      <td style="vertical-align: top;">Workshop Studio 3, Workshop
+Studio for JSF<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">3.0, 3.1, 3.2<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Genuitec LLC<br>
+      </td>
+      <td style="vertical-align: top;">MyEclipse Enterprise Workbench<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">5.0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Sun<br>
+      </td>
+      <td style="vertical-align: top;">Java Studio Creator 2<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">2.0 - Update 1<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Sun<br>
+      </td>
+      <td style="vertical-align: top;">NetBeans<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">5.0, 5.5<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+Note that the tool integration bundles may be updated independently
+from ICEfaces releases. Go to<a target="_blank"
+ class="moz-txt-link-freetext" href="http://www.icefaces.org"><br>
+http://www.icefaces.org</a> to get the most recent
+tools bundles.<br>
+<br>
+<ol>
+</ol>
+<hr>
+<h2 style="font-style: italic;"><a name="Known_Issues"></a>Known Issues</h2>
+<p>The following are known issues with this release:<br>
+</p>
+<h3>General</h3>
+<ul>
+  <li>If at any time the asynchronous connection between the browser
+and the server is lost due to a network interruption, reloading the
+page
+will generally restore normal operation from the previous application
+state.</li>
+</ul>
+<ul>
+  <li>ICEfaces pages included via &lt;jsp:include&gt; or
+&lt;tiles:insert&gt; have distinct PersistentFacesContext objects even
+if they are included by the same parent page. For this reason,
+application-initiated renders will apply only to the inclusion
+associated with the particular PersistentFacesContext.</li>
+</ul>
+<ul>
+  <li>Inclusion of ICEfaces content from JSP is not compatible with
+MyFaces.</li>
+</ul>
+<ul>
+  <li>Attempting to retrieve a Request parameter in the url using the
+following syntax is not supported (returns null):<br>
+&nbsp;&nbsp; <span style="font-family: monospace;">FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(paramName);</span><br>
+A workaround for this issue is to retrieve the Request parameter using
+the following alternative syntax:<br>
+&nbsp;<span style="font-family: monospace;">((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter(paramName);</span>
+  </li>
+</ul>
+<ul>
+  <li>When using ICEfaces with <span style="font-family: monospace;">com.icesoft.faces.concurrentDOMViews</span>
+enabled, reloading the page or opening the application with more than
+one browser window simultaneously will prevent references to any
+request-scoped beans from being removed, resulting in them being unable
+to be garbage collected until the user session expires. Further, any
+component bindings must be in request scope
+in this configuration as a component binding in
+session or application scope in concurrent views can lead to a
+component existing simultaneously
+in two component trees with unpredictable behavior.<br>
+  </li>
+</ul>
+<ul>
+  <li>Cookies can be set though the <span
+ style="font-family: monospace;">((BridgeExternalContext)
+FacesContext.getCurrentInstance().getExternalContext()).addCookie(new
+Cookie("test","test"));</span> method. </li>
+</ul>
+<ul>
+  <li>Ajax Push sometimes fails to update page when
+concurrentDOMViews=false set. A work-around is to obtain a reference to
+the PersistentFaceState in a bean getter/setter in addition to the
+constructor as a getter is more likely to be called specifically on the
+user's current page (<code>persistentFacesState =
+PersistentFacesState.getInstance();</code>). </li>
+</ul>
+<h3>JSP Markup </h3>
+<ul>
+  <li>UIComponentBodyTag processing supports only a single call to
+doAfterBody(). The full JSP lifecycle for iterative body processing is
+not supported.</li>
+</ul>
+<ul>
+  <li>The first-generation children of the DataTable's table-header and
+column-header facets must be standard JSF components. For example,
+plain markup cannot be contained on its own within these facets, it
+must be wrapped in a panelGrid and the panelGrid, in turn, can be
+contained within the facet.</li>
+</ul>
+<ul>
+  <li>JSP Page to Document conversion escapes &amp;nbsp, but &amp;nbsp
+in JSP Documents must be manually escaped by the developer as
+&amp;amp;nbsp. Similarly, &amp; characters must be escaped as
+&amp;amp;.</li>
+</ul>
+<ul>
+  <li>Non-JSF JSP tags (&lt;jsp:xxx/&gt;, etc.) embedded in JSP Pages
+and Documents are ignored by the ICEfaces parser with the exception of
+the inclusion mechanism (see Markup Reference in Developer's Guide for
+details).</li>
+</ul>
+<ul>
+  <li>Java code (&lt;% ...%&gt;, etc.) embedded in JSP Pages and
+Documents is ignored by the ICEfaces parser with the exception of the
+inclusion mechanism (see Markup Reference in Developer's Guide for
+details).</li>
+</ul>
+<ul>
+  <li>Input documents must be well-formed XML.</li>
+</ul>
+<ul>
+  <li>Deprecated HTML elements, specifically the FONT element, do not
+respond properly to DOM manipulation functions in the ICEfaces
+client-side JavaScript bridge. (see HTML 4.01 Specification for details
+on deprecated HTML Elements).</li>
+</ul>
+<ul>
+  <li>Pages should contain both a &lt;head&gt; tag and a &lt;body&gt;
+tag
+so that they are well-formed XHTML and ICEfaces can
+easily add a link to its own custom JavaScript library.</li>
+</ul>
+<ul>
+  <li>Any ICEfaces page included from a JSP via &lt;jsp:include/&gt;
+must contain a &lt;body&gt; tag as the content of the &lt;body&gt; tag
+is precisely the content inserted into the including page.</li>
+</ul>
+<ul>
+  <li>Tiles tags are not supported within ICEfaces pages, but ICEfaces
+pages may be included via Tiles.</li>
+</ul>
+<ul>
+  <li>If multiple ICEfaces inclusions are performed by the same parent
+JSP, each ICEfaces form must have a manually applied unique ID.</li>
+</ul>
+<ul>
+  <li>JSP Pages are dynamically converted to JSP Documents for
+processing by the ICEfaces parser, so it is important not to mix JSP
+Page and JSP document types when performing static inclusion.</li>
+</ul>
+<h3>ICEfaces Component Suite<br>
+</h3>
+<ul>
+  <li>All ICEfaces Component Suite components must be enclosed in a JSF
+form component (i.e.<span style="font-family: monospace;"> ice:form</span>,
+    <span style="font-family: monospace;">h:form</span>, or <span
+ style="font-family: monospace;">ui:form</span>).</li>
+</ul>
+<ul>
+  <li>Drag &amp; Drop (panelGroup)<br>
+  </li>
+  <ul>
+    <li>In Internet Explorer dragging and holding an image will cause
+the cursor to change to the not symbol. Operation returns to normal
+with a second left mouse button click.</li>
+  </ul>
+</ul>
+<ul>
+  <li>Effects (various components)<br>
+  </li>
+  <ul>
+    <li>In Internet Explorer the Fade, Appear, and Pulsate effects
+will not transition when used with select elements.<br>
+    </li>
+  </ul>
+  <ul>
+    <li>In Safari the Highlight effect will does not work on buttons
+and lists.<br>
+    </li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+  </ul>
+</ul>
+<ul>
+</ul>
+<ul>
+  <li>menuBar
+    <ul>
+      <li>When a menu is expanded and the user clicks on one of the
+menu items, and then the same
+menu is expanded again, the last-clicked menu item will appear with a
+dashed outline. This is
+only an issue in the Firefox or Mozilla browser.</li>
+    </ul>
+  </li>
+</ul>
+<ul>
+  <li>panelPopup</li>
+  <ul>
+    <li>When using a modal <span style="font-family: monospace;">panelPopup</span>
+it may be necessary to ensure that the body region of the page covers
+the entire visible region of the document or the component used to
+block user interaction with the document may not cover the entire page.
+To accomplish this a surrounding DIV sized to 100% width and height can
+be used to enclose all content in the document body. For example: <br>
+      <pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span
+ style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span
+ style="font-style: italic;">page content...</span>  <span
+ style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre>
+    </li>
+  </ul>
+</ul>
+<ul>
+  <li>panelTabSet</li>
+  <ul>
+    <li>On Safari browsers only, the layout of the tabs is incorrect,
+with horizontal spacing between the tabs.</li>
+    <li>On Safari browsers only, the tab panel resizes when tabs are
+selected.</li>
+  </ul>
+</ul>
+<ul>
+</ul>
+<h3>Facelets</h3>
+<ul>
+  <li>When using an ice:outputDeclaration component in a Facelets
+document on a JBoss application server, several warning messages may be
+logged. These warnings do not affect the performance or behavior of the
+component and can be ignored.</li>
+</ul>
+<h3>Portlets</h3>
+<ul>
+  <li>ICEfaces can now be used to develop and deploy rich
+portlets
+using Liferay Portal 4.3.0. For detailed information&nbsp; on using
+ICEfaces with Liferay
+Portal, see the <a target="_blank" href="http://www.liferay.com/">Liferay
+Portal</a> 4.3.0 documentation. Using ICEfaces with other portal
+products has not been tested.</li>
+</ul>
+<h3>Application Servers<br>
+</h3>
+<ul>
+  <li>BEA Weblogic Server 9</li>
+</ul>
+<ul>
+  <ul>
+    <li>In order to run ICEfaces on the BEA Weblogic Server 9, the html
+and core tld files located in jsf-impl.jar should be extracted from the
+jar file and placed into the WEB-INF folder of any application you want
+to deploy.</li>
+  </ul>
+</ul>
+<ul>
+  <li>Websphere Application Server 6.0.0.1</li>
+</ul>
+<ul>
+  <ul>
+    <li>A bug in the application server prevents the Timezone Step 3+
+tutorials from running correctly. A WebSphere patch is available from
+IBM that resolves this issue: APAR numberPQ99195, <a target="_blank"
+ href="http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195">http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195.</a></li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+    <li>The Component Effects demonstration in the ICEfaces Component
+Showcase application doesn't display the effects when hosted on
+WebSphere v6.0.0.1 server.<br>
+&nbsp;<br>
+    </li>
+  </ul>
+  <li>Apache Tomcat <br>
+  </li>
+</ul>
+<ul>
+  <ul>
+    <li>Tutorials bundled with the ICEfaces release will not build and
+deploy to Tomcat 5.5 with MyFaces due to a conflict related to
+jsp-api.jar.&nbsp; To build and deploy tutorials on Tomcat 5.5 with
+MyFaces, it is necessary to modify the <span
+ style="font-style: italic; font-weight: bold;">.../install_dir/ICEfaces-1.5/icefaces/samples/tutorial/build.properties</span>
+and set <span style="font-style: italic; font-weight: bold;">tomcat55=true</span>
+prior to building the application.</li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+    <li>Applications deployed to a Tomcat instance installed as a
+Windows service may experience the following error: <small>"SEVERE:
+ICEfaces could not initialize JavaServer Faces. Please check that the
+JSF .jar files are installed correctly."<big> </big></small>This issue
+can be resolved by including the following listener in the web.xml: <br>
+      <br>
+      <code>&lt;listener&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;listener-class&gt; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+com.sun.faces.config.ConfigureListener <br>
+&lt;/listener-class&gt; <br>
+&lt;/listener&gt;</code></li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+    <li>To use ICEfaces with <span style="font-weight: bold;">Tomcat
+v6.0</span> the following additional configuration steps are required:</li>
+    <ul>
+      <li>These jars that are included in the ICEfaces distribution
+must be removed from the web application:</li>
+      <ul>
+        <li>el-api.jar</li>
+        <li>xercesImpl.jar</li>
+        <li>xml-apis.jar</li>
+      </ul>
+    </ul>
+  </ul>
+</ul>
+<ul>
+  <br>
+</ul>
+<hr>
+<h2 style="font-style: italic;"><a name="Support"></a>Support</h2>
+<p>Open source community support is available at <a
+ href="http://www.icefaces.org">http://www.icefaces.org</a>. For
+commercial support please visit <a
+ href="http://www.icesoft.com/support/">http://www.icesoft.com/support</a><span
+ style="font-weight: bold; vertical-align: baseline; text-transform: none; color: rgb(0, 0, 0); font-style: normal; text-decoration: none;"></span>.<br>
+</p>
+<hr>
+<h2 style="font-style: italic;"><a name="License_Management"></a>License
+Notice</h2>
+<p class="Body">License agreements can be found in the <span
+ style="font-weight: bold;">.../<span style="font-style: italic;">install_dir</span>/</span><span
+ style="font-style: italic; font-weight: bold;">/</span><span
+ style="font-weight: bold;">icefaces</span><span
+ style="font-style: italic; font-weight: bold;">/</span><span
+ style="font-weight: bold;">docs/license</span> directory.</p>
+<p class="Body">&copy; Copyright 2005-2007. ICEsoft Technologies, Inc.</p>
+</body>
+</html>
