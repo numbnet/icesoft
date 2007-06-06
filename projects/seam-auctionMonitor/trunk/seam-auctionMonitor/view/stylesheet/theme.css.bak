@@ -1,0 +1,387 @@
+a:active, a:link, a:visited {
+	color: #0D5798;    
+}
+
+a:hover {
+	color: #8CAFCD;
+}
+
+input, textarea {
+	border: 1px solid #BBBBBB;
+	font-size: 10px;
+	background: #F0F8FF;
+	color: black;
+}
+
+input[type='submit'], input[type='button'] {
+	background: #4477AA;
+	color: white;
+	margin: 5px;
+	border-color: gray;
+}
+
+.prop .errors {
+	color: red;
+	text-align: left;
+    padding: .4em;
+    margin: 10px
+}
+
+.errorImg {
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+}
+.errorMsg {
+  display: block;
+  margin: 5px;
+  padding: .1em;
+}
+
+
+.error {
+  color: red;
+  border: solid red;
+  padding: .4em;
+  margin: 10px
+}
+
+.formBorderHighlight{
+    vertical-align: top; /*width: 100%;*/
+    border: 1px solid #bed6f8;
+    padding: 5px;
+}
+.menuButtons {
+   font-size: 12px;
+   font-weight: bold;
+   border-colour: #bed6f8;
+   background-color: #BED6F8;
+   background-position: top left;
+  
+}
+.menuButtons a {
+    font-size: 11px;
+    colour: #000000;
+    font-weight: bold;
+    font-family: Arial, Verdana, sans-serif;
+    text-decoration: none;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.searchResults {
+     border-top: 1px solid #bed6f8;
+      border-bottom:1px solid #bed6f8;
+     border-left:1px solid #bed6f8;
+     border-right:1px solid #bed6f8;
+     padding: 5px;
+
+}
+.leftMenu {
+   padding: 5px;
+   vertical-align: middle;
+   text-align: left;
+  background-color: transparent;
+}
+.rightMenu{
+    padding: 5px;
+   vertical-align: middle;
+   text-align: right;
+background-color: transparent;
+}
+.menuButtons a:hover {
+	font-family: Arial,sans-serif;
+    background-color: white;
+    color:  #0066ff; /*#8CAFCD*/
+}
+
+.loginout {
+	font-family: Arial,sans-serif;
+	text-align: right;
+	padding-right: 20px;
+	padding-top: 5px;
+	font-size: 0.85em;
+}
+.loginout a {
+	text-decoration: none;
+}
+
+.footer {
+	text-align: center;
+	font-size: 0.8em;
+}
+
+.actionButtons {
+	width: 100%;
+	text-align: left;
+	padding-top: 10px;
+}
+
+.tableControl, .actionButtons {
+	width: 100%;
+        font-size:11px;
+}
+
+.tableControl{
+	width: 100%;
+	text-align: right;
+	padding-top: 15px;
+}
+.iceTblHeader {
+  font-size:11px;
+   color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+.allcols{
+   font-size:11px;
+   color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+/*
+.actionButtons a, .tableControl a {
+	font-family: Arial,sans-serif;
+	font-weight: bold;
+	color: #578BB8;
+	border: 1px solid #578BB8;
+	text-decoration: none;
+	padding: 5px;
+	margin: 5px;
+}
+.actionButtons a:hover, .tableControl a:hover {
+	color: white;
+	background-color: #578BB8;
+	margin: 5px;
+}*/
+
+
+
+h1 {
+	font-family: Arial,sans-serif;
+	color: #578BB8;
+	font-size: 1.6em;
+	margin-top: 0;
+}
+
+body {
+	margin: 0px;
+	font-family: Arial,sans-serif;
+	color: #616161;
+}
+
+.body {
+	padding: 30px;
+}
+
+
+table {
+	width: 100%;
+}
+th {
+	background-color: #bed6f8;
+	color: white;
+	font-family: Arial,sans-serif;
+	padding: 5px;
+	
+}
+td {
+	background-color: transparent;
+	text-align: center;
+}
+.narrow {
+	width: 20%;
+}
+.wide {
+	width: 80%;
+}
+.first td {
+	background-color: #F0F0F0;
+}
+.second td {
+	background-color: white;
+}
+
+.dialog 
+{
+	padding: 15px;
+	background-color: #F0F0F0;
+	margin: 10px;	
+}
+.dialog table
+{
+	width: auto;
+}
+
+.columnHeader:link, .columnHeader:visited, .columnHeader:active
+{
+       font-size: 11px;
+	color: #578BB8;
+	text-decoration: none;
+}
+
+.columnHeader:hover
+{
+    color: white;
+}
+
+.message {
+	border: 1px solid #FFCC00;
+	padding: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #F0F0F0;
+}
+
+.prop {
+	padding: 5px;
+}
+.prop .name {
+	font-weight: bold;
+	text-align: left;
+	width: 115px;
+}
+.prop .value {
+	text-align: left;
+}
+.prop .errors {
+	color: red;
+	text-align: left;
+}
+/*.value input {
+	width:190px;
+}*/
+.errors input {
+	border: 1px solid red;
+}
+
+/* Seam Date Picker */
+
+/* the div that holds the date picker calendar */
+.seam-date {
+    width: 300px;
+}
+
+
+/* the table (within the div) that holds the date picker calendar */
+.seam-date table {
+   background: #fff url(../img/input.bg.gif) 0 0 repeat-x;
+   background-color: #FFFFFF;
+   border: 1px solid #AAAAAA;
+   color: #505050;
+   font-family: Tahoma, Arial, Helvetica, sans-serif;
+   font-size: 12px;
+   margin-top: 5px;
+   text-align: center
+}
+
+
+.seam-date-title div {
+    font-size: 12px;
+    color: gray;
+    font-weight: bold;
+}
+
+
+/* the forward/backward buttons at the top */
+.seam-date-title button{
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: gray;
+    background: #FFFFFF;
+    font-weight: bold;
+    padding: 0px;
+    border: 1px solid #AAAAAA;
+}
+
+
+/* the "This Month" and "Close" buttons at the bottom */
+.seam-date-footer {
+	display: none;
+}
+
+.seam-date-footer button {
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    color: gray;
+    background: #FFFFFF;
+    font-weight: bold;
+    border: 1px solid #AAAAAA;
+}
+
+
+
+/* a table cell that holds the names of days of the week (Mo, Tu, We, etc.) */
+.seam-date-header td {
+    background-color: #CCCCCC;
+    border: 1px solid #AAAAAA;
+    color: white;
+    width: 14%;
+}
+
+
+
+/* a table cell that holds a date number (either blank or 1-31) */
+.seam-date-week td.seam-date-day {
+    border: 1px solid #ece9d8;
+    width: 14%;
+}
+
+/* the date number table cell that the mouse pointer is currently over (you can use contrasting colors to make it apparent which cell is being hovered over) */
+.seam-date-week td.seam-date-hover  {
+    background-color: #CCCCCC;
+    border: 1px solid #AAAAAA;
+    cursor: pointer;
+    color: red;
+}
+
+
+/* additional style information for the cell that holds a highlighted day (usually either today's date or the current date field value) */ 
+.seam-date-week td.seam-date-selected {
+    background-color: #CCCCCC;        
+    border: 1px solid #AAAAAA;
+    font-weight: bold;
+}
+.contentLayoutGridStyleLogin {
+    width: 280px; /* fixed height of content demos*/  
+}
+.accordion2Container, .accordion2Container_collapsed{
+  border:1px solid #bed6f8;
+    font-family:tahoma,arial, san-serif;
+    font-weight:bold;
+    font-size:11px;
+    background-color:transparent;
+}
+ 
+.accordion2Header, .accordion2Header_collapsed{
+    border:1px solid #bed6f8;
+    font-family:tahoma,arial, san-serif;
+    font-weight:bold;
+    font-size:11px;
+  
+  }
+  
+.accordion2Content, .accordion2Content_collapsed{
+     border-bottom:1px solid #bed6f8;
+     border-left:1px solid #bed6f8;
+     border-right:1px solid #bed6f8;
+     font-family:tahoma,arial, san-serif;
+     font-size:11px;  
+     background-color: transparent;          
+  }
+
+.icePageNorth {
+    font-weight: bold;
+    height: 20px;
+    background-color: #cccccc;
+    padding: 5px;
+    text-align: center;
+}
