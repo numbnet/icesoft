@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package model.com.icesoft.eb;
+package com.icesoft.eb;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -27,14 +27,15 @@ import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Pattern;
 import org.jboss.seam.annotations.Name;
 
+
 @Entity
 @Name("bid")
 public class Bid implements Serializable
 {
    private Long id;
    private User user;
-   private AuctionItem bidItem;
-   private DateTime timestamp;
+   private Auctionitem bidItem;
+   private Date timestamp;
    private String creditCard;
    private String creditCardName;
    private int creditCardExpiryMonth;
@@ -42,9 +43,9 @@ public class Bid implements Serializable
    
    public Bid() {}
    
-   public Bid(AuctionItem bidItem, User user)
+   public Bid(Auctionitem bidItem, User user)
    {
-      this.bidItem = user;
+      this.bidItem = bidItem;
       this.user = user;
    }
 
@@ -59,22 +60,22 @@ public class Bid implements Serializable
    }
    
    @NotNull
-   @Basic @Temporal(TemporalType.DATETIME) 
-   public DateTime getTimestamp()
+   @Basic @Temporal(TemporalType.DATE) 
+   public Date getTimestamp()
    {
       return timestamp;
    }
-   public void setTimestamp(DateTime timestamp)
+   public void setTimestamp(Date timestamp)
    {
       this.timestamp = timestamp;
    }
 
    @ManyToOne @NotNull
-   public AuctionItem getAuctionItem()
+   public Auctionitem getAuctionItem()
    {
       return bidItem;
    }
-   public void setAuctionItem(AuctionItem bidItem)
+   public void setAuctionItem(Auctionitem bidItem)
    {
       this.bidItem = bidItem;
    }

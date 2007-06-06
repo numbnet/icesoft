@@ -322,6 +322,7 @@
                 <include name="jbpm-3.1.4.jar"/>
                 <include name="commons*.jar"/>
                 <include name="servlet*.jar"/>
+                <include name="hibernate*.jar"/>
             </fileset>
             <fileset dir="${jboss.seam.home}/drools/lib">
                 <include name="antlr-3.0ea8.jar"/>

@@ -15,7 +15,6 @@ import javax.ejb.Local;
 public interface  BidList {
 
    public void getBids();
-   public String cancel();
    public void destroy();
 }
 
