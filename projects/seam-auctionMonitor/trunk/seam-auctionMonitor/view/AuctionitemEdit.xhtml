@@ -1,0 +1,235 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+                template="layout/template.xhtml">
+                       
+<ui:define name="body">
+    
+    <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+    
+    <ice:form id="auctionitemeditForm" styleClass="edit">
+    
+	  <ice:panelAccordion expanded="#{auctionitemHome.openStatus}" styleClass="accordion2"
+				actionListener="#{auctionitemHome.toggle}" >
+		<f:facet name="header">
+ 			<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
+			    <ice:outputText value="Edit auctionitem"/>
+                      <ice:graphicImage value="img/expand_#{auctionitemHome.openStatus}.gif" /> 
+		      </ice:panelGrid>
+	     </f:facet>        
+           <ice:panelGroup styleClass="edit">
+		 
+                     <f:facet name="beforeInvalidField">
+                                <ice:graphicImage styleClass="errorImg" value="img/error.png"/>
+                        </f:facet>
+                        <f:facet name="afterInvalidField">
+                                    <s:message styleClass="errorMsg" />
+                        </f:facet>
+                        <f:facet name="aroundInvalidField">
+                                <s:div styleClass="error"/>
+                    </f:facet> 
+			<s:validateAll>
+			 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+
+                    <h:outputLabel for="itemId">
+                        itemId
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="itemIdDecoration">
+                        <ice:inputText id="itemId"
+					partialSubmit="true"
+                               required="true"
+                               disabled="#{auctionitemHome.managed}"
+                                  value="#{auctionitemHome.instance.itemId}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="bidCount">
+                        bidCount
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="bidCountDecoration">
+                        <ice:inputText id="bidCount"
+					partialSubmit="true"
+                               required="true"
+                                  value="#{auctionitemHome.instance.bidCount}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="currency">
+                        currency
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="currencyDecoration">
+                        <ice:inputText id="currency" 
+					partialSubmit="true"
+                               required="true"
+                                   size="5"
+                              maxlength="5"
+                                  value="#{auctionitemHome.instance.currency}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="description">
+                        description
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="descriptionDecoration">
+                        <ice:inputText id="description" 
+					partialSubmit="true"
+                               required="true"
+                                   size="80"
+                              maxlength="80"
+                                  value="#{auctionitemHome.instance.description}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="imageFile">
+                        imageFile
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="imageFileDecoration">
+                        <ice:inputText id="imageFile" 
+					partialSubmit="true"
+                               required="true"
+                                   size="45"
+                              maxlength="45"
+                                  value="#{auctionitemHome.instance.imageFile}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="location">
+                        location
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="locationDecoration">
+                        <ice:inputText id="location" 
+					partialSubmit="true"
+                               required="true"
+                                   size="45"
+                              maxlength="45"
+                                  value="#{auctionitemHome.instance.location}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="price">
+                        price
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="priceDecoration">
+                        <ice:inputText id="price"
+					partialSubmit="true"
+                               required="true"
+                                  value="#{auctionitemHome.instance.price}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="seller">
+                        seller
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="sellerDecoration">
+                        <ice:inputText id="seller" 
+					partialSubmit="true"
+                               required="true"
+                                   size="45"
+                              maxlength="45"
+                                  value="#{auctionitemHome.instance.seller}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="site">
+                        site
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="siteDecoration">
+                        <ice:inputText id="site" 
+					partialSubmit="true"
+                               required="true"
+                                   size="45"
+                              maxlength="45"
+                                  value="#{auctionitemHome.instance.site}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="title">
+                        title
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="titleDecoration">
+                        <ice:inputText id="title" 
+					partialSubmit="true"
+                               required="true"
+                                   size="45"
+                              maxlength="45"
+                                  value="#{auctionitemHome.instance.title}">
+                        </ice:inputText>
+                    </s:decorate>
+
+                    <h:outputLabel for="expiresindays">
+                        expiresindays
+                        <span class="required">*</span>
+                    </h:outputLabel>
+                    <s:decorate id="expiresindaysDecoration">
+                        <ice:inputText id="expiresindays"
+					partialSubmit="true"
+                               required="true"
+                                  value="#{auctionitemHome.instance.expiresindays}">
+                        </ice:inputText>
+                    </s:decorate>
+                  <div style="clear:both">
+                     <span class="required">*</span> 
+                                    required fields
+                  </div>
+  		  
+		</ice:panelGrid>
+		</s:validateAll>
+          </ice:panelGroup>
+	  </ice:panelAccordion>
+                  
+        <div class="actionButtons">
+        
+            <h:commandButton id="save" 
+                          value="Save" 
+                         action="#{auctionitemHome.persist}"
+                       disabled="#{!auctionitemHome.wired}"
+                       rendered="#{!auctionitemHome.managed}"/>  
+                          			  
+            <h:commandButton id="update" 
+                          value="Save" 
+                         action="#{auctionitemHome.update}"
+                       rendered="#{auctionitemHome.managed}"/>
+                        			  
+            <h:commandButton id="delete" 
+                          value="Delete" 
+                         action="#{auctionitemHome.remove}"
+                       rendered="#{auctionitemHome.managed}"/>
+                    
+            <s:button id="done" 
+                   value="Done"
+             propagation="end"
+                    view="/Auctionitem.xhtml"
+                rendered="#{auctionitemHome.managed}"/>
+                
+            <s:button id="cancel" 
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty auctionitemFrom ? 'AuctionitemList' : auctionitemFrom}.xhtml"
+                rendered="#{!auctionitemHome.managed}"/>
+                
+        </div>
+        
+    </ice:form>
+
+</ui:define>
+
+</ui:composition>
+
+
+

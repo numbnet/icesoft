@@ -1,0 +1,16 @@
+<!DOCTYPE page PUBLIC
+          "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
+          "http://jboss.com/products/seam/pages-1.2.dtd">
+
+<page>
+   <param name="firstResult" value="#{auctionitemList.firstResult}"/>
+   <param name="order" value="#{auctionitemList.order}"/>
+   <param name="from"/>
+   <param name="currency" value="#{auctionitemList.auctionitem.currency}"/>
+   <param name="description" value="#{auctionitemList.auctionitem.description}"/>
+   <param name="imageFile" value="#{auctionitemList.auctionitem.imageFile}"/>
+   <param name="location" value="#{auctionitemList.auctionitem.location}"/>
+   <param name="seller" value="#{auctionitemList.auctionitem.seller}"/>
+   <param name="site" value="#{auctionitemList.auctionitem.site}"/>
+   <param name="title" value="#{auctionitemList.auctionitem.title}"/>
+</page>

@@ -1,0 +1,31 @@
+<!DOCTYPE page PUBLIC
+          "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
+          "http://jboss.com/products/seam/pages-1.2.dtd">
+
+<page no-conversation-view-id="/AuctionitemList.xhtml"
+               login-required="true">
+   
+   <begin-conversation join="true"/>
+   
+   <action execute="#{auctionitemHome.wire}"/>
+   
+   <param name="auctionitemFrom"/>
+   <param name="auctionitemItemId" value="#{auctionitemHome.auctionitemItemId}"/>
+
+
+   <navigation from-action="#{auctionitemHome.persist}">
+       <end-conversation/>
+       <redirect view-id="/Auctionitem.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{auctionitemHome.update}">
+       <end-conversation/>
+       <redirect view-id="/Auctionitem.xhtml"/>
+   </navigation>
+   
+   <navigation from-action="#{auctionitemHome.remove}">
+       <end-conversation/>
+       <redirect view-id="/AuctionitemList.xhtml"/>
+   </navigation>
+   
+</page>
