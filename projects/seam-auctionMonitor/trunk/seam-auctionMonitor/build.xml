@@ -309,6 +309,7 @@
 		<include name="backport-util-concurrent.jar" />	
 		<include name="commons-fileupload.jar"/> 
                 <include name="myfaces*.jar"/>
+                <include name="commons-logging*.jar"/>
   	    </fileset>
            <fileset dir="${jboss.seam.home}">
                     <include name="jboss-seam*.jar"/>
