@@ -35,6 +35,7 @@ public class Bid implements Serializable
    private Long id;
    private User user;
    private Auctionitem bidItem;
+   private double bidValue;
    private Date timestamp;
    private String creditCard;
    private String creditCardName;
@@ -151,4 +152,12 @@ public class Bid implements Serializable
       return "Bid(" + user + ","+ bidItem + ")";
    }
 
+    @NotNull(message = "Bid value is required")
+    public double getBidValue() {
+        return bidValue;
+    }
+
+    public void setBidValue(double bidValue) {
+        this.bidValue = bidValue;
+    }
 }
