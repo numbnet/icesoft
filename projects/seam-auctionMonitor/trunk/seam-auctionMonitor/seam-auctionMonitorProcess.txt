@@ -20,4 +20,14 @@ ToDo (for functional requirements)
 Am I missing anything guys?
 
 
+Date: June 8th, 2007
+
+Committed classes with some skeleton methods in order to implement the rendering api as discussed in our design session.
+
+AuctionHouse - an application scope class that will initialize the application
+AuctionitemBean - a combination of AuctionItem and Bid that is used to represent an item in the UI.  The AuctionitemBean will make render calls when necessary.
+ViewManager - contains a List of "views"
+The only view right now is AuctionItemSearchingAction which is based on the Seam Booking example.  This class implements Renderable and changes the UI by creating a new collection of AuctionItemBeans with each new search.
+
+
 
