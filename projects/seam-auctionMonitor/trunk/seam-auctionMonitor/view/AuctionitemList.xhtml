@@ -14,65 +14,26 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="auctionitemForm" styleClass="edit">
-	<ice:panelAccordion expanded="#{auctionitemList.openStatus}" styleClass="accordion2"
-				actionListener="#{auctionitemList.toggle}" >
+
 	   <f:facet name="header">
            <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
-                  <ice:outputText value="Auctionitem search"/>
-                   <ice:graphicImage value="img/expand_#{auctionitemList.openStatus}.gif" /> 
+                  <ice:outputText value="Auctionitem search"/> 
 		</ice:panelGrid>
 	  </f:facet>        
         <ice:panelGroup styleClass="edit">
 		 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 	
-                <h:outputLabel for="currency">currency</h:outputLabel>
-                <ice:inputText id="currency" 
-                          value="#{auctionitemList.auctionitem.currency}"
+                <h:outputLabel for="searchString">search</h:outputLabel>
+                <ice:inputText id="searchString" 
+                          value="#{itemSearch.searchString}"
 				  partialSubmit="true"/>
 	
-	
-                <h:outputLabel for="description">description</h:outputLabel>
-                <ice:inputText id="description" 
-                          value="#{auctionitemList.auctionitem.description}"
-				  partialSubmit="true"/>
-	
-	
-                <h:outputLabel for="imageFile">imageFile</h:outputLabel>
-                <ice:inputText id="imageFile" 
-                          value="#{auctionitemList.auctionitem.imageFile}"
-				  partialSubmit="true"/>
-	
-	
-                <h:outputLabel for="location">location</h:outputLabel>
-                <ice:inputText id="location" 
-                          value="#{auctionitemList.auctionitem.location}"
-				  partialSubmit="true"/>
-	
-	
-                <h:outputLabel for="seller">seller</h:outputLabel>
-                <ice:inputText id="seller" 
-                          value="#{auctionitemList.auctionitem.seller}"
-				  partialSubmit="true"/>
-	
-	
-                <h:outputLabel for="site">site</h:outputLabel>
-                <ice:inputText id="site" 
-                          value="#{auctionitemList.auctionitem.site}"
-				  partialSubmit="true"/>
-	
-	
-                <h:outputLabel for="title">title</h:outputLabel>
-                <ice:inputText id="title" 
-                          value="#{auctionitemList.auctionitem.title}"
-				  partialSubmit="true"/>
-	
-            </ice:panelGrid>
+         </ice:panelGrid>
    
 	</ice:panelGroup>
-   </ice:panelAccordion>
         
         <div class="actionButtons">
-            <ice:commandButton id="search" value="Search" action="/AuctionitemList.xhtml"/>
+            <ice:commandButton id="search" value="Search Items" action="#{itemSearch.find}"/>
         </div>
       
     </ice:form>
@@ -83,160 +44,77 @@
 
     <div class="searchResults" id="contactgroupListResults">
     <ice:outputText value="No auctionitem exists" 
-               rendered="#{empty auctionitemList.resultList}"/>
+               rendered="#{auctionitems != null and auctionitems.rowCount==0}"/>
                
     <ice:dataTable id="auctionitemList" 
                 var="auctionitem"
-              value="#{auctionitemList.resultList}" 
+              value="#{auctionitems}" 
 		columnClasses="allCols"
-           rendered="#{not empty auctionitemList.resultList}">
+           rendered="#{auctionitems.rowCount>0}">
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="itemId #{auctionitemList.order=='itemId asc' ? messages.down : ( auctionitemList.order=='itemId desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='itemId asc' ? 'itemId desc' : 'itemId asc'}"/>
-                </s:link>
+            <f:facet name="header">itemId
             </f:facet>
             #{auctionitem.itemId}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="bidCount #{auctionitemList.order=='bidCount asc' ? messages.down : ( auctionitemList.order=='bidCount desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='bidCount asc' ? 'bidCount desc' : 'bidCount asc'}"/>
-                </s:link>
+            <f:facet name="header">bidCount
             </f:facet>
             #{auctionitem.bidCount}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="currency #{auctionitemList.order=='currency asc' ? messages.down : ( auctionitemList.order=='currency desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='currency asc' ? 'currency desc' : 'currency asc'}"/>
-                </s:link>
+            <f:facet name="header">currency
             </f:facet>
             #{auctionitem.currency}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="description #{auctionitemList.order=='description asc' ? messages.down : ( auctionitemList.order=='description desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='description asc' ? 'description desc' : 'description asc'}"/>
-                </s:link>
+            <f:facet name="header">description
             </f:facet>
             #{auctionitem.description}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="imageFile #{auctionitemList.order=='imageFile asc' ? messages.down : ( auctionitemList.order=='imageFile desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='imageFile asc' ? 'imageFile desc' : 'imageFile asc'}"/>
-                </s:link>
+            <f:facet name="header">imageFile
             </f:facet>
             #{auctionitem.imageFile}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="location #{auctionitemList.order=='location asc' ? messages.down : ( auctionitemList.order=='location desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='location asc' ? 'location desc' : 'location asc'}"/>
-                </s:link>
+            <f:facet name="header">location
             </f:facet>
             #{auctionitem.location}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="price #{auctionitemList.order=='price asc' ? messages.down : ( auctionitemList.order=='price desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='price asc' ? 'price desc' : 'price asc'}"/>
-                </s:link>
+            <f:facet name="header">price
             </f:facet>
             #{auctionitem.price}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="seller #{auctionitemList.order=='seller asc' ? messages.down : ( auctionitemList.order=='seller desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='seller asc' ? 'seller desc' : 'seller asc'}"/>
-                </s:link>
+            <f:facet name="header">seller
             </f:facet>
             #{auctionitem.seller}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="site #{auctionitemList.order=='site asc' ? messages.down : ( auctionitemList.order=='site desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='site asc' ? 'site desc' : 'site asc'}"/>
-                </s:link>
+            <f:facet name="header">site
             </f:facet>
             #{auctionitem.site}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="title #{auctionitemList.order=='title asc' ? messages.down : ( auctionitemList.order=='title desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='title asc' ? 'title desc' : 'title asc'}"/>
-                </s:link>
+            <f:facet name="header">title
             </f:facet>
             #{auctionitem.title}&amp;nbsp;
         </ice:column>
         <ice:column>
-            <f:facet name="header">
-                <s:link styleClass="columnHeader"
-                             value="expiresindays #{auctionitemList.order=='expiresindays asc' ? messages.down : ( auctionitemList.order=='expiresindays desc' ? messages.up : '' )}">
-                    <f:param name="order" value="#{auctionitemList.order=='expiresindays asc' ? 'expiresindays desc' : 'expiresindays asc'}"/>
-                </s:link>
+            <f:facet name="header">expiresindays
             </f:facet>
             #{auctionitem.expiresindays}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link view="/#{empty from ? 'Auctionitem' : from}.xhtml" 
-                   value="Select" 
-                      id="auctionitem">
-                <f:param name="auctionitemItemId" 
-                        value="#{auctionitem.itemId}"/>
+            <s:link value="Bid" action="#{itemSearch.selectItem(auctionitem)}">
             </s:link>
         </ice:column>
     </ice:dataTable>
 
     </div>
 </ice:panelGroup>
-
-    <div class="tableControl">
-      
-        <s:link view="/AuctionitemList.xhtml" 
-            rendered="#{auctionitemList.previousExists}" 
-               value="#{messages.left}#{messages.left} First Page"
-                  id="firstPage">
-          <f:param name="firstResult" value="0"/>
-        </s:link>
-        
-        <s:link view="/AuctionitemList.xhtml" 
-            rendered="#{auctionitemList.previousExists}" 
-               value="#{messages.left} Previous Page"
-                  id="previousPage">
-            <f:param name="firstResult" 
-                    value="#{auctionitemList.previousFirstResult}"/>
-        </s:link>
-        
-        <s:link view="/AuctionitemList.xhtml" 
-            rendered="#{auctionitemList.nextExists}" 
-               value="Next Page #{messages.right}"
-                  id="nextPage">
-            <f:param name="firstResult" 
-                    value="#{auctionitemList.nextFirstResult}"/>
-        </s:link>
-        
-        <s:link view="/AuctionitemList.xhtml" 
-            rendered="#{auctionitemList.nextExists}" 
-               value="Last Page #{messages.right}#{messages.right}"
-                  id="lastPage">
-            <f:param name="firstResult" 
-                    value="#{auctionitemList.lastFirstResult}"/>
-        </s:link>
-        
-    </div>
     
     <s:div styleClass="actionButtons" rendered="#{empty from}">
         <s:button view="/AuctionitemEdit.xhtml"

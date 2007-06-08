@@ -1,0 +1,163 @@
+//$Id: HotelSearchingAction.java,v 1.17 2007/02/25 19:09:39 gavin Exp $
+package com.icesoft.eb;
+import java.util.ArrayList;
+import java.util.List;
+import javax.ejb.Remove;
+import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Destroy;
+import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.datamodel.DataModelSelection;
+import org.jboss.seam.annotations.security.Restrict;
+
+import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+@Stateful
+@Name("itemSearch")
+@Scope(ScopeType.SESSION)
+//@Restrict("#{identity.loggedIn}")
+public class AuctionItemSearchingAction implements AuctionItemSearching, Renderable
+{
+   
+   @PersistenceContext
+   private EntityManager em;   
+   
+   private String searchString;
+   private int pageSize = 10;
+   private int page;
+   
+   @DataModel
+   private List<AuctionitemBean> auctionitems;
+   @DataModelSelection
+   private Auctionitem selectedItem; 
+   
+   ViewManager viewManager;
+   PersistentFacesState persistentFacesState;
+   
+   public AuctionItemSearchingAction(){
+       persistentFacesState = PersistentFacesState.getInstance();
+   }
+
+   public PersistentFacesState getState() {
+       // TODO Auto-generated method stub
+       return null;
+   }
+
+   public void find()
+   {
+      page = 0;
+      queryAuctionItems();
+   }
+   public void nextPage()
+   {
+      page++;
+      queryAuctionItems();
+   }
+      
+   private void queryAuctionItems()
+   {
+       //Hard code values in here for now.
+       List newAuctionitems = new ArrayList();
+       newAuctionitems = em.createQuery("select i from Auctionitem i where lower(i.itemId) like #{pattern} or lower(i.bidCount) like #{pattern} or lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
+            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.price) like #{pattern} or lower(i.seller) like #{pattern}" +
+            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern} or lower(i.expiresindays) like #{pattern}")
+            .setMaxResults(pageSize)
+            .setFirstResult( page * pageSize )
+            .getResultList();
+
+       if(newAuctionitems.equals(auctionitems)){
+           return;
+       }else{
+           if(!auctionitems.isEmpty()){
+               for(int i=0; i<auctionitems.size(); i++){
+                   AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+                   if(newAuctionitems.contains(tempBean)){
+                       continue;
+                   }else{
+                       tempBean.removeRenderable(this);
+                   }
+               }
+           }
+           if(!newAuctionitems.isEmpty()){
+               for(int i=0; i<newAuctionitems.size(); i++){
+                   AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
+                   if(auctionitems.contains(tempBean)){
+                       continue;
+                   }else{
+                       tempBean.addRenderable(this);
+                   }
+               }
+           }
+       }
+       auctionitems = newAuctionitems;
+   }
+   
+   public boolean isNextPageAvailable()
+   {
+      return auctionitems!=null && auctionitems.size()==pageSize;
+   }
+   
+   public int getPageSize() {
+      return pageSize;
+   }
+   
+   public void setPageSize(int pageSize) {
+      this.pageSize = pageSize;
+   }
+   
+   public Auctionitem getSelectedItem() {
+       return selectedItem;
+   }
+   public void setSelectedItem(Auctionitem selectedItem) {
+       this.selectedItem = selectedItem;
+   }
+   
+   @Factory(value="pattern", scope=ScopeType.EVENT)
+   public String getSearchPattern()
+   {
+      return searchString==null ? 
+            "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
+   }
+   
+   public String getSearchString()
+   {
+      return searchString;
+   }
+   
+   public void setSearchString(String searchString)
+   {
+      this.searchString = searchString;
+   }
+   
+   /**
+    * Callback method that is called if any exception occurs during an attempt
+    * to render this Renderable.
+    *
+    * @param renderingException The exception that occurred when attempting
+    * to render this Renderable.
+    */
+   public void renderingException(RenderingException renderingException) {
+
+       if (renderingException instanceof TransientRenderingException ){
+           
+       }
+       else if(renderingException instanceof FatalRenderingException){
+           for(int i=0; i<auctionitems.size(); i++){
+               AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+               tempBean.removeRenderable(this);
+           }
+       }
+   }
+   
+   @Destroy @Remove
+   public void destroy() {}
+
+}
