@@ -7,6 +7,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.Conversational;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.In;
@@ -20,7 +21,9 @@ import org.jboss.seam.log.Log;
 
 @Stateful
 @Name("itemBid")
+//@Conversational(ifNotBegunOutcome="main")
 //@Restrict("#{identity.loggedIn}")
+@LoggedIn
 
 public class AuctionitemBidAction implements AuctionitemBid {
     @PersistenceContext(type=EXTENDED)
@@ -30,7 +33,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     private User user;
     
     @In(required=false) @Out
-    private AuctionitemBean item;
+    private AuctionitemBean selectedItem;
     
     @In(required=false) 
     @Out(required=false)
@@ -47,28 +50,29 @@ public class AuctionitemBidAction implements AuctionitemBid {
     
     private boolean bidValid;
     
-    @Begin
+    @In
+    ViewManager viewManager;
+    
+    @Begin(join=true)
     public void selectItem(AuctionitemBean selectedItem)
     {
-       item = em.merge(selectedItem);
+       selectedItem = em.merge(selectedItem);
     }
     
     public void bid()
     {      
-       bid = new Bid(item.getAuctionitem(), user);
+       bid = new Bid(selectedItem.getAuctionitem(), user);
        Calendar calendar = Calendar.getInstance();
        bid.setTimestamp( calendar.getTime() );
     }
     public void setBidDetails()
     {
-       Calendar calendar = Calendar.getInstance();
-       calendar.add(Calendar.DAY_OF_MONTH, -1);
-       if ( bid.getAuctionItem().getPrice()<= item.getAuctionitem().getPrice() )
+       if ( bid.getBidValue()<= selectedItem.getAuctionitem().getPrice() )
        {
           //facesMessages.addToControl("checkinDate", "Bid must be higher than existing price");
           bidValid=false;
        }
-       else if ( bid.getAuctionItem().getPrice()> 999999 )
+       else if ( bid.getBidValue()> 999999 )
        {
           //facesMessages.addToControl("checkoutDate", "Bid must be less than $1,000,000");
           bidValid=false;
@@ -91,7 +95,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
        //facesMessages.add("Thank you, #{user.name}, your confimation number for #{item.name} is #{bid.id}");
        log.info("New booking: #{bid.id} for #{user.username}");
        events.raiseTransactionSuccessEvent("bidConfirmed");
-       item.render();
+       selectedItem.render();
     }
     
     @End

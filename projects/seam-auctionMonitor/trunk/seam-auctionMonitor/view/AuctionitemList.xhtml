@@ -108,10 +108,27 @@
         </ice:column>
         <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link value="Bid" action="#{itemSearch.selectItem(auctionitem)}">
+            <s:link value="Bid" action="#{itemBid.selectItem(auctionitem)}">
             </s:link>
         </ice:column>
     </ice:dataTable>
+    <s:link value="More results" action="#{itemSearch.nextPage}" 
+          rendered="#{itemSearch.nextPageAvailable}"/>		
+    <h:dataTable value="#{conversationList}" var="entry">
+        <h:column>
+		    <h:commandLink action="#{entry.select}" value="#{entry.description}"/>
+			<h:outputText value="[current]" rendered="#{entry.current}"/>
+		</h:column>
+		<h:column>
+		    <h:outputText value="#{entry.startDatetime}">
+			    <f:convertDateTime type="time" pattern="hh:mm"/>
+			</h:outputText>
+			  - 
+			<h:outputText value="#{entry.lastDatetime}">
+			    <f:convertDateTime type="time" pattern="hh:mm"/>
+		    </h:outputText>
+		</h:column>
+	</h:dataTable>
 
     </div>
 </ice:panelGroup>

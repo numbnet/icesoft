@@ -9,10 +9,10 @@ import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
-import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
@@ -24,6 +24,7 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Name("itemSearch")
 @Scope(ScopeType.SESSION)
 //@Restrict("#{identity.loggedIn}")
+
 public class AuctionItemSearchingAction implements AuctionItemSearching, Renderable
 {
    
@@ -35,10 +36,9 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    private int page;
    
    @DataModel
-   private List<AuctionitemBean> auctionitems;
-   @DataModelSelection
-   private Auctionitem selectedItem; 
+   private List<AuctionitemBean> auctionitems; 
    
+   @In
    ViewManager viewManager;
    PersistentFacesState persistentFacesState;
    
@@ -111,13 +111,6 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    
    public void setPageSize(int pageSize) {
       this.pageSize = pageSize;
-   }
-   
-   public Auctionitem getSelectedItem() {
-       return selectedItem;
-   }
-   public void setSelectedItem(Auctionitem selectedItem) {
-       this.selectedItem = selectedItem;
    }
    
    @Factory(value="pattern", scope=ScopeType.EVENT)
