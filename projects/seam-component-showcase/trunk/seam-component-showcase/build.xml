@@ -363,18 +363,20 @@
             <copy todir="${lib.dir}">
               <fileset dir="${icefacesSourcedirectory}/lib">
                 <include name="jsf*.jar"/>
+                <include name="commons-digester*.jar"/>
   	    </fileset>
             <fileset dir="${jboss.seam.home}/lib">
                 <include name="jboss*.jar"/>
                  <include name="jbpm*.jar" />
                  <include name="jboss-el.jar" />
-                 <include name="janino-*.jar"/>
                  <include name="antlr-*.jar"/>
+                 <include name="commons-digester*.jar"/>
             </fileset>
             <fileset dir="${jboss.seam.home}/drools/lib">
                 <include name="antlr-*.jar"/>
                 <include name="mvel*.jar"/>
                 <include name="drools-*.jar"/>
+                <include name="janino-*.jar"/>
             </fileset>
 	</copy>
 	</target>
@@ -391,9 +393,9 @@
 				<include name="jboss-seam.jar" />
                                 <include name="jbpm*.jar" />
                                 <include name="jboss-el.jar" />
-                                <include name="drools-*.jar"/>
-                                <include name="janino-*.jar"/>
-                                <include name="antlr-*.jar"/>
+                                <include name="drools-*-4.0*.jar"/>
+                                <include name="janino-2.5.6.jar"/>
+                                <include name="antlr-3*.jar"/>
                                 <include name="mvel*.jar"/>
 			</fileset>
 			<fileset dir="${lib.dir}">
@@ -401,7 +403,7 @@
 				<include name="backport-util-concurrent.jar" />
                                 <include name="krysalis-jCharts-1.0.0-alpha-1.jar" />
 				<include name="commons-fileupload.jar"/> 
-                                <include name="commons-digester.jar"/>
+                                <include name="commons-digester*.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="${ear.dir}/META-INF">
