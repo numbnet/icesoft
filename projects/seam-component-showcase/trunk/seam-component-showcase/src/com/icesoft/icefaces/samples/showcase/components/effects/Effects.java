@@ -51,6 +51,7 @@ public class Effects {
     private String specific = "AppearFade";
 
     private String sampleData = "";
+ 
 
     private PulsateBean pulsateBean;
     private HighlightBean highlightBean;
@@ -96,6 +97,8 @@ public class Effects {
     }
 
     public MoveBean getMoveBean() {
+        moveBean.setX(25);
+        moveBean.setY(25);
         return moveBean;
     }
 

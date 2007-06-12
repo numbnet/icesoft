@@ -62,6 +62,8 @@ public class MoveBean {
 
     public MoveBean(Effects effectsBean) {
         this.effectsBean = effectsBean;
+        this.x=25;
+        this.y=25;
     }
 
     /**

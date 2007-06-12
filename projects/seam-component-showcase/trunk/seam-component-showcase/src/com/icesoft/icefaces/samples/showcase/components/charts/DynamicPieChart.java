@@ -127,8 +127,6 @@ public class DynamicPieChart implements Serializable{
      * @return list of sales items for charting.
      */
     public DynamicPieChart() {
-        
-        
         salesMap = Sales.getSales();
         Iterator it = salesMap.values().iterator();
         double price;

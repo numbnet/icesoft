@@ -238,7 +238,7 @@ public class PieChartBean extends Chart{
     }
     
     public List getSales() {
-        return sales;
+       return type.equalsIgnoreCase("pie3d") ? allSales : sales;
     }
     
     

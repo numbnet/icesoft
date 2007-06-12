@@ -53,6 +53,8 @@ public class TextFieldsBean implements Serializable{
     private String password;
     private String comments;
 
+    private float numberValue = 500000.0f;
+
     /**
      * Gets the name property.
      *
@@ -132,5 +134,14 @@ public class TextFieldsBean implements Serializable{
         comments = "";
 
         return "Done";
+    }
+
+
+    public float getNumberValue() {
+        return numberValue;
+    }
+
+    public void setNumberValue(float numberValue) {
+        this.numberValue = numberValue;
     }
 }

@@ -33,8 +33,6 @@
 
 package com.icesoft.icefaces.samples.showcase.common;
 
-import javax.faces.event.ActionEvent;
-
 /**
  * Class of table element.
  */
@@ -80,5 +78,4 @@ public class Person {
     public String toString() {
         return firstName + " " + lastName + ", " + phoneNo + ", " + email;
     }
-    
 }
