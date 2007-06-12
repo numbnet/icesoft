@@ -2,14 +2,17 @@ package com.icesoft.eb;
 
 import java.util.List;
 
+import javax.ejb.Remove;
+
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Scope;
 
 import com.icesoft.faces.async.render.RenderManager;
 
 @Scope(ScopeType.APPLICATION)
-public class AuctionHouseAction {
+public class AuctionHouseAction implements AuctionHouse{
 
     @In
     private RenderManager renderManager;
@@ -30,5 +33,8 @@ public class AuctionHouseAction {
     public void itemExpired(AuctionitemBean itemBean){
         
     }
+    
+    @Destroy @Remove
+    public void destroy() {}
 
 }

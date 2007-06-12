@@ -7,4 +7,5 @@ public interface AuctionHouse {
 
     public void itemCreated(AuctionitemBean itemBean);
     public void itemExpired(AuctionitemBean itemBean);
+    public void destroy();
 }
