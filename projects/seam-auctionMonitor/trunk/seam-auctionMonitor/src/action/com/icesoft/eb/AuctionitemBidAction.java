@@ -51,7 +51,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     private boolean bidValid;
     
     @In
-    ViewManager viewManager;
+    ViewManagerAction viewManager;
     
     @Begin(join=true)
     public void selectItem(AuctionitemBean selectedItem)

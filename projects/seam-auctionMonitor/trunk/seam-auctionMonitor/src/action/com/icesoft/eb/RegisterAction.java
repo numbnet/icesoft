@@ -8,7 +8,7 @@
  *  really just copied from seam-booking example
  */
 
-package action.com.icesoft.eb;
+package com.icesoft.eb;
 
 
 import static org.jboss.seam.ScopeType.EVENT;

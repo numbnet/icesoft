@@ -10,7 +10,7 @@ import com.icesoft.faces.context.effects.Effect;
  * This class is the UI representation of an Auctionitem with the most recent Bid.
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
-public class AuctionitemBean {
+public class AuctionitemBean implements AuctionItemB{
     private Auctionitem auctionitem;
     private Bid bid;
     private OnDemandRenderer renderer;

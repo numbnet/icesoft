@@ -3,6 +3,7 @@
           "http://jboss.com/products/seam/pages-1.2.dtd">
 
 <page>
+	<!--
    <param name="firstResult" value="#{userList.firstResult}"/>
    <param name="order" value="#{userList.order}"/>
    <param name="from"/>
@@ -10,4 +11,5 @@
    <param name="password" value="#{userList.user.password}"/>
    <param name="name" value="#{userList.user.name}"/>
    <param name="role" value="#{userList.user.role}"/>
+   -->
 </page>

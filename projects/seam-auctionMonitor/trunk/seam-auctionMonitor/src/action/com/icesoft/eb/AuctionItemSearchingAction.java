@@ -39,10 +39,11 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    private List<AuctionitemBean> auctionitems; 
    
    @In
-   ViewManager viewManager;
+   ViewManagerAction viewManager;
    PersistentFacesState persistentFacesState;
    
    public AuctionItemSearchingAction(){
+       System.out.println("CONSTRUCTION AUCTIONITEMSEARCHINGACTION!!!!!");
        persistentFacesState = PersistentFacesState.getInstance();
    }
 

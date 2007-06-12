@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package action.com.icesoft.eb;
+package com.icesoft.eb;
 
 import static org.jboss.seam.ScopeType.EVENT;
 
