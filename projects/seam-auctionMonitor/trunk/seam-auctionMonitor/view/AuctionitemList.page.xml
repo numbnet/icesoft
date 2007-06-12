@@ -2,7 +2,9 @@
           "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
           "http://jboss.com/products/seam/pages-1.2.dtd">
 
+
 <page>
+	<!--
    <param name="firstResult" value="#{auctionitemList.firstResult}"/>
    <param name="order" value="#{auctionitemList.order}"/>
    <param name="from"/>
@@ -13,4 +15,5 @@
    <param name="seller" value="#{auctionitemList.auctionitem.seller}"/>
    <param name="site" value="#{auctionitemList.auctionitem.site}"/>
    <param name="title" value="#{auctionitemList.auctionitem.title}"/>
+   -->
 </page>
