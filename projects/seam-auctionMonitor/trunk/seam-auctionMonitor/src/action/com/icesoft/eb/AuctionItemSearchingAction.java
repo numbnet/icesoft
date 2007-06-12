@@ -43,7 +43,6 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    PersistentFacesState persistentFacesState;
    
    public AuctionItemSearchingAction(){
-       System.out.println("CONSTRUCTION AUCTIONITEMSEARCHINGACTION!!!!!");
        persistentFacesState = PersistentFacesState.getInstance();
    }
 
