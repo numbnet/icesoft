@@ -38,8 +38,8 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    @DataModel
    private List<AuctionitemBean> auctionitems; 
    
-   @In
-   ViewManagerAction viewManager;
+//   @In
+//   ViewManagerAction viewManager;
    PersistentFacesState persistentFacesState;
    
    public AuctionItemSearchingAction(){
