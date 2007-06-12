@@ -49,9 +49,9 @@
             <message>Unexpected error, please try again</message>
         </redirect>
     </exception>
-<!-- Conversation List-->
+<!-- Conversation List
 	<page view-id="/hotel.xhtml">View hotel: #{hotel.name}</page>
 	<page view-id="/book.xhtml">Book hotel: #{hotel.name}</page>
 	<page view-id="/confirm.xhtml">Confirm: #{booking.description}</page>
-
+-->
 </pages>
