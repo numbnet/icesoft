@@ -95,6 +95,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
        //facesMessages.add("Thank you, #{user.name}, your confimation number for #{item.name} is #{bid.id}");
        log.info("New booking: #{bid.id} for #{user.username}");
        events.raiseTransactionSuccessEvent("bidConfirmed");
+       selectedItem.buildBidEffect();
        selectedItem.render();
     }
     

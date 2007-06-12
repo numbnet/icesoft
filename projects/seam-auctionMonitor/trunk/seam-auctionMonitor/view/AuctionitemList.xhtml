@@ -47,64 +47,64 @@
                rendered="#{auctionitems != null and auctionitems.rowCount==0}"/>
                
     <ice:dataTable id="auctionitemList" 
-                var="auctionitem"
+                var="auctionitemBean"
               value="#{auctionitems}" 
 		columnClasses="allCols"
            rendered="#{auctionitems.rowCount>0}">
         <ice:column>
             <f:facet name="header">itemId
             </f:facet>
-            #{auctionitem.itemId}&amp;nbsp;
+            #{auctionitemBean.auctionitem.itemId}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">bidCount
             </f:facet>
-            #{auctionitem.bidCount}&amp;nbsp;
+            #{auctionitemBean.auctionitem.bidCount}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">currency
             </f:facet>
-            #{auctionitem.currency}&amp;nbsp;
+            #{auctionitemBean.auctionitem.currency}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">description
             </f:facet>
-            #{auctionitem.description}&amp;nbsp;
+            #{auctionitemBean.auctionitem.description}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">imageFile
             </f:facet>
-            #{auctionitem.imageFile}&amp;nbsp;
+            #{auctionitemBean.auctionitem.imageFile}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">location
             </f:facet>
-            #{auctionitem.location}&amp;nbsp;
+            #{auctionitemBean.auctionitem.location}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">price
             </f:facet>
-            #{auctionitem.price}&amp;nbsp;
+            <ice:outputText value="#{auctionitemBean.auctionitem.price}&amp;nbsp;" effect="#{auctionitemBean.bidEffect}"/>
         </ice:column>
         <ice:column>
             <f:facet name="header">seller
             </f:facet>
-            #{auctionitem.seller}&amp;nbsp;
+            #{auctionitemBean.auctionitem.seller}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">site
             </f:facet>
-            #{auctionitem.site}&amp;nbsp;
+            #{auctionitemBean.auctionitem.site}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">title
             </f:facet>
-            #{auctionitem.title}&amp;nbsp;
+            #{auctionitemBean.auctionitem.title}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">expiresindays
             </f:facet>
-            #{auctionitem.expiresindays}&amp;nbsp;
+            #{auctionitemBean.auctionitem.expiresindays}&amp;nbsp;
         </ice:column>
         <ice:column>
             <f:facet name="header">action</f:facet>

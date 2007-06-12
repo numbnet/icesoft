@@ -4,12 +4,6 @@
           "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 
 <faces-config>
-    <!-- added Highlight effects in but may not use it. Do we want to add other effects? -->
-    <managed-bean>
-        <managed-bean-name>highlight</managed-bean-name>
-        <managed-bean-class>com.icesoft.faces.context.effects.Highlight</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
 
    <application>
    <message-bundle>messages</message-bundle>
