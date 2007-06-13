@@ -19,5 +19,6 @@ public interface AuctionItemSearching
    public boolean isNextPageAvailable();
 
    public void destroy();
-   
+
+   public void queryAuctionItems();
 }

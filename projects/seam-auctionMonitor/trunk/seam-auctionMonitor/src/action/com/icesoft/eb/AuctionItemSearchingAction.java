@@ -61,8 +61,9 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
       page++;
       queryAuctionItems();
    }
-      
-   private void queryAuctionItems()
+
+   @Factory("auctionitems")
+   public void queryAuctionItems()
    {
        //Hard code values in here for now.
        List newAuctionitems = new ArrayList();
