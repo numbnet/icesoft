@@ -28,7 +28,7 @@ public class UserList extends EntityQuery {
 
 	@Override
 	public String getEjbql() {
-		return "select bidder from Bidder bidder";
+		return "select bidder from User bidder";
 	}
 
 	@Override
