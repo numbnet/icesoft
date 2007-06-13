@@ -54,9 +54,10 @@ public class AuctionitemBidAction implements AuctionitemBid {
     ViewManagerAction viewManager;
     
     @Begin(join=true)
-    public void selectItem(AuctionitemBean selectedItem)
+    public String selectItem(AuctionitemBean selectedItem)
     {
        selectedItem = em.merge(selectedItem);
+       return "";
     }
     
     public void bid()

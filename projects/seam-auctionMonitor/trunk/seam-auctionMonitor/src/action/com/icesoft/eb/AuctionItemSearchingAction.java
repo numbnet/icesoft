@@ -47,19 +47,20 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    }
 
    public PersistentFacesState getState() {
-       // TODO Auto-generated method stub
        return null;
    }
 
-   public void find()
+   public String find()
    {
       page = 0;
       queryAuctionItems();
+      return "";
    }
-   public void nextPage()
+   public String nextPage()
    {
       page++;
       queryAuctionItems();
+      return "";
    }
 
    @Factory("auctionitems")

@@ -15,7 +15,7 @@ public interface AuctionItemB {
     public void render();
     public void addRenderable(Renderable renderable);
     public void removeRenderable(Renderable renderable);
-    public Effect getNewBid() ;
-    public void setNewBid(Effect newBid);
+    public Effect getBidEffect() ;
+    public void setBidEffect(Effect bidEffect);
     public void buildBidEffect();
 }

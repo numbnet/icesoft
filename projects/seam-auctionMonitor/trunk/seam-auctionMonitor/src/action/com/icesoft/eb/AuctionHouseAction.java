@@ -9,8 +9,6 @@ import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Scope;
 
-import com.icesoft.faces.async.render.RenderManager;
-
 @Scope(ScopeType.APPLICATION)
 public class AuctionHouseAction implements AuctionHouse{
 

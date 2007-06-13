@@ -1,6 +1,9 @@
 package com.icesoft.eb;
 
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.ScopeType;
 
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
@@ -11,7 +14,9 @@ import com.icesoft.faces.context.effects.Effect;
 /**
  * This class is the UI representation of an Auctionitem with the most recent Bid.
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
-*/ 
+*/
+@Name("auctionitemBean")
+@Scope(ScopeType.STATELESS)
 public class AuctionitemBean implements AuctionItemB{
     
     @In
@@ -19,12 +24,11 @@ public class AuctionitemBean implements AuctionItemB{
     private Auctionitem auctionitem;
     private Bid bid;
     private OnDemandRenderer renderer;
-    private Effect newBid;
+    private Effect bidEffect;
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid){
         this.auctionitem = auctionitem;
         this.bid = bid;
-        renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );
     }
 
     public Auctionitem getAuctionitem() {
@@ -44,6 +48,9 @@ public class AuctionitemBean implements AuctionItemB{
     }
     
     public void render(){
+        if(renderer == null){
+            renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );            
+        }
         renderer.requestRender();
     }
     
@@ -56,17 +63,17 @@ public class AuctionitemBean implements AuctionItemB{
         renderer.add(renderable);        
     }
 
-    public Effect getNewBid() {
-        return newBid;
+    public Effect getBidEffect(){
+        return bidEffect;
     }
 
-    public void setNewBid(Effect newBid) {
-        this.newBid = newBid;
+    public void setBidEffect(Effect bidEffect) {
+        this.bidEffect = bidEffect;
     }
     
     public void buildBidEffect(){
-        newBid = new Appear();
-        newBid.setDuration(.5f);
+        bidEffect = new Appear();
+        bidEffect.setDuration(.5f);
     }
 
 }

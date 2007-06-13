@@ -14,8 +14,8 @@ public interface AuctionItemSearching
    
    public String getSearchPattern();
    
-   public void find();
-   public void nextPage();
+   public String find();
+   public String nextPage();
    public boolean isNextPageAvailable();
 
    public void destroy();
