@@ -1,5 +1,7 @@
 package com.icesoft.eb;
 
+import org.jboss.seam.annotations.In;
+
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
@@ -11,20 +13,18 @@ import com.icesoft.faces.context.effects.Effect;
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
 public class AuctionitemBean implements AuctionItemB{
+    
+    @In
+    private RenderManager renderManager;
     private Auctionitem auctionitem;
     private Bid bid;
     private OnDemandRenderer renderer;
     private Effect newBid;
     
-    public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
-        this.auctionitem = auctionitem;
-        this.bid = bid;
-        renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );
-    }
-
     public AuctionitemBean(Auctionitem auctionitem, Bid bid){
         this.auctionitem = auctionitem;
         this.bid = bid;
+        renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );
     }
 
     public Auctionitem getAuctionitem() {

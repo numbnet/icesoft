@@ -14,8 +14,6 @@ import com.icesoft.faces.async.render.RenderManager;
 @Scope(ScopeType.APPLICATION)
 public class AuctionHouseAction implements AuctionHouse{
 
-    @In
-    private RenderManager renderManager;
     private static List auctionitemBeans;
 
     AuctionHouseAction(){
