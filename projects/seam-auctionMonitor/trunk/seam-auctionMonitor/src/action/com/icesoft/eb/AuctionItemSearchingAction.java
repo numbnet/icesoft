@@ -66,13 +66,18 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    {
        //Hard code values in here for now.
        List newAuctionitems = new ArrayList();
+       newAuctionitems = em.createQuery("select new com.icesoft.eb.AuctionitemBean(i, b) from Auctionitem i left join i.bids b")
+            .getResultList();
+/*
        newAuctionitems = em.createQuery("select i from Auctionitem i where lower(i.itemId) like #{pattern} or lower(i.bidCount) like #{pattern} or lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
             " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.price) like #{pattern} or lower(i.seller) like #{pattern}" +
             " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern} or lower(i.expiresindays) like #{pattern}")
             .setMaxResults(pageSize)
             .setFirstResult( page * pageSize )
             .getResultList();
+*/
 
+/*
        if(newAuctionitems.equals(auctionitems)){
            return;
        }else{
@@ -97,6 +102,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
                }
            }
        }
+*/
        auctionitems = newAuctionitems;
    }
    

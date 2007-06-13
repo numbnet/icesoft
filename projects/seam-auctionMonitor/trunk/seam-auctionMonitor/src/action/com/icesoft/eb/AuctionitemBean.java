@@ -22,6 +22,11 @@ public class AuctionitemBean implements AuctionItemB{
         renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );
     }
 
+    public AuctionitemBean(Auctionitem auctionitem, Bid bid){
+        this.auctionitem = auctionitem;
+        this.bid = bid;
+    }
+
     public Auctionitem getAuctionitem() {
         return auctionitem;
     }
