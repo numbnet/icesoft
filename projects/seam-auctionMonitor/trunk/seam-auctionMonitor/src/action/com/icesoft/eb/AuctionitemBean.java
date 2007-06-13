@@ -14,7 +14,7 @@ import com.icesoft.faces.context.effects.Effect;
 /**
  * This class is the UI representation of an Auctionitem with the most recent Bid.
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
-*/
+*/ 
 @Name("auctionitemBean")
 @Scope(ScopeType.STATELESS)
 public class AuctionitemBean implements AuctionItemB{
@@ -29,6 +29,7 @@ public class AuctionitemBean implements AuctionItemB{
     public AuctionitemBean(Auctionitem auctionitem, Bid bid){
         this.auctionitem = auctionitem;
         this.bid = bid;
+        auctionitem.setBidCount(auctionitem.getBids().size());
     }
 
     public Auctionitem getAuctionitem() {
