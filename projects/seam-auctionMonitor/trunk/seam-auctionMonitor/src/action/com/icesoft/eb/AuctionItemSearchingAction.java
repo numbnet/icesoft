@@ -66,20 +66,15 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    @Factory("auctionitems")
    public void queryAuctionItems()
    {
-       //Hard code values in here for now.
        List newAuctionitems = new ArrayList();
        newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
-            " WHERE i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1)")
-            .getResultList();
-/*
-       newAuctionitems = em.createQuery("select i from Auctionitem i where lower(i.itemId) like #{pattern} or lower(i.bidCount) like #{pattern} or lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
-            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.price) like #{pattern} or lower(i.seller) like #{pattern}" +
-            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern} or lower(i.expiresindays) like #{pattern}")
+            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
+            " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
+            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
+            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
             .setMaxResults(pageSize)
             .setFirstResult( page * pageSize )
             .getResultList();
-*/
-
 /*
        if(newAuctionitems.equals(auctionitems)){
            return;
