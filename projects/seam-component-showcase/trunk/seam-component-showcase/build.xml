@@ -368,7 +368,7 @@
 	<target name="freshen-glassFish" depends="freshen-base"
                     description="grab fresh icefaces jars for jsf1.2*">
             <copy todir="${lib.dir}">
-              <fileset dir="${icefacesSourcedirectory}/lib">
+              <fileset dir="${icefacesSourceDirectory}/lib">
                 <include name="jsf*.jar"/>
                 <include name="commons-digester*.jar"/>
   	    </fileset>
