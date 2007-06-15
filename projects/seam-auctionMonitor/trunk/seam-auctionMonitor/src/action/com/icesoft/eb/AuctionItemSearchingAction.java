@@ -1,5 +1,7 @@
 //$Id: HotelSearchingAction.java,v 1.17 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
+
+import static javax.persistence.PersistenceContextType.EXTENDED;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Remove;
@@ -29,7 +31,7 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 public class AuctionItemSearchingAction implements AuctionItemSearching, Renderable
 {
    
-   @PersistenceContext
+   @PersistenceContext(type=EXTENDED)
    private EntityManager em;   
    
    private String searchString;

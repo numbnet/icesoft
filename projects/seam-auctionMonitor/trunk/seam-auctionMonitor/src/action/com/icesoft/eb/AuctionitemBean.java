@@ -16,7 +16,6 @@ import com.icesoft.faces.context.effects.Effect;
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
 @Name("auctionitemBean")
-@Scope(ScopeType.STATELESS)
 public class AuctionitemBean implements AuctionItemB{
     
     @In
@@ -26,6 +25,7 @@ public class AuctionitemBean implements AuctionItemB{
     private OnDemandRenderer renderer;
     private Effect bidEffect;
     private boolean bidding = false;
+    private double bidInput = 0.0;
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid){
         this.auctionitem = auctionitem;
@@ -84,6 +84,14 @@ public class AuctionitemBean implements AuctionItemB{
 
     public void setBidding(boolean bidding) {
         this.bidding = bidding;
+    }
+    
+    public double getBidInput() {
+        return bidInput;
+    }
+
+    public void setBidInput(double bidInput) {
+        this.bidInput = bidInput;
     }
 
 }

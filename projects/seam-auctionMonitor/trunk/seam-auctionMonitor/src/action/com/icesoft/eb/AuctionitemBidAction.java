@@ -35,7 +35,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @In 
     private User user;
     
-    @In(required=false) @Out
+    @In(create=true, required=false) @Out
     private AuctionitemBean auctionitemBean;
     
     @In(required=false) 
@@ -53,19 +53,17 @@ public class AuctionitemBidAction implements AuctionitemBid {
     
 //    @In
 //    ViewManagerAction viewManager;
-
-    double bidInput;
     
     @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
-       System.out.println("INSIDE SELECTITEM!!!!!!!!!!!");
        try{
-       auctionitemBean = em.merge(selectedItem);
+       Auctionitem temp = auctionitemBean.getAuctionitem();
+       temp = em.merge(selectedItem.getAuctionitem());
+       auctionitemBean = selectedItem;
        auctionitemBean.setBidding(true);
-       bidInput = auctionitemBean.getAuctionitem().getPrice();
        bid = new Bid(auctionitemBean.getAuctionitem(), user);
-       bid.setBidValue(bidInput);
+       bid.setBidValue(auctionitemBean.getBidInput());
        }catch(Exception e){
            e.printStackTrace();
        }
@@ -75,24 +73,30 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @End(ifOutcome={"success"})
     public String bid()
     {
-        if ( bidInput <= auctionitemBean.getAuctionitem().getPrice() )
+        if ( bid.getBidValue() <= auctionitemBean.getBid().getBidValue() )
         {
-           facesMessages.addToControl("item_localBid", "Bid must be higher than existing price");
+           //facesMessages.addToControl("item_localBid", "Bid must be higher than existing price");
            return "";
         }
-        else if ( bidInput > 999999 )
+        else if ( bid.getBidValue() > 999999 )
         {
-           facesMessages.addToControl("item_localBid", "Bid must be less than $1,000,000");
+           //facesMessages.addToControl("item_localBid", "Bid must be less than $1,000,000");
            return "";
         }        
        Calendar calendar = Calendar.getInstance();
+       System.out.println("SETTING TIMESTAMP");
        bid.setTimestamp( calendar.getTime() );
+       System.out.println("PERSISTING BID");
+       bid.setCreditCard("1234123412341234");
+       bid.setCreditCardName("American Express");
        em.persist(bid);
-       facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+       //facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
        log.info("New bid: #{bid.id} for #{user.username}");
+       System.out.println("RAISING TRANSACTION EVENT");
        events.raiseTransactionSuccessEvent("bidConfirmed");
        auctionitemBean.setBidding(false);
        auctionitemBean.buildBidEffect();
+       System.out.println("CALLING RENDER");
        auctionitemBean.render();
        return "success";
     }

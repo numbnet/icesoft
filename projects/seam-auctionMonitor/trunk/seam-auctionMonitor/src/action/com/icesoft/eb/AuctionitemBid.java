@@ -9,5 +9,5 @@ public interface AuctionitemBid {
     public String bid();
     public String cancel();
     public void destroy();
-    
+
 }

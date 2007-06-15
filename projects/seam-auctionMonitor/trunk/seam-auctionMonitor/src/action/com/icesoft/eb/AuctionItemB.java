@@ -20,4 +20,7 @@ public interface AuctionItemB {
     public void buildBidEffect();
     public boolean isBidding();
     public void setBidding(boolean bidding);
+    
+    public double getBidInput();
+    public void setBidInput(double bidInput);
 }

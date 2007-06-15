@@ -18,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -30,6 +31,7 @@ import org.jboss.seam.annotations.Name;
 
 @Entity
 @Name("bid")
+@Table(name = "Bid")
 public class Bid implements Serializable
 {
    private Long id;

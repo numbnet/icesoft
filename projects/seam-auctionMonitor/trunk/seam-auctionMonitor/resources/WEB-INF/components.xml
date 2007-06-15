@@ -28,7 +28,7 @@
    
    <!-- add this in for noConversationViewID -->
    <component name="org.jboss.seam.core.pages">
-        <property name="noConversationViewId">/main.xhtml</property>
+        <property name="noConversationViewId">/AuctionitemList.xhtml</property>
     </component>
    
   <!-- next stuff is auto generated and we can use it if we want to implement the security rules  -->
