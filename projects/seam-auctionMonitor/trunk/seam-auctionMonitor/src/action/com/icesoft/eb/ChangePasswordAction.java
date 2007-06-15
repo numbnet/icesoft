@@ -28,7 +28,6 @@ import com.icesoft.eb.User;
 @Stateful
 @Scope(EVENT)
 @Name("changePassword")
-@LoggedIn
 public class ChangePasswordAction implements ChangePassword
 {
 

@@ -25,6 +25,7 @@ public class AuctionitemBean implements AuctionItemB{
     private Bid bid;
     private OnDemandRenderer renderer;
     private Effect bidEffect;
+    private boolean bidding = false;
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid){
         this.auctionitem = auctionitem;
@@ -75,6 +76,14 @@ public class AuctionitemBean implements AuctionItemB{
     public void buildBidEffect(){
         bidEffect = new Appear();
         bidEffect.setDuration(.5f);
+    }
+
+    public boolean isBidding() {
+        return bidding;
+    }
+
+    public void setBidding(boolean bidding) {
+        this.bidding = bidding;
     }
 
 }

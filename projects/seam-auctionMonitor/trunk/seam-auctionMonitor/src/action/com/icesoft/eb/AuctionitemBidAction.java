@@ -22,8 +22,7 @@ import org.jboss.seam.log.Log;
 @Stateful
 @Name("itemBid")
 //@Conversational(ifNotBegunOutcome="main")
-//@Restrict("#{identity.loggedIn}")
-@LoggedIn
+@Restrict("#{identity.loggedIn}")
 
 public class AuctionitemBidAction implements AuctionitemBid {
     @PersistenceContext(type=EXTENDED)
@@ -33,7 +32,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     private User user;
     
     @In(required=false) @Out
-    private AuctionitemBean selectedItem;
+    private AuctionitemBean auctionitemBean;
     
     @In(required=false) 
     @Out(required=false)
@@ -48,61 +47,58 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @Logger 
     private Log log;
     
-    private boolean bidValid;
-    
-    @In
-    ViewManagerAction viewManager;
+//    @In
+//    ViewManagerAction viewManager;
+
+    double bidInput;
     
     @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
-       selectedItem = em.merge(selectedItem);
+       try{
+       auctionitemBean = em.merge(selectedItem);
+       auctionitemBean.setBidding(true);
+       bidInput = auctionitemBean.getAuctionitem().getPrice();
+       bid = new Bid(auctionitemBean.getAuctionitem(), user);
+       bid.setBidValue(bidInput);
+       }catch(Exception e){
+           e.printStackTrace();
+       }
        return "";
     }
     
-    public void bid()
-    {      
-       bid = new Bid(selectedItem.getAuctionitem(), user);
+    @End(ifOutcome={"success"})
+    public String bid()
+    {
+        if ( bidInput <= auctionitemBean.getAuctionitem().getPrice() )
+        {
+           facesMessages.addToControl("item_localBid", "Bid must be higher than existing price");
+           return "";
+        }
+        else if ( bidInput > 999999 )
+        {
+           facesMessages.addToControl("item_localBid", "Bid must be less than $1,000,000");
+           return "";
+        }        
        Calendar calendar = Calendar.getInstance();
        bid.setTimestamp( calendar.getTime() );
-    }
-    public void setBidDetails()
-    {
-       if ( bid.getBidValue()<= selectedItem.getAuctionitem().getPrice() )
-       {
-          //facesMessages.addToControl("checkinDate", "Bid must be higher than existing price");
-          bidValid=false;
-       }
-       else if ( bid.getBidValue()> 999999 )
-       {
-          //facesMessages.addToControl("checkoutDate", "Bid must be less than $1,000,000");
-          bidValid=false;
-       }
-       else
-       {
-          bidValid=true;
-       }
-    }
-    
-    public boolean isBidValid()
-    {
-       return bidValid;
-    }
-    
-    @End
-    public void confirm()
-    {
        em.persist(bid);
-       //facesMessages.add("Thank you, #{user.name}, your confimation number for #{item.name} is #{bid.id}");
-       log.info("New booking: #{bid.id} for #{user.username}");
+       facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+       log.info("New bid: #{bid.id} for #{user.username}");
        events.raiseTransactionSuccessEvent("bidConfirmed");
-       selectedItem.buildBidEffect();
-       selectedItem.render();
+       auctionitemBean.setBidding(false);
+       auctionitemBean.buildBidEffect();
+       auctionitemBean.render();
+       return "success";
     }
     
     @End
-    public void cancel() {}
+    public String cancel() {
+        auctionitemBean.setBidding(false);
+        return "";
+    }
     
     @Destroy @Remove
     public void destroy() {}
+
 }

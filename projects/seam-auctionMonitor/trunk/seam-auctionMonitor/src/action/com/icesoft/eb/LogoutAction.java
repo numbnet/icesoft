@@ -15,7 +15,6 @@ import org.jboss.seam.Seam;
 import org.jboss.seam.annotations.Name;
 
 @Stateless
-@LoggedIn
 @Name("logout")
 public class LogoutAction implements Logout
 {

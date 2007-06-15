@@ -109,8 +109,21 @@
         </ice:column>
         <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link value="Bid" action="#{itemBid.selectItem(auctionitem)}">
-            </s:link>
+			<ice:panelGroup rendered="#{!auctionitemBean.bidding}">
+                <s:link value="Bid" action="#{itemBid.selectItem(auctionitemBean)}">
+				</s:link>
+				<h:messages />
+		    </ice:panelGroup>
+                    <ice:panelGroup rendered="#{auctionitemBean.bidding}">
+                        <ice:inputText id="item_localBid"
+                                       value="#{itemBid.bidInput}" size="6"/>
+                        <ice:commandButton id="image_button_bid_accept"
+                                           action="#{itemBid.bid}"/>
+                        <ice:commandButton id="image_button_bid_decline"
+                                           immediate="true"
+                                           action="#{itemBid.cancel}"/>
+                        <h:message for="item_localBid" />
+                    </ice:panelGroup>
         </ice:column>
     </ice:dataTable>
     <s:link value="More results" action="#{itemSearch.nextPage}" 

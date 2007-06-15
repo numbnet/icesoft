@@ -6,11 +6,8 @@ import javax.ejb.Local;
 public interface AuctionitemBid {
 
     public String selectItem(AuctionitemBean selectedItem);
-    public void bid();
-    public void setBidDetails();
-    public boolean isBidValid();
-    public void confirm();
-    public void cancel();
+    public String bid();
+    public String cancel();
     public void destroy();
     
 }

@@ -18,4 +18,6 @@ public interface AuctionItemB {
     public Effect getBidEffect() ;
     public void setBidEffect(Effect bidEffect);
     public void buildBidEffect();
+    public boolean isBidding();
+    public void setBidding(boolean bidding);
 }

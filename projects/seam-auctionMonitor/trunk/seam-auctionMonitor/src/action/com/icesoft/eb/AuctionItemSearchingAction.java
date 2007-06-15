@@ -13,6 +13,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
@@ -36,14 +37,14 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    private int page;
    
    @DataModel
-   private List<AuctionitemBean> auctionitems; 
+   private List<AuctionitemBean> auctionitems;
    
 //   @In
 //   ViewManagerAction viewManager;
    PersistentFacesState persistentFacesState;
    
    public AuctionItemSearchingAction(){
-       persistentFacesState = PersistentFacesState.getInstance();
+       
    }
 
    public PersistentFacesState getState() {
@@ -126,6 +127,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    
    public String getSearchString()
    {
+       persistentFacesState = PersistentFacesState.getInstance();
       return searchString;
    }
    

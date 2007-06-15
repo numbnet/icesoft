@@ -30,7 +30,7 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-package com.icesoft.ejb;
+package action.com.icesoft.ejb;
 
 import javax.ejb.Local;
 

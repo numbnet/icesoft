@@ -39,7 +39,7 @@
     </exception>
     
     <exception class="org.jboss.seam.security.NotLoggedInException">
-        <redirect view-id="/register.xhtml">
+        <redirect view-id="/login.xhtml">
             <message>Please log in first</message>
         </redirect>
     </exception>
