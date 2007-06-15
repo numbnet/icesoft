@@ -6,6 +6,8 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Conversational;
 import org.jboss.seam.annotations.Destroy;
@@ -14,6 +16,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.core.FacesMessages;
@@ -21,6 +24,7 @@ import org.jboss.seam.log.Log;
 
 @Stateful
 @Name("itemBid")
+@Scope(ScopeType.SESSION)
 //@Conversational(ifNotBegunOutcome="main")
 @Restrict("#{identity.loggedIn}")
 
@@ -55,6 +59,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
+       System.out.println("INSIDE SELECTITEM!!!!!!!!!!!");
        try{
        auctionitemBean = em.merge(selectedItem);
        auctionitemBean.setBidding(true);
