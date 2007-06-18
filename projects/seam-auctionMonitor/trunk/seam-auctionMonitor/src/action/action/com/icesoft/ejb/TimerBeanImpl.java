@@ -69,7 +69,7 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
 	private RenderManager renderManager;
 
 	private boolean doneSetup;
-	private boolean openStatus;
+	private boolean openStatus = true;
 	private IntervalRenderer ir;
 
 	private PersistentFacesState state = PersistentFacesState.getInstance();
@@ -121,7 +121,7 @@ public class TimerBeanImpl implements Renderable, TimerBean, Serializable {
 
 	}
 
-	@Begin(join = true)
+//	@Begin(join = true)
 	public String getCurrentConversation() {
 		Manager m = Manager.instance();
 		return m.getCurrentConversationId();

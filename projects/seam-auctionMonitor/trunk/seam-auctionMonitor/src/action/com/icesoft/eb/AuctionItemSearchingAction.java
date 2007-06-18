@@ -9,11 +9,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.Factory;
-import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
@@ -25,7 +21,7 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Stateful
 @Name("itemSearch")
-@Scope(ScopeType.SESSION)
+@Scope(ScopeType.CONVERSATION)
 //@Restrict("#{identity.loggedIn}")
 
 public class AuctionItemSearchingAction implements AuctionItemSearching, Renderable
@@ -55,6 +51,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
        return null;
    }
 
+   @Begin
    public String find()
    {
       page = 0;
@@ -72,6 +69,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    public void queryAuctionItems()
    {
        List newAuctionitems = new ArrayList();
+       System.out.println("******** getSearchPattern() = " + getSearchPattern() + "********");
        newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
             " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
             " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
@@ -126,7 +124,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
       this.pageSize = pageSize;
    }
    
-   @Factory(value="pattern", scope=ScopeType.EVENT)
+   @Factory(value="pattern", scope = ScopeType.EVENT)
    public String getSearchPattern()
    {
       return searchString==null ? 
