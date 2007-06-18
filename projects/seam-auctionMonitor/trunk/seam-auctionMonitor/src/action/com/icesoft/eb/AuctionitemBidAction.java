@@ -41,9 +41,6 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @In(required=false) 
     @Out(required=false)
     private Bid bid;
-      
-    @In
-    private FacesMessages facesMessages;
        
     @In
     private Events events;
@@ -73,36 +70,44 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @End(ifOutcome={"success"})
     public String bid()
     {
-        if ( bid.getBidValue() <= auctionitemBean.getBid().getBidValue() )
+        try{
+        System.out.println("BID!!!! CURRENT BID: " + auctionitemBean.getBidInput());
+        if ( auctionitemBean.getBidInput() <= auctionitemBean.getBid().getBidValue() )
         {
-           //facesMessages.addToControl("item_localBid", "Bid must be higher than existing price");
+           System.out.println("BID TOO LOW !!!!");
+           FacesMessages.instance().add("Bid must be higher than existing price");
            return "";
         }
-        else if ( bid.getBidValue() > 999999 )
+        else if ( auctionitemBean.getBidInput() > 999999 )
         {
-           //facesMessages.addToControl("item_localBid", "Bid must be less than $1,000,000");
+           System.out.println("BID TOO HIGH !!!!");
+           FacesMessages.instance().add("Bid must be less than $1,000,000");
            return "";
         }        
+       
+       bid.setBidValue(auctionitemBean.getBidInput());
        Calendar calendar = Calendar.getInstance();
-       System.out.println("SETTING TIMESTAMP");
        bid.setTimestamp( calendar.getTime() );
        System.out.println("PERSISTING BID");
        bid.setCreditCard("1234123412341234");
        bid.setCreditCardName("American Express");
        em.persist(bid);
-       //facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
-       log.info("New bid: #{bid.id} for #{user.username}");
-       System.out.println("RAISING TRANSACTION EVENT");
-       events.raiseTransactionSuccessEvent("bidConfirmed");
+       FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+       log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
+       auctionitemBean.setBid(bid);
        auctionitemBean.setBidding(false);
        auctionitemBean.buildBidEffect();
        System.out.println("CALLING RENDER");
        auctionitemBean.render();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
        return "success";
     }
     
     @End
     public String cancel() {
+        auctionitemBean.setBidInput(0.0);
         auctionitemBean.setBidding(false);
         return "";
     }

@@ -1,5 +1,8 @@
 package com.icesoft.eb;
 
+import javax.ejb.Remove;
+
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
@@ -16,6 +19,7 @@ import com.icesoft.faces.context.effects.Effect;
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
 @Name("auctionitemBean")
+@Scope(ScopeType.SESSION)
 public class AuctionitemBean implements AuctionItemB{
     
     @In
@@ -58,11 +62,11 @@ public class AuctionitemBean implements AuctionItemB{
     
     
     public void addRenderable(Renderable renderable){
-        renderer.remove(renderable);
+        renderer.add(renderable);
     }
     
     public void removeRenderable(Renderable renderable){
-        renderer.add(renderable);        
+        renderer.remove(renderable);        
     }
 
     public Effect getBidEffect(){
@@ -92,6 +96,13 @@ public class AuctionitemBean implements AuctionItemB{
 
     public void setBidInput(double bidInput) {
         this.bidInput = bidInput;
+    }
+    
+    @Destroy @Remove
+    public void destroy() {
+        if(renderer != null){
+            renderer.requestStop();
+        }
     }
 
 }

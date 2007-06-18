@@ -45,6 +45,8 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
 //   ViewManagerAction viewManager;
    PersistentFacesState persistentFacesState;
    
+   private boolean first = true;
+   
    public AuctionItemSearchingAction(){
        
    }
@@ -78,7 +80,11 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
             .setMaxResults(pageSize)
             .setFirstResult( page * pageSize )
             .getResultList();
-/*
+       if(first){
+           auctionitems = newAuctionitems;
+           first = false;
+           return;
+       }
        if(newAuctionitems.equals(auctionitems)){
            return;
        }else{
@@ -103,7 +109,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
                }
            }
        }
-*/
+
        auctionitems = newAuctionitems;
    }
    
