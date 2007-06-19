@@ -15,6 +15,7 @@ import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
@@ -42,8 +43,11 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    private PersistentFacesState state = PersistentFacesState.getInstance();
    
    private boolean first = true;
-   
-   public AuctionItemSearchingAction(){
+
+   @In
+   private RenderManager renderManager;
+
+    public AuctionItemSearchingAction(){
        
    }
 
@@ -69,6 +73,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    public void queryAuctionItems()
    {
        List newAuctionitems = new ArrayList();
+/*
        newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
             " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
             " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
@@ -77,6 +82,20 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
             .setMaxResults(pageSize)
             .setFirstResult( page * pageSize )
             .getResultList();
+*/
+       List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
+            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
+            " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
+            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
+            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
+            .setMaxResults(pageSize)
+            .setFirstResult( page * pageSize )
+            .getResultList();
+       Object[] oa;
+       for (Object o : resultList) {
+           oa = (Object[]) o;
+           newAuctionitems.add(new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager));
+       }
        if(first){
            auctionitems = newAuctionitems;
            first = false;

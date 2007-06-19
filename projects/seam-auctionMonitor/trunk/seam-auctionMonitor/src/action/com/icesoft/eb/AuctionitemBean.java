@@ -30,9 +30,10 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     private boolean bidding = false;
     private double bidInput = 0.0;
     
-    public AuctionitemBean(Auctionitem auctionitem, Bid bid){
+    public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
         this.bid = bid;
+        this.renderManager = renderManager;
         auctionitem.setBidCount(auctionitem.getBids().size());
     }
 
