@@ -7,7 +7,7 @@
 
    <application>
       <message-bundle>messages</message-bundle>
-      <view-handler>com.icesoft.faces.facelets.D2DSeamFaceletViewHandler</view-handler>
+      <view-handler>com.icesoft.faces.facelets.D2DFaceletViewHandler</view-handler>
     <locale-config>
       <default-locale>en_US</default-locale>
     </locale-config>
