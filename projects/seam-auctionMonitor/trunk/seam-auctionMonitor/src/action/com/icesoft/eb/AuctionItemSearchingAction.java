@@ -39,7 +39,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    
 //   @In
 //   ViewManagerAction viewManager;
-   PersistentFacesState persistentFacesState;
+   private PersistentFacesState state = PersistentFacesState.getInstance();
    
    private boolean first = true;
    
@@ -48,13 +48,13 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    }
 
    public PersistentFacesState getState() {
-       return null;
+       return state;
    }
 
 //   @Begin
    public String find()
    {
-      page = 0;
+       page = 0;
       queryAuctionItems();
       return "";
    }
@@ -132,7 +132,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    
    public String getSearchString()
    {
-       persistentFacesState = PersistentFacesState.getInstance();
+       state = PersistentFacesState.getInstance();
       return searchString;
    }
    

@@ -1,6 +1,7 @@
 package com.icesoft.eb;
 
 import static javax.persistence.PersistenceContextType.EXTENDED;
+
 import java.util.Calendar;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -51,7 +52,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
 //    @In
 //    ViewManagerAction viewManager;
     
-    @Begin(join=true)
+    @Begin(join=true, nested=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
        try{

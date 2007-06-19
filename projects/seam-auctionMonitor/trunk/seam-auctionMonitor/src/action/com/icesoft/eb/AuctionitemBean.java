@@ -1,5 +1,7 @@
 package com.icesoft.eb;
 
+import java.io.Serializable;
+
 import javax.ejb.Remove;
 
 import org.jboss.seam.annotations.Destroy;
@@ -18,11 +20,8 @@ import com.icesoft.faces.context.effects.Effect;
  * This class is the UI representation of an Auctionitem with the most recent Bid.
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
-@Name("auctionitemBean")
-@Scope(ScopeType.SESSION)
-public class AuctionitemBean implements AuctionItemB{
-    
-    @In
+public class AuctionitemBean implements AuctionItemB, Serializable{
+
     private RenderManager renderManager;
     private Auctionitem auctionitem;
     private Bid bid;
