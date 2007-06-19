@@ -26,14 +26,14 @@
                 <h:outputLabel for="searchString">search</h:outputLabel>
                 <ice:inputText id="searchString" 
                           value="#{itemSearch.searchString}"
-				  partialSubmit="true"/>
+				  partialSubmit="false"/>
 	
          </ice:panelGrid>
    
 	</ice:panelGroup>
         
         <div class="actionButtons">
-            <s:button id="search" value="Search Items" action="#{itemSearch.find}" propagation="none"/>
+            <ice:commandButton id="search" value="Search Items" action="#{itemSearch.find}"/>
         </div>
       
     </ice:form>
@@ -138,21 +138,32 @@
             <h:dataTable value="#{conversationList}" var="entry">
                 <h:column>
                     #{entry.id} : #{entry.viewId}
-                    <h:outputText value=" [current]" rendered="#{entry.current}"/>
                 </h:column>
                 <h:column>
                     <h:commandLink action="#{entry.select}" value="#{entry.description}"/>
+                    <h:outputText value=" [current]" rendered="#{entry.current}"/>
                 </h:column>
                 <h:column>
-                    <h:commandLink action="#{entry.destroy}" value="destroy"/>
+                    <h:commandLink action="#{entry.end}" value="delete" rendered="#{!entry.current}"/>
                 </h:column>
                 <h:column>
                     <h:outputText value="#{entry.startDatetime}">
-                        <s:convertDateTime type="time" pattern="hh:mm"/>
+                        <s:convertDateTime type="time" pattern="HH:mm"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{entry.lastRequestTime}">
+                        <s:convertDateTime type="time" pattern="HH:mm"/>
+                    </h:outputText>
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{entry.lastDatetime}">
+                        <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
             </h:dataTable>
         </h:form>
+        <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>
     </div>
     </ice:panelGroup>
     

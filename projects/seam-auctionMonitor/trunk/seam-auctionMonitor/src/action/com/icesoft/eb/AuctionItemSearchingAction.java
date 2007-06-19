@@ -51,7 +51,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
        return null;
    }
 
-   @Begin
+//   @Begin
    public String find()
    {
       page = 0;
@@ -69,7 +69,6 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    public void queryAuctionItems()
    {
        List newAuctionitems = new ArrayList();
-       System.out.println("******** getSearchPattern() = " + getSearchPattern() + "********");
        newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
             " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
             " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
