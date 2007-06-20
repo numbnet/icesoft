@@ -1,24 +1,43 @@
-**This has been tested on a jboss4.0.5.GA server.  To run this on an Apache Tomcat Server
-please see the documentation that comes with jboss-seam.
+**This has been tested on a jboss4.0.5.GA server and JBoss AS 4.2.0.GA (with seam1.2.1.GA and seam1.3.0.ALPHA) 
+To run this on an Apache Tomcat Server, please see the documentation that comes with jboss-seam.
 
-1.  download jboss-seam1.2.1.GA and unzip all files (as the libraries are needed for this)
-2.  download and unzip Icefaces 1.6.0DR3
+1.  download jboss-seam1.2.1.GA or 1.3.0.GA and unzip all files (as the libraries will be copied from these folders)
+2.  download and unzip Icefaces 1.6.0 final release (or if you're eager and get this before the final release, just build the icefaces jars from the head)
 
 3. update the following properties in build.properties file to point to 
 the appropriate directories where the server, icefaces libraries and jboss-seam
 libraries exist on your machine.
 	(an example follows or you can just look at the build.properties file in this folder)
 
-	jboss.home = C:/work/webserver/jboss-4.0.5.GA
+	jboss.home = C:/work/webserver/jboss-4.0.5.GA 
 	icefacesSourceDirectory = C:/../icesfaces/  
 	jboss.seam.home = C:/Seam/jboss-seam-1.2.1.GA
 
-run> ant freshen 
-and this will place the libraries where they are required in your seam-componentShowcase/lib
-folder ready for building the project.  
+or for 1.3.0.ALPHA you will want:-
+ 	jboss.home = C:/work/webserver/jboss-4.2.0.GA 
+	icefacesSourceDirectory = C:/../icesfaces/  
+	jboss.seam.home = C:/Seam/jboss-seam-1.3.0.ALPHA       
 
-The rest of the ant tags are similar to any other project generated with icefaces-seam-gen projects.
-   > ant explode will compile, create the war, jar and ear and deploy it to the Server you have 
-	specified in teh build.properties file.
+
+for seam1.2.1 & myfaces:-
+
+run> ant build-myFaces  
+
+
+and this will copy the libraries from the locations you specifed in the build.properties file to the 
+seam-componentShowcase/lib folder, compile and build the exploded archives as well as the ear file to deploy.  
+
+if all goes well, 
+run> ant deploy
+
+this deploys the ear to your specified server....
+
+for jboss-seam1.2.1.GA and jsf1.2 libs (so basically with JBoss AS 4.2.0.GA) you choose
+>ant build-Seam1.2AndJsf1.2
+>ant deploy
+
+for jboss-seam-1.3.0.ALPHA and jsf1.2 you choose
+>ant build-Seam1.3.0AndJsf1.2
+>ant deploy
 
 Enjoy!
