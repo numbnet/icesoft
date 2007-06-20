@@ -21,7 +21,7 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     private RenderManager renderManager;
     private Auctionitem auctionitem;
     private Bid bid;
-    private OnDemandRenderer renderer;
+    public OnDemandRenderer renderer;
     private Effect bidEffect;
     private boolean bidding = false;
     private double bidInput = 0.0;
@@ -33,6 +33,10 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
         this.bid = bid;
         this.renderManager = renderManager;
         auctionitem.setBidCount(auctionitem.getBids().size());
+        if(renderer == null){
+            System.out.println("INSTANTIATING RENDER GROUP FOR ITEM");
+            renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );            
+        }
     }
 
     public Auctionitem getAuctionitem() {
@@ -52,9 +56,7 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     }
     
     public void render(){
-        if(renderer == null){
-            renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );            
-        }
+        System.out.println("CALLING RENDER FROM ITEM");
         renderer.requestRender();
     }
     

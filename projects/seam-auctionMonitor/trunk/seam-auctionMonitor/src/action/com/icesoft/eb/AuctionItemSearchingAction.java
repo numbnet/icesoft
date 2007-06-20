@@ -95,13 +95,12 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
            oa = (Object[]) o;
            newAuctionitems.add(new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager));
        }
+       if(!first && auctionitems.equals(newAuctionitems)){
+           return;
+       }
        if(first){
            auctionitems = newAuctionitems;
            first = false;
-           return;
-       }
-       if(newAuctionitems.equals(auctionitems)){
-           return;
        }else{
            if(!auctionitems.isEmpty()){
                for(int i=0; i<auctionitems.size(); i++){
@@ -109,6 +108,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
                    if(newAuctionitems.contains(tempBean)){
                        continue;
                    }else{
+                       System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
                        tempBean.removeRenderable(this);
                    }
                }
@@ -119,6 +119,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
                    if(auctionitems.contains(tempBean)){
                        continue;
                    }else{
+                       System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
                        tempBean.addRenderable(this);
                    }
                }
@@ -180,6 +181,11 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    }
    
    @Destroy @Remove
-   public void destroy() {}
+   public void destroy() {
+       for(int i=0; i<auctionitems.size(); i++){
+           AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+           tempBean.removeRenderable(this);
+       }
+   }
 
 }
