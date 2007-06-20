@@ -62,7 +62,7 @@ public class Bid implements Serializable
    }
    
    @NotNull
-   @Basic @Temporal(TemporalType.DATE) 
+   @Basic @Temporal(TemporalType.TIMESTAMP) 
    public Date getTimestamp()
    {
       return timestamp;

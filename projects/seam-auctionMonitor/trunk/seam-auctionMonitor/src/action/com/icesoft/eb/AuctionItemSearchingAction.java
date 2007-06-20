@@ -96,36 +96,38 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
            newAuctionitems.add(new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager));
        }
        if(!first && auctionitems.equals(newAuctionitems)){
+           System.out.println("IN EQUAL AUCTION ITEM LISTS");
            return;
        }
-       if(first){
-           auctionitems = newAuctionitems;
-           first = false;
-       }else{
-           if(!auctionitems.isEmpty()){
-               for(int i=0; i<auctionitems.size(); i++){
-                   AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-                   if(newAuctionitems.contains(tempBean)){
-                       continue;
-                   }else{
-                       System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
-                       tempBean.removeRenderable(this);
-                   }
-               }
-           }
-           if(!newAuctionitems.isEmpty()){
-               for(int i=0; i<newAuctionitems.size(); i++){
-                   AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
-                   if(auctionitems.contains(tempBean)){
-                       continue;
-                   }else{
-                       System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
-                       tempBean.addRenderable(this);
-                   }
+       if(!newAuctionitems.isEmpty()){
+           System.out.println("NEWAUCTIONITEMS NOT EMPTY");
+           for(int i=0; i<newAuctionitems.size(); i++){
+               AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
+               if(first || auctionitems.contains(tempBean)){
+                   continue;
+               }else{
+                   System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
+                   tempBean.addRenderable(this);
                }
            }
        }
-
+       if(first){
+           auctionitems = new ArrayList();
+           System.out.println("IN FIRST");
+           first = false;
+       }
+       if(!auctionitems.isEmpty()){
+           System.out.println("AUCTIONITEMS NOT EMPTY");
+           for(int i=0; i<auctionitems.size(); i++){
+               AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+               if(newAuctionitems.contains(tempBean)){
+                   continue;
+               }else{
+                   System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
+                   tempBean.removeRenderable(this);
+               }
+           }
+   }
        auctionitems = newAuctionitems;
    }
    
@@ -184,6 +186,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    public void destroy() {
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+           System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());           
            tempBean.removeRenderable(this);
        }
    }
