@@ -42,92 +42,96 @@
 
     <h3>auctionitem  search results</h3>
 
-    <div class="searchResults" id="contactgroupListResults">
+    <div id="resultsDiv">
     <ice:outputText value="No auctionitem exists" 
                rendered="#{auctionitems != null and auctionitems.rowCount==0}"/>
                
-    <ice:dataTable id="auctionitemList" 
-                var="auctionitemBean"
-              value="#{auctionitems}" 
-		columnClasses="allCols"
-           rendered="#{auctionitems.rowCount>0}">
-        <ice:column>
-            <f:facet name="header">itemId
-            </f:facet>
-            #{auctionitemBean.auctionitem.itemId}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">bidCount
-            </f:facet>
-            #{auctionitemBean.auctionitem.bidCount}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">currency
-            </f:facet>
-            #{auctionitemBean.auctionitem.currency}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">description
-            </f:facet>
-            #{auctionitemBean.auctionitem.description}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">imageFile
-            </f:facet>
-            #{auctionitemBean.auctionitem.imageFile}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">location
-            </f:facet>
-            #{auctionitemBean.auctionitem.location}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">price
-            </f:facet>
-            <ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}" />
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">seller
-            </f:facet>
-            #{auctionitemBean.auctionitem.seller}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">site
-            </f:facet>
-            #{auctionitemBean.auctionitem.site}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">title
-            </f:facet>
-            #{auctionitemBean.auctionitem.title}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">expiresindays
-            </f:facet>
-            #{auctionitemBean.auctionitem.expiresindays}&amp;nbsp;
-        </ice:column>
-        <ice:column>
-            <f:facet name="header">action</f:facet>
-			
-			<ice:panelGroup rendered="#{!auctionitemBean.bidding}">
-                <s:link value="Bid" action="#{itemBid.selectItem(auctionitemBean)}" />
-		    </ice:panelGroup>
-			    <ice:form>
-                    <ice:panelGroup rendered="#{auctionitemBean.bidding}">
+    <ice:dataTable width="100%" cellspacing="1"
+		           id="auctionitemList" 
+                   var="auctionitemBean"
+                   value="#{auctionitems}" 
+                   headerClass="tableHeader"
+                   rowClasses="rowClass1,rowClass2"
+                   rendered="#{auctionitems.rowCount>0}">
+		<ice:column>
+<!--            <ice:rowSelector value="#{auctionitemBean.expanded}"
+                             selectedClass="tableRowSelected" 
+                             mouseOverClass="tableRowMouseOver"/>-->
+			<f:facet name="header">
+                <ice:panelGrid columns="5" width="100%" cellspacing="1"
+                               columnClasses="column1,column2,column3,column4,column5,column6">
+				    <ice:outputText value="Item Name" />
+					<ice:outputText value="Price" />
+					<ice:outputText value="Bids" />
+					<ice:outputText value="Time Left" />
+					<ice:outputText value="Action" />
+				</ice:panelGrid>
+			</f:facet>
+            <ice:panelGrid columns="5" width="100%" cellspacing="1"
+                           styleClass="#{auctionitemBean.expandedStyleClass}"
+                           columnClasses="column1,column2,column3,column4,column5,column6">
+                <ice:panelGroup>
+				    <ice:outputText value="#{auctionitemBean.auctionitem.title}" />
+                </ice:panelGroup>
+				<ice:panelGroup>
+					<ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}" >
+						<f:convertNumber type="currency"
+										 currencySymbol="$"/>
+					</ice:outputText>
+				</ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:outputText value="#{auctionitemBean.auctionitem.bidCount}" />
+				</ice:panelGroup>
+				<ice:panelGroup>
+                    <ice:outputText value="#{auctionitemBean.auctionitem.expiresindays}"
+						            style="display: inherit;" />
+				</ice:panelGroup>
+			    <ice:panelGroup rendered="#{!auctionitemBean.bidding}">
+                    <s:link value="Bid" action="#{itemBid.selectItem(auctionitemBean)}" />
+		        </ice:panelGroup>
+			    <ice:panelGroup rendered="#{auctionitemBean.bidding}">
+					<ice:form>
                         <ice:inputText id="item_localBid"
-                                       value="#{auctionitemBean.bidInput}" size="6"/>
+                                       value="#{auctionitemBean.bidInput}" size="6"
+							           style="text-align:right"/>
                         <ice:commandButton id="image_button_bid_accept"
-                                           action="#{itemBid.bid}"/>
+							               image="img/button_bid_accept.gif"
+							               title="Place a bid on '#{auctionitemBean.auctionitem.title}'"
+                                           action="#{itemBid.bid}"
+							               style="border: 0px;width: 15px;height:15px;" />
                         <ice:commandButton id="image_button_bid_decline"
                                            immediate="true"
-                                           action="#{itemBid.cancel}"/>
-                    </ice:panelGroup>
-				</ice:form>
-        </ice:column>
+							               image="img/button_bid_decline.gif"
+                                           action="#{itemBid.cancel}"
+							               style="border: 0px;width: 15px;height:15px" />
+				    </ice:form>
+				</ice:panelGroup>
+			</ice:panelGrid>
+			<ice:panelGrid columns="3" width="100%"
+						   styleClass="#{auctionitemBean.expandedStyleClass}"
+						   columnClasses="expandedColumn1,expandedColumn2,expandedColumn3"
+						   rendered="#{auctionitemBean.expanded}">
+				<ice:graphicImage id="item_siteHostedPictureUrl"
+								  value="#{auctionitemBean.auctionitem.imageFile}" width="100"
+								  height="75"/>
+				<ice:panelGroup>
+					<ice:outputText id="item_description"
+									value="#{auctionitemBean.auctionitem.description}"/>
+				</ice:panelGroup>
+				<ice:panelGroup>
+					<ice:outputText id="item_location"
+									value="Location: #{auctionitemBean.auctionitem.location}"/>
+					<br/>
+					<ice:outputText id="item_seller"
+									value="Seller: #{auctionitemBean.auctionitem.seller}"/>
+				</ice:panelGroup>
+		    </ice:panelGrid>
+	    </ice:column>
     </ice:dataTable>
     <s:link value="More results" action="#{itemSearch.nextPage}" 
           rendered="#{itemSearch.nextPageAvailable}"/>		
     </div>
+	<span style="font-size: smaller;">* Item prices cannot be incremented by more then $1,000,000 per bid.</span>
 
     <h3>
         <h:outputText value="Workspaces #{empty conversationList ? 'empty' : ''}"/>

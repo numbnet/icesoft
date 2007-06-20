@@ -10,7 +10,6 @@
 package com.icesoft.eb;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.Date;
 
 import javax.persistence.Basic;

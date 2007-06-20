@@ -5,10 +5,6 @@ import java.io.Serializable;
 import javax.ejb.Remove;
 
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.ScopeType;
 
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
@@ -29,6 +25,8 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     private Effect bidEffect;
     private boolean bidding = false;
     private double bidInput = 0.0;
+    private boolean expanded = false;
+    private static final String STYLE_CLASS_EXPANDED_ROW = "rowClassHilite";
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
@@ -96,6 +94,17 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
 
     public void setBidInput(double bidInput) {
         this.bidInput = bidInput;
+    }
+
+    public boolean isExpanded() { return expanded; }
+    public void setExpanded(boolean expanded) { this.expanded = expanded; }
+    
+    public String getExpandedStyleClass() {
+        if (expanded) {
+            return STYLE_CLASS_EXPANDED_ROW;
+        } else {
+            return "";
+        }
     }
     
     @Destroy @Remove

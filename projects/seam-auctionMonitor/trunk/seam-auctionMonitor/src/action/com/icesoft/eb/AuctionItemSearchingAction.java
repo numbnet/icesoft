@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
-import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
