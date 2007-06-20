@@ -24,9 +24,6 @@
    <module>
       <java>jboss-el.jar</java>
    </module>
-    <module>
-      <java>jboss-el-api.jar</java>
-   </module>
 
    <!-- jBPM -->
    <module>
