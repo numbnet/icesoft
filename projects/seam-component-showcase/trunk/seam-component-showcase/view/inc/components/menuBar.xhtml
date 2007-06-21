@@ -40,9 +40,6 @@ are shown but could easily be made to invoke application logic.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelGrid
-        styleClass="contentLayoutGridStyle"
-        columns="1" border="0">
 
 <ice:panelTabSet styleClass="componentPanelTabSetLayout">
 
@@ -103,7 +100,7 @@ are shown but could easily be made to invoke application logic.
     <ice:menuBar id="menu" orientation="#{menuBar.orientation}">
 
         <!-- File menu -->
-        <ice:menuItem value="File" id="file">
+        <ice:menuItem value="File" id="file" >
             <ice:menuItem actionListener="#{menuBar.primaryListener}"
                           id="open" value="Open" icon="images/menu/open.gif">
                 <f:param name="myParam" value="Open"/>
@@ -112,7 +109,7 @@ are shown but could easily be made to invoke application logic.
                           actionListener="#{menuBar.primaryListener}">
                 <f:param name="myParam" value="Close"/>
             </ice:menuItem>
-            <ice:menuItemSeparator/>
+            <ice:menuItemSeparator />
             <ice:menuItem id="recent" value="Recent"
                           icon="images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
@@ -223,5 +220,4 @@ this placeholder
 
 </ice:panelTabSet>
 
-</ice:panelGrid>
 </ice:form>

@@ -42,10 +42,6 @@ and must be dismissed before the application's functionality will return.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelGrid
-        styleClass="contentLayoutGridStyle"
-        columns="1" border="0">
-
 <ice:panelTabSet styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
@@ -102,7 +98,7 @@ and must be dismissed before the application's functionality will return.
 
         <f:facet name="body">
             <ice:panelGrid width="100%" cellpadding="0"
-                           cellspacing="0" column="1"
+                           cellspacing="0" columns="1"
                            styleClass="popupModalBody">
                 <ice:outputText
                         value="#{msgs['component.popupPanel.draggable.content']}"/>
@@ -125,7 +121,7 @@ and must be dismissed before the application's functionality will return.
 
         <f:facet name="body">
             <ice:panelGrid width="100%" cellpadding="0"
-                           cellspacing="0" column="1"
+                           cellspacing="0" columns="1"
                            styleClass="popupModalBody">
                 <ice:outputText
                         value="#{msgs['component.popupPanel.modal.content']}"/>
@@ -161,5 +157,4 @@ this placeholder
 
 </ice:panelTabSet>
 
-</ice:panelGrid>
 </ice:form>
