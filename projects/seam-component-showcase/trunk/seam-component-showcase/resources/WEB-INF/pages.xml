@@ -3,6 +3,12 @@
           "http://jboss.com/products/seam/pages-1.1.dtd">
 
 <pages>
-
+    <page view-id="/showcase.xhtml">
+    
+        <navigation from-action="#{styleBean.changeStyle}">
+                <redirect/>
+        </navigation>
+        
+    </page>
     
 </pages>
