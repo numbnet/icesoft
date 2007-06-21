@@ -3,6 +3,8 @@ package com.icesoft.eb;
 import java.io.Serializable;
 
 import javax.ejb.Remove;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.jboss.seam.annotations.Destroy;
 
@@ -27,6 +29,8 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     private double bidInput = 0.0;
     private boolean expanded = false;
     private static final String STYLE_CLASS_EXPANDED_ROW = "rowClassHilite";
+    private static final String TRIANGLE_OPEN = "img/triangle_open.gif";
+    private static final String TRIANGLE_CLOSED = "img/triangle_close.gif";
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
@@ -106,6 +110,18 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
             return STYLE_CLASS_EXPANDED_ROW;
         } else {
             return "";
+        }
+    }
+    
+    public void pressExpandButton(ActionEvent e){
+        expanded = !expanded;
+    }
+    
+    public String getExpandTriangleImage() {
+        if (expanded) {
+            return TRIANGLE_OPEN;
+        } else {
+            return TRIANGLE_CLOSED;
         }
     }
     
