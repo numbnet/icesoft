@@ -681,11 +681,11 @@ public class TreeNavigation implements Serializable{
                 // component menu -> Accordion Series
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.accordionPanelItem");
+                        "submenuDisplayText.collapsiblePanelItem");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.accordionPanelItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/accordionPanel.xhtml");
-                branchObject.setTemplateName("accordionPanel");
+                        "submenuContentTitle.collapsiblePanelItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelCollapsible.xhtml");
+                branchObject.setTemplateName("collapsiblePanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);

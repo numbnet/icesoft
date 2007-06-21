@@ -120,7 +120,7 @@ public class StyleBean implements Serializable{
      *
      * @return the tag information needed for a valid css link tag
      */
-    public String getStyle() {
+   public String getStyle() {
         return "<link rel='stylesheet' type='text/css' href='./xmlhttp/css/" +
                currentStyle + "/" + currentStyle + ".css" + "'/>";
     }
@@ -144,14 +144,14 @@ public class StyleBean implements Serializable{
      *
      * @return the reload navigation attribute
      */
-    public String changeStyle() {
+     public String changeStyle() {
         currentStyle = tempStyle;
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
 
-        // manually update the icons in the navigation tree don't really need this though
+        // manually update the icons in the navigation tree
         treeNav.refreshIcons(currentStyle);
 
-       return "/showcase.xhtml";
+        return "reload";
     }
 
     /**
