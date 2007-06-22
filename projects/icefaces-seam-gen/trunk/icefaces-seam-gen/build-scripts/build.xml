@@ -149,7 +149,8 @@
 			<fileset dir="${lib.dir}">
 				<include name="icefaces*.jar" />
 				<include name="backport-util-concurrent.jar" />
-				<include name="commons-fileupload.jar"/> 			
+				<include name="commons-fileupload.jar"/> 
+				<include name="commons-digester.jar"/>			
 			</fileset>
 		</copy>
 		<copy todir="${ear.dir}/META-INF">
@@ -308,6 +309,7 @@
 		<include name="icefaces*.jar" />
 		<include name="backport-util-concurrent.jar" />	
 		<include name="commons-fileupload.jar"/> 			
+            <include name="commons-digester.jar"/>
   	    </fileset>
 	</copy>
 	</target>
