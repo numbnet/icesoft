@@ -53,7 +53,6 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.IntervalRenderer;
 import com.icesoft.faces.async.render.Renderable;
-import com.icesoft.faces.component.accordion.PanelAccordion;
 import com.icesoft.faces.context.ViewListener;
 
 import org.apache.commons.logging.Log;
@@ -78,7 +77,6 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
     private RenderManager renderManager;
 
     private boolean doneSetup;
-    private boolean openStatus;
 
     private IntervalRenderer ir;
 
@@ -159,19 +157,6 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
         Manager m = Manager.instance();
         return Boolean.toString( m.isLongRunningConversation() );
     } 
-
-    public void toggle(ActionEvent event) {
-          PanelAccordion component1 = (PanelAccordion)event.getSource();
-          openStatus = component1.getExpanded().booleanValue();
-    }
-
-    public void setOpenStatus(boolean input) {
-		this.openStatus = input;
-    }
-
-    public boolean getOpenStatus() {
-		return openStatus;
-    }
 
     @Remove
     @Destroy
