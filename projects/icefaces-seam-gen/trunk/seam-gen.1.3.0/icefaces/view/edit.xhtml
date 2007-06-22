@@ -13,9 +13,11 @@
     <h:messages globalOnly="true" styleClass="message"/>
     
     <ice:form id="@componentName@EditForm">
-        <ice:panelAccordion expanded="true" styleClass="accordion2" >
-		<f:facet name="header">
-		   <ice:outputText value="@pagename@"/>
+         <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+           <f:facet name="header">
+              <ice:panelGroup styleClass="expandableStateIndicator">
+		      <ice:outputText value="@pagename@"/>
+              </ice:panelGroup>
 		</f:facet>
            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">Name</ui:define>
@@ -24,7 +26,7 @@
             </s:decorate>
             
             <div style="clear:both"/>
-        </ice:panelAccordion>
+        </ice:panelCollapsible>
 
         <div class="actionButtons">
             <h:commandButton id="save" value="Save" 

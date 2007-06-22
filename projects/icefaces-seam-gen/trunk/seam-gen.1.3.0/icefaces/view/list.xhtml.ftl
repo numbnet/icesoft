@@ -12,7 +12,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		        xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -20,12 +20,12 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}Form" styleClass="edit">
-	<ice:panelAccordion expanded="true" styleClass="accordion2">
-	   <f:facet name="header">
-           <ice:panelGrid id="accordionHeaderStyle" columns="1" columnClasses="leftMenu">
+      <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
+       <f:facet name="header">
+        <ice:panelGroup styleClass="expandableStateIndicator">
                   <ice:outputText value="${entityName} search"/>
-		</ice:panelGrid>
-	  </f:facet>        
+	  </ice:panelGroup>
+       </f:facet>        
         <ice:panelGroup styleClass="edit">
 		 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
@@ -56,7 +56,7 @@
             </ice:panelGrid>
    
 	</ice:panelGroup>
-   </ice:panelAccordion>
+   </ice:panelCollapsible>
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>

@@ -12,18 +12,20 @@
 
     <h:messages globalOnly="true" styleClass="message"/>
 
-     <ice:panelAccordion expanded="true" styleClass="accordion2" >
-    	  <f:facet name="header">
+ <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="expandableStateIndicator">		
 		<ice:outputText value="@pageName@" />
-	  </f:facet>
-        <ice:form id="@componentName@Form">
+        </ice:panelGroup>
+    </f:facet>
+     <ice:form id="@componentName@Form">
         
             <h:commandButton id="@methodName@" value="@methodName@!" 
                              action="#{@componentName@.@methodName@}"/>     			  
         
         </ice:form>
         
-    </ice:panelAccordion>
+    </ice:panelCollapsible>
 
 </ui:define>
 

@@ -14,10 +14,12 @@
     
     <ice:form id="@componentName@form">
 
-	 <ice:accordionPanel  expanded="true" styleClass="accordion2">
-		<f:facet name="header">
+	 <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+          <f:facet name="header">
+           <ice:panelGroup styleClass="expandableStateIndicator">
 			<ice:outputText value="@pageName@"/>
-		</f:facet>
+           </ice:panelGroup>
+	    </f:facet>
            <s:decorate id="valueDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">Value</ui:define>
                 <h:inputText id="value" required="true"
@@ -26,7 +28,7 @@
             
             <div style="clear:both"/>
 
-        </ice:accordionPanel>
+        </ice:panelCollapsible>
 
         <div class="actionButtons">
             <h:commandButton id="@methodName@" value="@methodName@" 
