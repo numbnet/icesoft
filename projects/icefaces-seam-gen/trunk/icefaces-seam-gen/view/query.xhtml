@@ -14,7 +14,7 @@
     <p>Generated query page</p>
     
     <h:messages globalOnly="true" styleClass="message"/>
-    
+    <ice:form>
     <h:outputText value="No results from search" 
             rendered="#{empty @componentName@.resultList}"/>
     <f:subview id="results" rendered="#{not empty @componentName@.resultList}">
@@ -65,6 +65,7 @@
 
 
     </f:subview>
+  </ice:form>
 </ui:define>
 
 </ui:composition>

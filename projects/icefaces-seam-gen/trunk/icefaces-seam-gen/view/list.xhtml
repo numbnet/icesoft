@@ -12,9 +12,11 @@
     
     <h:messages globalOnly="true" styleClass="message"/>
    
-   <ice:panelAccordion expanded="true" styleClass="accordion2" >
-	<f:facet name="header">
+ <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="expandableStateIndicator">
 		<ice:outputText value="@masterPageName@"/>
+        </ice:panelGroup>
 	</f:facet>
       <div class="results">
      
@@ -36,7 +38,7 @@
         		</ice:column>
     		</ice:dataTable>
       </div>
-   </ice:panelAccordion>
+   </ice:panelCollapsible>
    <div class="actionButtons">
         <s:button id="done" value="Create @componentName@"
             view="/@pageName@.xhtml"/>			  

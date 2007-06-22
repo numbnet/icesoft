@@ -19,16 +19,13 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}editForm" styleClass="edit">
-    
-	  <ice:panelAccordion expanded="${'#'}{${homeName}.openStatus}" styleClass="accordion2"
-				actionListener="${'#'}{${homeName}.toggle}" >
-		<f:facet name="header">
- 			<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
+      <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
+       <f:facet name="header">
+        <ice:panelGroup styleClass="expandableStateIndicator">
 			    <ice:outputText value="Edit ${componentName}"/>
-                      <ice:graphicImage value="img/expand_${'#'}{${homeName}.openStatus}.gif" /> 
-		      </ice:panelGrid>
-	     </f:facet>        
-           <ice:panelGroup styleClass="edit">
+        </ice:panelGroup>
+	</f:facet>        
+      <ice:panelGroup styleClass="edit">
 		 
                      <f:facet name="beforeInvalidField">
                                 <ice:graphicImage styleClass="errorImg" value="img/error.png"/>
@@ -52,7 +49,7 @@
 		</ice:panelGrid>
 		</s:validateAll>
           </ice:panelGroup>
-	  </ice:panelAccordion>
+	  </ice:panelCollapsible>
                   
         <div class="actionButtons">
         

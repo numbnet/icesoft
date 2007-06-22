@@ -19,14 +19,12 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
 
-    <ice:panelAccordion expanded="${'#'}{${homeName}.openStatus}" styleClass="accordion2"
-				actionListener="${'#'}{${homeName}.toggle}" >
-	<f:facet name="header">
-		<ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
+ <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
+    <f:facet name="header">
+        <ice:panelGroup styleClass="expandableStateIndicator">
 			    <ice:outputText value="${homeName}"/>
- 				<ice:graphicImage value="img/expand_${'#'}{${homeName}.openStatus}.gif" /> 
-   		</ice:panelGrid>
-	</f:facet>        
+    	  </ice:panelGroup>
+    </f:facet>        
       <ice:panelGroup styleClass="prop">
           <ice:panelGrid columns="2" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
@@ -37,8 +35,8 @@
 
         <div style="clear:both"/>
 	    </ice:panelGrid>
-       </ice:panelGroup>
-     </ice:panelAccordion>
+     </ice:panelGroup>
+ </ice:panelCollapsible>
 
     <div class="actionButtons">      
 
