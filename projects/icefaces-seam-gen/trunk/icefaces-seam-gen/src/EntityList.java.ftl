@@ -16,7 +16,6 @@ import com.icesoft.faces.component.accordion.PanelAccordion;
 public class ${entityName}List extends EntityQuery
 {
     private String[] selectedFields;
-    private boolean openStatus = true;
     private static final String[] RESTRICTIONS = {
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
@@ -137,19 +136,6 @@ private static final SelectItem[] FIELDS = new SelectItem[]{
 </#if>
 </#if>
 </#foreach>
-
- 	public void toggle(ActionEvent event) {
-          PanelAccordion component1 = (PanelAccordion)event.getSource();
-          openStatus = component1.getExpanded().booleanValue();
-        }
-
-	public void setOpenStatus(boolean input) {
-            this.openStatus=input;
-	}
-
-	public boolean getOpenStatus() {
-		return openStatus;
-	}
 
 
 }

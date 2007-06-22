@@ -9,7 +9,6 @@ import com.icesoft.faces.component.accordion.PanelAccordion;
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
 {
-    private boolean openStatus = true;
 
 <#foreach property in pojo.allPropertiesIterator>
 <#if c2h.isManyToOne(property)>
@@ -112,19 +111,7 @@ public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framewo
 </#if>
 </#foreach>
 
- 	public void toggle(ActionEvent event) {
-          PanelAccordion component1 = (PanelAccordion)event.getSource();
-          openStatus = component1.getExpanded().booleanValue();
-        }
-
-	public void setOpenStatus(boolean input) {
-            this.openStatus=input;
-	}
-
-	public boolean getOpenStatus() {
-		return openStatus;
-	}
-}
+ }
 </#assign>
 
 ${pojo.generateImports()}
