@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
-import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.RenderManager;
@@ -45,6 +44,10 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
 
    @In
    private RenderManager renderManager;
+
+   @In(required = false, scope = ScopeType.APPLICATION)
+   @Out(required = false, scope = ScopeType.APPLICATION)
+   private List<AuctionitemBean> globalAuctionItems;
 
     public AuctionItemSearchingAction(){
        
@@ -91,9 +94,14 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
             .setFirstResult( page * pageSize )
             .getResultList();
        Object[] oa;
+       AuctionitemBean auctionitemBean;
+       if (globalAuctionItems == null) globalAuctionItems = new ArrayList<AuctionitemBean>();
        for (Object o : resultList) {
            oa = (Object[]) o;
-           newAuctionitems.add(new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager));
+           auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager);
+//           auctionitemBean.addRenderable(this);
+           newAuctionitems.add(auctionitemBean);
+           globalAuctionItems.add(auctionitemBean);
        }
        if(!first && auctionitems.equals(newAuctionitems)){
            System.out.println("IN EQUAL AUCTION ITEM LISTS");
@@ -188,6 +196,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
            System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());           
            tempBean.removeRenderable(this);
+           globalAuctionItems.remove(tempBean);
        }
    }
 

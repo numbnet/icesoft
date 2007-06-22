@@ -3,6 +3,7 @@ package com.icesoft.eb;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.Calendar;
+import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -46,12 +47,16 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @In
     private Events events;
     
-    @Logger 
+    @Logger
     private Log log;
     
 //    @In
 //    ViewManagerAction viewManager;
-    
+
+    @In(required = false, scope = ScopeType.APPLICATION)
+    @Out(required = false, scope = ScopeType.APPLICATION)
+    private List<AuctionitemBean> globalAuctionItems;
+
     @Begin(join=true, nested=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
@@ -99,7 +104,22 @@ public class AuctionitemBidAction implements AuctionitemBid {
        auctionitemBean.setBidding(false);
        auctionitemBean.buildBidEffect();
        System.out.println("CALLING RENDER");
-       auctionitemBean.render();
+//       auctionitemBean.render();
+            AuctionitemBean tempBean = null;
+            for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
+                if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
+                    System.out.println("globalAuctionItem = " + globalAuctionItem);
+                    globalAuctionItem.setBid(bid);
+                    globalAuctionItem.getAuctionitem().setBidCount(10);
+                    tempBean = globalAuctionItem;
+                }
+            }
+            if (tempBean != null) {
+                System.out.println("tempBean = " + tempBean);
+                System.out.println("tempBean.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
+                System.out.println("tempBean.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
+                tempBean.render();
+            }
         }catch(Exception e){
             e.printStackTrace();
         }

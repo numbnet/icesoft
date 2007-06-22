@@ -74,6 +74,7 @@
 										   title="Toggle the item details open or close"
 										   actionListener="#{auctionitemBean.pressExpandButton}"/>
 						<ice:outputText value="#{auctionitemBean.auctionitem.title}" />
+						<ice:outputText value=" [#{auctionitemBean}]" />
 					</ice:panelGroup>
 					<ice:panelGroup>
 						<ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}" >
