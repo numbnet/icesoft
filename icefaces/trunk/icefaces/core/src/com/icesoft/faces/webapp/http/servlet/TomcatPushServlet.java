@@ -16,6 +16,9 @@ import java.util.Iterator;
 import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometProcessor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +30,8 @@ import com.icesoft.faces.webapp.http.core.ViewQueue;
 
 public class TomcatPushServlet
     extends HttpServlet implements CometProcessor {
+
+    private static Log log = LogFactory.getLog(TomcatPushServlet.class);
 
     public void init() throws ServletException {
     }
@@ -82,6 +87,21 @@ public class TomcatPushServlet
     
     protected void read(CometEvent event, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
+            InputStream is = request.getInputStream();
+            byte[] buf = new byte[512];
+            do {
+                int n = is.read(buf); //can throw an IOException
+                if (n > 0) {
+                    if (log.isDebugEnabled()) {
+                        log.debug( "Read " + n + " bytes: " 
+                                + new String(buf, 0, n) + " for session: " 
+                                + request.getSession(true).getId() );
+                    }
+                } else if (n < 0) {
+                    error(event, request, response);
+                    return;
+                }
+            } while (is.available() > 0);
     }
 
     protected void service(HttpServletRequest request, HttpServletResponse response)
