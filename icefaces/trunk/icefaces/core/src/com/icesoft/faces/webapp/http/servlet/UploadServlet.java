@@ -28,7 +28,7 @@ public class UploadServlet implements PseudoServlet {
     public UploadServlet(Map views, Configuration configuration, ServletContext servletContext) {
         this.views = views;
         this.maxSize = configuration.getAttributeAsLong("uploadMaxFileSize", 3 * 1024 * 1024);//3Mb
-        // ngriffin@liferay.com: Partial fix for http://jira.icefaces.org/browse/ICE-1600
+        //Partial fix for http://jira.icefaces.org/browse/ICE-1600
         this.uploadDirectory = configuration.getAttribute("uploadDirectory", "");
         this.uploadDirectoryAbsolute = configuration.getAttributeAsBoolean("uploadDirectoryAbsolute", false);
         this.servletContext = servletContext;

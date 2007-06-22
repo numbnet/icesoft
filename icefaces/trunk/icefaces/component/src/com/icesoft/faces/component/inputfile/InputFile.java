@@ -744,7 +744,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * In the 1.5.3 codebase, there was a writeable ValueBinding named "file"
      *  that would be updated when a new file was saved. This provides
      *  backwards compatibility with that.
-     * Thanks to ngriffin@liferay.com for noticing the regression
      */
     protected void updateFileValueBinding(FacesContext context) {
         try {
