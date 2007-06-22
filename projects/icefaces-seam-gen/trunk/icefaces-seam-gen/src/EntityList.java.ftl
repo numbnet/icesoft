@@ -10,7 +10,6 @@ import javax.faces.model.SelectItem;
 import java.util.List;
 import java.util.Arrays;
 import javax.faces.event.ActionEvent;
-import com.icesoft.faces.component.accordion.PanelAccordion;
 
 @Name("${listName}")
 public class ${entityName}List extends EntityQuery

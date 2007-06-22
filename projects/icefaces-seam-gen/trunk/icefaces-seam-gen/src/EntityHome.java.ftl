@@ -4,7 +4,6 @@ ${pojo.packageDeclaration}
 <#assign componentName = util.lower(entityName)>
 <#assign homeName = componentName + "Home">
 import javax.faces.event.ActionEvent;
-import com.icesoft.faces.component.accordion.PanelAccordion;
 
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
