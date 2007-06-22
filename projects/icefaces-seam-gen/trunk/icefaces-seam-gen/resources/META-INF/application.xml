@@ -72,5 +72,8 @@
     </module>
         <module>
         <java>backport-util-concurrent.jar</java>
-    </module>   
+    </module> 
+    <module>
+        <java>commons-digester.jar</java>
+    </module>  
 </application>
