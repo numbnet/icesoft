@@ -61,6 +61,8 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     
     public void render(){
         System.out.println("CALLING RENDER FROM ITEM");
+        System.out.println("renderer.getName() = " + renderer.getName());
+        System.out.println("renderer.isEmpty() = " + renderer.isEmpty());
         renderer.requestRender();
     }
     

@@ -74,6 +74,7 @@
 										   title="Toggle the item details open or close"
 										   actionListener="#{auctionitemBean.pressExpandButton}"/>
 						<ice:outputText value="#{auctionitemBean.auctionitem.title}" />
+						<ice:outputText value=" [#{auctionitemBean.auctionitem.itemId}]" />
 						<ice:outputText value=" [#{auctionitemBean}]" />
 					</ice:panelGroup>
 					<ice:panelGroup>
@@ -143,6 +144,7 @@
             <h:dataTable value="#{conversationList}" var="entry">
                 <h:column>
                     #{entry.id} : #{entry.viewId}
+                    <h:outputText value=" [nested]" rendered="#{entry.nested}"/>
                 </h:column>
                 <h:column>
                     <h:commandLink action="#{entry.select}" value="#{entry.description}"/>
@@ -166,6 +168,7 @@
                         <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
+                <h:column>#{entry.timeout}</h:column>
             </h:dataTable>
         </h:form>
         <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>
