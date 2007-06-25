@@ -1080,7 +1080,7 @@ em {
 }
 .pnlClpsblDemoHdr span, .pnlClpsblDemoHdr-dis span,
     .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span{
-    padding-left: 18px;   
+    padding-left: 20px;   
 }
 .pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div,
     .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
@@ -1091,7 +1091,7 @@ em {
     background-image: url( "../images/panelCollapsible/arrowDown.gif" );
 }
 .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
-    background-image: url( "../images/panelCollapsible/arrowUp.gif" );
+    background-image: url( "../images/panelCollapsible/arrowCollapsed.gif" );
 }
 
 .pnlBrdrDemoNorth, .pnlBrdrDemoEast, .pnlBrdrDemoWest, .pnlBrdrDemoCenter, .pnlBrdrDemoSouth {

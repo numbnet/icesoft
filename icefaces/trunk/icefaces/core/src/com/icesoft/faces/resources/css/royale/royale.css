@@ -2227,6 +2227,9 @@ Disabeld classes for the calendar controls
     padding-top: 4px;
     padding-bottom: 4px;
 }
+.icePnlClpsblHdr .iceOutTxt, .icePnlClpsblColpsdHdr .iceOutTxt {
+	color:#FFFFFF;
+}
 .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis{
     color: #999999;
 }
