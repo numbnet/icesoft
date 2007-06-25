@@ -77,7 +77,7 @@ public class OutputChartRenderer extends DomBasicRenderer {
         Element image = (Element) domContext.createElement(HTML.IMG_ELEM);
 
         image.setAttribute(HTML.SRC_ATTR, getResourceURL(facesContext,
-                outputChart.getFolder().getName()+ "/" +
+                "/"+ outputChart.getFolder().getName()+ "/" +
                 outputChart.getFileName()));
 //        image.setAttribute(HTML.WIDTH_ATTR, outputChart.getWidth());
 //        image.setAttribute(HTML.HEIGHT_ATTR, outputChart.getHeight());
