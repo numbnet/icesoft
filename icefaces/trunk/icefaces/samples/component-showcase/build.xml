@@ -51,7 +51,7 @@
                 "
             />
 
-    
+
     <!-- jars needed for form Facelets -->
     <patternset id="faclets.jars"
                 includes="
@@ -86,4 +86,20 @@
         </copy>
         <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
     </target>
+
+    <target name="build.facelet.ear" depends="build.facelet.war">
+        <copy todir="conf" preservelastmodified="true">
+            <fileset dir="${build.common.basedir}" includes="application.xml">
+                <present present="srconly" targetdir="conf"/>
+            </fileset>
+            <filterset>
+                <filter token="project_name" value="${ant.project.name}"/>
+            </filterset>
+        </copy>
+
+        <ear destfile="${dist.dir}/${ant.project.name}.ear" appxml="conf/application.xml">
+            <fileset dir="${dist.dir}" includes="*.war"/>
+        </ear>
+    </target>
+
 </project>
