@@ -146,32 +146,32 @@ public class TableRenderer
         if (headerFacet != null || childHeaderFacetExists) {
             thead = domContext.createElement(tag);
             root.appendChild(thead);
+        
+        
+            if (header) {
+                renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
+                renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+            } else {
+                renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
+             
+            }
+            domContext.setCursorParent(root);
         }
-        if (headerFacet != null && headerFacet.isRendered()) {
-            resetFacetChildId(headerFacet);
+    }
+
+    private void renderColumnHeader(FacesContext facesContext, 
+                                    UIComponent uiComponent,
+                                    Element thead, 
+                                    String facet, 
+                                    String element, 
+                                    boolean header) throws IOException {
+        StringTokenizer columnWitdths = getColumnWidths(uiComponent);
+        DOMContext domContext =
+            DOMContext.getDOMContext(facesContext, uiComponent);
             Element tr = domContext.createElement("tr");
             thead.appendChild(tr);
-            Element th = domContext.createElement(element);
-            tr.appendChild(th);
-            if (facetClass != null) {
-                th.setAttribute("class", facetClass);
-            }
-            th.setAttribute("colspan",
-                            String.valueOf(getNumberOfChildColumns(uiData)));
-            th.setAttribute("scope", "colgroup");
-            domContext.setCursorParent(th);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), th);
-            encodeParentAndChildren(facesContext, headerFacet);
-            if (isScrollable(uiComponent)) {
-                tr.appendChild(scrollBarSpacer(domContext, facesContext));
-            }
-        }
-        StringTokenizer columnWitdths = getColumnWidths(uiData);
-        if (childHeaderFacetExists) {
-            Element tr = domContext.createElement("tr");
-            thead.appendChild(tr);
-            List childList = getRenderedChildColumnsList(uiData);
+            List childList = getRenderedChildColumnsList(uiComponent);
             Iterator childColumns = childList.iterator();
             String width = null;
             int columnIndex = 1;
@@ -214,11 +214,38 @@ public class TableRenderer
             if (header && isScrollable(uiComponent)) {
                 tr.appendChild(scrollBarSpacer(domContext, facesContext));
             }
-        }
-
-        domContext.setCursorParent(root);
     }
-
+    private void renderTableHeader(FacesContext facesContext, 
+                                    UIComponent uiComponent,
+                                    UIComponent headerFacet,
+                                    Element thead,
+                                    String facetClass,
+                                    String element
+                                    ) throws IOException{
+        DOMContext domContext =
+            DOMContext.getDOMContext(facesContext, uiComponent);
+        if (headerFacet != null && headerFacet.isRendered()) {
+            
+            resetFacetChildId(headerFacet);
+            Element tr = domContext.createElement("tr");
+            thead.appendChild(tr);
+            Element th = domContext.createElement(element);
+            tr.appendChild(th);
+            if (facetClass != null) {
+                th.setAttribute("class", facetClass);
+            }
+            th.setAttribute("colspan",
+                            String.valueOf(getNumberOfChildColumns(uiComponent)));
+            th.setAttribute("scope", "colgroup");
+            domContext.setCursorParent(th);
+            domContext.streamWrite(facesContext, uiComponent,
+                                   domContext.getRootNode(), th);
+            encodeParentAndChildren(facesContext, headerFacet);
+            if (isScrollable(uiComponent)) {
+                tr.appendChild(scrollBarSpacer(domContext, facesContext));
+            }
+        }
+    }
     private void processUIColumnHeader(FacesContext facesContext,
                                        UIComponent uiComponent,
                                        UIColumn nextColumn, Element tr,
