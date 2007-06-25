@@ -480,10 +480,11 @@
             <fileset dir="../lib"> 
 	        <exclude name="jsf-facelets.jar" />
 	        <exclude name="ajax4jsf.jar" />
+		  <exclude name="icefaces*.jar" />
 	    </fileset> 
             <fileset dir="../drools/lib"/>
 	    <fileset dir="${icefaces.home}/lib"> 
-	             <include name="icefaces*.jar" /> 
+	           <include name="icefaces*.jar" /> 
 		     <include name="backport-util-concurrent.jar" /> 
 		     <include name="commons-fileupload.jar" />
 	    </fileset> 
