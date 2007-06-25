@@ -99,7 +99,7 @@
 </target>
 
 <target name="zip.src">
-    <touch  file="${bin.bundle.file}" mkdirs="true"/> 
+    <touch  file="${bin.bundle.file}" mkdirs="true"/>
     <delete file="${bin.bundle.file}"/>
 
     <ice:zip destfile="${bin.bundle.file}">
@@ -120,7 +120,7 @@
         <zipfileset dir="core/build/javadocs" prefix="${bin.bundle.prefix}/docs/javadocs/icefaces/api"/>
         <zipfileset dir="component/build/doc" includes="tld/" prefix="${bin.bundle.prefix}/docs"/>
 
-        <zipfileset dir="." includes="lib/" prefix="${bin.bundle.prefix}"/>
+        <zipfileset dir="lib" excludes="catalina-comet.jar, jetty-util-6.0.1.jar, jsf-metadata.jar, portlet.jar, tlddoc.jar" prefix="${bin.bundle.prefix}/lib"/>
         <zipfileset file="core/dist/just-ice.jar" prefix="${bin.bundle.prefix}/lib"/>
 
         <zipfileset dir="core/src/com/icesoft/faces" includes="resources/css/" prefix="${bin.bundle.prefix}"/>
@@ -138,7 +138,7 @@
        </ice:subant>
 
 
-    
+
 </target>
 
 <target name="build.src.bundle">
