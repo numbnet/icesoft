@@ -142,21 +142,6 @@
                 <li>iceDatTblHdr</li>
                 <li>iceDatTblFtr</li>                
               </ul>   
-              if disabled
-              <ul>
-                <li>iceDatTbl-dis</li>
-                <li>iceDatTblCol-dis</li>
-                <li>iceDatTblCol1-dis</li>                
-                <li>iceDatTblCol2-dis</li>
-                <li>iceDatTblColHdr-dis</li>
-                <li>iceDatTblColHdr1-dis</li>
-                <li>iceDatTblColHdr2-dis</li>
-                <li>iceDatTblRow1-dis</li>
-                <li>iceDatTblRow2-dis</li>                
-                <li>iceDatTblHdr-dis</li>
-                <li>iceDatTblFtr-dis</li>                
-              </ul>                          
-		
         </p>		
      	]]>  		
 	</description>
