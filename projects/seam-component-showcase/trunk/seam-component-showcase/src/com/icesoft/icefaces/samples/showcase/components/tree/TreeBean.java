@@ -42,6 +42,7 @@ import java.util.Enumeration;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * <p>The TreeBean class is the backing bean for the Tree Component showcase
  * demonstration. It is used to store and display the selected tree node</p>
@@ -51,7 +52,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("treeExample")
-public class TreeBean {
+public class TreeBean implements Serializable{
 
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;

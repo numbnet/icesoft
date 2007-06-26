@@ -38,6 +38,7 @@ import javax.faces.model.SelectItem;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The SelectionTagsBean Class is the backing bean for the selection
@@ -46,7 +47,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("selectionTags")
-public class SelectionTagsBean {
+public class SelectionTagsBean implements Serializable{
 
     /**
      * Available options for the various selection components.

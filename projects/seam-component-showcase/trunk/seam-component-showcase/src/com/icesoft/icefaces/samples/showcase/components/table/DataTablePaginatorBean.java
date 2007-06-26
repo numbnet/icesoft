@@ -40,6 +40,7 @@ import java.util.Comparator;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The DataTablePaginatorBean Class is a backing bean for the
@@ -50,7 +51,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("scrollerList")
-public class DataTablePaginatorBean extends SortableList {
+public class DataTablePaginatorBean extends SortableList implements Serializable{
 
     // table of person data
 

@@ -40,6 +40,7 @@ import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import javax.faces.event.ActionEvent;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The PopupBean class is the backing bean that manages the Popup Panel
@@ -47,7 +48,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("popup")
-public class PopupBean {
+public class PopupBean implements Serializable{
 
     // icons used for draggable panel
     private String closePopupImage = "./images/popupPanel/popupclose.gif";

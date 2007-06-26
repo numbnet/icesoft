@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import java.io.Serializable;
 import static org.jboss.seam.ScopeType.PAGE;
 /**
  * The PieChartBean is responsible for holding all the backing information and
@@ -58,7 +59,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("pieChart")
-public class PieChartBean extends Chart{
+public class PieChartBean extends Chart implements Serializable{
     
     //list of labels for the chart
     protected static List labels = new ArrayList();

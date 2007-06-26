@@ -50,6 +50,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * The StaticTabSetBean class is a backing bean for the TabbedPane showcase
  * demonstration and is used to store the various states of the the
@@ -60,7 +61,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(ScopeType.SESSION)
 @Name("staticTabbedPaneExample")
-public class StaticTabSetBean implements TabChangeListener{
+public class StaticTabSetBean implements TabChangeListener, Serializable{
     
     /**
      * The demo contains three tabs and thus we need three variables to store

@@ -44,6 +44,7 @@ import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * <p>The TableBean class is the backing bean for the table Component showcase
@@ -54,7 +55,7 @@ import java.util.List;
  */
 @Scope(PAGE)
 @Name("table")
-public class TableBean {
+public class TableBean implements Serializable{
 
     // column visibility, true to render false otherwise.
     private boolean renderFirstName = true;

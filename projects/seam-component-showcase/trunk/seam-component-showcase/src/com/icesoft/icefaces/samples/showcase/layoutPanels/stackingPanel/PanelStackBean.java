@@ -38,6 +38,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * <p>The PanelStackBean class is a backing bean for the PanelStack showcase
  * demonstration and is used to store the selected panel state of the
@@ -47,7 +48,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("panelStack")
-public class PanelStackBean {
+public class PanelStackBean implements Serializable{
 
     // currently selected panel
     private String selectedPanel = "mineral";

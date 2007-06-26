@@ -40,6 +40,7 @@ import java.util.List;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
+import java.io.Serializable;
 /**
  * Simple bean which holds a list of objects which is manipulated by the
  * position panel
@@ -48,7 +49,7 @@ import static org.jboss.seam.ScopeType.PAGE;
  */
 @Scope(PAGE)
 @Name("panelPositioned")
-public class PositionedPanelBean {
+public class PositionedPanelBean implements Serializable{
 
     private List people = new ArrayList();
 

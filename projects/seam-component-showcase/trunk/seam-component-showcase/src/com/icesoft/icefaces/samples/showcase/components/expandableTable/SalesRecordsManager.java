@@ -42,6 +42,7 @@ import java.util.GregorianCalendar;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import java.io.Serializable;
 
 /**
  * <p>The <code>SalesRecordsManager</code> class is responsible for constructing
@@ -60,7 +61,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Scope(PAGE)
 @Name("salesRecordsManager")
-public class SalesRecordsManager {
+public class SalesRecordsManager implements Serializable{
 
     private ArrayList inventoryGroupItemBeans;
 
