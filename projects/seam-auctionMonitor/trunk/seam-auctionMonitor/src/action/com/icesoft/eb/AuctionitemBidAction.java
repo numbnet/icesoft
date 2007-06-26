@@ -110,7 +110,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
                 if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
                     System.out.println("globalAuctionItem = " + globalAuctionItem);
                     globalAuctionItem.setBid(bid);
-                    globalAuctionItem.getAuctionitem().setBidCount(10);
+//                    globalAuctionItem.getAuctionitem().setBidCount(10);
                     tempBean = globalAuctionItem;
                 }
             }
