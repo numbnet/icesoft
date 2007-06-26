@@ -3,6 +3,8 @@ package com.icesoft.eb;
 
 import static javax.persistence.PersistenceContextType.EXTENDED;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -23,34 +25,43 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Scope(ScopeType.CONVERSATION)
 //@Restrict("#{identity.loggedIn}")
 
-public class AuctionItemSearchingAction implements AuctionItemSearching, Renderable
+public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching, Renderable
 {
-   
+
    @PersistenceContext(type=EXTENDED)
-   private EntityManager em;   
-   
+   private EntityManager em;
+
    private String searchString;
    private int pageSize = 10;
    private int page;
-   
+
    @DataModel
    private List<AuctionitemBean> auctionitems;
-   
+
 //   @In
 //   ViewManagerAction viewManager;
    private PersistentFacesState state = PersistentFacesState.getInstance();
-   
+
    private boolean first = true;
 
    @In
    private RenderManager renderManager;
+
+   // sort column names
+/*   private static String itemNameColumnName = "Item Name";
+   private static String priceColumnName = "Price";
+   private static String bidsColumnName = "Bids";
+   private static String timeLeftColumnName = "Time Left";
+*/   // comparator used to sort queues.
+//   private Comparator comparator;
 
    @In(required = false, scope = ScopeType.APPLICATION)
    @Out(required = false, scope = ScopeType.APPLICATION)
    private List<AuctionitemBean> globalAuctionItems;
 
     public AuctionItemSearchingAction(){
-       
+        // default sort header
+        //super(itemNameColumnName);
    }
 
    public PersistentFacesState getState() {
@@ -107,22 +118,22 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
            System.out.println("IN EQUAL AUCTION ITEM LISTS");
            return;
        }
+       if(first){
+           auctionitems = new ArrayList();
+           System.out.println("IN FIRST");
+           first = false;
+       }
        if(!newAuctionitems.isEmpty()){
            System.out.println("NEWAUCTIONITEMS NOT EMPTY");
            for(int i=0; i<newAuctionitems.size(); i++){
                AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
-               if(first || auctionitems.contains(tempBean)){
+               if(auctionitems.contains(tempBean)){
                    continue;
                }else{
                    System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
                    tempBean.addRenderable(this);
                }
            }
-       }
-       if(first){
-           auctionitems = new ArrayList();
-           System.out.println("IN FIRST");
-           first = false;
        }
        if(!auctionitems.isEmpty()){
            System.out.println("AUCTIONITEMS NOT EMPTY");
@@ -138,38 +149,38 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    }
        auctionitems = newAuctionitems;
    }
-   
+
    public boolean isNextPageAvailable()
    {
       return auctionitems!=null && auctionitems.size()==pageSize;
    }
-   
+
    public int getPageSize() {
       return pageSize;
    }
-   
+
    public void setPageSize(int pageSize) {
       this.pageSize = pageSize;
    }
-   
+
    @Factory(value="pattern", scope = ScopeType.EVENT)
    public String getSearchPattern()
    {
-      return searchString==null ? 
+      return searchString==null ?
             "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
    }
-   
+
    public String getSearchString()
    {
        state = PersistentFacesState.getInstance();
       return searchString;
    }
-   
+
    public void setSearchString(String searchString)
    {
       this.searchString = searchString;
    }
-   
+
    /**
     * Callback method that is called if any exception occurs during an attempt
     * to render this Renderable.
@@ -180,7 +191,7 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
    public void renderingException(RenderingException renderingException) {
 
        if (renderingException instanceof TransientRenderingException ){
-           
+
        }
        else if(renderingException instanceof FatalRenderingException){
            for(int i=0; i<auctionitems.size(); i++){
@@ -189,15 +200,89 @@ public class AuctionItemSearchingAction implements AuctionItemSearching, Rendera
            }
        }
    }
-   
+
+   /**
+    * Sort the list.
+    */
+/*   protected void sort(final String column, final boolean ascending) {
+System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
+           comparator = new Comparator(){
+               public int compare(Object o1, Object o2) {
+                   AuctionitemBean c1 = (AuctionitemBean) o1;
+                   AuctionitemBean c2 = (AuctionitemBean) o2;
+                   if (column == null) {
+                       return 0;
+                   }
+                   else if (column.equals(itemNameColumnName)) {
+                       return ascending ?
+                               c1.getAuctionitem().getTitle().toLowerCase().compareTo( c2.getAuctionitem().getTitle().toLowerCase() ):
+                               c2.getAuctionitem().getTitle().toLowerCase().compareTo( c1.getAuctionitem().getTitle().toLowerCase() );
+                   }
+                   else if (column.equals(priceColumnName)) {
+                       return ascending ?
+                               new Double(c1.getAuctionitem().getPrice()).compareTo( new Double(c2.getAuctionitem().getPrice()) ):
+                               new Double(c2.getAuctionitem().getPrice()).compareTo( new Double(c1.getAuctionitem().getPrice()) );
+                   }
+                   else if (column.equals(bidsColumnName)) {
+                       return ascending ?
+                               new Integer(c1.getAuctionitem().getBidCount()).compareTo( new Integer(c2.getAuctionitem().getBidCount()) ):
+                               new Integer(c2.getAuctionitem().getBidCount()).compareTo( new Integer(c1.getAuctionitem().getBidCount()) );
+                   }
+                   else if (column.equals(timeLeftColumnName)) {
+                       return ascending ?
+                               new Integer(c1.getAuctionitem().getExpiresindays()).compareTo( new Integer(c2.getAuctionitem().getExpiresindays()) ):
+                               new Integer(c2.getAuctionitem().getExpiresindays()).compareTo( new Integer(c1.getAuctionitem().getExpiresindays()) );
+                   }
+                   else return 0;
+               }
+           };
+
+       Collections.sort(auctionitems, comparator);
+
+   }
+*/
+   /**
+    * Determines the sort order.
+    *
+    * @param sortColumn to sort by.
+    * @return whether sort order is ascending or descending.
+    */
+/*   protected boolean isDefaultAscending(String sortColumn) {
+       return true;
+   }
+*/
    @Destroy @Remove
    public void destroy() {
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-           System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());           
+           System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
            tempBean.removeRenderable(this);
            globalAuctionItems.remove(tempBean);
        }
    }
+/*
+public String getBidsColumnName() {
+    return bidsColumnName;
+}
 
+public String getItemNameColumnName() {
+    return itemNameColumnName;
+}
+
+public String getPriceColumnName() {
+    return priceColumnName;
+}
+
+public String getTimeLeftColumnName() {
+    return timeLeftColumnName;
+}
+
+@Begin(join=true)
+public List<AuctionitemBean> getAuctionitems() {
+    System.out.println("GETTING/SORTING AUCTION ITEMS");
+    sort(getSort(), isAscending());
+    System.out.println("RETURNING AUCTIONITEMS");
+    return auctionitems;
+}
+*/
 }
