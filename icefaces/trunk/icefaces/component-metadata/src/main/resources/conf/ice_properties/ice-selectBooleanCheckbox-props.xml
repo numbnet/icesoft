@@ -38,7 +38,7 @@
     <description>
         <![CDATA[
          <p>The base name for all style classes. Default is 
-         <b>iceBooleanCheckbox</b> if enabled and <b>iceBooleanCheckbox-dis</b> 
+         <b>iceSelBoolChkbx</b> if enabled and <b>iceSelBoolChkbx-dis</b> 
          if disabled.
          </p>
 		]]>

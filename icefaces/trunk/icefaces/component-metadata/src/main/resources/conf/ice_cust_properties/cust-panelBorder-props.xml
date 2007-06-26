@@ -141,13 +141,13 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-              <p>Defines the base class name for all style classes used in panelBorder. Default value is icePage</p>
+              <p>Defines the base class name for all style classes. Default value is <b>icePnlBrdr</b></p>
               <ul>
-                <li>icePageNorth</li>
-                <li>icePageWest</li>
-                <li>icePageEast</li>
-                <li>icePageCenter</li>
-                <li>icePageSouth</li>
+                <li>icePnlBrdrNorth</li>
+                <li>icePnlBrdrEast</li>
+                <li>icePnlBrdrWest</li>
+                <li>icePnlBrdrSouth</li>
+                <li>icePnlBrdrCenter</li>
               </ul>              
   		 </p>                   
 		]]>

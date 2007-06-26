@@ -65,31 +65,34 @@
     <description>
         <![CDATA[
 		<p>
-        Base Style class for component.
-        So if styleClass is set to accordion then when the panel is expanded the
-        following class names are applied <br>
+        Space-separated list of CSS style class(es) to be applied when this
+        element is rendered. This value must be passed through as the 
+        "class" attribute on generated markup.<br/>
+        The base name for all style classes. Default value is <b>icePnlClpsbl</b></p>
+        The class names for the panel, the header, and the content are:<br>
+		Expanded
 		<ul>
-        <li>iceAccordionHeader</li>
-        <li>iceAccordionContent</li>
-        <li>iceAccordionContainer</li>
+        <li>icePnlClpsbl</li>
+        <li>icePnlClpsblHdr</li>
+        <li>icePnlClpsblCnt</li>
 		</ul>
-        And when closed
+        Collapsed
 		<ul>
-        <li>iceAccordionHeaderCollapsed</li>
-        <li>iceAccordionContentCollapsed</li>
-        <li>iceAccordionContainerCollapsed</li>
+        <li>icePnlClpsblColpsd</li>
+        <li>icePnlClpsblColpsdHdr</li>
+        <li>icePnlClpsblColpsdCnt</li>
 		</ul>
-        Open and disabled
+        Expanded and disabled
 		<ul>
-        <li>iceAccordionHeader-dis</li>
-        <li>iceAccordionContent-dis</li>
-        <li>iceAccordionContainer-dis</li>
+        <li>icePnlClpsbl-dis</li>
+        <li>icePnlClpsblHdr-dis</li>
+        <li>icePnlClpsblCnt-dis</li>
 		</ul>
-        Closed and disabled
+        Collapsed and disabled
 		<ul>
-        <li>iceAccordionHeaderCollapsed-dis</li>
-        <li>iceAccordionContentCollapsed-dis</li>
-        <li>iceAccordionContainerCollapsed-dis</li>
+        <li>icePnlClpsblColpsd-dis</li>
+        <li>icePnlClpsblColpsdHdr-dis</li>
+        <li>icePnlClpsblColpsdCnt-dis</li>
         </ul>
 		</p>
 		]]>

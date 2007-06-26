@@ -256,3 +256,23 @@
         <is-hidden>true</is-hidden>
 	</property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+        Space-separated list of CSS style class(es) to be applied when this 
+		element is rendered. This value is passed through as the "class" 
+		attribute on generated markup.
+		The base name for all style classes. Default value is <b>icePnlGrp</b>
+		if enabled and <b>icePnlGrp-dis</b> if disabled.
+		]]>		
+    </description>
+    <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

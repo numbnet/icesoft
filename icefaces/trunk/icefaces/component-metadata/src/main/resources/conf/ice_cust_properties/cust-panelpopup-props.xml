@@ -79,11 +79,19 @@
 <property>
     <description>
         <![CDATA[
-              <p>The base name for all style classes. Default is icePanelPopup</p>
-              <ul>
-               <li>icePanelPopupHeader</li>
-               <li>icePanelPopupHeaderBody</li>
-              </ul>
+        <p>
+		Space-separated list of CSS style class(es) to be applied when this 
+		element is rendered. This value must be passed through as the "class" 
+		attribute on generated markup.
+		</p>
+        <p>Defines the base class name for all style classes.
+        Default value is <b>icePnlPop</b></p>
+              </p><ul>
+                <li>icePnlPop</li>
+                <li>icePnlPopHdr</li>
+                <li>icePnlPopBody</li>
+                <li>icePnlPopFtr</li>
+              </ul>              
 		]]>		
     </description>
     <property-name>styleClass</property-name>

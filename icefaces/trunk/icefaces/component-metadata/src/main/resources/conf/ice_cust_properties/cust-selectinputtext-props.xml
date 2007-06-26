@@ -107,12 +107,13 @@
 <property>
     <description>
         <![CDATA[
-              <p>Base name for the style classes. Deafult is iceSelInp.</p>
+              <p>Base name for the style classes. Deafult is <b>iceSelInpTxt</b>.</p>
                 <ul>
-                    <li>iceSelInpText</li>
-                    <li>iceSelInpList</li>
-                    <li>iceSelInpRow</li>
-                    <li>iceSelInpSelRow</li>
+                    <li>iceSelInpTxt</li>
+                    <li>iceSelInpTxtTxt</li>
+                    <li>iceSelInpTxtList</li>
+                    <li>iceSelInpTxtRow</li>
+                    <li>iceSelInpTxtSelRow</li>
                 </ul>
 		]]>		
     </description>

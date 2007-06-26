@@ -38,7 +38,7 @@
     <description>
         <![CDATA[
          <p>The base name for all style classes. Default is 
-         <b>iceRadioBtn</b> if enabled and <b>iceRadioBtn-dis</b> 
+         <b>iceSelOneRb</b> if enabled and <b>iceSelOneRb-dis</b> 
          if disabled.
          </p>
 		]]>

@@ -43,7 +43,8 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-             
+              Default value is <b>iceMnuItmSep<b> if enabled and <b>iceMnuItmSep-dis</b>
+              if disabled.
 		]]>
     </description>
     <property-name>styleClass</property-name>

@@ -51,8 +51,8 @@
 <property>
     <description>
         <![CDATA[
-		The base name for all style classes. Default value is <b>iceBtn</b> if 
-		enabled and <b>iceBtn-dis</b> if disabled.
+		The base name for all style classes. Default value is <b>iceCmdBtn</b> if 
+		enabled and <b>iceCmdBtn-dis</b> if disabled.
 		]]>
     </description>
     <property-name>styleClass</property-name>

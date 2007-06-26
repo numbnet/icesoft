@@ -41,8 +41,11 @@
 <property>
     <description>
         <![CDATA[
-			The base name for all style classes. Default value is 
-			<b>iceOutputText.</b>.
+        Space-separated list of CSS style class(es) to be applied when this 
+		element is rendered. This value is passed through as the "class" 
+		attribute on generated markup.
+		The base name for all style classes. Default value is <b>iceOutTxt</b>
+		if enabled and <b>iceOutTxt-dis</b> if disabled.
 		]]>		
     </description>
     <property-name>styleClass</property-name>

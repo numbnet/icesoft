@@ -194,3 +194,28 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[ 
+        <p>
+		Space-separated list of CSS style class(es) to be applied when this 
+		element is rendered. This value must be passed through as the "class" 
+		attribute on generated markup.
+		</p>
+        <p>Defines the base class name for all style classes.
+        Default value is <b>iceTree</b></p>
+              </p><ul>
+                <li>iceTree</li>
+                <li>iceTreeRow</li>
+              </ul>              
+		]]>			
+    </description>
+    <property-name>styleClass</property-name>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

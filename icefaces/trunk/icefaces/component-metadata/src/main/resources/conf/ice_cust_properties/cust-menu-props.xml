@@ -88,6 +88,33 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
+              The base name for all style classes. Default value is <b>iceMnuBar</b></p>
+              if enabled
+              <ul>
+                <li>iceMnuBar</li>
+                <li>iceMnuBarItem</li>
+                <li>iceMnuBarItemLabel</li>
+                <li>iceMnuBarSubMenu</li>
+                <li>iceMnuBarSubMenuInd</li>
+                <li>iceMnuBarVrt</li>
+                <li>iceMnuBarVrtItem</li>
+                <li>iceMnuBarVrtItemLabel</li>
+                <li>iceMnuBarVrtSubMenu</li>
+                <li>iceMnuBarVrtSubMenuInd</li>
+              </ul>   
+              if disabled
+              <ul>
+                <li>iceMnuBar-dis</li>
+                <li>iceMnuBarItem-dis</li>
+                <li>iceMnuBarItemLabel-dis</li>
+                <li>iceMnuBarSubMenu-dis</li>
+                <li>iceMnuBarSubMenuInd-dis</li>
+                <li>iceMnuBarVrt-dis</li>
+                <li>iceMnuBarVrtItem-dis</li>
+                <li>iceMnuBarVrtItemLabel-dis</li>
+                <li>iceMnuBarVrtSubMenu-dis</li>
+                <li>iceMnuBarVrtSubMenuInd-dis</li>
+              </ul>                          
              
 		]]>
     </description>

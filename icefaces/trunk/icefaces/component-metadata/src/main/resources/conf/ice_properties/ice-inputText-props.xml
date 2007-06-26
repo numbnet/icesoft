@@ -57,8 +57,8 @@
 	 	Space-separated list of CSS style class(es) to be applied when this 
 	 	element is rendered. This value must be passed through as the "class" 
 	 	attribute on generated markup. <br/>	   
-		The base name for all style classes. Default value is <b>iceInputtext</b>
-		if enabled and <b>iceInputtext-dis</b> if disabled.
+		The base name for all style classes. Default value is <b>iceInpTxt</b>
+		if enabled and <b>iceInpTxt-dis</b> if disabled.
 		]]>		
 	</description>  
     <property-name>styleClass</property-name>

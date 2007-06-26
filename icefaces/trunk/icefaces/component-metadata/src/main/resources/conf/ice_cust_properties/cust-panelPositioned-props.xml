@@ -59,7 +59,7 @@
               Space-separated list of CSS style class(es) to be applied when
               this element is rendered.  This value must be passed through
               as the "class" attribute on generated markup.
-              <br/> The default class would be rendered as <b>icePosPnl</b>
+              <br/> The default class would be rendered as <b>icePnlPos</b>
          </p>
 		]]>         
     </description>

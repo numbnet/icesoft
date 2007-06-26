@@ -231,22 +231,22 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-              Default value is <b>iceDtdPgr<b/></p>
+              Default value is <b>iceDatPgr<b/></p>
               if enabled
               <ul>
-                <li>iceDtdPgrScrBtn</li>
-                <li>iceDtdPgrScrOut</li>
-                <li>iceDtdPgrSrcCol</li>
-                <li>iceDtdPgrCol</li>
-                <li>iceDtdPgrTbl</li>                
+                <li>iceDatPgrScrBtn</li>
+                <li>iceDatPgrScrOut</li>
+                <li>iceDatPgrSrcCol</li>
+                <li>iceDatPgrCol</li>
+                <li>iceDatPgrTbl</li>                
               </ul>   
               if disabled
               <ul>
-                <li>iceDtdPgrScrBtn-dis</li>
-                <li>iceDtdPgrScrOut-dis</li>
-                <li>iceDtdPgrSrcCol-dis</li>
-                <li>iceDtdPgrCol-dis</li>
-                <li>iceDtdPgrTbl-dis</li>                
+                <li>iceDatPgrScrBtn-dis</li>
+                <li>iceDatPgrScrOut-dis</li>
+                <li>iceDatPgrSrcCol-dis</li>
+                <li>iceDatPgrCol-dis</li>
+                <li>iceDatPgrTbl-dis</li>                
               </ul>                          
 		]]>
     </description>

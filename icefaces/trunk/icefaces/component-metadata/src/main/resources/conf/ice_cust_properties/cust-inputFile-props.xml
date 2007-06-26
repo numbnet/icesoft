@@ -268,11 +268,18 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-                Default value is iceFileUpload:<br/>        
-               Style Classes Used:
+              Default value is <b>iceInpFile</b>.<br/>        
+              Style classes used, if enabled:
                      <ul>
-                       <li>iceFileUploadButton</li>
-                       <li>iceFileUploadText</li>                      
+                       <li>iceInpFile</li>
+                       <li>iceInpFileBtn</li>
+                       <li>iceInpFileTxt</li>                      
+                     </ul>
+              if disabled
+                     <ul>
+                       <li>iceInpFile-dis</li>
+                       <li>iceInpFileBtn-dis</li>
+                       <li>iceInpFileTxt-dis</li>                      
                      </ul>  
               </p>       
 		]]>

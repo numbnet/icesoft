@@ -39,7 +39,7 @@
     <description>
         <![CDATA[
          <p>The base name for all style classes. Default is 
-         <b>iceSelect</b> if enabled and <b>iceSelect-dis</b> 
+         <b>IceSelOneMnu</b> if enabled and <b>IceSelOneMnu-dis</b> 
          if disabled.
          </p>
 		]]>

@@ -108,14 +108,15 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-              <p>Defines the base class name for all style classes used in
-              outputConnectionStatus. Default value is iceOutputProgress</p>
+              <p>Defines the base class name for all style classes used.
+              Default value is <b>iceOutProg</b></p>
               <ul>
-                <li>iceOutputProgressIndeterminateActiveClass</li>
-                <li>iceOutputProgressIndeterminateInactiveClass</li>
-                <li>iceOutputProgressText</li>
-                <li>iceOutputProgressBackground</li>
-                <li>iceOutputProgressFill</li>
+                <li>iceOutProg</li>
+                <li>iceOutProgIndetActv</li>
+                <li>iceOutProgIndetInactv</li>
+                <li>iceOutProgBg</li>
+                <li>iceOutProgFill</li>
+                <li>iceOutProgTxt</li>
               </ul>              
   		 </p>                   
 		]]>

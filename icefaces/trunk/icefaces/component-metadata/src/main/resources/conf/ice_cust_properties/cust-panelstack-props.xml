@@ -53,9 +53,10 @@
 <property>
     <description>
         <![CDATA[
-         <p>Defines the base class name for all style classes used in panelStack. Default value is icePnlStk.</p>
+         <p>Defines the base class name for all style classes. Default value is <b>icePnlStk</b>.</p>
 		 <p>Style Classes Used:</p>
          <ul>
+         	<li>icePnlStk</li>
          	<li>icePnlStkRow</li>
             <li>icePnlStkCol</li>                       
          </ul>

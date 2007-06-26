@@ -127,7 +127,36 @@
 		Space-separated list of CSS style class(es) to be applied when this 
 		element is rendered. This value must be passed through as the "class" 
 		attribute on generated markup.
-		the default class rendered as <b>iceDataTblOutline</b>.
+		the default class rendered as <b>iceDatTbl</b>.
+              if enabled
+              <ul>
+                <li>iceDatTbl</li>
+                <li>iceDatTblCol</li>
+                <li>iceDatTblCol1</li>                
+                <li>iceDatTblCol2</li>
+                <li>iceDatTblColHdr</li>
+                <li>iceDatTblColHdr1</li>
+                <li>iceDatTblColHdr2</li>
+                <li>iceDatTblRow1</li>
+                <li>iceDatTblRow2</li>                
+                <li>iceDatTblHdr</li>
+                <li>iceDatTblFtr</li>                
+              </ul>   
+              if disabled
+              <ul>
+                <li>iceDatTbl-dis</li>
+                <li>iceDatTblCol-dis</li>
+                <li>iceDatTblCol1-dis</li>                
+                <li>iceDatTblCol2-dis</li>
+                <li>iceDatTblColHdr-dis</li>
+                <li>iceDatTblColHdr1-dis</li>
+                <li>iceDatTblColHdr2-dis</li>
+                <li>iceDatTblRow1-dis</li>
+                <li>iceDatTblRow2-dis</li>                
+                <li>iceDatTblHdr-dis</li>
+                <li>iceDatTblFtr-dis</li>                
+              </ul>                          
+		
         </p>		
      	]]>  		
 	</description>

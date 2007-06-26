@@ -208,14 +208,14 @@
 <property>
     <description>
         <![CDATA[
-              <p>Defines the base class name for all style classes used in selectInputDate. Default value is iceCal</p>
+              <p>Defines the base class name for all style classes. Default value is <b>iceSelInpDate</b></p>
               <ul>
-                <li>iceCalMonthYear</li>
-                <li>iceCalWeek</li>
-                <li>iceCalCur</li>
-                <li>iceCalDay</li>
-                <li>iceCalOutline</li>
-                <li>iceCalInput</li>                                
+                <li>iceSelInpDate</li>
+                <li>iceSelInpDateInput</li>
+                <li>iceSelInpDateMonthYear</li>
+                <li>iceSelInpDateWeek</li>
+                <li>iceSelInpDateDay</li>
+                <li>iceSelInpDateCur</li>
               </ul>              
 		]]>		
     </description>

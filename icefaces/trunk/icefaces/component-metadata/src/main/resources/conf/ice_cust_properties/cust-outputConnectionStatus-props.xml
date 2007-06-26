@@ -108,11 +108,12 @@
 		element is rendered. This value must be passed through as the "class" 
 		attribute on generated markup.
 		</p>
-        <p>Defines the base class name for all style classes used in outputConnectionStatus.
-        Default value is iceOutConStat</p>
+        <p>Defines the base class name for all style classes.
+        Default value is <b>iceOutConStat</b></p>
               </p><ul>
-                <li>iceOutConStatInactive</li>
-                <li>iceOutConStatActive</li>
+                <li>iceOutConStat</li>
+                <li>iceOutConStatInactv</li>
+                <li>iceOutConStatActv</li>
                 <li>iceOutConStatCaution</li>
                 <li>iceOutConStatDisconnect</li>
               </ul>              

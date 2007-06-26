@@ -86,6 +86,25 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
+              The base name for all style classes. Default value is <b>iceMnuItm</b></p>
+              if enabled
+              <ul>
+                <li>iceMnuItm</li>
+                <li>iceMnuItmImage</li>
+                <li>iceMnuItmLabel</li>
+                <li>iceMnuItmVrt</li>
+                <li>iceMnuItmVrtImage</li>
+                <li>iceMnuItmVrtLabel</li>
+              </ul>   
+              if disabled
+              <ul>
+                <li>iceMnuItm-dis</li>
+                <li>iceMnuItmImage-dis</li>
+                <li>iceMnuItmLabel-dis</li>
+                <li>iceMnuItmVrt-dis</li>
+                <li>iceMnuItmVrtImage-dis</li>
+                <li>iceMnuItmVrtLabel-dis</li>
+              </ul>                          
              
 		]]>
     </description>
