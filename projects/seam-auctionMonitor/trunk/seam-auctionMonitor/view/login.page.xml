@@ -8,4 +8,9 @@
          <redirect view-id="/AuctionitemList.xhtml"/>
       </rule>
    </navigation>
+   <navigation from-action="#{register.register}">
+      <rule if-outcome="login">
+         <redirect view-id="/AuctionitemList.xhtml"/>
+      </rule>
+   </navigation>
 </page>

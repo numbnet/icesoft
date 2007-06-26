@@ -1,43 +1,69 @@
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:s="http://jboss.com/products/seam/taglib"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		xmlns:ice="http://www.icesoft.com/icefaces/component"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
-<ui:define name="body">
-    
-    <h:messages styleClass="message"/>
-    
- <ice:form id="login">
-       <ice:panelAccordion expanded="true" styleClass="accordion" >
-       	<f:facet name="header">
-			<ice:outputText value="Login"/>
-		</f:facet>
-            <p>Please login using any username and password</p>
+    <ui:define name="body">
+        <h:messages styleClass="message"/>
 
-                    <div class="dialog">
-                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-                            <h:outputLabel for="username">Username</h:outputLabel>
-                            <h:inputText id="username" 
-                                      value="#{identity.username}"/>
-                            <h:outputLabel for="password">Password</h:outputLabel>
-                            <h:inputSecret id="password" 
-                                        value="#{identity.password}"/>
-                            <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
-                            <h:selectBooleanCheckbox id="rememberMe" 
-                                                  value="#{identity.rememberMe}"/>
-                        </h:panelGrid>
-                    </div>
+        <ice:form id="login">
+            <ice:panelAccordion expanded="true" styleClass="accordion">
+                <f:facet name="header">
+                    <ice:outputText value="Login"/>
+                </f:facet>
+                <p>Please login using any username and password:</p>
 
-        </ice:panelAccordion>
-         <div class="actionButtons">
-            <h:commandButton value="Login" action="#{identity.login}"/>
-        </div>
-          
-    </ice:form>      
-</ui:define> 
+                <div class="dialog">
+                    <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+                        <h:outputLabel for="username">Username</h:outputLabel>
+                        <h:inputText id="username"
+                                     value="#{identity.username}"/>
+                        <h:outputLabel for="password">Password</h:outputLabel>
+                        <h:inputSecret id="password"
+                                       value="#{identity.password}"/>
+                        <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
+                        <h:selectBooleanCheckbox id="rememberMe"
+                                                 value="#{identity.rememberMe}"/>
+                    </h:panelGrid>
+                </div>
+
+            </ice:panelAccordion>
+            <div class="actionButtons">
+                <h:commandButton value="Login" action="#{identity.login}"/>
+            </div>
+        </ice:form>
+
+        <ice:form id="register">
+            <ice:panelAccordion expanded="true" styleClass="accordion">
+                <f:facet name="header">
+                    <ice:outputText value="Register"/>
+                </f:facet>
+                <p>Or register:</p>
+
+                <div class="dialog">
+                    <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+                        <s:validateAll>
+                            <h:outputLabel for="rusername">Username</h:outputLabel>
+                            <h:inputText id="rusername" value="#{user.username}" required="true"/>
+                            <h:outputLabel for="rname">Real Name</h:outputLabel>
+                            <h:inputText id="rname" value="#{user.name}" required="true"/>
+                            <h:outputLabel for="rpassword">Password</h:outputLabel>
+                            <h:inputSecret id="rpassword" value="#{user.password}" required="true"/>
+                            <h:outputLabel for="rverify">Verify Password</h:outputLabel>
+                            <h:inputSecret id="rverify" value="#{register.verify}" required="true"/>
+                        </s:validateAll>
+                    </h:panelGrid>
+                </div>
+
+            </ice:panelAccordion>
+            <div class="actionButtons">
+                <h:commandButton value="Register" action="#{register.register}"/>
+            </div>
+        </ice:form>
+    </ui:define>
 </ui:composition>
