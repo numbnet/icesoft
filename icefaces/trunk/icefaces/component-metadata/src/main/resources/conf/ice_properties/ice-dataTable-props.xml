@@ -71,7 +71,7 @@
 		This attribute can be used to define the separate style classes for the each 
 		header of the each column.
 		
-		The default would rendered as : Header1, Header2, .....
+		The default would rendered as : iceDatTblColHdr1, iceDatTblColHdr2 alternatively
 		
 	</description>
 	<property-name>headerClasses</property-name>

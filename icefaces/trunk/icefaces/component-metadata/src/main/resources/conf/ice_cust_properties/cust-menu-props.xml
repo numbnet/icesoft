@@ -89,26 +89,32 @@
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
               The base name for all style classes. Default value is <b>iceMnuBar</b></p>
-              if enabled
+              if enabled + horizontal
               <ul>
                 <li>iceMnuBar</li>
                 <li>iceMnuBarItem</li>
                 <li>iceMnuBarItemLabel</li>
                 <li>iceMnuBarSubMenu</li>
                 <li>iceMnuBarSubMenuInd</li>
+              </ul>
+              if enabled + vertical
+              <ul>                
                 <li>iceMnuBarVrt</li>
                 <li>iceMnuBarVrtItem</li>
                 <li>iceMnuBarVrtItemLabel</li>
                 <li>iceMnuBarVrtSubMenu</li>
                 <li>iceMnuBarVrtSubMenuInd</li>
               </ul>   
-              if disabled
+              if disabled + horizontal
               <ul>
                 <li>iceMnuBar-dis</li>
                 <li>iceMnuBarItem-dis</li>
                 <li>iceMnuBarItemLabel-dis</li>
                 <li>iceMnuBarSubMenu-dis</li>
                 <li>iceMnuBarSubMenuInd-dis</li>
+              </ul>
+              if disabled + vertical
+              <ul>                
                 <li>iceMnuBarVrt-dis</li>
                 <li>iceMnuBarVrtItem-dis</li>
                 <li>iceMnuBarVrtItemLabel-dis</li>

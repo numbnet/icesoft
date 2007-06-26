@@ -72,7 +72,7 @@
         Space-separated list of CSS style class(es) that will be applied to any 
         header generated for this table.	
         <br/>
-        	The default header class would be rendered as <b>icePnlGrdHeader</b>.	
+        	The default header class would be rendered as <b>icePnlGrdHdr</b>.	
         </p>		
      	]]> 	
     </description>			
@@ -92,7 +92,7 @@
 		Space-separated list of CSS style class(es) that will be applied to any
 		footer generated for this table.
 		<br/>
-		The default footer class would be rendered as <b>icePnlGrdFooter</b>.
+		The default footer class would be rendered as <b>icePnlGrdFtr</b>.
 		</p>		
      	]]>  		
     </description>			
@@ -120,8 +120,8 @@
         of the "columns" attribute are ignored.	
         </p>
         <p>
- 		The default column classes would be rendered as : <b>icePnlGrdColumn1, 
- 		icePnlGrdColumn2, icePnlGrdColumn3, ....</b>
+ 		The default column classes would be rendered as : <b>icePnlGrdCol1, 
+ 		icePnlGrdCol2 </b>alternatively
         </p>		
      ]]>        
     </description>			
