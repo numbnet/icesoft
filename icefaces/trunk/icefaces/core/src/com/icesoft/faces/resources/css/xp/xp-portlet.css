@@ -1429,6 +1429,8 @@
     display: block;
 }
 
+.iceMnuBarVrtItemLabel {} /*newly added class*/
+
 .iceMnuBarVrtItem a { /* was iceMenu_verticalItem */
     background-color: #DDDDDD;
     height: auto;
@@ -2182,9 +2184,9 @@ Disabled classes for the calendar controls
 /*
 ----------- positionedPanel ----------
 */
-.icePnlStk {
-
-}
+.icePnlStk {}
+.icePnlStkRow {}
+.icePnlStkCol {}
 /*
 ----------- panelTab header ----------
 */

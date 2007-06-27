@@ -1479,6 +1479,8 @@ input {
     text-decoration: none;
 }
 
+.iceMnuBarVrtItemLabel {} /*newly added class*/
+
 .iceMnuBarVrtSubMenu { /* was iceSubMenu_vertical*/
     padding: 1px;
     width: 160px;
@@ -2209,9 +2211,10 @@ Disabled classes for the calendar controls
 /*
 ----------- positionedPanel ----------
 */
-.icePnlStk {
+.icePnlStk {}
+.icePnlStkRow {}
+.icePnlStkCol {}
 
-}
 /*
 ----------- panelTab header ----------
 */
@@ -2260,7 +2263,7 @@ Disabled classes for the calendar controls
 }
 
 /*
------------ Panel Accordion --------
+----------- Panel Collapsible --------
 */
 
 /* opened accordion styles */

@@ -1406,6 +1406,8 @@ iceMnuBarVrt, .iceMnuBarVrtItem {
     display: block;
 }
 
+.iceMnuBarVrtItemLabel {} /*newly added class*/
+
 .iceMnuBarVrtItem a { /* was iceMenu_verticalItem */
     background-color: #2A6CC2;
     height: auto;
@@ -2152,6 +2154,13 @@ Disabeld classes for the calendar controls
 }
 
 /*
+----------- positionedPanel ----------
+*/
+.icePnlStk {}
+.icePnlStkRow {}
+.icePnlStkCol {}
+
+/*
 ----------- panelTab header ----------
 */
 .icePnlTbSetHdrIconLft { /*was iceTabSetHdrIconLeft*/
@@ -2192,7 +2201,15 @@ Disabeld classes for the calendar controls
 }
 
 /*
------------ Panel Accordion --------
+----------- outputChart --------
+*/
+
+.iceOutChrt {
+
+}
+
+/*
+----------- Panel Collapsible --------
 */
 
 /* opened accordion styles */
