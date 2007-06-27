@@ -271,7 +271,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
     
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
-        writer.write("<html><body style=\"background-color:transparent\">");
+        writer.write("<html style=\"overflow:hidden;\">");
         ArrayList outputStyleComponents = findOutputStyleComponents(context.getViewRoot());
         if (outputStyleComponents != null)
         {
@@ -289,7 +289,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             writer.write("</head>");
         }        
         String srv = getUploadServletPath(context);
-        writer.write("<form method=\"post\" action=\""+srv+"\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
+        writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\""+srv+"\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
         writer.write("<input type=\"hidden\" name=\"componentID\" value=\"");
         writer.write(this.getClientId(context));
         writer.write("\"/>");
