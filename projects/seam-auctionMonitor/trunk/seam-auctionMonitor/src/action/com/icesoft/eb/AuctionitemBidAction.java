@@ -116,7 +116,9 @@ public class AuctionitemBidAction implements AuctionitemBid {
                 System.out.println("tempBean = " + tempBean);
                 System.out.println("tempBean.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
                 System.out.println("tempBean.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
+                tempBean.setBidding(false);
                 tempBean.buildBidEffect();
+                
                 //tempBean.render();
             }
         }catch(Exception e){

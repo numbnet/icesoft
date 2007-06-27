@@ -6,7 +6,7 @@ import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.context.effects.Effect;
 
 @Local
-public interface AuctionItemB {
+public interface AuctionitemBeanInterface {
 
     public Auctionitem getAuctionitem();
     public void setAuctionitem(Auctionitem auctionitem);

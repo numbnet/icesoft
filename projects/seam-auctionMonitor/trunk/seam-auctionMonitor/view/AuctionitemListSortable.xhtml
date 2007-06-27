@@ -49,7 +49,9 @@
 		<ice:dataTable width="100%" cellspacing="1"
 					   id="auctionitemList" 
 					   var="auctionitemBean"
-					   value="#{auctionitems}" 
+					   value="#{itemSearch.auctionitems}"
+                       sortColumn="#{itemSearch.sort}"
+                       sortAscending="#{itemSearch.ascending}" 
 					   headerClass="tableHeader"
 					   rowClasses="rowClass1,rowClass2"
 					   rendered="#{auctionitems.rowCount>0}">
@@ -57,10 +59,22 @@
 				<f:facet name="header">
 					<ice:panelGrid columns="5" width="100%" cellspacing="1"
 								   columnClasses="column1,column2,column3,column4,column5,column6">
-						<ice:outputText value="Item Name" />
-						<ice:outputText value="Price" />
-						<ice:outputText value="Bids" />
-						<ice:outputText value="Expires" />
+						<ice:commandSortHeader columnName="#{itemSearch.itemNameColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Item Name" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.priceColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Price" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.bidsColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Bids" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.timeLeftColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Time Left" />
+						</ice:commandSortHeader>
 						<ice:outputText value="Action" />
 					</ice:panelGrid>
 				</f:facet>
@@ -74,8 +88,8 @@
 										   title="Toggle the item details open or close"
 										   actionListener="#{auctionitemBean.pressExpandButton}"/>
 						<ice:outputText value="#{auctionitemBean.auctionitem.title}" />
-						<!--<ice:outputText value=" [#{auctionitemBean.auctionitem.itemId}]" />-->
-						<!--<ice:outputText value=" [#{auctionitemBean}]" />-->
+						<ice:outputText value=" [#{auctionitemBean.auctionitem.itemId}]" />
+						<ice:outputText value=" [#{auctionitemBean}]" />
 					</ice:panelGroup>
 					<ice:panelGroup>
 						<ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}" >
@@ -86,19 +100,12 @@
 					<ice:panelGroup>
 						<ice:outputText value="#{auctionitemBean.auctionitem.bidCount}" />
 					</ice:panelGroup>
-					<ice:panelGroup >
-						<ice:outputText value="#{auctionitemBean.auctionitem.expires}"
-										style="display: inherit;">
-							<s:convertDateTime type="both" dateStyle="full"/>
-					    </ice:outputText>						
+					<ice:panelGroup>
+						<ice:outputText value="#{auctionitemBean.auctionitem.expiresindays}"
+										style="display: inherit;" />
 					</ice:panelGroup>
 					<ice:panelGroup rendered="#{!auctionitemBean.bidding}">
-						<s:link value="Bid" 
-							    action="#{itemBid.selectItem(auctionitemBean)}" 
-							    rendered="#{!auctionitemBean.expired}" />
-						<ice:outputText value="EXPIRED" 
-							            rendered="#{auctionitemBean.expired}" 
-							            styleClass="#{auctionitemBean.expiredStyleClass}" />
+						<s:link value="Bid" action="#{itemBid.selectItem(auctionitemBean)}" />
 					</ice:panelGroup>
 					<ice:panelGroup rendered="#{auctionitemBean.bidding}">
 						<ice:inputText id="item_localBid"
@@ -160,7 +167,6 @@
                 <h:column>
                     <h:commandLink action="#{entry.end}" value="delete" rendered="#{!entry.current}"/>
                 </h:column>
-<!--
                 <h:column>
                     <h:outputText value="#{entry.startDatetime}">
                         <s:convertDateTime type="time" pattern="HH:mm"/>
@@ -171,18 +177,25 @@
                         <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
--->
                 <h:column>
                     <h:outputText value="#{entry.lastDatetime}">
                         <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
-                <!--<h:column>#{entry.timeout}</h:column>-->
+                <h:column>#{entry.timeout}</h:column>
             </h:dataTable>
         </h:form>
         <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>
     </div>
     </ice:panelGroup>
+    
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/AuctionitemEdit.xhtml"
+                    id="create" 
+                 value="Create auctionitem">
+            <f:param name="auctionitemItemId"/>
+        </s:button>
+    </s:div>
     
 </ui:define>
 

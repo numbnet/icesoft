@@ -19,7 +19,7 @@ public class AuctionHouseAction implements AuctionHouse{
     }
     
     private void init(){
-        //This will have to populate the initial AuctionitemBeans.       
+        //This could populate the initial AuctionitemBeans List.       
     }
     
     public void itemCreated(AuctionitemBean itemBean){
