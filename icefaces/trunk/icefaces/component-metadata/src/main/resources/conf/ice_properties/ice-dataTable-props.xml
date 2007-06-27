@@ -68,11 +68,13 @@
 
 <property>
 	<description>
+	    <![CDATA[	
 		This attribute can be used to define the separate style classes for the each 
-		header of the each column.
+		header of the each column.<br/>
 		
-		The default would rendered as : iceDatTblColHdr1, iceDatTblColHdr2 alternatively
-		
+		The default would rendered as : iceDatTblColHdr1, iceDatTblColHdr2 alternatively<br/>
+		Note: The attribute has been deprecated.
+     	]]> 		
 	</description>
 	<property-name>headerClasses</property-name>
 	<property-extension>
