@@ -1,6 +1,7 @@
 package com.icesoft.eb;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.ejb.Remove;
 import javax.faces.event.ActionEvent;
@@ -31,6 +32,7 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     private static final String STYLE_CLASS_EXPANDED_ROW = "rowClassHilite";
     private static final String TRIANGLE_OPEN = "img/triangle_open.gif";
     private static final String TRIANGLE_CLOSED = "img/triangle_close.gif";
+    private boolean expired = false;
     
     public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
@@ -125,6 +127,32 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
             return TRIANGLE_OPEN;
         } else {
             return TRIANGLE_CLOSED;
+        }
+    }
+    
+    public boolean isExpired(){
+        if(!expired){
+            Date current = new Date();
+            if(current.after(auctionitem.getExpires())){
+                expired = true;
+                return expired;
+            }else{
+                return expired;
+            }
+        }else{
+            return expired;
+        }
+    }
+    
+    public void setExpired(boolean expired){
+        this.expired = expired;
+    }
+    
+    public String getExpiredStyleClass(){
+        if(!expired){
+            return "";
+        }else{
+            return "expiredStyleClass";
         }
     }
     

@@ -230,8 +230,8 @@ System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
                    }
                    else if (column.equals(timeLeftColumnName)) {
                        return ascending ?
-                               new Integer(c1.getAuctionitem().getExpiresindays()).compareTo( new Integer(c2.getAuctionitem().getExpiresindays()) ):
-                               new Integer(c2.getAuctionitem().getExpiresindays()).compareTo( new Integer(c1.getAuctionitem().getExpiresindays()) );
+                               c1.getAuctionitem().getExpires().compareTo(c2.getAuctionitem().getExpires()):
+                               c2.getAuctionitem().getExpires().compareTo(c1.getAuctionitem().getExpires());
                    }
                    else return 0;
                }

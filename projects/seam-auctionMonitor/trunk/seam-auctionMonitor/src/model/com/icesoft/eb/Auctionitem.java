@@ -8,6 +8,7 @@ import org.hibernate.validator.NotNull;
 import org.jboss.seam.annotations.Name;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class Auctionitem implements java.io.Serializable {
 	private String seller;
 	private String site;
 	private String title;
-	private int expiresindays;
+	private Date expires;
     private List<Bid> bids = new ArrayList<Bid>();
 
 	public Auctionitem() {
@@ -37,7 +38,7 @@ public class Auctionitem implements java.io.Serializable {
 	public Auctionitem(long itemId, int bidCount, String currency,
 			String description, String imageFile, String location,
 			double price, String seller, String site, String title,
-			int expiresindays) {
+			Date expires) {
 		this.itemId = itemId;
 		this.bidCount = bidCount;
 		this.currency = currency;
@@ -48,7 +49,7 @@ public class Auctionitem implements java.io.Serializable {
 		this.seller = seller;
 		this.site = site;
 		this.title = title;
-		this.expiresindays = expiresindays;
+		this.expires = expires;
 	}
 
 	@Id
@@ -159,20 +160,21 @@ public class Auctionitem implements java.io.Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "expiresindays", nullable = false)
+	@Column(name = "expires", nullable = false)
 	@NotNull
-	public int getExpiresindays() {
-		return this.expiresindays;
+    @Basic @Temporal(TemporalType.TIMESTAMP)
+	public Date getExpires() {
+		return this.expires;
 	}
 
-	public void setExpiresindays(int expiresindays) {
-		this.expiresindays = expiresindays;
+	public void setExpires(Date expires) {
+		this.expires = expires;
 	}
         
         // not auto-generated
         @Override
         public String toString(){
-            return "AuctionItem(" + itemId + "," + description + ","+ price + "," + title +","+expiresindays+")";
+            return "AuctionItem(" + itemId + "," + description + ","+ price + "," + title +","+expires.toString()+")";
         }
 
     @OneToMany(mappedBy = "auctionItem")

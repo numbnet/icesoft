@@ -410,3 +410,7 @@ an item is expanded to show additional information*/
 .expandedColumn3{
     width:33%;
 }
+
+.expiredStyleClass{
+    color:#AA0000;
+}

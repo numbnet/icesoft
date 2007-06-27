@@ -60,7 +60,7 @@
 						<ice:outputText value="Item Name" />
 						<ice:outputText value="Price" />
 						<ice:outputText value="Bids" />
-						<ice:outputText value="Time Left" />
+						<ice:outputText value="Expires" />
 						<ice:outputText value="Action" />
 					</ice:panelGrid>
 				</f:facet>
@@ -86,12 +86,19 @@
 					<ice:panelGroup>
 						<ice:outputText value="#{auctionitemBean.auctionitem.bidCount}" />
 					</ice:panelGroup>
-					<ice:panelGroup>
-						<ice:outputText value="#{auctionitemBean.auctionitem.expiresindays}"
-										style="display: inherit;" />
+					<ice:panelGroup >
+						<ice:outputText value="#{auctionitemBean.auctionitem.expires}"
+										style="display: inherit;">
+							<s:convertDateTime type="both" dateStyle="full"/>
+					    </ice:outputText>						
 					</ice:panelGroup>
 					<ice:panelGroup rendered="#{!auctionitemBean.bidding}">
-						<s:link value="Bid" action="#{itemBid.selectItem(auctionitemBean)}" />
+						<s:link value="Bid" 
+							    action="#{itemBid.selectItem(auctionitemBean)}" 
+							    rendered="#{!auctionitemBean.expired}" />
+						<ice:outputText value="EXPIRED" 
+							            rendered="#{auctionitemBean.expired}" 
+							            styleClass="#{auctionitemBean.expiredStyleClass}" />
 					</ice:panelGroup>
 					<ice:panelGroup rendered="#{auctionitemBean.bidding}">
 						<ice:inputText id="item_localBid"
