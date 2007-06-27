@@ -40,7 +40,6 @@
 
 
 	&ice-panelGroup-props;
-	&panel-group-props;
 	&uipanel-props;
 
 	<component-extension>

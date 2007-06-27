@@ -32,7 +32,7 @@
   ~
   -->
   
-&ice-ext-core-styled-props;
+&ice-ext-core-props;
 &ice-effects-props;
 
 <property>
@@ -263,8 +263,7 @@
         Space-separated list of CSS style class(es) to be applied when this 
 		element is rendered. This value is passed through as the "class" 
 		attribute on generated markup.
-		The base name for all style classes. Default value is <b>icePnlGrp</b>
-		if enabled and <b>icePnlGrp-dis</b> if disabled.
+		The base name for all style classes. Default value is <b>icePnlGrp</b>.
 		]]>		
     </description>
     <property-name>styleClass</property-name>
