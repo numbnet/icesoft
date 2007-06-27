@@ -115,23 +115,27 @@ public class CombinedChartBean {
             DataSeries dataSeries =
                     new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, title);
 
-
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             String[] legendLabels = {"Bugs", "Security Holes", "Backdoors"};
-            Paint[] paints = TestDataGenerator.getRandomPaints(3);
+            Paint[] paints = new Color[]{
+                                new Color(0xCCCCCC), 
+                                new Color(0xF78208),
+                                new Color(0xCAE1EF) };
 
             BarChartProperties barChartProperties = new BarChartProperties();
-            AxisChartDataSet axisChartDataSet = new AxisChartDataSet(data,
-                                                                     legendLabels,
-                                                                     paints,
-                                                                     ChartType.BAR,
-                                                                     barChartProperties);
+            AxisChartDataSet axisChartDataSet =
+                    new AxisChartDataSet(data,
+                                         legendLabels,
+                                         paints,
+                                         ChartType.BAR,
+                                         barChartProperties);
             dataSeries.addIAxisPlotDataSet(axisChartDataSet);
 
 
             data = TestDataGenerator.getRandomNumbers(2, 7, 1000, 5000);
             legendLabels = new String[]{"Patches", "New Patch Bugs"};
-            paints = new Paint[]{Color.black, Color.red};
+            paints = new Paint[]{ new Color(0xB4C7D4),
+                                new Color(0xF78208)};
 
             Stroke[] strokes = {LineChartProperties.DEFAULT_LINE_STROKE,
                                 LineChartProperties.DEFAULT_LINE_STROKE};
@@ -163,11 +167,11 @@ public class CombinedChartBean {
      * Method to tell the page to render or not based on the initialized flag
      *
      * @param component chart component which will be rendered.
-     *
-     * @return boolean true if OutputChart should be re-rendered; otherwise, false.
+     * @return boolean true if OutputChart should be re-rendered; otherwise,
+     *         false.
      */
     public boolean renderOnSubmit(OutputChart component) {
-        if(axisChart == null || component.getChart() == null)
+        if (axisChart == null || component.getChart() == null)
             buildAxisChart();
         component.setChart(axisChart);
 
