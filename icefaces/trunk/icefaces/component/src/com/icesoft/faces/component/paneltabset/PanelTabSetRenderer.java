@@ -213,7 +213,17 @@ public class PanelTabSetRenderer
             Element contentRow = domContext.createElement(HTML.TR_ELEM);
             // append the tab content table row Element to the table
             table.appendChild(contentRow);
-
+            table.appendChild(headerRow);
+            Element headerTd = domContext.createElement(HTML.TD_ELEM);
+            headerRow.appendChild(headerTd);
+            Element tabsTable = domContext.createElement(HTML.TABLE_ELEM);
+            tabsTable.setAttribute(HTML.CELLPADDING_ATTR, "0");
+            tabsTable.setAttribute(HTML.CELLSPACING_ATTR, "0");
+            tabsTable.setAttribute(HTML.WIDTH_ATTR, "100%");            
+            headerTd.appendChild(tabsTable);
+            Element tabsTableRow = domContext.createElement(HTML.TR_ELEM);
+            tabsTable.appendChild(tabsTableRow);
+            
             contentRow.setAttribute(HTML.HEIGHT_ATTR, "100%");
             // call the writeTabCell method
             // pass in the new table row Element tr3
@@ -241,7 +251,6 @@ public class PanelTabSetRenderer
                     if (child instanceof PanelTab) {
                         if (child.isRendered()) {
                             // append the header table row Element to the table
-                            table.appendChild(headerRow);
 
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
@@ -252,7 +261,7 @@ public class PanelTabSetRenderer
                                             tabIdx,
                                             tabIdx == selectedIndex,
                                             ((PanelTab) child).isDisabled(),
-                                            headerRow);
+                                            tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -270,8 +279,6 @@ public class PanelTabSetRenderer
                     if (child instanceof PanelTab) {
                         if (child.isRendered()) {
                             // append the header table row Element to the table
-                            table.appendChild(headerRow);
-
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
@@ -281,7 +288,7 @@ public class PanelTabSetRenderer
                                             tabIdx,
                                             tabIdx == selectedIndex,
                                             ((PanelTab) child).isDisabled(),
-                                            headerRow);
+                                            tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -301,14 +308,23 @@ public class PanelTabSetRenderer
             }
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1
-            headerRow.appendChild(td);
+            tabsTableRow.appendChild(td);
 
             domContext.streamWrite(facesContext, tabSet);
             // steps to the position where the next sibling should be rendered
             domContext.stepOver();
 
         } else { // for now it's either Top or Bottom
-
+            table.appendChild(headerRow);
+            Element headerTd = domContext.createElement(HTML.TD_ELEM);
+            headerRow.appendChild(headerTd);
+            Element tabsTable = domContext.createElement(HTML.TABLE_ELEM);
+            tabsTable.setAttribute(HTML.CELLPADDING_ATTR, "0");
+            tabsTable.setAttribute(HTML.CELLSPACING_ATTR, "0");
+            tabsTable.setAttribute(HTML.WIDTH_ATTR, "100%");             
+            headerTd.appendChild(tabsTable);
+            Element tabsTableRow = domContext.createElement(HTML.TR_ELEM);
+            tabsTable.appendChild(tabsTableRow);
             if (tabSet.getValue() != null) {
                 int rowIndex = tabSet.getFirst();
                 int rowsToBeDisplayed = tabSet.getRows();
@@ -326,8 +342,6 @@ public class PanelTabSetRenderer
                     if (child instanceof PanelTab) {
                         if (child.isRendered()) {
                             // append the header table row Element to the table
-                            table.appendChild(headerRow);
-
                             // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
@@ -337,7 +351,7 @@ public class PanelTabSetRenderer
                                             tabIdx,
                                             tabIdx == selectedIndex,
                                             ((PanelTab) child).isDisabled(),
-                                            headerRow);
+                                            tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -354,9 +368,7 @@ public class PanelTabSetRenderer
                     if (child instanceof PanelTab) {
                         if (child.isRendered()) {
                             // append the header table row Element to the table
-                            table.appendChild(headerRow);
-
-                            // call the writeHeaderCell method
+                                  // call the writeHeaderCell method
                             // pass in the new header table row Element
                             writeHeaderCell(domContext,
                                             facesContext,
@@ -365,7 +377,7 @@ public class PanelTabSetRenderer
                                             tabIdx,
                                             tabIdx == selectedIndex,
                                             ((PanelTab) child).isDisabled(),
-                                            headerRow);
+                                            tabsTableRow);
                             visibleTabCount++;
                         }
                         tabIdx++;
@@ -387,7 +399,7 @@ public class PanelTabSetRenderer
 
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1
-            headerRow.appendChild(td);
+            tabsTableRow.appendChild(td);
 
             // Create Tab Cells
             // create a new table row Element for the Tab Cells
@@ -856,7 +868,7 @@ public class PanelTabSetRenderer
 
         // set the table data attributes
         //extra column for Safari table bug
-        td.setAttribute(HTML.COLSPAN_ATTR, Integer.toString(tabCount + 2 ));
+//        td.setAttribute(HTML.COLSPAN_ATTR, Integer.toString(tabCount + 2 ));
         td.setAttribute(HTML.CLASS_ATTR, tabSet.getContentClass());
 
         // set the cursor parent to the new table data Element
