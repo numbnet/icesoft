@@ -84,7 +84,7 @@
 
     This.RequestProxy = Object.subclass({
         initialize: function(request, logger) {
-            this.identifier =  + Math.random().toString().substr(2, 7);
+            this.identifier = + Math.random().toString().substr(2, 7);
             this.request = request;
             this.logger = logger;
             this.callbacks = [];
@@ -217,7 +217,8 @@
             try {
                 //replace the callback to avoid infinit loop since the callback is
                 //executed also when the connection is aborted.
-                this.request.onreadystatechange = null;
+                //also, setting 'onreadystatechange' to null will cause a memory leak in IE6
+                this.request.onreadystatechange = Function.NOOP;
                 this.request.abort();
             } catch (e) {
                 //ignore, the request was discarded by the browser
