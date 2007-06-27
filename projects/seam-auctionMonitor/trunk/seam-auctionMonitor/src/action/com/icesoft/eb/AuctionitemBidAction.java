@@ -26,8 +26,6 @@ import org.jboss.seam.log.Log;
 
 @Stateful
 @Name("itemBid")
-@Scope(ScopeType.SESSION)
-//@Conversational(ifNotBegunOutcome="main")
 @Restrict("#{identity.loggedIn}")
 
 public class AuctionitemBidAction implements AuctionitemBid {
@@ -57,7 +55,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     @Out(required = false, scope = ScopeType.APPLICATION)
     private List<AuctionitemBean> globalAuctionItems;
 
-    @Begin(join=true, nested=true)
+    @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
        try{
@@ -65,7 +63,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
        temp = em.merge(selectedItem.getAuctionitem());
        auctionitemBean = selectedItem;
        auctionitemBean.setBidding(true);
-       bid = new Bid(auctionitemBean.getAuctionitem(), user);
+       bid = new Bid(temp, user);
        bid.setBidValue(auctionitemBean.getBidInput());
        }catch(Exception e){
            e.printStackTrace();
@@ -118,7 +116,8 @@ public class AuctionitemBidAction implements AuctionitemBid {
                 System.out.println("tempBean = " + tempBean);
                 System.out.println("tempBean.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
                 System.out.println("tempBean.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
-                tempBean.render();
+                tempBean.buildBidEffect();
+                //tempBean.render();
             }
         }catch(Exception e){
             e.printStackTrace();

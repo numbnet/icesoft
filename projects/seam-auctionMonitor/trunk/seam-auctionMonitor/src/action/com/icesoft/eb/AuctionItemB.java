@@ -12,9 +12,9 @@ public interface AuctionItemB {
     public void setAuctionitem(Auctionitem auctionitem);
     public Bid getBid();
     public void setBid(Bid bid);
-    public void render();
-    public void addRenderable(Renderable renderable);
-    public void removeRenderable(Renderable renderable);
+    //public void render();
+    //public void addRenderable(Renderable renderable);
+    //public void removeRenderable(Renderable renderable);
     public Effect getBidEffect() ;
     public void setBidEffect(Effect bidEffect);
     public void buildBidEffect();

@@ -20,10 +20,10 @@ import com.icesoft.faces.context.effects.Effect;
 */ 
 public class AuctionitemBean implements AuctionItemB, Serializable{
 
-    private RenderManager renderManager;
+    //private RenderManager renderManager;
     private Auctionitem auctionitem;
     private Bid bid;
-    public OnDemandRenderer renderer;
+    //public OnDemandRenderer renderer;
     private Effect bidEffect;
     private boolean bidding = false;
     private double bidInput = 0.0;
@@ -35,12 +35,12 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
         this.bid = bid;
-        this.renderManager = renderManager;
+        //this.renderManager = renderManager;
         auctionitem.setBidCount(auctionitem.getBids().size());
-        if(renderer == null){
+        /*if(renderer == null){
             System.out.println("INSTANTIATING RENDER GROUP FOR ITEM");
             renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );            
-        }
+        }*/
     }
 
     public Auctionitem getAuctionitem() {
@@ -59,14 +59,14 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
         this.bid = bid;
     }
     
-    public void render(){
+/*    public void render(){
         bidding = false;
         System.out.println("CALLING RENDER FROM ITEM");
         System.out.println("renderer.getName() = " + renderer.getName());
         System.out.println("renderer.isEmpty() = " + renderer.isEmpty());
         renderer.requestRender();
     }
-    
+  
     
     public void addRenderable(Renderable renderable){
         renderer.add(renderable);
@@ -75,7 +75,7 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     public void removeRenderable(Renderable renderable){
         renderer.remove(renderable);        
     }
-
+  */
     public Effect getBidEffect(){
         return bidEffect;
     }
@@ -130,9 +130,9 @@ public class AuctionitemBean implements AuctionItemB, Serializable{
     
     @Destroy @Remove
     public void destroy() {
-        if(renderer != null){
+/*        if(renderer != null){
             renderer.requestStop();
-        }
+        }*/
     }
 
 }

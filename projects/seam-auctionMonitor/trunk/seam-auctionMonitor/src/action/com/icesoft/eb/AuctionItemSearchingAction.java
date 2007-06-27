@@ -22,10 +22,10 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Stateful
 @Name("itemSearch")
-@Scope(ScopeType.CONVERSATION)
+@Scope(ScopeType.SESSION)
 //@Restrict("#{identity.loggedIn}")
 
-public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching, Renderable
+public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching/*, Renderable*/
 {
 
    @PersistenceContext(type=EXTENDED)
@@ -114,16 +114,16 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
            newAuctionitems.add(auctionitemBean);
            globalAuctionItems.add(auctionitemBean);
        }
-       if(!first && auctionitems.equals(newAuctionitems)){
+/*       if(!first && auctionitems.equals(newAuctionitems)){
            System.out.println("IN EQUAL AUCTION ITEM LISTS");
            return;
        }
-       if(first){
+*/       if(first){
            auctionitems = new ArrayList();
            System.out.println("IN FIRST");
            first = false;
        }
-       if(!newAuctionitems.isEmpty()){
+/*       if(!newAuctionitems.isEmpty()){
            System.out.println("NEWAUCTIONITEMS NOT EMPTY");
            for(int i=0; i<newAuctionitems.size(); i++){
                AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
@@ -147,7 +147,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
                }
            }
    }
-       auctionitems = newAuctionitems;
+*/       auctionitems = newAuctionitems;
    }
 
    public boolean isNextPageAvailable()
@@ -188,7 +188,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
     * @param renderingException The exception that occurred when attempting
     * to render this Renderable.
     */
-   public void renderingException(RenderingException renderingException) {
+/*   public void renderingException(RenderingException renderingException) {
 
        if (renderingException instanceof TransientRenderingException ){
 
@@ -200,7 +200,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
            }
        }
    }
-
+*/
    /**
     * Sort the list.
     */
@@ -255,8 +255,8 @@ System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
    public void destroy() {
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-           System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
-           tempBean.removeRenderable(this);
+           //System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
+           //tempBean.removeRenderable(this);
            globalAuctionItems.remove(tempBean);
        }
    }
