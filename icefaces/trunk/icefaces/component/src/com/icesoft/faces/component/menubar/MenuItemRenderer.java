@@ -365,7 +365,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         } else {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR,"iceLink-dis");
         }
-        span.setAttribute(HTML.CLASS_ATTR, "iceSubMenuRowLabel");
+        span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
 
         div.appendChild(span);
         // create text
