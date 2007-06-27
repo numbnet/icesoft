@@ -241,6 +241,7 @@
             <classpath refid="compile.run.classpath"/>
             <fileset dir="${src.dir}">
                 <include name="com/icesoft/faces/context/DOMContext.java"/>
+                <include name="com/icesoft/faces/context/ViewListener.java"/>
                 <include name="com/icesoft/faces/renderkit/dom_html_basic/HTML.java"/>
                 <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicInputRenderer.java"/>
                 <include name="com/icesoft/faces/renderkit/dom_html_basic/DomBasicRenderer.java"/>

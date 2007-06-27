@@ -84,7 +84,7 @@ public class IntervalRenderer extends OnDemandRenderer implements Runnable {
 
     /**
      * Schedules a render pass on the group of Renderables using the interval
-     * value specified using {@link this.setInterval}.
+     * value specified using {@link #setInterval}.
      */
     public void requestRender() {
 

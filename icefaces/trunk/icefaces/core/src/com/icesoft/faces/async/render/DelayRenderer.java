@@ -69,7 +69,7 @@ public class DelayRenderer extends OnDemandRenderer implements Runnable {
 
     /**
      * Schedules a render pass on the group of Renderables using the delay value
-     * specified using {@link this.setDelay}.  If a delay value was not
+     * specified using {@link #setDelay}.  If a delay value was not
      * explicitly set, then the default delay value (60000 ms) is used.
      */
     public void requestRender() {
