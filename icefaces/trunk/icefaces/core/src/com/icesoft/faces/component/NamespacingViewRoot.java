@@ -1,6 +1,7 @@
 package com.icesoft.faces.component;
 
 import com.icesoft.jasper.Constants;
+import java.io.Serializable;
 
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
@@ -14,7 +15,7 @@ import java.util.Map;
  * our own custom ViewHandler.  It simply overrides the createUniqueId method
  * and, if necessary, prepends the namespace to each component id.
  */
-public class NamespacingViewRoot extends UIViewRoot {
+public class NamespacingViewRoot extends UIViewRoot  implements Serializable{
 
     private ExternalContext extCtxt;
     private String namespace;
