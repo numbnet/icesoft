@@ -141,7 +141,8 @@ em {
 
 /* main container for an include */
 .contentIncludePanelGroup{
-    margin-right: 5px; 
+    margin-right: 5px;
+    width: 100%;
 }
 
 /* Component tabset labels */
@@ -1100,7 +1101,7 @@ em {
 	vertical-align: top;
 }
 
-
+/* Panel Border Example*/
 .pnlBrdrDemo {
     width:60%;
 }
@@ -1132,6 +1133,6 @@ em {
 
 .mainBorderLayoutNorth {
     height:60px;
-    padding:0px;
+    padding:0;
 }
 

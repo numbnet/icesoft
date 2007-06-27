@@ -45,35 +45,32 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <title><ice:outputText value="#{msgs.showCasetitle}" /></title>
-        <h:outputText style="padding-top:0px; padding-bottom:0px;" value="#{styleBean.style}" escape="false" />
+        <h:outputText style="padding-top:0; padding-bottom:0;" value="#{styleBean.style}" escape="false" />
         <ice:outputStyle href="css/showcase_style.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
-    <!--
+        <!--
             This is the main formating table which represents a layout view for
             the application components.  The components are pretty straightforward:
             header, left menu, and body components.  Follow the includes
             to see each individual components makeup.
         -->
 
-    <ice:panelBorder layout="hide east" border="0" cellpadding="0"
-        cellspacing="0" styleClass="mainBorderLayout" >
+        <table border="0" cellpadding="0"
+               cellspacing="0" class="mainBorderLayout" width="100%">
 
-        <f:facet name="north">
-            <ice:panelGroup>
-                <jsp:directive.include file="./inc/header.jspx" />
-            </ice:panelGroup>
-        </f:facet>
+            <tr>
+                <td colspan="3">
+                    <jsp:directive.include file="./inc/header.jspx" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" width="150px">
+                    <jsp:directive.include file="./inc/navigation.jspx" />
+                </td>
+                <td valign="top">
 
-        <f:facet name="west">
-            <ice:panelGroup>
-                <jsp:directive.include file="./inc/navigation.jspx" />
-            </ice:panelGroup>
-        </f:facet>
-
-        <f:facet name="center">
-            <ice:panelGroup>
-                <!--
+                 <!--
                    Main Component content;
                    controls which content to display for the respective navigation
                 -->
@@ -233,7 +230,7 @@
                             <jsp:directive.include file="./inc/components/table.jspx" />
                         </f:subview>
                     </ice:panelGroup>
-                        
+
                     <ice:panelGroup id="columnsContentPanel" styleClass="contentIncludePanelGroup" >
                         <f:subview id="colSub">
                             <!-- Table include -->
@@ -312,26 +309,29 @@
                     </ice:panelGroup>
 
                 </ice:panelStack>
-                <br />
-            </ice:panelGroup>
-        </f:facet>
 
-        <f:facet name="south">
-            <ice:panelGroup>
-                <table width="100%" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td class="showcaseFooter">&#169; 2006 ICEsoft Technologies
-                        Inc. &#160; &#8226; &#160; Toll Free: 1-877-263-3822 USA and
-                        Canada
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="showcaseFooter">&#169; 2006 ICEsoft Technologies
+                                Inc. &#160; &#8226; &#160; Toll Free: 1-877-263-3822 USA and
+                                Canada
 
-                        <br />
+                                <br />
 
-                        </td>
-                    </tr>
-                </table>
-            </ice:panelGroup>
-        </f:facet>
-    </ice:panelBorder>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+
+
 <!--
   PRELOAD IMAGES need for roleovers and layout in general, javascript is only
   loaded once per refresh which is good enough.  This improves overall user

@@ -61,7 +61,7 @@ a control on the data to hide/show the table columns.
                     <ice:selectBooleanCheckbox value="#{table.renderLastName}"
                                                partialSubmit="true"/>
                     <ice:outputText
-                            value="#{msgs['component.table.column3']} "/>
+                            value="#{msgs['component.table.column2']} "/>
                     <ice:selectBooleanCheckbox value="#{table.renderEmail}"
                                                partialSubmit="true"/>
                     <ice:outputText
