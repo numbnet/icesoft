@@ -108,6 +108,7 @@
     <description>
         <![CDATA[
               <p>Base name for the style classes. Deafult is <b>iceSelInpTxt</b>.</p>
+                if enabled
                 <ul>
                     <li>iceSelInpTxt</li>
                     <li>iceSelInpTxtTxt</li>
@@ -115,6 +116,14 @@
                     <li>iceSelInpTxtRow</li>
                     <li>iceSelInpTxtSelRow</li>
                 </ul>
+                
+                if disabled
+                <ul>
+                    <li>iceSelInpTxt-dis</li>
+                    <li>iceSelInpTxtTxt-dis</li>
+                </ul>   
+                
+                
 		]]>		
     </description>
     <property-name>styleClass</property-name>
