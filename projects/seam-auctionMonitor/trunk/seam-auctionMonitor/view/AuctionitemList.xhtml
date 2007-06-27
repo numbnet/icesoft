@@ -74,8 +74,8 @@
 										   title="Toggle the item details open or close"
 										   actionListener="#{auctionitemBean.pressExpandButton}"/>
 						<ice:outputText value="#{auctionitemBean.auctionitem.title}" />
-						<ice:outputText value=" [#{auctionitemBean.auctionitem.itemId}]" />
-						<ice:outputText value=" [#{auctionitemBean}]" />
+						<!--<ice:outputText value=" [#{auctionitemBean.auctionitem.itemId}]" />-->
+						<!--<ice:outputText value=" [#{auctionitemBean}]" />-->
 					</ice:panelGroup>
 					<ice:panelGroup>
 						<ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}" >
@@ -153,6 +153,7 @@
                 <h:column>
                     <h:commandLink action="#{entry.end}" value="delete" rendered="#{!entry.current}"/>
                 </h:column>
+<!--
                 <h:column>
                     <h:outputText value="#{entry.startDatetime}">
                         <s:convertDateTime type="time" pattern="HH:mm"/>
@@ -163,12 +164,13 @@
                         <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
+-->
                 <h:column>
                     <h:outputText value="#{entry.lastDatetime}">
                         <s:convertDateTime type="time" pattern="HH:mm"/>
                     </h:outputText>
                 </h:column>
-                <h:column>#{entry.timeout}</h:column>
+                <!--<h:column>#{entry.timeout}</h:column>-->
             </h:dataTable>
         </h:form>
         <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>

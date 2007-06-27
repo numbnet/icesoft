@@ -1,11 +1,11 @@
 <!DOCTYPE pages PUBLIC
-          "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
-          "http://jboss.com/products/seam/pages-1.2.dtd">
+        "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
+        "http://jboss.com/products/seam/pages-1.2.dtd">
 
 <pages no-conversation-view-id="/home.xhtml"
-                 login-view-id="/register.xhtml">
+       login-view-id="/home.xhtml">
 
-    <page view-id="*">
+    <page view-id="*" login-required="true">
         <navigation>
             <rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
@@ -18,43 +18,56 @@
             <message>Not found</message>
         </redirect>
     </exception>
-    
+
     <exception class="javax.persistence.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
             <message>Not found</message>
         </redirect>
     </exception>
-    
+
     <exception class="javax.persistence.OptimisticLockException">
         <end-conversation/>
         <redirect view-id="/error.xhtml">
             <message>Another user changed the same data, please try again</message>
         </redirect>
     </exception>
-    
+
     <exception class="org.jboss.seam.security.AuthorizationException">
         <redirect>
             <message>You don't have permission to do this</message>
         </redirect>
     </exception>
-    
+
     <exception class="org.jboss.seam.security.NotLoggedInException">
-        <redirect view-id="/login.xhtml">
+        <redirect view-id="/home.xhtml">
             <message>Please log in first</message>
         </redirect>
     </exception>
-     
+
     <exception>
         <redirect view-id="/error.xhtml">
             <message>Unexpected error, please try again</message>
         </redirect>
     </exception>
-<!-- Conversation List
-	<page view-id="/hotel.xhtml">View hotel: #{hotel.name}</page>
-	<page view-id="/book.xhtml">Book hotel: #{hotel.name}</page>
-	<page view-id="/confirm.xhtml">Confirm: #{booking.description}</page>
--->
-    <page view-id="/AuctionitemList.xhtml">
+    <!-- Conversation List
+        <page view-id="/hotel.xhtml">View hotel: #{hotel.name}</page>
+        <page view-id="/book.xhtml">Book hotel: #{hotel.name}</page>
+        <page view-id="/confirm.xhtml">Confirm: #{booking.description}</page>
+    -->
+    <page view-id="/AuctionitemList.xhtml" action="#{conversation.begin}">
         Search items with pattern: #{itemSearch.searchPattern}
+    </page>
+
+    <page view-id="/home.xhtml" login-required="false">
+        <navigation from-action="#{identity.login}">
+            <rule if="#{identity.loggedIn}">
+                <redirect view-id="/AuctionitemList.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation from-action="#{register.register}">
+            <rule if-outcome="login">
+                <redirect view-id="/AuctionitemList.xhtml"/>
+            </rule>
+        </navigation>
     </page>
 </pages>
