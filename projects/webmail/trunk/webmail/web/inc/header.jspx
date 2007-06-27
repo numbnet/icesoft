@@ -32,8 +32,7 @@ webmail applicaiton as well as the following links:
         </tr>
         <tr>
             <td valign="top" align="right">
-                
-                <!-- DEMO_SURVEY_JAVASCRIPT BEGIN -->
+
                 <!-- Navigate to settings panel -->
                 <ice:panelGroup styleClass="smallCommandButtonBorder" >
                     <ice:commandLink
@@ -46,7 +45,6 @@ webmail applicaiton as well as the following links:
                                 styleClass="noborder" />
                    </ice:commandLink>
                 </ice:panelGroup>
-                <!-- DEMO_SURVEY_JAVASCRIPT END -->
 
                 <!-- logoff button -->
                 <ice:panelGroup styleClass="smallCommandButtonBorder" >

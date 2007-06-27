@@ -53,6 +53,7 @@ import org.hibernate.Session;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.context.FacesContext;
 import javax.mail.Folder;
 import javax.mail.MessagingException;
 import javax.mail.Flags;
@@ -62,7 +63,9 @@ import javax.mail.search.BodyTerm;
 import javax.mail.search.FromStringTerm;
 import javax.mail.search.SearchTerm;
 import javax.mail.search.SubjectTerm;
+import javax.servlet.http.HttpSession;
 import java.util.*;
+import java.io.IOException;
 
 
 /**
@@ -581,32 +584,57 @@ public class MailManager implements WebmailBase {
      * account subfolders to update their respective messages lists.
      */
     public void refreshMailAccounts(ActionEvent actionEvent) {
+        try{
+            MailAccountBean tmpAccount;
+            MailAccountControl tmpControl;
+            ArrayList tmpFolders;
+            MailFolderBean tmpFolder;
+            // loop through each account and refresh MailfoldersBeans
+            for (int i = mailAccountBeans.size() - 1; i >= 0; i--) {
 
-        MailAccountBean tmpAccount;
-        MailAccountControl tmpControl;
-        ArrayList tmpFolders;
-        MailFolderBean tmpFolder;
-        // loop through each account and refresh MailfoldersBeans
-        for (int i = mailAccountBeans.size() - 1; i >= 0; i--) {
+                if (mailAccountBeans.get(i) instanceof MailAccountBean) {
+                    tmpAccount = (MailAccountBean) mailAccountBeans.get(i);
+                    if(tmpAccount.getMailControl().isConnected()){
+                        tmpControl = tmpAccount.getMailControl();
+                        tmpFolders = tmpAccount.getMailFolders();
+                        // refresh each folder
+                        for (int j = tmpFolders.size() - 1; j >= 0; j--) {
+                            tmpFolder = (MailFolderBean) tmpFolders.get(j);
+                            tmpControl.tickleMailAccount(tmpFolder);
+                        }
+                    }
+                }
 
-        	if (mailAccountBeans.get(i) instanceof MailAccountBean) {
-                tmpAccount = (MailAccountBean) mailAccountBeans.get(i);
-                if(tmpAccount.getMailControl().isConnected()){
-                	tmpControl = tmpAccount.getMailControl();
-                	tmpFolders = tmpAccount.getMailFolders();
-                	// refresh each folder
-                	for (int j = tmpFolders.size() - 1; j >= 0; j--) {
-                	    tmpFolder = (MailFolderBean) tmpFolders.get(j);
-                	    tmpControl.tickleMailAccount(tmpFolder);
-                	}
-			    }
             }
-
+            WebmailMediator.addMessage("navInc:n",
+                                             "checkMessage",
+                                            null,
+                 ("Finished checking "+mailAccountBeans.size()+" mail accounts"));
         }
-        WebmailMediator.addMessage("navInc:n",
-                                         "checkMessage",
-                                        null,
-             ("Finished checking "+mailAccountBeans.size()+" mail accounts"));
+        catch(Throwable ex){
+            try{
+                FacesContext facesContext =  FacesContext.getCurrentInstance();
+
+                // make sure we have a valid facesContext
+                if (facesContext != null){
+
+                    HttpSession httpSession =
+                            (HttpSession) facesContext.getExternalContext()
+                                    .getSession(false);
+                    System.out.println("session 1 " + httpSession.getId());
+                    httpSession.invalidate();
+
+                    facesContext =  FacesContext.getCurrentInstance();
+                    httpSession =
+                            (HttpSession) facesContext.getExternalContext()
+                                    .getSession(false);
+                    System.out.println("session 2 " + httpSession.getId());
+                    facesContext.getExternalContext().redirect("./error.html");
+                }
+            }catch (IOException e){
+                log.error("On error rederect error", e);
+            }
+        }
      }
 
     /**

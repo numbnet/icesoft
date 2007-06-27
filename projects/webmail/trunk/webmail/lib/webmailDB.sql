@@ -101,16 +101,7 @@ CREATE TABLE IF NOT EXISTS `mail_accounts` (
 
 INSERT INTO `mail_accounts` (`id`, `username`, `protocol`, `host`, `incoming_host`, `incoming_port`, `incoming_ssl`, `outgoing_verification`, `outgoing_host`, `outgoing_port`, `outgoing_ssl`, `mail_username`, `password`)
 VALUES
-(null, 'anon1', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account1', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon2', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account2', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon3', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account3', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon4', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account4', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon5', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account5', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon6', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account6', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon7', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account7', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon8', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account8', 'us9AXNEUKdwuT0v+rM6OAw=='),
-(null, 'anon9', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account9', 'us9AXNEUKdwuT0v+rM6OAw==');
-
+(null, 'admin', 'imap', 'host.setup.this', 'host.setup.this', 143, 0, 0, 'host.setup.this', 25, 0, 'account1', 'us9AXNEUKdwuT0v+rM6OAw==');
 -- --------------------------------------------------------
 
 --
@@ -157,15 +148,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
 
 INSERT INTO `tasks` (`id`, `username`, `category`, `name`, `description`, `reminder_date`, `start_date`, `end_date`, `priority`, `status`, `percent_complete`)
 VALUES
-(null, 'anon1', 1, 'task 1 test', 'description 1 test', '2006-02-02', '2006-02-02', '2006-02-02', 1, 0, 0.5),
-(null, 'anon1', 1, 'test task', 'description 2 test', '2006-02-04', '2006-02-04', '2006-02-02', 2, 0, 0.25),
-(null, 'anon2', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon3', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon4', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon5', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon6', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon7', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0),
-(null, 'anon8', 0, 'test task', 'description 3 test', '2006-02-06', '2006-02-06', '2006-02-02', 1, 0, 0);
+(null, 'admin', 1, 'task 1 test', 'description 1 test', '2006-02-02', '2006-02-02', '2006-02-02', 1, 0, 0.5);
 
 -- --------------------------------------------------------
 
@@ -190,15 +173,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`username`, `password`, `first_name`, `last_name`, `company`)
 VALUES
-('anon1', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 1", "ICEsoft Technologies Inc." ),
-('anon2', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 2", "ICEsoft Technologies Inc." ),
-('anon3', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 3", "ICEsoft Technologies Inc." ),
-('anon4', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 4", "ICEsoft Technologies Inc." ),
-('anon5', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 5", "ICEsoft Technologies Inc." ),
-('anon6', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 6", "ICEsoft Technologies Inc." ),
-('anon7', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 7", "ICEsoft Technologies Inc." ),
-('anon8', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 8", "ICEsoft Technologies Inc." ),
-('anon9', 'us9AXNEUKdwuT0v+rM6OAw==', "Anonymous", "User 9", "ICEsoft Technologies Inc." );
+('admin', 'mF3AVDeUI18=', "Anonymous", "User 1", "ICEsoft Technologies Inc." );
 
 -- --------------------------------------------------------
 

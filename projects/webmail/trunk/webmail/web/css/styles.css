@@ -13,7 +13,7 @@ body {
     color: #666666;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
-    margin: 0px 0px 0px 0px;
+    margin: 0;
 }
 
 
@@ -27,12 +27,12 @@ body {
 }
 
 /* Override style of calendar input text field */
-.iceCalInput{
+.iceSelInpDate{
     width: 75px;
 }
 
 .noborder {
-    border-width: 0px;
+    border-width: 0;
     text-align: center;
 }
 
@@ -53,7 +53,7 @@ body {
 
 .commandButtonBorder a {
     vertical-align: middle;
-    border: 0px solid red;
+    border: 0 solid red;
 }
 .commandButtonBorder img {
     vertical-align: middle;
@@ -61,7 +61,7 @@ body {
 
 
 .smallCommandButtonBorder {
-    padding: 0px;
+    padding: 0;
     display: inline;
 }
 
@@ -102,14 +102,14 @@ body {
     width: 100%;
 }
 
-.icePageNorth {
+.icePnlBrdrNorth {
     background-color: #FFFFFF;
     text-align: left;
     vertical-align: top;
     padding: 5px;
 }
 
-.icePageWest {
+.icePnlBrdrWest {
     background-color: #FFFFFF;
     vertical-align: top;
     text-align: left;
@@ -117,7 +117,7 @@ body {
     padding: 5px;
 }
 
-.icePageCenter{
+.icePnlBrdrCenter{
     background-color: #FFFFFF;
     vertical-align: top;
     text-align: left;
@@ -175,7 +175,7 @@ body {
     text-align: center;
     color: white;
     background-color: orange;
-    margin: 0px;
+    margin: 0;
 }
 
 .infoBox input:hover {
@@ -186,7 +186,7 @@ body {
 /* feed back frorm */
 .feebackFormLink {
     color: blue;
-    font-size: 12;
+    font-size: 12px;
     vertical-align:text-top;
 }
 
@@ -200,7 +200,7 @@ body {
     padding-bottom: 1px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    margin: 0px;
+    margin: 0;
 }
 
 .emailColumnCenterAlign {
@@ -223,7 +223,7 @@ body {
     padding-bottom: 1px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    margin: 0px;
+    margin: 0;
 }
 
 .taskColumnCenterAlign {
@@ -246,7 +246,7 @@ body {
     padding-bottom: 1px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    margin: 0px;
+    margin: 0;
 }
 
 .contactColumnCenterAlign {
@@ -264,8 +264,8 @@ body {
 /* progress bar tweak */
 .bgStyleClass {
     width: 50px;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     display: block;
     border-collapse: collapse;
 }
@@ -304,8 +304,8 @@ body {
 .navigationItems{
     display: inline;
     text-align: left;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -338,7 +338,7 @@ body {
     background-color: #DEDEDE;
 }
 
-.iceDtdPgrScrCol a, .iceDtdPgrScrCol a{
+.iceDatPgrScrCol a, .iceDatPgrScrCol a{
     text-decoration:none;
     font-weight:normal;
     background-color:#FFFFFF;
@@ -349,13 +349,13 @@ body {
     border:1px solid #FFFFFF;
 }
 /* override the attributes for the currently selected page */
-.iceDtdPgrScrCol a{
+.iceDatPgrScrCol a{
     color:#FFFFFF;
     border:1px solid #999999;
     background-color:#999999;
 }
 /* set the attributes for the mouseover on none-current pages */
-.iceDtdPgrScrCol a:hover{
+.iceDatPgrScrCol a:hover{
     color:#000000;
     border:1px solid #666666;
 }
@@ -365,12 +365,12 @@ body {
     height: 25px;
 }
 
-.iceOutputProgress{
-    padding: 0px;
-    margin: 0px;
+.iceOutProg{
+    padding: 0;
+    margin: 0;
 }
 /* over ride defeault width of 300px */
-.iceOutputProgressBackground{
+.iceOutProgBackground{
   width: 50px;
 }
 
@@ -382,10 +382,10 @@ width:50%;
 width:50%;
 }
 
-.iceSelInpRow, .iceSelInpSelRow {
+.iceSelInpTxtRow, .iceSelInpTxtSelRow {
     height: 15px;
 }
 
-.iceSelInpSelRow {
+.iceSelInpTxtSelRow {
     color: #FFFFFF;
 }

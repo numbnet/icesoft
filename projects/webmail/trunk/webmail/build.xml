@@ -45,6 +45,9 @@
 
     <property name="common.build.dir" location="../../../../icefaces/samples/etc/" />
 
+    <patternset id="additional.compile.lib.jars"
+            includes="servlet-api.jar " />
+
     <!-- common application build include -->
     <import file="${common.build.dir}/build-common.xml"/>
 
