@@ -46,8 +46,8 @@
                 <p>Or register:</p>
 
                 <div class="dialog">
-                    <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-                        <s:validateAll>
+                    <s:validateAll>
+                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
                             <h:outputLabel for="rusername">Username</h:outputLabel>
                             <h:inputText id="rusername" value="#{user.username}" required="true"/>
                             <h:outputLabel for="rname">Real Name</h:outputLabel>
@@ -56,8 +56,8 @@
                             <h:inputSecret id="rpassword" value="#{user.password}" required="true"/>
                             <h:outputLabel for="rverify">Verify Password</h:outputLabel>
                             <h:inputSecret id="rverify" value="#{register.verify}" required="true"/>
-                        </s:validateAll>
-                    </h:panelGrid>
+                        </h:panelGrid>
+                    </s:validateAll>
                 </div>
 
             </ice:panelAccordion>
