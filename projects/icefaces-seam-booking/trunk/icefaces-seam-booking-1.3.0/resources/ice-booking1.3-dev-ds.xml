@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+    <local-tx-datasource>
+        <jndi-name>ice-booking1.3Datasource</jndi-name>
+        <connection-url>jdbc:hsqldb:.</connection-url>
+        <driver-class>org.hsqldb.jdbcDriver</driver-class>
+        <user-name>sa</user-name>
+        <password></password>
+    </local-tx-datasource>
+</datasources>

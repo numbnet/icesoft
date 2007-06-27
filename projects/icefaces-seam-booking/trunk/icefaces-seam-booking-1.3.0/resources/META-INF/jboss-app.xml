@@ -1,0 +1,5 @@
+<jboss-app>
+   <loader-repository> 
+      seam.jboss.org:loader=ice-booking1.3
+   </loader-repository> 
+</jboss-app> 
