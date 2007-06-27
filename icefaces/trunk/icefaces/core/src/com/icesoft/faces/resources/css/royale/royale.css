@@ -70,7 +70,7 @@ input {
 /*
 =================== Style class definitions for ICE Standard Extended Component Appearance ==============
 */
-.iceInpTxt, .iceInpSecrt, .iceTxtArea {
+.iceInpTxt, .iceInpSecrt, .iceInpTxtArea {
     border: 1px solid #0056EA;
     background-color: #FFFFFF;
     margin: 2px;
@@ -99,7 +99,7 @@ input {
     padding: 2px;
 }
 
-.iceTxtArea {
+.iceInpTxtArea {
     font-family: Arial, Helvetica, sans-serif;
     color: #000000;
     padding: 2px;
@@ -659,6 +659,7 @@ input {
     border-bottom: 1px solid #0056EA;
 }
 .icePnlTbSet { /* was iceTabSet */
+    width: 100%;
 }
 
 .icePnlTbSetCntBtm { /*was iceTabSetBottom*/
@@ -1602,7 +1603,7 @@ iceMnuBarVrt, .iceMnuBarVrtItem {
     padding: 2px;
 }
 
-.iceTxtArea-dis {
+.iceInpTxtArea-dis {
     font-family: Arial, Helvetica, sans-serif;
     font-size: .95em;
     color: #D0D4EE;

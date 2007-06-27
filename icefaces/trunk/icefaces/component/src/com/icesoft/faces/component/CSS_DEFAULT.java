@@ -55,7 +55,7 @@ public class CSS_DEFAULT {
     public static final String INPUT_TEXT_DEFAULT_STYLE_CLASS =
             "iceInpTxt"; // Originally was "iceInputtext"
     public static final String INPUT_TEXT_AREA_DEFAULT_STYLE_CLASS =
-            "iceTxtArea"; // Originally was "iceTextarea"
+            "iceInpTxtArea"; // Originally was "iceTextarea"
     public static final String OUTPUT_LABEL_DEFAULT_STYLE_CLASS =
             "iceOutLbl"; // Originally was "iceOuputtext"
     public static final String OUTPUT_LINK_DEFAULT_STYLE_CLASS =

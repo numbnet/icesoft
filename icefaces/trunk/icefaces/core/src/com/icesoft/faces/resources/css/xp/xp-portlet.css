@@ -48,7 +48,7 @@
 /*
 =================== Style class definitions for ICE Standard Extended Component Appearance ==============
 */
-.iceInpTxt, .iceInpSecrt, .iceTxtArea {
+.iceInpTxt, .iceInpSecrt, .iceInpTxtArea {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
     margin: 2px;
@@ -76,7 +76,7 @@
     padding: 2px;
 }
 
-.iceTxtArea {
+.iceInpTxtArea {
     font-family: Arial, Helvetica, sans-serif;
     color: #000000;
     padding: 2px;
@@ -670,7 +670,7 @@
 
 /* tabPanel */
 .icePnlTbSet { /* was iceTabSet*/
-
+    width: 100%;
 }
 
 .icePnlTbSetCnt { /*newly added class*/
@@ -1620,7 +1620,7 @@
     padding: 2px;
 }
 
-.iceTxtArea-dis {
+.iceInpTxtArea-dis {
     font-family: Arial, Helvetica, sans-serif;
     font-size: .95em;
     color: #ABABAB;
