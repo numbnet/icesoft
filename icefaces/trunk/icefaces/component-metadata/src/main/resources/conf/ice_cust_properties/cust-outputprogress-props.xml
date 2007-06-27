@@ -110,15 +110,27 @@
               "class" attribute on generated markup.<br/>
               <p>Defines the base class name for all style classes used.
               Default value is <b>iceOutProg</b></p>
+
               <ul>
                 <li>iceOutProg</li>
-                <li>iceOutProgIndetActv</li>
-                <li>iceOutProgIndetInactv</li>
                 <li>iceOutProgBg</li>
-                <li>iceOutProgFill</li>
                 <li>iceOutProgTxt</li>
               </ul>              
-  		 </p>                   
+
+			  The main div which shows progress bar renderes out different style
+			  classes depending on the mode:<br/><br/>
+
+			  Standard Mode:
+              <ul>
+                <li>iceOutProgFill</li>		
+              </ul>                	
+				
+			  Indeterminate Mode:
+              <ul>     
+                <li>iceOutProgIndetActv (during the progress)</li>
+                <li>iceOutProgIndetInactv (progress finished)</li>
+              </ul>                
+  		 	</p>                   
 		]]>
     </description>
     <property-name>styleClass</property-name>
