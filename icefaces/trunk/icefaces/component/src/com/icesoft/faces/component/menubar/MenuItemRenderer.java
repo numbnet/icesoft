@@ -149,9 +149,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Element topLevelDiv = (Element) domContext.getRootNode();
         topLevelDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL");
 
+        String rootItemSubClass = CSS_DEFAULT.MENU_BAR_ITEM_STYLE;
+        if (vertical) {
+            rootItemSubClass = CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE +
+                                rootItemSubClass;
+        }
         topLevelDiv.setAttribute(HTML.CLASS_ATTR,
                 ((MenuItem) uiComponent).
-                getUserDefinedStyleClass(menuComponent.getItemStyleClass()));
+                getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
+                        rootItemSubClass));
 
         if (uiComponent.getChildCount() > 0) {
             String displayEvent = HTML.ONMOUSEOVER_ATTR;
@@ -248,7 +254,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 Element iconImg = domContext.createElement(HTML.IMG_ELEM);
                 iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
                 iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
-                iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.getImageStyleClass());
+                iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
+                        getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
+                                CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
+                                CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
                 div.appendChild(iconImg);
             }
         }
@@ -260,7 +269,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         } else {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR, "iceLink-dis");
         }
-        span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
+        span.setAttribute(HTML.CLASS_ATTR, menuItem.
+                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
+                        CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
         div.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
@@ -303,7 +314,11 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             Element iconImg = domContext.createElement(HTML.IMG_ELEM);
             iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
-            iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.getImageStyleClass());
+            iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
+                    getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
+                            CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
+                            CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
+                            CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
             div.appendChild(iconImg);
         }
 
@@ -314,7 +329,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         } else {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR,"iceLink-dis");
         }
-        span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
+        span.setAttribute(HTML.CLASS_ATTR,  menuItem.
+                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
+                        CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
+                        CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
 
         div.appendChild(span);
         // create text

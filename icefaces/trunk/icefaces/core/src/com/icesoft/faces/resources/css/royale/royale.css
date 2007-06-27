@@ -1341,8 +1341,6 @@ input {
     text-align: left;
 }
 
-.iceMnuBarItemLabel {} /*newly added class*/
-
 .iceMnuBarSubMenu { /* was iceSubMenu */
     position: absolute;
     background-color: #D0D4EE;
@@ -1377,12 +1375,18 @@ input {
     color: #FFFFFF;
 }
 
-.iceMnuItmImage { /* was iceSubMenuRowImage */
+.iceMnuItmLabel {}
+.iceMnuItmImage{}
+
+.iceMnuBarItemLabel {} 
+.iceMnuBarItemImage {}
+
+.iceMnuItmImage, .iceMnuBarItemImage{ /* was iceSubMenuRowImage */
     display:inline;
     vertical-align: top;
 }
 
-.iceMnuItmLabel { /*was iceSubMenuRowLabel */
+.iceMnuItmLabel, .iceMnuBarItemLabel { /*was iceSubMenuRowLabel */
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 4px;
     font-size: 1.0em;
@@ -1398,6 +1402,8 @@ input {
 }
 
 /* classes for the vertical version of the iceMenu*/
+.iceMnuBarVrtItemLabel {} 
+.iceMnuBarVrtItemImage {}
 
 iceMnuBarVrt, .iceMnuBarVrtItem {
 /* iceMnuBarVrt was iceMenu_vertical */
@@ -1405,8 +1411,6 @@ iceMnuBarVrt, .iceMnuBarVrtItem {
     width: 160px;
     display: block;
 }
-
-.iceMnuBarVrtItemLabel {} /*newly added class*/
 
 .iceMnuBarVrtItem a { /* was iceMenu_verticalItem */
     background-color: #2A6CC2;

@@ -383,11 +383,11 @@ public class MenuItem extends MenuItemBase {
                 CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE);
     }
     
-    String getUserDefinedStyleClass(String parentClass) {
+    String getUserDefinedStyleClass(String parentClass, String subClass) {
         String disSuffix = isDisabled()? "-dis" : "";
         
         if (styleClass != null) {
-            return parentClass + disSuffix + " " +styleClass + disSuffix; 
+            return parentClass + disSuffix + " " +styleClass + subClass + disSuffix; 
         }
         return parentClass + disSuffix;
     }

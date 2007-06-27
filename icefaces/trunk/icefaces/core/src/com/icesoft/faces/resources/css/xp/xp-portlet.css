@@ -1362,8 +1362,6 @@
     text-align: left;
 }
 
-.iceMnuBarItemLabel {} /*newly added class*/
-
 .iceMnuBarSubMenu { /* was iceSubMenu */
     position: absolute;
     background-color: #EFEFEF;
@@ -1398,14 +1396,14 @@
     color: #FFFFFF;
 }
 
-.iceMnuItmLabel { /* was iceSubMenuRowLabel */
+.iceMnuItmLabel, .iceMnuBarItemLabel { /* was iceSubMenuRowLabel */
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 4px;
     font-size: 1.0em;
     display: inline;
 }
 
-.iceMnuItmImage {  /* was iceSubMenuRowImage */
+.iceMnuItmImage, .iceMnuBarItemImage {  /* was iceSubMenuRowImage */
     display:inline;
     vertical-align: top;    
 }
@@ -1418,6 +1416,9 @@
 }
 
 /* classes for the vertical version of the iceMenu*/
+.iceMnuBarVrtItemLabel {} 
+.iceMnuBarVrtItemImage {}
+
 .iceMnuBarVrt { /* was iceMenu_vertical */
     float: left;
     padding: 0px;
@@ -1428,8 +1429,6 @@
     width: 160px;
     display: block;
 }
-
-.iceMnuBarVrtItemLabel {} /*newly added class*/
 
 .iceMnuBarVrtItem a { /* was iceMenu_verticalItem */
     background-color: #DDDDDD;

@@ -1389,8 +1389,6 @@ input {
     text-align: left;
 }
 
-.iceMnuBarItemLabel {} /*newly added class*/
-
 .iceMnuBarSubMenu { /* was iceSubMenu */
     position: absolute;
     background-color: #EFEFEF;
@@ -1425,14 +1423,14 @@ input {
     color: #FFFFFF;
 }
 
-.iceMnuItmLabel { /* was iceSubMenuRowLabel */
+.iceMnuItmLabel, .iceMnuBarItemLabel { /* was iceSubMenuRowLabel */
     font-family: Arial, Helvetica, sans-serif;
     padding-top: 4px;
     font-size: 1.0em;
     display: inline;
 }
 
-.iceMnuItmImage {  /* was iceSubMenuRowImage */
+.iceMnuItmImage, .iceMnuBarItemImage {  /* was iceSubMenuRowImage */
     display:inline;
     vertical-align: top;    
 }
@@ -1445,6 +1443,10 @@ input {
 }
 
 /* classes for the vertical version of the iceMenu*/
+
+.iceMnuBarVrtItemLabel {} 
+.iceMnuBarVrtItemImage {}
+
 .iceMnuBarVrt { /* was iceMenu_vertical */
     float: left;
     padding: 0px;
@@ -1478,8 +1480,6 @@ input {
     color: #FFFFFF;
     text-decoration: none;
 }
-
-.iceMnuBarVrtItemLabel {} /*newly added class*/
 
 .iceMnuBarVrtSubMenu { /* was iceSubMenu_vertical*/
     padding: 1px;

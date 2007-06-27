@@ -94,6 +94,7 @@
                 <li>iceMnuBar</li>
                 <li>iceMnuBarItem</li>
                 <li>iceMnuBarItemLabel</li>
+                <li>iceMnuBarItemImage</li>                
                 <li>iceMnuBarSubMenu</li>
                 <li>iceMnuBarSubMenuInd</li>
               </ul>
@@ -102,6 +103,7 @@
                 <li>iceMnuBarVrt</li>
                 <li>iceMnuBarVrtItem</li>
                 <li>iceMnuBarVrtItemLabel</li>
+                <li>iceMnuBarVrtItemImage</li>
                 <li>iceMnuBarVrtSubMenu</li>
                 <li>iceMnuBarVrtSubMenuInd</li>
               </ul>   
@@ -110,6 +112,7 @@
                 <li>iceMnuBar-dis</li>
                 <li>iceMnuBarItem-dis</li>
                 <li>iceMnuBarItemLabel-dis</li>
+                <li>iceMnuBarItemImage-dis</li>
                 <li>iceMnuBarSubMenu-dis</li>
                 <li>iceMnuBarSubMenuInd-dis</li>
               </ul>
@@ -118,6 +121,7 @@
                 <li>iceMnuBarVrt-dis</li>
                 <li>iceMnuBarVrtItem-dis</li>
                 <li>iceMnuBarVrtItemLabel-dis</li>
+                <li>iceMnuBarVrtItemImage-dis</li>                
                 <li>iceMnuBarVrtSubMenu-dis</li>
                 <li>iceMnuBarVrtSubMenuInd-dis</li>
               </ul>                          
