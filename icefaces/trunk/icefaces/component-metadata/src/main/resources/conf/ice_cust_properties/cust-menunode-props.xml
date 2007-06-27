@@ -85,8 +85,13 @@
       
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
-              "class" attribute on generated markup.<br/>
-              The base name for all style classes. Default value is <b>iceMnuItm</b></p>
+              "class" attribute on generated markup.<br/><br/>
+              As the top level menu items are part of the menuBar so the style 
+              class names rendered differently for top level and non 
+              to level menu items. <br/>
+              <p>
+              The base name rendered same for all non top level menu item regardless
+              of orientation. Default value is <b>iceMnuItm</b></p>
               if enabled 
               <ul>
                 <li>iceMnuItm</li>
@@ -100,7 +105,43 @@
                 <li>iceMnuItmImage-dis</li>
                 <li>iceMnuItmLabel-dis</li>
               </ul>
+			  <p>
+			  As the top level menu item is part of the MenuBar, so it is 
+			  possible to have different representation for horizontal and 
+			  vertical menu. <br/>
+			  
+			  For the top level menu items the style class base name depends on 
+			  orientation of the menu . Default value for top level menu item
+			  <b>iceMnuBar</b>: <br/>
+			  if enabled + horizontal
+              <ul>
+                <li>iceMnuBarItem</li>
+                <li>iceMnuBarItemImage</li>
+                <li>iceMnuBarItemLabel</li>
+              </ul>
 
+			  if enabled + vertical
+              <ul>
+                <li>iceMnuBarVrtItem</li>
+                <li>iceMnuBarVrtItemImage</li>
+                <li>iceMnuBarVrtItemLabel</li>
+              </ul>
+
+			  if disabled + horizontal
+              <ul>
+                <li>iceMnuBarItem-dis</li>
+                <li>iceMnuBarItemImage-dis</li>
+                <li>iceMnuBarItemLabel-dis</li>
+              </ul>
+
+			  if disabled + vertical
+              <ul>
+                <li>iceMnuBarVrtItem-dis</li>
+                <li>iceMnuBarVrtItemImage-dis</li>
+                <li>iceMnuBarVrtItemLabel-dis</li>
+              </ul>
+			  
+			  </p> 
               
 		]]>
     </description>
