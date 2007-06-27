@@ -390,6 +390,7 @@
                             value="Please upload the presentation ZIP file. Select the Browse button below to navigate your file system and select the ZIP file created for this presentation.  Once the file has been selected, choose the Upload button."/>
                 </div>
                 <ice:inputFile uniqueFolder="false"
+                               width="400"
                                actionListener="#{participant.presentation.load}"
                                progressListener="#{participant.presentation.progressChange}"
                                buttonClass="none"

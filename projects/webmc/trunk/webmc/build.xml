@@ -1,83 +1,102 @@
-<project name="webmc" default="build.war">
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+  -->
+<project name="webmc" default="build.war" >
 
+    <!-- The basic build.properties file for customization -->
     <property file="build.properties"/>
-    <property name="demo.name"         value="${ant.project.name}"/>
-    <property name="base.dir"          location="."/>
-    <property name="build.dir"         location="build"/>
-    <property name="build.demo.dir"    location="${build.dir}/${demo.name}"/>
-    <property name="build.classes.dir" location="${build.demo.dir}/WEB-INF/classes"/>
-    <property name="lib.dir"           location="${base.dir}/"/>
-    <property name="locallib.dir"      location="lib/"/>
-    <property name="dist.dir"          location="dist"/>
-    <property name="src.dir"           location="src"/>
-    <property name="icefaces.jar"      location="${base.dir}/icefaces.jar"/>
-    <property name="components.jar"    value="${base.dir}/icefaces-comps.jar"/>
-    <property environment="env"/>
 
-    <!-- Classpath declarations for all the included jar files -->
-    <path id="compile.classpath">
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
-        <fileset dir="${locallib.dir}" includes="**/*.jar"/>
-        <pathelement location="${icefaces.jar}"/>
-        <pathelement location="${components.jar}"/>
-    </path>
+    <!-- compile settings overridden from -->
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    <property name="compile.debug" value="true"/>
 
-    <!-- Classpath declarations for standard libraries -->
-    <path id="taskdef.classpath">
-        <fileset dir="${lib.dir}" includes="catalina-ant.jar, jasper-compiler.jar, servlet-api.jar, jasper-runtime.jar, commons-logging.jar"/>
-    </path>
-    <taskdef resource="org/apache/catalina/ant/catalina.tasks" classpathref="taskdef.classpath"/>
+    <!-- path to applicaiton libraries -->
+    <property name="proj.lib.dir" location="lib/"/>
 
-    <!-- Target for compiling the source code -->
-    <target name="compile">
-        <delete dir="${build.classes.dir}"/>
-        <mkdir  dir="${build.classes.dir}"/>
-        <javac debug="on" srcdir="${src.dir}" destdir="${build.classes.dir}">
-            <classpath refid="compile.classpath"/>
-        </javac>
-        <copy todir="${build.classes.dir}">
-            <fileset dir="${src.dir}"/>
-        </copy>
+    <property name="common.build.dir" location="../../../../icefaces/samples/etc/" />
+
+    <!-- common application build include -->
+    <import file="${common.build.dir}/build-common.xml"/>
+
+     <patternset id="additional.compile.lib.jars" includes="servlet-api.jar "  />
+    
+    <!-- jars needed for form validation -->
+    <patternset id="validation.jars"
+                includes="
+        commons-validator-1.2.0.jar
+        oro-gump-28042006.jar
+        "
+            />
+    <!-- jars needed for JavaMail -->
+    <patternset id="javaMail.jars"
+                includes="
+        dsn.jar
+        imap.jar
+        mail.jar
+        mailapi.jar
+        pop3.jar
+        smtp.jar
+        activation.jar
+        "
+            />
+
+    <target name="clean" depends="common.clean">
+        <delete quiet="true">
+            <fileset dir="${app.lib.dir}" includes="*.jar" />
+        </delete>
+        <delete dir="${app.lib.dir}"/>
     </target>
 
-    <!-- Main target for building the project -->
+    <target name="compile" depends="clean">
+        <compile>
+            <add.javac.elements >
+                <classpath>
+                    <fileset dir="${proj.lib.dir}" includes="*.jar"/>
+                </classpath>
+            </add.javac.elements>
+        </compile>
+    </target>
+
     <target name="build.war" depends="compile">
-        <delete file="${dist.dir}/${demo.name}.war"/>
-        <mkdir dir="${dist.dir}"/>
-        <war destfile="${dist.dir}/${demo.name}.war" basedir="web" webxml="web/WEB-INF/web.xml" duplicate="fail">
 
-            <classes dir="${build.classes.dir}"/>
-            <lib dir="${lib.dir}">
-                <include name="commons-beanutils.jar"/>
-                <include name="commons-collections.jar"/>
-                <include name="commons-digester.jar"/>
-                <include name="commons-discovery.jar"/>
-                <include name="commons-el.jar"/>
-                <include name="commons-logging.jar"/>
-                <include name="commons-fileupload.jar"/>
-                <include name="jsf-api.jar"/>
-                <include name="backport-util-concurrent.jar"/>
-                <include name="jsf-impl.jar"/>
-                <include name="jstl.jar"/>
-                <include name="standard.jar"/>
-                <include name="xercesImpl.jar"/>
-                <include name="xml-apis.jar"/>
-                <include name="el-api.jar"/>
-                <include name="el-ri.jar"/>
-            </lib>
-            <lib dir="${locallib.dir}" includes="*.jar"/>
-            <lib file="${icefaces.jar}"/>
-            <lib file="${components.jar}"/>
-        </war>
-        
-        <delete dir="${build.demo.dir}"/>
-        <unwar src="${dist.dir}/${demo.name}.war" dest="${build.demo.dir}"/>
+        <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <fileset dir="${proj.lib.dir}">
+                <patternset refid="validation.jars"/>
+                <patternset refid="javaMail.jars"/>
+            </fileset>
+        </copy>
+
+        <build.war web.xml="web/WEB-INF/web.xml"/>
     </target>
-    
-    <!-- Target for cleaning up a built copy -->
-    <target name="clean">
-        <delete dir="${build.dir}"/>
-        <delete dir="${dist.dir}"/>
-    </target>
-    
+
 </project>
