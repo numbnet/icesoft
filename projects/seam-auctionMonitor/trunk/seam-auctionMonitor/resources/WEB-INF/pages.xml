@@ -54,7 +54,7 @@
         <page view-id="/book.xhtml">Book hotel: #{hotel.name}</page>
         <page view-id="/confirm.xhtml">Confirm: #{booking.description}</page>
     -->
-    <page view-id="/AuctionitemList.xhtml" action="#{conversation.begin}">
+    <page view-id="/AuctionitemList.xhtml">
         Search items with pattern: #{itemSearch.searchPattern}
     </page>
 

@@ -68,7 +68,6 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
        return state;
    }
 
-//   @Begin
    public String find()
    {
        page = 0;
