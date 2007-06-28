@@ -9,124 +9,115 @@
                 xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
-    <ui:define name="body">
+<ui:define name="body">
 
-        <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
+<h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
 
-        <ice:form id="bidForm" styleClass="edit">
-            <ice:panelAccordion styleClass="accordion2">
-                <f:facet name="header">
-                    <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
-                        <ice:outputText value="Bid search"/>
-                        <ice:graphicImage value="img/expand_true.gif"/>
-                    </ice:panelGrid>
-                </f:facet>
+<ice:form id="bidForm" styleClass="edit">
+    <ice:panelAccordion styleClass="accordion2" expanded="true">
+        <f:facet name="header">
+            <ice:outputText value="Bid Search"/>
+        </f:facet>
 
-                <ice:panelGroup styleClass="edit">
-                    <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-                        <h:outputText>bid value</h:outputText>
-                        <ice:inputText value="#{exampleBid.bidValue}" partialSubmit="true"/>
-                    </ice:panelGrid>
-                </ice:panelGroup>
-            </ice:panelAccordion>
-
-            <div class="actionButtons">
-                <ice:commandButton id="search" value="Search" action="/BidList.xhtml"/>
-            </div>
-        </ice:form>
-
-        <ice:panelGroup styleClass="formBorderHighlight">
-
-            <h3>bid search results</h3>
-
-            <div class="searchResults" id="contactgroupListResults">
-                <ice:outputText value="No bid exists"
-                                rendered="#{empty bidList.resultList}"/>
-
-                <ice:dataTable id="bidList"
-                               var="bid"
-                               value="#{bidList.resultList}"
-                               columnClasses="allCols"
-                               rendered="#{not empty bidList.resultList}">
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="id">
-                            </s:link>
-                        </f:facet>
-                        #{bid.id}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="user">
-                            </s:link>
-                        </f:facet>
-                        #{bid.user.username}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="bidItem">
-                            </s:link>
-                        </f:facet>
-                        #{bid.auctionItem.itemId}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="bidValue">
-                            </s:link>
-                        </f:facet>
-                        #{bid.bidValue}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="timestamp">
-                            </s:link>
-                        </f:facet>
-                        <h:outputText value="#{bid.timestamp}">
-                            <s:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/> 
-                        </h:outputText>
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="creditCard">
-                            </s:link>
-                        </f:facet>
-                        #{bid.creditCard}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="creditCardName">
-                            </s:link>
-                        </f:facet>
-                        #{bid.creditCardName}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="creditCardExpiryMonth">
-                            </s:link>
-                        </f:facet>
-                        #{bid.creditCardExpiryMonth}
-                    </ice:column>
-                    <ice:column>
-                        <f:facet name="header">
-                            <s:link styleClass="columnHeader"
-                                    value="creditCardExpiryYear">
-                            </s:link>
-                        </f:facet>
-                        #{bid.creditCardExpiryYear}
-                    </ice:column>
-                </ice:dataTable>
-            </div>
+        <ice:panelGroup styleClass="edit">
+            <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+                <h:outputText>user</h:outputText>
+                <ice:inputText value="#{exampleBid.user.name}" partialSubmit="true"/>
+                <h:outputText>item</h:outputText>
+                <ice:inputText value="#{exampleBid.auctionItem.title}" partialSubmit="true"/>
+            </ice:panelGrid>
         </ice:panelGroup>
+    </ice:panelAccordion>
 
-    </ui:define>
+    <div class="actionButtons">
+        <ice:commandButton id="search" value="Search" action="/BidList.xhtml"/>
+    </div>
+</ice:form>
+
+<ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>Bid Search Results</h3>
+
+    <div class="searchResults" id="contactgroupListResults">
+        <ice:outputText value="No bid exists"
+                        rendered="#{empty bidList.resultList}"/>
+
+        <ice:dataTable id="bidList"
+                       var="bid"
+                       value="#{bidList.resultList}"
+                       columnClasses="allCols"
+                       rendered="#{not empty bidList.resultList}">
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="id">
+                    </s:link>
+                </f:facet>
+                #{bid.id}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="user">
+                    </s:link>
+                </f:facet>
+                #{bid.user.name} [#{bid.user.username}]
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="bidItem">
+                    </s:link>
+                </f:facet>
+                #{bid.auctionItem.title} [#{bid.auctionItem.itemId}]
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="bidValue">
+                    </s:link>
+                </f:facet>
+                #{bid.bidValue}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="timestamp">
+                    </s:link>
+                </f:facet>
+                <h:outputText value="#{bid.timestamp}">
+                    <s:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
+                </h:outputText>
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCard">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCard}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCardName">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCardName}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCardExpiry">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCardExpiryMonth} / #{bid.creditCardExpiryYear}
+            </ice:column>
+        </ice:dataTable>
+    </div>
+</ice:panelGroup>
+
+</ui:define>
 
 </ui:composition>
 
