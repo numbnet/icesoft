@@ -194,7 +194,7 @@ public class TLDGenerator extends AbstractGenerator {
         if (isVerbose()) {
             AttributeBean ab = rb.getAttribute(pb.getPropertyName());
             DescriptionBean db = null;
-            if (ab != null)
+            if (ab != null && !cb.getComponentType().startsWith("com.icesoft.faces"))
                 db = ab.getDescription("");
             else
                 db = pb.getDescription("");
