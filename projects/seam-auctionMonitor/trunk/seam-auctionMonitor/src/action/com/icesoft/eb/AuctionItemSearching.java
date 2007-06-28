@@ -1,10 +1,6 @@
 //$Id: HotelSearching.java,v 1.10 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
 
-import org.jboss.seam.annotations.Factory;
-import org.jboss.seam.ScopeType;
-import org.jboss.seam.jsf.ListDataModel;
-
 import java.util.List;
 
 import javax.ejb.Local;
@@ -38,6 +34,4 @@ public interface AuctionItemSearching
    public String getSort() ;
    public boolean isAscending();
 */
-@Factory(value = "auctionitems", autoCreate = true, scope = ScopeType.CONVERSATION)
-ListDataModel getAuctionItems();
 }

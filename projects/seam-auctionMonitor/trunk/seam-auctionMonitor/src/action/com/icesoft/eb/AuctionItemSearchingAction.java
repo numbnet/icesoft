@@ -11,8 +11,6 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.jsf.ListDataModel;
-import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
@@ -27,18 +25,17 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Scope(ScopeType.SESSION)
 //@Restrict("#{identity.loggedIn}")
 
-public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching/*, Renderable*/
+public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching, Renderable
 {
 
    @PersistenceContext(type=EXTENDED)
    private EntityManager em;
 
-//   @In(create = false, required = false, scope = ScopeType.CONVERSATION)
-//   @Out(required = false, scope = ScopeType.CONVERSATION)
    private String searchString;
    private int pageSize = 10;
    private int page;
 
+   @DataModel
    private List<AuctionitemBean> auctionitems;
 
 //   @In
@@ -76,7 +73,6 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    {
        page = 0;
       queryAuctionItems();
-       Contexts.getConversationContext().set("auctionitems", new ListDataModel(auctionitems));
       return "";
    }
    public String nextPage()
@@ -86,12 +82,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
       return "";
    }
 
-    @Factory(value = "auctionitems", autoCreate = true, scope = ScopeType.CONVERSATION)
-    public ListDataModel getAuctionItems() {
-        queryAuctionItems();
-        return new ListDataModel(auctionitems);
-    }
-
+   @Factory("auctionitems")
    public void queryAuctionItems()
    {
        List newAuctionitems = new ArrayList();
@@ -119,44 +110,32 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
        for (Object o : resultList) {
            oa = (Object[]) o;
            auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager);
-//           auctionitemBean.addRenderable(this);
+           auctionitemBean.addRenderable(this);
            newAuctionitems.add(auctionitemBean);
            globalAuctionItems.add(auctionitemBean);
        }
-/*       if(!first && auctionitems.equals(newAuctionitems)){
-           System.out.println("IN EQUAL AUCTION ITEM LISTS");
-           return;
-       }
-*/       if(first){
+       if(first){
            auctionitems = new ArrayList();
            System.out.println("IN FIRST");
            first = false;
-       }
-/*       if(!newAuctionitems.isEmpty()){
-           System.out.println("NEWAUCTIONITEMS NOT EMPTY");
-           for(int i=0; i<newAuctionitems.size(); i++){
-               AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
-               if(auctionitems.contains(tempBean)){
-                   continue;
-               }else{
-                   System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
-                   tempBean.addRenderable(this);
-               }
-           }
        }
        if(!auctionitems.isEmpty()){
            System.out.println("AUCTIONITEMS NOT EMPTY");
            for(int i=0; i<auctionitems.size(); i++){
                AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-               if(newAuctionitems.contains(tempBean)){
-                   continue;
-               }else{
-                   System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
-                   tempBean.removeRenderable(this);
-               }
+               System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
+               tempBean.removeRenderable(this);
            }
-   }
-*/       auctionitems = newAuctionitems;
+       }
+       if(!newAuctionitems.isEmpty()){
+           System.out.println("NEWAUCTIONITEMS NOT EMPTY");
+           for(int i=0; i<newAuctionitems.size(); i++){
+               AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
+               System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
+               tempBean.addRenderable(this);
+           }
+       }
+       auctionitems = newAuctionitems;
    }
 
    public boolean isNextPageAvailable()
@@ -175,22 +154,19 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    @Factory(value="pattern", scope = ScopeType.EVENT)
    public String getSearchPattern()
    {
-       String searchString = (String) Contexts.getConversationContext().get("searchString");
-       return searchString==null ?
+      return searchString==null ?
             "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
    }
 
    public String getSearchString()
    {
        state = PersistentFacesState.getInstance();
-      return (String) Contexts.getConversationContext().get("searchString");
-//      return searchString;
+      return searchString;
    }
 
    public void setSearchString(String searchString)
    {
-      Contexts.getConversationContext().set("searchString", searchString);
-//      this.searchString = searchString;
+      this.searchString = searchString;
    }
 
    /**
@@ -200,7 +176,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
     * @param renderingException The exception that occurred when attempting
     * to render this Renderable.
     */
-/*   public void renderingException(RenderingException renderingException) {
+   public void renderingException(RenderingException renderingException) {
 
        if (renderingException instanceof TransientRenderingException ){
 
@@ -212,7 +188,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
            }
        }
    }
-*/
+
    /**
     * Sort the list.
     */

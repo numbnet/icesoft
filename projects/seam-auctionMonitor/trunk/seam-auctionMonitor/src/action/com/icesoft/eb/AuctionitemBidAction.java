@@ -96,18 +96,18 @@ public class AuctionitemBidAction implements AuctionitemBid {
        bid.setCreditCard("1234123412341234");
        bid.setCreditCardName("American Express");
        em.persist(bid);
-       FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+       //FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
        log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
        auctionitemBean.setBid(bid);
-       auctionitemBean.setBidding(false);
-       auctionitemBean.buildBidEffect();
        System.out.println("CALLING RENDER");
-//       auctionitemBean.render();
+       //auctionitemBean.render();
             AuctionitemBean tempBean = null;
             for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
                 if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
                     System.out.println("globalAuctionItem = " + globalAuctionItem);
                     globalAuctionItem.setBid(bid);
+                    globalAuctionItem.setBidding(false);
+                    globalAuctionItem.buildBidEffect();
 //                    globalAuctionItem.getAuctionitem().setBidCount(10);
                     tempBean = globalAuctionItem;
                 }
@@ -116,10 +116,8 @@ public class AuctionitemBidAction implements AuctionitemBid {
                 System.out.println("tempBean = " + tempBean);
                 System.out.println("tempBean.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
                 System.out.println("tempBean.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
-                tempBean.setBidding(false);
-                tempBean.buildBidEffect();
                 
-                //tempBean.render();
+                tempBean.render();
             }
         }catch(Exception e){
             e.printStackTrace();
