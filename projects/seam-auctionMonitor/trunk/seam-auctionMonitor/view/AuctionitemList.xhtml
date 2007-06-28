@@ -33,14 +33,14 @@
 	</ice:panelGroup>
         
         <div class="actionButtons">
-            <ice:commandButton id="search" value="Search Items" action="#{itemSearch.find}"/>
+            <ice:commandButton id="search" value="Search / Refresh" action="#{itemSearch.find}"/>
         </div>
       
     </ice:form>
     
     <ice:panelGroup styleClass="formBorderHighlight">
 
-    <h3>auctionitem  search results</h3>
+    <h3>Auction Item Search Results</h3>
 
     <div id="resultsDiv">
     <ice:outputText value="No auctionitem exists" 
@@ -144,7 +144,7 @@
 	<span style="font-size: smaller;">* Item prices cannot be incremented by more then $1,000,000 per bid.</span>
 
     <h3>
-        <h:outputText value="Workspaces #{empty conversationList ? 'empty' : ''}"/>
+        <h:outputText value="Conversations #{empty conversationList ? 'empty' : ''}"/>
     </h3>
     <div class="searchResults">
         <h:form>
@@ -180,7 +180,7 @@
                 <!--<h:column>#{entry.timeout}</h:column>-->
             </h:dataTable>
         </h:form>
-        <s:button value="New Search" propagation="begin"/>
+        <s:button value="New Conversation" propagation="begin"/>
         <!--<s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>-->
     </div>
     </ice:panelGroup>

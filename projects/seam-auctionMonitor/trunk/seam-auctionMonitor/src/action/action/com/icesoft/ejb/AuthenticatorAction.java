@@ -24,6 +24,7 @@ public class AuthenticatorAction implements Authenticator {
     Identity identity;
     @PersistenceContext
     EntityManager em;
+    @In(required = false, scope = ScopeType.SESSION)
     @Out(required = false, scope = ScopeType.SESSION)
     private User user;
 
@@ -31,6 +32,9 @@ public class AuthenticatorAction implements Authenticator {
         log.info("authenticating #0", identity.getUsername());
 
         try {
+            if (identity != null && user != null) {
+                identity.removeRole(user.getRole());
+            }
             user = (User) em.createQuery("from User where username=#{identity.username} and password=#{identity.password}").getSingleResult();
             identity.addRole(user.getRole());
             return true;

@@ -10,13 +10,13 @@
             <ice:outputText value="#{projectName}:"/>
             <s:link view="/home.xhtml" value="Home"/>
             <s:link view="/AuctionitemList.xhtml"
-                    value="Auctionitem List"
+                    value="Auction Item List"
                     propagation="none" rendered="#{identity.loggedIn}"/>
             <s:link view="/BidList.xhtml"
-                    value="Bid List"
+                    value="Bid List (admin only)" disabled="#{!s:hasRole('admin')}"
                     propagation="none" rendered="#{identity.loggedIn}"/>
-            <s:link view="/UserList.xhtml"
-                    value="Bidder List"
+            <s:link view="/UserList.xhtml" disabled="#{!s:hasRole('admin')}"
+                    value="Bidder List (admin only)"
                     propagation="none" rendered="#{identity.loggedIn}"/>
         </ice:panelGroup>
 

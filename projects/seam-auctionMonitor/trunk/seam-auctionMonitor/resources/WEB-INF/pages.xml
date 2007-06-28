@@ -33,7 +33,7 @@
     </exception>
 
     <exception class="org.jboss.seam.security.AuthorizationException">
-        <redirect>
+        <redirect view-id="/home.xhtml">
             <message>You don't have permission to do this</message>
         </redirect>
     </exception>
@@ -69,5 +69,13 @@
                 <redirect view-id="/AuctionitemList.xhtml"/>
             </rule>
         </navigation>
+    </page>
+
+    <page view-id="/BidList.xhtml">
+        <restrict>#{s:hasRole('admin')}</restrict>
+    </page>
+
+    <page view-id="/UserList.xhtml">
+        <restrict>#{s:hasRole('admin')}</restrict>
     </page>
 </pages>
