@@ -10,6 +10,7 @@ import java.io.PrintStream;
 public class ServeBlankPage implements Server {
     private static final ResponseHandler ResponseHandler = new ResponseHandler() {
         public void respond(Response response) throws Exception {
+            response.setHeader("Content-Type", "text/html");
             new PrintStream(response.writeBody()).println("<html><body></body></html>");
         }
     };
