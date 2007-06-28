@@ -95,6 +95,7 @@
                              xaxisTitle="#{chartMediator.titleX}"
                              xaxisLabels="#{chartMediator.chartObject.labels}"
                              labels="#{axisChart.legendLabels}"
+                             colors="#{chartMediator.areaPaints}"
                              data="#{chartMediator.chartObject.data}"
                              actionListener="#{chartMediator.imageClicked}"
                              renderOnSubmit="#{chartMediator.allCharts}"

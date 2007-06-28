@@ -44,6 +44,11 @@
 package com.icesoft.icefaces.samples.showcase.components.charts;
 
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.icesoft.faces.component.outputchart.OutputChart;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
@@ -60,6 +65,11 @@ import javax.faces.model.SelectItem;
  * @version 1.5
  */
 public class ChartMediator {
+    
+    private static final List areaPaints =
+        new ArrayList(Arrays.asList(new Color[]{new Color(172, 172, 172),
+                                                new Color(247, 130, 8),
+                                                new Color(0,0,0)}));
     
     //List of charts that the user can seleect from the drop down menu
     private static SelectItem[] chartList = new SelectItem[]{
@@ -450,4 +460,7 @@ public class ChartMediator {
         this.titleY = titleY;
     }
     
+    public List getAreaPaints() {
+        return areaPaints;
+    }
 }

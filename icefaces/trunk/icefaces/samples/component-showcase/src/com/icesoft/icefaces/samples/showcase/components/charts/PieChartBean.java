@@ -105,6 +105,11 @@ public class PieChartBean extends Chart{
     
     public PieChartBean(){
         super();
+        paints = new ArrayList();
+        paints.add(new Color(0,0,0)); //#000000
+        paints.add(new Color(247, 130, 8)); //#F78208
+        paints.add(new Color(172, 172, 172)); //#ACACAC
+        paints.add(new Color(148, 179, 203)); //#94B3CB
     }
     
     
