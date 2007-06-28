@@ -92,7 +92,7 @@ public class SeamUtilities {
      *         false otherwise
      */
     public static boolean requiresSeamExpressionFactory(){
-    	return (!seamVersion.startsWith("1.3.0"));
+    	return (seamVersion.startsWith("1.2.1"));
     }
     
     /**
@@ -313,13 +313,14 @@ public class SeamUtilities {
                seamVersionMethod = seamClass.getMethod("getVersion",null);
                if (seamVersionMethod!=null){
                    seamVersion = (String)seamVersionMethod.invoke(null,seamMethodNoArgs);
-//            	   log.info("SeamUtilities: loadSeam.. seamVersion="+seamVersion);
+            	   log.info("SeamUtilities: loadSeam.. seamVersion="+seamVersion);
                }
             } catch (NoSuchMethodException e){
                     /* no getVersion method exists for Seam1.2.1 or earlier */
             	    seamVersion="1.2.1.GA";
+            	    log.info("\t -->>>> seamVersion is null");
             } 
-//        	log.info("\t ->>> seamVersion="+seamVersion);
+        	log.info("\t ->>> seamVersion="+seamVersion);
             
             try {
                 seamAppendConversationMethodInstance =
