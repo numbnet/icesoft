@@ -4,7 +4,9 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
@@ -336,5 +338,36 @@ public class PanelCollapsible extends UIComponentBase implements ActionSource {
 
     public void processRestoreState(FacesContext facesContext, Object object) {
         super.processRestoreState(facesContext, object);
+    }
+    
+    public void processUpdates(FacesContext context) {
+        ValueBinding vb = getValueBinding("expanded");
+        if (vb != null) {
+            try {
+            vb.setValue(context, expanded);
+            return;
+            } catch (EvaluationException e) {
+                String messageStr = e.getMessage();
+                FacesMessage message = null;
+                if (null == messageStr) {
+                    messageStr = "Conversion error";
+                }
+                else {
+                    message = new FacesMessage(messageStr);
+                }
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                context.addMessage(getClientId(context), message);
+            } catch (Exception e) {
+                String messageStr = e.getMessage();
+                FacesMessage message = null;
+                if (null == messageStr) {
+                    messageStr = "Conversion error";
+                }
+               message = new FacesMessage(messageStr);
+               message.setSeverity(FacesMessage.SEVERITY_ERROR);
+               context.addMessage(getClientId(context), message);
+          
+            }
+        }
     }
 }
