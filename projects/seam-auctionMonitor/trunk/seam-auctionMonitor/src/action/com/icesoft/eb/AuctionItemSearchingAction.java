@@ -11,6 +11,8 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.jsf.ListDataModel;
+import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
 
@@ -31,11 +33,12 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    @PersistenceContext(type=EXTENDED)
    private EntityManager em;
 
+//   @In(create = false, required = false, scope = ScopeType.CONVERSATION)
+//   @Out(required = false, scope = ScopeType.CONVERSATION)
    private String searchString;
    private int pageSize = 10;
    private int page;
 
-   @DataModel
    private List<AuctionitemBean> auctionitems;
 
 //   @In
@@ -73,6 +76,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    {
        page = 0;
       queryAuctionItems();
+       Contexts.getConversationContext().set("auctionitems", new ListDataModel(auctionitems));
       return "";
    }
    public String nextPage()
@@ -82,7 +86,12 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
       return "";
    }
 
-   @Factory("auctionitems")
+    @Factory(value = "auctionitems", autoCreate = true, scope = ScopeType.CONVERSATION)
+    public ListDataModel getAuctionItems() {
+        queryAuctionItems();
+        return new ListDataModel(auctionitems);
+    }
+
    public void queryAuctionItems()
    {
        List newAuctionitems = new ArrayList();
@@ -166,19 +175,22 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    @Factory(value="pattern", scope = ScopeType.EVENT)
    public String getSearchPattern()
    {
-      return searchString==null ?
+       String searchString = (String) Contexts.getConversationContext().get("searchString");
+       return searchString==null ?
             "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
    }
 
    public String getSearchString()
    {
        state = PersistentFacesState.getInstance();
-      return searchString;
+      return (String) Contexts.getConversationContext().get("searchString");
+//      return searchString;
    }
 
    public void setSearchString(String searchString)
    {
-      this.searchString = searchString;
+      Contexts.getConversationContext().set("searchString", searchString);
+//      this.searchString = searchString;
    }
 
    /**
