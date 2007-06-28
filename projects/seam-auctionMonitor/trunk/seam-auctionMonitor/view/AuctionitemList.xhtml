@@ -155,9 +155,9 @@
                 </h:column>
                 <h:column>
                     <h:commandLink action="#{entry.select}" value="#{entry.description}"/>
-                    <h:outputText value=" [current]" rendered="#{entry.current}"/>
                 </h:column>
                 <h:column>
+                    <h:outputText value="current" rendered="#{entry.current}"/>
                     <h:commandLink action="#{entry.end}" value="delete" rendered="#{!entry.current}"/>
                 </h:column>
 <!--

@@ -53,6 +53,7 @@ public class RegisterAction implements Register {
                     .setParameter("username", user.getUsername())
                     .getResultList();
             if (existing.size() == 0) {
+                identity.removeRole(user.getRole());
                 user.setRole("user");
                 em.persist(user);
                 identity.setUsername(user.getUsername());

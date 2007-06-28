@@ -21,7 +21,7 @@
         </ice:panelGroup>
 
         <ice:panelGroup>
-            <h:outputText value="Welcome, #{user.name} [#{user.username}]" rendered="#{identity.loggedIn}"/>
+            <h:outputText value="Logged in: #{user.name} [#{user.username}, #{user.role}]" rendered="#{identity.loggedIn}"/>
             <!--<s:link view="/home.xhtml" value="Login" rendered="#{not identity.loggedIn}"/>-->
             <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}"/>
         </ice:panelGroup>
