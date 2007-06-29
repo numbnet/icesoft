@@ -2209,20 +2209,19 @@ Disabled classes for the calendar controls
 /*
 ----------- Table Row Selection --------
 */
-.iceRowSelSelected{
-    background-color: midnightblue;
+.iceRowSelSelected {
+    background-color: #316AC5;
 }
 .iceRowSelSelected span{
-    color: white;
+    color: #FFFFFF;
 }
 
 .iceRowSelMouseOver {
-    background-color: gray;
-    color: white;
+    background-color: #B6CAEA;
 }
 
 .iceRowSelMouseOver span{
-    color: white;
+    color: #000000;
 }
 
 /*
