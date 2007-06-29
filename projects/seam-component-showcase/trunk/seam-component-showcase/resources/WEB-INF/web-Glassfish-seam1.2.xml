@@ -15,10 +15,16 @@
    <listener>
       <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
    </listener>
-    
-   <listener>
-      <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-   </listener>
+   <!-- filters -->
+   <filter>
+      <filter-name>Seam Exception Filter</filter-name>
+      <filter-class>org.jboss.seam.servlet.SeamExceptionFilter</filter-class>
+   </filter>
+
+   <filter-mapping>
+      <filter-name>Seam Exception Filter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
 
    <listener>
       <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
@@ -70,17 +76,13 @@
         <param-value>true</param-value>
     </context-param>
 
-    <!-- filters -->
-   <filter>
-      <filter-name>Seam Exception Filter</filter-name>
-      <filter-class>org.jboss.seam.servlet.SeamExceptionFilter</filter-class>
-   </filter>
-
-   <filter-mapping>
-      <filter-name>Seam Exception Filter</filter-name>
-      <url-pattern>/*</url-pattern>
-   </filter-mapping>
-
+ 
+  <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+   </servlet>
+    
  <!-- Source Code reader servlet-->
  <servlet>
      <servlet-name>SourceCode Reader</servlet-name>
@@ -92,8 +94,7 @@
          <servlet-name>uploadServlet</servlet-name>
          <servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
          <load-on-startup> 1 </load-on-startup>
-  </servlet>
-    
+  </servlet>  
 
   <servlet>
         <servlet-name>Persistent Faces Servlet</servlet-name>
@@ -150,3 +151,4 @@
        </auth-constraint>
    </security-constraint>
 </web-app>
+

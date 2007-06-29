@@ -10,7 +10,7 @@
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-1.1.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-1.1.xsd">
 
-   <core:init debug="true" jndi-pattern="@jndiPattern@"/>
+   <core:init debug="true" jndi-pattern="seam-comp-showcase/#{ejbName}/local"/>
      
   
    
