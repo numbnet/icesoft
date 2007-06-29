@@ -1136,3 +1136,11 @@ em {
     padding:0;
 }
 
+/*
+	make panelTab label bold
+*/
+
+.MidMid {
+    font-size:12px;
+    font-weight:bold;
+}
