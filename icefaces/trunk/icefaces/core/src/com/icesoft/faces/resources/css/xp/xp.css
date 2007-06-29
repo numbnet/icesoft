@@ -1428,6 +1428,9 @@ input {
 
 .iceMnuItm a:hover { /* was iceSubMenuRow*/
     background-color: #2A6CC2;
+}
+
+.iceMnuItm a:hover .iceOutTxt{ 
     color: #FFFFFF;
 }
 
