@@ -108,6 +108,12 @@
 			<include name="*.*"/>
 			<include name="classes/**/*.*"/>
 			<exclude name="classes/**/*.class"/>
+                        <exclude name="web*.xml"/>
+                        <exclude name="page*.xml"/>
+                        <exclude name="component*.xml"/>
+                        <exclude name="faces-config*.xml"/>
+                        <include name="persistence*.xml"/>
+                        <include name="jboss-*.xml"/>
                     </fileset>
                     <filterset>
 			<filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
@@ -143,17 +149,40 @@
         	</copy>	
         	
         </target>
+        <target name="war2.0-configs" description="copies proper configs for web-inf for seam1.2.1">
+               <copy todir="${war.dir}/WEB-INF" overwrite="true">
+                    <fileset dir="${basedir}/resources/WEB-INF/Seam2Configs">
+			<include name="*.xml"/>
+                    </fileset>
+                    <filterset>
+			<filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
+			<filter token="embeddedEjb" value="false" />
+                    </filterset>
+		</copy>		
+        </target>
+        <target name="war1.2-configs" description="copies proper configs for web-inf for seam1.2.1">
+              <copy todir="${war.dir}/WEB-INF" overwrite="true">
+                    <fileset dir="${basedir}/resources/WEB-INF/Seam1.2.1.GA">
+			<include name="*.xml"/>
+                    </fileset>
+                    <filterset>
+			<filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
+			<filter token="embeddedEjb" value="false" />
+                    </filterset>
+		</copy>	
+        </target>
         
-	<target name="war" depends="freshen, war-base" 
+	<target name="war" depends="freshen, war-base, war1.2-configs" 
 			description="Build the distribution .war file">
              <copy file="${basedir}/resources/WEB-INF/web-myfaces.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
 	</target>
 
-        <target name="war-glassFish" depends="freshen-glassFish, war-base" description="Builds the war file for jsf1.2">
-             <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
+        <target name="war-glassFish" depends="freshen-glassFish, war-base, war2.0-configs" description="Builds the war file for jsf1.2">
+             <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>            
         </target>
-        <target name="war-glassFish1.2" depends="freshen-glassFish1.2, war-base" description="Builds the war file for jsf1.2 and Seam1.2.1.GA">
-             <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
+        
+        <target name="war-glassFish1.2" depends="freshen-glassFish1.2, war-base, war1.2-configs" description="Builds the war file for jsf1.2 and Seam1.2.1.GA or Seam2">
+             <copy file="${basedir}/resources/WEB-INF/web-Glassfish-seam1.2.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
         </target>  
         
 	<target name="ear" depends="ear-base" description="Build the EAR for myfaces jars and Seam1.2.1.GA">
@@ -185,14 +214,14 @@
             
 	<target name="build-myFaces" depends="freshen,jar,war,ear,archive" 
 			description="Package the archives">
-               <echo message="run deploy target to deploy (myfaces app) ear file to server"/>
+               <echo message="run deploy target to deploy (seam 1.2.1 myfaces app) ear file to server"/>
 	</target>
-	<target name="build-Seam1.3.0AndJsf1.2" depends="freshen-glassFish,jar,war-glassFish,ear-glassFish, archive" 
-			description="Package the archives">
-                <echo message="run deploy target to deploy (Seam 1.3.0 and jsf1.2 app) ear file to server"/>
+	<target name="build-Seam2.0WithJsf1.2" depends="freshen-glassFish,jar,war-glassFish,ear-glassFish, archive" 
+			description="Package the archives for seam2.0 using jsf1.2 specs">
+                <echo message="run deploy target to deploy (Seam 2.0 and jsf1.2 app) ear file to server"/>
 	</target>	
-        <target name="build-Seam1.2AndJsf1.2" depends="freshen-glassFish1.2,jar,war-glassFish1.2,ear-glassFish1.2, archive" 
-			description="Package the archives">
+        <target name="build-Seam1.2WithJsf1.2" depends="freshen-glassFish1.2,jar,war-glassFish1.2,ear-glassFish1.2, archive" 
+			description="Package the archives for seam1.2.1 and jsf 1.2 specs">
                 <echo message="run deploy target to deploy (Seam 1.2.1 and jsf1.2 app) ear file to server"/>
 	</target>	
 	<target name="datasource">
@@ -304,7 +333,7 @@
 		</testng>
 	</target>
 
-        <target name="freshen-base" description="copying of common libraries">
+        <target name="freshen-base" depends="delete-libs" description="copying of common libraries">
             <copy todir="${lib.dir}">
                 <fileset dir="${icefacesSourceDirectory}/lib">
                     <include name="icefaces*.jar" />
@@ -331,7 +360,7 @@
                     <include name="antlr-2.7.6.jar"/>
                     <include name="el-api.jar"/>
                     <include name="el-ri.jar"/>
-                    <include name="jbpm-3.1.4.jar"/>
+                    <include name="jbpm-*.jar"/>
                 </fileset>
                 <fileset dir="${jboss.seam.home}/drools/lib">
                     <include name="antlr-3.0ea8.jar"/>
@@ -354,7 +383,7 @@
                     <include name="antlr-2.7.6.jar"/>
                     <include name="el-api.jar"/>
                     <include name="el-ri.jar"/>
-                    <include name="jbpm-3.1.4.jar"/>
+                    <include name="jbpm-*.jar"/>
                 </fileset>
                 <fileset dir="${jboss.seam.home}/drools/lib">
                     <include name="antlr-3.0ea8.jar"/>
@@ -417,10 +446,11 @@
                 <copy todir="${ear.dir}">
 			<fileset dir="${lib.dir}">
                                 <include name="jboss-el.jar" />
-                                <include name="drools-*-4.0*.jar"/>
-                                <include name="janino-2.5.6.jar"/>
-                                <include name="antlr-3*.jar"/>
+                                <include name="thirdparty-all.jar"/>
+                                <include name="drools*.jar"/>
                                 <include name="mvel*.jar"/>
+                                <include name="janino*.jar"/>
+                                <include name="antlr*.jar"/>
 			</fileset>
 		</copy>
              <copy file="${basedir}/resources/META-INF/application-Glassfish.xml" tofile="${ear.dir}/META-INF/application.xml" 
@@ -439,7 +469,15 @@
 				<include name="stringtemplate-*.jar"/>
 			</fileset>
 		</copy>
-             <copy file="${basedir}/resources/META-INF/application-jsf1.2.xml" tofile="${ear.dir}/META-INF/application.xml" 
+             <copy file="${basedir}/resources/META-INF/application-seam1.2Withjsf1.2.xml" tofile="${ear.dir}/META-INF/application.xml" 
                             preservelastmodified="true" overwrite="true"/>
 	</target>
+        
+        <target name="delete-libs">
+            	<delete failonerror="no">
+			<fileset dir="${lib.dir}">
+				<exclude name="jboss-ejb3-all.jar" />
+			</fileset>
+		</delete>
+        </target>
 </project>
