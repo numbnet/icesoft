@@ -100,18 +100,18 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 
         header.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getHeaderClass());
         if(panelCollapsible.getToggleOnClick().equals(Boolean.TRUE)){
-//            if(!disabled)
-//                header.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelCollapsible." +
-//                        "fire('" + baseID + "_content', " +
-//                                "'"+ baseID +"_header', "+ panelCollapsible.getStyleClassForJs()+");");
+            if(!disabled)
+                header.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelCollapsible." +
+                        "fire('" + baseID + "_content', " +
+                                "'"+ baseID +"_header', "+ panelCollapsible.getStyleClassForJs()+");");
         }
         String script = "Ice.PanelCollapsible.collapse('" + baseID + "_content');";
         if(panelCollapsible.getExpanded().booleanValue()){
-//            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
+            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
         }
 
         if(!disabled)
-//            JavascriptContext.addJavascriptCall(facesContext, script);
+            JavascriptContext.addJavascriptCall(facesContext, script);
 
         header.setAttribute(HTML.ID_ATTR, baseID + "_header");
 
@@ -171,16 +171,13 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
-        PanelCollapsible panelCollapsible = (PanelCollapsible) uiComponent;
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        if(panelCollapsible.getExpanded().booleanValue()){
-            Iterator children = uiComponent.getChildren().iterator();
-            while (children.hasNext()) {
-                UIComponent nextChild = (UIComponent) children.next();
-                if (nextChild.isRendered()) {
-                    encodeParentAndChildren(facesContext, nextChild);
-                }
+        Iterator children = uiComponent.getChildren().iterator();
+        while (children.hasNext()) {
+            UIComponent nextChild = (UIComponent) children.next();
+            if (nextChild.isRendered()) {
+                encodeParentAndChildren(facesContext, nextChild);
             }
         }
         // set the cursor here since nothing happens in encodeEnd
