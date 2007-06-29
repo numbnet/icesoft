@@ -1144,3 +1144,13 @@ em {
     font-size:12px;
     font-weight:bold;
 }
+
+.pnlSrsDemoBtn {
+    background-color:white;
+    border: none;
+}
+
+.pnlSrsDemoBtn-dis {
+    background-color:white;
+    border: none;
+}

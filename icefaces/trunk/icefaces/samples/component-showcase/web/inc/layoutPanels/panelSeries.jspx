@@ -101,12 +101,14 @@ The content of the list is filled by iterating over a variable.
                     </div>
 
                     <ice:commandButton
+                    	    styleClass="pnlSrsDemoBtn"
                             image="#{styleBean.imageDirectory}add.gif"
                             style="height: 25px; width: 15px;"
                             actionListener="#{item1.incQuan}"
                             title="Buy #{item1.name}"/>
 
                     <ice:commandButton
+                    	    styleClass="pnlSrsDemoBtn"                    
                             image="#{styleBean.imageDirectory}remove.gif"
                             style="height: 25px; width: 15px;"
                             actionListener="#{item1.decQuan}"
