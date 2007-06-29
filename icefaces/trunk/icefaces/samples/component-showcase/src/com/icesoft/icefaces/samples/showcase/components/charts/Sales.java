@@ -52,7 +52,6 @@ public class Sales {
     //holds the price
     private int price;
 
-    
 
     //array of sales items for 2001
     private static final Sales[] sales2001 =
@@ -85,21 +84,15 @@ public class Sales {
                                                         "2004"),
                                               new Sales(15, "Ice Sailor",
                                                         "2004")};
-     //hashMap of the sales data 
+    //hashMap of the sales data
     private static final HashMap sales = createMap();
-    
+
 
     public Sales(int price, String product, String year) {
         this.price = price;
         this.product = product;
         this.year = year;
     }
-    
-   
-    
-   
-   
-
 
     /**
      * Method to create the hash map from the sales from different years
@@ -107,21 +100,17 @@ public class Sales {
      * @return HasMap
      */
     public static HashMap createMap() {
-      
+
         HashMap newSales = new HashMap();
         newSales.put("2001", sales2001);
         newSales.put("2002", sales2002);
         newSales.put("2003", sales2003);
         newSales.put("2004", sales2004);
-       
+
         return newSales;
     }
 
     public static Map getSales() {
-        
-        
-       
-        
         return sales;
     }
 

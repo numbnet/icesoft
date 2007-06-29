@@ -44,38 +44,41 @@
     <ice:panelGrid id="chartRootTable"
                    styleClass="componentLayoutRootTable" columns="1">
 
-        <ice:panelGrid id="chartTopGrid" columns="1"
-                       styleClass="formBorderHighlight" style="width:100%;"
-                       columnClasses="contentLayoutGridColumn">
-            <h3>
-                <ice:outputText id="chartTitle"
-                                value="#{msgs['component.chart.title']}"/>
-            </h3>
-            <br/>
-            <ice:selectOneMenu value="#{chartMediator.chart}" partialSubmit="true"
-                               valueChangeListener="#{chartMediator.chartChanged}">
-                <f:selectItems value="#{chartMediator.chartList}"/>
-            </ice:selectOneMenu>
-            <br/>
-            <!-- 
-                panelGroup displayed when chart type is bar or barclustered to 
-                toggle horizontal or vertical chart orientation.
-            -->
-            <ice:panelGroup rendered="#{chartMediator.orientationChange}">
-                <h3>
-                    <ice:outputText value="Chart Orientation:"/>
-                </h3>
-                <br/>
-                <ice:selectOneRadio value="false"
-                                    valueChangeListener="#{chartMediator.selectOrientation}"
-                                    partialSubmit="true">
-                    <f:selectItem itemValue="true"
-                                  itemLabel="Horizontal"/>
-                    <f:selectItem itemValue="false"
-                                  itemLabel="Vertical"/>
-                </ice:selectOneRadio>
-                
-            </ice:panelGroup>          
+        <ice:panelGroup id="chartTopGrid"
+                       styleClass="formBorderHighlight" style="width: 500px" >
+
+
+            <ice:panelGrid columns="2" style="width: 400px;">
+
+                <ice:panelGroup>
+                    <h3>
+                        <ice:outputText id="chartTitle"
+                                    value="#{msgs['component.chart.title']}"/>
+                    </h3>
+                    <ice:selectOneMenu value="#{chartMediator.chart}" partialSubmit="true"
+                                       valueChangeListener="#{chartMediator.chartChanged}">
+                        <f:selectItems value="#{chartMediator.chartList}"/>
+                    </ice:selectOneMenu>
+                </ice:panelGroup>
+                <!--
+                    panelGroup displayed when chart type is bar or barclustered to
+                    toggle horizontal or vertical chart orientation.
+                -->
+                <ice:panelGroup rendered="#{chartMediator.orientationChange}">
+                    <h3>
+                        <ice:outputText value="Chart Orientation:"/>
+                    </h3>
+                    <ice:selectOneRadio value="false"
+                                        valueChangeListener="#{chartMediator.selectOrientation}"
+                                        partialSubmit="true">
+                        <f:selectItem itemValue="true"
+                                      itemLabel="Horizontal"/>
+                        <f:selectItem itemValue="false"
+                                      itemLabel="Vertical"/>
+                    </ice:selectOneRadio>
+
+                </ice:panelGroup>
+            </ice:panelGrid>
             <br/>
             <ice:outputText effect="#{chartMediator.effectOutputText}"
                             value="#{chartMediator.clickedValue}"
@@ -84,8 +87,7 @@
                             value="#{chartMediator.clickedValue}"
                             rendered="#{!chartMediator.axis and !chartMediator.pie3D}"/>
                             
-
-       </ice:panelGrid>
+       </ice:panelGroup>
 
         <ice:panelGrid columns="2" id="centerWrapperChart">
             <ice:outputChart id="axisOutputChart"
@@ -99,7 +101,7 @@
                              data="#{chartMediator.chartObject.data}"
                              actionListener="#{chartMediator.imageClicked}"
                              renderOnSubmit="#{chartMediator.allCharts}"
-                             horizontal="#{chartMediator.horizontal}"                             
+                             horizontal="#{chartMediator.horizontal}"
                              rendered="#{chartMediator.axis and !chartMediator.pie3D and !chartMediator.pie}"/>
             <!-- Pie charts require a different data model
             Axis charts have a 2 dimensional data model, Pie charts are 1 dimensional -->
