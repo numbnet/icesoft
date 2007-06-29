@@ -185,7 +185,7 @@
              <copy file="${basedir}/resources/WEB-INF/web-Glassfish-seam1.2.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
         </target>  
         
-	<target name="ear" depends="ear-base" description="Build the EAR for myfaces jars and Seam1.2.1.GA">
+	<target name="ear" depends="ear-base" description="Build the EAR for myfaces jars and Seam1.2.1.GA">           
 		<copy todir="${ear.dir}">
 			<fileset dir="${lib.dir}">
 				<include name="el-*.jar" />
@@ -196,6 +196,7 @@
 				<include name="stringtemplate-*.jar"/>
 			</fileset>
 		</copy>
+              <copy file="${basedir}/resources/WEB-INF/web-myfaces.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
                <copy file="${basedir}/resources/META-INF/application-myfaces.xml" tofile="${ear.dir}/META-INF/application.xml" 
                             preservelastmodified="true" overwrite="true"/>
 	</target>
@@ -442,7 +443,7 @@
             </copy>
         </target>
 	<target name="ear-glassFish" depends="freshen-glassFish,ear-base" description="Build the EAR for jsf1.2 and Seam1.3.0">  
-                <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="web.xml" preservelastmodified="true" overwrite="true"/>
+                <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
                 <copy todir="${ear.dir}">
 			<fileset dir="${lib.dir}">
                                 <include name="jboss-el.jar" />
@@ -458,7 +459,7 @@
 	</target>
         
         <target name="ear-glassFish1.2" depends="freshen-glassFish1.2,ear-base" description="Build the EAR for jsf1.2 and Seam 1.2.1.GA">  
-               <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="web.xml" preservelastmodified="true" overwrite="true"/>
+               <copy file="${basedir}/resources/WEB-INF/web-Glassfish.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
                 <copy todir="${ear.dir}">
 			<fileset dir="${lib.dir}">
  				<include name="el-*.jar" />
