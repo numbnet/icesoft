@@ -1495,6 +1495,15 @@ iceMnuBarVrt, .iceMnuBarVrtItem {
     height: 2em;
 }
 
+.icePnlPopHdr .iceOutTxt {
+	color:#FFFFFF;
+	font-size:1.1em;
+	font-weight:bold;
+	padding:4px;
+	text-align:center;
+	vertical-align:middle;
+}
+
 .icePnlPopBody {
     padding: 10px;
 }
