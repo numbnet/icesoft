@@ -185,6 +185,10 @@ input {
     text-align: center;
 }
 
+.iceSelInpDateCur .iceOutTxt{
+	color:#FFFFFF;
+}
+
 /* now set the attributes for the numbers for each day of the week */
 .iceSelInpDateDay a {
 /* the day text */
