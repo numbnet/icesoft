@@ -84,8 +84,6 @@ public class AuctionitemBidAction implements AuctionitemBid, Renderable {
     @End(ifOutcome={"success"})
     public String bid()
     {
-        try{
-        System.out.println("BID!!!! CURRENT BID: " + auctionitemBean.getBidInput());
         if ( auctionitemBean.getBidInput() <= auctionitemBean.getBid().getBidValue() )
         {
            System.out.println("BID TOO LOW !!!!");
@@ -102,20 +100,23 @@ public class AuctionitemBidAction implements AuctionitemBid, Renderable {
        bid.setBidValue(auctionitemBean.getBidInput());
        Calendar calendar = Calendar.getInstance();
        bid.setTimestamp( calendar.getTime() );
-       System.out.println("PERSISTING BID");
        bid.setCreditCard("1234123412341234");
        bid.setCreditCardName("American Express");
+       System.out.println("PERSISTING BID");
        em.persist(bid);
        //FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
        log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
        auctionitemBean.setBid(bid);
-       System.out.println("CALLING RENDER");
        //auctionitemBean.render();
             AuctionitemBean tempBean = null;
             for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
+                System.out.println("GLOBAL AUCTION ITEM: " + globalAuctionItem.getAuctionitem().getDescription() + globalAuctionItem.getAuctionitem().getItemId());
                 if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
                     System.out.println("globalAuctionItem = " + globalAuctionItem);
                     globalAuctionItem.setBid(bid);
+                    globalAuctionItem.getAuctionitem().getBids().add(bid);
+                    int newBidCount = globalAuctionItem.getAuctionitem().getBidCount() + 1;
+                    globalAuctionItem.getAuctionitem().setBidCount(newBidCount);
                     globalAuctionItem.setBidding(false);
                     globalAuctionItem.buildBidEffect();
 //                    globalAuctionItem.getAuctionitem().setBidCount(10);
@@ -123,15 +124,12 @@ public class AuctionitemBidAction implements AuctionitemBid, Renderable {
                 }
             }
             if (tempBean != null) {
-                System.out.println("tempBean = " + tempBean);
-                System.out.println("tempBean.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
-                System.out.println("tempBean.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
-                
+                System.out.println("globalAuctionItem = " + tempBean);
+                System.out.println("globalAuctionItem.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
+                System.out.println("globalAuctionItem.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
+                System.out.println("CALLING RENDER");
                 tempBean.render();
             }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
        return "success";
     }
     

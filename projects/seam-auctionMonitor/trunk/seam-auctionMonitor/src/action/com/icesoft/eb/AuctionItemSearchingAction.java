@@ -111,26 +111,27 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
            auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager);
            auctionitemBean.addRenderable(this);
            newAuctionitems.add(auctionitemBean);
+           System.out.println("ADDING " + auctionitemBean.getAuctionitem().getDescription() + auctionitemBean.getAuctionitem().getItemId() + " TO GLOBALAUCTIONITEMS");
            globalAuctionItems.add(auctionitemBean);
        }
        if(first){
            auctionitems = new ArrayList();
-           System.out.println("IN FIRST");
+           System.out.println("FIRST SEARCH");
            first = false;
        }
        if(!auctionitems.isEmpty()){
-           System.out.println("AUCTIONITEMS NOT EMPTY");
+           System.out.println("AUCTIONITEMS NOT EMPTY REMOVING RENDERABLES");
            for(int i=0; i<auctionitems.size(); i++){
                AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-               System.out.println("REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
+               System.out.println("REMOVING FROM: " + tempBean.getAuctionitem().getTitle() + " " + tempBean.renderer.getName());
                tempBean.removeRenderable(this);
            }
        }
        if(!newAuctionitems.isEmpty()){
-           System.out.println("NEWAUCTIONITEMS NOT EMPTY");
+           System.out.println("NEWAUCTIONITEMS NOT EMPTY ADDING RENDERABLES");
            for(int i=0; i<newAuctionitems.size(); i++){
                AuctionitemBean tempBean = ((AuctionitemBean)newAuctionitems.get(i));
-               System.out.println("ADDING: " + tempBean.getAuctionitem().getTitle() + " TO: " + tempBean.renderer.getName());
+               System.out.println("ADDING TO: " + tempBean.getAuctionitem().getTitle() + " " + tempBean.renderer.getName());
                tempBean.addRenderable(this);
            }
        }

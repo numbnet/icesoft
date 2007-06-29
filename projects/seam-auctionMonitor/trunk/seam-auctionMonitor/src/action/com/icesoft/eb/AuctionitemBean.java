@@ -40,7 +40,7 @@ public class AuctionitemBean implements AuctionitemBeanInterface, Serializable{
         this.renderManager = renderManager;
         auctionitem.setBidCount(auctionitem.getBids().size());
         if(renderer == null){
-            System.out.println("INSTANTIATING RENDER GROUP FOR ITEM");
+            System.out.println("INSTANTIATING AUCTIONITEMBEAN " + auctionitem.getDescription() + " RETRIEVING ONDEMANDRENDER " + auctionitem.getItemId());
             renderer = renderManager.getOnDemandRenderer( Long.toString(auctionitem.getItemId()) );            
         }
     }
@@ -64,7 +64,7 @@ public class AuctionitemBean implements AuctionitemBeanInterface, Serializable{
     public void render(){
         buildBidEffect();
         bidding = false;
-        System.out.println("CALLING RENDER FROM ITEM");
+        System.out.println("CALLING RENDER FROM AUCTIONITEMBEAN");
         System.out.println("renderer.getName() = " + renderer.getName());
         System.out.println("renderer.isEmpty() = " + renderer.isEmpty());
         renderer.requestRender();
