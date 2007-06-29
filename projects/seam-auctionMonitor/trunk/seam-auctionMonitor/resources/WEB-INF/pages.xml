@@ -11,6 +11,15 @@
                 <redirect view-id="/home.xhtml"/>
             </rule>
         </navigation>
+		
+        <navigation from-action="#{identity.logout}">
+            <redirect view-id="/home.xhtml"/>
+        </navigation>
+
+        <navigation from-action="#{itemBid.cancel}">
+            <redirect view-id="/AuctionitemList.xhtml"/>
+        </navigation>
+		
     </page>
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
@@ -54,8 +63,13 @@
         <page view-id="/book.xhtml">Book hotel: #{hotel.name}</page>
         <page view-id="/confirm.xhtml">Confirm: #{booking.description}</page>
     -->
-    <page view-id="/AuctionitemList.xhtml">
+    <page view-id="/AuctionitemList.xhtml" login-required="true">
         Search items with pattern: #{itemSearch.searchPattern}
+    
+        <navigation from-action="#{itemBid.selectItem(auctionitemBean)}">
+            <redirect view-id="/bid.xhtml"/>
+        </navigation>
+
     </page>
 
     <page view-id="/home.xhtml" login-required="false">
@@ -69,6 +83,23 @@
                 <redirect view-id="/AuctionitemList.xhtml"/>
             </rule>
         </navigation>
+        <navigation>
+            <rule if="#{identity.loggedIn}">
+                <redirect view-id="/AuctionitemList.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+	
+	<page view-id="/bid.xhtml">
+          
+        <description>Confirm bid: #{auctionitemBean.auctionitem.description}</description>
+        
+        <navigation from-action="#{itemBid.bid}">
+			<rule if-outcome="success">
+                <redirect view-id="/AuctionitemList.xhtml"/>
+		    </rule>
+        </navigation>
+        
     </page>
 
     <page view-id="/BidList.xhtml">

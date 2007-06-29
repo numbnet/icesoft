@@ -243,7 +243,7 @@ System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
            //System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
-           //tempBean.removeRenderable(this);
+           tempBean.removeRenderable(this);
            globalAuctionItems.remove(tempBean);
        }
    }

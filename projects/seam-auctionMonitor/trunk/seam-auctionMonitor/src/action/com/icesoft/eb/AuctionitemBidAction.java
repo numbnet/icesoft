@@ -14,21 +14,29 @@ import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Conversational;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.End;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.core.FacesMessages;
 import org.jboss.seam.log.Log;
 
+import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+
 @Stateful
 @Name("itemBid")
 @Restrict("#{identity.loggedIn}")
 
-public class AuctionitemBidAction implements AuctionitemBid {
+public class AuctionitemBidAction implements AuctionitemBid, Renderable {
     @PersistenceContext(type=EXTENDED)
     private EntityManager em;
     
@@ -50,6 +58,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
     
 //    @In
 //    ViewManagerAction viewManager;
+    private PersistentFacesState state = PersistentFacesState.getInstance();
 
     @In(required = false, scope = ScopeType.APPLICATION)
     @Out(required = false, scope = ScopeType.APPLICATION)
@@ -68,6 +77,7 @@ public class AuctionitemBidAction implements AuctionitemBid {
        }catch(Exception e){
            e.printStackTrace();
        }
+       auctionitemBean.addRenderable(this);
        return "";
     }
     
@@ -126,13 +136,40 @@ public class AuctionitemBidAction implements AuctionitemBid {
     }
     
     @End
-    public String cancel() {
+    public void cancel() {
         auctionitemBean.setBidInput(0.0);
         auctionitemBean.setBidding(false);
-        return "";
     }
     
     @Destroy @Remove
-    public void destroy() {}
+    public void destroy() {
+        auctionitemBean.removeRenderable(this);
+    }
+
+    public PersistentFacesState getState() {
+        return state;
+    }
+
+    /**
+     * Callback method that is called if any exception occurs during an attempt
+     * to render this Renderable.
+     *
+     * @param renderingException The exception that occurred when attempting
+     * to render this Renderable.
+     */
+    public void renderingException(RenderingException renderingException) {
+
+        if (renderingException instanceof TransientRenderingException ){
+
+        }
+        else if(renderingException instanceof FatalRenderingException){
+            auctionitemBean.removeRenderable(this);
+        }
+    }
+
+    public List<Bid> getAuctionitemBidList() {
+        state = PersistentFacesState.getInstance();
+        return auctionitemBean.getAuctionitem().getBids();
+    }
 
 }

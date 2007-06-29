@@ -13,47 +13,11 @@
 
 <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
 
-<ice:form id="auctionitemForm" styleClass="edit">
-
-    <f:facet name="header">
-        <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
-            <ice:outputText value="Auctionitem search"/>
-        </ice:panelGrid>
-    </f:facet>
-    <ice:panelGroup styleClass="edit">
-        <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-
-            <h:outputLabel for="searchString">search</h:outputLabel>
-            <ice:inputText id="searchString"
-                           value="#{itemSearch.searchString}"
-                           partialSubmit="false"/>
-
-        </ice:panelGrid>
-
-    </ice:panelGroup>
-
-    <div class="actionButtons">
-        <ice:commandButton id="search" value="Search / Refresh" action="#{itemSearch.find}"/>
-    </div>
-
-</ice:form>
-
-<ice:panelGroup styleClass="formBorderHighlight">
-
-<h3>Auction Item Search Results</h3>
-
-<div id="resultsDiv">
-    <ice:outputText value="No auctionitem exists"
-                    rendered="#{auctionitems != null and auctionitems.rowCount==0}"/>
-    <ice:form>
-        <ice:dataTable width="100%" cellspacing="1"
-                       id="auctionitemList"
-                       var="auctionitemBean"
-                       value="#{auctionitems}"
+	<ice:form>
+        <ice:panelGrid width="100%" cellspacing="1"
+                       id="auctionitemBidding"
                        headerClass="tableHeader"
-                       rowClasses="rowClass1,rowClass2"
-                       rendered="#{auctionitems.rowCount>0}">
-            <ice:column>
+                       rowClasses="rowClass1,rowClass2" >
                 <f:facet name="header">
                     <ice:panelGrid columns="5" width="100%" cellspacing="1"
                                    columnClasses="column1,column2,column3,column4,column5,column6">
@@ -64,6 +28,7 @@
                         <ice:outputText value="Action"/>
                     </ice:panelGrid>
                 </f:facet>
+			<ice:panelGroup>
                 <ice:panelGrid columns="5" width="100%" cellspacing="1"
                                styleClass="#{auctionitemBean.expandedStyleClass}"
                                columnClasses="column1,column2,column3,column4,column5,column6">
@@ -92,13 +57,28 @@
                             <s:convertDateTime type="both" dateStyle="full"/>
                         </ice:outputText>
                     </ice:panelGroup>
-                    <ice:panelGroup>
+                    <ice:panelGroup rendered="#{!auctionitemBean.bidding}">
                         <s:link value="Bid"
                                 action="#{itemBid.selectItem(auctionitemBean)}"
                                 rendered="#{!auctionitemBean.expired}"/>
                         <ice:outputText value="EXPIRED"
                                         rendered="#{auctionitemBean.expired}"
                                         styleClass="#{auctionitemBean.expiredStyleClass}"/>
+                    </ice:panelGroup>
+                    <ice:panelGroup rendered="#{auctionitemBean.bidding}">
+                        <ice:inputText id="item_localBid"
+                                       value="#{auctionitemBean.bidInput}" size="6"
+                                       style="text-align:right"/>
+                        <ice:commandButton id="image_button_bid_accept"
+                                           image="img/button_bid_accept.gif"
+                                           title="Place a bid on '#{auctionitemBean.auctionitem.title}'"
+                                           action="#{itemBid.bid}"
+                                           style="border: 0px;width: 15px;height:15px;"/>
+                        <ice:commandButton id="image_button_bid_decline"
+                                           immediate="true"
+                                           image="img/button_bid_decline.gif"
+                                           action="#{itemBid.cancel}"
+                                           style="border: 0px;width: 15px;height:15px"/>
                     </ice:panelGroup>
                 </ice:panelGrid>
                 <ice:panelGrid columns="3" width="100%"
@@ -120,19 +100,92 @@
                                         value="Seller: #{auctionitemBean.auctionitem.seller}"/>
                     </ice:panelGroup>
                 </ice:panelGrid>
+            </ice:panelGroup>
+        </ice:panelGrid>
+    </ice:form>
+
+<ice:panelGroup styleClass="formBorderHighlight">
+
+    <h3>Bid History</h3>
+
+    <div class="searchResults" id="contactgroupListResults">
+        <ice:outputText value="No bid exists"
+                        rendered="#{empty itemBid.auctionitemBidList}"/>
+
+        <ice:dataTable id="bidList"
+                       var="bid"
+                       value="#{itemBid.auctionitemBidList}"
+                       columnClasses="allCols"
+                       rendered="#{not empty itemBid.auctionitemBidList}">
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="id">
+                    </s:link>
+                </f:facet>
+                #{bid.id}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="user">
+                    </s:link>
+                </f:facet>
+                #{bid.user.name} [#{bid.user.username}]
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="bidItem">
+                    </s:link>
+                </f:facet>
+                #{bid.auctionItem.title} [#{bid.auctionItem.itemId}]
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="bidValue">
+                    </s:link>
+                </f:facet>
+                #{bid.bidValue}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="timestamp">
+                    </s:link>
+                </f:facet>
+                <h:outputText value="#{bid.timestamp}">
+                    <s:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
+                </h:outputText>
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCard">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCard}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCardName">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCardName}
+            </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <s:link styleClass="columnHeader"
+                            value="creditCardExpiry">
+                    </s:link>
+                </f:facet>
+                #{bid.creditCardExpiryMonth} / #{bid.creditCardExpiryYear}
             </ice:column>
         </ice:dataTable>
-    </ice:form>
-    <s:link value="More results" action="#{itemSearch.nextPage}"
-            rendered="#{itemSearch.nextPageAvailable}"/>
-</div>
-<span style="font-size: smaller;">* Item prices cannot be incremented by more then $1,000,000 per bid.</span>
-
-<!--
-    <h3>
-        <h:outputText value="Conversations #{empty conversationList ? 'empty' : ''}"/>
-    </h3>
-    <div class="searchResults">
+    </div>
+</ice:panelGroup>
         <h:form>
             <h:dataTable value="#{conversationList}" var="entry">
                 <h:column>
@@ -153,10 +206,7 @@
                 </h:column>
             </h:dataTable>
         </h:form>
-        <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/>
-    </div>
--->
-</ice:panelGroup>
+<!--        <s:button value="New Search" action="#{itemSearch.find}" propagation="begin"/> -->
 
 </ui:define>
 
