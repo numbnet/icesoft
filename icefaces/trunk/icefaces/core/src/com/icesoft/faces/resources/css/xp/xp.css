@@ -1222,6 +1222,10 @@ input {
     position: relative;
 }
 
+.iceSelInpTxtSelRow span{
+    color: #FFFFFF;
+}
+
 /*
 --------------- autoComplete disable class ------
 */
