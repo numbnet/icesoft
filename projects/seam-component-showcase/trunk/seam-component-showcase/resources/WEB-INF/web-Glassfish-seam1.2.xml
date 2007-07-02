@@ -26,6 +26,7 @@
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 
+
    <listener>
       <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
    </listener>
@@ -151,4 +152,3 @@
        </auth-constraint>
    </security-constraint>
 </web-app>
-

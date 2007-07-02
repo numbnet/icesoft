@@ -13,10 +13,10 @@
     </locale-config>
    </application>
 
-   <!-- Seam transaction management -->
+  Seam transaction management 
    <lifecycle>
       <phase-listener>org.jboss.seam.jsf.TransactionalSeamPhaseListener</phase-listener>
-   </lifecycle>
+   </lifecycle> 
  
    
    <!-- No Seam transaction management -->

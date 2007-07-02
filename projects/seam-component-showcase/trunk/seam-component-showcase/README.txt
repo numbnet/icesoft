@@ -1,4 +1,4 @@
-**This has been tested on a jboss4.0.5.GA server and JBoss AS 4.2.0.GA (with seam1.2.1.GA and seam1.3.0.ALPHA) 
+**This has been tested on a jboss4.0.5.GA server and JBoss AS 4.2.0.GA (with seam1.2.1.GA and seam2.0.0.BETA1) 
 To run this on an Apache Tomcat Server, please see the documentation that comes with jboss-seam.
 
 1.  download jboss-seam1.2.1.GA or 2.0.0.Beta1 and unzip all files (as the libraries will be copied from these folders)
@@ -40,6 +40,7 @@ for jboss-seam1.2.1.GA and jsf1.2 libs (NOTE**had this working but now it's bein
 
 for jboss-seam-2.0.0.Beta1 and jsf1.2 you choose
 >ant build-Seam2.0WithJsf1.2
->ant deploy
+Then (as in regular seam 1.2.1.GA with jsf1.2 specs...see this url:- http://docs.jboss.com/seam/1.2.1.GA/reference/en/html/tutorial.html#d0e2067 )
+you have to then copy the el-*.jar files to your jsf-libs in the embeded Tomcat server.
 
 Enjoy!
