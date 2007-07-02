@@ -23,18 +23,21 @@
             header, left menu, and body components.  Follow the includes
             to see each individual components makeup.
         -->
-        
+<table border="0" class="templateLayout" cellpadding="0" cellspacing="0" >
+    <tr>
+        <td valign="top" class="templateFooterGradient">
+            <div class="templateHeader">
+                <div class="templateHeaderTop">
+                    <ui:include src="./header.xhtml" />
+                </div>
+                <div class="templateMain">
+                    <center>
+                        <div class="templateMainContent">
+
+<div class="templateConstraint">
 
         <table border="0" cellpadding="0"
                cellspacing="0" class="mainBorderLayout" width="100%">
-            
-            <tr>
-                <td colspan="3">
-                    <ui:insert name="header">
-                        <ui:include src="./header.xhtml"/>
-                    </ui:insert>
-                </td>
-            </tr>
             <tr>
                 <td valign="top" width="150px">
                     
@@ -51,23 +54,24 @@
                    </td>
                 <td></td>
             </tr>
-            <tr>
-                <td colspan="3">
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="showcaseFooter">&#169; 2006 ICEsoft Technologies
-                                Inc. &#160; &#8226; &#160; Toll Free: 1-877-263-3822 USA and
-                                Canada
-                                
-                                <br />
-                                
-                            </td>
-                        </tr>
-                    </table>                    
-                </td>
-            </tr>
             
-        </table>       
+        </table>
+</div>
+
+                        </div>
+                    </center>
+                </div>
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="footerBackground">
+            <ui:include src="./footer.xhtml" />
+        </td>
+    </tr>
+ </table>
+
         <!--
   PRELOAD IMAGES need for roleovers and layout in general, javascript is only
   loaded once per refresh which is good enough.  This improves overall user

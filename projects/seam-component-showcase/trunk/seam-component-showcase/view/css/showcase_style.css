@@ -66,6 +66,9 @@ h2 {
     margin-bottom: 5px;
     font-size: 1.5em;
 }
+h2 .iceOutTxt{
+     color: #136baa;
+}
 
 /* description of each component example */
 h3 {
@@ -100,6 +103,89 @@ h6 {
     margin-bottom: 2px;
     font-size: 1em;
 }
+
+/* for some reson IE things a form should have dimensions, */
+form {
+    padding: 0;
+    margin: 0;
+}
+
+/* Main template Layout */
+.templateLayout {
+    width: 100%;
+    height: 100%;
+}
+
+.templateHeader, .templateMain, .templateFooter, .templateHeaderTop, .templateHeaderMain,
+    .templateHeaderLogin, .templateHeaderMenu1, .templateMainContent {
+    padding: 0;
+    margin: 0;
+    border: 0 hidden transparent;
+    vertical-align: top;
+}
+
+.templateHeaderTop {
+
+}
+
+.templateHeaderMain {
+    background-color: transparent;
+    background-position: top;
+    background-repeat:repeat-x;
+    height: 75px;
+    width: 100%;
+}
+
+.templateHeader {
+    font-family: tahoma, sans-serif;
+     background-image: url( "../images/template/compsuite_background.gif" );
+    background-color: transparent;
+    background-position: top;
+    background-repeat: repeat-x;
+}
+
+.templateMain {
+    border: 0 solid red; /*min-height: 80px;*/
+}
+
+.templateMainContent {
+
+    padding: 0;
+    margin: 0;
+}
+.templateMainContent{
+    /*max-width: 1024px;*/
+}
+
+.templateConstraint{
+    padding-left: 15px;
+    padding-right:15px;
+    text-align: left;
+}
+
+/* footer styles  */
+.templateFooterGradient {
+    /*background: url( "../images/template/bgslice_bot.jpg" ) transparent repeat-x bottom left;*/
+}
+
+.footerBackground {
+    background: url( "../images/template/bgslice_footer.jpg" ) transparent repeat-x top left;
+    height: 90px; /*background-color: #074773;*/
+}
+
+.footerBackground table {
+    height: 100%;
+}
+
+.footerText {
+    font: 10px tahoma;
+    color: #C1D3DF;
+}
+a.linkORANGE, a.linkOrange {
+    color: #F78208;
+}
+
+
 
 .propertyLabel {
     font-weight: bold; /*font-size:0.9em;*/
@@ -141,7 +227,8 @@ em {
 
 /* main container for an include */
 .contentIncludePanelGroup{
-    margin-right: 5px; 
+    margin-right: 5px;
+    width: 100%;
 }
 
 /* Component tabset labels */
@@ -180,20 +267,24 @@ em {
 */
 .navTree {
     overflow: auto;
-    height: 550px;
+    height: 555px;
 }
 
 .navThemeChange, .navTree {
-    border: 1px solid #dedede;
-    margin: 5px; /*padding: 5px;*/
+    border: 1px solid #ABC0D4;
+    margin: 5px;
     margin-top: 0;
     width: 250px;
+     background-color: white;
+}
+.navTree {
+    background-color: white;
 }
 
 .navConnectionStatus {
     position: absolute;
-    top: 85px;
-    right: 0;
+    top: 105px;
+    right:35px;
 }
 
 .navThemeChange .themeSelector {
@@ -599,7 +690,7 @@ em {
     vertical-align: top;
 }
 .listReceipt{
-    width: 100%;   
+    width: 100%;
 }
 .shoppingListItemName{
 
@@ -610,7 +701,7 @@ em {
 }
 
 .shoppingListValue{
-    text-align: right;    
+    text-align: right;
 }
 
 /*
@@ -1080,7 +1171,7 @@ em {
 }
 .pnlClpsblDemoHdr span, .pnlClpsblDemoHdr-dis span,
     .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span{
-    padding-left: 18px;   
+    padding-left: 20px;
 }
 .pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div,
     .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
@@ -1100,6 +1191,7 @@ em {
 	vertical-align: top;
 }
 
+/* Panel Border Example*/
 .pnlBrdrDemo {
     width:60%;
 }
@@ -1107,7 +1199,7 @@ em {
     background-color:#EEEEEE;
     font-weight: bold;
     text-align: center;
-    height:60px;	    
+    height:60px;
 }
 
 .pnlBrdrDemoEast {
@@ -1131,7 +1223,7 @@ em {
 
 .mainBorderLayoutNorth {
     height:60px;
-    padding:0px;
+    padding:0;
 }
 /* added this for proper rendering in IE */
 .iceFileUpload {
