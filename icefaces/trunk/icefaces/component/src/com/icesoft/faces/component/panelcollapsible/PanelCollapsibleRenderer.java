@@ -44,10 +44,6 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
                 } else {
                     panelCollapsible.setExpanded(Boolean.TRUE);
                 }
-                
-                boolean expanded = Boolean.getBoolean(map.get(baseId).toString().trim());
-                System.out.println("as boolean  " + expanded);
-
                 ActionEvent ae = new ActionEvent(component);
                 component.queueEvent(ae);
                 
@@ -115,7 +111,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 //            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
         }
 
-        if(!disabled)
+//        if(!disabled)
 //            JavascriptContext.addJavascriptCall(facesContext, script);
 
         header.setAttribute(HTML.ID_ATTR, baseID + "_header");
