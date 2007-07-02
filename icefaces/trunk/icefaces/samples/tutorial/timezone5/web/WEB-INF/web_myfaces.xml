@@ -54,10 +54,6 @@
     <param-value>/WEB-INF/faces-config.xml</param-value>
   </context-param>
 
-  <listener>
-	<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-  </listener>
-
   <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
       <param-value>.iface</param-value>
@@ -72,6 +68,10 @@
     <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
     <param-value>true</param-value>
   </context-param>
+
+  <listener>
+	<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+  </listener>
 
   <!-- Faces Servlet -->
   <servlet>
@@ -110,7 +110,11 @@
     <servlet-name>Blocking Servlet</servlet-name>
     <url-pattern>/block/*</url-pattern>
   </servlet-mapping>
-
+  
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
   <!-- Welcome File List -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
