@@ -15,10 +15,10 @@
                   conversation-id-parameter="cid"
                   conversation-is-long-running-parameter="clr"/>
 
-    <core:transactionListener/>
+   <core:transactionListener/> 
 
     <core:ejb installed="@embeddedEjb@"/>
 
-    <security:identity authenticate-method="#{authenticator.authenticate}"/>
+   <security:identity authenticate-method="#{authenticator.authenticate}"/> 
 
 </components>
