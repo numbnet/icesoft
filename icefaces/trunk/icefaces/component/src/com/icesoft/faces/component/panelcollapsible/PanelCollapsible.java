@@ -137,12 +137,14 @@ public class PanelCollapsible extends UIComponentBase implements ActionSource {
 
 
     public Boolean getExpanded() {
-        if (expanded!= null) {
+        if (null != expanded) {
             return expanded;
         }
         ValueBinding vb = getValueBinding("expanded");
         if (vb != null) {
-            return (Boolean) vb.getValue(getFacesContext());
+            if (vb.getValue(getFacesContext()) != null) {
+                return (Boolean) vb.getValue(getFacesContext());
+            }
         }
         return Boolean.FALSE;
     }

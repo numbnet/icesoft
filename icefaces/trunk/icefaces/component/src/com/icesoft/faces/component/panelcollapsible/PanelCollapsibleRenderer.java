@@ -1,26 +1,22 @@
 package com.icesoft.faces.component.panelcollapsible;
 
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.component.util.CustomComponentUtils;
-import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.ext.taglib.Util;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.io.IOException;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+
+import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class PanelCollapsibleRenderer extends DomBasicRenderer {
 
@@ -38,27 +34,24 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         try {
             PanelCollapsible panelCollapsible = (PanelCollapsible) component;
 
-            Map map = (Map) context.getExternalContext().getSessionMap()
-                    .get(CurrentStyle.class.getName());
-            if (map != null) {
-                String baseId = component.getClientId(context);
-                String contentId = baseId + "_content";
-                String style = (String) map.get(contentId);
-
-                if (style != null) {
-                    Boolean newState = Boolean.TRUE;
-                    if (style.indexOf("display:none") != -1) {
-                        newState = Boolean.FALSE;
-                    }
-                    Boolean currentState = panelCollapsible.getExpanded();
-                    if (!newState.equals(currentState)) {
-                        ActionEvent ae = new ActionEvent(component);
-                        component.queueEvent(ae);
-                        panelCollapsible.setExpanded(newState);
-
-                        state.setChangedViaDecode(true);
-                    }
+            Map map =
+                context.getExternalContext().getRequestParameterMap();
+            String baseId =component.getClientId(context)+ "Expanded";            
+            if (map.containsKey(baseId) && (map.get(baseId) != null && !map.get(baseId).equals(""))) {
+                if ("true".equals(map.get(baseId).toString().trim())) {
+                    panelCollapsible.setExpanded(Boolean.FALSE);
+                    
+                } else {
+                    panelCollapsible.setExpanded(Boolean.TRUE);
                 }
+                
+                boolean expanded = Boolean.getBoolean(map.get(baseId).toString().trim());
+                System.out.println("as boolean  " + expanded);
+
+                ActionEvent ae = new ActionEvent(component);
+                component.queueEvent(ae);
+                
+ 
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,19 +92,31 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         Element header = domContext.createElement(HTML.DIV_ELEM);
 
         header.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getHeaderClass());
+        
+        UIComponent form = findForm(uiComponent);
+
         if(panelCollapsible.getToggleOnClick().equals(Boolean.TRUE)){
-            if(!disabled)
-                header.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelCollapsible." +
-                        "fire('" + baseID + "_content', " +
-                                "'"+ baseID +"_header', "+ panelCollapsible.getStyleClassForJs()+");");
+          if(!disabled)
+              FormRenderer.addHiddenField(facesContext, uiComponent.getClientId(facesContext)+ "Expanded");
+              
+              header.setAttribute(HTML.ONCLICK_ATTR, 
+                  "document.forms['"+ form.getClientId(facesContext) +"']" +
+                        "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
+                        panelCollapsible.getExpanded()+"'; " +
+                                "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+            
+//            if(!disabled)
+//                header.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelCollapsible." +
+//                        "fire('" + baseID + "_content', " +
+//                                "'"+ baseID +"_header', "+ panelCollapsible.getStyleClassForJs()+");");
         }
         String script = "Ice.PanelCollapsible.collapse('" + baseID + "_content');";
         if(panelCollapsible.getExpanded().booleanValue()){
-            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
+//            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
         }
 
         if(!disabled)
-            JavascriptContext.addJavascriptCall(facesContext, script);
+//            JavascriptContext.addJavascriptCall(facesContext, script);
 
         header.setAttribute(HTML.ID_ATTR, baseID + "_header");
 
@@ -122,6 +127,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
 
             //UIComponent headerComp = (UIComponent)headerFacet.getChildren().get(0);
             domContext.setCursorParent(header);
+          
             domContext.streamWrite(facesContext, uiComponent,
                                    domContext.getRootNode(),header);
 
@@ -145,15 +151,15 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         container.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getContentClass());
 
 
-        if(fireEffect){
-            if(!state.isLastExpandedValue()){
-                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
-            }
-        }else{
-            if (!open) {
-                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
-            }
-        }
+//        if(fireEffect){
+//            if(!state.isLastExpandedValue()){
+//                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
+//            }
+//        }else{
+//            if (!open) {
+//                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
+//            }
+//        }
         state.setLastExpandedValue(open);
         state.setChangedViaDecode(false);
         state.setFirstTime(false);
@@ -171,13 +177,16 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
     public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
+        PanelCollapsible panelCollapsible = (PanelCollapsible) uiComponent;
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        Iterator children = uiComponent.getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            if (nextChild.isRendered()) {
-                encodeParentAndChildren(facesContext, nextChild);
+        if(panelCollapsible.getExpanded().booleanValue()){
+            Iterator children = uiComponent.getChildren().iterator();
+            while (children.hasNext()) {
+                UIComponent nextChild = (UIComponent) children.next();
+                if (nextChild.isRendered()) {
+                    encodeParentAndChildren(facesContext, nextChild);
+                }
             }
         }
         // set the cursor here since nothing happens in encodeEnd
