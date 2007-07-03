@@ -130,6 +130,13 @@
 		attribute on generated markup.<br/>
 		The default class rendered as <b>iceMsg</b>. 
 		</p> 
+        <ul>
+          <li>iceMsg</li>
+          <li>iceMsgError</li>
+          <li>iceMsgFatal</li>
+          <li>iceMsgInfo</li>
+          <li>iceMsgWarn</li>
+        </ul>
 		]]>			
     </description>
     <property-name>styleClass</property-name>

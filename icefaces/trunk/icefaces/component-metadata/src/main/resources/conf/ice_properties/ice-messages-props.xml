@@ -118,6 +118,13 @@
 		attribute on generated markup.<br/>
 		The default class rendered as <b>iceMsgs</b>. 
 		</p> 
+        <ul>
+          <li>iceMsgs</li>
+          <li>iceMsgsError</li>
+          <li>iceMsgsFatal</li>
+          <li>iceMsgsInfo</li>
+          <li>iceMsgsWarn</li>
+        </ul>
 		]]>			
     </description>
     <property-name>styleClass</property-name>

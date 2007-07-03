@@ -125,7 +125,7 @@
               Space-separated list of CSS style class(es) to be applied when this
               element is rendered. This value must be passed through as the 
               "class" attribute on generated markup.<br/>
-                Default value is iceRowSel:<br/>        
+                Default value is <b>iceRowSel</b>:<br/>        
                Style Classes Used:
                      <ul>
                        <li>iceRowSelMouseOver</li>
