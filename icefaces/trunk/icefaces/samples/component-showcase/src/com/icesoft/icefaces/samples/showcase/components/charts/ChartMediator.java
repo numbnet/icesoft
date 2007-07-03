@@ -67,9 +67,9 @@ import javax.faces.model.SelectItem;
 public class ChartMediator {
     
     private static final List areaPaints =
-        new ArrayList(Arrays.asList(new Color[]{new Color(172, 172, 172),
-                                                new Color(247, 130, 8),
-                                                new Color(0,0,0)}));
+        new ArrayList(Arrays.asList(new Color[]{new Color(26, 86, 138),
+                                                new Color(76, 126, 167),
+                                                new Color(148, 179, 203)}));
     
     //List of charts that the user can seleect from the drop down menu
     private static SelectItem[] chartList = new SelectItem[]{
