@@ -49,13 +49,13 @@
         <li>Optimized to fully leverage ICEfaces Direct-to-Dom rendering
             technology providing seamless incremental
             user-interface updates for all components without full-page
-            refreshes (partial-page rendering).
+            refreshes (partial-page rendering).<br/><br/>
         </li>
         <li>Support for additional attributes for ICEfaces-specific features
-            such as effects, partialSubmit, renderedOnUserRole, etc.
+            such as effects, partialSubmit, renderedOnUserRole, etc.<br/><br/>
         </li>
         <li>Support for comprehensive component styling via predefined
-            component style sheets that are easily customized.
+            component style sheets that are easily customized.<br/><br/>
         </li>
     </ul>
     
@@ -64,19 +64,19 @@
     that ICEfaces provides:</p>
     <ul>
         <li>Smooth, incremental page updates without full-page
-            refreshes.
+            refreshes.<br/><br/>
         </li>
         <li>Asynchronous server-initiated user-interface updates without
-            polling.
+            polling.<br/><br/>
         </li>
         <li>Rich AJAX-enabled web applications with no JavaScript
-            development required.
+            development required.<br/><br/>
         </li>
         <li>User context preservation during page update, including
-            scrollbar positioning and user focus.
+            scrollbar positioning and user focus.<br/><br/>
         </li>
         <li>Fine-grained user interaction during form entry that augments
-            the standard submit/response loop.
+            the standard submit/response loop.<br/><br/>
         </li>
     </ul>
     </td>
