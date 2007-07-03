@@ -103,14 +103,12 @@ public class GroupRenderer extends DomBasicRenderer {
     }
     
     protected Element createRootElement(DOMContext domContext) {
-System.out.println("GroupRenderer.createRootElement()  SPAN");
         return domContext.createElement(HTML.SPAN_ELEM);
     }
     
     protected void renderStyleAndStyleClass(
         String style, String styleClass, Element root)
     {
-System.out.println("GroupRenderer.renderStyleAndStyleClass()  styleClass: " + styleClass);
         if (styleClass != null) {
             root.setAttribute(HTML.CLASS_ATTR, styleClass);
         }
