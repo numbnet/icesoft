@@ -174,27 +174,24 @@ public class ColumnsBean implements Serializable{
             columns = ((Integer) event.getNewValue()).intValue();
         }
         int numberOfRows=26;
-        if(columns>1){
-        numberOfRows = columns * ROW_CONSTANT;
+        if( columns > 1 ){
+            numberOfRows = columns * ROW_CONSTANT;
         }
-        
               
         ArrayList columnList = new ArrayList();
         ArrayList rowList = new ArrayList();
         
         table = new String[columns][numberOfRows];
         String r;
-        String c;
-        for(int i=0;i<columns;i++)
-        {
-            for(int j=0;j<numberOfRows;j++)
-            {
+        for( int i=0; i < columns; i++ ){
+            for( int j=0; j<numberOfRows; j++ ){
                 r = getChar(j);
+                // add row data. 
                 table[i][j] = r;
+                // add numeric row header
                 rowList.add(r);
              }
-            c = getChar(i);
-            columnList.add(c);
+            columnList.add(String.valueOf(i + 1));
             
         }
         
@@ -205,8 +202,7 @@ public class ColumnsBean implements Serializable{
 
    private String getChar(int i){
         i += 65;
-        String r = "" + (char)i;
-        return r;
+        return String.valueOf((char)i);
     }
 
     /**
