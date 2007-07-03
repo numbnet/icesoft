@@ -592,6 +592,67 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
+                // component menu -> Collapsible Panel
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.collapsiblePanelItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.collapsiblePanelItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelCollapsible.jspx");
+                branchObject.setTemplateName("collapsiblePanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                
+                //component menu -> Popup Panel
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.panelPopupSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.panelPopupSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelPopup.jspx");
+                branchObject.setTemplateName("panelPopupContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+
+                // component menu -> positioned Panel
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.positionedPanelItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.positionedPanelItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/positionedPanel.jspx");
+                branchObject.setTemplateName("positionPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                
+
+                // component menu -> Panel Series
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.listSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.listSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelSeries.jspx");
+                branchObject.setTemplateName("listContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+               
                 // Layout Panels menu -> Panel stack
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
@@ -615,66 +676,6 @@ public class TreeNavigation {
                         "submenuContentTitle.tabbedComponentSubmenuItem");
                 branchObject.setMenuContentInclusionFile("./layoutPanels/panelTabSet.jspx");
                 branchObject.setTemplateName("tabbedPaneContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
-                //component menu -> Popup Panel
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.panelPopupSubmenuItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.panelPopupSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelPopup.jspx");
-                branchObject.setTemplateName("panelPopupContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
-                // component menu -> Panel Series
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.listSubmenuItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.listSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelSeries.jspx");
-                branchObject.setTemplateName("listContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
-                // component menu -> Panel Series
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.positionedPanelItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.positionedPanelItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/positionedPanel.jspx");
-                branchObject.setTemplateName("positionPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
-                // component menu -> Accordion Series
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.collapsiblePanelItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.collapsiblePanelItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelCollapsible.jspx");
-                branchObject.setTemplateName("collapsiblePanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
