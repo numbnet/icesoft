@@ -1441,6 +1441,10 @@ input {
     display: inline;
 }
 
+.iceMnuBarItemImage {
+	width:0px;
+}
+
 .iceMnuItmImage, .iceMnuBarItemImage {  /* was iceSubMenuRowImage */
     display:inline;
     vertical-align: top;    
@@ -1456,7 +1460,9 @@ input {
 /* classes for the vertical version of the iceMenu*/
 
 .iceMnuBarVrtItemLabel {} 
-.iceMnuBarVrtItemImage {}
+.iceMnuBarVrtItemImage {
+	width:5px;
+}
 
 .iceMnuBarVrt { /* was iceMenu_vertical */
     float: left;
