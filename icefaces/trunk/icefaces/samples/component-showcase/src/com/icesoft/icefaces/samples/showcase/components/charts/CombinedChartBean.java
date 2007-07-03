@@ -68,6 +68,7 @@ package com.icesoft.icefaces.samples.showcase.components.charts;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 import com.icesoft.faces.context.effects.Effect;
+import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.context.effects.Pulsate;
 import org.krysalis.jcharts.axisChart.AxisChart;
 import org.krysalis.jcharts.chartData.AxisChartDataSet;
@@ -97,7 +98,7 @@ public class CombinedChartBean {
     private String clickedValue;
 
     //highlight effect when text is changed
-    private Effect effectOutputText;
+    private Effect effectOutputText =  new Highlight("#ffff99");;
 
     //local variable for the axis chart component of the combined chart
     private static AxisChart axisChart;
@@ -194,7 +195,7 @@ public class CombinedChartBean {
                 setClickedValue(chart.getClickedImageMapArea().getXAxisLabel() +
                                 "  :  " +
                                 chart.getClickedImageMapArea().getValue());
-                effectOutputText = new Pulsate(2.0f);
+                effectOutputText.setFired(false);
             }
         }
     }
