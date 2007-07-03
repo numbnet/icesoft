@@ -70,10 +70,14 @@ a control on the data to hide/show the table columns.
 
                 </ice:panelGroup>
 
-                <ice:panelGrid columns="2" cellpadding="3" cellspacing="2">
+                <ice:panelGrid styleClass="rowSelectDmo" columns="2" cellpadding="3" cellspacing="2">
                     <!--
                         Table with RowSelector table
                     -->
+                    <ice:panelGroup>
+                        <ice:outputText
+                                styleClass="propertyLabel"
+                                value="#{msgs['component.table.row.selection.clicktoselect']}"/>                    
                     <ice:dataTable var="person" value="#{table.personsList}"
                                    rows="15" columnClasses="tableCol" >
                         <ice:column>
@@ -103,7 +107,7 @@ a control on the data to hide/show the table columns.
                             <ice:outputText value="#{person.phoneNo}"/>
                         </ice:column>
                     </ice:dataTable>
-
+                    </ice:panelGroup>
                     <!-- selected values -->
                     <ice:panelGroup>
                         <ice:outputText

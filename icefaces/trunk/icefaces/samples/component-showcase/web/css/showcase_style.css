@@ -1231,3 +1231,11 @@ em {
 .iceOutConStatDisconnect, .iceOutConStatCaution, .iceOutConStatActv, .iceOutConStatInactv {
     top:93px;
 }
+
+.rowSelectDmoCol1, .rowSelectDmoCol2 {
+    vertical-align : top;
+}
+
+.rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt{
+    padding: 8px;
+}
