@@ -409,7 +409,10 @@ input {
 /* tabOn style classes */
 
 .icePnlTbOn { /* was iceTabSetTabOn */
+}
 
+.icePnlTbOn .MidMid td{
+	font-weight: bold;
 }
 
 .icePnlTbOn .LftTop {

@@ -383,6 +383,10 @@
 
 }
 
+.icePnlTbOn .MidMid td{
+	font-weight: bold;
+}
+
 .icePnlTbOn .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/on-left-top.gif" );
