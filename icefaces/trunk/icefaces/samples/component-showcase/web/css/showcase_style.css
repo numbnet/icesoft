@@ -1233,11 +1233,6 @@ em {
     padding:0;
 }
 
-
-.iceOutConStatDisconnect, .iceOutConStatCaution, .iceOutConStatActv, .iceOutConStatInactv {
-    top:93px;
-}
-
 .rowSelectDmoCol1, .rowSelectDmoCol2 {
     vertical-align : top;
 }
