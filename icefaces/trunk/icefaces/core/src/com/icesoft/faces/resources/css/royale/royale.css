@@ -376,6 +376,11 @@ input {
 
 }
 
+.icePnlTbOn .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOn .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/on-left-top.gif" );
@@ -472,6 +477,11 @@ input {
 
 }
 
+.icePnlTbOff .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOff .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/off-left-top.gif" );
@@ -565,6 +575,11 @@ input {
 
 .icePnlTbOver { /* was iceTabSetTabOver*/
 
+}
+
+.icePnlTbOver .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
 }
 
 .icePnlTbOver .LftTop {
@@ -695,6 +710,11 @@ input {
 
 }
 
+.icePnlTbOnBtm .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/tbot-on-left-top.gif" );
@@ -790,6 +810,11 @@ input {
 
 }
 
+.icePnlTbOffBtm .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOffBtm .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/tbot-off-left-top.gif" );
@@ -883,6 +908,11 @@ input {
 
 .icePnlTbOverBtm { /* was iceTabSetTabOverBottom*/
 
+}
+
+.icePnlTbOverBtm .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
 }
 
 .icePnlTbOverBtm .LftTop {

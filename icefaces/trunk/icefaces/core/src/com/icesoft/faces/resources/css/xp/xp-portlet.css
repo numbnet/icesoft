@@ -380,11 +380,12 @@
 /* tabOn style classes */
 
 .icePnlTbOn { /* was iceTabSetTabOn */
-
 }
 
 .icePnlTbOn .MidMid td{
 	font-weight: bold;
+    white-space: nowrap;
+    text-align: center;    	
 }
 
 .icePnlTbOn .LftTop {
@@ -430,7 +431,6 @@
     text-align: center;
     border: none;
     white-space: nowrap;
-    color:#012A5C;
 }
 
 .icePnlTbOn .MidMid a {
@@ -484,6 +484,11 @@
 
 }
 
+.icePnlTbOff .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOff .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/off-left-top.gif" );
@@ -527,7 +532,6 @@
     text-align: center;
     border: none;
     white-space: nowrap;
-    color:#012A5C;    
 }
 
 .icePnlTbOff .MidMid a {
@@ -579,6 +583,12 @@
 .icePnlTbOver { /* was iceTabSetTabOver */
 
 }
+
+.icePnlTbOver .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 
 .icePnlTbOver .LftTop {
     background-color: transparent;
@@ -710,6 +720,12 @@
 
 }
 
+.icePnlTbOnBtm .MidMid td{
+	font-weight: bold;
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
     background-image: url( "./css-images/tbot-on-left-top.gif" );
@@ -803,6 +819,11 @@
 
 .icePnlTbOffBtm { /* was iceTabSetTabOffBottom*/
 
+}
+
+.icePnlTbOffBtm .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
 }
 
 .icePnlTbOffBtm .LftTop {
@@ -899,6 +920,12 @@
 .icePnlTbOverBtm { /* was iceTabSetTabOverBottom*/
 
 }
+
+.icePnlTbOverBtm .MidMid td{
+    white-space: nowrap;
+    text-align: center;    	
+}
+
 
 .icePnlTbOverBtm .LftTop {
     background-color: transparent;
