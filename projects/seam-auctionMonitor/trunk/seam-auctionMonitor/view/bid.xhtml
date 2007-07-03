@@ -112,78 +112,54 @@
         <ice:outputText value="No bid exists"
                         rendered="#{empty itemBid.auctionitemBidList}"/>
 
-        <ice:dataTable id="bidList"
+        <ice:form>
+		<ice:dataTable id="bidList"
                        var="bid"
                        value="#{itemBid.auctionitemBidList}"
+                       sortColumn="#{itemBid.sort}"
+                       sortAscending="#{itemBid.ascending}"
                        columnClasses="allCols"
                        rendered="#{not empty itemBid.auctionitemBidList}">
             <ice:column>
                 <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="id">
-                    </s:link>
-                </f:facet>
-                #{bid.id}
-            </ice:column>
-            <ice:column>
-                <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="user">
-                    </s:link>
+                    <ice:commandSortHeader columnName="#{itemBid.userColumnName}"
+                                           arrow="true">
+                    <ice:outputText value="#{itemBid.userColumnName}" />
+						</ice:commandSortHeader>
                 </f:facet>
                 #{bid.user.name} [#{bid.user.username}]
             </ice:column>
             <ice:column>
                 <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="bidItem">
-                    </s:link>
+                    <ice:commandSortHeader columnName="#{itemBid.bidItemColumnName}"
+                                           arrow="true">
+                    <ice:outputText value="#{itemBid.bidItemColumnName}" />
+						</ice:commandSortHeader>
                 </f:facet>
                 #{bid.auctionItem.title} [#{bid.auctionItem.itemId}]
             </ice:column>
             <ice:column>
                 <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="bidValue">
-                    </s:link>
+                    <ice:commandSortHeader columnName="#{itemBid.bidColumnName}"
+                                           arrow="true">
+                    <ice:outputText value="#{itemBid.bidColumnName}" />
+						</ice:commandSortHeader>
                 </f:facet>
-                #{bid.bidValue}
+                 #{bid.bidValue}
             </ice:column>
             <ice:column>
                 <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="timestamp">
-                    </s:link>
+                    <ice:commandSortHeader columnName="#{itemBid.timestampColumnName}"
+                                           arrow="true">
+                    <ice:outputText value="#{itemBid.timestampColumnName}" />
+						</ice:commandSortHeader>
                 </f:facet>
                 <h:outputText value="#{bid.timestamp}">
                     <s:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
-                </h:outputText>
-            </ice:column>
-            <ice:column>
-                <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="creditCard">
-                    </s:link>
-                </f:facet>
-                #{bid.creditCard}
-            </ice:column>
-            <ice:column>
-                <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="creditCardName">
-                    </s:link>
-                </f:facet>
-                #{bid.creditCardName}
-            </ice:column>
-            <ice:column>
-                <f:facet name="header">
-                    <s:link styleClass="columnHeader"
-                            value="creditCardExpiry">
-                    </s:link>
-                </f:facet>
-                #{bid.creditCardExpiryMonth} / #{bid.creditCardExpiryYear}
+                </h:outputText>               
             </ice:column>
         </ice:dataTable>
+			</ice:form>
     </div>
 </ice:panelGroup>
         <h:form>

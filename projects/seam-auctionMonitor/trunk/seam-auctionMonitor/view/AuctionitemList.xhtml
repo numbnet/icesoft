@@ -50,18 +50,33 @@
                        id="auctionitemList"
                        var="auctionitemBean"
                        value="#{auctionitems}"
+                       sortColumn="#{itemSearch.sort}"
+                       sortAscending="#{itemSearch.ascending}"
                        headerClass="tableHeader"
                        rowClasses="rowClass1,rowClass2"
-                       rendered="#{auctionitems.rowCount>0}">
+                       rendered="#{auctionitems.rowCount>0}"
+			           styleClass="#{itemSearch.auctionitems}">
             <ice:column>
                 <f:facet name="header">
                     <ice:panelGrid columns="5" width="100%" cellspacing="1"
                                    columnClasses="column1,column2,column3,column4,column5,column6">
-                        <ice:outputText value="Item Name"/>
-                        <ice:outputText value="Price"/>
-                        <ice:outputText value="Bids"/>
-                        <ice:outputText value="Expires"/>
-                        <ice:outputText value="Action"/>
+						<ice:commandSortHeader columnName="#{itemSearch.itemNameColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Item Name" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.priceColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Price" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.bidsColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Bids" />
+						</ice:commandSortHeader>
+						<ice:commandSortHeader columnName="#{itemSearch.timeLeftColumnName}"
+                                               arrow="true">
+						    <ice:outputText value="Time Left" />
+						</ice:commandSortHeader>
+						<ice:outputText value="Action" />
                     </ice:panelGrid>
                 </f:facet>
                 <ice:panelGrid columns="5" width="100%" cellspacing="1"

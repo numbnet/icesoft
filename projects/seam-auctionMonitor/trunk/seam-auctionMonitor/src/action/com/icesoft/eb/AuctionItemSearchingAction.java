@@ -25,7 +25,7 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Scope(ScopeType.SESSION)
 //@Restrict("#{identity.loggedIn}")
 
-public class AuctionItemSearchingAction /*extends SortableList*/ implements AuctionItemSearching, Renderable
+public class AuctionItemSearchingAction extends SortableList implements AuctionItemSearching, Renderable
 {
 
    @PersistenceContext(type=EXTENDED)
@@ -48,12 +48,12 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    private RenderManager renderManager;
 
    // sort column names
-/*   private static String itemNameColumnName = "Item Name";
+   private static String itemNameColumnName = "Item Name";
    private static String priceColumnName = "Price";
    private static String bidsColumnName = "Bids";
    private static String timeLeftColumnName = "Time Left";
-*/   // comparator used to sort queues.
-//   private Comparator comparator;
+   // comparator used to sort queues.
+   private Comparator comparator;
 
    @In(required = false, scope = ScopeType.APPLICATION)
    @Out(required = false, scope = ScopeType.APPLICATION)
@@ -61,7 +61,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
 
     public AuctionItemSearchingAction(){
         // default sort header
-        //super(itemNameColumnName);
+        super(itemNameColumnName);
    }
 
    public PersistentFacesState getState() {
@@ -160,7 +160,7 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
 
    public String getSearchString()
    {
-       state = PersistentFacesState.getInstance();
+      state = PersistentFacesState.getInstance();
       return searchString;
    }
 
@@ -192,8 +192,8 @@ public class AuctionItemSearchingAction /*extends SortableList*/ implements Auct
    /**
     * Sort the list.
     */
-/*   protected void sort(final String column, final boolean ascending) {
-System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
+   protected void sort(final String column, final boolean ascending) {
+           System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
            comparator = new Comparator(){
                public int compare(Object o1, Object o2) {
                    AuctionitemBean c1 = (AuctionitemBean) o1;
@@ -228,27 +228,27 @@ System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
        Collections.sort(auctionitems, comparator);
 
    }
-*/
+
    /**
     * Determines the sort order.
     *
     * @param sortColumn to sort by.
     * @return whether sort order is ascending or descending.
     */
-/*   protected boolean isDefaultAscending(String sortColumn) {
+   protected boolean isDefaultAscending(String sortColumn) {
        return true;
    }
-*/
+
    @Destroy @Remove
    public void destroy() {
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-           //System.out.println("DESTROY METHOD REMOVING: " + tempBean.getAuctionitem().getTitle() + " FROM: " + tempBean.renderer.getName());
+           System.out.println("DESTROY METHOD REMOVING FROM: " + tempBean.getAuctionitem().getTitle() + tempBean.renderer.getName());
            tempBean.removeRenderable(this);
            globalAuctionItems.remove(tempBean);
        }
    }
-/*
+
 public String getBidsColumnName() {
     return bidsColumnName;
 }
@@ -265,12 +265,9 @@ public String getTimeLeftColumnName() {
     return timeLeftColumnName;
 }
 
-@Begin(join=true)
-public List<AuctionitemBean> getAuctionitems() {
-    System.out.println("GETTING/SORTING AUCTION ITEMS");
-    sort(getSort(), isAscending());
-    System.out.println("RETURNING AUCTIONITEMS");
-    return auctionitems;
+public String getAuctionitems(){
+        sort(getSort(), isAscending());
+        return "";
 }
-*/
+
 }

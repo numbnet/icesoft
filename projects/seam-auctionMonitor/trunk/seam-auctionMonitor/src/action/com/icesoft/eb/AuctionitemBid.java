@@ -12,5 +12,15 @@ public interface AuctionitemBid {
     public void cancel();
     public void destroy();
     public List<Bid> getAuctionitemBidList();
+    
+    public String getUserColumnName();
+    public String getBidItemColumnName();
+    public String getBidColumnName();
+    public String getTimestampColumnName();
+    
+    public String getSort() ;
+    public void setSort(String sort);
+    public boolean isAscending();
+    public void setAscending(boolean ascending);
 
 }

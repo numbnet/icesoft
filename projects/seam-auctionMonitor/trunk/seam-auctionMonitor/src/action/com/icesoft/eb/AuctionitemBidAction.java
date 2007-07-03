@@ -3,6 +3,8 @@ package com.icesoft.eb;
 import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -36,7 +38,7 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Name("itemBid")
 @Restrict("#{identity.loggedIn}")
 
-public class AuctionitemBidAction implements AuctionitemBid, Renderable {
+public class AuctionitemBidAction extends SortableList implements AuctionitemBid, Renderable {
     @PersistenceContext(type=EXTENDED)
     private EntityManager em;
     
@@ -63,20 +65,28 @@ public class AuctionitemBidAction implements AuctionitemBid, Renderable {
     @In(required = false, scope = ScopeType.APPLICATION)
     @Out(required = false, scope = ScopeType.APPLICATION)
     private List<AuctionitemBean> globalAuctionItems;
+    
+    // sort column names
+    private static String userColumnName = "User";
+    private static String bidItemColumnName = "Item";
+    private static String bidColumnName = "Bid";
+    private static String timestampColumnName = "Time";
+    // comparator used to sort queues.
+    private Comparator comparator;
+    
+    public AuctionitemBidAction(){
+        super(bidColumnName);
+    }
 
     @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
-       try{
        Auctionitem temp = auctionitemBean.getAuctionitem();
        temp = em.merge(selectedItem.getAuctionitem());
        auctionitemBean = selectedItem;
        auctionitemBean.setBidding(true);
        bid = new Bid(temp, user);
        bid.setBidValue(auctionitemBean.getBidInput());
-       }catch(Exception e){
-           e.printStackTrace();
-       }
        auctionitemBean.addRenderable(this);
        return "";
     }
@@ -167,7 +177,65 @@ public class AuctionitemBidAction implements AuctionitemBid, Renderable {
 
     public List<Bid> getAuctionitemBidList() {
         state = PersistentFacesState.getInstance();
+        sort(getSort(), isAscending());
         return auctionitemBean.getAuctionitem().getBids();
+    }
+
+    protected boolean isDefaultAscending(String sortColumn) {
+        return false;
+    }
+
+    protected void sort(final String column, final boolean ascending) {
+        System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
+        comparator = new Comparator(){
+            public int compare(Object o1, Object o2) {
+                Bid c1 = (Bid) o1;
+                Bid c2 = (Bid) o2;
+                if (column == null) {
+                    return 0;
+                }
+                else if (column.equals(userColumnName)) {
+                    return ascending ?
+                            c1.getUser().getName().toLowerCase().compareTo( c2.getUser().getName().toLowerCase() ):
+                            c2.getUser().getName().toLowerCase().compareTo( c1.getUser().getName().toLowerCase() );
+                }
+                else if (column.equals(bidItemColumnName)) {
+                    return ascending ?
+                            c1.getAuctionItem().getTitle().toLowerCase().compareTo( c2.getAuctionItem().getTitle().toLowerCase() ):
+                            c2.getAuctionItem().getTitle().toLowerCase().compareTo( c1.getAuctionItem().getTitle().toLowerCase() );
+                }
+                else if (column.equals(bidColumnName)) {
+                    return ascending ?
+                            new Double(c1.getBidValue()).compareTo( new Double(c2.getBidValue()) ):
+                            new Double(c2.getBidValue()).compareTo( new Double(c1.getBidValue()) );
+                }
+                else if (column.equals(timestampColumnName)) {
+                    return ascending ?
+                            c1.getTimestamp().compareTo(c2.getTimestamp()):
+                            c2.getTimestamp().compareTo(c1.getTimestamp());
+                }
+                else return 0;
+            }
+        };
+
+    Collections.sort(auctionitemBean.getAuctionitem().getBids(), comparator);
+        
+    }
+    
+    public String getUserColumnName() {
+        return userColumnName;
+    }
+
+    public String getBidItemColumnName() {
+        return bidItemColumnName;
+    }
+
+    public String getBidColumnName() {
+        return bidColumnName;
+    }
+
+    public String getTimestampColumnName() {
+        return timestampColumnName;
     }
 
 }

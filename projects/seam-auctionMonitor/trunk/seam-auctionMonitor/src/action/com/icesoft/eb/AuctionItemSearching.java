@@ -16,7 +16,7 @@ public interface AuctionItemSearching
    
    public String getSearchPattern();
 
-//   public List<AuctionitemBean> getAuctionitems();
+   public String getAuctionitems();
    
    public String find();
    public String nextPage();
@@ -25,13 +25,15 @@ public interface AuctionItemSearching
    public void destroy();
 
    public void queryAuctionItems();
-/*   
+   
    public String getBidsColumnName();
    public String getItemNameColumnName();
    public String getPriceColumnName();
    public String getTimeLeftColumnName();
    
    public String getSort() ;
+   public void setSort(String sort);
    public boolean isAscending();
-*/
+   public void setAscending(boolean ascending);
+
 }
