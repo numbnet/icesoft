@@ -468,6 +468,12 @@ em {
 }
 
 
+.selectionRadioGroup .iceInpTxt {
+    background-color: #FFFFFF;
+}
+
+
+
 .selectionRadioGroup, .selectionListBoxGroup {
     background-color: #efefef;
     text-align: center;
