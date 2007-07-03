@@ -343,7 +343,7 @@
 		<tag-name>panelTab</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.PanelTab</component-type>
-			<renderer-type>javax.faces.Group</renderer-type>
+			<renderer-type>com.icesoft.faces.TabbedPaneTab</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>

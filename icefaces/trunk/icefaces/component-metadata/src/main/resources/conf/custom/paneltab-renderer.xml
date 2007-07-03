@@ -37,7 +37,7 @@
 	<![CDATA[<p>Renders an individual Panel Tab. Must be contained within a TabbedPane. ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>javax.faces.Group</renderer-type>
+	<renderer-type>com.icesoft.faces.TabbedPaneTab</renderer-type>
 
 	<renderer-extension>
 		<instance-name>panelTab</instance-name>

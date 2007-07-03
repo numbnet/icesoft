@@ -56,28 +56,20 @@ public class GroupRenderer extends DomBasicRenderer {
         String style = (String) uiComponent.getAttributes().get("style");
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
-        boolean requiresSpan = requiresSpan(style, styleClass, uiComponent);
+        boolean requiresSpan = requiresRootElement(style, styleClass, uiComponent);
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
         if (requiresSpan) {
             if (!domContext.isInitialized()) {
-                Element rootSpan = domContext.createElement(HTML.SPAN_ELEM);
+                Element rootSpan = createRootElement(domContext);
                 domContext.setRootNode(rootSpan);
                 setRootElementId(facesContext, rootSpan, uiComponent);
             }
             Element rootSpan = (Element) domContext.getRootNode();
             DOMContext.removeChildren(rootSpan);
-            if (styleClass != null) {
-                rootSpan.setAttribute("class", styleClass);
-            }
-            if (style != null && style.length() > 0) {
-                rootSpan.setAttribute("style", style);
-            }
-            else {
-                rootSpan.removeAttribute("style");
-            }
+            renderStyleAndStyleClass(style, styleClass, rootSpan);
         }
         Element rootSpan = (Element) domContext.getRootNode();
         LocalEffectEncoder
@@ -109,6 +101,26 @@ public class GroupRenderer extends DomBasicRenderer {
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
     }
+    
+    protected Element createRootElement(DOMContext domContext) {
+System.out.println("GroupRenderer.createRootElement()  SPAN");
+        return domContext.createElement(HTML.SPAN_ELEM);
+    }
+    
+    protected void renderStyleAndStyleClass(
+        String style, String styleClass, Element root)
+    {
+System.out.println("GroupRenderer.renderStyleAndStyleClass()  styleClass: " + styleClass);
+        if (styleClass != null) {
+            root.setAttribute(HTML.CLASS_ATTR, styleClass);
+        }
+        if (style != null && style.length() > 0) {
+            root.setAttribute(HTML.STYLE_ATTR, style);
+        }
+        else {
+            root.removeAttribute(HTML.STYLE_ATTR);
+        }
+    }
 
 
     /**
@@ -117,7 +129,7 @@ public class GroupRenderer extends DomBasicRenderer {
      * @param uiComponent
      * @return boolean
      */
-    private boolean requiresSpan(String style, String styleClass,
+    private boolean requiresRootElement(String style, String styleClass,
                                  UIComponent uiComponent) {
         return idNotNull(uiComponent) || style != null || styleClass != null;
     }
