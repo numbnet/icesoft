@@ -21,16 +21,18 @@
 
         <ice:panelGroup styleClass="edit">
             <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
-                <h:outputText>user</h:outputText>
-                <ice:inputText value="#{exampleBid.user.name}" partialSubmit="true"/>
-                <h:outputText>item</h:outputText>
-                <ice:inputText value="#{exampleBid.auctionItem.title}" partialSubmit="true"/>
+                <ice:outputText>user (contains)</ice:outputText>
+                <ice:inputText value="#{exampleUser.name}"/>
+                <ice:outputText>item (contains)</ice:outputText>
+                <ice:inputText value="#{exampleItem.title}"/>
+                <ice:outputText>amount (above)</ice:outputText>
+                <ice:inputText value="#{exampleBid.bidValue}"/>
             </ice:panelGrid>
         </ice:panelGroup>
     </ice:panelAccordion>
 
     <div class="actionButtons">
-        <ice:commandButton id="search" value="Search" action="/BidList.xhtml"/>
+        <ice:commandButton value="Search" action="/BidList.xhtml"/>
     </div>
 </ice:form>
 

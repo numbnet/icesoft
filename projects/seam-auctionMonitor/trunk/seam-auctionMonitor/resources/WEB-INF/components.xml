@@ -51,12 +51,15 @@
         <action expression="#{redirect.returnToCapturedView}"/>
     </event>
 
+    <component name="exampleUser" class="com.icesoft.eb.User"/>
+    <component name="exampleItem" class="com.icesoft.eb.Auctionitem"/>
     <component name="exampleBid" class="com.icesoft.eb.Bid"/>
     <fwk:entity-query name="bidList" entity-manager="#{entityManager}" ejbql="select b from Bid b"
                       order="auctionItem.title, auctionItem.itemId, timestamp desc">
         <fwk:restrictions>
-            <value>lower(user.name) like lower('%' + #{exampleBid.user.name} + '%')</value>
-            <value>lower(auctionItem.title) like lower('%' + #{exampleBid.auctionItem.title} + '%')</value>
+            <value>lower(b.user.name) like lower('%' + #{exampleUser.name} + '%')</value>
+            <value>lower(b.auctionItem.title) like lower('%' + #{exampleItem.title} + '%')</value>
+            <value>b.bidValue > #{exampleBid.bidValue}</value>
         </fwk:restrictions>
     </fwk:entity-query>
 
