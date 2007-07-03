@@ -18,12 +18,16 @@ import org.jboss.seam.security.Identity;
 @Stateless
 @Name("authenticator")
 public class AuthenticatorAction implements Authenticator {
+
     @Logger
     Log log;
+    
     @In
     Identity identity;
+    
     @PersistenceContext
     EntityManager em;
+    
     @In(required = false, scope = ScopeType.SESSION)
     @Out(required = false, scope = ScopeType.SESSION)
     private User user;

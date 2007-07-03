@@ -6,9 +6,11 @@ import javax.ejb.Remove;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Scope;
 
+/**
+ * This class could be used as a central repository of AuctionitemBeans.
+*/
 @Scope(ScopeType.APPLICATION)
 public class AuctionHouseAction implements AuctionHouse{
 

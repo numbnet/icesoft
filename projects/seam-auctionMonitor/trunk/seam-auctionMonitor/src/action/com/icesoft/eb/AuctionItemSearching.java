@@ -1,8 +1,6 @@
 //$Id: HotelSearching.java,v 1.10 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
 
-import java.util.List;
-
 import javax.ejb.Local;
 
 @Local
@@ -33,6 +31,7 @@ public interface AuctionItemSearching
    
    public String getSort() ;
    public void setSort(String sort);
+
    public boolean isAscending();
    public void setAscending(boolean ascending);
 

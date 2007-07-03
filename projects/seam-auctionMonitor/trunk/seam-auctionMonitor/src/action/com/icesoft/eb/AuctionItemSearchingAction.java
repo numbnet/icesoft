@@ -20,14 +20,13 @@ import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+
 @Stateful
 @Name("itemSearch")
 @Scope(ScopeType.SESSION)
 //@Restrict("#{identity.loggedIn}")
-
 public class AuctionItemSearchingAction extends SortableList implements AuctionItemSearching, Renderable
 {
-
    @PersistenceContext(type=EXTENDED)
    private EntityManager em;
 
@@ -40,6 +39,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
 //   @In
 //   ViewManagerAction viewManager;
+
    private PersistentFacesState state = PersistentFacesState.getInstance();
 
    private boolean first = true;
@@ -193,7 +193,6 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
     * Sort the list.
     */
    protected void sort(final String column, final boolean ascending) {
-           System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
            comparator = new Comparator(){
                public int compare(Object o1, Object o2) {
                    AuctionitemBean c1 = (AuctionitemBean) o1;

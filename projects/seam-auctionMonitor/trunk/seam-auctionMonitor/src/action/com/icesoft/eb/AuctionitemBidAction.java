@@ -13,16 +13,12 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.Conversational;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.End;
-import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
-import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
 import org.jboss.seam.core.Events;
 import org.jboss.seam.core.FacesMessages;
@@ -51,15 +47,13 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     @In(required=false) 
     @Out(required=false)
     private Bid bid;
-       
-    @In
-    private Events events;
     
     @Logger
     private Log log;
     
 //    @In
 //    ViewManagerAction viewManager;
+
     private PersistentFacesState state = PersistentFacesState.getInstance();
 
     @In(required = false, scope = ScopeType.APPLICATION)
@@ -96,13 +90,11 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     {
         if ( auctionitemBean.getBidInput() <= auctionitemBean.getBid().getBidValue() )
         {
-           System.out.println("BID TOO LOW !!!!");
            FacesMessages.instance().add("Bid must be higher than existing price");
            return "";
         }
         else if ( auctionitemBean.getBidInput() > 999999 )
         {
-           System.out.println("BID TOO HIGH !!!!");
            FacesMessages.instance().add("Bid must be less than $1,000,000");
            return "";
         }        
@@ -124,12 +116,10 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
                 if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
                     System.out.println("globalAuctionItem = " + globalAuctionItem);
                     globalAuctionItem.setBid(bid);
+                    globalAuctionItem.buildBidEffect();
                     globalAuctionItem.getAuctionitem().getBids().add(bid);
                     int newBidCount = globalAuctionItem.getAuctionitem().getBidCount() + 1;
                     globalAuctionItem.getAuctionitem().setBidCount(newBidCount);
-                    globalAuctionItem.setBidding(false);
-                    globalAuctionItem.buildBidEffect();
-//                    globalAuctionItem.getAuctionitem().setBidCount(10);
                     tempBean = globalAuctionItem;
                 }
             }
@@ -186,7 +176,6 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     }
 
     protected void sort(final String column, final boolean ascending) {
-        System.out.println("SORTING!!: " + column + " ASCENDING: " + ascending);
         comparator = new Comparator(){
             public int compare(Object o1, Object o2) {
                 Bid c1 = (Bid) o1;

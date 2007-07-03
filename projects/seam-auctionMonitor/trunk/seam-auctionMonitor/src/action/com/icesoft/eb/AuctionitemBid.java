@@ -20,6 +20,7 @@ public interface AuctionitemBid {
     
     public String getSort() ;
     public void setSort(String sort);
+
     public boolean isAscending();
     public void setAscending(boolean ascending);
 

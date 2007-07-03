@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.ejb.Remove;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import org.jboss.seam.annotations.Destroy;
 
@@ -19,9 +18,8 @@ import com.icesoft.faces.context.effects.Effect;
  * This class is the UI representation of an Auctionitem with the most recent Bid.
  * It updates the UI with a render call to renderables in its OnDemandRenderer group.
 */ 
-public class AuctionitemBean implements AuctionitemBeanInterface, Serializable{
+public class AuctionitemBean {
 
-    private RenderManager renderManager;
     private Auctionitem auctionitem;
     private Bid bid;
     public OnDemandRenderer renderer;
@@ -37,7 +35,6 @@ public class AuctionitemBean implements AuctionitemBeanInterface, Serializable{
     public AuctionitemBean(Auctionitem auctionitem, Bid bid, RenderManager renderManager){
         this.auctionitem = auctionitem;
         this.bid = bid;
-        this.renderManager = renderManager;
         auctionitem.setBidCount(auctionitem.getBids().size());
         if(renderer == null){
             System.out.println("INSTANTIATING AUCTIONITEMBEAN " + auctionitem.getDescription() + " RETRIEVING ONDEMANDRENDER " + auctionitem.getItemId());

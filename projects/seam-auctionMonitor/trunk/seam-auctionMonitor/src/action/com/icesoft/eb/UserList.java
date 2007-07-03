@@ -1,7 +1,6 @@
 package com.icesoft.eb;
 
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.RequestParameter;
 import org.jboss.seam.framework.EntityQuery;
 import javax.faces.model.SelectItem;
 import java.util.List;
