@@ -119,9 +119,9 @@ public class CombinedChartBean {
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             String[] legendLabels = {"Bugs", "Security Holes", "Backdoors"};
             Paint[] paints = new Color[]{
-                                new Color(0x0D4274), 
+                                new Color(0xCAE1EF), 
                                 new Color(0xF78208),
-                                new Color(0xCAE1EF) };
+                                new Color(0x0D4274) };
 
             BarChartProperties barChartProperties = new BarChartProperties();
             AxisChartDataSet axisChartDataSet =
@@ -135,7 +135,7 @@ public class CombinedChartBean {
 
             data = TestDataGenerator.getRandomNumbers(2, 7, 1000, 5000);
             legendLabels = new String[]{"Patches", "New Patch Bugs"};
-            paints = new Paint[]{ new Color(0xB4C7D4),
+            paints = new Paint[]{ new Color(0x0D4274),
                                 new Color(0xF78208)};
 
             Stroke[] strokes = {LineChartProperties.DEFAULT_LINE_STROKE,
