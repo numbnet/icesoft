@@ -10,6 +10,7 @@ body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:small;
 }
+
 body {
 color:#333333;
 margin-right:40px;
@@ -23,7 +24,7 @@ font-weight:normal;
 }
 
 h3 {
-font-size:120%;
+font-size:125%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -33,6 +34,9 @@ margin:1em 0pt 0.2em;
 h1, h2 {
 border-bottom:1px solid #AAAAAA;
 font-weight: bold;
+}
+h4 {
+  font-size: 110%
 }
 
   </style>
@@ -52,7 +56,7 @@ font-weight: bold;
       <h2
  style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.0
 Release Notes</h2>
-      <p style="margin-left: 16px; margin-bottom: 12px;">July 3rd, 2007</p>
+      <p style="margin-left: 16px; margin-bottom: 12px;">July 4th, 2007</p>
       </td>
       <td align="center" valign="middle" width="22%"><img
  alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
@@ -144,36 +148,66 @@ at<span style="text-decoration: underline;"> </span><a
 <h2><a name="Changes_160"></a>Changes
 in This Release (v1.6.0)</h2>
 <br>
+ICEfaces v1.6 includes over 350 fixes and enhancements. A summary-level
+overview of the most notable changes is provided below. <br>
+<br>
+See the <a href="#ChangeLog_1_6_0">Detailed Change Log</a> or <a
+ target="_blank"
+ href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
+JIRA Change Log</a> for information on all the changes in this release.<br>
+<br>
+<h3>Java EE Integration</h3>
+<p>ICEfaces now supports integration with the following technologies:<br>
+</p>
+<h4>JSF
+1.2&nbsp;</h4>
 <ul>
-  <li style="font-weight: bold;">Complete support for using ICEfaces
-with JBoss Seam v1.2.1.</li>
+  <li>ICEfaces is now compatible with JSF 1.2-based runtime
+environments, such as Glassfish, Apache<br>
+Tomcat 6.0, and JBoss Application Server v4.2.</li>
+  <li>Support is provided for both JSP and Facelet-based JSF markup.</li>
+  <li>ICEfaces sample applications now incl. "JSF 1.2" ant build targets<br>
+  </li>
+</ul>
+<h4>JBoss Seam 1.2.1 GA</h4>
+<ul class="contentIndent">
+  <li>ICEfaces is now officially supported on JBoss Seam v1.2.1 GA.<br>
+  </li>
+  <li>Refer to the "JBoss Seam Integration" chapter in the
+ICEfaces Developer's Guide (pg. 48) for important information on
+configuring and using ICEfaces with Seam applications. <br>
+  </li>
+  <li>In addition, the following Seam-related projects are available
+on <a target="_blank" href="http://downloads.icefaces.org">http://downloads.icefaces.org</a>:</li>
   <ul>
-    <li>Note that there are important considerations required when
-using
-ICEfaces with a Seam project. Please refer to the <a target="_blank"
- href="http://support.icesoft.com/jive/category.jspa?categoryID=71">Using
-ICEfaces with
-JBoss Seam</a> topic in the ICEfaces Knowledge Base for important
-information regarding configuring your Seam application to work with
-ICEfaces.</li>
-    <li>It is
-recommended that you <a target="_blank"
- href="http://www.icefaces.org/main/downloads/project-downloads.iface">download</a>
-and explore the ICEfaces/Seam Component Showcase sample project bundle
-as it provides a working application that illustrates using all the
-ICEfaces Component Suite components successfully with Seam. Please see
-the ReadMe.html file in that bundle for instructions.</li>
-    <li>There is also a Seam Gen tool available for <a target="_blank"
- href="http://www.icefaces.org/main/downloads/project-downloads.iface">download</a>
-which you can use to rapidly create new ICEfaces + Seam projects.<br>
+    <li>The ICEfaces/Seam Component Showcase sample project provides
+a working application that illustrates using all the ICEfaces Component
+Suite components successfully in a Seam application. Please see the
+ReadMe.html file in that bundle for usage instructions.</li>
+    <li>The ICEfaces "Seam Gen" tool can be used to rapidly create
+new Seam projects that include ICEfaces support. <br>
     </li>
+    <ul>
+    </ul>
   </ul>
 </ul>
+<h4>Liferay Portal 4.3.0</h4>
+<ul class="contentIndent">
+  <li>ICEfaces can now be used to develop and deploy rich portlets
+using Liferay Portal 4.3.0.</li>
+  <li>For more information on using ICEfaces with Liferay Portal, see
+the <a href="http://www.liferay.com/" target="_blank">Liferay Portal</a>
+4.3.0 documentation and the&nbsp; Liferay/ICEfaces <a target="_blank"
+ href="http://www.liferay.com/web/guest/downloads/samples">sample
+project</a>.<br>
+  </li>
+  <ul>
+  </ul>
+</ul>
+<h4>Apache MyFaces Tomahawk
+Components</h4>
 <ul>
-  <li><span style="font-weight: bold;">Apache MyFaces</span> <span
- style="font-weight: bold;">Tomahawk
-component integration
-with ICEfaces applications</span>. You can now use Tomahawk components
+  <li>You can now use Tomahawk components
 along
 with ICEfaces Component Suite components in the same page, form, etc.
 For for more information including a detailed list of compatible
@@ -183,104 +217,145 @@ MyFaces Tomahawk Components with ICEfaces</a> topic in the ICEfaces
 Knowledge Base.</li>
 </ul>
 <ul>
-  <li><span style="font-weight: bold;">ICEfaces compatibility with JSF
-1.2 runtimes and Facelets</span>. See the <a
- href="ReleaseNotes.html#Known_Issues">Known
-Issues</a> for limitations.</li>
 </ul>
+<h4>Spring Web Flow</h4>
+<ul>
+  <li>ICEfaces provides preliminary integration with Spring Web Flow in
+this release.</li>
+  <li>For more information on using ICEfaces with Spring Web Flow, see
+the <a target="_blank"
+ href="http://support.icesoft.com/jive/category.jspa?categoryID=81">Using
+ICEfaces with Spring Web Flow</a> Knowledge Base topic.</li>
+</ul>
+<br>
+<h3>Performance &amp; Robustness</h3>
+<h4>Ajax Bridge</h4>
+<ul class="contentIndent">
+  <li>Enhanced ICEfaces Ajax bridge provides advanced connection
+management features that were previously only available in the
+commercial Enterprise Production Suite:</li>
+  <ul>
+    <li>Asynchronous heartbeating - provides active connection
+monitoring, status reporting, and recovery.</li>
+    <li>Redirect on lost connections - redirect the browser to a
+predefined URL if the connection to the host application is lost.</li>
+  </ul>
+  <li>Asynchronous connection-sharing for multi-tab/window connectivity
+to same host (overcome
+XMLHttpRequest 2-connection limit).</li>
+  <li>Open Ajax Alliance JavaScript Hub compliance</li>
+</ul>
+<h4>Framework</h4>
+<ul class="contentIndent">
+  <li>Optimized rendering algorithm for improved application
+responsiveness.</li>
+  <li>Enhanced exception and error reporting for easier debugging and
+detection of common configuration problems.</li>
+  <li>Support for Facelets dynamic ui:include.<br>
+  </li>
+</ul>
+<h4>Security</h4>
+<ul class="contentIndent">
+  <li>ICEfaces Ajax bridge prevents cross-site request forgery exploits
+such as SQL Injection Attacks and Fake Form Submits.</li>
+</ul>
+<br>
+<h3>ICEfaces Component Suite</h3>
+<h4>New Components</h4>
+<ul class="contentIndent">
+  <li>Collapsible panel<br>
+  </li>
+  <li>Effects component</li>
+  <li>IFrame component</li>
+</ul>
+<h4>Enhanced Components</h4>
+<ul class="contentIndent">
+  <li>ice:selectInputDate (Calendar) now supports highlighting and
+styling of specific dates, date ranges, etc.</li>
+  <li>ice:outputChart now support horizontal and vertical layouts</li>
+  <li>ice:popupPanel has improved modal dialog support</li>
+  <li>ice:rowSelector can be configured for manual row selection mode</li>
+  <li>New "focus" effect</li>
+</ul>
+<h4>Theme Styling</h4>
+<ul>
+  <li>The CSS classnames used by the ICEfaces Comp. Suite components
+for their default "theme"-based styling have been changed to provide
+much more consistent, meaningful, and efficient naming convention.</li>
+  <li>Inconsistencies in how the ICEfaces Comp. Suite component
+"styleClass" attributes were being applied vs. the default theme style
+classes have been corrected.</li>
+</ul>
+<span style="font-weight: bold; color: rgb(153, 0, 0);">Compatiblity
+Alert</span><span style="color: rgb(153, 0, 0);">:</span>
+ICEfaces applications developed for ICEfaces v1.5.x that override the
+default CSS classnames used by
+the xp.css and royale.css themes to custom style the ICEfaces Comp.
+Suite components must be updated to refer
+to the new theme classnames introduced in ICEfaces v1.6. Failure to
+update the classnames will result in the custom styling no longer being
+applied. For details see the <span class="jive-name"><a target="_blank"
+ href="http://support.icesoft.com/jive/entry.jspa?entryID=751&amp;categoryID=82">ICEface
+Comp. Suite Theme CSS Classname Changes</a> </span> Knowledge Base
+topic. <br>
+<br>
+<h3><span style="font-weight: bold;">Application Servers, Browsers,
+&amp; IDE Tools</span></h3>
+<h4>Application Servers</h4>
+<br>
+This release of ICEfaces has been verified on more JEE application
+servers than any previous release. New additions include: <br>
+<ul class="contentIndent">
+  <li>Apache Tomcat 6.0 (incl. prelim. support for async communication
+features)<br>
+  </li>
+  <li>JBoss Application Server 4.2<br>
+  </li>
+  <li>Glassfish v2</li>
+  <li>Sun Java System Application Server 9.0</li>
+  <li>BEA WebLogic Server 9.2<br>
+  </li>
+  <li>IBM WebSphere 6.1</li>
+  <li>SAP Netweaver 04<br>
+  </li>
+  <li>Webtide Jetty 6.1 (incl. support for Jetty Continuations for
+async communications)<br>
+  </li>
+</ul>
+<h4>Browsers</h4>
+<br>
+Support for the following browsers has been added:<br>
+<ul>
+  <li>Opera 9.x<br>
+  </li>
+  <li>Opera Mobile (Preliminary)</li>
+</ul>
+<h4>IDE Tools</h4>
+<p>ICEfaces IDE Tool Integrations have been revised and enhanced for:</p>
+<ul class="contentIndent">
+  <li>Eclipse v2.2 (Web Tools Platform + JSF tools)<br>
+  </li>
+  <li>Sun NetBeans v5.5<br>
+  </li>
+  <li>MyEclipse Enterprise Workbench v5.0, v5.5<br>
+  </li>
+  <li>BEA Workshop Studio 3, Workshop Studio for JSF</li>
+  <li>Oracle JDeveloper 10g Studio Edition</li>
+</ul>
+The tool integration bundles must be downloaded separately <a
+ href="http://downloads.icefaces.org/">here</a>.<br>
+<br>
+See the <a href="ReleaseNotes.html#Supported_Platforms">Supported
+Browsers, Application
+Servers, and Tools</a> section for the complete list of supported
+application servers, browsers, and IDEs.<br>
+<br>
 Please review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a> prior to
 using this release.<br>
 <br>
-<h3>Open Source</h3>
-<p>The ICEfaces Enterprise Production Suite (EPS) is now available
-under open source. ICEfaces is now 100% open source.<br>
-<br>
-</p>
-<h3>Java EE Integration</h3>
-<p>ICEfaces in now integrated with the following technologies:</p>
-<ul class="contentIndent">
-  <li>JBoss Seam 1.2.1</li>
-</ul>
-<p>ICEfaces 1.6.0 now offers integration with JBoss Seam 1.3. Included
-in this integration are enhancements to SeamGen that support the rapid
-generation of functional Seam plus ICEfaces applications. This release
-also contains a number of source code examples.</p>
-<div class="quoteBox">"The integration of Seam and ICEfaces
-validates the strength of the Seam ecosystem and underscores our
-commitment to developer choice and productivity by supporting multiple
-Ajax technologies within Seam," said Gavin King, project lead for JBoss
-Seam, JBoss, a division of Red Hat. "With ICEfaces 1.6, developers can
-transparently add Ajax to their Seam applications and benefit from the
-collaboration capabilities of Ajax Push and the productivity gains of
-auto-generating ICEfaces + Seam applications with SeamGen."</div>
-<ul class="contentIndent">
-  <li>Liferay Portal</li>
-</ul>
-<p>The Liferay Portal and ICEfaces integration addresses the
-complexities of Ajax development in a portal environment and allows
-enterprise Java developers to focus on building rich portal
-applications in pure Java instead of wrestling with low-level Ajax
-programming.</p>
-<div class="quoteBox">"ICEfaces technology raises the bar for
-creating intuitive and usable portal user interfaces," said Liferay?s
-Chief Software Architect, Brian Chan, "We specifically integrated with
-ICEfaces because they are the best at what they do and will have the
-highest impact on both the user and the developer experience."</div>
-<ul class="contentIndent">
-  <li>JSF 1.2</li>
-  <li>Spring Web flow (early integration)</li>
-  <li>Glassfish</li>
-  <li>SAP Netweaver Application Server</li>
-  <li>Webtide Jetty</li>
-</ul>
-<p><a href="http://lnstage1/main/product/platforms.iface">Click here</a>
-to see a complete list of supported platforms.<br>
-<br>
-</p>
-<h3>Updated IDE Integration</h3>
-<p>Updated tool integration bundles for:</p>
-<ul class="contentIndent">
-  <li>Eclipse (Web Tools Platform + JSF tools)</li>
-  <li>Sun NetBeans</li>
-  <li>MyEclipse Enterprise Workbench</li>
-  <li>BEA Workshop Studio 3, Workshop Studio for JSF</li>
-  <li>Oracle JDeveloper 10g Studio Edition</li>
-</ul>
-<p><a href="http://lnstage1/main/downloads/os-downloads.iface">Click
-here</a> to download the latest tool bundles.<br>
-<br>
-</p>
-<h3>New Browser Support</h3>
-<ul class="contentIndent">
-  <li>Opera Browser is now supported</li>
-  <li>Opera Mobile (preliminary)</li>
-</ul>
-<br>
-<h3>Components and Component Interoperability</h3>
-<ul class="contentIndent">
-  <li>Support for integrating Apache MyFaces Tomahawk components</li>
-  <li>New Collapsible Panel component</li>
-  <li>Open Ajax Hub compliance</li>
-</ul>
-<br>
-<h3>Performance Enhancements</h3>
-<ul class="contentIndent">
-  <li>Multi-window support for Ajax push over a single browser
-connection</li>
-  <li>Optimized rendering algorithm for improved application
-responsiveness</li>
-  <li>Enhanced connection monitoring and configuration features ensures
-asynchronous connection health and application responsiveness</li>
-</ul>
-<br>
-<h3>Security</h3>
-<ul class="contentIndent">
-  <li>ICEfaces Ajax bridge prevents cross-site request forgery exploits
-such as SQL Injection Attacks and Fake Form Submits</li>
-</ul>
-<br>
-<h3>New Features</h3>
+<h3><a name="ChangeLog_1_6_0"></a>Detailed Change Log</h3>
+<h4>New Features</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1699">ICE-1699</a>]
 - Runtime compatibility for JSF 1.2 implementations with JSPs</li>
@@ -324,8 +399,7 @@ XMLHttpRequest 2-connection limit)</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1810">ICE-1810</a>]
 - Support Integration with JBoss Seam</li>
 </ul>
-<br>
-<h3>Improvements</h3>
+<h4>Improvements</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-556">ICE-556</a>]
 - Request-scoped bean remain in memory until the session expires</li>
@@ -428,8 +502,16 @@ the effect</li>
 - Add accessibility to the Address Demo</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1535">ICE-1535</a>]
 - Make timezone tutorial use new ViewListener mechanism</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1539">ICE-1539</a>]
+- Component Showcase - refactor the AccordionPanel example</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1546">ICE-1546</a>]
 - Component Showcase: Panel Tab Set Example - Enhancements</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1551">ICE-1551</a>]
+- Autocomplete Tutorial</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1558">ICE-1558</a>]
+- Use relative URLs for ICEfaces' resources</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1561">ICE-1561</a>]
+- Facelets dynamic include tutorial</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1572">ICE-1572</a>]
 - missing backport-util-concurrent.jar fails silently</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1577">ICE-1577</a>]
@@ -482,13 +564,15 @@ not error</li>
 classnames</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1747">ICE-1747</a>]
 - Rename new panelAccordion component to panelCollapsible</li>
+  <li>[<a style="" href="http://jira.icefaces.org//browse/ICE-1757">ICE-1757</a>]
+- DataPaginator is using the same images for both xp and royale theme
+under component showcase</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1760">ICE-1760</a>]
 - netbeans: webuijsf form support</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1804">ICE-1804</a>]
 - Increase default session timeout on sample apps</li>
 </ul>
-<br>
-<h3>Bug Fixes</h3>
+<h4>Bug Fixes</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-109">ICE-109</a>]
 - BridgeFacesContext gets created twice in
@@ -666,7 +750,7 @@ original viewid/page </li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1222">ICE-1222</a>]
 - Component Showcase font size too large</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1227">ICE-1227</a>]
-- <f:loadBundle> gets cleaned up when using standardRequestScope="true"</f:loadBundle></li>
+- <f:loadbundle> gets cleaned up when using standardRequestScope="true"</f:loadbundle></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1228">ICE-1228</a>]
 - Seam: need to support @DataModelSelectionIndex</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1239">ICE-1239</a>]
@@ -738,8 +822,8 @@ jars</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1335">ICE-1335</a>]
 - icefaces-extras.js not loaded on subsequent page renders</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1344">ICE-1344</a>]
-- <ice:inputFile> can take a "style" attribute, but it is not valid
-according to the TLD.</ice:inputFile></li>
+- <ice:inputfile> can take a "style" attribute, but it is not valid
+according to the TLD.</ice:inputfile></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1346">ICE-1346</a>]
 - The InputFile Component with OutputProgress Component demo doesn't
 update/rerender in the browser with fast HTTP connections</li>
@@ -787,7 +871,7 @@ to insert a node where it is not permitted. </li>
 - Setting attribute "bgcolor" of PanelTabSet doesn't pass to the root
 element</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1391">ICE-1391</a>]
-- <ice:inputHidden> does not submit data back to server</ice:inputHidden></li>
+- <ice:inputhidden> does not submit data back to server</ice:inputhidden></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1392">ICE-1392</a>]
 - Cannot change theme for component-showcase-facelet on IE 7</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1396">ICE-1396</a>]
@@ -888,6 +972,9 @@ format</li>
 - WebLogic 9.2: UIInput in iframe will not allow direct focus in IE</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1509">ICE-1509</a>]
 - Seam-gen: .classpath and .project files missing</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1511">ICE-1511</a>]
+- dataTable columnClasses attribute appending column number to style
+names</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1512">ICE-1512</a>]
 - Seam page parameters are being kept as List of Strings rather than
 String</li>
@@ -936,6 +1023,8 @@ Safari fails</li>
 - column rendering with scroller bar - renders header columns and body
 columns separately and offsets columns --need a default setting for
 seam-gen</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1567">ICE-1567</a>]
+- rvn query parameter being duplicated on subsequent redirects</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1573">ICE-1573</a>]
 - spring: conversation lock release exception</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1590">ICE-1590</a>]
@@ -1006,6 +1095,8 @@ when using IE6</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1671">ICE-1671</a>]
 - Portlet decoration Javascript incompatibility between ICEfaces and
 Liferay "Desktop" theme</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1673">ICE-1673</a>]
+- JavaScript bridge takes over all form submission</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1677">ICE-1677</a>]
 - Server log WARN: [Parameters] Parameters: Invalid chunk ignored</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1695">ICE-1695</a>]
@@ -1077,9 +1168,13 @@ following components: panleGroup, ouputFormat and PanelTab</li>
 value binding</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1799">ICE-1799</a>]
 - Session expiry in Synchronous mode results in NPE</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1811">ICE-1811</a>]
+- PanelTab styling should not apply to its root span</li>
+  <li>[<a href="http://jira.icefaces.org//browse/ICE-1814">ICE-1814</a>]
+- ice:PanelTab renders an extra style class (MidMid) which causes the
+background image of the pabelTab to be looked incorrect</li>
 </ul>
-<br>
-<h3>Tasks</h3>
+<h4>Tasks</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1356">ICE-1356</a>]
 - Investigate Tomahawk comp. submit technique changes</li>
@@ -1109,9 +1204,8 @@ since v1.6.0 DR#5<br>
 <p>The following issues have been resolved between the release of the
 previous ICEfaces 1.6.0 DR#5 development build and this v1.6.0 final
 release:<br>
-<br>
 </p>
-<h3>New Features</h3>
+<h4>New Features</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1118">ICE-1118</a>]
 - Support NetBeans Visual Web Pack (VWP)</li>
@@ -1130,8 +1224,7 @@ release:<br>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1809">ICE-1809</a>]
 - Support for Liferay Portal</li>
 </ul>
-<br>
-<h3>Improvements</h3>
+<h4>Improvements</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-694">ICE-694</a>]
 - "jsp:directive.include" under sub folders</li>
@@ -1159,8 +1252,8 @@ XMLHttpRequest interaction</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1535">ICE-1535</a>]
 - Make timezone tutorial use new ViewListener mechanism</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1604">ICE-1604</a>]
-- <ice:inputFile> has too much margin around it and does not fit
-tightly with sibling components</ice:inputFile></li>
+- <ice:inputfile> has too much margin around it and does not fit
+tightly with sibling components</ice:inputfile></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1620">ICE-1620</a>]
 - Make javax.portlet.PortletConfig object available to portlet
 developers</li>
@@ -1193,9 +1286,8 @@ classnames</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1804">ICE-1804</a>]
 - Increase default session timeout on sample apps</li>
 </ul>
-<br>
-<h3>Bug Fixes<br>
-</h3>
+<h4>Bug Fixes<br>
+</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-839">ICE-839</a>]
 - eclipse jsf metadata</li>
@@ -1226,7 +1318,7 @@ should throw some kind of error</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1364">ICE-1364</a>]
 - Seam: Validators not fired when no value is set</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1391">ICE-1391</a>]
-- <ice:inputHidden> does not submit data back to server</ice:inputHidden></li>
+- <ice:inputhidden> does not submit data back to server</ice:inputhidden></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1392">ICE-1392</a>]
 - Cannot change theme for component-showcase-facelet on IE 7</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1492">ICE-1492</a>]
@@ -1276,12 +1368,12 @@ Liferay "Desktop" theme</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1677">ICE-1677</a>]
 - Server log WARN: [Parameters] Parameters: Invalid chunk ignored</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1695">ICE-1695</a>]
-- Error updating <ice:inputText> and <ice:selectInputDate> inside the
-DOM when running under IE7</ice:selectInputDate></ice:inputText></li>
+- Error updating <ice:inputtext> and <ice:selectinputdate> inside the
+DOM when running under IE7</ice:selectinputdate></ice:inputtext></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1696">ICE-1696</a>]
 - maxlength="0" rendered if no maxlength is supplied.</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1702">ICE-1702</a>]
-- <ice:inputFile> broken starting with build 145 (06/08/2006 trunk)</ice:inputFile></li>
+- <ice:inputfile> broken starting with build 145 (06/08/2006 trunk)</ice:inputfile></li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1704">ICE-1704</a>]
 - Unable to clear model data with null values after form submission in
 portlet after using trunk (revision 14098, 6/8/2007)</li>
@@ -1342,8 +1434,7 @@ value binding</li>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1799">ICE-1799</a>]
 - Session expiry in Synchronous mode results in NPE</li>
 </ul>
-<br>
-<h3>Tasks</h3>
+<h4>Tasks</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1780">ICE-1780</a>]
 - change panelSeries add and remove pics</li>
@@ -1428,6 +1519,13 @@ web browsers:
       </td>
       <td style="vertical-align: top; text-align: right;">9.x<br>
       </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Opera<br>
+      </td>
+      <td style="vertical-align: top;">Opera Mobile<br>
+      </td>
+      <td style="vertical-align: top; text-align: right;">8.65 beta</td>
     </tr>
   </tbody>
 </table>
@@ -1673,6 +1771,12 @@ constructor as a getter is more likely to be called specifically on the
 user's current page (<code>persistentFacesState =
 PersistentFacesState.getInstance();</code>).</li>
 </ul>
+<ul>
+  <li>If you specify the <code>com.icesoft.faces.connectionLostRedirectURI</code>
+configuration parameter in your web.xml file and forget
+to single quote the URL, the resulting js configuration string will be
+corrupted.&nbsp;</li>
+</ul>
 <br>
 <h3>JSP Markup </h3>
 <ul>
@@ -1738,7 +1842,11 @@ JSP, each ICEfaces form must have a manually applied unique ID.</li>
 processing by the ICEfaces parser, so it is important not to mix JSP
 Page and JSP document types when performing static inclusion.</li>
 </ul>
-<br>
+<ul>
+  <li>UTF-8 encoding must be used for all source files for ICEfaces
+(jsp jspx,
+etc.)</li>
+</ul>
 <h3>ICEfaces Component Suite<br>
 </h3>
 <ul>
@@ -1746,6 +1854,13 @@ Page and JSP document types when performing static inclusion.</li>
 form component (i.e.<span style="font-family: monospace;"> ice:form</span>,
     <span style="font-family: monospace;">h:form</span>, or <span
  style="font-family: monospace;">ui:form</span>).</li>
+</ul>
+<ul>
+  <li>If a "required" attribute is bound via a valueBinding in a UIData
+component (dataTable, panelSeries, etc.), it will be unset when using
+partialSubmit
+(<a target="_blank" class="moz-txt-link-freetext"
+ href="http://jira.icefaces.org//browse/ICE-1654">http://jira.icefaces.org//browse/ICE-1654</a>).</li>
 </ul>
 <ul>
   <li>Drag &amp; Drop (panelGroup)<br>
@@ -1782,7 +1897,7 @@ and lists.<br>
       <li>When a menu is expanded and the user clicks on one of the
 menu items, and then the same
 menu is expanded again, the last-clicked menu item will appear with a
-dashed outline. This is
+dashed outline (focus ind.). This is
 only an issue in the Firefox or Mozilla browser.</li>
     </ul>
   </li>
@@ -1803,13 +1918,6 @@ be used to enclose all content in the document body. For example: <br>
   </ul>
 </ul>
 <ul>
-  <li>panelTabSet</li>
-  <ul>
-    <li>On Safari browsers only, the layout of the tabs is incorrect,
-with horizontal spacing between the tabs.</li>
-    <li>On Safari browsers only, the tab panel resizes when tabs are
-selected.</li>
-  </ul>
 </ul>
 <ul>
 </ul>
@@ -1820,49 +1928,40 @@ document on a JBoss application server, several warning messages may be
 logged. These warnings do not affect the performance or behavior of the
 component and can be ignored.</li>
 </ul>
+<h3>JSF 1.2</h3>
+<ul>
+  <li>ICEfaces must use JSF 1.1 "compatibility mode" within JSF 1.2
+environments. See the "JSF 1.2" topic in the "Using ICEfaces with J2EE
+Application Servers, IDEs, and Frameworks" chapter of the ICEfaces
+Getting Started Guide (pg. 48) for details.</li>
+</ul>
+<h3>JBoss Seam</h3>
+<ul>
+  <li><span style="color: black;">There is an issue with using Seam
+components such as <code>&lt;s:convertEnum&gt;</code> and <code>&lt;s:convertEntity&gt;</code>
+(possibly others) with ICEfaces. </span>The MenuRenderer allows a
+String to be returned from a list
+of items. These newer Seam components allows objects to be returned and
+then
+with the value="" attribute you can select a different attribute
+(rather than the label) of an object to be returned. A <code>&lt;s:convertEnum&gt;</code>
+or <code>&lt;s:convertEntity&gt;</code>
+will convert this to a
+String to be returned. A workaround is to use an <code>&lt;f:convert&gt;</code>
+or actionListener to look up the String value returned from the Seam
+list. <span style="color: black;">&nbsp;</span></li>
+</ul>
 <h3>Portlets</h3>
 <ul>
   <li>ICEfaces can now be used to develop and deploy rich
 portlets
-using Liferay Portal 4.3.0. For detailed information&nbsp; on using
-ICEfaces with Liferay
-Portal, see the <a target="_blank" href="http://www.liferay.com/">Liferay
-Portal</a> 4.3.0 documentation. Using ICEfaces with other portal
+using Liferay Portal 4.3.0.&nbsp; Using ICEfaces with other portal
 products has not been tested.</li>
 </ul>
 <h3>Application Servers<br>
 </h3>
 <ul>
-  <li>BEA Weblogic Server 9</li>
-</ul>
-<ul>
-  <ul>
-    <li>In order to run ICEfaces on the BEA Weblogic Server 9, the html
-and core tld files located in jsf-impl.jar should be extracted from the
-jar file and placed into the WEB-INF folder of any application you want
-to deploy.</li>
-  </ul>
-</ul>
-<ul>
-  <li>Websphere Application Server 6.0.0.1</li>
-</ul>
-<ul>
-  <ul>
-    <li>A bug in the application server prevents the Timezone Step 3+
-tutorials from running correctly. A WebSphere patch is available from
-IBM that resolves this issue: APAR numberPQ99195, <a target="_blank"
- href="http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195">http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195.</a></li>
-  </ul>
-</ul>
-<ul>
-  <ul>
-    <li>The Component Effects demonstration in the ICEfaces Component
-Showcase application doesn't display the effects when hosted on
-WebSphere v6.0.0.1 server.<br>
-&nbsp;<br>
-    </li>
-  </ul>
-  <li>Apache Tomcat <br>
+  <li><span style="font-weight: bold;">Apache Tomcat v5.5</span><br>
   </li>
 </ul>
 <ul>
@@ -1893,17 +1992,71 @@ com.sun.faces.config.ConfigureListener <br>
   </ul>
 </ul>
 <ul>
+  <li><span style="font-weight: bold;">Apache Tomcat v6.0</span><br>
+  </li>
+</ul>
+<div style="margin-left: 40px;">To use ICEfaces with Tomcat
+v6.0 these jars that are included in the ICEfaces distribution
+must be removed from the web application:<br>
+</div>
+<ul style="margin-left: 40px;">
+  <li>el-api.jar</li>
+  <li>xercesImpl.jar</li>
+  <li>xml-apis.jar</li>
+</ul>
+<ul style="font-weight: bold;">
+  <li>BEA Weblogic Server 9</li>
+</ul>
+<ul>
   <ul>
-    <li>To use ICEfaces with <span style="font-weight: bold;">Tomcat
-v6.0</span> the following additional configuration steps are required:</li>
+    <li>In order to run ICEfaces on the BEA Weblogic Server 9, the html
+and core tld files located in jsf-impl.jar should be extracted from the
+jar file and placed into the WEB-INF folder of any application you want
+to deploy.</li>
+  </ul>
+</ul>
+<ul style="font-weight: bold;">
+  <li>OC4J 10.1.3</li>
+</ul>
+<ul>
+  <ul>
+    <li>You must configure
+a non-standard web.xml file (not the one included in the ICEfaces
+bundle) in order for ICEfaces applications to run correctly on the OC4J
+server.</li>
+    <li>This is due to a bug in the OC4J server servlet "forward"
+feature that results in request parameters from a previously forwarded
+request to be incorrectly re-used by subsequent forwarded requests. <br>
+    </li>
+    <li>See the <a target="_blank"
+ href="http://support.icesoft.com/jive/entry.jspa?entryID=752&amp;categoryID=80">Oracle
+OC4J 10.1.3 Deployment Guide</a> in the ICEfaces knowledge base for
+details. </li>
+  </ul>
+</ul>
+<ul style="font-weight: bold;">
+  <li>Websphere Application Server 6.0.0.1</li>
+</ul>
+<ul>
+  <ul>
+    <li>A bug in the application server prevents the Timezone Step 3+
+tutorials from running correctly. A WebSphere patch is available from
+IBM that resolves this issue: APAR numberPQ99195, <a target="_blank"
+ href="http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195">http://www-1.ibm.com/support/docview.wss?rs=180&amp;uid=swg1PQ99195.</a></li>
+  </ul>
+</ul>
+<ul>
+  <ul>
+    <li>The Component Effects demonstration in the ICEfaces Component
+Showcase application doesn't display the effects when hosted on
+WebSphere v6.0.0.1 server.<br>
+&nbsp;<br>
+    </li>
+  </ul>
+</ul>
+<ul>
+  <ul>
     <ul>
-      <li>These jars that are included in the ICEfaces distribution
-must be removed from the web application:</li>
-      <ul>
-        <li>el-api.jar</li>
-        <li>xercesImpl.jar</li>
-        <li>xml-apis.jar</li>
-      </ul>
     </ul>
   </ul>
 </ul>
