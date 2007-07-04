@@ -8,7 +8,11 @@
   <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
-font-size:small;
+font-size:80%;
+}
+
+code, pre {
+  font-size:110% 
 }
 
 body {
@@ -70,7 +74,6 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
-  <li><a href="#Understanding_ICEfaces">Understanding ICEfaces </a></li>
   <li><a href="ReleaseNotes.html#Changes_160">Changes in This Release
 (v1.6.0)</a></li>
   <li><a href="ReleaseNotes.html#Changes_since_DR5">Changes Since
@@ -80,70 +83,14 @@ DR#5<br>
   <li><a href="#Supported_Platforms">Supported Browsers, Application
 Servers, and Tools</a></li>
   <li><a href="#Known_Issues">Known Issues</a></li>
-  <li><a href="#Support">Getting Support for ICEfaces</a></li>
+  <li><a href="ReleaseNotes.html#About_ICEfaces">Support</a></li>
+  <li><a href="ReleaseNotes.html#About_ICEfaces">About ICEfaces </a></li>
   <li><a href="#License_Management">License information</a></li>
 </ul>
 For release note information for earlier ICEfaces releases, refer to
 the <a
  href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
 Knowledge Base</a>.<br>
-<br>
-<h2><a name="Understanding_ICEfaces"></a>Understanding
-ICEfaces<br>
-</h2>
-<p>ICEfaces delivers extensions to Java ServerFaces (JSF) that provide
-an
-AJAX-enabled rich presentation environment for JSF applications.
-ICEfaces
-brings value to any J2EE development project that needs to provide
-superior
-presentation capabilities to the web application user. In particular,
-ICEfaces provides the following features:</p>
-<ul>
-  <li>Smooth, incremental page updates that do not require a full page
-refresh to achieve presentation changes in the application.</li>
-  <li>Server-initiated asynchronous presentation updates for dynamic
-instantaneous data push.</li>
-  <li>The ICEfaces Component Suite, a complete rich JSF component suite
-that fully leverages ICEfaces capabilities. </li>
-  <li>Intelligent form processing that facilitates fine-grained
-interactions with the user as they manipulate a form.</li>
-  <li>API support for rapid development of group-aware and
-collaborative applications, such as Chat, Webcast, social apps., etc.</li>
-  <li>JSP or Facelets based development.</li>
-  <li>Tool integrations for leading Java IDEs.</li>
-  <li>Support for leading JEE frameworks, such as Spring and JBoss Seam.</li>
-  <li>Support for portlet development using Liferay Portal.<br>
-  </li>
-</ul>
-<h3>Learn More</h3>
-<p>This ICEfaces release comes with extensive documentation that will
-help you
-understand the product thoroughly. Documentation for this release is
-located
-in your installation directory at <span style="font-weight: bold;">.../<span>install_dir</span>/icefaces/docs/</span>.
-The
-following documents are provided in PDF format:</p>
-<ol>
-  <li><span>ICEfaces Getting Started Guide</span>:
-This guide takes you through product installation, environment
-configuration, demo app installation, and a basic 5-stage tutorial.
-This guide also contains information related to support for different
-application server environments and development tools.
-    <p> </p>
-  </li>
-  <li><span>ICEfaces Developer's Guide</span>:
-This guide contains information relevant to developing applications
-with ICEfaces. It describes the ICEfaces architecture, and explains key
-concepts that the ICEfaces developer should be aware of. It also
-provides a complete reference guide that covers APIs, configuration,
-components (including the ICEfaces Component Suite) and TLDs, and
-covers advanced topics like server-initiated rendering.</li>
-</ol>
-Additionally, ICEfaces documentation is also available on-line
-at<span style="text-decoration: underline;"> </span><a
- class="moz-txt-link-freetext" href="http://documentation.icefaces.org/">http://documentation.icefaces.org/.</a><br>
-<br>
 <br>
 <h2><a name="Changes_160"></a>Changes
 in This Release (v1.6.0)</h2>
@@ -166,7 +113,8 @@ JIRA Change Log</a> for information on all the changes in this release.<br>
 environments, such as Glassfish, Apache<br>
 Tomcat 6.0, and JBoss Application Server v4.2.</li>
   <li>Support is provided for both JSP and Facelet-based JSF markup.</li>
-  <li>ICEfaces sample applications now incl. "JSF 1.2" ant build targets<br>
+  <li>ICEfaces sample applications now include "JSF 1.2" ant build
+targets.<br>
   </li>
 </ul>
 <h4>JBoss Seam 1.2.1 GA</h4>
@@ -231,9 +179,9 @@ ICEfaces with Spring Web Flow</a> Knowledge Base topic.</li>
 <h3>Performance &amp; Robustness</h3>
 <h4>Ajax Bridge</h4>
 <ul class="contentIndent">
-  <li>Enhanced ICEfaces Ajax bridge provides advanced connection
+  <li>The ICEfaces Ajax bridge now provides advanced connection
 management features that were previously only available in the
-commercial Enterprise Production Suite:</li>
+commercial Enterprise Production Suite (EPS) product:</li>
   <ul>
     <li>Asynchronous heartbeating - provides active connection
 monitoring, status reporting, and recovery.</li>
@@ -243,7 +191,9 @@ predefined URL if the connection to the host application is lost.</li>
   <li>Asynchronous connection-sharing for multi-tab/window connectivity
 to same host (overcome
 XMLHttpRequest 2-connection limit).</li>
-  <li>Open Ajax Alliance JavaScript Hub compliance</li>
+  <li>ICEfaces Ajax bridge now passes the Open Ajax Alliance JavaScript
+Hub compliance test.<br>
+  </li>
 </ul>
 <h4>Framework</h4>
 <ul class="contentIndent">
@@ -256,8 +206,9 @@ detection of common configuration problems.</li>
 </ul>
 <h4>Security</h4>
 <ul class="contentIndent">
-  <li>ICEfaces Ajax bridge prevents cross-site request forgery exploits
-such as SQL Injection Attacks and Fake Form Submits.</li>
+  <li>ICEfaces Ajax bridge Servlets prevent cross-site request forgery
+exploits
+and fake form submits.</li>
 </ul>
 <br>
 <h3>ICEfaces Component Suite</h3>
@@ -266,11 +217,10 @@ such as SQL Injection Attacks and Fake Form Submits.</li>
   <li>Collapsible panel<br>
   </li>
   <li>Effects component</li>
-  <li>IFrame component</li>
 </ul>
 <h4>Enhanced Components</h4>
 <ul class="contentIndent">
-  <li>ice:selectInputDate (Calendar) now supports highlighting and
+  <li>ice:selectInputDate (date selector) now supports highlighting and
 styling of specific dates, date ranges, etc.</li>
   <li>ice:outputChart now support horizontal and vertical layouts</li>
   <li>ice:popupPanel has improved modal dialog support</li>
@@ -316,7 +266,7 @@ features)<br>
   <li>BEA WebLogic Server 9.2<br>
   </li>
   <li>IBM WebSphere 6.1</li>
-  <li>SAP Netweaver 04<br>
+  <li>SAP Netweaver 7.0<br>
   </li>
   <li>Webtide Jetty 6.1 (incl. support for Jetty Continuations for
 async communications)<br>
@@ -333,7 +283,7 @@ Support for the following browsers has been added:<br>
 <h4>IDE Tools</h4>
 <p>ICEfaces IDE Tool Integrations have been revised and enhanced for:</p>
 <ul class="contentIndent">
-  <li>Eclipse v2.2 (Web Tools Platform + JSF tools)<br>
+  <li>Eclipse v3.2 (Web Tools Platform + JSF tools)<br>
   </li>
   <li>Sun NetBeans v5.5<br>
   </li>
@@ -1597,7 +1547,7 @@ Container for J2EE (OC4J)<br>
       </td>
       <td style="vertical-align: top;">NetWeaver<br>
       </td>
-      <td style="vertical-align: top; text-align: right;">2004<br>
+      <td style="vertical-align: top; text-align: right;">7.0<br>
       </td>
     </tr>
     <tr>
@@ -1713,8 +1663,10 @@ tool bundles and associated ICEfaces runtime libraries.<br>
 <ol>
 </ol>
 <h2><a name="Known_Issues"></a>Known Issues</h2>
-<p>The following are known issues with this release:<br>
-<br>
+<p>The following section describes the most commonly encountered known
+issues with this release. For a complete reference of all outstanding
+issues please refer to the ICEfaces.org <a target="_blank"
+ href="http://jira.icefaces.org">JIRA</a> issue tracker.<br>
 </p>
 <h3>General</h3>
 <ul>
@@ -1738,46 +1690,24 @@ MyFaces.</li>
 <ul>
   <li>Attempting to retrieve a Request parameter in the url using the
 following syntax is not supported (returns null):<br>
-&nbsp;&nbsp; <span style="font-family: monospace;">FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(paramName);</span><br>
+&nbsp;&nbsp; <code>FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(paramName);</code><br>
 A workaround for this issue is to retrieve the Request parameter using
 the following alternative syntax:<br>
-&nbsp;<span style="font-family: monospace;">((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter(paramName);</span>
+&nbsp;<code>((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getParameter(paramName);</code>
   </li>
 </ul>
 <ul>
-  <li>When using ICEfaces with <span style="font-family: monospace;">com.icesoft.faces.concurrentDOMViews</span>
-enabled, reloading the page or opening the application with more than
-one browser window simultaneously will prevent references to any
-request-scoped beans from being removed, resulting in them being unable
-to be garbage collected until the user session expires. Further, any
-component bindings must be in request scope
-in this configuration as a component binding in
-session or application scope in concurrent views can lead to a
-component existing simultaneously
-in two component trees with unpredictable behavior.<br>
-  </li>
-</ul>
-<ul>
-  <li>Cookies can be set though the <span
- style="font-family: monospace;">((BridgeExternalContext)
+  <li>Cookies can be set though the <code>((BridgeExternalContext)
 FacesContext.getCurrentInstance().getExternalContext()).addCookie(new
-Cookie("test","test"));</span> method. </li>
-</ul>
-<ul>
-  <li>Ajax Push sometimes fails to update page when
-concurrentDOMViews=false set. A work-around is to obtain a reference to
-the PersistentFaceState in a bean getter/setter in addition to the
-constructor as a getter is more likely to be called specifically on the
-user's current page (<code>persistentFacesState =
-PersistentFacesState.getInstance();</code>).</li>
+Cookie("test","test"));</code> method. </li>
 </ul>
 <ul>
   <li>If you specify the <code>com.icesoft.faces.connectionLostRedirectURI</code>
 configuration parameter in your web.xml file and forget
 to single quote the URL, the resulting js configuration string will be
-corrupted.&nbsp;</li>
+corrupted. <br>
+  </li>
 </ul>
-<br>
 <h3>JSP Markup </h3>
 <ul>
   <li>UIComponentBodyTag processing supports only a single call to
@@ -1949,17 +1879,35 @@ or <code>&lt;s:convertEntity&gt;</code>
 will convert this to a
 String to be returned. A workaround is to use an <code>&lt;f:convert&gt;</code>
 or actionListener to look up the String value returned from the Seam
-list. <span style="color: black;">&nbsp;</span></li>
+list.&nbsp; <span style="color: black;"><br>
+    </span></li>
+</ul>
+<ul>
+  <li>ICEfaces v1.6 supports Seam v1.2.1GA. Support for Seam 2.0 is
+planned for a future release.</li>
 </ul>
 <h3>Portlets</h3>
 <ul>
-  <li>ICEfaces can now be used to develop and deploy rich
+  <li>ICEfaces v1.6 can be used to develop and deploy rich
 portlets
 using Liferay Portal 4.3.0.&nbsp; Using ICEfaces with other portal
-products has not been tested.</li>
+products has not been tested with this release.<br>
+  </li>
 </ul>
-<h3>Application Servers<br>
-</h3>
+<h3>Application Servers</h3>
+<ul style="font-weight: bold;">
+  <li>General</li>
+</ul>
+<ul>
+  <ul>
+    <li>ICEfaces 1.6 does not support session persistence. Some
+application servers enable distributable session features by default.
+In these cases serialization exceptions may appear in the log. Session
+distribution should be disabled when deploying ICEfaces applications.
+Support for session persistence is planned for a future release.<br>
+    </li>
+  </ul>
+</ul>
 <ul>
   <li><span style="font-weight: bold;">Apache Tomcat v5.5</span><br>
   </li>
@@ -2050,7 +1998,6 @@ IBM that resolves this issue: APAR numberPQ99195, <a target="_blank"
     <li>The Component Effects demonstration in the ICEfaces Component
 Showcase application doesn't display the effects when hosted on
 WebSphere v6.0.0.1 server.<br>
-&nbsp;<br>
     </li>
   </ul>
 </ul>
@@ -2062,7 +2009,6 @@ WebSphere v6.0.0.1 server.<br>
 </ul>
 <ul>
   <br>
-  <br>
 </ul>
 <h2><a name="Support"></a>Support</h2>
 <p>Open source community support is available at <a
@@ -2071,9 +2017,64 @@ WebSphere v6.0.0.1 server.<br>
 <p>For
 information on commercial support, professional services, and training,
 please visit <a target="_blank" href="http://support.icefaces.org">http://support.icefaces.org</a>.<br>
+<br>
 </p>
-<p><br>
-</p>
+<h2><a name="About_ICEfaces"></a>About
+ICEfaces<br>
+</h2>
+<p>ICEfaces delivers extensions to Java ServerFaces (JSF) that provide
+an
+AJAX-enabled rich presentation environment for JSF applications.
+ICEfaces
+brings value to any J2EE development project that needs to provide
+superior
+presentation capabilities to the web application user. In particular,
+ICEfaces provides the following features:</p>
+<ul>
+  <li>Smooth, incremental page updates that do not require a full page
+refresh to achieve presentation changes in the application.</li>
+  <li>Server-initiated asynchronous presentation updates for dynamic
+instantaneous data push.</li>
+  <li>The ICEfaces Component Suite, a complete rich JSF component suite
+that fully leverages ICEfaces capabilities. </li>
+  <li>Intelligent form processing that facilitates fine-grained
+interactions with the user as they manipulate a form.</li>
+  <li>API support for rapid development of group-aware and
+collaborative applications, such as Chat, Webcast, social apps., etc.</li>
+  <li>JSP or Facelets based development.</li>
+  <li>Tool integrations for leading Java IDEs.</li>
+  <li>Support for leading JEE frameworks, such as Spring and JBoss Seam.</li>
+  <li>Support for portlet development using Liferay Portal.<br>
+  </li>
+</ul>
+<h3>Learn More</h3>
+<p>This ICEfaces release comes with extensive documentation that will
+help you
+understand the product thoroughly. Documentation for this release is
+located
+in your installation directory at <span style="font-weight: bold;">.../<span>install_dir</span>/icefaces/docs/</span>.
+The
+following documents are provided in PDF format:</p>
+<ol>
+  <li><span>ICEfaces Getting Started Guide</span>:
+This guide takes you through product installation, environment
+configuration, demo app installation, and a basic 5-stage tutorial.
+This guide also contains information related to support for different
+application server environments and development tools.
+    <p> </p>
+  </li>
+  <li><span>ICEfaces Developer's Guide</span>:
+This guide contains information relevant to developing applications
+with ICEfaces. It describes the ICEfaces architecture, and explains key
+concepts that the ICEfaces developer should be aware of. It also
+provides a complete reference guide that covers APIs, configuration,
+components (including the ICEfaces Component Suite) and TLDs, and
+covers advanced topics like server-initiated rendering.</li>
+</ol>
+Additionally, ICEfaces documentation is also available on-line
+at<span style="text-decoration: underline;"> </span><a
+ class="moz-txt-link-freetext" href="http://documentation.icefaces.org/">http://documentation.icefaces.org/.</a><br>
+<br>
 <h2><a name="License_Management"></a>License
 Notice</h2>
 <p class="Body">License agreements can be found in the <span
