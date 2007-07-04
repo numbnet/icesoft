@@ -219,7 +219,6 @@ public class PanelTabSetRenderer
             Element tabsTable = domContext.createElement(HTML.TABLE_ELEM);
             tabsTable.setAttribute(HTML.CELLPADDING_ATTR, "0");
             tabsTable.setAttribute(HTML.CELLSPACING_ATTR, "0");
-            tabsTable.setAttribute(HTML.WIDTH_ATTR, "100%");            
             headerTd.appendChild(tabsTable);
             Element tabsTableRow = domContext.createElement(HTML.TR_ELEM);
             tabsTable.appendChild(tabsTableRow);
@@ -321,7 +320,6 @@ public class PanelTabSetRenderer
             Element tabsTable = domContext.createElement(HTML.TABLE_ELEM);
             tabsTable.setAttribute(HTML.CELLPADDING_ATTR, "0");
             tabsTable.setAttribute(HTML.CELLSPACING_ATTR, "0");
-            tabsTable.setAttribute(HTML.WIDTH_ATTR, "100%");             
             headerTd.appendChild(tabsTable);
             Element tabsTableRow = domContext.createElement(HTML.TR_ELEM);
             tabsTable.appendChild(tabsTableRow);
