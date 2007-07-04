@@ -720,6 +720,7 @@ em {
     border: 0;
     margin: 0;
     padding: 0;
+    padding-right: 4px;
 }
 
 .popupTitle span {
@@ -728,7 +729,7 @@ em {
     font-weight: bold;
     padding: 4px;
     color: #FFFFFF;
-    font-size: 1.10em;
+    font-size: 1.0em;
 }
 
 .popupModalBody {
@@ -1239,4 +1240,12 @@ em {
 
 .rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt{
     padding: 8px;
+}
+
+/* Series panel example */
+.seriesPanelItems{
+    float: left;
+    margin: 2px;
+    padding: 8px;
+    border: 1px solid #999999;
 }

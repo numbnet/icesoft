@@ -55,7 +55,8 @@ and must be dismissed before the application's functionality will return.
         <!-- Application title  -->
         <ice:panelGroup styleClass="formBorderHighlight">
             <h3>
-                <ice:outputText value="#{msgs['component.popupPanel.title']}"/>
+                <ice:outputText
+                        value="#{msgs['component.popupPanel.title']}"/>
             </h3>
             <h4>
                 <ice:outputText
@@ -86,9 +87,8 @@ and must be dismissed before the application's functionality will return.
         <f:facet name="header">
             <ice:panelGrid width="100%" cellpadding="0"
                            cellspacing="0" columns="2"
-                           columnClasses="dummy, popupButton">
-                <ice:outputText style="color:#FFFFFF;font-size:13px;"
-                                value="#{msgs['component.popupPanel.draggable.title']}"/>
+                           columnClasses="none, popupButton">
+                <ice:outputText value="#{msgs['component.popupPanel.draggable.title']}"/>
                 <ice:commandButton id="popupClose" type="button"
                                    image="#{popup.closePopupImage}"
                                    actionListener="#{popup.closeDraggablePopup}"

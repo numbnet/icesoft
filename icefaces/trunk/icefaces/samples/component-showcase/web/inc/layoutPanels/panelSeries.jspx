@@ -71,11 +71,11 @@ The content of the list is filled by iterating over a variable.
     </h3>
      <ice:panelGrid styleClass="formBorderHighlight" width="100%">
         <ice:panelSeries value="#{cashier.itemTable}" var="item1">
-            <ice:panelGroup style="float: left;margin: 2px; padding: 5px; margin-right: 20px; border: 1px solid #999999;" >
+            <ice:panelGroup styleClass="seriesPanelItems" >
                 <ice:graphicImage width="100" height="100"
                                   url="images/panelSeries/#{item1.name}.jpg"/>
                 <br />
-                <ice:panelGrid columns="2" width="110px">
+                <ice:panelGrid columns="2">
                     <ice:outputText
                             value="#{msgs['component.panelSeries.productLabel.name']}"
                             styleClass="propertyLabel"/>
