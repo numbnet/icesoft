@@ -11,7 +11,6 @@
         <!-- set global properties for this build -->
         <property name="project.name" value="ice-booking1.2.1"/>
         <property name="dist.dir" value="dist" />
- <!--       <property name="src.model.dir" value="src" /> -->
         <property name="src.action.dir" value="src" />
         <property name="src.test.dir" value="src/test" />
         <property name="lib.dir" value="lib" />
@@ -28,7 +27,6 @@
         <property name="javac.debug" value="true" />
         <property name="javac.deprecation" value="false" />
         <property name="debug" value="false" />
-	<property name="icefacesLibDirectory" value="c:/ossrepoTrunk" />
 
         <fileset id="lib" dir="${lib.dir}">
                 <include name="*.jar" />
@@ -323,7 +321,7 @@
       
          <target name="freshen-base" depends="delete-libs" description="copying of common libraries">
             <copy todir="${lib.dir}">
-                <fileset dir="${icefacesSourceDirectory}/lib">
+                <fileset dir="${icefaces.home}/lib">
                     <include name="icefaces*.jar" />
                     <include name="backport-util-concurrent.jar" />
                     <include name="commons-fileupload.jar"/> 
@@ -346,7 +344,7 @@
 	<target name="freshen" depends="freshen-base"             
                 description="grab fresh icefaces and Seam jars for myfaces deployment">
             <copy todir="${lib.dir}">
-                <fileset dir="${icefacesSourceDirectory}/lib">
+                <fileset dir="${icefaces.home}/lib">
                     <include name="myfaces*.jar"/>
                 </fileset>
                 <fileset dir="${jboss.seam.home}/lib">
@@ -368,7 +366,7 @@
         <target name="freshen-glassFish1.2" depends="freshen-base"
             description="grab fresh icefaces jars for jsf1.2* and seam1.2.1">
             <copy todir="${lib.dir}">
-                <fileset dir="${icefacesSourceDirectory}/lib">
+                <fileset dir="${icefaces.home}/lib">
                     <include name="jsf*.jar"/>
                     <include name="commons-digester*.jar"/>
                 </fileset>
