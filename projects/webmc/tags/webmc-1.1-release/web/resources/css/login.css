@@ -1,0 +1,117 @@
+/*
+* Version: MPL 1.1/GPL 2.0/LGPL 2.1
+*
+* "The contents of this file are subject to the Mozilla Public License
+* Version 1.1 (the "License"); you may not use this file except in
+* compliance with the License. You may obtain a copy of the License at
+* http://www.mozilla.org/MPL/
+*
+* Software distributed under the License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific language governing rights and limitations under
+* the License.
+*
+* The Original Code is ICEfaces 1.5 open source software code, released
+* November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+* Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+* 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+*
+* Contributor(s): _____________________.
+*
+* Alternatively, the contents of this file may be used under the terms of
+* the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+* License), in which case the provisions of the LGPL License are
+* applicable instead of those above. If you wish to allow use of your
+* version of this file only under the terms of the LGPL License and not to
+* allow others to use your version of this file under the MPL, indicate
+* your decision by deleting the provisions above and replace them with
+* the notice and other provisions required by the LGPL License. If you do
+* not delete the provisions above, a recipient may use your version of
+* this file under either the MPL or the LGPL License."
+*
+*/
+/* MAIN STYLES */
+html {
+    overflow: scroll;
+}
+
+body, html {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+}
+
+td {
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;
+}
+
+/* LINK STYLES */
+a {
+    color: #4878A1;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #5F9ED4;
+    text-decoration: underline;
+}
+
+/* FORM STYLES */
+.cellBGglossyDARK {
+    background: #FFFFFF url( '../images/bgslice_glossydarkblue.jpg' ) repeat-x top left;
+    padding: 10px 10px 10px 10px;
+    font: 10px tahoma, arial, sans-serif;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.mainPRES {
+    padding: 15px;
+    background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
+}
+
+.facesBox {
+    background: #FFFFFF url( '../images/bg_mainfaces.jpg' ) no-repeat center;
+    border: 1px solid #94B3CB;
+    padding-top: 125px;
+    height: 80%;
+}
+
+.loginBox {
+    width: 70%;
+}
+
+.loginTable td {
+    padding: 6px;
+    width: 150px;
+}
+
+.loginLabel {
+    text-align: right;
+    font-weight: bold;
+}
+
+.loginInput {
+    border: 1px solid #B4CEE1;
+    padding: 1px;
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;
+    width: 145px;
+}
+
+.inputError {
+    color: #F78208;
+}
+
+.headerMessage {
+    padding-top: 15px;
+    padding-bottom: 10px;
+    text-align: left;
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;
+}
