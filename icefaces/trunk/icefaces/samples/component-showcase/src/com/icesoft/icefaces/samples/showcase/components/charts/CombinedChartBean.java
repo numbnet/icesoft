@@ -119,7 +119,7 @@ public class CombinedChartBean {
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             String[] legendLabels = {"Bugs", "Security Holes", "Backdoors"};
             Paint[] paints = new Color[]{
-                                new Color(0xCCCCCC), 
+                                new Color(0x0D4274), 
                                 new Color(0xF78208),
                                 new Color(0xCAE1EF) };
 
