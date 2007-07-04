@@ -1,0 +1,85 @@
+<!--
+The tasks folder page, should list all tasks in database
+-->
+<ice:form id="taskEditForm"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:panelGrid
+            styleClass="contentLayoutGridStyle"
+            columnClasses="contentLayoutGridColumn"
+            columns="1" border="0">
+
+        <ice:panelGrid columns="4" id="editTable" style="border-width: 0px;">
+            <f:facet name="header">
+                <ice:outputText value="#{msgs['webmail.tasks.edit.title']}"/>
+            </f:facet>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.name']}"/>
+            <ice:inputText value="#{tasksManager.tasksBean.editableTaskBean.name}"
+                           maxlength="500"
+                           style="width: 150px;"/>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.startDate']}"/>
+            <ice:selectInputDate value="#{tasksManager.tasksBean.editableTaskBean.startDate}"
+                                 imageDir="#{styleBean.imageDirectory}"
+                                 renderAsPopup="true"/>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.category']}"/>
+            <ice:selectOneMenu partialSubmit="true" immediate="true"
+                               valueChangeListener="#{tasksManager.tasksBean.processCategoryChange}"
+                               styleClass="dropdown">
+                <f:selectItems value="#{tasksManager.tasksBean.categoryList}"/>
+            </ice:selectOneMenu>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.endDate']}"/>
+            <ice:selectInputDate value="#{tasksManager.tasksBean.editableTaskBean.endDate}"
+                                 imageDir="#{styleBean.imageDirectory}"
+                                 renderAsPopup="true"/>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.priority']}"/>
+            <ice:panelGroup>
+            <ice:selectOneMenu partialSubmit="true" immediate="true"
+                               valueChangeListener="#{tasksManager.tasksBean.processPriorityChange}"
+                               styleClass="dropdown">
+                <f:selectItems value="#{tasksManager.tasksBean.priorityList}"/>
+            </ice:selectOneMenu>
+            <ice:graphicImage value="images/priority_#{tasksManager.tasksBean.editableTaskBean.priority}.gif"/>
+            </ice:panelGroup>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.reminderDate']}"/>
+            <ice:selectInputDate
+                    imageDir="#{styleBean.imageDirectory}"
+                    value="#{tasksManager.tasksBean.editableTaskBean.reminderDate}"
+                    renderAsPopup="true"/>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.status']}"/>
+            <ice:selectOneMenu partialSubmit="true" immediate="true"
+                               valueChangeListener="#{tasksManager.tasksBean.processStatusChange}"
+                               styleClass="dropdown">
+                <f:selectItems value="#{tasksManager.tasksBean.statusList}"/>
+            </ice:selectOneMenu>
+            <ice:outputText value="#{msgs['webmail.tasks.edit.progress']}"/>
+            <ice:panelGroup>
+
+            <ice:inputText id="percentInput"
+                           value="#{tasksManager.tasksBean.editableTaskBean.percentCompleteStr}"
+                           style="width: 60px;" partialSubmit="true">
+                   <!--f:validateLongRange minimum="0" maximum="100"/-->
+            </ice:inputText>
+            <ice:outputText value="%"/>
+            </ice:panelGroup>
+       </ice:panelGrid>
+
+       <h:message for="percentInput" style="font-size: x-small; color: red;"/>
+
+       <ice:panelGrid columns="1" style="width: 100%; border-width: 0px;">
+                <ice:outputText value="#{msgs['webmail.tasks.edit.description']}"/>
+                <ice:inputTextarea value="#{tasksManager.tasksBean.editableTaskBean.description}"
+                                   rows="10" style="width: 95%;"/>
+       </ice:panelGrid>
+            <ice:panelGroup>
+                    <ice:commandButton value="#{msgs['webmail.tasks.edit.ok']}"
+                            action="#{tasksManager.navigateToTaskList}"
+                            actionListener="#{tasksManager.tasksBean.editableTaskBean.saveChanges}" />
+                    <ice:commandButton value="#{msgs['webmail.tasks.edit.apply']}"
+                            actionListener="#{tasksManager.tasksBean.editableTaskBean.saveChanges}" />
+                    <ice:commandButton value="#{msgs['webmail.tasks.edit.cancel']}"
+                            action="#{tasksManager.navigateToTaskList}"
+                            actionListener="#{tasksManager.tasksBean.editableTaskBean.restoreChanges}" />
+            </ice:panelGroup>
+    </ice:panelGrid>
+</ice:form>

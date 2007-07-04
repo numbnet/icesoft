@@ -1,0 +1,130 @@
+<h:form 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component"
+>
+<ice:panelTabSet selectedIndex="#{contactManager.contactListBean.contactBean.selectedIndex}" >
+
+	 <ice:panelTab id="general" label="#{msgs['webmail.contact.edit.label.general']}">
+	 <ice:panelGrid columns="2">
+
+   	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.displayName']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.displayName}" />
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.primaryPhone']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.primaryPhone}" />
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.primaryEmail']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.primaryEmail}" />
+	 	
+	 	<f:verbatim><br/></f:verbatim>
+	 	<f:verbatim><br/></f:verbatim>
+	 	
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.firstName']}" />
+	 	<ice:inputText partialSubmit="true" value="#{contactManager.contactListBean.contactBean.first}" />
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.lastName']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.last}" />
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.middleName']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.middle}" />
+	    <ice:outputText value="#{msgs['webmail.contact.edit.general.initials']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.initials}" />
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.nickName']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.nickName}" />	 		 	
+	 	<ice:outputText value="#{msgs['webmail.contact.edit.general.note']}" />
+	 	<ice:inputText value="#{contactManager.contactListBean.contactBean.note}" />
+	    
+	 </ice:panelGrid>
+	 </ice:panelTab>
+
+     <ice:panelTab id="email" label="#{msgs['webmail.contact.edit.label.email']}">
+     	
+     	<ice:panelSeries var="email" 
+     				   value="#{contactManager.contactListBean.contactBean.emails}"
+     				   
+     	>
+     	    
+	   		<h:panelGrid columns="1">
+	   		   <ice:outputText value="#{email.type}" />
+	           <ice:inputText value="#{email.value}" />
+	        </h:panelGrid>
+	       
+	    </ice:panelSeries>
+     </ice:panelTab>
+     
+     <ice:panelTab id="address" label="#{msgs['webmail.contact.edit.label.address']}">
+     	
+     	<ice:panelSeries var="address"
+     			  value="#{contactManager.contactListBean.contactBean.addresses}" 
+     	>
+     	
+     	
+	   		
+	   		
+	   		
+	   	    <h:panelGrid columns="2">	   
+	       
+	           <h4><h:outputText value="#{address.type}" /></h4>
+	           <br/>
+	           <ice:outputText value="#{msgs['webmail.contact.edit.address.street']}" />
+	           <ice:inputText value="#{address.street}" />
+	           
+	           <ice:outputText value="#{msgs['webmail.contact.edit.address.city']}"  />
+	           <ice:inputText value="#{address.city}" />
+	        
+	           <ice:outputText value="#{msgs['webmail.contact.edit.address.province']}" />
+	           <ice:inputText value="#{address.province}" />
+	     
+	           <ice:outputText value="#{msgs['webmail.contact.edit.address.country']}"  />
+	           <ice:inputText value="#{address.country}" />
+	           
+	           <ice:outputText value="#{msgs['webmail.contact.edit.address.postcode']}"  />
+	           <ice:inputText value="#{address.postcode}" />
+	       	        
+	      </h:panelGrid> 
+	    
+	   </ice:panelSeries>
+     </ice:panelTab>
+    
+	 
+	 <ice:panelTab id="phone" label="#{msgs['webmail.contact.edit.label.phone']}">
+     	
+     	<ice:panelSeries var="phone" 
+     			  value="#{contactManager.contactListBean.contactBean.phones}" 
+     	>
+     	    
+     	   
+	   		<h:panelGrid columns="1">
+	   		   <ice:outputText value="#{phone.type}" />
+	           <ice:inputText value="#{phone.value}" />
+	           
+	        </h:panelGrid>
+	        
+	    </ice:panelSeries>
+     </ice:panelTab>
+     
+     <ice:panelTab id="webpage" label="#{msgs['webmail.contact.edit.label.webpage']}">
+     	
+     	<ice:panelSeries var="webpage" 
+     		      value="#{contactManager.contactListBean.contactBean.webpages}"
+     	>
+     	   
+	       <h:panelGrid columns="1">
+	   		   <ice:outputText value="#{webpage.type}" />
+	           <ice:inputText value="#{webpage.value}" />
+               
+           </h:panelGrid> 
+         
+	    </ice:panelSeries>
+     </ice:panelTab>             
+</ice:panelTabSet>
+
+<ice:panelGrid columns="2">
+<ice:commandButton value="#{msgs['webmail.contact.edit.save']}" 
+	      actionListener="#{contactManager.contactListBean.contactBean.saveContact}"  
+		  		  action="#{contactManager.navigateToContactList}"
+/>
+<ice:commandButton value="#{msgs['webmail.contact.edit.cancel']}" 
+		 actionListener="#{contactManager.contactListBean.contactBean.cancel}"
+		           action="#{contactManager.navigateToContactList}"
+/>
+
+</ice:panelGrid>
+</h:form>
