@@ -42,7 +42,7 @@
     
 </div>
 <ice:form>
-    <ice:panelGroup id="searchResults">
+    <div id="searchResults">
         <div class="section">
             <h:outputText value="No Hotels Found" rendered="#{hotels != null and hotels.rowCount==0}"/>
             <ice:outputText value="Search Results"/>
@@ -70,7 +70,7 @@
             </ice:dataTable>
             <ice:commandLink value="More results" action="#{hotelSearch.nextPage}" rendered="#{hotelSearch.nextPageAvailable}"/>
         </div>
-    </ice:panelGroup>
+    </div>
 </ice:form>
 
 <div class="section">
