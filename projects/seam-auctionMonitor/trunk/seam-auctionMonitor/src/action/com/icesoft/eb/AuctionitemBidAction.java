@@ -20,7 +20,6 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.security.Restrict;
-import org.jboss.seam.core.Events;
 import org.jboss.seam.core.FacesMessages;
 import org.jboss.seam.log.Log;
 
@@ -88,6 +87,7 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     @End(ifOutcome={"success"})
     public String bid()
     {
+        // Validate input
         if ( auctionitemBean.getBidInput() <= auctionitemBean.getBid().getBidValue() )
         {
            FacesMessages.instance().add("Bid must be higher than existing price");
@@ -98,7 +98,7 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
            FacesMessages.instance().add("Bid must be less than $1,000,000");
            return "";
         }        
-       
+       // Persist new Bid
        bid.setBidValue(auctionitemBean.getBidInput());
        Calendar calendar = Calendar.getInstance();
        bid.setTimestamp( calendar.getTime() );
@@ -108,28 +108,24 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
        em.persist(bid);
        //FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
        log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
-       auctionitemBean.setBid(bid);
-       //auctionitemBean.render();
-            AuctionitemBean tempBean = null;
-            for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
-                System.out.println("GLOBAL AUCTION ITEM: " + globalAuctionItem.getAuctionitem().getDescription() + globalAuctionItem.getAuctionitem().getItemId());
-                if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
-                    System.out.println("globalAuctionItem = " + globalAuctionItem);
-                    globalAuctionItem.setBid(bid);
-                    globalAuctionItem.buildBidEffect();
-                    globalAuctionItem.getAuctionitem().getBids().add(bid);
-                    int newBidCount = globalAuctionItem.getAuctionitem().getBidCount() + 1;
-                    globalAuctionItem.getAuctionitem().setBidCount(newBidCount);
-                    tempBean = globalAuctionItem;
-                }
+       
+        for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
+            // Propagate new Bid throughout other views (AuctionitemBeans)
+            System.out.println("FOR LOOP GLOBAL AUCTION ITEM: " + globalAuctionItem.getAuctionitem().getDescription() + globalAuctionItem.getAuctionitem().getItemId());
+            if (globalAuctionItem.getAuctionitem().getItemId() == auctionitemBean.getAuctionitem().getItemId()) {
+                globalAuctionItem.setBid(bid);
+                globalAuctionItem.buildBidEffect();
+                System.out.println("ADDING BID TO auctionitem = " + globalAuctionItem.getAuctionitem().getItemId());
+                globalAuctionItem.getAuctionitem().getBids().add(bid);
+                int newBidCount = globalAuctionItem.getAuctionitem().getBidCount() + 1;
+                globalAuctionItem.getAuctionitem().setBidCount(newBidCount);
             }
-            if (tempBean != null) {
-                System.out.println("globalAuctionItem = " + tempBean);
-                System.out.println("globalAuctionItem.getBid().getBidValue() = " + tempBean.getBid().getBidValue());
-                System.out.println("globalAuctionItem.getAuctionitem().getBidCount() = " + tempBean.getAuctionitem().getBidCount());
-                System.out.println("CALLING RENDER");
-                tempBean.render();
-            }
+        }
+        // Make necessary changes to current view and call render.
+        auctionitemBean.setBidding(false);
+        auctionitemBean.setBidInput(0.0);
+        auctionitemBean.render();
+        
        return "success";
     }
     

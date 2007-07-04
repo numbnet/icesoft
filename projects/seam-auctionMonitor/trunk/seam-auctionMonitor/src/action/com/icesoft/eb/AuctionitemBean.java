@@ -59,8 +59,6 @@ public class AuctionitemBean {
     }
     
     public void render(){
-        buildBidEffect();
-        bidding = false;
         System.out.println("CALLING RENDER FROM AUCTIONITEMBEAN");
         System.out.println("renderer.getName() = " + renderer.getName());
         System.out.println("renderer.isEmpty() = " + renderer.isEmpty());

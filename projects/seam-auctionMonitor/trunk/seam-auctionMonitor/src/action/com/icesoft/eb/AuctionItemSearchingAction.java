@@ -105,13 +105,15 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
             .getResultList();
        Object[] oa;
        AuctionitemBean auctionitemBean;
-       if (globalAuctionItems == null) globalAuctionItems = new ArrayList<AuctionitemBean>();
+       if (globalAuctionItems == null){
+           globalAuctionItems = new ArrayList<AuctionitemBean>();
+       }
        for (Object o : resultList) {
            oa = (Object[]) o;
            auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager);
            auctionitemBean.addRenderable(this);
            newAuctionitems.add(auctionitemBean);
-           System.out.println("ADDING " + auctionitemBean.getAuctionitem().getDescription() + auctionitemBean.getAuctionitem().getItemId() + " TO GLOBALAUCTIONITEMS");
+           System.out.println("ADDING TO GLOBALAUCTIONITEMS" + auctionitemBean.getAuctionitem().getDescription() + auctionitemBean.getAuctionitem().getItemId() + " TO GLOBALAUCTIONITEMS");
            globalAuctionItems.add(auctionitemBean);
        }
        if(first){
@@ -125,6 +127,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
                AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
                System.out.println("REMOVING FROM: " + tempBean.getAuctionitem().getTitle() + " " + tempBean.renderer.getName());
                tempBean.removeRenderable(this);
+               globalAuctionItems.remove(tempBean);
            }
        }
        if(!newAuctionitems.isEmpty()){
@@ -207,8 +210,8 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
                    }
                    else if (column.equals(priceColumnName)) {
                        return ascending ?
-                               new Double(c1.getAuctionitem().getPrice()).compareTo( new Double(c2.getAuctionitem().getPrice()) ):
-                               new Double(c2.getAuctionitem().getPrice()).compareTo( new Double(c1.getAuctionitem().getPrice()) );
+                               new Double(c1.getBid().getBidValue()).compareTo( new Double(c2.getBid().getBidValue()) ):
+                               new Double(c2.getBid().getBidValue()).compareTo( new Double(c1.getBid().getBidValue()) );
                    }
                    else if (column.equals(bidsColumnName)) {
                        return ascending ?
@@ -242,7 +245,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    public void destroy() {
        for(int i=0; i<auctionitems.size(); i++){
            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-           System.out.println("DESTROY METHOD REMOVING FROM: " + tempBean.getAuctionitem().getTitle() + tempBean.renderer.getName());
+           System.out.println("DESTROY METHOD REMOVING FROM AuctionItemSearchingAction: " + tempBean.getAuctionitem().getTitle() + tempBean.renderer.getName());
            tempBean.removeRenderable(this);
            globalAuctionItems.remove(tempBean);
        }
