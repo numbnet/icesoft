@@ -121,10 +121,10 @@
         </ice:column>
         <ice:column>
             <f:facet name="header">action</f:facet>
-            <s:link view="/#{empty from ? 'Bidder' : from}.xhtml" 
+            <s:link view="/#{empty from ? 'User' : from}.xhtml"
                    value="Select" 
                       id="bidder">
-                <f:param name="bidderBidderId" 
+                <f:param name="userUserId" 
                         value="#{bidder.username}"/>
             </s:link>
         </ice:column>
@@ -169,10 +169,10 @@
     </div>
     
     <s:div styleClass="actionButtons" rendered="#{empty from}">
-        <s:button view="/BidderEdit.xhtml"
+        <s:button view="/UserEdit.xhtml"
                     id="create" 
                  value="Create bidder">
-            <f:param name="bidderBidderId"/>
+            <f:param name="userUserId"/>
         </s:button>
     </s:div>
     

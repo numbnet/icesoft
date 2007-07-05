@@ -1,21 +1,24 @@
 package com.icesoft.eb;
 
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityHome;
+import org.jboss.seam.ScopeType;
 
 import javax.faces.event.ActionEvent;
 import com.icesoft.faces.component.accordion.PanelAccordion;
 
 @Name("userHome")
+@Scope(ScopeType.CONVERSATION)
 public class UserHome extends EntityHome<User> {
 	private boolean openStatus = true;
 
-	public void setUserUserId(Integer id) {
+	public void setUserUserId(String id) {
 		setId(id);
 	}
 
-	public Integer getBidderBidderId() {
-		return (Integer) getId();
+	public String getUserUserId() {
+		return (String) getId();
 	}
 
 	@Override
