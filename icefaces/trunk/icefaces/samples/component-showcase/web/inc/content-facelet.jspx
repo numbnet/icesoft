@@ -53,9 +53,8 @@
     <ice:outputText
             value="#{navigation.selectedPanel.menuContentTitle}"/>
 </h2>
-
-    <div class="contentIncludePanelGroup">
+    <ice:panelGroup styleClass="contentIncludePanelGroup">
         <ui:include src="#{navigation.selectedPanel.menuContentInclusionFile}"/>
-    </div>
+    </ice:panelGroup>
 <br/>
 </div>
