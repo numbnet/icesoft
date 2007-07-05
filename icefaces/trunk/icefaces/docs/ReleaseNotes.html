@@ -60,7 +60,7 @@ h4 {
       <h2
  style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.0
 Release Notes</h2>
-      <p style="margin-left: 16px; margin-bottom: 12px;">July 4th, 2007</p>
+      <p style="margin-left: 16px; margin-bottom: 12px;">July 5th, 2007</p>
       </td>
       <td align="center" valign="middle" width="22%"><img
  alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
@@ -98,10 +98,11 @@ in This Release (v1.6.0)</h2>
 ICEfaces v1.6 includes over 350 fixes and enhancements. A summary-level
 overview of the most notable changes is provided below. <br>
 <br>
-See the <a href="#ChangeLog_1_6_0">Detailed Change Log</a> or <a
+See the <a href="#ChangeLog_1_6_0">Change Log</a> or <a
  target="_blank"
  href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
-JIRA Change Log</a> for information on all the changes in this release.<br>
+JIRA Change Log</a> for more information on all the changes in this
+release.<br>
 <br>
 <h3>Java EE Integration</h3>
 <p>ICEfaces now supports integration with the following technologies:<br>
@@ -113,8 +114,8 @@ JIRA Change Log</a> for information on all the changes in this release.<br>
 environments, such as Glassfish, Apache<br>
 Tomcat 6.0, and JBoss Application Server v4.2.</li>
   <li>Support is provided for both JSP and Facelet-based JSF markup.</li>
-  <li>ICEfaces sample applications now include "JSF 1.2" ant build
-targets.<br>
+  <li>The ANT build targets for the ICEfaces sample applications now
+include a "jsf12" option.<br>
   </li>
 </ul>
 <h4>JBoss Seam 1.2.1 GA</h4>
@@ -122,7 +123,7 @@ targets.<br>
   <li>ICEfaces is now officially supported on JBoss Seam v1.2.1 GA.<br>
   </li>
   <li>Refer to the "JBoss Seam Integration" chapter in the
-ICEfaces Developer's Guide (pg. 48) for important information on
+ICEfaces Developer's Guide (pg. 56) for important information on
 configuring and using ICEfaces with Seam applications. <br>
   </li>
   <li>In addition, the following Seam-related projects are available
@@ -157,8 +158,8 @@ Components</h4>
 <ul>
   <li>You can now use Tomahawk components
 along
-with ICEfaces Component Suite components in the same page, form, etc.
-For for more information including a detailed list of compatible
+with ICEfaces Component Suite components in the same page, form, etc..
+For&nbsp; more information including a detailed list of compatible
 components and known issues, refer to the <a target="_blank"
  href="http://support.icesoft.com/jive/category.jspa?categoryID=78">Using
 MyFaces Tomahawk Components with ICEfaces</a> topic in the ICEfaces
@@ -231,7 +232,7 @@ styling of specific dates, date ranges, etc.</li>
 <ul>
   <li>The CSS classnames used by the ICEfaces Comp. Suite components
 for their default "theme"-based styling have been changed to provide
-much more consistent, meaningful, and efficient naming convention.</li>
+a more consistent, meaningful, and efficient naming convention.</li>
   <li>Inconsistencies in how the ICEfaces Comp. Suite component
 "styleClass" attributes were being applied vs. the default theme style
 classes have been corrected.</li>
@@ -253,7 +254,7 @@ topic. <br>
 &amp; IDE Tools</span></h3>
 <h4>Application Servers</h4>
 <br>
-This release of ICEfaces has been verified on more JEE application
+This release of ICEfaces has been verified on more Java EE application
 servers than any previous release. New additions include: <br>
 <ul class="contentIndent">
   <li>Apache Tomcat 6.0 (incl. prelim. support for async communication
@@ -304,7 +305,7 @@ Please review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a> prior to
 using this release.<br>
 <br>
-<h3><a name="ChangeLog_1_6_0"></a>Detailed Change Log</h3>
+<h3><a name="ChangeLog_1_6_0"></a>Change Log</h3>
 <h4>New Features</h4>
 <ul>
   <li>[<a href="http://jira.icefaces.org//browse/ICE-1699">ICE-1699</a>]
@@ -1770,7 +1771,7 @@ JSP, each ICEfaces form must have a manually applied unique ID.</li>
 <ul>
   <li>JSP Pages are dynamically converted to JSP Documents for
 processing by the ICEfaces parser, so it is important not to mix JSP
-Page and JSP document types when performing static inclusion.</li>
+Page and JSP Document types when performing static inclusion.</li>
 </ul>
 <ul>
   <li>UTF-8 encoding must be used for all source files for ICEfaces
@@ -1797,7 +1798,8 @@ partialSubmit
   </li>
   <ul>
     <li>In Internet Explorer dragging and holding an image will cause
-the cursor to change to the not symbol. Operation returns to normal
+the pointer to change to the "not" symbol (circle with a line through
+it). Operation returns to normal
 with a second left mouse button click.</li>
   </ul>
 </ul>
@@ -1827,8 +1829,8 @@ and lists.<br>
       <li>When a menu is expanded and the user clicks on one of the
 menu items, and then the same
 menu is expanded again, the last-clicked menu item will appear with a
-dashed outline (focus ind.). This is
-only an issue in the Firefox or Mozilla browser.</li>
+dashed outline (browser focus indicator). This is
+only an issue in the Firefox or Mozilla browsers.</li>
     </ul>
   </li>
 </ul>
@@ -1853,6 +1855,19 @@ be used to enclose all content in the document body. For example: <br>
 </ul>
 <h3>Facelets</h3>
 <ul>
+</ul>
+<ul>
+  <li>HTML markup cannot be used inside of component tags when using
+Facelets with ICEfaces. For example, the following markup will cause
+the outputLink component to render incorrectly:<br>
+  </li>
+</ul>
+<div style="margin-left: 40px;"><code>&lt;ice:outputLink
+view="/selectItems.xhtml" name="test" &gt;
+<br>
+&nbsp;&nbsp;&nbsp; &lt;code&gt;html Code Test&lt;/code&gt; <br>
+&lt;/ice:outputLink&gt;</code></div>
+<ul>
   <li>When using an ice:outputDeclaration component in a Facelets
 document on a JBoss application server, several warning messages may be
 logged. These warnings do not affect the performance or behavior of the
@@ -1861,9 +1876,10 @@ component and can be ignored.</li>
 <h3>JSF 1.2</h3>
 <ul>
   <li>ICEfaces must use JSF 1.1 "compatibility mode" within JSF 1.2
-environments. See the "JSF 1.2" topic in the "Using ICEfaces with J2EE
+environments. See the "JSF 1.2" topic in the "Using ICEfaces with Java
+EE
 Application Servers, IDEs, and Frameworks" chapter of the ICEfaces
-Getting Started Guide (pg. 48) for details.</li>
+Getting Started Guide (pg. 54) for details.</li>
 </ul>
 <h3>JBoss Seam</h3>
 <ul>
@@ -1935,7 +1951,7 @@ can be resolved by including the following listener in the web.xml: <br>
 &nbsp;&nbsp;&nbsp; &lt;listener-class&gt; <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 com.sun.faces.config.ConfigureListener <br>
-&lt;/listener-class&gt; <br>
+&nbsp;&nbsp;&nbsp; &lt;/listener-class&gt; <br>
 &lt;/listener&gt;</code></li>
   </ul>
 </ul>
@@ -2026,7 +2042,7 @@ ICEfaces<br>
 an
 AJAX-enabled rich presentation environment for JSF applications.
 ICEfaces
-brings value to any J2EE development project that needs to provide
+brings value to any Java EE development project that needs to provide
 superior
 presentation capabilities to the web application user. In particular,
 ICEfaces provides the following features:</p>
@@ -2043,7 +2059,8 @@ interactions with the user as they manipulate a form.</li>
 collaborative applications, such as Chat, Webcast, social apps., etc.</li>
   <li>JSP or Facelets based development.</li>
   <li>Tool integrations for leading Java IDEs.</li>
-  <li>Support for leading JEE frameworks, such as Spring and JBoss Seam.</li>
+  <li>Support for leading Java EE frameworks, such as Spring and JBoss
+Seam.</li>
   <li>Support for portlet development using Liferay Portal.<br>
   </li>
 </ul>
@@ -2058,7 +2075,7 @@ following documents are provided in PDF format:</p>
 <ol>
   <li><span>ICEfaces Getting Started Guide</span>:
 This guide takes you through product installation, environment
-configuration, demo app installation, and a basic 5-stage tutorial.
+configuration, demo app installation, and a basic 7-stage tutorial.
 This guide also contains information related to support for different
 application server environments and development tools.
     <p> </p>
@@ -2084,7 +2101,7 @@ Notice</h2>
  style="font-style: italic; font-weight: bold;">/</span><span
  style="font-weight: bold;">docs/license</span> directory.</p>
 <p class="Body"><small><br>
-&copy; Copyright 2005-2007. ICEsoft Technologies, Inc.</small></p>
+&copy; Copyright 2005-2007 ICEsoft Technologies, Inc.</small></p>
 </div>
 </body>
 </html>
