@@ -12,7 +12,7 @@
         <property name="project.name" value="ice-booking1.2.1"/>
         <property name="dist.dir" value="dist" />
         <property name="src.action.dir" value="src" />
-        <property name="src.test.dir" value="src/test" />
+        <property name="src.test.dir" value="src/org/jboss/seam/example/booking/test" />
         <property name="lib.dir" value="lib" />
         <property name="ear.dir" value="exploded-archives/${project.name}.ear" />
         <property name="jar.dir" value="exploded-archives/${project.name}.jar" />
@@ -265,7 +265,6 @@
                     deprecation="${javac.deprecation}"
                         nowarn="on">
                 <src path="${src.action.dir}" />
-                <src path="${src.model.dir}" />
                 <src path="${src.test.dir}" />
         </javac>
         </target>
@@ -298,14 +297,14 @@
                         </fileset>
                 </copy>
                 <copy tofile="${test.dir}/META-INF/persistence.xml" 
-                            file="${basedir}/resources/META-INF/persistence-test.xml"
+                            file="${basedir}/resources/META-INF/persistence.xml"
                    overwrite="true"/>
                 <copy tofile="${test.dir}/import.sql" 
-                            file="${basedir}/resources/import-test.sql"
+                            file="${basedir}/resources/import.sql"
                    overwrite="true"/>
                 <copy todir="${test.dir}" flatten="true">
                         <fileset dir="${src.test.dir}">
-                                <include name="**/*Test.xml" />
+                                <include name="**/testng.xml" />
                         </fileset>
                 </copy>
         </target>
@@ -316,7 +315,7 @@
                         <classpath path="${test.dir}" />
                         <classpath path="${embedded-ejb3.dir}" />
                         <classpath refid="build.classpath" />
-                        <xmlfileset dir="${test.dir}" includes="*Test.xml" />
+                        <xmlfileset dir="${test.dir}" includes="testng.xml" />
                 </testng>
         </target>
       
