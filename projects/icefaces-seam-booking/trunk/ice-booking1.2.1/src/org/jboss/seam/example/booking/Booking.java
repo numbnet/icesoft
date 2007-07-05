@@ -1,6 +1,7 @@
 //$Id: Booking.java,v 1.13 2006/12/16 14:38:42 gavin Exp $
 package org.jboss.seam.example.booking;
 
+import bsh.This;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -40,6 +41,7 @@ public class Booking implements Serializable
    
    public Booking(Hotel hotel, User user)
    {
+       System.out.println("CReated new instance of booking for Hotel="+hotel.getName());
       this.hotel = hotel;
       this.user = user;
    }
@@ -75,6 +77,7 @@ public class Booking implements Serializable
    public void setCheckinDate(Date datetime)
    {
       this.checkinDate = datetime;
+      System.out.println("\t >>> SET checkIN date of "+datetime);
    }
 
    @ManyToOne @NotNull
@@ -101,11 +104,14 @@ public class Booking implements Serializable
    @NotNull
    public Date getCheckoutDate()
    {
+      if (checkoutDate!=null)System.out.println("\t >>> GET checkOUT date of "+checkoutDate);
       return checkoutDate;
    }
-   public void setCheckoutDate(Date checkoutDate)
+   public void setCheckoutDate(Date dateOut)
    {
-      this.checkoutDate = checkoutDate;
+
+      this.checkoutDate = dateOut; 
+      System.out.println("\t >>> SET checkOUT date to "+dateOut+ " now is="+this.checkoutDate);
    }
    
    @NotNull(message="Credit card number is required")
@@ -119,6 +125,9 @@ public class Booking implements Serializable
    public void setCreditCard(String creditCard)
    {
       this.creditCard = creditCard;
+      System.out.println("setCreditCard for booking="+ toString());
+      System.out.println(" now use getDescription ="+getDescription());
+      
    }
    
    @Transient
@@ -183,8 +192,9 @@ public class Booking implements Serializable
    
    @Override
    public String toString()
-   {
-      return "Booking(" + user + ","+ hotel + ")";
+   { if (checkinDate!=null && checkoutDate!=null)
+      return "Booking(" + user + ","+ hotel +", in= "+this.checkinDate+", out="+this.checkoutDate+")";
+     else return "Booking(" + user + ","+ hotel +")";
    }
 
 }

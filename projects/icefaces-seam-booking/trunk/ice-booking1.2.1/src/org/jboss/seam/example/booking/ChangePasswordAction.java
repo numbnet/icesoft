@@ -35,7 +35,9 @@ public class ChangePasswordAction implements ChangePassword
    {
       if ( user.getPassword().equals(verify) )
       {
+          System.out.println("CHANGE PASSWORD: before em call");
          user = em.merge(user);
+         System.out.println("\t after em");
          facesMessages.add("Password updated");
          changed = true;
       }

@@ -96,6 +96,7 @@
                 <copy todir="${war.dir}/WEB-INF">
                         <fileset dir="${basedir}/resources/WEB-INF">
                                  <include name="*.*"/>
+                                 <exclude name="web*.xml"/>
                                  <include name="classes/**/*.*"/>
                                  <exclude name="classes/**/*.class"/>
                          </fileset>
@@ -125,10 +126,10 @@
                 </copy>
         </target>
         <target name="war-myfaces" depends="war" description="build for myfaces jars">
-                        <copy file="${basedir}/resources/WEB-INF/web-myfaces.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
+              <copy file="${basedir}/resources/WEB-INF/web-myfaces.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
         </target>
-                <target name="war-glassfish1.2" depends="war" description="build for myfaces jars">
-                        <copy file="${basedir}/resources/WEB-INF/web-jsf1.2.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
+        <target name="war-glassfish1.2" depends="war" description="build for myfaces jars">
+             <copy file="${basedir}/resources/WEB-INF/web-jsf1.2.xml" tofile="${war.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
         </target>
         
         <target name="ear" description="Build the EAR">

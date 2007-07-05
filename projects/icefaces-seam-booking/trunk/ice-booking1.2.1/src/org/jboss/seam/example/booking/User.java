@@ -76,7 +76,6 @@ public class User implements Serializable
    }
    public void setUsername(String username)
    {
-      System.out.println("In User and name set to= "+username);
       this.username = username;
    }
    
@@ -85,21 +84,4 @@ public class User implements Serializable
    {
       return "User(" + username + ")";
    }
-   
- 
-/*   public void errorInput(ValueChangeEvent event){
-       System.out.println("Why can't I get into this method!!!");
-       HtmlInputText component1 = (HtmlInputText)event.getSource();
-       System.out.println("In errorUserName with component1 ="+component1.COMPONENT_TYPE);
-       List currMsgs= facesMessages.getCurrentMessages();
-       Iterator i = currMsgs.iterator();
-       while(i.hasNext()){
-           FacesMessage msg = (FacesMessage)i.next();
-           System.out.println("FacesMessage.getDetail is ="+msg.getDetail());
-           System.out.println("FacesMessage.  is="+msg.getSummary());
-          // component1.setFocus(true);
-           System.out.println("getting text from component="+ component1.getText());
-           component1.requestFocus();
-       }
-   } */
 }

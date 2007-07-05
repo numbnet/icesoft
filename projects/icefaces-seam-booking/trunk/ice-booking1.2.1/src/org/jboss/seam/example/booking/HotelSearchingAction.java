@@ -1,8 +1,6 @@
 //$Id: HotelSearchingAction.java,v 1.5 2006/11/29 19:17:05 gavin Exp $
 package org.jboss.seam.example.booking;
-
 import java.util.List;
-
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.faces.event.ValueChangeEvent;
@@ -16,7 +14,6 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.security.Restrict;
-
 @Stateful
 @Name("hotelSearch")
 @Scope(ScopeType.SESSION)
@@ -44,20 +41,6 @@ public class HotelSearchingAction implements HotelSearching
       page++;
       queryHotels();
    }
-
-  /*  public String find()
-   {
-      page = 0;
-      queryHotels();   
-      return "main";
-   }
-
-   public String nextPage()
-   {
-      page++;
-      queryHotels();
-      return "main";
-   } */ 
       
    private void queryHotels()
    {

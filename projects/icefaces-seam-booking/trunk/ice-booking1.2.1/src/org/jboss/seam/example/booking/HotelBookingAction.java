@@ -50,25 +50,22 @@ public class HotelBookingAction implements HotelBooking
    @Begin
    public void selectHotel(Hotel selectedHotel)
    {
-       System.out.println("selectHotel for hotel="+selectedHotel.getName());
       hotel = em.merge(selectedHotel);
    }
    
    public void bookHotel()
-   {      
-      System.out.println("bookHotel for hotel="+hotel.getName()+" and user="+user.toString());
+   {     
       booking = new Booking(hotel, user);
-      Calendar calendar = Calendar.getInstance();
-      booking.setCheckinDate( calendar.getTime() );
-      calendar.add(Calendar.DAY_OF_MONTH, 1);
-      booking.setCheckoutDate( calendar.getTime() );
+      Calendar c1 = Calendar.getInstance();
+      booking.setCheckinDate( c1.getTime() );
+      c1.add(Calendar.DAY_OF_MONTH, 1);
+      booking.setCheckoutDate( c1.getTime() );
    }
    public void setBookingDetails()
    {
-      System.out.println("in setBookingDetails for hotel="+hotel.getName()+" and user="+user.toString());
-      Calendar calendar = Calendar.getInstance();
-      calendar.add(Calendar.DAY_OF_MONTH, -1);
-      if ( booking.getCheckinDate().before( calendar.getTime() ) )
+      Calendar c2 = Calendar.getInstance();
+      c2.add(Calendar.DAY_OF_MONTH, -1);
+      if ( booking.getCheckinDate().before( c2.getTime() ) )
       {
          facesMessages.addToControl("checkinDate", "Check in date must be a future date");
          bookingValid=false;
@@ -86,7 +83,6 @@ public class HotelBookingAction implements HotelBooking
    
    public boolean isBookingValid()
    {
-       System.out.println("before returning bookingValid="+bookingValid);
       return bookingValid;
    }
    

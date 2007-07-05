@@ -11,12 +11,6 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.FacesMessages;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import java.util.Iterator;
-import javax.faces.application.FacesMessage;
-import com.icesoft.faces.component.ext.HtmlInputText;
-
 @Stateful
 @Scope(EVENT)
 @Name("register")
@@ -37,18 +31,10 @@ public class RegisterAction implements Register
    
    public void register()
    {
-       List allUsers = em.createQuery("select u.username from User u").getResultList();
-       Iterator i = allUsers.iterator();
-       System.out.println(">>>>>list all users");
-       while(i.hasNext()){
-           String u1 = (String)i.next();
-           System.out.println("\t user="+u1);
-       }    
       if ( user.getPassword().equals(verify) )
       {
          List existing = em.createQuery("select u.username from User u where u.username=#{user.username}")
             .getResultList();
- 
          if (existing.size()==0)
          {
             em.persist(user);
@@ -69,7 +55,6 @@ public class RegisterAction implements Register
    
    public void invalid()
    {
-       System.out.println("in register:invalid()");
       facesMessages.add("Please try again");
    }
    
@@ -84,22 +69,6 @@ public class RegisterAction implements Register
    public void setVerify(String verify)
    {
       this.verify = verify;
-   }
-   
-   public void errorInput(ValueChangeEvent event){
-       System.out.println("Why can't I get into this method!!!");
-       HtmlInputText component1 = (HtmlInputText)event.getSource();
-       System.out.println("In errorUserName with component1 ="+component1.COMPONENT_TYPE);
-       List currMsgs= facesMessages.getCurrentMessages();
-       Iterator i = currMsgs.iterator();
-       while(i.hasNext()){
-           FacesMessage msg = (FacesMessage)i.next();
-           System.out.println("FacesMessage.getDetail is ="+msg.getDetail());
-           System.out.println("FacesMessage.  is="+msg.getSummary());
-          // component1.setFocus(true);
-           System.out.println("getting text from component="+ component1.getText());
-           component1.requestFocus();
-       }
    }
    
    @Destroy @Remove

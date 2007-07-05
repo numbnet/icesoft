@@ -32,19 +32,15 @@
 				<br/>
                             <s:message/>
                         </ui:define>
-		</s:decorate>
-		
+		</s:decorate>		
+                
 		<s:decorate id="checkoutDateDecorate" template="edit.xhtml">
 			<ui:define name="label">Check Out Date:</ui:define>
-                        <ui:define name="valueInput">
-                            <ice:inputText id="checkoutDate" value="#{booking.checkoutDate}" >
-                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
-                            </ice:inputText>
-                            <ice:selectInputDate for="checkoutDate"
-                                value="#{booking.checkoutDate}"/>
-                        <!--        highlightClass="weekend:"
-				highlightUnit="DAY_OF_WEEK:"
-                                highlightValue="1,7: "/>                           -->
+                         <ui:define name="valueInput">
+                                <ice:selectInputDate id="checkoutDate" value="#{booking.checkoutDate}" 
+                                renderAsPopup="true" partialSubmit="true"/>
+				<br/>
+                            <s:message/>
                         </ui:define>
 		</s:decorate>
 		
@@ -73,16 +69,16 @@
 		<s:decorate id="creditCardDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card #:</ui:define>
                         <ui:define name="valueInput">
-                            <ice:inputText id="creditCard" value="#{booking.creditCard}" required="true"/> 
-                                 <!--   required="true" partialSubmit="true"/>        -->
+                            <ice:inputText id="creditCard" value="#{booking.creditCard}" 
+                                           required="true" partialSubmit="true"/> 
                         </ui:define>
 		</s:decorate>
 
 		<s:decorate id="creditCardNameDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card Name:</ui:define>
                         <ui:define name="valueInput">
-                            <ice:inputText id="creditCardName" value="#{booking.creditCardName}" required="true"/>
-                                     <!--  partialSubmit="true"/>-->
+                            <ice:inputText id="creditCardName" value="#{booking.creditCardName}" 
+                             partialSubmit="true" required="true"/>           
                         </ui:define>
 		</s:decorate>
 
@@ -104,11 +100,11 @@
                                 <f:selectItem itemLabel="Dec" itemValue="12"/>
                             </ice:selectOneMenu>
                             <ice:selectOneMenu id="creditCardExpiryYear" value="#{booking.creditCardExpiryYear}">
-                                <f:selectItem itemLabel="2005" itemValue="2005"/>
-                                <f:selectItem itemLabel="2006" itemValue="2006"/>
                                 <f:selectItem itemLabel="2007" itemValue="2007"/>
                                 <f:selectItem itemLabel="2008" itemValue="2008"/>
                                 <f:selectItem itemLabel="2009" itemValue="2009"/>
+                                <f:selectItem itemLabel="2010" itemValue="2010"/>
+                                <f:selectItem itemLabel="2011" itemValue="2011"/>
                             </ice:selectOneMenu>
                         </ui:define>
 		</s:decorate>
