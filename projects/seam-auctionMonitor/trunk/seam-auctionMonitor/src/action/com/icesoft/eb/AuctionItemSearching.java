@@ -40,7 +40,5 @@ public interface AuctionItemSearching
    
    public void updateList(ValueChangeEvent event);
    public List getList();
-   
-   public void generateAuctionHouseList();
 
 }

@@ -64,8 +64,8 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     private static String bidItemColumnName = "Item";
     private static String bidColumnName = "Bid";
     private static String timestampColumnName = "Time";
-    // comparator used to sort queues.
-    private Comparator comparator;
+    // bidComparator used to sort queues.
+    private Comparator bidComparator;
     
     public AuctionitemBidAction(){
         super(bidColumnName);
@@ -172,7 +172,8 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     }
 
     protected void sort(final String column, final boolean ascending) {
-        comparator = new Comparator(){
+        System.out.println("SORTING COLUMN: " + column + " ASCENDING: " + ascending);
+        bidComparator = new Comparator(){
             public int compare(Object o1, Object o2) {
                 Bid c1 = (Bid) o1;
                 Bid c2 = (Bid) o2;
@@ -203,7 +204,7 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
             }
         };
 
-    Collections.sort(auctionitemBean.getAuctionitem().getBids(), comparator);
+    Collections.sort(auctionitemBean.getAuctionitem().getBids(), bidComparator);
         
     }
     

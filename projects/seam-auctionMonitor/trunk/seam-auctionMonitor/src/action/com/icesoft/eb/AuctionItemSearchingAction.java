@@ -5,7 +5,6 @@ import static javax.persistence.PersistenceContextType.EXTENDED;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
@@ -56,8 +55,8 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    private static String priceColumnName = "Price";
    private static String bidsColumnName = "Bids";
    private static String timeLeftColumnName = "Time Left";
-   // comparator used to sort queues.
-   private Comparator comparator;
+   // auctionitemBeanComparator used to sort AuctiontemBeans.
+   private Comparator auctionitemBeanComparator;
 
    @In(required = false, scope = ScopeType.APPLICATION)
    @Out(required = false, scope = ScopeType.APPLICATION)
@@ -80,10 +79,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
            // compare ingnoring case, give the user a more automated feel when typing
            return s1.compareToIgnoreCase(s2);
        }
-   };
-   
-   @In(create=true)
-   private AuctionHouseAction auctionhouse;   
+   };   
 
     public AuctionItemSearchingAction(){
         // default sort header
@@ -96,6 +92,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    public String find()
    {
+       System.out.println("!!!!!!!!!!!!!!!!FINDING!!!!!!!!!!!!!!!");
        page = 0;
       queryAuctionItems();
       return "";
@@ -110,6 +107,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    @Factory("auctionitems")
    public void queryAuctionItems()
    {
+       System.out.println("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!!");
        List newAuctionitems = new ArrayList();
 /*
        newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
@@ -121,6 +119,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
             .setFirstResult( page * pageSize )
             .getResultList();
 */
+       System.out.println("SEARCHSTRING: " + searchString);
        List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
             " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
             " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
@@ -189,7 +188,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    public String getSearchString()
    {
-      state = PersistentFacesState.getInstance();
+
       return searchString;
    }
 
@@ -222,7 +221,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
     * Sort the list.
     */
    protected void sort(final String column, final boolean ascending) {
-           comparator = new Comparator(){
+           auctionitemBeanComparator = new Comparator(){
                public int compare(Object o1, Object o2) {
                    AuctionitemBean c1 = (AuctionitemBean) o1;
                    AuctionitemBean c2 = (AuctionitemBean) o2;
@@ -253,7 +252,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
                }
            };
 
-       Collections.sort(auctionitems, comparator);
+       Collections.sort(auctionitems, auctionitemBeanComparator);
 
    }
 
@@ -305,6 +304,7 @@ public String getAuctionitems(){
  */
 public List getList() {
     System.out.println("GETTING LIST!!!!");
+    state = PersistentFacesState.getInstance();
     return matchesList;
 }
 
@@ -326,13 +326,13 @@ public void updateList(ValueChangeEvent event) {
         // if no selected item then return the previously selected item.
         if (autoComplete.getSelectedItem() != null) {
             searchString = autoComplete.getSelectedItem().getLabel();
-            System.out.println("FINDING FROM UPDATELIST");
+            System.out.println("FINDING FROM UPDATELIST: " + searchString);
             find();
         }
         // otherwise if there is a selected item get the value from the match list
         else {
             //searchString = null;
-            System.out.println("UPDATELIST NO SELECTION!!!!!!!!!!!");
+            System.out.println("!!!!!!!!!!!!UPDATELIST NO SELECTION!!!!!!!!!!!");
             //find();
 
         }
@@ -354,35 +354,24 @@ private void setMatches(ValueChangeEvent event) {
     List matchList = new ArrayList(maxMatches);
     
     if(searchWord.equals("")){
-        System.out.println("SEARCHWORD EQUALS EMPTY STRING");
+        System.out.println("!!!!!!!!!SEARCHWORD EQUALS EMPTY STRING!!!!!!!!!");
         searchString = null;
         find();
-        matchList = auctionitems;
         return;
     }
-
-    try {
-
-        int insert = Collections.binarySearch(auctionhouse.getAuctionitemList(), searchWord,
-                                              LABEL_COMPARATOR);
-
-        // less then zero if wer have a partial match
-        if (insert < 0) {
-            insert = Math.abs(insert) - 1;
-        }
-
-        for (int i = 0; i < maxMatches; i++) {
-            // quit the match list creation if the index is larger then
-            // max entries in the dictionary if we have added maxMatches.
-            if ((insert + i) >= auctionhouse.getAuctionitemList().size() ||
-                i >= maxMatches) {
-                break;
-            }
-            matchList.add(auctionhouse.getAuctionitemList().get(insert + i));
-        }
-    } catch (Throwable e) {
-        e.printStackTrace();
+    searchString = searchWord.toString();
+    List autoCompleteResultList = em.createQuery("SELECT i FROM Auctionitem i " +
+            " WHERE (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
+            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
+            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
+            .setMaxResults(maxMatches)
+            .getResultList();
+    for (Object o : autoCompleteResultList) {
+        Auctionitem tempAuctionitem = (Auctionitem)o;
+        System.out.println("MATCHES ADDING " + tempAuctionitem.getTitle());
+        matchList.add(new SelectItem(tempAuctionitem,tempAuctionitem.getTitle())); 
     }
+    
     // assign new matchList
     if (this.matchesList != null) {
         this.matchesList.clear();
@@ -390,39 +379,5 @@ private void setMatches(ValueChangeEvent event) {
     }
     this.matchesList = matchList;
 }
-/*
-private City getMatch(String value) {
-    City result = null;
-    if (matchesList != null) {
-        SelectItem si;
-        Iterator iter = matchesList.iterator();
-        while (iter.hasNext()) {
-            si = (SelectItem) iter.next();
-            if (value.equals(si.getLabel())) {
-                result = (City) si.getValue();
-            }
-        }
-    }
-    return result;
-}
-*/
-@Create
-public void generateAuctionHouseList(){
-    if(!auctionhouse.isAuctionitemListExists()){
-    
-        List auctionitemList = new ArrayList();
-        System.out.println("AUCTION HOUSE GETTING ITEMS!");
-        List resultList = em.createQuery("SELECT i FROM Auctionitem i " )
-                .getResultList();
-        
-        for (Object o : resultList) {
-            Auctionitem tempAuctionitem = (Auctionitem)o;
-            System.out.println("AUCTION HOUSE ADDING " + tempAuctionitem.getTitle());
-            auctionitemList.add(new SelectItem(tempAuctionitem,tempAuctionitem.getTitle())); 
-        }
-        
-        auctionhouse.setAuctionitemList(auctionitemList);
-        auctionhouse.setAuctionitemListExists(true);
-    }       
-}
+
 }
