@@ -5,9 +5,12 @@ import static javax.persistence.PersistenceContextType.EXTENDED;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
@@ -16,6 +19,7 @@ import org.jboss.seam.annotations.datamodel.DataModel;
 
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.RenderManager;
+import com.icesoft.faces.component.selectinputtext.SelectInputText;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
@@ -58,6 +62,28 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    @In(required = false, scope = ScopeType.APPLICATION)
    @Out(required = false, scope = ScopeType.APPLICATION)
    private List<AuctionitemBean> globalAuctionItems;
+   
+   // list of possible matches.
+   private List matchesList = new ArrayList();
+   // Comparator utility for sorting SelectItem labels in autocomplete component.
+   public static final Comparator LABEL_COMPARATOR = new Comparator() {
+       String s1;
+       String s2;
+       // compare method for entries.
+       public int compare(Object o1, Object o2) {
+           s1 = ((SelectItem) o1).getLabel();
+           if (o2 instanceof SelectItem) {
+               s2 = ((SelectItem) o2).getLabel();
+           } else {
+               s2 = o2.toString();
+           }
+           // compare ingnoring case, give the user a more automated feel when typing
+           return s1.compareToIgnoreCase(s2);
+       }
+   };
+   
+   @In(create=true)
+   private AuctionHouseAction auctionhouse;   
 
     public AuctionItemSearchingAction(){
         // default sort header
@@ -272,4 +298,131 @@ public String getAuctionitems(){
         return "";
 }
 
+/**
+ * The list of possible matches for the given SelectInputText value
+ *
+ * @return list of possible matches.
+ */
+public List getList() {
+    System.out.println("GETTING LIST!!!!");
+    return matchesList;
+}
+
+/**
+ * Called when a user has modifed the SelectInputText value.  This method
+ * call causes the match list to be updated.
+ *
+ * @param event
+ */
+public void updateList(ValueChangeEvent event) {
+    System.out.println("UPDATING LIST!!!");
+    // get a new list of matches.
+    setMatches(event);
+
+    // Get the auto complete component from the event and assing
+    if (event.getComponent() instanceof SelectInputText) {
+        SelectInputText autoComplete =
+                (SelectInputText) event.getComponent();
+        // if no selected item then return the previously selected item.
+        if (autoComplete.getSelectedItem() != null) {
+            searchString = autoComplete.getSelectedItem().getLabel();
+            System.out.println("FINDING FROM UPDATELIST");
+            find();
+        }
+        // otherwise if there is a selected item get the value from the match list
+        else {
+            //searchString = null;
+            System.out.println("UPDATELIST NO SELECTION!!!!!!!!!!!");
+            //find();
+
+        }
+    }
+}
+
+/**
+ * Utility method for building the match list given the current value of the
+ * SelectInputText component.
+ *
+ * @param event
+ */
+// maxMatches hard coded because of JIRA ICE-1320
+int maxMatches = 4;
+private void setMatches(ValueChangeEvent event) {
+    System.out.println("SETTING MATCHES: " + event.getNewValue());
+    Object searchWord = event.getNewValue();
+    //int maxMatches = ((SelectInputText) event.getComponent()).getRows();
+    List matchList = new ArrayList(maxMatches);
+    
+    if(searchWord.equals("")){
+        System.out.println("SEARCHWORD EQUALS EMPTY STRING");
+        searchString = null;
+        find();
+        matchList = auctionitems;
+        return;
+    }
+
+    try {
+
+        int insert = Collections.binarySearch(auctionhouse.getAuctionitemList(), searchWord,
+                                              LABEL_COMPARATOR);
+
+        // less then zero if wer have a partial match
+        if (insert < 0) {
+            insert = Math.abs(insert) - 1;
+        }
+
+        for (int i = 0; i < maxMatches; i++) {
+            // quit the match list creation if the index is larger then
+            // max entries in the dictionary if we have added maxMatches.
+            if ((insert + i) >= auctionhouse.getAuctionitemList().size() ||
+                i >= maxMatches) {
+                break;
+            }
+            matchList.add(auctionhouse.getAuctionitemList().get(insert + i));
+        }
+    } catch (Throwable e) {
+        e.printStackTrace();
+    }
+    // assign new matchList
+    if (this.matchesList != null) {
+        this.matchesList.clear();
+        this.matchesList = null;
+    }
+    this.matchesList = matchList;
+}
+/*
+private City getMatch(String value) {
+    City result = null;
+    if (matchesList != null) {
+        SelectItem si;
+        Iterator iter = matchesList.iterator();
+        while (iter.hasNext()) {
+            si = (SelectItem) iter.next();
+            if (value.equals(si.getLabel())) {
+                result = (City) si.getValue();
+            }
+        }
+    }
+    return result;
+}
+*/
+@Create
+public void generateAuctionHouseList(){
+    if(!auctionhouse.isAuctionitemListExists()){
+    
+        List auctionitemList = new ArrayList();
+        System.out.println("AUCTION HOUSE GETTING ITEMS!");
+        List resultList = em.createQuery("SELECT i FROM Auctionitem i " )
+                .getResultList();
+        
+        for (Object o : resultList) {
+            Auctionitem tempAuctionitem = (Auctionitem)o;
+            System.out.println("AUCTION HOUSE ADDING " + tempAuctionitem.getTitle());
+            auctionitemList.add(new SelectItem(tempAuctionitem,tempAuctionitem.getTitle())); 
+        }
+        
+        auctionhouse.setAuctionitemList(auctionitemList);
+        auctionhouse.setAuctionitemListExists(true);
+    }       
+}
 }

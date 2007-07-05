@@ -24,17 +24,15 @@
         <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 
             <h:outputLabel for="searchString">search</h:outputLabel>
-            <ice:inputText id="searchString"
-                           value="#{itemSearch.searchString}"
-                           partialSubmit="false"/>
+
+			<ice:selectInputText rows="4" width="200"
+                                 valueChangeListener="#{itemSearch.updateList}">
+                <f:selectItems value="#{itemSearch.list}"/>
+            </ice:selectInputText>
 
         </ice:panelGrid>
 
     </ice:panelGroup>
-
-    <div class="actionButtons">
-        <ice:commandButton id="search" value="Search" action="#{itemSearch.find}"/>
-    </div>
 
 </ice:form>
 

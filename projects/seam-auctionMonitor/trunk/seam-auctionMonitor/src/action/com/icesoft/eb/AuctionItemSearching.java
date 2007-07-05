@@ -1,7 +1,10 @@
 //$Id: HotelSearching.java,v 1.10 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
 
+import java.util.List;
+
 import javax.ejb.Local;
+import javax.faces.event.ValueChangeEvent;
 
 @Local
 public interface AuctionItemSearching
@@ -34,5 +37,10 @@ public interface AuctionItemSearching
 
    public boolean isAscending();
    public void setAscending(boolean ascending);
+   
+   public void updateList(ValueChangeEvent event);
+   public List getList();
+   
+   public void generateAuctionHouseList();
 
 }
