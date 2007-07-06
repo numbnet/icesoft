@@ -124,7 +124,7 @@
                 <f:facet name="header">
                     <ice:commandSortHeader columnName="#{itemBid.userColumnName}"
                                            arrow="true">
-                    <ice:outputText value="#{itemBid.userColumnName}" />
+                    <ice:outputText value="User" />
 						</ice:commandSortHeader>
                 </f:facet>
                 #{bid.user.name} [#{bid.user.username}]
@@ -133,7 +133,7 @@
                 <f:facet name="header">
                     <ice:commandSortHeader columnName="#{itemBid.bidItemColumnName}"
                                            arrow="true">
-                    <ice:outputText value="#{itemBid.bidItemColumnName}" />
+                    <ice:outputText value="Item" />
 						</ice:commandSortHeader>
                 </f:facet>
                 #{bid.auctionItem.title} [#{bid.auctionItem.itemId}]
@@ -142,7 +142,7 @@
                 <f:facet name="header">
                     <ice:commandSortHeader columnName="#{itemBid.bidColumnName}"
                                            arrow="true">
-                    <ice:outputText value="#{itemBid.bidColumnName}" />
+                    <ice:outputText value="Bid" />
 						</ice:commandSortHeader>
                 </f:facet>
                  #{bid.bidValue}
@@ -151,11 +151,11 @@
                 <f:facet name="header">
                     <ice:commandSortHeader columnName="#{itemBid.timestampColumnName}"
                                            arrow="true">
-                    <ice:outputText value="#{itemBid.timestampColumnName}" />
+                    <ice:outputText value="Time" />
 						</ice:commandSortHeader>
                 </f:facet>
                 <h:outputText value="#{bid.timestamp}">
-                    <s:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
+                    <s:convertDateTime type="both" dateStyle="full"/>
                 </h:outputText>               
             </ice:column>
         </ice:dataTable>

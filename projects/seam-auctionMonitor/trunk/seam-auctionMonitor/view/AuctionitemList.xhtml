@@ -26,6 +26,7 @@
             <h:outputLabel for="searchString">search</h:outputLabel>
 
 			<ice:selectInputText rows="4" width="200"
+				                 value="#{itemSearch.searchString}"
                                  valueChangeListener="#{itemSearch.updateList}">
                 <f:selectItems value="#{itemSearch.list}"/>
             </ice:selectInputText>

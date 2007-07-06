@@ -92,8 +92,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    public String find()
    {
-       System.out.println("!!!!!!!!!!!!!!!!FINDING!!!!!!!!!!!!!!!");
-       page = 0;
+      page = 0;
       queryAuctionItems();
       return "";
    }
@@ -188,7 +187,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    public String getSearchString()
    {
-
+      state = PersistentFacesState.getInstance();
       return searchString;
    }
 
@@ -303,8 +302,6 @@ public String getAuctionitems(){
  * @return list of possible matches.
  */
 public List getList() {
-    System.out.println("GETTING LIST!!!!");
-    state = PersistentFacesState.getInstance();
     return matchesList;
 }
 
@@ -315,7 +312,7 @@ public List getList() {
  * @param event
  */
 public void updateList(ValueChangeEvent event) {
-    System.out.println("UPDATING LIST!!!");
+    System.out.println("AUTOCOMPLETE UPDATING LIST!!!");
     // get a new list of matches.
     setMatches(event);
 
@@ -326,14 +323,10 @@ public void updateList(ValueChangeEvent event) {
         // if no selected item then return the previously selected item.
         if (autoComplete.getSelectedItem() != null) {
             searchString = autoComplete.getSelectedItem().getLabel();
-            System.out.println("FINDING FROM UPDATELIST: " + searchString);
             find();
         }
         // otherwise if there is a selected item get the value from the match list
         else {
-            //searchString = null;
-            System.out.println("!!!!!!!!!!!!UPDATELIST NO SELECTION!!!!!!!!!!!");
-            //find();
 
         }
     }
@@ -348,13 +341,12 @@ public void updateList(ValueChangeEvent event) {
 // maxMatches hard coded because of JIRA ICE-1320
 int maxMatches = 4;
 private void setMatches(ValueChangeEvent event) {
-    System.out.println("SETTING MATCHES: " + event.getNewValue());
+    System.out.println("AUTOCOMPLETE SETTING MATCHES: " + event.getNewValue());
     Object searchWord = event.getNewValue();
     //int maxMatches = ((SelectInputText) event.getComponent()).getRows();
     List matchList = new ArrayList(maxMatches);
     
     if(searchWord.equals("")){
-        System.out.println("!!!!!!!!!SEARCHWORD EQUALS EMPTY STRING!!!!!!!!!");
         searchString = null;
         find();
         return;

@@ -59,9 +59,7 @@ public class AuctionitemBean {
     }
     
     public void render(){
-        System.out.println("CALLING RENDER FROM AUCTIONITEMBEAN");
-        System.out.println("renderer.getName() = " + renderer.getName());
-        System.out.println("renderer.isEmpty() = " + renderer.isEmpty());
+        System.out.println("CALLING RENDER FROM AUCTIONITEMBEAN: " + renderer.getName());
         renderer.requestRender();
     }
   

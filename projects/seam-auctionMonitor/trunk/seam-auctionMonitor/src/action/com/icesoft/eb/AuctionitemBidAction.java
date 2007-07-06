@@ -74,13 +74,17 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     @Begin(join=true)
     public String selectItem(AuctionitemBean selectedItem)
     {
-       Auctionitem temp = auctionitemBean.getAuctionitem();
-       temp = em.merge(selectedItem.getAuctionitem());
-       auctionitemBean = selectedItem;
-       auctionitemBean.setBidding(true);
-       bid = new Bid(temp, user);
-       bid.setBidValue(auctionitemBean.getBidInput());
-       auctionitemBean.addRenderable(this);
+       try{
+           Auctionitem temp = auctionitemBean.getAuctionitem();
+           temp = em.merge(selectedItem.getAuctionitem());
+           auctionitemBean = selectedItem;
+           auctionitemBean.setBidding(true);
+           bid = new Bid(temp, user);
+           bid.setBidValue(auctionitemBean.getBidInput());
+           auctionitemBean.addRenderable(this);
+       }catch(Exception e){
+           e.printStackTrace();
+       }
        return "";
     }
     
@@ -168,11 +172,10 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     }
 
     protected boolean isDefaultAscending(String sortColumn) {
-        return false;
+        return true;
     }
 
     protected void sort(final String column, final boolean ascending) {
-        System.out.println("SORTING COLUMN: " + column + " ASCENDING: " + ascending);
         bidComparator = new Comparator(){
             public int compare(Object o1, Object o2) {
                 Bid c1 = (Bid) o1;
