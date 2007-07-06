@@ -35,7 +35,7 @@ package com.icesoft.eb;
 
 /**
  * <p>The SortableList class is a utility class used by the data table paginator
- * example.</p>
+ * and commandSortHeader example.</p>
  *
  * @since 0.3.0
  */

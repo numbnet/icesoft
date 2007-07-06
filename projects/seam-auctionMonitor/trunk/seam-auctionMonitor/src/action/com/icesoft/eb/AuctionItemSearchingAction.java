@@ -1,4 +1,3 @@
-//$Id: HotelSearchingAction.java,v 1.17 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
 
 import static javax.persistence.PersistenceContextType.EXTENDED;
@@ -15,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.*;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.security.Restrict;
 
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.RenderManager;
@@ -27,7 +27,7 @@ import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 @Stateful
 @Name("itemSearch")
 @Scope(ScopeType.SESSION)
-//@Restrict("#{identity.loggedIn}")
+@Restrict("#{identity.loggedIn}")
 public class AuctionItemSearchingAction extends SortableList implements AuctionItemSearching, Renderable
 {
    @PersistenceContext(type=EXTENDED)
@@ -39,9 +39,6 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    @DataModel
    private List<AuctionitemBean> auctionitems;
-
-//   @In
-//   ViewManagerAction viewManager;
 
    private PersistentFacesState state = PersistentFacesState.getInstance();
 
@@ -106,19 +103,9 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    @Factory("auctionitems")
    public void queryAuctionItems()
    {
-       System.out.println("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!!");
+       System.out.println("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
        List newAuctionitems = new ArrayList();
-/*
-       newAuctionitems = em.createQuery("SELECT new com.icesoft.eb.AuctionitemBean(i, b) FROM Auctionitem i LEFT JOIN i.bids b" +
-            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
-            " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
-            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
-            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
-            .setMaxResults(pageSize)
-            .setFirstResult( page * pageSize )
-            .getResultList();
-*/
-       System.out.println("SEARCHSTRING: " + searchString);
+       
        List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
             " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
             " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
@@ -132,10 +119,12 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
        if (globalAuctionItems == null){
            globalAuctionItems = new ArrayList<AuctionitemBean>();
        }
+       // Instantiate search result AuctionitemBeans from result list.
+       // Add the AuctionitemBean to the globalAuctionItems list so changes in
+       // other views can be propagated across all views in the application.
        for (Object o : resultList) {
            oa = (Object[]) o;
            auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1], renderManager);
-           auctionitemBean.addRenderable(this);
            newAuctionitems.add(auctionitemBean);
            System.out.println("ADDING TO GLOBALAUCTIONITEMS" + auctionitemBean.getAuctionitem().getDescription() + auctionitemBean.getAuctionitem().getItemId() + " TO GLOBALAUCTIONITEMS");
            globalAuctionItems.add(auctionitemBean);
@@ -145,6 +134,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
            System.out.println("FIRST SEARCH");
            first = false;
        }
+       // Remove this view as a renderable from the existing list of AuctionitemBeans.
        if(!auctionitems.isEmpty()){
            System.out.println("AUCTIONITEMS NOT EMPTY REMOVING RENDERABLES");
            for(int i=0; i<auctionitems.size(); i++){
@@ -154,6 +144,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
                globalAuctionItems.remove(tempBean);
            }
        }
+       // Add this view as a renderable to the new list of AuctionitemBeans.
        if(!newAuctionitems.isEmpty()){
            System.out.println("NEWAUCTIONITEMS NOT EMPTY ADDING RENDERABLES");
            for(int i=0; i<newAuctionitems.size(); i++){
@@ -216,9 +207,6 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
        }
    }
 
-   /**
-    * Sort the list.
-    */
    protected void sort(final String column, final boolean ascending) {
            auctionitemBeanComparator = new Comparator(){
                public int compare(Object o1, Object o2) {
@@ -255,121 +243,112 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
 
    }
 
-   /**
-    * Determines the sort order.
-    *
-    * @param sortColumn to sort by.
-    * @return whether sort order is ascending or descending.
-    */
    protected boolean isDefaultAscending(String sortColumn) {
        return true;
    }
 
-   @Destroy @Remove
-   public void destroy() {
-       for(int i=0; i<auctionitems.size(); i++){
-           AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
-           System.out.println("DESTROY METHOD REMOVING FROM AuctionItemSearchingAction: " + tempBean.getAuctionitem().getTitle() + tempBean.renderer.getName());
-           tempBean.removeRenderable(this);
-           globalAuctionItems.remove(tempBean);
-       }
-   }
+    public String getBidsColumnName() {
+        return bidsColumnName;
+    }
+    
+    public String getItemNameColumnName() {
+        return itemNameColumnName;
+    }
+    
+    public String getPriceColumnName() {
+        return priceColumnName;
+    }
+    
+    public String getTimeLeftColumnName() {
+        return timeLeftColumnName;
+    }
+    
+    public String getAuctionitems(){
+            sort(getSort(), isAscending());
+            return "";
+    }
 
-public String getBidsColumnName() {
-    return bidsColumnName;
-}
+    /**
+     * The list of possible matches for the given SelectInputText value
+     *
+     * @return list of possible matches.
+     */
+    public List getList() {
+        return matchesList;
+    }
+    
+    /**
+     * Called when a user has modifed the SelectInputText value.  This method
+     * call causes the match list to be updated.
+     *
+     * @param event
+     */
+    public void updateList(ValueChangeEvent event) {
+        System.out.println("AUTOCOMPLETE UPDATING LIST!!!");
+        // get a new list of matches.
+        setMatches(event);
 
-public String getItemNameColumnName() {
-    return itemNameColumnName;
-}
-
-public String getPriceColumnName() {
-    return priceColumnName;
-}
-
-public String getTimeLeftColumnName() {
-    return timeLeftColumnName;
-}
-
-public String getAuctionitems(){
-        sort(getSort(), isAscending());
-        return "";
-}
-
-/**
- * The list of possible matches for the given SelectInputText value
- *
- * @return list of possible matches.
- */
-public List getList() {
-    return matchesList;
-}
-
-/**
- * Called when a user has modifed the SelectInputText value.  This method
- * call causes the match list to be updated.
- *
- * @param event
- */
-public void updateList(ValueChangeEvent event) {
-    System.out.println("AUTOCOMPLETE UPDATING LIST!!!");
-    // get a new list of matches.
-    setMatches(event);
-
-    // Get the auto complete component from the event and assing
-    if (event.getComponent() instanceof SelectInputText) {
-        SelectInputText autoComplete =
-                (SelectInputText) event.getComponent();
-        // if no selected item then return the previously selected item.
-        if (autoComplete.getSelectedItem() != null) {
-            searchString = autoComplete.getSelectedItem().getLabel();
+        if (event.getComponent() instanceof SelectInputText) {
+            SelectInputText autoComplete =
+                    (SelectInputText) event.getComponent();
+            if (autoComplete.getSelectedItem() != null) {
+                searchString = autoComplete.getSelectedItem().getLabel();
+                find();
+            }
+            else {
+                // setMatches() will return a complete list by default.
+            }
+        }
+    }
+    
+    /**
+     * Utility method for building the match list given the current value of the
+     * SelectInputText component.
+     *
+     * @param event
+     */
+    // maxMatches hard coded because of JIRA ICE-1320
+    int maxMatches = 4;
+    private void setMatches(ValueChangeEvent event) {
+        System.out.println("AUTOCOMPLETE SETTING MATCHES: " + event.getNewValue());
+        Object searchWord = event.getNewValue();
+        //int maxMatches = ((SelectInputText) event.getComponent()).getRows();
+        List matchList = new ArrayList(maxMatches);
+        
+        if(searchWord.equals("")){
+            searchString = null;
             find();
+            return;
         }
-        // otherwise if there is a selected item get the value from the match list
-        else {
-
+        searchString = searchWord.toString();
+        List autoCompleteResultList = em.createQuery("SELECT i FROM Auctionitem i " +
+                " WHERE (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
+                " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
+                " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
+                .setMaxResults(maxMatches)
+                .getResultList();
+        for (Object o : autoCompleteResultList) {
+            Auctionitem tempAuctionitem = (Auctionitem)o;
+            System.out.println("MATCHES ADDING " + tempAuctionitem.getTitle());
+            matchList.add(new SelectItem(tempAuctionitem,tempAuctionitem.getTitle())); 
         }
-    }
-}
-
-/**
- * Utility method for building the match list given the current value of the
- * SelectInputText component.
- *
- * @param event
- */
-// maxMatches hard coded because of JIRA ICE-1320
-int maxMatches = 4;
-private void setMatches(ValueChangeEvent event) {
-    System.out.println("AUTOCOMPLETE SETTING MATCHES: " + event.getNewValue());
-    Object searchWord = event.getNewValue();
-    //int maxMatches = ((SelectInputText) event.getComponent()).getRows();
-    List matchList = new ArrayList(maxMatches);
-    
-    if(searchWord.equals("")){
-        searchString = null;
-        find();
-        return;
-    }
-    searchString = searchWord.toString();
-    List autoCompleteResultList = em.createQuery("SELECT i FROM Auctionitem i " +
-            " WHERE (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
-            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
-            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
-            .setMaxResults(maxMatches)
-            .getResultList();
-    for (Object o : autoCompleteResultList) {
-        Auctionitem tempAuctionitem = (Auctionitem)o;
-        System.out.println("MATCHES ADDING " + tempAuctionitem.getTitle());
-        matchList.add(new SelectItem(tempAuctionitem,tempAuctionitem.getTitle())); 
+        
+        // assign new matchList
+        if (this.matchesList != null) {
+            this.matchesList.clear();
+            this.matchesList = null;
+        }
+        this.matchesList = matchList;
     }
     
-    // assign new matchList
-    if (this.matchesList != null) {
-        this.matchesList.clear();
-        this.matchesList = null;
+    @Destroy @Remove
+    public void destroy() {
+        for(int i=0; i<auctionitems.size(); i++){
+            AuctionitemBean tempBean = ((AuctionitemBean)auctionitems.get(i));
+            System.out.println("DESTROY METHOD REMOVING FROM AuctionItemSearchingAction: " + tempBean.getAuctionitem().getTitle() + tempBean.renderer.getName());
+            tempBean.removeRenderable(this);
+            globalAuctionItems.remove(tempBean);
+        }
     }
-    this.matchesList = matchList;
-}
 
 }

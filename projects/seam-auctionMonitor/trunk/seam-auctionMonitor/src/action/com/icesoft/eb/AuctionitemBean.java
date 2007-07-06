@@ -1,6 +1,5 @@
 package com.icesoft.eb;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.ejb.Remove;

@@ -1,4 +1,3 @@
-//$Id: HotelSearching.java,v 1.10 2007/02/25 19:09:39 gavin Exp $
 package com.icesoft.eb;
 
 import java.util.List;
@@ -26,18 +25,18 @@ public interface AuctionItemSearching
    public void destroy();
 
    public void queryAuctionItems();
-   
+
+   // ice:commandSortHeader methods
    public String getBidsColumnName();
    public String getItemNameColumnName();
    public String getPriceColumnName();
-   public String getTimeLeftColumnName();
-   
+   public String getTimeLeftColumnName();   
    public String getSort() ;
    public void setSort(String sort);
-
    public boolean isAscending();
    public void setAscending(boolean ascending);
-   
+
+   // ice:selectInputText methods (autocomplete)
    public void updateList(ValueChangeEvent event);
    public List getList();
 

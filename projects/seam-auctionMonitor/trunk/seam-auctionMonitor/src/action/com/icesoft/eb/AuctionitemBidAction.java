@@ -49,9 +49,6 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     
     @Logger
     private Log log;
-    
-//    @In
-//    ViewManagerAction viewManager;
 
     private PersistentFacesState state = PersistentFacesState.getInstance();
 
@@ -68,6 +65,7 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     private Comparator bidComparator;
     
     public AuctionitemBidAction(){
+        // default sort header
         super(bidColumnName);
     }
 
@@ -101,16 +99,20 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
         {
            FacesMessages.instance().add("Bid must be less than $1,000,000");
            return "";
-        }        
+        }
+        else if ( auctionitemBean.getBidInput()-auctionitemBean.getBid().getBidValue() < auctionitemBean.getAuctionitem().getPrice() )
+        {
+           FacesMessages.instance().add("Bids on this item must be in increments of " + auctionitemBean.getAuctionitem().getPrice());
+           return "";
+        }
        // Persist new Bid
        bid.setBidValue(auctionitemBean.getBidInput());
        Calendar calendar = Calendar.getInstance();
        bid.setTimestamp( calendar.getTime() );
        bid.setCreditCard("1234123412341234");
-       bid.setCreditCardName("American Express");
+       bid.setCreditCardName("ICEsoft Financial");
        System.out.println("PERSISTING BID");
        em.persist(bid);
-       //FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
        log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
        
         for (AuctionitemBean globalAuctionItem : globalAuctionItems) {
@@ -129,6 +131,7 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
         auctionitemBean.setBidding(false);
         auctionitemBean.setBidInput(0.0);
         auctionitemBean.render();
+        FacesMessages.instance().add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
         
        return "success";
     }
@@ -137,11 +140,6 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
     public void cancel() {
         auctionitemBean.setBidInput(0.0);
         auctionitemBean.setBidding(false);
-    }
-    
-    @Destroy @Remove
-    public void destroy() {
-        auctionitemBean.removeRenderable(this);
     }
 
     public PersistentFacesState getState() {
@@ -225,6 +223,11 @@ public class AuctionitemBidAction extends SortableList implements AuctionitemBid
 
     public String getTimestampColumnName() {
         return timestampColumnName;
+    }
+    
+    @Destroy @Remove
+    public void destroy() {
+        auctionitemBean.removeRenderable(this);
     }
 
 }
