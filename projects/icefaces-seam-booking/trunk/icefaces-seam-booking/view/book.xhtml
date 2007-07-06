@@ -4,7 +4,7 @@
 	  			xmlns:h="http://java.sun.com/jsf/html"
 	  			xmlns:f="http://java.sun.com/jsf/core"
 	  			xmlns:s="http://jboss.com/products/seam/taglib"
-                xmlns:a="https://ajax4jsf.dev.java.net/ajax"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" 
 				template="template.xhtml">
 
 <!-- content -->
@@ -21,95 +21,102 @@
 	
 	<div style="clear:both"/>
 
-	<h:form id="booking">
+	<ice:form id="booking">
 	<fieldset>
 			
 		<s:decorate id="checkinDateDecorate" template="edit.xhtml">
 			<ui:define name="label">Check In Date:</ui:define>
-			<h:inputText id="checkinDate" value="#{booking.checkinDate}" required="true">
-				<s:convertDateTime pattern="MM/dd/yyyy"/>
-				<a:support event="onblur" reRender="checkinDateDecorate"/>
-			</h:inputText>
-			<s:selectDate for="checkinDate">
-				<h:graphicImage url="img/dtpick.gif" style="margin-left:5px;cursor:pointer"/>
-			</s:selectDate>
-		</s:decorate>
-		
+                        <ui:define name="valueInput">
+                                <ice:selectInputDate id="checkinDate" value="#{booking.checkinDate}" 
+                                renderAsPopup="true" partialSubmit="true"/>
+				<br/>
+                            <s:message/>
+                        </ui:define>
+		</s:decorate>		
+                
 		<s:decorate id="checkoutDateDecorate" template="edit.xhtml">
 			<ui:define name="label">Check Out Date:</ui:define>
-			<h:inputText id="checkoutDate" value="#{booking.checkoutDate}" required="true">
-				<s:convertDateTime pattern="MM/dd/yyyy"/>
-				<a:support event="onblur" reRender="checkoutDateDecorate"/>
-			</h:inputText>
-			<s:selectDate for="checkoutDate">
-				<h:graphicImage url="img/dtpick.gif" style="margin-left:5px;cursor:pointer"/>
-			</s:selectDate>
+                         <ui:define name="valueInput">
+                                <ice:selectInputDate id="checkoutDate" value="#{booking.checkoutDate}" 
+                                renderAsPopup="true" partialSubmit="true"/>
+				<br/>
+                            <s:message/>
+                        </ui:define>
 		</s:decorate>
 		
 		<s:decorate id="bedsDecorate" template="edit.xhtml">
 			<ui:define name="label">Room Preference:</ui:define>
-			<h:selectOneMenu id="beds" value="#{booking.beds}">
-				<f:selectItem itemLabel="One king-size bed" itemValue="1"/>
-				<f:selectItem itemLabel="Two double beds" itemValue="2"/>
-				<f:selectItem itemLabel="Three beds" itemValue="3"/>
-			</h:selectOneMenu>
+                        <ui:define name="valueInput">
+                            <h:selectOneMenu id="beds" value="#{booking.beds}">
+                                <f:selectItem itemLabel="One king-size bed" itemValue="1"/>
+                                <f:selectItem itemLabel="Two double beds" itemValue="2"/>
+                                <f:selectItem itemLabel="Three beds" itemValue="3"/>
+                            </h:selectOneMenu>
+                        </ui:define>
 		</s:decorate>
 		
 		<s:decorate id="smokingDecorate" template="edit.xhtml">
 			<ui:define name="label">Smoking Preference:</ui:define>
-			<h:selectOneRadio id="smoking" value="#{booking.smoking}" layout="pageDirection" styleClass="radio">
-				<f:selectItem itemLabel="Smoking" itemValue="true"/>
-				<f:selectItem itemLabel="Non Smoking" itemValue="false"/>
-			</h:selectOneRadio>
+                        <ui:define name="valueInput">
+                            <ice:selectOneRadio id="smoking" value="#{booking.smoking}" 
+                                 layout="pageDirection" styleClass="radio">
+                                <f:selectItem itemLabel="Smoking" itemValue="true"/>
+                                <f:selectItem itemLabel="Non Smoking" itemValue="false"/>
+                            </ice:selectOneRadio>
+                        </ui:define>
 		</s:decorate>
 
 		<s:decorate id="creditCardDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card #:</ui:define>
-			<h:inputText id="creditCard" value="#{booking.creditCard}" required="true">
-				<a:support event="onblur" reRender="creditCardDecorate"/>
-			</h:inputText>
+                        <ui:define name="valueInput">
+                            <ice:inputText id="creditCard" value="#{booking.creditCard}" 
+                                           required="true" partialSubmit="true"/> 
+                        </ui:define>
 		</s:decorate>
 
 		<s:decorate id="creditCardNameDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card Name:</ui:define>
-			<h:inputText id="creditCardName" value="#{booking.creditCardName}" required="true">
-				<a:support event="onblur" reRender="creditCardNameDecorate"/>
-			</h:inputText>
+                        <ui:define name="valueInput">
+                            <ice:inputText id="creditCardName" value="#{booking.creditCardName}" 
+                             partialSubmit="true" required="true"/>           
+                        </ui:define>
 		</s:decorate>
 
 		<s:decorate id="creditCardExpiryDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card Expiry:</ui:define>
-			<h:selectOneMenu id="creditCardExpiryMonth" value="#{booking.creditCardExpiryMonth}">
-				<f:selectItem itemLabel="Jan" itemValue="1"/>
-				<f:selectItem itemLabel="Feb" itemValue="2"/>
-				<f:selectItem itemLabel="Mar" itemValue="3"/>
-				<f:selectItem itemLabel="Apr" itemValue="4"/>
-				<f:selectItem itemLabel="May" itemValue="5"/>
-				<f:selectItem itemLabel="Jun" itemValue="6"/>
-				<f:selectItem itemLabel="Jul" itemValue="7"/>
-				<f:selectItem itemLabel="Aug" itemValue="8"/>
-				<f:selectItem itemLabel="Sep" itemValue="9"/>
-				<f:selectItem itemLabel="Oct" itemValue="10"/>
-				<f:selectItem itemLabel="Nov" itemValue="11"/>
-				<f:selectItem itemLabel="Dec" itemValue="12"/>
-			</h:selectOneMenu>
-			<h:selectOneMenu id="creditCardExpiryYear" value="#{booking.creditCardExpiryYear}">
-				<f:selectItem itemLabel="2005" itemValue="2005"/>
-				<f:selectItem itemLabel="2006" itemValue="2006"/>
-				<f:selectItem itemLabel="2007" itemValue="2007"/>
-				<f:selectItem itemLabel="2008" itemValue="2008"/>
-				<f:selectItem itemLabel="2009" itemValue="2009"/>
-			</h:selectOneMenu>
+                        <ui:define name="valueInput">
+                            <ice:selectOneMenu id="creditCardExpiryMonth" value="#{booking.creditCardExpiryMonth}">
+                                <f:selectItem itemLabel="Jan" itemValue="1"/>
+                                <f:selectItem itemLabel="Feb" itemValue="2"/>
+                                <f:selectItem itemLabel="Mar" itemValue="3"/>
+                                <f:selectItem itemLabel="Apr" itemValue="4"/>
+                                <f:selectItem itemLabel="May" itemValue="5"/>
+                                <f:selectItem itemLabel="Jun" itemValue="6"/>
+                                <f:selectItem itemLabel="Jul" itemValue="7"/>
+                                <f:selectItem itemLabel="Aug" itemValue="8"/>
+                                <f:selectItem itemLabel="Sep" itemValue="9"/>
+                                <f:selectItem itemLabel="Oct" itemValue="10"/>
+                                <f:selectItem itemLabel="Nov" itemValue="11"/>
+                                <f:selectItem itemLabel="Dec" itemValue="12"/>
+                            </ice:selectOneMenu>
+                            <ice:selectOneMenu id="creditCardExpiryYear" value="#{booking.creditCardExpiryYear}">
+                                <f:selectItem itemLabel="2007" itemValue="2007"/>
+                                <f:selectItem itemLabel="2008" itemValue="2008"/>
+                                <f:selectItem itemLabel="2009" itemValue="2009"/>
+                                <f:selectItem itemLabel="2010" itemValue="2010"/>
+                                <f:selectItem itemLabel="2011" itemValue="2011"/>
+                            </ice:selectOneMenu>
+                        </ui:define>
 		</s:decorate>
 		
 		<div class="buttonBox">
 			<h:commandButton id="proceed" value="Proceed" action="#{hotelBooking.setBookingDetails}"/>
 			&#160;
-			<s:button id="cancel" value="Cancel" action="#{hotelBooking.cancel}"/>
+			<ice:commandButton id="cancel" value="Cancel" actionListener="#{hotelBooking.cancel}"/>
 		</div>
 		
 	</fieldset>
-	</h:form>
+	</ice:form>
 </div>
 </ui:define>
 

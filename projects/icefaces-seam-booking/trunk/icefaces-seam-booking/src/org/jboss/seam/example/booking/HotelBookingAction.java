@@ -59,18 +59,18 @@ public class HotelBookingAction implements HotelBooking
    
    public void bookHotel()
    {      
+      System.out.println("bookHotel for hotel="+hotel.getName()+" and user="+user.toString());
       booking = new Booking(hotel, user);
-      Calendar calendar = Calendar.getInstance();
-      booking.setCheckinDate( calendar.getTime() );
-      calendar.add(Calendar.DAY_OF_MONTH, 1);
-      booking.setCheckoutDate( calendar.getTime() );
+      Calendar c1 = Calendar.getInstance();
+      booking.setCheckinDate( c1.getTime() );
+      c1.add(Calendar.DAY_OF_MONTH, 1);
+      booking.setCheckoutDate( c1.getTime() );
    }
-   
    public void setBookingDetails()
    {
-      Calendar calendar = Calendar.getInstance();
-      calendar.add(Calendar.DAY_OF_MONTH, -1);
-      if ( booking.getCheckinDate().before( calendar.getTime() ) )
+      Calendar c2 = Calendar.getInstance();
+      c2.add(Calendar.DAY_OF_MONTH, -1);
+      if ( booking.getCheckinDate().before( c2.getTime() ) )
       {
          facesMessages.addToControl("checkinDate", "Check in date must be a future date");
          bookingValid=false;

@@ -4,22 +4,23 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:s="http://jboss.com/products/seam/taglib"
-      xmlns:a="https://ajax4jsf.dev.java.net/ajax">
+          xmlns:ice="http://www.icesoft.com/icefaces/component" >
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>JBoss Suites: Seam Framework</title>
 	<link href="css/screen.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body id="pgHome">
 
-<div id="document">
+<ice:panelGroup id="document">
 
 	<div id="header">
-		<div id="title"><img src="img/hdr.title.gif" alt="JBoss Suites: seam framework demo"/></div>
+		<ice:panelGroup id="title"><img src="img/hdr.title.gif" alt="JBoss Suites: seam framework demo"/></ice:panelGroup>
 	</div>
 	
-	<div id="container">
+	<ice:panelGroup id="container">
 	
 		<div id="sidebar">		    
 			<h1>Integrated multi-layer validation</h1>
@@ -39,7 +40,7 @@
 			</p>
 		</div>
 		
-		<div id="content">
+		<ice:panelGroup id="content">
 		
 			<div class="section">
 				<h1>Register</h1>
@@ -52,50 +53,55 @@
 				</div>
 
                 <h:form id="registration">
-				<fieldset>
-				
-					<s:decorate id="usernameDecorate" template="edit.xhtml">
-						<ui:define name="label">Username:</ui:define>
-						<h:inputText id="username" value="#{user.username}" required="true">
-							<a:support event="onblur" reRender="usernameDecorate"/>
-						</h:inputText>
-					</s:decorate>
-					
-					<s:decorate id="nameDecorate" template="edit.xhtml">
-						<ui:define name="label">Real Name:</ui:define>
-						<h:inputText id="name" value="#{user.name}" required="true">
-							<a:support event="onblur" reRender="nameDecorate"/>
-						</h:inputText>
-					</s:decorate>
-					
-					<s:decorate id="passwordDecorate" template="edit.xhtml">
-						<ui:define name="label">Password:</ui:define>
-						<h:inputSecret id="password" value="#{user.password}" required="true"/>
-					</s:decorate>
-					
-					<s:decorate id="verifyDecorate" template="edit.xhtml">
-						<ui:define name="label">Verify Password:</ui:define>
-						<h:inputSecret id="verify" value="#{register.verify}" required="true"/>
-					</s:decorate>
-					
-					<div class="buttonBox">
-						<h:commandButton id="register" value="Register" action="#{register.register}"/>
+                    <fieldset>
+
+                                        <s:decorate id="usernameDecorate" template="edit.xhtml">
+                                                <ui:define name="label">Username:*    </ui:define>
+                                               <ui:define name="valueInput"> 
+                                                    <ice:inputText id="username" value="#{user.username}" 
+                                                                   required="true"  partialSubmit="true"/>
+                                               </ui:define>
+                                        </s:decorate> 
+                                            
+                                            
+                                            <s:decorate id="nameDecorate" template="edit.xhtml">
+                                                <ui:define name="label">Real Name:*    </ui:define>
+                                                <ui:define name="valueInput">
+                                                    <ice:inputText id="name" value="#{user.name}" 
+                                                                   required="true" partialSubmit="true"/>                                                
+                                                </ui:define>
+                                            </s:decorate>
+                                            
+                                            <s:decorate id="passwordDecorate" template="edit.xhtml">
+                                                <ui:define name="label">Password:*      </ui:define>
+                                                <ui:define name="valueInput">
+                                                    <ice:inputSecret id="password" value="#{user.password}" 
+                                                                     redisplay="true" partialSubmit="true" required="true"/>
+                                                </ui:define>
+                                            </s:decorate>					
+                                            
+                                            <s:decorate id="verifyDecorate" template="edit.xhtml">
+                                                <ui:define name="label">Verify Password*:</ui:define>
+                                                <ui:define name="valueInput">
+                                                    <ice:inputSecret id="verify" value="#{register.verify}" 
+                                                                     redisplay="true" partialSubmit="true" required="true"/>
+                                                </ui:define>
+                                            </s:decorate>
+          
+					<div id="buttonBox" class="buttonBox">
+						<ice:commandButton id="register" value="Register" action="#{register.register}"/>
 						&#160;
 						<s:button id="cancel" value="Cancel" view="/home.xhtml"/>
 					</div>
 									
 				</fieldset>
-                </h:form>
+                          </h:form>
                 
-			</div>
-			
-		</div>
-		
-	</div>
-	
-	<div id="footer">Created with JBoss EJB 3.0, Seam, MyFaces, and Facelets</div>
-	
-</div>
+		    </div>	
+               </ice:panelGroup>
+	</ice:panelGroup>
+    <div id="footer">Created with JBoss EJB 3.0, Seam, MyFaces, and Facelets</div>	
+</ice:panelGroup>
 
 </body>
 

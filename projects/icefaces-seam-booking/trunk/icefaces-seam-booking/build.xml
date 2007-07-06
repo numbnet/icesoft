@@ -3,15 +3,14 @@
 <project name="Booking" default="deploy" basedir=".">
 
     <!-- Naming -->
-    <property name="Name"                   value="Seam on JBoss Booking Example"/>
-    <property name="example.name"           value="jboss-seam-booking"/>
+    <property name="Name"                   value="Seam on JBoss ICEfaces Booking Example"/>
+    <property name="example.name"           value="icefaces-booking"/>
 	
     <!-- Overrides -->
     <property name="example.webinf.lib.dir" value="."/>
     <property name="example.seam.ui.lib"    value="yes"/>
     <property name="example.seam.debug.lib" value="yes"/>
-    <property name="example.facelets.lib"   value="yes"/>
-    <property name="example.ajax4jsf.lib"   value="yes"/>
+    <property name="example.icefaces.lib"   value="yes"/>
     <property name="example.ds"             value="booking-ds.xml"/>
     <property name="src.java.dir"           value="src"/>
     <property name="src.test.dir"           value="src"/>

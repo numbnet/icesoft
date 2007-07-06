@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
@@ -42,13 +44,33 @@ public class HotelSearchingAction implements HotelSearching
       page++;
       queryHotels();
    }
+
+  /*  public String find()
+   {
+      page = 0;
+      queryHotels();   
+      return "main";
+   }
+
+   public String nextPage()
+   {
+      page++;
+      queryHotels();
+      return "main";
+   } */ 
       
    private void queryHotels()
    {
-      hotels = em.createQuery("select h from Hotel h where lower(h.name) like #{pattern} or lower(h.city) like #{pattern} or lower(h.zip) like #{pattern} or lower(h.address) like #{pattern}")
+      hotels = em.createQuery("select h from Hotel h where lower(h.name) like :search or lower(h.city) like :search or lower(h.zip) like :search or lower(h.address) like :search")
+            .setParameter( "search", getSearchPattern() )
             .setMaxResults(pageSize)
             .setFirstResult( page * pageSize )
             .getResultList();
+   }
+
+   private String getSearchPattern()
+   {
+      return searchString==null ? "%" : searchString.toLowerCase().replace('*', '%') + '%';
    }
    
    public boolean isNextPageAvailable()
@@ -59,18 +81,11 @@ public class HotelSearchingAction implements HotelSearching
    public int getPageSize() {
       return pageSize;
    }
-   
+
    public void setPageSize(int pageSize) {
       this.pageSize = pageSize;
    }
-   
-   @Factory(value="pattern", scope=ScopeType.EVENT)
-   public String getSearchPattern()
-   {
-      return searchString==null ? 
-            "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
-   }
-   
+
    public String getSearchString()
    {
       return searchString;
@@ -79,6 +94,24 @@ public class HotelSearchingAction implements HotelSearching
    public void setSearchString(String searchString)
    {
       this.searchString = searchString;
+   }
+
+   public void handleSearchStringChange(ValueChangeEvent e) {
+      page = 0;
+      setSearchString( (String) e.getNewValue() );
+      queryHotels();
+   }
+   
+   public List<SelectItem> getCities() {
+       System.out.println("HotelSearch: getCities() search="+this.searchString);
+      return em.createQuery("select distinct new javax.faces.model.SelectItem(h.city) from Hotel h where lower(h.city) like :search order by h.city")
+            .setParameter("search", getSearchPattern())
+            .getResultList();
+   }
+   
+   public void handlePageSizeChange(ValueChangeEvent e)  {
+      setPageSize( (Integer) e.getNewValue() );
+      queryHotels();
    }
    
    @Remove

@@ -19,19 +19,26 @@
 		
 	<s:decorate template="display.xhtml">
 		<ui:define name="label">Total Payment:</ui:define>
-		<h:outputText value="#{booking.total}">
-			<f:convertNumber type="currency" currencySymbol="$"/>
-		</h:outputText>
+                <ui:define name="inputField">
+                    <h:outputText value="#{booking.total}">
+                        <f:convertNumber type="currency" currencySymbol="$"/>
+                    </h:outputText>
+                </ui:define>
 	</s:decorate>
+
 
 	<s:decorate template="display.xhtml">
 		<ui:define name="label">Check In Date:</ui:define>
-		<h:outputText value="#{booking.checkinDate}"/>
+                <ui:define name="inputField">
+                    <h:outputText value="#{booking.checkinDate}"/>
+                </ui:define>
 	</s:decorate>
 
 	<s:decorate template="display.xhtml">
 		<ui:define name="label">Check Out Date:</ui:define>
-		<h:outputText value="#{booking.checkoutDate}"/>
+                 <ui:define name="inputField">
+                    <h:outputText value="#{booking.checkoutDate}"/>
+                 </ui:define>
 	</s:decorate>
 
 	<s:decorate template="display.xhtml">

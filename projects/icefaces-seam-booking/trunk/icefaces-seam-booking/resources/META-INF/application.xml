@@ -4,24 +4,47 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd"
              version="5">
              
-    <display-name>Seam Booking</display-name>
+    <display-name>ICEfaces Seam Booking</display-name>
 
     <module>
         <web>
-            <web-uri>jboss-seam-booking.war</web-uri>
-            <context-root>/seam-booking</context-root>
+            <web-uri>icefaces-booking.war</web-uri>
+            <context-root>/icefaces-booking</context-root>
         </web>
     </module>
     
     <module>
-        <ejb>jboss-seam-booking.jar</ejb>
+        <ejb>icefaces-booking.jar</ejb>
     </module>
     
     <module>
-        <ejb>jboss-seam.jar</ejb>
+        <java>jboss-seam.jar</java>
     </module>
 
     <module>
         <java>jboss-el.jar</java>
     </module>
+
+    <module>
+        <java>icefaces.jar</java>
+    </module>
+        <module>
+        <java>icefaces-comps.jar</java>
+    </module>
+    <module>
+        <java>icefaces-facelets.jar</java>
+    </module>
+    <module>
+        <java>commons-fileupload.jar</java>
+    </module>
+    <module>
+        <java>backport-util-concurrent.jar</java>
+    </module>
+    <module>
+        <java>commons-digester-1.6.jar</java>
+    </module>
+     <module>
+        <java>commons-beanutils-1.7.0.jar</java>
+    </module>
+
 </application>
