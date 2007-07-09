@@ -128,9 +128,12 @@ input[type="submit"], input[type="button"] {
 	text-align: left;
 }
 .entry .error {
-	float: right;
+	float: none;
 	width: 360px;
 	text-align: left;
+}
+.entry .valueInput{
+       width:150px;  
 }
 /* Sidebar
 ----------------------------------------------- */
@@ -271,4 +274,9 @@ input[type="submit"], input[type="button"] {
 }
 #pgHome #content {
 	margin-top: 183px;
+}
+/* ice date selector css */
+.iceSelInpDate {
+    width: 90px;
+    background-color: #ffffff;
 }
