@@ -251,7 +251,6 @@
                     deprecation="${javac.deprecation}"
                         nowarn="on">
                 <src path="${src.action.dir}" />
-                <src path="${src.model.dir}" />
                 <src path="${src.test.dir}" />
         </javac>
         </target>
@@ -302,7 +301,7 @@
                         <classpath path="${test.dir}" />
                         <classpath path="${embedded-ejb3.dir}" />
                         <classpath refid="build.classpath" />
-                        <xmlfileset dir="${test.dir}" includes="*Test.xml" />
+                            <xmlfileset dir="${test.dir}" includes="testng.xml" />
                 </testng>
         </target>
         
