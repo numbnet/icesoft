@@ -51,7 +51,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
    private static String itemNameColumnName = "Item Name";
    private static String priceColumnName = "Price";
    private static String bidsColumnName = "Bids";
-   private static String timeLeftColumnName = "Time Left";
+   private static String expiresColumnName = "Expires";
    // auctionitemBeanComparator used to sort AuctiontemBeans.
    private Comparator auctionitemBeanComparator;
 
@@ -230,7 +230,7 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
                                new Integer(c1.getAuctionitem().getBidCount()).compareTo( new Integer(c2.getAuctionitem().getBidCount()) ):
                                new Integer(c2.getAuctionitem().getBidCount()).compareTo( new Integer(c1.getAuctionitem().getBidCount()) );
                    }
-                   else if (column.equals(timeLeftColumnName)) {
+                   else if (column.equals(expiresColumnName)) {
                        return ascending ?
                                c1.getAuctionitem().getExpires().compareTo(c2.getAuctionitem().getExpires()):
                                c2.getAuctionitem().getExpires().compareTo(c1.getAuctionitem().getExpires());
@@ -259,8 +259,8 @@ public class AuctionItemSearchingAction extends SortableList implements AuctionI
         return priceColumnName;
     }
     
-    public String getTimeLeftColumnName() {
-        return timeLeftColumnName;
+    public String getExpiresColumnName() {
+        return expiresColumnName;
     }
     
     public String getAuctionitems(){

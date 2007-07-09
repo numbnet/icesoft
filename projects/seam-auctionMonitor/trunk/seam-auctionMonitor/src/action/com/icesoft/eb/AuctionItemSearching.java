@@ -30,7 +30,7 @@ public interface AuctionItemSearching
    public String getBidsColumnName();
    public String getItemNameColumnName();
    public String getPriceColumnName();
-   public String getTimeLeftColumnName();   
+   public String getExpiresColumnName();   
    public String getSort() ;
    public void setSort(String sort);
    public boolean isAscending();
