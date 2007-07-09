@@ -201,7 +201,8 @@ public class CustomComponentUtils {
         }
         intBuf.append("]");
 
-        buf.insert(0, intBuf);
+        //intBuf.toString for non-1.4 JDK 1.5 compiler output
+        buf.insert(0, intBuf.toString());
 
         if (component != null) {
             getPathToComponent(component.getParent(), buf);
