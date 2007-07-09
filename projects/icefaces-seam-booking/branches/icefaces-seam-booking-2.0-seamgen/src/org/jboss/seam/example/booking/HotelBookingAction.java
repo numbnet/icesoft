@@ -59,7 +59,6 @@ public class HotelBookingAction implements HotelBooking
    
    public void bookHotel()
    {      
-      System.out.println("bookHotel for hotel="+hotel.getName()+" and user="+user.toString());
       booking = new Booking(hotel, user);
       Calendar c1 = Calendar.getInstance();
       booking.setCheckinDate( c1.getTime() );

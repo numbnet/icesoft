@@ -17,7 +17,7 @@ public interface HotelSearching
    public void setSearchString(String searchString);
    public void handleSearchStringChange(ValueChangeEvent e);
    public void handlePageSizeChange(ValueChangeEvent e);
-//   public SelectItem[] getPageSizes();
+
    public List<SelectItem> getCities();
    
    public void find();

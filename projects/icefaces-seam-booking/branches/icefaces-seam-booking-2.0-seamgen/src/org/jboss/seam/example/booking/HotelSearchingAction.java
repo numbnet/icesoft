@@ -45,19 +45,6 @@ public class HotelSearchingAction implements HotelSearching
       queryHotels();
    }
 
-  /*  public String find()
-   {
-      page = 0;
-      queryHotels();   
-      return "main";
-   }
-
-   public String nextPage()
-   {
-      page++;
-      queryHotels();
-      return "main";
-   } */ 
       
    private void queryHotels()
    {
@@ -103,7 +90,6 @@ public class HotelSearchingAction implements HotelSearching
    }
    
    public List<SelectItem> getCities() {
-       System.out.println("HotelSearch: getCities() search="+this.searchString);
       return em.createQuery("select distinct new javax.faces.model.SelectItem(h.city) from Hotel h where lower(h.city) like :search order by h.city")
             .setParameter("search", getSearchPattern())
             .getResultList();
