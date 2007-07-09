@@ -17,15 +17,16 @@
         <ejb>icefaces-booking.jar</ejb>
     </module>
     
-    <module>
-        <java>jboss-seam.jar</java>
-    </module>
 
-    <module>
-        <java>jboss-el.jar</java>
-    </module>
+   <!-- Seam and EL -->
+   <module>
+       <java>jboss-seam.jar</java>
+   </module>   
+   <module>
+      <java>jboss-el.jar</java>
+   </module>
 
-    <module>
+     <module>
         <java>icefaces.jar</java>
     </module>
         <module>
@@ -39,12 +40,11 @@
     </module>
     <module>
         <java>backport-util-concurrent.jar</java>
-    </module>
+    </module>   
     <module>
-        <java>commons-digester-1.6.jar</java>
+	   <java>commons-digester-1.6.jar</java>
     </module>
      <module>
-        <java>commons-beanutils-1.7.0.jar</java>
-    </module>
-
+	   <java>commons-beanutils-1.7.0.jar</java>
+    </module>  
 </application>
