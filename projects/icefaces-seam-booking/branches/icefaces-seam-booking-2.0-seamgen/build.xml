@@ -173,6 +173,10 @@
                 </jar>
         </target>
         
+        <target name="build" depends="clean,copy-libs,archive">
+             <echo message="run deploy target to deploy (seam-2.0.0.beta1 jsf1.2 app) ear file to server"/>
+        </target>
+        
         <target name="datasource">
                 <fail unless="jboss.home">jboss.home not set</fail>
                 <copy todir="${deploy.dir}">
@@ -338,14 +342,15 @@
                 <exclude name="jboss-seam-gen*.jar"/>
             </fileset>
             <fileset dir="${jboss.seam.home}/lib">
-                <include name="jboss-ejb3-all.jar"/>
+                <include name="thirdparty-all.jar"/>
+                <include name="jboss-embedded-all.jar"/>
                 <include name="hibernate*.jar"/>
                 <include name="testng*.jar"/>
             </fileset>
         </copy>
     </target>
 
-    <target name="freshen-jsf1.2" depends="freshen-base"
+    <target name="copy-libs" depends="delete-libs,freshen-base"
         description="grab fresh icefaces jars for jsf1.2* and seam1.2.1">
         <copy todir="${lib.dir}">
             <fileset dir="${icefaces.home}/lib">
@@ -353,7 +358,6 @@
                 <include name="commons-digester*.jar"/>
             </fileset>
             <fileset dir="${jboss.seam.home}/lib">
-                <include name="jboss-ejb3-all.jar"/>
                 <include name="antlr*.jar"/>
                 <include name="jboss-el*.jar"/>
                 <include name="commons-beanutils-*.jar"/>
