@@ -10,14 +10,14 @@
         </locale-config>
     </application>
 
-    <!-- Basic InputFile example bean-->
+    <!-- Basic OutputChart example bean-->
     <managed-bean>
         <description>
-            Backing bean for inputFile example.
+            Backing bean for outputChart example.
         </description>
         <managed-bean-name>user</managed-bean-name>
         <managed-bean-class>
-            com.icesoft.icefaces.tutorial.component.inputfile.basic.User
+            com.icesoft.icefaces.tutorial.component.outputChart.basic.User
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>

@@ -1,4 +1,4 @@
-<project name="inputFile-basic-tutorial" default="build.war">
+<project name="outputChart-basic-tutorial" default="build.war">
 
     <!-- location of common build file -->
     <property name="build-common.xml" value="../etc/build-common.xml"/>
@@ -9,6 +9,7 @@
                 includes="
             icefaces.jar
             icefaces-comps.jar
+            krysalis-jCharts-1.0.0-alpha-1.jar
         "
             />
     <patternset id="deployment.icefaces.lib.jars.to.include"

@@ -1,4 +1,4 @@
-<project name="inputFile-tutorial" default="build.examples">
+<project name="outputChart-tutorial" default="build.examples">
 
     <description>
         Builds child projects
