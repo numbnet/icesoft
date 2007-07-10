@@ -27,7 +27,7 @@
 
    <!-- jBPM -->
    <module>
-      <java>jbpm-3.1.4.jar</java>
+      <java>jbpm-jpdl.jar</java>
    </module>
 
    <!-- Drools and dependencies -->
@@ -58,10 +58,13 @@
     <module>
         <java>commons-fileupload.jar</java>
     </module>
-        <module>
+    <module>
         <java>backport-util-concurrent.jar</java>
     </module>   
     <module>
 	   <java>commons-digester.jar</java>
     </module>
+     <module>
+	   <java>commons-beanutils-1.7.0.jar</java>
+    </module>  
 </application>

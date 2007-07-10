@@ -138,12 +138,13 @@
                         </fileset>
                         <fileset dir="${lib.dir}">
                                 <include name="jboss-seam.jar" />
-                                <include name="jbpm*.jar" />
+                                <include name="jbpm-*.jar" />
                                 <include name="jboss-el.jar" />
                                 <include name="drools-*.jar"/>
                                 <include name="janino-*.jar"/>
                                 <include name="antlr-*.jar"/>
                                 <include name="mvel*.jar"/>
+					  <include name="commons-beanutils-1.7.0.jar"/>
                         </fileset>
 			<fileset dir="${lib.dir}">
 				<include name="icefaces*.jar" />
