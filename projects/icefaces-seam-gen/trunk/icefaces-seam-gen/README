@@ -1,3 +1,12 @@
+
+***Added enhancement of ICEfaces application. ***
+ To create an ICEFaces enhanced application, just specify the
+icefaces.home property in the build.properties file.  
+If the icefaces.home property is not set in this file(this means 
+that it is not present in the file or is set to <blank>), a regular
+seam application is created.
+
+
 NAME
    seam - execute seam code generation. There are seam.bat (Windows) and 
    seam (Linux/Unix) scripts that make calls to Ant targets for seam project 
