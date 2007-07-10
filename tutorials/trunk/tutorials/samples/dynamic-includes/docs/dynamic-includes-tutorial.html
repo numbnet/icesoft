@@ -1,0 +1,505 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+
+<html>
+  <head>
+    <title>ICEfaces Facelets Dynamic Include Tutorial</title>
+  </head>
+  <body>
+      <!-- header section-->
+      <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      <hr/>
+      <p>
+          <b>Lesson:</b> Using facelets dynamic includes
+      </p>
+      
+      <!-- tutorial content section -->
+      
+      <h1>How to Use Facelets Dynamic Includes</h1>
+      
+      <p>
+          Facelets is a view technology that focuses on building JSF component 
+          trees.  Facelets includes many features such as: 
+      </p>
+      <ul>
+          <li>Works with JSF 1.1 and JSF 1.2, including Sun's RI and Apache MyFaces. </li>
+          <li>Zero Tag development time for UIComponents </li>
+          <li>Fast Templating/Decorators for Components and Pages </li>
+          <li>The ability to specify UIComponent trees in separate files (UICompositions) </li>
+          <li>Line/Tag/Attribute precise Error Reporting </li>
+          <li>Specify Tags in Separate Files, even packaged with Jars </li>
+          <li>Full EL support, including Functions </li>
+          <li>Build-time EL Validation </li>
+          <li>XML configuration files aren't necessary </li>
+          <li>Works with any RenderKit</li>
+          <li>Facelet APIs aren't dependent on a Web Container </li>          
+      </ul>
+      
+      <p>
+          We will use facelets to construct a navigation tree.  This navigation 
+          tree will be built from a single <code>ui:include</code> tag.  The nodes on the 
+          tree will link to various content pages.
+      </p>
+      
+      <p>
+          This tutorial will discuss the following topics:
+      </p>
+      <ul>
+          <li><a href="#configure">Configuring/Installing Facelets</a></li>
+          <li><a href="#createweb">Create the Web Pages</a></li>
+          <li><a href="#createbeans">Create the Backing Beans</a></li>
+          <li><a href="#examples">Examples that use Facelets Dynamic Includes</a></li>
+      </ul>
+      
+      <a name="configure">&nbsp;</a>
+      
+      <h2>Configuring/Installing Facelets</h2>
+      
+      <p>
+          The steps to get facelets up and running for your application is 
+          quite simple:
+      </p>
+      <ol>
+          <li><a target="_blank" href="http://www.icefaces.org/main/downloads/os-downloads.iface">Download the ICEfaces distribution</a> and unzip it.</li>
+          <li>Copy the icefaces-facelets.jar into your WEB-INF/lib directory.</li>
+          <li>Add the Facelet init parameter to the web.xml file.</li>
+          <li>Add the FaceletViewHandler to the faces-config.xml file.</li>
+      </ol>
+      
+      <p>
+          The first two steps are fairly straight forward but the last two 
+          steps need to be described in detail.
+      </p>
+      
+      <h3>Adding the init Parameter</h3>
+      
+      <p>
+          The following code should be added to the web.xml file:
+      </p>
+      
+      <pre>
+          ...
+          &lt;context-param&gt;
+            &lt;param-name>javax.faces.DEFAULT_SUFFIX&lt;/param-name&gt;
+ 	    &lt;param-value>.jspx&lt;/param-value&gt;
+          &lt;/context-param&gt;
+          ...
+      </pre>
+      
+      <p>
+          This tells JSF to assume a prefix of jspx, which the Facelet's 
+          rendered can interpret.  Facelets can use many other parameters 
+          depending on your application.  
+      </p>
+      
+      <h3>Adding the FaceletsViewHandler</h3>
+      
+      <p>
+          For Facelets to work correctly, you'll need to tell JSF about the 
+          Facelets view handler.  This is a plug-in that handles the Render 
+          Response and Restore View phases of the JSF request-processing life 
+          cycle.  Add the following code to the faces-config.xml file:
+      </p>
+      
+      <pre>
+          ...
+          &lt;application&gt;
+            &lt;view-handler&gt;
+                com.icesoft.faces.facelets.D2DFaceletViewHandler
+            &lt;/view-handler&gt;
+          &lt;/application&gt;
+          ...
+      </pre>
+      
+      <a name="createweb">&nbsp;</a>
+      
+      <h2>Create the Web Pages</h2>
+      
+      <p>
+          The beauty of dynamically including the of the web pages is that the 
+          majority of the jspx pages have very little code involved.  First off 
+          the we'll look at the country-facelet.jspx code:
+      </p>
+      
+      <pre>
+            ...
+            &lt;ui:composition template="mainTemplate.jspx"&gt;
+                &lt;ui:define name="faceletHeader"&gt;
+                    &lt;meta http-equiv="Content-Type"
+                          content="text/html; charset=utf-8"&gt;&lt;/meta&gt;
+                    &lt;title&gt;
+                        &lt;ice:outputText value="Facelet Dynamic Include Tutorial"/&gt;
+                    &lt;/title&gt;
+                    &lt;link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/&gt;
+                &lt;/ui:define&gt;
+            &lt;/ui:composition&gt;
+            ...
+      </pre>
+      
+      <p>
+          There are a few tags that may look unfamiliar and are described below:
+      </p>
+      
+      <ul>
+          <li>
+              <b>&lt;ui:composition&gt;</b> - This is a templating tag that 
+              wraps content to be included in another facelet.  Any content 
+              outside the composition tag will be ignored by the Facelets 
+              view handler.
+          </li>
+          <li>
+              <b>&lt;ui:define&gt;</b> - This tag is a templating tag that 
+              defines named content to be inserted into a template.
+          </li>
+      </ul>
+      
+      <p>
+          For our example the composition tag included the mainTemplate.jsp page
+          which will be described later.  In the composition tag it also defines
+          a 'faceletHeader', this will match a <code>ui:include</code> tag in the 
+          mainTemplate.jspx.
+      </p>
+      
+      <p>
+          From this page it goes to the mainTemplate.jspx page.  This page is a 
+          template for the entire application.  It consists of a header, 
+          navigation bar, and a content section.  The following is the code 
+          from the page:
+      </p>
+      
+      <pre>
+            ...
+            &lt;head&gt;
+                &lt;ui:insert name="faceletHeader"&gt;Headers &lt;/ui:insert&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;table border="0" cellpadding="0"
+                        cellspacing="0" width="100%"&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;
+                            &lt;ui:insert name="header"&gt;
+                                &lt;h1&gt;
+                                    &lt;ice:outputText value="ICEfaces Facelets Dynamic Include Tutorial"/&gt;
+                                &lt;/h1&gt;
+                                &lt;ice:outputText&gt;
+                                    The following application uses a tree navigation menu 
+                                    that is created using a dynamic ui:include tag.
+                                &lt;/ice:outputText&gt;
+                                &lt;hr/&gt;
+                            &lt;/ui:insert&gt;
+                        &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td valign="top" width="150px" style="border-right:1px solid #999999;"&gt;
+                            &lt;ui:insert name="navigation"&gt;
+                                &lt;ui:include src="./navigation.jspx" /&gt;
+                            &lt;/ui:insert&gt;
+                        &lt;/td&gt;
+                        &lt;td valign="top" style="padding-left:10px;"&gt;
+                            &lt;ui:insert name="content"&gt;
+                                &lt;ui:include src="./content-facelet.jspx" /&gt;
+                            &lt;/ui:insert&gt;
+                        &lt;/td&gt;
+                        &lt;td&gt;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt; 
+            &lt;/body&gt;
+            ...
+      </pre>
+      
+      <p>
+          At first it inserts the named content configured in the 
+          country-facelet page, this will include the title for the page.  It then outlines 
+          the content of the page.  Starting with a basic header that will 
+          remain the same no matter what content page is displayed.  It then 
+          includes the navigation and content files into the template using the 
+          tag, <code>ui:include</code>.  The Facelet tags used in this page is described 
+          below:
+      </p>
+      
+      <ul>
+          <li>
+              <b>&lt;ui:insert&gt;</b>- A templating tag that declares a named 
+              content element to be defined by another Facelet.  Used 
+              effectively with the ui:define tag.
+          </li>
+          <li>
+              <b>&lt;ui:include&gt;</b>- A server-side include tag for Facelets.
+              It simply includes the document pointed to by the "src" attribute 
+              as part of the current JSF page. 
+          </li>
+      </ul>
+      
+      <p>
+          The mainTemplate page includes two pages, navigation.jspx and 
+          content-facelet.jspx.  The navigation page is where the navigation 
+          tree is built dynamically.  The content-facelet page is where the 
+          information is displayed.  
+      </p>   
+      
+      <p>
+          As with the rest of the web pages the navigation.jspx code is fairly simple:
+      </p>
+      
+      <pre>
+          ...          
+            &lt;ice:form
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                id="navigationMenuForm"&gt;
+                &lt;div class="navTree"&gt;
+                    &lt;ice:tree
+                        value="#{treeNavigation.model}"
+                        var="item"
+                        hideRootNode="false"
+                        binding="#{treeNavigation.treeComponent}"&gt;
+                        &lt;ice:treeNode&gt;
+                            &lt;f:facet name="content"&gt;
+                                &lt;ice:panelGroup style="display: inline"&gt;
+                                    &lt;ice:commandLink
+                                        actionListener="#{item.userObject.contentVisibleAction}"&gt;
+                                    &lt;ice:outputText
+                                        value="#{item.userObject.menuDisplayText}"/&gt;
+                                    &lt;/ice:commandLink&gt;
+                                &lt;/ice:panelGroup&gt;
+                            &lt;/f:facet&gt;
+                        &lt;/ice:treeNode&gt;
+                    &lt;/ice:tree&gt;
+                &lt;/div&gt;
+            &lt;/ice:form&gt;
+         ...
+      </pre>
+      
+      <p>
+          The page creates an ice:tree that is generated from a backing bean.  
+          The nodes are command links that function is defined in the backing bean.  
+      </p>
+      
+      <p>
+          The content-facelet page is also fairly simple:
+      </p>
+      
+      <pre>
+          ...
+            &lt;ice:panelGroup&gt;
+                &lt;h2&gt;
+                &lt;ice:outputText
+                    value="#{navigation.selectedPanel.menuContentTitle}"/&gt;
+                &lt;/h2&gt;
+                &lt;div class="demoWindow"&gt;
+                    &lt;ui:include src="#{navigation.selectedPanel.menuContentInclusionFile}"/&gt;
+                &lt;/div&gt;
+                &lt;br/&gt;
+            &lt;/ice:panelGroup&gt;
+          ...  
+      </pre>
+      
+      <p>
+          The page displays the contents title received from the backing bean 
+          and then displays the content that was defined by the backing bean.
+      </p>
+      
+      <a name="createbeans">&nbsp;</a>
+      
+      <h2>Create the Backing Beans</h2>
+      
+      <p>
+          In our example there are just three backing beans that are responsible
+          for the creation and function of the navigation tree.  The beans are:
+      </p>
+      
+      <ul>
+          <li>
+              <b>NavigationBean</b>: responsible for storing the state of the two panel
+              stacks which display dynamic content. 
+          </li>
+          <li>
+              <b>PageContentBean</b>: responsible for holding state information which 
+              will allow a TreeNavigation and NavigationBean display dynamic 
+              content.
+          </li>
+          <li>
+              <b>TreeNavigation</b>: backing bean for the navigation tree on the left 
+              hand side of the application. Each node in the tree is made up of 
+              a PageContent which is responsible for the navigation action when 
+              a tree node is selected.
+          </li>
+      </ul>
+      
+      <p>
+          The NavigationBean is fairly straight forward.  It consists of a 
+          selectedPanel object and the getters and setter for this attribute.  
+          The class is used mainly by the page content bean to change the file 
+          that is being displayed in the application.
+      </p>
+      
+      <p>
+          The PageContentBean is a little more complicated and is part of the 
+          major functionality for displaying content dynamically.  The class 
+          extends the IceUserObject class, this class represents a 
+          DefaultMutableTreeNode as pert of the TreeModel.  The class also holds
+          some of the basic information regarding content such as:
+      </p>
+      
+      <ul>
+          <li><b>templateName</b>: default panel to make visible in a panel stack.</li>
+          <li><b>menuDisplayText</b>: text to be displayed in navigation link.</li>
+          <li><b>menuContentTitle</b>: text to be displayed in the content part of the page.</li>
+          <li><b>menuContentInclusionFile</b>: the path of the file to be included, must be a jspx or xhtml file.</li>
+          <li><b>pageContent</b>: boolean that indicates if the object will have page content or none, if it doesn't have any content then it will be a toggle for branch visibility.</li>
+          <li><b>navigationBean</b>: view reference to control the visible content.</li>
+      </ul>
+      
+      <p>
+          The PageContentBean's methods consist of basic getters and setters and
+          an action listener that will toggle the branch visibility.  
+      </p>
+      
+      <p>
+          The TreeNavigation is the bean that creates the tree model for 
+          navigation.  Each node is a PageContentBean object.  First off the 
+          root node is created in the constructor like this:
+      </p>
+      
+      <pre>
+            ...
+            // build root node so that children can be attached
+            PageContentBean rootObject = new PageContentBean();
+            rootObject.setMenuDisplayText("Country Fact Sheet");
+            rootObject.setMenuContentTitle("Country Fact Sheet");
+            rootObject.setMenuContentInclusionFile("./content/main.xhtml");
+            rootObject.setTemplateName("mainPanel");
+            rootObject.setNavigationSelection(navigationBean);
+            rootObject.setPageContent(true);
+            rootTreeNode = new DefaultMutableTreeNode(rootObject);
+            rootObject.setWrapper(rootTreeNode);
+
+            model = new DefaultTreeModel(rootTreeNode);
+            ...
+      </pre>
+      
+      <p>
+          All the children will be attached to this node.  The init method will 
+          create the rest of the tree.  To create the children there are two 
+          differences.  You can create a node that will be a parent of a branch
+          or create a leaf that, when clicked, will display content.  The 
+          following is an example on how to create a parent of a branch:
+      </p>
+      
+      <pre>
+                ...
+                // North America menu item
+                branchObject = new PageContentBean();
+                branchObject.setExpanded(false);
+                branchObject.setMenuDisplayText("North America");
+                branchObject.setMenuContentTitle("North America");
+                branchObject.setTemplateName("northAmericaPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                branchObject.setPageContent(false);
+                DefaultMutableTreeNode branchNode = 
+                        new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(branchNode);
+                // finally add the new custom component branch
+                rootTreeNode.add(branchNode);
+                ...
+      </pre>
+      
+      <p>
+          A new PageContentBean is created and its values are defined.  Also the
+          PageContentBean is wrapped in a DefaultMutableTreeNode which will make 
+          it compatible with the tree object.  Once all vlaues have been set the 
+          node is added to the root.
+      </p>
+      
+      <p>
+          The following is an example on how to add a leaf node under the parent
+          branch:
+      </p>
+      
+      <pre>
+                ...
+                // North Ameica menu -> Canada
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText("Canada");
+                branchObject.setMenuContentTitle("Canada Facts");
+                branchObject.setMenuContentInclusionFile("./content/NA/canada.xhtml");
+                branchObject.setTemplateName("canadaContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                DefaultMutableTreeNode leafNode =
+                        new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                ...
+      </pre>
+      
+      <p>
+          The creation of this bean is very similar to creating a parent object
+          with a few differences.  Instead of a branchNode being created a 
+          leafNode is created and added to the branchNode created in the parent,
+          instead of the root node.  Also the leaf attribute is set to true.
+      </p>
+      
+      <p>
+          The basic structure is shown below:          
+      </p>
+      
+     <div class="screenshot">
+          <img src="images/navigation-tree.png"
+                title="Navigation Tree"
+                alt="Navigation Tree" width="162"
+                height="366"/>
+      </div>
+
+      
+      <a name="examples">&nbsp;</a>
+      
+      <h2>Examples that use Facelets Dynamic Includes</h2>
+      
+      <table cellpadding="1" cellspacing="0" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">Component-Showcase-Facelets</td>
+                  <td class="bodySource">Available in release bundles</td>
+                  <td class="bodyNotes">
+                      The Component-Showcase-Facelets version (bundled in the ICEfaces release) 
+                      uses dynamic includes for its navigation tree.
+                  </td>
+              </tr>
+              <tr>
+                  <td class="bodyExample">Dynamic-Include-Tutorial</td>
+                  <td class="bodySource"><a href="dynamic-include-tutorial.zip">
+                          dynamic-include-tutorial source code
+                  </a></td>
+                  <td class="bodyNotes">
+                      Simple example demonstrating how to use Facelets dynamic includes.
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- footer section -->
+      
+      <hr/>
+      
+      <p class="tutorialFooterText">
+          The ICEfaces Tutorial
+          <br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      
+      <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+
+          
+  </body>
+</html>
