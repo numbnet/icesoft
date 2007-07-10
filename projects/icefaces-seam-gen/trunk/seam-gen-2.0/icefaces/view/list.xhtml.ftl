@@ -20,7 +20,7 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}Form" styleClass="edit">
-      <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
+      <ice:panelCollapsible expanded="true" styleClass="pnlClpsblDemo">
        <f:facet name="header">
         <ice:panelGroup styleClass="expandableStateIndicator">
                   <ice:outputText value="${entityName} search"/>
