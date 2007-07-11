@@ -21,68 +21,131 @@
 <h1>How to Use the ICEfaces OutputChart Component</h1>
 
 <p>
-    The <span class="object-name">outputChart</span> component can upload a file
-    from a client machine to the server.  The outputChart component renders an
-    file input HTML element. Users specify a file to upload either by entering
-    the path to a file directly, or by clicking the Browse button to open a
-    file-system navigation dialog window. Clicking the Upload button uploads
-    the specified file to the server.
+    The <span class="object-name">outputChart</span> uses the JCharts open source
+    charting utility (http://jcharts.sourceforge.net/) to create charts. The two
+    main types of charts that can be created with this component are axis charts
+    and pie charts.
 </p>
 
 <p>This tutorial will discuss the following topics related to the use of the
     <span class="object-name">outputChart</span> component:</p>
 <ul>
-    <li><a href="#basicoutputChartcomponent">Basic OutputChart Component</a></li>
-    <li><a href="#progressoutputChartcomponent">OutputChart Component with OutputProgress Component</a>
+    <li><a href="#axisoutputChartcomponent">Axis OutputChart Component</a></li>
+    <li><a href="#pieoutputChartcomponent">Pie OutputChart Component</a>
     </li>
-    <li><a href="#advancedoutputChartcomponent">Advanced OutputChart Component</a></li>
+    <li><a href="#dynamicoutputChartcomponent">Dynamic OutputChart Component</a></li>
     <li><a href="#examplesthatuseoutputChart">Examples that use OutputChart Component</a></li>
 </ul>
 
-<a name="basicoutputChartcomponent"><h2>Basic OutputChart Component</h2></a>
+<a name="axisoutputChartcomponent"><h2>Axis OutputChart Component</h2></a>
 
-    <p>There are three things you must keep in mind before using the ice:outputChart
-        component.  You need to have the file-upload.jar on your classpath (please
-        note: the name of the jar changed from commons-fileupload-1.0.jar in
-        ICEfaces 1.0 to file-upload.jar in ICEfaces 1.01).  The ice:outputChart
-        component must be inside a form element and you must add the following to
-        your web.xml file:
-    <pre>
-    &lt;!-- file upload Servlet --&gt;
-    &lt;servlet&gt;
-         &lt;servlet-name&gt;uploadServlet&lt;/servlet-name&gt;
-         &lt;servlet-class&gt;com.icesoft.faces.component.outputChart.FileUploadServlet&lt;/servlet-class&gt;
-         &lt;load-on-startup&gt; 1 &lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-         &lt;servlet-name&gt;uploadServlet&lt;/servlet-name&gt;
-         &lt;url-pattern&gt;/uploadHtml&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-    </pre>
+    <p>There are 7 types of axis charts: area, areastacked, bar, barclustered, barstacked,
+       line and point.
     </p>
-    <p>In our demo, a bean named user has been defined in the faces.config file as a session
-        scope bean.  The ice:outputChart component will upload a file and save a reference to it
-        in the user bean via the following attribute: file="#{user.file}".
-    </p>
-    <p>If you attempt to upload an invalid entry, or a file greater in size than
-        10 MB (the default limit for this component), you should see an appropriate
-        error message output via an ice:message component.  The outputChart component
-        sends exception information to the client using FacesMessage, so it is
-        a good idea to have an instance of ice:message or ice:messages on your page.
-    </p>
-    <p>In the demo, we have added an ice:outputText component at the bottom, to show the location of the file
-        on the server after it has been uploaded.
+
+
+      <div class="screenshot">
+          <img src="images/area.png"
+                title="Area Chart"
+                alt="Area Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/areastacked.png"
+                title="AreaStacked Chart"
+                alt="AreaStacked Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/bar.png"
+                title="Bar Chart"
+                alt="Bar Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/barclustered.png"
+                title="BarClustered Chart"
+                alt="BarClustered Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/barstacked.png"
+                title="BarStacked Chart"
+                alt="BarStacked Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/line.png"
+                title="Line Chart"
+                alt="Line Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/point.png"
+                title="Point Chart"
+                alt="Point Chart"
+                width="200" />
+      </div>
+
+    <p>
+		<pre>
+				<ice:outputChart id="axisOutputChart"
+								 type="bar"
+								 chartTitle="Bar Chart"
+								 yaxisTitle="Problems"
+								 xaxisTitle="Years"
+								 xaxisLabels="#{axisChartBean.labels}"
+								 labels="#{axisChartBean.legendLabels}"
+								 colors="#{axisChartBean.paints}"
+								 data="#{axisChartBean.data}" />
+		</pre>
+       The "colors" method of the bean may return either a java.util.List of
+       java.awt.Color, an array of java.awt.Color or a String array.
+       You can also define the data statically in the jsf page:
+		<pre>
+		   colors="red, blue, green"
+		</pre>
+       The "data" method of the bean may return either a java.util.List of
+       double array for each pair value, or a double array.
+       You can also define the data statically in the jsf page:
+		<pre>
+		   Defining the data for an axis type chart in the jsf page for two data sets:
+		   data="10, 30, 40, 33: 30, 20, 30, 40"
+		   NOTE: the colon(":") is used as the identifier for a new data set.
+		</pre>
+       The axis charts use the same underlying data structure which can allow you
+       to change the chart type dynamically:
+		<pre>
+		   type="#{axisChartBean.type}"
+		</pre>
+
+       The participation of the outputChart component with the jsf lifecycle allows
+       developers to hook actionListeners to a clientSideImageMap. This feature can
+       be harnessed to provide drill down behavior in all axis charts except area and
+       areastacked.  In the demo, when you click on a bar in the chart this will trigger
+       the actionListener to display the value of that bar on the page.
+       <pre>
+           actionListener="#{axisChartBean.imageClicked}"
+       </pre>
+       By default the chart component renders only on the first render cycle and any
+       further render requests will not cause it to be re-rendered unless specified.
+       The rendering of a chart can be an expensive operation if it renders on every
+       render phase. The renderOnSubmit attribute lets the developer decide when to
+       render the chart.
+       <pre>
+           renderOnSubmit="#{axisChartBean.newChart}"
+       </pre>
     </p>
 <br/>
 
 <div class="demo-instruction">
     <h3>See the demo:</h3>
     <ul>
-        <li>See the outputChart-basic demo for your self by clicking
-            <a href="/outputChart-basic-tutorial/"
+        <li>See the outputChart-axis demo for your self by clicking
+            <a href="/outputChart-axis-tutorial/"
                target="_blank">here</a>,
-            or download the dataTable-basic source code <a
-                href="outputChart-basic-tutorial.zip">here</a>.</li>
+            or download the outputChart-axis source code <a
+                href="outputChart-axis-tutorial.zip">here</a>.</li>
     </ul>
 </div>
 
@@ -186,12 +249,12 @@
         <tr>
             <td class="bodyExample">Component Showcase</td>
             <td class="bodySource">Available in release bundles</td>
-            <td class="bodyNotes">Contains basic outputChart example.</td>
+            <td class="bodyNotes">Contains axis outputChart example.</td>
         </tr>
         <tr>
-            <td class="bodyExample">outputChart-basic</td>
+            <td class="bodyExample">outputChart-axis</td>
             <td class="bodySource"><a
-                    href="outputChart-basic-tutorial.zip">outputChart-basic
+                    href="outputChart-axis-tutorial.zip">outputChart-axis
                 source code</a></td>
             <td class="bodyNotes">Simple example of how to use outputChart component.</td>
         </tr>
