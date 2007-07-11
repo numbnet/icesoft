@@ -28,7 +28,11 @@
         xml-apis.jar
     "
             />
-
+    <patternset id="additional.icefaces.lib.jars.to.include"
+		    includes="
+	  icefaces-facelets.jar
+    "
+		/>
     <target name="clean" depends="common.clean">
         <delete quiet="true">
             <fileset dir="${app.lib.dir}">
