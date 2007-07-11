@@ -15,9 +15,9 @@
         <description>
             Backing bean for outputChart example.
         </description>
-        <managed-bean-name>user</managed-bean-name>
+        <managed-bean-name>axisChartBean</managed-bean-name>
         <managed-bean-class>
-            com.icesoft.icefaces.tutorial.component.outputChart.basic.User
+            com.icesoft.icefaces.tutorial.component.outputchart.basic.AxisChartBean
         </managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
