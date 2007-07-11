@@ -21,6 +21,7 @@
         commons-el.jar
         commons-fileupload.jar
         commons-logging.jar
+        commons-lang.jar
         el-api.jar
         jstl.jar
         standard.jar
@@ -28,6 +29,11 @@
         xml-apis.jar
     "
             />
+    <patternset id="additional.icefaces.lib.jars.to.include"
+		    includes="
+	  commons-lang.jar
+    "
+		/>
 
     <target name="clean" depends="common.clean">
         <delete quiet="true">
