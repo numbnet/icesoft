@@ -31,7 +31,7 @@
     </context-param>
 	
     <listener>
-	<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
     </listener>
   
     <!-- Faces Servlet -->
