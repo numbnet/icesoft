@@ -5,17 +5,17 @@
     </description>
 
     <property name="build-common.xml"
-              value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+              value="../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
 
     <!--
         builds the examples
     -->
     <target name="build.examples" >
-
-        <subant target="copy.zip.src">
+	  <subant target="build.deployable">
             <property name="build-common.xml" value="${build-common.xml}"/>
-            <fileset dir="." includes="*/build.xml" />
+            <fileset dir="." includes="*/build.xml"/>
         </subant>
+
         
     </target>
 

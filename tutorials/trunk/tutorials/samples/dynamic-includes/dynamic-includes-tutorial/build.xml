@@ -1,10 +1,7 @@
 <project name="dynamic-includes-tutorial" default="build.war">
 
     <!-- location of common build file -->
-    <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
-
-    <!-- path to applicaiton libraries -->
-    <property name="proj.lib.dir" location="./lib/" />
+    <property name="build-common.xml" value="../etc/build-common.xml"/>
 
     <import file="${build-common.xml}"/>
 
@@ -40,16 +37,6 @@
         </delete>
     </target>
 
-    <target name="compile" >
-        <compile>
-            <add.javac.elements >
-                <classpath>
-                    <fileset dir="${proj.lib.dir}" includes="*.jar"/>
-                </classpath>
-            </add.javac.elements>
-        </compile>
-    </target>
-
     <target name="build.war" depends="compile">
 
         <copy todir="${app.lib.dir}" preservelastmodified="true">
@@ -57,32 +44,31 @@
                 <patternset refid="common.icefaces.lib.jars.to.include"/>
                 <patternset refid="deployment.icefaces.lib.jars.to.include"/>
             </fileset>
-            <fileset dir="${proj.lib.dir}" includes="*.jar"/>
         </copy>
 
-        <build.war web.xml="conf/web.sunri.icefaces.xml"/>
+        <build.war />
     </target>
 
     <target name="build.minimal.war" depends="compile">
 
-        <fileset dir="${icefaces.lib.dir}">
-            <patternset refid="common.icefaces.lib.jars.to.include"/>
+        <fileset dir="${icefaces.lib.dir}" >
+            <patternset refid="common.icefaces.lib.jars.to.include" />
         </fileset>
 
-        <build.war web.xml="conf/web.sunri.icefaces.xml"
-                   war.file.name="${ant.project.name}.war"/>
+        <build.war war.file.name="${ant.project.name}.war"/>
     </target>
 
     <!--
         Zip of source code and save in documents folder
     -->
-    <target name="copy.zip.src" >
+    <target name="copy.zip.src">
         <mkdir dir="${dist.dir}"/>
-        <zip basedir="." destfile="${dist.dir}/${ant.project.name}.zip" />
+        <zip basedir="." destfile="${dist.dir}/${ant.project.name}.zip"/>
     </target>
 
     <target name="build.deployable"
             depends="clean, copy.zip.src, build.minimal.war"/>
+
 
 </project>
 

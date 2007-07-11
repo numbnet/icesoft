@@ -28,6 +28,13 @@
         xml-apis.jar
     "
             />
+    <patternset id="additional.compile.lib.jars"
+		    includes="
+	  commons-logging.jar
+        servlet-api.jar
+    "
+		/>
+
 
     <target name="clean" depends="common.clean">
         <delete quiet="true">

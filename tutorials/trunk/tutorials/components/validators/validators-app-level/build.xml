@@ -29,6 +29,12 @@
             xml-apis.jar
         "
             />
+    <patternset id="additional.compile.lib.jars"
+		    includes="
+	  commons-lang.jar
+    "
+		/>
+
 
     <target name="clean" depends="common.clean">
         <delete quiet="true">

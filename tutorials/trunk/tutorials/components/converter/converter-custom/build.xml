@@ -29,7 +29,7 @@
         xml-apis.jar
     "
             />
-    <patternset id="additional.icefaces.lib.jars.to.include"
+    <patternset id="additional.compile.lib.jars"
 		    includes="
 	  commons-lang.jar
     "
