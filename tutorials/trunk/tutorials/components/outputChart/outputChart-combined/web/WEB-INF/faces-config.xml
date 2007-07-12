@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE faces-config PUBLIC
+        "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config>
+    <application>
+        <locale-config>
+            <default-locale>en</default-locale>
+        </locale-config>
+    </application>
+
+    <!-- Basic OutputChart example bean-->
+    <managed-bean>
+        <description>
+            Backing bean for outputChart example.
+        </description>
+        <managed-bean-name>axisChartBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.tutorial.component.outputchart.basic.AxisChartBean
+        </managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+</faces-config>
