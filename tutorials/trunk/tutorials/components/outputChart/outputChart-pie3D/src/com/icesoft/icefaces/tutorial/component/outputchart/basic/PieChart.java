@@ -19,15 +19,7 @@ public class PieChart {
     protected List data = new ArrayList();
 
     //list of the colors used in the pie chart
-    private List paints;
-    
-    public PieChart(){
-        paints = new ArrayList();
-        paints.add(new Color(26, 86, 138)); //#1A568A
-        paints.add(new Color(76, 126, 167)); //#4C7EA7
-        paints.add(new Color(148, 179, 203)); //#94B3CB
-        paints.add(new Color(193, 211, 223)); //#C1D3DF
-    }
+    protected List paints = new ArrayList();
     
     public List getPaints() {
         return paints;
