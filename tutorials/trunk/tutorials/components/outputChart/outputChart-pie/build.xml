@@ -1,4 +1,4 @@
-<project name="outputChart-basic-tutorial" default="build.war">
+<project name="outputChart-pie2D-tutorial" default="build.war">
 
     <!-- location of common build file -->
     <property name="build-common.xml" value="../etc/build-common.xml"/>
