@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Tabset Component Tutorial</title>
+        <title>Panel Popup Component Tutorial</title>
     </head>
     <body>
         <jsp:forward page="modalPanelPopup.iface" />
