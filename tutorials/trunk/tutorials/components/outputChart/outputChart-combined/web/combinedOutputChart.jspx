@@ -15,57 +15,20 @@
     </head>
 
     <body>
-    <h2>OutputChart Axis Demo</h2>
     
     <ice:form>
-
-
-            <ice:panelGrid columns="2" style="width: 400px;">
-
-                <ice:panelGroup>
-                    <h4>
-                        <ice:outputText id="chartTitle"
-                                    value="Chart Type:"/>
-                    </h4>
-                    <ice:selectOneMenu value="#{axisChartBean.type}" partialSubmit="true"
-                                       valueChangeListener="#{axisChartBean.chartChanged}">
-                        <f:selectItems value="#{axisChartBean.chartList}"/>
-                    </ice:selectOneMenu>
-                </ice:panelGroup>
-                <!--
-                    panelGroup displayed when chart type is bar or barclustered to
-                    toggle horizontal or vertical chart orientation.
-                -->
-                <ice:panelGroup rendered="#{axisChartBean.orientationChange}">
-                    <h4>
-                        <ice:outputText value="Chart Orientation:"/>
-                    </h4>
-                    <ice:selectOneRadio value="false"
-                                        valueChangeListener="#{axisChartBean.selectOrientation}"
-                                        partialSubmit="true">
-                        <f:selectItem itemValue="true"
-                                      itemLabel="Horizontal"/>
-                        <f:selectItem itemValue="false"
-                                      itemLabel="Vertical"/>
-                    </ice:selectOneRadio>
-
-                </ice:panelGroup>
-            </ice:panelGrid>
-            <br/>
-            <ice:outputText value="#{axisChartBean.clickedValue}"/>
-            <br/>                
-            <ice:outputChart id="axisOutputChart"
-                             type="#{axisChartBean.type}"
-                             chartTitle="#{axisChartBean.type} Chart"
-                             yaxisTitle="#{axisChartBean.titleY}"
-                             xaxisTitle="#{axisChartBean.titleX}"
-                             xaxisLabels="#{axisChartBean.labels}"
-                             labels="#{axisChartBean.legendLabels}"
-                             colors="#{axisChartBean.paints}"
-                             data="#{axisChartBean.data}"
-                             actionListener="#{axisChartBean.imageClicked}"
-                             renderOnSubmit="#{axisChartBean.newChart}"
-                             horizontal="#{axisChartBean.horizontal}" />
+            <h3>
+                <ice:outputText id="combinedChartTitle"
+                                value="Combine Different Chart Types:"/>
+            </h3>
+            <ice:outputText
+                    value="This demonstration combines a bar chart with a line chart."/>
+            <br />
+            <ice:outputText value="Click image map for chart value: #{combinedChartBean.clickedValue}"/>
+        <br/>                
+        <ice:outputChart type="custom"
+                         renderOnSubmit="#{combinedChartBean.newChart}"
+                         actionListener="#{combinedChartBean.action}"/>
         
     </ice:form>
 

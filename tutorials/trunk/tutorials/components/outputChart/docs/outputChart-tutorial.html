@@ -224,11 +224,13 @@
 
 <a name="combiningoutputchartcomponent"><h2>Combining with the OutputChart Component</h2></a>
 
-    <p>You can create any type of chart or combined chart using the JCharts API in your
-    bean. You can then pass the custom chart to the outputChart component which will
-    allow the chart to participate in the JSF lifecycle.  The proper place for this
-    operation is in a method binding which is bound with the renderOnSubmit attribute.
-    This tells the component whether to render the chart or not:</p>
+    <p>You can create any type of chart or combine charts using the JCharts API in your
+    bean. You can then pass this custom chart to the outputChart component which will
+    allow the chart to participate in the JSF lifecycle.
+    </p>
+    <p>The proper place for chart manipulation using the JCharts API is in the method
+    binding which is bound tp the renderOnSubmit attribute, which tells the component
+    whether to render the chart:</p>
     <pre>
 //JSF
 <ice:outputChart type="custom" renderOnSubmit="#{combinedChart.newChart}" />
