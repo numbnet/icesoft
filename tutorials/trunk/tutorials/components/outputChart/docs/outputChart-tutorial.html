@@ -172,9 +172,9 @@
 		<pre>
             <ice:outputChart id="pie2DOutputChart"
                              type="pie2D"
+                             chartTitle="Pie2D Chart"
                              width="350"
                              height="350"
-                             chartTitle="Pie2D Chart"
                              labels="#{pieChart.labels}"
                              data="#{pieChart.data}"
                              colors="#{pieChart.paints}"
@@ -195,7 +195,7 @@
     <p>
        The 3D demo shows how you can dynamically manipulate any chart through the UI.
        The data, label and paint properties can each be bound to Lists in a
-       backing bean. This feature allows developers to easily manipulate the chart
+       backing bean. This feature allows developers to easily manipulate chart
        properties in the backing bean.
     </p>
 
@@ -224,48 +224,31 @@
 
 <a name="combiningoutputchartcomponent"><h2>Combining with the OutputChart Component</h2></a>
 
-    <h4>Maximum File Size</h4>
-
-    <p>If you want to change the maximum file size that can be uploaded with the
-        ice:outputChart component, you must add a context parameter to the web.xml
-        file.  The default maximum is 10 MB, we will change the maximum to 2 MB in
-        the advanced demos by adding the following:</p>
+    <p>You can create any type of chart or combined chart using the JCharts API in your
+    bean. You can then pass the custom chart to the outputChart component which will
+    allow the chart to participate in the JSF lifecycle.  The proper place for this
+    operation is in a method binding which is bound with the renderOnSubmit attribute.
+    This tells the component whether to render the chart or not:</p>
     <pre>
-    &lt;context-param&gt;
-        &lt;param-name&gt;com.icesoft.faces.uploadMaxFileSize&lt;/param-name&gt;
-        &lt;param-value&gt;2097152&lt;/param-value&gt;
-    &lt;/context-param&gt;
+//JSF
+<ice:outputChart type="custom" renderOnSubmit="#{combinedChart.newChart}" />
+
+//Bean
+public boolean newChart(OutputChart component){
+    try {
+        .............
+        .............
+        org.krysalis.jcharts.axisChart.AxisChart axisChart= new org.krysalis.jcharts.axisChart.AxisChart( ......);
+        component.setChart(axisChart);
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     </pre>
 
-    <h4>ActionListener Attribute</h4>
 
-    <p>An actionListener is invoked when the uploaded file is saved, or on any
-        exception. This means the developer can perform an operation when the
-        component reaches one of the following four OutputChart states:  [SAVED,
-        INVALID, SIZE_LIMIT_EXCEEDED, UNKNOWN_SIZE].</p>
-    <p> The advanced demo removes the ice:message component we used previously to
-        output error messages.  Now we will use the actionListener method to query
-        the component for its state and output the state with an ice:outputText
-        component.  When using the demo, try uploading a file greater than 2 MB in size
-        to confirm we have changed the maximum file size with the addition of the context
-        parameter above.</p>
-
-    <h4>UniqueFile Attribute</h4>
-
-    <p>The ice:outputChart component features an attribute that lets you manipulate
-        where the file will be saved.  The default behaviour of the component is to
-        create a folder at the root of your context with the session id as its name.
-        This allows you to easily associate files to a specific session.  If you add
-        the attribute uniqueFolder="false" to the component, files will be uploaded
-        to the context root and a folder will not be created.
-    </p>
-    <p>The advanced demo has two components under the heading UniqueFile Attribute, both of them
-       have an outputText component underneath to show the location of the file after it has been
-       uploaded.  The first component shows the default behaviour of creating a folder in the
-       context root with the session id for a name and placing the file in that folder.  The
-       second component has the attribute uniqueFolder="false" which means the file will be uploaded
-       directly to the context root.
-    </p>
 
 <div class="demo-instruction">
     <h3>See the demo:</h3>
@@ -293,14 +276,14 @@
         <tr>
             <td class="bodyExample">Component Showcase</td>
             <td class="bodySource">Available in release bundles</td>
-            <td class="bodyNotes">Contains axis outputChart example.</td>
+            <td class="bodyNotes">Contains outputChart example.</td>
         </tr>
         <tr>
             <td class="bodyExample">outputChart-axis</td>
             <td class="bodySource"><a
                     href="outputChart-axis-tutorial.zip">outputChart-axis
                 source code</a></td>
-            <td class="bodyNotes">Simple example of how to use outputChart component.</td>
+            <td class="bodyNotes">Simple example of how to use the outputChart component.</td>
         </tr>
         <tr>
             <td class="bodyExample">outputChart-pie2D</td>
@@ -308,15 +291,15 @@
                     href="outputChart-pie2D-tutorial.zip">outputChart-pie2D
                 source code</a></td>
             <td class="bodyNotes"> Example of advanced use of ActionListener with the
-            pie2D chart type<./td>
+            the outputChart component<./td>
         </tr>
         <tr>
             <td class="bodyExample">outputChart-pie3D</td>
             <td class="bodySource"><a
                     href="outputChart-pie3D-tutorial.zip">outputChart-pie3D
                 source code</a></td>
-            <td class="bodyNotes"> Example showing the manipulation of the chart
-            properties in the backing bean of a pie3D chart type<./td>
+            <td class="bodyNotes"> Example showing the manipulation of chart
+            properties in the backing bean.</td>
         </tr>
         <tr>
             <td class="bodyExample">outputChart-combining</td>
