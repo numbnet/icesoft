@@ -171,10 +171,10 @@
     <p>
 		<pre>
             <ice:outputChart id="pie2DOutputChart"
-                             type="#{pieChart.type}"
+                             type="pie2D"
                              width="350"
                              height="350"
-                             chartTitle="#{pieChart.type} Chart"
+                             chartTitle="Pie2D Chart"
                              labels="#{pieChart.labels}"
                              data="#{pieChart.data}"
                              colors="#{pieChart.paints}"
@@ -187,11 +187,14 @@
     </p>
     <p>
        The 2D demo shows a 2D Pie Chart with an actionListener that will show a further
-       breakdown of the pie data.
+       breakdown of the pie data.  This shows the ability of any chart to pass the
+       selected image map data into the bean for further processing.  In this case, we
+       have a separate ice:dataTable component showing a breakdown of the yearly sales
+       selected from the 2D Pie Chart.
     </p>
     <p>
-       The 3D demo shows how you can dynamically manipulate the chart through the UI.
-       The data, label and the paint properties can each be bound to Lists in a
+       The 3D demo shows how you can dynamically manipulate any chart through the UI.
+       The data, label and paint properties can each be bound to Lists in a
        backing bean. This feature allows developers to easily manipulate the chart
        properties in the backing bean.
     </p>

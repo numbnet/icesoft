@@ -13,10 +13,10 @@ import java.util.List;
 public class PieChart {
     
     //list of labels for the chart
-    protected static List labels = new ArrayList();
+    protected List labels = new ArrayList();
 
     //list of the data used by the chart
-    protected static List data = new ArrayList();
+    protected List data = new ArrayList();
 
     //list of the colors used in the pie chart
     private List paints;
