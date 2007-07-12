@@ -14,7 +14,7 @@ import java.util.List;
 public class AxisChart {
     
     //list of the Labels for the x axis of the chart
-    public static final List labels = new ArrayList(Arrays.asList(
+    private static final List labels = new ArrayList(Arrays.asList(
             new String[]{"2000", "2001", "2002", "2003", "2004", "2005",
                          "2006"}));
 
@@ -23,7 +23,7 @@ public class AxisChart {
             new String[]{"Bugs", "Enhancements", "Fixed"}));
 
     //The list of the data used by the chart
-    public static final List data = new ArrayList(
+    private static final List data = new ArrayList(
             Arrays.asList(new double[][]{new double[]{350, 50, 400},
                                          new double[]{45, 145, 50},
                                          new double[]{-36, 6, 98},

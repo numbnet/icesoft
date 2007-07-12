@@ -63,7 +63,7 @@ public class AxisChartBean extends AxisChart{
     //Flag to determine whether the type of chart was changed
     private boolean chartChangedFlag = true;
 
-    public static final String DEFAULT_STRING =
+    private static final String DEFAULT_STRING =
         "Click on the image map below to display a chart value: ";
     
     //sets the string returned when the chart is clicked to the default value

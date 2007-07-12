@@ -3,6 +3,6 @@
         <title>ICEfaces Component Showcase</title>
     </head>
     <body>
-        <jsp:forward page="basicOutputChart.iface" />
+        <jsp:forward page="pieOutputChart.iface" />
     </body>
 </html>

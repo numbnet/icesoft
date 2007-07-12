@@ -33,7 +33,7 @@
     <li><a href="#axisoutputChartcomponent">Axis OutputChart Component</a></li>
     <li><a href="#pieoutputChartcomponent">Pie OutputChart Component</a>
     </li>
-    <li><a href="#dynamicoutputChartcomponent">Dynamic OutputChart Component</a></li>
+    <li><a href="#combiningoutputChartcomponent">Combining with the OutputChart Component</a></li>
     <li><a href="#examplesthatuseoutputChart">Examples that use OutputChart Component</a></li>
 </ul>
 
@@ -149,36 +149,77 @@
     </ul>
 </div>
 
-<a name="progressoutputChartcomponent"><h2>OutputChart Component with OutputProgress Component</h2></a>
+<a name="pieoutputChartcomponent"><h2>Pie OutputChart Component</h2></a>
 
-    <p>In order to see the progress of a file as it uploads, we must place an ice:outputProgress
-       component on the page and add a progressListener to the ice:outputChart component.  The
-       progressListener on the outputChart component sets the value of an integer in the backing
-       bean that in turn, is bound to the value attribute of the ice:outputProgress component.
-       This integer lets the ice:outputProgress component know the percentage progress of the
-       file as it is being uploaded.
+    <p>There are 2 types of pie charts: 2D and 3D.
     </p>
-    <p>Here are some things to consider when implementing the progressListener, you can see the
-       implementation in the source code:<br />
-       The method must take a single argument of type java.util.EventObject.<br />
-       Beans which implement the progressListener must be in session scope.<br />
-       The PersistentFacesState must be set in the constructor of the implementing session bean.<br />
-       The developer must invoke a render() call on this PersistentFacesState instance.
+
+
+      <div class="screenshot">
+          <img src="images/pie2D.png"
+                title="Pie2D Chart"
+                alt="Pie2D Chart"
+                width="200" />
+      </div>
+      <div class="screenshot">
+          <img src="images/pie3D.png"
+                title="Pie3D Chart"
+                alt="Pie3D Chart"
+                width="200" />
+      </div>
+
+    <p>
+		<pre>
+            <ice:outputChart id="pie2DOutputChart"
+                             type="#{pieChart.type}"
+                             width="350"
+                             height="350"
+                             chartTitle="#{pieChart.type} Chart"
+                             labels="#{pieChart.labels}"
+                             data="#{pieChart.data}"
+                             colors="#{pieChart.paints}"
+                             actionListener="#{pieChart.action}"
+                             renderOnSubmit="#{pieChart.newChart}" />
+		</pre>
+       Pie Charts require a different data model (one dimensional versus the two
+       dimensional model with axis charts) so we have a different bean for the pie
+       charts.
+    </p>
+    <p>
+       The 2D demo shows a 2D Pie Chart with an actionListener that will show a further
+       breakdown of the pie data.
+    </p>
+    <p>
+       The 3D demo shows how you can dynamically manipulate the chart through the UI.
+       The data, label and the paint properties can each be bound to Lists in a
+       backing bean. This feature allows developers to easily manipulate the chart
+       properties in the backing bean.
     </p>
 
 <div class="demo-instruction">
     <h3>See the demo:</h3>
     <ul>
-        <li>See the outputChart-progress demo for your self by clicking
-            <a href="/outputChart-progress-tutorial/"
+        <li>See the outputChart-pie2D demo for your self by clicking
+            <a href="/outputChart-pie2D-tutorial/"
                target="_blank">here</a>,
-            or download the outputChart-progress source code <a
-                href="outputChart-progress-tutorial.zip">here</a>.
+            or download the outputChart-pie2D source code <a
+                href="outputChart-pie2D-tutorial.zip">here</a>.
+        </li>
+    </ul>
+</div>
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the outputChart-pie3D demo for your self by clicking
+            <a href="/outputChart-pie3D-tutorial/"
+               target="_blank">here</a>,
+            or download the outputChart-pie3D source code <a
+                href="outputChart-pie3D-tutorial.zip">here</a>.
         </li>
     </ul>
 </div>
 
-<a name="advancedoutputchartcomponent"><h2>Advanced OutputChart Component</h2></a>
+<a name="combiningoutputchartcomponent"><h2>Combining with the OutputChart Component</h2></a>
 
     <h4>Maximum File Size</h4>
 
@@ -226,11 +267,11 @@
 <div class="demo-instruction">
     <h3>See the demo:</h3>
     <ul>
-        <li>See the outputChart-advanced demo for your self by clicking
-            <a href="/outputChart-advanced-tutorial/"
+        <li>See the outputChart-combining demo for your self by clicking
+            <a href="/outputChart-combining-tutorial/"
                target="_blank">here</a>,
-            or download the outputChart-advanced source code <a
-                href="outputChart-advanced-tutorial.zip">here</a>.
+            or download the outputChart-combining source code <a
+                href="outputChart-combining-tutorial.zip">here</a>.
         </li>
     </ul>
 </div>
@@ -259,20 +300,27 @@
             <td class="bodyNotes">Simple example of how to use outputChart component.</td>
         </tr>
         <tr>
-            <td class="bodyExample">outputChart-progress</td>
+            <td class="bodyExample">outputChart-pie2D</td>
             <td class="bodySource"><a
-                    href="outputChart-progress-tutorial.zip">outputChart-progress
+                    href="outputChart-pie2D-tutorial.zip">outputChart-pie2D
                 source code</a></td>
-            <td class="bodyNotes"> An outputProgress component is added to the page and
-            connected to the progress of the uploading file<./td>
+            <td class="bodyNotes"> Example of advanced use of ActionListener with the
+            pie2D chart type<./td>
         </tr>
         <tr>
-            <td class="bodyExample">outputChart-advanced</td>
+            <td class="bodyExample">outputChart-pie3D</td>
             <td class="bodySource"><a
-                    href="outputChart-advanced-tutorial.zip">outputChart-advanced
+                    href="outputChart-pie3D-tutorial.zip">outputChart-pie3D
                 source code</a></td>
-            <td class="bodyNotes">The maximum file size is altered.  The ActionListener and
-            UniqueFile attributes are explained.</td>
+            <td class="bodyNotes"> Example showing the manipulation of the chart
+            properties in the backing bean of a pie3D chart type<./td>
+        </tr>
+        <tr>
+            <td class="bodyExample">outputChart-combining</td>
+            <td class="bodySource"><a
+                    href="outputChart-combining-tutorial.zip">outputChart-combining
+                source code</a></td>
+            <td class="bodyNotes">Example showing the combination of chart types.</td>
         </tr>
     </tbody>
 </table>

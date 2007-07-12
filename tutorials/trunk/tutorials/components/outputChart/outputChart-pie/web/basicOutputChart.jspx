@@ -15,57 +15,46 @@
     </head>
 
     <body>
-    <h2>OutputChart Axis Demo</h2>
+    <h2>OutputChart Pie Demo</h2>
     
     <ice:form>
-
-
-            <ice:panelGrid columns="2" style="width: 400px;">
-
-                <ice:panelGroup>
-                    <h4>
-                        <ice:outputText id="chartTitle"
-                                    value="Chart Type:"/>
-                    </h4>
-                    <ice:selectOneMenu value="#{axisChartBean.type}" partialSubmit="true"
-                                       valueChangeListener="#{axisChartBean.chartChanged}">
-                        <f:selectItems value="#{axisChartBean.chartList}"/>
-                    </ice:selectOneMenu>
-                </ice:panelGroup>
-                <!--
-                    panelGroup displayed when chart type is bar or barclustered to
-                    toggle horizontal or vertical chart orientation.
-                -->
-                <ice:panelGroup rendered="#{axisChartBean.orientationChange}">
-                    <h4>
-                        <ice:outputText value="Chart Orientation:"/>
-                    </h4>
-                    <ice:selectOneRadio value="false"
-                                        valueChangeListener="#{axisChartBean.selectOrientation}"
-                                        partialSubmit="true">
-                        <f:selectItem itemValue="true"
-                                      itemLabel="Horizontal"/>
-                        <f:selectItem itemValue="false"
-                                      itemLabel="Vertical"/>
-                    </ice:selectOneRadio>
-
-                </ice:panelGroup>
-            </ice:panelGrid>
-            <br/>
-            <ice:outputText value="#{axisChartBean.clickedValue}"/>
-            <br/>                
-            <ice:outputChart id="axisOutputChart"
-                             type="#{axisChartBean.type}"
-                             chartTitle="#{axisChartBean.type} Chart"
-                             yaxisTitle="#{axisChartBean.titleY}"
-                             xaxisTitle="#{axisChartBean.titleX}"
-                             xaxisLabels="#{axisChartBean.labels}"
-                             labels="#{axisChartBean.legendLabels}"
-                             colors="#{axisChartBean.paints}"
-                             data="#{axisChartBean.data}"
-                             actionListener="#{axisChartBean.imageClicked}"
-                             renderOnSubmit="#{axisChartBean.newChart}"
-                             horizontal="#{axisChartBean.horizontal}" />
+        <ice:panelGrid columns="2">        
+            <ice:outputChart id="pieOutputChart"
+                             type="pie2D"
+                             chartTitle="Pie2D Chart"
+                             width="350"
+                             height="350"
+                             labels="#{pieChartBean.labels}"
+                             colors="#{pieChartBean.paints}"
+                             data="#{pieChartBean.data}"
+                             actionListener="#{pieChartBean.imageClicked}"
+                             renderOnSubmit="#{pieChartBean.newChart}" />
+                             
+            <ice:panelGroup>
+                <ice:outputText value="Year Specific Data:"/>
+                <ice:dataTable var="sale" value="#{pieChartBean.sales}">
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Product Name"/>
+                        </f:facet>
+                        <ice:outputText value="#{sale.product}"/>
+                    </ice:column>
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Price"/>
+                        </f:facet>
+                        <ice:outputText value="#{sale.price}"/>
+                    </ice:column>
+                    <ice:column>
+                        <f:facet name="header">
+                            <ice:outputText value="Year"/>
+                        </f:facet>
+                        <ice:outputText value="#{sale.year}"/>
+                    </ice:column>
+                </ice:dataTable>
+            </ice:panelGroup>
+            
+        </ice:panelGrid>
         
     </ice:form>
 
