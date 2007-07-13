@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.el.PartialSubmitValueBinding;
 
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
@@ -40,7 +41,7 @@ public class ReceiveSendUpdates implements Server {
         if (request.getParameterAsBoolean("partial", false)) {
             String componentID = request.getParameter("ice.event.captured");
             UIComponent component = D2DViewHandler.findComponent(componentID, context.getViewRoot());
-            renderCyclePartial(context, component);
+            renderCyclePartial(context, component, componentID);
         } else {
             renderCycle(context);
         }
@@ -60,10 +61,10 @@ public class ReceiveSendUpdates implements Server {
     }
 
     private void renderCyclePartial(FacesContext context,
-                                    UIComponent component) {
+                                    UIComponent component, String clientId) {
         synchronized (context) {
             Map alteredRequiredComponents =
-                    setRequiredFalseInFormContaining(component);
+                    setRequiredFalseInFormContaining(component, clientId);
             com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
             lifecycle.execute(context);
             lifecycle.render(context);
@@ -86,40 +87,59 @@ public class ReceiveSendUpdates implements Server {
         }
     }
 
-    private Map setRequiredFalseInFormContaining(UIComponent component) {
+    private Map setRequiredFalseInFormContaining(
+            UIComponent component, String clientId)  {
         Map alteredComponents = new HashMap();
         UIComponent form = getContainingForm(component);
-        setRequiredFalseOnAllChildrenExceptOne(form, component,
+        setRequiredFalseOnAllChildrenExceptOne(form, component, clientId,
                 alteredComponents);
         return alteredComponents;
     }
 
-    private void setRequiredFalseOnAllChildrenExceptOne(UIComponent parent,
-                                                        UIComponent componentToAvoid,
-                                                        Map alteredComponents) {
+
+    private void setRequiredFalseOnAllChildrenExceptOne(
+            UIComponent parent, 
+            UIComponent componentToAvoid, String clientIdToAvoid,
+            Map alteredComponents )  {
+
+        //turn off required simply with false for all but iterative case
         ValueBinding FALSE_BINDING = FacesContext.getCurrentInstance()
                 .getApplication().createValueBinding("#{false}");
+
         int length = parent.getChildCount();
         UIComponent next = null;
         for (int i = 0; i < length; i++) {
             next = (UIComponent) parent.getChildren().get(i);
-            if (next instanceof UIInput && next != componentToAvoid) {
+            if (next instanceof UIInput) {
                 UIInput input = (UIInput) next;
-                if (input.isRequired()) {
-                    ValueBinding valueBinding = 
-                            input.getValueBinding(REQUIRED);
-                    if (null != valueBinding) {
-                        input.setValueBinding(REQUIRED, FALSE_BINDING);
+                ValueBinding valueBinding =
+                    input.getValueBinding(REQUIRED);
+                if (null != valueBinding)  {
+                    ValueBinding replacementBinding = null;
+                    if (input == componentToAvoid) {
+                        //The component that caused the partialSubmit may
+                        //be used iteratively (in a dataTable).  We use
+                        //PartialSubmitValueBinding to detect which single
+                        //client instance of the component to avoid
+	                replacementBinding = new PartialSubmitValueBinding(
+                                valueBinding, input, clientIdToAvoid );
                     } else {
-                        input.setRequired(false);
+                        replacementBinding = FALSE_BINDING;
                     }
+                    input.setValueBinding(REQUIRED, replacementBinding);
                     alteredComponents.put(input, valueBinding);
+                } else {
+                    if (input.isRequired() && input != componentToAvoid) {
+                        input.setRequired(false);
+                        alteredComponents.put(input, null);
+                   }
                 }
             }
-            setRequiredFalseOnAllChildrenExceptOne(next, componentToAvoid,
-                    alteredComponents);
+            setRequiredFalseOnAllChildrenExceptOne( next, 
+                    componentToAvoid, clientIdToAvoid, alteredComponents );
         }
     }
+
 
     private UIComponent getContainingForm(UIComponent component) {
         if (null == component) {
