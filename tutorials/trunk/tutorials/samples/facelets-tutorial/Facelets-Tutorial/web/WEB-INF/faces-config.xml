@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+  <application>
+    <view-handler>
+            com.icesoft.faces.facelets.D2DFaceletViewHandler
+        </view-handler>
+  </application>
+  <managed-bean>
+      <managed-bean-name>tree</managed-bean-name>
+      <managed-bean-class>
+          com.icesoft.icefaces.tutorials.facelets.navigation.TreeBean
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean>
+      <managed-bean-name>inputFieldManager</managed-bean-name>
+      <managed-bean-class>
+          com.icesoft.icefaces.tutorials.facelets.example.InputFieldManager
+      </managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <navigation-rule>
+      <from-view-id>/example.jspx</from-view-id>
+      <navigation-case>
+          <from-outcome>success</from-outcome>
+          <to-view-id>/success.iface</to-view-id>
+      </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+      <from-view-id>/success.jspx</from-view-id>
+      <navigation-case>
+          <from-outcome>back</from-outcome>
+          <to-view-id>/example.iface</to-view-id>
+      </navigation-case>
+  </navigation-rule>
+
+</faces-config>

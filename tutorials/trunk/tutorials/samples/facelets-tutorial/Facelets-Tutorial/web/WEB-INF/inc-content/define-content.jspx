@@ -1,0 +1,47 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The Define tag is a templating tag that defines named content to be 
+        inserted into a template. The name attribute value must match that of a 
+        ui:insert tag in the target template for the named content to be included.
+    </p>
+    <p><b><i>Example:</i></b></p>
+    <pre>
+        &lt; h:outputText value="&gt;
+            &lt; s:convertDateTime dateStyle="full" type="both" /&gt; 
+        &lt; /h:outputText&gt;
+    </pre>
+    
+    <p><b>template.jsf</b></p>
+    <pre>
+        &lt; h2&gt;&lt; ui:insert name="title" /&gt;&lt; /h2&gt;
+    </pre>
+    
+    <p><b>composition.jsf</b></p>
+    <pre>
+        &lt; ui:composition template="template.jsf"&gt;
+            &lt; ui:define name="title">Hello World!&lt; /ui:define&gt;
+        &lt; /ui:composition&gt;
+    </pre>
+    
+    <p><b><i>HTML Output</i></b></p>
+    <p><b>composition.jsf</b></p>
+    <pre>
+        &lt; h2&gt;Hello World!&lt; /h2&gt;
+    </pre>
+    
+    <h3>Tag Attributes</h3>
+    
+    <p><b>name</b></p>
+    <p>
+        The name attribute specifies the literal name of the definition and must
+        match the name of a ui:insert tag in a target template for the content 
+        to be included in that template.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-define.html" target="_blank">
+            Facelets Tag Reference - UI Define
+        </a>
+    </p>    
+</div>

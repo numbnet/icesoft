@@ -1,0 +1,44 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Fragment tag inserts a new UIComponent instance into the JSF 
+        component tree. Any components or content fragments outside this tag 
+        will be included by the Facelets view handler. Any components or content
+        fragments within this tag will be added to the component tree as 
+        children of this component instance.  See also &#160;<b>ui:component</b>.
+    </p>
+    <p><b><i>Example:</i></b></p>
+    <pre>
+        This text will be included.
+        &lt; ui:fragment binding=""&gt;
+        &lt; /ui:fragment&gt;
+        &lt; div id="message"&gt;Hello World!&lt; /div&gt;
+        This text will be included.
+    </pre>
+    
+    <p><b><i>HTML Output:</i></b></p>
+    <pre>
+        This text will be included.
+            &lt; div id="message"&gt;Hello World!&lt; /div&gt;
+        This text will be included.
+    </pre>
+    
+    <h3>Tag Attributes</h3>
+    <p><b>binding</b></p>
+    <p>
+        The binding attribute accepts a value-binding expression linking this 
+        UIComponent to a property in a backing bean.
+    </p>
+    <p><b>id</b></p>
+    <p>
+        The unique identifier value for this component. The value must be unique
+        within the closest naming container. If you do not provide a component 
+        ID, Facelets will assign one automatically.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-fragment.html" target="_blank">
+            Facelets Tag Reference - UI Fragment
+        </a>
+    </p>    
+</div>

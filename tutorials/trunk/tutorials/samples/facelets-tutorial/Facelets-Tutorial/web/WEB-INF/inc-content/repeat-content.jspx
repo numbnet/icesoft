@@ -1,0 +1,26 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Repeat tag is used to iterate over a collection of objects 
+        exposed to the JSF page as a value-binding EL expression. It is 
+        intended as a replacement for the c:forEach tag from the JSTL Core tag 
+        library. You can also use this tag with the "jsfc" feature in Facelets.
+    </p>
+    <h3>Tag Attributes</h3>
+    <p><b>value</b></p>
+    <p>
+        The value attribute specifies the value-binding EL expression that 
+        resolves to a List of objects to be iterated over.
+    </p>
+    <p><b>var</b></p>
+    <p>
+        The var attribute specifies the literal name of the variable used to 
+        iterate over the collection.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-repeat.html" target="_blank">
+            Facelets Tag Reference - UI Repeat
+        </a>
+    </p>    
+</div>

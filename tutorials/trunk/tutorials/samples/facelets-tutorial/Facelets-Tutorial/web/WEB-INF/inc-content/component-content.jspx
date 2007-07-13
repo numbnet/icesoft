@@ -1,0 +1,44 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Component tag inserts a new UIComponent instance into 
+        the JSF component tree. Any components or content fragments 
+        outside this tag will be ignored by the Facelets view handler.
+    </p>
+    <p>
+        Any components or content fragments within this tag will be 
+        added to the component tree as children of the UIComponent 
+        instance. 
+    </p>
+    <b><i>Example:</i></b>
+    <pre>
+        This text will be ignored.
+        &lt; ui:component binding=""&gt;
+            &lt; div&gt;Hello World!&lt; /div&gt;
+        &lt; /ui:component&gt;
+        This text will be ignored.
+    </pre>
+    
+    <b><i>HTML Output:</i></b>
+    <pre>
+        &lt; div&gt;Hello World!&lt; /div&gt;
+    </pre>
+    
+    <h3>Tag Attributes</h3>
+    <b>id</b>
+    <p>
+        The id attribute uniquely identifies this UIComponent instance. If you 
+        do not provide a component ID, Facelets will assign one automatically.
+    </p>
+    <b>binding</b>
+    <p>
+        The binding attribute accepts a value-binding expression linking this 
+        UIComponent to a property in a backing bean.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-component.html" target="_blank">
+            Facelets Tag Reference - UI Conponent
+        </a>
+    </p>
+</div>

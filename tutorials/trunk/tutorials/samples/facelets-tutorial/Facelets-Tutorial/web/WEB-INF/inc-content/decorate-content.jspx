@@ -1,0 +1,82 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Decorate tag is a templating tag that decorates content included 
+        from another Facelet. Any content outside of the UI Decorate tag will be
+        displayed by the Facelets view handler. Any content within the decorate 
+        tag will be passed to the associated template as parameters or simply 
+        ignored. You can use nested ui:define tags to pass named content to the 
+        associated template. See ui:insert for more information.
+    </p>
+    <hr/>
+    <p>
+        <b>Note:</b>The content of the page containing the decorate tag is be 
+        used to populate an associated template page. If the decorate tag 
+        contains &#160;<b>ui:define</b> tags, the content of these tags will be inserted into
+        the template where matching &#160;<b>ui:insert</b> tags can be found. You can use a 
+        nameless &#160;<b>ui:insert</b> tag to insert all the content of the composition tag 
+        within the template page.
+    </p>
+    <hr/>
+    <br/>
+    <p>
+        <b><i>Example:</i></b>
+    </p>
+    <br/>
+    <b>template.jsf</b>
+    <br/>
+    <pre>
+        This text will be removed.
+        &lt; ui:composition&gt;
+            &lt; h2&gt;&lt; ui:insert name="title" /&gt;&lt; /h2&gt;
+            &lt; ui:insert name="body" /&gt;
+        &lt; /ui:composition&gt;
+        This text will be removed.
+    </pre>
+    <br/>
+    <b>decorate.jsf</b>
+    <pre>
+        Text before will stay.
+        &lt; ui:decorate template="template.jsf"&gt;
+            &lt; ui:define name="title"&gt;Our Products&lt; /ui:define&gt;
+            &lt; ui:define name="body"&gt;
+            &lt; ul&gt;
+                &lt; li&gt;Apples&lt; /li&gt;
+                &lt; li&gt;Oranges&lt; /li&gt;
+                &lt; li&gt;Bananas&lt; /li&gt;
+            &lt; /ul&gt;
+            &lt; /ui:define&gt;
+        &lt; /ui:decorate&gt;
+        Text after will stay.
+    </pre>
+    <br/>
+    <b><i>HTML Output</i></b>
+    <b>decorate.jsf</b>
+    <br/>
+    <pre>
+        Text before will stay.
+        &lt; h2&gt;Our Products&lt; /h2&gt;
+        &lt; ul&gt;
+            &lt; li&gt;Apples&lt; /li&gt;
+            &lt; li&gt;Oranges&lt; /li&gt;
+            &lt; li&gt;Bananas&lt; /li&gt;
+        &lt; /ul&gt;
+        Text after will stay.
+    </pre>
+    <br/>
+    <h3>Tag Attributes</h3>
+    <br/>
+    <b>template</b>
+    <p>
+        The absolute or relative URI of the template to use. The content within 
+        the decorate tag will be used in populating the template specified.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-decorate.html" target="_blank">
+            Facelets Tag Reference - UI Decorate
+        </a>
+    </p>
+        
+        
+</div>

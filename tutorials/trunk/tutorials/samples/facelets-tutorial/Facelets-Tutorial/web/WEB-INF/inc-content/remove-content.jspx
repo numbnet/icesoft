@@ -1,0 +1,41 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Remove tag is used to specify tags or blocks of content that 
+        should be removed from your page by the Facelets view handler at compile
+        time. This tag has no attributes. You can use this tag within the "jsfc"
+        attribute to indicate that a particular tag should be removed from the 
+        rendered page.
+    </p>
+    <p>
+        Note that the Facelets compilation process is much faster than the JSP 
+        compilation process because no Java bytecode is actually generated and 
+        compiled behind the scenes when you first visit your page.
+    </p>
+    <p>
+        This gives you some flexibility to display content and to work with 
+        markup in your design environment that will be omitted once the page is 
+        actually viewed by your users. FaceletsTools will not display any markup
+        that is wrapped with a ui:remove tag in Dreamweaver's design view, but 
+        it will display markup containing the "jsfc" variant of this tag.
+    </p>
+    <p><b><i>Example:</i></b></p>
+    <pre>
+        This text will be displayed.
+        &lt; ui:remove&gt;
+        This text will be removed.
+        &lt; /ui:remove&gt;
+        This text will be displayed.
+    </pre>
+    <p><b><i>HTML Output</i></b></p>
+    <pre>
+        This text will be displayed.
+        This text will be displayed.
+    </pre>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-remove.html" target="_blank">
+            Facelets Tag Reference - UI Remove
+        </a>
+    </p>    
+</div>

@@ -1,0 +1,62 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Composition tag is a templating tag that wraps content to be 
+        included in another Facelet. Any content outside of the UI Composition 
+        tag will be ignored by the Facelets view handler.
+    </p>
+    <p>
+        Any content inside of the UI Composition tag will be included when 
+        another Facelets page includes the page containing this UI Composition 
+        tag.
+    </p>
+    <hr/>
+    <p><b>Note:</b>If the template attribute is specified, the JSF page 
+        containing the UI Composition tag will display the content of the 
+        associated template.
+    </p>
+    <p>
+        If the UI Composition tag contains &#160;<b>ui:define</b> tags, the content of these 
+        tags will be inserted into the template where matching &#160;<b>ui:insert</b> tags 
+        can be found.
+    </p>
+    <p>
+        The template page can use a nameless &#160;<b>ui:insert</b> tag to insert all the 
+        content within the UI Composition tag.
+    </p>
+    <hr/>
+    
+    <b><i>Example:</i></b><br/><br/>
+    <b>template.jsf</b>
+    <pre>
+        &lt; h2&gt;&lt; ui:insert name="title"/&gt;&lt; /h2&gt;
+    </pre>
+    
+    <b>composition.jsf</b>
+    <pre>
+        This text will be ignored.
+        &lt; ui:composition template="template.jsf"&gt;
+            &lt; ui:define name="title"&gt;Hello World!&lt; /ui:define&gt;
+        &lt; /ui:composition&gt;
+        This text will be ignored.
+    </pre>
+    
+    <b><i>HTML Output:</i></b>
+    
+    <b>composition.jsf</b>
+    <pre>
+        &lt; h2&gt;Hello World!&lt; /h2&gt;
+    </pre>
+    
+    <h3>Tag Attributes</h3><br/>
+    <b>template</b>
+    <p>
+        The path to the template to be populated by the content within the UI Composition tag.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-composition.html" target="_blank">
+            Facelets Tag Reference - UI Composition
+        </a>
+    </p>
+</div>

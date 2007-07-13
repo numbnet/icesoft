@@ -1,0 +1,39 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Param tag is used to pass objects as named variables between 
+        Facelets. The name attribute of the UI Param tag should match the name 
+        attribute of a ui:define tag contained in a ui:composition 
+        or ui:decorate in the template page receiving the object. 
+        The UI Param tag can also be used to pass objects to another page by 
+        using the ui:include tag.
+    </p>
+    <p><b><i>Example:</i></b></p>
+    <p><b>param.jsf</b></p>
+    <pre>
+        &lt; ui:include src="hello.jsf"&gt;
+            &lt; ui:param name="greeting" value=""/&gt;
+        &lt; /ui:include&gt;
+    </pre>
+    <p><b><i>HTML Output</i></b></p>
+    <p><b>param.jsf</b></p>
+    <pre>
+        &lt; h2&gt;Hello World &lt; h2&gt;
+    </pre>
+    
+    <h3>Tag Attributes</h3>
+    <p><b>name</b></p>
+    <p>
+        The name of the variable to pass to the included Facelet.
+    </p>
+    <p><b>value</b></p>
+    <p>
+        The literal or EL expression value to assign to the named variable.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-param.html" target="_blank">
+            Facelets Tag Reference - UI Param
+        </a>
+    </p>    
+</div>

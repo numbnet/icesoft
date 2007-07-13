@@ -1,0 +1,8 @@
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ice="http://www.icesoft.com/icefaces/component">
+         <ice:form>
+             <ice:outputText value="Sucessfully Registered!"/>
+             <ice:commandButton value="Back" type="submit"
+                                action="#{inputFieldManager.back}"/>
+         </ice:form>
+</div>

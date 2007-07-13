@@ -1,0 +1,551 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+
+<html>
+  <head>
+    <title>ICEfaces Facelets Tutorial</title>
+    <LINK href="css/styles.css" rel="stylesheet" TYPE="text/css"/>
+  </head>
+  <body>
+      <!-- header section -->
+      <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      <hr/>
+      <p>
+          <b>Lesson:</b>Using facelets
+      </p>
+      
+      <!-- tutorial content section -->
+      <h1>ICEfaces Facelets Tutorial</h1>
+      
+      <p>
+          Facelets is a view technology that focuses on building JSF component 
+          trees.  Facelets steps outside of the JSP specification and provides 
+          a highly performant, JSF-centric view technology.  Facelets includes 
+          many features such as:
+      </p>
+      <ul>
+          <li>Works with JSF 1.1 and JSF 1.2, including Sun's RI and Apache MyFaces.</li>
+          <li>Zero Tag development time for UIComponents.</li>
+          <li>Fast Templating/Decorators for Components and Pages.</li>
+          <li>The ability to specify UIComponent trees and separate files.</li>
+          <li>Line/Tag/Attribute precise Error Reporting.</li>
+          <li>Specify Tags in Separate Files, even packages Jars.</li>
+          <li>Full EL support, including Functions.</li>
+          <li>Build-time EL Validation.</li>
+          <li>XML configuration files aren't necessary.</li>
+          <li>Works with any RenderKit.</li>
+          <li>Facelet APIs aren't dependent on a Web Container.</li>
+      </ul>
+      
+      <p>
+          This tutorial will discuss the following topics:
+      </p>
+      <ul>
+          <li><a href="#configure">Configuring/Installing Facelets</a></li>
+          <li><a href="#templating">How to Use Facelets Templating</a></li>
+          <ul>
+              <li><a href="#compdeco">How Compositions and Decorations Work</a></li>
+              <li><a href="#insertdefine">How to Use Insert and Define Tags</a></li>
+              <li><a href="#dynamic">How to Use Dynamic Includes (ui:include)</a></li>
+          </ul>
+          <li><a href="#definecustom">Defining a Custom Component</a></li>
+          <ul>
+              <li><a href="#stepcustom">Steps to Create a Custom Component</a></li>
+              <ul>
+                  <li><a href="#stepone">Step 1: Create a Facelets tag library</a></li>
+                  <li><a href="#steptwo">Step 2: Declare the tag library in web.xml</a></li>
+                  <li><a href="#stepthree">Step 3: Import the tagfile using namespace</a></li>
+              </ul>
+          </ul>
+          <li><a href="#examples">Examples that Use Facelets</a></li>
+      </ul>
+      
+      <a name="configure">&nbsp;</a>
+      
+      <h2>Configuring/Installing Facelets</h2>
+      
+      <p>
+          The steps to get facelets configured/installed are as follows:
+      </p>
+      <ol>
+          <li>Download the latest ICEfaces distribution.</li>
+          <li>Make sure the icefaces-facelets jar is included in your project lib folder.</li>
+          <li>Add the Facelet init parameter to the web.xml file.</li>
+          <li>Add the FaceletsViewHandler to the faces-config.xml file</li>
+      </ol>
+      <p>
+          The latest ICEfaces distribution can be found at 
+          <a href="http://www.icefaces.org">http://www.icefaces.org</a>
+      </p>
+      <p>
+          The following code should be included in the web.xml file:
+      </p>
+      <pre>
+          ...
+          &lt;context-param&gt;
+            &lt;param-name>javax.faces.DEFAULT_SUFFIX&lt;/param-name&gt;
+ 	    &lt;param-value>.jspx&lt;/param-value&gt;
+          &lt;/context-param&gt;
+          ...
+      </pre>
+      <p>
+          The above code is used to notify JSF to assume a prefix of jspx, 
+          which the facelet's renderer can interpret.  Note that the .jspx 
+          value can be .xhtml or which ever file extension you require.
+      </p>
+      <p>
+          The following code should be included in the faces-config.xml file:
+      </p>
+      <pre>
+          ...
+          &lt;application&gt;
+            &lt;view-handler&gt;
+                com.icesoft.faces.facelets.D2DFaceletViewHandler
+            &lt;/view-handler&gt;
+          &lt;/application&gt;
+          ...
+      </pre>
+      <p>
+          This includes the Facelets view handler.  This handles the Render 
+          Response and Restore View phases of the JSF request-processing life cycle.
+      </p>
+      
+      <a name="templating">&nbsp;</a>
+      
+      <h2>How to Use Facelets Templating</h2>
+      
+      <p>
+          Facelets emphasizes its ability to template content in your 
+          application.  Templating promotes re-use and eases long term 
+          maintenance of your application, allowing content to be changed 
+          in one spot, but used in multiple pages.
+      </p>
+      <p>
+          When describing templating within Facelets, we have two roles: the 
+          template and the template client.  Any document can act as a template;
+          but what makes a document a template?  It just simply uses one or more
+          &lt;ui:insert/&gt; tags to inject some content from another source.  
+          The other half of the equation is the template client.  This includes 
+          documents that use the &lt;ui:component/&gt;, &lt;ui:composition/&gt;
+          , &lt;ui:fragment/&gt;, or &lt;ui:define/&gt;.  These tags and their 
+          uses will be described in greater detail below.
+      </p>
+      <p>
+          For our example, we have developed a site that uses Facelets templating
+          techniques.  The site is divided into four parts, header, footer, 
+          navigation, and content sections.  Each page on the site is run off
+          of the main-template.jspx template shown below:
+      </p>
+      <pre>
+          ...
+          &lt;div class="page"&gt;
+            &lt;div class="header"&gt;
+                &lt;ui:include src="/WEB-INF/inc-content/header.jspx"/&gt;
+            &lt;/div&gt;
+            &lt;div class="navigation"&gt;
+                &lt;ui:include src="/WEB-INF/inc-content/navigation.jspx"/&gt;
+            &lt;/div&gt;
+            &lt;div class="content"&gt;
+                &lt;ui:insert name="content"&gt;
+                     Default Content
+                &lt;/ui:insert&gt;
+            &lt;/div&gt;
+            &lt;div class="footer"&gt;
+                &lt;ui:include src="/WEB-INF/inc-content/footer.jspx"/&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        ...
+      </pre>
+      <p>
+          The header, footer, and navigation is included directly into the 
+          template.  The content section is constantly changing therefore it isn't 
+          included directly in the template.  
+      </p>
+      <p>
+          The content pages use another template to outline its content.  The 
+          content-template.jspx source code is shown below:
+      </p>
+      <pre>
+          &lt;div vxmlns="http://www.w3.org/1999/xhtml"
+               xmlns:ui="http://java.sun.com/jsf/facelets"&gt;
+
+            &lt;div class="main-header"&gt;
+                &lt;h3&gt;&lt;ui:insert name="pageName"/&gt;&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class="page-container-header"&gt;
+                &lt;ui:insert name="pageContent"/&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+      </pre>
+      <p>
+          The content template defines a header and the page content.  This will
+          mean that each page that uses the template will have a header and the
+          content sections.
+      </p>
+      <p>
+          The following is an examle of a content page:
+      </p>
+      <pre>
+          &lt;ui:composition template="WEB-INF/inc-templates/main-template.jspx"
+                             xmlns="http://www.w3.org/1999/xhtml"
+                             xmlns:ui="http://java.sun.com/jsf/facelets"
+                             xmlns:f="http://java.sun.com/jsf/core"&gt;
+
+            &lt;!-- params for page titles--&gt;
+            &lt;ui:param name="pageTitle" value="UI Component Tag" /&gt;
+            &lt;ui:param name="contentHeader" value="UI Component Tag Reference"/&gt;
+
+            &lt;ui:define name="content"&gt;
+
+                &lt;ui:decorate template="/WEB-INF/inc-templates/content-template.jspx"&gt;
+
+                    &lt;!-- header content here  --&gt;
+                    &lt;ui:define name="pageName"&gt;
+                        #{contentHeader}
+                    &lt;/ui:define&gt;
+
+                    &lt;!-- insert content here --&gt;
+                    &lt;ui:define name="pageContent"&gt;
+                        &lt;ui:include src="/WEB-INF/inc-content/component-content.jspx"/&gt;
+                    &lt;/ui:define&gt;
+                &lt;/ui:decorate&gt;
+
+            &lt;/ui:define&gt;
+          &lt;/ui:composition&gt;
+      </pre>
+      <p>
+          This page uses a ui:composition tag which is linked to the 
+          main-template tenplate.  This will include the header, footer, and 
+          navigation pages and allow the content to be defined separetly.  The 
+          content pages also use a ui:decorate tag to link the content template 
+          to the page.  The page content is defined on another jspx page which 
+          is included with an ui:include tag.
+      </p>
+      
+      <div class="demo-instruction">
+          <h3>See the demo:</h3>
+          <ul>
+              <li>See the Facelets Tutorial demo for your self by click
+                  <a href="/facelets-tutorial/"
+                     target="_blank">here</a>,
+                  or download the source code <a
+                     href="facelets-tutorial.zip">here</a>.</li>
+              <li>The example shows a general overview of how Facelets templating works</li>
+          </ul>
+     </div>
+
+      
+      <a name="compdeco">&nbsp;</a>
+      
+      <h3>How Compositions and Decorations Work</h3>
+      
+      <p>
+          The composition and decorate tags are very similar in the fact that 
+          they both wrap content to be included in another Facelet.  The 
+          composition tag will not display any content outside of the 
+          &lt;ui:composition/&gt; tag.  Any content inside the tag will be 
+          included when another Facelets page includes the page containing the 
+          composition tag.  The following is an example of how the composition 
+          tag works:
+      </p>
+      <pre>
+          template.jsf
+          &lt;h2&gt;&lt;ui:insert name="title".&gt;&lt;/h2&gt;
+          
+          composition.jsf
+          This text will be ignored.
+          &lt;ui:composition template="template.jsf"&gt;
+                &lt;ui:define name="title"&gt;Hello World!&lt;/ui:define&gt;
+          &lt;/ui:composition&gt;
+          This text will be ignored.
+          
+          HTML Output
+          &lt;h2&gt;Hello World!&lt;/h2&gt;
+      </pre>
+      <p>
+          The decorate tag is handled a little differently.  Any content outside
+          of the UI Decorate tag will be displayed by the Facelets view handler.
+          Any content within the decorate tag will be passed to the associated 
+          template as parameters or simply ignored.  Also nested ui:define tags 
+          can be used to pass names content to the associated template.  The 
+          following is an example of how the decorate tag works:
+      </p>
+      <pre>
+          template.jsf
+          This text will be removed.
+          &lt;ui:composition&gt;
+              &lt;h2&gt;&lt;ui:insert name="title"/&gt;&lt;/h2&gt;
+              &lt;ui:insert name="body"/&gt;
+          &lt;/ui:composition&gt;   
+          This text will be removed.
+          
+          decorate.jsf
+          Text before will stay.
+          &lt;ui:decorate template="template.jsf"&gt;
+              &lt;ui:define name="title"&gt;Our Products&lt;/ui:define&gt;
+              &lt;ui:define name="body"&gt;
+                 &lt;ul&gt;
+                    &lt;li&gt;Apples&lt;/li&gt;
+                    &lt;li&gt;Oranges&lt;/li&gt;
+                    &lt;li&gt;Bananas&lt;/li&gt;
+                 &lt;/ul&gt;
+              &lt;/ui:define&gt;
+          &lt;/ui:decorate&gt;
+          Text after will stay.
+          
+          HTML Output
+          Text before will stay.
+          &lt;h2&gt;Our Products&lt;/h2&gt;
+              &lt;ul&gt;
+                 &lt;li&gt;Apples&lt;/li&gt;
+                 &lt;li&gt;Oranges&lt;/li&gt;
+                 &lt;li&gt;Bananas&lt;/li&gt;
+              &lt;/ul&gt;
+          Text after will stay.
+      </pre>
+      
+      <a name="insertdefine">&nbsp;</a>
+      
+      <h3>How to Use Insert and Define Tags</h3>
+      <p>
+          The insert tag is a templating tag that declares a named content 
+          element to be defined by another Facelet.  It can be used effectively 
+          with the ui:define tag to pass values between facelets.  The define 
+          tag is a templating tag that defines named content to be inserted into
+          a template.  The name attribute value must match that of a ui:insert 
+          tag in the target template for the named content to be included.  The 
+          following is an example on how the two tags work in conjunction with 
+          each other:
+      </p>
+      <pre>
+          content-template.jspx
+          ...
+          &lt;div class="main-header"&gt;
+             &lt;h3&gt;&lt;ui:insert name="pageName"/&gt;&lt;/h3&gt;
+          &lt;/div&gt;
+          ...
+           
+          component.jspx
+          ...
+          &lt;!-- header content here  --&gt;
+          &lt;ui:define name="pageName"&gt;
+              #{contentHeader}
+          &lt;/ui:define&gt;
+          ... 
+      </pre>
+      
+      <a name="dynamic">&nbsp;</a>
+      
+      <h3>How to Use Dynamic Includes (ui:include)</h3>
+      
+      <p>
+          The include tag is a server-side include tag for Facelets.  It simply 
+          includes the document pointed to by the “src” attribute as part of the 
+          current JSF page.  The included document should use a component or 
+          composition tag to trim unnecessary markup, or it may simply contain a
+          fragment of XHTML or XML to be included. 
+      </p>
+      <p>
+          For dynamic includes the “src” attribute is linked to a backing bean 
+          value.  When the navigation is changed (user clicks a new link), the 
+          backing bean value us also changed thus changing the include value.  
+          This enables the use of a single include tag to be used in the 
+          template.  The following is an example of how it can be basically used:
+      </p>
+      <pre>
+          ...
+          &lt;div class="header"&gt;
+            &lt;ui:include src="/WEB-INF/inc-content/header.jspx"/&gt;
+          &lt;/div&gt;
+          ...
+      </pre>
+      <p>
+          The following code shows how the include tag can be used for 
+          dynamically including content:
+      </p>
+      <pre>
+          ...
+          &lt;ui:include src="#{navigation.selectedPanel.menuContentInclusionFile}"/&gt;
+          ...
+      </pre>
+      <p>
+          For more information on dynamic includes using Facelets see the 
+          Dynamic-Includes Tutorial located <a href="http://www.icefaces.org/main/resources/tutorials.iface">here</a>.
+      </p>
+      
+      <a name="definecustom">&nbsp;</a>
+      
+      <h2>Defining a Custom Facelets Component </h2>
+      
+      <p>
+          Facelets is not only just used for templates.  You can create your own
+          custom tags to be used in your application.  Creating your own custom 
+          tags can be beneficial due to it will promote code re-use and 
+          portability.  For our example we have a register form, it consists of 
+          a few labels and a few input text boxes.  Normally this would take 
+          quite a few lines of code to create:
+      </p>
+      <pre>
+          ...
+          &lt;ice:panelGrid columns="2"&gt;
+              &lt;ice:outputLabel value="Name:"/&gt;
+              &lt;ice:inputText value="#{input.name}"/&gt;
+              &lt;ice:outputLabel value="Address:"/&gt;
+              &lt;ice:inputText value="#{input.address}"/&gt;
+              &lt;ice:outputLabel value="Phone:"/&gt;
+              &lt;ice:inputText value="#{input.phone}"/&gt;
+              &lt;ice:outputLabel value="Email:"/&gt;
+              &lt;ice:inputText value="#{input.email}"/&gt;
+              &lt;ice:outputLabel value="City:"/&gt;
+              &lt;ice:inputText value="#{input.city}"/&gt;
+              &lt;ice:outputLabel value="Province/State:"/&gt;
+              &lt;ice:inputText value="#{input.provState}"/&gt;
+              &lt;ice:outputLabel value="Postal/Zip Code:"/&gt;
+              &lt;ice:inputText value="#{input.postalZip}"/&gt;
+          &lt;/ice:panelGrid&gt;    
+          ...
+      </pre>
+      <p>
+          The following code renders a similar output using the custom 
+          component we have created:
+      </p>
+      <pre>
+          &lt;c:forEach var="inputField" items="#{inputFieldManager.fields}"&gt;
+              &lt;ft:inputField value="#{inputField}"/&gt;
+          &lt;/c:forEach&gt;
+      </pre>
+      <p>
+          Notice the big difference in the amount of code?  The second example 
+          is getting the information from the backing bean.  The nice thing 
+          about doing it this was is say if there was a search or edit page, 
+          the form used would probably be similar.  Instead of re writing the 
+          same code all over again we can use our custom component. 
+      </p>
+      
+      <a name="stepcustom">&nbsp;</a>
+      
+      <h3>Steps to Create a Custom Component</h3>
+      
+      <p>
+          There are three major steps in creating a custom component:
+      </p>
+      <ol>
+          <li>Create a Facelets tag library.</li>
+          <li>Declare the tag library in web.xml.</li>
+          <li>Import the tagfile using namespace.</li>
+      </ol>
+      
+      <a name="stepone">&nbsp;</a>
+      
+      <h4>Step 1: Create a Facelets tag library</h4>
+      
+      <p>
+          A tagfile is a file that follows the facelet_taglib_1_0.dtd.  It is 
+          similar in concept to a TLD file in JSP.  The following is an example 
+          of the tag library:
+      </p>
+      <pre>
+          &lt;facelet-taglib&gt;
+              &lt;namespace&gt;http://www.facelettutorial.com/jsf&lt;/namespace&gt;
+              &lt;tag&gt;
+                &lt;tag-name&gt;inputField&lt;/tag-name&gt;
+                &lt;source&gt;../../inc-templates/inputField-component.jspx&lt;/source&gt;
+              &lt;/tag&gt;
+          &lt;/facelet-taglib&gt;
+      </pre>
+      <p>
+          The faceletsTutorial Tag library only defines one tag but all of the 
+          tags being used in the application should be defined in the same tag 
+          library file.  Note the namespace element that is declared before the 
+          tag element, it will be used in the facelets page.
+      </p>
+      
+      <a name="steptwo">&nbsp;</a>
+      
+      <h4>Step 2: Declare the tag library in web.xml</h4>
+      
+      <p>
+          This will tell Facelets the that tag library exists so it can use it. 
+          The following is how it should be declared:
+      </p>
+      <pre>
+          ...
+          &lt;context-param&gt;
+              &lt;param-name&gt;facelets.LIBRARIES&lt;/param-name&gt;
+              &lt;param-value&gt;
+                  /WEB-INF/facelets/tags/faceletsTutorial.taglib.xml
+              &lt;param-value&gt;
+          &lt;/context-param&gt;
+          ...
+      </pre>
+      <p>
+          Note you can also define multiple tag libraries to be used by passing 
+          facelets.LIBRARIES as a semicolon-delimited list.
+      </p>
+      
+      <a name="stepthree">&nbsp;</a>
+      
+      <h4>Step 3: Import the tagfile using namespace</h4>
+      
+      <p>
+          Once the tagfile has been created and defined in the tag library its 
+          ready to be used.  To use the tagfile, declare it as an XML namespace,
+          shown below:
+      </p>
+      <pre>
+          &lt;div xmlns:ft="http://www.facelettutorial.com/jsf"&gt;
+          ...
+                &lt;ft:inputField value="#{inputField}"/&gt;
+          ...      
+      </pre>
+      
+      <a name="examples">&nbsp;</a>
+      
+      <h2>Example that use Facelets</h2>
+      
+      <table cellpadding="1" cellspacing="1" class="examplesTable" width="100%">
+          <thead>
+              <tr>
+                  <td class="headerTitle">Example</td>
+                  <td class="headerTitle">Source</td>
+                  <td class="headerTitle">Notes</td>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td class="bodyExample">Component-Showcase-Facelets</td>
+                  <td class="bodySource">Available in release bundles</td>
+                  <td class="bodyNotes">
+                      The Component Showcase Facelets version demonstrates how
+                      ICEfaces components are compatable with Facelets.
+                  </td>
+              </tr>
+              <tr>
+                  <td class="bodyExample">Facelets-Tutorial</td>
+                  <td class="bodySource"><a href="facelets-tutorial.zip">
+                      facelets-tutorial source code
+                  </a></td>
+                  <td class="bodyNotes">
+                      Basic site example on how to use Facelets.  Includes 
+                      samples on templating and custom components.
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- footer section -->
+      
+      <hr/>
+      
+      <p class="tutorialFooterText">
+          The ICEfaces Tutorial
+          <br/>
+          <a href="index.html">Table of Contents</a>
+      </p>
+      
+      <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+      
+      
+  </body>
+</html>

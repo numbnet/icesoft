@@ -1,0 +1,40 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Include tag is a server-side include tag for Facelets. It simply 
+        includes the document pointed to by the "src" attribute as part of the 
+        current JSF page. The included document should use a component or 
+        composition tag to trim unnecessary markup, or it may simply contain a 
+        fragment of XHTML or XML to be included.
+    </p>
+    
+    <p><b><i>Example:</i></b></p>
+    <p><b>include.jsf</b></p>
+    <pre>
+        &lt; ui:include src="header.jsf"/&gt;
+        Body text here.
+    </pre>
+    <p><b>header.jsf</b></p>
+    <pre>
+        &lt; h2&gt;Our Company&lt; /h2&gt;
+    </pre>
+    <p><b><i>HTML Output</i></b></p>
+    <p><b>include.jsf</b></p>
+    <pre>
+        &lt; h2&gt;Our Company &lt; h2&gt;
+        Body text here.
+    </pre>
+    <br/>
+    <h3>Tag Attributes</h3>
+    <p><b>src</b></p>
+    <p>
+        The src attribute accepts a literal value or an EL expression that 
+        points to the Facelet to be included in your document.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-include.html" target="_blank">
+            Facelets Tag Reference - UI Include
+        </a>
+    </p>    
+</div>

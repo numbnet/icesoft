@@ -1,0 +1,22 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Insert tag is a templating tag that declares a named content 
+        element to be defined by another Facelet. It can be used effectively 
+        with the ui:define tag to pass values between Facelets.
+    </p>
+    
+    <h3>Tag Attributes</h3>
+    <p><b>name</b></p>
+    <p>
+        The name attribute specifies the name of the matching ui:define tag that
+        will provide the content to be inserted into this Facelet.
+    </p>
+    <br/>
+    <hr/>
+    <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-insert.html" target="_blank">
+            Facelets Tag Reference - UI Insert
+        </a>
+    </p>    
+    
+</div>

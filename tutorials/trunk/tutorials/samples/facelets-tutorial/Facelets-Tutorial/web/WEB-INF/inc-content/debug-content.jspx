@@ -1,0 +1,38 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <p>
+        The UI Debug tag allows you to display helpful information about the JSF
+        component tree and scoped variables in your browser when you test your 
+        JSF pages. The hotkey attribute specifies a key combination (CTRL + 
+        SHIFT + D is the default value) to display the popup window containing 
+        the information. The UI Debug tag can be enabled or disabled by setting 
+        the rendered attribute.
+    </p>
+    <p>
+        <b><i>Example:</i></b>
+    </p>
+    <pre>
+        &lt; h:commandButton value="Continue Shopping" action=""&gt;
+            &lt; ui:debug /&gt;
+        &lt; /h:commandButton&gt;
+    </pre>
+    
+    <h3>Tag Attributes</h3>
+    <b>hotkey</b>
+    <p>
+        The key to press with 'CTRL' + 'SHIFT' to display the debug popup 
+        window. The default value is CTRL + SHIFT + D. This attribute does not 
+        accept EL expressions.
+    </p>
+    <b>rendered</b>
+    <p>
+        A value-binding expression that evaluates to a Boolean condition 
+        indicating if this component should be rendered.
+    </p>
+    <br/>
+    <hr/>
+     <p>
+        Source: <a href="http://www.jsftoolbox.com/documentation/facelets/10-TagReference/facelets-ui-debug.html" target="_blank">
+            Facelets Tag Reference - UI Debug
+        </a>
+    </p>
+</div>
