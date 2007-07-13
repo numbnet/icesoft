@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Class SalesBean. Retrieves sales data to be displayed in the UI.
+ * SalesBean retrieves sales data to be displayed in the UI.
  */
 public class SalesBean extends Sales{
     

@@ -1,6 +1,5 @@
 package com.icesoft.icefaces.tutorial.component.outputchart.basic;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

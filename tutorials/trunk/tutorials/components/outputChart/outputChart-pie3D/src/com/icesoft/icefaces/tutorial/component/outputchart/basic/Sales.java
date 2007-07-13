@@ -38,8 +38,7 @@ import java.util.Map;
 
 
 /**
- * Class Sales. holds the backing data used to assemble the 2D and 3D pie
- * charts.
+ * Sales data used to assemble the 2D and 3D pie charts.
  */
 public class Sales {
 

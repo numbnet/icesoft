@@ -256,7 +256,7 @@ public class AxisChartBean extends AxisChart{
         return horizontal;
     }
 
-    /*
+    /**
      * When the image map has been clicked this method returns the axis label plus the value
      *@param ActionEvent event
      */
@@ -278,7 +278,7 @@ public class AxisChartBean extends AxisChart{
         
     }
     
-    /*
+    /**
      * Determines whether or not the application should render based on status change
      *@return boolean
      */
