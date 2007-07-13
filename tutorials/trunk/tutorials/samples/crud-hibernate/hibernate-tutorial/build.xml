@@ -1,8 +1,7 @@
 <project name="hibernate-tutorial" default="build.war">
 
     <!-- location of common build file -->
-    <property name="build-common.xml" value="../etc/build-common.xml"/>
-
+    <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
     <!-- path to applicaiton libraries -->
     <property name="proj.lib.dir" location="./lib/" />
 
