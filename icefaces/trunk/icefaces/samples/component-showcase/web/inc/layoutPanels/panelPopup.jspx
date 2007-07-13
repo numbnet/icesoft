@@ -38,11 +38,12 @@ The Draggable panel can be moved. The Modal panel cannot be moved, interrupts
 the application
 and must be dismissed before the application's functionality will return.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
 -->
@@ -55,11 +56,11 @@ and must be dismissed before the application's functionality will return.
         <!-- Application title  -->
         <ice:panelGroup styleClass="formBorderHighlight">
             <h3>
-                <ice:outputText
+                <ice:outputText id="title"
                         value="#{msgs['component.popupPanel.title']}"/>
             </h3>
             <h4>
-                <ice:outputText
+                <ice:outputText id="instructions"
                         value="#{msgs['component.popupPanel.instructions']}"/>
             </h4>
 
@@ -67,25 +68,28 @@ and must be dismissed before the application's functionality will return.
             <ice:panelGrid columns="2" styleClass="popupControls">
                 <ice:outputText styleClass="propertyLabel"
                                 value="#{msgs['component.popupPanel.draggable.controlLabel']}"/>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="draggableChk"
+                                           partialSubmit="true"
                                            value="#{popup.showDraggablePanel}"/>
                 <ice:outputText styleClass="propertyLabel"
                                 value="#{msgs['component.popupPanel.modal.controlLabel']}"/>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="modalChk"
+                                           partialSubmit="true"
                                            value="#{popup.showModalPanel}"/>
             </ice:panelGrid>
         </ice:panelGroup>
     </ice:panelGrid>
 
     <!-- panel popup code, draggable type  -->
-    <ice:panelPopup
+    <ice:panelPopup id="draggablePP"
             draggable="true"
             rendered="#{popup.showDraggablePanel}"
             visible="#{popup.showDraggablePanel}"
             style="z-index: 1000; top: 300px; left: 300px; position: absolute; width: 300px; height: 150px;">
 
         <f:facet name="header">
-            <ice:panelGrid width="100%" cellpadding="0"
+            <ice:panelGrid id="draggablePanelGrid"
+                           width="100%" cellpadding="0"
                            cellspacing="0" columns="2"
                            columnClasses="none, popupButton">
                 <ice:outputText value="#{msgs['component.popupPanel.draggable.title']}"/>
@@ -97,7 +101,8 @@ and must be dismissed before the application's functionality will return.
         </f:facet>
 
         <f:facet name="body">
-            <ice:panelGrid width="100%" cellpadding="0"
+            <ice:panelGrid id="dragContent"
+                           width="100%" cellpadding="0"
                            cellspacing="0" columns="1"
                            styleClass="popupModalBody">
                 <ice:outputText
@@ -120,7 +125,8 @@ and must be dismissed before the application's functionality will return.
         </f:facet>
 
         <f:facet name="body">
-            <ice:panelGrid width="100%" cellpadding="0"
+            <ice:panelGrid id="modalPanelGrid"
+                           width="100%" cellpadding="0"
                            cellspacing="0" columns="1"
                            styleClass="popupModalBody">
                 <ice:outputText

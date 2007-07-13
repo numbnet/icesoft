@@ -37,19 +37,21 @@ used to input different kinds of texts. The input fields are submitted to the
 server one by one as they are being entered. These partial submits are triggered
 when the user presses the Enter key or tabs out of a field.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+    <ice:panelTabSet id="icepnltabset" 
+                    styleClass="componentPanelTabSetLayout">
         <!--
           Example include, also see source code include.
         -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+        <ice:panelTab id="icepnltab"
+                      label="#{msgs['tabbedHeadings.demo']}">
 
-            <ice:panelGrid
-                    styleClass="componentLayoutRootTable"
-                    columns="1">
+            <ice:panelGrid styleClass="componentLayoutRootTable"
+                           columns="1">
 
                 <!-- Text Field input -->
                 <ice:panelGrid styleClass="formBorderHighlight">
@@ -64,18 +66,21 @@ when the user presses the Enter key or tabs out of a field.
                                    rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
                         <ice:outputText styleClass="propertyLabel"
                                         value="#{msgs['component.textFields.name']}"/>
-                        <ice:inputText value="#{textFields.name}"
+                        <ice:inputText id="TxtName"
+                                       value="#{textFields.name}"
                                        partialSubmit="true"/>
                         <ice:outputText styleClass="propertyLabel"
                                         value="#{msgs['component.textFields.password']}"/>
-                        <ice:inputSecret value="#{textFields.password}"
+                        <ice:inputSecret id="TxtPw"
+                                         value="#{textFields.password}"
                                          partialSubmit="true"
                                          redisplay="true"/>
                         <div style="padding-top:5px;">
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.textFields.comments']}"/>
                         </div>
-                        <ice:inputTextarea value="#{textFields.comments}"
+                        <ice:inputTextarea id="TxtCmt"
+                                           value="#{textFields.comments}"
                                            cols="20" rows="4"
                                            partialSubmit="true"
                                            style="width:280px;height:80px;overflow: auto;"
@@ -97,17 +102,20 @@ when the user presses the Enter key or tabs out of a field.
                         <ice:outputText
                                 value="#{msgs['component.textFields.name']} "
                                 styleClass="valueHeader"/>
-                        <ice:outputText value="#{textFields.name}"
+                        <ice:outputText id="TxtNameout"
+                                        value="#{textFields.name}"
                                         styleClass="valueText"/>
                         <ice:outputText
                                 value="#{msgs['component.textFields.password']} "
                                 styleClass="valueHeader"/>
-                        <ice:outputText value="#{textFields.password}"
+                        <ice:outputText id="TxtPwout"
+                                        value="#{textFields.password}"
                                         styleClass="valueText"/>
                         <ice:outputText
                                 value="#{msgs['component.textFields.comments']} "
                                 styleClass="valueHeader"/>
-                        <ice:outputText value="#{textFields.comments}"
+                        <ice:outputText id="TxtCmtout"
+                                        value="#{textFields.comments}"
                                         styleClass="valueText"/>
                     </ice:panelGrid>
                 </ice:panelGrid>

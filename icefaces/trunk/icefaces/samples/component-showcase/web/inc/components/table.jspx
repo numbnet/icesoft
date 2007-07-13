@@ -35,15 +35,16 @@
 In this demonstration, ice:dataTable is used to display data. There is
 a control on the data to hide/show the table columns.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
     <!--
       Controls to show/hide the table columns
     -->
-    <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+    <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
         <ice:panelGrid
                 styleClass="componentLayoutRootTable"
                 columns="1">
@@ -54,15 +55,18 @@ a control on the data to hide/show the table columns.
                     <ice:outputText value="#{msgs['component.table.title']}"/>
                 </h3>
                 <ice:panelGroup>
-                    <ice:selectBooleanCheckbox value="#{table.renderFirstName}"
+                    <ice:selectBooleanCheckbox id="FirstNameChk"
+                                               value="#{table.renderFirstName}"
                                                partialSubmit="true"/>
                     <ice:outputText
                             value="#{msgs['component.table.column1']} "/>
-                    <ice:selectBooleanCheckbox value="#{table.renderLastName}"
+                    <ice:selectBooleanCheckbox id="LastNameChk"
+                                               value="#{table.renderLastName}"
                                                partialSubmit="true"/>
                     <ice:outputText
                             value="#{msgs['component.table.column2']} "/>
-                    <ice:selectBooleanCheckbox value="#{table.renderEmail}"
+                    <ice:selectBooleanCheckbox id="EmailChk"
+                                               value="#{table.renderEmail}"
                                                partialSubmit="true"/>
                     <ice:outputText
                             value="#{msgs['component.table.column4']} "/>
@@ -75,11 +79,12 @@ a control on the data to hide/show the table columns.
                     <ice:outputText
                             value="#{msgs['component.table.scrollable.height']} "/>
 
-                    <ice:inputText
+                    <ice:inputText id="ScrollHt"
                             size="10"
                             value="#{table.scrollableHeight}" />
 
-                    <ice:selectBooleanCheckbox value="#{table.scrollable}"
+                    <ice:selectBooleanCheckbox id="scrollable"
+                                               value="#{table.scrollable}"
                                                partialSubmit="true"/>
                     <ice:outputText
                             value="#{msgs['component.table.scrollable']} "/>
@@ -91,7 +96,8 @@ a control on the data to hide/show the table columns.
                     Basic table
                 -->
                 <div style="width: 600px">
-                <ice:dataTable var="person"
+                <ice:dataTable id="iceDataTbl"
+                               var="person"
                                value="#{scrollerList.persons}"
                                columnClasses="tableCol"
                                scrollable="#{table.scrollable}"
@@ -100,29 +106,30 @@ a control on the data to hide/show the table columns.
                         >
                     <ice:column rendered="#{table.renderFirstName}">
                         <f:facet name="header">
-                            <ice:outputText
+                            <ice:outputText id="FirstNameColm" 
                                     value="#{msgs['component.table.column1']}"/>
                         </f:facet>
-                        <ice:outputText
+                        <ice:outputText id="FirstName"
                                 value="#{person.firstName}"/>
                     </ice:column>
 
                     <ice:column rendered="#{table.renderLastName}">
                         <f:facet name="header">
-                            <ice:outputText
+                            <ice:outputText id="LastNameColm" 
                                     value="#{msgs['component.table.column2']}"/>
                         </f:facet>
-                        <ice:outputText value="#{person.lastName}"/>
+                        <ice:outputText id="LastName"
+                                    value="#{person.lastName}"/>
                     </ice:column>
 
                     <ice:column rendered="#{table.renderEmail}">
                         <f:facet name="header">
-                            <ice:outputText
+                            <ice:outputText id="EmailColm" 
                                     value="#{msgs['component.table.column4']}"/>
                         </f:facet>
-                        <ice:outputLink
+                        <ice:outputLink id="MailTo"
                                 value="mailto:#{person.email}">
-                            <ice:outputText
+                            <ice:outputText id="Email"
                                     value="#{person.email}"/>
                         </ice:outputLink>
                     </ice:column>

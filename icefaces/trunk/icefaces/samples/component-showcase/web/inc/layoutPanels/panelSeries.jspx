@@ -36,11 +36,12 @@ In this example two lists are used. For each list, each elements markup is
 defined once.
 The content of the list is filled by iterating over a variable.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
 -->
@@ -70,21 +71,22 @@ The content of the list is filled by iterating over a variable.
         <ice:outputText value="Item List"/>
     </h3>
      <ice:panelGrid styleClass="formBorderHighlight" width="100%">
-        <ice:panelSeries value="#{cashier.itemTable}" var="item1">
+        <ice:panelSeries id="itemTable" value="#{cashier.itemTable}" var="item1">
             <ice:panelGroup styleClass="seriesPanelItems" >
-                <ice:graphicImage width="100" height="100"
+                <ice:graphicImage id="itemImage"
+                                  width="100" height="100"
                                   url="images/panelSeries/#{item1.name}.jpg"/>
                 <br />
                 <ice:panelGrid columns="2">
                     <ice:outputText
                             value="#{msgs['component.panelSeries.productLabel.name']}"
                             styleClass="propertyLabel"/>
-                    <ice:outputText value="#{item1.name}"/>
+                    <ice:outputText id="name" value="#{item1.name}"/>
 
                     <ice:outputText
                             value="#{msgs['component.panelSeries.productLabel.unitPrice']}"
                             styleClass="propertyLabel"/>
-                    <ice:outputText value="#{item1.unitPrice}">
+                    <ice:outputText id="unitPrice" value="#{item1.unitPrice}">
                         <f:convertNumber type="currency"/>
                     </ice:outputText>
 
@@ -97,17 +99,17 @@ The content of the list is filled by iterating over a variable.
                 <ice:panelGrid columns="3">
 
                     <div class="quantityLabel">
-                        <ice:outputText value="#{item1.quantity}"/>
+                        <ice:outputText id="quantity" value="#{item1.quantity}"/>
                     </div>
 
-                    <ice:commandButton
+                    <ice:commandButton id="buy"
                     	    styleClass="pnlSrsDemoBtn"
                             image="#{styleBean.imageDirectory}add.gif"
                             style="height: 25px; width: 15px;"
                             actionListener="#{item1.incQuan}"
                             title="Buy #{item1.name}"/>
 
-                    <ice:commandButton
+                    <ice:commandButton id="return"
                     	    styleClass="pnlSrsDemoBtn"                    
                             image="#{styleBean.imageDirectory}remove.gif"
                             style="height: 25px; width: 15px;"
@@ -115,7 +117,8 @@ The content of the list is filled by iterating over a variable.
                             title="Return #{item1.name}"
                             disabled="#{item1.quanMinusDisabled}"/>
                 </ice:panelGrid>
-                <ice:outputText style="text-align:center;"
+                <ice:outputText id="subtotal"
+                                style="text-align:center;"
                                 value="#{item1.subtotal}">
                     <f:convertNumber type="currency"/>
                 </ice:outputText>
@@ -132,14 +135,14 @@ The content of the list is filled by iterating over a variable.
                 value="#{msgs['component.panelSeries.shoppingListTitle']}"/>
     </h3>
     <ice:panelGroup styleClass="formBorderHighlight" >
-        <ice:panelSeries value="#{cashier.shoppingList}" var="item2">
+        <ice:panelSeries id="shoppingList" value="#{cashier.shoppingList}" var="item2">
             <ice:panelGrid columns="3" border="0"
                            styleClass="listReceipt"
                     columnClasses="shoppingListItemName, shoppingListItemQuantity, shoppingListValue">
 
-                <ice:outputText value="#{item2.name}"/>
-                <ice:outputText value="#{item2.quantity}"/>
-                <ice:outputText value="#{item2.subtotal}">
+                <ice:outputText id="nameShopped" value="#{item2.name}"/>
+                <ice:outputText id="quantityShopped" value="#{item2.quantity}"/>
+                <ice:outputText id="subtotalShopped" value="#{item2.subtotal}">
                     <f:convertNumber type="currency"/>
                 </ice:outputText>
 
@@ -149,7 +152,7 @@ The content of the list is filled by iterating over a variable.
         <ice:panelGroup style="text-align: right">
             <ice:outputText
                     value="#{msgs['component.panelSeries.totalLabel']}"/>
-            <ice:outputText value="#{cashier.total}">
+            <ice:outputText id="totalShopped" value="#{cashier.total}">
                 <f:convertNumber type="currency"/>
             </ice:outputText>
         </ice:panelGroup>

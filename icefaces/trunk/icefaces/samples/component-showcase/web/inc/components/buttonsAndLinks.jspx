@@ -38,16 +38,16 @@ links and buttons. A text input field is used to test submission of inputs for
 those buttons
 and links that trigger submits.
 -->
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
             <!--
               Example include, also see source code include.
             -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+            <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
                 <ice:panelGrid
                         styleClass="componentLayoutRootTable">
@@ -64,7 +64,7 @@ and links that trigger submits.
                                             value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"/>
                             <!--ice:inputText value="#{buttonsAndLinks.inputText}" onblur="javascript:iceSubmitPartial(form,this,event)"/-->
                             <ice:panelGroup>
-                                <ice:inputText
+                                <ice:inputText id="BLTxt"
                                         value="#{buttonsAndLinks.inputText}"/>
                                 <ice:outputText
                                         value="#{msgs['component.buttonsAndLinks.inputTextNote']}"/>
@@ -72,31 +72,36 @@ and links that trigger submits.
 
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.buttonsAndLinks.submitButtonLabel']}"/>
-                            <ice:commandButton type="submit" value="Submit"
+                            <ice:commandButton id="BLCmdBtn"
+                                               type="submit" value="Submit"
                                                actionListener="#{buttonsAndLinks.submitButtonListener}"/>
 
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.buttonsAndLinks.resetButtonLabel']}"/>
                             <ice:panelGroup>
-                                <ice:commandButton type="reset" value="Reset"/>
+                                <ice:commandButton id="BLRset"
+                                                    type="reset" value="Reset"/>
                                 <ice:outputText
                                         value="#{msgs['component.buttonsAndLinks.resetButtonNote']}"/>
                             </ice:panelGroup>
 
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.buttonsAndLinks.imageButtonLabel']}"/>
-                            <ice:commandButton image="images/button-submit.gif"
+                            <ice:commandButton id="BLImg"
+                                               image="images/button-submit.gif"
                                                actionListener="#{buttonsAndLinks.imageButtonListener}"
                                                styleClass=""/>
 
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.buttonsAndLinks.commandLinkLabel']}"/>
-                            <ice:commandLink value="Submit"
+                            <ice:commandLink id="BLCmdLnk"
+                                             value="Submit"
                                              actionListener="#{buttonsAndLinks.commandLinkListener}"/>
 
                             <ice:outputText styleClass="propertyLabel"
                                             value="#{msgs['component.buttonsAndLinks.outputLinkLabel']}"/>
-                            <ice:outputLink value="http://www.icesoft.com"
+                            <ice:outputLink id="BLOutLnk"
+                                            value="http://www.icesoft.com"
                                             target="_blank">
                                 <ice:outputText value="www.icesoft.com"
                                                 styleClass=""/>
@@ -114,14 +119,14 @@ and links that trigger submits.
                                 <ice:outputText
                                         value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"
                                         styleClass="valueHeader"/>
-                                <ice:outputText
+                                <ice:outputText id="BLTxtout"
                                         value="#{buttonsAndLinks.inputText}"
                                         styleClass="valueText"/>
 
                                 <ice:outputText
                                         value="#{msgs['component.buttonsAndLinks.clickedLabel']}"
                                         styleClass="valueHeader"/>
-                                <ice:outputText
+                                <ice:outputText id="BLClkd"
                                         value="#{buttonsAndLinks.clicked}"
                                         styleClass="valueText"/>
                             </ice:panelGrid>
