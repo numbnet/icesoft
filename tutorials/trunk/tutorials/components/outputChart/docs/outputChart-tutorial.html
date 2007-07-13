@@ -43,53 +43,68 @@
        line and point.
     </p>
 
-
+<table>
+    <tr>
+    <td>
       <div class="screenshot">
           <img src="images/area.png"
                 title="Area Chart"
-                alt="Area Chart"
-                width="200" />
+                alt="Area Chart" />
       </div>
+    </td>
+    <td>
       <div class="screenshot">
           <img src="images/areastacked.png"
                 title="AreaStacked Chart"
-                alt="AreaStacked Chart"
-                width="200" />
+                alt="AreaStacked Chart" />
       </div>
+    </td>
+    </tr>
+    <tr>
+    <td>
       <div class="screenshot">
           <img src="images/bar.png"
                 title="Bar Chart"
-                alt="Bar Chart"
-                width="200" />
+                alt="Bar Chart" />
       </div>
+    </td>
+    <td>
       <div class="screenshot">
           <img src="images/barclustered.png"
                 title="BarClustered Chart"
-                alt="BarClustered Chart"
-                width="200" />
+                alt="BarClustered Chart" />
       </div>
+    </td>
+    </tr>
+    <tr>
+    <td>
       <div class="screenshot">
           <img src="images/barstacked.png"
                 title="BarStacked Chart"
-                alt="BarStacked Chart"
-                width="200" />
+                alt="BarStacked Chart" />
       </div>
+    </td>
+    <td>
       <div class="screenshot">
           <img src="images/line.png"
                 title="Line Chart"
-                alt="Line Chart"
-                width="200" />
+                alt="Line Chart" />
       </div>
+    </td>
+    </tr>
+    <tr>
+    <td>
       <div class="screenshot">
           <img src="images/point.png"
                 title="Point Chart"
-                alt="Point Chart"
-                width="200" />
+                alt="Point Chart" />
       </div>
-
-    <p>
+    </td>
+    <td>
+    </tr>
+</table>
 		<pre>
-				<ice:outputChart id="axisOutputChart"
+				&lt;ice:outputChart id="axisOutputChart"
 								 type="bar"
 								 chartTitle="Bar Chart"
 								 yaxisTitle="Problems"
@@ -97,45 +112,52 @@
 								 xaxisLabels="#{axisChartBean.labels}"
 								 labels="#{axisChartBean.legendLabels}"
 								 colors="#{axisChartBean.paints}"
-								 data="#{axisChartBean.data}" />
+								 data="#{axisChartBean.data}" /&gt;
 		</pre>
+       <p>
        The "colors" method of the bean may return either a java.util.List of
        java.awt.Color, an array of java.awt.Color or a String array.
        You can also define the data statically in the jsf page:
+       </p>
 		<pre>
 		   colors="red, blue, green"
 		</pre>
+	   <p>
        The "data" method of the bean may return either a java.util.List of
        double array for each pair value, or a double array.
        You can also define the data statically in the jsf page:
-		<pre>
+	   </p>
+	   <pre>
 		   Defining the data for an axis type chart in the jsf page for two data sets:
 		   data="10, 30, 40, 33: 30, 20, 30, 40"
 		   NOTE: the colon(":") is used as the identifier for a new data set.
 		</pre>
-       The axis charts use the same underlying data structure which can allow you
+       <p>The axis charts use the same underlying data structure which can allow you
        to change the chart type dynamically:
-		<pre>
+	   </p>
+	   <pre>
 		   type="#{axisChartBean.type}"
 		</pre>
-
+       <p>
        The participation of the outputChart component with the jsf lifecycle allows
        developers to hook actionListeners to a clientSideImageMap. This feature can
        be harnessed to provide drill down behavior in all axis charts except area and
        areastacked.  In the demo, when you click on a bar in the chart this will trigger
        the actionListener to display the value of that bar on the page.
+       </p>
        <pre>
            actionListener="#{axisChartBean.imageClicked}"
        </pre>
+       <p>
        By default the chart component renders only on the first render cycle and any
        further render requests will not cause it to be re-rendered unless specified.
        The rendering of a chart can be an expensive operation if it renders on every
        render phase. The renderOnSubmit attribute lets the developer decide when to
        render the chart.
+       </p>
        <pre>
            renderOnSubmit="#{axisChartBean.newChart}"
        </pre>
-    </p>
 <br/>
 
 <div class="demo-instruction">
@@ -154,33 +176,36 @@
     <p>There are 2 types of pie charts: 2D and 3D.
     </p>
 
-
+<table>
+<tr>
+    <td>
       <div class="screenshot">
           <img src="images/pie2D.png"
                 title="Pie2D Chart"
-                alt="Pie2D Chart"
-                width="200" />
+                alt="Pie2D Chart" />
       </div>
+    </td>
+    <td>
       <div class="screenshot">
           <img src="images/pie3D.png"
                 title="Pie3D Chart"
-                alt="Pie3D Chart"
-                width="200" />
+                alt="Pie3D Chart" />
       </div>
+    </td>
+</tr>
+</table>
 
-    <p>
 		<pre>
-            <ice:outputChart id="pie2DOutputChart"
+            &lt;ice:outputChart id="pie2DOutputChart"
                              type="pie2D"
                              chartTitle="Pie2D Chart"
-                             width="350"
-                             height="350"
                              labels="#{pieChart.labels}"
                              data="#{pieChart.data}"
                              colors="#{pieChart.paints}"
                              actionListener="#{pieChart.action}"
-                             renderOnSubmit="#{pieChart.newChart}" />
+                             renderOnSubmit="#{pieChart.newChart}" /&gt;
 		</pre>
+	<p>
        Pie Charts require a different data model (one dimensional versus the two
        dimensional model with axis charts) so we have a different bean for the pie
        charts.
@@ -228,12 +253,17 @@
     bean. You can then pass this custom chart to the outputChart component which will
     allow the chart to participate in the JSF lifecycle.
     </p>
+      <div class="screenshot">
+          <img src="images/combinedcharts.png"
+                title="Combined Chart"
+                alt="Combined Chart" />
+      </div>
     <p>The proper place for chart manipulation using the JCharts API is in the method
-    binding which is bound tp the renderOnSubmit attribute, which tells the component
+    binding which is bound to the renderOnSubmit attribute, which tells the component
     whether to render the chart:</p>
     <pre>
 //JSF
-<ice:outputChart type="custom" renderOnSubmit="#{combinedChart.newChart}" />
+&lt;ice:outputChart type="custom" renderOnSubmit="#{combinedChart.newChart}" /&gt;
 
 //Bean
 public boolean newChart(OutputChart component){
@@ -255,11 +285,11 @@ public boolean newChart(OutputChart component){
 <div class="demo-instruction">
     <h3>See the demo:</h3>
     <ul>
-        <li>See the outputChart-combining demo for your self by clicking
-            <a href="/outputChart-combining-tutorial/"
+        <li>See the outputChart-combined demo for your self by clicking
+            <a href="/outputChart-combined-tutorial/"
                target="_blank">here</a>,
-            or download the outputChart-combining source code <a
-                href="outputChart-combining-tutorial.zip">here</a>.
+            or download the outputChart-combined source code <a
+                href="outputChart-combined-tutorial.zip">here</a>.
         </li>
     </ul>
 </div>
@@ -293,7 +323,7 @@ public boolean newChart(OutputChart component){
                     href="outputChart-pie2D-tutorial.zip">outputChart-pie2D
                 source code</a></td>
             <td class="bodyNotes"> Example of advanced use of ActionListener with the
-            the outputChart component<./td>
+            the outputChart component.</td>
         </tr>
         <tr>
             <td class="bodyExample">outputChart-pie3D</td>
@@ -304,9 +334,9 @@ public boolean newChart(OutputChart component){
             properties in the backing bean.</td>
         </tr>
         <tr>
-            <td class="bodyExample">outputChart-combining</td>
+            <td class="bodyExample">outputChart-combined</td>
             <td class="bodySource"><a
-                    href="outputChart-combining-tutorial.zip">outputChart-combining
+                    href="outputChart-combined-tutorial.zip">outputChart-combined
                 source code</a></td>
             <td class="bodyNotes">Example showing the combination of chart types through the
             use of the JCharts API in the backing bean.</td>
