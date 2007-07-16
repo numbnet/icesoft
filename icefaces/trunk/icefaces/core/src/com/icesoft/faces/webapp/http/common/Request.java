@@ -41,4 +41,15 @@ public interface Request {
     void readBodyInto(OutputStream out) throws IOException;
 
     void respondWith(ResponseHandler handler) throws Exception;
+
+    void detectEnvironment(Environment environment) throws Exception;
+
+    //avoid runtime dependency on Portlet interfaces,
+    //and for the symmetry's sake, same for the Servlet interfaces
+    interface Environment {
+
+        void servlet(Object request, Object response) throws Exception;
+
+        void portlet(Object request, Object response) throws Exception;
+    }
 }

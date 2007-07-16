@@ -1,53 +1,54 @@
-package com.icesoft.faces.webapp.http.servlet;
+package com.icesoft.faces.webapp.http.core;
 
+import com.icesoft.faces.context.View;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.core.PageServer;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class SingleViewServlet extends BasicAdaptingServlet {
+public class SingleViewServer implements Server {
     private static final String viewNumber = "1";
-    private HttpSession session;
     private Map views;
     private String sessionID;
     private ViewQueue allUpdatedViews;
     private Configuration configuration;
     private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private HttpSession session;
+    private Server server;
 
-    public SingleViewServlet(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration) {
-        super(new PageServer());
-        this.sessionID = sessionID;
+    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration) {
         this.session = session;
+        this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
         this.views = views;
         this.allUpdatedViews = allUpdatedViews;
         this.configuration = configuration;
+        this.server = new PageServer();
     }
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void service(Request request) throws Exception {
         //create single view or re-create view if the request is the result of a redirect 
-        ServletView view = (ServletView) views.get(viewNumber);
+        View view = (View) views.get(viewNumber);
         if (view == null) {
-            view = new ServletView(viewNumber, sessionID, request, response, allUpdatedViews, configuration);
+            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         } else {
-            view.updateOnRequest(request, response);
+            view.updateOnRequest(request);
         }
 
         view.switchToNormalMode();
         sessionMonitor.touchSession();
-        super.service(request, response);
+        server.service(request);
         view.switchToPushMode();
         view.release();
     }
 
     public void shutdown() {
-        super.shutdown();
+        server.shutdown();
     }
 }

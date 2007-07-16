@@ -34,12 +34,12 @@
 package com.icesoft.faces.component.inputfile;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.FileUploadComponent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.MessageUtils;
-import com.icesoft.faces.webapp.http.servlet.FileUploadComponent;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase;
@@ -49,14 +49,13 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.servlet.ServletContext;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,7 +72,7 @@ import java.util.Iterator;
  */
 public class InputFile extends UICommand implements Serializable, FileUploadComponent {
     private static final Log log = LogFactory.getLog(InputFile.class);
-    
+
     public static final int DEFAULT = 0;
     public static final int UPLOADING = 1;
     public static final int SAVED = 2;
@@ -144,8 +143,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             BridgeFacesContext bfc,
             ServletContext servletContext,
             String sessionId)
-            throws IOException
-    {
+            throws IOException {
         this.uploadException = null;
         this.status = UPLOADING;
         this.sizeMax = maxSize;
@@ -154,28 +152,28 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         //  but if it's not given, then default to the
         //  com.icesoft.faces.uploadDirectory context-param
         String folder = getUploadDirectory();
-        if(folder == null) {
+        if (folder == null) {
             folder = uploadDirectory;
         }
         // InputFile uploadDirectoryAbsolute attribute takes precedence,
         //  but if it's not given, then default to the
         //  com.icesoft.faces.uploadDirectoryAbsolute context-param
         Boolean folderAbs = getUploadDirectoryAbsolute();
-        if(folderAbs == null) {
+        if (folderAbs == null) {
             folderAbs = uploadDirectoryAbsolute ? Boolean.TRUE : Boolean.FALSE;
         }
-        if(!folderAbs.booleanValue()) {
+        if (!folderAbs.booleanValue()) {
             folder = servletContext.getRealPath(folder);
         }
-        if(isUniqueFolder()) {
+        if (isUniqueFolder()) {
             String FILE_SEPARATOR = System.getProperty("file.separator");
             folder = folder + FILE_SEPARATOR + sessionId;
         }
-        
+
         String namePattern = getFileNamePattern().trim();
         String fileName = stream.getName();
         try {
-            if(fileName != null && fileName.length() > 0) {
+            if (fileName != null && fileName.length() > 0) {
                 // IE gives us the whole path on the client, but we just
                 //  want the client end file name, not the path
                 File tempFileName = new File(fileName);
@@ -184,17 +182,17 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 throw new FileUploadBase.FileUploadIOException(
                         new FileUploadBase.InvalidContentTypeException());
             }
-            
+
             fileInfo.setFileName(fileName);
             fileInfo.setContentType(stream.getContentType());
             if (fileName != null && fileName.trim().matches(namePattern)) {
                 File folderFile = new File(folder);
-                if(!folderFile.exists())
+                if (!folderFile.exists())
                     folderFile.mkdirs();
                 file = new File(folder, fileName);
                 OutputStream output = new FileOutputStream(file);
                 Streams.copy(stream.openStream(), output, true);
-                if (file.length() == 0 ) {
+                if (file.length() == 0) {
                     setProgress(0);
                     file.delete();
                     throw new FileUploadBase.FileUploadIOException(
@@ -208,7 +206,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 fileInfo.reset();
                 file = null;
                 status = INVALID_NAME_PATTERN;
-                context.addMessage(null, MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[] { fileName, namePattern }));
+                context.addMessage(null, MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
                 notifyDone(bfc);
             }
         } catch (FileUploadBase.FileUploadIOException uploadException) {
@@ -225,24 +223,24 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 status = INVALID;
             }
             fileInfo.setException(uploadException);
-            if(file != null)
+            if (file != null)
                 file.delete();
             notifyDone(bfc);
             throw uploadException;
         }
-        catch(IOException e) { // Eg: If creating the saved file fails
+        catch (IOException e) { // Eg: If creating the saved file fails
             this.uploadException = e;
             status = INVALID;
             fileInfo.setException(e);
-            if(file != null)
+            if (file != null)
                 file.delete();
             notifyDone(bfc);
             throw e;
         }
-        
+
         PersistentFacesState.getInstance().renderLater();
     }
-    
+
     protected void notifyDone(BridgeFacesContext bfc) {
         ActionEvent event = new ActionEvent(this);
 
@@ -250,46 +248,43 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
         //this is true for JSF 1.1 only
         MethodBinding actionListener = getActionListener();
-        if(actionListener != null) {
+        if (actionListener != null) {
             actionListener.invoke(
-                FacesContext.getCurrentInstance(),
-                new Object[] {event} );
+                    FacesContext.getCurrentInstance(),
+                    new Object[]{event});
         }
-        
+
         //this is true for JSF 1.2 only
         ActionListener[] actionListeners = getActionListeners();
-        for (int i=0; i< actionListeners.length; i++) {
+        for (int i = 0; i < actionListeners.length; i++) {
             actionListeners[i].processAction(event);
         }
         MethodBinding action = getAction();
-        if(action != null) {
+        if (action != null) {
             action.invoke(FacesContext.getCurrentInstance(), null);
         }
-        
-        if(fileInfo != null)
+
+        if (fileInfo != null)
             fileInfo.reset();
     }
-    
+
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
         writer.write("<html style=\"overflow:hidden;\">");
         ArrayList outputStyleComponents = findOutputStyleComponents(context.getViewRoot());
-        if (outputStyleComponents != null)
-        {
+        if (outputStyleComponents != null) {
             writer.write("<head>");
-            for (int i = 0; i < outputStyleComponents.size(); i++)
-            {
+            for (int i = 0; i < outputStyleComponents.size(); i++) {
                 OutputStyle outputStyle = (OutputStyle) outputStyleComponents.get(i);
                 String href = outputStyle.getHref();
-                if ((href != null) && (href.length() > 0))
-                {
+                if ((href != null) && (href.length() > 0)) {
                     href = CoreUtils.resolveResourceURL(context, href);
                     writer.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + href + "\">");
                 }
             }
             writer.write("</head>");
-        }        
+        }
         String srv = getUploadServletPath(context);
-        writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\""+srv+"\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
+        writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\"" + srv + "\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
         writer.write("<input type=\"hidden\" name=\"componentID\" value=\"");
         writer.write(this.getClientId(context));
         writer.write("\"/>");
@@ -298,9 +293,10 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         writer.write("<input type=\"file\" name=\"upload\"");
         writer.write(" size=\"" + getInputTextSize() + "\"");
         String inputTextClass = getInputTextClass();
-        if (inputTextClass != null) writer.write(" class=\"" + inputTextClass + "\"");
+        if (inputTextClass != null)
+            writer.write(" class=\"" + inputTextClass + "\"");
         String title = getTitle();
-        if (title != null) writer.write(" title=\"" + title +"\"");
+        if (title != null) writer.write(" title=\"" + title + "\"");
         writer.write("/>");
         writer.write("<input type=\"submit\" value=\"" + getLabel() + "\"");
         String buttonClass = getButtonClass();
@@ -310,16 +306,16 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         writer.write("</form>");
         writer.write("</body></html>");
     }
-    
+
     private String getUploadServletPath(BridgeFacesContext context) {
         String requestContextPath = null;
-        if(context != null) {
+        if (context != null) {
             ExternalContext externalContext = context.getExternalContext();
-            if(externalContext != null) {
+            if (externalContext != null) {
                 requestContextPath = externalContext.getRequestContextPath();
             }
         }
-        if(requestContextPath == null || requestContextPath.length() == 0)
+        if (requestContextPath == null || requestContextPath.length() == 0)
             return "./uploadHtml";
         else
             return requestContextPath + "/uploadHtml";
@@ -362,7 +358,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         return true;
     }
-    
+
     /**
      * <p/>
      * Return the value of the <code>label</code> property. </p>
@@ -387,7 +383,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             }
             ValueBinding vb = getValueBinding("disabled");
             Boolean boolVal = vb != null ?
-                              (Boolean) vb.getValue(getFacesContext()) : null;
+                    (Boolean) vb.getValue(getFacesContext()) : null;
             return boolVal != null ? boolVal.booleanValue() : false;
 
         }
@@ -431,18 +427,18 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("uploadDirectory");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     public void setUploadDirectoryAbsolute(Boolean uploadDirectoryAbsolute) {
         this.uploadDirectoryAbsolute = uploadDirectoryAbsolute;
     }
-    
+
     public Boolean getUploadDirectoryAbsolute() {
         if (uploadDirectoryAbsolute != null) {
             return uploadDirectoryAbsolute;
         }
         ValueBinding vb = getValueBinding("uploadDirectoryAbsolute");
         return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-    } 
+    }
 
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
@@ -488,7 +484,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         ValueBinding vb = getValueBinding("style");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
-               "border-collapse:collapse; border-spacing:0px; padding:0px;";
+                "border-collapse:collapse; border-spacing:0px; padding:0px;";
     }
 
     /**
@@ -502,11 +498,11 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * <p>Return the value of the <code>styleClass</code> property.</p>
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                            styleClass, 
-                            CSS_DEFAULT.ICE_FILE_UPLOAD_BASE_CLASS, 
-                            "styleClass",
-                            isDisabled());
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.ICE_FILE_UPLOAD_BASE_CLASS,
+                "styleClass",
+                isDisabled());
     }
 
     /**
@@ -591,7 +587,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("title");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     // size
     private String size = null;
 
@@ -614,78 +610,78 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
 
 
-	public int getHeight() {
-		ValueBinding vb = getValueBinding("height");
-		if (vb != null) {
-		    Integer value = (Integer) vb.getValue(getFacesContext());
-		    if (null == value) {
-			return height;
-		    }
-		    return (value.intValue());
-		} else {
-		    return (this.height);
-		}
-	}
+    public int getHeight() {
+        ValueBinding vb = getValueBinding("height");
+        if (vb != null) {
+            Integer value = (Integer) vb.getValue(getFacesContext());
+            if (null == value) {
+                return height;
+            }
+            return (value.intValue());
+        } else {
+            return (this.height);
+        }
+    }
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-	public int getWidth() {
-		ValueBinding vb = getValueBinding("width");
-		if (vb != null) {
-		    Integer value = (Integer) vb.getValue(getFacesContext());
-		    if (null == value) {
-			return width;
-		    }
-		    return (value.intValue());
-		} else {
-		    return (this.width);
-		}
-	}
+    public int getWidth() {
+        ValueBinding vb = getValueBinding("width");
+        if (vb != null) {
+            Integer value = (Integer) vb.getValue(getFacesContext());
+            if (null == value) {
+                return width;
+            }
+            return (value.intValue());
+        } else {
+            return (this.width);
+        }
+    }
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
-	public int getInputTextSize() {
-		ValueBinding vb = getValueBinding("inputTextSize");
-		if (vb != null) {
-		    Integer value = (Integer) vb.getValue(getFacesContext());
-		    if (null == value) {
-			return inputTextSize;
-		    }
-		    return (value.intValue());
-		} else {
-		    return (this.inputTextSize);
-		}
-	}
+    public int getInputTextSize() {
+        ValueBinding vb = getValueBinding("inputTextSize");
+        if (vb != null) {
+            Integer value = (Integer) vb.getValue(getFacesContext());
+            if (null == value) {
+                return inputTextSize;
+            }
+            return (value.intValue());
+        } else {
+            return (this.inputTextSize);
+        }
+    }
 
-	public void setInputTextSize(int inputTextSize) {
-		this.inputTextSize = inputTextSize;
-	}
+    public void setInputTextSize(int inputTextSize) {
+        this.inputTextSize = inputTextSize;
+    }
 
-	public String getFileNamePattern() {
+    public String getFileNamePattern() {
         if (fileNamePattern != null) {
             return fileNamePattern;
         }
         ValueBinding vb = getValueBinding("fileNamePattern");
         return vb != null ? (String) vb.getValue(getFacesContext()) : ".+";
-	}
+    }
 
-	public void setFileNamePattern(String fileNamePattern) {
-		this.fileNamePattern = fileNamePattern;
-	}
+    public void setFileNamePattern(String fileNamePattern) {
+        this.fileNamePattern = fileNamePattern;
+    }
 
 
     public void setInputTextClass(String inputTextClass) {
         this.inputTextClass = inputTextClass;
     }
-    
+
     public String getInputTextClass() {
-        return Util.getQualifiedStyleClass(this, 
-                inputTextClass, 
-                CSS_DEFAULT.ICE_FILE_UPLOAD_DEFAULT_INPUT_TEXT_CLASS, 
+        return Util.getQualifiedStyleClass(this,
+                inputTextClass,
+                CSS_DEFAULT.ICE_FILE_UPLOAD_DEFAULT_INPUT_TEXT_CLASS,
                 "inputTextClass",
                 isDisabled());
     }
@@ -697,9 +693,9 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     }
 
     public String getButtonClass() {
-        return Util.getQualifiedStyleClass(this, 
-                buttonClass, 
-                CSS_DEFAULT.ICE_FILE_UPLOAD_DEFAULT_BUTTON_CLASS, 
+        return Util.getQualifiedStyleClass(this,
+                buttonClass,
+                CSS_DEFAULT.ICE_FILE_UPLOAD_DEFAULT_BUTTON_CLASS,
                 "buttonClass",
                 isDisabled());
     }
@@ -742,20 +738,20 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
     /**
      * In the 1.5.3 codebase, there was a writeable ValueBinding named "file"
-     *  that would be updated when a new file was saved. This provides
-     *  backwards compatibility with that.
+     * that would be updated when a new file was saved. This provides
+     * backwards compatibility with that.
      */
     protected void updateFileValueBinding(FacesContext context) {
         try {
             ValueBinding vb = getValueBinding("file");
-            if(vb != null)
+            if (vb != null)
                 vb.setValue(context, getFile());
         }
-        catch(Exception e) {
-            log.warn("The InputFile's file attribute has a ValueBinding, whose value could not be set",e);
+        catch (Exception e) {
+            log.warn("The InputFile's file attribute has a ValueBinding, whose value could not be set", e);
         }
     }
-    
+
     public int getStatus() {
         return status;
     }
@@ -775,7 +771,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * @deprecated use getFileInfo().setFileName() instead.
      */
     public void setFilename(String filename) {
-       fileInfo.setFileName(filename);
+        fileInfo.setFileName(filename);
     }
 
     /**
@@ -789,14 +785,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
     /**
      * <p>Set the value of the <code>size</code> property.</p>
-     *
      */
     public void setFilesize(long filesize) {
         fileInfo.setSize(filesize);
     }
 
     public long getSizeMax() {
-       return sizeMax;
+        return sizeMax;
     }
 
     public MethodBinding getProgressListener() {
@@ -807,49 +802,50 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         progressListener = binding;
     }
 
-    public int getProgress(){
+    public int getProgress() {
         return progress;
     }
 
-    public void setProgress(int i){
+    public void setProgress(int i) {
 
         progress = i;
         fileInfo.setPercent(i);
-        if( getProgressListener() != null )
-            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[] {new EventObject(this)});
+        if (getProgressListener() != null)
+            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new EventObject(this)});
     }
 
     public String getCssFile() {
-      return null;
+        return null;
     }
 
     private String getDisabled() {
-    	return null;
+        return null;
     }
-  
+
     private String getStyleClassString() {
-    	return null;
+        return null;
     }
-    
+
     private String getStyleString() {
-    	return null;
+        return null;
     }
-    
+
     private String getStyleInfo() {
-    	return null;
+        return null;
     }
+
     private String getInputTextClassString() {
-    	return null;
+        return null;
     }
 
     private String getButtonClassString() {
-    	return null;
+        return null;
     }
-    
-    private String getTitleAsString(){
-    	return null;
+
+    private String getTitleAsString() {
+        return null;
     }
-    
+
     private static ArrayList findOutputStyleComponents(UIComponent parent) {
         ArrayList returnValue = null;
         Iterator children = parent.getChildren().iterator();
@@ -861,14 +857,12 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                     returnValue = new ArrayList();
                 }
                 returnValue.add(childComponent);
-            }
-            else {
+            } else {
                 ArrayList outputStyleComponents = findOutputStyleComponents(childComponent);
                 if (outputStyleComponents != null) {
                     if (returnValue == null) {
                         returnValue = outputStyleComponents;
-                    }
-                    else {
+                    } else {
                         returnValue.add(outputStyleComponents);
                     }
                 }
@@ -876,13 +870,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         return returnValue;
     }
-    
+
     private String onfocus;
-    
+
     public void setOnfocus(String onfocus) {
         this.onfocus = onfocus;
     }
-    
+
     public String getOnfocus() {
         if (onfocus != null) {
             return onfocus;
@@ -890,13 +884,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("onfocus");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     private String onchange;
-    
+
     public void setOnchange(String onchange) {
         this.onchange = onchange;
     }
-    
+
     public String getOnchange() {
         if (onchange != null) {
             return onchange;
@@ -904,13 +898,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("onchange");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     private String accept;
-    
+
     public void setAccept(String accept) {
         this.accept = accept;
     }
-    
+
     public String getAccept() {
         if (accept != null) {
             return accept;
@@ -918,13 +912,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("accept");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     private String accesskey;
-    
+
     public void setAccesskey(String accesskey) {
         this.accesskey = accesskey;
     }
-    
+
     public String getAccesskey() {
         if (accesskey != null) {
             return accesskey;
@@ -932,13 +926,13 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("accesskey");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     private String onblur;
-    
+
     public void setOnblur(String onblur) {
         this.onblur = onblur;
     }
-    
+
     public String getOnblur() {
         if (onblur != null) {
             return onblur;
@@ -946,18 +940,18 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("onblur");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     private String tabindex;
-    
+
     public void setTabindex(String tabindex) {
         this.tabindex = tabindex;
     }
-    
+
     public String getTabindex() {
         if (tabindex != null) {
             return tabindex;
         }
         ValueBinding vb = getValueBinding("tabindex");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
-    }    
+    }
 }

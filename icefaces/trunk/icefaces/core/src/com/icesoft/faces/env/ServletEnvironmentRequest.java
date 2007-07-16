@@ -34,17 +34,23 @@
 package com.icesoft.faces.env;
 
 import com.icesoft.jasper.Constants;
-import org.apache.commons.collections.iterators.IteratorEnumeration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A wrapper for HttpServletRequest.
@@ -55,23 +61,15 @@ import java.util.Vector;
  * the application server, so it's possible that certain calls may result in
  * exceptions being thrown.
  * <p/>
- * Note:  This class may not be completely finished.  We have only included what
- * we've needed to this point. Also, the proper operations of some methods may
- * not make sense (like getting the reader or the input stream) so they simply
- * return null and we don't call them on the underlying instance either.
  */
-public class ServletEnvironmentRequest
-        extends CommonEnvironmentRequest
+public class ServletEnvironmentRequest extends CommonEnvironmentRequest
         implements HttpServletRequest {
-
-    protected static Log log =
+    private static final Log log =
             LogFactory.getLog(ServletEnvironmentRequest.class);
-    private static String ACEGI_AUTH_CLASS = "org.acegisecurity.Authentication";
-    HttpServletRequest servletRequest;
-    private String localName;
-    private String localAddr;
-    private int localPort;
-    private Hashtable headers;
+    private static final String ACEGI_AUTH_CLASS = "org.acegisecurity.Authentication";
+    private static Class acegiAuthClass;
+    private HttpServletRequest request;
+    private Map headers;
     private Cookie[] cookies;
     private String method;
     private String pathInfo;
@@ -88,10 +86,12 @@ public class ServletEnvironmentRequest
     private String contentType;
     private String protocol;
     private String remoteAddr;
-    private String remoteHost;
     private int remotePort;
+    private String remoteHost;
+    private String localName;
+    private String localAddr;
+    private int localPort;
     private AcegiAuthWrapper acegiAuthWrapper;
-    private static Class acegiAuthClass;
 
     static {
         try {
@@ -105,29 +105,27 @@ public class ServletEnvironmentRequest
             }
         }
     }
-    
-    public ServletEnvironmentRequest(HttpServletRequest req) {
-        servletRequest = req;
 
+    public ServletEnvironmentRequest(Object request) {
+        this.request = (HttpServletRequest) request;
         //Copy common data
-        authType = req.getAuthType();
-        contextPath = req.getContextPath();
-        remoteUser = req.getRemoteUser();
-        userPrincipal = req.getUserPrincipal();
+        authType = this.request.getAuthType();
+        contextPath = this.request.getContextPath();
+        remoteUser = this.request.getRemoteUser();
+        userPrincipal = this.request.getUserPrincipal();
         if (null != acegiAuthClass) {
             if (acegiAuthClass.isInstance(userPrincipal)) {
                 acegiAuthWrapper = new AcegiAuthWrapper(userPrincipal);
             }
         }
-        requestedSessionId = req.getRequestedSessionId();
-        isRequestedSessionIdValid = req.isRequestedSessionIdValid();
+        requestedSessionId = this.request.getRequestedSessionId();
+        requestedSessionIdValid = this.request.isRequestedSessionIdValid();
 
         attributes = new Hashtable();
-        Enumeration items = req.getAttributeNames();
-        String name = null;
-        while (items.hasMoreElements()) {
-            name = (String) items.nextElement();
-            Object attribute = req.getAttribute(name);
+        Enumeration attributeNames = this.request.getAttributeNames();
+        while (attributeNames.hasMoreElements()) {
+            String name = (String) attributeNames.nextElement();
+            Object attribute = this.request.getAttribute(name);
             if ((null != name) && (null != attribute)) {
                 attributes.put(name, attribute);
             }
@@ -137,104 +135,79 @@ public class ServletEnvironmentRequest
         // not available via the getAttributeNames() call.  This may be limited
         // to a Liferay issue but when the MainPortlet dispatches the call to
         // the MainServlet, all of the javax.include.* attributes can be
-        // retrieved using request.getAttribute() but they do NOT appear in
+        // retrieved using this.request.getAttribute() but they do NOT appear in
         // the Enumeration of names returned by getAttributeNames().  So here
         // we manually add them to our map to ensure we can find them later.
         String[] incAttrKeys = Constants.INC_CONSTANTS;
         for (int index = 0; index < incAttrKeys.length; index++) {
             String incAttrKey = incAttrKeys[index];
-            Object incAttrVal = req.getAttribute(incAttrKey);
-            if( incAttrVal != null ){
-                attributes.put(incAttrKey,req.getAttribute(incAttrKey));
+            Object incAttrVal = this.request.getAttribute(incAttrKey);
+            if (incAttrVal != null) {
+                attributes.put(incAttrKey, this.request.getAttribute(incAttrKey));
             }
         }
 
-        headers = new Hashtable();
-        items = req.getHeaderNames();
-        name = null;
-        while (items.hasMoreElements()) {
-            name = (String) items.nextElement();
-            Enumeration values = req.getHeaders(name);
-            LinkedList valueList = new LinkedList();
-            while (values.hasMoreElements()) {
-                 valueList.add(values.nextElement());
-            }
-            headers.put(name, valueList);
+        headers = new HashMap();
+        Enumeration headerNames = this.request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String name = (String) headerNames.nextElement();
+            Enumeration values = this.request.getHeaders(name);
+            headers.put(name, Collections.list(values));
         }
 
-        parameters = new Hashtable();
-        items = req.getParameterNames();
-        while (items.hasMoreElements()) {
-            name = (String) items.nextElement();
-            parameters.put(name, req.getParameterValues(name));
+        parameters = new HashMap();
+        Enumeration parameterNames = this.request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String name = (String) parameterNames.nextElement();
+            parameters.put(name, this.request.getParameterValues(name));
         }
 
-        scheme = req.getScheme();
-        serverName = req.getServerName();
-        serverPort = req.getServerPort();
-        locale = req.getLocale();
-
-        locales = new Vector();
-        items = req.getLocales();
-        while (items.hasMoreElements()) {
-            locales.add(items.nextElement());
-        }
-
-        isSecure = req.isSecure();
+        scheme = this.request.getScheme();
+        serverName = this.request.getServerName();
+        serverPort = this.request.getServerPort();
+        locale = this.request.getLocale();
+        locales = Collections.list(this.request.getLocales());
+        secure = this.request.isSecure();
 
         //Copy servlet specific data
-        cookies = req.getCookies();
-        method = req.getMethod();
-        pathInfo = req.getPathInfo();
-        pathTranslated = req.getPathTranslated();
-        queryString = req.getQueryString();
-        requestURI = req.getRequestURI();
-        requestURL = req.getRequestURL();
-        servletPath = req.getServletPath();
-        servletSession = req.getSession();
-        isRequestedSessionIdFromCookie = req.isRequestedSessionIdFromCookie();
-        isRequestedSessionIdFromURL = req.isRequestedSessionIdFromURL();
-        characterEncoding = req.getCharacterEncoding();
-        contentLength = req.getContentLength();
-        contentType = req.getContentType();
-        protocol = req.getProtocol();
-        remoteAddr = req.getRemoteAddr();
-        remoteHost = req.getRemoteHost();
-
-        //Servlet 2.4 Stuff
-//        localName = req.getLocalName();
-//        localAddr = req.getLocalAddr();
-//        localPort = req.getLocalPort();
-//        remotePort = req.getRemotePort();
-
+        cookies = this.request.getCookies();
+        method = this.request.getMethod();
+        pathInfo = this.request.getPathInfo();
+        pathTranslated = this.request.getPathTranslated();
+        queryString = this.request.getQueryString();
+        requestURI = this.request.getRequestURI();
+        requestURL = this.request.getRequestURL();
+        servletPath = this.request.getServletPath();
+        servletSession = this.request.getSession();
+        isRequestedSessionIdFromCookie = this.request.isRequestedSessionIdFromCookie();
+        isRequestedSessionIdFromURL = this.request.isRequestedSessionIdFromURL();
+        characterEncoding = this.request.getCharacterEncoding();
+        contentLength = this.request.getContentLength();
+        contentType = this.request.getContentType();
+        protocol = this.request.getProtocol();
+        remoteAddr = this.request.getRemoteAddr();
+        remoteHost = this.request.getRemoteHost();
+        remotePort = this.request.getRemotePort();
+        localName = this.request.getLocalName();
+        localAddr = this.request.getLocalAddr();
+        localPort = this.request.getLocalPort();
     }
-
-
-    /**
-     * Common HttpServletRequest/PortletRequest methods
-     */
 
     public boolean isUserInRole(String role) {
         if (null != acegiAuthWrapper) {
             return acegiAuthWrapper.isUserInRole(role);
         }
-        return servletRequest.isUserInRole(role);
+        return request.isUserInRole(role);
     }
-
-
-    /**
-     * HttpServletRequest methods
-     */
 
     public Cookie[] getCookies() {
         return cookies;
     }
 
-
     public void setAttribute(String name, Object value) {
         super.setAttribute(name, value);
         try {
-            servletRequest.setAttribute(name, value);
+            request.setAttribute(name, value);
         } catch (Exception e) {
             //ignore because the container disposed servletRequest by now 
         }
@@ -243,7 +216,7 @@ public class ServletEnvironmentRequest
     public void removeAttribute(String name) {
         super.removeAttribute(name);
         try {
-            servletRequest.removeAttribute(name);
+            request.removeAttribute(name);
         } catch (Exception e) {
             //ignore because the container disposed servletRequest by now
         }
@@ -260,18 +233,18 @@ public class ServletEnvironmentRequest
     }
 
     public String getHeader(String name) {
-        LinkedList values = (LinkedList) headers.get(name);
+        List values = (List) headers.get(name);
         return values == null || values.isEmpty() ?
-               null : (String)  values.getFirst();
+                null : (String) values.get(0);
     }
 
     public Enumeration getHeaders(String name) {
-        LinkedList values = (LinkedList) headers.get(name);
-        return new IteratorEnumeration(values.iterator());
+        List values = (List) headers.get(name);
+        return Collections.enumeration(values);
     }
 
     public Enumeration getHeaderNames() {
-        return headers.keys();
+        return Collections.enumeration(headers.keySet());
     }
 
     public int getIntHeader(String name) {
@@ -296,7 +269,6 @@ public class ServletEnvironmentRequest
 
     public String getQueryString() {
         return queryString;
-        //return (contextServletPath.substring(contextServletPath.indexOf("/")));
     }
 
     public String getRequestURI() {
@@ -305,16 +277,14 @@ public class ServletEnvironmentRequest
 
     public StringBuffer getRequestURL() {
         return requestURL;
-        //return new StringBuffer(contextServletPath);
     }
 
     public String getServletPath() {
         return servletPath;
-        //return (contextServletPath.substring(contextServletPath.lastIndexOf("/")));
     }
 
     public HttpSession getSession(boolean create) {
-        return servletRequest.getSession(create);
+        return request.getSession(create);
     }
 
     public HttpSession getSession() {
@@ -337,8 +307,7 @@ public class ServletEnvironmentRequest
         return characterEncoding;
     }
 
-    public void setCharacterEncoding(String encoding)
-            throws java.io.UnsupportedEncodingException {
+    public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {
         characterEncoding = encoding;
     }
 
@@ -350,18 +319,16 @@ public class ServletEnvironmentRequest
         return contentType;
     }
 
-    public javax.servlet.ServletInputStream getInputStream()
-            throws java.io.IOException {
-        return null;
+    public ServletInputStream getInputStream() throws IOException {
+        return request.getInputStream();
     }
 
     public String getProtocol() {
         return protocol;
-//        return "javascript";
     }
 
-    public java.io.BufferedReader getReader() throws java.io.IOException {
-        return null;
+    public BufferedReader getReader() throws IOException {
+        return request.getReader();
     }
 
     public String getRemoteAddr() {
@@ -372,15 +339,12 @@ public class ServletEnvironmentRequest
         return remoteHost;
     }
 
-    public javax.servlet.RequestDispatcher getRequestDispatcher(String name) {
-        return null;
+    public RequestDispatcher getRequestDispatcher(String name) {
+        return request.getRequestDispatcher(name);
     }
 
-    /**
-     * @deprecated
-     */
     public String getRealPath(String path) {
-        return servletRequest.getRealPath(path);
+        return request.getRealPath(path);
     }
 
     public int getRemotePort() {
@@ -398,5 +362,4 @@ public class ServletEnvironmentRequest
     public int getLocalPort() {
         return localPort;
     }
-
 }

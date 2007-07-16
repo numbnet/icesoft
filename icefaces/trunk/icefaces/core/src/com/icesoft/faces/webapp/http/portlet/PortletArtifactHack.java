@@ -1,7 +1,8 @@
 package com.icesoft.faces.webapp.http.portlet;
 
 import javax.portlet.PortletConfig;
-import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
  * WARNING! WARNING! WARNING!
@@ -18,23 +19,29 @@ import javax.portlet.PortletRequest;
  */
 public class PortletArtifactHack {
 
-	public static final String PORTLET_HACK_KEY =
-			"com.icesoft.faces.portletHack";
+    public static final String PORTLET_HACK_KEY =
+            "com.icesoft.faces.portletHack";
 
-	private PortletConfig portletConfig;
-	private PortletRequest portletRequest;
+    private PortletConfig portletConfig;
+    private RenderRequest request;
+    private RenderResponse response;
 
-	public PortletArtifactHack(PortletConfig portletConfig,
-			PortletRequest portletRequest) {
-		this.portletConfig = portletConfig;
-		this.portletRequest = portletRequest;
-	}
+    public PortletArtifactHack(PortletConfig portletConfig,
+                               RenderRequest request, RenderResponse response) {
+        this.portletConfig = portletConfig;
+        this.request = request;
+        this.response = response;
+    }
 
-	public PortletRequest getPortletRequest() {
-		return (this.portletRequest);
-	}
+    public RenderRequest getRequest() {
+        return this.request;
+    }
 
-	public PortletConfig getPortletConfig() {
-		return (this.portletConfig);
-	}
+    public RenderResponse getResponse() {
+        return response;
+    }
+
+    public PortletConfig getPortletConfig() {
+        return (this.portletConfig);
+    }
 }

@@ -34,38 +34,33 @@
 package com.icesoft.faces.env;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.Map;
 
 /**
  * This is an abstract class that contains fields and method implementations
  * that are common to any request type class that is environmentally dependent.
  * Currently this includes both servlets (ServletEnvironmentRequest) and
- * portlets (PortletEnvironmentRequest).
+ * portlets (PortletEnvironmentRenderRequest).
  */
 public abstract class CommonEnvironmentRequest {
-
-    //Commmon members
     protected String authType;
     protected String remoteUser;
     protected Principal userPrincipal;
     protected String requestedSessionId;
-    protected boolean isRequestedSessionIdValid;
+    protected boolean requestedSessionIdValid;
     protected String scheme;
     protected String serverName;
     protected int serverPort;
     protected Locale locale;
-    protected boolean isSecure;
-    protected Hashtable attributes;
-    protected Hashtable parameters;
+    protected boolean secure;
     protected String contextPath;
-    protected Vector locales;
-
-    /**
-     * Common HttpServletRequest/PortletRequest methods
-     */
+    protected List locales;
+    protected Map attributes;
+    protected Map parameters;
 
     public String getAuthType() {
         return authType;
@@ -79,8 +74,6 @@ public abstract class CommonEnvironmentRequest {
         return remoteUser;
     }
 
-    public abstract boolean isUserInRole(String role);
-
     public Principal getUserPrincipal() {
         return userPrincipal;
     }
@@ -90,7 +83,7 @@ public abstract class CommonEnvironmentRequest {
     }
 
     public boolean isRequestedSessionIdValid() {
-        return isRequestedSessionIdValid;
+        return requestedSessionIdValid;
     }
 
     public Object getAttribute(String name) {
@@ -98,27 +91,27 @@ public abstract class CommonEnvironmentRequest {
     }
 
     public Enumeration getAttributeNames() {
-        return attributes.keys();
+        return Collections.enumeration(attributes.keySet());
     }
 
     public String getParameter(String name) {
-        Object o = parameters.get(name);
-        if (o instanceof String[]) {
-            return ((String[])o)[0];
+        Object value = parameters.get(name);
+        if (value instanceof String[]) {
+            return ((String[]) value)[0];
         } else {
-            return (String) o;
+            return (String) value;
         }
     }
 
     public Enumeration getParameterNames() {
-        return parameters.keys();
+        return Collections.enumeration(parameters.keySet());
     }
 
     public String[] getParameterValues(String name) {
         return (String[]) parameters.get(name);
     }
 
-    public java.util.Map getParameterMap() {
+    public Map getParameterMap() {
         return parameters;
     }
 
@@ -151,11 +144,10 @@ public abstract class CommonEnvironmentRequest {
     }
 
     public Enumeration getLocales() {
-        return locales.elements();
+        return Collections.enumeration(locales);
     }
 
     public boolean isSecure() {
-        return isSecure;
+        return secure;
     }
-
 }

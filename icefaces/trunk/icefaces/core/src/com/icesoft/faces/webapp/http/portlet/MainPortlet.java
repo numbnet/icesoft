@@ -1,5 +1,6 @@
 package com.icesoft.faces.webapp.http.portlet;
 
+import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -17,8 +18,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
 import java.util.Enumeration;
-
-import com.icesoft.jasper.Constants;
 
 /**
  * The MainPortlet is the entry point for ICEfaces-based portlets.  The goal is
@@ -85,35 +84,35 @@ public class MainPortlet implements Portlet {
         //JSF uses the ExternalContext.encodeNamespace() method to do this.
         //Because we are dispatching, we have to ensure that we make this
         //setting available to the ICEfaces framework.
-        addAttribute(renderRequest,Constants.NAMESPACE_KEY,renderResponse.getNamespace());
+        addAttribute(renderRequest, Constants.NAMESPACE_KEY, renderResponse.getNamespace());
 
         //General marker attribute that shows that this request originated from
         //a portlet environment.
-        addAttribute(renderRequest,Constants.PORTLET_KEY, PORTLET_MARKER);
+        addAttribute(renderRequest, Constants.PORTLET_KEY, PORTLET_MARKER);
 
         //Get the inital view that is configured in the portlet.xml file
         PortletMode portletMode = portletMode = renderRequest.getPortletMode();
         String viewId = null;
         if (portletMode == PortletMode.VIEW) {
             viewId = portletConfig.getInitParameter(Constants.VIEW_KEY);
-            if(viewId == null){
-                if( log.isErrorEnabled() ){
+            if (viewId == null) {
+                if (log.isErrorEnabled()) {
                     log.error(Constants.VIEW_KEY + " is not properly configured");
                 }
                 throw new PortletException(Constants.VIEW_KEY + " is not properly configured");
             }
         } else if (portletMode == PortletMode.EDIT) {
             viewId = portletConfig.getInitParameter(Constants.EDIT_KEY);
-            if(viewId == null){
-                if( log.isErrorEnabled() ){
+            if (viewId == null) {
+                if (log.isErrorEnabled()) {
                     log.error(Constants.EDIT_KEY + " is not properly configured");
                 }
                 throw new PortletException(Constants.EDIT_KEY + " is not properly configured");
             }
         } else if (portletMode == PortletMode.HELP) {
             viewId = portletConfig.getInitParameter(Constants.HELP_KEY);
-            if(viewId == null){
-                if( log.isErrorEnabled() ){
+            if (viewId == null) {
+                if (log.isErrorEnabled()) {
                     log.error(Constants.HELP_KEY + " is not properly configured");
                 }
                 throw new PortletException(Constants.HELP_KEY + " is not properly configured");
@@ -126,14 +125,14 @@ public class MainPortlet implements Portlet {
         PortletContext ctxt = portletConfig.getPortletContext();
         PortletRequestDispatcher disp = ctxt.getRequestDispatcher(viewId);
 
-        if(disp == null){
+        if (disp == null) {
             throw new PortletException("could not find dispatcher for " + viewId);
         }
 
         //IMPORTANT: See the JavaDoc for this class
-        PortletArtifactHack hack = new PortletArtifactHack(portletConfig,
-                                                           renderRequest);
-        addAttribute(renderRequest,PortletArtifactHack.PORTLET_HACK_KEY, hack);
+        PortletArtifactHack hack =
+                new PortletArtifactHack(portletConfig, renderRequest, renderResponse);
+        addAttribute(renderRequest, PortletArtifactHack.PORTLET_HACK_KEY, hack);
 
         // Jack: This is a temporary fix for JBoss Portal. We should come up
         //       with a better fix in our framework that makes sure the
@@ -146,12 +145,12 @@ public class MainPortlet implements Portlet {
     }
 
 
-    private static void addAttribute(RenderRequest req, String key, Object value){
+    private static void addAttribute(RenderRequest req, String key, Object value) {
         if (key != null && value != null) {
             req.setAttribute(key, value);
         }
         if (log.isTraceEnabled()) {
-            log.trace( key + ": " + value);
+            log.trace(key + ": " + value);
         }
     }
 

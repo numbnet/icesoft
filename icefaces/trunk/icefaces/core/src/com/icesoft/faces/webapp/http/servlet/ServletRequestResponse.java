@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.portlet.PortletArtifactHack;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -163,6 +164,16 @@ public class ServletRequestResponse implements Request, Response {
 
     public void writeBodyFrom(InputStream in) throws IOException {
         copy(in, writeBody());
+    }
+
+    public void detectEnvironment(Environment environment) throws Exception {
+        Object portletEnvironment = request.getAttribute(PortletArtifactHack.PORTLET_HACK_KEY);
+        if (portletEnvironment == null) {
+            environment.servlet(request, response);
+        } else {
+            PortletArtifactHack portletArtifact = (PortletArtifactHack) portletEnvironment;
+            environment.portlet(portletArtifact.getRequest(), portletArtifact.getResponse());
+        }
     }
 
     private static void copy(InputStream input, OutputStream output) throws IOException {

@@ -37,30 +37,54 @@
 
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
+import com.icesoft.util.SeamUtilities;
+
 import javax.faces.context.ExternalContext;
+import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
- * This class is supposed to provide a nice, generic interface to the
- * environment that we're running in (e.g. servlets, portlets).  The current
- * design has the type of environment identified during construction and any
- * subsequent method calls check the environment and call the underlying methods
- * appropriately.  I don't think this is the way we should do it but hopefully
- * we'll get this working and then refactor.
+ * This class is supposed to provide a generic interface to the
+ * environment that we're running in (e.g. servlets, portlets).
  */
 public abstract class BridgeExternalContext extends ExternalContext {
+    private static String PostBackKey;
 
-    public static final String
-            INCLUDE_SERVLET_PATH = "javax.servlet.include.servlet_path";
+    static {
+        //We will place VIEW_STATE_PARAM in the requestMap so that
+        //JSF 1.2 doesn't think the request is a postback and skip
+        //execution
+        try {
+            Field field = ResponseStateManager.class.getField("VIEW_STATE_PARAM");
+            if (null != field) {
+                PostBackKey = (String) field.get(ResponseStateManager.class);
+            }
+        } catch (Exception e) {
+        }
+    }
 
-    public abstract void resetRequestMap();
+    protected String viewIdentifier;
+    protected CommandQueue commandQueue;
+    protected boolean standardScope;
+
+    protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration) {
+        this.viewIdentifier = viewIdentifier;
+        this.commandQueue = commandQueue;
+        this.standardScope = configuration.getAttributeAsBoolean("standardRequestScope", false);
+    }
 
     public abstract String getRequestURI();
-
-    public abstract Map getApplicationSessionMap();
 
     public abstract void setRequestServletPath(String viewId);
 
@@ -71,11 +95,116 @@ public abstract class BridgeExternalContext extends ExternalContext {
     /**
      * This method is not necessary. The application developer can keep track
      * of the added cookies.
+     *
      * @deprecated
      */
     public abstract Map getResponseCookieMap();
 
-    public abstract Map collectBundles();
-
     public abstract Writer getWriter(String encoding) throws IOException;
+
+    public abstract void switchToNormalMode();
+
+    public abstract void switchToPushMode();
+
+    public abstract void update(HttpServletRequest request, HttpServletResponse response);
+
+    public abstract void updateOnReload(Object request, Object response);
+
+    public Map getApplicationSessionMap() {
+        return getSessionMap();
+    }
+
+    //todo: see if we can execute full JSP cycle all the time (not only when page is parsed)
+    //todo: this way the bundles are put into the request map every time, so we don't have to carry
+    //todo: them between requests
+    public Map collectBundles() {
+        Map result = new HashMap();
+        Iterator entries = getRequestMap().entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry entry = (Map.Entry) entries.next();
+            Object value = entry.getValue();
+            if (value != null) {
+                String className = value.getClass().getName();
+                if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
+                        (className.indexOf("BundleMap") > 0)) {     //MyFaces
+                    result.put(entry.getKey(), value);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public void injectBundles(Map bundles) {
+        getRequestMap().putAll(bundles);
+    }
+
+    protected void insertPostbackKey() {
+        if (null != PostBackKey) {
+            getRequestParameterMap().put(PostBackKey, "not reload");
+            getRequestParameterValuesMap().put(PostBackKey, new String[]{"not reload"});
+        }
+    }
+
+    /**
+     * Any GET request performed by the browser is a non-faces request to the framework.
+     * (JSF-spec chapter 2, introduction). Given this, the framework must create a new
+     * viewRoot for the request, even if the viewId has already been visited. (Spec
+     * section 2.1.1) <p>
+     * <p/>
+     * Only during GET's remember, not during partial submits, where the JSF framework must
+     * be allowed to attempt to restore the view. There is a great deal of Seam related code
+     * that depends on this happening. So put in a token that allows the D2DViewHandler
+     * to differentiate between the non-faces request, and the postbacks, for this
+     * request, which will allow the ViewHandler to make the right choice, since we keep
+     * the view around for all types of requests
+     */
+    protected void insertNewViewrootToken() {
+        if (SeamUtilities.isSeamEnvironment()) {
+            getRequestParameterMap().put(
+                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
+                    Boolean.TRUE);
+        }
+    }
+
+    /**
+     * If in Standard request scope mode, remove all parameters from
+     * the Request Map.
+     */
+    public void resetRequestMap() {
+        if (standardScope) {
+            getRequestMap().clear();
+        }
+    }
+
+    public void dispose() {
+        getRequestMap().clear();
+        commandQueue.take();
+    }
+
+    protected void applySeamLifecycleShortcut(boolean persistSeamKey) {
+        if (persistSeamKey) {
+            getRequestParameterMap().put(
+                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
+                    Boolean.TRUE);
+        }
+    }
+
+    protected boolean isSeamLifecycleShortcut() {
+        boolean persistSeamKey = false;
+        Map map = getRequestParameterMap();
+        if (map != null) {
+            persistSeamKey = map.containsKey(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
+        }
+
+        return persistSeamKey;
+    }
+
+    protected interface Redirector {
+        void redirect(String uri);
+    }
+
+    protected interface CookieTransporter {
+        void send(Cookie cookie);
+    }
 }

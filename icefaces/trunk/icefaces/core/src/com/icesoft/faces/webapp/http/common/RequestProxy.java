@@ -80,4 +80,8 @@ public class RequestProxy implements Request {
     public void respondWith(ResponseHandler handler) throws Exception {
         request.respondWith(handler);
     }
+
+    public void detectEnvironment(Environment environment) throws Exception {
+        request.detectEnvironment(environment);
+    }
 }

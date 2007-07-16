@@ -33,9 +33,8 @@
 
 package com.icesoft.faces.util.event.servlet;
 
-import java.util.EventObject;
-
 import javax.servlet.http.HttpSession;
+import java.util.EventObject;
 
 /**
  * The <code>AbstractSessionEvent</code> class provides a default implementation
@@ -64,12 +63,12 @@ public abstract class AbstractSessionEvent
     protected AbstractSessionEvent(HttpSession source, String iceFacesId)
             throws IllegalArgumentException {
         super(source);
-        if (iceFacesId == null) {
-            throw new IllegalArgumentException("iceFacesId is null");
-        }
-        if (iceFacesId.trim().length() == 0) {
-            throw new IllegalArgumentException("iceFacesId is empty");
-        }
+//        if (iceFacesId == null) {
+//            throw new IllegalArgumentException("iceFacesId is null");
+//        }
+//        if (iceFacesId.trim().length() == 0) {
+//            throw new IllegalArgumentException("iceFacesId is empty");
+//        }
         this.iceFacesId = iceFacesId;
     }
 

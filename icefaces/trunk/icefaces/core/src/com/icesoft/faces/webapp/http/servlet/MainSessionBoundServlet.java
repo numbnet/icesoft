@@ -1,15 +1,23 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.context.View;
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
 import com.icesoft.faces.webapp.http.core.IDVerifier;
+import com.icesoft.faces.webapp.http.core.MultiViewServer;
 import com.icesoft.faces.webapp.http.core.ReceivePing;
 import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
-import com.icesoft.faces.webapp.http.core.SendUpdatedViews;
 import com.icesoft.faces.webapp.http.core.SendUpdates;
+import com.icesoft.faces.webapp.http.core.SingleViewServer;
+import com.icesoft.faces.webapp.http.core.UploadServer;
+import com.icesoft.faces.webapp.http.core.ViewBoundServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
 import org.apache.commons.logging.Log;
@@ -27,9 +35,10 @@ import java.util.Map;
 public class MainSessionBoundServlet implements PseudoServlet {
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final SessionExpired SessionExpired = new SessionExpired();
-    private static final PseudoServlet NOOPServlet = new PseudoServlet() {
-        public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    private static final Server NOOPServer = new Server() {
+        public void service(Request request) throws Exception {
         }
+
         public void shutdown() {
         }
     };
@@ -42,59 +51,60 @@ public class MainSessionBoundServlet implements PseudoServlet {
             allUpdatedViews.clear();
         }
     };
-    private PathDispatcher dispatcher = new PathDispatcher();
     private Map views = new HashMap();
     private ViewQueue allUpdatedViews = new ViewQueue();
     private Collection synchronouslyUpdatedViews = new HashSet();
-
-    private HttpSession session;
     private String sessionID;
+    private PseudoServlet servlet;
+    private HttpSession session;
 
     public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, Configuration configuration) {
         this.session = session;
         sessionID = idGenerator.newIdentifier();
-        ContextEventRepeater.iceFacesIdRetrieved(this.session, sessionID);
+        ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
-        final PseudoServlet viewServlet;
-        final PseudoServlet disposeViews;
+        final Server viewServlet;
+        final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServlet(this.session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
-            disposeViews = new BasicAdaptingServlet(new IDVerifier(sessionID, new DisposeViews(views)));
+            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
+            disposeViews = new IDVerifier(sessionID, new DisposeViews(views));
         } else {
-            viewServlet = new SingleViewServlet(this.session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
-            disposeViews = NOOPServlet;
+            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
+            disposeViews = NOOPServer;
         }
 
-        final PseudoServlet sendUpdatedViews;
-        final PseudoServlet sendUpdates;
-        final PseudoServlet receivePing;
+        final Server sendUpdatedViews;
+        final Server sendUpdates;
+        final Server receivePing;
         if (configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
             //drain the updated views queue if in 'synchronous mode'
             allUpdatedViews.onPut(drainUpdatedViews);
-            sendUpdatedViews = NOOPServlet;
-            sendUpdates = NOOPServlet;
-            receivePing = NOOPServlet;
+            sendUpdatedViews = NOOPServer;
+            sendUpdates = NOOPServer;
+            receivePing = NOOPServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new EnvironmentAdaptingServlet(new IDVerifier(sessionID, new SendUpdatedViews(synchronouslyUpdatedViews, allUpdatedViews)), configuration, sessionID, synchronouslyUpdatedViews, allUpdatedViews, this.session.getServletContext());
-            sendUpdates = new BasicAdaptingServlet(new IDVerifier(sessionID, new SendUpdates(views)));
-            receivePing = new BasicAdaptingServlet(new IDVerifier(sessionID, new ReceivePing(views)));
+            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), configuration));
+            sendUpdates = new IDVerifier(sessionID, new SendUpdates(views));
+            receivePing = new IDVerifier(sessionID, new ReceivePing(views));
         }
 
-        PseudoServlet upload = new UploadServlet(views, configuration, this.session.getServletContext());
-        PseudoServlet receiveSendUpdates = new ViewBoundAdaptingServlet(new IDVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews)), sessionMonitor, views);
+        Server upload = new UploadServer(views, configuration);
+        Server receiveSendUpdates = new ViewBoundServer(new IDVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews)), sessionMonitor, views);
 
+        PathDispatcherServer dispatcher = new PathDispatcherServer();
         dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
         dispatcher.dispatchOn(".*block\\/receive\\-updated\\-views$", sendUpdatedViews);
         dispatcher.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
         dispatcher.dispatchOn(".*block\\/ping$", receivePing);
-        dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);        
+        dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
+        servlet = new EnvironmentAdaptingServlet(dispatcher, configuration);
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        dispatcher.service(request, response);
+        servlet.service(request, response);
     }
 
     public void shutdown() {
@@ -110,22 +120,22 @@ public class MainSessionBoundServlet implements PseudoServlet {
         } catch (InterruptedException e) {
             //do nothing
         } finally {
-            dispatcher.shutdown();
+            servlet.shutdown();
         }
 
         Iterator viewIterator = views.values().iterator();
         while (viewIterator.hasNext()) {
-            ServletView view = (ServletView) viewIterator.next();
+            View view = (View) viewIterator.next();
             view.dispose();
         }
     }
 
     //Exposing queues for Tomcat 6 Ajax Push
-    public ViewQueue getAllUpdatedViews()  {
+    public ViewQueue getAllUpdatedViews() {
         return allUpdatedViews;
     }
 
-    public Collection getSynchronouslyUpdatedViews()  {
+    public Collection getSynchronouslyUpdatedViews() {
         return synchronouslyUpdatedViews;
     }
 }
