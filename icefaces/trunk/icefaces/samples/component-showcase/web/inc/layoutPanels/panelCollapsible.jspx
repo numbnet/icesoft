@@ -35,13 +35,14 @@
         In this demonstration, ice:dataTable is used to display data. There is
         a control on the data to hide/show the table columns.
         -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="demo" label="#{msgs['tabbedHeadings.demo']}">
 
 <ice:panelGrid styleClass="componentLayoutRootTable"
                 columns="1" width="100%">
@@ -58,10 +59,10 @@
 </ice:panelGroup>
 <ice:panelGroup>
 <!-- Link based expandable panel demo -->
-<ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+<ice:panelCollapsible id="linkPanel" expanded="#{true}" styleClass="pnlClpsblDemo">
     <f:facet name="header">
         <ice:panelGroup styleClass="expandableStateIndicator">
-            <ice:outputText
+            <ice:outputText id="linkHeader"
                     value="#{msgs['component.collapsiblePanel.links.header']}"/>
         </ice:panelGroup>
     </f:facet>
@@ -69,65 +70,65 @@
         <!-- icfaces.org -->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://icefaces.org/main/home/index.jsp">
-            <ice:outputText value="ICEfaces.org"/>
+            <ice:outputText id="icefacesOrgLink" value="ICEfaces.org"/>
         </ice:outputLink>
 
         <!-- icfaces.org downloads-->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://icefaces.org/main/downloads/os-downloads.iface">
-            <ice:outputText value="ICEfaces Downloads"/>
+            <ice:outputText id="downloadsLink" value="ICEfaces Downloads"/>
         </ice:outputLink>
 
         <!-- icfaces.org JForumn-->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://www.icefaces.org/JForum/">
-            <ice:outputText value="ICEfaces JForum"/>
+            <ice:outputText id="jforumLink" value="ICEfaces JForum"/>
         </ice:outputLink>
 
 
         <!-- icfaces.org SVN-->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://icefaces.org/main/downloads/svninfo.iface">
-            <ice:outputText value="ICEfaces SVN"/>
+            <ice:outputText id="svnLink" value="ICEfaces SVN"/>
         </ice:outputLink>
 
         <!-- icfaces.org Projects-->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://icefaces.org/main/downloads/project-downloads.iface">
-            <ice:outputText value="ICEfaces Projects"/>
+            <ice:outputText id="projectsLink" value="ICEfaces Projects"/>
         </ice:outputLink>
 
         <!-- icfaces.org Tutorials -->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://icefaces.org/main/resources/tutorials.iface">
-            <ice:outputText value="ICEfaces Tutorials"/>
+            <ice:outputText id="tutorialsLink" value="ICEfaces Tutorials"/>
         </ice:outputLink>
 
         <!-- icfaces.org Time Zone -->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://timezone.icefaces.org/timezone5/">
-            <ice:outputText value="Time Zone"/>
+            <ice:outputText id="timezoneLink" value="Time Zone"/>
         </ice:outputLink>
 
         <!-- icfaces.org Component Showcase -->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://webmc.icefaces.org/">
-            <ice:outputText value="WebMC"/>
+            <ice:outputText id="webmcLink" value="WebMC"/>
         </ice:outputLink>
 
         <!-- icfaces.org  Auction Monitor -->
         <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
                         value="http://auctionmonitor.icefaces.org/">
-            <ice:outputText value="Auction Monitor"/>
+            <ice:outputText id="auctionMonitorLink" value="Auction Monitor"/>
         </ice:outputLink>
 
     </ice:panelGrid>
 </ice:panelCollapsible>
 <!-- Form input based expandable panel demo -->
-<ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+<ice:panelCollapsible id="formPanel" expanded="#{true}" styleClass="pnlClpsblDemo">
     <f:facet name="header">
         <ice:panelGroup styleClass="expandableStateIndicator">
-            <ice:outputText value="#{msgs['component.collapsiblePanel.form.header']}"/>
+            <ice:outputText id="formHeader" value="#{msgs['component.collapsiblePanel.form.header']}"/>
         </ice:panelGroup>
     </f:facet>
     <ice:panelGroup >
@@ -156,29 +157,29 @@
         </ice:panelGrid>
     </ice:panelGroup>
 </ice:panelCollapsible>
-<ice:panelCollapsible expanded="#{false}" styleClass="pnlClpsblDemo">
+<ice:panelCollapsible id="imagePanel" expanded="#{false}" styleClass="pnlClpsblDemo">
     <f:facet name="header">
         <ice:panelGroup styleClass="expandableStateIndicator">
-            <ice:outputText
+            <ice:outputText id="imageHeader"
                     value="#{msgs['component.collapsiblePanel.image.header']}"/>
         </ice:panelGroup>
     </f:facet>
     <ice:panelGroup style="text-align: center;">
-        <ice:graphicImage value="./images/panelCollapsible/pnlClpsbl_logo.gif"
+        <ice:graphicImage id="image" value="./images/panelCollapsible/pnlClpsbl_logo.gif"
                           width="359px" height="90"
                           alt="ICEfaces.org"
                           title="ICEfaces.org"/>
     </ice:panelGroup>
 </ice:panelCollapsible>
 <!-- Text output based expandable panel demo -->
-<ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
+<ice:panelCollapsible id="textPanel" expanded="#{true}" styleClass="pnlClpsblDemo">
     <f:facet name="header">
         <ice:panelGroup styleClass="expandableStateIndicator">
-            <ice:outputText value="#{msgs['component.collapsiblePanel.text.header']}"/>
+            <ice:outputText id="textHeader" value="#{msgs['component.collapsiblePanel.text.header']}"/>
         </ice:panelGroup>
     </f:facet>
     <ice:panelGroup >
-            <ice:outputText
+            <ice:outputText id="textDesc"
                 value="#{msgs['component.collapsiblePanel.text.description']}"/>
     </ice:panelGroup>
 </ice:panelCollapsible>
@@ -192,7 +193,7 @@
   The bean is responsible for streaming html documentation to
   this placeholder
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+<ice:panelTab id="description" label="#{msgs['tabbedHeadings.description']}">
     <iframe src="./docs/panelCollapsibleDoc.html"
             class="includeIframe"
             width="100%"></iframe>
@@ -202,7 +203,7 @@
   Template for component source code.  This servlet loads
   the component example jsp include as an xml stream
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+<ice:panelTab id="source" label="#{msgs['tabbedHeadings.source']}">
     <iframe
             src="./sourcecodeStream.html?path=./inc/layoutPanels/panelCollapsible.jspx"
             class="includeIframe" width="100%"></iframe>
