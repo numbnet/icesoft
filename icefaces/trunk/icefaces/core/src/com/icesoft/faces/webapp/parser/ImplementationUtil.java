@@ -64,6 +64,7 @@ public class ImplementationUtil {
      */
     private static boolean isRI = false;
     private static boolean isMyFaces = false;
+    private static boolean isJSF12 = false;
 
     /**
      * Marker classes whose presence we used to detect which implementation we
@@ -73,6 +74,8 @@ public class ImplementationUtil {
             "com.sun.faces.application.ApplicationImpl";
     private static String MYFACES_MARKER =
             "org.apache.myfaces.application.ApplicationImpl";
+    private static String JSF12_MARKER =
+            "javax.faces.webapp.UIComponentELTag";
 
     /**
      * In a couple of places, we need to access the component stack from the
@@ -104,6 +107,17 @@ public class ImplementationUtil {
             log.trace("JSF-RI: " + isRI + "  MyFaces: " + isMyFaces);
         }
 
+        //Test for JSF 1.2
+        try {
+            Class.forName(JSF12_MARKER);
+            isJSF12 = true;
+        } catch (Throwable t) {
+        }
+
+        if (log.isTraceEnabled()) {
+            log.trace("JSF-12: " + isJSF12);
+        }
+
     }
 
     /**
@@ -133,7 +147,7 @@ public class ImplementationUtil {
      * @return true if the JSF implementation is JSF 1.2
      */
     public static boolean isJSF12() {
-        return ComponentRuleSet.isJSF12();
+        return isJSF12;
     }
 
 

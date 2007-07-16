@@ -73,6 +73,8 @@ public class ComponentRuleSet extends RuleSetBase {
             setPropertiesRuleClass =
                     Class.forName(
                             "org.apache.commons.digester.SetPropertiesRule");
+            //Test for JSF 1.2
+            Class.forName("javax.faces.webapp.UIComponentELTag");
             setPropertiesRuleClass =
                     Class.forName(
                             "com.icesoft.faces.webapp.parser.ELSetPropertiesRule");
