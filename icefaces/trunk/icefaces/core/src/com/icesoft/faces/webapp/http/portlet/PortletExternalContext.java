@@ -5,8 +5,6 @@ import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
-import com.icesoft.faces.webapp.command.Redirect;
-import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
 
@@ -289,18 +287,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void switchToPushMode() {
-        redirector = new PortletExternalContext.Redirector() {
-            public void redirect(String uri) {
-                commandQueue.put(new Redirect(uri));
-            }
-        };
-
-        cookieTransporter = new PortletExternalContext.CookieTransporter() {
-            public void send(Cookie cookie) {
-                commandQueue.put(new SetCookie(cookie));
-            }
-        };
-
+        redirector = new CommandQueueRedirector();
+        cookieTransporter = new CommandQueueCookieTransporter();
         resetRequestMap();
     }
 

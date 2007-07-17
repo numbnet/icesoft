@@ -38,6 +38,8 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.command.Redirect;
+import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
@@ -271,11 +273,24 @@ public abstract class BridgeExternalContext extends ExternalContext {
         return requestCookieMap;
     }
 
-    protected interface Redirector {
+    public interface Redirector {
         void redirect(String uri);
     }
 
-    protected interface CookieTransporter {
+    public interface CookieTransporter {
         void send(Cookie cookie);
     }
+
+    public class CommandQueueRedirector implements Redirector {
+        public void redirect(String uri) {
+            commandQueue.put(new Redirect(uri));
+        }
+    }
+
+    public class CommandQueueCookieTransporter implements CookieTransporter {
+        public void send(Cookie cookie) {
+            commandQueue.put(new SetCookie(cookie));
+        }
+    }
+
 }
