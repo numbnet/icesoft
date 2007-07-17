@@ -43,6 +43,7 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
 
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -77,6 +79,18 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected String viewIdentifier;
     protected CommandQueue commandQueue;
     protected boolean standardScope;
+    protected Map applicationMap;
+    protected Map sessionMap;
+    protected Map requestMap;
+    protected Map initParameterMap;
+    protected Redirector redirector;
+    protected CookieTransporter cookieTransporter;
+    protected String requestServletPath;
+    protected String requestPathInfo;
+    protected Map requestParameterMap;
+    protected Map requestParameterValuesMap;
+    protected Map requestCookieMap;
+    protected Map responseCookieMap;
 
     protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration) {
         this.viewIdentifier = viewIdentifier;
@@ -85,20 +99,6 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public abstract String getRequestURI();
-
-    public abstract void setRequestServletPath(String viewId);
-
-    public abstract void setRequestPathInfo(String viewId);
-
-    public abstract void addCookie(Cookie cookie);
-
-    /**
-     * This method is not necessary. The application developer can keep track
-     * of the added cookies.
-     *
-     * @deprecated
-     */
-    public abstract Map getResponseCookieMap();
 
     public abstract Writer getWriter(String encoding) throws IOException;
 
@@ -110,8 +110,31 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     public abstract void updateOnReload(Object request, Object response);
 
+    public void addCookie(Cookie cookie) {
+        responseCookieMap.put(cookie.getName(), cookie);
+        cookieTransporter.send(cookie);
+    }
+
+    public void setRequestPathInfo(String viewId) {
+        requestPathInfo = viewId;
+    }
+
+    public void setRequestServletPath(String viewId) {
+        requestServletPath = viewId;
+    }
+
     public Map getApplicationSessionMap() {
-        return getSessionMap();
+        return sessionMap;
+    }
+
+    /**
+     * This method is not necessary. The application developer can keep track
+     * of the added cookies.
+     *
+     * @deprecated
+     */
+    public Map getResponseCookieMap() {
+        return responseCookieMap;
     }
 
     //todo: see if we can execute full JSP cycle all the time (not only when page is parsed)
@@ -119,7 +142,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     //todo: them between requests
     public Map collectBundles() {
         Map result = new HashMap();
-        Iterator entries = getRequestMap().entrySet().iterator();
+        Iterator entries = requestMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             Object value = entry.getValue();
@@ -136,13 +159,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public void injectBundles(Map bundles) {
-        getRequestMap().putAll(bundles);
+        requestMap.putAll(bundles);
     }
 
     protected void insertPostbackKey() {
         if (null != PostBackKey) {
-            getRequestParameterMap().put(PostBackKey, "not reload");
-            getRequestParameterValuesMap().put(PostBackKey, new String[]{"not reload"});
+            requestParameterMap.put(PostBackKey, "not reload");
+            requestParameterValuesMap.put(PostBackKey, new String[]{"not reload"});
         }
     }
 
@@ -161,7 +184,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
      */
     protected void insertNewViewrootToken() {
         if (SeamUtilities.isSeamEnvironment()) {
-            getRequestParameterMap().put(
+            requestParameterMap.put(
                     PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
                     Boolean.TRUE);
         }
@@ -173,18 +196,18 @@ public abstract class BridgeExternalContext extends ExternalContext {
      */
     public void resetRequestMap() {
         if (standardScope) {
-            getRequestMap().clear();
+            requestMap.clear();
         }
     }
 
     public void dispose() {
-        getRequestMap().clear();
+        requestMap.clear();
         commandQueue.take();
     }
 
     protected void applySeamLifecycleShortcut(boolean persistSeamKey) {
         if (persistSeamKey) {
-            getRequestParameterMap().put(
+            requestParameterMap.put(
                     PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
                     Boolean.TRUE);
         }
@@ -192,12 +215,60 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     protected boolean isSeamLifecycleShortcut() {
         boolean persistSeamKey = false;
-        Map map = getRequestParameterMap();
-        if (map != null) {
-            persistSeamKey = map.containsKey(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
+        if (requestParameterMap != null) {
+            persistSeamKey = requestParameterMap.containsKey(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
         }
 
         return persistSeamKey;
+    }
+
+    public Map getApplicationMap() {
+        return applicationMap;
+    }
+
+    public Map getSessionMap() {
+        return sessionMap;
+    }
+
+    public Map getRequestMap() {
+        return requestMap;
+    }
+
+    public String getInitParameter(String name) {
+        return (String) initParameterMap.get(name);
+    }
+
+    public Map getInitParameterMap() {
+        return initParameterMap;
+    }
+
+    public void redirect(String requestURI) throws IOException {
+        URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
+        String query = uri.getQuery();
+        if (query == null) {
+            redirector.redirect(uri + "?rvn=" + viewIdentifier);
+        } else if (query.matches(".*rvn=.*")) {
+            redirector.redirect(uri.toString());
+        } else {
+            redirector.redirect(uri + "&rvn=" + viewIdentifier);
+        }
+        FacesContext.getCurrentInstance().responseComplete();
+    }
+
+    public Map getRequestParameterMap() {
+        return requestParameterMap;
+    }
+
+    public Map getRequestParameterValuesMap() {
+        return requestParameterValuesMap;
+    }
+
+    public Iterator getRequestParameterNames() {
+        return requestParameterMap.keySet().iterator();
+    }
+
+    public Map getRequestCookieMap() {
+        return requestCookieMap;
     }
 
     protected interface Redirector {
