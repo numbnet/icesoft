@@ -343,6 +343,7 @@ public class PanelCollapsible extends UIComponentBase implements ActionSource {
     }
     
     public void processUpdates(FacesContext context) {
+        super.processUpdates(context);
         ValueBinding vb = getValueBinding("expanded");
         if (vb != null) {
             try {
