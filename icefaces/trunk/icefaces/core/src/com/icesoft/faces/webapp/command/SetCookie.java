@@ -10,9 +10,11 @@ import java.util.TimeZone;
 
 public class SetCookie implements Command {
     private final static DateFormat CookieDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z");
+
     static {
         CookieDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
+
     private Cookie cookie;
 
     public SetCookie(Cookie cookie) {
@@ -61,7 +63,7 @@ public class SetCookie implements Command {
         writer.write("; ");
         int maxAge = cookie.getMaxAge();
         if (maxAge >= 0) {
-            Date expiryDate = new Date(System.currentTimeMillis() + maxAge * 1000);
+            Date expiryDate = new Date(System.currentTimeMillis() + maxAge * 1000l);
             writer.write("expires=");
             writer.write(CookieDateFormat.format(expiryDate));
             writer.write("; ");
