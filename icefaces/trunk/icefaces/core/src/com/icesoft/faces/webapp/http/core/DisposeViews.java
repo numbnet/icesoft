@@ -14,7 +14,7 @@ public class DisposeViews implements Server {
     }
 
     public void service(Request request) throws Exception {
-        String[] viewIdentifiers = request.getParameterAsStrings("viewNumber");
+        String[] viewIdentifiers = request.getParameterAsStrings("ice.view.all");
         for (int i = 0; i < viewIdentifiers.length; i++) {
             String viewIdentifier = viewIdentifiers[i];
             //todo: remove dependency on com.icesoft.faces.webapp.http.servlet package

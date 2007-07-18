@@ -100,6 +100,7 @@
                                         },
 
         serializeOn: function(query) {
+            this.serializeView(query);
         },
 
         sendOn: function(connection) {
@@ -139,6 +140,26 @@
         eachListenerName: function(iterator) {
             this.MouseListenerNames.each(iterator);
             this.KeyListenerNames.each(iterator);
+        },
+
+        serializeView: function(query) {
+            var view;
+            //traverse parents in search of 'viewIdentifier' property
+            var parent = this.element;
+            while (parent) {
+                if (parent.viewIdentifier) {
+                    view = parent.viewIdentifier;
+                    break;
+                } else {
+                    parent = parent.parentNode;
+                }
+            }
+
+            if (view) {
+                query.add("ice.view.active", view);
+            } else {
+                throw 'viewIdentifier is missing';
+            }
         }
     });
 
@@ -238,6 +259,7 @@
                 case 'checkbox':
                 case 'radio': if (this.element.checked) query.add(this.element.name, this.element.value || 'on'); break;
             }
+            this.serializeView(query);
         },
 
         eachListenerName: function(iterator) {
@@ -263,6 +285,7 @@
                 var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
                 query.add(this.element.name, value);
             }.bind(this));
+            this.serializeView(query);
         }
     });
 
@@ -283,6 +306,7 @@
 
         serializeOn: function(query) {
             query.add(this.element.name, this.element.value);
+            this.serializeView(query);
         }
     });
 
@@ -332,6 +356,7 @@
             this.formElements().each(function(formElement) {
                 if (!formElement.isSubmit()) formElement.serializeOn(query);
             });
+            this.serializeView(query);
         },
 
         eachListenerName: function(iterator) {
@@ -397,6 +422,7 @@
 
         serializeOn: function(query) {
             if (this.element.name) query.add(this.element.name, this.element.name);
+            this.serializeView(query);
         },
 
         form: function() {

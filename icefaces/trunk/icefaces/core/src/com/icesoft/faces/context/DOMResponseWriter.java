@@ -353,7 +353,11 @@ public class DOMResponseWriter extends ResponseWriter {
         Map session = context.getExternalContext().getSessionMap();
         ElementController.from(session).addInto(body);
 
-        String sessionIDScript = "window.session='" + context.getIceFacesId() + "'; ";
+        String sessionIDScript = "window.session='" + context.getIceFacesId() + "';\n";
+        //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
+        String viewIDScript = "document.getElementById('configuration-script').parentNode.viewIdentifier=" + context.getViewNumber() + ";\n";
+        String viewsIDScript = "if (!window.views) window.views = []; window.views.push(" + context.getViewNumber() + ");\n";
+
         String configurationScript =
                 "window.configuration = {" +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
@@ -367,11 +371,12 @@ public class DOMResponseWriter extends ResponseWriter {
                         "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
                         "}" +
                         "}" +
-                        "};";
+                        "};\n";
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
+        configurationElement.setAttribute("id", "configuration-script");
         configurationElement.setAttribute("language", "javascript");
-        configurationElement.appendChild(document.createTextNode(sessionIDScript + configurationScript));
+        configurationElement.appendChild(document.createTextNode(sessionIDScript + viewIDScript + viewsIDScript + configurationScript));
         body.appendChild(configurationElement);
     }
 

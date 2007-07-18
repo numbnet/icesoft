@@ -55,9 +55,9 @@ public class UploadServer implements Server {
                     FileItemStream item = iter.next();
                     if (item.isFormField()) {
                         String name = item.getFieldName();
-                        if ("componentID".equals(name)) {
+                        if ("ice.component".equals(name)) {
                             componentID = Streams.asString(item.openStream());
-                        } else if ("viewNumber".equals(name)) {
+                        } else if ("ice.view.active".equals(name)) {
                             viewIdentifier = Streams.asString(item.openStream());
                         }
                     } else {

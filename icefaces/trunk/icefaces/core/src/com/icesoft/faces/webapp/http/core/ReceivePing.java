@@ -6,11 +6,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
-
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Map;
 
 public class ReceivePing implements Server, ResponseHandler {
 
@@ -24,18 +23,18 @@ public class ReceivePing implements Server, ResponseHandler {
     }
 
     public void service(Request request) throws Exception {
-        String[] viewIdentifiers = request.getParameterAsStrings("viewNumber");
+        String[] viewIdentifiers = request.getParameterAsStrings("ice.view.all");
         for (int i = 0; i < viewIdentifiers.length; i++) {
             CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifiers[i]);
-            if( queue != null ){
+            if (queue != null) {
                 queue.put(PONG);
-            } else {                              
-                if( log.isWarnEnabled() ){
-                    log.warn( "could not get a valid queue for " + viewIdentifiers[i] );
+            } else {
+                if (log.isWarnEnabled()) {
+                    log.warn("could not get a valid queue for " + viewIdentifiers[i]);
                 }
             }
         }
-        request.respondWith(this);        
+        request.respondWith(this);
     }
 
     public void respond(Response response) throws Exception {

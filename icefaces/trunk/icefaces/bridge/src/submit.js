@@ -34,7 +34,7 @@
 function iceSubmitPartial(form, component, evt) {
     form = (form ? form : component.form);
     Ice.Parameter.Query.create(function(query) {
-        'partial'.associateWith(true).serializeOn(query);
+        'ice.submit.partial'.associateWith(true).serializeOn(query);
 
         $event(evt, component).serializeOn(query);
         if (form && form.id) $element(form).serializeOn(query);
@@ -58,7 +58,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
             //cancel the default action to block 'onclick' event on the submit element
             event.cancelDefaultAction();
             Ice.Parameter.Query.create(function(query) {
-                'partial'.associateWith(false).serializeOn(query);
+                'ice.submit.partial'.associateWith(false).serializeOn(query);
                 event.serializeOn(query);
                 if (submit) submit.serializeOn(query);
                 if (form) form.serializeOn(query);
@@ -68,7 +68,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
         var component = aComponent && aComponent.id ? $element(aComponent) : null;
 
         Ice.Parameter.Query.create(function(query) {
-            'partial'.associateWith(false).serializeOn(query);
+            'ice.submit.partial'.associateWith(false).serializeOn(query);
             event.serializeOn(query);
             if (component) component.serializeOn(query);
             if (form) form.serializeOn(query);
@@ -81,6 +81,6 @@ function iceSubmit(aForm, aComponent, anEvent) {
 //todo: determine if the cleanup of hidden fields should be at framework or component level
 function resetHiddenFieldsFor(aForm) {
     $enumerate(aForm.elements).each(function(formElement) {
-        if (formElement.type == 'hidden' && formElement.id == '' && formElement.name != 'viewNumber') formElement.value = '';
+        if (formElement.type == 'hidden' && formElement.id == '') formElement.value = '';
     });
 }

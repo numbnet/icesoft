@@ -1,25 +1,24 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.el.PartialSubmitValueBinding;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.el.PartialSubmitValueBinding;
 
 import javax.faces.FactoryFinder;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
-import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class ReceiveSendUpdates implements Server {
     private static final String REQUIRED = "required";
@@ -34,11 +33,11 @@ public class ReceiveSendUpdates implements Server {
     }
 
     public void service(final Request request) throws Exception {
-        List viewIdentifiers = Arrays.asList(request.getParameterAsStrings("viewNumber"));
+        List viewIdentifiers = Arrays.asList(request.getParameterAsStrings("ice.view.all"));
         synchronouslyUpdatedViews.addAll(viewIdentifiers);
 
         FacesContext context = FacesContext.getCurrentInstance();
-        if (request.getParameterAsBoolean("partial", false)) {
+        if (request.getParameterAsBoolean("ice.submit.partial", false)) {
             String componentID = request.getParameter("ice.event.captured");
             UIComponent component = D2DViewHandler.findComponent(componentID, context.getViewRoot());
             renderCyclePartial(context, component, componentID);
@@ -77,7 +76,7 @@ public class ReceiveSendUpdates implements Server {
         UIInput next = null;
         while (i.hasNext()) {
             next = (UIInput) i.next();
-            ValueBinding valueBinding = (ValueBinding) 
+            ValueBinding valueBinding = (ValueBinding)
                     requiredComponents.get(next);
             if (null != valueBinding) {
                 next.setValueBinding(REQUIRED, valueBinding);
@@ -88,7 +87,7 @@ public class ReceiveSendUpdates implements Server {
     }
 
     private Map setRequiredFalseInFormContaining(
-            UIComponent component, String clientId)  {
+            UIComponent component, String clientId) {
         Map alteredComponents = new HashMap();
         UIComponent form = getContainingForm(component);
         setRequiredFalseOnAllChildrenExceptOne(form, component, clientId,
@@ -98,9 +97,9 @@ public class ReceiveSendUpdates implements Server {
 
 
     private void setRequiredFalseOnAllChildrenExceptOne(
-            UIComponent parent, 
+            UIComponent parent,
             UIComponent componentToAvoid, String clientIdToAvoid,
-            Map alteredComponents )  {
+            Map alteredComponents) {
 
         //turn off required simply with false for all but iterative case
         ValueBinding FALSE_BINDING = FacesContext.getCurrentInstance()
@@ -113,16 +112,16 @@ public class ReceiveSendUpdates implements Server {
             if (next instanceof UIInput) {
                 UIInput input = (UIInput) next;
                 ValueBinding valueBinding =
-                    input.getValueBinding(REQUIRED);
-                if (null != valueBinding)  {
+                        input.getValueBinding(REQUIRED);
+                if (null != valueBinding) {
                     ValueBinding replacementBinding = null;
                     if (input == componentToAvoid) {
                         //The component that caused the partialSubmit may
                         //be used iteratively (in a dataTable).  We use
                         //PartialSubmitValueBinding to detect which single
                         //client instance of the component to avoid
-	                replacementBinding = new PartialSubmitValueBinding(
-                                valueBinding, input, clientIdToAvoid );
+                        replacementBinding = new PartialSubmitValueBinding(
+                                valueBinding, input, clientIdToAvoid);
                     } else {
                         replacementBinding = FALSE_BINDING;
                     }
@@ -132,11 +131,11 @@ public class ReceiveSendUpdates implements Server {
                     if (input.isRequired() && input != componentToAvoid) {
                         input.setRequired(false);
                         alteredComponents.put(input, null);
-                   }
+                    }
                 }
             }
-            setRequiredFalseOnAllChildrenExceptOne( next, 
-                    componentToAvoid, clientIdToAvoid, alteredComponents );
+            setRequiredFalseOnAllChildrenExceptOne(next,
+                    componentToAvoid, clientIdToAvoid, alteredComponents);
         }
     }
 

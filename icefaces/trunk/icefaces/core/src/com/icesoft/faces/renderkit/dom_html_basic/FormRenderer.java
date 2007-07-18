@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
-import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.util.SeamUtilities;
@@ -57,9 +56,6 @@ public class FormRenderer extends DomBasicRenderer {
     private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY =
             "com.icesoft.faces.FormRequiredHidden";
     public static final String FOCUS_HIDDEN_FIELD = "focus_hidden_field";
-    public static final String VIEWNUMBER_HIDDEN_FIELD = "viewNumber";
-
-
     private static final Log log = LogFactory.getLog(FormRenderer.class);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -69,7 +65,7 @@ public class FormRenderer extends DomBasicRenderer {
                 facesContext.getExternalContext().getRequestParameterMap();
         String formClientId = uiForm.getClientId(facesContext);
         if (requestParameterMap.containsKey(formClientId) ||
-            uiComponent.getAttributes().containsKey("fileUploaded")) {
+                uiComponent.getAttributes().containsKey("fileUploaded")) {
             uiForm.setSubmitted(true);
         } else {
             uiForm.setSubmitted(false);
@@ -108,7 +104,7 @@ public class FormRenderer extends DomBasicRenderer {
                 root.setAttribute("accept-charset", acceptcharset);
             }
             //redirect form submits
-            String redirectScript = "'" + formClientId +"'.asExtendedElement().captureAndRedirectSubmit();";
+            String redirectScript = "'" + formClientId + "'.asExtendedElement().captureAndRedirectSubmit();";
             Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
             scriptElement.setAttribute("language", "javascript");
             scriptElement.appendChild(domContext.createTextNode(redirectScript));
@@ -127,19 +123,9 @@ public class FormRenderer extends DomBasicRenderer {
             Element cssUpdateField = domContext.createElement(HTML.INPUT_ELEM);
             cssUpdateField.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
             cssUpdateField.setAttribute(HTML.NAME_ATTR,
-                                        CurrentStyle.CSS_UPDATE_FIELD);
+                    CurrentStyle.CSS_UPDATE_FIELD);
             cssUpdateField.setAttribute(HTML.VALUE_ATTR, "");
             root.appendChild(cssUpdateField);
-
-            // support for VIEWNUMBER_HIDDEN_FIELD
-            if (!domContext.isStreamWriting()) {
-                Element viewNumberElement = domContext.createElement("input");
-                viewNumberElement.setAttribute("type", "hidden");
-                viewNumberElement.setAttribute("name", VIEWNUMBER_HIDDEN_FIELD);
-                viewNumberElement.setAttribute("value",
-                                               ((BridgeFacesContext) facesContext).getViewNumber());
-                root.appendChild(viewNumberElement);
-            }
         }
 
         // This has to occur outside the isInitialized test, as it has to happen
@@ -155,7 +141,7 @@ public class FormRenderer extends DomBasicRenderer {
                     domContext.createElement(HTML.INPUT_ELEM);
             if (log.isDebugEnabled()) {
                 log.debug("Embedding Seam Param - name: " + conversationParamName +
-                          ", value: " + conversationId);
+                        ", value: " + conversationId);
             }
             conversationIDElement
                     .setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
@@ -176,7 +162,7 @@ public class FormRenderer extends DomBasicRenderer {
                     domContext.createElement(HTML.INPUT_ELEM);
             if (log.isDebugEnabled()) {
                 log.debug("Embedding Spring Param - name: " + flowParamName +
-                          ", value: " + flowId);
+                        ", value: " + flowId);
             }
             String flowParamId = formClientId + ":" + flowParamName;
             flowIDElement
@@ -236,30 +222,29 @@ public class FormRenderer extends DomBasicRenderer {
 
     /**
      * @param facesContext
-     * @param uiComponent
-     * Render any required hidden fields. There is a list
-     * (on the request map of the external context) of
-     * 'required hidden fields'. Hidden fields can be
-     * contributed by the CommandLinkRenderer. Contribution
-     * is made during rendering of this form's commandLink
-     * children so we have to wait for the child renderers
-     * to complete their work before we render the hidden
-     * fields. Therefore, this method should be called from
-     * the form's encodeEnd method. We can assume that the
-     * hidden fields are the last fields in the form because
-     * they are rendered in the FormRenderer's encodeEnd
-     * method. Note that the CommandLinkRenderer adds one
-     * hidden field that indicates the id of the link that
-     * was clicked to submit the form ( in case there are
-     * multiple commandLinks on a page) and one hidden field
-     * for each of its UIParameter children.
+     * @param uiComponent  Render any required hidden fields. There is a list
+     *                     (on the request map of the external context) of
+     *                     'required hidden fields'. Hidden fields can be
+     *                     contributed by the CommandLinkRenderer. Contribution
+     *                     is made during rendering of this form's commandLink
+     *                     children so we have to wait for the child renderers
+     *                     to complete their work before we render the hidden
+     *                     fields. Therefore, this method should be called from
+     *                     the form's encodeEnd method. We can assume that the
+     *                     hidden fields are the last fields in the form because
+     *                     they are rendered in the FormRenderer's encodeEnd
+     *                     method. Note that the CommandLinkRenderer adds one
+     *                     hidden field that indicates the id of the link that
+     *                     was clicked to submit the form ( in case there are
+     *                     multiple commandLinks on a page) and one hidden field
+     *                     for each of its UIParameter children.
      */
     private static void renderCommandLinkHiddenFields(FacesContext facesContext,
                                                       UIComponent uiComponent) {
         Map commandLinkHiddenFields = getCommandLinkFields(facesContext);
         if (commandLinkHiddenFields != null) {
             renderRequiredCommandLinkHiddenFields(uiComponent, facesContext,
-                                                  commandLinkHiddenFields);
+                    commandLinkHiddenFields);
             resetCommandLinkFieldsInRequestMap(facesContext);
         }
     }
@@ -353,12 +338,13 @@ public class FormRenderer extends DomBasicRenderer {
         }
         return hiddenFieldMap;
     }
-    private void validateNestingForm(UIComponent uiComponent) throws IOException{
+
+    private void validateNestingForm(UIComponent uiComponent) throws IOException {
         UIComponent parent = uiComponent.getParent();
         if (parent == null) {
             return;
         }
-        if (parent instanceof UIForm){
+        if (parent instanceof UIForm) {
             throw new FacesException("Nested form found on the page. The form " +
                     "action element can not be nested");
         }

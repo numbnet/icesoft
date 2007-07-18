@@ -33,15 +33,9 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.FacesContext;
-import java.io.IOException;
-
 public class FormRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.FormRenderer {
-    static private final String FOCUS_HIDDEN_FIELD = "focus";
+    static private final String FOCUS_HIDDEN_FIELD = "ice.focus";
 
     static public String getFocusElementId() {
         return FOCUS_HIDDEN_FIELD;

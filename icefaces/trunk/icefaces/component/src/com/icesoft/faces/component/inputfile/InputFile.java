@@ -285,10 +285,10 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         String srv = getUploadServletPath(context);
         writer.write("<body style=\"background-color:transparent; overflow:hidden\"><form method=\"post\" action=\"" + srv + "\" enctype=\"multipart/form-data\" id=\"fileUploadForm\">");
-        writer.write("<input type=\"hidden\" name=\"componentID\" value=\"");
+        writer.write("<input type=\"hidden\" name=\"ice.component\" value=\"");
         writer.write(this.getClientId(context));
         writer.write("\"/>");
-        writer.write("<input type=\"hidden\" name=\"viewNumber\"");
+        writer.write("<input type=\"hidden\" name=\"ice.view.active\"");
         writer.write(" value=\"" + context.getViewNumber() + "\"/>");
         writer.write("<input type=\"file\" name=\"upload\"");
         writer.write(" size=\"" + getInputTextSize() + "\"");

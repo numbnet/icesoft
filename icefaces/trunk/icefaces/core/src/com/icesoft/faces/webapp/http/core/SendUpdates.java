@@ -41,7 +41,7 @@ public class SendUpdates implements Server {
         }
 
         public void writeTo(Writer writer) throws IOException {
-            HashSet viewIdentifierSet = new HashSet(Arrays.asList(request.getParameterAsStrings("viewNumber")));
+            HashSet viewIdentifierSet = new HashSet(Arrays.asList(request.getParameterAsStrings("ice.view.all")));
             Iterator viewIdentifiers = viewIdentifierSet.iterator();
             ArrayList commandList = new ArrayList(viewIdentifierSet.size());
             while (viewIdentifiers.hasNext()) {

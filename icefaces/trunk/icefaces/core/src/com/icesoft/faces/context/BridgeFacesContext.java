@@ -294,14 +294,14 @@ public class BridgeFacesContext extends FacesContext {
      */
     public String getFocusId() {
         Map map = externalContext.getRequestParameterMap();
-        return (String) (map.containsKey("focus") ? map.get("focus") : "");
+        return (String) (map.containsKey("ice.focus") ? map.get("ice.focus") : "");
     }
 
     /**
      * Sets the id of the Element that should get focus in the browser.
      */
     public void setFocusId(String focusId) {
-        externalContext.getRequestParameterMap().put("focus", focusId);
+        externalContext.getRequestParameterMap().put("ice.focus", focusId);
     }
 
     /**

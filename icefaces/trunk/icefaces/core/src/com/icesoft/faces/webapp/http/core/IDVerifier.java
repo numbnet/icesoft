@@ -20,7 +20,7 @@ public class IDVerifier extends FixedXMLContentHandler implements Server {
     }
 
     public void service(Request request) throws Exception {
-        String id = request.getParameter("icefacesID");
+        String id = request.getParameter("ice.session");
         if (id != null && sessionID.equals(id)) {
             server.service(request);
         } else {
