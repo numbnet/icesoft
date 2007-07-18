@@ -1,0 +1,713 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+    <head>
+        <title>ICEfaces Menu Bar Tutorial</title>
+        <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <!-- header section -->
+        <p class="tutorialHeaderText">The ICEfaces Tutorial<br/>
+            <a href="index.html">Table of Contents</a>
+        </p>
+        <hr/>
+        <p>
+            <b>Lesson:</b> Using the menuBar Component
+        </p>
+        
+        <!-- tutorial content section -->
+        <h1>ICEfaces Menu Bar Component Tutorial</h1>
+        <p>
+            The menuBar component provides a robust menu system that supports: 
+        </p>
+        <ul>
+            <li>
+                Nested child <span class="object-name">menuItem</span> and 
+                <span class="object-name">menuItemSeparator</span> components. 
+            </li>
+            <li>
+                Horizontal (default) and Vertical menu orientations. Defines 
+                whether the submenus of the top-level menu items appear beside 
+                or below the top-level menu items.
+            </li>
+            <li>
+                Definition of the hierarchy of menu items and their submenus in 
+                one of two ways: 
+            </li>
+            <ol>
+                <li>
+                    By using a binding to a bean method that returns a 
+                    (potentially) dynamic hierarchy of menu items. 
+                </li>
+                <li>By statically defining the hierarchy in the JSPX page.</li>
+            </ol>
+            <li>
+                The <span class="object-name">action</span> attribute of the 
+                contained menuItem tags or instances can be defined to indicate 
+                a string or a backing bean method that can be used in 
+                application navigation.
+            </li>
+            <li>
+                The <span class="object-name">actionListener</span> attribute of
+                the contained <span class="object-name">menuItem</span> tags or 
+                instances can be defined to indicate an 
+                <span class="object-name">actionListener</span> that 
+                resides in a backing bean. 
+            </li>
+        </ul>
+        <p>
+            This tutorial will discuss the following topics:
+        </p>
+        <ul>
+            <li><a href="#howtouse">How to Use the Menu Bar Component</a></li>
+            <ul>
+                <li><a href="#static">Static Hierarchy Definition</a></li>
+                <li><a href="#dynamic">Dynamic Hierarchy Definition</a></li>
+            </ul>
+            <li><a href="#howtostyle">How to Style the Menu Bar Component</a></li>
+            <li><a href="#examples">Examples That Use A Menu Bar</a></li>
+        </ul>
+        
+        <a name="howtouse">&nbsp;</a>
+        
+        <h2>How to Use the Menu Bar Component</h2>
+        
+        <p>
+            The <span class="object-name">menuBar</span> component is used as a 
+            robust menu system.  Among its primary uses is navigation.  The 
+            <span class="object-name">menuBar</span> component can be situated 
+            horizontally or vertically.  Its contents can be defined statically 
+            or dynamically in a backing bean.  The following is a listing of the
+            attributes that the <span class="object-name">menuBar</span> component 
+            uses:
+        </p>
+        <ul>
+            <li><b>binding:</b> The value binding expression linking this component to a property in a backing bean </li>
+            <li>
+                <b>id:</b> The component identifier for this component. This value must
+                be unique within the closest parent component that is a naming 
+                container. 
+            </li>
+            <li>
+                <b>imageDir:</b> Set directory for location of the tree images. 
+                Default directory is /xmlhttp/css/xp/css-images/ which is 
+                include in the icefaces.jar. 
+            </li>
+            <li>
+                <b>immediate:</b> Flag indicating that this component's value must be 
+                converted and validated immediately (that is, during Apply 
+                Request Values phase), rather than waiting until Process 
+                Validations phase. 
+            </li>
+            <li>
+                <b>noIcons:</b> If true, this component will not rendered icons and 
+                icon spacers in <span class="object-name">menuItems</span>. The 
+                default is false. By default icons are rendered.
+            </li>
+            <li>
+                <b>orientation:</b> Defines whether the submenus of the top-level menu 
+                items appear beside or below the top-level menu items. 
+                Horizontal (default) and Vertical menu orientations. 
+            </li>
+            <li>
+                <b>rendered:</b> Flag indicating whether or not this component should 
+                be rendered (during Render Response Phase), or processed on any 
+                subsequent form submit. 
+            </li>
+            <li>
+                <b>renderedOnUserRole:</b> If user is in given role, this component 
+                will be rendered normally. If not, nothing is rendered and the 
+                body of this tag will be skipped. 
+            </li>
+            <li>
+                <b>style:</b> CSS style(s) to be applied when this component is rendered. 
+            </li>
+            <li>
+                <b>styleClass:</b> Space-separated list of CSS style class(es) to be 
+                applied when this element is rendered.  This will be discusses 
+                in greater detail later in the tutorial.
+            </li>
+            <li><b>value:</b> The current value of this component. </li>
+        </ul>
+        <p>
+            There are three other components that can be used to define the 
+            content in the <span class="object-name">menuBar</span> component.  
+            The <span class="object-name">menuItem</span> component defines 
+            the menu items contained by a <span class="object-name">menuBar</span>.
+            The following is a listing of some of the main attributes used for the 
+            <span class="object-name">menuItem</span> component:
+        </p>
+        <ul>
+            <li>
+                <b>action:</b> MethodBinding representing the application action to 
+                invoke when this component is activated by the user. The 
+                expression must evaluate to a either a String or a public 
+                method that takes no parameters, and returns a String (the 
+                logical outcome) which is passed to the NavigationHandler for 
+                this application. 
+            </li>
+            <li>
+                <b>actionListener:</b> MethodBinding representing an action listener 
+                method that will be notified when this component is activated 
+                by the user. The expression must evaluate to a public method 
+                that takes an ActionEvent parameter, with a return type of void. 
+            </li>
+            <li>
+                <b>icon:</b> Location of the icon image to be used by the 
+                <span class="object-name">menuItem</span>.
+            </li>
+            <li>
+                <b>id:</b> The component identifier for this component. This value must
+                be unique within the closest parent component that is a naming 
+                container. 
+            </li>
+            <li><b>link:</b>  For use in navigation, link to another page/site.</li>
+            <li><b>value:</b> The current value of this component. </li>
+        </ul>
+        <p>
+            The <span class="objetc-name">menuItems</span> component is similar 
+            to the <span class="object-name">menuItem</span> component, the 
+            major difference being that the <span class="object-name">menuItems</span>
+            is used if you want to supply a dynamic heirarchy for the 
+            <span class="object-name">menuBar</span>.  The following is a list
+            of available attributes that can be used for this component:
+        </p>
+        <ul>
+            <li>
+                <b>action:</b> MethodBinding representing the application action to 
+                invoke when this component is activated by the user. The 
+                expression must evaluate to a either a String or a public method
+                that takes no parameters, and returns a String (the logical 
+                outcome) which is passed to the NavigationHandler for this 
+                application. 
+            </li>
+            <li>
+                <b>actionListener:</b> MethodBinding representing an action listener 
+                method that will be notified when this component is activated 
+                by the user. The expression must evaluate to a public method 
+                that takes an ActionEvent parameter, with a return type of void.
+            </li>
+            <li>
+                <b>binding:</b> The value binding expression linking this component to 
+                a property in a backing bean 
+            </li>
+            <li>
+                <b>id:</b> The component identifier for this component. This value must
+                be unique within the closest parent component that is a naming 
+                container. 
+            </li>
+            <li>
+                <b>immediate:</b> Flag indicating that this component's value must be 
+                converted and validated immediately (that is, during Apply 
+                Request Values phase), rather than waiting until Process 
+                Validations phase. 
+            </li>
+            <li>
+                <b>rendered:</b> Flag indicating whether or not this component should 
+                be rendered (during Render Response Phase), or processed on any 
+                subsequent form submit. 
+            </li>
+            <li><b>value:</b> The current value of this component.</li>
+         </ul>
+         <p>
+            The last component that can be used with the 
+            <span class="object-name">menuBar</span> is the 
+            <span class="object-name">menuItemSeparator</span> 
+            component.  This component inserts a line 
+            similar to the &lt;hr/&gt; html tag.  The screen shot below 
+            demonstrates how it is displayed:
+        </p>
+        <div class="screenshot">
+            <img src="images/menuBarBasic.JPG"
+                 title="Basic Menu Bar Component"
+                 alt="Basic Menu Bar Component" width="562"
+                 height="430"
+		     style="border:1px solid #999999;"/>
+        </div>
+
+        <a name="static">&nbsp;</a>
+
+        <h3>Static Hierarchy Definition</h3>
+
+        <p>
+            For the example we have developed a basic menu bar with three
+            top-level menu headers.  The top-level menu headers consist of 
+            File, Edit, and View.  The File sub-menu consists the most 
+            detail, it has icons defined for some headings.  It also has 
+            another sub-menu defined in the Recent heading, this shows the 
+            ability for the component to have a sub-menu hierarchy defined.  
+            The following is the code for the basic menuBar component:
+        </p>
+        <pre>
+            ...
+            &lt;ice:menuBar orientation="#{menuBar.orientation}"&gt;
+                   &lt;ice:menuItem value="File" id="file"&gt;
+                       &lt;ice:menuItem id="open" value="Open"
+                                     icon="images/open.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                             &lt;f:param name="myParam" value="Open"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="close" value="Close"
+                                     actionListener="#{menuBar.listener}"&gt;
+                             &lt;f:param name="myParam" value="Close"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItemSeparator/&gt;
+                       &lt;ice:menuItem id="recent" value="Recent"
+                                     icon="images/recent.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;ice:menuItem id="photo1" value="Photo 1"
+                                         actionListener="#{menuBar.listener}"&gt;
+                               &lt;f:param name="myParam" value="Photo 1"/&gt;
+                           &lt;/ice:menuItem&gt;
+                           &lt;ice:menuItem id="file2" value="File 2"
+                                         actionListener="#{menuBar.listener}"&gt;
+                               &lt;ice:menuItem id="para1" value="Para 1"
+                                             actionListener="#{menuBar.listener}"&gt;
+                                     &lt;f:param name="myParam" value="Para 1"/&gt;
+                               &lt;/ice:menuItem&gt;
+                               &lt;ice:menuItem id="para2" value="Para 2"
+                                             actionListener="#{menuBar.listener}"&gt;
+                                     &lt;f:param name="myParam" value="Para 2"/&gt;
+                               &lt;/ice:menuItem&gt;
+                               &lt;ice:menuItem id="para3" value="Para 3"
+                                             actionListener="#{menuBar.listener}"&gt;
+                                     &lt;f:param name="myParam" value="Para 3"/&gt;
+                               &lt;/ice:menuItem&gt;
+                               &lt;f:param name="myParam" value="File 2"/&gt;
+                           &lt;/ice:menuItem&gt;
+                           &lt;ice:menuItem id="photo3" value="Photo 3"
+                                         actionListener="#{menuBar.listener}"&gt;
+                               &lt;f:param name="myParam" value="Photo 3"/&gt;
+                           &lt;/ice:menuItem&gt;
+                           &lt;ice:menuItem id="file4" value="File 4"
+                                         actionListener="#{menuBar.listener}"&gt;
+                               &lt;f:param name="myParam" value="File 4"/&gt;
+                           &lt;/ice:menuItem&gt;
+                           &lt;f:param name="myParam" value="Recent"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="save" value="Save"
+                                     icon="images/save.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Save"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="print" value="Print"
+                                     icon="images/print.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Print"/&gt;
+                       &lt;/ice:menuItem&gt;
+                   &lt;/ice:menuItem&gt;
+                   &lt;ice:menuItem id="edit" value="Edit"&gt;
+                       &lt;ice:menuItem id="cut" value="Cut"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Cut"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="copy" value="Copy"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Copy"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="paste" value="Paste"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Paste"/&gt;
+                       &lt;/ice:menuItem&gt;
+                   &lt;/ice:menuItem&gt;
+                   &lt;ice:menuItem id="view" value="View"&gt;
+                       &lt;ice:menuItem id="zoomin" value="Zoom In"
+                                     icon="images/zoomin.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Zoom In"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="zoomout" value="Zoom Out"
+                                     icon="images/zoomout.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Zoom Out"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="fitinwin" value="Fit In Window"
+                                     icon="images/fitinwindow.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Fit In Window"/&gt;
+                       &lt;/ice:menuItem&gt;
+                       &lt;ice:menuItem id="actualsize" value="Actual Size"
+                                     icon="images/actualsize.gif"
+                                     actionListener="#{menuBar.listener}"&gt;
+                           &lt;f:param name="myParam" value="Actual Size"/&gt;
+                       &lt;/ice:menuItem&gt;
+                   &lt;/ice:menuItem&gt;
+               &lt;/ice:menuBar&gt;
+               ...
+        </pre>
+        
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>
+                    See the Menu Bar component demo for your self by clicking
+                    <a href="/menuBar-basic/" target="_blank">here</a>,
+                    or download the source code 
+                    <a href="menuBar-basic.zip">here</a>.
+                </li>
+                <li>The example shows how the menuBar component works.</li>
+            </ul>
+        </div>
+
+        <a name="dynamic">&nbsp;</a>
+
+        <h3>Dynamic Hierarchy Definition</h3>
+
+        <p>
+            The <span class="object-name">menuBar</span> components menu items 
+            can also be defined dynamically through a backing bean.  In the 
+            static definition we use the 
+            <span class="object-name">menuItem</span> component, for the dynamic
+            definition we will use the <span class="object-name">menuItems</span> 
+            component.  By dynamically defining the menu items it requires less 
+            code in the page, as shown below:
+        </p>
+
+        <pre>
+            &lt;ice:menuBar orientation="vertical"&gt;
+                &lt;ice:menuItems value="#{menuBean.menuModel}"/&gt;
+            &lt;/ice:menuBar&gt;
+        </pre>
+
+        <p>
+            The backing bean provides (some variation of) the following 
+            infrastructure. Actions and actionListeners are omitted for 
+            brevity: 
+        </p>
+
+        <pre>
+            private List menuModel;
+            public List getMenuModel() {
+                return menuModel;
+            }
+            public MenuBean() {
+
+                menuModel = new ArrayList();
+
+                MenuItem topLevel1 = new MenuItem();
+                topLevel1.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                topLevel1.setValue("topLevel1");
+
+                MenuItem topLevel2 = new MenuItem();
+                topLevel2.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                topLevel2.setValue("topLevel2");
+
+                MenuItem topLevel3 = new MenuItem();
+                topLevel3.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                topLevel3.setValue("topLevel3");
+
+                menuModel.add(topLevel1);
+                menuModel.add(topLevel2);
+                menuModel.add(topLevel3);
+
+                MenuItem sub1_1 = new MenuItem();
+                sub1_1.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_1.setValue("sub1_1");
+                MenuItem sub1_2 = new MenuItem();
+                sub1_2.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_2.setValue("sub1_2");
+                MenuItem sub1_3 = new MenuItem();
+                sub1_3.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_3.setValue("sub1_3");
+
+                topLevel1.getChildren().add(sub1_1);
+                topLevel1.getChildren().add(sub1_2);
+                topLevel1.getChildren().add(sub1_3);
+
+                MenuItem sub1_1_1 = new MenuItem();
+                sub1_1_1.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_1_1.setValue("sub1_1_1");
+                MenuItem sub1_1_2 = new MenuItem();
+                sub1_1_2.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_1_2.setValue("sub1_1_2");
+                MenuItem sub1_1_3 = new MenuItem();
+                sub1_1_3.setIcon("xmlhttp/css/xp/css-images/menuitem.gif");
+                sub1_1_3.setValue("sub1_1_3");
+
+                sub1_1.getChildren().add(sub1_1_1);
+                sub1_1.getChildren().add(sub1_1_2);
+                sub1_1.getChildren().add(sub1_1_3);
+            }
+        </pre>
+        
+        <a name="howtostyle">&nbsp;</a>
+        
+        <h2>How to Style the Menu Bar Component</h2>
+        
+        <p>
+            In the basic example we use the default xp style that is located in 
+            the icefaces.jar file.  The following is a screen shot of the 
+            <span class="object-name">menuBar</span> component with the defualt 
+            xp style:
+        </p>
+        
+        <div class="screenshot">
+            <img src="images/styledBefore.JPG"
+                 title="Before Styled Menu Bar Component"
+                 alt="Before Styled Menu Bar Component" width="571"
+                 height="198"
+		     style="border:1px solid #999999;"/>
+        </div>
+        
+        <p>
+            The following is a screen shot of the 
+            <span class="object-name">menuBar</span> component after the 
+            style class has been altered:
+        </p>
+        
+        <div class="screenshot">
+            <img src="images/styledAfter.JPG"
+                 title="After Styled Menu Bar Component"
+                 alt="After Styled Menu Bar Component" width=""
+                 height=""
+		     style="border:1px solid #999999;"/>
+        </div>
+        
+        <p>
+            The styling of the component is done through a CSS file.  The 
+            following is an example of the CSS code used:
+        </p>
+        
+        <pre>
+            ...
+            .iceMnuBar { 
+
+                padding: 0px;
+                white-space: nowrap;
+            }
+
+            .iceMnuBarItem, .myHomeMenuItem { 
+                float: left;
+                padding: 0px;
+                white-space: nowrap;
+            }
+
+            .iceMnuBarItem a, .myHomeMenuItem a {
+                background:url("../images/blue004.jpg");
+                height: auto;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+                color: #FFF; 
+                margin: 0px;
+                width: 100px;
+                float: left;
+                display: block;
+                text-decoration: none;
+                font-weight:bold;
+                white-space :normal ;
+
+            }
+
+            .myHomeMenuItem a {
+                width: 40px;
+            }
+
+            .iceMnuBarItem a:hover, myHomeMenuItem a:hover{ 
+                background: #006699;
+                color: #FFFFFF;
+
+            }
+
+            .iceMnuBarItem hr {
+                border: none 0;
+                border-top: 1px solid #999999;
+                width: 100%;
+                height: 1px;
+                margin-top: 3px;
+                padding: 0px;
+                text-align: left;
+            }
+
+            .iceMnuBarSubMenu { 
+                position: absolute;
+                background-color: #0099CC;
+                width: 138px;
+                border-top:1px solid #FFF;
+                padding: 1px;
+                height: auto;
+                display: block;
+            }
+
+            .iceMnuItm { 
+                padding: 0px;
+                display: block;
+                height: auto;
+            }
+
+            .iceMnuItm a { 
+                color: #FFFFFF;
+                display: block;
+                text-decoration: none;
+                padding-left: 3px;
+                padding-right: 3px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+                font-weight : bold;
+            }
+
+            .iceMnuItm a:hover { 
+                background-color:#0066CC;
+            }
+
+            .iceMnuItm a:hover .iceOutTxt{ 
+                color: #FFFFFF;
+            }
+
+            .iceMnuItmLabel, .iceMnuBarItemLabel { 
+                font-family: Arial, Helvetica, sans-serif;
+                padding-top: 4px;
+                font-size: 1.0em;
+                display: inline;
+            }
+
+            .iceMnuBarItemImage {
+                    width:0px;
+            }
+
+            .iceMnuItmImage, .iceMnuBarItemImage {  
+                display:inline;
+                vertical-align: top;    
+            }
+
+            .iceMnuBarSubMenuInd { 
+                display:inline;
+                float:right;
+                padding-top: 3px;
+                padding-right: 1px;    
+            }
+            ...
+        </pre>
+        
+        <p>
+            The default style class names are used except for the 
+            “myHomeMenuItem” class.  This class is used to get the My Home 
+            heading text to wrap, due to its smaller size it needs a smaller 
+            width to get the desired text wrapping effect.  
+        </p>
+        <p>
+            The following is a description of the default text style classes 
+            and which part of the <span class="object-name">menuBar</span> 
+            component they represent:
+        </p>
+        <ul>
+            <li>iceMnuBar: The base name for the entire menuBar component.</li>
+            <li>iceMnuBarItem: Represents the top-level heading.</li>
+            <li>iceMnuBarItemLabel: Represents the text label in the heading.</li>
+            <li>iceMnuBarItemImage: Represents the image for the heading.</li>
+            <li>iceMnuBarSubMenu: Represents the sub-menu for the menuBar component.</li>
+            <li>
+                iceMnuBarSubMenuInd: Represents the indicator for the sub-menu. 
+                Displays an arrow when the sub-menu is a header for another menu.  
+            </li>
+        </ul>
+        <p>
+            When the menu bar's orientation is set to vertical the style classes
+            change a bit.  The following is a list of style classes used when 
+            the <span class="object-name">menuBar</span> components orientation 
+            is set to vertical:
+        </p>
+        <ul>
+            <li>iceMnuBarVrt</li>
+            <li>iceMnuBarVrtItem </li>
+            <li>iceMnuBarVrtItemLabel </li>
+            <li>iceMnuBarVrtItemImage </li>
+            <li>iceMnuBarVrtSubMenu </li>
+            <li>iceMnuBarVrtSubMenuInd </li>
+        </ul>
+        <p>
+            If the <span class="object-name">menuBar</span> component is 
+            disabled and orientation is set to horizontal(default), the style 
+            classes are:
+        </p>
+        <ul>
+            <li>iceMnuBar-dis</li>
+            <li>iceMnuBarItem-dis </li>
+            <li>iceMnuBarItemLabel-dis </li>
+            <li>iceMnuBarItemImage-dis </li>
+            <li>iceMnuBarSubMenu-dis </li>
+            <li>iceMnuBarSubMenuInd-dis </li>
+        </ul>
+        <p>
+            If the <span class="object-name">menuBar</span> component is 
+            disabled and the orientation is set to vertical, the style classes are:
+        </p>
+        <ul>
+            <li>iceMnuBarVrt-dis </li>
+            <li>iceMnuBarVrtItem-dis </li>
+            <li>iceMnuBarVrtItemLabel-dis </li>
+            <li>iceMnuBarVrtItemImage-dis</li>
+            <li>iceMnuBarVrtSubMenu-dis </li>
+            <li>iceMnuBarVrtSubMenuInd-dis</li>
+        </ul>
+        
+        <div class="demo-instruction">
+            <h3>See the demo:</h3>
+            <ul>
+                <li>
+                    See the Menu Bar component demo for your self by clicking
+                    <a href="/menuBar-styled/" target="_blank">here</a>,
+                    or download the source code 
+                    <a href="menuBar-styled.zip">here</a>.
+                </li>
+                <li>The example shows how the menuBar component works and can be styled.</li>
+            </ul>
+        </div>
+        
+        <a name="examples">&nbsp;</a>
+        
+        <h2>Examples That Use A Menu Bar</h2>
+        
+        <table cellpadding="1" cellspacing="1" class="examplesTable" width="100%">
+            <thead>
+                <tr>
+                    <td class="headerTitle">Example</td>
+                    <td class="headerTitle">Source</td>
+                    <td class="headerTitle">Notes</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="bodyExample">Component-Showcase</td>
+                    <td class="bodySource">Available in release bundles</td>
+                    <td class="bodyNotes">
+                        The Component Showcase demonstrates the basic 
+                        functionality of all ICEfaces components, including 
+                        Menu Bar.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bodyExample">menuBar-basic</td>
+                    <td class="bodySource"><a href="menuBar-basic.zip">
+                        menuBar-basic source code
+                    </a></td>
+                    <td class="bodyNotes">
+                        Basic example demonstrating how to use the menuBar component.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="bodyExample">menuBar-styled</td>
+                    <td class="bodySource"><a href="menuBar-styled.zip">
+                        menuBar-styled source code
+                    </a></td>
+                    <td class="bodyNotes">
+                        Basic example demonstrating how to style the menuBar 
+                        component through CSS.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- footer section -->
+        
+        <hr/>
+        
+        <p class="tutorialFooterText">
+            The ICEfaces Tutorial
+            <br/>
+            <a href="index.html">Table of Contents</a>
+        </p>
+        <p>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</p>
+        
+    </body>
+</html>

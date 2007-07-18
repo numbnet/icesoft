@@ -1,0 +1,147 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+            
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+       <html>
+           <head>
+               <meta http-equiv="Content-Type"
+                  content="text/html; charset=iso-8859-1"></meta>
+               <title>MenuBar Component Tutorial - Basic</title>
+               <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css"/>
+           </head>
+           <body>
+               <h2>MenuBar Component Tutorial - Basic</h2>
+               <p>
+                   This is an example of a basic MenuBar component.  It consists 
+                   of four main menu headers.  Hovering over the header
+                   names will show the underlying menu, these menus can contain
+                   icons and other headers to sub-menu's.  The radio buttons can
+                   toggle the Menus orientation from horizontal to vertical.  By
+                   clicking on any of the sub-menus, the value of that sub-menu 
+                   will be displayed.
+               </p>
+               <br/>
+               <ice:form>
+                   <ice:panelGroup>
+                       <ice:panelGroup >
+                           <ice:panelGrid columns="2">
+                               <ice:outputLabel value="Menu Orientation:" for="menuRadio" style="font-weight:bold;"/>
+                               <ice:selectOneRadio id="menuRadio" value="#{menuBar.orientation}" partialSubmit="true">
+                                   <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="Horizontal"/>
+                                   <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="Vertical"/>
+                               </ice:selectOneRadio>
+                           </ice:panelGrid>
+                       </ice:panelGroup>
+                       
+                       <ice:panelGroup >
+                           <ice:panelGrid columns="2" >
+                               <ice:outputLabel value="Menu Item Clicked:" for="param" style="font-weight:bold;"/>
+                               <ice:outputText id="param" value="#{menuBar.param}"/>
+                               
+                           </ice:panelGrid>
+                       </ice:panelGroup>
+                   </ice:panelGroup>
+                   <br/>
+                   <ice:menuBar orientation="#{menuBar.orientation}">
+                       <ice:menuItem value="File" id="file">
+                           <ice:menuItem id="open" value="Open"
+                                         icon="images/open.gif"
+                                         actionListener="#{menuBar.listener}">
+                                 <f:param name="myParam" value="Open"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="close" value="Close"
+                                         actionListener="#{menuBar.listener}">
+                                 <f:param name="myParam" value="Close"/>
+                           </ice:menuItem>
+                           <ice:menuItemSeparator/>
+                           <ice:menuItem id="recent" value="Recent"
+                                         icon="images/recent.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <ice:menuItem id="photo1" value="Photo 1"
+                                             actionListener="#{menuBar.listener}">
+                                   <f:param name="myParam" value="Photo 1"/>
+                               </ice:menuItem>
+                               <ice:menuItem id="file2" value="File 2"
+                                             actionListener="#{menuBar.listener}">
+                                   <ice:menuItem id="para1" value="Para 1"
+                                                 actionListener="#{menuBar.listener}">
+                                         <f:param name="myParam" value="Para 1"/>
+                                   </ice:menuItem>
+                                   <ice:menuItem id="para2" value="Para 2"
+                                                 actionListener="#{menuBar.listener}">
+                                         <f:param name="myParam" value="Para 2"/>
+                                   </ice:menuItem>
+                                   <ice:menuItem id="para3" value="Para 3"
+                                                 actionListener="#{menuBar.listener}">
+                                         <f:param name="myParam" value="Para 3"/>
+                                   </ice:menuItem>
+                                   <f:param name="myParam" value="File 2"/>
+                               </ice:menuItem>
+                               <ice:menuItem id="photo3" value="Photo 3"
+                                             actionListener="#{menuBar.listener}">
+                                   <f:param name="myParam" value="Photo 3"/>
+                               </ice:menuItem>
+                               <ice:menuItem id="file4" value="File 4"
+                                             actionListener="#{menuBar.listener}">
+                                   <f:param name="myParam" value="File 4"/>
+                               </ice:menuItem>
+                               <f:param name="myParam" value="Recent"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="save" value="Save"
+                                         icon="images/save.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Save"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="print" value="Print"
+                                         icon="images/print.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Print"/>
+                           </ice:menuItem>
+                       </ice:menuItem>
+                       <ice:menuItem id="edit" value="Edit">
+                           <ice:menuItem id="cut" value="Cut"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Cut"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="copy" value="Copy"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Copy"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="paste" value="Paste"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Paste"/>
+                           </ice:menuItem>
+                       </ice:menuItem>
+                       <ice:menuItem id="view" value="View">
+                           <ice:menuItem id="zoomin" value="Zoom In"
+                                         icon="images/zoomin.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Zoom In"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="zoomout" value="Zoom Out"
+                                         icon="images/zoomout.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Zoom Out"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="fitinwin" value="Fit In Window"
+                                         icon="images/fitinwindow.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Fit In Window"/>
+                           </ice:menuItem>
+                           <ice:menuItem id="actualsize" value="Actual Size"
+                                         icon="images/actualsize.gif"
+                                         actionListener="#{menuBar.listener}">
+                               <f:param name="myParam" value="Actual Size"/>  
+                           </ice:menuItem>
+                       </ice:menuItem>
+                   </ice:menuBar>
+               </ice:form>
+           </body>
+       </html>
+        
+        
+           
+</f:view>
