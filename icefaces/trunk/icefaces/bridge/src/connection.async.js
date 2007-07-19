@@ -167,7 +167,9 @@
                 request.on(Connection.ServerError, this.serverErrorCallback);
                 request.on(Connection.Receive, this.receiveCallback);
                 request.on(Connection.Receive, this.receiveXWindowCookie);
-                request.on(Connection.Receive, this.connect.bind(this).delayFor(150));
+                request.on(Connection.Receive, function() {
+                    this.connect();
+                }.bind(this).delayFor(150));
             }.bind(this));
         },
 
@@ -219,6 +221,7 @@
             try {
                 //avoid sending XMLHTTP requests that might create new sessions on the server
                 this.send = Function.NOOP;
+                this.connect = Function.NOOP
                 this.heartbeat.stop();
                 this.listening.remove();
                 this.listener.close();
