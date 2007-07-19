@@ -107,7 +107,7 @@
 <#if property.optional>
 	<ice:panelTab label="${property.name}">
 <#else>
- 	<ice:panelTab label="${property.name} *" labelClass="required">
+ 	<ice:panelTab label="${property.name} *" >
 </#if>
 		<div class="association" id="${property.name}Parent">
     
