@@ -333,3 +333,15 @@ td {
 .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
     background-image: url( "../img/arrowUp.gif" );
 }
+.tabbedContainerHeaderControl {
+    color: #ffffff;
+    vertical-align: middle;
+    font-weight: bold;
+    font-family: tahoma, sans-serif;
+    font-size: 14px;
+    background: url( "../img/sidebox_bottom.gif" ) transparent repeat-x bottom left;
+    height: 29px;
+    white-space: nowrap;
+   width: 25px;
+    text-align: left;
+}

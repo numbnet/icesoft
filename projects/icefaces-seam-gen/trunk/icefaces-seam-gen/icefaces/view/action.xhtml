@@ -12,21 +12,24 @@
 
     <h:messages globalOnly="true" styleClass="message"/>
 
- <ice:panelCollapsible expanded="true" styleClass="pnlClpsblDemo">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="expandableStateIndicator">		
-		<ice:outputText value="@pageName@" />
-        </ice:panelGroup>
-    </f:facet>
-     <ice:form id="@componentName@Form">
-        
-            <h:commandButton id="@methodName@" value="@methodName@!" 
+  <ice:form id="@componentName@Form">
+     <ice:panelGroup  id="action" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                      	<ice:outputText value="@pageName@" />
+                  </td>
+              </tr>
+          </table>
+          
+          <div class="actionButtons">
+            <ice:commandButton id="@methodName@" value="@methodName@!" 
                              action="#{@componentName@.@methodName@}"/>     			  
-        
-        </ice:form>
-        
-    </ice:panelCollapsible>
+          </div>
 
+        
+    </ice:panelGroup>
+  </ice:form>
 </ui:define>
 
 </ui:composition>

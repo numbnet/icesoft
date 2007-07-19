@@ -34,7 +34,7 @@ package @actionPackage@;
 
 
 import javax.ejb.Local;
-
+import com.icesoft.faces.context.effects.Effect;
 /**
  * @author ICEsoft Technologies, Inc.
  */
@@ -42,13 +42,15 @@ import javax.ejb.Local;
 public interface TimerBean {
 
     public String getCurrentTime();
-
     public String getRenderMode();
-
     public void remove();
-
     public String getCurrentConversation();
 
-    public String getLongRunning();
-
+	public String getLongRunning();
+    public boolean getExpanded();
+    public void setExpanded(boolean expanded);
+    public boolean isVisibility() ;
+    public void setVisibility(boolean visibility);
+    public String toggleExpanded();
+    public Effect getExpandEffect();
 }

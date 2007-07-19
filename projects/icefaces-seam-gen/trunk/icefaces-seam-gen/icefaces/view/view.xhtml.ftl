@@ -18,14 +18,17 @@
     
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
  
-<ice:form id="searchForm">   
+<ice:form id="viewForm">   
 
- <ice:panelCollapsible expanded="true" styleClass="pnlClpsblDemo">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="expandableStateIndicator">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
 			    <ice:outputText value="${homeName}"/>
-    	  </ice:panelGroup>
-    </f:facet>        
+                  </td>
+              </tr>
+          </table>
+      
       <ice:panelGroup styleClass="prop">
           <ice:panelGrid columns="2" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
@@ -37,7 +40,7 @@
         <div style="clear:both"/>
 	    </ice:panelGrid>
      </ice:panelGroup>
- </ice:panelCollapsible>
+ 
 
     <div id="searchButtons" class="actionButtons">      
 
@@ -50,6 +53,7 @@
                  value="Done"/>
 
     </div>
+  </ice:panelGroup>
 </ice:form>
 <#assign hasAssociations=false>
 <#foreach property in pojo.allPropertiesIterator>
