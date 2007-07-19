@@ -97,8 +97,6 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
     }
 
     public void renderingException( RenderingException re) {
-//        System.out.println("Exception in rendering: " + re);
-//        re.printStackTrace();
         if(log.isTraceEnabled() ) { 
            log.trace("*** View obsoleted: " + myId );
         } 
@@ -108,7 +106,11 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
 
     public TimerBeanImpl() {
         dateFormatter =  DateFormat.getDateTimeInstance();
-        myId = ++id;         
+        myId = ++id;      
+    }
+
+
+    /** to simulate panelCollapsible */   
     private void buildEffect() {
        if (expanded) {
             currentEffect = new BlindDown();
@@ -162,9 +164,6 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
         toggledEffect = false;
         return currentEffect;
     }
-    }
-
-
     
     public String getCurrentTime() {
 
