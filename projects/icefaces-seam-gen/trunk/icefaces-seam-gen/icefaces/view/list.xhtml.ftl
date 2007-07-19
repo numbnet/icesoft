@@ -12,7 +12,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		        xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -57,13 +57,13 @@
 </#foreach>
             </ice:panelGrid>
    
-	</ice:panelGroup>
-   </ice:panelGroup>
+	  </ice:panelGroup>
+  
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
         </div>
-      
+      </ice:panelGroup> 
     </ice:form>
     
     <ice:panelGroup styleClass="formBorderHighlight">
