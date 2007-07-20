@@ -12,15 +12,15 @@
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
-   <core:init debug="true" jndi-pattern="@jndiPattern@"/>
+   <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
      
    <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" />
 
    <core:manager concurrent-request-timeout="500" 
                  conversation-timeout="120000" 
-                 conversation-id-parameter="cid" />
+                 conversation-id-parameter="cid"/>
     
-    <persistence:managed-persistence-context name="entityManager"
+   <persistence:managed-persistence-context name="entityManager"
                                      auto-create="true"
                       persistence-unit-jndi-name="java:/@projectName@EntityManagerFactory"/>
 
@@ -31,8 +31,7 @@
    </drools:rule-base>
 
    <security:identity authenticate-method="#{authenticator.authenticate}"
-                           security-rules="#{securityRules}"
-                              remember-me="true"/>
+                           security-rules="#{securityRules}"/>
    
    <event type="org.jboss.seam.notLoggedIn">
        <action expression="#{redirect.captureCurrentView}"/>

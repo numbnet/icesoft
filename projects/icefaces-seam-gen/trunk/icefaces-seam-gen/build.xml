@@ -96,6 +96,7 @@
         <filterset id="project">
             <filter token="projectName" value="${project.name}" />
             <filter token="jbossHome" value="${jboss.home}" />
+            <filter token="iceHome" value="${icefaces.home}" />
             <filter token="hbm2ddl" value="${hibernate.hbm2ddl.auto}"/>
             <filter token="driverJar" value="${driver.file}"/>
         	<filter token="schemaVersion" value="${version}" />
@@ -535,7 +536,7 @@
 	    </fileset> 
             <fileset dir="../drools/lib"/>
 	    <fileset dir="${icefaces.home}/lib"> 
-	             <include name="icefaces*.jar" /> 
+	         <include name="icefaces*.jar" /> 
 		     <include name="backport-util-concurrent.jar" /> 
 		     <include name="commons-fileupload.jar" />
 		     <include name="commons-digester.jar"/>
@@ -555,11 +556,11 @@
         <echo message="Copying resources needed for WAR deployment to the ${project.home}/resources directory..." />
 
 		<copy tofile="${project.home}/resources/WEB-INF/components.xml" 
-                file="${basedir}/resources/WEB-INF/components-war.xml">
+                file="${resources.dir}/WEB-INF/components-war.xml">
             <filterset refid="project"/>
         </copy>
         <copy tofile="${project.home}/build.xml" 
-                file="${basedir}/build-scripts/build-war.xml">
+                file="${script.dir}/build-war.xml">
             <filterset refid="project"/>
         </copy>
         <copy todir="${project.home}/resources">
@@ -578,18 +579,18 @@
         <echo message="Copying resources needed for EAR deployment to the ${project.home}/resources directory..." />
 		
 	    <copy tofile="${project.home}/resources/WEB-INF/components.xml" 
-	             file="${basedir}/resources/WEB-INF/components.xml">
+	             file="${resources.dir}/WEB-INF/components.xml">
 	         <filterset refid="project"/>
 	     </copy>
         <copy tofile="${project.home}/build.xml" 
-                file="${basedir}/build-scripts/build.xml">
+                file="${script.dir}/build.xml">
             <filterset refid="project"/>
         </copy>
 		<copy todir="${project.home}" overwrite="true">
 		    <fileset file="../validate.xml"/>
 		</copy>
         <copy todir="${project.home}/resources">
-            <fileset dir="${basedir}/resources/">
+            <fileset dir="${resources.dir}/">
             	<include name="META-INF/application.xml"/>
             	<include name="META-INF/jboss-app.xml"/>
             	<include name="META-INF/ejb-jar.xml"/>
@@ -683,7 +684,7 @@
         </copy>
         
         <copy todir="${project.home}">
-            <fileset dir="${basedir}/build-scripts">
+            <fileset dir="${script.dir}">
             	<exclude name="build*.xml"/>
             </fileset>
             <filterset refid="project"/>
@@ -701,7 +702,8 @@
 
     </target>
     
-    <!-- next 2 targets new jag 25-05-07 -->
+    <!-- next 4 targets new jag 25-05-07 -->
+ 
     <target name="file-copy-icefaces" depends="icefacesCheck, copy-images" if="icefaces.property">
         <copy todir="${project.home}/src/${action.dir}" file="${basedir}/icefaces/src/TimerBean.java" >
             <filterset refid="filters"/>
@@ -713,19 +715,13 @@
               <fileset dir="${basedir}/icefaces/resources/">
                 <include name="components.properties"/>
             	<include name="META-INF/application.xml"/>
-            	<include name="WEB-INF/components.xml"/>
             	<include name="WEB-INF/web.xml"/>
             	<include name="WEB-INF/faces-config.xml"/>
             </fileset>
             <filterset refid="project"/>
             <filterset refid="jdbc"/>
         </copy>
-        <copy todir="${project.home}" overwrite="true">
-            <fileset dir="${basedir}/icefaces/build-scripts">
-            	<include name="build*.xml"/>
-            </fileset>
-            <filterset refid="project"/>
-        </copy>
+
         <copy todir="${project.home}/view" overwrite="true">
             <fileset refid="icefaces-view"/>
             <filterset refid="project"/>
@@ -994,9 +990,7 @@
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}"/>
 
     </target>
-   <target name="generate-icefaces" depends="icefacesCheck" if="icefaces.property">
-            
-    </target>	
+ 
     <target name="deploy" depends="validate-project"
         description="Deploy the EAR or WAR">
         <echo message="Deploying project '${project.name}' to JBoss" />
@@ -1062,7 +1056,7 @@
     </target>
   <target name="icefacesCheck" depends="cond-if,cond-else"/>
    
-   <target name="check-icefaces">
+   <target name="check-icefaces" depends="init-properties">
          <condition property="icefaces.property">
              <and>
                  <isset property="icefaces.home"/>
@@ -1073,10 +1067,14 @@
    </target>
     <target name="cond-if" depends="check-icefaces" if="icefaces.property">
         <property name="view.dir" value="icefaces/."/>
-        <echo message="is icefaces and view.dir is ${view.dir}"/>
+        <property name="script.dir" value="icefaces/build-scripts" />
+        <property name="resources.dir" value="icefaces/resources" />
+          <echo message="ICEfaces with view.dir ${view.dir} script is ${script.dir} resources is ${resources.dir}"/>
     </target>
     <target name="cond-else" depends="check-icefaces" unless="icefaces.property">
         <property name="view.dir" value="."/>
-        <echo message="not icefaces and view.dir is ${view.dir}"/>
+        <property name="script.dir" value="./build-scripts" />
+        <property name="resources.dir" value="./resources" />
+        <echo message="non-ICEfaces project with view.dir of ${view.dir} and script dir of ${script.dir}"/>
     </target>
 </project>
