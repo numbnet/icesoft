@@ -585,7 +585,7 @@
 		</copy>
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
-            	<include name="META-INF/application.xml"/>
+            	<include name="META-INF/application.xml" unless="icefaces.property"/>
             	<include name="META-INF/jboss-app.xml"/>
             	<include name="META-INF/ejb-jar.xml"/>
             	<include name="META-INF/persistence*.xml"/>
@@ -594,10 +594,16 @@
             <filterset refid="project"/>
             <filterset refid="jdbc"/>
         </copy>
+        <copy todir="${project.home}/resources" overwrite="true">
+             <fileset dir="${resources.dir}">
+             	 <include name="META-INF/application.xml" if="icefaces.property"/>
+             </fileset>
+             <filterset refid="project"/>
+             <filterset refid="jdbc"/>
+        </copy>  	
 	</target>
     
-    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters, file-copy-icefaces">
-                
+    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters, copy-images">            
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
             	<exclude name="datasource-ds.xml"/>
@@ -675,7 +681,14 @@
         <copy todir="${project.home}/src/${action.dir}" file="${basedir}/src/Authenticator.java">
             <filterset refid="filters"/>
         </copy>
-        
+    	
+        <copy todir="${project.home}/src/${action.dir}" >
+        	<fileset dir="${basedir}/icefaces/src/">
+        		<include file="Timer*.java" if="icefaces.property"/>
+        	</fileset>
+            <filterset refid="filters"/>     
+        </copy> 
+    	
         <copy todir="${project.home}">
             <fileset dir="${script.dir}">
             	<exclude name="build*.xml"/>
@@ -692,28 +705,15 @@
             <fileset dir="${basedir}/nbproject" />
             <filterset refid="project"/>
         </copy>
-
-    </target>
- 
-    <target name="file-copy-icefaces" depends="copy-images" if="icefaces.property">
-        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/icefaces/src/TimerBean.java" >
-            <filterset refid="filters"/>
-        </copy>    
-        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/icefaces/src/TimerBeanImpl.java">
-            <filterset refid="filters"/>
-        </copy>
         <copy todir="${project.home}/resources" overwrite="true">
-              <fileset dir="${resources.dir}">
-                <include name="components.properties"/>
-            	<include name="META-INF/application.xml"/>
-            	<include name="WEB-INF/web.xml"/>
-            	<include name="WEB-INF/faces-config.xml"/>
+            <fileset dir="${resources.dir}">
+                <include name="components.properties" if="icefaces.property"/>
+                <include name="WEB-INF/web.xml" if="icefaces.property"/>
+                <include name="WEB-INF/faces-config.xml" if="icefaces.property"/>
             </fileset>
             <filterset refid="project"/>
             <filterset refid="jdbc"/>
-        </copy>
-
-
+         </copy>  	
     </target>
     
     <!-- copy the images separately or they get garbled when using filters -->
