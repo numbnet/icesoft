@@ -521,7 +521,7 @@ public class TableRenderer
             if (width != null) {
 
                 td.setAttribute("style",
-                                "width:" + width + ";overfolw:hidden;");
+                                "width:" + width + ";overflow:hidden;");
             }
             domContext.setCursorParent(oldCursorParent);
             tr.appendChild(td);
