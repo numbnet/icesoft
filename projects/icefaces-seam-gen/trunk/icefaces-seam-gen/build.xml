@@ -804,7 +804,7 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/action.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
@@ -821,7 +821,7 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/action.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
@@ -835,7 +835,7 @@
         <copy file="test/FormTest.java" tofile="${test.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/form.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/form.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <copy file="test/testng.xml" tofile="${testng.file}">
@@ -855,7 +855,7 @@
         <copy file="test/FormTest.java" tofile="${test.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/form.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/form.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <copy file="test/testng.xml" tofile="${testng.file}">
@@ -870,7 +870,7 @@
             <filterset refid="filters"/>
         </copy>
 
-        <copy file="view/query.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/query.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
 
@@ -885,7 +885,7 @@
         <copy file="src/Conversation.java" tofile="${interface.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/conversation.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/conversation.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
@@ -903,10 +903,10 @@
         <copy file="src/EntityList.java" tofile="${list.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/edit.xhtml" tofile="${page.file}">
+        <copy file="${view.dir}/view/edit.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="view/list.xhtml" tofile="${masterPage.file}">
+        <copy file="${view.dir}/view/list.xhtml" tofile="${masterPage.file}">
             <filterset refid="filters"/>
         </copy>
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
