@@ -737,8 +737,8 @@
     
     <!-- copy the images separately or they get garbled when using filters -->
     <target name="copy-images" if="icefaces.property">
-	   <copy todir="${project.home}/img" overwrite="true">
-		<fileset file="${view.dir}/view/img/*"/>
+	   <copy todir="${project.home}/view/img" overwrite="true">
+		<fileset file="${basedir}/icefaces/view/img/*"/>
 	   </copy>
     </target>
         
