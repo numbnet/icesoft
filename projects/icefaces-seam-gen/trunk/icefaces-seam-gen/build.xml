@@ -68,15 +68,15 @@
             <isset property="hibernate.default_schema"/>
         </condition>
         <condition property="schema.property" value="">
-	    <not><isset property="hibernate.default_schema"/></not>
-	</condition>
+	       <not><isset property="hibernate.default_schema"/></not>
+	    </condition>
 	
-	<condition property="catalog.property" value="&#xa;         &lt;property name=&quot;hibernate.default_catalog&quot; value=&quot;${hibernate.default_catalog}&quot;/&gt;">
-	    <isset property="hibernate.default_catalog"/>
-	</condition>
-	<condition property="catalog.property" value="">
-	    <not><isset property="hibernate.default_catalog"/></not>
-	</condition>
+	    <condition property="catalog.property" value="&#xa;         &lt;property name=&quot;hibernate.default_catalog&quot; value=&quot;${hibernate.default_catalog}&quot;/&gt;">
+	       <isset property="hibernate.default_catalog"/>
+	    </condition>
+	    <condition property="catalog.property" value="">
+	       <not><isset property="hibernate.default_catalog"/></not>
+	    </condition>
 
         <condition property="icefaces.home" value="&#xa;         &lt;property name=&quot;icefaces.home&quot; value=&quot;${icefaces.home}&quot;/&gt;">
             <isset property="icefaces.home"/>
@@ -107,15 +107,15 @@
         <condition property="script.dir" value="./build-scripts">
             <not><isset property="icefaces.property"/></not>
         </condition>   
-       <condition property="resources.dir" value="./resources">
+        <condition property="resources.dir" value="./resources">
             <not><isset property="icefaces.property"/></not>
         </condition>                       
-       <condition property="filter.dir" value="${basedir}/icefaces/view">
+        <condition property="filter.dir" value="${basedir}/icefaces/view">
             <isset property="icefaces.property"/>
-       </condition>
-       <condition property="filter.dir" value="${basedir}/view">
+        </condition>
+        <condition property="filter.dir" value="${basedir}/view">
             <not><isset property="icefaces.property"/></not>
-       </condition>
+        </condition>
         <filterset id="jdbc">
             <filter token="jdbcUrl" value="${hibernate.connection.url}"/>
             <filter token="driverClass" value="${hibernate.connection.driver_class}"/>
@@ -134,21 +134,18 @@
         	<filter token="schemaVersion" value="${version}" />
         </filterset>
         
-     <fileset id="view" dir="${filter.dir}">
-        <include name="home.xhtml"/>
-    	<include name="error.xhtml"/>
-    	<include name="login.xhtml"/>
-    	<include name="login.page.xml"/>
-        <include name="index.html"/>
-        <include name="layout/*"/>
-        <include name="stylesheet/*"/>
-    	<include name="img/*"/>
-    	<exclude name="**/*.ftl"/>
-    </fileset>
+        <fileset id="view" dir="${filter.dir}">
+            <include name="home.xhtml"/>
+    	    <include name="error.xhtml"/>
+    	    <include name="login.xhtml"/>
+    	    <include name="login.page.xml"/>
+            <include name="index.html"/>
+            <include name="layout/*"/>
+            <include name="stylesheet/*"/>
+    	    <include name="img/*"/>
+    	    <exclude name="**/*.ftl"/>
+        </fileset>
     </target>
-        
-    
- 
     
     <fileset id="seam" dir="../">
         <include name="jboss-seam*.jar"/>
@@ -524,44 +521,28 @@
     </target>
 
 
-    <!-- if icefaces then we want to copy over the icefaces jars & not the jsf-facelets or ajax4jsf jars -->
-    <!-- next 3 targets have changed or are new  jag 25-05-2007 -->
-    <target name="copy-lib" depends="copy-lib-icefaces, copy-lib-regular">
+    <target name="copy-lib" >
           <echo message="Copying Seam jars to the ${project.home}/lib directory..." />
           <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
+           <copy todir="${project.home}/lib" overwrite="true">
+               <fileset dir="../lib">
+           	      <exclude name="jsf-facelets.jar" if="icefaces.property"/>
+           	      <exclude name="ajax4jsf*.jar" if="icefaces.property"/>
+               	  <exclude name="richfaces*.jar" if="icefaces.property"/>
+               </fileset>
+              <fileset dir="../drools/lib"/>
+              <fileset refid="seam"/>
+              <fileset file="${driver.jar}"/>
+    	      <fileset dir="${icefaces.home}/lib"> 
+    	          <include name="icefaces*.jar" if="icefaces.property"/> 
+    		      <include name="backport-util-concurrent.jar" if="icefaces.property"/> 
+    		      <include name="commons-fileupload.jar" if="icefaces.property"/> 
+    		      <include name="commons-digester.jar" if="icefaces.property"/> 
+    	      </fileset> 
+          </copy>  	
             <copy todir="${project.home}/bootstrap" overwrite="true">
               <fileset dir="../bootstrap" />
            </copy>
-    </target>
-        
-    <target name="copy-lib-regular" unless="icefaces.property">
-          <copy todir="${project.home}/lib" overwrite="true">
-            <fileset dir="../lib"/>
-            <fileset dir="../drools/lib"/>
-            <fileset refid="seam"/>
-            <fileset file="${driver.jar}"/>
-        </copy>
-        
-    </target>
-    
-    <target name="copy-lib-icefaces" if="icefaces.property">
-        <echo message="This is an icefaces project"/>
-        <copy todir="${project.home}/lib" overwrite="true">
-            <fileset dir="../lib"> 
-	        <exclude name="jsf-facelets.jar" />
-	        <exclude name="ajax4jsf*.jar" />
-	    </fileset> 
-            <fileset dir="../drools/lib"/>
-	    <fileset dir="${icefaces.home}/lib"> 
-	         <include name="icefaces*.jar" /> 
-		     <include name="backport-util-concurrent.jar" /> 
-		     <include name="commons-fileupload.jar" />
-		     <include name="commons-digester.jar"/>
-	    </fileset> 
-            <fileset refid="seam"/>
-            <fileset file="${driver.jar}"/>
-        </copy>
-        
     </target>
 	
 	<target name="file-copy-war" if="project.war">
