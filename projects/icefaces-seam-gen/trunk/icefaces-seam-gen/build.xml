@@ -556,6 +556,7 @@
                 file="${script.dir}/build-war.xml">
             <filterset refid="project"/>
         </copy>
+		
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
             	<include name="META-INF/persistence*-war.xml"/>
@@ -602,7 +603,7 @@
              <filterset refid="jdbc"/>
         </copy>  	
 	</target>
-    
+ 
     <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters, copy-images">            
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
@@ -684,7 +685,7 @@
     	
         <copy todir="${project.home}/src/${action.dir}" >
         	<fileset dir="${basedir}/icefaces/src/">
-        		<include file="Timer*.java" if="icefaces.property"/>
+        		<include name="Timer*.java" if="icefaces.property"/>
         	</fileset>
             <filterset refid="filters"/>     
         </copy> 
@@ -692,6 +693,7 @@
         <copy todir="${project.home}">
             <fileset dir="${script.dir}">
             	<exclude name="build*.xml"/>
+            	<include name="build.properties"/>
             </fileset>
             <filterset refid="project"/>
         </copy>
