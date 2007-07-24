@@ -81,7 +81,7 @@
         <condition property="icefaces.home" value="&#xa;         &lt;property name=&quot;icefaces.home&quot; value=&quot;${icefaces.home}&quot;/&gt;">
             <isset property="icefaces.home"/>
         </condition>
-        <condition property="icefaces.home" value="../">
+        <condition property="icefaces.home" value="">
             <not><isset property="icefaces.home"/></not>
         </condition>
         
@@ -116,7 +116,12 @@
         <condition property="filter.dir" value="${basedir}/view">
             <not><isset property="icefaces.property"/></not>
         </condition>
-  
+        <condition property="icefaces.lib" value="${icefaces.home}/lib">
+             <isset property="icefaces.property"/>
+         </condition>
+         <condition property="icefaces.lib" value="../lib">
+             <not><isset property="icefaces.property"/></not>
+         </condition>  
         <filterset id="jdbc">
             <filter token="jdbcUrl" value="${hibernate.connection.url}"/>
             <filter token="driverClass" value="${hibernate.connection.driver_class}"/>
@@ -190,7 +195,7 @@
         
         <property name="old.icefaces.home" value="C:\ICEfaces-1.6.0-src\icefaces"/>
         <input addproperty="icefaces.home.new" 
-                   message="Enter your icefaces home directory or blank for no icefaces [${icefaces.home}]" 
+                   message="Enter your ICEfaces home directory or blank if not an ICEfaces project [${old.icefaces.home}]" 
               defaultvalue="${old.icefaces.home}"/>
     	<pathFixer property="icefaces.home.new" />
         
@@ -531,7 +536,7 @@
               <fileset dir="../drools/lib"/>
               <fileset refid="seam"/>
               <fileset file="${driver.jar}"/>
-    	      <fileset dir="${icefaces.home}/lib" > 
+    	      <fileset dir="${icefaces.lib}" > 
     	          <include name="icefaces*.jar" if="icefaces.property"/> 
     		      <include name="backport-util-concurrent.jar" if="icefaces.property"/> 
     		      <include name="commons-fileupload.jar" if="icefaces.property"/> 
