@@ -97,6 +97,8 @@ public class ServletExternalContext extends BridgeExternalContext {
 
         this.update(this.request, this.response);
         this.insertNewViewrootToken();
+        // #ICE-1722 default to normal mode before the first request
+        switchToNormalMode();
     }
 
     public Object getSession(boolean create) {
@@ -271,6 +273,9 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
     }
 
+    /**
+     * Switch to normal redirection mode, using the HTTPServletResponse object
+     */
     public void switchToNormalMode() {
         redirector = new Redirector() {
             public void redirect(String uri) {
