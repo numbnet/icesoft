@@ -603,8 +603,15 @@
              <filterset refid="jdbc"/>
         </copy>  	
 	</target>
- 
-    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters, copy-images">            
+	
+    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters"> 
+    	
+ 	   <copy todir="${project.home}/view/img" overwrite="true">
+ 		<fileset dir="${basedir}/icefaces/view/img">
+ 			<include name="*.*" if="icefaces.property"/>
+ 	    </fileset>
+ 	   </copy>
+    	
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
             	<exclude name="datasource-ds.xml"/>
@@ -717,14 +724,6 @@
             <filterset refid="jdbc"/>
          </copy>  	
     </target>
-    
-    <!-- copy the images separately or they get garbled when using filters -->
-    <target name="copy-images" if="icefaces.property">
-	   <copy todir="${project.home}/view/img" overwrite="true">
-		<fileset file="${basedir}/icefaces/view/img/*"/>
-	   </copy>
-    </target>
-        
     
     <target name="validate-project" depends="init-properties, validate-workspace">
         <fail message="No project name specified (run 'seam new-project' first)">
