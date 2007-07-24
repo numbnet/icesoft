@@ -68,15 +68,15 @@
             <isset property="hibernate.default_schema"/>
         </condition>
         <condition property="schema.property" value="">
-	       <not><isset property="hibernate.default_schema"/></not>
-	    </condition>
+	    <not><isset property="hibernate.default_schema"/></not>
+	</condition>
 	
-	    <condition property="catalog.property" value="&#xa;         &lt;property name=&quot;hibernate.default_catalog&quot; value=&quot;${hibernate.default_catalog}&quot;/&gt;">
-	       <isset property="hibernate.default_catalog"/>
-	    </condition>
-	    <condition property="catalog.property" value="">
-	       <not><isset property="hibernate.default_catalog"/></not>
-	    </condition>
+	<condition property="catalog.property" value="&#xa;         &lt;property name=&quot;hibernate.default_catalog&quot; value=&quot;${hibernate.default_catalog}&quot;/&gt;">
+	    <isset property="hibernate.default_catalog"/>
+	</condition>
+	<condition property="catalog.property" value="">
+	    <not><isset property="hibernate.default_catalog"/></not>
+	</condition>
 
         <condition property="icefaces.home" value="&#xa;         &lt;property name=&quot;icefaces.home&quot; value=&quot;${icefaces.home}&quot;/&gt;">
             <isset property="icefaces.home"/>
@@ -184,22 +184,21 @@
     <target name="setup"
     	description="Prompt for settings">
         <property file="${basedir}/build.properties" prefix="old" />
-    	      
-        <echo message="Welcome to seam-gen with ICEFaces option:-"/>
-        <echo message="     (leave icefaces home directory blank if a non-ICEFaces application is desired)"/>
+
+        <echo message="Welcome to seam-gen :-)"/>
         <property name="old.workspace.home" value="C:/Projects"/>
         <input addproperty="workspace.home.new" 
                    message="Enter your Java project workspace (the directory that contains your Seam projects) [${old.workspace.home}]" 
               defaultvalue="${old.workspace.home}"/>
     	<pathFixer property="workspace.home.new" />
         
-        <property name="old.icefaces.home" value="C:\ICEfaces-1.6.0-src\icefaces"/>
+        <property name="old.icefaces.home" value="C:/Projects/ICEfaces-1.6.0-src/icefaces"/>
         <input addproperty="icefaces.home.new" 
-                   message="Enter your ICEfaces home directory or blank if not an ICEfaces project [${old.icefaces.home}]" 
+                   message="Enter your ICEfaces home directory (leave blank to omit ICEfaces) [${old.icefaces.home}]" 
               defaultvalue="${old.icefaces.home}"/>
     	<pathFixer property="icefaces.home.new" />
         
-        <property name="old.jboss.home" value="C:/Projects/jboss-4.2.0.GA"/>
+        <property name="old.jboss.home" value="C:/Program Files/jboss-4.2.0.GA"/>
         <input addproperty="jboss.home.new" 
                    message="Enter your JBoss home directory [${old.jboss.home}]" 
               defaultvalue="${old.jboss.home}"/>
@@ -559,7 +558,6 @@
                 file="${script.dir}/build-war.xml">
             <filterset refid="project"/>
         </copy>
-		
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
             	<include name="META-INF/persistence*-war.xml"/>
@@ -579,7 +577,6 @@
 	             file="${resources.dir}/WEB-INF/components.xml">
 	         <filterset refid="project"/>
 	     </copy>
-	     
         <copy tofile="${project.home}/build.xml" 
                 file="${script.dir}/build.xml">
             <filterset refid="project"/>
@@ -606,9 +603,9 @@
              <filterset refid="jdbc"/>
         </copy>  	
 	</target>
-	
-    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters"> 
-    	
+    
+    <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters">
+                
  	   <copy todir="${project.home}/view/img" overwrite="true">
  		<fileset dir="${basedir}/icefaces/view/img">
  			<include name="*.*" if="icefaces.property"/>
@@ -897,7 +894,7 @@
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
     </target>
 
-    <target name="generate-entities" depends="validate-project"
+	 <target name="generate-entities" depends="validate-project"
          description="Reverse engineer entities from the database">
 		
 		<echo message="Reverse engineering database using JDBC driver ${driver.jar}"/>
@@ -981,7 +978,7 @@
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}"/>
 
     </target>
- 
+	
     <target name="deploy" depends="validate-project"
         description="Deploy the EAR or WAR">
         <echo message="Deploying project '${project.name}' to JBoss" />
@@ -1039,7 +1036,7 @@
         <echo message="JDBC URL: ${hibernate.connection.url}"/>
         <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
         <echo message="Database username: ${hibernate.connection.username}"/>
-        <echo message="Database password: ${hibernate.connection.password}"/> 
+        <echo message="Database password: ${hibernate.connection.password}"/>
         <echo message="icefaces.lib is  ${icefaces.lib}"/>   
     	<echo message="icefaces.property is ${icefaces.property}" />
     </target>
@@ -1047,5 +1044,5 @@
     <target name="help">
         <print file="README"/>
     </target>
-    
+
 </project>
