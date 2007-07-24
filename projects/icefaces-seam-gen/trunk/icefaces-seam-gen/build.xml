@@ -88,7 +88,7 @@
         <condition property="icefaces.property">
              <and>
                  <isset property="icefaces.home"/>
-                 <not><equals arg1="${icefaces.home}" arg2="../"/></not>
+                 <not><equals arg1="${icefaces.home}" arg2=""/></not>
              </and>
         </condition>
 
@@ -1039,7 +1039,9 @@
         <echo message="JDBC URL: ${hibernate.connection.url}"/>
         <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
         <echo message="Database username: ${hibernate.connection.username}"/>
-        <echo message="Database password: ${hibernate.connection.password}"/>   
+        <echo message="Database password: ${hibernate.connection.password}"/> 
+        <echo message="icefaces.lib is  ${icefaces.lib}"/>   
+    	<echo message="icefaces.property is ${icefaces.property}" />
     </target>
     
     <target name="help">
