@@ -17,7 +17,6 @@ public class DisposeViews implements Server {
         String[] viewIdentifiers = request.getParameterAsStrings("ice.view.all");
         for (int i = 0; i < viewIdentifiers.length; i++) {
             String viewIdentifier = viewIdentifiers[i];
-            //todo: remove dependency on com.icesoft.faces.webapp.http.servlet package
             View view = (View) views.remove(viewIdentifier);
             // Jira 1616 Logout throws NPE.              
             if (view != null) {
