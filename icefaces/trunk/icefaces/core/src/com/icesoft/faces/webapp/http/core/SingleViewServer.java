@@ -34,7 +34,7 @@ public class SingleViewServer implements Server {
         //create single view or re-create view if the request is the result of a redirect 
         View view = (View) views.get(viewNumber);
         if (view == null) {
-            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration);
+            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         } else {

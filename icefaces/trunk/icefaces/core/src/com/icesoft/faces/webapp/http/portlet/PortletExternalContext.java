@@ -6,6 +6,7 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
 import javax.faces.FacesException;
@@ -36,11 +37,15 @@ public class PortletExternalContext extends BridgeExternalContext {
     private RenderResponse response;
     private PortletSession session;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration) {
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor) {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (RenderRequest) request;
         this.response = (RenderResponse) response;
-        this.session = this.request.getPortletSession();
+        this.session = new ProxyPortletSession(this.request.getPortletSession()) {
+            public void invalidate() {
+                monitor.shutdown();
+            }
+        };
         this.context = this.session.getPortletContext();
         this.initParameterMap = new AbstractAttributeMap() {
             protected Object getAttribute(String key) {

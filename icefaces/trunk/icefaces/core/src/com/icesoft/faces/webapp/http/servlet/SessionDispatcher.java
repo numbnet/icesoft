@@ -49,7 +49,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     private void sessionCreated(HttpSession session) {
         try {
-            sessionBoundServers.put(session.getId(), this.newServlet(session,Listener.lookupSessionMonitor(session)));
+            sessionBoundServers.put(session.getId(), this.newServlet(session, Listener.lookupSessionMonitor(session)));
         } catch (Exception e) {
             Log.warn(e);
             throw new RuntimeException(e);
@@ -69,12 +69,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
-    public static PseudoServlet getSingletonSessionServlet(HttpSession session)  {
+    public static PseudoServlet getSingletonSessionServlet(HttpSession session) {
         return ((SessionDispatcher) SessionDispatchers.get(0))
-                    .getSessionServlet(session);
+                .getSessionServlet(session);
     }
 
-    public PseudoServlet getSessionServlet(HttpSession session)  {
+    public PseudoServlet getSessionServlet(HttpSession session) {
         return (PseudoServlet) sessionBoundServers.get(session.getId());
     }
 
@@ -161,7 +161,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
             private HttpSession session;
             private long lastAccess;
 
-            public Monitor(HttpSession session) {
+            private Monitor(HttpSession session) {
                 this.session = session;
                 this.lastAccess = session.getLastAccessedTime();
             }
@@ -170,24 +170,28 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 lastAccess = System.currentTimeMillis();
             }
 
-            private boolean isExpired() {
+            public boolean isExpired() {
                 long elapsedInterval = System.currentTimeMillis() - lastAccess;
                 long maxInterval = session.getMaxInactiveInterval() * 1000;
                 //shutdown the session a bit (15s) before session actually expires
                 return elapsedInterval + 15000 > maxInterval;
             }
 
-            private void shutdownIfExpired() {
+            public void shutdown() {
                 try {
-                    if (isExpired()) {
-                        sessionMonitors.remove(session);
-                        sessionShutdown(session);
-                    }
+                    sessionMonitors.remove(session);
+                    sessionShutdown(session);
                 } catch (IllegalStateException e) {
                     //session was already invalidated by the container
                 } catch (Throwable t) {
                     //just inform that something went wrong
                     Log.warn("Failed to monitor session expiry", t);
+                }
+            }
+
+            public void shutdownIfExpired() {
+                if (isExpired()) {
+                    shutdown();
                 }
             }
         }

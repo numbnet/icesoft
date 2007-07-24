@@ -35,11 +35,15 @@ public class ServletExternalContext extends BridgeExternalContext {
     private HttpServletResponse response;
     private HttpSession session;
 
-    public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration) {
+    public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
         this.response = (HttpServletResponse) response;
-        this.session = this.request.getSession();
+        this.session = new ProxyHttpSession(this.request.getSession()) {
+            public void invalidate() {
+                sessionMonitor.shutdown();
+            }
+        };
         this.context = this.session.getServletContext();
         this.initParameterMap = new AbstractAttributeMap() {
             protected Object getAttribute(String key) {

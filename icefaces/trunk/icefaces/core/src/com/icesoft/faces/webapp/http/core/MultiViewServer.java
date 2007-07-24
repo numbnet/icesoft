@@ -37,7 +37,7 @@ public class MultiViewServer implements Server {
             String redirectViewNumber = request.getParameter("rvn");
             view = (View) views.get(redirectViewNumber);
             if (view == null) {
-                view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration);
+                view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor);
                 views.put(redirectViewNumber, view);
                 ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
             } else {
@@ -46,7 +46,7 @@ public class MultiViewServer implements Server {
             }
         } else {
             String viewNumber = String.valueOf(++viewCount);
-            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration);
+            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         }

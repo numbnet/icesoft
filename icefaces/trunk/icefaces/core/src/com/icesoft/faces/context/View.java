@@ -10,6 +10,7 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
@@ -41,21 +42,23 @@ public class View implements CommandQueue {
     private Collection viewListeners = new ArrayList();
     private String sessionID;
     private Configuration configuration;
+    private SessionDispatcher.Listener.Monitor sessionMonitor;
 
-    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration) throws Exception {
+    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
+        this.sessionMonitor = sessionMonitor;
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 ServletEnvironmentRequest wrappedRequest = new ServletEnvironmentRequest(request);
                 requestURI = wrappedRequest.getRequestURI();
-                externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration);
+                externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
             }
 
             public void portlet(Object request, Object response) {
                 PortletEnvironmentRenderRequest wrappedRequest = new PortletEnvironmentRenderRequest(request);
-                externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration);
+                externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
             }
         });
         this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration);
@@ -92,7 +95,7 @@ public class View implements CommandQueue {
                 if (differentURI(wrappedRequest)) {
                     //page redirect
                     requestURI = wrappedRequest.getRequestURI();
-                    externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration);
+                    externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
                     facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration);
                     //reuse  PersistentFacesState instance when page redirects occur                    
                     persistentFacesState.setFacesContext(facesContext);
