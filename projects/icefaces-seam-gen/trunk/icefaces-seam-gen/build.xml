@@ -180,7 +180,6 @@
     	description="Prompt for settings">
         <property file="${basedir}/build.properties" prefix="old" />
     	      
-        <!-- next 2 lines new jag May 25-07 -->
         <echo message="Welcome to seam-gen with ICEFaces option:-"/>
         <echo message="     (leave icefaces home directory blank if a non-ICEFaces application is desired)"/>
         <property name="old.workspace.home" value="C:/Projects"/>
@@ -397,7 +396,6 @@
     	    <equals arg1="${hibernate.default_catalog.new}" arg2=""/>
     	</condition>
 
-        <!-- added icefaces.home property to be read in from properties file either has value or is blank -->
         <propertyfile file="build.properties">
             <entry key="workspace.home" value="${workspace.home.new}"/>
             <entry key="project.name" value="${project.name.new}"/>
@@ -521,7 +519,6 @@
         <property name="page.file" value="${project.home}/view/${page.name}.xhtml"/>
     </target>
 
- <target name="test-copy-lib" depends="init-properties,copy-lib" />
     <target name="copy-lib" >
           <echo message="Copying Seam jars to the ${project.home}/lib directory..." />
           <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
@@ -1037,9 +1034,7 @@
         <echo message="JDBC URL: ${hibernate.connection.url}"/>
         <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
         <echo message="Database username: ${hibernate.connection.username}"/>
-        <echo message="Database password: ${hibernate.connection.password}"/>
-        <echo message=" icefaces.property is ${icefaces.property} icefaces.home is ${icefaces.home}"/>  
-        <echo message=" view.dir ${view.dir} script is ${script.dir} resources is ${resources.dir}"/>      
+        <echo message="Database password: ${hibernate.connection.password}"/>   
     </target>
     
     <target name="help">
