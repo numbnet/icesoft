@@ -127,6 +127,9 @@ background-color: transparent;
 	text-align: right;
 	padding-top: 15px;
 }
+.iceDatTbl{
+  margin:0px ;
+}
 .iceDataTblOutline {
     width: 98%;
 }
@@ -139,7 +142,6 @@ background-color: transparent;
     padding-bottom: 3px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    white-space: nowrap;
 
 }
 /* data tables are rendered with alternating row colors */
@@ -159,7 +161,6 @@ background-color: transparent;
     padding-bottom: 3px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    white-space:nowrap;
    }
 .dataScrollerTable {
   
