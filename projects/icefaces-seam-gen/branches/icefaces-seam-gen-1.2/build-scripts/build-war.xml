@@ -81,7 +81,7 @@
             </fileset>
         </copy>
     </target>
-
+    
     <target name="war" depends="compilemodel,compileactions,copyclasses" 
             description="Build the distribution .war file">
         
@@ -285,6 +285,24 @@
 			<classpath refid="build.classpath" />
 			<xmlfileset dir="${test.dir}" includes="*Test.xml" />
 		</testng>
+	<target name="freshen" description="grab fresh icefaces jars">
+	<copy todir="${lib.dir}">
+	    <fileset dir="${icefaces.home}/lib">
+		   <include name="icefaces*.jar" />
+		   <include name="backport-util-concurrent.jar" />	
+		   <include name="commons-fileupload.jar"/> 			
+  	    </fileset>
+	</copy>
+	</target>
+
+	<target name="purge" depends="undeploy" description="clean out jboss deployments of crashing applications"> 
+	  <delete dir="${jboss.home}/server/default/tmp/deploy" />
+	  <mkdir dir="${jboss.home}/server/default/tmp/deploy/" />
+	  <delete dir="${jboss.home}/server/default/tmp/sessions" />
+	  <mkdir dir="${jboss.home}/server/default/tmp/sessions" />
+  	  <delete dir="${jboss.home}/server/default/work/jboss.web/localhost/${project.name}" />
+	</target>
+	
 	</target>
 	
 </project>
