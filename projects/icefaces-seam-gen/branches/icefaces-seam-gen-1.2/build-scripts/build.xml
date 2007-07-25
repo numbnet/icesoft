@@ -28,7 +28,7 @@
         <property name="javac.debug" value="true" />
         <property name="javac.deprecation" value="false" />
         <property name="debug" value="false" />
-	<property name="icefacesLibDirectory" value="c:/ossrepoTrunk/lib" />
+
 
 	<fileset id="lib" dir="${lib.dir}">
 		<include name="*.jar" />
@@ -304,7 +304,7 @@
 
 	<target name="freshen" description="grab fresh icefaces jars">
 	<copy todir="${lib.dir}">
-	    <fileset dir="${icefacesLibDirectory}">
+	    <fileset dir="${icefaces.home}/lib">
 		<include name="icefaces*.jar" />
 		<include name="backport-util-concurrent.jar" />	
 		<include name="commons-fileupload.jar"/> 			

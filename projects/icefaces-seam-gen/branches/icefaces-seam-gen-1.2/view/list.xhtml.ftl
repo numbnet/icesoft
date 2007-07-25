@@ -12,7 +12,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		        xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -20,13 +20,15 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}Form" styleClass="edit">
-      <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
-       <f:facet name="header">
-        <ice:panelGroup styleClass="expandableStateIndicator">
-                  <ice:outputText value="${entityName} search"/>
-	  </ice:panelGroup>
-       </f:facet>        
-        <ice:panelGroup styleClass="edit">
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                    <ice:outputText value="${entityName} search"/>
+                 </td>
+              </tr>
+         </table>	
+         <ice:panelGroup styleClass="edit">
 		 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
@@ -55,13 +57,13 @@
 </#foreach>
             </ice:panelGrid>
    
-	</ice:panelGroup>
-   </ice:panelCollapsible>
+	  </ice:panelGroup>
+  
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/${listPageName}.xhtml"/>
         </div>
-      
+      </ice:panelGroup> 
     </ice:form>
     
     <ice:panelGroup styleClass="formBorderHighlight">

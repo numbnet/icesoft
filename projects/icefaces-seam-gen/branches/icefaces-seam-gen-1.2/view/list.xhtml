@@ -11,14 +11,17 @@
 <ui:define name="body">
     
     <h:messages globalOnly="true" styleClass="message"/>
-   
- <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="expandableStateIndicator">
-		<ice:outputText value="@masterPageName@"/>
-        </ice:panelGroup>
-	</f:facet>
-      <div class="results">
+  <ice:form id="listForm>  
+     <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">		
+		          <ice:outputText value="@masterPageName@"/>
+                  </td>
+              </tr>
+          </table>
+
+         <div class="results">
      
     		<h:outputText value="No @componentName@ exists" 
             	rendered="#{empty @listName@.resultList}"/>
@@ -38,12 +41,12 @@
         		</ice:column>
     		</ice:dataTable>
       </div>
-   </ice:panelCollapsible>
+   </ice:panelGroup>
    <div class="actionButtons">
         <s:button id="done" value="Create @componentName@"
             view="/@pageName@.xhtml"/>			  
    </div>
-    
+ </ice:form>   
 </ui:define>
 
 </ui:composition>

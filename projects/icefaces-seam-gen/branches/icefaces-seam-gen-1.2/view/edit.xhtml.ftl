@@ -19,13 +19,16 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}editForm" styleClass="edit">
-      <ice:panelCollapsible expanded="${'#'}{true}" styleClass="pnlClpsblDemo">
-       <f:facet name="header">
-        <ice:panelGroup styleClass="expandableStateIndicator">
+     <ice:panelGroup  id="editGroup" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
 			    <ice:outputText value="Edit ${componentName}"/>
-        </ice:panelGroup>
-	</f:facet>        
-      <ice:panelGroup styleClass="edit">
+                  </td>
+              </tr>
+          </table>
+
+        <ice:panelGroup styleClass="edit">
 		 
                      <f:facet name="beforeInvalidField">
                                 <ice:graphicImage styleClass="errorImg" value="img/error.png"/>
@@ -49,7 +52,7 @@
 		</ice:panelGrid>
 		</s:validateAll>
           </ice:panelGroup>
-	  </ice:panelCollapsible>
+	  </ice:panelGroup>
                   
         <div class="actionButtons">
         
@@ -104,7 +107,7 @@
 <#if property.optional>
 	<ice:panelTab label="${property.name}">
 <#else>
- 	<ice:panelTab label="${property.name} *" labelClass="required">
+ 	<ice:panelTab label="${property.name} *" >
 </#if>
 		<div class="association" id="${property.name}Parent">
     

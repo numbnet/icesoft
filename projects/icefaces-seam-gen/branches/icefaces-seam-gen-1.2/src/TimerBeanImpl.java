@@ -55,6 +55,10 @@ import com.icesoft.faces.async.render.IntervalRenderer;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.context.ViewListener;
 
+import com.icesoft.faces.context.effects.Effect;
+import com.icesoft.faces.context.effects.BlindDown;
+import com.icesoft.faces.context.effects.BlindUp;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,6 +72,12 @@ import org.apache.commons.logging.LogFactory;
 @Name("timer")
 @Scope(ScopeType.PAGE)
 public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
+
+    // expand/contract effects to take place of panelCollapsible
+    private Effect currentEffect=new BlindUp();
+    private boolean visibility=false;
+    private boolean toggledEffect;
+    private boolean expanded = false;
 
     private DateFormat dateFormatter;
 
@@ -94,8 +104,6 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
     }
 
     public void renderingException( RenderingException re) {
-//        System.out.println("Exception in rendering: " + re);
-//        re.printStackTrace();
         if(log.isTraceEnabled() ) { 
            log.trace("*** View obsoleted: " + myId );
         } 
@@ -105,10 +113,64 @@ public class TimerBeanImpl implements Renderable, ViewListener, Serializable {
 
     public TimerBeanImpl() {
         dateFormatter =  DateFormat.getDateTimeInstance();
-        myId = ++id;         
+        myId = ++id;      
     }
 
 
+    /** to simulate panelCollapsible */   
+    private void buildEffect() {
+       if (expanded) {
+            currentEffect = new BlindDown();
+       } else {
+           currentEffect = new BlindUp();
+       }
+           currentEffect.setSubmit(true);
+           currentEffect.setTransitory(false);
+           currentEffect.setDuration(.2f);
+    }
+
+    public boolean getExpanded() {
+        return expanded;
+    }
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+        visibility = expanded;
+        buildEffect();
+        currentEffect.setFired(true);
+    }
+       public boolean isVisibility() {
+        return visibility;
+    }
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
+ 
+    /**
+     * Method used to toggle the expanded status of this item This would be
+     * called from the front end pages
+     *
+     * @return "toggleExpanded" for use with faces-config navigation
+     */
+    public String toggleExpanded() {
+        expanded = !expanded;
+        buildEffect();
+        toggledEffect = true;
+        currentEffect.setFired(false);
+        currentEffect.setSubmit(true);
+        return null;
+    }
+    /**
+     * Gets the effect used when a cell is expanded or contracted
+     *
+     * @return effect
+     */
+    public Effect getExpandEffect() {
+        if (!toggledEffect) {
+            currentEffect.setSubmit(false);
+        }
+        toggledEffect = false;
+        return currentEffect;
+    }
     
     public String getCurrentTime() {
 

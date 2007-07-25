@@ -3,8 +3,6 @@ ${pojo.packageDeclaration}
 <#assign entityName = pojo.shortName>
 <#assign componentName = util.lower(entityName)>
 <#assign homeName = componentName + "Home">
-import javax.faces.event.ActionEvent;
-
 @${pojo.importType("org.jboss.seam.annotations.Name")}("${homeName}")
 public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framework.EntityHome")}<${entityName}>
 {
@@ -110,7 +108,7 @@ public class ${entityName}Home extends ${pojo.importType("org.jboss.seam.framewo
 </#if>
 </#foreach>
 
- }
+}
 </#assign>
 
 ${pojo.generateImports()}

@@ -13,12 +13,16 @@
     <h:messages styleClass="message"/>
     
  <ice:form id="login">
-      <ice:panelCollapsible expanded="#{true}" styleClass="pnlClpsblDemo">
-  	  <f:facet name="header">
-        	<ice:panelGroup styleClass="expandableStateIndicator">
-			<ice:outputText value="Login"/>
-        	</ice:panelGroup>
-   	  </f:facet>
+      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+       			<ice:outputText value="Login"/>
+                  </td>
+              </tr>
+          </table>
+    
+      
             <p>Please login using any username and password</p>
 
                     <div class="dialog">
@@ -35,11 +39,11 @@
                         </h:panelGrid>
                     </div>
 
-        </ice:panelCollapsible>
+      </ice:panelGroup>
          <div class="actionButtons">
             <h:commandButton value="Login" action="#{identity.login}"/>
         </div>
           
-    </ice:form>      
+  </ice:form>      
 </ui:define> 
 </ui:composition>

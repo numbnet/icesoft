@@ -91,6 +91,7 @@
         <filter token="jbossHome" value="${jboss.home}" />
     	<filter token="hbm2ddl" value="${hibernate.hbm2ddl.auto}"/>
     	<filter token="driverJar" value="${driver.file}"/>
+    	<filter token="iceHome" value="${icefaces.home}" />
     </filterset>
     
     <fileset id="view" dir="${basedir}/view">
@@ -969,6 +970,7 @@
 		<echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
 		<echo message="Database username: ${hibernate.connection.username}"/>
 		<echo message="Database password: ${hibernate.connection.password}"/>
+		<echo message="icefaces home directory: ${icefaces.home}" />
 	</target>
 
     <target name="help">
