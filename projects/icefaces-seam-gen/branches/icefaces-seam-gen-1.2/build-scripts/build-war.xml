@@ -119,6 +119,9 @@
 		<copy todir="${war.dir}/WEB-INF">
 			<fileset dir="${basedir}/resources/WEB-INF">
 				<include name="lib/*.*"/>
+                        <exclude name="ajax4jsf*.* />
+                        <exclude name="rich*.* />
+                        <exclude name="jsf-facelets.jar />
 				<include name="classes/**/*.class"/>
 			</fileset>
 		</copy>
