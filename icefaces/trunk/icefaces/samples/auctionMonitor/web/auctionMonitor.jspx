@@ -65,7 +65,7 @@
 </ice:panelGroup>
 
 <!-- Item List Start -->
-<h:form>
+<h:form id="iceForm">
     <div id="hiddenDiv">
         <ice:outputText value="#{AuctionBean.autoLoad}"/>
         <ice:outputText value="#{LogBean.autoLoad}"/>
@@ -82,7 +82,7 @@
     <div id="resultsDiv">
         <ice:dataTable width="100%" cellspacing="1" styleClass="bidTable"
                        value="#{AuctionBean.searchItems}" var="item"
-                       rowClasses="rowClass1,rowClass2">
+                       rowClasses="rowClass1,rowClass2" id="iceTable">
             <ice:column>
                 <f:facet name="header">
                     <ice:panelGrid columns="5" width="100%" cellspacing="1"
@@ -126,7 +126,7 @@
                                                image="#{item.expandTriangleImage}"
                                                title="Toggle the item details open or close"
                                                action="#{item.pressExpandButton}"/>
-                            <ice:outputText value="#{item.title}"/>
+                            <ice:outputText value="#{item.title}" id="item_title"/>
                         </font>
                     </ice:panelGroup>
 
@@ -230,7 +230,7 @@
                                                action="#{UserBean.switchMinimized}"
                                                title="Toggle the chat section open or close"
                                                style="vertical-align: middle;"/>
-                            <ice:outputText value="#{UserBean.chatStatus}"
+                            <ice:outputText value="#{UserBean.chatStatus}" id="chatStatus"
                                             escape="false"
                                             style="vertical-align: middle;"/>
                         </td>
@@ -278,7 +278,7 @@
                     </tr>
                     <ice:dataTable value="#{UserBean.pageLog}" var="page"
                                    cellspacing="0" cellpadding="0"
-                                   style="width: 700px;">
+                                   style="width: 700px;" id="pageLog">
                         <ice:column>
                             <div class="chatLine">
                                 <div class="chatName"><ice:outputText

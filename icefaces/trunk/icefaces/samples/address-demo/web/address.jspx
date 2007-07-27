@@ -54,7 +54,7 @@
 
     <div id="addressFormPanel">
     <h1>Enter Address Details into the ICEfaces Demo Below</h1>
-    <ice:form>
+    <ice:form id="iceForm">
 
         <table>
         <tr><td colspan="4"><ice:outputText value=" " /></td></tr>

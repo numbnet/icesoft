@@ -58,7 +58,7 @@
 	<div id="addressFormPanel">
 	<h1>AddressForm Results</h1>
 
-	<ice:form>
+	<ice:form id="iceForm">
 		<table cellspacing="5" >
 			<tr>
 				<td class="resultLabel" ><ice:outputLabel for="title" value="Title:"/></td>
