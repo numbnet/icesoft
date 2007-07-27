@@ -50,6 +50,6 @@ public interface Request {
 
         void servlet(Object request, Object response) throws Exception;
 
-        void portlet(Object request, Object response) throws Exception;
+        void portlet(Object request, Object response, Object config) throws Exception;
     }
 }

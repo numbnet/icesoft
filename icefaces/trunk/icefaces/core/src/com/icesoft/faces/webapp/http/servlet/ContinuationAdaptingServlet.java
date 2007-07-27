@@ -37,7 +37,7 @@ public class ContinuationAdaptingServlet implements PseudoServlet {
         private boolean captureContinuation = true;
         private Continuation continuation;
 
-        public ContinuationRequestResponse(HttpServletRequest request, HttpServletResponse response) {
+        public ContinuationRequestResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
             super(request, response);
         }
 

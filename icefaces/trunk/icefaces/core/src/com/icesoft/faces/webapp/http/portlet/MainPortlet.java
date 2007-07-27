@@ -130,9 +130,9 @@ public class MainPortlet implements Portlet {
         }
 
         //IMPORTANT: See the JavaDoc for this class
-        PortletArtifactHack hack =
-                new PortletArtifactHack(portletConfig, renderRequest, renderResponse);
-        addAttribute(renderRequest, PortletArtifactHack.PORTLET_HACK_KEY, hack);
+        PortletArtifactWrapper wrapper =
+                new PortletArtifactWrapper(portletConfig, renderRequest, renderResponse);
+        addAttribute(renderRequest, PortletArtifactWrapper.PORTLET_ARTIFACT_KEY, wrapper);
 
         // Jack: This is a temporary fix for JBoss Portal. We should come up
         //       with a better fix in our framework that makes sure the

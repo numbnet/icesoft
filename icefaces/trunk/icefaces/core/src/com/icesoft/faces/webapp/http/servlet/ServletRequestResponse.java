@@ -3,11 +3,12 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.portlet.PortletArtifactHack;
+import com.icesoft.faces.webapp.http.portlet.PortletArtifactWrapper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,8 +21,12 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
 
+import org.apache.jasper.Constants;
+
 public class ServletRequestResponse implements Request, Response {
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+
+    private URI requestURI;
 
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -30,9 +35,28 @@ public class ServletRequestResponse implements Request, Response {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
-    public ServletRequestResponse(HttpServletRequest request, HttpServletResponse response) {
+    public ServletRequestResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
         this.request = request;
         this.response = response;
+
+        //Need to determine the type of request URI we are using based on the
+        //environment we are running in (servlet vs portlet).
+        detectEnvironment(new Environment() {
+
+            public void servlet(Object request, Object response) {
+                HttpServletRequest req = (HttpServletRequest)request;
+                String reqURI = req.getRequestURI();
+                String query = req.getQueryString();
+                URI uri = URI.create(req.getRequestURL().toString());
+                requestURI = (query == null ? uri : URI.create(uri + "?" + query));
+            }
+
+            public void portlet(Object request, Object response, Object portletConfig) {
+                PortletRequest req = (PortletRequest)request;
+                String reqURI = (String)req.getAttribute(Constants.INC_REQUEST_URI);
+                requestURI = URI.create(reqURI);
+            }
+        });
     }
 
     public String getMethod() {
@@ -40,9 +64,7 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public URI getURI() {
-        String query = request.getQueryString();
-        URI uri = URI.create(request.getRequestURL().toString());
-        return query == null ? uri : URI.create(uri + "?" + query);
+        return requestURI;
     }
 
     public String getHeader(String name) {
@@ -167,12 +189,15 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void detectEnvironment(Environment environment) throws Exception {
-        Object portletEnvironment = request.getAttribute(PortletArtifactHack.PORTLET_HACK_KEY);
+
+        Object portletEnvironment = request.getAttribute(PortletArtifactWrapper.PORTLET_ARTIFACT_KEY);
         if (portletEnvironment == null) {
             environment.servlet(request, response);
         } else {
-            PortletArtifactHack portletArtifact = (PortletArtifactHack) portletEnvironment;
-            environment.portlet(portletArtifact.getRequest(), portletArtifact.getResponse());
+            PortletArtifactWrapper portletArtifact = (PortletArtifactWrapper) portletEnvironment;
+            environment.portlet(portletArtifact.getRequest(),
+                                portletArtifact.getResponse(),
+                                portletArtifact.getPortletConfig() );
         }
     }
 

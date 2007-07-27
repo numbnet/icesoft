@@ -56,9 +56,9 @@ public class View implements CommandQueue {
                 externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
             }
 
-            public void portlet(Object request, Object response) {
+            public void portlet(Object request, Object response, Object portletConfig) {
                 PortletEnvironmentRenderRequest wrappedRequest = new PortletEnvironmentRenderRequest(request);
-                externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
+                externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor, portletConfig);
             }
         });
         this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration);
@@ -81,7 +81,7 @@ public class View implements CommandQueue {
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
             }
 
-            public void portlet(Object request, Object response) {
+            public void portlet(Object request, Object response, Object config) {
                 //this call cannot arrive from a Portlet
             }
         });
@@ -105,7 +105,7 @@ public class View implements CommandQueue {
                 }
             }
 
-            public void portlet(Object request, Object response) {
+            public void portlet(Object request, Object response, Object config) {
                 //page reload
                 PortletEnvironmentRenderRequest wrappedRequest = new PortletEnvironmentRenderRequest(request);
                 externalContext.updateOnReload(wrappedRequest, response);

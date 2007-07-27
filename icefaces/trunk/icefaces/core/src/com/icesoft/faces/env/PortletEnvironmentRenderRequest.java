@@ -1,5 +1,7 @@
 package com.icesoft.faces.env;
 
+import com.icesoft.jasper.Constants;
+
 import javax.portlet.PortalContext;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
@@ -57,6 +59,19 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
             Object attribute = this.request.getAttribute(name);
             if ((null != name) && (null != attribute)) {
                 attributes.put(name, attribute);
+            }
+        }
+
+        //Some portal containers do not add the javax.servlet.include.*
+        //attributes to the attribute names collection so they are not
+        //copied into our own collection.  So we do that here if
+        //necessary:
+
+        String[] incKeys = Constants.INC_CONSTANTS;
+        for (int index = 0; index < incKeys.length; index++) {
+            String incVal = (String)this.request.getAttribute(incKeys[index]);
+            if( !attributes.containsKey(incKeys[index]) && incVal != null ){
+                attributes.put(incKeys[index], incVal);
             }
         }
 

@@ -10,11 +10,7 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
 import javax.faces.FacesException;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import javax.portlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,12 +29,14 @@ import java.util.Set;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private PortletContext context;
+    private PortletConfig config;
     private RenderRequest request;
     private RenderResponse response;
     private PortletSession session;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor) {
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor, Object config) {
         super(viewIdentifier, commandQueue, configuration);
+        this.config = (PortletConfig)config;
         this.request = (RenderRequest) request;
         this.response = (RenderResponse) response;
         this.session = new ProxyPortletSession(this.request.getPortletSession()) {
@@ -198,7 +196,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public String getRequestPathInfo() {
-        return requestPathInfo;
+        return (String) request.getAttribute(Constants.INC_PATH_INFO);
     }
 
     public String getRequestURI() {
@@ -206,11 +204,11 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public String getRequestContextPath() {
-        return request.getContextPath();
+        return (String) request.getAttribute(Constants.INC_CONTEXT_PATH);
     }
 
     public String getRequestServletPath() {
-        return requestServletPath;
+        return (String) request.getAttribute(Constants.INC_SERVLET_PATH);
     }
 
     public Set getResourcePaths(String path) {
@@ -275,6 +273,10 @@ public class PortletExternalContext extends BridgeExternalContext {
 
     public Writer getWriter(String encoding) throws IOException {
         return response.getWriter();
+    }
+
+    public PortletConfig getConfig() {
+        return config;
     }
 
     public void switchToNormalMode() {

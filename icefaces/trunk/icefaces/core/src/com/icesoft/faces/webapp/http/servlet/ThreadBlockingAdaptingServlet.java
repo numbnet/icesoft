@@ -28,7 +28,7 @@ public class ThreadBlockingAdaptingServlet implements PseudoServlet {
         private boolean blockResponse = true;
         private Semaphore semaphore;
 
-        public ThreadBlockingRequestResponse(HttpServletRequest request, HttpServletResponse response) {
+        public ThreadBlockingRequestResponse(HttpServletRequest request, HttpServletResponse response) throws Exception {
             super(request, response);
         }
 

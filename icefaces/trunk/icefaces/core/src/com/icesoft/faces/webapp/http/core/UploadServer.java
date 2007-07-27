@@ -99,7 +99,7 @@ public class UploadServer implements Server {
                 }
             }
 
-            public void portlet(Object request, Object response) {
+            public void portlet(Object request, Object response, Object config) {
                 throw new IllegalAccessError("Cannot upload using a portlet request/response.");
             }
         });
