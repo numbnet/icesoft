@@ -17,16 +17,16 @@ import javax.portlet.RenderResponse;
  * solution, we provide this class stored as a request attribute that can be
  * retrieved.
  */
-public class PortletArtifactHack {
+public class PortletArtifactWrapper {
 
-    public static final String PORTLET_HACK_KEY =
-            "com.icesoft.faces.portletHack";
+    public static final String PORTLET_ARTIFACT_KEY =
+            "com.icesoft.faces.portlet.artifact";
 
     private PortletConfig portletConfig;
     private RenderRequest request;
     private RenderResponse response;
 
-    public PortletArtifactHack(PortletConfig portletConfig,
+    public PortletArtifactWrapper(PortletConfig portletConfig,
                                RenderRequest request, RenderResponse response) {
         this.portletConfig = portletConfig;
         this.request = request;
