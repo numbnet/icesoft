@@ -38,11 +38,10 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
+import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
-import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
-import com.icesoft.jasper.Constants;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -68,7 +67,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -158,9 +156,6 @@ public class D2DViewHandler extends ViewHandler {
             stateMgr.saveSerializedView(context);
             // JSF 1.1 removes transient components here, but I don't think that 1.2 does
         }
-
-       // This has been moved to the ServletView
-
     }
 
 
@@ -376,80 +371,45 @@ public class D2DViewHandler extends ViewHandler {
     public String getResourceURL(FacesContext context, String path) {
         //Context and resource must be non-null
         if (context == null) {
-            throw new NullPointerException("context cannot be null");
+            throw new IllegalArgumentException("context cannot be null");
         }
 
         if (path == null) {
-            throw new NullPointerException("path cannot be null");
+            throw new IllegalArgumentException("path cannot be null");
         }
 
+        ExternalContext externalContext = context.getExternalContext();
         //The URI class doesn't like resource with illegal characters so
         //we need to do our own encoding.
-        path = encode(path);
-
-        ExternalContext extCtxt = context.getExternalContext();
-
+        String resourcePath = path.trim().replaceAll(" ", "%20");
         // Components that render out links to resources like images, CSS,
-        // JavaScript, etc. must do it correctly.  In a normal web app, there
-        // may not be much to do but in a portlet environment, we have to
-        // resolve these correctly.
-        if (isPortlet(extCtxt)) {
-            path = resolveFully(extCtxt, path);
+        // JavaScript, etc. must do it correctly.
+        String contextPath = externalContext.getRequestContextPath();
+
+        if (resourcePath.startsWith("/")) {
+            //absolute references are handled differently, we just
+            //need to stick the context in front.
+            return contextPath + resourcePath;
         } else {
-            //is it an absolute path?
-            if (path.startsWith("/")) {
-                //resolve the path to the application's context
-                StringBuffer dir = new StringBuffer();
-                int atoms = extCtxt.getRequestServletPath().split("/").length;
-                while (atoms-- > 2) dir.append("../");
-                path = URI.create(dir + "." + path).normalize().toString();                
+            //for relative paths, we need to resolve them to the full path
+            String servletPath = externalContext.getRequestServletPath();
+            String base = contextPath + servletPath;
+            try {
+                URI baseURI = new URI(base);
+                URI resourceURI = new URI(resourcePath);
+                URI resolvedURI = baseURI.resolve(resourceURI);
+                return resolvedURI.toString();
+            } catch (URISyntaxException e) {
+                if (log.isWarnEnabled()) {
+                    log.warn("could not resolve URI's based on" +
+                            "\n  context : " + contextPath +
+                            "\n  path    : " + servletPath +
+                            "\n  resource: " + resourcePath, e);
+                }
+                return resourcePath;
             }
-            //else don't resolve (see: ViewHandler.getResourceURL javadocs) 
         }
-
-        return path;
     }
-
-    private String encode(String path){
-        return path.trim().replaceAll(" ","%20");
-    }
-
-    private boolean isPortlet(ExternalContext extCtxt) {
-        return extCtxt.getRequestMap().get(Constants.PORTLET_KEY) != null;
-    }
-
-    /**
-     * Resolves references fragements to the full resource reference including
-     * the context path and the servlet path.
-     */
-    private String resolveFully(ExternalContext extCtxt, String resource) {
-
-        String context = extCtxt.getRequestContextPath();
-
-        //Absolute references are handled differently.  For portlets, we just
-        //need to stick the context in front.
-        if( resource.startsWith("/") ){
-            return context + resource;
-        }
-
-        //For relative paths, we need to resolve them to the full path
-        String base = context + extCtxt.getRequestServletPath();
-        try {
-            URI baseURI = new URI(base);
-            URI resourceURI = new URI(resource);
-            URI resolvedURI = baseURI.resolve(resourceURI);
-            return resolvedURI.toString();
-
-        } catch (URISyntaxException e) {
-            if( log.isWarnEnabled() ){
-                log.warn( "could not resolve URI's based on" +
-                          "\n  context : " + extCtxt.getRequestContextPath() +
-                          "\n  path    : " + extCtxt.getRequestServletPath() +
-                          "\n  resource: " + resource, e );
-            }
-            return resource;
-        }
-    }    
 
     protected long getTimeAttribute(UIComponent root, String key) {
         Long timeLong = (Long) root.getAttributes().get(key);
@@ -564,7 +524,7 @@ public class D2DViewHandler extends ViewHandler {
                         " " + e.getMessage(), e);
             }
 
-            if (ImplementationUtil.isJSF12())  {
+            if (ImplementationUtil.isJSF12()) {
                 if (log.isDebugEnabled()) {
                     log.debug("Rendering outside ViewTag for JSF 1.2");
                 }
@@ -592,7 +552,7 @@ public class D2DViewHandler extends ViewHandler {
         //   createUniqueId(), which we don't want, or else we get
         //   duplicate ids
         boolean isUIViewRoot = component instanceof UIViewRoot;
-        if( !isUIViewRoot )
+        if (!isUIViewRoot)
             component.encodeBegin(context);
 
         if (component.getRendersChildren()) {
@@ -604,7 +564,7 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
-        if( !isUIViewRoot )
+        if (!isUIViewRoot)
             component.encodeEnd(context);
 
         //Workaround so that MyFaces UIData will apply values to
@@ -616,12 +576,11 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     protected void tracePrintComponentTree(FacesContext context) {
-        tracePrintComponentTree( context, context.getViewRoot() );
+        tracePrintComponentTree(context, context.getViewRoot());
     }
 
     protected void tracePrintComponentTree(
-        FacesContext context, UIComponent component)
-    {
+            FacesContext context, UIComponent component) {
         if (log.isTraceEnabled()) {
             StringBuffer sb = new StringBuffer(4096);
             sb.append("tracePrintComponentTree() vvvvvv\n");
@@ -632,10 +591,9 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     private void tracePrintComponentTree(
-        FacesContext context, UIComponent component,
-        int levels, StringBuffer sb, String facetName)
-    {
-        if( component == null ) {
+            FacesContext context, UIComponent component,
+            int levels, StringBuffer sb, String facetName) {
+        if (component == null) {
             sb.append("null\n");
             return;
         }
@@ -656,44 +614,44 @@ public class D2DViewHandler extends ViewHandler {
         if (!hasUnderlings)
             open.append("/");
         open.append(">");
-        if( facetName != null ) {
+        if (facetName != null) {
             open.append(" facetName: ");
             open.append(facetName);
         }
         open.append(" id: ");
         open.append(component.getId());
-        if( component.getParent() != null ) {
+        if (component.getParent() != null) {
             open.append(" clientId: ");
             open.append(component.getClientId(context));
         }
-        if(hasKids) {
+        if (hasKids) {
             open.append(" kids: ");
             open.append(Integer.toString(component.getChildCount()));
         }
-        if(hasFacets) {
+        if (hasFacets) {
             open.append(" facets: ");
             open.append(Integer.toString(facetsMap.size()));
         }
-        if(component.isTransient())
+        if (component.isTransient())
             open.append(" TRANSIENT ");
         sb.append(open.toString());
         sb.append('\n');
 
         if (hasUnderlings) {
-            if( hasFacets ) {
+            if (hasFacets) {
                 Object[] facetKeys = facetsMap.keySet().toArray();
                 Arrays.sort(facetKeys);
-                for(int i = 0; i < facetKeys.length; i++) {
+                for (int i = 0; i < facetKeys.length; i++) {
                     tracePrintComponentTree(
-                        context, (UIComponent) facetsMap.get(facetKeys[i]),
-                        levels + 1, sb, facetKeys[i].toString());
+                            context, (UIComponent) facetsMap.get(facetKeys[i]),
+                            levels + 1, sb, facetKeys[i].toString());
                 }
             }
-            if( hasKids ) {
+            if (hasKids) {
                 Iterator kids = component.getChildren().iterator();
                 while (kids.hasNext()) {
                     tracePrintComponentTree(
-                        context, (UIComponent) kids.next(), levels + 1, sb, null);
+                            context, (UIComponent) kids.next(), levels + 1, sb, null);
                 }
             }
 

@@ -179,33 +179,28 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String getRequestPathInfo() {
-        if (requestPathInfo != null && requestPathInfo.trim().length() > 0) {
-            return requestPathInfo;
-        }
-
-        //If we start out null (because it hasn't been specifically set) then
-        //use the wrapped request value.
-        if (requestPathInfo == null) {
-            requestPathInfo = request.getPathInfo();
-        }
-
-        //We need to fix any occurrences of the "" (the empty String) because
-        //the JSF Lifecycle implementations won't be able to properly create
-        //a view ID otherwise because they check for null but not the empty
-        //String.
-        return requestPathInfo = convertEmptyStringToNull(requestPathInfo);
+        return convertEmptyStringToNull(requestPathInfo == null ? request.getPathInfo() : requestPathInfo);
     }
 
     public String getRequestURI() {
-        return request.getRequestURI();
+        String requestURI = (String) request.getAttribute("javax.servlet.forward.request_uri");
+        return requestURI == null ? request.getRequestURI() : requestURI;
     }
 
     public String getRequestContextPath() {
-        return request.getContextPath();
+        String contextPath = (String) request.getAttribute("javax.servlet.forward.context_path");
+        return contextPath == null ? request.getContextPath() : contextPath;
     }
 
     public String getRequestServletPath() {
-        return null == requestServletPath ? request.getServletPath() : requestServletPath;
+        //crazy "workaround": solves the different behaviour MyFaces and Icefaces (including Sun-RI) need from this method
+        boolean callFromMyfaces = new Exception().getStackTrace()[1].getClassName().startsWith("org.apache.myfaces");
+        if (callFromMyfaces) {
+            return requestServletPath == null ? request.getServletPath() : requestServletPath;
+        } else {
+            String servletPath = (String) request.getAttribute("javax.servlet.forward.servlet_path");
+            return servletPath == null ? request.getServletPath() : servletPath;
+        }
     }
 
     public Set getResourcePaths(String path) {
