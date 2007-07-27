@@ -65,8 +65,8 @@ input[type='submit'], input[type='button'] {
     font-weight: bold;
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .searchResults {
@@ -81,13 +81,13 @@ input[type='submit'], input[type='button'] {
    padding: 5px;
    vertical-align: middle;
    text-align: left;
-  background-color: transparent;
+   background-color: transparent;
 }
 .rightMenu{
-    padding: 5px;
+   padding: 5px;
    vertical-align: middle;
    text-align: right;
-background-color: transparent;
+   background-color: transparent;
 }
 .menuButtons a:hover {
 	font-family: Arial,sans-serif;
