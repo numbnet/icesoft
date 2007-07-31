@@ -1039,6 +1039,7 @@
         <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
         <echo message="Database username: ${hibernate.connection.username}"/>
         <echo message="Database password: ${hibernate.connection.password}"/>
+	<echo message="ICEfaces home: ${icefaces.home}"/>
     </target>
     
     <target name="help">
