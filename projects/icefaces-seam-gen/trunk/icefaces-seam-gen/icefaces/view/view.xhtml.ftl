@@ -193,7 +193,7 @@
         
      </div>
     
-    <div id="add${componentName}Button" class="actionButtons">
+    <div class="actionButtons">
         <s:button id="add${childName}" 
                value="Add ${childName}"
                 view="/${childEditPageName}.xhtml">
