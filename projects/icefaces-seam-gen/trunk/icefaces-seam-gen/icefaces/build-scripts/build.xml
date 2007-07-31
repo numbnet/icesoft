@@ -19,17 +19,22 @@
         <property name="jar.dir" value="exploded-archives/${project.name}.jar" />
         <property name="war.dir" value="exploded-archives/${project.name}.war" />
         <property name="test.dir" value="test-build" />
-        <property name="embedded-ejb3.dir" value="${basedir}/embedded-ejb/conf" />
+        <property name="bootstrap.dir" value="${basedir}/bootstrap" />
         <property name="deploy.dir" value="${jboss.home}/server/default/deploy" />
         <property name="ear.deploy.dir" value="${deploy.dir}/${project.name}.ear" />
         <property name="jar.deploy.dir" value="${ear.deploy.dir}/${project.name}.jar" />
         <property name="war.deploy.dir" value="${ear.deploy.dir}/${project.name}.war" />
-        <property name="testng.jar" value="${basedir}/lib/testng-4.5.1-jdk15.jar" />
+        <property name="testng.jar" value="${basedir}/lib/testng-5.6-jdk15.jar" />
         <property name="javac.debug" value="true" />
         <property name="javac.deprecation" value="false" />
         <property name="debug" value="false" />
-	<property name="icefacesLibDirectory" value="c:/ossrepoTrunk/lib" />
-
+	
+		<!--Properties for validating configuration files -->
+		<property name="validate.resources.dir" value="${basedir}/exploded-archives" />
+		<property name="schema.dir" value="${basedir}/exploded-archives/schemas" />
+		<property name="src.schema.dir" value="${schema.dir}/org/jboss/seam"/>
+		<property name="schema.version" value="@schemaVersion@" />
+	
         <fileset id="lib" dir="${lib.dir}">
                 <include name="*.jar" />
         </fileset>
@@ -98,16 +103,16 @@
                 </copy>
                 <copy todir="${war.dir}/WEB-INF">
                         <fileset dir="${basedir}/resources/WEB-INF">
-                                 <include name="*.*"/>
-                                 <include name="classes/**/*.*"/>
-                                 <exclude name="classes/**/*.class"/>
-                         </fileset>
-                         <filterset>
-                             <filter token="debug" value="${debug}" />
-                             <filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
-                             <filter token="embeddedEjb" value="false" />
-                         </filterset>
-                 </copy>         
+                                <include name="*.*"/>
+                                <include name="classes/**/*.*"/>
+                                <exclude name="classes/**/*.class"/>
+                        </fileset>
+                        <filterset>
+                            <filter token="debug" value="${debug}" />
+                            <filter token="jndiPattern" value="${project.name}/#{ejbName}/local" />
+                            <filter token="embeddedEjb" value="false" />
+                        </filterset>
+                </copy>         
                 <copy todir="${war.dir}/WEB-INF">
                         <fileset dir="${basedir}/resources/WEB-INF">
                                 <include name="lib/*.*"/>
@@ -118,6 +123,7 @@
             <fileset dir="${lib.dir}">
 				<include name="oscache*.jar" />
 				<include name="jboss-seam-*.jar" />
+				<include name="commons-beanutils-*.jar" />
 				<exclude name="jboss-seam-gen.jar" />
 			</fileset>
 		</copy>
@@ -134,31 +140,30 @@
                                 <include name="*jpdl.xml" />
                                 <include name="hibernate.cfg.xml" />
                                 <include name="jbpm.cfg.xml" />
-                                <include name="security.drl" />
+                                <include name="*.drl" />
                         </fileset>
                         <fileset dir="${lib.dir}">
                                 <include name="jboss-seam.jar" />
-                                <include name="jbpm-*.jar" />
+                                <include name="jbpm*.jar" />
                                 <include name="jboss-el.jar" />
                                 <include name="drools-*.jar"/>
                                 <include name="janino-*.jar"/>
                                 <include name="antlr-*.jar"/>
                                 <include name="mvel*.jar"/>
-					  <include name="commons-beanutils-1.7.0.jar"/>
                         </fileset>
-			<fileset dir="${lib.dir}">
-				<include name="icefaces*.jar" />
-				<include name="backport-util-concurrent.jar" />
-				<include name="commons-fileupload.jar"/> 	
-                       <include name="commons-digester.jar"/>		
-			</fileset>
-          </copy>
-          <copy todir="${ear.dir}/META-INF">
+			            <fileset dir="${lib.dir}">
+				                <include name="icefaces*.jar" />
+				                <include name="backport-util-concurrent.jar" />
+				                <include name="commons-fileupload.jar"/> 	
+                                <include name="commons-digester.jar"/>		
+                        </fileset>
+                </copy>
+                <copy todir="${ear.dir}/META-INF">
                         <fileset dir="${basedir}/resources/META-INF">
                                 <include name="application.xml" />
                                 <include name="jboss-app.xml" />
                         </fileset>
-          </copy>
+                </copy>
         </target>
         
         <target name="archive" depends="jar,war,ear" 
@@ -231,6 +236,7 @@
                 <delete dir="${ear.dir}"/>
                 <delete dir="${war.dir}"/>
                 <delete dir="${jar.dir}"/>
+        		<delete dir="${src.schema.dir}" failonerror="no"/>
                 <delete dir="${basedir}/test-report"/>
                 <delete dir="${basedir}/test-output"/>
                 <delete failonerror="no">
@@ -281,10 +287,10 @@
                         </fileset>
                 </copy>
                 <copy tofile="${test.dir}/META-INF/persistence.xml" 
-                            file="${basedir}/resources/META-INF/persistence-test.xml"
+                        file="${basedir}/resources/META-INF/persistence-test.xml"
                    overwrite="true"/>
                 <copy tofile="${test.dir}/import.sql" 
-                            file="${basedir}/resources/import-test.sql"
+                        file="${basedir}/resources/import-test.sql"
                    overwrite="true"/>
                 <copy todir="${test.dir}" flatten="true">
                         <fileset dir="${src.test.dir}">
@@ -297,11 +303,22 @@
                 <taskdef resource="testngtasks" classpath="${testng.jar}" />
                 <testng outputdir="${basedir}/test-report">
                         <classpath path="${test.dir}" />
-                        <classpath path="${embedded-ejb3.dir}" />
+                        <classpath path="${bootstrap.dir}" />
                         <classpath refid="build.classpath" />
                         <xmlfileset dir="${test.dir}" includes="*Test.xml" />
                 </testng>
         </target>
+	
+	<target name="validateConfiguration" depends="war,ear,jar" description="Validate the xml configuration files">
+		<mkdir dir="${schema.dir}"/>
+		<unjar src="${lib.dir}/jboss-seam.jar" dest="${schema.dir}">
+			<patternset>
+				<include name="org/jboss/seam/*.xsd"/>
+				<include name="org/jboss/seam/*.dtd"/>
+			</patternset>
+		</unjar>
+		<ant antfile="validate.xml" target="validateConfiguration" />
+	</target>
         
 	<target name="freshen" description="grab fresh icefaces jars">
 	<copy todir="${lib.dir}">

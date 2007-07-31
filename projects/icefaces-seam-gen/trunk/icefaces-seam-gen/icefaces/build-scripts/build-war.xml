@@ -26,15 +26,15 @@
     <property name="testng.jar" value="${basedir}/lib/testng-5.6-jdk15.jar" />
     <property name="javac.debug" value="true" />
     <property name="javac.deprecation" value="false" />
-    <property name="debug" value="false" /> 
- 
-        <fileset id="lib" dir="${lib.dir}">
-                <include name="*.jar" />
-        </fileset>
-
-        <path id="build.classpath">
-                <fileset refid="lib" />
-        </path>
+    <property name="debug" value="false" />
+    
+    <fileset id="lib" dir="${lib.dir}">
+        <include name="*.jar" />
+    </fileset>
+    
+    <path id="build.classpath">
+        <fileset refid="lib" />
+    </path>
 
     <taskdef name ="groovyc"
         classname ="org.codehaus.groovy.ant.Groovyc"
@@ -141,7 +141,7 @@
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources">
                 <include name="seam.properties" />
-                <include name="security.drl" />
+                <include name="*.drl" />
             </fileset>
         </copy>
         
@@ -181,11 +181,11 @@
 		<copy todir="${war.dir}/WEB-INF/lib">
 			<fileset dir="${lib.dir}">
 				<include name="oscache*.jar" />
-				<include name="jboss-seam-*.jar" />
-				<exclude name="jboss-seam-gen.jar" />
-				<include name="drools-*.jar"/>
-				<include name="janino-*.jar"/>
-				<include name="antlr-*.jar"/>
+                <include name="jboss-seam-*.jar" />
+                <exclude name="jboss-seam-gen.jar" />
+                <include name="drools-*.jar"/>
+                <include name="janino-*.jar"/>
+                <include name="antlr-*.jar"/>
                 <include name="mvel*.jar"/>
                 <include name="groovy-*.jar" if="groovy.present"/>
             </fileset>
@@ -210,11 +210,11 @@
                 <include name="jboss-seam.jar" />
                 <include name="jbpm*.jar" />
                 <include name="jboss-el.jar" />
+                <include name="commons-digester-*.jar" />
                 <include name="commons-beanutils-*.jar" />
 				<include name="icefaces*.jar" />
 				<include name="backport-util-concurrent.jar" />
 				<include name="commons-fileupload.jar"/> 	
-                <include name="commons-digester.jar"/>		
 			</fileset>
         </copy>
         

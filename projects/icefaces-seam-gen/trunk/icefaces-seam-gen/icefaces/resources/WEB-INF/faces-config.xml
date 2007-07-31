@@ -8,6 +8,9 @@
 
    <application>
    <message-bundle>messages</message-bundle>
+      <locale-config>
+    		<default-locale>en</default-locale>
+      </locale-config>
       <view-handler>com.icesoft.faces.facelets.D2DSeamFaceletViewHandler</view-handler>
    </application>
 
