@@ -29,11 +29,11 @@
         <property name="javac.deprecation" value="false" />
         <property name="debug" value="false" />
 	
-		<!--Properties for validating configuration files -->
-		<property name="validate.resources.dir" value="${basedir}/exploded-archives" />
-		<property name="schema.dir" value="${basedir}/exploded-archives/schemas" />
-		<property name="src.schema.dir" value="${schema.dir}/org/jboss/seam"/>
-		<property name="schema.version" value="@schemaVersion@" />
+	<!--Properties for validating configuration files -->
+	<property name="validate.resources.dir" value="${basedir}/exploded-archives" />
+	<property name="schema.dir" value="${basedir}/exploded-archives/schemas" />
+	<property name="src.schema.dir" value="${schema.dir}/org/jboss/seam"/>
+	<property name="schema.version" value="@schemaVersion@" />
 	
         <fileset id="lib" dir="${lib.dir}">
                 <include name="*.jar" />
@@ -144,7 +144,7 @@
                                 <include name="*jpdl.xml" />
                                 <include name="hibernate.cfg.xml" />
                                 <include name="jbpm.cfg.xml" />
-                                <include name="security.drl" />
+                                <include name="*.drl" />
                         </fileset>
                         <fileset dir="${lib.dir}">
                                 <include name="jboss-seam.jar" />
