@@ -12,11 +12,12 @@
 </head>
 
 <body>
-
+<ice:form id="menuLinks">
     <ui:include src="menu.xhtml">
         <ui:param name="projectName" value="@projectName@"/>
     </ui:include>
-
+</ice:form>
+    
 	<div class="body">
 		<ui:insert name="body"/>
 	</div>
