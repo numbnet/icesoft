@@ -322,7 +322,7 @@
         
 	<target name="freshen" description="grab fresh icefaces jars">
 	<copy todir="${lib.dir}">
-	    <fileset dir="${icefacesLibDirectory}">
+	    <fileset dir="${icefaces.home}/lib">
 		<include name="icefaces*.jar" />
 		<include name="backport-util-concurrent.jar" />	
 		<include name="commons-fileupload.jar"/> 	
