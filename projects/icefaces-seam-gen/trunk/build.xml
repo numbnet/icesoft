@@ -194,7 +194,7 @@
               defaultvalue="${old.workspace.home}"/>
     	<pathFixer property="workspace.home.new" />
         
-        <property name="old.icefaces.home" value="C:/Projects/ICEfaces-1.6.0-src/icefaces"/>
+        <property name="old.icefaces.home" value=""/>
         <input addproperty="icefaces.home.new" 
                    message="Enter your ICEfaces home directory (leave blank to omit ICEfaces) [${old.icefaces.home}]" 
               defaultvalue="${old.icefaces.home}"/>
