@@ -523,7 +523,7 @@
         <property name="page.file" value="${project.home}/view/${page.name}.xhtml"/>
     </target>
 
-    <target name="copy-lib" >
+    <target name="copy-lib">
           <echo message="Copying Seam jars to the ${project.home}/lib directory..." />
           <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
            <copy todir="${project.home}/lib" overwrite="true">
@@ -761,7 +761,7 @@
     	<echo message="Type 'seam restart' to update the exploded deployment"/>
     </target>
 
-    <target name="delete-project" depends="validate-project"
+    <target name="delete-project" depends="validate-project,unexplode,undeploy"
         description="Delete the project">
         <echo message="Deleting the entire project in ${project.home}" />
         <delete dir="${project.home}" />
@@ -792,7 +792,7 @@
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
-    <target name="new-action-war" depends="validate-project,action-input,setup-filters" if="project.">
+    <target name="new-action-war" depends="validate-project,action-input,setup-filters" if="project.war">
         <echo message="Creating a new JavaBean component with an action method" />
         <copy file="src/ActionJavaBean.java" tofile="${interface.file}">
             <filterset refid="filters"/>
@@ -1037,8 +1037,7 @@
         <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
         <echo message="Database username: ${hibernate.connection.username}"/>
         <echo message="Database password: ${hibernate.connection.password}"/>
-        <echo message="icefaces.lib is  ${icefaces.lib}"/>   
-    	<echo message="icefaces.property is ${icefaces.property}" />
+	    <echo message="ICEfaces home: ${icefaces.home}"/>
     </target>
     
     <target name="help">
