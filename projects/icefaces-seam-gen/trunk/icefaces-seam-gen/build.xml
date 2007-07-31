@@ -31,12 +31,12 @@
 
     
     <target name="init-properties">
-    	<!-- Import properties from seam itself -->
-    	<property file="../build.properties" />
-    	
         <!-- Give user a chance to override without editing this file or typing -D -->
         <property file="${basedir}/build.properties" />
     
+    	<!-- Import properties from seam itself -->
+    	<property file="../build.properties" />
+    	
         <packageDirectory property="action.dir" package="action/${action.package}"/>
         <packageDirectory property="model.dir" package="model/${model.package}"/>
         <packageDirectory property="test.dir" package="test/${test.package}"/>
@@ -130,6 +130,8 @@
             <filter token="catalogProperty" value="${catalog.property}"/>
             <filter token="schemaProperty" value="${schema.property}"/>
         </filterset>
+    	
+    	<echo message="${jboss.home}"/>
         
         <filterset id="project">
             <filter token="projectName" value="${project.name}" />
@@ -192,7 +194,7 @@
               defaultvalue="${old.workspace.home}"/>
     	<pathFixer property="workspace.home.new" />
         
-        <property name="old.icefaces.home" value="C:/Projects/ICEfaces-1.6.0-src/icefaces"/>
+        <property name="old.icefaces.home" value=""/>
         <input addproperty="icefaces.home.new" 
                    message="Enter your ICEfaces home directory (leave blank to omit ICEfaces) [${old.icefaces.home}]" 
               defaultvalue="${old.icefaces.home}"/>
@@ -894,8 +896,8 @@
         <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
     </target>
 
-	 <target name="generate-entities" depends="validate-project"
-         description="Reverse engineer entities from the database">
+	<target name="generate-entities" depends="validate-project"
+        description="Reverse engineer entities from the database">
 		
 		<echo message="Reverse engineering database using JDBC driver ${driver.jar}"/>
 
