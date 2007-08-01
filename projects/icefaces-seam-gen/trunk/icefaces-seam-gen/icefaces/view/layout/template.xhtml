@@ -41,6 +41,7 @@
                             <tr>
                                 <td class="tabbedContainerHeaderControl" >
                                     <ice:commandButton
+				        id="templateExpandPanelButtonId"
                                         partialSubmit="true"
                                         image="img/orange-toggle-#{timer.expanded}.gif"
                                         immediate="true" 
@@ -48,7 +49,7 @@
                                         style="width: 20px; height: 20px;"/>
                                 </td>
                                 <td class="iceDatTblColHdr2">
-                                    <ice:outputText value="Timer and Program Info Panel"/>
+                                    <ice:outputText id="templatePanelId" value="Timer and Program Info Panel"/>
                                 </td>
                             </tr>
                         </table>
@@ -56,24 +57,24 @@
                 </tr>
                 <tr>
                     <td colspan="1" align="left" class="tabbedContainerContent">
-                        <ice:panelGroup effect="#{timer.expandEffect}" visible="#{timer.visibility}" >
+                        <ice:panelGroup id="templatePanelGroupId" effect="#{timer.expandEffect}" visible="#{timer.visibility}" >
                             <table width="100%" border="1" cellspacing="0" cellpadding="1">
                                 <tr>
                                     <td>
                                         Current time is:
-                                        <ice:outputText value="#{timer.currentTime}"/>
+                                        <ice:outputText id="templateTimeId" value="#{timer.currentTime}"/>
                                     </td>
                                     <td>Synchronous Render Mode:&nbsp;
-                                        <ice:outputText value="#{timer.renderMode}"/>
+                                        <ice:outputText id="templateRenderModeId" value="#{timer.renderMode}"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Current Conversation Id:
-                                        <ice:outputText
+                                        <ice:outputText id="templateConversationId"
                                             value="#{timer.currentConversation}"/>
                                     </td>
                                     <td>Is Long Running?
-                                        <ice:outputText value="#{timer.longRunning}"/>
+                                        <ice:outputText id="timerLongRunningId" value="#{timer.longRunning}"/>
                                     </td>
                                 </tr>
                             </table>

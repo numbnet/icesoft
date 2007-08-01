@@ -5,7 +5,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -13,11 +13,11 @@
     <h:messages globalOnly="true" styleClass="message"/>
 
 <ice:form id="@componentName@Form">    
-      <ice:panelGroup  id="conversation" styleClass="formBorderHighlight">
+      <ice:panelGroup  id="conversationPanelId" styleClass="formBorderHighlight">
           <table wide="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
-                      <ice:outputText value="@pageName@" />
+                      <ice:outputText id="conversation@componentName@Id" value="@pageName@" />
                   </td>
               </tr>
           </table>         

@@ -12,12 +12,12 @@
     
     <h:messages styleClass="message"/>
     
- <ice:form id="login">
-      <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+ <ice:form id="loginFormId">
+      <ice:panelGroup  id="loginPanelGroupId" styleClass="formBorderHighlight">
           <table wide="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
-       			<ice:outputText value="Login"/>
+       			<ice:outputText id="loginTextId" value="Login"/>
                   </td>
               </tr>
           </table>
@@ -26,7 +26,7 @@
             <p>Please login using any username and password</p>
 
                     <div class="dialog">
-                        <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+                        <h:panelGrid id="loginPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
                             <h:outputLabel for="username">Username</h:outputLabel>
                             <h:inputText id="username" 
                                       value="#{identity.username}"/>
@@ -41,7 +41,7 @@
 
       </ice:panelGroup>
          <div class="actionButtons">
-            <h:commandButton value="Login" action="#{identity.login}"/>
+            <h:commandButton id="loginButtonId" value="Login" action="#{identity.login}"/>
         </div>
           
   </ice:form>      

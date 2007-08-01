@@ -5,35 +5,35 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
     
     <h:messages globalOnly="true" styleClass="message"/>
-  <ice:form id="listForm>  
-     <ice:panelGroup  id="searchGroup" styleClass="formBorderHighlight">
+  <ice:form id="listFormId">  
+     <ice:panelGroup  id="listSearchGroupId" styleClass="formBorderHighlight">
           <table wide="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">		
-		          <ice:outputText value="@masterPageName@"/>
+		          <ice:outputText id="list@masterPageName@Id" value="@masterPageName@"/>
                   </td>
               </tr>
           </table>
 
          <div class="results">
      
-    		<h:outputText value="No @componentName@ exists" 
+    		<h:outputText id="list@componentNameExistsId" value="No @componentName@ exists" 
             	rendered="#{empty @listName@.resultList}"/>
-    		<ice:dataTable id="@listName@" var="@componentName@"
+    		<ice:dataTable id="@listName@TableId" var="@componentName@"
            			 value="#{@listName@.resultList}" 
 				columnClasses="allCols"
            			rendered="#{not empty @listName@.resultList}">
-        		<ice:column>
+        		<ice:column id="list@componentName@.id">
             		<f:facet name="header">Id</f:facet>
             		#{@componentName@.id}
         		</ice:column>
-        		<ice:column>
+        		<ice:column id="list@componentName@.name">
            			<f:facet name="header">Name</f:facet>
             		<s:link id="@componentName@" value="#{@componentName@.name}" view="/@pageName@.xhtml">
                 		<f:param name="@componentName@Id" value="#{@componentName@.id}"/>
@@ -43,7 +43,7 @@
       </div>
    </ice:panelGroup>
    <div class="actionButtons">
-        <s:button id="done" value="Create @componentName@"
+        <s:button id="listDoneId" value="Create @componentName@"
             view="/@pageName@.xhtml"/>			  
    </div>
  </ice:form>   

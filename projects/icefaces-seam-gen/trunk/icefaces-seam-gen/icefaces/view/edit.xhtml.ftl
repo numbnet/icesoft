@@ -11,7 +11,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -19,28 +19,27 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="${componentName}editForm" styleClass="edit">
-     <ice:panelGroup  id="editGroup" styleClass="formBorderHighlight">
+     <ice:panelGroup  id="edit${componentName}GroupId" styleClass="formBorderHighlight">
           <table wide="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
-			    <ice:outputText value="Edit ${componentName}"/>
+			    <ice:outputText id="editTextBoxId" value="Edit ${componentName}"/>
                   </td>
               </tr>
           </table>
 
-        <ice:panelGroup styleClass="edit">
-		 
-                     <f:facet name="beforeInvalidField">
-                                <ice:graphicImage styleClass="errorImg" value="img/error.png"/>
-                        </f:facet>
-                        <f:facet name="afterInvalidField">
-                                    <s:message styleClass="errorMsg" />
-                        </f:facet>
-                        <f:facet name="aroundInvalidField">
-                                <s:div styleClass="error"/>
-                    </f:facet> 
-			<s:validateAll>
-			 <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+        <ice:panelGroup id="editPanelGroupId" styleClass="edit">		 
+               <f:facet name="beforeInvalidField">
+                     <ice:graphicImage id="editErrorImgId" styleClass="errorImg" value="img/error.png"/>
+               </f:facet>
+               <f:facet name="afterInvalidField">
+                     <s:message id="editMessageErrorId" styleClass="errorMsg" />
+               </f:facet>
+               <f:facet name="aroundInvalidField">
+                     <s:div styleClass="error"/>
+               </f:facet> 
+	       <s:validateAll>
+		     <ice:panelGrid id="editpanelGrid${componentName}Id" columns="2" rowClasses="prop" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#include "editproperty.xhtml.ftl">
 </#foreach>
@@ -49,36 +48,36 @@
                                     required fields
                   </div>
   		  
-		</ice:panelGrid>
-		</s:validateAll>
+		    </ice:panelGrid>
+	       </s:validateAll>
           </ice:panelGroup>
-	  </ice:panelGroup>
+       </ice:panelGroup>
                   
-        <div class="actionButtons">
+       <div class="actionButtons">
         
-            <h:commandButton id="save" 
+            <h:commandButton id="save${homeName}" 
                           value="Save" 
                          action="${'#'}{${homeName}.persist}"
                        disabled="${'#'}{!${homeName}.wired}"
                        rendered="${'#'}{!${homeName}.managed}"/>  
                           			  
-            <h:commandButton id="update" 
+            <h:commandButton id="update${homeName}" 
                           value="Save" 
                          action="${'#'}{${homeName}.update}"
                        rendered="${'#'}{${homeName}.managed}"/>
                         			  
-            <h:commandButton id="delete" 
+            <h:commandButton id="delete${homeName}" 
                           value="Delete" 
                          action="${'#'}{${homeName}.remove}"
                        rendered="${'#'}{${homeName}.managed}"/>
                     
-            <s:button id="done" 
+            <s:button id="done${homeName}" 
                    value="Done"
              propagation="end"
                     view="/${pageName}.xhtml"
                 rendered="${'#'}{${homeName}.managed}"/>
                 
-            <s:button id="cancel" 
+            <s:button id="cancel${homeName}" 
                    value="Cancel"
              propagation="end"
                     view="/${'#'}{empty ${componentName}From ? '${masterPageName}' : ${componentName}From}.xhtml"
@@ -95,8 +94,8 @@
 </#foreach>
 
 <#if hasAssociations>
- <ice:form>  
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
+ <ice:form id="form2${homeName}">  
+        <ice:panelTabSet id="editPanelTab${homeName}Id" styleClass="componentPanelTabSetLayout" style="margin-bottom:5px;margin-top:10px;">
 </#if>
 <#foreach property in pojo.allPropertiesIterator>
 <#if c2h.isManyToOne(property)>
@@ -105,31 +104,31 @@
 <#assign parentName = util.lower(parentPojo.shortName)>
    
 <#if property.optional>
-	<ice:panelTab label="${property.name}">
+	<ice:panelTab id="editTab${property.name}Id" label="${property.name}">
 <#else>
- 	<ice:panelTab label="${property.name} *" >
+ 	<ice:panelTab id="editTab${property.name}Id" label="${property.name} *" >
 </#if>
 		<div class="association" id="${property.name}Parent">
     
-        	<h:outputText value="No ${property.name}" 
+        	<h:outputText id="edit${property.name}TextId" value="No ${property.name}" 
                    rendered="${'#'}{${homeName}.instance.${property.name} == null}"/>
        	<ice:dataTable var="${parentName}" 
                    value="${'#'}{${homeName}.instance.${property.name}}" 
                 rendered="${'#'}{${homeName}.instance.${property.name} != null}"
               rowClasses="rvgRowOne,rvgRowTwo"
 		  columnClasses="allCols"
-                      id="${property.name}Table">
+                      id="edit${property.name}TableId">
 <#foreach parentProperty in parentPojo.allPropertiesIterator>
 <#if !c2h.isCollection(parentProperty) && !c2h.isManyToOne(parentProperty)>
 <#if parentPojo.isComponent(parentProperty)>
 <#foreach componentProperty in parentProperty.value.propertyIterator>
-            <ice:column>
+            <ice:column id="$editColumn${componentProperty.name}Id">
                 <f:facet name="header">${componentProperty.name}</f:facet>
                 ${'#'}{${parentName}.${parentProperty.name}.${componentProperty.name}}
             </ice:column>
 </#foreach>
 <#else>
-            <ice:column>
+            <ice:column id="$editColumn${parentProperty.name}Id">
                 <f:facet name="header">${parentProperty.name}</f:facet>
                 ${'#'}{${parentName}.${parentProperty.name}}
             </ice:column>
@@ -139,20 +138,20 @@
 <#assign parentParentPojo = c2j.getPOJOClass(cfg.getClassMapping(parentProperty.value.referencedEntityName))>
 <#if parentParentPojo.isComponent(parentParentPojo.identifierProperty)>
 <#foreach componentProperty in parentParentPojo.identifierProperty.value.propertyIterator>
-            <ice:column>
+            <ice:column id="$editColumn${parentProperty.name}Id">
 	    	    <f:facet name="header">${parentProperty.name} ${componentProperty.name}</f:facet>
 		    	${'#'}{${parentName}.${parentProperty.name}.${parentParentPojo.identifierProperty.name}.${componentProperty.name}}
             </ice:column>
 </#foreach>
 <#else>
-            <ice:column>
+            <ice:column id="$editColumn${parentProperty.name}Id">
 	    	    <f:facet name="header">${parentProperty.name} ${parentParentPojo.identifierProperty.name}</f:facet>
 		    	${'#'}{${parentName}.${parentProperty.name}.${parentParentPojo.identifierProperty.name}}
             </ice:column>
 </#if>
 </#if>
 </#foreach>
-            <ice:column>
+            <ice:column id="editColumn${parentName}LinkId">
                 <f:facet name="header">action</f:facet>
                 <s:link view="/${parentPageName}.xhtml" 
                          id="view${parentName}" 
@@ -173,7 +172,8 @@
 <#if parentPojo.shortName!=pojo.shortName>
         <div class="actionButtons">
             <s:button value="Select ${property.name}"
-                       view="/${parentPageName}List.xhtml">
+	              id="editSelectButton${property.name}Id"
+                      view="/${parentPageName}List.xhtml">
                 <f:param name="from" value="${pageName}Edit"/>
             </s:button>
         </div>
@@ -183,7 +183,7 @@
     </ice:panelTab>
 </#if>
 <#if c2h.isOneToManyCollection(property)>
- 	<ice:panelTab label="${property.name}">
+ 	<ice:panelTab id="editPanelTab${property.name}Id" label="${property.name}">
         <div class="association" id="${property.name}Children">
         
 <#assign childPojo = c2j.getPOJOClass(property.value.element.associatedClass)>
@@ -191,31 +191,32 @@
 <#assign childEditPageName = childPojo.shortName + "Edit">
 <#assign childName = util.lower(childPojo.shortName)>
             <h:outputText value="No ${property.name}" 
+	                     id="edit${property.name}TextId"
                        rendered="${'#'}{empty ${homeName}.${property.name}}"/>
            <ice:dataTable value="${'#'}{${homeName}.${property.name}}" 
                            var="${childName}" 
                       rendered="${'#'}{not empty ${homeName}.${property.name}}" 
                     rowClasses="rvgRowOne,rvgRowTwo"
 			  columnClasses="allCols"
-                            id="${property.name}Table">
+                            id="edit${property.name}Table">
 <#foreach childProperty in childPojo.allPropertiesIterator>
 <#if !c2h.isCollection(childProperty) && !c2h.isManyToOne(childProperty)>
 <#if childPojo.isComponent(childProperty)>
 <#foreach componentProperty in childProperty.value.propertyIterator>
-               <ice:column>
+               <ice:column id="edit${componentProperty.name}Id">
                     <f:facet name="header">${componentProperty.name}</f:facet>
                     ${'#'}{${childName}.${childProperty.name}.${componentProperty.name}}
                 </ice:column>
 </#foreach>
 <#else>
-                <ice:column>
+                <ice:column id="edit${childProperty.name}Id">
                     <f:facet name="header">${childProperty.name}</f:facet>
-                    <h:outputText value="${'#'}{${childName}.${childProperty.name}}"/>
+                    <h:outputText id="edit${childProperty.name}TextId" value="${'#'}{${childName}.${childProperty.name}}"/>
                 </ice:column>
 </#if>
 </#if>
 </#foreach>
-                <ice:column>
+                <ice:column id="edit${childName}Id">
                     <f:facet name="header">action</f:facet>
                     <s:link view="/${childPageName}.xhtml" 
                               id="select${childName}" 
@@ -235,9 +236,9 @@
                 </ice:column>
            </ice:dataTable>
       </div>
-        <f:subview rendered="${'#'}{${homeName}.managed}" id="${property.name}">
+        <f:subview rendered="${'#'}{${homeName}.managed}" id="${property.name}Id">
         <div class="actionButtons">
-            <s:button id="add${childName}" 
+            <s:button id="add${childName}Id" 
                    value="Add ${childName}"
                     view="/${childEditPageName}.xhtml"
              propagation="none">

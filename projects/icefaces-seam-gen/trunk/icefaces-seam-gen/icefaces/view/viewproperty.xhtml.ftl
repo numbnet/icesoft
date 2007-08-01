@@ -3,11 +3,12 @@
 <#foreach componentProperty in property.value.propertyIterator>
 <#assign propertyType = componentProperty.value.typeName>
 
-                <ice:outputLabel>${componentProperty.name}</ice:outputLabel>
+            <ice:outputLabel id="view${componentProperty.name}OutputLabelId">${componentProperty.name}</ice:outputLabel>
 <#if propertyType == "date">
-            <ice:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+            <ice:outputText id="view${homeName}.instance.${property.name}.${componentProperty.name}TextId"
+	                 value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                 <s:convertDateTime type="date" dateStyle="short"/>
-              </ice:outputText>
+            </ice:outputText>
 <#elseif propertyType == "time">
              <ice:outputText value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                 <s:convertDateTime type="time"/>
