@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<project name="icefaces-1.6.0-AHS" default="build.src.bundle">
+    
+    <property file="build.properties"/>
+    
+    <property name="src.dir" location="src"/>
+    <property name="web.dir" location="web"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="docs.dir" location="docs"/>
+    <property name="dist.dir" location="dist"/>
+    
+    
+    <property name="bundle.name" value="${product}"/>
+    <property name="src.bundle.name" value="${bundle.name}-src"/>
+    <property name="src.bundle.prefix" value="${src.bundle.name}/icefaces"/>
+    <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>    
+    
+    <target name="build.src.bundle">
+        <touch  file="${src.bundle.file}" mkdirs="true"/>
+        <delete file="${src.bundle.file}"/>
+        
+        <zip destfile="${src.bundle.file}">
+            <fileset dir=".">
+                <include name="**/src.dir/**"/>
+                <include name="**/lib/**"/>
+                <include name="**/web/**"/>
+            </fileset>
+
+        </zip>
+
+    </target>
+    
+</project>
