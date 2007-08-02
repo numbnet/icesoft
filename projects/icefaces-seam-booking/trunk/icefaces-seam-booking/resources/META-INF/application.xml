@@ -21,26 +21,4 @@
         <ejb>jboss-seam.jar</ejb>
     </module>
 
-  <!-- <module>
-      <java>jboss-el.jar</java>
-   </module>
-
-    <module>
-        <java>icefaces.jar</java>
-    </module>
-        <module>
-        <java>icefaces-comps.jar</java>
-    </module>
-    <module>
-        <java>icefaces-facelets.jar</java>
-    </module>
-    <module>
-        <java>backport-util-concurrent.jar</java>
-    </module>   
-    <module>
-	   <java>commons-digester-1.6.jar</java>
-    </module>
-     <module>
-	   <java>commons-beanutils-1.7.0.jar</java>
-    </module>  -->
 </application>
