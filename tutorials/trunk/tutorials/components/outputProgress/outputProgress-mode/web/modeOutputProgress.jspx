@@ -1,0 +1,46 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Progress Bar Modes</h2>
+        <p>Choose the determinate or indeterminate mode from the radio buttons below.</p>
+        <p>Determinate mode is used when the time to finish or percent remaining is known.</p>
+        <p>Indeterminate mode in other cases where we do not know when the process will complete.</p>
+        <p>Press the Start button to see an example of the progress bar working in the mode you selected.</p>
+        <p>If you are using Determinate mode, you can also use the Stop button.</p>
+        <!-- This demo shows an outputProgress in either determinate or indeterminate mode -->
+        <ice:form style="width: 45%;">
+            <ice:selectOneRadio value="#{mode.isIndeterminate}" partialSubmit="true"
+                                valueChangeListener="#{mode.modeChanged}">
+                <f:selectItems value="#{mode.availableModes}"/>
+            </ice:selectOneRadio>
+            
+            <ice:outputProgress value="#{mode.percent}"
+                                indeterminate="#{mode.isIndeterminatePrimitive}"/>
+                                
+            <!-- Render a start and stop button for determinate mode -->
+            <ice:panelGroup rendered="#{!mode.isIndeterminatePrimitive}">
+                <ice:commandButton value="Start" action="#{mode.startProgress}" rendered="#{!mode.isRunning}"/>
+                <ice:commandButton value="Stop" action="#{mode.stopProgress}" rendered="#{mode.isRunning}"/>
+            </ice:panelGroup>
+            
+            <!-- Don't bother giving a stop option for indeterminate mode -->
+            <ice:panelGroup rendered="#{mode.isIndeterminatePrimitive}">
+                <ice:commandButton value="Start" action="#{mode.startProgress}" disabled="#{mode.isRunning}"/>
+            </ice:panelGroup>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+

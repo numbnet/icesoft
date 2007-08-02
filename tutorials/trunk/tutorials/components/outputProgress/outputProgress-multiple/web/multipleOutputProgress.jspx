@@ -1,0 +1,41 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Multiple Progress Bars</h2>
+        <p>The following tutorial shows an example tool for the simple monitoring of servers.</p>
+        <p>The demonstration of CPU load of the server at each location is updated every 1 second.</p>
+        <p>This shows how multiple progress bars can be displayed at once.</p>
+        <p>It also takes a different approach to the progress bar, by using it to display information instead of just a task loading, etc.</p>
+        <!-- This demo shows multiple outputProgress in a table -->
+        <ice:form style="width: 45%;">
+            <ice:dataTable value="#{multiple.progressBarList}" var="progress">
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="Server Location"/>
+                    </f:facet>
+                    <ice:outputText value="#{progress.name}"/>
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText value="CPU Load"/>
+                    </f:facet>
+                    <ice:outputProgress value="#{progress.percent}"/>
+                </ice:column>
+            </ice:dataTable>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+

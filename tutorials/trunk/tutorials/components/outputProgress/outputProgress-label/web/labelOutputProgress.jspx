@@ -1,0 +1,49 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Progress Bar Labels</h2>
+        <p>Choose the working and complete label text, as well as the position of the label.</p>
+        <p>The working label is displayed while the progress bar is processing.</p>
+        <p>Once the progress bar is complete at 100%, the complete label is displayed.</p>
+        <p>The label position can be changed to 9 positions around the progress bar.</p>
+        <p>Press the Start and Stop buttons to control the flow of the progress bar.</p>
+        <!-- This demo shows an outputProgress label text and position -->
+        <ice:form style="width: 45%;">
+            <!-- Various control options for labels and positon -->
+            <ice:panelGrid columns="2" style="border: 1px solid #000000;">
+                <ice:outputText value="Working Label:"/>
+                <ice:inputText value="#{label.label}" partialSubmit="true"/>
+                
+                <ice:outputText value="Complete Label:"/>
+                <ice:inputText value="#{label.labelComplete}" partialSubmit="true"/>
+                
+                <ice:outputText value="Label Position:"/>
+                <ice:selectOneMenu value="#{label.labelPosition}" partialSubmit="true">
+                    <f:selectItems value="#{label.availablePositions}"/>
+                </ice:selectOneMenu>
+            </ice:panelGrid>
+            
+            <ice:outputProgress value="#{label.percent}"
+                                label="#{label.label}"
+                                labelComplete="#{label.labelComplete}"
+                                labelPosition="#{label.labelPosition}"/>
+                                
+            <ice:commandButton value="Start" action="#{label.startProgress}" rendered="#{!label.isRunning}"/>
+            <ice:commandButton value="Stop" action="#{label.stopProgress}" rendered="#{label.isRunning}"/>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+

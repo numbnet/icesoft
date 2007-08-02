@@ -1,0 +1,31 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Progress Bar Component Tutorial</title>
+        <link href="./xmlhttp/css/xp/xp.css" rel="stylesheet" type="text/css" />
+        <!-- The stylesheet with the overriding classes -->
+        <link href="override.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Progress Bar Styling</h2>
+        <p>The following demonstrates a fully styled progress bar component.</p>
+        <p>All the styling was done using css overrides to the default classes.</p>
+        <!-- This demo shows an outputProgress with overriding styles applied -->
+        <ice:form style="width: 45%;">
+            <ice:outputProgress value="#{style.percent}"/>
+            
+            <ice:commandButton value="Start" action="#{style.startProgress}" rendered="#{!style.isRunning}"/>
+            <ice:commandButton value="Stop" action="#{style.stopProgress}" rendered="#{style.isRunning}"/>
+        </ice:form>
+    </body>
+    </html>
+</f:view>
+
