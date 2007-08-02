@@ -109,6 +109,7 @@
             <f:facet name="header">
 <#assign propertyPath = property.name + '.' + parentPojo.identifierProperty.name + '.' + componentProperty.name>
                 <s:link styleClass="columnHeader"
+		                id="listColumnHeader${componentProperty.name}Id"
                              value="${property.name} ${componentProperty.name} ${'#'}{${listName}.order=='${propertyPath} asc' ? messages.down : ( ${listName}.order=='${propertyPath} desc' ? messages.up : '' )}">
                     <f:param name="order" value="${'#'}{${listName}.order=='${propertyPath} asc' ? '${propertyPath} desc' : '${propertyPath} asc'}"/>
                 </s:link>
@@ -121,6 +122,7 @@
             <f:facet name="header">
 <#assign propertyPath = property.name + '.' + parentPojo.identifierProperty.name>
                 <s:link styleClass="columnHeader"
+		                id="listcolumnHeader${property.name}Id"
                              value="${property.name} ${parentPojo.identifierProperty.name} ${'#'}{${listName}.order=='${propertyPath} asc' ? messages.down : ( ${listName}.order=='${propertyPath} desc' ? messages.up : '' )}">
                     <f:param name="order" value="${'#'}{${listName}.order=='${propertyPath} asc' ? '${propertyPath} desc' : '${propertyPath} asc'}"/>
                 </s:link>
