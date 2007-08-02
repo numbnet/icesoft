@@ -58,10 +58,14 @@ public class MessageRenderer extends DomBasicRenderer {
             writeStream(facesContext, uiComponent);
             return;
         }
-
+        
         FacesMessage facesMessage =
                 getSingleMessage(facesContext, (UIMessage) uiComponent);
 
+        if (facesMessage == null) {
+            domContext.stepOver();
+            return;
+        }
 
         if (!domContext.isInitialized()) {
             Element span = domContext.createElement(HTML.SPAN_ELEM);
@@ -71,13 +75,7 @@ public class MessageRenderer extends DomBasicRenderer {
         Element root = (Element) domContext.getRootNode();
 
 
-        if (facesMessage == null) {
-            if (root != null) {
-                DOMContext.removeChildren(root);
-                domContext.stepOver();
-            }
-            return;
-        }
+
 
         // Remove the previous message 
         DOMContext.removeChildren(root);

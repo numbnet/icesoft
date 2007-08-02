@@ -78,6 +78,10 @@ public class MessagesRenderer extends DomBasicRenderer {
             messagesIterator = facesContext.getMessages();
         }
 
+        if (!messagesIterator.hasNext()) {
+            domContext.stepOver();
+            return;
+        }
         // layout
         boolean tableLayout = false; // default layout is list
         String layout = (String) uiComponent.getAttributes().get("layout");
