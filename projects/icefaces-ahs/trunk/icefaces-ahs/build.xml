@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="icefaces-1.6.0-AHS" default="build.src.bundle">
+<project name="icefaces-ahs" default="build.src.bundle">
     
     <property file="build.properties"/>
     
