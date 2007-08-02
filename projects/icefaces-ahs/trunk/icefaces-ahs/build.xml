@@ -22,7 +22,7 @@
         
         <zip destfile="${src.bundle.file}">
             <fileset dir=".">
-                <include name="**/src.dir/**"/>
+                <include name="**/src/**"/>
                 <include name="**/lib/**"/>
                 <include name="**/web/**"/>
             </fileset>
