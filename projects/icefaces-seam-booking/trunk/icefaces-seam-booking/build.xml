@@ -7,14 +7,12 @@
     <property name="example.name"           value="icefaces-booking"/>
 	
     <!-- Overrides -->
-    <property name="example.webinf.lib.dir" value="."/>
-    <property name="example.seam.ui.lib"    value="yes"/>
-    <property name="example.seam.debug.lib" value="yes"/>
-    <property name="example.icefaces.lib"   value="yes"/>
-    <property name="example.ds"             value="icefaces-booking-ds.xml"/>
-    <property name="src.java.dir"           value="src"/>
-    <property name="src.test.dir"           value="src"/>
-    <property name="test.classpath"         value="test.eejb.classpath"/>
+    <property name="seam.ui.lib"            value="yes"/>
+    <property name="seam.debug.lib"         value="yes"/>
+    <property name="icefaces.lib"           value="yes"/>
     
-    <import file="../../build.xml"/>
+    <!-- Datasource -->
+    <property name="example.ds"             value="icefaces-booking-ds.xml"/>
+    
+    <import file="../build.xml"/>
 </project>

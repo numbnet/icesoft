@@ -1,9 +1,14 @@
 Seam Booking Example
 ====================
-This example demonstrates the use of Seam in a Java EE 5 environment.
+This example demonstrates the use of Icefaces with Seam in a Java EE 5 
+environment.
 Transaction and persistence context management is handled by the
 EJB container.
 
+TODO:--
+1. redo web pages containing explanations when code is different eg: hotel
+   search action is done differently with icefaces
+2. get this running in Tomcat
 This example can also run in Tomcat with the JBoss Embeddable EJB3
 container.
 
@@ -22,13 +27,13 @@ How to Build and Deploy the Example on JBoss AS
 4. Build Seam by running "ant" the Seam root directory
 
 5. Build and deploy the example by running "ant" in the Seam
-   "examples/booking" directory
+   "examples/icefaces" directory
 
 6. Start JBoss AS by typing "bin/run.sh" in the JBoss home directory
 
 7. Point your web browser to:
 
-   http://localhost:8080/seam-booking/
+   http://localhost:8080/icefaces-booking/
 
    NOTE: The default build uses the HSQL database embedded in JBoss AS
 

@@ -84,7 +84,7 @@
 
 		<s:decorate id="creditCardExpiryDecorate" template="edit.xhtml">
 			<ui:define name="label">Credit Card Expiry:</ui:define>
-                        <ui:define name="valueInput">
+                 <ui:define name="valueInput">
                             <ice:selectOneMenu id="creditCardExpiryMonth" value="#{booking.creditCardExpiryMonth}">
                                 <f:selectItem itemLabel="Jan" itemValue="1"/>
                                 <f:selectItem itemLabel="Feb" itemValue="2"/>
@@ -106,13 +106,13 @@
                                 <f:selectItem itemLabel="2010" itemValue="2010"/>
                                 <f:selectItem itemLabel="2011" itemValue="2011"/>
                             </ice:selectOneMenu>
-                        </ui:define>
+              </ui:define>
 		</s:decorate>
 		
 		<div class="buttonBox">
 			<h:commandButton id="proceed" value="Proceed" action="#{hotelBooking.setBookingDetails}"/>
 			&#160;
-			<ice:commandButton id="cancel" value="Cancel" actionListener="#{hotelBooking.cancel}"/>
+			<s:button id="cancel" value="Cancel" action="#{hotelBooking.cancel}"/>
 		</div>
 		
 	</fieldset>
