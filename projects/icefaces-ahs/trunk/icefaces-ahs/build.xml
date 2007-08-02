@@ -10,25 +10,81 @@
     <property name="docs.dir" location="docs"/>
     <property name="dist.dir" location="dist"/>
     
+    <property name="build.dir" location="build"/>
+    <property name="build.lib.dir" location="${build.dir}/lib"/>
+    <property name="build.classes.dir" location="${build.dir}/classes"/>
+    <property name="compile.debug" value="true"/>
+    <property name="3rd.lib.dir" location="../../icefaces-archived/lib"/>
+    <property name="icefaces.dir" location="../../../../../repo/icefaces-archived/lib"/>
     
-    <property name="bundle.name" value="${product}"/>
+    <!--property name="bundle.name" value="${product}"/>
     <property name="src.bundle.name" value="${bundle.name}-src"/>
     <property name="src.bundle.prefix" value="${src.bundle.name}/icefaces"/>
-    <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>    
+    <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/-->    
     
-    <target name="build.src.bundle">
+    <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}${release.type}"/>
+    <property name="src.bundle.name" value="${product}-${product.version}"/>
+    <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>
+    
+    <path id="compile.run.classpath">
+        <pathelement location="${build.classes.dir}"/>
+        <!--fileset dir="${3rd.lib.dir}" includes="**/*.jar" excludes="jsf-api-1.2.jar"/-->
+        <fileset dir="../../../../icefaces/trunk/icefaces/lib" includes="**/*.jar"/>
+        <fileset dir="${icefaces.dir}" includes="**/*.jar"/>
+        <fileset dir="lib" includes="**/*.jar"/>
+        <!--pathelement location="${icefaces.jar}" /-->
+    </path>
+    
+    <target name="compile">
+        <!--echo message="${icefaces.dir}"/-->
+        <delete dir="${build.classes.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <javac source="1.4" target="1.4" srcdir="${src.dir}" destdir="${build.classes.dir}" debug="${compile.debug}">
+            <classpath refid="compile.run.classpath"/>
+        </javac>
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${src.dir}" includes="**/*.dtd"/>
+        </copy>
+    </target>    
+    
+    <target name="jar" depends="compile">
+        <delete file="${build.lib.dir}/${ant.project.name}.jar"/>
+        <mkdir dir="${build.lib.dir}"/>
+        <jar destfile="${lib.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
+            <manifest>
+                <section name="com.icesoft.faces">
+                    <attribute name="Implementation-Title" value="${product}"/>
+                    <attribute name="Implementation-Version" value="${release.type} ${version.primary}.${version.secondary}.${version.tertiary}_${build.number} (${buildtime})"/>
+                    <attribute name="Implementation-Vendor" value="${company}"/>
+                </section>
+            </manifest>
+            <fileset dir="${src.dir}">
+                <include name="**/*.properties"/>
+            </fileset>
+        </jar>
+    </target>    
+    
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="$(dist.dir}"/>
+    </target>
+    
+    <target name="build.src.bundle" depends="clean, jar">
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
         
         <zip destfile="${src.bundle.file}">
+            
+            
+            
             <fileset dir=".">
                 <include name="**/src/**"/>
                 <include name="**/lib/**"/>
                 <include name="**/web/**"/>
             </fileset>
-
+            
         </zip>
-
+        
     </target>
     
 </project>
