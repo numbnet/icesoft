@@ -156,14 +156,9 @@ public class AsyncHttpServer
                                 sessionMap.remove(iceFacesId);
                             }
                             if (pendingRequestMap.containsKey(iceFacesId)) {
-                                Iterator _processHandlers =
-                                    ((Map)
-                                        pendingRequestMap.remove(iceFacesId)).
-                                            values().iterator();
-                                while (_processHandlers.hasNext()) {
-                                    ((ProcessHandler)
-                                        _processHandlers.next()).handle();
-                                }
+                                ((ProcessHandler)
+                                    pendingRequestMap.remove(iceFacesId)).
+                                        handle();
                             }
                             updatedViewsQueueManager.remove(iceFacesId);
                         }
