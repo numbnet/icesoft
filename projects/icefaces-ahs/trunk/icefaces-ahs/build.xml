@@ -14,6 +14,7 @@
     <property name="build.lib.dir" location="${build.dir}/lib"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
+    <property name="additional.lib.dir" location="../../../../../repo/icefaces-archived/lib"/>
     <!--property name="3rd.lib.dir" location="../../icefaces-archived/lib"/>
     <property name="icefaces.dir" location="../../../../../repo/icefaces-archived/lib"/-->
     
@@ -31,8 +32,9 @@
         <!--fileset dir="${3rd.lib.dir}" includes="**/*.jar" excludes="jsf-api-1.2.jar"/-->
         <!--fileset dir="../../../../icefaces/trunk/icefaces/lib" includes="**/*.jar"/>
         <fileset dir="${icefaces.dir}" includes="**/*.jar"/-->
-        <fileset dir="lib" includes="**/*.jar"/>
-        <!--pathelement location="${icefaces.jar}" /-->
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+        <fileset dir="${additional.lib.dir}" includes="**/*.jar"/>
+        <pathelement location="${icefaces.jar}" />
     </path>
     
     <target name="compile">
