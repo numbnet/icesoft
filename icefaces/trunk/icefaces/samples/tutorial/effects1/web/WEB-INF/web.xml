@@ -54,6 +54,10 @@
         <param-value>true</param-value>
     </context-param>
 
+    <listener>
+	  <listener-class>com.sun.config.ConfigureListener</listener-class>
+    </listener>
+
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

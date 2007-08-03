@@ -49,6 +49,9 @@
     <param-value>server</param-value>
   </context-param>
   
+    <listener>
+	  <listener-class>com.sun.config.ConfigureListener</listener-class>
+    </listener>
  
 
   <!-- Faces Servlet -->

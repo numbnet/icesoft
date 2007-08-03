@@ -59,6 +59,10 @@
 	<listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
   </listener>
 
+    <listener>
+	  <listener-class>com.sun.config.ConfigureListener</listener-class>
+    </listener>
+
 
   <!-- Faces Servlet -->
   <servlet>
