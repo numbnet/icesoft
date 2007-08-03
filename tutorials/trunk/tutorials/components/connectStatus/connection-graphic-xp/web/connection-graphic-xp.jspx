@@ -1,0 +1,14 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+              <html>
+                  <head>
+                   <link rel='stylesheet' type='text/css' href='./xmlhttp/css/xp/xp.css'/>
+                  </head>
+                      <body>
+                          <h1>Graphical representation - Theme : XP</h1>
+                      <ice:outputConnectionStatus/> 
+                    </body>
+                  
+              </html>
+</f:view>

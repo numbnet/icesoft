@@ -1,0 +1,21 @@
+
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+              <html>
+                  <head>
+                   
+                  </head>
+              
+                      <body>
+                          <h1>ICEfaces Output Connection Status Tutorial</h1>
+                      <ice:outputConnectionStatus
+                         cautionLabel="Caution: Connection in danger."
+                         activeLabel="Active: Working."
+                         disconnectedLabel="Disconnected."
+                         inactiveLabel="Active: Idle."/> 
+                      
+                    </body>
+                  
+              </html>
+</f:view>
