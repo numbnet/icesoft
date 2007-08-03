@@ -50,8 +50,8 @@
     </target>    
     
     <target name="jar" depends="compile">
-        <delete file="${build.lib.dir}/${ant.project.name}.jar"/>
-        <mkdir dir="${build.lib.dir}"/>
+        <!--delete file="${build.lib.dir}/${ant.project.name}.jar"/>
+        <mkdir dir="${build.lib.dir}"/-->
         <jar destfile="${lib.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
             <manifest>
                 <section name="com.icesoft.faces">
@@ -72,7 +72,7 @@
     </target>
     
     <target name="war" depends="clean, jar">
-        <war destfile="${build.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
+        <war destfile="async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
             <lib dir="${additional.lib.dir}">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
@@ -100,9 +100,12 @@
         
         <zip destfile="${src.bundle.file}">
             <fileset dir=".">
+                <include name="async-http-server.war"/>
                 <include name="**/src/**"/>
                 <include name="**/lib/**"/>
                 <include name="**/web/**"/>
+                <exclude name="**/lib/*jms.jar"/>
+                <!--exclude name="**/build/**"/-->
             </fileset>
         </zip>
     </target>
