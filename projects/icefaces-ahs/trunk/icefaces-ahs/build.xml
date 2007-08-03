@@ -15,7 +15,7 @@
     <property name="build.lib.dir" location="${build.dir}/lib"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
-    <property name="additional.lib.dir" location="../../../../../repo/icefaces-archived/lib"/>
+    <property name="additional.lib.dir" location="../../../../../ossrepo/icefaces/trunk/icefaces/lib"/>
 
     
     <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}${release.type}"/>
@@ -92,7 +92,7 @@
         <delete file="${src.bundle.file}"/>
         
         <zip destfile="${src.bundle.file}">
-            <fileset dir=".">
+            <zipfileset dir="." prefix="${src.bundle.name}">
                 <include name="**/bin/**"/>
                 <include name="**/src/**"/>
                 <include name="**/lib/**"/>
@@ -100,7 +100,7 @@
                 <include name="**/docs/**"/>
                 <exclude name="**/lib/*jms.jar"/>
 
-            </fileset>
+            </zipfileset>
         </zip>
     </target>
     
