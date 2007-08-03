@@ -32,31 +32,32 @@
 package com.icesoft.faces.async.server;
 
 import com.icesoft.faces.async.server.messaging.UpdatedViewsQueueExceededMessageHandler;
-import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.util.net.messaging.MessageServiceClient;
 import com.icesoft.util.net.messaging.MessageServiceException;
 import com.icesoft.util.net.messaging.jms.JMSAdapter;
 import com.icesoft.util.net.messaging.jms.JMSProviderConfiguration;
 import com.icesoft.util.net.messaging.jms.JMSProviderConfigurationProperties;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.ServletContext;
-import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class AsyncHttpServerAdaptingServlet
-        implements Server {
+implements PseudoServlet {
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
     private static final Log LOG =
-            LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
+        LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
 
     private final String iceFacesId;
 
@@ -64,13 +65,14 @@ public class AsyncHttpServerAdaptingServlet
     private Object lock = new Object();
     private MessageServiceClient messageServiceClient;
     private long sequenceNumber;
+    private Server server;
     private boolean updatedViewsQueueExceeded = false;
 
     private UpdatedViewsQueueExceededMessageHandler
-            updatedViewsQueueExceededMessageHandler =
+        updatedViewsQueueExceededMessageHandler =
             new UpdatedViewsQueueExceededMessageHandler() {
                 protected void updatedViewsQueueExceeded(
-                        final String iceFacesId) {
+                    final String iceFacesId) {
 
                     if (iceFacesId == null || iceFacesId.trim().length() == 0) {
                         return;
@@ -87,81 +89,81 @@ public class AsyncHttpServerAdaptingServlet
             };
 
     public AsyncHttpServerAdaptingServlet(
-            final String iceFacesId,
-            final Collection synchronouslyUpdatedViews,
-            final ViewQueue allUpdatedViews, final ServletContext servletContext) {
+        final Server server, final String iceFacesId,
+        final Collection synchronouslyUpdatedViews,
+        final ViewQueue allUpdatedViews, final ServletContext servletContext) {
 
+        this.server = server;
         this.iceFacesId = iceFacesId;
         setUpMessageClientService(servletContext);
         allUpdatedViews.onPut(
-                new Runnable() {
-                    public void run() {
-                        allUpdatedViews.removeAll(synchronouslyUpdatedViews);
-                        synchronouslyUpdatedViews.clear();
-                        Set _viewIdentifierSet = new HashSet(allUpdatedViews);
-                        if (!_viewIdentifierSet.isEmpty()) {
-                            final String[] _viewIdentifiers =
-                                    (String[])
-                                            _viewIdentifierSet.toArray(
-                                                    new String[_viewIdentifierSet.size()]);
-                            final StringWriter _stringWriter = new StringWriter();
-                            for (int i = 0; i < _viewIdentifiers.length; i++) {
-                                if (i != 0) {
-                                    _stringWriter.write(',');
-                                }
-                                _stringWriter.write(_viewIdentifiers[i]);
+            new Runnable() {
+                public void run() {
+                    allUpdatedViews.removeAll(synchronouslyUpdatedViews);
+                    synchronouslyUpdatedViews.clear();
+                    Set _viewIdentifierSet = new HashSet(allUpdatedViews);
+                    if (!_viewIdentifierSet.isEmpty()) {
+                        final String[] _viewIdentifiers =
+                            (String[])
+                                _viewIdentifierSet.toArray(
+                                    new String[_viewIdentifierSet.size()]);
+                        final StringWriter _stringWriter = new StringWriter();
+                        for (int i = 0; i < _viewIdentifiers.length; i++) {
+                            if (i != 0) {
+                                _stringWriter.write(',');
                             }
-                            messageServiceClient.publish(
-                                    iceFacesId + ";" +                    // ICEfaces ID
-                                            ++sequenceNumber + ";" +      // Sequence Number
-                                            _stringWriter.toString(),        // Message Body
-                                    UPDATED_VIEWS_MESSAGE_TYPE,
-                                    MessageServiceClient.RESPONSE_TOPIC_NAME
-                            );
+                            _stringWriter.write(_viewIdentifiers[i]);
                         }
+                        messageServiceClient.publish(
+                            iceFacesId + ";" +                    // ICEfaces ID
+                                ++sequenceNumber + ";" +      // Sequence Number
+                                _stringWriter.toString(),        // Message Body
+                            UPDATED_VIEWS_MESSAGE_TYPE,
+                            MessageServiceClient.RESPONSE_TOPIC_NAME
+                        );
                     }
                 }
+            }
         );
     }
 
-    public void service(Request request) throws Exception {
-        request.respondWith(new StreamingContentHandler("text/plain", "UTF-8") {
-            public void writeTo(Writer writer) throws IOException {
-                writer.write("Asynchronous HTTP Server is enabled.\n");
-                writer.write("Check your server configuration.\n");
-            }
-        });
+    public void service(
+        final HttpServletRequest request, final HttpServletResponse response)
+    throws Exception {
+        // todo: Respond with a Server-Error explaining that the Asynchronous
+        //       HTTP Server is configured to be used.
     }
 
     public void shutdown() {
         tearDownMessageServiceClient();
+        server.shutdown();
     }
 
     private void setUpMessageClientService(
-            final ServletContext servletContext) {
+        final ServletContext servletContext) {
 
         JMSProviderConfiguration _jmsProviderConfiguration =
-                new JMSProviderConfigurationProperties(servletContext);
+            new JMSProviderConfigurationProperties(servletContext);
         messageServiceClient =
-                new MessageServiceClient(
-                        _jmsProviderConfiguration,
-                        new JMSAdapter(_jmsProviderConfiguration),
-                        servletContext);
+            new MessageServiceClient(
+                _jmsProviderConfiguration,
+                new JMSAdapter(_jmsProviderConfiguration),
+                servletContext);
         try {
             messageServiceClient.subscribe(
-                    MessageServiceClient.RESPONSE_TOPIC_NAME,
-                    updatedViewsQueueExceededMessageHandler.getMessageSelector());
+                MessageServiceClient.RESPONSE_TOPIC_NAME,
+                updatedViewsQueueExceededMessageHandler.getMessageSelector());
         } catch (MessageServiceException exception) {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal(
-                        "Failed to subscribe to topic: " +
-                                MessageServiceClient.RESPONSE_TOPIC_NAME,
-                        exception);
+                    "Failed to subscribe to topic: " +
+                        MessageServiceClient.RESPONSE_TOPIC_NAME,
+                    exception);
             }
         }
         messageServiceClient.addMessageHandler(
-                updatedViewsQueueExceededMessageHandler,
-                MessageServiceClient.RESPONSE_TOPIC_NAME);
+            updatedViewsQueueExceededMessageHandler,
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
@@ -180,15 +182,15 @@ public class AsyncHttpServerAdaptingServlet
             }
         }
         messageServiceClient.removeMessageHandler(
-                updatedViewsQueueExceededMessageHandler,
-                MessageServiceClient.RESPONSE_TOPIC_NAME);
+            updatedViewsQueueExceededMessageHandler,
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.closeConnection();
         } catch (MessageServiceException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
-                        "Failed to close connection due to some internal error!",
-                        exception);
+                    "Failed to close connection due to some internal error!",
+                    exception);
             }
         }
     }
