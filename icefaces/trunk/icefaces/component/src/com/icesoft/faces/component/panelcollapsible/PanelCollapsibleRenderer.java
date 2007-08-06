@@ -2,11 +2,9 @@ package com.icesoft.faces.component.panelcollapsible;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,54 +25,8 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         return true;
     }
 
-    public void decode(FacesContext context, UIComponent component) {
-        super.decode(context, component);
-        PanelCollapsibleState state = PanelCollapsibleState.getState(context, component);
-        state.setChangedViaDecode(false);
-        try {
-            PanelCollapsible panelCollapsible = (PanelCollapsible) component;
-
-            Map map =
-                context.getExternalContext().getRequestParameterMap();
-            String baseId =component.getClientId(context)+ "Expanded";            
-            if (map.containsKey(baseId) && (map.get(baseId) != null && !map.get(baseId).equals(""))) {
-                if ("true".equals(map.get(baseId).toString().trim())) {
-                    panelCollapsible.setExpanded(Boolean.FALSE);
-                    
-                } else {
-                    panelCollapsible.setExpanded(Boolean.TRUE);
-                }
-                ActionEvent ae = new ActionEvent(component);
-                component.queueEvent(ae);
-                
- 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         PanelCollapsible panelCollapsible = (PanelCollapsible) uiComponent;
-        PanelCollapsibleState state = PanelCollapsibleState.getState(facesContext, uiComponent);
-        String base = panelCollapsible.getStyleClass();
-        boolean open = panelCollapsible.getExpanded().booleanValue();
-        boolean disabled = panelCollapsible.isDisabled();
-        StringBuffer classModeSuffix = new StringBuffer(16);
-        String style = panelCollapsible.getStyle();
-        
-        boolean fireEffect = false;
-
-
-        String baseID = uiComponent.getClientId(facesContext);
-        if( !state.isFirstTime() &&
-            !state.isChangedViaDecode() &&
-            state.isLastExpandedValue() != open){
-            fireEffect = true;
-        }
-
-
         DOMContext domContext = DOMContext.attachDOMContext(facesContext, uiComponent);
         if (!domContext.isInitialized()) {
             Element rootSpan = domContext.createElement(HTML.DIV_ELEM);
@@ -82,114 +34,65 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             setRootElementId(facesContext, rootSpan, uiComponent);
         }
         Element root = (Element) domContext.getRootNode();
-        root.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getStyleClass());
-        root.setAttribute(HTML.STYLE_ATTR, style);
-
-        Element header = domContext.createElement(HTML.DIV_ELEM);
-
-        header.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getHeaderClass());
+        String style = panelCollapsible.getStyle();
         
-        UIComponent form = findForm(uiComponent);
-
-        if(panelCollapsible.getToggleOnClick().equals(Boolean.TRUE)){
-          if(!disabled)
-              FormRenderer.addHiddenField(facesContext, uiComponent.getClientId(facesContext)+ "Expanded");
-              
-              header.setAttribute(HTML.ONCLICK_ATTR, 
-                  "document.forms['"+ form.getClientId(facesContext) +"']" +
-                        "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
-                        panelCollapsible.getExpanded()+"'; " +
-                                "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
-            
-//            if(!disabled)
-//                header.setAttribute(HTML.ONCLICK_ATTR, "Ice.PanelCollapsible." +
-//                        "fire('" + baseID + "_content', " +
-//                                "'"+ baseID +"_header', "+ panelCollapsible.getStyleClassForJs()+");");
+        if (style != null) {
+        	root.setAttribute(HTML.STYLE_ATTR, style);
         }
-        String script = "Ice.PanelCollapsible.collapse('" + baseID + "_content');";
-        if(panelCollapsible.getExpanded().booleanValue()){
-//            script = "Ice.PanelCollapsible.expand('" + baseID + "_content');";
-        }
-
-//        if(!disabled)
-//            JavascriptContext.addJavascriptCall(facesContext, script);
-
-        header.setAttribute(HTML.ID_ATTR, baseID + "_header");
-
+        root.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getStyleClass());
+        
+        //create "header" div and append to the parent, don't render any children yet
+        Element header = (Element) domContext.createElement(HTML.DIV_ELEM);
+        header.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getHeaderClass());
         root.appendChild(header);
+        
+        //create "contents" div and append to the parent, don't render any children yet        
+        Element contents = (Element) domContext.createElement(HTML.DIV_ELEM);
+        contents.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getContentClass());
+        root.appendChild(contents);
+        
+        //add click handler if not disabled and toggleOnClick is set to true
+        if (panelCollapsible.isToggleOnClick() && 
+        		!panelCollapsible.isDisabled()) {
+            FormRenderer.addHiddenField(facesContext, uiComponent.getClientId(facesContext)+ "Expanded");
+            UIComponent form = findForm(uiComponent);
+        	header.setAttribute(HTML.ONCLICK_ATTR, 
+                "document.forms['"+ form.getClientId(facesContext) +"']" +
+                      "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
+                      panelCollapsible.isExpanded()+"'; " +
+                              "iceSubmit(document.forms['"+ form.getClientId(facesContext) +"'],this,event); return false;");
+        }
+
+    }
+    
+    
+    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
+    throws IOException {
+    	validateParameters(facesContext, uiComponent, null);
+    	PanelCollapsible panelCollapsible = (PanelCollapsible) uiComponent;
+    	DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
+    	
+    	//if headerfacet found, get the header div and render all its children
         UIComponent headerFacet = uiComponent.getFacet("header");
         if(headerFacet != null){
-            try{
-
-            //UIComponent headerComp = (UIComponent)headerFacet.getChildren().get(0);
-            domContext.setCursorParent(header);
-          
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(),header);
-
-            CustomComponentUtils.renderChild(facesContext,headerFacet);
-                //System.err.println("Header Renader Done");
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }else{
-            log.error("No Header facet found in Panel collapsible");
+        	Element header = (Element)domContext.getRootNode().getFirstChild();
+        	domContext.setCursorParent(header);
+        	CustomComponentUtils.renderChild(facesContext,headerFacet);
         }
-        //Text script = domContext.createTextNode(SCRIPT);
-        //Element scriptEle = domContext.createElement(SCRIPT);
-        //scriptEle.setAttribute(HTML.LANG_ATTR, "javascript");
-        //scriptEle.appendChild(script);
-        //header.appendChild(scriptEle);
 
-        Element container = domContext.createElement(HTML.DIV_ELEM);
-        container.setAttribute(HTML.ID_ATTR, baseID + "_content");
-        root.appendChild(container);
-        container.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getContentClass());
-
-
-//        if(fireEffect){
-//            if(!state.isLastExpandedValue()){
-//                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
-//            }
-//        }else{
-//            if (!open) {
-//                container.setAttribute(HTML.STYLE_ATTR, "display:none;");
-//            }
-//        }
-        state.setLastExpandedValue(open);
-        state.setChangedViaDecode(false);
-        state.setFirstTime(false);
-        domContext.setCursorParent(container);
-
-    }
-
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponenet) throws IOException {
-
-        DOMContext.getDOMContext(facesContext, uiComponenet).stepOver();
-
-    }
-
-    public void encodeChildren(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        validateParameters(facesContext, uiComponent, null);
-        PanelCollapsible panelCollapsible = (PanelCollapsible) uiComponent;
-        DOMContext domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent);
-        if(panelCollapsible.getExpanded().booleanValue()){
-            Iterator children = uiComponent.getChildren().iterator();
-            while (children.hasNext()) {
-                UIComponent nextChild = (UIComponent) children.next();
-                if (nextChild.isRendered()) {
-                    encodeParentAndChildren(facesContext, nextChild);
-                }
-            }
+        //if expanded get the content div and render all its children 
+        if (panelCollapsible.isExpanded()) {
+        	Element contents = (Element)domContext.getRootNode().getFirstChild().getNextSibling();
+        	domContext.setCursorParent(contents);        	
+	        Iterator children = uiComponent.getChildren().iterator();
+	        while (children.hasNext()) {
+	            UIComponent nextChild = (UIComponent) children.next();
+	            if (nextChild.isRendered()) {
+	                encodeParentAndChildren(facesContext, nextChild);
+	            }
+	        }
         }
-        // set the cursor here since nothing happens in encodeEnd
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
-
     }
-
 }
 
