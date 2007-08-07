@@ -195,26 +195,24 @@ The email folder page, should list all mail in the respective current folder in 
     </ice:panelGrid>
 
     <!-- Email List output -->
+    <!--  Table with RowSelector table-->
     <ice:dataTable
             id="messagesTable"
             styleClass="taskScrollerTable"
-            columnClasses="emailColumnCenterAlign, emailColumnCenterAlign, emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
+            columnClasses="emailColumnCenterAlign, emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
             sortColumn="#{mailManager.selectedMailAccount.selectedMailFolder.sort}"
             sortAscending="#{mailManager.selectedMailAccount.selectedMailFolder.ascending}"
             value="#{mailManager.selectedMailAccount.selectedMailFolder.messageList}"
             var="msg"
             rows="10">
-        <!-- Selectable column -->
-        <ice:column>
-            <ice:selectBooleanCheckbox
-                    partialSubmit="true"
-                    immediate="true"
-                    value="#{msg.selected}"
-                    valueChangeListener="#{mailManager.selectedMailAccount.selectedMailFolder.changeMessageSelection}"/>
-        </ice:column>
+ 
         <!-- Drageable mail folder column -->
         <ice:column>
-            <f:facet name="header">
+             <ice:rowSelector value="#{msg.selected}" 
+                              multiple="#{mailManager.selectedMailAccount.selectedMailFolder.multipleSelection}"
+                              selectionListener="#{mailManager.selectedMailAccount.selectedMailFolder.rowSelection}"/>
+           
+             <f:facet name="header">
                 <ice:outputText value="move"/>
             </f:facet>
             <ice:panelGroup

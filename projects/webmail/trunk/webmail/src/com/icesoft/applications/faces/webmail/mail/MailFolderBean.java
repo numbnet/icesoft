@@ -47,6 +47,7 @@ import javax.mail.event.MessageChangedEvent;
 import javax.mail.event.MessageCountEvent;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import com.icesoft.faces.component.ext.RowSelectorEvent;
 
 /**
  * <p>The MailFolderBean wraps a IMAPFolder and listens for MessageChanged and
@@ -72,6 +73,12 @@ public class MailFolderBean extends MailFolder
     // initilization flag
     private boolean isInit;
 
+    /**
+      * Field for enabling/disabling multiple message selection in email list table.
+      * Placeholder for future enhancement which allows user to make choice between 
+      * one or multiple message selections
+      */	
+    public boolean multipleSelection = true;
     /**
      * Default constructor for a new folder bean.
      * @param folderName alternative name for folder wrapper.  Will only be used
@@ -351,14 +358,13 @@ public class MailFolderBean extends MailFolder
         }
     }
 
-
-    /**
-     * Listener method called when a checkbox on the page is changed
-     * The method will update the current checkbox count
+      /**
+     * Listener method called when a message on the page is selected
+     * The method will update the current selected message count
      */
-    public synchronized void changeMessageSelection(ValueChangeEvent event) {
-        // Maintain a count of selected checkboxes
-        if (Boolean.valueOf(event.getNewValue().toString()).booleanValue()) {
+   public synchronized void rowSelection(RowSelectorEvent event) {
+        // Maintain a count of selected messages
+        if (event.isSelected()) {
             checkedCount++;
         } else {
             checkedCount--;
@@ -523,6 +529,23 @@ public class MailFolderBean extends MailFolder
 //        webmailMediator.requestOnDemandRender();
     }
 
+    /**
+     * Is multiple message selection enabled in the email list table?
+     * @return true if multiple selection is enabled
+     */
 
+    public boolean isMultipleSelection() {
+        return multipleSelection;
+    }
+
+    /**
+     * Sets the state of multiple message selection.
+     *
+     * @param multipleSelection
+     */
+
+    public void setMultipleSelection(boolean multipleSelection) {
+        this.multipleSelection = multipleSelection;
+    }
 
 }
