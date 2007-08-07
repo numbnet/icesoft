@@ -92,7 +92,6 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     private static String DEFAULT_DATA = "20, 30, 40";
     static String ICE_CHART_COMPONENT = "iceChartComponent";
     private int imageCounter = 0;
-    private AbstractChart abstractChart;
     private String width;
     private String height;
 
@@ -367,14 +366,14 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     	
     	if(!Beans.isDesignTime()){
 	        try {
-	            if (abstractChart == null) {
-	                abstractChart = AbstractChart.createChart(this);
+	            if (getAbstractChart() == null) {
+	            	createAbstractChart();	                
 	                if (getType().equalsIgnoreCase(OutputChart.CUSTOM_CHART_TYPE)) {
                         evaluateRenderOnSubmit(context);
 	                }
-	                abstractChart.encode();
+	                getAbstractChart().encode();
 	            } else if (evaluateRenderOnSubmit(context).booleanValue()) {
-	                abstractChart.encode();
+	            	getAbstractChart().encode();
 	            }
 	        } catch (Throwable e) {
 	            e.printStackTrace();
@@ -449,14 +448,14 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
      *<p>Return the value of the <code>chart</code> property.</p> 
      */
     public Chart getChart() {
-        return abstractChart.getChart();
+        return getAbstractChart().getChart();
     }
 
     /**
      * <p>Set the value of the <code>chart</code> property. </p>
      */
     public void setChart(Chart chart) {
-        abstractChart.setChart(chart);
+    	getAbstractChart().setChart(chart);
     }
 
     public void render() {
@@ -488,29 +487,27 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
                DEFAULT_CHART_TYPE;
     }
 
-    private String fileName = null;
 
     /**
      *<p>Return the value of the <code>fileName</code> property.</p> 
      */
     public String getFileName() {
-        return fileName;
+        return getAbstractChart().getImageFile().getName();
     }
 
-    private File imageFile;
+
 
     /**
      *<p>Return the value of the <code>data</code> property.</p> 
      */
     OutputStream getNewOutputStream() {
         //removed the old image, if exist
-        if (imageFile != null) {
-            imageFile.delete();
+        if (getAbstractChart().getImageFile() != null) {
+        	getAbstractChart().getImageFile().delete();
         }
-        imageFile = new File(getFolder(), getChartFileName());
-        fileName = imageFile.getName();
+        getAbstractChart().setImageFile(new File(getFolder(), getChartFileName()));
         try {
-            return out = new FileOutputStream(imageFile);
+            return out = new FileOutputStream(getAbstractChart().getImageFile());
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -544,18 +541,18 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     }
 
     Map getGeneratedImageMapArea() {
-        return abstractChart.getGeneratedImageMapArea();
+        return getAbstractChart().getGeneratedImageMapArea();
     }
 
     /**
      *<p>Return the value of the <code>data</code> property.</p> 
      */
     public ImageMapArea getClickedImageMapArea() {
-        return abstractChart.getClickedImageMapArea();
+        return getAbstractChart().getClickedImageMapArea();
     }
 
     public void setClickedImageMapArea(ImageMapArea clickedImageMapArea) {
-        abstractChart.setClickedImageMapArea(clickedImageMapArea);
+    	getAbstractChart().setClickedImageMapArea(clickedImageMapArea);
     }
 
     void generateClientSideImageMap(DOMContext domContext, Element map) {
@@ -686,6 +683,14 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         this.horizontalSet = true;        
     }
     
+    private AbstractChart createAbstractChart() throws Throwable {
+        return (AbstractChart)this.getAttributes().put(getClientId(getFacesContext()), AbstractChart.createChart(this));
+    }
+    
+    private AbstractChart getAbstractChart() {
+    	Object abstractChart = this.getAttributes().get(getClientId(getFacesContext()));
+    	return (abstractChart != null)? (AbstractChart)abstractChart : null;
+    }
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
@@ -694,26 +699,25 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = new Integer(imageCounter);
-        values[2] = abstractChart;
-        values[3] = width;
-        values[4] = height;
-        values[5] = render ? Boolean.TRUE : Boolean.FALSE;
-        values[6] = chartTitle;
-        values[7] = data;
-        values[8] = labels;
-        values[9] = colors;
-        values[10] = shapes;
-        values[11] = xaxisLabels;
-        values[12] = xaxisTitle;
-        values[13] = yaxisTitle;
-        values[14] = style;
-        values[15] = styleClass;
-        values[16] = legendPlacement;
-        values[17] = legendColumns;
-        values[18] = horizontal ? Boolean.TRUE : Boolean.FALSE;
-        values[19] = horizontalSet ? Boolean.TRUE : Boolean.FALSE;
-        values[20] = type;
-        values[21] = saveAttachedState(context, renderOnSubmitMethodBinding);
+        values[2] = width;
+        values[3] = height;
+        values[4] = render ? Boolean.TRUE : Boolean.FALSE;
+        values[5] = chartTitle;
+        values[6] = data;
+        values[7] = labels;
+        values[8] = colors;
+        values[9] = shapes;
+        values[10] = xaxisLabels;
+        values[11] = xaxisTitle;
+        values[12] = yaxisTitle;
+        values[13] = style;
+        values[14] = styleClass;
+        values[15] = legendPlacement;
+        values[16] = legendColumns;
+        values[17] = horizontal ? Boolean.TRUE : Boolean.FALSE;
+        values[18] = horizontalSet ? Boolean.TRUE : Boolean.FALSE;
+        values[19] = type;
+        values[20] = saveAttachedState(context, renderOnSubmitMethodBinding);
         return ((Object) (values));
     }
 
@@ -725,26 +729,25 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         imageCounter = ((Integer) values[1]).intValue();
-        abstractChart = (AbstractChart) values[2];
-        width = (String) values[3];
-        height = (String) values[4];
-        render = ((Boolean) values[5]).booleanValue();
-        chartTitle = (String) values[6];
-        data = values[7];
-        labels = values[8];
-        colors = values[9];
-        shapes = values[10];
-        xaxisLabels = values[11];
-        xaxisTitle = (String) values[12];
-        yaxisTitle = (String) values[13];
-        style = (String) values[14];
-        styleClass = (String) values[15];
-        legendPlacement = values[16];
-        legendColumns = values[17];
-        horizontal = ((Boolean) values[18]).booleanValue();
-        horizontalSet = ((Boolean) values[19]).booleanValue();
-        type = (String) values[20];
-        renderOnSubmitMethodBinding = (MethodBinding) restoreAttachedState(context, values[21]);
+        width = (String) values[2];
+        height = (String) values[3];
+        render = ((Boolean) values[4]).booleanValue();
+        chartTitle = (String) values[5];
+        data = values[6];
+        labels = values[7];
+        colors = values[8];
+        shapes = values[9];
+        xaxisLabels = values[10];
+        xaxisTitle = (String) values[11];
+        yaxisTitle = (String) values[12];
+        style = (String) values[13];
+        styleClass = (String) values[14];
+        legendPlacement = values[15];
+        legendColumns = values[16];
+        horizontal = ((Boolean) values[17]).booleanValue();
+        horizontalSet = ((Boolean) values[18]).booleanValue();
+        type = (String) values[19];
+        renderOnSubmitMethodBinding = (MethodBinding) restoreAttachedState(context, values[20]);
     }
 }
 

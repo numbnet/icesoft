@@ -36,6 +36,7 @@ package com.icesoft.faces.component.outputchart;
 import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.io.File;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,6 +66,7 @@ public abstract class AbstractChart {
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
     private ImageMapArea clickedImageMapArea;
     String type = null;
+    private File imageFile;
 
     public AbstractChart(UIComponent uiComponent) throws Throwable {
         this.outputChart = (OutputChart) uiComponent;
@@ -205,6 +207,12 @@ public abstract class AbstractChart {
             for (int i = 0; i < objList.size(); i++) {
                 paintArray[i] = (Paint) objList.get(i);
             }
+        } else if (obj instanceof String[]) {
+        	String[] colors = (String[]) obj;
+            paintArray = new Paint[colors.length];
+            for (int i = 0; i < colors.length; i++) {
+                paintArray[i] = colorMap.getColor(colors[i]);
+            }
         }
         return paintArray;
     }
@@ -288,6 +296,14 @@ public abstract class AbstractChart {
    		}
    		return legendProperties;
     }
+
+	public File getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(File imageFile) {
+		this.imageFile = imageFile;
+	}
 }
 
 class ColorMap extends HashMap {
