@@ -195,9 +195,32 @@ public class PanelCollapsible extends UICommand {
         }
         return super.isRendered();
     }
-    
-    public void processUpdates(FacesContext context) {
-        super.processUpdates(context);
+    /* (non-Javadoc)
+     * @see javax.faces.component.UIComponent#processDecodes(javax.faces.context.FacesContext)
+     */
+     public void processDecodes(javax.faces.context.FacesContext context) {
+  	   if (isExpanded()) {
+  		   super.processDecodes(context);
+  	   }
+  	   decode(context);
+     }
+
+     /* (non-Javadoc)
+     * @see javax.faces.component.UIComponent#processValidators(javax.faces.context.FacesContext)
+     */
+     public void processValidators(FacesContext context) {
+  	   if (isExpanded()) {
+  		   super.processValidators(context);
+  	   }
+     }
+
+     /* (non-Javadoc)
+      * @see javax.faces.component.UIComponent#processUpdates(javax.faces.context.FacesContext)
+      */
+     public void processUpdates(FacesContext context) {
+    	if (isExpanded()) {
+    		super.processUpdates(context);
+    	}
         ValueBinding vb = getValueBinding("expanded");
         //Let bean to know that the component's expanded state 
         //has been changed by the decode method. 
@@ -254,5 +277,4 @@ public class PanelCollapsible extends UICommand {
         renderedOnUserRole = (String)state[5];
         toggleOnClick = (Boolean)state[6];        
     }
-
 }
