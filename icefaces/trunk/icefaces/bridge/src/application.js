@@ -83,6 +83,10 @@
                 if (e.isEscKey()) e.cancelDefaultAction();
             });
 
+            window.onBeforeUnload(function() {
+                this.connection.sendDisposeViews();
+            }.bind(this));
+
             this.connection.onSend(function() {
                 Ice.Focus.userInterupt = false;
             });
@@ -96,10 +100,10 @@
             });
 
             this.connection.onServerError(function (response) {
-                document.open();
-                document.write(response.content());
-                document.close();
-            });
+                this.dispose();
+                $element(document.documentElement).replaceHtml(response.content());
+                scriptLoader.searchAndEvaluateScripts(document.documentElement);
+            }.bind(this));
 
             this.connection.whenDown(function() {
                 logger.warn('connection to server was lost');
@@ -124,7 +128,6 @@
         },
 
         dispose: function() {
-            this.connection.sendDisposeViews();
             this.connection.shutdown();
             this.logger.info('page unloaded!');
             this.logHandler.disable();
@@ -136,7 +139,7 @@
         this.application = new This.Application;
     });
 
-    window.onBeforeUnload(function() {
+    window.onUnload(function() {
         this.application.dispose();
     });
 });

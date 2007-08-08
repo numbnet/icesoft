@@ -4,7 +4,8 @@
     This.Loader = Object.subclass({
         initialize: function(logger) {
             this.logger = logger.child('script-loader');
-            this.referencedScripts = [];//list of urls
+            this.referencedScripts = [];
+            //list of urls
             this.client = new Client(this.logger);
             //the scripts present on the page are already evaluated
             $enumerate(document.documentElement.getElementsByTagName('script')).each(function(script) {
@@ -13,7 +14,9 @@
         },
 
         searchAndEvaluateScripts: function(element) {
-            $enumerate(element.getElementsByTagName('script')).each(this.evaluateScript.bind(this));
+            $enumerate(element.getElementsByTagName('script')).each(function(s) {
+                this.evaluateScript(s);
+            }.bind(this));
         },
 
         evaluateScript: function(script) {
@@ -36,7 +39,7 @@
             } else {
                 var code = script.text;
                 this.logger.debug('evaluating script : ' + code);
-                try{
+                try {
                     eval(code);
                 } catch (e) {
                     this.logger.warn('Failed to evaluate script: \n' + code, e);

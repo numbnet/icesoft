@@ -183,6 +183,7 @@
             case 'fieldset': e.peer = new This.FieldSetElement(e); break;
             case 'object': e.peer = new This.ObjectElement(e); break;
             case 'iframe': e.peer = new This.IFrameElement(e); break;
+            case 'html': e.peer = new This.HtmlElement(e); break;
             default : e.peer = new This.Element(e); break;
         }
 
@@ -366,9 +367,39 @@
         }
     });
 
+    This.HtmlElement = This.Element.subclass({
+        replaceHtml: function(html) {
+            var outerHTML = function(tag) {
+                var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
+                var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
+                return html.substring(start.index, end.index + end[0].length);
+            };
+
+            var documentBody = document.body;
+            new This.BodyElement(documentBody).replaceHtml(outerHTML('body'));
+            var documentTitle = document.getElementsByTagName('title')[0];
+            new This.TitleElement(documentTitle).replaceHtml(outerHTML('title'));
+            var documentHead = document.getElementsByTagName('head')[0];
+            //replacing the head in IE removes the title
+            if (documentHead && !/MSIE/.test(navigator.userAgent)) {
+                new This.HeadElement(documentHead).replaceHtml(outerHTML('head'));
+            }
+        }
+    });
+
     This.HeadElement = This.Element.subclass({
         replaceHtml: function(html) {
-            this.element.innerHTML = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+            $enumerate(this.element.childNodes).each(function(e) {
+                this.element.removeChild(e);
+            }.bind(this));
+            this.withTemporaryContainer(function(container) {
+                container.innerHTML = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+                $enumerate(container.childNodes).each(function(e) {
+                    this.element.appendChild(e);
+                    //todo: evaluate script nodes
+                }.bind(this));
+            });
+            //todo: replace the attributes
         }
     });
 

@@ -54,7 +54,7 @@
             return false;
         },
 
-        //todo: rename to 'capturingElement'
+    //todo: rename to 'capturingElement'
         captured: function() {
             return this.currentElement ? Element.adaptToElement(this.currentElement) : null;
         },
@@ -71,7 +71,7 @@
 
         sendOn: function(connection) {
             Query.create(function(query) {
-                "partial".associateWith('true').serializeOn(query);
+                "ice.submit.partial".associateWith('false').serializeOn(query);
                 try {
                     this.captured().serializeOn(query);
                     this.serializeOn(query);
@@ -83,7 +83,7 @@
 
         sendFullOn: function(connection) {
             Query.create(function(query) {
-                "partial".associateWith('false').serializeOn(query);
+                "ice.submit.partial".associateWith('false').serializeOn(query);
                 try {
                     this.captured().serializeOn(query);
                     this.captured().form().serializeOn(query);
@@ -110,7 +110,7 @@
     });
 
     This.IE.Event = This.Event.subclass({
-        //todo: rename to 'triggeringElement'
+    //todo: rename to 'triggeringElement'
         target: function() {
             return this.event.srcElement ? Element.adaptToElement(this.event.srcElement) : null;
         },
@@ -125,9 +125,9 @@
     });
 
     This.Netscape.Event = This.Event.subclass({
-        //todo: rename to 'triggeringElement'
+    //todo: rename to 'triggeringElement'
         target: function() {
-            return this.event.target? Element.adaptToElement(this.event.target) : null;
+            return this.event.target ? Element.adaptToElement(this.event.target) : null;
         },
 
         cancelBubbling: function() {
@@ -345,7 +345,7 @@
                 return This.Event.adaptToPlainEvent(e, currentElement);
             }
         } else {
-            return new This.UnknownEvent(currentElement);            
+            return new This.UnknownEvent(currentElement);
         }
     };
 
