@@ -1684,7 +1684,7 @@ input {
 .iceCmdBtn-dis {
 }
 
-.iceCmdLnk-dis {
+.iceCmdLnk-dis, .iceOutLnk-dis {
     color: #ABABAB;
     text-decoration: none;
     border-bottom: 1px dotted #CCCCCC;
@@ -1698,7 +1698,7 @@ input {
     cursor: default;
 }
 
-.iceInpTxt-dis, iceInpSecrt-dis {
+.iceInpTxt-dis, .iceInpSecrt-dis {
     font-family: Arial, Helvetica, sans-serif;
     font-size: .95em;
     color: #ABABAB;
