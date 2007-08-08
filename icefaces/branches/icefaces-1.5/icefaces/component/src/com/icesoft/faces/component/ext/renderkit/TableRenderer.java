@@ -429,9 +429,11 @@ public class TableRenderer
                             width = columnWitdths.nextToken();
 
                         }
+                        nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
                                       columnStyleIndex, colNumber, width);
+                        nextChild.encodeEnd(facesContext);
                         colNumber = uiData.getColNumber();
                     }
                 }
