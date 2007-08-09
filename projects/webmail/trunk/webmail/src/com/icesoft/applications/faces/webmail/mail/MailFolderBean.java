@@ -79,6 +79,7 @@ public class MailFolderBean extends MailFolder
       * one or multiple message selections
       */	
     public boolean multipleSelection = true;
+    
     /**
      * Default constructor for a new folder bean.
      * @param folderName alternative name for folder wrapper.  Will only be used

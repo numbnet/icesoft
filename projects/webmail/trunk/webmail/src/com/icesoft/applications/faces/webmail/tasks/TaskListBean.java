@@ -43,7 +43,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.Date;
-
+import com.icesoft.faces.component.ext.RowSelectorEvent;
 /**
  * <p>The <code>TasksBean</code> class represents the view of the <code>Tasks</code>
  * model class. This class is responsible for handling user events from the
@@ -65,6 +65,13 @@ public class TaskListBean extends TaskList implements WebmailBase {
 
     // checked count
     private int checkedCount = 0;
+    
+    /**
+      * Field for enabling/disabling multiple tasks selection in email list table.
+      * Placeholder for future enhancement which allows user to make choice between 
+      * one or multiple message selections
+      */	
+    public boolean multipleSelection = true;
 
     /**
      * The method should be called to initialize the TasksBean and to refresh
@@ -247,6 +254,19 @@ public class TaskListBean extends TaskList implements WebmailBase {
         }
     }
 
+    
+        /**
+     * Listener method called when a task on the page is selected
+     * The method will update the current selected tasks count
+     */
+   public synchronized void rowSelection(RowSelectorEvent event) {
+        // Maintain a count of selected messages
+        if (event.isSelected()) {
+            checkedCount++;
+        } else {
+            checkedCount--;
+        }
+    }
     public int getCheckedCount() {
         return checkedCount;
     }
@@ -329,4 +349,24 @@ public class TaskListBean extends TaskList implements WebmailBase {
             }
         }
     }
+    
+   /**
+     * Is multiple task selection enabled in the task list table?
+     * @return true if multiple task is enabled
+     */
+
+    public boolean isMultipleSelection() {
+        return multipleSelection;
+    }
+
+    /**
+     * Sets the state of multiple task selection.
+     *
+     * @param multipleSelection
+     */
+
+    public void setMultipleSelection(boolean multipleSelection) {
+        this.multipleSelection = multipleSelection;
+    }
+
 }
