@@ -245,15 +245,23 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public void redirect(String requestURI) throws IOException {
-        URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
-        String query = uri.getQuery();
-        if (query == null) {
-            redirector.redirect(uri + "?rvn=" + viewIdentifier);
-        } else if (query.matches(".*rvn=.*")) {
-            redirector.redirect(uri.toString());
+        final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
+        final String redirectURI;
+        if (uri.isAbsolute()) {
+            redirectURI = uri.toString();
         } else {
-            redirector.redirect(uri + "&rvn=" + viewIdentifier);
+            String query = uri.getQuery();
+            if (query == null) {
+                redirectURI = uri + "?rvn=" + viewIdentifier;
+            } else {
+                if (query.matches(".*rvn=.*")) {
+                    redirectURI = uri.toString();
+                } else {
+                    redirectURI = uri + "&rvn=" + viewIdentifier;
+                }
+            }
         }
+        redirector.redirect(redirectURI);
         FacesContext.getCurrentInstance().responseComplete();
     }
 
