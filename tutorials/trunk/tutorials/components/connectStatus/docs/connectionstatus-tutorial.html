@@ -20,7 +20,7 @@
 <h1>How to Use the ICEfaces OutputConnectionStatus Component</h1>
 
 
-        <p>The <span class="object-name">outputConnectionStatus</span> component displays the information about the status of the network connection
+        <p>The <span class="object-name">outputConnectionStatus</span> component displays information about the status of the network connection
         between the client browser and the server. The component displays one of 4 possible states, which are as
         follows.</p>
         <ol>
@@ -33,14 +33,14 @@
         </ol>
         <p>The <span class="object-name">outputConnectionStatus</span> component provides an ideal mechanism to provide continuous real-time feedback
         to users of the status of their ICEfaces application. It is particularly important to inform users when the
-        application is busy sending and receiving data in response to a user-initiated action to manage their 
+        application is busy sending and receiving data in response to a user-initiated action to manage their
         expectations with respect to application readiness for additional user input. Generally, the
         <span class="object-name">outputConnectionStatus</span> component should be located in a consistent location throughout an ICEfaces application.
         </p>
         <p>
         <b>NOTE:</b> A web-page may only contain a single <span class="object-name">outputConnectionStatus</span> component. Using more than one
         <span class="object-name">outputConnectionStatus</span> component on the same web page will result in erratic results.</p>
-         
+
         <br>
 
 
@@ -53,7 +53,7 @@
 <ul>
     <li><a href="#connectionLabel">Creating a Basic outputConnectionStatus component with label</a></li>
     <li><a href="#connectionGraphic">Creating an outputConnectionStatus component with graphic representation</a></li>
-    <li><a href="#connectionCustomize">How to custom styling an outputConnectionStatus component </a></li>
+    <li><a href="#connectionCustomize">How to custom style an outputConnectionStatus component </a></li>
     <li><a href="#exampleConnectionStatus">Examples using outputConnectionStatus component</a></li>
 </ul>
 
@@ -61,8 +61,8 @@
 <a name="connectionLabel"><h2>Creating an outputConnectionStatus component</h2></a>
 
 <p>
-The creation of <span class="object-name">outputConnectionStatus</span> component a simple one step process.
-The following code sample is how to use the component to reflect the current connection status:
+The creation of an <span class="object-name">outputConnectionStatus</span> component is a simple one step process.
+The following code sample shows how to use the component to reflect the current connection status:
 </p>
 <span style="font-family: monospace;">&lt;ice:outputConnectionStatus</span><br
  style="font-family: monospace;">
@@ -104,28 +104,28 @@ The screen shot below shows the component in action:
 <a name="connectionGraphic"><h2>Graphical representation of an outputConnectionStatus component </h2></a>
 
     <p>
-        The <span class="object-name">outputConnectionStatus</span> component can also be graphically represented. The component displays 
+        The <span class="object-name">outputConnectionStatus</span> component can also be graphically represented. The component displays
     one of four possible states graphically as follows:<br /></p>
-    
+
     <div class="screenshot">
         <img src="images/connection_showcase_screenshot.PNG"
              title="connection status component in Component Showcase application"
              alt="connection status component in Component Showcase application" width="873" height="246"
              border="1"/>
     </div><br />
-    
-    <p>The creation of <span class="object-name">outputConnectionStatus</span> component with graphical representation is 
+
+    <p>The creation of the <span class="object-name">outputConnectionStatus</span> component with graphical representation is
         also simple. The following example code shows how to display the <span class="object-name">outputConnectionStatus</span> component in two different themes: <br /><br />
     </div></p>
-    
-    
+
+
     <span style="font-family: monospace;">&lt;link rel='stylesheet' type='text/css' href='./xmlhttp/css/xp/xp.css'/&gt;</span><br />
     <span style="font-family: monospace;">&lt;ice:outputConnectionStatus/&gt;</span><br />
-    <p>or,</p> 
+    <p>or,</p>
     <span style="font-family: monospace;">&lt;link rel='stylesheet' type='text/css' href='./xmlhttp/css/royale/royale.css'/&gt;</span><br>
     <span style="font-family: monospace;">&lt;ice:outputConnectionStatus/&gt;</span><br /><br />
-   
-    
+
+
     <p> The screen shots below show the two different themes:</p>
 
 <br /><br />
@@ -158,23 +158,23 @@ The screen shot below shows the component in action:
 
 
 <!-- tutorial: connectionCustomize -->
-<a name="connectionCustomize"><h2>Custom the style of the outputConnectionStatus component</h2></a>
+<a name="connectionCustomize"><h2>Customize the style of the outputConnectionStatus component</h2></a>
 
     <p>
-        The style of the <span class="object-name">outputConnectionStatus</span> component is customizable with user's preference. As shown in the above 
-    examples, the styling and positioning are determined by the css file comes with ICEFaces framework:</p>
-    
+        The style of the <span class="object-name">outputConnectionStatus</span> component is customizable to a user's preference. As shown in the above
+    examples, the styling and positioning are determined by the css file that comes with the ICEFaces framework:</p>
+
     <span style="font-family: monospace;">&lt;link rel='stylesheet' type='text/css' href='./xmlhttp/css/royale/royale.css'/&gt;</span><br>
-  
- 
+
+
    <p> You are able to customize
-the <span class="object-name">outputConnectionStatus</span> component to fit for different purposes. The example below shows how to custom styling the 
-component so that the component can be use to display a full page overlays of a different translucent colour for each 
+the <span class="object-name">outputConnectionStatus</span> component for different purposes. The example below shows how to customize styling the
+component so that the component can be use to display a full page overlay of a different translucent colour for each
 connection state. </p>
 
 <p>
-To custom styling the <span class="object-name">outputConnectionStatus</span> component you only need to create your own
-css file and choose the images to use as background. In this example, four different color of transparent images are used
+To customize the styling of the <span class="object-name">outputConnectionStatus</span> component you only need to create your own
+css file and choose the background images. In this example, four transparent images of different colors are used
 as the <span class="object-name">outputConnectionStatus</span> component's background image. The example css file is as follows:
 </p>
 
@@ -235,7 +235,7 @@ as the <span class="object-name">outputConnectionStatus</span> component's backg
 <span style="font-family: monospace;">&lt;link rel='stylesheet' type='text/css' href='style.css'/&gt;</span><br>
 
 <p>
-The screen shots below show the component switches background color as the connection state changes.
+The screen shots below shows how the component switches background color as the connection state changes.
 </p>
 
  <br />
@@ -259,7 +259,7 @@ The screen shots below show the component switches background color as the conne
     <h3>Download the demo:</h3>
     <ul>
         <li>Download the custom styling outputConnectionStatus component source code <a href="connectionStatus-customize.zip">here</a>.</li>
-	  <li>The demo shows how to custom styling the outputConnectionStatus component that displays transparent background images in different color when the connection state changes.</li>
+	  <li>The demo shows how to custom style the outputConnectionStatus component with different transparent background images when the connection state changes.</li>
 
     </ul>
 </div>
