@@ -131,18 +131,16 @@
                        rows="10"
                        rendered="#{!contactManager.contactListBean.noResult}"
                        styleClass="taskScrollerTable"
-                       columnClasses="contactColumnCenterAlign, emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
+                       columnClasses="emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
                        sortColumn="#{contactManager.contactListBean.sort}"
                        sortAscending="#{contactManager.contactListBean.ascending}">
-            <ice:column>
 
-                <ice:selectBooleanCheckbox partialSubmit="true"
-                                           value="#{contact.flag}"
-                                           valueChangeListener="#{contactManager.contactListBean.checkCountChange}"
-                        />
-            </ice:column>
 
             <ice:column>
+
+                <ice:rowSelector value="#{contact.flag}" 
+                             multiple="#{contactManager.contactListBean.multipleSelection}"
+                             selectionListener="#{contactManager.contactListBean.rowSelection}"/>
                 <f:facet name="header">
                     <ice:commandSortHeader columnName="displayName" arrow="true">
                         <ice:outputText

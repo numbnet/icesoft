@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-
+import com.icesoft.faces.component.ext.RowSelectorEvent;
 
 /**
  * wrapper class of contact list model and this class will
@@ -92,6 +92,12 @@ public class ContactListBean extends ContactListModel implements WebmailBase {
     //keep track number of records selected
     private long checkCount = 0;
 
+    /**
+      * Field for enabling/disabling multiple contact selection in contact list table.
+      * Placeholder for future enhancement which allows user to make choice between 
+      * one or multiple contact selections
+      */	
+    public boolean multipleSelection = true;
 
     /**
      * getter of contact bean
@@ -455,8 +461,9 @@ public class ContactListBean extends ContactListModel implements WebmailBase {
      * Dynamically change the count of selected records
      * so that edit button or delete button can be disabled
      */
-    public void checkCountChange(ValueChangeEvent event) {
-        if (event.getNewValue().toString().equals("true")) {
+   public synchronized void rowSelection(RowSelectorEvent event) {
+        // Maintain a count of selected messages
+        if (event.isSelected()) {
             checkCount++;
         } else {
             checkCount--;
@@ -639,6 +646,24 @@ public class ContactListBean extends ContactListModel implements WebmailBase {
             }
         }
     }
+    
+   /**
+     * Is multiple contact selection enabled in the contact list table?
+     * @return true if multiple selection is enabled
+     */
 
+    public boolean isMultipleSelection() {
+        return multipleSelection;
+    }
+
+    /**
+     * Sets the state of multiple contact selection.
+     *
+     * @param multipleSelection
+     */
+
+    public void setMultipleSelection(boolean multipleSelection) {
+        this.multipleSelection = multipleSelection;
+    }
 
 }
