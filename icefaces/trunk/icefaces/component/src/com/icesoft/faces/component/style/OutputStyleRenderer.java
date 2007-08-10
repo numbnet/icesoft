@@ -153,13 +153,17 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 result = _browserType( user);
 
             } else {
-                log.error(
+            	if (log.isDebugEnabled()) {
+            		log.debug(
                         "OutputStyleRenderer: Request is not HttpServletRequest. Its [" +
                         o.getClass().getName() + "]");
+            	}
             }
         } else {
-            log.error(
+        	if (log.isDebugEnabled()) {
+        		log.debug(
                     "IceStyleReader: facesContext.getExternalContext().getRequest() is null");
+        	}
         }
         return result;
     }
