@@ -4,7 +4,6 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.IdGenerator;
-import com.icesoft.jasper.Constants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -72,9 +70,6 @@ public class MainServlet extends HttpServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if( log.isTraceEnabled() ){
-            log.trace(getIncludeInfo(request,"entering main servlet"));
-        }
 
         //set flag to indicate an ICEfaces request so that delegateNonIface
         //will detect this and execute D2DViewHandler for it
@@ -88,61 +83,6 @@ public class MainServlet extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException(e);
         }
-    }
-
-    private String getIncludeInfo(HttpServletRequest req, String header) {
-        StringBuffer buff = new StringBuffer(header);
-        buff.append("\nvia Attributes - via Methods");
-
-        buff.append("\n");
-        buff.append(Constants.INC_CONTEXT_PATH);
-        buff.append(": ");
-        buff.append(req.getAttribute(Constants.INC_CONTEXT_PATH));
-        buff.append(" - ");
-        buff.append(req.getContextPath());
-
-        buff.append("\n");
-        buff.append(Constants.INC_PATH_INFO);
-        buff.append(": ");
-        buff.append(req.getAttribute(Constants.INC_PATH_INFO));
-        buff.append(" - ");
-        buff.append(req.getPathInfo());
-
-        buff.append("\n");
-        buff.append(Constants.INC_QUERY_STRING);
-        buff.append(": ");
-        buff.append(req.getAttribute(Constants.INC_QUERY_STRING));
-        buff.append(" - ");
-        buff.append(req.getQueryString());
-
-        buff.append("\n");
-        buff.append(Constants.INC_REQUEST_URI);
-        buff.append(": ");
-        buff.append(req.getAttribute(Constants.INC_REQUEST_URI));
-        buff.append(" - ");
-        buff.append(req.getRequestURI());
-
-        buff.append("\n");
-        buff.append(Constants.INC_SERVLET_PATH);
-        buff.append(": ");
-        buff.append(req.getAttribute(Constants.INC_SERVLET_PATH));
-        buff.append(" - ");
-        buff.append(req.getServletPath());
-        
-        buff.append("\n\n");
-        buff.append("via getAttributeNames():\n");
-        Enumeration attrNames = req.getAttributeNames();
-        while (attrNames.hasMoreElements()) {
-            String key = (String)attrNames.nextElement();
-            Object val = req.getAttribute(key);
-            buff.append("\t");
-            buff.append(key);
-            buff.append(": ");
-            buff.append(val.toString());
-            buff.append("\n");
-        }
-
-        return buff.toString();
     }
 
     public void destroy() {

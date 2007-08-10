@@ -5,17 +5,14 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * WARNING! WARNING! WARNING!
- * <p/>
- * This class is temporary and should not be relied on as it is extremely likely
- * not to be the final solution.
- * <p/>
- * Because we use a dispatcher to pass requests from the MainPortlet to the
- * MainServlet, the resulting portlet artifacts (like request, response, etc.)
- * are wrapped to look like servlet artifacts and certain types and APIs that
- * are specific to portlets are not available to the developer.  As a temporary
- * solution, we provide this class stored as a request attribute that can be
- * retrieved.
+ * Because we are using a RequestDispatcher to bridge portlet handling into our servlet
+ * based framework, we "lose" some of the characteristics of the Portlet API.  When
+ * the dispatched call arrives at the ICEfaces MainServlet, the request and response
+ * objects are wrapped as servlet versions and no longer accessible as portlet types.
+ *
+ * What we currently do, then, is save instances of those things that the portlet
+ * developer might want to access and make them accessible on the other side of
+ * the dispatched call.  This class is simply the envelope they are carried in.
  */
 public class PortletArtifactWrapper {
 

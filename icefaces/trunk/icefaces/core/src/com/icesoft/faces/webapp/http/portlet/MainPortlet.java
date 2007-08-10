@@ -11,13 +11,10 @@ import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
-import javax.portlet.PortletRequest;
 import javax.portlet.PortletRequestDispatcher;
-import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 /**
  * The MainPortlet is the entry point for ICEfaces-based portlets.  The goal is
@@ -54,6 +51,11 @@ public class MainPortlet implements Portlet {
     }
 
     public void destroy() {
+
+        if( log == null ){
+            return;
+        }
+        
         if (log.isTraceEnabled()) {
             log.trace("portlet config: " + portletConfig);
         }
@@ -62,22 +64,11 @@ public class MainPortlet implements Portlet {
     public void processAction(
             ActionRequest actionRequest, ActionResponse actionResponse)
             throws IOException, PortletException {
-
-        if (log.isTraceEnabled()) {
-            dumpMaps(actionRequest, "portlet action request");
-        }
-
     }
 
     public void render(
             RenderRequest renderRequest, RenderResponse renderResponse)
             throws IOException, PortletException {
-
-        //Tracing for development purposes to see what's in all the different
-        //request maps.
-        if (log.isTraceEnabled()) {
-            dumpMaps(renderRequest, "portlet render request");
-        }
 
         //Portlets are provided in a namespace which is used to uniquely
         //identify aspects (e.g. JavaScript, JSF component IDs) of the portlet.
@@ -154,102 +145,4 @@ public class MainPortlet implements Portlet {
         }
     }
 
-
-    //For some debugging help, we dump out the contents of various
-    //parameter, attribute, etc maps related to requests, sessions, etc.
-    private void dumpMaps(PortletRequest req, String header) {
-
-        log.trace(header + "\n-------------------------------");
-
-        Enumeration keys;
-        String key;
-        StringBuffer buff;
-
-        keys = portletConfig.getInitParameterNames();
-        buff = new StringBuffer("portlet config init parameters:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(portletConfig.getInitParameter(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        PortletContext portletContext = portletConfig.getPortletContext();
-        keys = portletContext.getAttributeNames();
-        buff = new StringBuffer("portlet context attributes:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(portletContext.getAttribute(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        keys = portletContext.getInitParameterNames();
-        buff = new StringBuffer("portlet context init parameters:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(portletContext.getInitParameter(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        PortletSession session = req.getPortletSession();
-        keys = session.getAttributeNames();
-        buff = new StringBuffer("portlet session attributes:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(session.getAttribute(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        keys = req.getAttributeNames();
-        buff = new StringBuffer("request attributes:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(req.getAttribute(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        keys = req.getParameterNames();
-        buff = new StringBuffer("request parameters:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(req.getParameter(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-        keys = req.getPropertyNames();
-        buff = new StringBuffer("request properties:\n");
-        while (keys.hasMoreElements()) {
-            key = (String) keys.nextElement();
-            buff.append("\t");
-            buff.append(key);
-            buff.append(" - ");
-            buff.append(req.getProperty(key));
-            buff.append("\n");
-        }
-        log.trace(buff.toString());
-
-    }
 }

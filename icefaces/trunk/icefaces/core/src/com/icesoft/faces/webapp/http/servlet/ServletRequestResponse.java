@@ -198,6 +198,20 @@ public class ServletRequestResponse implements Request, Response {
             environment.portlet(portletArtifact.getRequest(),
                                 portletArtifact.getResponse(),
                                 portletArtifact.getPortletConfig() );
+
+            //Due to the fact that the original portlet request used a RequestDispatcher to
+            //connect to the ICEfaces framework, we need to adjust the java.servlet.include*
+            //attributes in the original portlet request to match the dispatched request.
+            PortletRequest pReq = (PortletRequest)portletArtifact.getRequest();
+            String[] incKeys = com.icesoft.jasper.Constants.INC_CONSTANTS;
+            for (int index = 0; index < incKeys.length; index++) {
+                String incVal = (String)request.getAttribute(incKeys[index]);
+                if( incVal != null ){
+                    pReq.setAttribute(incKeys[index], incVal);
+                } else {
+                    pReq.removeAttribute(incKeys[index]);
+                }
+            }
         }
     }
 
