@@ -170,7 +170,8 @@ public class SelectInputDateRenderer
         String clientId;
         if (!domContext.isInitialized()) {
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
-
+            boolean popupState = selectInputDate.isShowPopup();
+            
             setRootElementId(facesContext, root, uiComponent);
             clientId = uiComponent.getClientId(facesContext);
             if (selectInputDate.isRenderAsPopup()) {
@@ -207,13 +208,6 @@ public class SelectInputDateRenderer
                 calendarButton.setAttribute(HTML.NAME_ATTR,
                                             clientId + CALENDAR_BUTTON);
                 calendarButton.setAttribute(HTML.TYPE_ATTR, "image");
-                String resolvedSrc =
-                        CoreUtils.resolveResourceURL( facesContext,
-                                                      selectInputDate.getImageDir() +
-                                                      selectInputDate.getOpenPopupImage() );
-                calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
-                calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
-                calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
                 calendarButton.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 // render onclick to set value of hidden field to true
                 String onClick = "document.forms['" +
@@ -230,17 +224,43 @@ public class SelectInputDateRenderer
                                  "'], this,event); return false;";
                 calendarButton.setAttribute(HTML.ONCLICK_ATTR, onClick);
                 root.appendChild(calendarButton);
+                // render a hidden field to manage the popup state; visible || hidden
+                FormRenderer.addHiddenField(facesContext, getHiddenFieldName(
+                        facesContext, uiComponent));
+                if (popupState) {
+
+                    String resolvedSrc =
+                            CoreUtils.resolveResourceURL( facesContext,
+                                                          selectInputDate.getImageDir() +
+                                                          selectInputDate.getClosePopupImage() );
+                    calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
+                    calendarButton.setAttribute(HTML.ALT_ATTR, "Close Popup Calendar");
+                    calendarButton.setAttribute(HTML.TITLE_ATTR , "Close Popup Calendar");                
+                } else {
+                    String resolvedSrc =
+                            CoreUtils.resolveResourceURL( facesContext,
+                                                          selectInputDate.getImageDir() +
+                                                          selectInputDate.getOpenPopupImage() );
+                    calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
+                    calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
+                    calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
+                    FormRenderer.addHiddenField(facesContext, parentForm.getClientId(facesContext)+ ":_idcl");
+                    domContext.stepOver();
+                    return ;
+                }
+                
                 if (!domContext.isStreamWriting()) {
                     Text br = domContext.createTextNode("<br/>");
                     root.appendChild(br);
                 }
+                
                 Element calendarDiv = domContext.createElement(HTML.DIV_ELEM);
                 calendarDiv
                         .setAttribute(HTML.ID_ATTR, clientId + CALENDAR_POPUP);
                 calendarDiv.setAttribute(HTML.NAME_ATTR,
                                          clientId + CALENDAR_POPUP);
                 calendarDiv.setAttribute(HTML.STYLE_ELEM,
-                          "display:none;position:absolute;overflow:hidden;z-index:10;");
+                          "position:absolute;z-index:10;");
                 calendarDiv.setAttribute(HTML.TITLE_ATTR, "A Popup Calendar where a date can be selected.");
                 Element table = domContext.createElement(HTML.TABLE_ELEM);
                 table.setAttribute(HTML.ID_ATTR, clientId + CALENDAR_TABLE);
@@ -263,9 +283,7 @@ public class SelectInputDateRenderer
                         " 6.5]><iframe class=\"iceSelInpDateIFrameFix\"></iframe><![endif]-->");
                 calendarDiv.appendChild(iframe);                 
                 root.appendChild(calendarDiv);
-                // render a hidden field to manage the popup state; visible || hidden
-                FormRenderer.addHiddenField(facesContext, getHiddenFieldName(
-                        facesContext, uiComponent));
+
             } else {
                 if (log.isTraceEnabled()) {
                     log.trace("Select input Date Normal");
@@ -348,6 +366,7 @@ public class SelectInputDateRenderer
 
         Element root = (Element) domContext.getRootNode();
 
+      
         if (selectInputDate.isRenderAsPopup()) {
             if (log.isTraceEnabled()) {
                 log.trace("SelectInputDate as Popup");
@@ -362,37 +381,7 @@ public class SelectInputDateRenderer
                                               (Date) currentValue));
             }
 
-            // assuming button is the second child
-            Element calendarButton =
-                    (Element) root.getFirstChild().getNextSibling();
-
-            // determine if the popup should be visible
-            // get selectinputdate div, assume it's the last child
-            Element calendarDiv = (Element) root.getLastChild();
-            boolean popupState = selectInputDate.isShowPopup();
-
-            if (popupState) {
-                calendarDiv.setAttribute(HTML.STYLE_ELEM,
-                                         "z-index:10;display:block;position:absolute;");
-                String resolvedSrc =
-                        CoreUtils.resolveResourceURL( facesContext,
-                                                      selectInputDate.getImageDir() +
-                                                      selectInputDate.getClosePopupImage() );
-                calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
-                calendarButton.setAttribute(HTML.ALT_ATTR, "Close Popup Calendar");
-                calendarButton.setAttribute(HTML.TITLE_ATTR , "Close Popup Calendar");                
-            } else {
-                calendarDiv.setAttribute(HTML.STYLE_ELEM,
-                                         "display:none;position:absolute;");
-                String resolvedSrc =
-                        CoreUtils.resolveResourceURL( facesContext,
-                                                      selectInputDate.getImageDir() +
-                                                      selectInputDate.getOpenPopupImage() );
-                calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
-                calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
-                calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
-            }
-
+    
             // get tables , our table is the first and only one
             NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
             // assumption we want the first table in tables. there should only be one
@@ -404,24 +393,24 @@ public class SelectInputDateRenderer
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
 
             table.appendChild(tr1);
+	            writeMonthYearHeader(domContext, facesContext, writer,
+	                                 selectInputDate, timeKeeper,
+	                                 currentDay, weekdays, months, tr1,
+	                                 selectInputDate.getMonthYearRowClass());
+	
+	            Element tr2 = domContext.createElement(HTML.TR_ELEM);
+	            table.appendChild(tr2);
+	
+	            writeWeekDayNameHeader(domContext, weekStartsAtDayIndex, weekdays,
+	                                   facesContext, writer, selectInputDate, tr2,
+	                                   selectInputDate.getWeekRowClass());
+	
+	            writeDays(domContext, facesContext, writer, selectInputDate,
+	                      timeKeeper,
+	                      currentDay, weekStartsAtDayIndex,
+	                      weekDayOfFirstDayOfMonth,
+	                      lastDayInMonth, weekdays, table);
 
-            writeMonthYearHeader(domContext, facesContext, writer,
-                                 selectInputDate, timeKeeper,
-                                 currentDay, weekdays, months, tr1,
-                                 selectInputDate.getMonthYearRowClass());
-
-            Element tr2 = domContext.createElement(HTML.TR_ELEM);
-            table.appendChild(tr2);
-
-            writeWeekDayNameHeader(domContext, weekStartsAtDayIndex, weekdays,
-                                   facesContext, writer, selectInputDate, tr2,
-                                   selectInputDate.getWeekRowClass());
-
-            writeDays(domContext, facesContext, writer, selectInputDate,
-                      timeKeeper,
-                      currentDay, weekStartsAtDayIndex,
-                      weekDayOfFirstDayOfMonth,
-                      lastDayInMonth, weekdays, table);
 
         } else {
             if (log.isTraceEnabled()) {
@@ -1025,7 +1014,7 @@ public class SelectInputDateRenderer
                 facesContext.getExternalContext().getRequestParameterMap();
         String param =
                 (String) parameter.get(component.getClientId(facesContext));
-        if (param != null) {
+        if (clickedLink != null) {
 
 
             if (log.isDebugEnabled()) {
@@ -1152,17 +1141,19 @@ public class SelectInputDateRenderer
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
 
+        String inputTextDateId = component.getClientId(facesContext) +
+        CALENDAR_INPUTTEXT;
+        Object inputTextDate = requestParameterMap.get(inputTextDateId);
+
         // inputtext is only available in popup mode 
-        if ((requestParameterMap.containsKey(clientId)) &&
+        if (requestParameterMap.containsKey(inputTextDateId) &&
             dateSelect.isRenderAsPopup()) {
             if (log.isDebugEnabled()) {
                 log.debug("decoding InputText EnterKey::");
                 log.debug("###################################");
             }
             if (showPopup != null) {
-                String inputTextDateId = component.getClientId(facesContext) +
-                                         CALENDAR_INPUTTEXT;
-                Object inputTextDate = requestParameterMap.get(inputTextDateId);
+ 
                 
                 if (checkLink((String) clickedLink, clientId)) {
                     if (showPopup.equalsIgnoreCase("true")) {
