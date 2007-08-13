@@ -60,12 +60,12 @@
     
     <target name="clean">
         <delete dir="${build.dir}"/>
-        <delete dir="$(bin.dir}"/>
+        <delete dir="${dist.dir}"/>
     </target>
     
     <target name="war" depends="clean, jar">
             <mkdir dir="${dist.dir}"/>
-        <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
+        <war destfile="${dist.dir}/build.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
             <lib dir="${additional.lib.dir}">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
