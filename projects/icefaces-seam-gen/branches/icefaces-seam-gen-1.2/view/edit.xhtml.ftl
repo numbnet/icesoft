@@ -11,7 +11,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-		    xmlns:ice="http://www.icesoft.com/icefaces/component" 
+		xmlns:ice="http://www.icesoft.com/icefaces/component" 
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -20,7 +20,7 @@
     
     <ice:form id="${componentName}editForm" styleClass="edit">
      <ice:panelGroup  id="editGroup" styleClass="formBorderHighlight">
-          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
 			    <ice:outputText value="Edit ${componentName}"/>
