@@ -73,10 +73,6 @@ public class OutputProgress extends UIComponentBase {
 
     private Integer value = null;
 
-    private Text textNode = null;
-
-    private Element barNode = null;
-
     private Boolean indeterminate = null;
 
     private String renderedOnUserRole;
@@ -97,38 +93,6 @@ public class OutputProgress extends UIComponentBase {
       */
     public String getRendererType() {
         return "com.icesoft.faces.Bar";
-    }
-
-    /**
-     * <p>
-     * Set the value of the <code>textNode</code> property. </p>
-     */
-    public void setTextNode(Text textNode) {
-        this.textNode = textNode;
-    }
-
-    /**
-     * <p>
-     * Return the value of the <code>textNode</code> property. </p>
-     */
-    public Text getTextNode() {
-        return textNode;
-    }
-
-    /**
-     * <p>
-     * Set the value of the <code>barNode</code> property. </p>
-     */
-    public void setBarNode(Element barNode) {
-        this.barNode = barNode;
-    }
-
-    /**
-     * <p>
-     * Return the value of the <code>barNode</code> property. </p>
-     */
-    public Element getBarNode() {
-        return barNode;
     }
 
     /**
@@ -333,17 +297,15 @@ public class OutputProgress extends UIComponentBase {
      * </p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[10];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = label;
         values[2] = labelPosition;
         values[3] = labelComplete;
         values[4] = new Boolean(labelPositionChanged);
         values[5] = value;
-        values[6] = textNode;
-        values[7] = barNode;
-        values[8] = style;
-        values[9] = renderedOnUserRole;
+        values[6] = style;
+        values[7] = renderedOnUserRole;
         return ((Object) (values));
     }
 
@@ -360,10 +322,8 @@ public class OutputProgress extends UIComponentBase {
         labelComplete = (String) values[3];
         labelPositionChanged = ((Boolean) values[4]).booleanValue();
         value = (Integer) values[5];
-        textNode = (Text) values[6];
-        barNode = (Element) values[7];
-        style = (String) values[8];
-        renderedOnUserRole = (String) values[9];
+        style = (String) values[6];
+        renderedOnUserRole = (String) values[7];
     }
 
     /**

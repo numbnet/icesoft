@@ -79,7 +79,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         //therefore we are storing nodes to the component itself.
         buildLayout(table, uiComponent, domContext);
 
-        setPercentage(facesContext, uiComponent);
         if (PassThruAttributeRenderer.passThruAttributeExists(uiComponent)) {
             PassThruAttributeRenderer
                     .renderAttributes(facesContext, uiComponent, null);
@@ -90,20 +89,16 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
     }
 
 
-    private void setPercentage(FacesContext facesContext,
-                               UIComponent uiComponent) {
-        DOMContext domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent);
+    private void setPercentage(UIComponent uiComponent,
+                               DOMContext domContext,
+                               Text percentageText,
+                               Element fillBar) {
         String space = "&nbsp;";
         if (domContext.isStreamWriting()) {
             space = "";
         }
 
         OutputProgress progressBar = (OutputProgress) uiComponent;
-
-        Text percentageText = progressBar.getTextNode();
-        Element bgBar = progressBar.getBarNode();
-        Element fillBar = (Element) bgBar.getFirstChild();
 
         String progressLabel = progressBar.getProgressLabel();
         int percentValue = progressBar.getValue();
@@ -242,9 +237,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
 
         barTd.appendChild(bgBar);
 
-        progressBar.setTextNode(percentageText);
-        progressBar.setBarNode(bgBar);
-
         String textPosition = progressBar.getLabelPosition();
 
         if (!isValidTextPosition(textPosition.toString().toLowerCase())) {
@@ -310,6 +302,8 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
             fillBar.appendChild(nbsp4opera);
             bgBar.appendChild(nbsp4mozila);
         }
+        
+        setPercentage(uiComponent, domContext, percentageText, fillBar);
     }
 
     private boolean isValidTextPosition(String textPosition) {
