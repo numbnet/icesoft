@@ -63,9 +63,9 @@
         <delete dir="${dist.dir}"/>
     </target>
     
-    <target name="war" depends="clean, jar">
+    <target name="build.war" depends="clean, jar">
             <mkdir dir="${dist.dir}"/>
-        <war destfile="${dist.dir}/build.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
+        <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
             <lib dir="${additional.lib.dir}">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
@@ -87,7 +87,7 @@
         </war>
     </target>
 
-    <target name="build.src.bundle" depends="clean, jar, war">
+    <target name="build.src.bundle" depends="clean, jar, build.war">
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
         
