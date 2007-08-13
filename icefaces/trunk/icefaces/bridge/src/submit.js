@@ -34,7 +34,7 @@
 function iceSubmitPartial(form, component, evt) {
     form = (form ? form : component.form);
     Ice.Parameter.Query.create(function(query) {
-        'ice.submit.partial'.associateWith(true).serializeOn(query);
+        query.add('ice.submit.partial', true);
 
         $event(evt, component).serializeOn(query);
         if (form && form.id) $element(form).serializeOn(query);
@@ -58,7 +58,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
             //cancel the default action to block 'onclick' event on the submit element
             event.cancelDefaultAction();
             Ice.Parameter.Query.create(function(query) {
-                'ice.submit.partial'.associateWith(false).serializeOn(query);
+                query.add('ice.submit.partial', false);
                 event.serializeOn(query);
                 if (submit) submit.serializeOn(query);
                 if (form) form.serializeOn(query);
@@ -68,7 +68,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
         var component = aComponent && aComponent.id ? $element(aComponent) : null;
 
         Ice.Parameter.Query.create(function(query) {
-            'ice.submit.partial'.associateWith(false).serializeOn(query);
+            query.add('ice.submit.partial', false);
             event.serializeOn(query);
             if (component) component.serializeOn(query);
             if (form) form.serializeOn(query);

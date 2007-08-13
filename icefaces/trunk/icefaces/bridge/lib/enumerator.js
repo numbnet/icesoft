@@ -33,37 +33,33 @@
 
 [ Ice ].as(function(This) {
     This.Enumerator = Object.subclass({
-         initialize: function(indexedObject) {
+        initialize: function(indexedObject) {
             this.indexedObject = indexedObject;
-         },
+        },
 
-         _each: function(iterator) {
+        _each: function(iterator) {
             for (var i = 0; i < this.indexedObject.length; i++) iterator(this.indexedObject[i], i);
-         },
+        },
 
-         reverse: function() {
-             return new This.ReverseEnumerator(this.indexedObject);
-         }
+        reverse: function() {
+            return new This.ReverseEnumerator(this.indexedObject);
+        }
     });
 
     This.Enumerator.methods(Enumerable);
 
     This.ReverseEnumerator = This.Enumerator.subclass({
-         _each: function(iterator) {
+        _each: function(iterator) {
             for (var i = (this.indexedObject.length - 1); i >= 0; i--) iterator(this.indexedObject[i], i);
-         },
+        },
 
-         reverse: function() {
-             return new This.Enumerator(this.indexedObject);
-         }
+        reverse: function() {
+            return new This.Enumerator(this.indexedObject);
+        }
     });
-
-    Object.prototype.asEnumerator = function() {
-        return new This.Enumerator(this);
-    };
 
     //public call
     window.$enumerate = function(object) {
-        return new This.Enumerator(object);    
+        return new This.Enumerator(object);
     };
 });

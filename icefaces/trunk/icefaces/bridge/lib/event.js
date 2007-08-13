@@ -71,7 +71,7 @@
 
         sendOn: function(connection) {
             Query.create(function(query) {
-                "ice.submit.partial".associateWith('false').serializeOn(query);
+                query.add('ice.submit.partial', false);
                 try {
                     this.captured().serializeOn(query);
                     this.serializeOn(query);
@@ -83,7 +83,7 @@
 
         sendFullOn: function(connection) {
             Query.create(function(query) {
-                "ice.submit.partial".associateWith('false').serializeOn(query);
+                query.add('ice.submit.partial', false);
                 try {
                     this.captured().serializeOn(query);
                     this.captured().form().serializeOn(query);

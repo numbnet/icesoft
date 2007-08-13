@@ -41,7 +41,7 @@
             //discard duplicates.
             if (!this.parameters.detect(function(parameter) {
                 return parameter.name == name && parameter.value == value;
-            })) this.parameters.push(name.associateWith(value));
+            })) this.parameters.push(new This.Association(name, value));
         },
 
         addQuery: function(query) {
@@ -101,9 +101,5 @@
             query.add(this.name, this.value);
         }
     });
-
-    Object.prototype.associateWith = function(value) {
-        return new This.Association(this, value);
-    }
 });
 
