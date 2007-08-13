@@ -8,7 +8,6 @@ import com.icesoft.faces.webapp.http.portlet.PortletArtifactWrapper;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
-
-import org.apache.jasper.Constants;
 
 public class ServletRequestResponse implements Request, Response {
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
@@ -42,18 +39,16 @@ public class ServletRequestResponse implements Request, Response {
         //Need to determine the type of request URI we are using based on the
         //environment we are running in (servlet vs portlet).
         detectEnvironment(new Environment() {
-
             public void servlet(Object request, Object response) {
-                HttpServletRequest req = (HttpServletRequest)request;
-                String reqURI = req.getRequestURI();
+                HttpServletRequest req = (HttpServletRequest) request;
                 String query = req.getQueryString();
                 URI uri = URI.create(req.getRequestURL().toString());
                 requestURI = (query == null ? uri : URI.create(uri + "?" + query));
             }
 
             public void portlet(Object request, Object response, Object portletConfig) {
-                PortletRequest req = (PortletRequest)request;
-                String reqURI = (String)req.getAttribute(Constants.INC_REQUEST_URI);
+                javax.portlet.PortletRequest req = (javax.portlet.PortletRequest) request;
+                String reqURI = (String) req.getAttribute(com.icesoft.jasper.Constants.INC_REQUEST_URI);
                 requestURI = URI.create(reqURI);
             }
         });
@@ -176,6 +171,10 @@ public class ServletRequestResponse implements Request, Response {
         response.setIntHeader(name, value);
     }
 
+    public void setHeader(String name, long value) {
+        response.setHeader(name, String.valueOf(value));
+    }
+
     public void addCookie(Cookie cookie) {
         response.addCookie(cookie);
     }
@@ -196,20 +195,19 @@ public class ServletRequestResponse implements Request, Response {
         } else {
             PortletArtifactWrapper portletArtifact = (PortletArtifactWrapper) portletEnvironment;
             environment.portlet(portletArtifact.getRequest(),
-                                portletArtifact.getResponse(),
-                                portletArtifact.getPortletConfig() );
+                    portletArtifact.getResponse(),
+                    portletArtifact.getPortletConfig());
 
             //Due to the fact that the original portlet request used a RequestDispatcher to
             //connect to the ICEfaces framework, we need to adjust the java.servlet.include*
             //attributes in the original portlet request to match the dispatched request.
-            PortletRequest pReq = (PortletRequest)portletArtifact.getRequest();
             String[] incKeys = com.icesoft.jasper.Constants.INC_CONSTANTS;
             for (int index = 0; index < incKeys.length; index++) {
-                String incVal = (String)request.getAttribute(incKeys[index]);
-                if( incVal != null ){
-                    pReq.setAttribute(incKeys[index], incVal);
+                String incVal = (String) request.getAttribute(incKeys[index]);
+                if (incVal != null) {
+                    portletArtifact.getRequest().setAttribute(incKeys[index], incVal);
                 } else {
-                    pReq.removeAttribute(incKeys[index]);
+                    portletArtifact.getRequest().removeAttribute(incKeys[index]);
                 }
             }
         }
