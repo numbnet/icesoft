@@ -92,7 +92,7 @@
         <delete file="${src.bundle.file}"/>
         
         <zip destfile="${src.bundle.file}">
-            <zipfileset dir="." prefix="${src.bundle.name}">
+            <zipfileset dir="." prefix="${src.bundle.name}/${ant.project.name}">
                 <!-- include name="**/bin/**"/ -->
                 <include name="**/src/**"/>
                 <include name="**/lib/**"/>
