@@ -54,12 +54,12 @@
 @LoggedIn
 public class HotelSearchingAction implements HotelSearching
 {
-   
    @PersistenceContext
    private EntityManager em;
    
    private String searchString;
    private int pageSize = 10;
+   private int page = 0;
    
    @DataModel
    private List&lt;Hotel&gt; hotels;
@@ -68,24 +68,24 @@ public class HotelSearchingAction implements HotelSearching
    
    public String find()
    {
-      String searchPattern = searchString==null ? "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
-      hotels = em.createQuery("from Hotel where lower(name) like :search or lower(city) like :search or lower(zip) like :search or lower(address) like :search")
-            .setParameter("search", searchPattern)
+      hotels = em.createQuery("select h from Hotel h where lower(h.name) " + 
+                              "like #{pattern} or lower(h.city) like #{pattern} " + 
+                              "or lower(h.zip) like #{pattern} or " + 
+                              "lower(h.address) like #{pattern}")
             .setMaxResults(pageSize)
+            .setFirstResult( page * pageSize )
             .getResultList();
-      
-      return "main";
    }
    
-   public Hotel getSelectedHotel()
+   public boolean isNextPageAvailable()
    {
-      return selectedHotel;
+      return hotels!=null && hotels.size()==pageSize;
    }
    
    public int getPageSize() {
       return pageSize;
    }
-
+   
    public void setPageSize(int pageSize) {
       this.pageSize = pageSize;
    }
@@ -94,13 +94,13 @@ public class HotelSearchingAction implements HotelSearching
    {
       return searchString;
    }
-
+   
    public void setSearchString(String searchString)
    {
       this.searchString = searchString;
    }
    
-   @Destroy @Remove
+   @Remove
    public void destroy() {}
 
 }</code>
@@ -113,16 +113,12 @@ public class HotelSearchingAction implements HotelSearching
        variable named <code>hotels</code>. So, when the search page is re-rendered, the
        result list is available to the JSF <code>dataTable</code>. 
        Each row of the data table has an associated command button or link 
-       (see below). When the user
-       clicks on the button / link, the <code>Hotel</code> represented by that
-       row is injected into the <code>hotel</code> field annotated by the
-       <code>@DataModelSelection</code> annotation. Other application components
-       can then access the selected hotel via the
-       <code>HotelSearching.selectedHotel</code> property.
+       (see below). 
     </p>
 
 <code class="block">
-&lt;h:outputText value="No Hotels Found" rendered="#{hotels != null and hotels.rowCount==0}"/&gt;
+&lt;h:outputText value="No Hotels Found" 
+              rendered="#{hotels != null and hotels.rowCount==0}"/&gt;
 &lt;h:dataTable value="#{hotels}" var="hot" rendered="#{hotels.rowCount>0}"&gt;
 	&lt;h:column&gt;
 		&lt;f:facet name="header"&gt;Name&lt;/f:facet&gt;
@@ -142,7 +138,8 @@ public class HotelSearchingAction implements HotelSearching
 	&lt;/h:column&gt;
 	&lt;h:column&gt;
 		&lt;f:facet name="header"&gt;Action&lt;/f:facet&gt;
-		&lt;s:link value="View Hotel" action="#{hotelBooking.selectHotel}"/&gt;
+		&lt;s:link value="View Hotel" 
+                        action="#{hotelBooking.selectHotel(hot)}"/&gt;
 	&lt;/h:column&gt;
 &lt;/h:dataTable&gt;
 </code>
@@ -150,7 +147,7 @@ public class HotelSearchingAction implements HotelSearching
     <p>
        The "View Hotel" link is the above mentioned command link associated
        with each row of the data table. It is implemented 
-       using a Seam <code>&lt;s:Link&gt;</code>, which is part of Seam's 
+       using a Seam <code>&lt;s:link&gt;</code>, which is part of Seam's 
        extension of JSF controls.
        This JSF control let's us call an action, and pass a request parameter, without 
        submitting any JSF form. The advantage of <code>&lt;s:link&gt;</code> is that, 
@@ -159,9 +156,13 @@ public class HotelSearchingAction implements HotelSearching
     </p>
     <p>
        When this link is clicked, the <code>selectHotel()</code> method of the
-       <code>HotelBookingAction</code> bean is called. It gets the selected
-       hotel from the <code>HotelSearching.selectedHotel</code> property,
-       merges it to the current persistence context (in case the same
+       <code>HotelBookingAction</code> bean is called with the <code>hot</code>
+       parameter that is specified in the query.  The parameter values are evaluated
+       at invocation time, not when the link is generated, so the <code>&lt;s:link&gt;</code>
+       tag adds a dataModelSelection parameter that indicates the value of the 
+       <code>hot</code> loop variable for the given row.</p>
+    <p>  The <code>selectHotel()</code> method merges the selected hotel into 
+       the current persistence context (in case the same
        hotel has been accessed before in the same session),
        and starts a Seam conversation. We will discuss Seam conversations
        in the next step.
@@ -177,10 +178,9 @@ public class HotelBookingAction implements HotelBooking
    ... ...
    
    @Begin
-   public String selectHotel()
+   public void selectHotel(Hotel selectedHotel)
    {
-      hotel = em.merge( hotelSearch.getSelectedHotel() );
-      return "hotel";
+      hotel = em.merge(selectedHotel);
    }
 }
 </code>
