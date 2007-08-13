@@ -20,7 +20,7 @@
     
     <ice:form id="${componentName}editForm" styleClass="edit">
      <ice:panelGroup  id="edit${componentName}GroupId" styleClass="formBorderHighlight">
-          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
 			    <ice:outputText id="editTextBoxId" value="Edit ${componentName}"/>

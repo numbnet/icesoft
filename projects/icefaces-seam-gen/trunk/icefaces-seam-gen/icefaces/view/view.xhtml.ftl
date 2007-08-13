@@ -19,7 +19,7 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
  
       <ice:panelGroup  id="view${homeName}PanelGroupId" styleClass="formBorderHighlight">
-          <table wide="100%" border="0" cellspacing="0" cellpadding="0">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                   <td class="iceDatTblColHdr2">
 			    <ice:outputText id="viewText${homeName}Id" value="${homeName}"/>
