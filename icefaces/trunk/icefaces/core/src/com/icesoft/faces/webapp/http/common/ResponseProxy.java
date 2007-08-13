@@ -1,6 +1,5 @@
 package com.icesoft.faces.webapp.http.common;
 
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +29,10 @@ public class ResponseProxy implements Response {
     }
 
     public void setHeader(String name, int value) {
+        response.setHeader(name, value);
+    }
+
+    public void setHeader(String name, long value) {
         response.setHeader(name, value);
     }
 

@@ -41,9 +41,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * The <code>IdGenerator</code> is responsible for generating a unique ID based
  * on a counter, the current time in milliseconds, an arbitrary string, the IP
@@ -65,7 +62,7 @@ public class IdGenerator {
         this.counter = 0;
         try {
             ipAddress = InetAddress.getLocalHost().getHostAddress();
-            md5 = MessageDigest.getInstance("MD5");            
+            md5 = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (UnknownHostException e) {
@@ -75,6 +72,7 @@ public class IdGenerator {
 
     /**
      * Creates a unique ID based on the specified <code>string</code>. </p>
+     *
      * @return a unique ID.
      */
     public synchronized String newIdentifier() {

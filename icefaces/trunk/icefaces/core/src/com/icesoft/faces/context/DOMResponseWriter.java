@@ -326,7 +326,7 @@ public class DOMResponseWriter extends ResponseWriter {
                 frameURI = "about:blank";
             } else {
                 frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
-                        "/xmlhttp/blank.iface");
+                        "/xmlhttp/blank");
             }
         } else {
             frameURI = "about:blank";

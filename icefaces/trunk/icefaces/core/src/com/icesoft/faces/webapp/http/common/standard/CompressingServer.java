@@ -29,6 +29,7 @@ public class CompressingServer implements Server {
     }
 
     public void shutdown() {
+        server.shutdown();
     }
 
     private class CompressingRequest extends RequestProxy {

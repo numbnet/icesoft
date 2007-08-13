@@ -1,6 +1,5 @@
 package com.icesoft.faces.webapp.http.common;
 
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,6 +16,8 @@ public interface Response {
     void setHeader(String name, Date value);
 
     void setHeader(String name, int value);
+
+    void setHeader(String name, long value);
 
     OutputStream writeBody() throws IOException;
 
