@@ -90,7 +90,7 @@
             this.callbacks = [];
             this.responseCallback = function() {
                 if (this.isComplete()) {
-                    this.logger.debug('[' + this.identifier + '] : receive [' + this.request.status + '] ' + this.request.statusText);
+                    this.logger.debug('[' + this.identifier + '] : receive [' + this.statusCode() + '] ' + this.statusText());
                 }
                 this.callbacks.each(function(callback) {
                     try {
@@ -102,6 +102,22 @@
             }.bind(this);
         },
 
+        statusCode: function() {
+            try {
+                return this.request.status;
+            } catch (e) {
+                return 0;
+            }
+        },
+
+        statusText: function() {
+            try {
+                return this.request.statusText;
+            } catch (e) {
+                return '';
+            }
+        },
+
         on: function(test, handler) {
             this.callbacks.push(function(request) {
                 if (test(request)) handler(request);
@@ -109,7 +125,11 @@
         },
 
         isComplete: function() {
-            return this.request.readyState == 4;
+            try {
+                return this.request.readyState == 4;
+            } catch (e) {
+                return false;
+            }
         },
 
         isResponseValid: function() {
