@@ -11,12 +11,10 @@
     <property name="dist.dir" location="dist"/>
     <property name="bin.dir" location="bin"/>
     
-    
     <property name="build.dir" location="build"/>
     <property name="build.lib.dir" location="${build.dir}/lib"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
-
     
     <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}${release.type}"/>
     <property name="src.bundle.name" value="${product}-${product.version}"/>
