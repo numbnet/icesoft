@@ -91,6 +91,20 @@
         
     </page>
     
+    <page view-id="/confirm.xhtml"
+          conversation-required="true"
+	  login-required="true">
+	  
+	<navigation from-action="#{identity.logout}">
+            <redirect view-id="/home.xhtml"/>
+        </navigation>
+
+        <navigation from-action="#{hotelBooking.cancel}">
+            <redirect view-id="/main.xhtml"/>
+        </navigation>
+        
+    </page>
+	  
     <page view-id="*">
     
         <navigation from-action="#{identity.logout}">
