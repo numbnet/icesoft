@@ -24,7 +24,7 @@
         <pathelement location="${build.classes.dir}"/>
 
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
-        <fileset dir="${additional.lib.dir}" includes="**/*.jar"/>
+        <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
         <pathelement location="${icefaces.jar}" />
     </path>
     
@@ -64,7 +64,7 @@
     <target name="build.war" depends="clean, jar">
             <mkdir dir="${dist.dir}"/>
         <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
-            <lib dir="${additional.lib.dir}">
+            <lib dir="${icefaces.lib.dir}">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
                 <include name="commons-digester.jar" />
