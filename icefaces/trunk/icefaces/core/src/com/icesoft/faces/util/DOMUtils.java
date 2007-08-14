@@ -141,9 +141,10 @@ public class DOMUtils {
                                 // because when rendering our tabbedPane, if there's
                                 // any whitespace between the adjacent TDs, then
                                 // Internet Explorer will add vertical spacing
+                                // Also same for input fields to avoid extra space (JIRA ICE-1351)
                                 childAddTrailingNewline =
                                         !isWhitespaceText(nextChild) &&
-                                        !isTD(nextChild);
+                                        !isTD(nextChild) && !isInput(nextChild);
                             }
                         }
                         printNode(children.item(i), stringbuffer, depth + 1,
@@ -182,6 +183,15 @@ public class DOMUtils {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             String name = node.getNodeName();
             if (name != null && name.equalsIgnoreCase("td"))
+                return true;
+        }
+        return false;
+    }
+
+    private static boolean isInput(Node node) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+            String name = node.getNodeName();
+            if (name != null && name.equalsIgnoreCase("input"))
                 return true;
         }
         return false;
