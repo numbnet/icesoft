@@ -18,6 +18,7 @@
         </navigation>
         
     </page>
+    
 
     <page view-id="/home.xhtml">
     
@@ -53,7 +54,7 @@
         
     </page>
     
-	<page view-id="/hotel.xhtml" 
+    <page view-id="/hotel.xhtml" 
 	      conversation-required="true" 
 	      login-required="true">
           
@@ -65,7 +66,7 @@
         
     </page>
 
-	<page view-id="/book.xhtml" 
+    <page view-id="/book.xhtml" 
 	      conversation-required="true" 
 	      login-required="true">
           
@@ -78,8 +79,8 @@
         </navigation>
         
     </page>
-
-	<page view-id="/confirm.xhtml" 
+ 
+    <page view-id="/confirm.xhtml" 
 	      conversation-required="true" 
 	      login-required="true">
           
@@ -91,21 +92,8 @@
         
     </page>
     
-    <page view-id="/confirm.xhtml"
-          conversation-required="true"
-	  login-required="true">
-	  
-	<navigation from-action="#{identity.logout}">
-            <redirect view-id="/home.xhtml"/>
-        </navigation>
-
-        <navigation from-action="#{hotelBooking.cancel}">
-            <redirect view-id="/main.xhtml"/>
-        </navigation>
-        
-    </page>
-	  
     <page view-id="*">
+       <description></description>
     
         <navigation from-action="#{identity.logout}">
             <redirect view-id="/home.xhtml"/>
@@ -116,6 +104,7 @@
         </navigation>
         
     </page>
+ 
     
     <exception class="org.jboss.seam.security.NotLoggedInException">
         <redirect view-id="/home.xhtml">
