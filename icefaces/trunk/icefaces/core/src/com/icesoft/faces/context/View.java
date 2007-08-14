@@ -186,6 +186,8 @@ public class View implements CommandQueue {
     }
 
     public void dispose() {
+        this.persistentFacesState.setCurrentInstance();
+        this.facesContext.setCurrentInstance();
         this.notifyViewDisposal();
         this.release();
         this.facesContext.dispose();
