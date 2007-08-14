@@ -15,7 +15,6 @@
     <property name="build.lib.dir" location="${build.dir}/lib"/>
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
-    <!--property name="additional.lib.dir" location="../../../../../ossrepo/icefaces/trunk/icefaces/lib"/-->
 
     
     <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}${release.type}"/>
@@ -26,7 +25,7 @@
         <pathelement location="${build.classes.dir}"/>
 
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
-        <fileset dir="${additional.lib.dir}" includes="**/*.jar"/>
+        <fileset dir="${icefaces.dir}/lib" includes="**/*.jar"/>
         <pathelement location="${icefaces.jar}" />
     </path>
     
@@ -66,7 +65,7 @@
     <target name="build.war" depends="clean, jar">
             <mkdir dir="${dist.dir}"/>
         <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
-            <lib dir="${additional.lib.dir}">
+            <lib dir="${icefaces.dir}/lib">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
                 <include name="commons-digester.jar" />
