@@ -244,6 +244,7 @@ public class TableRenderer
             throws IOException {
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         int rowIndex = nextColumn.getFirst();
+        nextColumn.encodeBegin(facesContext);
         nextColumn.setRowIndex(rowIndex);
         while (nextColumn.isRowAvailable()) {
             UIComponent headerFacet = getFacetByName(nextColumn, facet);
