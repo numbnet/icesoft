@@ -172,6 +172,11 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
         String namePattern = getFileNamePattern().trim();
         String fileName = stream.getName();
+        // If server is Unix and file name has full Windows path info. (JIRA ICE-1868)
+        if (File.separatorChar == '/' && fileName.matches("^[a-zA-Z]:\\\\.*?|^\\\\\\\\.*?")) {
+            // Strip the path info. Keep the base file name
+            fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+        }
         try {
             if (fileName != null && fileName.length() > 0) {
                 // IE gives us the whole path on the client, but we just
