@@ -43,16 +43,17 @@ import java.util.Map;
 
 public class OutputLinkRenderer extends DomBasicRenderer {
     /**
-     * Return true as this component renders its children.
+     * @return false as this component does not specially
+     *         handle rendering its children.
      */
     public boolean getRendersChildren() {
-        return true;
+        return false;
     }
 
     /**
      * Returns the value of this component as an Object.
      *
-     * @param the component to retrieve the value from.
+     * @param uiComponent the component to retrieve the value from.
      * @return value as an Object.
      */
     protected Object getValue(UIComponent uiComponent) {
@@ -147,26 +148,6 @@ public class OutputLinkRenderer extends DomBasicRenderer {
             }
         }
         return hrefBuffer.toString();
-    }
-
-    /**
-     * @param facesContext
-     * @param uiComponent
-     * @throws IOException
-     */
-    public void encodeChildren(FacesContext facesContext,
-                               UIComponent uiComponent)
-            throws IOException {
-        validateParameters(facesContext, uiComponent, UIOutput.class);
-        Iterator children = uiComponent.getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            nextChild.encodeBegin(facesContext);
-            if (nextChild.getRendersChildren()) {
-                nextChild.encodeChildren(facesContext);
-            }
-            nextChild.encodeEnd(facesContext);
-        }
     }
 
     /**
