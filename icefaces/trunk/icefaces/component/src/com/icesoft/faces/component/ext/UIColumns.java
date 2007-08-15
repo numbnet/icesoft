@@ -40,6 +40,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -236,5 +238,15 @@ public class UIColumns extends UISeries {
         }
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
+    	served = false;
     }
+    
+    private boolean served;
+    public void encodeBegin(FacesContext context) throws IOException {
+    	if (!served) {
+    		super.encodeBegin(context);
+    		served = true;
+    	}
+    }
+
 }

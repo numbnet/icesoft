@@ -288,6 +288,7 @@ public class TableRenderer
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         int rowIndex = nextColumn.getFirst();
         //syleIndex should be increment here
+        nextColumn.encodeBegin(facesContext);
         nextColumn.setRowIndex(rowIndex);
         while (nextColumn.isRowAvailable()) {
             UIComponent headerFacet = getFacetByName(nextColumn, facet);
@@ -304,7 +305,7 @@ public class TableRenderer
                 domContext.setCursorParent(th);
                 domContext.streamWrite(facesContext, uiComponent,
                                        domContext.getRootNode(), th);
-
+                	
                 encodeParentAndChildren(facesContext, headerFacet);
                 domContext.setCursorParent(oldParent);
             }
