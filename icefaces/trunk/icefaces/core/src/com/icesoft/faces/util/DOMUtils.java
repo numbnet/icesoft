@@ -33,7 +33,16 @@
 
 package com.icesoft.faces.util;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Entity;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import java.util.List;
@@ -42,11 +51,11 @@ import java.util.Vector;
 public class DOMUtils {
     private static int DEFAULT_DOM_STRING_PRESIZE = 4096;
     private static int DEFAULT_NODE_STRING_PRESIZE = 256;
-    
+
     public static String DocumentTypetoString(String publicID, String systemID,
                                               String root) {
         return "<!DOCTYPE " + root + " PUBLIC \"" + publicID + "\" \"" +
-               systemID + "\">";
+                systemID + "\">";
     }
 
     public static String DOMtoString(Document document) {
@@ -93,7 +102,7 @@ public class DOMUtils {
                 if (nodes != null) {
                     for (int i = 0; i < nodes.getLength(); i++) {
                         printNode(nodes.item(i), stringbuffer, depth + 1,
-                                  allowAddingWhitespace, false);
+                                allowAddingWhitespace, false);
                     }
                 }
                 break;
@@ -144,12 +153,12 @@ public class DOMUtils {
                                 // Also same for input fields to avoid extra space (JIRA ICE-1351)
                                 childAddTrailingNewline =
                                         !isWhitespaceText(nextChild) &&
-                                        !isTD(nextChild) && !isInput(nextChild);
+                                                !isTD(nextChild) && !isInput(nextChild);
                             }
                         }
                         printNode(children.item(i), stringbuffer, depth + 1,
-                                  allowAddingWhitespace,
-                                  childAddTrailingNewline);
+                                allowAddingWhitespace,
+                                childAddTrailingNewline);
                     }
                 }
 
@@ -225,7 +234,7 @@ public class DOMUtils {
     public static Node[] domDiff(Document oldDOM, Document newDOM) {
         List nodeDiffs = new Vector();
         compareNodes(nodeDiffs, oldDOM.getDocumentElement(),
-                     newDOM.getDocumentElement());
+                newDOM.getDocumentElement());
         return ((Node[]) nodeDiffs.toArray(new Node[0]));
     }
 
@@ -255,7 +264,7 @@ public class DOMUtils {
             return false;
         }
         if (!compareStrings(oldNode.getNodeValue(),
-                            newNode.getNodeValue())) {
+                newNode.getNodeValue())) {
             //might not have an id
             nodeDiffs.add(newNode);
             return false;
@@ -275,7 +284,7 @@ public class DOMUtils {
         boolean allChildrenMatch = true;
         for (int i = 0; i < newChildLength; i++) {
             if (!compareNodes(nodeDiffs, oldChildNodes.item(i),
-                              newChildNodes.item(i))) {
+                    newChildNodes.item(i))) {
                 allChildrenMatch = false;
             }
         }
@@ -301,7 +310,7 @@ public class DOMUtils {
      */
     public static boolean compareIDs(Node oldNode, Node newNode) {
         if (!(oldNode instanceof Element) &&
-            !(newNode instanceof Element)) {
+                !(newNode instanceof Element)) {
             //both do not have an ID
             return true;
         }
@@ -392,8 +401,8 @@ public class DOMUtils {
     }
 
     public static String escapeAnsi(String text) {
-	if(null == text){
-	    return  "";
+        if (null == text) {
+            return "";
         }
         char[] chars = text.toCharArray();
         StringBuffer buffer = new StringBuffer(chars.length);
@@ -440,11 +449,11 @@ public class DOMUtils {
 
     /**
      * from http://www.w3.org/TR/REC-html40/sgml/entities.html
-     Portions Copyright International Organization for Standardization 1986
-     Permission to copy in any form is granted for use with
-     conforming SGML systems and applications as defined in
-     ISO 8879, provided this notice is included in all copies.
-    */
+     * Portions Copyright International Organization for Standardization 1986
+     * Permission to copy in any form is granted for use with
+     * conforming SGML systems and applications as defined in
+     * ISO 8879, provided this notice is included in all copies.
+     */
     private static String[] ansiCharacters = new String[]{
             "nbsp"
             /* "&#160;" -- no-break space = non-breaking space, U+00A0 ISOnum -->*/,
@@ -624,4 +633,50 @@ public class DOMUtils {
             /* "&#255;" -- latin small letter y with diaeresis, U+00FF ISOlat1 */,
     };
 
+    public static String toDebugString(Node node) {
+        short type = node.getNodeType();
+        switch (type) {
+            case Node.ATTRIBUTE_NODE: {
+                Attr attr = (Attr) node;
+                return "attribute[name: " + attr.getName() + "; value: " + attr.getValue() + "]";
+            }
+            case Node.ELEMENT_NODE: {
+                Element element = (Element) node;
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("element[tag: ");
+                buffer.append(element.getTagName());
+                buffer.append("; attributes: ");
+                NamedNodeMap attributes = element.getAttributes();
+                for (int i = 0; i < attributes.getLength(); i++) {
+                    Attr attr = (Attr) attributes.item(i);
+                    buffer.append(attr.getName());
+                    buffer.append("=");
+                    buffer.append(attr.getValue());
+                    buffer.append(' ');
+                }
+                buffer.append(']');
+
+                return buffer.toString();
+            }
+            case Node.CDATA_SECTION_NODE: {
+                CDATASection cdataSection = (CDATASection) node;
+                return "cdata[" + cdataSection.getData() + "]";
+            }
+            case Node.TEXT_NODE: {
+                Text text = (Text) node;
+                return "text[" + text.getData() + "]";
+            }
+            case Node.COMMENT_NODE: {
+                Comment comment = (Comment) node;
+                return "comment[" + comment.getData() + "]";
+            }
+            case Node.ENTITY_NODE: {
+                Entity entity = (Entity) node;
+                return "entity[public: " + entity.getPublicId() + "; system: " + entity.getSystemId() + "]";
+            }
+            default: {
+                return node.getNodeName();
+            }
+        }
+    }
 }

@@ -37,10 +37,13 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.application.StartupTime;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -182,22 +185,11 @@ public class DOMResponseWriter extends ResponseWriter {
 
     public void startElement(String name, UIComponent componentForElement)
             throws IOException {
-        Node oldCursor = cursor;
-        Element elem = document.createElement(name);
-        cursor = cursor.appendChild(elem);
-        if (log.isTraceEnabled()) {
-            log.trace("startElement()  name: " + name + "  elem: " + elem +
-                    "  oldCursor: " + oldCursor + "  newCursor: " + cursor);
-        }
+        moveCursorOn(appendToCursor(document.createElement(name)));
     }
 
     public void endElement(String name) throws IOException {
-        Node oldCursor = cursor;
-        cursor = cursor.getParentNode();
-        if (log.isTraceEnabled()) {
-            log.trace("endElement()  name: " + name + "  oldCursor: " +
-                    oldCursor + "  newCursor: " + cursor);
-        }
+        moveCursorOn(cursor.getParentNode());
     }
 
     public void writeAttribute(String name, Object value,
@@ -205,7 +197,9 @@ public class DOMResponseWriter extends ResponseWriter {
             throws IOException {
         //name.trim() because cardemo had a leading space in an attribute name
         //which made the DOM processor choke
-        ((Element) cursor).setAttribute(name.trim(), String.valueOf(value));
+        Attr attribute = document.createAttribute(name.trim());
+        attribute.setValue(String.valueOf(value));
+        appendToCursor(attribute);
     }
 
     public void writeURIAttribute(String name, Object value,
@@ -213,34 +207,23 @@ public class DOMResponseWriter extends ResponseWriter {
             throws IOException {
         String stringValue = String.valueOf(value);
         if (stringValue.startsWith("javascript:")) {
-            ((Element) cursor).setAttribute(name, stringValue);
+            writeAttribute(name, stringValue, componentPropertyName);
         } else {
-            ((Element) cursor)
-                    .setAttribute(name, stringValue.replace(' ', '+'));
+            writeAttribute(name, stringValue.replace(' ', '+'), componentPropertyName);
         }
     }
 
     public void writeComment(Object comment) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("writeComment()  comment: " + comment);
-        }
-        cursor.appendChild(document.createComment(String.valueOf(comment)));
+        appendToCursor(document.createComment(String.valueOf(comment)));
     }
 
     public void writeText(Object text, String componentPropertyName)
             throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("writeText(O,S)  text: " + text);
-        }
-        cursor.appendChild(document.createTextNode(String.valueOf(text)));
+        appendToCursor(document.createTextNode(String.valueOf(text)));
     }
 
     public void writeText(char text[], int off, int len) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("writeText(c[],i,i)  text: " +
-                    (new String(text, off, len)));
-        }
-        cursor.appendChild(document.createTextNode(new String(text, off, len)));
+        appendToCursor(document.createTextNode(new String(text, off, len)));
     }
 
     public ResponseWriter cloneWithWriter(Writer writer) {
@@ -264,33 +247,19 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void write(char[] cbuf, int off, int len) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("writeText(c[],i,i)  str: " +
-                    (new String(cbuf, off, len)));
-        }
-        cursor.appendChild(document.createTextNode(new String(cbuf, off, len)));
+        appendToCursor(document.createTextNode(new String(cbuf, off, len)));
     }
 
     public void write(int c) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("write(i)  hex: " + Integer.toHexString(c) +
-                    "  decimal: " + c);
-        }
-        cursor.appendChild(document.createTextNode(String.valueOf((char) c)));
+        appendToCursor(document.createTextNode(String.valueOf((char) c)));
     }
 
     public void write(String str) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("write(S)  str: " + str);
-        }
-        cursor.appendChild(document.createTextNode(str));
+        appendToCursor(document.createTextNode(str));
     }
 
     public void write(String str, int off, int len) throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("write(S,i,i)  str_sub: " + str.substring(off, len));
-        }
-        cursor.appendChild(document.createTextNode(str.substring(off, len)));
+        appendToCursor(document.createTextNode(str.substring(off, len)));
     }
 
     private void enhanceAndFixDocument() {
@@ -482,5 +451,40 @@ public class DOMResponseWriter extends ResponseWriter {
         return isStreamWritingFlag;
     }
 
+    private void moveCursorOn(Node node) {
+        if (log.isTraceEnabled()) {
+            log.trace("moving cursor on " + DOMUtils.toDebugString(node));
+        }
+        cursor = node;
+    }
 
+    private Node appendToCursor(Node node) {
+        try {
+            if (log.isTraceEnabled()) {
+                log.trace("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
+            }
+            return cursor.appendChild(node);
+        } catch (DOMException e) {
+            String message = "Failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
+            log.error(message);
+            throw new RuntimeException(message, e);
+        }
+    }
+
+    private Node appendToCursor(Attr node) {
+        try {
+            if (log.isTraceEnabled()) {
+                log.trace("Appending " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor));
+            }
+            return ((Element) cursor).setAttributeNode(node);
+        } catch (DOMException e) {
+            String message = "Failed to append " + DOMUtils.toDebugString(node) + " into " + DOMUtils.toDebugString(cursor);
+            log.error(message);
+            throw new RuntimeException(message, e);
+        } catch (ClassCastException e) {
+            String message = "The cursor is not an element: " + DOMUtils.toDebugString(cursor);
+            log.error(message);
+            throw new RuntimeException(message, e);
+        }
+    }
 }
