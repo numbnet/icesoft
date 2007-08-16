@@ -354,28 +354,17 @@ public class TableRenderer
         String rowSelectionFunctionName = null;
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
+        String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
                     domContext.createElement(HTML.INPUT_ELEM);
-            String tableId = uiComponent.getClientId(facesContext);
-            String id = getSelectedRowParameterName(tableId);
-            rowSelectedField.setAttribute(HTML.ID_ATTR, id);
-            rowSelectedField.setAttribute(HTML.NAME_ATTR, id);
+
+            rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
+            rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
             root.appendChild(rowSelectedField);
-            rowSelectionFunctionName = "ice_tableRowClicked" + rowSelectorNumber(facesContext); 
-            String scriptSrc = "this['" + rowSelectionFunctionName + "'] = function (id){\n";
-            scriptSrc += "try{ var fld = $('" + id +
-                         "');fld.value = id;var nothingEvent = new Object();\n";
-            scriptSrc +=
-                    " var form = Ice.util.findForm(fld);iceSubmit(null,fld,nothingEvent);}catch(e){alert(e);}};";
-            JavascriptContext.addJavascriptCall(facesContext, scriptSrc);
-            scriptNode = domContext.createElement(HTML.SCRIPT_ELEM);
-            scriptNode.setAttribute("language", "javascript");
-            scriptNode.appendChild(domContext.createTextNode(scriptSrc));
-            //root.appendChild(scriptNode);
-
+            rowSelectionFunctionName = "ice_tableRowClicked"; 
         }
 
         String columnStyles[] = getColumnStyleClasses(uiComponent);
@@ -391,8 +380,8 @@ public class TableRenderer
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound && toggleOnClick) {
-                tr.setAttribute("onclick", rowSelectionFunctionName + "('" +
-                                           uiData.getRowIndex() + "');");
+            	 tr.setAttribute("onclick", rowSelectionFunctionName + "('" +
+                       uiData.getRowIndex() + "', '"+ paramId +"');");            	
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, id);
@@ -402,20 +391,8 @@ public class TableRenderer
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
                 }
-                StringTokenizer st = new StringTokenizer(
-                                            rowSelector.getMouseOverClass());
-                StringBuffer omov = new StringBuffer();
-                StringBuffer omot = new StringBuffer();
-                while(st.hasMoreTokens()){
-                    String t = st.nextToken();
-                    omov.append("Element.addClassName($('" + id + "'), '" +
-                        t + "');");
-                    omot.append("Element.removeClassName($('" + id + "'), '" +
-                        t + "');");
-                }
-                tr.setAttribute(HTML.ONMOUSEOVER_ATTR, omov.toString());
-                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, omot.toString());
-
+                tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getMouseOverClass() +"'");
+                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'");
             }
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
