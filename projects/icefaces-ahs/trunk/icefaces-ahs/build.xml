@@ -97,6 +97,7 @@
                 <include name="**/web/**"/>
                 <include name="**/docs/**"/>
                 <!--exclude name="**/lib/*jms.jar"/-->
+                <include name="README.txt"/>
                 <include name="build.*"/>
             </zipfileset>
         </zip>
