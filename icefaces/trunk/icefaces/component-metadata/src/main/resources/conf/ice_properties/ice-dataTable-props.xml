@@ -89,7 +89,11 @@
 	<description>
 		When true table is scrollable.
 		(Note: you will also need to set columnWidths, and scrollHeight)
-	</description>
+        When table is scrollable pass-thru attributes like bgcolor will not work
+        because they are passed to the outer scrollable div only, not to the table
+        itself. Use style classes instead. See the styleClass, rowClasses and
+        columnClasses attributes.
+    </description>
     <property-name>scrollable</property-name>
     <property-class>boolean</property-class>
     <property-extension>
