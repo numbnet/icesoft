@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -187,10 +188,17 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
         protocol = this.request.getProtocol();
         remoteAddr = this.request.getRemoteAddr();
         remoteHost = this.request.getRemoteHost();
-        remotePort = this.request.getRemotePort();
-        localName = this.request.getLocalName();
-        localAddr = this.request.getLocalAddr();
-        localPort = this.request.getLocalPort();
+        initializeServlet2point4Properties();
+    }
+
+    private void initializeServlet2point4Properties() {
+        ServletContext context = request.getSession().getServletContext();
+        if (context.getMajorVersion() > 1 && context.getMinorVersion() > 3) {
+            remotePort = this.request.getRemotePort();
+            localName = this.request.getLocalName();
+            localAddr = this.request.getLocalAddr();
+            localPort = this.request.getLocalPort();
+        }
     }
 
     public boolean isUserInRole(String role) {
