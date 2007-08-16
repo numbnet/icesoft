@@ -202,7 +202,9 @@ var Sortable = {
             // handles are per-draggable
 	        //Ice.DnD.logger.error('k1');
             var handle = options.handle ?
-                Element.childrenWithClassName(e, options.handle)[0] : e;
+            // Element.childrenWithClassName(e, options.handle)[0] : e;
+            // Above call will cause "not a function" error. See JIRA ICE-1705.
+                e.getElementsByClassName(options.handle)[0] : e;
             //Ice.DnD.logger.error('k2');
             options.draggables.push(
                 new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
