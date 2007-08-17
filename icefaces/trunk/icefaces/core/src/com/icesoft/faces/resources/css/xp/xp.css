@@ -323,6 +323,18 @@ input {
 .iceDatTblHdr{} /*was iceTblHeader */
 .iceDatTblFtr{} /*was iceTblFooter */
 
+/*
+----- for datatable when cell content length exceeds-----
+*/
+
+.iceDatTbl td span.iceOutTxt{
+	color:#000000;
+	font-family:Arial,Helvetica,sans-serif;
+	padding:2px 0px;
+	overflow: hidden;
+	display: block;
+}
+
 /* etc */
 
 /*
