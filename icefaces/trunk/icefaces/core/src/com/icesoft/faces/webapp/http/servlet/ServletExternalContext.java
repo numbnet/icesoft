@@ -39,11 +39,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
         this.response = (HttpServletResponse) response;
-        this.session = new ProxyHttpSession(this.request.getSession()) {
-            public void invalidate() {
-                sessionMonitor.shutdown();
-            }
-        };
+        this.session = new InterceptingHttpSession(this.request.getSession(), sessionMonitor);
         this.context = this.session.getServletContext();
         this.initParameterMap = new AbstractAttributeMap() {
             protected Object getAttribute(String key) {
@@ -327,5 +323,18 @@ public class ServletExternalContext extends BridgeExternalContext {
      */
     private static String convertEmptyStringToNull(String val) {
         return val == null || val.trim().length() == 0 ? null : val;
+    }
+
+    public class InterceptingHttpSession extends ProxyHttpSession {
+        private final SessionDispatcher.Listener.Monitor sessionMonitor;
+
+        public InterceptingHttpSession(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor) {
+            super(session);
+            this.sessionMonitor = sessionMonitor;
+        }
+
+        public void invalidate() {
+            sessionMonitor.shutdown();
+        }
     }
 }
