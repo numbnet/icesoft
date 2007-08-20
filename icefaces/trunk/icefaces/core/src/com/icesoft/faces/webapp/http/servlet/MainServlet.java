@@ -62,7 +62,7 @@ public class MainServlet extends HttpServlet {
                 }
             };
 
-            dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|block\\/)", sessionServer);
+            dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|block\\/)", sessionServer);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
             throw new ServletException(e);
