@@ -166,10 +166,21 @@ public class MenuRenderer extends DomBasicInputRenderer {
             throw new ConverterException("Inconvertible type in value binding");
         }
         if (List.class.isAssignableFrom(valueBindingClass)) {
+            Converter converter = uiSelectMany.getConverter();
+            if (converter == null) {
+                // Determine if there is a default converter for the class
+                converter = getConverterForClass(valueBindingClass);
+            }
+            
             ArrayList submittedValuesAsList = new ArrayList(
                     newSubmittedValues.length);
             for (int index = 0; index < newSubmittedValues.length; index++) {
-                submittedValuesAsList.add(newSubmittedValues[index]);
+                Object convertedValue = newSubmittedValues[index];
+                if (converter != null) {
+                    convertedValue = converter.getAsObject(
+                        facesContext, uiSelectMany, newSubmittedValues[index]);
+                }
+                submittedValuesAsList.add(convertedValue);
             }
             return submittedValuesAsList;
         }
