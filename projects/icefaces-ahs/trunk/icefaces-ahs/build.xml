@@ -16,8 +16,8 @@
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
     
-    <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}${release.type}"/>
-    <property name="src.bundle.name" value="${product}-${product.version}"/>
+    <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
+    <property name="src.bundle.name" value="${product}-${product.version}-AHS-${release.type}"/>
     <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>
     
     <path id="compile.run.classpath">
