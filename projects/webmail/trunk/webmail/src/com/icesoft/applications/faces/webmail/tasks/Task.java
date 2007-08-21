@@ -102,7 +102,6 @@ public class Task extends Event {
         	try {
             	setPercentComplete(Integer.parseInt(percentCompleteStr));
         	} catch (NumberFormatException e) {
-            	//System.out.println("Invalid number format.");
             	WebmailMediator.addMessage(
             	        "tevp:taskEditForm",
             	        "percentInput",
