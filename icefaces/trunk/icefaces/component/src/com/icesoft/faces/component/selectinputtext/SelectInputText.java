@@ -298,12 +298,16 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      */
     public int getRows() {
         if (rows != null) {
+            // Should always return the original no. of rows. JIRA ICE-1320.
+            return rows.intValue();
+/*
             if (itemMap != null) {
                 return itemMap.size() > 0 && itemMap.size() < rows.intValue() ?
                        itemMap.size() : rows.intValue();
             } else {
                 return rows.intValue();
             }
+*/
         }
 
         ValueBinding vb = getValueBinding("rows");
