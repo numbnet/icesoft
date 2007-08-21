@@ -238,15 +238,7 @@ public class UIColumns extends UISeries {
         }
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
-    	served = false;
     }
     
-    private boolean served;
-    public void encodeBegin(FacesContext context) throws IOException {
-    	if (!served) {
-    		super.encodeBegin(context);
-    		served = true;
-    	}
-    }
 
 }
