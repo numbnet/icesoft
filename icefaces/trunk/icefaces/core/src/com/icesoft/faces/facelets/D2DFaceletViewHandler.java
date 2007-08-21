@@ -56,6 +56,7 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -254,7 +255,22 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             String facesSuffix = actionId.substring(actionId.lastIndexOf('.'));
             String viewSuffix = context.getExternalContext()
                     .getInitParameter(ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-            viewId = actionId.replaceFirst(facesSuffix, viewSuffix);
+            if(viewSuffix != null) {
+                viewId = actionId.replaceFirst(facesSuffix, viewSuffix);
+            }
+            else {
+                if(log.isErrorEnabled()) {
+                    log.error(
+                        "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
+                        " context parameter is not set in web.xml. " +
+                        "Please define the filename extension used for " +
+                        "your source JSF pages. Example:\n" +
+                        "<context-param>\n" +
+                        "  <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
+                        "  <param-value>.xhtml</param-value>\n" +
+                        "</context-param>");
+                }
+            }            
         }
         return viewId;
     }
