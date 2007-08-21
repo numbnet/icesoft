@@ -31,8 +31,9 @@
         logger.info('Redirecting to ' + url);
         //avoid view disposal on navigation rules
         if (url.contains('rvn=')) {
-            connection.cancelDisposeViews();
+            window.connection.cancelDisposeViews();
         }
+        window.application.dispose();
         window.location.href = url;
     };
 
