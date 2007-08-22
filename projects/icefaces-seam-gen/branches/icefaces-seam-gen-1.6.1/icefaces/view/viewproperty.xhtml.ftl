@@ -31,15 +31,15 @@
                 <f:convertNumber integerOnly="true"/>
             </ice:outputText>
 <#else>
-            <ice:outputText id="view${componentProperty.name}TextId"
-	                 value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}"/>
+            ${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}
 </#if>
         </s:decorate>
 </#foreach>
 <#else>
 <#assign propertyType = property.value.typeName>
 
-                  <ice:outputLabel>${property.name}</ice:outputLabel>
+        <s:decorate id="${property.name}" template="layout/display.xhtml">
+            <ui:define name="label">${property.name}</ui:define>
 <#if propertyType == "date">
             <ice:outputText id="view${property.name}TextId"
 	                 value="${'#'}{${homeName}.instance.${property.name}}">
@@ -66,9 +66,8 @@
                 <f:convertNumber integerOnly="true"/>
             </ice:outputText>
 <#else>
-            <ice:outputText id="view${property.name}TextId"
-	                 value="${'#'}{${homeName}.instance.${property.name}}"/>
-
+            ${'#'}{${homeName}.instance.${property.name}}
 </#if>
+        </s:decorate>
 </#if>
 </#if>
