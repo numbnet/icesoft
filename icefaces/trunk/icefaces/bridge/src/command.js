@@ -33,7 +33,6 @@
         if (url.contains('rvn=')) {
             window.connection.cancelDisposeViews();
         }
-        window.application.dispose();
         window.location.href = url;
     };
 

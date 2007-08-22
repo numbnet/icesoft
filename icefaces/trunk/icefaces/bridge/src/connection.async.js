@@ -219,6 +219,8 @@
 
         shutdown: function() {
             try {
+                //shutdown once
+                this.shutdown = Function.NOOP;
                 //avoid sending XMLHTTP requests that might create new sessions on the server
                 this.send = Function.NOOP;
                 this.connect = Function.NOOP

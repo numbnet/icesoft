@@ -85,6 +85,7 @@
 
             window.onBeforeUnload(function() {
                 this.connection.sendDisposeViews();
+                this.connection.shutdown();
             }.bind(this));
 
             this.connection.onSend(function() {
