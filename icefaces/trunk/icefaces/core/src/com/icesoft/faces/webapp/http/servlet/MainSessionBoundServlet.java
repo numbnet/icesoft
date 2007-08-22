@@ -7,6 +7,7 @@ import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
@@ -37,6 +38,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private static final SessionExpired SessionExpired = new SessionExpired();
     private static final Server NOOPServer = new Server() {
         public void service(Request request) throws Exception {
+            request.respondWith(OKHandler.HANDLER);
         }
 
         public void shutdown() {
