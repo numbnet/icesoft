@@ -10,7 +10,12 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
 import javax.faces.FacesException;
-import javax.portlet.*;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +41,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
     public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor, Object config) {
         super(viewIdentifier, commandQueue, configuration);
-        this.config = (PortletConfig)config;
+        this.config = (PortletConfig) config;
         this.request = (RenderRequest) request;
         this.response = (RenderResponse) response;
         this.session = new ProxyPortletSession(this.request.getPortletSession()) {
@@ -124,8 +129,8 @@ public class PortletExternalContext extends BridgeExternalContext {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
 
-        requestParameterMap = new HashMap();
-        requestParameterValuesMap = new HashMap();
+        requestParameterMap = Collections.synchronizedMap(new HashMap());
+        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
         insertPostbackKey();
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -137,7 +142,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
         applySeamLifecycleShortcut(persistSeamKey);
 
-        requestCookieMap = new HashMap();
+        requestCookieMap = Collections.synchronizedMap(new HashMap());
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -145,7 +150,7 @@ public class PortletExternalContext extends BridgeExternalContext {
                 requestCookieMap.put(cookie.getName(), cookie);
             }
         }
-        responseCookieMap = new HashMap();
+        responseCookieMap = Collections.synchronizedMap(new HashMap());
     }
 
     public void update(RenderRequest request, RenderResponse response) {

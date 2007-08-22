@@ -121,8 +121,8 @@ public class ServletExternalContext extends BridgeExternalContext {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
 
-        requestParameterMap = new HashMap();
-        requestParameterValuesMap = new HashMap();
+        requestParameterMap = Collections.synchronizedMap(new HashMap());
+        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
         insertPostbackKey();
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -134,7 +134,7 @@ public class ServletExternalContext extends BridgeExternalContext {
 
         applySeamLifecycleShortcut(persistSeamKey);
 
-        requestCookieMap = new HashMap();
+        requestCookieMap = Collections.synchronizedMap(new HashMap());
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -142,7 +142,7 @@ public class ServletExternalContext extends BridgeExternalContext {
                 requestCookieMap.put(cookie.getName(), cookie);
             }
         }
-        responseCookieMap = new HashMap();
+        responseCookieMap = Collections.synchronizedMap(new HashMap());
 
         this.response = response;
     }

@@ -68,6 +68,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -262,7 +263,8 @@ public class D2DViewHandler extends ViewHandler {
             domResponseContexts = (Map) contextServletTable
                     .get(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE);
         } else {
-            domResponseContexts = new HashMap();
+            //todo: figure out what these maps are doing and re-implement functionality
+            domResponseContexts = Collections.synchronizedMap(new HashMap());
             contextServletTable.put(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE,
                     domResponseContexts);
         }
@@ -306,7 +308,7 @@ public class D2DViewHandler extends ViewHandler {
         if (domContextTables.containsKey(servletRequestPath)) {
             return (Map) domContextTables.get(servletRequestPath);
         } else {
-            Map domContextTable = new HashMap();
+            Map domContextTable = Collections.synchronizedMap(new HashMap());
             domContextTables.put(servletRequestPath, domContextTable);
             return domContextTable;
         }
