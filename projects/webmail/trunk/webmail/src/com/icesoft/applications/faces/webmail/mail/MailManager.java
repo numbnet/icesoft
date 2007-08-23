@@ -471,25 +471,24 @@ public class MailManager implements WebmailBase {
                     // check to make sure the need folders are available, if not
                     // try creating them.
                     if (mailAccountBean.getMailControl() != null){
+                        //update the intialization process and label for login webmail
                         mailAccountBean.getMailControl().createMailFolder(
                                 INBOX_FOLDER_NAME);
-                        
-                        //update the intialization process and label for login webmail
                         this.setProcess(80);
                         this.setProcessText("Inbox Folder Initializing");
                         mediator.renderHelper();
-                        //  mailAccountBean.getMailControl().createMailFolder(
-                        //         TRASH_FOLDER_NAME);
+                        mailAccountBean.getMailControl().createMailFolder(
+                                TRASH_FOLDER_NAME);
                         this.setProcess(90);
                         this.setProcessText("Trash Folder Initializing");
                         mediator.renderHelper();
-                        // mailAccountBean.getMailControl().createMailFolder(
-                        //        SENT_FOLDER_NAME);
+                        mailAccountBean.getMailControl().createMailFolder(
+                                SENT_FOLDER_NAME);
                         this.setProcess(95);
                         this.setProcessText("Sent Folder Initializing");
                         mediator.renderHelper();
-                        // mailAccountBean.getMailControl().createMailFolder(
-                        //        DRAFT_FOLDER_NAME);
+                        mailAccountBean.getMailControl().createMailFolder(
+                                DRAFT_FOLDER_NAME);
                         this.setProcess(99);
                         this.setProcessText("Draft Folder Initializing");
                         mediator.renderHelper();

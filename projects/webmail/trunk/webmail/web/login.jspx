@@ -80,7 +80,7 @@
                                                             rendered="#{mailManager.showModalPanel}"
                                                             visible="#{mailManager.showModalPanel}"
                                                             modal="true"
-                                                            style="z-index: 1000; top: 200px; left: 360px; position: absolute; width: 350px; height: 150px;">
+                                                            style="z-index: 1000; position: middle; width: 350px; height: 150px;">
                                                             
                                                             <f:facet name="header">
                                                                 <ice:panelGrid width="100%" cellpadding="0"
