@@ -1,0 +1,23 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+        <html>
+            <head>
+                <link href="./css/effects.css" rel="stylesheet" type="text/css" />
+            </head>
+            <body> 
+                <ice:form partialSubmit="true">
+                    <ice:panelGrid columns="2">
+                        <ice:panelGroup>
+                            <ice:outputText value="Click to reveal ICEfaces info" />
+                            <ice:commandButton value="Reveal" action="#{customEffects.fireEffect}"/>
+                        </ice:panelGroup>
+                        <ice:panelGroup styleClass="blindDownPanel" effect="#{customEffects.panelEffect}" visible="false">
+                            <ice:outputText value="ICEfaces"/><br/><br/>
+                            <ice:outputText value="ICEfaces is more than a rich component library, it's an Ajax-based Java EE framework for developing and deploying rich enterprise applications (REAs). With ICEfaces, enterprise Java developers can develop rich applications in Java, not JavaScript."/>
+                        </ice:panelGroup>
+                    </ice:panelGrid>
+                </ice:form>
+            </body>
+        </html>
+</f:view>

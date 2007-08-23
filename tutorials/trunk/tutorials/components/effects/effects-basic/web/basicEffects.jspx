@@ -1,0 +1,32 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
+        <title>Effects Component Tutorial</title>
+        <link href="css/effects.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <h2>Highlight after update</h2>
+        <p>The following shows how a highlight will emphasize changed data</p>
+        <ice:form partialSubmit="true">
+            <ice:panelGrid columns="2">
+            	<ice:panelGroup>
+            		<ice:outputText value="Input Text: " />
+                        <ice:inputText value="#{basicEffects.text}"/>
+            	</ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:outputText value="Value: "/>
+                    <ice:outputText value="#{basicEffects.text}" effect="#{basicEffects.effectOutputText}"/>
+                </ice:panelGroup>
+            </ice:panelGrid>
+        </ice:form>
+    </body>
+    </html>
+</f:view>

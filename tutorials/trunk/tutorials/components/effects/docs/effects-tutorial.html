@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Effects Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the Effects component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Effects Component</h1>
+
+<p>
+    The <span class="object-name">Effects</span> component provides a mechanism for
+    dynamically generating required effects to certain components depending on how the user
+    wants the content to appear.
+    The <span class="object-name">Effects</span> component has many effects associated with it.
+    Some of which include:
+
+</p>
+
+<ul>
+	<li>Highlight - provides a highlight over the desired item</li>
+	<li>Move - moves the item a to the desired co-ordinates</li>
+	<li>Pulsate - causes the item to fade in and out</li>
+	<li>Grow - enlarges the item</li>
+	<li>Shrink - shrinks the item</li>
+	<li>Scale - resizes the item to a specific size</li>
+	<li>Puff - enlarges the item and fades out</li>
+	<li>BlindDown - expands the item from the top down</li>
+</ul>
+
+<p>
+    The <span class="object-name">Effects</span> component can be used in a variety of ways.
+    The majority of the time effects are used to add additional asthetic appeal such as
+    expanding a panel when a button is clicked, or having a panel fade out after some information
+     has been submitted. Sometimes, however, they are used to emphasize important data.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#creationBasic">Creating a Highlight based on direct-to-dom updates</a></li>
+    <li><a href="#creationCustom">Using an Effect with the panelGroup</a></li>
+</ul>
+
+<!-- tutorial: effects-basic -->
+<a name="creationBasic"><h2>Creating a Highlight based on updates</h2></a>
+
+<p>
+The simplest example of Effects is to hav a <span class="object-name">Highlight</span> fire up
+ once some information has been changed or submitted. In this example we will highlight the backing bean
+ value for an inputText. The text submitted in the inputText will appear in a panel, and will highlight.
+</P>
+<p>First you need to set up your jsp page. For this example we used just a few simple input and output text
+components. You also need to make sure that partialSubmit is set to true on the form component.
+
+<pre>
+	&lt;ice:form partialSubmit="true"&gt;
+</pre>
+<p>Next you need to set the effect attribute to the backing bean on the text you want to highlight.</p>
+<pre>
+ &lt;ice:outputText value="#{basicEffects.text}" effect="#{basicEffects.effectOutputText}"/&gt;
+ </pre>
+ <p>In the backing bean you need to set up an Effect parameter and set the effect to fire when the
+ text is retrieved.</p>
+ <pre>
+ public class BasicEffects{
+
+ 	 private Highlight effectOutputText = new Highlight("#ffcc99");
+          private String text;
+
+  /* Returns the text effect
+      *@return Effect EffectOutputText
+      */
+     public Effect getEffectOutputText() {
+
+         return effectOutputText;
+     }
+
+     /*
+      * Sets the output text effect
+      *@param Effect effectOutputText
+      */
+     public void setEffectOutputText(Effect effectOutputText) {
+         this.effectOutputText = (Highlight) effectOutputText;
+     }
+
+     public String getText() {
+         effectOutputText = new Highlight("#FFCC99");
+
+             effectOutputText.setFired(false);
+         return text;
+    }
+    .
+    .
+    .
+    }
+    </pre>
+
+<p>
+The following screenshot shows what the page looks like when the effect is fired.
+</p>
+
+<div class="screenshot">
+    <img src="images/highlight.png"
+       title="Highlight"
+         alt="Highlight Example"/>
+</div>
+
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the effects-basic demo for your self by clicking
+            <a href="/effects-basic-tutorial/"
+               target="_blank">here</a>,
+            or download the effects-basic source code <a href="effects-basic-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+
+<!-- tutorial: panelSeries-custom -->
+<a name="creationCustom"><h2>Using an Effect with a panelGroup</h2></a>
+
+<p>
+In this advanced example, we will show how to use an <span class="object-name">Effect</span>
+component with a panelGroup. Here we will be adding a blindDown effect to a panel in order to
+ reveal it.
+</p>
+
+
+<p>
+First, setup your panelGroup, then set the effect attribute of the panelGroup to the backingBean value, and
+set visible to false.
+</p>
+
+<pre>
+	&lt;ice:panelGroup styleClass="blindDownPanel" effect="#{customEffects.panelEffect}" visible="false"&gt;
+</pre>
+<p>Set the action attribute of your commandButton to the backing bean value.</p>
+<pre>
+&lt;ice:panelGrid columns="2"&gt;
+     &lt;ice:panelGroup&gt;
+         &lt;ice:outputText value="Click to reveal ICEfaces info" /&gt;
+         &lt;ice:commandButton value="Reveal" action="#{customEffects.fireEffect}"/&gt;
+     &lt;/ice:panelGroup&gt;
+     &lt;ice:panelGroup styleClass="blindDownPanel" effect="#{customEffects.panelEffect}" visible="false"&gt;
+         &lt;ice:outputText value="ICEfaces"/&gt;&lt;br/&gt;&lt;br/&gt;
+         &lt;ice:outputText value="ICEfaces is more than a rich component library..."/&gt;
+     &lt;/ice:panelGroup&gt;
+&lt;/ice:panelGrid&gt;
+</pre>
+<p>
+Then set up your backing bean as follows.
+</p>
+<pre>
+public class CustomEffects {
+
+    private Effect panelEffect;
+
+    /** Creates a new instance of CustomEffects */
+    public CustomEffects() {
+    }
+
+    public Effect getPanelEffect() {
+        return panelEffect;
+    }
+
+    public void setPanelEffect(Effect panelEffect) {
+        this.panelEffect = panelEffect;
+    }
+    public String fireEffect(){
+        panelEffect = new BlindDown();
+        return null;
+    }
+
+}
+</pre>
+<p>
+The following screenshots show what the page looks like before clicking reveal and after.
+</p>
+
+<div class="screenshot">
+    <img src="images/blindDownBefore.png"
+       title="Blind Down Before"
+         alt="Blind Down Before" />
+</div>
+
+<div class="screenshot">
+    <img src="images/blindDownAfter.png"
+       title="Blind Down After"
+         alt="Blind Down After" />
+</div>
+
+<div class="demo-instruction">
+    <h3>See the demo:</h3>
+    <ul>
+        <li>See the effects-custom demo for your self by clicking
+            <a href="/effects-custom-tutorial/"
+               target="_blank">here</a>,
+            or download the effects-custom source code <a href="effects-custom-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<!-- links to examples -->
+<a name="exampleTabsets"><h2>Examples Using Panel Series</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Effects example</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">effects-basic</td>
+            <td class="bodySource"><a href="effects-basic-tutorial.zip" >effects-basic source code</a></td>
+            <td class="bodyNotes">Simple example of how to setup effects component and backing bean.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">effects-custom</td>
+            <td class="bodySource"><a href="effects-custom-tutorial.zip" >effects-custom source code</a></td>
+            <td class="bodyNotes">Demonstration of how effects component can be used with panels.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2006 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>
