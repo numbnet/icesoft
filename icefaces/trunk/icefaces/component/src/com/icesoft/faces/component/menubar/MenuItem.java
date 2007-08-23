@@ -42,6 +42,8 @@ import javax.faces.component.UIParameter;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionListener;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
@@ -233,7 +235,17 @@ public class MenuItem extends MenuItemBase {
             return true;
         return false;
     }
-
+    
+    public void queueEvent(FacesEvent e) {
+        // ICE-1956 UICommand subclasses shouldn't call super.queueEvent
+        //  on ActionEvents or else the immediate flag is ignored
+        if( (e instanceof ActionEvent) && !this.equals(e.getComponent()) && getParent() != null) {
+            getParent().queueEvent(e);
+        }
+        else {
+            super.queueEvent(e);
+        }
+    }
 
     /**
      * <p>Set the value of the <code>disabled</code> property.</p>

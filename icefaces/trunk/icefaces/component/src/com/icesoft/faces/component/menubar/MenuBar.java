@@ -45,6 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
+import javax.faces.event.ActionEvent;
 
 
 /**
@@ -273,8 +274,15 @@ public class MenuBar extends UICommand implements NamingContainer {
     /* (non-Javadoc)
      * @see javax.faces.component.UIComponent#queueEvent(javax.faces.event.FacesEvent)
      */
-    public void queueEvent(FacesEvent event) {
-        super.queueEvent(event);
+    public void queueEvent(FacesEvent e) {
+        // ICE-1956 UICommand subclasses shouldn't call super.queueEvent
+        //  on ActionEvents or else the immediate flag is ignored
+        if( (e instanceof ActionEvent) && !this.equals(e.getComponent()) && getParent() != null) {
+            getParent().queueEvent(e);
+        }
+        else {
+            super.queueEvent(e);
+        }
     }
 
     /* (non-Javadoc)

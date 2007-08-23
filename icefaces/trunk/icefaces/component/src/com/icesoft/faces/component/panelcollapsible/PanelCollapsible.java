@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.el.EvaluationException;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.FacesEvent;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
@@ -250,6 +251,17 @@ public class PanelCollapsible extends UICommand {
                context.addMessage(getClientId(context), message);
           
             }
+        }
+    }
+    
+    public void queueEvent(FacesEvent e) {
+        // ICE-1956 UICommand subclasses shouldn't call super.queueEvent
+        //  on ActionEvents or else the immediate flag is ignored
+        if( (e instanceof ActionEvent) && !this.equals(e.getComponent()) && getParent() != null) {
+            getParent().queueEvent(e);
+        }
+        else {
+            super.queueEvent(e);
         }
     }
     

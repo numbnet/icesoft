@@ -47,6 +47,7 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
+import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import java.io.Serializable;
@@ -987,13 +988,23 @@ public class Tree extends UICommand implements NamingContainer {
                !(parentTreeNode instanceof TreeNode)) {
             parentTreeNode = parentTreeNode.getParent();
         }
-        if (parentTreeNode == null) {
-            // queue a non-wrapper event        	
-            super.queueEvent(event);
-            return;
+        if (parentTreeNode != null) {
+            event = new NodeEvent(
+                this, event, ((TreeNode) parentTreeNode).getMutable());
         }
-        super.queueEvent(new NodeEvent(this, event,
-                                       ((TreeNode) parentTreeNode).getMutable()));
+        // ICE-1956 UICommand subclasses shouldn't call super.queueEvent
+        //  on ActionEvents or else the immediate flag is ignored
+        // Shouldn't really be an issue for Tree though, since it tries
+        //  to wrap event in NodeEvent, which doesn't extend ActionEvent,
+        //  but we might as well still have this code so we're not brittle
+        if( (event instanceof ActionEvent) &&
+            !this.equals(event.getComponent()) &&
+            getParent() != null )
+        {
+            getParent().queueEvent(event);
+        }
+        else
+            super.queueEvent(event);
     }
 
     /*
