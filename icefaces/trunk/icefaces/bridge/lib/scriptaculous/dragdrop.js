@@ -275,8 +275,9 @@ Draggable.prototype = {
       options.scroll = $(options.scroll);
       this._isScrollChild = Element.childOf(this.element, options.scroll);
     }
-
-    Element.makePositioned(this.element); // fix IE    
+	if (!options.dragGhost) {
+       Element.makePositioned(this.element); // fix IE
+    }    
 
     this.delta    = this.currentDelta();
     this.options  = options;
