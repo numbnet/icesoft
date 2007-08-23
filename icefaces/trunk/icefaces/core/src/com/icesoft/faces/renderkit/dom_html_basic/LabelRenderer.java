@@ -116,18 +116,23 @@ public class LabelRenderer extends DomBasicInputRenderer {
             }
         }
 
-        domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
+        domContext.stepInto(uiComponent);
     }
 
     public void encodeChildren(FacesContext facesContext,
-                               UIComponent uiComponent) {
+                               UIComponent uiComponent)
+            throws IOException {
         validateParameters(facesContext, uiComponent, null);
+        super.encodeChildren(facesContext, uiComponent);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
+        DOMContext domContext =
+                DOMContext.attachDOMContext(facesContext, uiComponent);
+        domContext.stepOver();
+        domContext.streamWrite(facesContext, uiComponent);
     }
 
 
