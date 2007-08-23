@@ -47,6 +47,7 @@
  */
 package com.icesoft.faces.component.selectinputdate;
 
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
@@ -97,7 +98,6 @@ public class SelectInputDateRenderer
             LogFactory.getLog(SelectInputDateRenderer.class);
 
     private final String CALENDAR_TABLE = "_calendarTable";
-    private final String CALENDAR_INPUTTEXT = "_calendarInputtext";
     private final String CALENDAR_BUTTON = "_calendarButton";
     private final String CALENDAR_POPUP = "_calendarPopup";
     private final String HIDDEN_FIELD_NAME = "showPopup";
@@ -184,9 +184,9 @@ public class SelectInputDateRenderer
                                               (Date) selectInputDate
                                                       .getValue()));
                 dateText.setAttribute(HTML.ID_ATTR,
-                                      clientId + CALENDAR_INPUTTEXT);
+                                      clientId + SelectInputDate.CALENDAR_INPUTTEXT);
                 dateText.setAttribute(HTML.NAME_ATTR,
-                                      clientId + CALENDAR_INPUTTEXT);
+                                      clientId + SelectInputDate.CALENDAR_INPUTTEXT);
                 dateText.setAttribute(HTML.CLASS_ATTR,
                                       selectInputDate.getCalendarInputClass());
                 dateText.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
@@ -1125,6 +1125,9 @@ public class SelectInputDateRenderer
             log.debug("decodeUIInput::");
             log.debug("#################################");
         }
+        String inputTextDateId = component.getClientId(facesContext) +
+        SelectInputDate.CALENDAR_INPUTTEXT;
+        JavascriptContext.addJavascriptCall(facesContext, "Ice.Focus.setFocus('"+ inputTextDateId +"');");
         CustomComponentUtils.decodeUIInput(facesContext, component);
         // not a navigation event
         dateSelect.setNavEvent(false);
@@ -1142,7 +1145,7 @@ public class SelectInputDateRenderer
         Object clickedLink = requestParameterMap.get(linkId);
 
         String inputTextDateId = component.getClientId(facesContext) +
-        CALENDAR_INPUTTEXT;
+        SelectInputDate.CALENDAR_INPUTTEXT;
         Object inputTextDate = requestParameterMap.get(inputTextDateId);
 
         // inputtext is only available in popup mode 

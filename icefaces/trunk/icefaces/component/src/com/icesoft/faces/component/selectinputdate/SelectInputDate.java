@@ -38,8 +38,8 @@ import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.util.CoreUtils;
-
-import org.krysalis.jcharts.properties.LegendProperties;
+import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.context.BridgeFacesContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -164,6 +164,8 @@ public class SelectInputDate
     private DateFormat myDateFormat =
             new SimpleDateFormat(DEFAULT_POPUP_DATE_FORMAT);
 
+    public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
+    
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
@@ -596,6 +598,18 @@ public class SelectInputDate
         }
         ValueBinding vb = getValueBinding("highlightClass");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
+    }
+    
+    public void requestFocus() {
+    	if (isRenderAsPopup()) {
+        ((BridgeFacesContext) FacesContext.getCurrentInstance())
+                .setFocusId("null");
+        JavascriptContext.focus(FacesContext.getCurrentInstance(),
+                                this.getClientId(
+                                        FacesContext.getCurrentInstance())+ CALENDAR_INPUTTEXT);
+    	} else {
+    		//log: focus can only be set in popup mode
+    	}
     }
     
     private String highlightUnit;
