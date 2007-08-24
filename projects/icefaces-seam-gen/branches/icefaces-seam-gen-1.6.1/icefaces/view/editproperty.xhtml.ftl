@@ -91,7 +91,7 @@
 <#else>
 <#assign size = column.length>
 </#if>
-                <h:inputText id="${componentProperty.name}" 
+                <ice:inputText id="${componentProperty.name}" 
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -101,7 +101,8 @@
                           size="${size}"
                      maxlength="${column.length}"
                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                        </h:inputText>
+                         partialSubmit="true"
+                 </ice:inputText>
 </#if>
 <#else>
                 <ice:inputText id="${componentProperty.name}"
@@ -112,9 +113,10 @@
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
                                   value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                        </ice:inputText>
+                        partialSubmit="true"
+                 </ice:inputText>
 </#if>
-                    </s:decorate>
+               </s:decorate>
 </#foreach>
 <#else>
 <#assign column = property.columnIterator.next()>
