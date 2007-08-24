@@ -285,9 +285,12 @@ public abstract class AbstractChart {
     }
 
     public LegendProperties getLegendProperties() {
-    	LegendProperties legendProperties = new LegendProperties();
-   		legendProperties.setPlacement(legendPlacementMap.getLegendPlacement(
-				String.valueOf(outputChart.getLegendPlacement())));
+        String legendPlacement = (String) outputChart.getLegendPlacement();
+        if (legendPlacement.equals("none")) {
+            return null;
+        }
+        LegendProperties legendProperties = new LegendProperties();
+   		legendProperties.setPlacement(legendPlacementMap.getLegendPlacement(legendPlacement));
    		Object legendColumns = outputChart.getLegendColumns();
    		if (legendColumns instanceof Integer) {
    			legendProperties.setNumColumns(((Integer)outputChart.getLegendColumns()).intValue());

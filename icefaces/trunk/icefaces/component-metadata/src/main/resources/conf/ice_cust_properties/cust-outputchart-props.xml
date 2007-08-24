@@ -285,11 +285,12 @@
 		<![CDATA[
 		<p>The placement of legend label can be set to one of the following:
         <ul>
-        	<li>top</li/>
-        	<li>bottom</li/> 
-        	<li>left</li/>
-        	<li>right</li/>          	  
-        </ul>     
+        	<li>top</li>
+        	<li>bottom (default)</li>
+        	<li>left</li>
+        	<li>right</li>
+        	<li>none</li>          	  
+        </ul>
         <pre> 
 		(e.g.)
         &lt;ice:outputChart type="barstacked" 
@@ -298,7 +299,9 @@
         		colors="green, red"
         		legendPlacement="right"/&gt;
          </pre>         
-         Note: This attribute does not apply on pie3D
+         Note: This attribute does not apply to pie3D charts.
+         When the chart type is "custom", remember to read this attribute in
+         your custom charting code and set the chart legend placement accordingly.
         </p> 
         ]]>         
     </description>
