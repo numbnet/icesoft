@@ -45,6 +45,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -442,7 +443,12 @@ public class TreeRenderer extends DomBasicRenderer {
             }
 
             verticalLine.setAttribute(HTML.BORDER_ATTR, "0");
+            Text space = domContext.createTextNode(" ");
+            treeNodeDiv.appendChild(space);
             treeNodeDiv.appendChild(verticalLine);
+            space = domContext.createTextNode(" ");
+            treeNodeDiv.appendChild(space);
+  
             // startNode is used in conjunction with endNode as an alternative to streamWrite method
             try {
                 domContext.startNode(facesContext, treeComponent, verticalLine);
@@ -542,6 +548,9 @@ public class TreeRenderer extends DomBasicRenderer {
 
         } else { // this is a leaf node
             Element lineImage = domContext.createElement(HTML.IMG_ELEM);
+            Text space = domContext.createTextNode(" ");
+            treeNodeDiv.appendChild(space);
+            
             treeNodeDiv.appendChild(lineImage);
             lineImage.setAttribute(HTML.BORDER_ATTR, "0");
             lineImage.setAttribute(HTML.ALT_ATTR, "");
@@ -631,7 +640,6 @@ public class TreeRenderer extends DomBasicRenderer {
         Element tree_line_middle_node = domContext.createElement(HTML.IMG_ELEM);
         Element tree_nav_bottom_open = domContext.createElement(HTML.IMG_ELEM);
         Element tree_nav_top_close = domContext.createElement(HTML.IMG_ELEM);
-
         String appBase = CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/css/xp/css-images/");
 
         tree_document.setAttribute(HTML.SRC_ATTR, appBase + "tree_document.gif");
@@ -655,6 +663,7 @@ public class TreeRenderer extends DomBasicRenderer {
                                                          "tree_nav_bottom_open.gif");
         tree_nav_top_close.setAttribute(HTML.SRC_ATTR, appBase +
                                                        "tree_nav_top_close.gif");
+        
 
         imageLoaderDiv.appendChild(tree_document);
         imageLoaderDiv.appendChild(tree_line_blank);
