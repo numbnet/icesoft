@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" >
+<html>
+<head>
+    <title>Output Progress Component Tutorials</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<!-- header section -->
+<p class="tutorialHeaderText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html">Table of Contents</a>
+</p>
+<hr/>
+<p>
+    <b>Lesson:</b> Using the outputProgress component
+</p>
+
+<!-- introduction section -->
+<h1>How to Use the ICEfaces Output Progress Component</h1>
+
+<p>
+The <span class="object-name">outputProgress</span> component can be used to inform
+the user of the current status of a long running task. For example, retrieving new
+emails from a web based client, or uploading a large data set, or performing a statistic
+computation on some fields.</p>
+<p>
+The mode of the progress bar can be set to display either determinate mode (if the
+percentage complete is known to the developer), or an indeterminate mode for tasks
+where the time frame is unknown or cannot be calculated. In addition the look and feel
+of the progress bar can be customized to a great extend. Not only can CSS classes be
+overridden as needed, but the text and position of various labels can be modified. The
+following screenshot is of the <span class="object-name">ice:outputProgress</span> component
+demo in component-showcase.
+</p>
+
+<div class="screenshot">
+    <img src="images/progress_showcase_screenshot.png"
+       title="outputProgress component in Component Showcase application"
+         alt="outputProgress component in Component Showcase application" width="602" height="326"
+         border="1"/>
+</div>
+
+<p>
+The progress bar requires the management of the completed percentage at a backing bean level.
+How the percentage is updated depends on the developer's application. In some cases it is
+inside a separate thread, in others it is set from a loop in the business logic. In the case
+of this tutorial, each demo will use a threaded backing bean to track the percentage and
+any other attributes of the progress bar.
+</p>
+
+<p>The rest of this tutorial will discuss the following topics:</p>
+<ul>
+    <li><a href="#progressModes">Setting Progress Bar Modes</a></li>
+    <li><a href="#progressLabel">Customizing Progress Bar Labels</a></li>
+    <li><a href="#progressStyle">Customizing Progress Bar Styles</a></li>
+    <li><a href="#progressMultiple">Creating Multiple Progress Bars</a></li>
+    <li><a href="#exampleProgress">Examples Using Progress Bars</a></li>
+</ul>
+
+<!-- tutorial: outputProgress-mode -->
+<a name="progressModes"><h2>Setting Progress Bar Modes</h2></a>
+
+<p>
+Customizing the mode of the progress bar is done by setting the boolean attribute
+<span class="object-name">indeterminate</span> to true or false. Indeterminate mode
+will not display a percentage complete on the progress bar, and should be used for
+tasks without an estimated time frame. Determinate mode is the default, and will display
+the percentage progress.</p>
+<p>
+In this demo we create a simple progress bar that uses a timed backend task to
+simulate a long running process. Controls have been added to allow the user to start
+and stop the progress bar.</p>
+<p>
+To set the mode used, a <span class="object-name">selectOneRadio</span> component has been
+used, as shown below.</p>
+
+<pre>
+    &lt;ice:selectOneRadio value="#{mode.isIndeterminate}" partialSubmit="true"
+                        valueChangeListener="#{mode.modeChanged}"&gt;
+        &lt;f:selectItems value="#{mode.availableModes}"/&gt;
+    &lt;/ice:selectOneRadio&gt;
+</pre>
+
+<p>
+The determinate or indeterminate mode is reflected in the progress bar component's
+attribute as shown below.</p>
+
+<pre>
+    &lt;ice:outputProgress value="#{mode.percent}" indeterminate="#{mode.isIndeterminatePrimitive}"/&gt;
+</pre>
+
+<p>
+The percent value is managed in the backing bean by a thread. The thread will slowly
+increase the percent value, and can be stopped and restarted based on the user's actions.
+</p>
+
+<p>
+With the mode selector, progress bar, and controls in place, this example looks similar to:
+</p>
+    
+<div class="screenshot">
+    <img src="images/mode-tutorial_screenshot.png"
+       title="Progress Bar Mode Example"
+         alt="Progress Bar Mode Example" width="661" height="287"
+         border="1"/>
+</div>
+
+<p>
+The creation of this selectable progress bar was very simple, as the <span class="code-jsf">
+modeOutputProgress.jspx</span> page shows.
+</p>
+
+<div class="demo-instruction">
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the outputProgress-mode source code <a href="outputProgress-mode-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+The progress bar shown was simple and focused on available modes.
+In the next tutorial the ability to customize in-progress and completed labels will be demonstrated.
+</p>
+</p>
+
+<!-- tutorial: outputProgress-label -->
+<a name="progressLabel"><h2>Customizing Progress Bar Labels</h2></a>
+
+<p>
+The progress bar has two label types; a working and completed label. While the percentage has not
+completed yet and the progress bar is still active, the working label is used, specified as
+the component attribute <span class="object-name">label</span>. When the progress bar is finished,
+the completed label will be displayed until further action is undertaken on the progress bar. This
+label is set through the <span class="object-name">labelComplete</span> component attribute.</p>
+<p>
+Finally the position of the labels (both working and completed) can be changed through the
+<span class="object-name">labelPosition</span> component attribute, to any of the 8 available
+positions. The positions are listed below, with <span class="object-name">embed</span> being the
+default.</p>
+
+<pre>
+right, top, topcenter, topright, bottom, bottomcenter, bottomright, embed
+</pre>
+
+<p>
+In the case of this tutorial, a combination of <span class="object-name">inputText</span> components
+and <span class="object-name">selectOneMenu</span> are used to allow the user to choose their own labels
+and position. The above attributes are then applied to the progress bar in a way similar to the following:</p>
+
+<pre>
+    &lt;ice:outputProgress value="#{label.percent}"
+                        label="#{label.label}"
+                        labelComplete="#{label.labelComplete}"
+                        labelPosition="#{label.labelPosition}"/&gt;
+</pre>
+
+<p>
+The backing for this application is similar to the mode tutorial above, as we use a threaded
+approach to simulate a long running process. By default, the completed page with label selectors and
+example progress bar looks similar to:
+</p>
+
+<div class="screenshot">
+    <img src="images/label-tutorial_screenshot.png"
+       title="Progress Bar Label Example"
+         alt="Progress Bar Label Example" width="545" height="348"
+         border="1"/>
+</div>
+
+<p>Notice that by default, a simple percentage label will be displayed, and no completed label is used.
+
+<div class="demo-instruction">
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the outputProgress-label source code <a href="outputProgress-label-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>
+The appearance of these two examples is rather generic and may not suit your application. The next section will demonstrate how to
+customize the CSS for the <span class="object-name">outputProgress</span> component.
+</p>
+
+<!-- tutorial: outputProgress-style -->
+<a name="progressStyle"><h2>Customizing Progress Bar Styles</h2></a>
+
+<p>
+The progressBar styles can be customized by overriding the default CSS values. The first step is to create a new stylesheet and link to it in <span class="code-jsf">
+styleOutputProgress.jspx</span> page, as shown in the line below:
+</p>
+
+<pre>
+    &lt;link href="override.css" rel="stylesheet" type="text/css"/&gt;
+</pre>
+
+<p>
+Next the default progress bar styles should be copied into the override sheet, and changed as desired.
+The names of each overriding class are listed below:</p>
+</p>
+
+<pre>
+.iceOutProg
+.iceOutProgBg
+.iceOutProgFill
+.iceOutProgTxt
+</pre>
+
+<p>
+After this is done, you can begin customizing the styles. This demonstration changes the colors and borders of the progress bar,
+to give it a brighter sunken appearance. The result is similar to the following:
+</p>
+
+<div class="screenshot">
+    <img src="images/style-tutorial_screenshot.png"
+       title="Progress Bar Style Example"
+         alt="Progress Bar Style Example" width="478" height="174"
+         border="1"/>
+</div>
+
+<p>
+For example, to achieve the color change of the <span class="object-name">outputProgress</span> bar, the following CSS changes were used: 
+</p>
+
+<pre>
+.iceOutProgFill {
+    background-color: #FF0202;
+    background-position: top left;
+    background-repeat: repeat-x;
+    height: 25px;
+    display: block;
+}
+</pre>
+
+<p>
+Other CSS changes were done to help display the possibilities, and since all the relevant classes are accessible to the developer 
+the <span class="object-name">outputProgress</span> style can be completely changed.
+</p>
+
+<div class="demo-instruction" >
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the outputProgress-style source code <a href="outputProgress-style-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<p>The next tutorial approaches the progress bar from a different mindset. Instead of using it
+just for updating the user about a long running task, the progress bar is instead used as a status message.
+In addition, the next tutorial will look at multiple progress bars on the same page.</p>
+
+<!-- tutorial: outputProgress-multiple -->
+<a name="progressMultiple"><h2>Creating Multiple Progress Bars</h2></a>
+
+<p>
+This tutorial will look at multiple progress bars on a single page, and using the <span class="object-name">outputProgress</span>
+component to demonstrate a simple CPU monitor, something which is normally not considered for the progress bar.
+</p>
+
+<p>
+The backing beans were changed to allow for multiple progress bars by breaking up the threaded progress bar bean
+into a creatable instance, and maintaining a list of them. This list is iterated through by a simple <span class="object-name">dataTable</span>
+component at the page level, with one progress bar being displayed for each value.
+</p>
+
+<p>
+This is a fairly passive demonstration, with no user input available. As a result, the main relevant part of the code is the
+<span class="object-name">dataTable</span>, which is similar to:</p>
+
+<pre>
+    &lt;ice:dataTable value="#{multiple.progressBarList}" var="progress"&gt;
+        &lt;ice:column&gt;
+            &lt;f:facet name="header"&gt;
+                &lt;ice:outputText value="Server Location"/&gt;
+            &lt;/f:facet&gt;
+            &lt;ice:outputText value="#{progress.name}"/&gt;
+        &lt;/ice:column&gt;
+        &lt;ice:column&gt;
+            &lt;f:facet name="header"&gt;
+                &lt;ice:outputText value="CPU Load"/&gt;
+            &lt;/f:facet&gt;
+            &lt;ice:outputProgress value="#{progress.percent}"/&gt;
+        &lt;/ice:column&gt;
+    &lt;/ice:dataTable&gt;
+</pre>
+
+<p>
+As you can see, this is a fairly standard dataTable with two columns present. By constantly updating the
+percentage values of the simulated CPU load, we can demonstrate how a server monitoring suite could implement
+multiple progress bars. The finished result is similar to the following:
+</p>
+
+<div class="screenshot">
+    <img src="images/multiple-tutorial_screenshot.png"
+       title="Multiple Progress Bar Example"
+         alt="Multiple Progress Bar Example" width="837" height="510"
+         border="1"/>
+</div>
+
+<p>
+Once the list of progress bars has been created by the backing bean, a thread is started to
+randomly update the percent value of each simulated server. These updates are then pushed to
+the page, and give the illusion of actual data changing.
+</p>
+
+<div class="demo-instruction" >
+    <h3>Download the demo:</h3>
+    <ul>
+<li>Download the outputProgress-multiple source code <a href="outputProgress-multiple-tutorial.zip">here</a>.</li>
+    </ul>
+</div>
+
+<!-- links to examples -->
+<a name="exampleProgress"><h2>Examples Using Progress Bars</h2></a>
+
+<table cellpadding="1" cellspacing="0" class="examplesTable">
+    <thead>
+        <tr>
+            <td class="headerTitle">Example</td>
+            <td class="headerTitle">Source</td>
+            <td class="headerTitle">Notes</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="bodyExample">Component Showcase</td>
+            <td class="bodySource">Available in release bundles</td>
+            <td class="bodyNotes">Progress Bar example which includes mode setting and label customization.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">Webmail</td>
+            <td class="bodySource">Available on the demo site</td>
+            <td class="bodyNotes">Used to display the completed percentage of user created tasks.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">outputProgress-mode</td>
+            <td class="bodySource"><a href="outputProgress-mode-tutorial.zip" >outputProgress-mode source code</a></td>
+            <td class="bodyNotes">Allows the switching of determinate and indeterminate mode in a simple progress bar.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">outputProgress-label</td>
+            <td class="bodySource"><a href="outputProgress-label-tutorial.zip" >outputProgress-label source code</a></td>
+            <td class="bodyNotes">Example showing the customization of progress bar label text and position.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">outputProgress-style</td>
+            <td class="bodySource"><a href="outputProgress-style-tutorial.zip" >outputProgress-style source code</a></td>
+            <td class="bodyNotes">Demonstration of how easily and fully an outputProgress can be styled with custom CSS.</td>
+        </tr>
+        <tr>
+            <td class="bodyExample">outputProgress-multiple</td>
+            <td class="bodySource"><a href="outputProgress-multiple-tutorial.zip" >outputProgress-multiple source code</a></td>
+            <td class="bodyNotes">This example shows how multiple progress bars can be displayed on the same page.</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- footer section -->
+<hr/>
+<p class="tutorialFooterText">The ICEfaces Tutorial
+    <br/>
+    <a href="index.html"> Table of Contents</a>
+</p>
+
+<p><i>Copyright 2007 ICEsoft Technologies Inc. All rights reserved.</i></p>
+</body>
+</html>
