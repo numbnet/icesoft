@@ -35,7 +35,7 @@
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-            <s:decorate template="layout/display.xhtml">
+            <s:decorate id="${componentProperty.name}decId" template="layout/display.xhtml">
                 <ui:define name="label">${componentProperty.name}</ui:define>
                   <ice:inputText id="${componentProperty.name}TextId" 
                           value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
@@ -46,7 +46,7 @@
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
-            <s:decorate template="layout/display.xhtml">
+            <s:decorate id="${property.name}decId" template="layout/display.xhtml">
                 <ui:define name="label">${property.name}</ui:define>
                 <ice:inputText id="list${property.name}TextId" 
                           value="${'#'}{${listName}.${componentName}.${property.name}}"
