@@ -302,11 +302,9 @@
 ----- for datatable when cell content length exceeds-----
 */
 .iceDatTbl td span.iceOutTxt{
-	color:#000000;
-	font-family:Arial,Helvetica,sans-serif;
-	padding:2px 0px;
 	overflow: hidden;
 	display: block;
+	padding: 2px 0px;	
 }
 /* etc */
 
@@ -2280,12 +2278,21 @@ Disabled classes for the calendar controls
 .iceRowSelSelected {
     background-color: #316AC5;
 }
-.iceRowSelSelected span{
+.iceRowSelSelected span {
     color: #FFFFFF;
 }
 
+.iceRowSelSelectedMouseOver {
+    background-color: #0D4092;
+}
+
+.iceRowSelSelectedMouseOver span {
+    color: #FFFFFF;
+}
+
+
 .iceRowSelMouseOver {
-    background-color: #B6CAEA;
+    background-color: #B2CDF9;
 }
 
 .iceRowSelMouseOver span{

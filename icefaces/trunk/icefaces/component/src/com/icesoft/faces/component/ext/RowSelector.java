@@ -59,6 +59,7 @@ public class RowSelector extends UIComponentBase {
     private Boolean multiple;
     private String mouseOverClass;
     private String selectedClass;
+    private String selectedMouseOverClass;    
     private MethodBinding selectionListener;
     private MethodBinding selectionAction;
     private Integer clickedRow;
@@ -172,6 +173,17 @@ public class RowSelector extends UIComponentBase {
         this.selectedClass = selectedClass;
     }
 
+    public String getSelectedMouseOverClass() {
+        return Util.getQualifiedStyleClass(this, 
+                selectedMouseOverClass,
+                CSS_DEFAULT.ROW_SELECTION_SELECTED_MOUSE_OVER,
+                "selectedMouseOverClass");
+    }
+
+    public void setSelectedMouseOverClass(String selectedMouseOverClass) {
+        this.selectedMouseOverClass = selectedMouseOverClass;
+    }
+    
     public MethodBinding getSelectionListener() {
         return selectionListener;
     }

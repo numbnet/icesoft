@@ -303,6 +303,7 @@ public class CSS_DEFAULT {
     public static final String ROW_SELECTION_BASE = "iceRowSel";
     public static final String ROW_SELECTION_SELECTED = "Selected";
     public static final String ROW_SELECTION_MOUSE_OVER = "MouseOver";
+    public static final String ROW_SELECTION_SELECTED_MOUSE_OVER = "SelectedMouseOver";
     
     // PanelCollapsible constants
     public static final String PANEL_COLLAPSIBLE_DEFAULT_STYLE_CLASS =

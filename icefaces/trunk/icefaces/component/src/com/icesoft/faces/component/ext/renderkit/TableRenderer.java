@@ -388,10 +388,11 @@ public class TableRenderer
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getSelectedMouseOverClass() +"'");                     
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getMouseOverClass() +"'");                    
                 }
-                tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getMouseOverClass() +"'");
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'");
             }
             domContext.setCursorParent(tBody);
