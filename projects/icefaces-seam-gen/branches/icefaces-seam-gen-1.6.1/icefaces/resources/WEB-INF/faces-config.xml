@@ -6,8 +6,7 @@
 <faces-config>
 
 
-   <application>
-   <message-bundle>messages</message-bundle>
+   <application>   <message-bundle>messages</message-bundle>
       <locale-config>
     		<default-locale>en</default-locale>
       </locale-config>
