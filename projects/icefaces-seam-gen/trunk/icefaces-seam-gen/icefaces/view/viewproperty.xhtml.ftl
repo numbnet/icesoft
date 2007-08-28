@@ -31,7 +31,7 @@
                 <f:convertNumber integerOnly="true"/>
             </ice:outputText>
 <#else>
-            ${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}
+            ${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}&#160;
 </#if>
         </s:decorate>
 </#foreach>
@@ -66,7 +66,7 @@
                 <f:convertNumber integerOnly="true"/>
             </ice:outputText>
 <#else>
-            ${'#'}{${homeName}.instance.${property.name}}
+            ${'#'}{${homeName}.instance.${property.name}}&#160;
 </#if>
         </s:decorate>
 </#if>
