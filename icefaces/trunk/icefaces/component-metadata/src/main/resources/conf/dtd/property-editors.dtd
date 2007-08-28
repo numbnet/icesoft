@@ -62,16 +62,14 @@
 <!ENTITY localesDomain "com.sun.rave.propertyeditors.domains.LocalesDomain.class">
 <!ENTITY inputComponentIdsDomain "com.sun.rave.propertyeditors.domains.InputComponentIdsDomain.class">
 <!ENTITY eventComponentIdsDomain "com.sun.rave.propertyeditors.domains.EventComponentIdsDomain.class">
-<!ENTITY eventClientIdsDomain "com.sun.rave.web.ui.component.propertyeditors.EventClientIdsDomain.class">
 <!ENTITY instanceVariableDomain "com.sun.rave.propertyeditors.domains.InstanceVariableDomain.class">
 <!ENTITY fieldKeysDomain "com.sun.rave.propertyeditors.domains.FieldKeyDomain.class">
-<!ENTITY alignDomain "com.sun.rave.propertyeditors.domains.AlignDomain.class">
-<!ENTITY horizontalAlignDomain "com.sun.rave.propertyeditors.domains.HorizontalAlignDomain.class">
-<!ENTITY verticalAlignDomain "com.sun.rave.propertyeditors.domains.VerticalAlignDomain.class">
-<!ENTITY frameTargetsDomain "com.sun.rave.propertyeditors.domains.FrameTargetsDomain.class">
-<!ENTITY htmlElementNamesDomain "com.sun.rave.propertyeditors.domains.HtmlElementNamesDomain.class">
+<!ENTITY alignDomain "com.sun.rave.propertyeditors.domains.HtmlAlignDomain.class">
+<!ENTITY horizontalAlignDomain "com.sun.rave.propertyeditors.domains.HtmlHorizontalAlignDomain.class">
+<!ENTITY verticalAlignDomain "com.sun.rave.propertyeditors.domains.HtmlVerticalAlignDomain.class">
+<!ENTITY frameTargetsDomain "com.sun.rave.propertyeditors.domains.HtmlFrameTargetsDomain.class">
 <!ENTITY layoutDomain "com.sun.rave.propertyeditors.domains.LayoutDomain.class">
-<!ENTITY linkTypesDomain "com.sun.rave.propertyeditors.domains.LinkTypesDomain.class">
+<!ENTITY linkTypesDomain "com.sun.rave.propertyeditors.domains.HtmlLinkTypesDomain.class">
 <!ENTITY mimeTypesDomain "com.sun.rave.propertyeditors.domains.MimeTypesDomain.class">
 <!ENTITY charSetsDomain "com.sun.rave.propertyeditors.domains.CharacterSetsDomain.class">
 <!ENTITY dateFormatPatternsDomain "com.sun.rave.propertyeditors.domains.DateFormatPatternsDomain.class">
@@ -80,5 +78,5 @@
 <!ENTITY componentIdsDomain "com.sun.rave.propertyeditors.domains.ComponentIdsDomain.class">
 <!ENTITY htmlCommandButtonTypesDomain "com.sun.rave.propertyeditors.domains.HtmlCommandButtonTypesDomain.class">
 <!ENTITY textDirectionDomain "com.sun.rave.propertyeditors.domains.TextDirectionDomain.class">
-<!ENTITY htmlRegionShapesDomain "com.sun.rave.propertyeditors.domains.HtmlRegionShapesDomain .class">
-
+<!ENTITY htmlRegionShapesDomain "com.sun.rave.propertyeditors.domains.HtmlRegionShapesDomain.class">
+<!ENTITY timeZonesDomain "com.sun.rave.propertyeditors.domains.TimeZonesDomain.class">
