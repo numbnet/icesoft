@@ -163,8 +163,8 @@ public class MetadataXmlParser {
         return parse(url, new FacesConfigBean());
     }
     
-    public FacesConfigBean parse(File url) throws IOException, SAXException {
-        return parse(url.toURL(), new FacesConfigBean());
+    public FacesConfigBean parse(File file) throws IOException, SAXException {
+        return parse(file.toURI().toURL(), new FacesConfigBean());
     }
     
     public FacesConfigBean parse(URL url, FacesConfigBean metadata)throws IOException, SAXException{
