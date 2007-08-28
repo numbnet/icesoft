@@ -20,9 +20,9 @@
                   </td>
               </tr>
           </table>
-
-         <div class="results">
-     
+        
+        <div class="results">
+        
     		<h:outputText id="list@componentNameExistsId" value="No @componentName@ exists" 
             	rendered="#{empty @listName@.resultList}"/>
     		<ice:dataTable id="@listName@TableId" var="@componentName@"
@@ -34,10 +34,13 @@
             		#{@componentName@.id}
         		</ice:column>
         		<ice:column id="list@componentName@.name">
-           			<f:facet name="header">Name</f:facet>
-            		<s:link id="@componentName@" value="#{@componentName@.name}" view="/@pageName@.xhtml">
-                		<f:param name="@componentName@Id" value="#{@componentName@.id}"/>
-            		</s:link>
+                    <f:facet name="header">Name</f:facet>
+                    <s:link id="@componentName@" 
+                         value="#{@componentName@.name}" 
+                         view="/@pageName@.xhtml">
+                        <f:param name="@componentName@Id" 
+                                value="#{@componentName@.id}"/>
+                    </s:link>
         		</ice:column>
     		</ice:dataTable>
       </div>

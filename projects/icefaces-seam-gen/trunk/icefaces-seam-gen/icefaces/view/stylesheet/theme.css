@@ -20,13 +20,6 @@ input[type='submit'], input[type='button'] {
 	border-color: gray;
 }
 
-.prop .errors {
-	color: red;
-	text-align: left;
-    padding: .4em;
-    margin: 10px
-}
-
 .errorImg {
   vertical-align: middle;
   width: 16px;
@@ -65,8 +58,8 @@ input[type='submit'], input[type='button'] {
     font-weight: bold;
     font-family: Arial, Verdana, sans-serif;
     text-decoration: none;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .searchResults {
@@ -165,23 +158,6 @@ input[type='submit'], input[type='button'] {
 .dataScrollerTable {
   
 }
-/*
-.actionButtons a, .tableControl a {
-	font-family: Arial,sans-serif;
-	font-weight: bold;
-	color: #578BB8;
-	border: 1px solid #578BB8;
-	text-decoration: none;
-	padding: 5px;
-	margin: 5px;
-}
-.actionButtons a:hover, .tableControl a:hover {
-	color: white;
-	background-color: #578BB8;
-	margin: 5px;
-}*/
-
-
 
 h1 {
 	font-family: Arial,sans-serif;
@@ -194,6 +170,7 @@ body {
 	margin: 0px;
 	font-family: Arial,sans-serif;
 	color: #616161;
+	font-size: 11px;
 }
 
 .body {
@@ -261,27 +238,31 @@ td {
 
 .prop {
 	padding: 5px;
+        display: block;
+       
 }
 .prop .name {
 	font-weight: bold;
 	text-align: left;
-	width: 115px;
+	width: 155px;
+        float: left;
 }
 .prop .value {
-	text-align: left;
+	text-align: left;      
+}
+
+.prop .required{
+        color: red;
+        text-align: left;	
 }
 .prop .errors {
 	color: red;
 	text-align: left;
 }
-/*.value input {
-	width:190px;
-}*/
+
 .errors input {
 	border: 1px solid red;
 }
-
-
 
 .contentLayoutGridStyleLogin {
     width: 280px; /* fixed height of content demos*/  
@@ -313,27 +294,7 @@ td {
     vertical-align: top;
     text-align: left;
 }
-/* panelCollapsible Component Example */
-.pnlClpsblLnks span,
-    .pnlClpsblLnks.nodec, .pnlClpsblLnks:link, .pnlClpsblLnks:hover, .pnlClpsblLnks:visited {
-    color: #004080;
-    text-decoration: underline;
-}
-.pnlClpsblDemoHdr span, .pnlClpsblDemoHdr-dis span,
-    .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span{
-    padding-left: 18px;   
-}
-.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div,
-    .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
-    background-repeat: no-repeat;
-    background-position: left top;
-}
-.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div{
-    background-image: url( "../img/arrowDown.gif" );
-}
-.pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
-    background-image: url( "../img/arrowUp.gif" );
-}
+
 .tabbedContainerHeaderControl {
     color: #ffffff;
     vertical-align: middle;

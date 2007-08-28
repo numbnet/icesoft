@@ -22,7 +22,7 @@
               </tr>
           </table>
 	
-           <s:decorate id="nameDecorationId" template="layout/edit.xhtml">
+            <s:decorate id="nameDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">Name</ui:define>
                 <h:inputText id="name" required="true"
                              value="#{@homeName@.instance.name}"/>
@@ -31,18 +31,23 @@
             <div style="clear:both"/>
        </ice:panelGroup>
 
-       <div class="actionButtons">
-            <h:commandButton id="edit@homeName@save" value="Save" 
-                action="#{@homeName@.persist}"
-                rendered="#{!@homeName@.managed}"/>     			  
-            <h:commandButton id="edit@homeName@update" value="Save" 
-                action="#{@homeName@.update}"
-                rendered="#{@homeName@.managed}"/>    			  
-            <h:commandButton id="edit@homeName@delete" value="Delete" 
-                action="#{@homeName@.remove}"
-                rendered="#{@homeName@.managed}"/>
-            <s:button id="edit@homeName@done" value="Done"
-                propagation="end" view="/@masterPageName@.xhtml"/>			  
+        <div class="actionButtons">
+            <h:commandButton id="edit@homeName@save" 
+                          value="Save" 
+                         action="#{@homeName@.persist}"
+                       rendered="#{!@homeName@.managed}"/>                   
+            <h:commandButton id="edit@homeName@update" 
+                          value="Save" 
+                         action="#{@homeName@.update}"
+                       rendered="#{@homeName@.managed}"/>                  
+            <h:commandButton id="edit@homeName@delete" 
+                          value="Delete" 
+                         action="#{@homeName@.remove}"
+                       rendered="#{@homeName@.managed}"/>
+            <s:button propagation="end" 
+                               id="edit@homeName@done" 
+                            value="Done"
+                             view="/@masterPageName@.xhtml"/>
         </div>
     </ice:form>
     

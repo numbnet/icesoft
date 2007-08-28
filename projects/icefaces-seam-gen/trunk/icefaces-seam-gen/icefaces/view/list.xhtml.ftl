@@ -29,33 +29,35 @@
               </tr>
          </table>	
          <ice:panelGroup id="listPanelGroup${entityName}Id" styleClass="edit">
-		 <ice:panelGrid id="listPanelGrid${entityName}Id" columns="2" rowClasses="prop" columnClasses="name,value">
+		
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#if c2j.isComponent(property)>
 <#foreach componentProperty in property.value.propertyIterator>
 <#if componentProperty.value.typeName == "string">
-	
-                  <h:outputLabel for="${componentProperty.name}">${componentProperty.name}</h:outputLabel>
+            <s:decorate id="${componentProperty.name}decId" template="layout/display.xhtml">
+                <ui:define name="label">${componentProperty.name}</ui:define>
                   <ice:inputText id="${componentProperty.name}TextId" 
                           value="${'#'}{${listName}.${componentName}.${property.name}.${componentProperty.name}}"
-				partialSubmit="true"/>
-	         
+				  partialSubmit="true"/>
+            </s:decorate>
+
 </#if>
 </#foreach>
 <#else>
 <#if property.value.typeName == "string">
-	
-                <h:outputLabel for="${property.name}">${property.name}</h:outputLabel>
+            <s:decorate id="${property.name}decId" template="layout/display.xhtml">
+                <ui:define name="label">${property.name}</ui:define>
                 <ice:inputText id="list${property.name}TextId" 
                           value="${'#'}{${listName}.${componentName}.${property.name}}"
 				  partialSubmit="true"/>
-	
+            </s:decorate>
+
 </#if>
 </#if>
 </#if>
 </#foreach>
-            </ice:panelGrid>
+          
    
 	  </ice:panelGroup>
   

@@ -27,18 +27,18 @@
 
                     <div class="dialog">
                         <h:panelGrid id="loginPanelGridId" columns="2" rowClasses="prop" columnClasses="name,value">
-                            <h:outputLabel for="username">Username</h:outputLabel>
-                            <h:inputText id="username" 
-                                      value="#{identity.username}"/>
-                            <h:outputLabel for="password">Password</h:outputLabel>
-                            <h:inputSecret id="password" 
-                                        value="#{identity.password}"/>
-                            <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
-                            <h:selectBooleanCheckbox id="rememberMe" 
-                                                  value="#{identity.rememberMe}"/>
-                        </h:panelGrid>
-                    </div>
-
+                    <h:outputLabel for="username">Username</h:outputLabel>
+                    <h:inputText id="username" 
+                              value="#{identity.username}"/>
+                    <h:outputLabel for="password">Password</h:outputLabel>
+                    <h:inputSecret id="password" 
+                                value="#{identity.password}"/>
+                    <h:outputLabel for="rememberMe">Remember me</h:outputLabel>
+                    <h:selectBooleanCheckbox id="rememberMe" 
+                                          value="#{identity.rememberMe}"/>
+                </h:panelGrid>
+            </div>
+  
       </ice:panelGroup>
          <div class="actionButtons">
             <h:commandButton id="loginButtonId" value="Login" action="#{identity.login}"/>

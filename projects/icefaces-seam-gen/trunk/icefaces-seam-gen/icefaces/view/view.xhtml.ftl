@@ -27,8 +27,6 @@
               </tr>
           </table>
       
-      <ice:panelGroup id="viewPanelGroup2${homeName}Id" styleClass="prop">
-          <ice:panelGrid columns="2" columnClasses="name,value">
 <#foreach property in pojo.allPropertiesIterator>
 <#if !c2h.isCollection(property) && !c2h.isManyToOne(property)>
 <#include "viewproperty.xhtml.ftl">
@@ -36,8 +34,6 @@
 </#foreach>
 
           <div style="clear:both"/>
-	 </ice:panelGrid>
-     </ice:panelGroup>
  
 
     <div id="view${editPageName}searchButtons" class="actionButtons">      
