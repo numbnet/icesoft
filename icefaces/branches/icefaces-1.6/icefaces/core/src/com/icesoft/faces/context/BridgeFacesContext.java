@@ -36,6 +36,7 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -249,6 +250,11 @@ public class BridgeFacesContext extends FacesContext {
     }
 
     public UIViewRoot getViewRoot() {
+        if ( null != externalContext.getRequestParameterMap()
+             .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT) ) {
+            //ViewRoot and attributes being cached interferes with PAGE scope
+            return null;
+        }
         if (null == viewRoot) {
             Map contextServletTable = D2DViewHandler.getContextServletTable(this);
             if (null != contextServletTable) {
