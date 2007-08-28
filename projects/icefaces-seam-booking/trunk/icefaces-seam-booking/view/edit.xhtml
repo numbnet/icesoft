@@ -5,13 +5,15 @@
                 xmlns:s="http://jboss.com/products/seam/taglib">
                  
     <div class="entry">
-
-      <s:label styleClass="label #{invalid?'errors':''}"> 
-                <ui:insert name="label"/>
-            </s:label>
+        <s:label styleClass="label #{invalid?'errors':''}">
+            <ui:insert name="label"/>
+            <s:span styleClass="required" rendered="#{required}">*</s:span>
+        </s:label>
+        <span class="input #{invalid?'errors':''}">
             <s:validateAll>
-                <ui:insert name="valueInput"/>
+                <ui:insert/>
             </s:validateAll>
+        </span>
         <s:message styleClass="error errors"/>
     </div>
     

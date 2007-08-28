@@ -1,4 +1,4 @@
-//$Id: LoginTest.java,v 1.28 2007/06/20 22:12:24 gavin Exp $
+//$Id: LoginTest.java,v 1.29 2007/07/16 06:45:47 gavin Exp $
 package org.jboss.seam.example.booking.test;
 
 import org.jboss.seam.core.Manager;
@@ -64,7 +64,7 @@ public class LoginTest extends SeamTest
          @Override
          protected void invokeApplication()
          {
-            invokeMethod("#{identity.login}");
+            invokeAction("#{identity.login}");
          }
 
          @Override

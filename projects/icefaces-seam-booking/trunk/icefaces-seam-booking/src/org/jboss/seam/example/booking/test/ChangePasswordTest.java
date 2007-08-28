@@ -1,4 +1,4 @@
-//$Id: ChangePasswordTest.java,v 1.16 2007/02/13 04:00:57 sbryzak2 Exp $
+//$Id: ChangePasswordTest.java,v 1.17 2007/07/16 06:45:47 gavin Exp $
 package org.jboss.seam.example.booking.test;
 
 import org.jboss.seam.contexts.Contexts;
@@ -61,7 +61,7 @@ public class ChangePasswordTest extends SeamTest
          @Override
          protected void invokeApplication()
          {
-            assert invokeMethod("#{changePassword.changePassword}")==null;
+            assert invokeAction("#{changePassword.changePassword}")==null;
          }
 
          @Override

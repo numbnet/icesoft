@@ -1,6 +1,6 @@
 Icefaces-Seam Booking Example
 ====================
-This example demonstrates the use of Icefaces with Seam in a Java EE 5 
+This example demonstrates the use of Icefaces-1.6.1 with Seam in a Java EE 5 
 environment and how, with very little change, a Seam application can become 
 ajax-enhanced with ICEfaces
 
@@ -15,6 +15,8 @@ int the  OPTIONAL DEPENDENCIES FOR USING SEAM section:-
 		<include name="backport-util*.jar" if="icefaces.lib" />
 		<include name="commons-fileupload*.jar" if="icefaces.lib" />
 	</fileset>
+
+***Don't forget to ensure these jars are included in jboss-seam/lib 
 	
 and in the <target name="war" depends="compile">
 for <copy todir="${war.dir}/WEB-INF/lib">

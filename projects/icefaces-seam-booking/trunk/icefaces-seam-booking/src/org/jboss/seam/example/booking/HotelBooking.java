@@ -14,7 +14,7 @@ public interface HotelBooking
    public boolean isBookingValid();
    
    public void confirm();
-   
+
    public void cancel();
    
    public void destroy();

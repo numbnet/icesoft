@@ -6,41 +6,39 @@
     
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">Name:</ui:define>
-         <ui:define name="inputField">#{hotel.name}</ui:define>
+		#{hotel.name}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">Address:</ui:define>
-		<ui:define name="inputField">#{hotel.address}</ui:define>
+		#{hotel.address}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">City:</ui:define>
-		<ui:define name="inputField">#{hotel.city}</ui:define>
+		#{hotel.city}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">State:</ui:define>
-		<ui:define name="inputField">#{hotel.state}</ui:define>
+		#{hotel.state}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">Zip:</ui:define>
-		<ui:define name="inputField">#{hotel.zip}</ui:define>
+		#{hotel.zip}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">Country:</ui:define>
-		<ui:define name="inputField">#{hotel.country}</ui:define>
+		#{hotel.country}
 	</s:decorate>
 	
     <s:decorate template="display.xhtml">             
 		<ui:define name="label">Nightly rate:</ui:define>
-        <ui:define name="inputField">
-		 <h:outputText value="#{hotel.name}">
+		<h:outputText value="#{hotel.name}">
 			<f:convertNumber type="currency" currencySymbol="$"/>
-		 </h:outputText>
-        </ui:define>
+		</h:outputText>
 	</s:decorate>
 	  
 </ui:composition>
