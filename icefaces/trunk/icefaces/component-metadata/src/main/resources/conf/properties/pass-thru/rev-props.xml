@@ -42,14 +42,10 @@
     <property-name>rev</property-name>
     <property-extension>
         <category>ADVANCED</category>
-        <editor-class>
-            &chooseOneReferenceDataEditor;
-        </editor-class>
+               <editor-class>&selectOneDomainEditor;</editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
-            <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.LINK_TYPES
-            </expression>
+            <name>&domainClass;</name>
+            <expression>&linkTypesDomain;</expression>
         </named-value>
     </property-extension>
 </property>

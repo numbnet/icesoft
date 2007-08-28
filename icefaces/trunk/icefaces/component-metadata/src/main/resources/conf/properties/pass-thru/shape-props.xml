@@ -42,14 +42,10 @@
     <property-name>shape</property-name>
     <property-extension>
         <category>ADVANCED</category>
-        <editor-class>
-            &chooseOneReferenceDataEditor;
-        </editor-class>
-        <named-value>
-            <name>referenceDataDefiner</name>
-            <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.REGION_SHAPES
-            </expression>
-        </named-value>
-    </property-extension>
+        <editor-class>&selectOneDomainEditor;</editor-class>
+              <named-value>
+                  <name>&domainClass;</name>
+                  <expression>&htmlRegionShapesDomain;</expression>
+              </named-value>
+          </property-extension>
 </property>

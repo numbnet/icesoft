@@ -374,7 +374,7 @@
   <!ENTITY panelCollapsible-component SYSTEM "custom/panelCollapsible-component.xml">
   <!ENTITY panelCollapsible-renderer SYSTEM "custom/panelCollapsible-renderer.xml">
 
-<!ENTITY ice-cust-effect-props SYSTEM "ice_cust_properties/cust-effect-props.xml">
+  <!ENTITY ice-cust-effect-props SYSTEM "ice_cust_properties/cust-effect-props.xml">
   <!ENTITY effect-component SYSTEM "custom/effect-component.xml">
   <!ENTITY effect-renderer SYSTEM "custom/effect-renderer.xml">          
   

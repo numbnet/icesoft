@@ -56,16 +56,15 @@
         specified, or not a valid value, the default value is "submit".
     </description>  
     <property-name>type</property-name>
-    <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
+            <name>&domainClass;</name>
             <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.COMMAND_BUTTON_TYPES
+                &mimeTypesDomain;
             </expression>
         </named-value>
     </property-extension>
