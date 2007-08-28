@@ -544,9 +544,11 @@
     		      <include name="commons-digester.jar" if="icefaces.property"/> 
     	      </fileset> 
           </copy>  	
-            <copy todir="${project.home}/bootstrap" overwrite="true">
-              <fileset dir="../bootstrap" />
-           </copy>
+        <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
+          <copy todir="${project.home}/bootstrap" overwrite="true">
+            <fileset dir="../bootstrap" />
+          </copy>
+        
     </target>
 	
 	<target name="file-copy-war" if="project.war">
