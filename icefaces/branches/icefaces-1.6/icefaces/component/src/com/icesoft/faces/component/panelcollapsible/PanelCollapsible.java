@@ -52,7 +52,7 @@ public class PanelCollapsible extends UICommand {
                 return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
             }
         }
-        Object value = getAttributes().get(getClientId(getFacesContext()));
+        Object value = getAttributes().get(getMatureClientId());
         if (value != null) {
         	return ((Boolean)value).booleanValue();
         }
@@ -78,7 +78,8 @@ public class PanelCollapsible extends UICommand {
     	//so to make it work with any UIData type of component
     	//the state need to be put inside the map belongs to
     	//this component instance.
-        getAttributes().put(getClientId(getFacesContext()), Boolean.valueOf(expanded));
+  
+        getAttributes().put(getMatureClientId(), Boolean.valueOf(expanded));
     }
     
     public String getStyle() {
@@ -288,5 +289,21 @@ public class PanelCollapsible extends UICommand {
         enabledOnUserRole = (String)state[4];
         renderedOnUserRole = (String)state[5];
         toggleOnClick = (Boolean)state[6];        
+    }
+    
+    //At the time of the creation of the component both JSP and facelets
+    //returns incomplete client-id. So we want to keep the initial state of the 
+    //component and later we want to replace it with the client-id so when this 
+    //component is inside the dataTable it work for each row properly.
+    private String getMatureClientId() {
+        String clientId = getClientId(getFacesContext());
+        if (clientId != null && clientId.indexOf(':') >= 0) {
+            if (getAttributes().containsKey("expandedState")) {
+                getAttributes().put(clientId, getAttributes().get("expandedState"));
+                getAttributes().remove("expandedState");
+            }
+            return clientId;
+        }
+        return "expandedState";
     }
 }
