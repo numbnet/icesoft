@@ -401,6 +401,8 @@ public class MenuItem extends MenuItemBase {
         if (styleClass != null) {
             return parentClass + disSuffix + " " +styleClass + subClass + disSuffix; 
         }
-        return parentClass + disSuffix;
+        
+        ValueBinding vb = getValueBinding("styleClass");
+        return vb != null ? parentClass + disSuffix + " " + (String) vb.getValue(getFacesContext()) + subClass + disSuffix : parentClass + disSuffix;
     }
 }
