@@ -36,6 +36,10 @@
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     };
 
+    This.Close = function(response) {
+        response.close();
+    };
+
     This.BadResponse = function(request) {
         return request.isComplete() && !request.isResponseValid();
     }
@@ -130,13 +134,19 @@
 
         sendDisposeViews: function() {
             try {
-                this.channel.postAsynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), Connection.FormPost);
+                this.channel.postAsynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                    Connection.FormPost(request);
+                    request.close();
+                });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);
             }
         },
 
         shutdown: function() {
+            //shutdown once
+            this.shutdown = Function.NOOP;
+            //avoid sending XMLHTTP requests that might create new sessions on the server
             this.send = Function.NOOP;
             [ this.onSendListeners, this.onReceiveListeners, this.onServerErrorListeners, this.connectionDownListeners ].eachWithGuard(function(listeners) {
                 listeners.clear();

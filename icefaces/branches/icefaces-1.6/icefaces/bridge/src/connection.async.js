@@ -142,9 +142,7 @@
                         this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery().asURIEncodedString(), function(request) {
                             Connection.FormPost(request);
                             request.on(Connection.Receive, this.receiveCallback);
-                            request.on(Connection.Receive, function(response) {
-                                response.close();
-                            });
+                            request.on(Connection.Receive, Connection.Close);
                         }.bind(this));
                         this.updatedViews.saveValue(views.complement(viewIdentifiers()).join(' '));
                     }
@@ -181,6 +179,7 @@
                 Connection.FormPost(request);
                 request.on(Connection.Receive, this.receiveCallback);
                 request.on(Connection.ServerError, this.serverErrorCallback);
+                request.on(Connection.Receive, Connection.Close);
                 this.onSendListeners.broadcast(request);
             }.bind(this));
         },
@@ -211,7 +210,10 @@
 
         sendDisposeViews: function() {
             try {
-                this.sendChannel.postAsynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), Connection.FormPost);
+                this.sendChannel.postAsynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                    Connection.FormPost(request);
+                    request.close();
+                });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);
             }
