@@ -52,15 +52,16 @@ public class SendUpdates implements Server {
                 }
             }
 
+            final Command command;
             if (commandList.size() > 1) {
                 Command[] commands = (Command[]) commandList.toArray(new Command[commandList.size()]);
-                new Macro(commands).serializeTo(writer);
+                command = new Macro(commands);
             } else if (commandList.size() == 1) {
-                Command command = (Command) commandList.get(0);
-                command.serializeTo(writer);
+                command = (Command) commandList.get(0);
             } else {
-                NOOP.serializeTo(writer);
+                command = NOOP;
             }
+            command.serializeTo(writer);
         }
     }
 }

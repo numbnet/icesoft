@@ -22,7 +22,7 @@ public class ServeJSCode implements Server {
         final InputStream in = loader.getResourceAsStream(Package + file);
 
         if (in == null) {
-            request.respondWith(NotFoundHandler.HANDLER);
+            request.respondWith(new NotFoundHandler("Cannot find JS file for " + path));
         } else {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {

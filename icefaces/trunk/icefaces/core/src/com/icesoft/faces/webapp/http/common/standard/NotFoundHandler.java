@@ -1,12 +1,24 @@
 package com.icesoft.faces.webapp.http.common.standard;
 
 import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
 
-public class NotFoundHandler implements ResponseHandler {
-    public static final NotFoundHandler HANDLER = new NotFoundHandler();
+import java.io.IOException;
+import java.io.Writer;
 
-    public void respond(Response response) {
+public class NotFoundHandler extends FixedSizeContentHandler {
+    private String message;
+
+    public NotFoundHandler(String message) {
+        super("text/plain", "UTF-8");
+        this.message = message;
+    }
+
+    public void writeTo(Writer writer) throws IOException {
+        writer.write(message);
+    }
+
+    public void respond(Response response) throws Exception {
         response.setStatus(404);
+        super.respond(response);
     }
 }

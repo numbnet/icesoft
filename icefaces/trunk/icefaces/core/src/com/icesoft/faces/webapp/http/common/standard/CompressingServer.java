@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 
+//todo: handle fixed size responses
 public class CompressingServer implements Server {
     private Server server;
 

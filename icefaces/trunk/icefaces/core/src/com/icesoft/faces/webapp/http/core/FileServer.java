@@ -6,10 +6,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.PrintWriter;
 import java.util.Date;
 
 public class FileServer implements Server {
@@ -36,15 +36,7 @@ public class FileServer implements Server {
                 }
             });
         } else {
-            request.respondWith(new ResponseHandler() {
-                public void respond(Response response) throws Exception {
-                    response.setStatus(404);
-                    response.setHeader("Content-Type", "text/plain");
-                    PrintWriter writer = new PrintWriter(response.writeBody(), true);
-                    writer.print("Cannot find file ");
-                    writer.println(file);
-                }
-            });
+            request.respondWith(new NotFoundHandler("Cannot find file " + file));
         }
     }
 

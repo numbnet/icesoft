@@ -20,7 +20,7 @@ public class PathDispatcherServer implements Server {
         }
 
         if (!matched) {
-            request.respondWith(NotFoundHandler.HANDLER);
+            request.respondWith(new NotFoundHandler("Could not find resource at " + path));
         }
     }
 

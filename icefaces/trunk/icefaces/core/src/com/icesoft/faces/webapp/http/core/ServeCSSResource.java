@@ -25,7 +25,7 @@ public class ServeCSSResource implements Server {
         final InputStream in = loader.getResourceAsStream(Package + file);
 
         if (in == null) {
-            request.respondWith(NotFoundHandler.HANDLER);
+            request.respondWith(new NotFoundHandler("Cannot find CSS file for " + path));
         } else {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {
