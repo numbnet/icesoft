@@ -375,9 +375,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.moveBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2">
+            <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/>
+                    <ice:inputText value="#{effects.sampleData}"/><br />
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -409,9 +409,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.appearFadeBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2">
+            <ice:panelGrid columns="2" width="100%" >
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/>
+                    <ice:inputText value="#{effects.sampleData}"/><br />
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -443,9 +443,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.highlightBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2">
+            <ice:panelGrid columns="2" width="100%" >
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/>
+                    <ice:inputText value="#{effects.sampleData}"/><br />
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -475,9 +475,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.pulsateBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2">
+            <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/>
+                    <ice:inputText value="#{effects.sampleData}"/><br />
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
