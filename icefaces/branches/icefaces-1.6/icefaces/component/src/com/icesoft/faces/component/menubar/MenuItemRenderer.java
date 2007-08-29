@@ -301,7 +301,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         if (menuItem.getChildCount() > 0) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
-            subImg.setAttribute(HTML.SRC_ATTR, getSubMenuImage(menuBar));
+            subImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
                                 menuBar.getSubMenuIndicatorStyleClass());
@@ -359,7 +359,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         if (menuItem.getChildCount() > 0) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
-            subImg.setAttribute(HTML.SRC_ATTR, getSubMenuImage(menuBar));
+            subImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getSubMenuImage(menuBar)));
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
                                 menuBar.getSubMenuIndicatorStyleClass());
