@@ -686,8 +686,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if ((customPath = menuComponent.getImageDir()) != null) {
             return customPath + SUBMENU_IMAGE;
         }
-        return CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
-               DEFAULT_IMAGEDIR + SUBMENU_IMAGE);
+        return DEFAULT_IMAGEDIR + SUBMENU_IMAGE;
     }
 
     protected String getTextValue(UIComponent component) {

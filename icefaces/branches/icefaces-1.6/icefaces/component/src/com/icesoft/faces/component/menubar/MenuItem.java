@@ -119,7 +119,7 @@ public class MenuItem extends MenuItemBase {
         if (vb != null) {
             return (String) vb.getValue(getFacesContext());
         }
-        return CoreUtils.resolveResourceURL(getFacesContext(), DEFAULT_ICON);
+        return DEFAULT_ICON;
     }
 
     /**
