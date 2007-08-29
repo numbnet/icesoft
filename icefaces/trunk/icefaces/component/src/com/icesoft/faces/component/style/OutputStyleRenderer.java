@@ -143,7 +143,9 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                     useragent = ((OutputStyle)uiComponent).getUserAgent();
                 }
                 if(useragent == null){
-                    log.warn("Not able to find user agent. Returning default");
+                	if (log.isDebugEnabled()) {
+                		log.debug("Not able to find user agent. Returning default");
+                	}
                     return DEFAULT_TYPE;
                 }
                 if(((OutputStyle)uiComponent).getUserAgent() == null){
