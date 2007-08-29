@@ -32,9 +32,7 @@ run> ant deploy
 
 this deploys the ear to your specified server....
 
-for jboss-seam1.2.1.GA and jsf1.2 libs (NOTE**had this working but now it's being stubborn, so
-	bear with me while I get this working again!  It's just configuration & packaging issues & fixing the build
-       script, just need the time to fix it up)  with JBoss AS 4.2.0.GA you choose
+for jboss-seam1.2.1.GA and jsf1.2 libs ( with JBoss AS 4.2.0.GA or 4.2.1.GA you choose
 >ant build-Seam1.2WithJsf1.2
 >ant deploy
 
