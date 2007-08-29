@@ -47,6 +47,7 @@
  */
 package com.icesoft.faces.component.selectinputdate;
 
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
@@ -191,7 +192,7 @@ public class SelectInputDateRenderer
                                       selectInputDate.getCalendarInputClass());
                 dateText.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 dateText.setAttribute("onkeypress", this.ICESUBMIT);
-                dateText.setAttribute(HTML.ONBLUR_ATTR, this.ICESUBMITPARTIAL);
+                dateText.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');"+ this.ICESUBMITPARTIAL);
                 if (selectInputDate.getAutocomplete() != null) {
                     dateText.setAttribute("autocomplete",
                                           selectInputDate.getAutocomplete());
@@ -1127,7 +1128,7 @@ public class SelectInputDateRenderer
         }
         String inputTextDateId = component.getClientId(facesContext) +
         SelectInputDate.CALENDAR_INPUTTEXT;
-        JavascriptContext.addJavascriptCall(facesContext, "Ice.Focus.setFocus('"+ inputTextDateId +"');");
+        ((BridgeFacesContext)facesContext).setFocusId(inputTextDateId);
         CustomComponentUtils.decodeUIInput(facesContext, component);
         // not a navigation event
         dateSelect.setNavEvent(false);
