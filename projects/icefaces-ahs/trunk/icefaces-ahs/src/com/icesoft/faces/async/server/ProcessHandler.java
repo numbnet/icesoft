@@ -113,6 +113,7 @@ import org.apache.commons.logging.LogFactory;
 public class ProcessHandler
 extends AbstractHandler
 implements Handler, Runnable {
+    private static final String ICEFACES_ID = "ice.session";
     private static final String UPDATED_VIEWS_START_TAG = "<updated-views>";
     private static final String UPDATED_VIEWS_END_TAG = "</updated-views>";
 
@@ -152,7 +153,7 @@ implements Handler, Runnable {
     }
 
     public void run() {
-        HttpResponse _httpResponse = null;
+        HttpResponse _httpResponse;
         if (httpConnection.hasException()) {
             _httpResponse = handleException();
         } else {
@@ -484,8 +485,8 @@ implements Handler, Runnable {
     }
 
     private void addExtensionHeaderFields() {
-        HttpRequest _httpRequest =
-            httpConnection.getTransaction().getHttpRequest();
+//        HttpRequest _httpRequest =
+//            httpConnection.getTransaction().getHttpRequest();
         HttpResponse _httpResponse =
             httpConnection.getTransaction().getHttpResponse();
         if (_httpResponse.isSuccessful()) {
@@ -621,7 +622,7 @@ implements Handler, Runnable {
         if (_httpRequest.getMethod().equalsIgnoreCase(HttpRequest.GET)) {
             extractICEfacesID(
                 httpConnection.getTransaction().getHttpRequest().
-                    getParameter("icefacesID"));
+                    getParameter(ICEFACES_ID));
         } else if (
             _httpRequest.getMethod().equalsIgnoreCase(HttpRequest.POST)) {
 
@@ -644,7 +645,7 @@ implements Handler, Runnable {
             final int _tokenCount = _tokens.countTokens();
             for (int i = 0; i < _tokenCount; i++) {
                 final String _token = _tokens.nextToken();
-                if (_token.startsWith("icefacesID")) {
+                if (_token.startsWith(ICEFACES_ID)) {
                     extractICEfacesID(
                         _token.substring(_token.indexOf("=") + 1));
                 }
@@ -711,10 +712,11 @@ implements Handler, Runnable {
             _updates.append(' ');
         }
         return
-            new String(
+            (
                 UPDATED_VIEWS_START_TAG +
                     _updates.toString() +
-                UPDATED_VIEWS_END_TAG).getBytes();
+                UPDATED_VIEWS_END_TAG
+            ).getBytes();
     }
 
     private String getSequenceNumberValue() {
