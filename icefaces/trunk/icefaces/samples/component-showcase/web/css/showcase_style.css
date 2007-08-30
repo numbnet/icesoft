@@ -1185,6 +1185,7 @@ em {
     .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
     background-repeat: no-repeat;
     background-position: left top;
+    height: 17px;
 }
 .pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div{
     background-image: url( "../images/panelCollapsible/arrowDown.gif" );
