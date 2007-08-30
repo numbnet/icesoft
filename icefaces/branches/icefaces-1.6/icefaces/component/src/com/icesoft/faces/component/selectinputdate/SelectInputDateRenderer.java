@@ -1128,7 +1128,9 @@ public class SelectInputDateRenderer
         }
         String inputTextDateId = component.getClientId(facesContext) +
         SelectInputDate.CALENDAR_INPUTTEXT;
-        ((BridgeFacesContext)facesContext).setFocusId(inputTextDateId);
+        if (requestParameterMap.containsKey(inputTextDateId)) {
+            ((BridgeFacesContext)facesContext).setFocusId(inputTextDateId);
+        }
         CustomComponentUtils.decodeUIInput(facesContext, component);
         // not a navigation event
         dateSelect.setNavEvent(false);
