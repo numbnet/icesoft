@@ -281,7 +281,9 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.SUMMARY_ATTR,"This table contains a Calendar where a date can be selected.");
                 calendarDiv.appendChild(table);
                 Text iframe = domContext.createTextNode("<!--[if lte IE"+
-                        " 6.5]><iframe class=\"iceSelInpDateIFrameFix\"></iframe><![endif]-->");
+                        " 6.5]><iframe src='"+ CoreUtils.resolveResourceURL
+                        (FacesContext.getCurrentInstance(),"/xmlhttp/blank")+ 
+                        "' class=\"iceSelInpDateIFrameFix\"></iframe><![endif]-->");
                 calendarDiv.appendChild(iframe);                 
                 root.appendChild(calendarDiv);
 
