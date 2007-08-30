@@ -5,7 +5,7 @@ long-lived asynchronous XMLHttpRequests in a scalable fashion.
 
 Quick Start
 
-1. Edit the build.properties file by specifying the path to the ICEfaces 1.6 
+1. Edit the build.properties file by specifying the path to the ICEfaces 1.6.1 
    installation directory using the icefaces.dir property.
 
 2. Build the ICEfaces Asynchronous HTTP Server library and application by
