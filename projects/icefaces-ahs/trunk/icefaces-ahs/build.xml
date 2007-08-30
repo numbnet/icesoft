@@ -89,6 +89,8 @@
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
         
+        <echo message="${icefaces.dir}"/>
+        
         <zip destfile="${src.bundle.file}">
             <zipfileset dir="." prefix="${src.bundle.name}/${ant.project.name}">
                 <!-- include name="**/bin/**"/ -->
