@@ -583,6 +583,12 @@ b.rtop b.r4, b.rbottom b.r4{
 	clear:both;
 }
 
+.chatLineMobile{
+        border-top:1px dotted #BEBEBE;
+        margin-bottom:8px;
+        clear:both;
+}
+
 .chatName{
 	width:70%;
 	font-weight: bold;
@@ -599,6 +605,14 @@ b.rtop b.r4, b.rbottom b.r4{
 	color:#666666;
 	text-align:right;
 	float:left;
+}
+
+.chatTimeMobile{
+        font-weight:normal;
+        font-size:9px;
+        color:#666666;
+        text-align:right;
+        float:left;
 }
 
 .chatText{

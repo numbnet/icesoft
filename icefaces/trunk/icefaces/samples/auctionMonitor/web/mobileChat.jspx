@@ -38,6 +38,7 @@
 <html>
 <head><title>Auction Monitor - Mobile Chat</title>
     <ice:outputStyle rel="stylesheet" type="text/css" href="auction_styles.css"/>
+<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0;" />
 </head>
 
 <body bgcolor="white">
@@ -102,12 +103,12 @@
                                    cellspacing="0" cellpadding="0"
                                    style="width: 700px;">
                         <ice:column>
-                            <div class="chatLine">
+                            <div class="chatLineMobile">
                                 <div class="chatName"><ice:outputText
                                         value="#{page.sender}" escape="false"/>
                                 </div>
 
-                                <div class="chatTime"><ice:outputText
+                                <div class="chatTimeMobile"><ice:outputText
                                         value="#{page.timestamp}"
                                         escape="false"/></div>
 
