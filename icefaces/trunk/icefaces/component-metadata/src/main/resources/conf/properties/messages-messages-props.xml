@@ -97,12 +97,12 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &selectOneDomainEditor;
+            &chooseOneReferenceDataEditor;
         </editor-class>
         <named-value>
-            <name>&domainClass;</name>
+            <name>referenceDataDefiner</name>
             <expression>
-                &layoutDomain;
+                com.sun.jsfcl.std.reference.ReferenceDataManager.MESSAGES_LAYOUTS
             </expression>
         </named-value>
     </property-extension>

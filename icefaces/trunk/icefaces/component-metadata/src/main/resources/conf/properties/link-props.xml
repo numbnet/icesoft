@@ -55,18 +55,17 @@
 		be displayed.
     </description>
     <property-name>target</property-name>
-      <property-extension>
-        <category>APPEARANCE</category>
+    <property-extension>
         <editor-class>
-           &selectOneDomainEditor;
+            &chooseOneReferenceDataEditor;
         </editor-class>
         <named-value>
-          <name>&domainClass;</name>
-          <expression>
-            &frameTargetsDomain;
-          </expression>
+            <name>referenceDataDefiner</name>
+            <expression>
+                com.sun.jsfcl.std.reference.ReferenceDataManager.FRAME_TARGETS
+            </expression>
         </named-value>
-      </property-extension>
+    </property-extension>
 </property>
 
 
@@ -75,16 +74,16 @@
 		The content type of the resource designated by this hyperlink.
     </description>
     <property-name>type</property-name>
-      <property-extension>
+    <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-         &selectOneDomainEditor;
+            &chooseOneReferenceDataEditor;
         </editor-class>
         <named-value>
-          <name>&domainClass;</name>
-          <expression>
-            &mimeTypesDomain;
-          </expression>
+            <name>referenceDataDefiner</name>
+            <expression>
+                com.sun.jsfcl.std.reference.ReferenceDataManager.MEDIA_TYPES
+            </expression>
         </named-value>
-      </property-extension>
+    </property-extension>
 </property>

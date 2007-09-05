@@ -32,18 +32,22 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-
+  
 <property>
-    <description>
-        The language code of the resource designated by this hyperlink.
-    </description>
+	<description>
+		The language code of the resource designated by this hyperlink.
+	</description>
     <property-name>hreflang</property-name>
     <property-extension>
         <category>ADVANCED</category>
-        <editor-class>&selectOneDomainEditor;</editor-class>
+        <editor-class>
+            &chooseOneReferenceDataEditor;
+        </editor-class>
         <named-value>
-            <name>&domainClass;</name>
-            <expression>&languagesDomain;</expression>
+            <name>referenceDataDefiner</name>
+            <expression>
+                com.sun.jsfcl.std.reference.ReferenceDataManager.LANGUAGE_CODES
+            </expression>
         </named-value>
     </property-extension>
 </property>

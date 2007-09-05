@@ -42,7 +42,7 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &stringEditor;
+            &stringEditorWithShortDescription;
         </editor-class>
     </property-extension>
 </property>

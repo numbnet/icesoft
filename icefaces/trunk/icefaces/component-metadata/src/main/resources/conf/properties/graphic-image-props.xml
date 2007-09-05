@@ -68,6 +68,15 @@
     <property-name>usemap</property-name>
     <property-extension>
         <category>ADVANCED</category>
+        <editor-class>
+            &chooseOneReferenceDataEditor;
+        </editor-class>
+        <named-value>
+            <name>referenceDataDefiner</name>
+            <expression>
+                com.sun.jsfcl.std.reference.ReferenceDataManager.IMAGE_MAP_NAMES
+            </expression>
+        </named-value>
     </property-extension>
 </property>
 
