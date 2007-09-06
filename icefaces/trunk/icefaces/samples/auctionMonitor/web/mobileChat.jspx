@@ -58,7 +58,7 @@
                         </td>
                         <td width="20%" align="center"><ice:commandButton
                                 id="button_leaveConversation" immediate="true"
-                                action="#{UserBean.leaveConversation}"
+                                actionListener="#{UserBean.leaveConversation}"
                                 value="Leave" styleClass="endChatButtons"
                                 title="Leave this chat session"/></td>
                     </ice:panelGroup>
@@ -76,7 +76,7 @@
                                 id="join_chat_button" styleClass="orangeButtonM"
                                 value="Join"
                                 title="Join the chat conversation"
-                                action="enterConversation"/></td>
+                                actionListener="#{UserBean.enterConversation}"/></td>
                     </ice:panelGroup>
                 </tr>
                 <ice:panelGrid id="chatWindow"

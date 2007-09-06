@@ -38,6 +38,8 @@ import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.context.ViewListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -87,7 +89,7 @@ public class ClockBean implements Renderable, ViewListener {
 
     public void setRenderManager(RenderManager manager) {
         if (manager != null) {
-            clock = manager.getIntervalRenderer(INTERVAL_RENDERER_GROUP + "-" + System.currentTimeMillis() + "-" + this);
+            clock = manager.getIntervalRenderer(INTERVAL_RENDERER_GROUP);
             if (clock.getInterval() != pollInterval) {
                 clock.setInterval(pollInterval);
             }
@@ -114,18 +116,25 @@ public class ClockBean implements Renderable, ViewListener {
                       renderingException);
         }
 
-        performCleanup();
+        if (log.isDebugEnabled() &&
+                renderingException instanceof TransientRenderingException) {
+            log.debug("Transient Rendering excpetion:", renderingException);
+        } else if (renderingException instanceof FatalRenderingException) {
+            if (log.isDebugEnabled()) {
+                log.debug("Fatal rendering exception: ", renderingException);
+            }
+            performCleanup();
+        }
+
+
+
     }
     
     protected boolean performCleanup() {
         try{
             if (clock != null) {
-                clock.requestStop();
                 clock.remove(this);
-                clock.dispose();
-                clock = null;
             }
-            
             isRunning = false;
             AuctionBean.decrementUsers();
             
@@ -140,13 +149,17 @@ public class ClockBean implements Renderable, ViewListener {
     }
     
     public void viewCreated() {
+        if (clock != null){
+            clock.add(this);
+        }
     }
     
     public void viewDisposed() {
         if (log.isInfoEnabled()) {
             log.info("ViewListener of ClockBean fired for a user - cleaning up");
         }
-        
-        performCleanup();
+        if (clock != null) {
+            clock.remove(this);
+        }
     }
 }

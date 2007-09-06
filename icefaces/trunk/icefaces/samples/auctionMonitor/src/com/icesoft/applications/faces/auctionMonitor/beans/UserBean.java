@@ -41,11 +41,14 @@ import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
+import com.icesoft.faces.context.ViewListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -54,7 +57,7 @@ import java.util.Map;
  * Bean class used to store user information, as well as local information for
  * messages and viewing information
  */
-public class UserBean implements Renderable {
+public class UserBean implements Renderable, ViewListener {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";
@@ -71,10 +74,9 @@ public class UserBean implements Renderable {
     private static Log log = LogFactory.getLog(UserBean.class);
 
     private OnDemandRenderer renderer = null;
-    private PersistentFacesState persistentState =
-            PersistentFacesState.getInstance();
-    private ExternalContext externalContext =
-            FacesContext.getCurrentInstance().getExternalContext();
+
+    private PersistentFacesState persistentState;
+
     private String autoLoad = " ";
     private String message = "";
     private String color = ChatState.DEFAULT_COLOR;
@@ -92,6 +94,14 @@ public class UserBean implements Renderable {
     // this is used to stop old messages from being submit
     //  when pressing "Leave Chat"
 
+
+    public UserBean() {
+        // rendermanager persistent state
+        persistentState = PersistentFacesState.getInstance();
+        // add a view listener so we can do a clean up on window closes.
+        persistentState.addViewListener(this);
+    }
+
     public boolean isMinimized() {
         return (minimized);
     }
@@ -99,7 +109,7 @@ public class UserBean implements Renderable {
     public boolean getConversationStatus() {
         return (inConversation);
     }
-    
+
     public String getColor() {
         return (color);
     }
@@ -147,7 +157,8 @@ public class UserBean implements Renderable {
 
     private MessageLog getMessageLog() {
         // Get the message log from the faces context
-        Map applicationMap = externalContext.getApplicationMap();
+        Map applicationMap = FacesContext.getCurrentInstance().
+                getExternalContext().getApplicationMap();
         messageLog = (MessageLog) applicationMap.get(LogBean.LOG_PATH);
 
         // Null messageLog means the LogBean is null, so create it and get the log again
@@ -186,9 +197,8 @@ public class UserBean implements Renderable {
 
         // Assign the nick and enter the conversation
         this.nick = nick;
-        enterConversation();
     }
-    
+
     public void setColor(String color) {
         this.color = color;
     }
@@ -317,21 +327,24 @@ public class UserBean implements Renderable {
     /**
      * Method to handle initialization of entering the conversation Add this
      * UserBean to the ChatState Send a join conversation message
+     *
+     * @param event jsf action event.
      */
-    public void enterConversation() {
+    public void enterConversation(ActionEvent event) {
         chatState.addUserChild(this);
         buttonImage = MAXIMIZE_IMAGE;
         minimized = false;
         position = bottom();
         inConversation = true;
-	  leaving = false;
+        leaving = false;
     }
 
     /**
      * Method to remove this user from the conversation and reset their status
      * flag
+     * @param event jsf action event.
      */
-    public void leaveConversation() {
+    public void leaveConversation(ActionEvent event) {
         leaving = true;
         inConversation = false;
         buttonImage = MINIMIZE_IMAGE;
@@ -478,16 +491,49 @@ public class UserBean implements Renderable {
      * @param renderingException that happened
      */
     public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled()) {
-            log.debug("Rendering exception called because of " +
-                      renderingException);
-        }
+        if (log.isDebugEnabled() &&
+                renderingException instanceof TransientRenderingException) {
+            log.debug("Transient Rendering excpetion:", renderingException);
+        } else if (renderingException instanceof FatalRenderingException) {
+            if (log.isDebugEnabled()) {
+                log.debug("Fatal rendering exception: ", renderingException);
+            }
 
-        if (renderer != null) {
             renderer.remove(this);
-            renderer = null;
+            chatState.removeUserChild(this);
         }
 
-        chatState.removeUserChild(this);
+
     }
+
+    /**
+     * New view has been created
+     */
+    public void viewCreated() {
+        // remove ourselves from the render group.
+        if (renderer != null){
+            renderer.add(this);
+        }
+    }
+
+    /**
+     * View has been disposed either by window closing
+     * or timeout.
+     */
+    public void viewDisposed() {
+        if (log.isInfoEnabled()) {
+            log.info("ViewListener of userBean fired for a user - cleaning up");
+        }
+        // remove ourselves from the render group.
+        if (renderer != null){
+            renderer.remove(this);
+        }
+
+        // remove the user.
+        if (chatState != null){
+            chatState.removeUserChild(this);
+        }
+    }
+
+
 }

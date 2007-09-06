@@ -236,7 +236,7 @@
                         </td>
                         <td width="20%" align="center"><ice:commandButton
                                 id="button_leaveConversation" immediate="true"
-                                action="#{UserBean.leaveConversation}"
+                                actionListener="#{UserBean.leaveConversation}"
                                 value="Leave Chat" styleClass="endChatButtons"
                                 title="Leave this chat session"/></td>
                     </ice:panelGroup>
@@ -253,7 +253,7 @@
                                 id="join_chat_button" styleClass="orangeButtons"
                                 value="Join Chat"
                                 title="Join the chat conversation"
-                                action="enterConversation"/></td>
+                                actionListener="#{UserBean.enterConversation}"/></td>
                     </ice:panelGroup>
                 </tr>
                 <ice:panelGrid id="chatWindow"
@@ -267,12 +267,14 @@
                                                    image="./images/button_arrow_top.gif"
                                                    action="#{UserBean.moveToTop}"
                                                    title="Move to the top of the log"
-                                                   style="border: 0px;"/>
+                                                   alt="Move to the top of the log"
+                                                   style="border: 0px;width:20px;height:20px;"/>
                                 <ice:commandButton immediate="true"
                                                    image="./images/button_arrow_up.gif"
                                                    action="#{UserBean.moveUpMinor}"
                                                    title="Move up one line in the log"
-                                                   style="border: 0px;"/>
+                                                   alt="Move up one line in the log"
+                                                   style="border: 0px;width:20px;height:20px;"/>
                             </td>
                         </ice:column>
                     </tr>
@@ -302,12 +304,14 @@
                                                    image="./images/button_arrow_bottom.gif"
                                                    action="#{UserBean.moveToBottom}"
                                                    title="Move to the bottom of the log"
-                                                   style="border: 0px;"/>
+                                                   alt="Move to the bottom of the log"
+                                                   style="border: 0px;width:20px;height:20px;"/>
                                 <ice:commandButton immediate="true"
                                                    image="./images/button_arrow_down.gif"
                                                    action="#{UserBean.moveDownMinor}"
                                                    title="Move down one line in the log"
-                                                   style="border: 0px;"/>
+                                                   alt="Move to the bottom of the log"
+                                                   style="border: 0px;width:20px;height:20px;"/>
                             </td>
                         </ice:column>
                     </tr>
