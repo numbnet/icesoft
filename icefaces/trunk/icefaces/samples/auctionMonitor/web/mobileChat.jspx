@@ -101,7 +101,7 @@
                     </tr>
                     <ice:dataTable value="#{UserBean.pageLog}" var="page"
                                    cellspacing="0" cellpadding="0"
-                                   style="width: 700px;">
+                                   >
                         <ice:column>
                             <div class="chatLineMobile">
                                 <div class="chatName"><ice:outputText
