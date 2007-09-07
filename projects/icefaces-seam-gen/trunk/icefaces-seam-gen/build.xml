@@ -704,7 +704,6 @@
         <copy todir="${project.home}">
             <fileset dir="${script.dir}">
             	<exclude name="build*.xml"/>
-            	<include name="build.properties"/>
             </fileset>
             <filterset refid="project"/>
         </copy>
