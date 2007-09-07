@@ -66,6 +66,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -454,7 +455,16 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
     }
 
+    //todo: create a ResourceDispatcher made out of a PathDispatcherServer and instances of this class
     private static class ResourceServer implements Server, ResponseHandler {
+        private ResponseHandler notModified = new ResponseHandler() {
+            public void respond(Response response) throws Exception {
+                response.setStatus(304);
+                response.setHeader("ETag", encode(resource));
+                response.setHeader("Date", new Date());
+                response.setHeader("Last-Modified", resource.lastModified());
+            }
+        };
         private String mimeType;
         private final Resource resource;
 
@@ -464,11 +474,21 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
 
         public void service(Request request) throws Exception {
-            request.respondWith(this);
+            try {
+                Date modifiedSince = request.getHeaderAsDate("If-Modified-Since");
+                if (resource.lastModified().getTime() > modifiedSince.getTime() + 1000) {
+                    request.respondWith(this);
+                } else {
+                    request.respondWith(notModified);
+                }
+            } catch (Exception e) {
+                request.respondWith(this);
+            }
         }
 
         public void respond(Response response) throws Exception {
-            response.setHeader("Cache-Control", "public");
+            response.setHeader("ETag", encode(resource));
+            response.setHeader("Cache-Control", "private");
             response.setHeader("Content-Type", mimeType);
             response.setHeader("Last-Modified", resource.lastModified());
             response.writeBodyFrom(resource.open());
