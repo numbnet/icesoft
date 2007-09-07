@@ -201,6 +201,9 @@ public class SelectInputDateRenderer
                 String tooltip = selectInputDate.getPopupDateFormat();
                 dateText.setAttribute(HTML.TITLE_ATTR,
                                       "Date Format: " + tooltip);
+                if (selectInputDate.isDisabled()) {
+                    dateText.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
+                }
                 root.appendChild(dateText);
                 Element calendarButton =
                         domContext.createElement(HTML.INPUT_ELEM);
@@ -224,6 +227,9 @@ public class SelectInputDateRenderer
                                  parentForm.getClientId(facesContext) +
                                  "'], this,event); return false;";
                 calendarButton.setAttribute(HTML.ONCLICK_ATTR, onClick);
+                if (selectInputDate.isDisabled()) {
+                    calendarButton.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
+                }
                 root.appendChild(calendarButton);
                 // render a hidden field to manage the popup state; visible || hidden
                 FormRenderer.addHiddenField(facesContext, getHiddenFieldName(
@@ -822,6 +828,7 @@ public class SelectInputDateRenderer
         link.setPartialSubmit(true);
         link.setTransient(true);
         link.setImmediate(component.isImmediate());
+        link.setDisabled(((SelectInputDate) component).isDisabled());
 
         if (imgSrc != null) {
             HtmlGraphicImage img = new HtmlGraphicImage();
