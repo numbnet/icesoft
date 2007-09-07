@@ -7,6 +7,7 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
@@ -43,12 +44,15 @@ public class View implements CommandQueue {
     private String sessionID;
     private Configuration configuration;
     private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private PathDispatcherServer resourceDispatcher;
 
-    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) throws Exception {
+    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor, PathDispatcherServer resourceDispatcher) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
+        this.resourceDispatcher = resourceDispatcher;
+
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 ServletEnvironmentRequest wrappedRequest = new ServletEnvironmentRequest(request);
@@ -61,7 +65,7 @@ public class View implements CommandQueue {
                 externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor, portletConfig);
             }
         });
-        this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration);
+        this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration, resourceDispatcher);
         this.persistentFacesState = new PersistentFacesState(facesContext, viewListeners, configuration);
         this.onPut(new Runnable() {
             public void run() {
@@ -96,7 +100,7 @@ public class View implements CommandQueue {
                     //page redirect
                     requestURI = wrappedRequest.getRequestURI();
                     externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
-                    facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration);
+                    facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher);
                     //reuse  PersistentFacesState instance when page redirects occur                    
                     persistentFacesState.setFacesContext(facesContext);
                 } else {

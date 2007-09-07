@@ -65,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -111,10 +112,14 @@ public class DOMResponseWriter extends ResponseWriter {
     private BridgeFacesContext context;
     private DOMSerializer serializer;
     private Configuration configuration;
+    private List jsCode;
+    private List cssCode;
 
-    public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration) {
+    public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration, List jsCode, List cssCode) {
         this.serializer = serializer;
         this.configuration = configuration;
+        this.jsCode = jsCode;
+        this.cssCode = cssCode;
         try {
             this.context = (BridgeFacesContext) context;
         } catch (ClassCastException e) {
@@ -237,7 +242,7 @@ public class DOMResponseWriter extends ResponseWriter {
             }
         }
         try {
-            return new DOMResponseWriter(context, serializer, configuration);
+            return new DOMResponseWriter(context, serializer, configuration, jsCode, cssCode);
         } catch (FacesException e) {
             throw new IllegalStateException();
         }
@@ -383,14 +388,25 @@ public class DOMResponseWriter extends ResponseWriter {
                 }
             }
         }
+        libs.addAll(jsCode);
 
-        Iterator iterator = libs.iterator();
-        while (iterator.hasNext()) {
-            String lib = (String) iterator.next();
+        Iterator libIterator = libs.iterator();
+        while (libIterator.hasNext()) {
+            String lib = (String) libIterator.next();
             Element script = (Element) head
                     .appendChild(document.createElement("script"));
             script.setAttribute("language", "javascript");
             script.setAttribute("src", handler.getResourceURL(context, lib));
+        }
+
+        Iterator cssIterator = cssCode.iterator();
+        while (cssIterator.hasNext()) {
+            String css = (String) cssIterator.next();
+            Element link = (Element) head
+                    .appendChild(document.createElement("link"));
+            link.setAttribute("rel", "stylesheet");
+            link.setAttribute("type", "text/css");
+            link.setAttribute("href", handler.getResourceURL(context, css));
         }
 
         String sessionIdentifier = context.getIceFacesId();

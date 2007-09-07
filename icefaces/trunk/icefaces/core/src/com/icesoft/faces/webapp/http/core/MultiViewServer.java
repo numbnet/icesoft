@@ -5,6 +5,7 @@ import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
@@ -19,14 +20,16 @@ public class MultiViewServer implements Server {
     private SessionDispatcher.Listener.Monitor sessionMonitor;
     private HttpSession session;
     private Server server;
+    private PathDispatcherServer resourceDispatcher;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration) {
+    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, PathDispatcherServer resourceDispatcher) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
         this.views = views;
         this.asynchronouslyUpdatedViews = asynchronouslyUpdatedViews;
         this.configuration = configuration;
+        this.resourceDispatcher = resourceDispatcher;
         this.server = new PageServer();
     }
 
@@ -37,7 +40,7 @@ public class MultiViewServer implements Server {
             String redirectViewNumber = request.getParameter("rvn");
             view = (View) views.get(redirectViewNumber);
             if (view == null) {
-                view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor);
+                view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
                 views.put(redirectViewNumber, view);
                 ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
             } else {
@@ -46,7 +49,7 @@ public class MultiViewServer implements Server {
             }
         } else {
             String viewNumber = String.valueOf(++viewCount);
-            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor);
+            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         }

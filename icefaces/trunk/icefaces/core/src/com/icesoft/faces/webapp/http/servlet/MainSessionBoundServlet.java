@@ -7,6 +7,7 @@ import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
@@ -65,13 +66,14 @@ public class MainSessionBoundServlet implements PseudoServlet {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
+        final PathDispatcherServer resourceDispatcher = new PathDispatcherServer();
         final Server viewServlet;
         final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
-            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
+            viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             disposeViews = new IDVerifier(sessionID, new DisposeViews(views));
         } else {
-            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration);
+            viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             disposeViews = NOOPServer;
         }
 
@@ -100,6 +102,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         dispatcher.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
         dispatcher.dispatchOn(".*block\\/ping$", receivePing);
         dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
+        dispatcher.dispatchOn(".*block\\/resource\\/.*", new CompressingServer(resourceDispatcher));
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
         servlet = new EnvironmentAdaptingServlet(dispatcher, configuration);

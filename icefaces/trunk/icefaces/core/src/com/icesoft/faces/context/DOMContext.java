@@ -52,6 +52,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,7 @@ public class DOMContext implements java.io.Serializable {
             public String getValue() throws ConfigurationException {
                 throw new ConfigurationException("value not available");
             }
-        });
+        }, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
         Document doc = domWriter.getDocument();
         Element html = doc.createElement("html");
         doc.appendChild(html);

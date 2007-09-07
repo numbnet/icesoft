@@ -36,7 +36,13 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
+import com.icesoft.util.encoding.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -56,6 +62,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +73,7 @@ import java.util.Map;
 import java.util.Vector;
 
 //for now extend BridgeFacesContext since there are so many 'instanceof' tests
-public class BridgeFacesContext extends FacesContext {
+public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
     private static final Log log = LogFactory.getLog(BridgeFacesContext.class);
     private Application application;
     private BridgeExternalContext externalContext;
@@ -81,8 +88,12 @@ public class BridgeFacesContext extends FacesContext {
     private String viewNumber;
     private CommandQueue commandQueue;
     private Configuration configuration;
+    private ArrayList jsCode = new ArrayList();
+    private ArrayList cssCode = new ArrayList();
+    private ArrayList images = new ArrayList();
+    private PathDispatcherServer resourceDispatcher;
 
-    public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration) {
+    public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, PathDispatcherServer resourceDispatcher) {
         setCurrentInstance(this);
         this.externalContext = externalContext;
         this.viewNumber = view;
@@ -91,6 +102,7 @@ public class BridgeFacesContext extends FacesContext {
         this.configuration = configuration;
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.externalContext = externalContext;
+        this.resourceDispatcher = resourceDispatcher;
         this.switchToNormalMode();
     }
 
@@ -212,7 +224,7 @@ public class BridgeFacesContext extends FacesContext {
     }
 
     public ResponseWriter createAndSetResponseWriter() throws IOException {
-        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration);
+        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCode, cssCode);
     }
 
     public void switchToNormalMode() {
@@ -250,8 +262,8 @@ public class BridgeFacesContext extends FacesContext {
     }
 
     public UIViewRoot getViewRoot() {
-        if ( null != externalContext.getRequestParameterMap()
-             .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT) ) {
+        if (null != externalContext.getRequestParameterMap()
+                .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT)) {
             //ViewRoot and attributes being cached interferes with PAGE scope
             return null;
         }
@@ -409,6 +421,60 @@ public class BridgeFacesContext extends FacesContext {
                     }
                 }
             }
+        }
+    }
+
+    public void loadJavascriptCode(final Resource resource) {
+        String name = "block/resource/" + encode(resource);
+        if (!jsCode.contains(name)) {
+            jsCode.add(name);
+            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer("text/javascript", resource));
+        }
+    }
+
+    public void loadCSSRules(Resource resource) {
+        String name = "block/resource/" + encode(resource);
+        if (!cssCode.contains(name)) {
+            cssCode.add(name);
+            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer("text/css", resource));
+        }
+    }
+
+    public URI registerResource(String mimeType, Resource resource) {
+        String name = "block/resource/" + encode(resource);
+        if (!images.contains(name)) {
+            images.add(name);
+            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer(mimeType, resource));
+        }
+
+        return URI.create(application.getViewHandler().getResourceURL(this, name));
+    }
+
+    private static String encode(Resource resource) {
+        return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
+    }
+
+    private static class ResourceServer implements Server, ResponseHandler {
+        private String mimeType;
+        private final Resource resource;
+
+        public ResourceServer(String mimeType, Resource resource) {
+            this.mimeType = mimeType;
+            this.resource = resource;
+        }
+
+        public void service(Request request) throws Exception {
+            request.respondWith(this);
+        }
+
+        public void respond(Response response) throws Exception {
+            response.setHeader("Cache-Control", "public");
+            response.setHeader("Content-Type", mimeType);
+            response.setHeader("Last-Modified", resource.lastModified());
+            response.writeBodyFrom(resource.open());
+        }
+
+        public void shutdown() {
         }
     }
 }
