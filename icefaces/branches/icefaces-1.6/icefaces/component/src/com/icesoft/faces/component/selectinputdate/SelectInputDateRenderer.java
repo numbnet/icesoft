@@ -252,6 +252,7 @@ public class SelectInputDateRenderer
                     calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
                     calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
                     FormRenderer.addHiddenField(facesContext, parentForm.getClientId(facesContext)+ ":_idcl");
+                    PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, null);
                     domContext.stepOver();
                     return ;
                 }
