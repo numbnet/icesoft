@@ -36,13 +36,8 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
-import com.icesoft.util.encoding.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -65,9 +60,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -89,12 +85,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private String viewNumber;
     private CommandQueue commandQueue;
     private Configuration configuration;
-    private ArrayList jsCode = new ArrayList();
-    private ArrayList cssCode = new ArrayList();
-    private ArrayList images = new ArrayList();
-    private PathDispatcherServer resourceDispatcher;
+    private Collection jsCodeURIs = new HashSet();
+    private Collection cssRuleURIs = new HashSet();
+    private ResourceDispatcher resourceDispatcher;
 
-    public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, PathDispatcherServer resourceDispatcher) {
+    public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         setCurrentInstance(this);
         this.externalContext = externalContext;
         this.viewNumber = view;
@@ -225,7 +220,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public ResponseWriter createAndSetResponseWriter() throws IOException {
-        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCode, cssCode);
+        return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCodeURIs, cssRuleURIs);
     }
 
     public void switchToNormalMode() {
@@ -426,75 +421,17 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void loadJavascriptCode(final Resource resource) {
-        String name = "block/resource/" + encode(resource);
-        if (!jsCode.contains(name)) {
-            jsCode.add(name);
-            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer("text/javascript", resource));
-        }
+        URI uri = resourceDispatcher.registerResource("text/javascript", resource);
+        jsCodeURIs.add(uri.toString());
     }
 
     public void loadCSSRules(Resource resource) {
-        String name = "block/resource/" + encode(resource);
-        if (!cssCode.contains(name)) {
-            cssCode.add(name);
-            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer("text/css", resource));
-        }
+        URI uri = resourceDispatcher.registerResource("text/css", resource);
+        cssRuleURIs.add(uri.toString());
     }
 
     public URI registerResource(String mimeType, Resource resource) {
-        String name = "block/resource/" + encode(resource);
-        if (!images.contains(name)) {
-            images.add(name);
-            resourceDispatcher.dispatchOn(".*" + name, new ResourceServer(mimeType, resource));
-        }
-
-        return URI.create(application.getViewHandler().getResourceURL(this, name));
-    }
-
-    private static String encode(Resource resource) {
-        return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
-    }
-
-    //todo: create a ResourceDispatcher made out of a PathDispatcherServer and instances of this class
-    private static class ResourceServer implements Server, ResponseHandler {
-        private ResponseHandler notModified = new ResponseHandler() {
-            public void respond(Response response) throws Exception {
-                response.setStatus(304);
-                response.setHeader("ETag", encode(resource));
-                response.setHeader("Date", new Date());
-                response.setHeader("Last-Modified", resource.lastModified());
-            }
-        };
-        private String mimeType;
-        private final Resource resource;
-
-        public ResourceServer(String mimeType, Resource resource) {
-            this.mimeType = mimeType;
-            this.resource = resource;
-        }
-
-        public void service(Request request) throws Exception {
-            try {
-                Date modifiedSince = request.getHeaderAsDate("If-Modified-Since");
-                if (resource.lastModified().getTime() > modifiedSince.getTime() + 1000) {
-                    request.respondWith(this);
-                } else {
-                    request.respondWith(notModified);
-                }
-            } catch (Exception e) {
-                request.respondWith(this);
-            }
-        }
-
-        public void respond(Response response) throws Exception {
-            response.setHeader("ETag", encode(resource));
-            response.setHeader("Cache-Control", "private");
-            response.setHeader("Content-Type", mimeType);
-            response.setHeader("Last-Modified", resource.lastModified());
-            response.writeBodyFrom(resource.open());
-        }
-
-        public void shutdown() {
-        }
+        URI uri = resourceDispatcher.registerResource(mimeType, resource);
+        return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
     }
 }

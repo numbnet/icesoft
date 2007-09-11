@@ -7,7 +7,6 @@ import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
@@ -16,6 +15,7 @@ import com.icesoft.faces.webapp.http.core.IDVerifier;
 import com.icesoft.faces.webapp.http.core.MultiViewServer;
 import com.icesoft.faces.webapp.http.core.ReceivePing;
 import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
+import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.SendUpdates;
 import com.icesoft.faces.webapp.http.core.SingleViewServer;
 import com.icesoft.faces.webapp.http.core.UploadServer;
@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class MainSessionBoundServlet implements PseudoServlet {
+    private static final String ResourcePrefix = "block/resource/";
+    private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final SessionExpired SessionExpired = new SessionExpired();
     private static final Server NOOPServer = new Server() {
@@ -66,7 +68,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
-        final PathDispatcherServer resourceDispatcher = new PathDispatcherServer();
+        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix);
         final Server viewServlet;
         final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
@@ -102,7 +104,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         dispatcher.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
         dispatcher.dispatchOn(".*block\\/ping$", receivePing);
         dispatcher.dispatchOn(".*block\\/dispose\\-views$", disposeViews);
-        dispatcher.dispatchOn(".*block\\/resource\\/.*", new CompressingServer(resourceDispatcher));
+        dispatcher.dispatchOn(ResourceRegex, resourceDispatcher);
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
         servlet = new EnvironmentAdaptingServlet(dispatcher, configuration);

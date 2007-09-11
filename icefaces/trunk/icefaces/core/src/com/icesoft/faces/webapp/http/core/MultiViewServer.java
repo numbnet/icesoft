@@ -5,7 +5,6 @@ import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
@@ -20,9 +19,9 @@ public class MultiViewServer implements Server {
     private SessionDispatcher.Listener.Monitor sessionMonitor;
     private HttpSession session;
     private Server server;
-    private PathDispatcherServer resourceDispatcher;
+    private ResourceDispatcher resourceDispatcher;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, PathDispatcherServer resourceDispatcher) {
+    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;

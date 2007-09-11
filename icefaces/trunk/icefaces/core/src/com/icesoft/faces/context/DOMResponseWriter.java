@@ -65,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -112,10 +111,10 @@ public class DOMResponseWriter extends ResponseWriter {
     private BridgeFacesContext context;
     private DOMSerializer serializer;
     private Configuration configuration;
-    private List jsCode;
-    private List cssCode;
+    private Collection jsCode;
+    private Collection cssCode;
 
-    public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration, List jsCode, List cssCode) {
+    public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration, Collection jsCode, Collection cssCode) {
         this.serializer = serializer;
         this.configuration = configuration;
         this.jsCode = jsCode;
