@@ -868,7 +868,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                     if (returnValue == null) {
                         returnValue = outputStyleComponents;
                     } else {
-                        returnValue.add(outputStyleComponents);
+                        returnValue.addAll(outputStyleComponents);
                     }
                 }
             }
