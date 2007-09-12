@@ -82,7 +82,7 @@
         jstl.jar
         xercesImpl.jar
         xml-apis.jar
-	
+
 	myfaces-api.jar
 	myfaces-impl.jar
 	jsf-api.jar

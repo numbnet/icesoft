@@ -46,6 +46,7 @@
 >
     <include name="commons-lang-2.1.jar" if="myfaces"/>
     <include name="commons-lang.jar" if="myfaces"/>
+
 </patternset>
 
 <target name="clean" depends="common.clean">
