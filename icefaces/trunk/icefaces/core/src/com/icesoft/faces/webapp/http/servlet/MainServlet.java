@@ -7,8 +7,6 @@ import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.IdGenerator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -19,30 +17,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 public class MainServlet extends HttpServlet {
-    private static final String AWT_HEADLESS = "java.awt.headless";
-    private static final Log log = LogFactory.getLog(MainServlet.class);
+    static {
+        final String headless = "java.awt.headless";
+        if (null == System.getProperty(headless)) {
+            System.setProperty(headless, "true");
+        }
+    }
+
     private PathDispatcher dispatcher = new PathDispatcher();
     private String contextPath;
-    private ServletContext servletContext;
+    private ServletContext context;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
-        this.servletContext = servletConfig.getServletContext();
+        this.context = servletConfig.getServletContext();
         try {
-            String awtHeadless = System.getProperty(AWT_HEADLESS);
-            if (null == awtHeadless) {
-                System.setProperty(AWT_HEADLESS, "true");
-            }
-            final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", servletContext);
-            final IdGenerator idGenerator = getIdGenerator(servletContext);
+            final Configuration configuration = new ServletContextConfiguration("com.icesoft.faces", context);
+            final IdGenerator idGenerator = new IdGenerator(context.getResource("/WEB-INF/web.xml").getPath());
             final MimeTypeMatcher mimeTypeMatcher = new MimeTypeMatcher() {
                 public String mimeTypeFor(String extension) {
-                    return servletContext.getMimeType(extension);
+                    return context.getMimeType(extension);
                 }
             };
             final FileLocator localFileLocator = new FileLocator() {
@@ -50,7 +47,7 @@ public class MainServlet extends HttpServlet {
                     URI contextURI = URI.create(contextPath);
                     URI pathURI = URI.create(path);
                     String result = contextURI.relativize(pathURI).getPath();
-                    String fileLocation = servletContext.getRealPath(result);
+                    String fileLocation = context.getRealPath(result);
                     return new File(fileLocation);
                 }
             };
@@ -69,24 +66,6 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private IdGenerator getIdGenerator(ServletContext servletContext)
-            throws MalformedURLException {
-        URL res = servletContext.getResource("/");
-        //ICE-985: Some app servers will return null when you ask for a
-        //directory as a resource.  Those special circumstances where
-        //it doesn't work, we'll try to locate a known resource.
-        if (res == null) {
-            res = servletContext.getResource("/WEB-INF/web.xml");
-            if (res == null) {
-                if (log.isErrorEnabled()) {
-                    log.error("invalid resource path");
-                }
-                throw new NullPointerException("invalid resource path");
-            }
-        }
-        return new IdGenerator(res.getPath());
-    }
-
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //set flag to indicate an ICEfaces request so that delegateNonIface
         //will detect this and execute D2DViewHandler for it
@@ -103,7 +82,7 @@ public class MainServlet extends HttpServlet {
     }
 
     public void destroy() {
-        DisposeBeans.in(servletContext);
+        DisposeBeans.in(context);
         dispatcher.shutdown();
     }
 }
