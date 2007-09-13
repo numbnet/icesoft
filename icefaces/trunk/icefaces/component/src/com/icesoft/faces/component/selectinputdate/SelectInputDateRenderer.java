@@ -1238,9 +1238,7 @@ public class SelectInputDateRenderer
 
             if (uiComponent instanceof SelectInputDate &&
                 ((SelectInputDate) uiComponent).isRenderAsPopup()) {
-                String popupDateFormat =
-                        ((SelectInputDate) uiComponent).getPopupDateFormat();
-                dateFormat = new SimpleDateFormat(popupDateFormat);
+                dateFormat = ((SelectInputDate) uiComponent).getDateFormat();
             } else {
                 dateFormat = createStandardDateFormat(facesContext);
             }
@@ -1305,9 +1303,7 @@ public class SelectInputDateRenderer
 
             if (uiComponent instanceof SelectInputDate &&
                 ((SelectInputDate) uiComponent).isRenderAsPopup()) {
-                String popupDateFormat =
-                        ((SelectInputDate) uiComponent).getPopupDateFormat();
-                dateFormat = new SimpleDateFormat(popupDateFormat);
+                dateFormat = ((SelectInputDate) uiComponent).getDateFormat();
             } else {
                 dateFormat = createStandardDateFormat(facesContext);
             }

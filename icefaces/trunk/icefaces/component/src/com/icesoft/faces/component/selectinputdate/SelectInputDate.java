@@ -158,11 +158,6 @@ public class SelectInputDate
      * The default close popup image name.
      */
     private final String DEFAULT_CLOSEPOPUP = "cal_off.gif";
-    /**
-     * The default date format used by this component.
-     */
-    private DateFormat myDateFormat =
-            new SimpleDateFormat(DEFAULT_POPUP_DATE_FORMAT);
 
     public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
     
@@ -175,7 +170,7 @@ public class SelectInputDate
 
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
-        buildHeighLightMap();
+        buildHighlightMap();
     }
 
     /**
@@ -218,10 +213,15 @@ public class SelectInputDate
      */
     public String formatDate(Date date) {
         if (date != null) {
-            return myDateFormat.format(date);
+            return getDateFormat().format(date);
         } else {
             return "";
         }
+    }
+    
+    public DateFormat getDateFormat() {
+        String dateFormatPattern = getPopupDateFormat();
+        return new SimpleDateFormat(dateFormatPattern);
     }
 
     /**
@@ -481,12 +481,10 @@ public class SelectInputDate
      */
     public String getPopupDateFormat() {
         if (_popupDateFormat != null) {
-            myDateFormat = new SimpleDateFormat(_popupDateFormat);
             return _popupDateFormat;
         }
         ValueBinding vb = getValueBinding("popupDateFormat");
         if (vb != null ) {
-            myDateFormat = new SimpleDateFormat((String) vb.getValue(getFacesContext()));
             return (String) vb.getValue(getFacesContext());
         } else {
             return DEFAULT_POPUP_DATE_FORMAT;
@@ -662,7 +660,7 @@ public class SelectInputDate
     
     private Map hightlightRules = new HashMap(); 
     private Map unitMap = new UnitMap();
-    private void buildHeighLightMap() {
+    private void buildHighlightMap() {
         validateHighlight();
         resetHighlightClasses(Calendar.YEAR); 
     }
