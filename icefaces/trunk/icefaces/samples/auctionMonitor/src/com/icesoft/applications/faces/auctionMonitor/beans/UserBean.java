@@ -43,7 +43,7 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-import com.icesoft.faces.context.ViewListener;
+import com.icesoft.faces.context.DisposableBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,7 +57,7 @@ import java.util.Map;
  * Bean class used to store user information, as well as local information for
  * messages and viewing information
  */
-public class UserBean implements Renderable, ViewListener {
+public class UserBean implements Renderable, DisposableBean {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";
@@ -98,8 +98,6 @@ public class UserBean implements Renderable, ViewListener {
     public UserBean() {
         // rendermanager persistent state
         persistentState = PersistentFacesState.getInstance();
-        // add a view listener so we can do a clean up on window closes.
-        persistentState.addViewListener(this);
     }
 
     public boolean isMinimized() {
@@ -517,10 +515,9 @@ public class UserBean implements Renderable, ViewListener {
     }
 
     /**
-     * View has been disposed either by window closing
-     * or timeout.
+     * View has been disposed either by window closing or a session timeout.
      */
-    public void viewDisposed() {
+    public void dispose() throws Exception {
         if (log.isInfoEnabled()) {
             log.info("ViewListener of userBean fired for a user - cleaning up");
         }
@@ -534,6 +531,4 @@ public class UserBean implements Renderable, ViewListener {
             chatState.removeUserChild(this);
         }
     }
-
-
 }
