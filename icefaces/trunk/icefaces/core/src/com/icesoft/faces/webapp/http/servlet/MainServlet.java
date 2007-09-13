@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.IdGenerator;
@@ -23,17 +24,16 @@ import java.net.URI;
 import java.net.URL;
 
 public class MainServlet extends HttpServlet {
-
-    private static Log log = LogFactory.getLog(MainServlet.class);
-
-    private PathDispatcher dispatcher = new PathDispatcher();
     private static final String AWT_HEADLESS = "java.awt.headless";
+    private static final Log log = LogFactory.getLog(MainServlet.class);
+    private PathDispatcher dispatcher = new PathDispatcher();
     private String contextPath;
+    private ServletContext servletContext;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
+        this.servletContext = servletConfig.getServletContext();
         try {
-            final ServletContext servletContext = servletConfig.getServletContext();
             String awtHeadless = System.getProperty(AWT_HEADLESS);
             if (null == awtHeadless) {
                 System.setProperty(AWT_HEADLESS, "true");
@@ -93,7 +93,6 @@ public class MainServlet extends HttpServlet {
         request.setAttribute(PersistentFacesCommonlet.SERVLET_KEY,
                 PersistentFacesCommonlet.PERSISTENT);
         contextPath = request.getContextPath();
-
         try {
             dispatcher.service(request, response);
         } catch (RuntimeException e) {
@@ -104,6 +103,7 @@ public class MainServlet extends HttpServlet {
     }
 
     public void destroy() {
+        DisposeBeans.in(servletContext);
         dispatcher.shutdown();
     }
 }

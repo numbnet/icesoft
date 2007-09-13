@@ -10,6 +10,7 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
+import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
 import com.icesoft.faces.webapp.http.core.IDVerifier;
 import com.icesoft.faces.webapp.http.core.MultiViewServer;
@@ -115,6 +116,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     }
 
     public void shutdown() {
+        DisposeBeans.in(session);
         Iterator i = views.values().iterator();
         while (i.hasNext()) {
             CommandQueue commandQueue = (CommandQueue) i.next();
