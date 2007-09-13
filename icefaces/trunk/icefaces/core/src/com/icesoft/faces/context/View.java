@@ -44,6 +44,7 @@ public class View implements CommandQueue {
     private String viewIdentifier;
     private ArrayList onPutListeners = new ArrayList();
     private ArrayList onTakeListeners = new ArrayList();
+    private Collection viewListeners = new ArrayList();
     private String sessionID;
     private Configuration configuration;
     private SessionDispatcher.Listener.Monitor sessionMonitor;
@@ -52,6 +53,7 @@ public class View implements CommandQueue {
         public void run() {
             persistentFacesState.setCurrentInstance();
             facesContext.setCurrentInstance();
+            notifyViewDisposal();
             release();
             facesContext.dispose();
             externalContext.dispose();
@@ -78,7 +80,7 @@ public class View implements CommandQueue {
             }
         });
         this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration, resourceDispatcher);
-        this.persistentFacesState = new PersistentFacesState(facesContext, configuration);
+        this.persistentFacesState = new PersistentFacesState(facesContext, viewListeners, configuration);
         this.onPut(new Runnable() {
             public void run() {
                 try {
@@ -211,5 +213,17 @@ public class View implements CommandQueue {
         persistentFacesState.setCurrentInstance();
         facesContext.setCurrentInstance();
         facesContext.applyBrowserDOMChanges();
+    }
+
+    private void notifyViewDisposal() {
+        Iterator i = viewListeners.iterator();
+        while (i.hasNext()) {
+            try {
+                ViewListener listener = (ViewListener) i.next();
+                listener.viewDisposed();
+            } catch (Throwable t) {
+                Log.warn("Failed to invoke view listener", t);
+            }
+        }
     }
 }

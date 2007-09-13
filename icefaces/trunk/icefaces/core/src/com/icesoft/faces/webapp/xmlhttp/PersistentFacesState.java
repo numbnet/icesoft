@@ -34,6 +34,7 @@
 package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -47,6 +48,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -71,14 +73,16 @@ public class PersistentFacesState implements Serializable {
 
     private ClassLoader renderableClassLoader = null;
     private boolean synchronousMode;
+    private Collection viewListeners;
 
-    public PersistentFacesState(BridgeFacesContext facesContext, Configuration configuration) {
+    public PersistentFacesState(BridgeFacesContext facesContext, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
         renderableClassLoader = Thread.currentThread().getContextClassLoader();
 
         this.facesContext = facesContext;
+        this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
@@ -265,6 +269,13 @@ public class PersistentFacesState implements Serializable {
 
     public ClassLoader getRenderableClassLoader() {
         return renderableClassLoader;
+    }
+
+    /**
+     * @deprecated use {@link com.icesoft.faces.context.DisposableBean} interface instead
+     */
+    public void addViewListener(ViewListener listener) {
+        viewListeners.add(listener);
     }
 
     private class RenderRunner implements Runnable {
