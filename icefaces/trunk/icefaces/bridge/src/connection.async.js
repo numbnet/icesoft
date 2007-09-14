@@ -95,6 +95,20 @@
             commandDispatcher.register('updated-views', function(message) {
                 this.updatedViews.saveValue(message.firstChild.data);
             }.bind(this));
+
+
+            //remove the blocking connection marker so that everytime a new
+            //window (== bridge instance) is opened the blocking connection will
+            //be re-established
+            //this strategy is mainly employed to fix the window.onunload issue
+            //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
+            try {
+                this.listening = Ice.Cookie.lookup('bconn');
+                this.listening.remove();
+            } catch (e) {
+                //do nothing
+            }
+
             //monitor if the blocking connection needs to be started
             //
             //the blocking connection will be started by the window noticing
@@ -132,7 +146,7 @@
                     this.heartbeat.start();
                     this.connect();
                 }
-            }.bind(this).repeatExecutionEvery(1000);
+            }.bind(this).delayFor(200).repeatExecutionEvery(1000);
 
             //get the updates for the updated views contained within this window
             this.updatesListenerProcess = function() {
