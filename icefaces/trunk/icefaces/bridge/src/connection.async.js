@@ -97,6 +97,7 @@
             }.bind(this));
 
 
+            //todo: employ a 2-phase mechanism for the markers (since no synchronization construct are available)
             //remove the blocking connection marker so that everytime a new
             //window (== bridge instance) is opened the blocking connection will
             //be re-established
