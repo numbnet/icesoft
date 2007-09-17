@@ -354,6 +354,7 @@ public class TableRenderer
         String rowSelectionFunctionName = null;
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
+        Element hiddenInputNode = null;
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
@@ -363,7 +364,7 @@ public class TableRenderer
             rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
-            root.appendChild(rowSelectedField);
+            hiddenInputNode = rowSelectedField;
             rowSelectionFunctionName = "ice_tableRowClicked"; 
         }
 
@@ -415,6 +416,9 @@ public class TableRenderer
                         Element td = domContext.createElement(HTML.TD_ELEM);
                         if(!rowSelectorCodeAdded && scriptNode != null){
                             td.appendChild(scriptNode);
+                        }
+                        if (null != hiddenInputNode)  {
+                            td.appendChild(hiddenInputNode);
                         }
                         writeColStyles(columnStyles, columnStylesMaxIndex,
                                        columnStyleIndex, td, colNumber++,
