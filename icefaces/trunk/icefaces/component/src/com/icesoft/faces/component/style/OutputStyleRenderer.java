@@ -65,14 +65,14 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final String OPERA_MOBILE_EXTENTION = "_operamobile";
 
     private static final int DEFAULT_TYPE = 0;
-    private static final int IE = 1;    
+    private static final int IE = 1;
     private static final int SAFARI = 2;
     private static final int DT = 3;
     private static final int IE_7 = 4;
     private static final int IPHONE = 5;
     private static final int OPERA = 6;
     private static final int OPERA_MOBILE = 7;
-    
+
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, OutputStyle.class);
@@ -190,7 +190,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
         if (Beans.isDesignTime()) {
             result = DT;
         } else {
-            if (!user.contains("opera") && user.indexOf("msie") != -1) {
+            if (user.indexOf("opera") < 0 && user.indexOf("msie") != -1) {
                 result = IE;
                 if(user.indexOf("msie 7") != -1){
                     result = IE_7;
