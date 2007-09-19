@@ -32,6 +32,7 @@
 package com.icesoft.faces.async.server;
 
 import com.icesoft.faces.util.net.http.HttpResponse;
+import com.icesoft.faces.util.net.http.HttpRequest;
 
 import java.io.IOException;
 
@@ -77,12 +78,14 @@ implements Handler, Runnable {
             try {
                 httpConnection.write(_httpResponse.getBytes());
                 if (LOG.isDebugEnabled()) {
+                    HttpRequest _httpRequest =
+                        httpConnection.getTransaction().getHttpRequest();
                     LOG.debug(
                         "HTTP Response send to " +
                             httpConnection.getRemoteSocketAddress() + ":\r\n" +
                             "[" +
-                                httpConnection.getTransaction().
-                                    getHttpRequest().getRequestLine() +
+                                _httpRequest != null ?
+                                    _httpRequest.getRequestLine() : null +
                             "]\r\n\r\n" +
                             _httpResponse.getMessage(false));
                 }
