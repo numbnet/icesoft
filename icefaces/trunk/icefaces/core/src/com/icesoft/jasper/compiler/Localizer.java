@@ -145,6 +145,12 @@ public class Localizer {
      */
     public static String getMessage(String errCode, Object[] args) {
         String errMsg = errCode;
+        
+        for (int i = 0; i<args.length; i++) {
+            errMsg = errMsg + " " + String.valueOf(args[i]);
+        }
+
+/*
         try {
 //	    errMsg = bundle.getString(errCode);
             if (args != null) {
@@ -156,7 +162,7 @@ public class Localizer {
                 log.debug(e.getMessage(), e);
             }
         }
-
+*/
         return errMsg;
     }
 }
