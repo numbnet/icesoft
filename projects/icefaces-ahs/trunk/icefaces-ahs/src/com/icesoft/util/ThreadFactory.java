@@ -38,9 +38,10 @@ public class ThreadFactory
 implements edu.emory.mathcs.backport.java.util.concurrent.ThreadFactory {
     private static final Log LOG = LogFactory.getLog(ThreadFactory.class);
 
+    private final Object lock = new Object();
+
     private int counter;
     private boolean daemon = true;
-    private Object lock = new Object();
     private String prefix = "Thread";
 
     public ThreadFactory() {

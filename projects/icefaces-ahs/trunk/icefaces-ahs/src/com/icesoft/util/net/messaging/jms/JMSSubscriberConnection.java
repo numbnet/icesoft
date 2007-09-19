@@ -364,6 +364,9 @@ implements JMSConnection {
         }
 
         public void run() {
+            if (LOG.isInfoEnabled()) {
+                LOG.info(this + " started.");
+            }
             try {
                 while (!stopRequested) {
                     javax.jms.Message _message = topicSubscriber.receive();
@@ -378,6 +381,21 @@ implements JMSConnection {
                         exception);
                 }
             }
+            if (LOG.isInfoEnabled()) {
+                LOG.info(this + " stopped.");
+            }
+        }
+
+        public String toString() {
+            StringBuffer _string = new StringBuffer();
+            _string.append("MessageReceiver [");
+            try {
+                _string.append(topicSubscriber.getMessageSelector());
+            } catch (JMSException exception) {
+                // do nothing.
+            }
+            _string.append("]");
+            return _string.toString();
         }
 
         private void requestStop() {

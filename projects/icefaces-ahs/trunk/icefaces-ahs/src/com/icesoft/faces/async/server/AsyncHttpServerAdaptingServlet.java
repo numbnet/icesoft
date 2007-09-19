@@ -58,73 +58,72 @@ public class AsyncHttpServerAdaptingServlet
     private static final Log LOG =
             LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
 
+    private static final Object messageServiceClientLock = new Object();
+    private static MessageServiceClient messageServiceClient;
+
     private final String iceFacesId;
 
     private ViewQueue allUpdatedViews;
     private Object lock = new Object();
-    private MessageServiceClient messageServiceClient;
     private long sequenceNumber;
-    private boolean updatedViewsQueueExceeded = false;
+    // todo: implement this!
+//    private boolean updatedViewsQueueExceeded = false;
 
     private UpdatedViewsQueueExceededMessageHandler
-            updatedViewsQueueExceededMessageHandler =
+        updatedViewsQueueExceededMessageHandler =
             new UpdatedViewsQueueExceededMessageHandler() {
                 protected void updatedViewsQueueExceeded(
-                        final String iceFacesId) {
+                    final String iceFacesId) {
 
                     if (iceFacesId == null || iceFacesId.trim().length() == 0) {
                         return;
                     }
-                    if (iceFacesId.equals(
-                            AsyncHttpServerAdaptingServlet.this.iceFacesId)) {
-
-                        synchronized (lock) {
-                            updatedViewsQueueExceeded = true;
-                        }
-
-                    }
+                    // todo: implement this!
                 }
             };
 
     public AsyncHttpServerAdaptingServlet(
-            final String iceFacesId,
-            final Collection synchronouslyUpdatedViews,
-            final ViewQueue allUpdatedViews, final ServletContext servletContext) {
+        final String iceFacesId,
+        final Collection synchronouslyUpdatedViews,
+        final ViewQueue allUpdatedViews, final ServletContext servletContext) {
 
         this.iceFacesId = iceFacesId;
-        setUpMessageClientService(servletContext);
+        synchronized (messageServiceClientLock) {
+            if (messageServiceClient == null) {
+                setUpMessageClientService(servletContext);
+            }
+        }
         allUpdatedViews.onPut(
-                new Runnable() {
-                    public void run() {
-                        allUpdatedViews.removeAll(synchronouslyUpdatedViews);
-                        synchronouslyUpdatedViews.clear();
-                        Set _viewIdentifierSet = new HashSet(allUpdatedViews);
-                        if (!_viewIdentifierSet.isEmpty()) {
-                            final String[] _viewIdentifiers =
-                                    (String[])
-                                            _viewIdentifierSet.toArray(
-                                                    new String[_viewIdentifierSet.size()]);
-                            final StringWriter _stringWriter = new StringWriter();
-                            for (int i = 0; i < _viewIdentifiers.length; i++) {
-                                if (i != 0) {
-                                    _stringWriter.write(',');
-                                }
-                                _stringWriter.write(_viewIdentifiers[i]);
+            new Runnable() {
+                public void run() {
+                    allUpdatedViews.removeAll(synchronouslyUpdatedViews);
+                    synchronouslyUpdatedViews.clear();
+                    Set _viewIdentifierSet = new HashSet(allUpdatedViews);
+                    if (!_viewIdentifierSet.isEmpty()) {
+                        final String[] _viewIdentifiers =
+                            (String[])
+                                _viewIdentifierSet.toArray(
+                                    new String[_viewIdentifierSet.size()]);
+                        final StringWriter _stringWriter = new StringWriter();
+                        for (int i = 0; i < _viewIdentifiers.length; i++) {
+                            if (i != 0) {
+                                _stringWriter.write(',');
                             }
-                            messageServiceClient.publish(
-                                    iceFacesId + ";" +                    // ICEfaces ID
-                                            ++sequenceNumber + ";" +      // Sequence Number
-                                            _stringWriter.toString(),        // Message Body
-                                    UPDATED_VIEWS_MESSAGE_TYPE,
-                                    MessageServiceClient.RESPONSE_TOPIC_NAME
-                            );
+                            _stringWriter.write(_viewIdentifiers[i]);
                         }
+                        messageServiceClient.publish(
+                            iceFacesId + ";" +                    // ICEfaces ID
+                                ++sequenceNumber + ";" +      // Sequence Number
+                                _stringWriter.toString(),        // Message Body
+                            UPDATED_VIEWS_MESSAGE_TYPE,
+                            MessageServiceClient.RESPONSE_TOPIC_NAME);
                     }
                 }
-        );
+            });
     }
 
-    public void service(Request request) throws Exception {
+    public void service(final Request request)
+    throws Exception {
         request.respondWith(new StreamingContentHandler("text/plain", "UTF-8") {
             public void writeTo(Writer writer) throws IOException {
                 writer.write("Asynchronous HTTP Server is enabled.\n");
@@ -138,30 +137,30 @@ public class AsyncHttpServerAdaptingServlet
     }
 
     private void setUpMessageClientService(
-            final ServletContext servletContext) {
+        final ServletContext servletContext) {
 
         JMSProviderConfiguration _jmsProviderConfiguration =
-                new JMSProviderConfigurationProperties(servletContext);
+            new JMSProviderConfigurationProperties(servletContext);
         messageServiceClient =
-                new MessageServiceClient(
-                        _jmsProviderConfiguration,
-                        new JMSAdapter(_jmsProviderConfiguration),
-                        servletContext);
+            new MessageServiceClient(
+                _jmsProviderConfiguration,
+                new JMSAdapter(_jmsProviderConfiguration),
+                servletContext);
         try {
             messageServiceClient.subscribe(
-                    MessageServiceClient.RESPONSE_TOPIC_NAME,
-                    updatedViewsQueueExceededMessageHandler.getMessageSelector());
+                MessageServiceClient.RESPONSE_TOPIC_NAME,
+                updatedViewsQueueExceededMessageHandler.getMessageSelector());
         } catch (MessageServiceException exception) {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal(
-                        "Failed to subscribe to topic: " +
-                                MessageServiceClient.RESPONSE_TOPIC_NAME,
-                        exception);
+                    "Failed to subscribe to topic: " +
+                        MessageServiceClient.RESPONSE_TOPIC_NAME,
+                    exception);
             }
         }
         messageServiceClient.addMessageHandler(
-                updatedViewsQueueExceededMessageHandler,
-                MessageServiceClient.RESPONSE_TOPIC_NAME);
+            updatedViewsQueueExceededMessageHandler,
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
@@ -180,15 +179,15 @@ public class AsyncHttpServerAdaptingServlet
             }
         }
         messageServiceClient.removeMessageHandler(
-                updatedViewsQueueExceededMessageHandler,
-                MessageServiceClient.RESPONSE_TOPIC_NAME);
+            updatedViewsQueueExceededMessageHandler,
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.closeConnection();
         } catch (MessageServiceException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
-                        "Failed to close connection due to some internal error!",
-                        exception);
+                    "Failed to close connection due to some internal error!",
+                    exception);
             }
         }
     }
