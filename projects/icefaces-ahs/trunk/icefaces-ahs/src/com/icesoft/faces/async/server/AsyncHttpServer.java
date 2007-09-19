@@ -323,6 +323,17 @@ public class AsyncHttpServer
 //         */
 //    }
 
+    public void cancelHttpRequest(String iceFacesId) {
+        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
+            return;
+        }
+        ProcessHandler _processHandler = pullPendingRequest(iceFacesId);
+        if (_processHandler != null) {
+            _processHandler.getHandlerPool().
+                returnProcessHandler(_processHandler);
+        }
+    }
+
     /**
      * <p>
      *   Gets the execute queue of this <code>AsyncHttpServer</code>.

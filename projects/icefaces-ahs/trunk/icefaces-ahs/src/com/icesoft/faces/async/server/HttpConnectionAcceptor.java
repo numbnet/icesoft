@@ -51,6 +51,8 @@ public interface HttpConnectionAcceptor {
     public void addHttpConnectionAcceptorListener(
         final HttpConnectionAcceptorListener httpConnectionAcceptorListener);
 
+    public void doneReading(final HttpConnection httpConnection);
+
     /**
      * <p>
      *   Gets the Asynchronous HTTP Server associated with this

@@ -124,9 +124,9 @@ implements Handler, Runnable {
     private UpdatedViews updatedViews;
 
     static {
-        if (LOG.isDebugEnabled()) {
+        if (LOG.isTraceEnabled()) {
             LOG.warn(
-                "Log level DEBUG is enabled. " +
+                "Log level TRACE is enabled. " +
                 "This will expose each node's address into the HTTP Responses!");
         }
     }
@@ -495,7 +495,7 @@ implements Handler, Runnable {
                 "Sequence_Number=\"" + getSequenceNumberValue() + "\"",
                 true);
         }
-        if (LOG.isDebugEnabled()) {
+        if (LOG.isTraceEnabled()) {
             try {
                 _httpResponse.putHeader(
                     "X-Source-Node-Address",
@@ -663,6 +663,8 @@ implements Handler, Runnable {
             final String _iceFacesId = _iceFacesIds.nextToken();
             if (_iceFacesId.trim().length() != 0) {
                 iceFacesId = _iceFacesId;
+                httpConnection.getTransaction().getHttpRequest().
+                    setICEfacesID(iceFacesId);
                 break;
             }
         }

@@ -36,9 +36,19 @@ extends com.icesoft.util.net.http.HttpRequest {
     /** HTTP request header (extension): X-Window-Cookie. */
     public static final String X_WINDOW_COOKIE = "X-Window-Cookie";
 
+    private String iceFacesId;
+    
     public HttpRequest(
         final String method, final String requestUri, final String httpVersion)
     throws IllegalArgumentException {
         super(method, requestUri, httpVersion);
+    }
+
+    public String getICEfacesID() {
+        return iceFacesId;
+    }
+
+    public void setICEfacesID(final String iceFacesId) {
+        this.iceFacesId = iceFacesId;
     }
 }

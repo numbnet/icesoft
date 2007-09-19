@@ -75,11 +75,4 @@ implements HttpConnection {
     public SelectionKey getSelectionKey() {
         return selectionKey;
     }
-
-    public void reset() {
-        super.reset();
-        if (!closeRequested) {
-            nioHttpConnectionAcceptor.handle(selectionKey);
-        }
-    }
 }

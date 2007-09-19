@@ -35,14 +35,16 @@ import com.icesoft.faces.async.server.AbstractHttpConnectionAcceptor;
 import com.icesoft.faces.async.server.AsyncHttpServer;
 import com.icesoft.faces.async.server.HttpConnectionAcceptor;
 import com.icesoft.faces.async.server.ReadHandler;
+import com.icesoft.faces.async.server.HttpConnection;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentLinkedQueue;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
-import java.net.BindException;
 import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.CancelledKeyException;
 import java.nio.channels.ClosedByInterruptException;
@@ -70,8 +72,9 @@ implements HttpConnectionAcceptor {
     private static final Log LOG =
         LogFactory.getLog(NioHttpConnectionAcceptor.class);
 
-    private ConcurrentLinkedQueue selectionKeyQueue =
+    private final ConcurrentLinkedQueue selectionKeyQueue =
         new ConcurrentLinkedQueue();
+
     private Selector selector;
     private ServerSocket serverSocket;
     private ServerSocketChannel serverSocketChannel;
@@ -103,20 +106,30 @@ implements HttpConnectionAcceptor {
         }
     }
 
+    public void doneReading(final HttpConnection httpConnection) {
+        registerSelectionKey(
+            ((NioHttpConnection)httpConnection).getSelectionKey(),
+            SelectionKey.OP_READ);
+    }
+
     public void enableSelectionKeys() {
         int _size = selectionKeyQueue.size();
         for (int i = 0; i < _size; i++) {
-            Registration _registration = (Registration)selectionKeyQueue.poll();
+            Registration _registration =
+                (Registration)selectionKeyQueue.poll();
             if (_registration.selectionKey.isValid()) {
-                _registration.selectionKey.interestOps(
-                    _registration.selectionKey.interestOps() |
-                        _registration.operations);
+                try {
+                    // throws CancelledKeyException
+                    _registration.selectionKey.interestOps(
+                        _registration.selectionKey.interestOps() |
+                            _registration.operations);
+                } catch (CancelledKeyException exception) {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn("Selection Key got cancelled!", exception);
+                    }
+                }
             }
         }
-    }
-
-    public void handle(final SelectionKey selectionKey) {
-        registerSelectionKey(selectionKey, SelectionKey.OP_READ);
     }
 
     public void registerSelectionKey(
@@ -139,14 +152,80 @@ implements HttpConnectionAcceptor {
         try {
             while (!stopRequested) {
                 enableSelectionKeys();
+                if (LOG.isTraceEnabled()) {
+                    StringBuffer _string = new StringBuffer();
+                    _string.
+                        append(
+                            "ACCEPT\tCONNECT\tREAD\tWRITE\tChannel\r\n");
+                    Iterator _keys = selector.keys().iterator();
+                    while (_keys.hasNext()) {
+                        SelectionKey _selectionKey = (SelectionKey)_keys.next();
+                        try {
+                            boolean _OP_ACCEPT = _selectionKey.isAcceptable();
+                            boolean _OP_CONNECT = _selectionKey.isConnectable();
+                            boolean _OP_READ = _selectionKey.isReadable();
+                            boolean _OP_WRITE = _selectionKey.isWritable();
+                            SelectableChannel _channel =
+                                _selectionKey.channel();
+                            _string.
+                                append(_OP_ACCEPT).append('\t').
+                                append(_OP_CONNECT).append('\t').
+                                append(_OP_READ).append('\t').
+                                append(_OP_WRITE).append('\t').
+                                append(_channel).append("\r\n");
+                        } catch (CancelledKeyException exception) {
+                            // do nothing. (this is logging.)
+                        }
+                    }
+                    LOG.trace("Keys:\r\n" + _string);
+                }
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Selection Process started.");
+                }
                 int _numberOfKeys = selector.select(60000);
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Selection Process done or timed out.");
+                }
                 Set _selectedKeySet = selector.selectedKeys();
                 if (_numberOfKeys == 0) {
                     _selectedKeySet.clear();
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Nothing to do. Continuing...");
+                    }
                     continue;
                 }
                 if (_selectedKeySet.isEmpty()) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Nothing to do. Continuing...");
+                    }
                     continue;
+                }
+                if (LOG.isTraceEnabled()) {
+                    StringBuffer _string = new StringBuffer();
+                    _string.
+                        append(
+                            "ACCEPT\tCONNECT\tREAD\tWRITE\tValid\tChannel\r\n");
+                    Iterator _keys = _selectedKeySet.iterator();
+                    while (_keys.hasNext()) {
+                        SelectionKey _selectionKey = (SelectionKey)_keys.next();
+                        try {
+                            boolean _OP_ACCEPT = _selectionKey.isAcceptable();
+                            boolean _OP_CONNECT = _selectionKey.isConnectable();
+                            boolean _OP_READ = _selectionKey.isReadable();
+                            boolean _OP_WRITE = _selectionKey.isWritable();
+                            SelectableChannel _channel =
+                                _selectionKey.channel();
+                            _string.
+                                append(_OP_ACCEPT).append('\t').
+                                append(_OP_CONNECT).append('\t').
+                                append(_OP_READ).append('\t').
+                                append(_OP_WRITE).append('\t').
+                                append(_channel).append("\r\n");
+                        } catch (CancelledKeyException exception) {
+                            // do notning. (this is logging.)
+                        }
+                    }
+                    LOG.trace("Selected Keys:\r\n" + _string);
                 }
                 Iterator _selectedKeys = _selectedKeySet.iterator();
                 while (_selectedKeys.hasNext()) {
@@ -325,14 +404,20 @@ implements HttpConnectionAcceptor {
     }
 
     private void cancelSelectionKey(final SelectionKey selectionKey) {
-        try {
-            ((SocketChannel)selectionKey.channel()).socket().shutdownInput();
-        } catch (IOException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(
-                    "An I/O error occurred while " +
-                        "shutting down socket channel's socket",
-                    exception);
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Canceling SelectionKey: " + selectionKey);
+        }
+        if (selectionKey.isValid()) {
+            selectionKey.cancel();
+            try {
+                selectionKey.channel().close();
+            } catch (IOException exception) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "An I/O error occurred while " +
+                            "closing the socket channel!",
+                        exception);
+                }
             }
         }
     }
@@ -359,6 +444,12 @@ implements HttpConnectionAcceptor {
     }
 
     private void handleAccept(final SelectionKey selectedKey) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
+                "Handling OP_ACCEPT for Selection Key " +
+                    "with associated Channel: " +
+                        selectedKey.channel());
+        }
         ServerSocketChannel _serverSocketChannel =
             (ServerSocketChannel)selectedKey.channel();
         try {
@@ -445,34 +536,57 @@ implements HttpConnectionAcceptor {
     }
 
     private void handleRead(final SelectionKey selectedKey) {
-        selectedKey.interestOps(
-            selectedKey.interestOps() & (~SelectionKey.OP_READ));
-        NioHttpConnection _nioHttpConnection;
-        if (httpConnectionMap.containsKey(selectedKey)) {
-            _nioHttpConnection =
-                (NioHttpConnection)httpConnectionMap.get(selectedKey);
-        } else {
-            _nioHttpConnection = new NioHttpConnection(selectedKey, this);
-            httpConnectionMap.put(selectedKey, _nioHttpConnection);
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
+                "Handling OP_READ for Selection Key " +
+                    "with associated Channel: " +
+                        selectedKey.channel());
         }
-        if (pendingReadHandlerMap.containsKey(_nioHttpConnection)) {
-            ((ReadHandler)pendingReadHandlerMap.remove(_nioHttpConnection)).
-                handle();
-        } else {
-            handlerPool.getReadHandler(_nioHttpConnection).handle();
+        try {
+            selectedKey.interestOps(
+                selectedKey.interestOps() & (~SelectionKey.OP_READ));
+            NioHttpConnection _nioHttpConnection;
+            if (httpConnectionMap.containsKey(selectedKey)) {
+                _nioHttpConnection =
+                    (NioHttpConnection)httpConnectionMap.get(selectedKey);
+            } else {
+                _nioHttpConnection = new NioHttpConnection(selectedKey, this);
+                httpConnectionMap.put(selectedKey, _nioHttpConnection);
+            }
+            if (pendingReadHandlerMap.containsKey(_nioHttpConnection)) {
+                ((ReadHandler)pendingReadHandlerMap.remove(_nioHttpConnection)).
+                    handle();
+            } else {
+                handlerPool.getReadHandler(_nioHttpConnection).handle();
+            }
+        } catch (CancelledKeyException exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Selection Key got cancelled!", exception);
+            }
         }
     }
 
     private void handleSelectionKey(final SelectionKey selectionKey) {
-        if ((selectionKey.readyOps() & SelectionKey.OP_ACCEPT) ==
-                SelectionKey.OP_ACCEPT) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
+                "Handling Selection Key with associated Channel: " +
+                    selectionKey.channel());
+        }
+        try {
+            int _readyOps = selectionKey.readyOps();
+            if ((_readyOps & SelectionKey.OP_ACCEPT) ==
+                    SelectionKey.OP_ACCEPT) {
 
-            handleAccept(selectionKey);
-        } else if (
-            (selectionKey.readyOps() & SelectionKey.OP_READ) ==
-                SelectionKey.OP_READ) {
+                handleAccept(selectionKey);
+            } else if (
+                (_readyOps & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
 
-            handleRead(selectionKey);
+                handleRead(selectionKey);
+            }
+        } catch (CancelledKeyException exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error("Selection Key got cancelled!", exception);
+            }
         }
     }
 

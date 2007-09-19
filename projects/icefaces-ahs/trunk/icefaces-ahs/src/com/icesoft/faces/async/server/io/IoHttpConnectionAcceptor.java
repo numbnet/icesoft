@@ -35,6 +35,7 @@ import com.icesoft.faces.async.server.AbstractHttpConnectionAcceptor;
 import com.icesoft.faces.async.server.AsyncHttpServer;
 import com.icesoft.faces.async.server.HttpConnectionAcceptor;
 import com.icesoft.faces.async.server.ReadHandler;
+import com.icesoft.faces.async.server.HttpConnection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -73,6 +74,10 @@ implements HttpConnectionAcceptor {
                 httpConnectionMap.remove(socket);
             }
         }
+    }
+
+    public void doneReading(final HttpConnection httpConnection) {
+        // do nothing.
     }
 
     public void handle(final Socket socket) {

@@ -148,8 +148,18 @@ implements Handler, Runnable {
                             // User-Agent closed the connection?!
                             // (Linux; Windows seems to throw a SocketException)
                             httpConnection.requestClose();
+                            if (httpConnection.getTransaction().
+                                    hasHttpRequest()) {
+                                asyncHttpServer.cancelHttpRequest(
+                                    httpConnection.getTransaction().
+                                        getHttpRequest().getICEfacesID());
+                            }
                             httpConnection.reset();
                             handlerPool.returnReadHandler(this);
+                            if (LOG.isTraceEnabled()) {
+                                LOG.trace(
+                                    "Close: User-Agent closed the connection!");
+                            }
                             return;
                         } else if (length == 0) {
                             park();
@@ -329,7 +339,7 @@ implements Handler, Runnable {
             }
             httpConnection.setException(exception);
         } finally {
-            if (!httpConnection.isCloseRequested()) {
+            if (!httpConnection.isCloseRequested() && inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException exception) {
@@ -347,6 +357,8 @@ implements Handler, Runnable {
             }
         }
         handlerPool.getProcessHandler(httpConnection).handle();
+        asyncHttpServer.getHttpConnectionAcceptor(asyncHttpServer.getPort()).
+            doneReading(httpConnection);
         handlerPool.returnReadHandler(this);
     }
 
