@@ -36,9 +36,9 @@
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></meta>
     <title>ICEfaces Address Demo</title>
-    <ice:outputStyle rel='stylesheet' type='text/css' href='./xmlhttp/css/xp/xp.css'/>
-    <ice:outputStyle href="./css/address.css" rel="stylesheet" type="text/css" />
-    <ice:outputStyle href="./css/readme.css" rel="stylesheet" type="text/css" />
+    <ice:outputStyle href='./xmlhttp/css/xp/xp.css'/>
+    <ice:outputStyle href="./css/address.css"/>
+    <ice:outputStyle href="./css/readme.css"/>
     </head>
     <body>
     

@@ -37,7 +37,7 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 <html>
 <head><title>Auction Monitor - Mobile Chat</title>
-    <ice:outputStyle rel="stylesheet" type="text/css" href="auction_styles.css"/>
+    <ice:outputStyle href="auction_styles.css"/>
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0;" />
 </head>
 

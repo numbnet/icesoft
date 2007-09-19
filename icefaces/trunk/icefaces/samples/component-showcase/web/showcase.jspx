@@ -46,7 +46,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
         <title><ice:outputText value="#{msgs.showCasetitle}" /></title>
         <h:outputText style="padding-top:0; padding-bottom:0;" value="#{styleBean.style}" escape="false" />
-        <ice:outputStyle href="css/showcase_style.css" rel="stylesheet" type="text/css" />
+        <ice:outputStyle href="css/showcase_style.css"/>
     </head>
     <body>
         <!--

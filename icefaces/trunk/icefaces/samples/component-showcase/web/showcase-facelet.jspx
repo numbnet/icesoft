@@ -17,7 +17,7 @@
             <ice:outputText value="#{msgs.showCasetitle}"/>
         </title>
         <h:outputText value="#{styleBean.style}" escape="false"/>
-        <ice:outputStyle href="css/showcase_style.css" rel="stylesheet" type="text/css" />
+        <ice:outputStyle href="css/showcase_style.css"/>
     </ui:define>
 
 </ui:composition>
