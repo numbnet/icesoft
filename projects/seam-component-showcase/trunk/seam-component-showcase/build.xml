@@ -151,7 +151,7 @@
         </target>
         <target name="war2.0-configs" description="copies proper configs for web-inf for seam1.2.1">
                <copy todir="${war.dir}/WEB-INF" overwrite="true">
-                    <fileset dir="${basedir}/resources/WEB-INF/Seam2Configs">
+                    <fileset dir="${basedir}/resources/WEB-INF/seam2Configs">
 			<include name="*.xml"/>
                     </fileset>
                     <filterset>
