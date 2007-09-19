@@ -16,8 +16,12 @@
     <property name="build.classes.dir" location="${build.dir}/classes"/>
     <property name="compile.debug" value="true"/>
     
+    <condition property="release.type.suffix" value="-${release.type}" else="">
+	<not><equals arg1="${release.type}" arg2="" trim="true"/></not>
+    </condition>
+    
     <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
-    <property name="src.bundle.name" value="${product}-${product.version}-AHS-${release.type}"/>
+    <property name="src.bundle.name" value="${product}-${product.version}-AHS-${release.type.suffix}"/>
     <property name="src.bundle.file" location="${dist.dir}/${src.bundle.name}.zip"/>
     
     <path id="compile.run.classpath">
