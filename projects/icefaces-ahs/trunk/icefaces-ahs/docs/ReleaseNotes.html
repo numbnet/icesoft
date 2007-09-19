@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head><!-- saved from url=(0022)http://internet.e-mail -->
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
-    <title>ICEfaces&#8482; Asynchronous HTTP Server v1.6.1 Release Notes</title>
+    <title>ICEfaces&#8482; Asynchronous HTTP Server v1.6.1a Release Notes</title>
   </head>
   <body style="font-family: helvetica,arial,sans-serif;">
     <table border="0" width="100%">
@@ -9,9 +9,9 @@
         <tr>
           <td width="78%">
             <h1>ICEfaces&#8482; Asynchronous HTTP Server</h1>
-            <h1>v1.6.1 Release Notes</h1>
+            <h1>v1.6.1a Release Notes</h1>
             <p>
-              <strong><em>August 31, 2007</em></strong>
+              <strong><em>September 21, 2007</em></strong>
             </p>
           </td>
           <td align="center" valign="top" width="22%">
@@ -102,7 +102,14 @@
     <h3>ICEfaces Asynchronous HTTP Server</h3>
     <ul>
       <li>
-        Added support for ICEfaces 1.6.1.
+        Improved threading model for JMS communication.
+      </li>
+      <li>
+        Fixed a socket leak issue where sockets could end up in a CLOSE_WAIT
+        state, without actually being closed.
+      </li>
+      <li>
+        Minor bug fixes.
       </li>
     </ul>
     <hr>
@@ -110,7 +117,8 @@
       <a name="Prerequisites"></a>
       Prerequisites
     </h2>
-    <p>ICEfaces 1.6.1 is required in order to use the ICEfaces Asynchronous HTTP Server.
+    <p>ICEfaces 1.6.1 is required in order to use the ICEfaces Asynchronous HTTP
+       Server 1.6.1a.
     </p>
     <hr>
     <h2 style="font-style: italic;">
