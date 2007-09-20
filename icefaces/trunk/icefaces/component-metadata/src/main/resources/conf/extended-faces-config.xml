@@ -208,7 +208,8 @@
   <!ENTITY ice-cust-outputDeclaration-props SYSTEM "ice_cust_properties/cust-outputDeclaration-props.xml">  
   <!ENTITY ice-cust-style-props SYSTEM "ice_cust_properties/cust-style-props.xml">
   <!ENTITY ice-cust-panelPositioned-props SYSTEM "ice_cust_properties/cust-panelPositioned-props.xml">
-  
+  <!ENTITY ice-cust-portlet-props SYSTEM "ice_cust_properties/cust-portlet-props.xml">
+
   <!-- ICE Extended components -->
   <!ENTITY ice-button-component   SYSTEM "components/ice-button-component.xml">
   <!ENTITY ice-button-renderer    SYSTEM "components/ice-button-renderer.xml">
@@ -381,7 +382,10 @@
   <!ENTITY ice-cust-googlemap-props SYSTEM "ice_cust_properties/cust-googlemap-props.xml">
   <!ENTITY googlemap-component SYSTEM "custom/googlemap-component.xml">
   <!ENTITY googlemap-renderer SYSTEM "custom/googlemap-renderer.xml">    
-  
+
+  <!ENTITY portlet-component   SYSTEM "custom/portlet-component.xml">
+  <!ENTITY portlet-renderer    SYSTEM "custom/portlet-renderer.xml">
+
   <!ENTITY % property-editors SYSTEM "dtd/property-editors.dtd">
   %property-editors;
     
@@ -431,6 +435,7 @@
 	&tree-component;
 	&treenode-component;
 	&panelpopup-component;
+	&portlet-component;
 	&menu-component;
 	&menuitem-component;
 	&menuitems-component;
@@ -493,6 +498,7 @@
 		&tree-renderer;
 		&treenode-renderer;
 		&panelpopup-renderer;
+		&portlet-renderer;
 		&menu-renderer;
 		&menuitem-renderer;
 		&menuitems-renderer;
