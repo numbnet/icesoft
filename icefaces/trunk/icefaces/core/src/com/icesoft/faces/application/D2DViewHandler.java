@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.application;
 
-import com.icesoft.faces.component.NamespacingViewRoot;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
@@ -174,8 +173,7 @@ public class D2DViewHandler extends ViewHandler {
             return delegate.createView(context, viewId);
         }
 
-        UIViewRoot root = new NamespacingViewRoot(context);
-//        UIViewRoot root = new UIViewRoot();
+        UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
 
         Map contextServletTable =
