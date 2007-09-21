@@ -13,7 +13,8 @@ import java.util.Map;
  * the proper namespace to the portlet's component heirarchy by
  */
 public class Portlet extends UINamingContainer {
-
+    private String style;
+    private String styleClass;
 
     public String getClientId(FacesContext context) {
 
@@ -24,5 +25,19 @@ public class Portlet extends UINamingContainer {
         return (String) requestMap.get(Constants.NAMESPACE_KEY);
     }
 
+    public String getStyle() {
+        return style;
+    }
 
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getStyleClass() {
+        return styleClass;
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
 }
