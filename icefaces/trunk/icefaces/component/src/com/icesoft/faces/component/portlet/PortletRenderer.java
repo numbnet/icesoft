@@ -26,7 +26,6 @@ public class PortletRenderer extends DomBasicRenderer {
 
             domContext.setRootNode(root);
             root.setAttribute(HTML.ID_ATTR, clientID);
-            System.out.println("PortletRenderer.encodeBegin:  id = " + clientID );
         }
 
         Element root = (Element) domContext.getRootNode();
@@ -49,31 +48,4 @@ public class PortletRenderer extends DomBasicRenderer {
         domContext.stepInto(uiComponent);
     }
 
-
-
-//    protected void renderEnd(FacesContext facesContext, UIComponent component, String currentValue) throws IOException {
-//
-//        validateParameters(facesContext, component, UINamingContainer.class);
-//
-//        DOMContext domContext = DOMContext.attachDOMContext(facesContext, component);
-//
-//        if (!domContext.isInitialized()) {
-//            Element root = domContext.createElement(HTML.DIV_ELEM);
-//            domContext.setRootNode(root);
-//            setRootElementId(facesContext, root, component);
-//            root.setAttribute("name", component.getClientId(facesContext));
-//        }
-//
-//        Element root = (Element) domContext.getRootNode();
-//
-//        String styleClass = (String) component.getAttributes().get("styleClass");
-//        if (styleClass != null) {
-//            root.setAttribute("class", styleClass);
-//        }
-//
-//        PassThruAttributeRenderer.renderAttributes(facesContext, component, null);
-//
-//        domContext.stepOver();
-//        domContext.streamWrite(facesContext, component);
-//    }
 }
