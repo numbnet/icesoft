@@ -34,10 +34,12 @@
 package com.icesoft.faces.component.ext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -129,7 +131,8 @@ public class HtmlOutputLabel
         return Util.getQualifiedStyleClass(this, 
                 styleClass,
                 CSS_DEFAULT.OUTPUT_LABEL_DEFAULT_STYLE_CLASS,
-                "styleClass");    
+                "styleClass",
+                PORTLET_CSS_DEFAULT.PORTLET_FORM_LABEL);    
                
     }
 

@@ -33,10 +33,14 @@
 
 package com.icesoft.faces.component.menubar;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.util.CoreUtils;
+
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -65,8 +69,17 @@ public class MenuBarRenderer extends DomBasicRenderer {
         menuDiv.setAttribute(HTML.ID_ATTR,
                              uiComponent.getClientId(facesContext));
 
+        
         MenuBar menuComponent = (MenuBar) uiComponent;
-            menuDiv.setAttribute(HTML.CLASS_ATTR, menuComponent.getStyleClass());
+        String defaultStyle = CSS_DEFAULT.MENU_BAR_STYLE;
+        if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
+                menuComponent.getOrientation())){
+            defaultStyle+=CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE;
+        }
+        
+        String styleClass = menuComponent.getStyleClass();
+        menuDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.
+        		addPortletStyleClassToQualifiedClass(styleClass, defaultStyle, PORTLET_CSS_DEFAULT.PORTLET_MENU));
         String style = menuComponent.getStyle();
         if(style != null && style.length() > 0)
             menuDiv.setAttribute(HTML.STYLE_ATTR, style);

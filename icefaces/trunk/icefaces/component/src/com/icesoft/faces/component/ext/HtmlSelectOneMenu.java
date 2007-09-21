@@ -48,11 +48,13 @@ import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.IceExtended;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
 
 
 /**
@@ -327,7 +329,8 @@ public class HtmlSelectOneMenu
                 styleClass,
                 CSS_DEFAULT.SELECT_ONE_MENU_DEFAULT_STYLE_CLASS,
                 "styleClass",
-                isDisabled());  
+                isDisabled(),
+                PORTLET_CSS_DEFAULT.PORTLET_FORM_FIELD);  
     }
 
     /**

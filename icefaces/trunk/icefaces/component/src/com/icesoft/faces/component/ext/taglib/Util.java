@@ -55,6 +55,8 @@ import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.EffectBuilder;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.util.CoreUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -323,7 +325,8 @@ public class Util extends Object {
                                 null,
                                 null,
                                 false,
-                                true);
+                                true,
+                                "");
         
     }
 
@@ -345,7 +348,8 @@ public class Util extends Object {
                                 null,
                                 null,
                                 disabled,
-                                true);
+                                true,
+                                "");
         
     }
 
@@ -371,10 +375,67 @@ public class Util extends Object {
                 defaulStyleClass, 
                 classAttributeName, 
                 false,
-                false);
+                false,
+                "");
         
     }
 
+    /**
+     * This method should be used by the renderer/component class to get the 
+     * qualifiedStyleClass for a "styleClass" or any other class related attribute
+     * on the component (e.g.) inputText on inputFile component.
+     * This would return a qualifiedStyleClass string using the following pattern.
+     *      defaulStyleClass  [userDefinedStyleClass]
+     * @param uiComponent
+     * @param userDefinedStyleClass
+     * @param defaulStyleClass
+     * @param classAttributeName
+     * @return qualifiedStyleClass string
+     */    
+    
+    public static String getQualifiedStyleClass(UIComponent uiComponent,
+                                          String userDefinedStyleClass,
+                                          String defaulStyleClass, 
+                                          String classAttributeName,
+                                          String portletClass) {
+        return getQualifiedStyleClass(uiComponent, 
+                userDefinedStyleClass, 
+                defaulStyleClass, 
+                classAttributeName, 
+                false,
+                false,
+                portletClass);
+        
+    }
+    
+    /**
+     * This method should be used by the renderer/component class that can be
+     * disabled, to get the qualifiedStyleClass for a "styleClass" or any other 
+     * class related attribute on the component (e.g.) "inputText" attribute on 
+     * "inputFile" component. This methods returns a qualifiedStyleClass string 
+     * using the following pattern.
+     *      defaulStyleClass[-dis]  [userDefinedStyleClass[-dis]]
+     * @param uiComponent
+     * @param userDefinedStyleClass
+     * @param defaulStyleClass
+     * @param classAttributeName
+     * @return qualifiedStyleClass string
+     */    
+    public static String getQualifiedStyleClass(UIComponent uiComponent,
+                                          String userDefinedStyleClass,
+                                          String defaulStyleClass, 
+                                          String classAttributeName,
+                                          boolean disabled,
+                                          String portletClass) {
+        return getQualifiedStyleClass(uiComponent, 
+                userDefinedStyleClass, 
+                defaulStyleClass, 
+                classAttributeName, 
+                disabled,
+                false,
+                portletClass);
+        
+    }
     /**
      * This method should be used by the renderer/component class that can be
      * disabled, to get the qualifiedStyleClass for a "styleClass" or any other 
@@ -398,7 +459,8 @@ public class Util extends Object {
                 defaulStyleClass, 
                 classAttributeName, 
                 disabled,
-                false);
+                false,
+                "");
         
     }
 
@@ -407,7 +469,8 @@ public class Util extends Object {
                                           String defaulStyleClass, 
                                           String classAttributeName,
                                           boolean disabled,
-                                          boolean isNoneAttributeClass) {
+                                          boolean isNoneAttributeClass,
+                                          String portletClass) {
           if (isNoneAttributeClass) {
               //1- This requested class is used internally by the component and
               //not visible to the developer (or can not be set using an attribute)
@@ -425,7 +488,7 @@ public class Util extends Object {
                       userDefinedStyleClass,
                       "styleClass");
               styleClass = defaulStyleClass + 
-              disabledSuffix+
+              disabledSuffix+ CoreUtils.getPortletStyleClass(portletClass) +
               " " + ((styleClass!=null)? styleClass + disabledSuffix :"");
               return styleClass.trim();
           } else {

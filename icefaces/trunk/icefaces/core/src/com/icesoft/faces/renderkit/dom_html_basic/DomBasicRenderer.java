@@ -33,9 +33,11 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
 
@@ -648,24 +650,41 @@ public abstract class DomBasicRenderer extends Renderer {
         // obtain the severity style and severity style class
         String severityStyle = null;
         String severityStyleClass = null;
+        String baseStyle = null;
         Severity messageSeverity = facesMessage.getSeverity();
         if (messageSeverity == FacesMessage.SEVERITY_INFO) {
             severityStyle =
                     (String) uiComponent.getAttributes().get("infoStyle");
             if (uiComponent instanceof HtmlMessage) {
                 severityStyleClass = ((HtmlMessage) uiComponent).getInfoClass();
+                baseStyle = "iceMsg";
             } else if (uiComponent instanceof HtmlMessages) {
                 severityStyleClass =
                         ((HtmlMessages) uiComponent).getInfoClass();
+                baseStyle = "iceMsgs";                
+            }
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
+            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+            							(severityStyleClass, 
+            							baseStyle + "Info", 
+            							PORTLET_CSS_DEFAULT.PORTLET_MSG_INFO);
             }
         } else if (messageSeverity == FacesMessage.SEVERITY_WARN) {
             severityStyle =
                     (String) uiComponent.getAttributes().get("warnStyle");
             if (uiComponent instanceof HtmlMessage) {
                 severityStyleClass = ((HtmlMessage) uiComponent).getWarnClass();
+                baseStyle = "iceMsg";                
             } else if (uiComponent instanceof HtmlMessages) {
                 severityStyleClass =
                         ((HtmlMessages) uiComponent).getWarnClass();
+                baseStyle = "iceMsgs";                
+            }
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
+            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+            							(severityStyleClass, 
+            							baseStyle + "Warn", 
+            							PORTLET_CSS_DEFAULT.PORTLET_MSG_ALERT);
             }
         } else if (messageSeverity == FacesMessage.SEVERITY_ERROR) {
             severityStyle =
@@ -673,10 +692,20 @@ public abstract class DomBasicRenderer extends Renderer {
             if (uiComponent instanceof HtmlMessage) {
                 severityStyleClass =
                         ((HtmlMessage) uiComponent).getErrorClass();
+                baseStyle = "iceMsg";
             } else if (uiComponent instanceof HtmlMessages) {
                 severityStyleClass =
                         ((HtmlMessages) uiComponent).getErrorClass();
+                baseStyle = "iceMsgs";
             }
+            if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
+            	System.out.println(severityStyleClass);
+            	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
+            							(severityStyleClass, 
+            							baseStyle + "Error", 
+            							PORTLET_CSS_DEFAULT.PORTLET_MSG_ERROR);
+            }
+
         } else if (messageSeverity == FacesMessage.SEVERITY_FATAL) {
             severityStyle =
                     (String) uiComponent.getAttributes().get("fatalStyle");

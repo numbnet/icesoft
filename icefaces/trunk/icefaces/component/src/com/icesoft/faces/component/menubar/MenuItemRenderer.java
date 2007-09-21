@@ -35,6 +35,7 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.InvalidComponentTypeException;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
@@ -154,10 +155,13 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             rootItemSubClass = CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE +
                                 rootItemSubClass;
         }
-        topLevelDiv.setAttribute(HTML.CLASS_ATTR,
-                ((MenuItem) uiComponent).
-                getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
-                        rootItemSubClass));
+        String qualifiedName = ((MenuItem) uiComponent).
+        getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
+                rootItemSubClass);
+        
+        topLevelDiv.setAttribute(HTML.CLASS_ATTR,CoreUtils.
+        		addPortletStyleClassToQualifiedClass(qualifiedName, 
+        				rootItemSubClass, PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
 
         if (uiComponent.getChildCount() > 0) {
             String displayEvent = HTML.ONMOUSEOVER_ATTR;
@@ -405,13 +409,11 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String subMenuDivId = uiComponent.getClientId(facesContext) + SUB;
         submenuDiv.setAttribute(HTML.ID_ATTR, subMenuDivId);
 
-//        if (vertical) {
-//            submenuDiv.setAttribute(HTML.CLASS_ATTR,
-//                                    CSS_DEFAULT.SUBMENU_VERTICAL_STYLE);
-//        } else {
-//            submenuDiv.setAttribute(HTML.CLASS_ATTR, CSS_DEFAULT.SUBMENU_STYLE);
-//        }
-        submenuDiv.setAttribute(HTML.CLASS_ATTR, menuComponent.getSubMenuStyleClass());
+        
+        String qualifiedName = menuComponent.getSubMenuStyleClass();
+        submenuDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.
+        		addPortletStyleClassToQualifiedClass(qualifiedName, 
+        				CSS_DEFAULT.MENU_BAR_SUB_MENU_STYLE , PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM) );
         submenuDiv.setAttribute(HTML.STYLE_ATTR, "display:none");
         masterDiv.appendChild(submenuDiv);
         // check if this menuItem is disabled, if it is lets disable the  children
