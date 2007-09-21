@@ -29,9 +29,13 @@ public class PortletRenderer extends DomBasicRenderer {
             System.out.println("PortletRenderer.encodeBegin:  id = " + clientID );
         }
 
-        // This has to occur outside the isInitialized test, as it has to happen
-        // all the time, even if the form otherwise has not changed.
         Element root = (Element) domContext.getRootNode();
+
+        String styleClass =
+                (String) uiComponent.getAttributes().get("styleClass");
+        if (styleClass != null) {
+            root.setAttribute("class", styleClass);
+        }
 
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, uiComponent, null);
