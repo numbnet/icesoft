@@ -252,29 +252,33 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         ExternalContext extCtx = context.getExternalContext();
         String viewId = actionId;
         if (extCtx.getRequestPathInfo() == null) {
-            String facesSuffix = actionId.substring(actionId.lastIndexOf('.'));
-            String viewSuffix = context.getExternalContext()
-                    .getInitParameter(ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-            if(viewSuffix != null) {
-                viewId = actionId.replaceFirst(facesSuffix, viewSuffix);
-            }
-            else {
+            String viewSuffix = context.getExternalContext().getInitParameter(
+                ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            if(viewSuffix == null) {
                 if(log.isErrorEnabled()) {
                     log.error(
                         "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
-                        " context parameter is not set in web.xml. " +
-                        "Please define the filename extension used for " +
-                        "your source JSF pages. Example:\n" +
-                        "<context-param>\n" +
-                        "  <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
-                        "  <param-value>.xhtml</param-value>\n" +
-                        "</context-param>");
+                            " context parameter is not set in web.xml. " +
+                            "Please define the filename extension used for " +
+                            "your source JSF pages. Example:\n" +
+                            "<context-param>\n" +
+                            " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
+                            " <param-value>.xhtml</param-value>\n" +
+                            "</context-param>");
                 }
-            }            
+            }
+            else {
+                int lastPeriod = actionId.lastIndexOf('.');
+                if(lastPeriod < 0) {
+                    viewId = actionId + viewSuffix;
+                }
+                else {
+                    viewId = actionId.substring(0, lastPeriod) + viewSuffix;
+                }
+            }
         }
         return viewId;
     }
-
 
     protected void renderResponse(FacesContext facesContext) throws IOException {
         if (log.isTraceEnabled()) {
@@ -317,11 +321,31 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             renderResponse(context, viewToRender);
             responseWriter.endDocument();
         }
+        catch(FileNotFoundException e) {
+            handleFaceletFileNotFoundException(context);
+        }
         catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error("Problem in renderResponse: " + e.getMessage(), e);
             }
             throw new FacesException("Problem in renderResponse: " + e.getMessage(), e);
+        }
+    }
+    
+    protected void handleFaceletFileNotFoundException(FacesContext context)
+            throws FacesException, IOException {
+        String actualId = "";
+        UIViewRoot viewToRender = context.getViewRoot();
+        if( viewToRender != null) {
+            String viewId = viewToRender.getViewId();
+            String renderedViewId = getRenderedViewId(context, viewId);
+            actualId = getActionURL(context, renderedViewId);
+        }
+        Object respObj = context.getExternalContext().getResponse();
+        if (respObj instanceof HttpServletResponse) {
+            HttpServletResponse respHttp = (HttpServletResponse) respObj;
+            respHttp.sendError(HttpServletResponse.SC_NOT_FOUND, actualId);
+            context.responseComplete();
         }
     }
 
