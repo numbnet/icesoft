@@ -85,12 +85,17 @@ public class TableRenderer
     }
 
     public String[] getHeaderStyles(UIComponent uiComponent) {
-        if (((String[]) getHeaderStyleClasses(uiComponent)).length <= 0) {
+        String headerClass = getHeaderClass(uiComponent).
+        replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");
+    	if (((String[]) getHeaderStyleClasses(uiComponent)).length <= 0) {
             String[] headerStyles = new String[2];
             headerStyles[0] = Util.getQualifiedStyleClass(uiComponent, 
-                    CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS1);
+                    CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS1) + ((headerClass.length() > 0)
+                    ? headerClass : "");
             headerStyles[1] =Util.getQualifiedStyleClass(uiComponent, 
-                    CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS2);
+                    CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS2)+ ((headerClass.length() > 0)
+                            ? headerClass : "");
+            
             return headerStyles;
         } else {
             return getHeaderStyleClasses(uiComponent);
@@ -646,13 +651,16 @@ public class TableRenderer
     }
     
     public String[] getHeaderStyleClasses(UIComponent uiComponent) {
+        String headerClass = getHeaderClass(uiComponent).
+        replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");    	
        String[] headerClasses = getStyleClasses(uiComponent, "headerClasses");
        for (int i=0; i < headerClasses.length; i++) {
            headerClasses[i] = Util.getQualifiedStyleClass(uiComponent,
                    headerClasses[i],
                          CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS,
                          "headerClasses"                            
-                                      ); 
+                                      )+ ((headerClass.length() > 0)
+                                              ? headerClass : "");
        }
        return headerClasses;       
     }
