@@ -321,31 +321,11 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             renderResponse(context, viewToRender);
             responseWriter.endDocument();
         }
-        catch(FileNotFoundException e) {
-            handleFaceletFileNotFoundException(context);
-        }
         catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error("Problem in renderResponse: " + e.getMessage(), e);
             }
             throw new FacesException("Problem in renderResponse: " + e.getMessage(), e);
-        }
-    }
-    
-    protected void handleFaceletFileNotFoundException(FacesContext context)
-            throws FacesException, IOException {
-        String actualId = "";
-        UIViewRoot viewToRender = context.getViewRoot();
-        if( viewToRender != null) {
-            String viewId = viewToRender.getViewId();
-            String renderedViewId = getRenderedViewId(context, viewId);
-            actualId = getActionURL(context, renderedViewId);
-        }
-        Object respObj = context.getExternalContext().getResponse();
-        if (respObj instanceof HttpServletResponse) {
-            HttpServletResponse respHttp = (HttpServletResponse) respObj;
-            respHttp.sendError(HttpServletResponse.SC_NOT_FOUND, actualId);
-            context.responseComplete();
         }
     }
 
