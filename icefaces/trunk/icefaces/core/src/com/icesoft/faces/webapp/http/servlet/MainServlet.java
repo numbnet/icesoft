@@ -55,7 +55,7 @@ public class MainServlet extends HttpServlet {
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             PseudoServlet sessionServer = new SessionDispatcher() {
                 protected PseudoServlet newServlet(HttpSession session, Listener.Monitor sessionMonitor) {
-                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, configuration);
+                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, configuration);
                 }
             };
 

@@ -1,5 +1,6 @@
 package com.icesoft.faces.context;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public class JarResource implements Resource {
         return StartTime;
     }
 
-    public InputStream open() throws Exception {
+    public InputStream open() throws IOException {
         return this.getClass().getClassLoader().getResourceAsStream(path);
     }
 }

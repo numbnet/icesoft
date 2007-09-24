@@ -434,4 +434,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         URI uri = resourceDispatcher.registerResource(mimeType, resource);
         return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
     }
+
+    public URI registerZippedResources(Resource zippedResources) throws IOException {
+        URI uri = resourceDispatcher.registerZippedResources(zippedResources);
+        return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
+    }
 }

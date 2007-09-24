@@ -1,5 +1,6 @@
 package com.icesoft.faces.context;
 
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -30,7 +31,7 @@ public interface ResourceRegistry {
     void loadCSSRules(Resource resource);
 
     /**
-     * Register resource to be served. The URIs are encoded using
+     * Register resource to be served. The URI is encoded using
      * {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)} so
      * that proper resolution is achieved when template subdirectories or
      * forwards are used.
@@ -40,4 +41,17 @@ public interface ResourceRegistry {
      * @return the URI of the resource
      */
     URI registerResource(String mimeType, Resource resource);
+
+    /**
+     * Register a set of resources to be served. The resources have to be
+     * packaged into a Zip file. Once registered all the contained entries will
+     * be registered as individual resources.
+     * The URI is encoded using {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)}
+     * so that proper resolution is achieved when template subdirectories or
+     * forwards are used.
+     *
+     * @param resource the resource containing the zipped (compressed) stream
+     * @return the base URI of the registered resources
+     */
+    URI registerZippedResources(Resource zippedResources) throws IOException;
 }

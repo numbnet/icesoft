@@ -2,6 +2,7 @@ package com.icesoft.faces.context;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class FileResource implements Resource {
         return new Date(file.lastModified());
     }
 
-    public InputStream open() throws Exception {
+    public InputStream open() throws IOException {
         return new FileInputStream(file);
     }
 }

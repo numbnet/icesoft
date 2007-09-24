@@ -1,5 +1,6 @@
 package com.icesoft.faces.context;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ public interface Resource {
      *
      * @return the stream
      */
-    InputStream open() throws Exception;
+    InputStream open() throws IOException;
 
     /**
      * Return timestamp when resource was last updated or created.

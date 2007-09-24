@@ -5,22 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-public class StringResource implements Resource {
+public class ByteArrayResource implements Resource {
     private static final Date LastModified = new Date();
-    private String content;
-    private String encoding;
+    private byte[] content;
 
-    public StringResource(String content) {
-        this(content, "UTF-8");
-    }
-
-    public StringResource(String content, String encoding) {
+    public ByteArrayResource(byte[] content) {
         this.content = content;
-        this.encoding = encoding;
     }
 
     public String calculateDigest() {
-        return content;
+        return String.valueOf(content);
     }
 
     public Date lastModified() {
@@ -28,6 +22,6 @@ public class StringResource implements Resource {
     }
 
     public InputStream open() throws IOException {
-        return new ByteArrayInputStream(content.getBytes(encoding));
+        return new ByteArrayInputStream(content);
     }
 }

@@ -22,6 +22,7 @@ public abstract class FixedSizeContentHandler implements ResponseHandler {
         StringWriter writer = new StringWriter();
         writeTo(writer);
         writer.write("\n\n");
+        writer.flush();
         byte[] content = writer.getBuffer().toString().getBytes(characterSet);
         response.setHeader("Content-Type", mimeType + "; charset=" + characterSet);
         response.setHeader("Content-Length", content.length);

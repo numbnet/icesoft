@@ -5,6 +5,7 @@ import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
@@ -64,12 +65,12 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private PseudoServlet servlet;
     private HttpSession session;
 
-    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, Configuration configuration) {
+    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
         this.session = session;
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
-        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix);
+        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher);
         final Server viewServlet;
         final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
