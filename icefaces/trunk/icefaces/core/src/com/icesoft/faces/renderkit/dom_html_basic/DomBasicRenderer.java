@@ -191,13 +191,19 @@ public abstract class DomBasicRenderer extends Renderer {
     String formatComponentValue(FacesContext facesContext,
                                 UIComponent uiComponent, Object currentValue)
             throws ConverterException {
-
-        if (currentValue == null) {
-            return null;
-        }
-
+        return converterGetAsString(facesContext, uiComponent, currentValue);
+    }
+    
+    public static String converterGetAsString(FacesContext facesContext,
+                                              UIComponent uiComponent,
+                                              Object currentValue)
+    {
         if (!(uiComponent instanceof ValueHolder)) {
-            return currentValue.toString();
+            if (currentValue != null) {
+                return currentValue.toString();
+            } else {
+                return null;
+            }
         }
 
         // look to see whether there is a converter registered with the component
@@ -206,25 +212,28 @@ public abstract class DomBasicRenderer extends Renderer {
         // if there was no converter registered with the component then 
         // look for the default converter for the Class of the currentValue
         if (converter == null) {
-            if (currentValue instanceof String) {
+            if(currentValue == null) {
+                return "";
+            } else if (currentValue instanceof String) {
                 return (String) currentValue;
-            }
+            } 
+            
             converter = getConverterForClass(currentValue.getClass());
-        }
 
-        if (converter == null) {
-            return currentValue.toString();
-        } else {
-            // Don't convert currentValues that are already a String. Some 3rd party converters attempt
-            // to cast this to a specific instance. 
-            if (currentValue instanceof String) {
-                return (String) currentValue;
+            if (converter == null) {
+                return currentValue.toString();
             }
-            return converter
-                    .getAsString(facesContext, uiComponent, currentValue);
         }
+        
+        String ret = converter.getAsString(facesContext, uiComponent, currentValue);
+//System.out.println("DomBasicRenderer.converterGetAsString()  currentValue: " + currentValue);        
+//System.out.println("DomBasicRenderer.converterGetAsString()  ret         : " + ret);        
+//System.out.println("DomBasicRenderer.converterGetAsString()  converter   : " + converter);
+//        if(converter instanceof javax.faces.convert.DateTimeConverter)
+//            System.out.println("DomBasicRenderer.converterGetAsString()  timeZone: " + ((javax.faces.convert.DateTimeConverter)converter).getTimeZone());
+        return ret;
     }
-
+    
     /**
      * Find the UIComponent whose id is given by the for attribute of the
      * UIComponent parameter.
@@ -771,15 +780,13 @@ public abstract class DomBasicRenderer extends Renderer {
      * @param converterClass
      * @return
      */
-    Converter getConverterForClass(Class converterClass) {
+    static Converter getConverterForClass(Class converterClass) {
         if (converterClass == null) {
             return null;
         }
         try {
-            ApplicationFactory aFactory =
-                    (ApplicationFactory) FactoryFinder.getFactory(
-                            FactoryFinder.APPLICATION_FACTORY);
-            Application application = aFactory.getApplication();
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            Application application = ctx.getApplication();
             return (application.createConverter(converterClass));
         } catch (Exception e) {
             return (null);
