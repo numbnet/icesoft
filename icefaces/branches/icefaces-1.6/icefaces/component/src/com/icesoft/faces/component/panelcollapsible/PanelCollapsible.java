@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UICommand;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.el.EvaluationException;
@@ -203,7 +204,12 @@ public class PanelCollapsible extends UICommand {
      public void processDecodes(javax.faces.context.FacesContext context) {
   	   if (isExpanded()) {
   		   super.processDecodes(context);
-  	   }
+  	   } else {//now process the children of the header only
+  		   UIComponent headerFacet = getFacet("header");
+  		   if(headerFacet != null){
+  			   headerFacet.processDecodes(context);
+  		   }
+       }
   	   decode(context);
      }
 
@@ -213,7 +219,12 @@ public class PanelCollapsible extends UICommand {
      public void processValidators(FacesContext context) {
   	   if (isExpanded()) {
   		   super.processValidators(context);
-  	   }
+  	   } else {//now process the children of the header only
+  		   UIComponent headerFacet = getFacet("header");
+  		   if(headerFacet != null){
+  			   headerFacet.processValidators(context);
+  		   }
+       }
      }
 
      /* (non-Javadoc)
@@ -222,7 +233,12 @@ public class PanelCollapsible extends UICommand {
      public void processUpdates(FacesContext context) {
     	if (isExpanded()) {
     		super.processUpdates(context);
-    	}
+    	} else {//now process the children of the header only
+  		   UIComponent headerFacet = getFacet("header");
+  		   if(headerFacet != null){
+  			   headerFacet.processUpdates(context);
+  		   }
+       }
         ValueBinding vb = getValueBinding("expanded");
         //Let bean to know that the component's expanded state 
         //has been changed by the decode method. 
