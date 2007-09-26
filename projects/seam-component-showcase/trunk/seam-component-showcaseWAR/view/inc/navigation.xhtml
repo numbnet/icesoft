@@ -53,6 +53,23 @@
         </ice:selectOneRadio>
         <ice:commandButton action="#{styleBean.changeStyle}"
                            value="Change Theme"/>
+                           
+  <!--       <h3>  <ice:outputText value="Language:"/>    </h3>
+        <ice:panelGroup>
+ 		<ice:selectOneMenu value="#{org.jboss.seam.international.localeSelector.language}">
+ 		    <f:selectItem itemLabel="English" itemValue="en"/>
+ 		    <f:selectItem itemLabel="Francais" itemValue="fr"/>
+ 		</ice:selectOneMenu>
+ 		</ice:panelGroup>
+ 		<ice:commandButton action="#{localeSelector.select}"
+                           value="ChangeLanguage"/>
+        <ice:outputText value="#{localeSelector.language}"/> -->  
+    <!--     
+        <ice:selectOneRadio value="#{languageBean.currentLanguage}">
+            <f:selectItem itemLabel="English" itemValue="en"/>
+            <f:selectItem itemLabel="French"  itemValue="fr"/>
+        </ice:selectOneRadio>
+    -->     
     </ice:panelGrid>
 
     <div class="navTree">

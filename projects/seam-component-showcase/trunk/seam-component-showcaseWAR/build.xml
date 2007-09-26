@@ -341,7 +341,7 @@
               <fileset dir="${icefaces.home}/lib">
                 <include name="icefaces*.jar" />
                 <include name="backport-util-concurrent.jar" />	
-		<include name="commons-fileupload.jar"/> 
+		        <include name="commons-fileupload.jar"/> 
                 <include name="commons-logging*.jar"/>
                 <include name="krysalis-*.jar"/>
                 <include name="commons-digester*.jar"/>
@@ -350,6 +350,7 @@
                 <include name="jboss-seam.jar"/>
                 <include name="jboss-seam-debug.jar"/>
                 <include name="jboss-el.jar"/>
+            	<include name="hibernate-all.jar"/>
             </fileset>
                        
             <fileset dir="${jboss.seam.home}/lib">

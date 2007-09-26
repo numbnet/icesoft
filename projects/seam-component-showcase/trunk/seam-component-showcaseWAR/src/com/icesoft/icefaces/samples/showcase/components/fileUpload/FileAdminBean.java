@@ -2,8 +2,10 @@ package com.icesoft.icefaces.samples.showcase.components.fileUpload;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 import javax.ejb.Remove;
 import javax.faces.context.FacesContext;
@@ -14,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 
+import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.In;
 
@@ -37,11 +40,11 @@ import org.jboss.seam.ScopeType;
 
 @Name("fileAdminBean")
 @Scope(ScopeType.SESSION)
-public class FileAdminBean{
+public class FileAdminBean implements Serializable{
 	/* each user is allowed a max number of files =6 or 
 	 * max size allowance to upload of 10MB
 	 */
-	private final int MAXFILESALLOWED=6;
+	private final int MAXFILESALLOWED=4;
 	private final int MAXSIZEALLOWED=1024000;
 	private final String msgExceededAllocation=
 		"Allotted disc space exceeded: Remove unwanted files before further uploads";
@@ -49,12 +52,11 @@ public class FileAdminBean{
 		"Number of files has been exceeded: Remove unwanted files before further uploads";
 	private long currentSize = 0;
 	private String remainingSpace;
+	private ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
 	
 	//for checking purposes
 	private String convId;
 	private boolean longRunning;
-	
-	private boolean deleteFlag = false;
 
 	private InputFileBean fileUpload;
 	
@@ -79,7 +81,7 @@ public class FileAdminBean{
 
 	public List<FileEntry> getFilesList() {
 		log.info("getFilesList");
-		buildFilesList();
+		if (filesList.isEmpty())buildFilesList();
 		return filesList;
 	}
 	/*
@@ -87,13 +89,12 @@ public class FileAdminBean{
 	 * the local limits are not exceeded (max # files and max disk space allotted
 	 * for this user.
 	 */
-// 	@Observer("buildfiles")
 	public void buildFilesList(){
+		log.info("buildFilesList");
 		/* get files from server directory */
-		log.info("buildFilesList and deleteFlag="+deleteFlag);
-		if (!deleteFlag)refreshList();
+		List<FileEntry> tempList = refreshList();
 		/*if they have exceeded max number of files or max size allowed, delete last file*/
-    	if (filesList.size() > this.MAXFILESALLOWED){
+    	if (tempList.size() > this.MAXFILESALLOWED){
 	    		log.info("MaxFilesExceeded");
 	    		//get rid of the last uploaded file
 	    		fileUpload.setError(msgNumberFilesExceeded);
@@ -102,17 +103,45 @@ public class FileAdminBean{
 	    else if (currentSize > this.MAXSIZEALLOWED){
 	    		log.info("max size Exceeded");
 	    		fileUpload.setError(msgExceededAllocation);
-	    		deleteCurrentFileEntry();	 
+	    		deleteCurrentFileEntry();
 	    }
-	    else fileUpload.setError("");
-	    /* calculate remaining allotted space */
-	     remainingSpace=String.valueOf((MAXSIZEALLOWED-currentSize));
+	    else {
+	    	fileUpload.setError("");
+	        /* calculate remaining allotted space */
+	     	remainingSpace=String.valueOf((MAXSIZEALLOWED-currentSize));
+	     	/* update the filesList from tempList */
+	     	if (tempList.isEmpty())filesList.clear();
+	     	else{
+		     	Iterator i = tempList.iterator();
+		     	while (i.hasNext()){
+		     		FileEntry fe = (FileEntry)i.next();
+		     		String fname = fe.getFileName();
+		     		if (!listContains(fname))
+		     			filesList.add(fe);
+		     	}
+		     	if (!deletedEntries.isEmpty()){
+		     		for (int j=0; j<deletedEntries.size(); j++){
+		     			filesList.remove(deletedEntries.get(j));
+		     		}
+		     	}
+	     	}
+	    }
 	}
+	
+	public boolean listContains(String fname){
+		Iterator i = filesList.iterator();
+		while (i.hasNext()){
+			if (((FileEntry)i.next()).getFileName().equals(fname))
+				return true;
+		}
+		return false;
+	}
+	
 	/* may need to refresh the list more than once per each upload */
-	public void refreshList(){
-		log.info("refreshList and deleteFlag="+deleteFlag);
+	public ArrayList<FileEntry> refreshList(){
+		log.info("refreshList");
 	    String parentDir= null;
-		filesList.clear();
+	    ArrayList<FileEntry> tempList = new ArrayList<FileEntry>();
 		currentSize=0;
 	    try {
 	    	/* get the session attribute value for the uploadDirectory */
@@ -137,26 +166,31 @@ public class FileAdminBean{
 	      if (files!=null){
 	    	for (int i=0; i< files.length; i++){
 	    		FileEntry f = new FileEntry(files[i]);
-	    		filesList.add(f);   
+	    		tempList.add(f);   
 	    	    this.currentSize += f.getSize();
 	    	}
 	      }
 	    }
+	    return tempList;
 	}
 	/* deletes currentFileEntry as it violates max Number of files or max allotted space */
 	public void deleteCurrentFileEntry(){
 		log.info("deletecurrentFileEntry");
 		File f = getLastFile();
-		if (f!=null && f.exists())f.delete();
+		if (f!=null && f.exists()){
+			f.delete();
+			log.info("\t\t-> deleted "+f.getName());
+			//add the size back into remaining space
+			this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
+			buildFilesList();
+		}
 		else log.info("unable to delete file "+f.getName());
-		refreshList();
 	}
 	/*
 	 * deletes the selected file(s) from the server
 	 */
-//    @End
+
 	public void deleteFiles(ActionEvent e) {
-		deleteFlag = true;
 		log.info("in deleteFiles with filesList size="+filesList.size());
 	     for (int i =0; i <filesList.size() ; i++) {
 	        FileEntry fr = (FileEntry)filesList.get(i);
@@ -164,17 +198,24 @@ public class FileAdminBean{
 	        if (fr.getSelected().booleanValue()) {
 	    	   //remove from the server and the filesList
 	          log.info("selected file to delete is "+fr.getFileName());
-	          filesList.remove(i);
+	          deletedEntries.add(i);
 	          File f = new File(fr.getAbsolutePath());
 	          if(f.exists()){
 	        	  f.delete();
 	        	  log.info("File "+f.getName()+" is deleted");
-	        	  deleteFlag=false; //reset delete flag
 	          }
 	          else log.info("File "+f.getName()+" NOT DELETED!!");
 	       }
 	   }
-	   refreshList();
+	    buildFilesList();
+	}
+	
+	public boolean filesListHasSelected(){
+		Iterator i = filesList.iterator();
+		while (i.hasNext()){
+			if (((FileEntry)i.next()).getSelected())return true;
+		}
+		return false;
 	}
 	
 	public File getLastFile(){
