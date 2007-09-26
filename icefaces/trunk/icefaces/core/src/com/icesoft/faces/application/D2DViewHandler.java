@@ -172,7 +172,12 @@ public class D2DViewHandler extends ViewHandler {
         if (delegateView(viewId)) {
             return delegate.createView(context, viewId);
         }
-
+        // # 2141 consume this parameter under JSF too, (no guarantee restore
+        // view is ever called )
+        if (SeamUtilities.isSeamEnvironment()) {
+            context.getExternalContext().getRequestParameterMap().remove(
+                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
+        }
         UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
 
