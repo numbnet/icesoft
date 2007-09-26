@@ -44,8 +44,10 @@ function iceSubmitPartial(form, component, evt) {
         }
         if (component && component.id) {
             var c = $element(component);
-            c.serializeOn(query);
-            c.serializeViewOn(query);
+            if (c.isSubmit()) {
+                c.serializeOn(query);
+                c.serializeViewOn(query);
+            }
         }
     }).send();
     resetHiddenFieldsFor(form);
@@ -81,7 +83,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
         Ice.Parameter.Query.create(function(query) {
             query.add('ice.submit.partial', false);
             event.serializeOn(query);
-            if (component) {
+            if (component && component.isSubmit()) {
                 component.serializeOn(query);
                 component.serializeViewOn(query);
             }

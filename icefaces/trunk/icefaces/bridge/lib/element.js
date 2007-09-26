@@ -56,6 +56,10 @@
             return this.element.id;
         },
 
+        isSubmit: function() {
+            return false;
+        },
+
         replaceHtml: function(html) {
             this.withTemporaryContainer(function(container) {
                 container.innerHTML = html;
