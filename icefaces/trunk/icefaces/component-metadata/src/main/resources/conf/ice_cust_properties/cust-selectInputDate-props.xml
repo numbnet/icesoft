@@ -38,7 +38,6 @@
 &ice-att-autoComplete-props;
 &ice-att-userrole-enabled-props;
 &value-props;
-&converter-props;
 &ice-att-immediate-props;
 &required-props;
 &validator-props;
@@ -63,9 +62,10 @@
 
 <property>
 	<description>
-		Not Applicable - the ICEfaces popup dateSelect does not require
-		any special attributes.
-	</description>
+        DEPRECATED
+        Now one should instead use an f:convertDateTime tag with its pattern attribute.
+        This is the pattern of the simple date format used in the text input, when renderAsPopup = true
+    </description>
 	<property-name>popupDateFormat</property-name>
 	<property-class>java.lang.String</property-class>
 	<property-extension>
@@ -74,6 +74,20 @@
 			&stringEditor;
 		</editor-class>
 	</property-extension>
+</property>
+
+<property>
+    <description>
+		Converter instance registered with this component.
+        Converter must be a javax.faces.convert.DateTimeConverter instance, or subclass,
+        which can be accomplished by using the f:convertDateTime tag.
+        Note: DateTimeConverter's default timeZone, if none is specified, is GMT.
+    </description>
+    <property-name>converter</property-name>
+    <property-class>javax.faces.convert.Converter</property-class>
+    <property-extension>
+        <category>APPEARANCE</category>
+    </property-extension>
 </property>
 
 <property>
@@ -95,8 +109,10 @@
 
 <property>
 	<description>
-		Render the input-dateSelect as a java-script popup on client.
-	</description>
+		If true, render the selectInputDate as an inputText field with a button,
+        which when pressed, displays a popup calendar. Else if false,
+        only render the calendar, in-place.
+    </description>
 	<property-name>renderAsPopup</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>

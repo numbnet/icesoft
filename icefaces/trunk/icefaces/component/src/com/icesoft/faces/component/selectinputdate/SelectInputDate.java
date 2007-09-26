@@ -37,21 +37,22 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMResponseWriter;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.convert.Converter;
+import javax.faces.convert.DateTimeConverter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
+import java.util.Locale;
 
 /**
  * SelectInputDate is a JSF component class that represents an ICEfaces input
@@ -213,15 +214,76 @@ public class SelectInputDate
      */
     public String formatDate(Date date) {
         if (date != null) {
-            return getDateFormat().format(date);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            String ret = resolveDateTimeConverter(facesContext).getAsString(
+                facesContext, this, date);
+            return ret;
         } else {
             return "";
         }
     }
     
-    public DateFormat getDateFormat() {
-        String dateFormatPattern = getPopupDateFormat();
-        return new SimpleDateFormat(dateFormatPattern);
+    public String getTextToRender() {
+        Object submittedValue = getSubmittedValue();
+        if(submittedValue != null) {
+            if(submittedValue instanceof Date)
+                return formatDate( (Date) submittedValue );
+            else {
+                // If the submittedValue had passed validation, then it
+                //  would already be null and value would be a Date,
+                //  so we're dealing with bogus text that we're outputting
+                //  so the user can fix it
+                return submittedValue.toString(); 
+            }
+        }
+        return formatDate( (Date) getValue() );
+    }
+    
+    /**
+     * To properly function, selectInputDate needs to use the same timezone
+     * in the inputText field as well as the calendar, which is accomplished
+     * by using a javax.faces.convert.DateTimeConverter, which provides
+     * the required Converter behaviours, as we as gives access to its
+     * TimeZone object. If developers require a custom Converter, then they
+     * must subclass javax.faces.convert.DateTimeConverter.
+     * 
+     * @return DateTimeConverter
+     */
+    public DateTimeConverter resolveDateTimeConverter(FacesContext context) {
+        DateTimeConverter converter = null;
+        Converter compConverter = getConverter();
+        if(compConverter instanceof DateTimeConverter) {
+            converter = (DateTimeConverter) compConverter;
+        }
+        else {
+            Converter appConverter = context.getApplication().createConverter(
+                java.util.Date.class);
+            if(appConverter instanceof DateTimeConverter) {
+                converter = (DateTimeConverter) appConverter;
+            }
+            else {
+                converter = new DateTimeConverter();
+            }
+        }
+        
+        // For backwards compatibility, if they specify the popupDateFormat
+        //  attribute, then that takes precedence over the DateTimeConverter's
+        //  original pattern or other settings relating to its DateFormat
+        String pattern = getSpecifiedPopupDateFormat();
+        if(pattern != null && pattern.trim().length() > 0)
+            converter.setPattern(pattern);
+        
+        return converter;
+    }
+    
+    public TimeZone resolveTimeZone(FacesContext context) {
+        DateTimeConverter converter = resolveDateTimeConverter(context);
+        return converter.getTimeZone();
+    }
+    
+    public Locale resolveLocale(FacesContext context) {
+        DateTimeConverter converter = resolveDateTimeConverter(context);
+        return converter.getLocale();
     }
 
     /**
@@ -480,17 +542,29 @@ public class SelectInputDate
      * @return _popupDateFormat
      */
     public String getPopupDateFormat() {
+        String popupDateFormat = getSpecifiedPopupDateFormat();
+        if(popupDateFormat == null)
+            popupDateFormat = DEFAULT_POPUP_DATE_FORMAT;
+        return popupDateFormat;
+    }
+
+    /**
+     * If the popupDateFormat was specified, then return that, but not any
+     * default values.
+     * 
+     * @return popupDateFormat
+     */
+    protected String getSpecifiedPopupDateFormat() {
         if (_popupDateFormat != null) {
             return _popupDateFormat;
         }
         ValueBinding vb = getValueBinding("popupDateFormat");
         if (vb != null ) {
             return (String) vb.getValue(getFacesContext());
-        } else {
-            return DEFAULT_POPUP_DATE_FORMAT;
         }
+        return null;
     }
-
+    
     /* (non-Javadoc)
      * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
      */
@@ -614,7 +688,7 @@ public class SelectInputDate
     /**
      * <p>Set the value of the <code>highlightUnit</code> property.</p>
      *
-     * @param highlightClass
+     * @param highlightUnit The highlight class
      */
     public void setHighlightUnit(String highlightUnit) {
         this.highlightUnit = highlightUnit;
@@ -782,25 +856,25 @@ public class SelectInputDate
         this.highlightDayClass = ""; 
         this.highlightWeekClass = "";
     }
-}
 
-class UnitMap extends HashMap {
-    public UnitMap() {
-        this.put("YEAR", new Integer(Calendar.YEAR));
-        this.put("MONTH", new Integer(Calendar.MONTH));
-        this.put("WEEK_OF_YEAR", new Integer(Calendar.WEEK_OF_YEAR));
-        this.put("WEEK_OF_MONTH", new Integer(Calendar.WEEK_OF_MONTH));
-        this.put("DATE", new Integer(Calendar.DATE));
-        this.put("DAY_OF_YEAR", new Integer(Calendar.DAY_OF_YEAR));
-        this.put("DAY_OF_WEEK", new Integer(Calendar.DAY_OF_WEEK));
-        this.put("DAY_OF_WEEK_IN_MONTH", new Integer(Calendar.DAY_OF_WEEK_IN_MONTH));
-    }
-    
-    public int getConstant(String key) {
-        if (!super.containsKey(key)) {
-            return 0;
+    static class UnitMap extends HashMap {
+        public UnitMap() {
+            this.put("YEAR", new Integer(Calendar.YEAR));
+            this.put("MONTH", new Integer(Calendar.MONTH));
+            this.put("WEEK_OF_YEAR", new Integer(Calendar.WEEK_OF_YEAR));
+            this.put("WEEK_OF_MONTH", new Integer(Calendar.WEEK_OF_MONTH));
+            this.put("DATE", new Integer(Calendar.DATE));
+            this.put("DAY_OF_YEAR", new Integer(Calendar.DAY_OF_YEAR));
+            this.put("DAY_OF_WEEK", new Integer(Calendar.DAY_OF_WEEK));
+            this.put("DAY_OF_WEEK_IN_MONTH", new Integer(Calendar.DAY_OF_WEEK_IN_MONTH));
         }
-        return Integer.parseInt(super.get(key).toString());
+
+        public int getConstant(String key) {
+            if (!super.containsKey(key)) {
+                return 0;
+            }
+            return Integer.parseInt(super.get(key).toString());
+        }
     }
 }
 
