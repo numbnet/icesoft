@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><!-- saved from url=(0022)http://internet.e-mail -->
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482;
-v1.6.1 Release Notes</title> <style>
+v1.7 DR#1 Release Notes</title> <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:80%;
@@ -33,16 +33,20 @@ h4 {
 font-size: 110%
 }
 </style></head>
-
 <body><div style="border: 1px solid rgb(187, 187, 187);"><table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%"> <tbody> <tr> <td width="78%"> <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces&#8482;
-<br> </h1> <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.1
-Release Notes</h2> <p style="margin-left: 16px; margin-bottom: 12px;">August 31st,
+<br> </h1> <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7
+DR#1
+Release Notes</h2> <p style="margin-left: 16px; margin-bottom: 12px;">September
+28th,
 2007</p> </td> <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br> </td> </tr> </tbody>
 </table></div><div><br><h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
-<ul> <li><a href="ReleaseNotes.html#Changes_161">Changes
+<ul> <li><a href="ReleaseNotes.html#Changes_17DR1">Changes
 in This Release
-(v1.6.1)</a></li> <li><a href="ReleaseNotes.html#Changes_160">Changes in
+(v1.7 DR#1)</a></li>
+<li><a href="ReleaseNotes.html#Changes_161">Changes
+in
+v1.6.1<br> </a></li> <li><a href="ReleaseNotes.html#Changes_160">Changes in
 v1.6.0<br> </a></li> <li><a href="#Supported_Platforms">Supported Browsers, Application
 Servers, and Tools</a></li> <li><a href="#Known_Issues">Known Issues</a></li> <li><a href="ReleaseNotes.html#About_ICEfaces">Support</a></li>
 <li><a href="ReleaseNotes.html#About_ICEfaces">About
@@ -50,8 +54,155 @@ ICEfaces </a></li> <li><a href="#License_Management">License information</a></li
 </ul>For release note information for earlier ICEfaces releases,
 refer to
 the <a href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
-Knowledge Base</a>.<br>
-<h2><a name="Changes_161"></a>Changes
+Knowledge Base</a>.<br><br><h2><a name="Changes_17DR1"></a>Changes
+in This Release (v1.7 DR#1)</h2>
+<br>ICEfaces v1.7 DR#1 is a Development Build that provides an
+early-access preview of new features, enhancements, and fixes that will
+be included in the upcoming ICEfaces v1.7 release. This build has only
+been lightly tested and is unsuitable for Production use.<br><br>Please
+review the <a href="#Known_Issues">Known Issues</a>
+prior to using this release.&nbsp; You may report any issues with
+this build to the ICEfaces <a href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback forum</a> or the ICEfaces <a href="http://jira.icefaces.org/">JIRA issue tracker</a>.<br><br><h4>Notable
+Enhancements&nbsp;</h4>
+<ul style="font-weight: bold;" class="contentIndent"><li>Portlet
+Support</li></ul><ul class="contentIndent"><ul><li>ICEfaces&nbsp;now
+supports the <a target="_blank" href="http://jcp.org/aboutJava/communityprocess/review/jsr168/">JSR-168</a>
+portlet APIs for&nbsp;PortletRequest (RenderRequest) and its
+affiliates (PortalContext, PortletMode, PortletSession, PortletContext,
+PortletPreferences and WindowState), as well as PortletConfig.</li></ul></ul><ul class="contentIndent"><ul><li>A new
+"ice:portlet" component has been added. All ICEfaces portlets must be
+contained withing an "ice:portlet" component.</li></ul></ul><ul class="contentIndent"><ul><li>The standard
+portlet CSS style class naming convention is now supported by the
+ICEfaces Component Suite components, as well as the standard "h:"
+components when using ICEfaces.</li></ul></ul><ul class="contentIndent"><ul><li>See the <a href="#Anchor_KI_Portlets">Portlet Known Issues</a> for important information on current limitations and supported portal containers.</li></ul></ul><ul style="font-weight: bold;" class="contentIndent"><li>Performance
+Enhancements</li></ul><ul class="contentIndent"><ul><li>Significant
+client-side performance improvements have been made when handling large
+incremental changes to the UI, such as expanding or collapsing a tree
+node with a large number of child nodes, or updating a dataTable with a
+large number of rows and/or columns.</li></ul></ul>Refer
+the <a href="ReleaseNotes.html#ChangeLog_161">Change
+Log</a>
+below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
+JIRA Change Log</a> for more information on&nbsp;the changes
+in
+this
+release.<br><br><span style="font-weight: bold; color: rgb(153, 0, 0);">Compatibility
+Alert</span><span style="color: rgb(153, 0, 0);">:</span>&nbsp;The
+ice:selectInputDate component has improved support for timezones which
+has affected the default timezone that it will&nbsp;use if a
+specific&nbsp;timezone is not specified. This could cause
+the&nbsp;selected Date in the component to increase or decrease by
+one day if the timezone setting in the bound bean attribute differs
+from the timezone setting being used by the selectInputDate
+component.&nbsp; To avoid this issue an f:convertDateTime child tag
+should be used in conjunction with the ice:selectInputDate component to
+specify a&nbsp;timezone setting for the selectInputDate component
+that aligns with the timezone of the bound bean's Date attribute. Note
+that both the&nbsp;f:convertDateTime
+and&nbsp;ice:selectInputDate use GMT as their&nbsp;default
+timezone if none is specified.&nbsp;Seam users should also note
+that the Seam s:convertDateTime component uses the&nbsp;the
+application server's local timezone by default, and not GMT.<br><br><h3><a name="ChangeLog_161"></a>Change
+Log</h3>
+<h4>New Features</h4>
+<ul><li>[<a href="http://jira.icefaces.org//browse/ICE-1935">ICE-1935</a>]
+- Support JSR-168 Portlet API</li><li>[<a href="http://jira.icefaces.org//browse/ICE-2122">ICE-2122</a>]
+- Create a new ice:portlet (UINamingContainer) JSF component for
+wrapping ICEfaces portlets</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1408">ICE-1408</a>]
+- Support standard portlet themes in ICEfaces components</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1625">ICE-1625</a>]
+- Make Portlet specific artifacts and APIs accessible to developers</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1938">ICE-1938</a>]
+- New component resource registration and loading API</li>
+</ul><h4>Improvements</h4>
+<ul><li>[<a href="http://jira.icefaces.org//browse/ICE-734">ICE-734</a>]
+- Tree performance issue with &gt; 300 nodes on a branch</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2016">ICE-2016</a>]
+- JSF <navigation-rule> mechanism doesn't work for portlets</navigation-rule></li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2083">ICE-2083</a>]
+- Facelets: Cannot register two tag libraries with the same namespace</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2086">ICE-2086</a>]
+- clean build function enhancement</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2094">ICE-2094</a>]
+- Extend ice:outputStyle Component to include iphone Safari browser and
+opera 8.65 for Windows Mobile</li>
+</ul><h4>Bug Fixes</h4>
+<ul><li>[<a href="http://jira.icefaces.org//browse/ICE-1423">ICE-1423</a>]
+- Navigation in Portlets error</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1537">ICE-1537</a>]
+- <ice:outputText> converter attribute not calling custom
+converter if value is a java.lang.String ice:outputText</ice:outputText></li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1594">ICE-1594</a>]
+- ice:panelPopup component doesn't work as a portlet under Liferay</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1679">ICE-1679</a>]
+- ParserUtils.java is hiding a useful error message contained within
+the SAXException</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1681">ICE-1681</a>]
+- com.icesoft.jasper.compiler.Localizer doesn't really localize, in
+that it is not using resource bundle to localize messages</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1748">ICE-1748</a>]
+- selectInputDate does not fire validator when tabbing-out of the
+rendered input field</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1764">ICE-1764</a>]
+- javadoc target fails using JDK 1.4 due to new jsf-api-1.2.jar file</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1777">ICE-1777</a>]
+- Output Chart in 1.6DR#5 does not work if the page is in a sub
+directory </li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1865">ICE-1865</a>]
+- <ice:selectInputDate> ignores the disabled attribute
+ice:selectInputDate</ice:selectInputDate></li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1879">ICE-1879</a>]
+- The backport-util-concurrent.jar file might be older than version
+2.1, and not at version 2.2, as stated in the versions-licenses.html
+file</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1943">ICE-1943</a>]
+- MainServlet should guard against SocketException</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1989">ICE-1989</a>]
+- ViewListener.viewCreated() not being called</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1990">ICE-1990</a>]
+- ViewListener.viewDisposed() not called when the window is closed</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2024">ICE-2024</a>]
+- Row selector attribute multiple = false not enforced across multiple
+pages</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2071">ICE-2071</a>]
+- outputStyle under Facelets logs error messages</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2072">ICE-2072</a>]
+- Facelets apps log TagLibraryConfig loadImplicit messages</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2082">ICE-2082</a>]
+- The visible attribute on the popup-calendar is not working</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2090">ICE-2090</a>]
+- Pseudo memory leak</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2095">ICE-2095</a>]
+- selectInputDate: popupDateFormat not working as expected</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2099">ICE-2099</a>]
+- missing commons-lang.jar in sample builds for myfaces version</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2101">ICE-2101</a>]
+- inputFile IFRAME rendering ClassCastException</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2103">ICE-2103</a>]
+- Attribute headerClass in ice:dataTable is ignored</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2109">ICE-2109</a>]
+- Problem with ice:rowSelector Component in Safari</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2123">ICE-2123</a>]
+- OutputStyleRenderer.java fails in compiling in Java 1.4 environment</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2139">ICE-2139</a>]
+- Postback token mistakenly inserted into non JSF requests</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2142">ICE-2142</a>]
+- Seam PDF example doesn't work</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2143">ICE-2143</a>]
+- BlockingServlet throws java.lang.RuntimeException: "Query does not
+contain parameter named: ice.session" in Liferay 4.3.2</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2146">ICE-2146</a>]
+- PanelCollapsible not firing events from UICommands in header when
+collapsed</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2150">ICE-2150</a>]
+- selectInputDate inputText and calendar are inconsistent</li>
+</ul><h4>Tasks</h4>
+<ul><li>[<a href="http://jira.icefaces.org//browse/ICE-1273">ICE-1273</a>]
+- Document com.sun.faces.config.ConfigureListener work-around in
+Release Notes to avoid JSF initialization problems</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2155">ICE-2155</a>]
+- Clean up /lib/versions-licenses.html file issues</li>
+</ul><h2><a name="Changes_161"></a>Changes
 in This Release (v1.6.1)</h2>
 <br>ICEfaces 1.6.1 is a maintenance release that includes over 80
 improvements and fixes. Significant improvments include:<br><h4>JBoss
@@ -59,7 +210,8 @@ Seam 2.0 Support&nbsp;</h4>
 <ul class="contentIndent"><li>ICEfaces&nbsp;now
 supports&nbsp;JBoss Seam 2.0.0 (CR1 release or newer) in addition
 to Seam v1.2.1GA.</li><li>All significant "Known Issues"
-related to using ICEfaces 1.6.0 with Seam have been resolved in this release.</li></ul>See
+related to using ICEfaces 1.6.0 with Seam have been resolved in this
+release.</li></ul>See
 the <a href="ReleaseNotes.html#ChangeLog_161">Change
 Log</a>
 below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
@@ -88,8 +240,8 @@ Log</h3>
 <h4>Improvements</h4><ul><li>[<a href="http://jira.icefaces.org//browse/ICE-956">ICE-956</a>]
 - Tree performance issue with selectInputDate in Tree nodes</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1635">ICE-1635</a>]
 - row selector performance does not scale well</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1665">ICE-1665</a>]
-- Support Seam tags related to <s:selectItems> to allow more
-than a String to be returned. </s:selectItems></li><li>[<a href="http://jira.icefaces.org//browse/ICE-1837">ICE-1837</a>]
+- Support Seam tags related to <s:selectitems> to allow more
+than a String to be returned. </s:selectitems></li><li>[<a href="http://jira.icefaces.org//browse/ICE-1837">ICE-1837</a>]
 - Custom Component Tutorials - progress bar</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1866">ICE-1866</a>]
 - dataTable: bad performance when used with nested selectInputDate
 components</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1909">ICE-1909</a>]
@@ -138,8 +290,8 @@ partialSubmit in UIData components</li>
 - Facelet View Handler throws nested forms FacesException when using a
 flow-through template</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1712">ICE-1712</a>]
-- <ice:selectInputDate> fails to set focus after date is
-selected from popup calender</ice:selectInputDate></li>
+- <ice:selectinputdate> fails to set focus after date is
+selected from popup calender</ice:selectinputdate></li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1722">ICE-1722</a>]
 - Seam redirection cause NullPointerException</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1741">ICE-1741</a>]
@@ -1204,32 +1356,31 @@ environments. See the "JSF 1.2" topic in the "Using ICEfaces with Java
 EE
 Application Servers, IDEs, and Frameworks" chapter of the ICEfaces
 Getting Started Guide (pg. 54) for details.</li>
-</ul><h3>Portlets</h3>
-<ul> <li>ICEfaces v1.6 can be used to develop and deploy
-rich
-portlets
-using Liferay Portal 4.3.0.&nbsp; Using ICEfaces with other portal
-products has not been tested with this release.<br> </li>
-</ul><h3>Application Servers</h3>
+</ul><h3><a name="Anchor_KI_Portlets"></a>Portlets</h3>
+<ul><li>In this release all ICEfaces portlets on a single portal page
+must be loaded from the same .war file. Restated, ICEfaces portlets may
+not be loaded from separate .war files when viewed together on the same
+portal page.</li><li>All ICEfaces portlets on a single portal page must
+be configured to use the same communication/update mode (Synchronous or
+Asynchronous). If any ICEfaces portlets on the page require
+Asynchronous communications then <span style="text-decoration: underline;">all</span> the ICEfaces portlets on the page must be configured to use Asynchronous communications.</li><li>ICEfaces v1.7 DR#1 has been tested with the following portlet containers:</li>
+<ul><li>Liferay Portal 4.3.1, 4.3.2</li><li>JBoss Portal 2.6.1</li><li>BEA WebLogic Portal 10.0</li><ul><li>Note: Asynchronous communication mode is currently not supported in WebLogic Portal.</li></ul></ul><li>Several smaller outstanding issues remain when using ICEfaces in a portal environment, refer to the ICEfaces <a href="http://jira.icefaces.org/" target="_blank">JIRA</a> for details.</li>
+
+
+
+</ul>
+<h3>Application
+Servers</h3>
 <ul style="font-weight: bold;"> <li>General</li>
-</ul><ul> <ul> <li>ICEfaces 1.6 does not
+</ul><ul> <ul> <li>ICEfaces does not
 support session persistence. Some
 application servers enable distributable session features by default.
 In these cases serialization exceptions may appear in the log. Session
 distribution should be disabled when deploying ICEfaces applications.
-Support for session persistence is planned for a future release.<br>
-</li> </ul></ul><ul> <li><span style="font-weight: bold;">Apache
-Tomcat v5.5</span><br> </li>
-</ul><ul> <ul> <li>Tutorials bundled with the
-ICEfaces release will not build and
-deploy to Tomcat 5.5 with MyFaces due to a conflict related to
-jsp-api.jar.&nbsp; To build and deploy tutorials on Tomcat 5.5 with
-MyFaces, it is necessary to modify the <span style="font-style: italic; font-weight: bold;">.../install_dir/ICEfaces-1.5/icefaces/samples/tutorial/build.properties</span>
-and set <span style="font-style: italic; font-weight: bold;">tomcat55=true</span>
-prior to building the application.</li> </ul>
-</ul><ul> <ul> <li>Applications deployed to a
-Tomcat instance installed as a
-Windows service may experience the following error: <small>"SEVERE:
+Support for session persistence is planned for a future release.</li>
+</ul></ul><ul><ul><li>Due to an apparent
+bug in Tomcat 5.x, users have occasionally reported seeing the
+following error when using ICEfaces with Tomcat 5.x or JBoss 4.0.x: <small>"SEVERE:
 ICEfaces could not initialize JavaServer Faces. Please check that the
 JSF .jar files are installed correctly."<big> </big></small>This
 issue
@@ -1239,8 +1390,16 @@ can be resolved by including the following listener in the web.xml: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 com.sun.faces.config.ConfigureListener <br>
 &nbsp;&nbsp;&nbsp; &lt;/listener-class&gt; <br>
-&lt;/listener&gt;</code></li> </ul>
-</ul><ul> <li><span style="font-weight: bold;">Apache
+&lt;/listener&gt;</code></li></ul></ul><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><ul> <li><span style="font-weight: bold;">Apache
+Tomcat v5.5</span><br> </li>
+</ul><ul> <ul> <li>Tutorials bundled with the
+ICEfaces release will not build and
+deploy to Tomcat 5.5 with MyFaces due to a conflict related to
+jsp-api.jar.&nbsp; To build and deploy tutorials on Tomcat 5.5 with
+MyFaces, it is necessary to modify the <span style="font-style: italic; font-weight: bold;">.../install_dir/ICEfaces-1.5/icefaces/samples/tutorial/build.properties</span>
+and set <span style="font-style: italic; font-weight: bold;">tomcat55=true</span>
+prior to building the application.</li> </ul>
+</ul><ul><li><span style="font-weight: bold;">Apache
 Tomcat v6.0</span><br> </li>
 </ul><div style="margin-left: 40px;">To use ICEfaces
 with Tomcat
