@@ -431,19 +431,10 @@
         }
     });
 
-    This.FieldSetElement = This.Element.subclass({
-        isSubmit: function(html) {
-            return false;
-        }
-    });
-
-    This.ObjectElement = This.Element.subclass({
-        isSubmit: function(html) {
-            return false;
-        }
-    });
-
     This.AnchorElement = This.Element.subclass({
+        isSubmit: function() {
+            return true;
+        },
 
         focus: function() {
             var onFocusListener = this.element.onfocus;
