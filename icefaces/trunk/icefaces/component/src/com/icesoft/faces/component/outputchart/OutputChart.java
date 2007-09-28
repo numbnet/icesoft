@@ -38,14 +38,13 @@ import com.icesoft.faces.component.ext.HtmlCommandButton;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.DOMResponseWriter;
+
 import org.krysalis.jcharts.Chart;
 import org.krysalis.jcharts.imageMap.ImageMapArea;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
@@ -53,16 +52,11 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionListener;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import java.beans.Beans;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -96,8 +90,6 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     private String height;
 
     private boolean render = false;
-    private FileOutputStream out;
-
     private String chartTitle;
     private Object data;
     private Object labels;
@@ -113,7 +105,8 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     private Object legendColumns;
     private boolean horizontal;
     private boolean horizontalSet;
-    File folder = null;
+    private URI chartURI;
+    private ChartResource chartResource;
 
     public OutputChart() {
         setRendererType("com.icesoft.faces.OutputChartRenderer");
@@ -371,9 +364,9 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
 	                if (getType().equalsIgnoreCase(OutputChart.CUSTOM_CHART_TYPE)) {
                         evaluateRenderOnSubmit(context);
 	                }
-	                getAbstractChart().encode();
+	                getAbstractChart().encode(context);
 	            } else if (evaluateRenderOnSubmit(context).booleanValue()) {
-	            	getAbstractChart().encode();
+	            	getAbstractChart().encode(context);
 	            }
 	        } catch (Throwable e) {
 	            e.printStackTrace();
@@ -416,34 +409,6 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         super.decode(context);
     }
 
-    private String getChartFileName() {
-        HttpServletRequest req =
-                (HttpServletRequest) ((ExternalContext) FacesContext
-                        .getCurrentInstance().getExternalContext())
-                        .getRequest();
-        return this.getType() + this
-                .getClientId(FacesContext.getCurrentInstance())
-                .replaceAll(":", "") + req.getRequestedSessionId() +
-                                     imageCounter++ + ".jpeg";
-    }
-
-    /**
-     *<p>Return the the path where the chart is stored.</p> 
-     */
-    public String getPath() {
-        String folder = "/";
-        if (getFacesContext() != null &&
-            getFacesContext().getExternalContext() != null) {
-            if (DOMResponseWriter.isStreamWriting()) {
-                folder = "./web/chart/images";
-            } else {
-                folder =
-                        ((ServletContext) getFacesContext().getExternalContext()
-                                .getContext()).getRealPath("/charts");
-            }
-        }
-        return folder;
-    }
     /**
      *<p>Return the value of the <code>chart</code> property.</p> 
      */
@@ -485,59 +450,6 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         ValueBinding vb = getValueBinding("type");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
                DEFAULT_CHART_TYPE;
-    }
-
-
-    /**
-     *<p>Return the value of the <code>fileName</code> property.</p> 
-     */
-    public String getFileName() {
-        return getAbstractChart().getImageFile().getName();
-    }
-
-
-
-    /**
-     *<p>Return the value of the <code>data</code> property.</p> 
-     */
-    OutputStream getNewOutputStream() {
-        //removed the old image, if exist
-        if (getAbstractChart().getImageFile() != null) {
-        	getAbstractChart().getImageFile().delete();
-        }
-        getAbstractChart().setImageFile(new File(getFolder(), getChartFileName()));
-        try {
-            return out = new FileOutputStream(getAbstractChart().getImageFile());
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    File getFolder() {
-        
-        if(Beans.isDesignTime()){
-            folder = new File(getPath());
-            return folder;
-        }
-        
-        if (folder == null) {
-            folder = new File(getPath());
-            if (folder != null) {
-                if (!folder.exists()) {
-                    folder.mkdirs();
-                }
-            }
-        }
-        return folder;
-    }
-
-    /**
-     *<p>Return the value of the <code>data</code> property.</p> 
-     */
-    public OutputStream getOutputStream() {
-        return out;
     }
 
     Map getGeneratedImageMapArea() {
@@ -749,5 +661,24 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         type = (String) values[19];
         renderOnSubmitMethodBinding = (MethodBinding) restoreAttachedState(context, values[20]);
     }
+
+	public ChartResource getChartResource() {
+		return chartResource;
+	}
+
+
+	public void setChartResource(ChartResource chartResource) {
+		this.chartResource = chartResource;
+	}
+
+
+	public URI getChartURI() {
+		return chartURI;
+	}
+
+
+	public void setChartURI(URI chartURI) {
+		this.chartURI = chartURI;
+	}
 }
 

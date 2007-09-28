@@ -36,6 +36,7 @@ package com.icesoft.faces.component.outputchart;
 import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -56,6 +57,8 @@ import org.krysalis.jcharts.properties.LegendProperties;
 import org.krysalis.jcharts.properties.PointChartProperties;
 import org.krysalis.jcharts.test.TestDataGenerator;
 
+import com.icesoft.faces.context.ResourceRegistry;
+
 public abstract class AbstractChart {
     private final Log log = LogFactory.getLog(AbstractChart.class);
     protected OutputChart outputChart = null;
@@ -66,14 +69,13 @@ public abstract class AbstractChart {
     private static LegendPlacementMap legendPlacementMap = new LegendPlacementMap();
     private ImageMapArea clickedImageMapArea;
     String type = null;
-    private File imageFile;
 
     public AbstractChart(UIComponent uiComponent) throws Throwable {
         this.outputChart = (OutputChart) uiComponent;
         this.type = outputChart.getType();
     }
 
-    public void encode() throws Throwable {
+    public void encode(FacesContext context) throws Throwable {
         //if type is dynamic here we should update it
         this.type = outputChart.getType();
         Chart currentChart = getChart();
@@ -84,10 +86,12 @@ public abstract class AbstractChart {
             if (outputChart.isClientSideImageMap()) {
                 generateMap(getChart());
             }
-            OutputStream outputStream = outputChart.getNewOutputStream();
-            JPEGEncoder.encode(getChart(), 1.0f, outputStream);
-            outputStream.flush();
-            outputStream.close();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            JPEGEncoder.encode(getChart(), 1.0f, bos);
+            outputChart.setChartResource(new ChartResource(bos));
+            outputChart.setChartURI(((ResourceRegistry) context).registerResource("image/jpeg", outputChart.getChartResource()));
+            bos.flush();
+            bos.close();
         } else {
             log.equals("The jchart is not defined for the "+ 
                     outputChart.getClientId(FacesContext.getCurrentInstance())+
@@ -299,14 +303,6 @@ public abstract class AbstractChart {
    		}
    		return legendProperties;
     }
-
-	public File getImageFile() {
-		return imageFile;
-	}
-
-	public void setImageFile(File imageFile) {
-		this.imageFile = imageFile;
-	}
 }
 
 class ColorMap extends HashMap {
