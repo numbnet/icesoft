@@ -4,18 +4,23 @@ import javax.faces.context.FacesContext;
 
 public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
+	private static Boolean portletEnvironment;
+	
     public static String resolveResourceURL(FacesContext facesContext, String path) {
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
     }
     
     public static boolean isPortletEnvironment() {
-	    try {
-	    	return (FacesContext.getCurrentInstance().getExternalContext()
-	    			.getRequest() instanceof javax.portlet.PortletRequest);
-	    } catch (java.lang.NoClassDefFoundError e) {
-	    	//portlet not found
-	    	return false;
-		}
+    	if (portletEnvironment == null) {
+		    try {
+		    	portletEnvironment = new Boolean(FacesContext.getCurrentInstance().getExternalContext()
+		    			.getRequest() instanceof javax.portlet.PortletRequest);
+		    } catch (java.lang.NoClassDefFoundError e) {
+		    	//portlet not found
+		    	portletEnvironment = Boolean.FALSE;
+			}
+    	}
+    	return portletEnvironment.booleanValue();
     }
     
     public static String getPortletStyleClass(String className) {
