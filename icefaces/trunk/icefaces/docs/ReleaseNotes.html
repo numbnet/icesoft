@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><!-- saved from url=(0022)http://internet.e-mail -->
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482;
-v1.7 DR#1 Release Notes</title> <style>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482; v1.7 DR#1 Release Notes</title> <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:80%;
@@ -42,20 +41,19 @@ Release Notes</h2> <p style="margin-left: 16px; margin-bottom: 12px;">September
 </table></div><div><br><h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul> <li><a href="ReleaseNotes.html#Changes_17DR1">Changes
-in This Release
-(v1.7 DR#1)</a></li>
+in&nbsp;v1.7 DR#1 (this release)</a></li>
 <li><a href="ReleaseNotes.html#Changes_161">Changes
 in
 v1.6.1<br> </a></li> <li><a href="ReleaseNotes.html#Changes_160">Changes in
 v1.6.0<br> </a></li> <li><a href="#Supported_Platforms">Supported Browsers, Application
-Servers, and Tools</a></li> <li><a href="#Known_Issues">Known Issues</a></li> <li><a href="ReleaseNotes.html#About_ICEfaces">Support</a></li>
+Servers, and Tools</a></li> <li><a href="#Known_Issues">Known Issues</a></li> <li><a href="#Support">Support</a></li>
 <li><a href="ReleaseNotes.html#About_ICEfaces">About
 ICEfaces </a></li> <li><a href="#License_Management">License information</a></li>
 </ul>For release note information for earlier ICEfaces releases,
 refer to
 the <a href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
 Knowledge Base</a>.<br><br><h2><a name="Changes_17DR1"></a>Changes
-in This Release (v1.7 DR#1)</h2>
+in&nbsp;v1.7 DR#1 (this release)</h2>
 <br>ICEfaces v1.7 DR#1 is a Development Build that provides an
 early-access preview of new features, enhancements, and fixes that will
 be included in the upcoming ICEfaces v1.7 release. This build has only
@@ -72,38 +70,36 @@ portlet APIs for&nbsp;PortletRequest (RenderRequest) and its
 affiliates (PortalContext, PortletMode, PortletSession, PortletContext,
 PortletPreferences and WindowState), as well as PortletConfig.</li></ul></ul><ul class="contentIndent"><ul><li>A new
 "ice:portlet" component has been added. All ICEfaces portlets must be
-contained withing an "ice:portlet" component.</li></ul></ul><ul class="contentIndent"><ul><li>The standard
-portlet CSS style class naming convention is now supported by the
-ICEfaces Component Suite components, as well as the standard "h:"
-components when using ICEfaces.</li></ul></ul><ul class="contentIndent"><ul><li>See the <a href="#Anchor_KI_Portlets">Portlet Known Issues</a> for important information on current limitations and supported portal containers.</li></ul></ul><ul style="font-weight: bold;" class="contentIndent"><li>Performance
+contained within an "ice:portlet" component.</li></ul></ul><ul class="contentIndent"><ul><li>The ICEfaces Component Suite now supports the standard portlet CSS style definitions as specified by <a target="_blank" href="http://jcp.org/aboutJava/communityprocess/review/jsr168/">JSR-168</a> (when
+used in a portlet). ICEfaces components used in a portlet will
+automatically adopt the style theme of the containing portal page.
+&nbsp;</li></ul></ul><ul class="contentIndent"><ul><li>See the <a href="#Anchor_KI_Portlets">Portlet Known Issues</a> for important information on current limitations and tested portal containers.</li></ul></ul><ul style="font-weight: bold;" class="contentIndent"><li>Performance
 Enhancements</li></ul><ul class="contentIndent"><ul><li>Significant
 client-side performance improvements have been made when handling large
 incremental changes to the UI, such as expanding or collapsing a tree
 node with a large number of child nodes, or updating a dataTable with a
 large number of rows and/or columns.</li></ul></ul>Refer
-the <a href="ReleaseNotes.html#ChangeLog_161">Change
+the <a href="ReleaseNotes.html#ChangeLog_17DR1">Change
 Log</a>
 below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
 JIRA Change Log</a> for more information on&nbsp;the changes
 in
 this
 release.<br><br><span style="font-weight: bold; color: rgb(153, 0, 0);">Compatibility
-Alert</span><span style="color: rgb(153, 0, 0);">:</span>&nbsp;The
-ice:selectInputDate component has improved support for timezones which
-has affected the default timezone that it will&nbsp;use if a
-specific&nbsp;timezone is not specified. This could cause
-the&nbsp;selected Date in the component to increase or decrease by
-one day if the timezone setting in the bound bean attribute differs
-from the timezone setting being used by the selectInputDate
-component.&nbsp; To avoid this issue an f:convertDateTime child tag
-should be used in conjunction with the ice:selectInputDate component to
-specify a&nbsp;timezone setting for the selectInputDate component
-that aligns with the timezone of the bound bean's Date attribute. Note
-that both the&nbsp;f:convertDateTime
-and&nbsp;ice:selectInputDate use GMT as their&nbsp;default
-timezone if none is specified.&nbsp;Seam users should also note
-that the Seam s:convertDateTime component uses the&nbsp;the
-application server's local timezone by default, and not GMT.<br><br><h3><a name="ChangeLog_161"></a>Change
+Alert</span><span style="color: rgb(153, 0, 0);">:</span>&nbsp;The <span style="font-weight: bold;">ice:selectInputDate</span>
+component has improved support for timezones which has affected the
+default timezone that it will now use if none is specified. Care should
+be taken to use the same timezone between UIComponents that
+view and edit dates and times, otherwise data corruption and
+misrepresentation can occur. Tips:<br><ul><li>You may add an
+f:convertDateTime child tag with a timeZone attribute to specify
+a&nbsp;timezone for the ice:selectInputDate component to use. When no
+timeZone attribute is specified, the f:convertDateTime component will
+use GMT as a default.</li><li>If the ice:selectInputDate component is
+used without a corresponding f:convertDateTime component it will also
+use GMT as the default timezone.</li><li>Note for Seam users that
+s:convertDateTime component uses&nbsp;the application server's local
+timezone as it's default, and not GMT.<br></li></ul><h3><a name="ChangeLog_17DR1"></a>Change
 Log</h3>
 <h4>New Features</h4>
 <ul><li>[<a href="http://jira.icefaces.org//browse/ICE-1935">ICE-1935</a>]
@@ -130,8 +126,8 @@ opera 8.65 for Windows Mobile</li>
 <ul><li>[<a href="http://jira.icefaces.org//browse/ICE-1423">ICE-1423</a>]
 - Navigation in Portlets error</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1537">ICE-1537</a>]
-- <ice:outputText> converter attribute not calling custom
-converter if value is a java.lang.String ice:outputText</ice:outputText></li>
+- <ice:outputtext> converter attribute not calling custom
+converter if value is a java.lang.String ice:outputText</ice:outputtext></li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1594">ICE-1594</a>]
 - ice:panelPopup component doesn't work as a portlet under Liferay</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1679">ICE-1679</a>]
@@ -149,8 +145,8 @@ rendered input field</li>
 - Output Chart in 1.6DR#5 does not work if the page is in a sub
 directory </li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1865">ICE-1865</a>]
-- <ice:selectInputDate> ignores the disabled attribute
-ice:selectInputDate</ice:selectInputDate></li>
+- <ice:selectinputdate> ignores the disabled attribute
+ice:selectInputDate</ice:selectinputdate></li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1879">ICE-1879</a>]
 - The backport-util-concurrent.jar file might be older than version
 2.1, and not at version 2.2, as stated in the versions-licenses.html
@@ -203,7 +199,7 @@ Release Notes to avoid JSF initialization problems</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2155">ICE-2155</a>]
 - Clean up /lib/versions-licenses.html file issues</li>
 </ul><h2><a name="Changes_161"></a>Changes
-in This Release (v1.6.1)</h2>
+in&nbsp;v1.6.1</h2>
 <br>ICEfaces 1.6.1 is a maintenance release that includes over 80
 improvements and fixes. Significant improvments include:<br><h4>JBoss
 Seam 2.0 Support&nbsp;</h4>
@@ -1343,13 +1339,7 @@ the entire visible region of the document or the component used to
 block user interaction with the document may not cover the entire page.
 To accomplish this a surrounding DIV sized to 100% width and height can
 be used to enclose all content in the document body. For example: <br>
-<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul><h3>Facelets</h3><ul>
-<li>When using an ice:outputDeclaration component in
-a Facelets
-document on a JBoss application server, several warning messages may be
-logged. These warnings do not affect the performance or behavior of the
-component and can be ignored.</li>
-</ul><h3>JSF 1.2</h3>
+<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul><h3>JSF 1.2</h3>
 <ul> <li>ICEfaces must use JSF 1.1 "compatibility mode"
 within JSF 1.2
 environments. See the "JSF 1.2" topic in the "Using ICEfaces with Java
