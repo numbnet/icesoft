@@ -256,6 +256,22 @@ public class CSS_DEFAULT {
      */
     public final static String DEFAULT_CALENDARINPUT_CLASS =
             "Input"; // Did not have an original name
+    /**
+     * The default style class name for the calendar previous month or year button
+     */
+    public final static String DEFAULT_CALENDARMOVEPREV_CLASS = "MovePrev";
+    /**
+     * The default style class name for the calendar next month or year button
+     */
+    public final static String DEFAULT_CALENDARMOVENEXT_CLASS = "MoveNext";
+    /**
+     * The default style class name for the calendar open popup button
+     */
+    public final static String DEFAULT_CALENDAROPENPOPUP_CLASS = "OpenPopup";
+    /**
+     * The default style class name for the calendar close popup button
+     */
+    public final static String DEFAULT_CALENDARCLOSEPOPUP_CLASS = "ClosePopup";
 
 
     public static final String DEFAULT_SELECT_INPUT = "iceSelInpTxt";

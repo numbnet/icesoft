@@ -223,20 +223,33 @@ public class SelectInputDateRenderer
                 // render a hidden field to manage the popup state; visible || hidden
                 FormRenderer.addHiddenField(facesContext, getHiddenFieldName(
                         facesContext, uiComponent));
+                String resolvedSrc;
                 if (popupState) {
 
-                    String resolvedSrc =
-                            CoreUtils.resolveResourceURL( facesContext,
-                                                          selectInputDate.getImageDir() +
-                                                          selectInputDate.getClosePopupImage() );
+                    if (selectInputDate.isImageDirSet()) {
+                        resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
+                                selectInputDate.getImageDir() + selectInputDate.getClosePopupImage());
+                    } else {
+                        // ICE-2127: allow override of button images via CSS
+                        calendarButton.setAttribute(HTML.CLASS_ATTR, selectInputDate.getClosePopupClass());
+                        // without this Firefox would display a default text on top of the image
+                        resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
+                                selectInputDate.getImageDir() + "spacer.gif");
+                    }
                     calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
                     calendarButton.setAttribute(HTML.ALT_ATTR, "Close Popup Calendar");
                     calendarButton.setAttribute(HTML.TITLE_ATTR , "Close Popup Calendar");                
                 } else {
-                    String resolvedSrc =
-                            CoreUtils.resolveResourceURL( facesContext,
-                                                          selectInputDate.getImageDir() +
-                                                          selectInputDate.getOpenPopupImage() );
+                    if (selectInputDate.isImageDirSet()) {
+                        resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
+                                selectInputDate.getImageDir() + selectInputDate.getOpenPopupImage());
+                    } else {
+                        // ICE-2127: allow override of button images via CSS
+                        calendarButton.setAttribute(HTML.CLASS_ATTR, selectInputDate.getOpenPopupClass());
+                        // without this Firefox would display a default text on top of the image
+                        resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
+                                selectInputDate.getImageDir() + "spacer.gif");
+                    }
                     calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
                     calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
                     calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
@@ -832,7 +845,19 @@ public class SelectInputDateRenderer
 
         if (imgSrc != null) {
             HtmlGraphicImage img = new HtmlGraphicImage();
-            img.setUrl(imgSrc);
+            if (component.isImageDirSet()) {
+                img.setUrl(imgSrc);
+            } else {
+                // ICE-2127: allow override of button images via CSS
+                // getImageDir() returns default
+                // without a dummy image Firefox would show the alt text
+                img.setUrl(component.getImageDir() + "spacer.gif");
+                if (content.equals("<") || content.equals("<<")) {
+                    img.setStyleClass(component.getMovePrevClass());
+                } else if (content.equals(">") || content.equals(">>")) {
+                    img.setStyleClass(component.getMoveNextClass());
+                }
+            }
             img.setHeight("16");
             img.setWidth("17");
             img.setStyle("border:none;");

@@ -414,6 +414,42 @@ public class SelectInputDate
                                 isDisabled()); 
     }
 
+    /**
+     * Returns the style class name applied to the previous month or year button in the SelectInputDate calendar.
+     *
+     * @return the style class name that is applied to the SelectInputDate previous month or year button
+     */
+    public String getMovePrevClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_CALENDARMOVEPREV_CLASS, isDisabled());
+    }
+
+    /**
+     * Returns the style class name applied to the next month or year button in the SelectInputDate calendar.
+     *
+     * @return the style class name that is applied to the SelectInputDate next month or year button
+     */
+    public String getMoveNextClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_CALENDARMOVENEXT_CLASS, isDisabled());
+    }
+
+    /**
+     * Returns the style class name applied to the open popup button in the SelectInputDate calendar.
+     *
+     * @return the style class name that is applied to the SelectInputDate open popup button
+     */
+    public String getOpenPopupClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_CALENDAROPENPOPUP_CLASS, isDisabled());
+    }
+
+    /**
+     * Returns the style class name applied to the close popup button in the SelectInputDate calendar.
+     *
+     * @return the style class name that is applied to the SelectInputDate close popup button
+     */
+    public String getClosePopupClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_CALENDARCLOSEPOPUP_CLASS, isDisabled());
+    }
+
     /* (non-Javadoc)
      * @see com.icesoft.faces.component.ext.HtmlInputText#setStyleClass(java.lang.String)
      */
@@ -490,6 +526,13 @@ public class SelectInputDate
         } else {
             return DEFAULT_IMAGEDIR;
         }
+    }
+
+    /**
+     * @return whether the imageDir attribute has been set.
+     */
+    public boolean isImageDirSet() {
+        return _imageDir != null || getValueBinding("imageDir") != null;
     }
 
     /**
