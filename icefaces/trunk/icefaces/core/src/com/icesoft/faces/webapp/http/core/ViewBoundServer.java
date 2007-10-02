@@ -27,7 +27,7 @@ public class ViewBoundServer implements Server {
         this.views = views;
     }
 
-    public synchronized void service(Request request) throws Exception {
+    public void service(Request request) throws Exception {
         String viewNumber = request.getParameter("ice.view.active");
         if (viewNumber == null) {
             request.respondWith(new ResponseHandler() {
