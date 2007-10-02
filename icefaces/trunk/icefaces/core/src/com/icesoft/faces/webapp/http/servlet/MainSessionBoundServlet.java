@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -58,7 +59,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
             allUpdatedViews.clear();
         }
     };
-    private Map views = new HashMap();
+    private Map views = Collections.synchronizedMap(new HashMap());
     private ViewQueue allUpdatedViews = new ViewQueue();
     private Collection synchronouslyUpdatedViews = new HashSet();
     private String sessionID;
