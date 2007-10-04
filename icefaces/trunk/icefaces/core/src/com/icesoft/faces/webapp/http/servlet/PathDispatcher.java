@@ -30,7 +30,7 @@ public class PathDispatcher implements PseudoServlet {
         }
 
         if (!matched) {
-            response.sendError(404, "Resource at '" + path + "' not found.");
+            response.sendError(404, "Resource not found.");
         }
     }
 
