@@ -117,8 +117,8 @@ dynamically changed.
         <ice:selectBooleanCheckbox value="#{progressProperty.customProgress}"
                                    partialSubmit="true"/>
 
-        <ice:inputText value="#{progressProperty.progressLabel}"
-                       partialSubmit="true"/>
+        <ice:inputText value="#{progressProperty.progressLabel}" 
+                         partialSubmit="true"/> 
     </ice:panelGroup>
 
 
@@ -143,6 +143,7 @@ dynamically changed.
      <ice:panelGroup>
 	            <ice:outputText value="#{progressProperty.convId}"/>
 		        <ice:outputText value="#{progressProperty.longRunning}"/>
+		        <ice:outputText value="#{progressProperty.convParam}"/>
 	</ice:panelGroup>
 </ice:panelGrid>
 
@@ -159,14 +160,14 @@ dynamically changed.
                         value="#{msgs['component.progressBar.demo.content']}"
                         style="font-weight: bold;"/>
 
-                <ice:outputProgress
+                <ice:outputProgress id="percentStandard"
                         value="#{progress.percent}"
                         label="#{progressProperty.progressLabelAfter}"
                         labelComplete="#{progressProperty.progressCompleteLabelAfter}"
-                        labelPosition="#{progressProperty.labelPosition}"
-                        binding="#{progress.progressBar}"/>
+                        labelPosition="#{progressProperty.labelPosition}"/>
 
-                <ice:commandButton actionListener="#{progress.start}"
+                <ice:commandButton id="startStandard"
+                                   actionListener="#{progress.start}"
                                    value="#{msgs['component.progressBar.startButton']}"
                                    disabled="#{progress.disableStartButton}"/>
             </ice:panelGrid>

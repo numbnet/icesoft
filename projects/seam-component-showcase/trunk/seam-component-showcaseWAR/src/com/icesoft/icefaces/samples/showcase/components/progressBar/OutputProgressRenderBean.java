@@ -38,21 +38,31 @@ import javax.faces.event.ActionEvent;
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 
+import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.IntervalRenderer;
 import com.icesoft.faces.component.outputprogress.OutputProgress;
+import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.icefaces.samples.showcase.components.fileUpload.FileAdminBean;
+import com.icesoft.icefaces.samples.showcase.components.progressBar.OutputProgressIndeterminateBean.LongOperationRunner;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
+import org.jboss.seam.core.Manager;
+import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.ScopeType;
-import static org.jboss.seam.ScopeType.PAGE;
+
 
 import java.io.Serializable;
 
@@ -63,18 +73,25 @@ import java.io.Serializable;
  * @see OutputProgressPropertyBean
  * @since 1.0
  */
-//@Scope(ScopeType.EVENT)
+@Scope(ScopeType.PAGE)
 @Name("progress")
-public class OutputProgressRenderBean implements Serializable {
-
+//@BypassInterceptors
+public class OutputProgressRenderBean implements Renderable, ViewListener, Serializable {
+	   private static Log log =
+           LogFactory.getLog(OutputProgressRenderBean.class);	
     /**
      * Renderable Interface
      */
+	public static final String RENDERER_NAME = "demand";
     private PersistentFacesState state;
-    private boolean keepRunning;
-    public OutputProgressRenderBean() {
-
-    } 
+    private boolean doneSetup;
+    private int myId; 
+    private static int id;
+    private IntervalRenderer ir;
+    private OnDemandRenderer renderer;
+    private int lastPercent;
+   
+    private RenderManager renderManager;
 
     /**
      * Get the PersistentFacesState.
@@ -92,130 +109,87 @@ public class OutputProgressRenderBean implements Serializable {
      */
     public void renderingException(RenderingException renderingException) {
         renderingException.printStackTrace();
-    }
-
-
-    // flag to disable start button when progress bar is started
-    private boolean disableStartButton = false;
-
-    // binding back to jsp page
-    private OutputProgress progressBar;
-
-    // value bound to component as an indicator of progress
-    private int percent = 0;
-
-       /**
-     * Gets the disabled state for the start button.
-     *
-     * @return true if the button should be disabled; false otherwise.
-     */
-    public boolean isDisableStartButton() {
-        return disableStartButton;
+        cleanup();
     }
 
     /**
-     * Start a new thread to do some work which is monitored for progress.
+     * Sets the Render Manager.
+     *
+     * @param renderManager
      */
-    @Begin
-    public void start(ActionEvent event) {
-
-        Thread testThread = new Thread(new LongOperationRunner(this));
-        testThread.start();
+    @In
+    public void setRenderManager(RenderManager renderManager) {
+        this.renderManager = renderManager;
+        if (renderManager !=null){
+          renderer = renderManager.getDelayRenderer(RENDERER_NAME);
+          renderer.add(this);
+        }
     }
 
     /**
-     * Get the current percent value.
+     * Gets RenderManager, just try to satisfy WAS
      *
-     * @return percent complete of progress bar
+     * @return RenderManager null
+     */
+    public RenderManager getRenderManager() {
+        return this.renderManager;
+    }
+
+    // progress active status
+    private boolean runningTask=true;
+
+	    // value bound to component as an indicator of progress
+	private int percent = 0;
+
+    
+    	    // flag to disable start button when progress bar is started
+	private boolean disableStartButton = false;
+	
+	/**
+	* Default construction for the backing bean.
+	*/
+	 public OutputProgressRenderBean() {
+	        state = PersistentFacesState.getInstance();
+	        myId = ++id;  
+	    }
+     /* 
+     * @return the current percentage
      */
     public int getPercent() {
-        state = PersistentFacesState.getInstance();
+    	//need to get state again in case seam has redirected to same view
+    	state=PersistentFacesState.getInstance();
+    	if (percent==100){
+    		if (!ir.isEmpty()){
+    			log.info("stopping ir 1");
+    			ir.requestRender();
+    			ir.requestStop();
+    			this.disableStartButton = false;
+    		}
+    		ir.requestRender();
+    		ir.requestStop();
+    	}
         return percent;
     }
 
+	private void setupIntervalRenderer() {
+		//	if (log.isTraceEnabled()){
+    			log.info(">>> new OutputProgressRenderBean renderable..."+myId);
+    		//}
+    		state.addViewListener(this);
+    		ir = renderManager.getIntervalRenderer("org.icesoft.clock.clockRenderer");
+    		ir.setInterval(1000);
+    		ir.add(this);
+    		ir.requestRender();
+	}
+	
+
     /**
-     * Sets the current percent value.
+     * Sets the percentage.
      *
-     * @param percent percent value of progress bar state.
+     * @param percent the new percentage
      */
     public void setPercent(int percent) {
         this.percent = percent;
-    }
-
-    /**
-     * Gets the progress bar binding.
-     *
-     * @return bound progress bar.
-     */
-    public OutputProgress getProgressBar() {
-        return progressBar;
-    }
-
-    /**
-     * Sets the progress bar binding.
-     *
-     * @param progressBar progress bar to bind to this bean.
-     */
-    public void setProgressBar(OutputProgress progressBar) {
-        this.progressBar = progressBar;
-    }
-
-
-    /**
-     * Helper class that simulates a long running task.  The progress bar
-     * updates based on this task via requestRender() calls.
-     */
-    protected class LongOperationRunner implements Runnable {
-
-        PersistentFacesState state = null;
-        OutputProgressRenderBean outputBean;
-
-        public LongOperationRunner(OutputProgressRenderBean outputBean) {
-            disableStartButton = true;
-            this.outputBean = outputBean;
-        }
-
-        @End
-        public void run() {
-
-            state = PersistentFacesState.getInstance();
-
-            try {
-                for (int i = 0; i <= 100; i += 10) {
-                    // pause the thread
-                    Thread.sleep(300);
-                    // update the percent value
-                    percent = i;
-                    // call a render to update the component state
-                    try {                        
-
-                        state.execute();
-                        state.render();
-                        
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                // now that thread work is complete enable "start" button
-                disableStartButton = false;
-
-                // one last render to update start button
-                try {
-
-                    state.execute();
-                    state.render();
-
-                    OutputProgressRenderBean.this.keepRunning = false;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -224,7 +198,7 @@ public class OutputProgressRenderBean implements Serializable {
      * @return the activity status
      */
     public boolean isRunningTask() {
-        return disableStartButton;
+        return runningTask;
     }
 
     /**
@@ -233,12 +207,118 @@ public class OutputProgressRenderBean implements Serializable {
      * @param runningTask the new activity status
      */
     public void setRunningTask(boolean runningTask) {
-        disableStartButton = runningTask;
+        this.runningTask = runningTask;
     }
-    
-	@Destroy @Remove
-	public void destroy(){
-		System.out.println("progress destroy");
-	}
+	    /**
+	     * Gets the disabled state for the start button.
+	     *
+	     * @return true if the button should be disabled; false otherwise.
+	     */
+	    public boolean isDisableStartButton() {
+	        return disableStartButton;
+	    }
+	    public void setDisableStartButton(boolean dsb){
+	    	this.disableStartButton = dsb;
+	    }
 
-}
+	    /**
+	     * Start a new thread to do some work which is monitored for progress.
+	     */
+	    public void start(ActionEvent event) {
+	    	log.info("start IntervalRenderer");
+	    	setPercent(0);
+	    	if (!doneSetup){
+	    	    setupIntervalRenderer();
+	    	}else ir.requestRender();
+	    	doneSetup = true;
+	    	log.info("starting thread");	    	
+	        Thread testThread = new Thread(new LongOperationRunner(this));
+	        testThread.start();	  
+	    }
+
+	    /**
+	     * Helper class that simulates a long running task.  The progress bar
+	     * updates based on this task via requestRender() calls.
+	     */
+	    static class LongOperationRunner implements Runnable {
+
+	        OutputProgressRenderBean outputBean;
+
+	        public LongOperationRunner(OutputProgressRenderBean outputBean) {
+	        	log.info("thread constructor");
+	            this.outputBean = outputBean;
+	        }
+
+	        public void run() {
+	        	log.info("thread run()");
+	            outputBean.setDisableStartButton(true);
+	            try {
+	                for (int i = 0; i <= 100; i += 10) {
+	                	log.info("i = "+i);
+	                    // pause the thread
+
+	                    // update the percent value
+	                    if (i>0)outputBean.setPercent(i);
+	                    Thread.sleep(300);
+	                }
+	                // now that thread work is complete enable "start" button
+	                outputBean.setRunningTask(false);
+	                outputBean.setDisableStartButton(false);
+ 	            }
+	            catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    
+	    
+	    public void reRender() {
+	        if (renderer != null) {
+	            renderer.requestRender();
+	        } else {
+	            if (log.isDebugEnabled()) {
+	                log.debug("OnDemandRenderer was not available (it was null)");
+	            }
+	        }
+	    }
+
+	    public void viewCreated() {
+	    	log.info("viewCreated()");
+	    }
+
+	    public void viewDisposed() {
+	    	log.info("*** View dispoded: "+myId);
+//	        if(log.isTraceEnabled() ) { 
+//	           log.trace("*** View disposed: " +myId );
+//	        } 
+	        cleanup();
+	    }
+
+	    private void cleanup() {
+	    	log.info("cleanup()");
+	        if (renderManager != null) {
+	        	log.info("cleanup & renderManager !=null");
+	            ir.remove(this);
+	            renderer.remove(this);
+	            if (ir.isEmpty() ) {
+	            	log.info("*** IntervaleRenderer Stopped");
+	                if(log.isTraceEnabled() ) { 
+	                   log.trace("*** IntervalRenderer Stopped " );
+	                } 
+	                ir.requestStop();
+	            }
+	        }
+	        else if (!ir.isEmpty()){
+	        	log.info("trying to stop ir");
+	        	ir.remove(this);
+	        	ir.requestStop();
+	        	renderer.remove(this);
+	        }
+	    } 	    
+	    
+		@Destroy @Remove
+		public void destroy(){
+			cleanup();
+			System.out.println("OutputProgressRenderBean destroy");
+		} 
+	}
