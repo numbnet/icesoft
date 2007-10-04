@@ -19,14 +19,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class ServletRequestResponse implements Request, Response {
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+    private static Pattern HEADER_FIXER = null;
 
     private URI requestURI;
 
     static {
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+        HEADER_FIXER = Pattern.compile("[\r\n]");
     }
 
     protected HttpServletRequest request;
@@ -148,6 +152,8 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void setHeader(String name, String value) {
+        //CR and LF embedded in headers can corrup the HTTP response
+        value = HEADER_FIXER.matcher(value).replaceAll("");
         if ("Content-Type".equals(name)) {
             response.setContentType(value);
         } else if ("Content-Length".equals(name)) {
@@ -159,7 +165,8 @@ public class ServletRequestResponse implements Request, Response {
 
     public void setHeader(String name, String[] values) {
         for (int i = 0; i < values.length; i++) {
-            response.addHeader(name, values[i]);
+            String safeValue = HEADER_FIXER.matcher(values[i]).replaceAll("");
+            response.addHeader(name, safeValue);
         }
     }
 
