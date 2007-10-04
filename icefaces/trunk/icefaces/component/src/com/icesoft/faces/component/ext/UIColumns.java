@@ -238,6 +238,7 @@ public class UIColumns extends UISeries {
         }
         iterate(context, PhaseId.APPLY_REQUEST_VALUES);
         decode(context);
+        getAttributes().remove("rowServed");
     }
     
 
