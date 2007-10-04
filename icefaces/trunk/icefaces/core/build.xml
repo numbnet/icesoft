@@ -154,6 +154,7 @@
             <classpath refid="compile.run.classpath"/>
             <src location="${src.dir}"/>
             <include name="com/icesoft/faces/webapp/http/servlet/TomcatPushServlet.java"/>
+            <include name="com/icesoft/faces/webapp/http/servlet/GrizzlyPushServlet.java"/>
         </javac>
 
         <antcall target="jsf12" /> 
@@ -181,6 +182,7 @@
             <include name="**/*.java"/>
             <exclude name="com/icesoft/faces/webapp/parser/ELSetPropertiesRule.java"/>
             <exclude name="com/icesoft/faces/webapp/http/servlet/TomcatPushServlet.java"/>
+            <exclude name="com/icesoft/faces/webapp/http/servlet/GrizzlyPushServlet.java"/>
         </javac>
 
         <antcall target="compile15" />
