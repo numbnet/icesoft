@@ -42,6 +42,12 @@
             Custom Components
      </description>
             <!-- Custom components -->
+      <renderer>
+            <component-family>javax.faces.Command</component-family>
+            <renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>
+            <renderer-class>com.icesoft.faces.component.gmap.GMapRenderer</renderer-class>
+      </renderer>
+                     
         <renderer>
             <component-family>javax.faces.Command</component-family>
             <renderer-type>com.icesoft.faces.OutputChartRenderer</renderer-type>
@@ -236,6 +242,36 @@
         -->
   </render-kit>
 
+   <component>
+      <component-type>com.icesoft.faces.GLatLng</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GLatLng</component-class>
+    </component>
+    
+   <component>
+      <component-type>com.icesoft.faces.GLatLngs</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GLatLngs</component-class>
+    </component>
+        
+   <component>
+      <component-type>com.icesoft.faces.GMarker</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GMarker</component-class>
+    </component>
+    
+   <component>
+      <component-type>com.icesoft.faces.GDirection</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GDirection</component-class>
+    </component>
+    
+   <component>
+      <component-type>com.icesoft.faces.GControl</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GControl</component-class>
+    </component>
+    
+   <component>
+      <component-type>com.icesoft.faces.GMap</component-type>
+      <component-class>com.icesoft.faces.component.gmap.GMap</component-class>
+    </component>
+    
   <component>
 	  <component-type>com.icesoft.faces.series</component-type>
 	  <component-class>com.icesoft.faces.component.panelseries.UISeries</component-class>

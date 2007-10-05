@@ -222,7 +222,9 @@
                 <file name="sortable_ext.js"/>
                 <file name="autocomplete_ext.js"/>
                 <file name="effects_ext.js"/>
-                <file name="bootstrap.js"/>                                                              
+                <file name="bootstrap.js"/>  
+                <file name="gmap.js"/>
+                <file name="repository.js"/>                                                            
             </filelist>
             <filelist dir="${component.dir}">
 		        <file name="menu.js"/>

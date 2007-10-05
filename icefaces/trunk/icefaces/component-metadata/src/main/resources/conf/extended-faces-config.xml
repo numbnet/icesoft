@@ -187,6 +187,12 @@
   <!ENTITY ice-cust-panelBorder-props SYSTEM "ice_cust_properties/cust-panelBorder-props.xml">
   <!ENTITY ice-cust-datapaginator-props SYSTEM "ice_cust_properties/cust-datapaginator-props.xml">
   <!ENTITY ice-cust-inputFile-props SYSTEM "ice_cust_properties/cust-inputFile-props.xml">
+  <!ENTITY ice-cust-gmap-props SYSTEM "ice_cust_properties/cust-gmap-props.xml">
+  <!ENTITY ice-cust-gLatLng-props SYSTEM "ice_cust_properties/cust-gLatLng-props.xml">
+  <!ENTITY ice-cust-gLatLngs-props SYSTEM "ice_cust_properties/cust-gLatLngs-props.xml">
+  <!ENTITY ice-cust-gMarker-props SYSTEM "ice_cust_properties/cust-gMarker-props.xml">  
+  <!ENTITY ice-cust-gControl-props SYSTEM "ice_cust_properties/cust-gControl-props.xml">
+  <!ENTITY ice-cust-gDirection-props SYSTEM "ice_cust_properties/cust-gDirection-props.xml">
   <!ENTITY ice-cust-menunodecheckbox-props SYSTEM "ice_cust_properties/cust-menunodecheckbox-props.xml">
   <!ENTITY ice-cust-menunode-props SYSTEM "ice_cust_properties/cust-menunode-props.xml">
   <!ENTITY ice-cust-menunodeRadio-props SYSTEM "ice_cust_properties/cust-menunodeRadio-props.xml">
@@ -295,7 +301,25 @@
   
   <!ENTITY inputFile-component   SYSTEM "custom/inputFile-component.xml">
   <!ENTITY inputFile-renderer    SYSTEM "custom/inputFile-renderer.xml">
+
+  <!ENTITY gDirection-component   SYSTEM "custom/gDirection-component.xml">
+  <!ENTITY gDirection-renderer    SYSTEM "custom/gDirection-renderer.xml">
+    
+  <!ENTITY gmap-component   SYSTEM "custom/gmap-component.xml">
+  <!ENTITY gmap-renderer    SYSTEM "custom/gmap-renderer.xml">
+
+  <!ENTITY gLatLng-component   SYSTEM "custom/gLatLng-component.xml">
+  <!ENTITY gLatLng-renderer    SYSTEM "custom/gLatLng-renderer.xml">
+
+  <!ENTITY gLatLngs-component   SYSTEM "custom/gLatLngs-component.xml">
+  <!ENTITY gLatLngs-renderer    SYSTEM "custom/gLatLngs-renderer.xml">
+
+  <!ENTITY gMarker-component   SYSTEM "custom/gMarker-component.xml">
+  <!ENTITY gMarker-renderer    SYSTEM "custom/gMarker-renderer.xml">
   
+  <!ENTITY gControl-component   SYSTEM "custom/gControl-component.xml">
+  <!ENTITY gControl-renderer    SYSTEM "custom/gControl-renderer.xml">
+    
   <!ENTITY panelstack-component   SYSTEM "custom/panelstack-component.xml">
   <!ENTITY panelstack-renderer    SYSTEM "custom/panelstack-renderer.xml">
   
@@ -424,6 +448,12 @@
 	<!--  custom component -->
 	&selectinputdate-component;
 	&inputFile-component;
+	&gmap-component;
+    &gLatLng-component;
+    &gLatLngs-component;
+    &gMarker-component;	
+    &gControl-component;	
+	&gDirection-component;	
 	&panelstack-component;
 	&outputprogress-component;
 	&panelBorder-component;
@@ -487,6 +517,12 @@
 		<!-- custom component -->
 		&selectinputdate-renderer;
 		&inputFile-renderer;
+        &gDirection-renderer;
+		&gmap-renderer;
+        &gLatLng-renderer;
+        &gLatLngs-renderer;
+        &gMarker-renderer;
+		&gControl-renderer;
 		&panelstack-renderer;
 		&outputprogress-renderer;
 		&panelBorder-renderer;
