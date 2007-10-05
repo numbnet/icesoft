@@ -134,14 +134,14 @@ Ice.modal = {
             };
             resize();
             window.onResize(resize);
-
-            modal = document.getElementById(target);
-
-            modal.style.zIndex = iframe.style.zIndex + 1;
-            modal.style.position = 'absolute';
-            Ice.modal.target = modal;
-            Ice.modal.id = target;
         }
+
+        var modal = document.getElementById(target);
+
+        modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
+        modal.style.position = 'absolute';
+        Ice.modal.target = modal;
+        Ice.modal.id = target;
         Ice.modal.running = true;
     },
     stop:function(target) {
