@@ -563,6 +563,129 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode3.add(leafNode);
 
+                // component menu -> GoogleMaps
+                branchObject = new PageContentBean();
+                branchObject.setExpanded(false);
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.googlemaps");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.googlemaps");
+                branchObject.setTemplateName("splashGoolMapsPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                branchObject.setPageContent(false);
+                DefaultMutableTreeNode googleMapNode =
+                        new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(branchNode3);
+                // finally add the new custom component branch
+                branchNode.add(googleMapNode);
+
+                // component menu -> GoogleMaps -> Demo1
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo1");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo1");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo1.jspx");
+                branchObject.setTemplateName("gmapDemo1Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+
+                // component menu -> GoogleMaps -> Demo2
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo2");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo2");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo2.jspx");
+                branchObject.setTemplateName("gmapDemo2Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+
+                // component menu -> GoogleMaps -> Demo3
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo3");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo3");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo3.jspx");
+                branchObject.setTemplateName("gmapDemo3Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+/*
+                // component menu -> GoogleMaps -> Demo4
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo4");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo4");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo4.jspx");
+                branchObject.setTemplateName("gmapDemo4Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+
+                // component menu -> GoogleMaps -> Demo5
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo5");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo5");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo5.jspx");
+                branchObject.setTemplateName("gmapDemo5Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+                
+                // component menu -> GoogleMaps -> Demo6
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo6");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo6");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo6.jspx");
+                branchObject.setTemplateName("gmapDemo6Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+
+                // component menu -> GoogleMaps -> Demo7
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo7");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo7");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo7.jspx");
+                branchObject.setTemplateName("gmapDemo7Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+                                
+  */              
+                
                 // Layout Panels menu item
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(

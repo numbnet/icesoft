@@ -314,6 +314,27 @@
                     </f:subview>
                 </ice:panelGroup>
 
+                <ice:panelGroup id="gmapDemo1Panel" styleClass="contentIncludePanelGroup" >
+                    <f:subview id="gmapDemo1Sub">
+                        <!-- OutputChart include -->
+                        <jsp:directive.include file="./inc/components/gmap/demo1.jspx" />
+                    </f:subview>
+                </ice:panelGroup>
+
+                <ice:panelGroup id="gmapDemo2Panel" styleClass="contentIncludePanelGroup" >
+                    <f:subview id="gmapDemo2Sub">
+                        <!-- OutputChart include -->
+                        <jsp:directive.include file="./inc/components/gmap/demo2.jspx" />
+                    </f:subview>
+                </ice:panelGroup>
+
+                <ice:panelGroup id="gmapDemo3Panel" styleClass="contentIncludePanelGroup" >
+                    <f:subview id="gmapDemo3Sub">
+                        <!-- OutputChart include -->
+                        <jsp:directive.include file="./inc/components/gmap/demo3.jspx" />
+                    </f:subview>
+                </ice:panelGroup>
+
             </ice:panelStack>
         </td>
      </tr>

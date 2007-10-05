@@ -38,6 +38,18 @@
       <default-locale>en_US</default-locale>
     </locale-config>
   </application>
+
+    <managed-bean>
+        <description>
+            
+        </description>
+        <managed-bean-name>gmap</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.samples.showcase.components.gmap.Bean
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+      
   <managed-bean>
     <managed-bean-name>inputFile</managed-bean-name>
     <managed-bean-class>
