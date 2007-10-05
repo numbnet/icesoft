@@ -1,5 +1,6 @@
 package com.icesoft.faces.component.gmap;
 
+import java.beans.Beans;
 import java.io.IOException;
 import java.util.Map;
 
@@ -33,6 +34,11 @@ public class GMap extends UICommand{
     }
     
     public GMap() {
+    	super();
+    	if (FacesContext.getCurrentInstance() == null) {
+    		//LOG: google map library is not loaded, please email us your enviroment 
+    		return;
+    	} 
         String key = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
         if(key != null) {
         	JavascriptContext.includeLib("http://maps.google.com/maps?file=api&v=2&key="+ key, FacesContext.getCurrentInstance());
@@ -113,9 +119,6 @@ public class GMap extends UICommand{
     			getType() +"');");
     }
     
-    public void encodeEnd(FacesContext context) throws IOException {
-    	System.out.println("GMAP encode end");
-    }
 
 	public int getZoomLevel() {
        if (zoomLevel != null) {

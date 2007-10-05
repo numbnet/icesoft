@@ -20,7 +20,7 @@ public class GMapRenderer extends DomBasicRenderer{
     }
     
 	public void decode(FacesContext facesContext, UIComponent uiComponent) {
-		 System.out.println("Decode called");
+
 	 }
 	 
 	 public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)

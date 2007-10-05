@@ -31,10 +31,10 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-
+<!--
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
-
+-->
 <property>
     <description>
         name

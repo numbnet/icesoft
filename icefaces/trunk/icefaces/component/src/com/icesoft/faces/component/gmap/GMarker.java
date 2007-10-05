@@ -33,8 +33,6 @@ public class GMarker extends UIPanel{
     }
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
-    	//add it to the parnet map
-    	System.out.println("-->>>  GMarker");
     }
     
     public void encodeChildren(FacesContext context) throws IOException {
@@ -91,13 +89,11 @@ public class GMarker extends UIPanel{
         return vb != null ? (String) vb.getValue(getFacesContext()) : "37.4419";
 	}
 
-	private void setLongitude(String longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
-		System.out.println("Maps longitude ... "+ longitude);
 	}
 
-	private void setLatitude(String latitude) {
+	public void setLatitude(String latitude) {
 		this.latitude = latitude;
-		System.out.println("Maps latitude ... "+ latitude);		
 	}
 }
