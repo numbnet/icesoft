@@ -74,7 +74,6 @@ public class GMap extends UICommand{
     public void decode(FacesContext facesContext) {
     	Map map = facesContext.getExternalContext().getRequestParameterMap();
     	String clientId = getClientId(facesContext);
-    	System.out.println("gmap decode " + map.get(clientId+ "event"));
     	if (map.get(clientId+ "event") != null && map.get(clientId+ "event")
     						.toString().length() > 0) {
 	    	 if (map.containsKey(clientId + "lat")) {
@@ -107,7 +106,7 @@ public class GMap extends UICommand{
     			JavascriptContext.addJavascriptCall(context, 
     					"Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
     					"').getRealGMap().setZoom("+ getZoomLevel() +");");
-    		} else { System.out.println("REnderint passing zoom "+ getZoomLevel());
+    		} else { 
     			JavascriptContext.addJavascriptCall(context, 
     					"Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
     					"').getRealGMap().setCenter(new GLatLng("+ getLatitude() 
