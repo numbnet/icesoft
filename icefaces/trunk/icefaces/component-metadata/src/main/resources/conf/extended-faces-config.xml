@@ -192,6 +192,7 @@
   <!ENTITY ice-cust-gLatLngs-props SYSTEM "ice_cust_properties/cust-gLatLngs-props.xml">
   <!ENTITY ice-cust-gMarker-props SYSTEM "ice_cust_properties/cust-gMarker-props.xml">  
   <!ENTITY ice-cust-gControl-props SYSTEM "ice_cust_properties/cust-gControl-props.xml">
+  <!ENTITY ice-cust-geoXml-props SYSTEM "ice_cust_properties/cust-geoXml-props.xml">
   <!ENTITY ice-cust-gDirection-props SYSTEM "ice_cust_properties/cust-gDirection-props.xml">
   <!ENTITY ice-cust-menunodecheckbox-props SYSTEM "ice_cust_properties/cust-menunodecheckbox-props.xml">
   <!ENTITY ice-cust-menunode-props SYSTEM "ice_cust_properties/cust-menunode-props.xml">
@@ -320,6 +321,9 @@
   <!ENTITY gControl-component   SYSTEM "custom/gControl-component.xml">
   <!ENTITY gControl-renderer    SYSTEM "custom/gControl-renderer.xml">
     
+  <!ENTITY geoXml-component   SYSTEM "custom/geoXml-component.xml">
+  <!ENTITY geoXml-renderer    SYSTEM "custom/geoXml-renderer.xml">
+
   <!ENTITY panelstack-component   SYSTEM "custom/panelstack-component.xml">
   <!ENTITY panelstack-renderer    SYSTEM "custom/panelstack-renderer.xml">
   
@@ -453,6 +457,7 @@
     &gLatLngs-component;
     &gMarker-component;	
     &gControl-component;	
+    &geoXml-component;    
 	&gDirection-component;	
 	&panelstack-component;
 	&outputprogress-component;
@@ -523,6 +528,7 @@
         &gLatLngs-renderer;
         &gMarker-renderer;
 		&gControl-renderer;
+        &geoXml-renderer;		
 		&panelstack-renderer;
 		&outputprogress-renderer;
 		&panelBorder-renderer;

@@ -94,26 +94,26 @@ Ice.GoogleMap = {
         return gmapWrapper;
 	},
 
-    getGMarker:function(id) {
-        return  GMapRepository[id+'gmarker'];
+    getOverlay:function(id) {
+        return  GMapRepository[id+'overlay'];
     },
     
-    createGMarker: function(id, overlay) {
-       var gmarker = GMapRepository[id+'gmarker'];
-       if(gmarker == null) {
-          GMapRepository[id+'gmarker'] = eval(overlay);
-          return GMapRepository[id+'gmarker'];
+    createOverlay: function(id, overlayFunc) {
+       var overlay = GMapRepository[id+'overlay'];
+       if(overlay == null) {
+          GMapRepository[id+'overlay'] = eval(overlayFunc);
+          return GMapRepository[id+'overlay'];
        } else {
-          return gmarker;
+          return overlay;
        }
     },
     	
 	addOverlay:function (mapid, overlayId, ovrLay) {
-	   var gmarker = Ice.GoogleMap.getGMarker(overlayId);
+	   var overLay = Ice.GoogleMap.getOverlay(overlayId);
        var map = Ice.GoogleMap.getGMapWrapper(mapid).getRealGMap();
-       if(gmarker == null) {
-          gmarker = Ice.GoogleMap.createGMarker(overlayId, ovrLay);
-          map.addOverlay(gmarker);        
+       if(overLay == null) {
+          overLay = Ice.GoogleMap.createOverlay(overlayId, ovrLay);
+          map.addOverlay(overLay);        
        }
 	    
 	},
