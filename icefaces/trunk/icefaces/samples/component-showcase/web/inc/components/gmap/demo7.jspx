@@ -41,23 +41,14 @@
   Controls to show/hide the table columns
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid id="gampDemo3"
-                   styleClass="componentLayoutRootTable" columns="2">
-            <f:facet name="header">
-                <ice:outputText value="GMap using GDirection, panelGroup is being used for the textual result"/>
-            </f:facet>
-            <ice:panelGrid>
-                <ice:panleGroup>
-                    <ice:outputText value="From : "/>
-                    <ice:inputText value="#{gmap.from2}" valueChangeListener="#{gmap.addressChanged}"/> 
-                    <ice:outputText value="To : "/>
-                    <ice:inputText value="#{gmap.to2}" valueChangeListener="#{gmap.addressChanged}"/>
-                </ice:panleGroup>
-                <ice:GMap>
-                    <ice:GDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>
-                </ice:GMap>
-                 <ice:panelGroup id="textDiv"/>
-            </ice:panelGrid>
+    <ice:panelGrid id="gmapDemo"
+                   styleClass="componentLayoutRootTable" columns="1">
+         <f:facet name="header">
+            <ice:outputText value="View KML examples (geoxml-kml.html)"/>
+         </f:facet>                   
+          <ice:GMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
+              <ice:GeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
+          </ice:GMap>
     </ice:panelGrid>
 
 </ice:panelTab>
@@ -76,7 +67,7 @@
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe src="./sourcecodeStream.html?path=./inc/components/gmap/demo3.jspx"
+    <iframe src="./sourcecodeStream.html?path=./inc/components/gmap/demo1.jspx"
             class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>

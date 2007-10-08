@@ -14,6 +14,8 @@ public class Bean {
 	private boolean locateAddress = false;
 	private String from;
 	private String to;
+	private String from2;
+	private String to2;
 	private boolean render = true;
 	private List point = new ArrayList();
 	
@@ -83,5 +85,21 @@ public class Bean {
 
 	public void setPoint(List point) {
 		this.point = point;
+	}
+
+	public String getFrom2() {
+		return from2;
+	}
+
+	public void setFrom2(String from2) {
+		this.from2 = from2;
+	}
+
+	public String getTo2() {
+		return to2;
+	}
+
+	public void setTo2(String to2) {
+		this.to2 = to2;
 	}
 }
