@@ -10,6 +10,8 @@ import javax.faces.el.ValueBinding;
 
 import org.w3c.dom.Element;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -24,7 +26,10 @@ public class GMap extends UICommand{
     private boolean initilized = false;
     private String address;
     private String type;
-
+    private String style = null;
+    private String styleClass = null;
+    private String renderedOnUserRole = null;
+    
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -178,5 +183,79 @@ public class GMap extends UICommand{
 	public void setType(String type) {
 		this.type = type;
 	}	
+
+    /**
+     * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
+    }
+
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public String getRenderedOnUserRole() {
+        if (renderedOnUserRole != null) {
+            return renderedOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    }
+
+    /**
+     * <p>Set the value of the <code>style</code> property.</p>
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    /**
+     * <p>Return the value of the <code>style</code> property.</p>
+     */
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String) vb.getValue(getFacesContext()) :
+                "border-collapse:collapse; border-spacing:0px; padding:0px;";
+    }
+
+    /**
+     * <p>Set the value of the <code>styleClass</code> property.</p>
+     */
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    /**
+     * <p>Return the value of the <code>styleClass</code> property.</p>
+     */
+    public String getStyleClass() {
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.GMAP,
+                "styleClass");
+    }
+
+    public String getMapTdStyleClass() {
+        return Util.getQualifiedStyleClass(this, 
+                CSS_DEFAULT.GMAP_MAP_TD);
+    }    
+    
+    public String getTxtTdStyleClass() {
+        return Util.getQualifiedStyleClass(this, 
+                CSS_DEFAULT.GMAP_TXT_TD);
+    }    
 }
 

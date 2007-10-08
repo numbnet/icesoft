@@ -31,8 +31,13 @@ public class GMapRenderer extends DomBasicRenderer{
 	                DOMContext.attachDOMContext(facesContext, uiComponent);
 	        if (!domContext.isInitialized()) {
 	        	Element container = domContext.createRootElement(HTML.TABLE_ELEM);
+	        	container.setAttribute(HTML.CLASS_ATTR, gmap.getStyleClass());
+	        	if (gmap.getStyle() != null) {
+	        		container.setAttribute(HTML.STYLE_ATTR, gmap.getStyle());
+	        	}
 	        	Element tr = domContext.createElement(HTML.TR_ELEM);
 	        	Element td = domContext.createElement(HTML.TD_ELEM);
+	        	td.setAttribute(HTML.CLASS_ATTR, gmap.getMapTdStyleClass());
 	        	td.setAttribute("VALIGN", "top");
 	        	container.appendChild(tr);
 	        	tr.appendChild(td);
@@ -40,7 +45,7 @@ public class GMapRenderer extends DomBasicRenderer{
 	        	Element gmapDiv = domContext.createElement(HTML.DIV_ELEM);
 	        	td.appendChild(gmapDiv);
 	        	gmapDiv.setAttribute(HTML.ID_ATTR, gmap.getClientId(facesContext));
-	        	gmapDiv.setAttribute(HTML.STYLE_ATTR, "width: 600px; height: 400px; float:left;");
+	        	gmapDiv.setAttribute(HTML.CLASS_ATTR, "gmap");
 	        	
 	        	addHiddenField(domContext, td, clientId, "hdn");
 	        	addHiddenField(domContext, td, clientId, "lat");

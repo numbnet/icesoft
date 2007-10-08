@@ -36,7 +36,7 @@ public class GDirection extends UIPanel{
     public void encodeBegin(FacesContext context) throws IOException {
     	setRendererType(null);
     	String textualDivId = getTextualDivId(); 
-		UIComponent gmap = this.getParent();
+		GMap gmap = (GMap)this.getParent();
     	String mapId = gmap.getClientId(context);
     	if (textualDivId == null) {
     		//user didn't defined the textual div, so create one
@@ -44,6 +44,7 @@ public class GDirection extends UIPanel{
     		textualDivId = mapId + "textualDiv";
     		DOMContext domContext = DOMContext.getDOMContext(context, gmap);
     		Element texttualTd =  (Element) domContext.createElement(HTML.TD_ELEM);
+    		texttualTd.setAttribute(HTML.CLASS_ATTR, gmap.getTxtTdStyleClass());
     		Element textualDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
     		textualDiv.setAttribute(HTML.STYLE_ATTR, "width:300px;");
     		textualDiv.setAttribute(HTML.ID_ATTR, textualDivId );

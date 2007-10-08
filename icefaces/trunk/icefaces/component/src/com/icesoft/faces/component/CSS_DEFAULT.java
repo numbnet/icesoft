@@ -334,4 +334,12 @@ public class CSS_DEFAULT {
             "Colpsd";
     public static final String DIS_SUFFIX =
             "-dis";
+    public static final String GMAP =
+        "iceGmp";    
+    public static final String GMAP_MAP_TD =
+        "MapTd";
+    public static final String GMAP_TXT_TD =
+        "TxtTd";
+
+    
 }
