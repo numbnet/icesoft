@@ -35,7 +35,7 @@
 <renderer>
 	<description>
 		<![CDATA[
-            GLatLng
+            This component is a wrapper of google map's GLatLng API. Can be child of GMarker component.
          ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>

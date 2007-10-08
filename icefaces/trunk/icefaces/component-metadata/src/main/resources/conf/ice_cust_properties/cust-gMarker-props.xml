@@ -34,7 +34,7 @@
 <!--
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
--->
+
 <property>
     <description>
         To
@@ -70,3 +70,4 @@
         <category>ICE_LAYOUT</category>
     </property-extension>
 </property>
+-->

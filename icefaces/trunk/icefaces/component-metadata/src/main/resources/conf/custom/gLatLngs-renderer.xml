@@ -35,7 +35,7 @@
 <renderer>
 	<description>
 		<![CDATA[
-            GLatLngs
+        This component can be a child of GMarker component and its value attribute can be a list of GLatLng component. 
          ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>

@@ -35,7 +35,7 @@
 <renderer>
 	<description>
 		<![CDATA[
-            GDirection
+            The GDirection component uses the google map's GDirections API to get the direction from point A to point B. This component must need to be a child of ice:GMap component.
          ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>

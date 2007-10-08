@@ -34,9 +34,12 @@
 
 <renderer>
 	<description>
-		<![CDATA[
-            GeoXml
-         ]]>
+        <![CDATA[  
+           This component uses google map's GGeoXml API, to support the KML and GeoRSS data formats for displaying geographic information.<br/>
+          &lt;ice:GMap latitude="41.875696" longitude="-87.624207" zoomLevel="11"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&lt;ice:GeoXml url="http://mapgadgets.googlepages.com/cta.kml"/&gt;</br>
+          &lt;/ice:GMap&gt;<br/>
+        ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
 

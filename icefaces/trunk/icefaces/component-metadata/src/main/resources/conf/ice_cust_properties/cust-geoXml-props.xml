@@ -37,7 +37,7 @@
 -->
 <property>
     <description>
-        url
+        Url of the Kml or GeoRSS
     </description>
     <property-name>url</property-name>
     <property-class>java.lang.String</property-class>

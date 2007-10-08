@@ -37,7 +37,17 @@
 -->
 <property>
     <description>
-        name
+    <![CDATA[ 
+        The name represents the control of the google map. The following are the valid values.
+        <ul>
+            <li>GSmallMapControl</li>
+            <li>GLargeMapControl</li>
+            <li>GSmallZoomControl</li>
+            <li>GScaleControl</li>
+            <li>GMapTypeControl</li>
+            <li>GOverviewMapControl</li>                                                                        
+        </ul>                
+    ]]>       
     </description>
     <property-name>name</property-name>
     <property-class>java.lang.String</property-class>
@@ -48,6 +58,7 @@
         </editor-class>
     </property-extension>
 </property>
+<!--
 <property>
     <description>
     </description>
@@ -60,3 +71,4 @@
         </editor-class>
     </property-extension>
 </property>
+-->

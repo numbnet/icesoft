@@ -37,7 +37,7 @@
 -->
 <property>
     <description>
-        longitude
+        The longitude
     </description>
     <property-name>longitude</property-name>
     <property-class>java.lang.String</property-class>
@@ -50,6 +50,7 @@
 </property>
 <property>
     <description>
+        The latitude
     </description>
     <property-name>latitude</property-name>
     <property-class>java.lang.String</property-class>
