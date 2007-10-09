@@ -30,16 +30,19 @@ public class InputRichText extends UIInput{
     	ResourceRegistry registry = (ResourceRegistry) 
     	FacesContext.getCurrentInstance();
 		try {
-			
-			baseURI = registry.registerZippedResources(FCK_EDITOR_BASE);
-			String path = baseURI + "/fckeditor.js";
-			path = path.substring(path.indexOf("block"), path.length());
-			JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
-			
-			URI jsURI = registry.registerResource("application/x-javascript",ICE_FCK_EDITOR_JS);
-			path = jsURI.getPath();
-			path = path.substring(path.indexOf("block"), path.length());
-			JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
+	    	if (registry != null) {			
+				baseURI = registry.registerZippedResources(FCK_EDITOR_BASE);
+				String path = baseURI + "/fckeditor.js";
+				path = path.substring(path.indexOf("block"), path.length());
+				JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
+				
+				URI jsURI = registry.registerResource("application/x-javascript",ICE_FCK_EDITOR_JS);
+				path = jsURI.getPath();
+				path = path.substring(path.indexOf("block"), path.length());
+				JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
+	    	} else {
+	    		//LOG fckeditor's library has not loaded, component will not work as desired
+	    	}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
