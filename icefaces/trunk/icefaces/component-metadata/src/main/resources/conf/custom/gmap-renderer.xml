@@ -34,7 +34,9 @@
 
 <renderer>
          <description>
-             <![CDATA[ GMap ]]>
+             <![CDATA[
+                   This component uses the version 2 of the Google Maps API.
+              ]]>
          </description>
 	<component-family>javax.faces.Command</component-family>
 	<renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>	
