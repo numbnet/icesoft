@@ -48,8 +48,12 @@
 
 <property>
 	<description>
-		Set directory for location of the tree images.
-	</description>
+		Set directory for location of the button images. Deprecated. Use styleClass instead.
+        The style class name for a button is made up of the styleClass name plus a predefined name.
+        For example: with a styleClass name of "myCalendar", the button class names would be:
+        myCalendarMovePrev, myCalendarMoveNext, myCalendarOpenPopup, myCalendarClosePopup.
+        Override the images with the background-image property.
+    </description>
 	<property-name>imageDir</property-name>
 	<property-class>java.lang.String</property-class>
 	<property-extension>
