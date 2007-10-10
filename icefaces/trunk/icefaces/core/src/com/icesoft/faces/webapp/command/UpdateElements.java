@@ -53,6 +53,10 @@ public class UpdateElements implements Command {
         return new Macro(redirect, this);
     }
 
+    public Command coalesceWith(Reload reload) {
+        return new Macro(reload, this);
+    }
+
     public Command coalesceWith(SessionExpired sessionExpired) {
         return sessionExpired;
     }
@@ -63,7 +67,7 @@ public class UpdateElements implements Command {
 
     public Command coalesceWith(Pong pong) {
         return new Macro(pong, this);
-    }    
+    }
 
     public Command coalesceWith(NOOP noop) {
         return this;

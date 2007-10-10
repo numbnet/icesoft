@@ -3,13 +3,22 @@ package com.icesoft.faces.webapp.command;
 import java.io.IOException;
 import java.io.Writer;
 
-public class SessionExpired implements Command {
+public class Reload implements Command {
 
     public Command coalesceWith(Command command) {
         return command.coalesceWith(this);
     }
 
     public Command coalesceWith(Redirect redirect) {
+        return redirect;
+    }
+
+    public Command coalesceWith(Macro macro) {
+        macro.addCommand(this);
+        return macro;
+    }
+
+    public Command coalesceWith(UpdateElements updateElements) {
         return this;
     }
 
@@ -17,20 +26,12 @@ public class SessionExpired implements Command {
         return this;
     }
 
-    public Command coalesceWith(Macro macro) {
-        return this;
-    }
-
-    public Command coalesceWith(UpdateElements updateElements) {
-        return this;
-    }
-
     public Command coalesceWith(SessionExpired sessionExpired) {
-        return this;
+        return new Macro(sessionExpired, this);
     }
 
     public Command coalesceWith(SetCookie setCookie) {
-        return this;
+        return new Macro(setCookie, this);
     }
 
     public Command coalesceWith(Pong pong) {
@@ -42,6 +43,6 @@ public class SessionExpired implements Command {
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<session-expired/>");
+        writer.write("<reload/>");
     }
 }

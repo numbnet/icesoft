@@ -45,6 +45,7 @@
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
             commandDispatcher.register('redirect', Ice.Command.Redirect);
+            commandDispatcher.register('reload', Ice.Command.Reload);
             commandDispatcher.register('parsererror', Ice.Command.ParsingError);
             commandDispatcher.register('macro', function(message) {
                 $enumerate(message.childNodes).each(function(subMessage) {

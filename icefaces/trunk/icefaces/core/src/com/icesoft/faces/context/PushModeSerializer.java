@@ -2,6 +2,7 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.command.UpdateElements;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PushModeSerializer implements DOMSerializer {
+    private static final Reload Reload = new Reload();
     private Document oldDocument;
     private CommandQueue commandQueue;
 
@@ -53,8 +55,13 @@ public class PushModeSerializer implements DOMSerializer {
             }
         }
         if (!elementList.isEmpty()) {
-            Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
-            commandQueue.put(new UpdateElements(elements));
+            if (elementList.size() == 1 && "html".equalsIgnoreCase(((Element) elementList.get(0)).getTagName())) {
+                //reload document instead of applying an update for the entire page (see: ICE-2189)
+                commandQueue.put(Reload);
+            } else {
+                Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
+                commandQueue.put(new UpdateElements(elements));
+            }
         }
 
         oldDocument = document;

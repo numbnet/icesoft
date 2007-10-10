@@ -25,7 +25,7 @@
     This.Redirect = function(element) {
         var url = element.getAttribute("url");
         /* the following replaces ampersand entities incorrectly decoded
-           by Safari 2.0.4.  It appears to be fixed in nightly Safari builds 
+           by Safari 2.0.4.  It appears to be fixed in nightly Safari builds
         */
         url = url.replace(/&#38;/g, "&");
         logger.info('Redirecting to ' + url);
@@ -34,6 +34,11 @@
             window.connection.cancelDisposeViews();
         }
         window.location.href = url;
+    };
+
+    This.Reload = function(element) {
+        logger.info('Reloading');
+        window.location.reload();
     };
 
     This.SetCookie = function(message) {

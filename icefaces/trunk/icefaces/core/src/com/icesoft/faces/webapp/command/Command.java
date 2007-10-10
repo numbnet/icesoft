@@ -13,6 +13,8 @@ public interface Command {
 
     Command coalesceWith(Redirect redirect);
 
+    Command coalesceWith(Reload reload);
+
     Command coalesceWith(SessionExpired sessionExpired);
 
     Command coalesceWith(SetCookie setCookie);
@@ -20,6 +22,6 @@ public interface Command {
     Command coalesceWith(Pong pong);
 
     Command coalesceWith(NOOP noop);
-    
+
     void serializeTo(Writer writer) throws IOException;
 }

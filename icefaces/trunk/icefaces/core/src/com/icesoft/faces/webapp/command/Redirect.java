@@ -33,6 +33,10 @@ public class Redirect implements Command {
         return this;
     }
 
+    public Command coalesceWith(Reload reload) {
+        return this;
+    }
+
     public Command coalesceWith(SessionExpired sessionExpired) {
         return sessionExpired;
     }
@@ -50,6 +54,6 @@ public class Redirect implements Command {
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<redirect url=\"" + DOMUtils.escapeAnsi(uri.toString() ) + "\"/>");
+        writer.write("<redirect url=\"" + DOMUtils.escapeAnsi(uri.toString()) + "\"/>");
     }
 }
