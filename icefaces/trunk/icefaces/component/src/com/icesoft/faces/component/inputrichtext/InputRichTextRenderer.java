@@ -25,6 +25,10 @@ public class InputRichTextRenderer extends DomBasicInputRenderer{
 	        	Element root = domContext.createRootElement(HTML.DIV_ELEM);
 	        	root.setAttribute(HTML.ID_ATTR, clientId + "container");
 	        	Element div = domContext.createElement(HTML.DIV_ELEM);
+	        	root.setAttribute(HTML.CLASS_ATTR, inputRichText.getStyleClass());
+	        	if (inputRichText.getStyle() != null) {
+	        		root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
+	        	}
 	        	root.appendChild(div);
 	        	if(inputRichText.isToolbarOnly()) {
 	        		div.setAttribute(HTML.ID_ATTR, inputRichText.getId());
@@ -35,10 +39,10 @@ public class InputRichTextRenderer extends DomBasicInputRenderer{
 	        	}
 	        	StringBuffer call = new StringBuffer();
 	        	if (inputRichText.getValue() != null) {
-	        		call.append("Ice.FCKeditor.register ('"+ clientId+"', new Ice.FCKeditor('"+ clientId+"', '','"+ inputRichText.getLanguage() +"', '"+ inputRichText.getFor()  +"', '"+inputRichText.getBaseURI().getPath() +"/'));");
+	        		call.append("Ice.FCKeditor.register ('"+ clientId+"', new Ice.FCKeditor('"+ clientId+"', '','"+ inputRichText.getLanguage() +"', '"+ inputRichText.getFor()  +"', '"+inputRichText.getBaseURI().getPath() +"/','"+ inputRichText.getWidth() +"', '"+ inputRichText.getHeight() +"'));");
 	        		call.append("Ice.FCKeditor.getInstance('"+ clientId+"').value('"+ clientId+"','');");
 	        	} else {
-	        		call.append("Ice.FCKeditor.register ('"+ clientId+"', new Ice.FCKeditor('"+ clientId+"','','"+ inputRichText.getLanguage() +"', '"+ inputRichText.getFor()  +"', '"+ inputRichText.getBaseURI().getPath() +"/'));");
+	        		call.append("Ice.FCKeditor.register ('"+ clientId+"', new Ice.FCKeditor('"+ clientId+"','','"+ inputRichText.getLanguage() +"', '"+ inputRichText.getFor()  +"', '"+ inputRichText.getBaseURI().getPath() +"/','"+ inputRichText.getWidth() +"', '"+  inputRichText.getHeight() +"'));");
 	        	}
 
 

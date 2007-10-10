@@ -31,6 +31,36 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
+<property>
+    <description>
+        CSS style(s) to be applied when this component is rendered.
+    </description>
+    <property-name>style</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+    <![CDATA[
+        Space-separated list of CSS style class(es) to be applied when this element is rendered. This value must be passed through as the "class" attribute on generated markup.
+        <br/><br/>
+        The base name for all style classes. Default value is iceInpRchTxt        
+         ]]>
+    </description>
+    <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
 
 <property>
     <property-name>valueChangeListener</property-name>
@@ -102,6 +132,32 @@
         The for attribute references the id of the inputRichText which toolbarOnly attribute is set to "true".
     </description>
     <property-name>for</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        Width.
+    </description>
+    <property-name>width</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        height.
+    </description>
+    <property-name>height</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>

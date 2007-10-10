@@ -340,6 +340,8 @@ public class CSS_DEFAULT {
         "MapTd";
     public static final String GMAP_TXT_TD =
         "TxtTd";
+    
+    public static final String INPUT_RICH_TEXT = "iceInpRchTxt";
 
     
 }

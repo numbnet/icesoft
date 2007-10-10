@@ -8,6 +8,9 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceRegistry;
@@ -20,6 +23,11 @@ public class InputRichText extends UIInput{
     private String _for;
     private Boolean html; 
     private Boolean toolbarOnly;   
+    private String style;
+    private String styleClass;
+    private String width;
+    private String height;
+    
 	private final Resource FCK_EDITOR_BASE = new 
 	 JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.zip");
 	private final Resource ICE_FCK_EDITOR_JS = new 
@@ -118,4 +126,77 @@ public class InputRichText extends UIInput{
 	public URI getBaseURI() {
 		return baseURI;
 	}	
+    
+	/**
+     * <p>Set the value of the <code>style</code> property.</p>
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    /**
+     * <p>Return the value of the <code>style</code> property.</p>
+     */
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+	
+    /**
+     * <p>Set the value of the <code>styleClass</code> property.</p>
+     */
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    /**
+     * <p>Return the value of the <code>styleClass</code> property.</p>
+     */
+    public String getStyleClass() {
+        return Util.getQualifiedStyleClass(this, 
+                styleClass,
+                CSS_DEFAULT.INPUT_RICH_TEXT,
+                "styleClass");
+                                             
+    }	
+
+	/**
+     * <p>Set the value of the <code>width</code> property.</p>
+     */
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    /**
+     * <p>Return the value of the <code>width</code> property.</p>
+     */
+    public String getWidth() {
+        if (width != null) {
+            return width;
+        }
+        ValueBinding vb = getValueBinding("width");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "100%";
+    }
+    
+	/**
+     * <p>Set the value of the <code>height</code> property.</p>
+     */
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    /**
+     * <p>Return the value of the <code>height</code> property.</p>
+     */
+    public String getHeight() {
+        if (height != null) {
+            return height;
+        }
+        ValueBinding vb = getValueBinding("height");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "200";
+    }    
 }

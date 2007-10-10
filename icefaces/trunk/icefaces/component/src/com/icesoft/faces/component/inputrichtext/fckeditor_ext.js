@@ -34,7 +34,7 @@
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
-	initialize:function(ele, val, lang, _for, basePath) {
+	initialize:function(ele, val, lang, _for, basePath, width, height) {
 	this._for = _for;
 	var valueHolder = $(ele + 'valueHolder');
 	var value = valueHolder.value;
@@ -50,6 +50,8 @@ Ice.FCKeditor.prototype = {
 			if (_for != '') {
 				this.thirdPartyObject.Config[ 'ToolbarLocation' ] = 'Out:'+_for ;
 			}
+			this.thirdPartyObject.Width = width;
+			this.thirdPartyObject.Height = height;
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
 			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;				
 			this.thirdPartyObject.CreateIce(ele);
@@ -66,6 +68,8 @@ Ice.FCKeditor.prototype = {
 			if (_for != '') {
 				this.thirdPartyObject.Config[ 'ToolbarLocation' ] = 'Out:'+_for ;
 			}			
+            this.thirdPartyObject.Width = width;
+            this.thirdPartyObject.Height = height;			
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
 			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;											
 			this.thirdPartyObject.CreateIce(ele);	
