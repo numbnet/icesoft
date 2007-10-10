@@ -98,6 +98,17 @@ Ice.GoogleMap = {
         return  GMapRepository[id+'overlay'];
     },
     
+    loadDirection:function(id, text_div, query) {
+        var direction = GMapRepository[id+'dir'];
+        var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
+        if(direction == null) {
+            var directionsPanel = document.getElementById(text_div);  
+            direction = new GDirections(map, directionsPanel);
+            GMapRepository[id+'dir'] = direction;
+         }
+        direction.load(query);
+    },
+    
     createOverlay: function(id, overlayFunc) {
        var overlay = GMapRepository[id+'overlay'];
        if(overlay == null) {
@@ -147,7 +158,8 @@ Ice.GoogleMap = {
         var mapTypedRegistered = false;
 
         GEvent.addListener(gmapWrapper.getRealGMap(), "zoomend", function(oldLevel,  newLevel) {
-             Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "zoomend", newLevel );
+             if(oldLevel != null)
+                Ice.GoogleMap.submitEvent(ele, gmapWrapper.getRealGMap(), "zoomend", newLevel );
         }); 
                 
         GEvent.addListener(gmapWrapper.getRealGMap(), "dragend", function() {
@@ -263,167 +275,3 @@ Ice.GoogleMap = {
     }//setMapType    
 }
 
-
-/*
-var iceGmap = Class.create();
-iceGmap.prototype = {
-  initialize: function(eleId, gmapObj) {
-    this.eleId  = eleId;
-    this.gmapObj = gmapObj;
-    this.controls = new Object();
-    this.geocoder = new GClientGeocoder();
-  },
-
-  getElementId: function() {
-    return this.eleId;
-  },
-
-  getGmapObject: function() {
-      return this.gmapObj;
-  },
-    
-  getControlsArray: function() {
-      return this.controls;
-  }
- };
- 
-Ice.GoogleMap = Class.create();
-Ice.GoogleMap = {
-	getInstance:function(ele) {
-		var map = Ice.GoogleMap.getMap(ele);
-		if(map) {
-		   var gmapComp = document.getElementById(ele);
-		   if (!gmapComp.hasChildNodes()) {
-				map = Ice.GoogleMap.recreate(ele, map);
-			}
-		} else {
-			map = Ice.GoogleMap.create(ele);
-		}
-		return map.getGmapObject();
-	},
-
-	getMap:function(ele) {
-		return GMapRepository[ele];
-	},
-	
-	addControl:function(ele, controlName) {
-	    var iceGmap = Ice.GoogleMap.getMap(ele);
-	    var control = iceGmap.controls[controlName];
-	    if (control == null) {
-			control =  eval('new '+ controlName + '()');
-	    	iceGmap.getGmapObject().addControl(control);
-	    	iceGmap.controls[controlName] = control;
-	    }
-	},
-	
-	removeControl:function(ele, controlName) {
-		var iceGmap = Ice.GoogleMap.getMap(ele);
-		var control = iceGmap.controls[controlName];
-		if (control != null) {
-			iceGmap.getGmapObject().removeControl(control);
-		}
-		var newCtrlArray = new Object();
-		for (control in iceGmap.controls) {
-			if (controlName != control) {
-				newCtrlArray[control] = iceGmap.controls[control];
-			}
-		}
-		iceGmap.controls = newCtrlArray;
-	},
-	
-	openInfoWindow:function(ele, position, body) {
-		var iceGmap = Ice.GoogleMap.getInstance(ele);
-		iceGmap.openInfoWindow(iceGmap.getCenter(), body);
-	},
-	
-	closeInfoWindow:function(ele) {
-		var iceGmap = Ice.GoogleMap.getInstance(ele);
-		iceGmap.closeInfoWindow();
-	},
-	
-	create:function (ele) {
-		var map = new iceGmap(ele, new GMap2(document.getElementById(ele)));
-		var hiddenField = document.getElementById(ele+'hdn');			
-		var eventInit = true;
-		GEvent.addListener(map.getGmapObject(), "dragend", function() {
-  			hiddenField.value='position::'+map.getGmapObject().getCenter();
-		    var form = Ice.util.findForm(hiddenField);  			
- 			var nothingEvent = new Object();
-         	iceSubmitPartial(form, hiddenField, nothingEvent);
-	    });	
-		GEvent.addListener(map.getGmapObject(), "zoomend", function(oldzoom, zoom) {
-  			hiddenField.value='zoom::'+map.getGmapObject().getZoom();
-		    var form = Ice.util.findForm(hiddenField);  			
- 			var nothingEvent = new Object();
-         	iceSubmitPartial(form, hiddenField, nothingEvent);
-         	
-	    });	    
-	    	
-		GEvent.addListener(map.getGmapObject(), "infowindowclose", function() {
-  			hiddenField.value='windowClose::true';
-			var form = Ice.util.findForm(hiddenField);  			
- 			var nothingEvent = new Object();
-        	iceSubmitPartial(form, hiddenField, nothingEvent);
-  			hiddenField.value+='';         			
-		});		      		
-		GMapRepository[ele]= map;	
-		return map;
-	},	
-	
-	recreate:function(ele, map) {
-		Ice.GoogleMap.remove(ele);
-		var controls = map.controls;
-    	map = Ice.GoogleMap.create(ele);
-		var tempObject = new Object();
-		for (control in controls){
-	   	 	if (tempObject[control]== null) {
-		   	 	Ice.GoogleMap.removeControl(ele, control);
-		   	 	Ice.GoogleMap.addControl(ele, control)
-	   	 	}
-		}
-		return map;
-	},
-	
-	remove:function(ele) {
-		var newRepository = new Array();
-		for (map in GMapRepository) {
-			if(map != ele) {
-				newRepository[map] = GMapRepository[map];
-			}
-		}
-		GMapRepository = newRepository;
-	},
-	
-	locateAddress:function(ele, address) {
-	    var iceGmap = Ice.GoogleMap.getMap(ele);
-	    if (iceGmap.geocoder) {
-			iceGmap.geocoder.getLatLng(
-          			address,
-          			function(point) {
-            			if (!point) {
-              				//alert(address + " not found");
-            			} else {
-              				iceGmap.getGmapObject().setCenter(point, 13);
-              				var marker = new GMarker(point);
-              				iceGmap.getGmapObject().addOverlay(marker);
-              				marker.openInfoWindowHtml(address);
-							var hiddenField = document.getElementById(ele+'hdn');	              				
-  			hiddenField.value='position::'+iceGmap.getGmapObject().getCenter();
-		    var form = Ice.util.findForm(hiddenField);  			
- 			var nothingEvent = new Object();
-         	iceSubmitPartial(form, hiddenField, nothingEvent);
-            			}
-          			}
-        	);	    	
-	    } else {
-	    	//alert ('geo coder not found');
-	    }
-	},
-	
-	setZoom:function(ele, level) {
-		 var iceGmap = Ice.GoogleMap.getMap(ele);
-		 iceGmap.getGmapObject().setZoom(level);
-	}
-	
-}
-*/

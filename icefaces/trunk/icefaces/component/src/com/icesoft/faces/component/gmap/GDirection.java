@@ -22,6 +22,7 @@ public class GDirection extends UIPanel{
     private String from;
     private String to;
     private String textualDivId;
+    private String textualDivClientId;
     private String locale;
     
 	
@@ -43,6 +44,7 @@ public class GDirection extends UIPanel{
 
     		textualDivId = mapId + "textualDiv";
     		DOMContext domContext = DOMContext.getDOMContext(context, gmap);
+
     		Element texttualTd =  (Element) domContext.createElement(HTML.TD_ELEM);
     		texttualTd.setAttribute(HTML.CLASS_ATTR, gmap.getTxtTdStyleClass());
     		Element textualDiv = (Element) domContext.createElement(HTML.DIV_ELEM);
@@ -52,7 +54,9 @@ public class GDirection extends UIPanel{
     		texttualTd.appendChild(textualDiv);
     		domContext.getRootNode().getFirstChild().appendChild(texttualTd);
     	} else {
-    		textualDivId = getClientIdOfTextualDiv();
+    		if (textualDivClientId == null) {
+    			textualDivClientId = getClientIdOfTextualDiv(context);
+    		}
     	}
     	
     	String query = "";
@@ -67,8 +71,8 @@ public class GDirection extends UIPanel{
     		 }
     		 if (query.length() > 2 ) {
     			 JavascriptContext.addJavascriptCall(context, 
-    					 "Ice.GoogleMap.getGDirection('"+ mapId +"', '"+ 
-    					 textualDivId +"').load('"+ query +"');");
+    					 "Ice.GoogleMap.loadDirection('"+ mapId +"', '"+ 
+    					 textualDivClientId +"', '"+ query +"');");
     		 }
     		 initilized = true;    		
     	}
@@ -136,9 +140,10 @@ public class GDirection extends UIPanel{
 		this.locale = locale;
 	}
 	
-	public String getClientIdOfTextualDiv() {
+	public String getClientIdOfTextualDiv(FacesContext context) {
 		String forString = getTextualDivId();
 		UIComponent forComponent =  D2DViewHandler.findComponent(forString, this);
-		return forComponent.getClientId(getFacesContext());
+		String forClientId = forComponent.getClientId(context);
+		return (forClientId.indexOf(':') > 1)? forClientId : null;
 	}
 }
