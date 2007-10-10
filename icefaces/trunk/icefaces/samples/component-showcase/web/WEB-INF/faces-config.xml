@@ -39,6 +39,15 @@
     </locale-config>
   </application>
 
+    <!-- FCKEditor  -->
+  <managed-bean>
+    <managed-bean-name>inputRichTextBean</managed-bean-name>
+    <managed-bean-class>
+            com.icesoft.icefaces.samples.showcase.components.inputrichtext.InputRichTextBean
+        </managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+  
     <managed-bean>
         <description>
             

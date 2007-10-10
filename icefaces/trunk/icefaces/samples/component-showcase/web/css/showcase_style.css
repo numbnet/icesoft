@@ -1250,3 +1250,7 @@ em {
     padding: 8px;
     border: 1px solid #999999;
 }
+
+.inputRichTextDemoCol1{
+    width:700px;
+}

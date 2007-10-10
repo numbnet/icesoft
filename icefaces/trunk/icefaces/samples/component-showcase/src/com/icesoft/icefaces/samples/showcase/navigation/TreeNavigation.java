@@ -231,6 +231,22 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
+
+                // component menu -> inputRichText
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.inputRichText");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.inputRichText");
+                branchObject.setMenuContentInclusionFile("./components/inputRichText.jspx");
+                branchObject.setTemplateName("inputRichTextPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                
                 // component menu -> Selection
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
