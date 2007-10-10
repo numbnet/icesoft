@@ -42,12 +42,10 @@
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gampDemo3"
-                   styleClass="componentLayoutRootTable" columns="2">
+                   styleClass="componentLayoutRootTable">
             <f:facet name="header">
                 <ice:outputText value="Locate the Future Shop in the map"/>
             </f:facet>
-             <ice:GMap address="#{gmap.address}" 
-                         locateAddress="#{gmap.locateAddress}"/>
               <ice:panelGrid style="border:solid 1px;" styleClass="componentLayoutRootTable" >
                   <ice:outputText value="----&gt;&gt; Select a location &lt;&lt;----" />
                   <ice:commandLink value="5111 Northland Drive NW, Calgary, AB" actionListener="#{gmap.findAddress}"/>
@@ -56,7 +54,10 @@
                   <ice:commandLink value="110 - 350R Shawville Boulevard SE, Calgary, AB" actionListener="#{gmap.findAddress}"/>
                   <ice:commandLink value="331-130 Country Village Road NE, Calgary, AB" actionListener="#{gmap.findAddress}"/>
                   <ice:commandLink value="1180 - 33 Heritage Meadows Way SE, Calgary, AB" actionListener="#{gmap.findAddress}"/>
-              </ice:panelGrid>
+              </ice:panelGrid>            
+             <ice:GMap address="#{gmap.address}" 
+                         locateAddress="#{gmap.locateAddress}"/>
+
     </ice:panelGrid>
 
 </ice:panelTab>
