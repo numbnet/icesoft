@@ -44,11 +44,15 @@
     <ice:panelGrid id="gmapDemo"
                    styleClass="componentLayoutRootTable" columns="1">
          <f:facet name="header">
-            <ice:outputText value="View KML examples (geoxml-kml.html)"/>
+            <ice:outputText value="This demo is using ice:GMarker component to display Future shop locations in the Calgary on the map"/>
          </f:facet>                   
-          <ice:GMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
-              <ice:GeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
-          </ice:GMap>
+         <ice:GMap latitude="51.04507" longitude="-114.06319" zoomLevel="10">
+             <ice:GMarker>
+                 <ice:GLatLng latitude="51.100088" longitude="-114.141425"/>
+                 <ice:GLatLng latitude="51.077861" longitude="-113.987032"/>
+                 <ice:GLatLngs value="#{gmap.point}"/>      
+             </ice:GMarker>
+         </ice:GMap>
     </ice:panelGrid>
 
 </ice:panelTab>

@@ -44,18 +44,19 @@
     <ice:panelGrid id="gampDemo3"
                    styleClass="componentLayoutRootTable" columns="2">
             <f:facet name="header">
-                <ice:outputText value="GMap using GDirection, textual div is not defined so component will use the default textualDiv"/>
+                <ice:outputText value="GMap using GDirection, panelGroup is being used for the textual result"/>
             </f:facet>
             <ice:panelGrid>
                 <ice:panleGroup>
                     <ice:outputText value="From : "/>
-                    <ice:inputText value="#{gmap.from}" valueChangeListener="#{gmap.addressChanged}"/> 
+                    <ice:inputText value="#{gmap.from2}" valueChangeListener="#{gmap.addressChanged}"/> 
                     <ice:outputText value="To : "/>
-                    <ice:inputText value="#{gmap.to}" valueChangeListener="#{gmap.addressChanged}"/>
+                    <ice:inputText value="#{gmap.to2}" valueChangeListener="#{gmap.addressChanged}"/>
                 </ice:panleGroup>
                 <ice:GMap>
-                    <ice:GDirection  from = "#{gmap.from}" to = "#{gmap.to}"  locateAddress="#{gmap.locateAddress}"/>
+                    <ice:GDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>
                 </ice:GMap>
+                 <ice:panelGroup id="textDiv"/>
             </ice:panelGrid>
     </ice:panelGrid>
 
