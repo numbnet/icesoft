@@ -349,12 +349,6 @@
                         <jsp:directive.include file="./inc/components/gmap/demo6.jspx" />
                     </f:subview>
                 </ice:panelGroup>
-                
-                <ice:panelGroup id="gmapDemo7Panel" styleClass="contentIncludePanelGroup" >
-                    <f:subview id="gmapDemo7Sub">
-                        <jsp:directive.include file="./inc/components/gmap/demo7.jspx" />
-                    </f:subview>
-                </ice:panelGroup>   
                                          
                 <ice:panelGroup id="inputRichTextPanel" styleClass="contentIncludePanelGroup" >
                     <f:subview id="inputRichTextSub">

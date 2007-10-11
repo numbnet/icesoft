@@ -685,21 +685,6 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
 
-                // component menu -> GoogleMaps -> Demo7
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.demo7");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.demo7");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo7.jspx");
-                branchObject.setTemplateName("gmapDemo7Panel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                googleMapNode.add(leafNode);
-                                
                 // Layout Panels menu item
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(

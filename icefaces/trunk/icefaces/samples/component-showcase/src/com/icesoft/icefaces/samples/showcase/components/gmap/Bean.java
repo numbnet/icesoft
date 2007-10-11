@@ -5,17 +5,13 @@ import java.util.List;
 
 import javax.faces.component.UICommand;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 
 import com.icesoft.faces.component.gmap.GMapLatLng;
 
 public class Bean {
+	private String geoCoderAddress;
 	private String address;
 	private boolean locateAddress = false;
-	private String from;
-	private String to;
-	private String from2;
-	private String to2;
 	private boolean render = true;
 	private List point = new ArrayList();
 	
@@ -52,22 +48,6 @@ public class Bean {
 		locateAddress = true;
 	}
 
-	public String getFrom() {
-		return from;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
 	public boolean isRender() {
 		return render;
 	}
@@ -88,19 +68,11 @@ public class Bean {
 		this.point = point;
 	}
 
-	public String getFrom2() {
-		return from2;
+	public String getGeoCoderAddress() {
+		return geoCoderAddress;
 	}
 
-	public void setFrom2(String from2) {
-		this.from2 = from2;
-	}
-
-	public String getTo2() {
-		return to2;
-	}
-
-	public void setTo2(String to2) {
-		this.to2 = to2;
+	public void setGeoCoderAddress(String geoCoderAddress) {
+		this.geoCoderAddress = geoCoderAddress;
 	}
 }

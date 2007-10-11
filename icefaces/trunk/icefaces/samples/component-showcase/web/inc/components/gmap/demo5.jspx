@@ -43,21 +43,16 @@
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gampDemo3"
                    styleClass="componentLayoutRootTable" columns="2">
-            <f:facet name="header">
-                <ice:outputText value="gMap using GDirection, panelGroup is being used for the textual result"/>
-            </f:facet>
-            <ice:panelGrid>
-                <ice:panleGroup>
-                    <ice:outputText value="From : "/>
-                    <ice:inputText value="#{gmap.from2}" actionListener="#{gmap.enterKeyPressed}"/> 
-                    <ice:outputText value="To : "/>
-                    <ice:inputText value="#{gmap.to2}" actionListener="#{gmap.enterKeyPressed}"/>
-                </ice:panleGroup>
-                <ice:gMap>
-                    <ice:gMapDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>
-                </ice:gMap>
-                 <ice:panelGroup id="textDiv"/>
-            </ice:panelGrid>
+         <f:facet name="header">
+            <ice:outputText value="This demo is using ice:gMapMarker component to display Future shop locations in the Calgary on the map"/>
+         </f:facet>                   
+         <ice:gMap latitude="51.04507" longitude="-114.06319" zoomLevel="10">
+             <ice:gMapMarker>
+                 <ice:gMapLatLng latitude="51.100088" longitude="-114.141425"/>
+                 <ice:gMapLatLng latitude="51.077861" longitude="-113.987032"/>
+                 <ice:gMapLatLngs value="#{gmap.point}"/>      
+             </ice:gMapMarker>
+         </ice:gMap>
     </ice:panelGrid>
 
 </ice:panelTab>
