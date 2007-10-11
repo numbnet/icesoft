@@ -164,8 +164,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         return Util.getQualifiedStyleClass(this, 
                 styleClass,
                 CSS_DEFAULT.OUTPUT_TEXT_DEFAULT_STYLE_CLASS,
-                "styleClass",
-                PORTLET_CSS_DEFAULT.PORTLET_FORM_LABEL);    
+                "styleClass");    
     }
 
     /**

@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
@@ -42,6 +43,8 @@ import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -154,9 +157,19 @@ public class TableRenderer
         
         
             if (header) {
+            	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
+            			.PORTLET_SECTION_HEADER).length() > 1) {
+                	thead.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT
+                			.PORTLET_SECTION_HEADER);
+            	}
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
                 renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
             } else {
+            	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
+            			.PORTLET_SECTION_FOOTER).length() > 1) {
+                	thead.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT
+                			.PORTLET_SECTION_FOOTER);
+            	}            	
                 renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
              
@@ -338,6 +351,10 @@ public class TableRenderer
         }
         DOMContext.removeChildrenByTagName(root, HTML.TBODY_ELEM);
         Element tBody = (Element) domContext.createElement(HTML.TBODY_ELEM);
+        if (CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT.
+        							PORTLET_SECTION_BODY).length() > 1) {
+        	tBody.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT.PORTLET_SECTION_BODY);
+        }
         root.appendChild(tBody);
 
         HtmlDataTable uiData = (HtmlDataTable) uiComponent;
@@ -403,7 +420,7 @@ public class TableRenderer
             }
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
-
+            selectedClass = getPortletAlternateRowClass(selectedClass, rowIndex);
             tr.setAttribute(HTML.CLASS_ATTR, selectedClass);
            
             if(rowStylesMaxIndex >= 0){ // Thanks denis tsyplakov
@@ -669,5 +686,13 @@ public class TableRenderer
        return headerClasses;       
     }
     
+    String getPortletAlternateRowClass(String selectedClass, int rowIndex) {
+    	if ((rowIndex % 2) == 0) return selectedClass;
+    	if(selectedClass.indexOf(' ')> 1) {
+    		return  selectedClass.replaceFirst(" ", CoreUtils.getPortletStyleClass(" "+ PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE+ " "));
+    	} else {
+    		return selectedClass += CoreUtils.getPortletStyleClass(""+ PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE);
+    	}
+    }
     
 }
