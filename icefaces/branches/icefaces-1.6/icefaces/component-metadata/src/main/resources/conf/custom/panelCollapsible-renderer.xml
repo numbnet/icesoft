@@ -34,7 +34,17 @@
 
 <renderer>
          <description>
-             <![CDATA[ Description in here will be used to generate TLD file ]]>
+             <![CDATA[ 
+             <p>
+                The panelCollapsible component is comprised of two parts: the 
+                content area, where its children can be displayed; and a header 
+                section, which can be clicked on, to cause the content area to 
+                collapse into not being visible, or expand to become visible. 
+                The panelCollapsible's state of being expanded or collapsed is 
+                fully controllable via its expanded attribute, which can be tied 
+                to a bean property through a ValueBinding.             
+             </p>
+             ]]>
          </description>
 	<component-family>javax.faces.Command</component-family>
 	<renderer-type>com.icesoft.faces.PanelCollapsibleRenderer</renderer-type>	
