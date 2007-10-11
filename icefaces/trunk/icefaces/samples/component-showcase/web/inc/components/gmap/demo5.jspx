@@ -49,9 +49,9 @@
             <ice:panelGrid>
                 <ice:panleGroup>
                     <ice:outputText value="From : "/>
-                    <ice:inputText value="#{gmap.from2}" valueChangeListener="#{gmap.addressChanged}"/> 
+                    <ice:inputText value="#{gmap.from2}" actionListener="#{gmap.enterKeyPressed}"/> 
                     <ice:outputText value="To : "/>
-                    <ice:inputText value="#{gmap.to2}" valueChangeListener="#{gmap.addressChanged}"/>
+                    <ice:inputText value="#{gmap.to2}" actionListener="#{gmap.enterKeyPressed}"/>
                 </ice:panleGroup>
                 <ice:gMap>
                     <ice:gMapDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>

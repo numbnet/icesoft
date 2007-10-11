@@ -48,7 +48,7 @@
          </f:facet>                            
          <ice:panelGroup>
 	         <ice:outputText value="Find address : "/>
-	         <ice:inputText value="#{gmap.address}" valueChangeListener="#{gmap.addressChanged}" />
+	         <ice:inputText value="#{gmap.address}" actionListener="#{gmap.enterKeyPressed}" />
          </ice:panelGroup>
          <ice:gMap address="#{gmap.address}" 
                          locateAddress="#{gmap.locateAddress}"/>

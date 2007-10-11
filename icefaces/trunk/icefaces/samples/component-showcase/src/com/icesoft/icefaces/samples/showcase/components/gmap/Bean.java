@@ -34,9 +34,10 @@ public class Bean {
 		this.address = address;
 	}
 	
-	public void addressChanged(ValueChangeEvent event) {
+	public void enterKeyPressed(ActionEvent event) {
 		locateAddress = true;
 	}
+	
 	
 	public boolean isLocateAddress() {
 		if (locateAddress) {
