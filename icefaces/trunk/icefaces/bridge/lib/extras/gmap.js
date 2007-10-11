@@ -194,6 +194,9 @@ Ice.GoogleMap = {
                 zoom.value = map.getZoom();
             } else {
                 zoom.value = zoomLevel;
+                if (zoom.value == map.getZoom()) {
+                    return;
+                }
             }
             var form = Ice.util.findForm(lat);              
             var nothingEvent = new Object();
