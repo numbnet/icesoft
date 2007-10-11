@@ -35,7 +35,15 @@
 <renderer>
          <description>
              <![CDATA[
-                   This component uses the version 2 of the Google Maps API.
+                   This component uses the version 2 of the Google Maps API. In
+                   order to use the google maps, an API key is required. The API
+                   key can be obtained from the google maps' website. You must need to specify
+                   the API key in the web.xml(e.g.)<br/>
+                   &lt;context-param&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&lt;param-name&gt;com.icesoft.faces.gmapKey&lt;/param-name&gt;<br/>
+                    &nbsp;&nbsp;&nbsp;&lt;param-value&gt;ABQIAAAADlu0Z........&lt;/param-value&gt;<br/>
+                   &lt;/context-param&gt;
+
               ]]>
          </description>
 	<component-family>javax.faces.Command</component-family>
