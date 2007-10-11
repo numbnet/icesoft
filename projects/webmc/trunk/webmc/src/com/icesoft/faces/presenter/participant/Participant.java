@@ -38,7 +38,6 @@ import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.presenter.chat.Message;
-import com.icesoft.faces.presenter.mail.MailTool;
 import com.icesoft.faces.presenter.participant.view.ChatView;
 import com.icesoft.faces.presenter.participant.view.ParticipantView;
 import com.icesoft.faces.presenter.presentation.Presentation;
@@ -49,6 +48,8 @@ import com.icesoft.faces.presenter.util.StringResource;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+
+import java.lang.reflect.Method;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -712,22 +713,36 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return "emailMessageLog" for faces-config navigation
      */
     public String emailMessageLog() {
-        String header = (
+        Boolean success = Boolean.FALSE;
+        try {
+            Method sendMessageMethod = Class.forName(
+                "com.icesoft.faces.presenter.mail.MailTool" )
+                        .getMethod("sendMessage", new Class[] 
+                                {String.class, String.class, String.class});
+            String header = (
                 "This is an automated email message. Please do not reply to this address.\n" +
                 "Message log for presentation " + this.presentation.getName() +
                 ":\n" +
                 "-----------------------------------------------------------------------\n"
         );
 
-        StringBuffer content = new StringBuffer();
-        for (int i = 0; i < this.presentation.getMessageLog().size(); i++) {
-            content.append(((Message) this.presentation.getMessageLog().get(i))
-                    .toString()).append("\n");
+            StringBuffer content = new StringBuffer();
+            for (int i = 0; i < this.presentation.getMessageLog().size(); i++) {
+                content.append(((Message) this.presentation.getMessageLog()
+                    .get(i)).toString()).append("\n");
+            }
+
+            success = (Boolean) sendMessageMethod
+                    .invoke("Message Log from WebMC",
+                            (header + content.toString()),
+                            this.email);
+        } catch (Exception e) {
+           if (log.isWarnEnabled()) {
+               log.warn("Email message log failed ", e);
+           }
         }
 
-        if (MailTool.sendMessage("Message Log from WebMC",
-                                 (header + content.toString()),
-                                 this.email)) {
+        if (success.booleanValue()) {
             updateStatus("Successfully emailed chat log to " + email);
         }
         else {

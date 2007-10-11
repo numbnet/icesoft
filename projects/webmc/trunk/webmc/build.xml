@@ -78,7 +78,15 @@
     </target>
 
     <target name="compile" depends="clean">
-        <compile>
+        <compile failonerror="false" >
+            <add.javac.elements >
+                <classpath>
+                    <fileset dir="${proj.lib.dir}" includes="*.jar"/>
+                </classpath>
+            </add.javac.elements>
+        </compile>
+
+        <compile src.javac.excludes="com/icesoft/faces/presenter/mail/**" >
             <add.javac.elements >
                 <classpath>
                     <fileset dir="${proj.lib.dir}" includes="*.jar"/>
