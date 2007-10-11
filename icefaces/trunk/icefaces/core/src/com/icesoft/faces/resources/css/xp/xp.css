@@ -2395,3 +2395,7 @@ Disabled classes for the calendar controls
     width:600px;
     height:400px;
 }
+
+.iceInpRchTxt {
+    width:100%;
+}
