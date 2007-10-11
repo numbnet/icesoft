@@ -57,7 +57,7 @@ public class GMap extends UICommand{
             return longitude;
         }
         ValueBinding vb = getValueBinding("longitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "-122.1419";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "-101.162109375";
 	}
 
 	public String getLatitude() {
@@ -65,7 +65,7 @@ public class GMap extends UICommand{
             return latitude;
         }
         ValueBinding vb = getValueBinding("latitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "37.4419";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "56.46249048388979";
 	}
 
 	public void setLongitude(String longitude) {
@@ -129,7 +129,7 @@ public class GMap extends UICommand{
             return zoomLevel.intValue();
         }
         ValueBinding vb = getValueBinding("zoomLevel");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 13;
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 3;
 	}
 
 	public void setZoomLevel(int zoomLevel) {
