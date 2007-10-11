@@ -2356,3 +2356,13 @@ Disabled classes for the calendar controls
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.iceGmp{}
+.iceGmpMapTd div.gmap{
+    width:600px;
+    height:400px;
+}
+
+.iceInpRchTxt {
+    width:100%;
+}
