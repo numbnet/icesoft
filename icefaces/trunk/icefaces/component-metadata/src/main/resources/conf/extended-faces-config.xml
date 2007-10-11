@@ -188,13 +188,13 @@
   <!ENTITY ice-cust-datapaginator-props SYSTEM "ice_cust_properties/cust-datapaginator-props.xml">
   <!ENTITY ice-cust-inputFile-props SYSTEM "ice_cust_properties/cust-inputFile-props.xml">
   <!ENTITY ice-cust-gmap-props SYSTEM "ice_cust_properties/cust-gmap-props.xml">
-  <!ENTITY ice-cust-gLatLng-props SYSTEM "ice_cust_properties/cust-gLatLng-props.xml">
-  <!ENTITY ice-cust-gLatLngs-props SYSTEM "ice_cust_properties/cust-gLatLngs-props.xml">
-  <!ENTITY ice-cust-gMarker-props SYSTEM "ice_cust_properties/cust-gMarker-props.xml">  
-  <!ENTITY ice-cust-gControl-props SYSTEM "ice_cust_properties/cust-gControl-props.xml">
-  <!ENTITY ice-cust-geoXml-props SYSTEM "ice_cust_properties/cust-geoXml-props.xml">
+  <!ENTITY ice-cust-gMapLatLng-props SYSTEM "ice_cust_properties/cust-gMapLatLng-props.xml">
+  <!ENTITY ice-cust-gMapLatLngs-props SYSTEM "ice_cust_properties/cust-gMapLatLngs-props.xml">
+  <!ENTITY ice-cust-gMapMarker-props SYSTEM "ice_cust_properties/cust-gMapMarker-props.xml">  
+  <!ENTITY ice-cust-gMapControl-props SYSTEM "ice_cust_properties/cust-gMapControl-props.xml">
+  <!ENTITY ice-cust-gMapGeoXml-props SYSTEM "ice_cust_properties/cust-gMapGeoXml-props.xml">
+  <!ENTITY ice-cust-gMapDirection-props SYSTEM "ice_cust_properties/cust-gMapDirection-props.xml">
   <!ENTITY ice-cust-inputRichText-props SYSTEM "ice_cust_properties/cust-inputRichText-props.xml">
-  <!ENTITY ice-cust-gDirection-props SYSTEM "ice_cust_properties/cust-gDirection-props.xml">
   <!ENTITY ice-cust-menunodecheckbox-props SYSTEM "ice_cust_properties/cust-menunodecheckbox-props.xml">
   <!ENTITY ice-cust-menunode-props SYSTEM "ice_cust_properties/cust-menunode-props.xml">
   <!ENTITY ice-cust-menunodeRadio-props SYSTEM "ice_cust_properties/cust-menunodeRadio-props.xml">
@@ -304,27 +304,27 @@
   <!ENTITY inputFile-component   SYSTEM "custom/inputFile-component.xml">
   <!ENTITY inputFile-renderer    SYSTEM "custom/inputFile-renderer.xml">
 
-  <!ENTITY gDirection-component   SYSTEM "custom/gDirection-component.xml">
-  <!ENTITY gDirection-renderer    SYSTEM "custom/gDirection-renderer.xml">
-    
   <!ENTITY gmap-component   SYSTEM "custom/gmap-component.xml">
   <!ENTITY gmap-renderer    SYSTEM "custom/gmap-renderer.xml">
 
-  <!ENTITY gLatLng-component   SYSTEM "custom/gLatLng-component.xml">
-  <!ENTITY gLatLng-renderer    SYSTEM "custom/gLatLng-renderer.xml">
+  <!ENTITY gMapLatLng-component   SYSTEM "custom/gMapLatLng-component.xml">
+  <!ENTITY gMapLatLng-renderer    SYSTEM "custom/gMapLatLng-renderer.xml">
 
-  <!ENTITY gLatLngs-component   SYSTEM "custom/gLatLngs-component.xml">
-  <!ENTITY gLatLngs-renderer    SYSTEM "custom/gLatLngs-renderer.xml">
+  <!ENTITY gMapLatLngs-component   SYSTEM "custom/gMapLatLngs-component.xml">
+  <!ENTITY gMapLatLngs-renderer    SYSTEM "custom/gMapLatLngs-renderer.xml">
 
-  <!ENTITY gMarker-component   SYSTEM "custom/gMarker-component.xml">
-  <!ENTITY gMarker-renderer    SYSTEM "custom/gMarker-renderer.xml">
+  <!ENTITY gMapMarker-component   SYSTEM "custom/gMapMarker-component.xml">
+  <!ENTITY gMapMarker-renderer    SYSTEM "custom/gMapMarker-renderer.xml">
   
-  <!ENTITY gControl-component   SYSTEM "custom/gControl-component.xml">
-  <!ENTITY gControl-renderer    SYSTEM "custom/gControl-renderer.xml">
+  <!ENTITY gMapControl-component   SYSTEM "custom/gMapControl-component.xml">
+  <!ENTITY gMapControl-renderer    SYSTEM "custom/gMapControl-renderer.xml">
     
-  <!ENTITY geoXml-component   SYSTEM "custom/geoXml-component.xml">
-  <!ENTITY geoXml-renderer    SYSTEM "custom/geoXml-renderer.xml">
+  <!ENTITY gMapGeoXml-component   SYSTEM "custom/gMapGeoXml-component.xml">
+  <!ENTITY gMapGeoXml-renderer    SYSTEM "custom/gMapGeoXml-renderer.xml">
 
+  <!ENTITY gMapDirection-component   SYSTEM "custom/gMapDirection-component.xml">
+  <!ENTITY gMapDirection-renderer    SYSTEM "custom/gMapDirection-renderer.xml">
+  
   <!ENTITY inputRichText-component   SYSTEM "custom/inputRichText-component.xml">
   <!ENTITY inputRichText-renderer    SYSTEM "custom/inputRichText-renderer.xml">
   
@@ -457,12 +457,12 @@
 	&selectinputdate-component;
 	&inputFile-component;
 	&gmap-component;
-    &gLatLng-component;
-    &gLatLngs-component;
-    &gMarker-component;	
-    &gControl-component;	
-    &geoXml-component;    
-	&gDirection-component;	
+    &gMapLatLng-component;
+    &gMapLatLngs-component;
+    &gMapMarker-component;	
+    &gMapControl-component;	
+    &gMapGeoXml-component;    
+	&gMapDirection-component;	
     &inputRichText-component;	
 	&panelstack-component;
 	&outputprogress-component;
@@ -527,13 +527,13 @@
 		<!-- custom component -->
 		&selectinputdate-renderer;
 		&inputFile-renderer;
-        &gDirection-renderer;
 		&gmap-renderer;
-        &gLatLng-renderer;
-        &gLatLngs-renderer;
-        &gMarker-renderer;
-		&gControl-renderer;
-        &geoXml-renderer;		
+        &gMapLatLng-renderer;
+        &gMapLatLngs-renderer;
+        &gMapMarker-renderer;
+		&gMapControl-renderer;
+        &gMapGeoXml-renderer;		
+        &gMapDirection-renderer;
         &inputRichText-renderer;   
 		&panelstack-renderer;
 		&outputprogress-renderer;

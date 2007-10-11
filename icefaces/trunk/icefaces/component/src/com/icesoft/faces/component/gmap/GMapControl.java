@@ -8,10 +8,10 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
 
-public class GControl extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GControl";
+public class GMapControl extends UIPanel{
+	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapControl";
 
-	public GControl() {
+	public GMapControl() {
 		setRendererType(null);
 	}
 	

@@ -11,10 +11,10 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.component.ext.UIColumns;
 
-public class GLatLngs extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GLatLngs";
+public class GMapLatLngs extends UIPanel{
+	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapLatLngs";
 	private List value;
-	public GLatLngs() {
+	public GMapLatLngs() {
 		setRendererType(null);
 	}
 	

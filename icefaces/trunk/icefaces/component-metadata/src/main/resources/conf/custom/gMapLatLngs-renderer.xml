@@ -35,17 +35,17 @@
 <renderer>
 	<description>
 		<![CDATA[
-            This component is a wrapper of google map's GLatLng API. Can be child of GMarker component.
+        This component can be a child of gMapMarker component and its value attribute can be a list of gMapLatLng component. 
          ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GLatLngRenderer</renderer-type>
+	<renderer-type>com.icesoft.faces.GMapLatLngsRenderer</renderer-type>
 
 	<renderer-extension>
-		<instance-name>GLatLng</instance-name>
+		<instance-name>gMapLatLngs</instance-name>
 		<is-container>false</is-container>
 		<renders-children>false</renders-children>
-		<tag-name>GLatLng</tag-name>
+		<tag-name>gMapLatLngs</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>

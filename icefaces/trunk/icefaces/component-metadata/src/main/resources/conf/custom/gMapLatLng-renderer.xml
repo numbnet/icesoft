@@ -35,17 +35,17 @@
 <renderer>
 	<description>
 		<![CDATA[
-            The GDirection component uses the google map's GDirections API to get the direction from point A to point B. This component must need to be a child of ice:GMap component.
+            This component is a wrapper of google map's GLatLng API. Can be child of gMapMarker component.
          ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GDirectionRenderer</renderer-type>
+	<renderer-type>com.icesoft.faces.GMapLatLngRenderer</renderer-type>
 
 	<renderer-extension>
-		<instance-name>GDirection</instance-name>
+		<instance-name>gMapLatLng</instance-name>
 		<is-container>false</is-container>
 		<renders-children>false</renders-children>
-		<tag-name>GDirection</tag-name>
+		<tag-name>gMapLatLng</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>

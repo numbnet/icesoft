@@ -37,19 +37,19 @@
 
 	</description>
 
-	<display-name>GLatLng</display-name>
+	<display-name>gMapMarker</display-name>
 	<component-type>
-		com.icesoft.faces.GLatLng
+		com.icesoft.faces.GMapMarker
 	</component-type>
 
-	&ice-cust-gLatLng-props;
+	&ice-cust-gMapMarker-props;
 
 	<component-extension>
 		<base-component-type>
 			javax.faces.Panel
 		</base-component-type>
 		<component-family>javax.faces.Panel</component-family>
-		<renderer-type>com.icesoft.faces.GLatLngRenderer</renderer-type>
+		<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
 	</component-extension>
 
 </component>

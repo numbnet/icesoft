@@ -37,19 +37,19 @@
 
 	</description>
 
-	<display-name>GLatLngs</display-name>
+	<display-name>gMapDirection</display-name>
 	<component-type>
-		com.icesoft.faces.GLatLngs
+		com.icesoft.faces.GMapDirection
 	</component-type>
 
-	&ice-cust-gLatLngs-props;
+	&ice-cust-gMapDirection-props;
 
 	<component-extension>
 		<base-component-type>
 			javax.faces.Panel
 		</base-component-type>
 		<component-family>javax.faces.Panel</component-family>
-		<renderer-type>com.icesoft.faces.GLatLngsRenderer</renderer-type>
+		<renderer-type>com.icesoft.faces.GMapDirectionRenderer</renderer-type>
 	</component-extension>
 
 </component>

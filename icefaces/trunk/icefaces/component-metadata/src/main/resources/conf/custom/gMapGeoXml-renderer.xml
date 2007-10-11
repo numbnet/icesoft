@@ -34,18 +34,24 @@
 
 <renderer>
 	<description>
-		<![CDATA[
-            This component uses the google map's GMarker API, which displays the points on the map.
-         ]]>
+        <![CDATA[  
+           This component uses google map's GGeoXml API, to support the KML and GeoRSS data formats for displaying geographic information.<br/>
+          &lt;ice:gMap latitude="41.875696" longitude="-87.624207" zoomLevel="11"&gt;<br/>
+              &nbsp;&nbsp;&nbsp;&lt;ice:gMapGeoXml url="http://mapgadgets.googlepages.com/cta.kml"/&gt;</br>
+          &lt;/ice:gMap&gt;<br/>
+        ]]>
 	</description>
 	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GMarkerRenderer</renderer-type>
+
+	<renderer-type>com.icesoft.faces.GMapGeoXmlRenderer</renderer-type>
+
 	<renderer-extension>
-		<instance-name>GMarker</instance-name>
-		<is-container>false</is-container>
-		<renders-children>false</renders-children>
-		<tag-name>GMarker</tag-name>
+		<instance-name>gMapGeoXml</instance-name>
+		<is-container>true</is-container>
+		<renders-children>true</renders-children>
+		<tag-name>gMapGeoXml</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>
+
 </renderer>

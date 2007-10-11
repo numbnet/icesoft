@@ -32,26 +32,24 @@
   ~
   -->
 
-<renderer>
+<component>
 	<description>
-        <![CDATA[  
-           This component uses google map's GGeoXml API, to support the KML and GeoRSS data formats for displaying geographic information.<br/>
-          &lt;ice:GMap latitude="41.875696" longitude="-87.624207" zoomLevel="11"&gt;<br/>
-              &nbsp;&nbsp;&nbsp;&lt;ice:GeoXml url="http://mapgadgets.googlepages.com/cta.kml"/&gt;</br>
-          &lt;/ice:GMap&gt;<br/>
-        ]]>
+
 	</description>
-	<component-family>javax.faces.Panel</component-family>
 
-	<renderer-type>com.icesoft.faces.GeoXmlRenderer</renderer-type>
+	<display-name>gMapLatLng</display-name>
+	<component-type>
+		com.icesoft.faces.GMapLatLng
+	</component-type>
 
-	<renderer-extension>
-		<instance-name>GeoXml</instance-name>
-		<is-container>true</is-container>
-		<renders-children>true</renders-children>
-		<tag-name>GeoXml</tag-name>
-		<taglib-prefix>@taglib-prefix@</taglib-prefix>
-		<taglib-uri>@taglib-uri@</taglib-uri>
-	</renderer-extension>
+	&ice-cust-gMapLatLng-props;
 
-</renderer>
+	<component-extension>
+		<base-component-type>
+			javax.faces.Panel
+		</base-component-type>
+		<component-family>javax.faces.Panel</component-family>
+		<renderer-type>com.icesoft.faces.GMapLatLngRenderer</renderer-type>
+	</component-extension>
+
+</component>

@@ -19,10 +19,7 @@ public class GMapRenderer extends DomBasicRenderer{
         return true;
     }
     
-	public void decode(FacesContext facesContext, UIComponent uiComponent) {
-
-	 }
-	 
+ 
 	 public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
      throws IOException {
 	        String clientId = uiComponent.getClientId(facesContext);

@@ -49,10 +49,10 @@
 	<component-family>javax.faces.Command</component-family>
 	<renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>	
 	<renderer-extension>
-		<instance-name>GMap</instance-name>
+		<instance-name>gMap</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
-		<tag-name>GMap</tag-name>
+		<tag-name>gMap</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>

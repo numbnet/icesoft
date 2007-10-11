@@ -32,24 +32,27 @@
   ~
   -->
 
-<component>
+<renderer>
 	<description>
-
+        <![CDATA[  
+        This component adds the control to the ice:gMap. This component must need to be a child of ice:gMap component. (e.g.)<br/>
+            &lt;ice:gMap&gt;<br/>
+                &lt;ice:gMapControl name="GLargeMapControl"/&gt;<br/> 
+               &lt;ice:gMapControl name="GScaleControl"/&gt;<br/> 
+           &lt;/ice:gMap&gt;<br/>      
+        ]]>
 	</description>
+	<component-family>javax.faces.Panel</component-family>
 
-	<display-name>GDirection</display-name>
-	<component-type>
-		com.icesoft.faces.GDirection
-	</component-type>
+	<renderer-type>null</renderer-type>
 
-	&ice-cust-gDirection-props;
+	<renderer-extension>
+		<instance-name>gMapControl</instance-name>
+		<is-container>true</is-container>
+		<renders-children>true</renders-children>
+		<tag-name>gMapControl</tag-name>
+		<taglib-prefix>@taglib-prefix@</taglib-prefix>
+		<taglib-uri>@taglib-uri@</taglib-uri>
+	</renderer-extension>
 
-	<component-extension>
-		<base-component-type>
-			javax.faces.Panel
-		</base-component-type>
-		<component-family>javax.faces.Panel</component-family>
-		<renderer-type>com.icesoft.faces.GDirectionRenderer</renderer-type>
-	</component-extension>
-
-</component>
+</renderer>

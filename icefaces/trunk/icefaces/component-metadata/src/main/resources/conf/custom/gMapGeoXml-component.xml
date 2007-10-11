@@ -32,22 +32,24 @@
   ~
   -->
 
-<renderer>
+<component>
 	<description>
-		<![CDATA[
-        This component can be a child of GMarker component and its value attribute can be a list of GLatLng component. 
-         ]]>
+
 	</description>
-	<component-family>javax.faces.Panel</component-family>
-	<renderer-type>com.icesoft.faces.GLatLngsRenderer</renderer-type>
 
-	<renderer-extension>
-		<instance-name>GLatLngs</instance-name>
-		<is-container>false</is-container>
-		<renders-children>false</renders-children>
-		<tag-name>GLatLngs</tag-name>
-		<taglib-prefix>@taglib-prefix@</taglib-prefix>
-		<taglib-uri>@taglib-uri@</taglib-uri>
-	</renderer-extension>
+	<display-name>gMapGeoXml</display-name>
+	<component-type>
+		com.icesoft.faces.GMapGeoXml
+	</component-type>
 
-</renderer>
+	&ice-cust-gMapGeoXml-props;
+
+	<component-extension>
+		<base-component-type>
+			javax.faces.Panel
+		</base-component-type>
+		<component-family>javax.faces.Panel</component-family>
+		<renderer-type>com.icesoft.faces.GMapGeoXmlRenderer</renderer-type>
+	</component-extension>
+
+</component>

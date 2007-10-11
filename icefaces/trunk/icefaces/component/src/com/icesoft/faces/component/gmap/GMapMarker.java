@@ -13,14 +13,14 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
 
-public class GMarker extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMarker";
+public class GMapMarker extends UIPanel{
+	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapMarker";
 	private Boolean draggable;
     private String longitude;
     private String latitude;	
     private List point = new ArrayList();
     
-	public GMarker() {
+	public GMapMarker() {
 		setRendererType(null);
 	}
 	
@@ -45,10 +45,10 @@ public class GMarker extends UIPanel{
 			    	kid.encodeChildren(context);
 			    }
 			    kid.encodeEnd(context);
-			    if (kid instanceof GLatLng) {
+			    if (kid instanceof GMapLatLng) {
 			    	point.add(kid.getAttributes().get("latLngScript"));
 			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ kid.getClientId(context)+"', 'new GMarker("+ kid.getAttributes().get("latLngScript") +")');");
-			    } else if(kid instanceof GLatLngs) {
+			    } else if(kid instanceof GMapLatLngs) {
 			    	StringTokenizer st = new StringTokenizer(kid.getAttributes().get("latLngsScript").toString(), ";");
 			    	while(st.hasMoreTokens()) {
 			    		String[] scriptInfo =st.nextToken().split("kid-id");

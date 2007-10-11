@@ -8,11 +8,11 @@ import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
 
-public class GeoXml extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GeoXml";
+public class GMapGeoXml extends UIPanel{
+	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapGeoXml";
 	private String url;
 	
-	public GeoXml() {
+	public GMapGeoXml() {
 		setRendererType(null);
 	}
 	

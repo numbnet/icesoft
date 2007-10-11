@@ -38,7 +38,7 @@
 
 		 ]]>
 	</description>
-	<display-name>gmap</display-name>
+	<display-name>gMap</display-name>
 	<component-type>com.icesoft.faces.GMap</component-type>
     &ice-cust-gmap-props;
 	<component-extension>

@@ -6,16 +6,16 @@ import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-public class GLatLng extends UIPanel{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.GLatLng";
+public class GMapLatLng extends UIPanel{
+	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapLatLng";
     private String longitude;
     private String latitude;
     
-	public GLatLng() {
+	public GMapLatLng() {
 		setRendererType(null);
 	}
 	
-	public GLatLng(String latitude, String longitude) {
+	public GMapLatLng(String latitude, String longitude) {
 		this();
 		this.latitude = latitude;
 		this.longitude = longitude;

@@ -32,24 +32,22 @@
   ~
   -->
 
-<component>
+<renderer>
 	<description>
-
+		<![CDATA[
+            The gMapDirection component uses the google map's GDirections API to get the direction from point A to point B. This component must need to be a child of ice:gMap component.
+         ]]>
 	</description>
+	<component-family>javax.faces.Panel</component-family>
+	<renderer-type>com.icesoft.faces.GMapDirectionRenderer</renderer-type>
 
-	<display-name>Google map Control</display-name>
-	<component-type>
-		com.icesoft.faces.GControl
-	</component-type>
+	<renderer-extension>
+		<instance-name>gMapDirection</instance-name>
+		<is-container>false</is-container>
+		<renders-children>false</renders-children>
+		<tag-name>gMapDirection</tag-name>
+		<taglib-prefix>@taglib-prefix@</taglib-prefix>
+		<taglib-uri>@taglib-uri@</taglib-uri>
+	</renderer-extension>
 
-	&ice-cust-gControl-props;
-
-	<component-extension>
-		<base-component-type>
-			javax.faces.Panel
-		</base-component-type>
-		<component-family>javax.faces.Panel</component-family>
-		<renderer-type>null</renderer-type>
-	</component-extension>
-
-</component>
+</renderer>
