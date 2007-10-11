@@ -44,7 +44,7 @@
     <ice:panelGrid id="gmapDemo2"
                    styleClass="componentLayoutRootTable" >
          <f:facet name="header">
-            <ice:outputText value="ice:gMap uses GClientGeocoder to locate as address"/>
+            <ice:outputText value="ice:gMap component uses google maps' GClientGeocoder API implicitly to locate an address"/>
          </f:facet>                            
          <ice:panelGroup>
 	         <ice:outputText value="Find address : "/>
