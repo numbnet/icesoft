@@ -7,7 +7,7 @@ import javax.faces.component.UICommand;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import com.icesoft.faces.component.gmap.GLatLng;
+import com.icesoft.faces.component.gmap.GMapLatLng;
 
 public class Bean {
 	private String address;
@@ -20,10 +20,10 @@ public class Bean {
 	private List point = new ArrayList();
 	
 	public Bean() {
-		point.add(new GLatLng("50.992255", "-114.071646"));
-		point.add(new GLatLng("50.905381", "-114.066651"));
-		point.add(new GLatLng("51.160609", "-114.064579"));
-		point.add(new GLatLng("50.985599", "-114.031506"));
+		point.add(new GMapLatLng("50.992255", "-114.071646"));
+		point.add(new GMapLatLng("50.905381", "-114.066651"));
+		point.add(new GMapLatLng("51.160609", "-114.064579"));
+		point.add(new GMapLatLng("50.985599", "-114.031506"));
 	}
 	
 	public String getAddress() {

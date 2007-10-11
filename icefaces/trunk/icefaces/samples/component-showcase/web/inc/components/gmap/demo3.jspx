@@ -55,7 +55,7 @@
                   <ice:commandLink value="331-130 Country Village Road NE, Calgary, AB" actionListener="#{gmap.findAddress}"/>
                   <ice:commandLink value="1180 - 33 Heritage Meadows Way SE, Calgary, AB" actionListener="#{gmap.findAddress}"/>
               </ice:panelGrid>            
-             <ice:GMap address="#{gmap.address}" 
+             <ice:gMap address="#{gmap.address}" 
                          locateAddress="#{gmap.locateAddress}"/>
 
     </ice:panelGrid>

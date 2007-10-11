@@ -46,11 +46,11 @@
             <f:facet name="header">
                 <ice:outputText value="Controls maintain their state"/>
             </f:facet>
-            <ice:GMap>
-                <ice:GControl name="GLargeMapControl"/> 
-                <ice:GControl name="GScaleControl"/> 
-                <ice:GControl name="GMapTypeControl"/> 
-            </ice:GMap>
+            <ice:gMap>
+                <ice:gMapControl name="GLargeMapControl"/> 
+                <ice:gMapControl name="GScaleControl"/> 
+                <ice:gMapControl name="GMapTypeControl"/> 
+            </ice:gMap>
     </ice:panelGrid>
 
 </ice:panelTab>

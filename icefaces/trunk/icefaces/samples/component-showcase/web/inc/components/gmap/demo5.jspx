@@ -44,7 +44,7 @@
     <ice:panelGrid id="gampDemo3"
                    styleClass="componentLayoutRootTable" columns="2">
             <f:facet name="header">
-                <ice:outputText value="GMap using GDirection, panelGroup is being used for the textual result"/>
+                <ice:outputText value="gMap using GDirection, panelGroup is being used for the textual result"/>
             </f:facet>
             <ice:panelGrid>
                 <ice:panleGroup>
@@ -53,9 +53,9 @@
                     <ice:outputText value="To : "/>
                     <ice:inputText value="#{gmap.to2}" valueChangeListener="#{gmap.addressChanged}"/>
                 </ice:panleGroup>
-                <ice:GMap>
-                    <ice:GDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>
-                </ice:GMap>
+                <ice:gMap>
+                    <ice:gMapDirection textualDivId="textDiv" from = "#{gmap.from2}" to = "#{gmap.to2}"  locateAddress="#{gmap.locateAddress}"/>
+                </ice:gMap>
                  <ice:panelGroup id="textDiv"/>
             </ice:panelGrid>
     </ice:panelGrid>

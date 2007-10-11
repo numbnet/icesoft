@@ -46,9 +46,9 @@
          <f:facet name="header">
             <ice:outputText value="View KML examples (geoxml-kml.html)"/>
          </f:facet>                   
-          <ice:GMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
-              <ice:GeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
-          </ice:GMap>
+          <ice:gMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
+              <ice:gMapGeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
+          </ice:gMap>
     </ice:panelGrid>
 
 </ice:panelTab>

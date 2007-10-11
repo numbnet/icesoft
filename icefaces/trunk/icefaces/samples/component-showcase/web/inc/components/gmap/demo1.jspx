@@ -44,9 +44,9 @@
     <ice:panelGrid id="gmapDemo"
                    styleClass="componentLayoutRootTable" columns="1">
          <f:facet name="header">
-            <ice:outputText value="GMap with default location"/>
+            <ice:outputText value="gMap with default location"/>
          </f:facet>                   
-         <ice:GMap address="1717 10th St. NW, Calgary, AB"/>
+         <ice:gMap address="1717 10th St. NW, Calgary, AB"/>
     </ice:panelGrid>
 
 </ice:panelTab>
