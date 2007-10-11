@@ -121,6 +121,8 @@
 
 <macrodef name="compile">
     <attribute name="src.copy.excludes" default=""/>
+    <attribute name="failonerror" default="true"/>
+    <attribute name="src.javac.excludes" default=""/>
     <element name="add.javac.elements" optional="true"/>
 
     <sequential>
@@ -129,10 +131,11 @@
         <mkdir dir="${app.lib.dir}"/>
 
         <javac destdir="${classes.dir}" sourcepath=""
-            source="${compile.source}" target="${compile.target}" debug="${compile.debug}"
+            source="${compile.source}" target="${compile.target}" debug="${compile.debug}" failonerror="@failonerror"
         >
             <src location="${src.dir}"/>
             <include name="**/*.java"/>
+            <exclude name="@{src.javac.excludes}" />
             <classpath>
                 <fileset dir="${app.lib.dir}" includes="*.jar"/>
                 <fileset dir="${icefaces.lib.dir}" >
