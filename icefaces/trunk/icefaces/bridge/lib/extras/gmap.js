@@ -38,6 +38,7 @@ GMapWrapper.prototype = {
     this.eleId  = eleId;
     this.realGMap = realGMap;
     this.controls = new Object();
+    this.overlays = new Object();
   },
 
   getElementId: function() {
@@ -94,10 +95,6 @@ Ice.GoogleMap = {
         return gmapWrapper;
 	},
 
-    getOverlay:function(id) {
-        return  GMapRepository[id+'overlay'];
-    },
-    
     loadDirection:function(id, text_div, query) {
         var direction = GMapRepository[id+'dir'];
         var map = Ice.GoogleMap.getGMapWrapper(id).getRealGMap();
@@ -109,24 +106,14 @@ Ice.GoogleMap = {
         direction.load(query);
     },
     
-    createOverlay: function(id, overlayFunc) {
-       var overlay = GMapRepository[id+'overlay'];
-       if(overlay == null) {
-          GMapRepository[id+'overlay'] = eval(overlayFunc);
-          return GMapRepository[id+'overlay'];
-       } else {
-          return overlay;
-       }
-    },
-    	
-	addOverlay:function (mapid, overlayId, ovrLay) {
-	   var overLay = Ice.GoogleMap.getOverlay(overlayId);
-       var map = Ice.GoogleMap.getGMapWrapper(mapid).getRealGMap();
-       if(overLay == null) {
-          overLay = Ice.GoogleMap.createOverlay(overlayId, ovrLay);
-          map.addOverlay(overLay);        
-       }
-	    
+	addOverlay:function (ele, overlayId, ovrLay) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay == null) {
+            overlay =  eval(ovrLay);
+            gmapWrapper.getRealGMap().addOverlay(overlay);
+            gmapWrapper.overlays[overlayId] = overlay;
+        }
 	},
 	
     locateAddress: function(clientId,  address) {
