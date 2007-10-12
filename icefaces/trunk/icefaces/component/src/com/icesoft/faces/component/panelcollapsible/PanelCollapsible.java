@@ -1,5 +1,6 @@
 package com.icesoft.faces.component.panelcollapsible;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -44,6 +45,13 @@ public class PanelCollapsible extends UICommand {
     		setExpanded(exp);
     		queueEvent(new ActionEvent(this));
     	}
+    }
+
+    public void encodeBegin(FacesContext context) throws IOException {
+        super.encodeBegin(context);
+        if (getAttributes().get(getClientId(getFacesContext()))== null){
+        	setExpanded(isExpanded());
+        }
     }
     
     public boolean isExpanded() {
