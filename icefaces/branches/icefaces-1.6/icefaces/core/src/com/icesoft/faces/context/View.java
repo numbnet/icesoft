@@ -95,7 +95,9 @@ public class View implements CommandQueue {
                 if (differentURI(wrappedRequest)) {
                     //page redirect
                     requestURI = wrappedRequest.getRequestURI();
+                    externalContext.dispose();
                     externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
+                    facesContext.dispose();
                     facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration);
                     //reuse  PersistentFacesState instance when page redirects occur                    
                     persistentFacesState.setFacesContext(facesContext);
