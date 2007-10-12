@@ -22,6 +22,10 @@ public class Pong implements Command {
         return redirect;
     }
 
+    public Command coalesceWith(Reload reload) {
+        return reload;
+    }
+
     public Command coalesceWith(SessionExpired sessionExpired) {
         return sessionExpired;
     }

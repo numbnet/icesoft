@@ -13,6 +13,10 @@ public class SessionExpired implements Command {
         return this;
     }
 
+    public Command coalesceWith(Reload reload) {
+        return this;
+    }
+
     public Command coalesceWith(Macro macro) {
         return this;
     }

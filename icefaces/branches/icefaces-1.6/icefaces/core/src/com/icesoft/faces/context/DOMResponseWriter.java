@@ -276,12 +276,14 @@ public class DOMResponseWriter extends ResponseWriter {
     private void enhanceHtml(Element html) {
         //add lang attribute
         Locale locale = context.getApplication().getViewHandler().calculateLocale(context);
+        //id required for forwarded (server-side) redirects
+        html.setAttribute("id", "document:html");
         html.setAttribute("lang", locale.getLanguage());
     }
 
     private void enhanceBody(Element body) {
         //id required for forwarded (server-side) redirects
-        body.setAttribute("id", "body");
+        body.setAttribute("id", "document:body");
         Element iframe = document.createElement("iframe");
         body.insertBefore(iframe, body.getFirstChild());
         iframe.setAttribute("id", "history-frame");
@@ -351,8 +353,6 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private void enhanceHead(Element head) {
         ViewHandler handler = context.getApplication().getViewHandler();
-        //id required for forwarded (server-side) redirects
-        head.setAttribute("id", "head");
         Element meta =
                 (Element) head.appendChild(document.createElement("meta"));
         meta.setAttribute("name", "icefaces");

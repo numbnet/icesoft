@@ -245,13 +245,13 @@ public class BridgeFacesContext extends FacesContext {
         //
         if (responseWriter != null) {
             Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(document, commandQueue);
+            domSerializer = new PushModeSerializer(document, commandQueue, viewNumber);
         }
     }
 
     public UIViewRoot getViewRoot() {
-        if ( null != externalContext.getRequestParameterMap()
-             .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT) ) {
+        if (null != externalContext.getRequestParameterMap()
+                .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT)) {
             //ViewRoot and attributes being cached interferes with PAGE scope
             return null;
         }

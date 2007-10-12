@@ -33,6 +33,11 @@ public class Macro implements Command {
         return this;
     }
 
+    public Command coalesceWith(Reload reload) {
+        commands.add(reload);
+        return this;
+    }
+
     public Command coalesceWith(SessionExpired sessionExpired) {
         return sessionExpired;
     }
