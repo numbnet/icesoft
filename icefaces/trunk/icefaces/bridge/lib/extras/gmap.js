@@ -256,11 +256,15 @@ Ice.GoogleMap = {
     setMapType:function(ele, type) {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
         //if the chart is recreated, so add any geoCoderMarker that was exist before.
-        if (gmapWrapper.geoMarkerSet) {
+        if (gmapWrapper.geoMarkerSet 
+            && gmapWrapper.geoMarker != null
+            && gmapWrapper.geoMarkerAddress != null
+            ) 
+        {
             gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
             gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
             gmapWrapper.geoMarkerSet = false;
-        }
+        } 
         if (gmapWrapper.getRealGMap().getCurrentMapType() != null ) {
              //set the map type only when difference found
              if (gmapWrapper.getRealGMap().getCurrentMapType().getName() != type) {
