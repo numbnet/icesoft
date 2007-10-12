@@ -39,6 +39,9 @@ GMapWrapper.prototype = {
     this.realGMap = realGMap;
     this.controls = new Object();
     this.overlays = new Object();
+    this.geoMarker = new Object();
+    this.geoMarkerAddress;
+    this.geoMarkerSet = false;
   },
 
   getElementId: function() {
@@ -127,6 +130,8 @@ Ice.GoogleMap = {
 	                 var marker = new GMarker(point);
 	                 gmapWrapper.getRealGMap().addOverlay(marker);
 	                 marker.openInfoWindowHtml(address);
+                     gmapWrapper.geoMarker =  marker;
+                     gmapWrapper.geoMarkerAddress = address;
                      Ice.GoogleMap.submitEvent(clientId, gmapWrapper.getRealGMap(), "geocoder" );
 	             } else {
 	                 //FOR IS DEFINED BUT MAP IS NOT FOUND,
@@ -197,7 +202,12 @@ Ice.GoogleMap = {
     recreate:function(ele, gmapWrapper) {
         Ice.GoogleMap.remove(ele);
         var controls = gmapWrapper.controls;
+        var geoMarker =  gmapWrapper.geoMarker;
+        var geoMarkerAddress = gmapWrapper.geoMarkerAddress;
         gmapWrapper = Ice.GoogleMap.create(ele);
+        gmapWrapper.geoMarker = geoMarker;
+        gmapWrapper.geoMarkerAddress = geoMarkerAddress;
+        gmapWrapper.geoMarkerSet = 'true'; 
         var tempObject = new Object();
         for (control in controls){
             if (tempObject[control] == null) {
@@ -245,6 +255,12 @@ Ice.GoogleMap = {
     
     setMapType:function(ele, type) {
         var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        //if the chart is recreated, so add any geoCoderMarker that was exist before.
+        if (gmapWrapper.geoMarkerSet) {
+            gmapWrapper.getRealGMap().addOverlay(gmapWrapper.geoMarker);
+            gmapWrapper.geoMarker.openInfoWindowHtml(gmapWrapper.geoMarkerAddress);
+            gmapWrapper.geoMarkerSet = false;
+        }
         if (gmapWrapper.getRealGMap().getCurrentMapType() != null ) {
              //set the map type only when difference found
              if (gmapWrapper.getRealGMap().getCurrentMapType().getName() != type) {
