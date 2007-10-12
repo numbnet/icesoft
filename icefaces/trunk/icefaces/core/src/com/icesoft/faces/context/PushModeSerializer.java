@@ -12,13 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PushModeSerializer implements DOMSerializer {
-    private static final Reload Reload = new Reload();
     private Document oldDocument;
     private CommandQueue commandQueue;
+    private String viewNumber;
 
-    public PushModeSerializer(Document currentDocument, CommandQueue commandQueue) {
+    public PushModeSerializer(Document currentDocument, CommandQueue commandQueue, String viewNumber) {
         this.oldDocument = currentDocument;
         this.commandQueue = commandQueue;
+        this.viewNumber = viewNumber;
     }
 
     public void serialize(Document document) throws IOException {
@@ -57,7 +58,7 @@ public class PushModeSerializer implements DOMSerializer {
         if (!elementList.isEmpty()) {
             if (elementList.size() == 1 && "html".equalsIgnoreCase(((Element) elementList.get(0)).getTagName())) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)
-                commandQueue.put(Reload);
+                commandQueue.put(new Reload(viewNumber));
             } else {
                 Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
                 commandQueue.put(new UpdateElements(elements));

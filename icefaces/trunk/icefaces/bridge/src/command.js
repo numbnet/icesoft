@@ -38,7 +38,15 @@
 
     This.Reload = function(element) {
         logger.info('Reloading');
-        window.location.reload();
+        var url = window.location.href;
+        window.connection.cancelDisposeViews();
+        if (url.contains('rvn=')) {
+            window.location.reload();
+        } else {
+            var view = element.getAttribute('view');
+            var queryPrefix = url.contains('?') ? '&' : '?';
+            window.location.href = url + queryPrefix + 'rvn=' + view;
+        }
     };
 
     This.SetCookie = function(message) {

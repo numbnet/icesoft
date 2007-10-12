@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.Writer;
 
 public class Reload implements Command {
+    private String viewIdentifier;
+
+    public Reload(String viewIdentifier) {
+        this.viewIdentifier = viewIdentifier;
+    }
 
     public Command coalesceWith(Command command) {
         return command.coalesceWith(this);
@@ -43,6 +48,6 @@ public class Reload implements Command {
     }
 
     public void serializeTo(Writer writer) throws IOException {
-        writer.write("<reload/>");
+        writer.write("<reload view=\"" + viewIdentifier + "\"/>");
     }
 }

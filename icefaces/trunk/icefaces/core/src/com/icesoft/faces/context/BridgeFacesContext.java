@@ -253,7 +253,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         //
         if (responseWriter != null) {
             Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(document, commandQueue);
+            domSerializer = new PushModeSerializer(document, commandQueue, viewNumber);
         }
     }
 
