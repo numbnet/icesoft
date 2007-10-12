@@ -135,7 +135,7 @@
 
         sendDisposeViews: function() {
             try {
-                this.channel.postAsynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                this.channel.postSynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
                     request.close();
                 });
