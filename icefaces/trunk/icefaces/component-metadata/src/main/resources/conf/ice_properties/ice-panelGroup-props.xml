@@ -34,6 +34,7 @@
   
 &ice-ext-core-props;
 &ice-effects-props;
+&ice-att-menuPopup-props;
 
 <property>
 	<description>

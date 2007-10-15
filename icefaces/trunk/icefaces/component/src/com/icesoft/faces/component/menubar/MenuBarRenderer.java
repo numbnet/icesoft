@@ -68,10 +68,11 @@ public class MenuBarRenderer extends DomBasicRenderer {
         Element menuDiv = (Element) domContext.getRootNode();
         menuDiv.setAttribute(HTML.ID_ATTR,
                              uiComponent.getClientId(facesContext));
+        menuDiv.setAttribute(HTML.NAME_ATTR, "MENU");
 
         
         MenuBar menuComponent = (MenuBar) uiComponent;
-        String defaultStyle = CSS_DEFAULT.MENU_BAR_STYLE;
+        String defaultStyle = menuComponent.getComponentRootStyle();
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
                 menuComponent.getOrientation())){
             defaultStyle+=CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE;
@@ -91,10 +92,22 @@ public class MenuBarRenderer extends DomBasicRenderer {
             PassThruAttributeRenderer
                     .renderAttributes(facesContext, uiComponent, null);
         }
+        
+        domContext.stepInto(uiComponent);
+        
+        trailingEncodeBegin(facesContext, uiComponent);
 
         domContext.streamWrite(facesContext, uiComponent,
                                domContext.getRootNode(), menuDiv);
-        domContext.stepInto(uiComponent);
+    }
+
+    /**
+     * For subclasses to add in any required rendering, without having to
+     * override the whole encodeBegin(-)
+     * @param facesContext
+     * @param uiComponent
+     */
+    protected void trailingEncodeBegin(FacesContext facesContext, UIComponent uiComponent) {
     }
 
     public void encodeChildren(FacesContext context, UIComponent component)

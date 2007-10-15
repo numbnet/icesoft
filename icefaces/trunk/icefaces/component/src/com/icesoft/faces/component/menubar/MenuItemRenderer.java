@@ -182,7 +182,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
 
         DOMContext.removeChildren(topLevelDiv);
-        Element masterDiv = (Element) topLevelDiv.getParentNode();
+        Element masterDiv = topLevelDiv;
+        while(masterDiv != null &&
+              !masterDiv.getAttribute(HTML.NAME_ATTR).equals("MENU") )
+        {
+            masterDiv = (Element) masterDiv.getParentNode();
+        }
 
         renderAnchor(facesContext, domContext, 0, (MenuItem) uiComponent,
                      topLevelDiv, menuComponent, vertical);

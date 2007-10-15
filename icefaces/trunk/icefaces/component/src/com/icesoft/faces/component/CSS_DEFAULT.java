@@ -202,6 +202,7 @@ public class CSS_DEFAULT {
     public static String MENU_BAR_STYLE = "iceMnuBar";
     public static String MENU_BAR_ITEM_STYLE = "Item";
     public static String MENU_BAR_ITEM_LABEL_STYLE = "ItemLabel";
+    public static String MENU_BAR_TOP_SUB_MENU_STYLE = "TopSubMenu";
     public static String MENU_BAR_SUB_MENU_STYLE = "SubMenu";
     public static String MENU_BAR_SUB_MENU_INDICATOR_STYLE = "SubMenuInd";
     public static String MENU_BAR_VERTICAL_SUFFIX_STYLE = "Vrt";
@@ -219,6 +220,7 @@ public class CSS_DEFAULT {
             "iceSubMenuDivider";  // Originally was "submenuDivider"
     public static String SUBMENU_INDICATOR_STYLE =
             "iceSubMenuInd"; // Originally was "submenuIndicator"
+    public static String MENU_POPUP_STYLE = "iceMnuPop";
     public static final String STYLE_TREEROW =
             "Row";// Originally was "treerow"
     public static final String TREE_DEFAULT_STYLE_CLASS = "iceTree";

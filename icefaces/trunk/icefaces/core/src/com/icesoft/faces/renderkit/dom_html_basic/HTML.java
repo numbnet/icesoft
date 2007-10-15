@@ -109,6 +109,7 @@ public final class HTML {
     public static final String ONKEYPRESS_ATTR = "onkeypress";
     public static final String ONKEYDOWN_ATTR = "onkeydown";
     public static final String ONKEYUP_ATTR = "onkeyup";
+    public static final String ONCONTEXTMENU_ATTR = "oncontextmenu";
     public static final String[] EVENT_HANDLER_ATTRIBUTES_WITHOUT_ONCLICK =
             {
                     ONDBLCLICK_ATTR,
@@ -119,7 +120,8 @@ public final class HTML {
                     ONMOUSEOUT_ATTR,
                     ONKEYPRESS_ATTR,
                     ONKEYDOWN_ATTR,
-                    ONKEYUP_ATTR
+                    ONKEYUP_ATTR,
+                    ONCONTEXTMENU_ATTR
             };
     public static final String[] EVENT_HANDLER_ATTRIBUTES =
             (String[]) ArrayUtils.concat(

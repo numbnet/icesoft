@@ -102,6 +102,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private Effect onkeyupeffect;
 
     private String hoverclass;
+    
+    private String menuPopup;
 
     /**
      *
@@ -608,6 +610,28 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         JavascriptContext
                 .includeLib(JavascriptContext.ICE_EXTRAS, getFacesContext());
     }
+    
+    /**
+     * <p>Return the value of the <code>menuPopup</code> property,
+     * which is the id of the ice:menuPopup to show when the user
+     * context-clicks on this component</p>
+     */
+    public String getMenuPopup() {
+        if(menuPopup != null) {
+            return menuPopup;
+        }
+        ValueBinding vb = getValueBinding("menuPopup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * <p>Set the value of the <code>menuPopup</code> property,
+     * which is the id of the ice:menuPopup to show when the user
+     * context-clicks on this component</p>
+     */
+    public void setMenuPopup(String menuPopup) {
+        this.menuPopup = menuPopup;
+    }
 
 
     /**
@@ -615,7 +639,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[29];
+        Object values[] = new Object[30];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -641,6 +665,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[26] = onkeyupeffect;
         values[27] = currentStyle;
         values[28] = visible;
+        values[29] = menuPopup;
         return values;
 
     }
@@ -677,6 +702,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         onkeyupeffect = (Effect) values[26];
         currentStyle = (CurrentStyle) values[27];
         visible = (Boolean) values[28];
+        menuPopup = (String) values[29];
     }
 
     /**

@@ -195,6 +195,34 @@ are shown but could easily be made to invoke application logic.
     </ice:menuBar>
 </ice:panelGroup>
 
+<ice:panelGroup styleClass="formBorderHighlight"
+                style="height: 100px ">
+    
+    <ice:panelGroup id="clickingSection"
+                    menuPopup="menuP">
+        <p>Right click on the image, or this text.</p>
+        <ice:graphicImage
+            url="http://www.java2s.com/style/logo.png"
+            alt="www.java2s.com"
+            width="99"
+            height="76"/>
+        <br/>
+        <br/>
+    </ice:panelGroup>
+    <ice:menuPopup id="menuP">
+        <ice:menuItem value="File" id="popup_file">
+            <ice:menuItem value="Open" id="popup_file_open" actionListener="#{menuBar.primaryListener}" icon="images/menu/open.gif"/>
+            <ice:menuItem value="Close" id="popup_file_close" actionListener="#{menuBar.primaryListener}"/>
+            <ice:menuItem value="Recent" id="popup_file_recent" icon="images/menu/recent.gif">
+                <ice:menuItem value="File 1" id="popup_file_recent_1" actionListener="#{menuBar.primaryListener}"/>
+                <ice:menuItem value="File 2" id="popup_file_recent_2" actionListener="#{menuBar.primaryListener}"/>
+            </ice:menuItem>
+        </ice:menuItem>
+        <ice:menuItem value="Edit" id="popup_edit" actionListener="#{menuBar.primaryListener}"/>
+        <ice:menuItem value="View" id="popup_view" actionListener="#{menuBar.primaryListener}"/>
+    </ice:menuPopup>
+    
+</ice:panelGroup>
 
 </ice:panelGrid>
 

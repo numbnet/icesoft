@@ -91,6 +91,8 @@ public class MenuBarBean {
                 .getClientId(FacesContext.getCurrentInstance());
         // chop off the meaningless numbers, etc. from the id tag
         int menuIndex = actionFired.indexOf("menu:");
+        if(menuIndex < 0)
+            menuIndex = actionFired.indexOf("menuP:");
         actionFired = actionFired.substring(menuIndex, actionFired.length());
 
         FacesContext facesContext = FacesContext.getCurrentInstance();

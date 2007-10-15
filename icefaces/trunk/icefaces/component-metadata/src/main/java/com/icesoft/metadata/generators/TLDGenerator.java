@@ -186,6 +186,11 @@ public class TLDGenerator extends AbstractGenerator {
                         pb.getPropertyName().equals("actionListener"))) {
             return;
         }
+        else if ("com.icesoft.faces.component.menupopup.MenuPopup".equals(cb.getComponentClass()) 
+                && (pb.getPropertyName().equals("action") ||
+                        pb.getPropertyName().equals("actionListener"))) {
+            return;
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("    <attribute>\n");
         sb.append("      <name>" + pb.getPropertyName() + "</name>\n");

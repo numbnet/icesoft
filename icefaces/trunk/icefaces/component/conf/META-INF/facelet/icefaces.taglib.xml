@@ -52,6 +52,61 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>gMap</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMap</component-type>
+			<renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapControl</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapControl</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapDirection</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapDirection</component-type>
+			<renderer-type>com.icesoft.faces.GMapDirectionRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapGeoXml</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapGeoXml</component-type>
+			<renderer-type>com.icesoft.faces.GMapGeoXmlRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapLatLng</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapLatLng</component-type>
+			<renderer-type>com.icesoft.faces.GMapLatLngRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapLatLngs</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapLatLngs</component-type>
+			<renderer-type>com.icesoft.faces.GMapLatLngsRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>gMapMarker</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.GMapMarker</component-type>
+			<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>commandButton</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlCommandButton</component-type>
@@ -244,6 +299,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>inputRichText</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.InputRichText</component-type>
+			<renderer-type>com.icesoft.faces.InputRichTextRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>menuBar</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Menu</component-type>
@@ -272,6 +335,14 @@
 		<component>
 			<component-type>com.icesoft.faces.MenuNodes</component-type>
 			<renderer-type>com.icesoft.faces.View</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>menuPopup</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.MenuPopup</component-type>
+			<renderer-type>com.icesoft.faces.MenuPopup</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>

@@ -66,6 +66,7 @@ Ice.Menu = {
             Ice.Menu.openMenus[i].style.display='none';
         }
         Ice.Menu.openMenus = new Array();
+        Ice.Menu.currentMenu = null;
     },
     getPosition: function(element,positionProperty) {
 	    var position = 0;
@@ -93,10 +94,47 @@ Ice.Menu = {
                 submenu.style.top = styleTop;
             }
 	    }
-	    if ((Ice.Menu.currentMenu) && (submenu != Ice.Menu.currentMenu) && (supermenu != Ice.Menu.currentMenu))  {
-	    	Ice.Menu.hideMenuWithId(Ice.Menu.currentMenu.id);
+        Ice.Menu.currentMenu = submenu;
+    },
+    showPopup: function(showX, showY, submenu) {
+        Ice.Menu.hideAll();
+        submenu=$(submenu);
+	    if (submenu) {
+            Ice.Menu.showMenuWithId(submenu);
+            var styleLeft = showX + "px";
+            submenu.style.left = styleLeft;
+            var styleTop = showY  + "px";
+            submenu.style.top = styleTop;
         }
         Ice.Menu.currentMenu = submenu;
+    },
+    contextMenuPopup: function(event, popupMenu) {
+        if(!event) {
+        	event = window.event;
+        }
+        if(event) {
+        	event.returnValue = false;
+        	event.cancelBubble  = true;
+
+            if(event.stopPropagation) {
+            	event.stopPropagation();
+            }
+            
+            var posx = 0; // Mouse position relative to
+            var posy = 0; //  the document
+            if (event.pageX || event.pageY) 	{
+                posx = event.pageX;
+                posy = event.pageY;
+            }
+            else if (event.clientX || event.clientY) 	{
+                posx = event.clientX + document.body.scrollLeft
+                    + document.documentElement.scrollLeft;
+                posy = event.clientY + document.body.scrollTop
+                    + document.documentElement.scrollTop;
+            }
+            
+            Ice.Menu.showPopup(posx, posy, popupMenu);
+        }
     },
     hideOrphanedMenusNotRelatedTo: function(hoverMenu) {
     	// form an array of allowable names
@@ -123,7 +161,10 @@ Ice.Menu = {
 			}
 			if (found != 'true') {
 				menusToHide[menusToHide.length] = nextOpenMenu.id;
-			}
+                if(nextOpenMenu == Ice.Menu.currentMenu) {
+                    Ice.Menu.currentMenu = null;
+                }
+            }
 		}
 		// iterate over the menus to hide
 		Ice.Menu.hideMenusWithIdsInArray(menusToHide);

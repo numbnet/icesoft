@@ -344,7 +344,7 @@ public class MenuBar extends UICommand implements NamingContainer {
      * @return String styleClass
      */
     public String getStyleClass() {
-        String defaultStyle = CSS_DEFAULT.MENU_BAR_STYLE;
+        String defaultStyle = getComponentRootStyle();
         String userDefinedClass = styleClass;
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
                 getOrientation())){
@@ -383,6 +383,10 @@ public class MenuBar extends UICommand implements NamingContainer {
     public String getSubMenuIndicatorStyleClass() {
         return Util.getQualifiedStyleClass(this, 
                                 CSS_DEFAULT.MENU_BAR_SUB_MENU_INDICATOR_STYLE);
+    }
+    
+    public String getComponentRootStyle() {
+        return CSS_DEFAULT.MENU_BAR_STYLE;
     }
 }
 

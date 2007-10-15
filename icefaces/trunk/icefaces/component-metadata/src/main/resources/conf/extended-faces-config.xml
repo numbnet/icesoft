@@ -137,6 +137,7 @@
       
   <!-- ICE core properties for each instance of the extended component -->
   <!ENTITY ice-att-style-props SYSTEM "ice_properties/ice-att-style-props.xml">
+  <!ENTITY ice-att-menuPopup-props SYSTEM "ice_properties/ice-att-menuPopup-props.xml">
   <!ENTITY ice-att-title-props SYSTEM "ice_properties/ice-att-title-props.xml">
   <!ENTITY ice-att-immediate-props SYSTEM "ice_properties/ice-att-immediate-props.xml">
   <!ENTITY ice-att-autoComplete-props SYSTEM "ice_properties/ice-att-autoComplete-props.xml">
@@ -201,6 +202,7 @@
   <!ENTITY ice-cust-menunodeSeparator-props SYSTEM "ice_cust_properties/cust-menunodeSeparator-props.xml">
   <!ENTITY ice-cust-menunodes-props SYSTEM "ice_cust_properties/cust-menunodes-props.xml">
   <!ENTITY ice-cust-menu-props SYSTEM "ice_cust_properties/cust-menu-props.xml">
+  <!ENTITY ice-cust-menuPopup-props SYSTEM "ice_cust_properties/cust-menuPopup-props.xml">
   <!ENTITY ice-cust-outputConnectionStatus-props SYSTEM "ice_cust_properties/cust-outputConnectionStatus-props.xml">
   <!ENTITY ice-cust-panelpopup-props SYSTEM "ice_cust_properties/cust-panelpopup-props.xml">
   <!ENTITY ice-cust-panelSeries-props SYSTEM "ice_cust_properties/cust-panelSeries-props.xml">
@@ -361,6 +363,9 @@
   <!ENTITY panelpopup-component   SYSTEM "custom/panelpopup-component.xml">
   <!ENTITY panelpopup-renderer    SYSTEM "custom/panelpopup-renderer.xml">
 
+  <!ENTITY menuPopup-component   SYSTEM "custom/menuPopup-component.xml">
+  <!ENTITY menuPopup-renderer    SYSTEM "custom/menuPopup-renderer.xml">
+      
   <!ENTITY menu-component   SYSTEM "custom/menu-component.xml">
   <!ENTITY menu-renderer    SYSTEM "custom/menu-renderer.xml">
   
@@ -476,6 +481,7 @@
 	&treenode-component;
 	&panelpopup-component;
 	&portlet-component;
+	&menuPopup-component;
 	&menu-component;
 	&menuitem-component;
 	&menuitems-component;
@@ -547,6 +553,7 @@
 		&treenode-renderer;
 		&panelpopup-renderer;
 		&portlet-renderer;
+		&menuPopup-renderer;
 		&menu-renderer;
 		&menuitem-renderer;
 		&menuitems-renderer;

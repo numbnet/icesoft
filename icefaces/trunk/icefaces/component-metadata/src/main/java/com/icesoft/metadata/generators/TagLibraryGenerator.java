@@ -148,8 +148,14 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     .getPropertyName()));
             if ("com.icesoft.faces.component.menubar.MenuBar".equals(cb.getComponentClass()) &&
                     (pb.getPropertyName().equals("action") ||
-                            pb.getPropertyName().equals("actionListener"))) 
+                            pb.getPropertyName().equals("actionListener"))) {
                     continue;
+            }
+            else if ("com.icesoft.faces.component.menupopup.MenuPopup".equals(cb.getComponentClass()) &&
+                    (pb.getPropertyName().equals("action") ||
+                            pb.getPropertyName().equals("actionListener"))) { 
+                    continue;
+            }
             if (pb.isTagAttribute())
                 attribute(cb, pb);
         }
@@ -359,6 +365,11 @@ public class TagLibraryGenerator extends AbstractGenerator {
                 continue;
             
             if ("com.icesoft.faces.component.menubar.MenuBar".equals(cb.getComponentClass()) && 
+                    (pb.getPropertyName().equals("action") ||
+                            pb.getPropertyName().equals("actionListener"))) {
+                continue;
+            }
+            else if ("com.icesoft.faces.component.menupopup.MenuPopup".equals(cb.getComponentClass()) && 
                     (pb.getPropertyName().equals("action") ||
                             pb.getPropertyName().equals("actionListener"))) {
                 continue;
@@ -822,6 +833,11 @@ public class TagLibraryGenerator extends AbstractGenerator {
             PropertyBean pb = merge(pbs[i], rb.getAttribute(pbs[i]
                     .getPropertyName()));
             if ("com.icesoft.faces.component.menubar.MenuBar".equals(cb.getComponentClass()) && 
+                    (pb.getPropertyName().equals("action") ||
+                            pb.getPropertyName().equals("actionListener"))) {
+                continue;
+            }
+            else if ("com.icesoft.faces.component.menupopup.MenuPopup".equals(cb.getComponentClass()) && 
                     (pb.getPropertyName().equals("action") ||
                             pb.getPropertyName().equals("actionListener"))) {
                 continue;

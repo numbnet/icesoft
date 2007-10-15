@@ -1580,6 +1580,84 @@ input {
     padding-top: 3px;
     padding-right: 1px;    
 }
+
+/*
+----------- PanelPopup ----------
+*/
+
+.iceMnuPopVrtItemLabel {} 
+.iceMnuPopVrtItemImage {
+	width:5px;
+}
+
+.iceMnuPopVrt { /* was iceMenu_vertical */
+    float: left;
+    white-space: nowrap;
+    
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width: 0px;
+    height: 0px;
+}
+.iceMnuPopVrtTopSubMenu {
+    padding: 1px;
+    width: 160px;
+    background-color: #EFEFEF;
+    border: 1px solid #999999;
+    position: absolute;
+    height: auto;
+    display: block;
+}
+
+.iceMnuPopVrtItem { /* was iceMenu_verticalItem */
+    width: 160px;
+    display: block;
+}
+
+.iceMnuPopVrtItem a { /* was iceMenu_verticalItem */
+/*    background-color: #DDDDDD;*/
+    height: auto;
+    padding-left: 3px;
+    padding-right: 3px;    
+    padding-top: 3px;
+    padding-bottom: 3px;
+/*    color: #333333;*/
+    font-size: 1.1em;
+    margin-bottom: 1px;
+    float: none;
+    display: block;
+    text-decoration: none;
+    border: 0px solid #FFFFFF;
+    width: 100%;
+}
+
+.iceMnuPopVrtItem a:hover { /* was iceMenu_verticalItem */
+    background-color: #2A6CC2;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.iceMnuPopVrtSubMenu { /* was iceSubMenu_vertical*/
+    padding: 1px;
+    width: 160px;
+    background-color: #EFEFEF;
+    border-top: 1px solid #999999;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    position: absolute;
+    height: auto;
+    display: block;
+}
+
+.iceMnuPopVrtSubMenuInd { /* was iceSubMenuDividerVert */
+    display:inline;
+    float:right;
+    padding-top: 3px;
+    padding-right: 1px;    
+}
+
 /*
 ----------- PanelPopup ----------
 */
