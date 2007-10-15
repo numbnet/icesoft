@@ -110,6 +110,14 @@ also
   <!ENTITY style-component SYSTEM "custom/style-component.xml">
   <!ENTITY style-renderer SYSTEM "custom/style-renderer.xml">
 
+and
+
+faces-config
+&ice-style-component
+
+renderer-kit
+&ice-style-renderer
+
 #4 add component and render in faces-config.xml (component/conf/META-INF/faces-config.xml)
 
       <renderer>
