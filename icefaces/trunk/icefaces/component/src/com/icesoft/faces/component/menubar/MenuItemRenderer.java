@@ -261,7 +261,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             // this only applies to horizontal top level menu items
             if (!getIcon(menuItem).endsWith(MenuItem.DEFAULT_ICON)) {
                 Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-                iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+                iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
                 iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
                         getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
@@ -321,7 +321,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if ((!menuBar.getNoIcons().equalsIgnoreCase("true")) &&
             (getIcon(menuItem) != null)) {
             Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-            iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+            iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
                     getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
@@ -379,7 +379,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if ((!menuBar.getNoIcons().equalsIgnoreCase("true")) &&
             (getIcon(menuItem) != null)) {
             Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-            iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+            iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.getImageStyleClass());
             div.appendChild(iconImg);
