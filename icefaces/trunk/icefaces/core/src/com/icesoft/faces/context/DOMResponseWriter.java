@@ -394,7 +394,7 @@ public class DOMResponseWriter extends ResponseWriter {
             String lib = (String) libIterator.next();
             Element script = (Element) head
                     .appendChild(document.createElement("script"));
-            script.setAttribute("language", "javascript");
+            script.setAttribute("type", "text/javascript");
             script.setAttribute("src", handler.getResourceURL(context, lib));
         }
 

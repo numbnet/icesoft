@@ -420,23 +420,37 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
     }
 
-    public void loadJavascriptCode(final Resource resource) {
+    public URI loadJavascriptCode(final Resource resource) {
         URI uri = resourceDispatcher.registerResource("text/javascript", resource);
         jsCodeURIs.add(uri.toString());
+        return resolve(uri);
     }
 
-    public void loadCSSRules(Resource resource) {
+    public URI loadJavascriptCode(Resource resource, ResourceLinker.Handler linkerHandler) {
+        URI uri = resourceDispatcher.registerResource("text/javascript", resource, linkerHandler);
+        jsCodeURIs.add(uri.toString());
+        return resolve(uri);
+    }
+
+    public URI loadCSSRules(Resource resource) {
         URI uri = resourceDispatcher.registerResource("text/css", resource);
         cssRuleURIs.add(uri.toString());
+        return resolve(uri);
     }
+
+
+    public URI loadCSSRules(Resource resource, ResourceLinker.Handler linkerHandler) {
+        URI uri = resourceDispatcher.registerResource("text/css", resource, linkerHandler);
+        cssRuleURIs.add(uri.toString());
+        return resolve(uri);
+    }
+
 
     public URI registerResource(String mimeType, Resource resource) {
-        URI uri = resourceDispatcher.registerResource(mimeType, resource);
-        return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
+        return resolve(resourceDispatcher.registerResource(mimeType, resource));
     }
 
-    public URI registerZippedResources(Resource zippedResources) throws IOException {
-        URI uri = resourceDispatcher.registerZippedResources(zippedResources);
+    private URI resolve(URI uri) {
         return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
     }
 }

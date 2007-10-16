@@ -37,7 +37,7 @@
                     }.bind(this));
                 }
             } else {
-                var code = script.text;
+                var code = script.innerHTML;
                 this.logger.debug('evaluating script : ' + code);
                 try {
                     eval(code);

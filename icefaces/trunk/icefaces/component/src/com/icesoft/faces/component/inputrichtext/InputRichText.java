@@ -1,79 +1,87 @@
 package com.icesoft.faces.component.inputrichtext;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Map;
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.ByteArrayResource;
+import com.icesoft.faces.context.JarResource;
+import com.icesoft.faces.context.Resource;
+import com.icesoft.faces.context.ResourceLinker;
+import com.icesoft.faces.context.ResourceRegistry;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
-import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.JarResource;
-import com.icesoft.faces.context.Resource;
-import com.icesoft.faces.context.ResourceRegistry;
-import com.icesoft.faces.context.effects.JavascriptContext;
-
-public class InputRichText extends UIInput{
-	public static final String COMPONENET_TYPE = "com.icesoft.faces.InputRichText";
+public class InputRichText extends UIInput {
+    public static final String COMPONENET_TYPE = "com.icesoft.faces.InputRichText";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
+    private static final Resource ICE_FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
+    private static final Resource FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
+    private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
+        public void linkWith(ResourceLinker linker) {
+            try {
+                InputStream in = this.getClass().getClassLoader().getResourceAsStream("com/icesoft/faces/component/inputrichtext/fckeditor.zip");
+                ZipInputStream zip = new ZipInputStream(in);
+                ZipEntry entry;
+                while ((entry = zip.getNextEntry()) != null) {
+                    if (!entry.isDirectory()) {
+                        String entryName = entry.getName();
+                        Resource linkedResource = new ByteArrayResource(toByteArray(zip));
+                        linker.registerRelativeResource(entryName, linkedResource);
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
     private String language;
     private String _for;
-    private Boolean html; 
-    private Boolean toolbarOnly;   
+    private Boolean html;
+    private Boolean toolbarOnly;
     private String style;
     private String styleClass;
     private String width;
     private String height;
-    
-	private final Resource FCK_EDITOR_BASE = new 
-	 JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.zip");
-	private final Resource ICE_FCK_EDITOR_JS = new 
-	 JarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");	
-	private URI baseURI;
-	 
+    private URI baseURI;
+
     public InputRichText() {
-    	ResourceRegistry registry = (ResourceRegistry) 
-    	FacesContext.getCurrentInstance();
-		try {
-	    	if (registry != null) {			
-				baseURI = registry.registerZippedResources(FCK_EDITOR_BASE);
-				String path = baseURI + "/fckeditor.js";
-				path = path.substring(path.indexOf("block"), path.length());
-				JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
-				
-				URI jsURI = registry.registerResource("application/x-javascript",ICE_FCK_EDITOR_JS);
-				path = jsURI.getPath();
-				path = path.substring(path.indexOf("block"), path.length());
-				JavascriptContext.includeLib(path, FacesContext.getCurrentInstance());
-	    	} else {
-	    		//LOG fckeditor's library has not loaded, component will not work as desired
-	    	}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        ResourceRegistry registry =
+                (ResourceRegistry) FacesContext.getCurrentInstance();
+        if (registry != null) {
+            baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
+            registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
+        } else {
+            //LOG fckeditor's library has not loaded, component will not work as desired
+        }
     }
+
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
-    
+
     public String getComponentType() {
         return COMPONENET_TYPE;
     }
-    
+
     public void decode(FacesContext facesContext) {
-		 Map map = facesContext.getExternalContext().getRequestParameterMap();
-		 String clientId = getClientId(facesContext);
-		 if (map.containsKey(clientId)) {
-			 String newValue = map.get(clientId).toString().replace('\n', ' ');
-			 System.out.println(newValue);
-			 setSubmittedValue(newValue);			 
-		 }
-		 super.decode(facesContext);
+        Map map = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(facesContext);
+        if (map.containsKey(clientId)) {
+            String newValue = map.get(clientId).toString().replace('\n', ' ');
+            System.out.println(newValue);
+            setSubmittedValue(newValue);
+        }
+        super.decode(facesContext);
     }
-    
+
     /**
      * <p>Set the value of the <code>language</code> property.</p>
      */
@@ -91,7 +99,7 @@ public class InputRichText extends UIInput{
         ValueBinding vb = getValueBinding("language");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "da";
     }
-    
+
     /**
      * <p>Set the value of the <code>for</code> property.</p>
      */
@@ -109,25 +117,26 @@ public class InputRichText extends UIInput{
         ValueBinding vb = getValueBinding("for");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
     }
-	
-	public boolean isToolbarOnly() {
+
+    public boolean isToolbarOnly() {
         if (toolbarOnly != null) {
             return toolbarOnly.booleanValue();
         }
         ValueBinding vb = getValueBinding("toolbarOnly");
         return vb != null ?
-               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
-               false;
-	}
+                ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+                false;
+    }
 
-	public void setToolbarOnly(boolean toolbarOnly) {
-		this.toolbarOnly = new Boolean(toolbarOnly);
-	}
-	public URI getBaseURI() {
-		return baseURI;
-	}	
-    
-	/**
+    public void setToolbarOnly(boolean toolbarOnly) {
+        this.toolbarOnly = new Boolean(toolbarOnly);
+    }
+
+    public URI getBaseURI() {
+        return baseURI;
+    }
+
+    /**
      * <p>Set the value of the <code>style</code> property.</p>
      */
     public void setStyle(String style) {
@@ -144,8 +153,8 @@ public class InputRichText extends UIInput{
         ValueBinding vb = getValueBinding("style");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
-	
+
+
     /**
      * <p>Set the value of the <code>styleClass</code> property.</p>
      */
@@ -157,14 +166,14 @@ public class InputRichText extends UIInput{
      * <p>Return the value of the <code>styleClass</code> property.</p>
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 styleClass,
                 CSS_DEFAULT.INPUT_RICH_TEXT,
                 "styleClass");
-                                             
-    }	
 
-	/**
+    }
+
+    /**
      * <p>Set the value of the <code>width</code> property.</p>
      */
     public void setWidth(String width) {
@@ -181,8 +190,8 @@ public class InputRichText extends UIInput{
         ValueBinding vb = getValueBinding("width");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "100%";
     }
-    
-	/**
+
+    /**
      * <p>Set the value of the <code>height</code> property.</p>
      */
     public void setHeight(String height) {
@@ -198,5 +207,13 @@ public class InputRichText extends UIInput{
         }
         ValueBinding vb = getValueBinding("height");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "200";
-    }    
+    }
+
+    private static byte[] toByteArray(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        byte[] buf = new byte[4096];
+        int len = 0;
+        while ((len = input.read(buf)) > -1) output.write(buf, 0, len);
+        return output.toByteArray();
+    }
 }
