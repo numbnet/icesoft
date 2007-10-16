@@ -1,7 +1,6 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
@@ -56,7 +55,11 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 hiddenValueHolder.setAttribute(HTML.VALUE_ATTR, inputRichText.getValue().toString());
             }
 
-            JavascriptContext.addJavascriptCall(facesContext, call.toString());
+            Element script = domContext.createElement(HTML.SCRIPT_ELEM);
+            script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
+            script.appendChild(domContext.createTextNode(call.toString()));
+            root.appendChild(script);
+
             domContext.stepOver();
         }
     }
