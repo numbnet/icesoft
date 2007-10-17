@@ -60,11 +60,19 @@ public class TextRenderer extends DomBasicInputRenderer {
                              String currentValue)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
-        if (uiComponent instanceof UIInput) {
+        if (isRenderingAsInput(uiComponent)) {
             renderUIInput(facesContext, uiComponent, currentValue);
-        } else if (uiComponent instanceof UIOutput) {
+        } else if (isRenderingAsOutput(uiComponent)) {
             renderUIOutput(facesContext, uiComponent, currentValue);
         }
+    }
+
+    protected boolean isRenderingAsInput(UIComponent uiComponent) {
+        return (uiComponent instanceof UIInput);
+    }
+
+    protected boolean isRenderingAsOutput(UIComponent uiComponent) {
+        return (uiComponent instanceof UIOutput);
     }
 
     /**

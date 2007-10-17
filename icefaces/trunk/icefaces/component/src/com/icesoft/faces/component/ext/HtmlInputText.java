@@ -270,7 +270,10 @@ public class HtmlInputText
                 "styleClass",
                 isDisabled(),
                 PORTLET_CSS_DEFAULT.PORTLET_FORM_INPUT_FIELD);
-                                             
+    }
+
+    protected String getStyleClassField() {
+        return styleClass;
     }
 
     /**
