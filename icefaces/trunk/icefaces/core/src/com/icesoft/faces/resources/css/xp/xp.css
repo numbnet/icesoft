@@ -1482,6 +1482,7 @@ input {
     padding-top: 4px;
     font-size: 1.0em;
     display: inline;
+    vertical-align: middle;
 }
 
 .iceMnuBarItemImage {
@@ -1490,7 +1491,7 @@ input {
 
 .iceMnuItmImage, .iceMnuBarItemImage {  /* was iceSubMenuRowImage */
     display:inline;
-    vertical-align: top;    
+    vertical-align: middle;    
 }
 
 .iceMnuBarSubMenuInd { /* was iceSubMenuRowSubMenuIndicator */
@@ -1585,9 +1586,12 @@ input {
 ----------- PanelPopup ----------
 */
 
-.iceMnuPopVrtItemLabel {} 
+.iceMnuPopVrtItemLabel {
+    vertical-align: middle;
+}
 .iceMnuPopVrtItemImage {
 	width:19px;
+    vertical-align: middle;
 }
 
 .iceMnuPopVrt { /* was iceMenu_vertical */
@@ -1629,7 +1633,7 @@ input {
     display: block;
     text-decoration: none;
     border: 0px solid #FFFFFF;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 .iceMnuPopVrtItem a:hover { /* was iceMenu_verticalItem */

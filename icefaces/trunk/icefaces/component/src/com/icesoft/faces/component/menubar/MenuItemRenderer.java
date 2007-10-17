@@ -166,9 +166,14 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (uiComponent.getChildCount() > 0) {
             String displayEvent = HTML.ONMOUSEOVER_ATTR;
             if (vertical) {
+                String supermenu = menuComponent.getClientId(facesContext);
+                Element parentNode = (Element) topLevelDiv.getParentNode();
+                if (parentNode.getAttribute(HTML.NAME_ATTR).equals("TOP_LEVEL_SUBMENU")) {
+                    supermenu += "_sub";
+                }
                 topLevelDiv.setAttribute(displayEvent,
                                          "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                                         expand("this", clientId + "_sub",
+                                         expand(supermenu, clientId + "_sub",
                                                 KEYWORD_THIS));
             } else {
                 topLevelDiv.setAttribute(displayEvent,
