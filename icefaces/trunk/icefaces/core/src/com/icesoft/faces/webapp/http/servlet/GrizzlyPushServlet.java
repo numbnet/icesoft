@@ -42,6 +42,7 @@ public class GrizzlyPushServlet
 
     public void init(ServletConfig config) throws ServletException { 
         super.init(config);
+System.out.println("Latest GrizzlyPushServlet");
         Method getContextPathMethod;
         ServletContext servletContext = config.getServletContext();
         try {
@@ -88,7 +89,6 @@ public class GrizzlyPushServlet
         CometContext cometContext = cometEngine.getCometContext(contextPath);
         grizzlyResponder.attach(response);
         cometContext.addCometHandler(grizzlyResponder);
-        allUpdatedViews.onPut( grizzlyResponder );
     }
     
 
@@ -138,6 +138,7 @@ class GrizzlyEventResponder implements Runnable,
      */
     public void onInitialize(CometEvent event) throws IOException {
         cometContext = event.getCometContext();  
+        allUpdatedViews.onPut(this);
     }
     
     
@@ -146,6 +147,7 @@ class GrizzlyEventResponder implements Runnable,
      * tcp communication is closed by the <code>CometHandler</code>
      */
     public void onTerminate(CometEvent event) throws IOException  {
+System.out.println("onTerminate " + this);
         onInterrupt(event);
     }
     
@@ -168,7 +170,7 @@ class GrizzlyEventResponder implements Runnable,
                 }
             }
             writeViews(allUpdatedViews, synchronouslyUpdatedViews, writer);
-            cometContext.removeCometHandler(this);
+            cometContext.resumeCometHandler(this);
         } catch (Throwable e) {
             e.printStackTrace();
         }
