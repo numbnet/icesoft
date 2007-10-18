@@ -53,7 +53,7 @@ public class FileAdminBean implements Serializable{
 	private long currentSize = 0;
 	private String remainingSpace;
 	private ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
-	
+
 	//for checking purposes
 	private String convId;
 	private boolean longRunning;
@@ -66,16 +66,36 @@ public class FileAdminBean implements Serializable{
     private static Log log =
            LogFactory.getLog(FileAdminBean.class);	
   	
-	@In(create=true)
     public void setFileUpload(InputFileBean ifb){
     	log.info("setFileUpload");
     	if (ifb==null){
     		log.info("\t\t >>>creating new fileUpload");
-    		fileUpload = new InputFileBean();
     	}
+    	else fileUpload=ifb;
+//		log.info("setFileUpload version="+fileUpload.toString());
+//		log.info("setFileUpload fileAdmin version="+this.toString());
     }
 
 	public InputFileBean getFileUpload(){
+		if (fileUpload==null){
+			log.info("inputFileBean is null");
+    		fileUpload = new InputFileBean();
+		}
+		else {
+//			log.info("gettingInputFileBean percent="+fileUpload.getPercent());
+//			if (fileUpload.getPercent()>-1)this.percent=fileUpload.getPercent();
+		}
+//		log.info("getFileUpload version="+fileUpload.toString());
+//		log.info("getFileUpload fileAdmin version="+this.toString());
+//try{
+//   	 java.lang.reflect.Method[] methods = fileUpload.getClass().getMethods();
+//   	 for(int i = 0; i < methods.length; i++) {
+//   		 log.info(methods[i].toGenericString());
+//   	 }
+//}catch (Exception e){
+//	log.info("\t\t-> couldn't get list of methods for fileUpload "+e);
+//	//e.printStackTrace();
+//}
 		return this.fileUpload;
 	}
 
@@ -217,7 +237,7 @@ public class FileAdminBean implements Serializable{
 		}
 		return false;
 	}
-	
+
 	public File getLastFile(){
 		log.info("getLastFile");
 		if (filesList.size() > 0){
@@ -257,4 +277,12 @@ public class FileAdminBean implements Serializable{
 	 		fileUpload.getRenderManager().dispose();
 	 	}
 	}
+
+//	public int getPercent() {
+//		return percent;
+//	}
+//
+//	public void setPercent(int percent) {
+//		this.percent = percent;
+//	}
 }

@@ -72,7 +72,7 @@ public class InputFileBean implements Renderable, Serializable{
      * constructor
      */
     public InputFileBean() {
-    	log.info("initializing InputFileBean");
+    	log.info("initializing InputFileBean "+this.toString());
         state = PersistentFacesState.getInstance();    
     }
 
@@ -131,6 +131,7 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public void action(ActionEvent event) {
+    	log.info("action version="+this);
 	     InputFile inputFile = (InputFile) event.getSource();
 	     currentFileName = inputFile.getFileInfo().getFileName();
 	     this.percent = inputFile.getFileInfo().getPercent();
@@ -174,13 +175,18 @@ public class InputFileBean implements Renderable, Serializable{
 	    }
 	     else setError("nothing");
     }
-
+    public String act(){
+    	log.info("act() version="+this);
+    	
+    	return null;
+    }
 
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
 	 */
      @Begin
     public void progress(EventObject event) {
+    	 log.info("progress version="+this);
         InputFile ifile = (InputFile) event.getSource(); 
 		this.percent = ifile.getFileInfo().getPercent();
 		if (renderManager != null) {

@@ -4,9 +4,8 @@
        xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
   no-conversation-view-id="/showcase.xhtml">
 
-    <page view-id="/showcase.xhtml">
-    
-        <navigation from-action="#{styleBean.changeStyle}">
+    <page view-id="/showcase.xhtml" >
+        <navigation from-action="#{treeNavigation.changeStyle}">
                 <redirect/>
         </navigation>
         

@@ -37,9 +37,12 @@ import com.icesoft.icefaces.samples.showcase.navigation.TreeNavigation;
 
 import javax.faces.model.SelectItem;
 
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.SESSION;
+import static org.jboss.seam.ScopeType.EVENT;
+import org.jboss.seam.ScopeType;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -55,7 +58,7 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
-@Scope(SESSION)
+@Scope(ScopeType.SESSION)
 @Name("styleBean")
 public class StyleBean implements Serializable{
 
@@ -74,7 +77,8 @@ public class StyleBean implements Serializable{
     private String imageDirectory = "./xmlhttp/css/xp/css-images/";
 
     // navigation tree reference for updating folder icons
-    TreeNavigation treeNav;
+//    @In @Out
+//    TreeNavigation treeNavigation;
 
     // folder icons for the respective themes
     public static final String XP_BRANCH_EXPANDED_ICON =
@@ -149,7 +153,7 @@ public class StyleBean implements Serializable{
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
 
         // manually update the icons in the navigation tree
-        treeNav.refreshIcons(currentStyle);
+//        treeNavigation.refreshIcons(currentStyle);
 
         return "reload";
     }
@@ -171,7 +175,7 @@ public class StyleBean implements Serializable{
      * @param treeNav
      */
     public void registerTree(TreeNavigation treeNav) {
-
-        this.treeNav = treeNav;
+    	System.out.println("StyleBean: registerTree");
+//        this.treeNavigation = treeNav;
     }
 }

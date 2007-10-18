@@ -51,10 +51,10 @@
 <!-- Demo Title -->
 <h2>
     <ice:outputText
-            value="#{navigation.selectedPanel.menuContentTitle}"/>
+            value="#{treeNavigation.currentPageContent.menuContentTitle}"/>
 </h2>
     <ice:panelGroup styleClass="contentIncludePanelGroup">
-        <ui:include src="#{navigation.selectedPanel.menuContentInclusionFile}"/>
+        <ui:include src="#{treeNavigation.currentPageContent.menuContentInclusionFile}"/>
      </ice:panelGroup>
 <br/>
 </div>

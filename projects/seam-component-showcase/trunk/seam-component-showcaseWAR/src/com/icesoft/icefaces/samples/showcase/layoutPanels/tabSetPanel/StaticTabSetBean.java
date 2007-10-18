@@ -39,17 +39,27 @@
 package com.icesoft.icefaces.samples.showcase.layoutPanels.tabSetPanel;
 
 import com.icesoft.faces.component.paneltabset.PanelTabSet;
+import com.icesoft.faces.component.ext.HtmlSelectOneRadio;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeListener;
-import javax.faces.component.UIInput;
-import javax.faces.component.html.HtmlSelectOneRadio;
+
+import javax.ejb.Remove;
+
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.End;
+
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.PAGE;
+
+import org.jboss.seam.core.Manager;
+
 import java.io.Serializable;
 /**
  * The StaticTabSetBean class is a backing bean for the TabbedPane showcase
@@ -59,33 +69,39 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
-@Scope(ScopeType.SESSION)
-@Name("staticTabbedPaneExample")
-public class StaticTabSetBean implements TabChangeListener, Serializable{
-    
+
+@Scope(ScopeType.PAGE)
+@Name("staticTabbedPane")
+public class StaticTabSetBean implements  Serializable{
+//	public class StaticTabSetBean implements TabChangeListener, Serializable{
     /**
      * The demo contains three tabs and thus we need three variables to store
      * their respective rendered states.
      */
     private boolean tabbedPane1Visible=true;
-    private boolean tabbedPane2Visible;
-    private boolean tabbedPane3Visible;
-    private HtmlSelectOneRadio selectedTabObject;
-    
+    private boolean tabbedPane2Visible=true;
+    private boolean tabbedPane3Visible=true;
+    private int selectedIndex=1;
+	private static Log log =
+           LogFactory.getLog(StaticTabSetBean.class);    
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
      * "bottom".
      */
     private String tabPlacement = "bottom";
 
-    // default tab focus.
-    private String selectedTabFocus = "1";
 
     /**
      * Binding used by example to listen
      */
-    private PanelTabSet tabSet;
+
+ // private PanelTabSet tabSet;
     
+
+ 	@Begin
+	public void startConv(){
+	  log.info("starting Conversation");
+	}   
     /**
      * Return the visibility of tab panel 1.
      *
@@ -148,9 +164,11 @@ public class StaticTabSetBean implements TabChangeListener, Serializable{
      *
      * @return bound tabbed pane.
      */
-    public PanelTabSet getTabSet() {
-        return tabSet;
-    }
+//     public PanelTabSet getTabSet() {
+   // 	if (tabSet!=null)log.info("getTabSet and tabSet="+tabSet.getId());
+    //	else log.info("getTabSet and tabSet is null");
+ //       return tabSet;
+ //   }
     
     /**
      * Set a tabbed pane object which will be bound to this object
@@ -158,36 +176,13 @@ public class StaticTabSetBean implements TabChangeListener, Serializable{
      * @param tabSet new PanelTabSet object.
      */
     public void setTabSet(PanelTabSet tabSet) {
-        this.tabSet = tabSet;
-    }
-    
-    /**
-     * Called when the tab pane focus is to be changed.
-     *
-     * @param event new value is the new selected tab index.
-     */
-    public void selectTabFocus(ValueChangeEvent event) {
-        int index = Integer.parseInt((String) event.getNewValue());
-        tabSet.setSelectedIndex(index);
-    }
-    
-    /**
-     * Called when a tab is selected.
-     *
-     * @param event value is the selected tab.
-     */
-    public void selectTab(ValueChangeEvent event) {
-        UIInput component = (UIInput) event.getComponent();
-        int index = 1;
-        try {
-            index = Integer.parseInt(component.getValue().toString());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        tabSet.setSelectedIndex(index);
-    }
+ //        this.tabSet = tabSet;
+//    	if (tabSet==null){
+  //  		log.info("settabSet is null");
+ //   	}
+    //	else log.info("setTabSet & tabSet="+tabSet.getId());
+
+    } 
     
     /**
      * Gets the tab placement, either top or bottom.
@@ -227,46 +222,70 @@ public class StaticTabSetBean implements TabChangeListener, Serializable{
      */
     public void processTabChange(TabChangeEvent tabChangeEvent)
             throws AbortProcessingException {
+    	/*
         setSelectedTabFocus(String.valueOf(tabChangeEvent.getNewTabIndex()));
-        if (selectedTabObject != null) {
-            selectedTabObject.setSubmittedValue(selectedTabFocus);
-        }
+//        if (selectedTabObject != null) {
+//        	log.info("selectedTabObject!=null");
+//            selectedTabObject.setSubmittedValue(selectedTabFocus);
+//        }
+        */
     }
     
-    /**
-     * Gets the currently selected tab.
-     *
-     * @return selectedTabFocus of the currently selected tab.
-     */
-    public String getSelectedTabFocus() {
-        return selectedTabFocus;
-    }
+//    /**
+//     * Gets the currently selected tab. --don't need this either
+//     *
+//     * @return selectedTabFocus of the currently selected tab.
+//     */
+//    public String getSelectedTabFocus() {
+//    	log.info("getSelectedTabFocus value="+selectedTabFocus);
+//        return Integer.toString(selectedIndex);
+//    }
 
-    /**
-     * Sets the currently selected tab.
-     *
-     * @param selectedTabFocus new selected tab.
-     */
-    public void setSelectedTabFocus(String selectedTabFocus) {
-        this.selectedTabFocus = selectedTabFocus;
-    }
+//    /**
+//     * Sets the currently selected tab. don't need this anymore!!!
+//     *
+//     * @param selectedTabFocus new selected tab.
+//     */
+//    public void setSelectedTabFocus(String selectedTabFocus) {
+//    	log.info("setSelectedTabFocus to "+selectedTabFocus);
+//    	try{
+//    	selectedIndex = Integer.parseInt(selectedTabFocus);
+//    	}catch (NumberFormatException e){
+//    		log.info("problem with parsing for selectedTabFocus="+selectedTabFocus);
+//    		log.info("exception :-"+e);
+//    	}
+//    }
     
-    /**
-     * Gets the currently selected tab object.
-     *
-     * @return selectedTabObject of the currently selected tab.
-     */
-    public HtmlSelectOneRadio getBindSelectedTabObject() {
-        return selectedTabObject;
-    }
-    
-    /**
-     * Sets the cuurently selected tab object.
-     *
-     * @param selectedTabObject new HtmlSelectOneRadia object.
-     */
-    public void setBindSelectedTabObject(HtmlSelectOneRadio selectedTabObject) {
-        this.selectedTabObject = selectedTabObject;
-    }
-    
+
+
+    private String convId;
+    private String longRunning;
+    private String convParam;
+
+	public String getConvId() {
+		return Manager.instance().getCurrentConversationId();
+	}
+
+	public String getLongRunning() {
+		return String.valueOf(Manager.instance().isLongRunningConversation());
+	}
+
+	public String getConvParam() {
+		return Manager.instance().getConversationIdParameter();
+	}
+	   @Remove
+	   public void destroy() {
+		   log.info("destroying StaticTabSetBean");
+	   }
+
+	public int getSelectedIndex() {
+//		log.info("getSelectedIndex and value is="+selectedIndex);
+		return selectedIndex;
+	}
+	public void setSelectedIndex(int selectedIndex) {
+//		log.info("setSelectedIndex to value="+selectedIndex);
+		this.selectedIndex = selectedIndex;
+	}
+
+
 }

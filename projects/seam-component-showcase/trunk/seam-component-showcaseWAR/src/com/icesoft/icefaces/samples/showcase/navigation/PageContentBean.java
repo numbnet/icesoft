@@ -38,6 +38,19 @@ import com.icesoft.icefaces.samples.showcase.util.StyleBean;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.End;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.Manager;
+
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -48,8 +61,11 @@ import java.util.ResourceBundle;
  *
  * @since 0.3.0
  */
-public class PageContentBean extends IceUserObject {
-
+//@Scope(ScopeType.CONVERSATION)    
+//@Name("pageContent")
+public class PageContentBean extends IceUserObject implements Serializable{
+	   private static Log log =
+           LogFactory.getLog(PageContentBean.class);   
     // template, default panel to make visible in a panel stack
     private String templateName = "";
 
@@ -58,6 +74,9 @@ public class PageContentBean extends IceUserObject {
     // title information to be displayed
     private String menuContentTitle;
     private String menuContentInclusionFile;
+    
+    // all but one component doesn't require LR Conversation
+    private boolean startLongRunningConversation=false;
 
     // True indicates that there is content associated with link and as a
     // result templateName and contentPanelName can be used. Otherwise we
@@ -71,27 +90,32 @@ public class PageContentBean extends IceUserObject {
     private static ResourceBundle messages = null;
 
     // view reference to control the visible content
-    private NavigationBean navigationBean;
+ //   @In @Out
+ //   private NavigationBean navigationBean;
 
+    private TreeNavigation treeNav;
     /**
      * Build a default node for the tree.  We also change the default icon and
      * always expand branches.
      */
-    public PageContentBean() {
+    public PageContentBean(TreeNavigation treeNav) {
         super(null);
         init();
+        this.treeNav = treeNav;
     }
 
     /**
      * Initialize internationalization.
      */
     private void init() {
-
+    	//why set the images statically?  They should be set properly from 
+    	//the StyleBean's current set of images???
         setBranchContractedIcon(StyleBean.XP_BRANCH_CONTRACTED_ICON);
         setBranchExpandedIcon(StyleBean.XP_BRANCH_EXPANDED_ICON);
         setLeafIcon("./images/gear.gif");
         setExpanded(true);
 
+        //will set the locale from the LanguageBean--soon to be LocaleBean??
         Locale locale =
                 FacesContext.getCurrentInstance().getViewRoot().getLocale();
         // assign a default locale if the faces context has none, shouldn't happen
@@ -109,18 +133,18 @@ public class PageContentBean extends IceUserObject {
      *
      * @return NavigationBean.
      */
-    public NavigationBean getNavigationSelection() {
-        return navigationBean;
-    }
+//    public NavigationBean getNavigationSelection() {
+//        return navigationBean;
+//    }
 
     /**
      * Sets the navigation callback.
      *
      * @param navigationBean controls selected panel state.
      */
-    public void setNavigationSelection(NavigationBean navigationBean) {
-        this.navigationBean = navigationBean;
-    }
+//    public void setNavigationSelection(NavigationBean navigationBean) {
+//        this.navigationBean = navigationBean;
+//    }
 
     /**
      * Gets the template name to display in the showcase.jspx.  The template is
@@ -129,6 +153,7 @@ public class PageContentBean extends IceUserObject {
      * @return panel stack template name.
      */
     public String getTemplateName() {
+//    	log.info("getTemplateName = "+templateName);
         return templateName;
     }
 
@@ -160,6 +185,7 @@ public class PageContentBean extends IceUserObject {
      * @param menuDisplayText menu text to display
      */
     public void setMenuDisplayText(String menuDisplayText) {
+//    	log.info("setMenuDisplayText is:-"+menuDisplayText);
         if (menuDisplayText != null) {
             this.menuDisplayText = menuDisplayText;
             // set tree node text value
@@ -176,9 +202,12 @@ public class PageContentBean extends IceUserObject {
      * @return menu content title
      */
     public String getMenuContentTitle() {
+    	
         if (menuContentTitle != null && !menuContentTitle.equals("")) {
+//        	log.info("getMenuContentTitle ="+messages.getString(menuContentTitle));
             return messages.getString(menuContentTitle);
         } else {
+//        	log.info("getter menuContentTitle is null");
             return "";
         }
     }
@@ -191,7 +220,9 @@ public class PageContentBean extends IceUserObject {
     public void setMenuContentTitle(String menuContentTitle) {
         if (menuContentTitle != null) {
             this.menuContentTitle = menuContentTitle;
+//            log.info("setMenuContentTitle to "+messages.getString(menuContentTitle));
         } else {
+//        	log.info("setter menuContentTitle is null");
             this.menuContentTitle = "";
         }
     }
@@ -209,6 +240,7 @@ public class PageContentBean extends IceUserObject {
      * @param menuContentInclusionFile The server-side path to the file to be included
      */
     public void setMenuContentInclusionFile(String menuContentInclusionFile) {
+//    	log.info("setMenuContentInclusionFile to "+menuContentInclusionFile);
         this.menuContentInclusionFile = menuContentInclusionFile;
     }
     
@@ -231,22 +263,80 @@ public class PageContentBean extends IceUserObject {
         this.pageContent = pageContent;
     }
 
+ 
     /**
      * Sets the navigationSelectionBeans selected state
      */
     public void contentVisibleAction(ActionEvent event) {
-        if (isPageContent()) {
+//    	log.info("contentVisibleAction for "+this.getMenuDisplayText());
+         if (isPageContent()) {
+//         	log.info("setting "+this.getMenuDisplayText()+" to expanded");
             // only toggle the branch expansion if we have already selected the node
-            if (navigationBean.getSelectedPanel().equals(this)) {
+  //          if (navigationBean.getSelectedPanel().equals(this)) {
                 // toggle the branch node expansion
                 setExpanded(!isExpanded());
-            }
-            navigationBean.setSelectedPanel(this);
-        }
+ //               if (this.templateName.equals("tabbedPaneContentPanel")){
+ //               	log.info("this is a panelTabSet so start LR Conversation");
+  //              	setStartLongRunningConversation(true);
+//                }else{
+//                	log.info("not panelTabSet & LR Conversation="+Manager.instance().isLongRunningConversation());
+//                	setStartLongRunningConversation(false);
+//                }
+                	
+                treeNav.setCurrentPageContent(this);
+    //        }
+    //        navigationBean.setSelectedPanel(this);
+         }
         // Otherwise toggle the node visibility, only changes the state
         // of the nodes with children.
         else {
             setExpanded(!isExpanded());
         }
     }
+/*DON'T NEED THIS ANYMORE!!! made panelTabSet page scoped !!
+ * all components but panelTabSet currently don't require a LR conversation
+ * Thus check to see if a LR conversation exists and end it.  Seam will 
+ * automatically demote to temporary conversation
+ */
+	public boolean isStartLongRunningConversation() {
+		return startLongRunningConversation;
+	}
+
+	/*DON'T NEED THIS ANYMORE!!! made panelTabSet page scoped !!
+	 * so far the only PageContentBean requiring a LR conversation is panelTabSet
+	 * If startLongRunningConversation == true, then make sure there isn't one already 
+	 * present to join.  If not, then start one, otherwise join ?? or maybe end the
+	 * old one and start a new one???
+	 */
+	public void setStartLongRunningConversation(boolean startLongRunningConversation) {
+		log.info("setStartLongRunningConversation = "+startLongRunningConversation);
+		this.startLongRunningConversation = startLongRunningConversation;
+		if (startLongRunningConversation){
+			if (Manager.instance().isLongRunningConversation() ){
+				log.info("already have a long running Conversation!!");
+				//join it!
+				joinConversation();
+			}
+			else {
+				log.info("starting LR Conversation");
+				startConversation();
+			}
+		}else if (Manager.instance().isLongRunningConversation()){
+			log.info("ending LR Conversation");
+			endConversation();
+		}
+
+	}
+	@End
+	public void endConversation(){
+		log.info("LR Conversation ended");
+	}
+	@Begin
+	public void startConversation(){
+		log.info("LR Conversation started");
+	}
+	@Begin(join=true)
+	public void joinConversation(){
+		log.info("Joined Conversation");
+	}
 }

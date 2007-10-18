@@ -71,11 +71,13 @@ Once the file is uploaded, information about the file is displayed.
                                 style="text-align:left">
                    <ice:inputFile id="inputFileName"
                        progressListener="#{fileAdminBean.fileUpload.progress}"
-                         actionListener="#{fileAdminBean.fileUpload.action}" />
+                         actionListener="#{fileAdminBean.fileUpload.action}"
+                         action="#{fileAdminBean.fileUpload.act}" />
                    <ice:outputProgress id="pro"
                                     value="#{fileAdminBean.fileUpload.percent}"/>
                    <ice:outputText id="fileName"
-                                value="Uploading to File Name: #{fileAdminBean.fileUpload.currentFileName}"/> 
+                                value="Uploading to File Name: #{fileAdminBean.fileUpload.currentFileName}"/>
+                   <ice:outputText value="From fileAdmin percent=#{fileAdminBean.percent}"/> 
                       <br/>
                    <ice:outputText value="Remaining space for file uploads: #{fileAdminBean.remainingSpace}"/>
                </ice:panelGroup>
@@ -120,11 +122,6 @@ Once the file is uploaded, information about the file is displayed.
               </ice:panelGroup>
    
 	    </ice:panelGroup> 
-	    <ice:panelGroup>
-	       <ice:outputText value="#{fileAdminBean.convId}"/>
-	       <ice:outputText value="#{fileAdminBean.longRunning}"/>
-	       <h:messages/>
-	    </ice:panelGroup>
 
    <!--   </ice:panelTab> -->
 

@@ -38,10 +38,14 @@
 package com.icesoft.icefaces.samples.showcase.layoutPanels.tabSetPanel;
 
 import com.icesoft.faces.component.paneltabset.PanelTabSet;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -54,20 +58,22 @@ import static org.jboss.seam.ScopeType.PAGE;
  *
  * @since 0.3.0
  */
-@Scope(ScopeType.SESSION)
+@Scope(ScopeType.PAGE)
 @Name("dynamicTabbedPaneExample")
-public class DynamicTabSetBean{
-    
+public class DynamicTabSetBean implements Serializable{
+	   private static Log log =
+           LogFactory.getLog(DynamicTabSetBean.class);   
     private int tabIndex;
     private String newTabLabel;
     private String newTabContent;
     private List tabs = new ArrayList();
     private String removedTab;
-    private List tabItems = new ArrayList();
-    private PanelTabSet dynamicTabSet;
+    private List tabItems = new ArrayList(); 
+    private int selectedIndex = 0;
+   
+//   private PanelTabSet dynamicTabSet;
         
     public DynamicTabSetBean() {
-        
         //pre-defined two tabs into the panelTabSet
         Tab newTab1 = new Tab();
         newTab1.setLabel("Label1");
@@ -94,17 +100,19 @@ public class DynamicTabSetBean{
      * @param event remove button click.
      */
     public void removeTab(ActionEvent event) {
-        int selectedIndex =  dynamicTabSet.getSelectedIndex();
+ //       int selectedIndex =  dynamicTabSet.getSelectedIndex();
         //remove from tabs
         for (int i = 0; i < tabs.size(); i++) {
             if (((Tab) tabs.get(i)).getIndex() ==
                 Integer.parseInt(removedTab)) {
                 tabs.remove(i);
                 if (selectedIndex  > i) {
-                    dynamicTabSet.setSelectedIndex((selectedIndex > 0)? 
+  //                  dynamicTabSet.setSelectedIndex((selectedIndex > 0)?
+                	setSelectedIndex((selectedIndex > 0)?
                         (selectedIndex -1) : selectedIndex);
                 } else if (tabs.size() ==1) {
-                    dynamicTabSet.setSelectedIndex(0);
+//                    dynamicTabSet.setSelectedIndex(0);
+                	setSelectedIndex(0);
                 }
                 break;
             }
@@ -243,19 +251,25 @@ public class DynamicTabSetBean{
      *
      * @return dynamicTabSet PanelTabSet object.
      */
-    public PanelTabSet getDynamicTabSet() {
-        return dynamicTabSet;
-    }
+//    public PanelTabSet getDynamicTabSet() {
+//        return dynamicTabSet;
+//    }
     
     /**
      * Sets the dynamicTabSet PanelTabSet object.
      *
      * @param dynamicTabSet PanelTabSet object.
      */
-    public void setDynamicTabSet(PanelTabSet dynamicTabSet) {
-        this.dynamicTabSet = dynamicTabSet;
-    }
-    
+//    public void setDynamicTabSet(PanelTabSet dynamicTabSet) {
+//        this.dynamicTabSet = dynamicTabSet;
+//    }
+	public int getSelectedIndex() {
+		return selectedIndex;
+	}
+
+	public void setSelectedIndex(int selectedIndex) {
+		this.selectedIndex = selectedIndex;
+	}  
     /**
      * Inner class that represents a tab object with a label, content, and an
      * index.
