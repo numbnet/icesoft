@@ -37,24 +37,20 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 <ice:panelTabSet styleClass="componentPanelTabSetLayout">
-<!--
-  Controls to show/hide the table columns
--->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid id="gampDemo3"
-                   styleClass="componentLayoutRootTable" columns="2">
-         <f:facet name="header">
-            <ice:outputText value="This demo is using ice:gMapMarker component to display Future shop locations in the Calgary on the map"/>
-         </f:facet>                   
-         <ice:gMap latitude="51.04507" longitude="-114.06319" zoomLevel="10">
-             <ice:gMapMarker>
-                 <ice:gMapLatLng latitude="51.100088" longitude="-114.141425"/>
-                 <ice:gMapLatLng latitude="51.077861" longitude="-113.987032"/>
-                 <ice:gMapLatLngs value="#{gmap.point}"/>      
-             </ice:gMapMarker>
-         </ice:gMap>
-    </ice:panelGrid>
 
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+    <ice:panelGrid id="gmapDemo5"
+                   styleClass="componentLayoutRootTable">
+        <ice:outputText value="You can nest an ice:gMapMarker tag to display single or multiple locations on a map"/>
+        <ice:panelGroup styleClass="formBorderHighlight">  
+	        <ice:gMap latitude="39.10295" longitude="-94.58302">
+	            <ice:gMapMarker>
+	                <ice:gMapLatLng latitude="51.067591" longitude="-114.084862"/>
+	                <ice:gMapLatLngs value="#{gmap.points}"/>      
+	            </ice:gMapMarker>
+	        </ice:gMap>
+	    </ice:panelGroup>
+    </ice:panelGrid>
 </ice:panelTab>
 <!--
   The bean is responsible for streaming html documentation to

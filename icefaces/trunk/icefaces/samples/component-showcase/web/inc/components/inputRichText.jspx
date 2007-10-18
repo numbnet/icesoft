@@ -44,10 +44,19 @@
     <ice:panelGrid id="inputRichTextDemo1"
                    styleClass="inputRichTextDemo" columns="1">
          <f:facet name="header">
-            <ice:outputText value="Click on save button to save the data"/>
+            <ice:outputText value="#{msgs['component.inputRichTextFields.instructions']}"/>
          </f:facet>                   
             <ice:inputRichText height="300" value="#{inputRichTextBean.value}" language="en" valueChangeListener="#{inputRichTextBean.valueChange}"/>
-            <ice:outputText escape="false" value="#{inputRichTextBean.value}"/>
+                            <!-- Text Field output text -->
+            <ice:panelGrid styleClass="formBorderHighlight">
+
+                <h3>
+                    <ice:outputText
+                            value="#{msgs['component.inputRichTextFields.serverFeedback']}"/>
+                </h3>
+                <ice:outputText escape="false" value="#{inputRichTextBean.value}"/>
+            </ice:panelGrid>
+                
     </ice:panelGrid>
 
 </ice:panelTab>

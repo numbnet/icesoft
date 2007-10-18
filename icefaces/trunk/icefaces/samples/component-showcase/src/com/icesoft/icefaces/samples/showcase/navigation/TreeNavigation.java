@@ -670,7 +670,7 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
                 
-                // component menu -> GoogleMaps -> Demo6
+/*                // component menu -> GoogleMaps -> Demo6
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
                         "submenuDisplayText.demo6");
@@ -684,7 +684,7 @@ public class TreeNavigation {
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
-
+*/
                 // Layout Panels menu item
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(

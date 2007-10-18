@@ -45,10 +45,12 @@
                    styleClass="componentLayoutRootTable" columns="1">
          <f:facet name="header">
             <ice:outputText value="View KML examples (geoxml-kml.html)"/>
-         </f:facet>                   
-          <ice:gMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
-              <ice:gMapGeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
-          </ice:gMap>
+         </f:facet>
+         <ice:panelGroup styleClass="formBorderHighlight">  
+             <ice:gMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">
+                 <ice:gMapGeoXml url="http://mapgadgets.googlepages.com/cta.kml"/>
+             </ice:gMap>
+         </ice:panelGroup>
     </ice:panelGrid>
 
 </ice:panelTab>

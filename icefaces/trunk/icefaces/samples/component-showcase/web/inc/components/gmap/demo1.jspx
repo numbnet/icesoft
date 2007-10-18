@@ -37,16 +37,14 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 <ice:panelTabSet styleClass="componentPanelTabSetLayout">
-<!--
-  Controls to show/hide the table columns
--->
+
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo"
                    styleClass="componentLayoutRootTable" columns="1">
-         <f:facet name="header">
-            <ice:outputText value="gMap with default location"/>
-         </f:facet>                   
-         <ice:gMap address="1717 10th St. NW, Calgary, AB"/>
+        <ice:outputText value="The ice:gMap component with a default location set in the address attribute."/>
+        <ice:panelGroup styleClass="formBorderHighlight">                   
+            <ice:gMap address="New York City"/>
+        </ice:panelGroup>
     </ice:panelGrid>
 
 </ice:panelTab>

@@ -37,22 +37,19 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 <ice:panelTabSet styleClass="componentPanelTabSetLayout">
-<!--
-  Controls to show/hide the table columns
--->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid id="gampDemo3"
-                   styleClass="componentLayoutRootTable">
-            <f:facet name="header">
-                <ice:outputText value="Controls maintain their state"/>
-            </f:facet>
-            <ice:gMap>
-                <ice:gMapControl name="GLargeMapControl"/> 
-                <ice:gMapControl name="GScaleControl"/> 
-                <ice:gMapControl name="GMapTypeControl"/> 
-            </ice:gMap>
-    </ice:panelGrid>
 
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+    <ice:panelGrid id="gmapDemo4"
+                   styleClass="componentLayoutRootTable">
+        <ice:outputText value="You can nest the desired ice:gMapControl tags inside an ice:gMap tag.  If you leave this demo and return, you will find these controls maintain their state."/>
+        <ice:panelGroup styleClass="formBorderHighlight">  
+	        <ice:gMap>
+	            <ice:gMapControl name="GLargeMapControl"/> 
+	            <ice:gMapControl name="GScaleControl"/> 
+	            <ice:gMapControl name="GMapTypeControl"/> 
+	        </ice:gMap>
+	    </ice:panelGroup>
+    </ice:panelGrid>
 </ice:panelTab>
 <!--
   The bean is responsible for streaming html documentation to

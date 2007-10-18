@@ -3,23 +3,23 @@ package com.icesoft.icefaces.samples.showcase.components.gmap;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.component.UICommand;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import com.icesoft.faces.component.gmap.GMapLatLng;
 
 public class Bean {
 	private String geoCoderAddress;
-	private String address;
+	private String address = "";
 	private boolean locateAddress = false;
-	private boolean render = true;
-	private List point = new ArrayList();
+	private List points = new ArrayList();
 	
 	public Bean() {
-		point.add(new GMapLatLng("50.992255", "-114.071646"));
-		point.add(new GMapLatLng("50.905381", "-114.066651"));
-		point.add(new GMapLatLng("51.160609", "-114.064579"));
-		point.add(new GMapLatLng("50.985599", "-114.031506"));
+		points.add(new GMapLatLng("37.379434", "-121.02203"));
+		points.add(new GMapLatLng("33.845449", "-84.368682"));
+		points.add(new GMapLatLng("34.05333", "-118.24499"));
+		points.add(new GMapLatLng("33.072694", "-97.06234"));
+        points.add(new GMapLatLng("37.391278", "-121.952451"));
 	}
 	
 	public String getAddress() {
@@ -43,29 +43,16 @@ public class Bean {
 		return false;
 	}
 	
-	public void findAddress(ActionEvent event) {
-		this.address = ((UICommand)event.getComponent()).getValue().toString();
+	public void findAddress(ValueChangeEvent event) {
 		locateAddress = true;
 	}
 
-	public boolean isRender() {
-		return render;
+	public List getPoints() {
+		return points;
 	}
 
-	public void setRender(boolean render) {
-		this.render = render;
-	}
-	
-	public void toggle(ActionEvent event) {
-		render = !render;
-	}
-
-	public List getPoint() {
-		return point;
-	}
-
-	public void setPoint(List point) {
-		this.point = point;
+	public void setPoints(List points) {
+		this.points = points;
 	}
 
 	public String getGeoCoderAddress() {

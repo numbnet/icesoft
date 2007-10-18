@@ -52,9 +52,9 @@ are shown but could easily be made to invoke application logic.
 <ice:panelGrid
         styleClass="componentLayoutRootTable"
         columns="1">
-
-<!-- description for menubar -->
-<ice:panelGroup styleClass="formBorderHighlight">
+<!-- menubar -->
+<ice:panelGroup styleClass="formBorderHighlight"
+                style="height: 200px ">
     <h3>
         <ice:outputText
                 value="#{msgs['component.menuBar.instructions']}"/>
@@ -63,8 +63,6 @@ are shown but could easily be made to invoke application logic.
         <ice:outputText
                 value="#{msgs['component.menuBar.subInstructions']}"/>
     </h4>
-    <br/>
-
     <h3>
         <ice:outputText
                 value="#{msgs['component.menuBar.orientationLabel']}"/>
@@ -75,30 +73,9 @@ are shown but could easily be made to invoke application logic.
         <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="Horizontal"/>
         <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="Vertical"/>
     </ice:selectOneRadio>
-
-</ice:panelGroup>
-
-<!-- menubar example -->
-<ice:panelGroup styleClass="formBorderHighlight">
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.global.serverFeedback']}"/>
-    </h3>
-    <ice:panelGrid columns="2">
-        <ice:outputText value="#{msgs['component.menuBar.selection']}"
-                        styleClass="valueHeader"/>
-        <ice:outputText id="MenuSlct" value="#{menuBar.actionFired}" styleClass="valueText"/>
-        <ice:outputText value="#{msgs['component.menuBar.param']}"
-                        styleClass="valueHeader"/>
-        <ice:outputText id="MenuParamVal" value="#{menuBar.param}" styleClass="valueText"/>
-    </ice:panelGrid>
-</ice:panelGroup>
-
-<!-- menubar -->
-<ice:panelGroup styleClass="formBorderHighlight"
-                style="height: 150px ">
+    <br />
     <!-- main menu declaration  -->
-    <ice:menuBar id="menu" orientation="#{menuBar.orientation}">
+    <ice:menuBar id="menuBar" orientation="#{menuBar.orientation}">
 
         <!-- File menu -->
         <ice:menuItem value="File" id="file" >
@@ -159,11 +136,9 @@ are shown but could easily be made to invoke application logic.
         <!-- Edit menu -->
         <ice:menuItem value="Edit" id="edit">
             <ice:menuItem id="cut" value="Cut"
-
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
             <ice:menuItem id="copy" value="Copy"
-
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
             <ice:menuItem id="paste" value="Paste"
@@ -196,32 +171,71 @@ are shown but could easily be made to invoke application logic.
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="formBorderHighlight"
-                style="height: 100px ">
+                style="height: 175px ">
     
     <ice:panelGroup id="clickingSection"
-                    menuPopup="menuP">
-        <p>Right click on the image, or this text.</p>
-        <ice:graphicImage
-            url="http://www.java2s.com/style/logo.png"
-            alt="www.java2s.com"
-            width="99"
-            height="76"/>
-        <br/>
-        <br/>
+                    menuPopup="menuPopupText">
+    <h3>
+        <ice:outputText
+                value="#{msgs['component.menuPopup.instructions']}"/>
+    </h3>
+    <h4>
+        <ice:outputText
+                value="#{msgs['component.menuPopup.subInstructions']}"/>
+    </h4>
     </ice:panelGroup>
-    <ice:menuPopup id="menuP">
-        <ice:menuItem value="File" id="popup_file">
-            <ice:menuItem value="Open" id="popup_file_open" actionListener="#{menuBar.primaryListener}" icon="images/menu/open.gif"/>
-            <ice:menuItem value="Close" id="popup_file_close" actionListener="#{menuBar.primaryListener}"/>
-            <ice:menuItem value="Recent" id="popup_file_recent" icon="images/menu/recent.gif">
-                <ice:menuItem value="File 1" id="popup_file_recent_1" actionListener="#{menuBar.primaryListener}"/>
-                <ice:menuItem value="File 2" id="popup_file_recent_2" actionListener="#{menuBar.primaryListener}"/>
+    <ice:panelGroup id="clickingImageSection"
+                    menuPopup="menuPopupImage">	    
+    <ice:graphicImage value="images/panelSeries/Ice Berg.jpg"
+                      alt="Ice Berg"
+                      width="100"
+                      height="75"/>
+    </ice:panelGroup>
+    <br/>
+    <ice:menuPopup id="menuPopupImage">
+        <!-- File menu -->
+        <ice:menuItem value="File" id="file" >
+            <ice:menuItem actionListener="#{menuBar.primaryListener}"
+                          id="open" value="Open" icon="images/menu/open.gif">
+                <f:param name="myParam" value="Open"/>
+            </ice:menuItem>
+            <ice:menuItem id="close" value="Close"
+                          actionListener="#{menuBar.primaryListener}">
+                <f:param name="myParam" value="Close"/>
             </ice:menuItem>
         </ice:menuItem>
-        <ice:menuItem value="Edit" id="popup_edit" actionListener="#{menuBar.primaryListener}"/>
-        <ice:menuItem value="View" id="popup_view" actionListener="#{menuBar.primaryListener}"/>
     </ice:menuPopup>
-    
+    <ice:menuPopup id="menuPopupText">
+        <!-- File menu -->
+        <ice:menuItem value="File" id="file" >
+            <ice:menuItem id="recent" value="Recent"
+                          icon="images/menu/recent.gif"
+                          actionListener="#{menuBar.primaryListener}">
+                <f:param name="myParam" value="Recent"/>
+                <ice:menuItem id="file1"
+                              value="File 1"
+                              actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="File 1"/>
+                </ice:menuItem>
+            </ice:menuItem>
+        </ice:menuItem>
+    </ice:menuPopup>    
+</ice:panelGroup>
+
+<!-- Server Side Backing Bean Values -->
+<ice:panelGroup styleClass="formBorderHighlight">
+    <h3>
+        <ice:outputText
+                value="#{msgs['component.global.serverFeedback']}"/>
+    </h3>
+    <ice:panelGrid columns="2">
+        <ice:outputText value="#{msgs['component.menuBar.selection']}"
+                        styleClass="valueHeader"/>
+        <ice:outputText id="MenuSlct" value="#{menuBar.actionFired}" styleClass="valueText"/>
+        <ice:outputText value="#{msgs['component.menuBar.param']}"
+                        styleClass="valueHeader"/>
+        <ice:outputText id="MenuParamVal" value="#{menuBar.param}" styleClass="valueText"/>
+    </ice:panelGrid>
 </ice:panelGroup>
 
 </ice:panelGrid>
@@ -246,7 +260,6 @@ this placeholder
             src="./sourcecodeStream.html?path=./inc/components/menuBar.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
-
 </ice:panelTabSet>
 
 </ice:form>
