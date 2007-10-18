@@ -184,7 +184,7 @@ public class InputFileBean implements Renderable, Serializable{
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
 	 */
-     @Begin
+  //   @Begin
     public void progress(EventObject event) {
     	 log.info("progress version="+this);
         InputFile ifile = (InputFile) event.getSource(); 
@@ -208,7 +208,7 @@ public class InputFileBean implements Renderable, Serializable{
      /*
       * crude error messaging
       */
-    @End
+ //   @End
  	public void setError(String msg) {
 		errorMsg = msg;
 		if (log.isDebugEnabled())log.debug("errorMsg="+errorMsg);
