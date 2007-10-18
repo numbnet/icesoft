@@ -15,7 +15,7 @@ public class Bean {
 	private List points = new ArrayList();
 	
 	public Bean() {
-		points.add(new GMapLatLng("37.379434", "-121.02203"));
+		points.add(new GMapLatLng("37.379434", "-121.92293"));
 		points.add(new GMapLatLng("33.845449", "-84.368682"));
 		points.add(new GMapLatLng("34.05333", "-118.24499"));
 		points.add(new GMapLatLng("33.072694", "-97.06234"));
