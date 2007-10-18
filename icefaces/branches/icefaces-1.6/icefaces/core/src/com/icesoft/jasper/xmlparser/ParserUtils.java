@@ -103,8 +103,13 @@ public class ParserUtils {
                                                   ex.getColumnNumber())),
                      ex);
         } catch (SAXException sx) {
+            if (log.isErrorEnabled()) {
+                log.error( "XML parsing failed for " + uri + 
+                        "SAXException: " +sx.getMessage() );
+            }
             throw new JasperException
-                    (Localizer.getMessage("jsp.error.parse.xml", uri), sx);
+                    (Localizer.getMessage("jsp.error.parse.xml", uri) + 
+                            "SAXException: " +sx.getMessage(), sx);
         } catch (IOException io) {
             throw new JasperException
                     (Localizer.getMessage("jsp.error.parse.xml", uri), io);
