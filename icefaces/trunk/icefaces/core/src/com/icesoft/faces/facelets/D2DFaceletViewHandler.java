@@ -37,6 +37,7 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.sun.facelets.Facelet;
 import com.sun.facelets.FaceletFactory;
+import com.sun.facelets.util.ReflectionUtil;
 import com.sun.facelets.compiler.Compiler;
 import com.sun.facelets.compiler.SAXCompiler;
 import com.sun.facelets.compiler.TagLibraryConfig;
@@ -151,7 +152,7 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             String[] paramDecoratorsArray = paramDecorators.split(";");
             for (int i = 0; i < paramDecoratorsArray.length; i++) {
                 try {
-                    Class tagDecoratorClass = Class.forName(paramDecoratorsArray[i]);
+                    Class tagDecoratorClass = ReflectionUtil.forName(paramDecoratorsArray[i]);
                     TagDecorator tagDecorator = (TagDecorator)
                             tagDecoratorClass.newInstance();
                     c.addTagDecorator(tagDecorator);
@@ -212,10 +213,8 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
                 PARAM_RESOURCE_RESOLVER);
         if (paramResourceResolver != null && paramResourceResolver.length() > 0) {
             try {
-                Class resourceResolverClass = Class.forName(
-                        paramResourceResolver,
-                        true,
-                        Thread.currentThread().getContextClassLoader());
+                Class resourceResolverClass = ReflectionUtil.forName(
+                        paramResourceResolver);
                 resourceResolver = (ResourceResolver)
                         resourceResolverClass.newInstance();
             }
@@ -321,6 +320,11 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             renderResponse(context, viewToRender);
             responseWriter.endDocument();
         }
+        /*
+        catch(FileNotFoundException e) {
+            handleFaceletFileNotFoundException(context);
+        }
+        */
         catch (Exception e) {
             if (log.isErrorEnabled()) {
                 log.error("Problem in renderResponse: " + e.getMessage(), e);
@@ -328,6 +332,25 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             throw new FacesException("Problem in renderResponse: " + e.getMessage(), e);
         }
     }
+    
+    /*
+    protected void handleFaceletFileNotFoundException(FacesContext context)
+            throws FacesException, IOException {
+        String actualId = "";
+        UIViewRoot viewToRender = context.getViewRoot();
+        if( viewToRender != null) {
+            String viewId = viewToRender.getViewId();
+            String renderedViewId = getRenderedViewId(context, viewId);
+            actualId = getActionURL(context, renderedViewId);
+        }
+        Object respObj = context.getExternalContext().getResponse();
+        if (respObj instanceof HttpServletResponse) {
+            HttpServletResponse respHttp = (HttpServletResponse) respObj;
+            respHttp.sendError(HttpServletResponse.SC_NOT_FOUND, actualId);
+            context.responseComplete();
+        }
+    }
+    */
 
     protected static void removeTransient(UIComponent c) {
         UIComponent d, e;
