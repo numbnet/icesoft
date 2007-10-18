@@ -156,7 +156,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
         topLevelDiv.setAttribute(HTML.CLASS_ATTR,
                 ((MenuItem) uiComponent).
-                getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
+                getUserDefinedStyleClass(menuComponent.getItemStyleClass(),
                         rootItemSubClass));
 
         if (uiComponent.getChildCount() > 0) {
@@ -252,10 +252,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             // this only applies to horizontal top level menu items
             if (!getIcon(menuItem).endsWith(MenuItem.DEFAULT_ICON)) {
                 Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-                iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+                iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
                 iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
-                        getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
+                        getUserDefinedStyleClass(menuBar.getItemImageStyleClass(),
                                 CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
                                 CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
                 div.appendChild(iconImg);
@@ -270,7 +270,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR, "iceLink-dis");
         }
         span.setAttribute(HTML.CLASS_ATTR, menuItem.
-                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
+                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
         div.appendChild(span);
         // create text
@@ -312,10 +312,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if ((!menuBar.getNoIcons().equalsIgnoreCase("true")) &&
             (getIcon(menuItem) != null)) {
             Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-            iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+            iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.
-                    getUserDefinedStyleClass(menuBar.getItemImageStyleClass(), 
+                    getUserDefinedStyleClass(menuBar.getItemImageStyleClass(),
                             CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
                             CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
                             CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
@@ -330,7 +330,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR,"iceLink-dis");
         }
         span.setAttribute(HTML.CLASS_ATTR,  menuItem.
-                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
+                getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
                         CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
 
@@ -370,7 +370,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if ((!menuBar.getNoIcons().equalsIgnoreCase("true")) &&
             (getIcon(menuItem) != null)) {
             Element iconImg = domContext.createElement(HTML.IMG_ELEM);
-            iconImg.setAttribute(HTML.SRC_ATTR, getIcon(menuItem));
+            iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.getImageStyleClass());
             div.appendChild(iconImg);
@@ -671,7 +671,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         link.getChildren().add(div);
     }
 
-    private void renderSeparatorDiv(DOMContext domContext, Element parent, 
+    private void renderSeparatorDiv(DOMContext domContext, Element parent,
             MenuItemSeparator menuItemSeparator) {
         Element hr = domContext.createElement("hr");
         parent.setAttribute(HTML.CLASS_ATTR, menuItemSeparator.getStyleClass());
