@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class DisposeBeans {
     }
 
     public static void in(Map map) {
-        Iterator iterator = map.values().iterator();
+        Iterator iterator = new ArrayList(map.values()).iterator();
         while (iterator.hasNext()) {
             Object object = iterator.next();
             dispose(object);
