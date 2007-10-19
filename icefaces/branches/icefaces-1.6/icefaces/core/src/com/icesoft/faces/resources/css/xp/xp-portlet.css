@@ -126,7 +126,7 @@
 }
 
 .iceSelInpDateOpenPopup {
-    display: block;
+    display: inline;
     text-decoration: none;
     background-color: transparent;
     background-image: url( "./css-images/cal_button.gif" );
@@ -138,7 +138,7 @@
 }
 
 .iceSelInpDateClosePopup {
-    display: block;
+    display: inline;
     text-decoration: none;
     background-color: transparent;
     background-image: url( "./css-images/cal_off.gif" );
@@ -169,7 +169,7 @@
 
 .iceSelInpDateMovePrev {
     text-decoration: none;
-    display: block;
+    display: inline;
     background-color: transparent;
     background-image: url( "./css-images/cal_arrow_left.gif" );
     background-repeat: no-repeat;
@@ -181,7 +181,7 @@
 
 .iceSelInpDateMoveNext {
     text-decoration: none;
-    display: block;
+    display: inline;
     background-color: transparent;
     background-image: url( "./css-images/cal_arrow_right.gif" );
     background-repeat: no-repeat;

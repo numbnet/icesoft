@@ -64,17 +64,20 @@ the click of a button.
 
                             <ice:outputText id="defaultSelectedDate" 
                                             value="#{dateSelect.date1}">
-                                <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
                             </ice:outputText>
                         </h4>
                         <!-- Calendar Component -->
                         <ice:selectInputDate id="date1"
-                                imageDir="#{styleBean.imageDirectory}"
                                 value="#{dateSelect.date1}"
                                 highlightClass="weekend: august:"
                                 highlightUnit="DAY_OF_WEEK: MONTH"
-                                highlightValue="1,7: 8"
-                                />
+                                highlightValue="1,7: 8">
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
+                        </ice:selectInputDate>
+
                         <ul>
                             <li>Weekends have dark gray backgrounds</li>
                             <li>August days are bold</li>
@@ -96,15 +99,18 @@ the click of a button.
                                     value="#{msgs['components.dateSelect.selectedDate']}"/>
                             <ice:outputText value="#{dateSelect.date2}">
 
-                                <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
                             </ice:outputText>
                         </h4>
                         <!-- Calendar Component -->
                         <ice:selectInputDate id="date2"
                                              value="#{dateSelect.date2}"
-                                             imageDir="#{styleBean.imageDirectory}"
-                                             renderAsPopup="true"/>
-
+                                             renderAsPopup="true">
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
+                        </ice:selectInputDate>
+                        <ice:messages/>
                     </ice:panelGroup>
 
             </ice:panelTab>

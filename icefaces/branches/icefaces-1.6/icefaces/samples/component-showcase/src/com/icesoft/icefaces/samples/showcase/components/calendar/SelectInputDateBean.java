@@ -34,6 +34,7 @@
 package com.icesoft.icefaces.samples.showcase.components.calendar;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * <p>The SelectInputDateBean Class is used to store the selected dates from the
@@ -80,5 +81,9 @@ public class SelectInputDateBean {
      */
     public void setDate2(Date date) {
         date2 = date;
+    }
+    
+    public TimeZone getTimeZone() {
+        return java.util.TimeZone.getDefault();
     }
 }

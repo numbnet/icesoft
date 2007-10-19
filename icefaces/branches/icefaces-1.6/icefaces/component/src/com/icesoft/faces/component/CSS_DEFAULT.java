@@ -87,7 +87,7 @@ public class CSS_DEFAULT {
     public static final String TABLE_FOOTER_CLASS =
             "Ftr";   // Originally was "headerClass"
     public static final String TABLE_ROW_CLASS =
-        "Row"; // Originally was "rowClasses1"    
+        "Row"; // Originally was "rowClasses1"
     public static final String TABLE_ROW_CLASS1 =
             "Row1"; // Originally was "rowClasses1"
     public static final String TABLE_ROW_CLASS2 =
@@ -95,15 +95,15 @@ public class CSS_DEFAULT {
     public static final String TABLE_COLUMN_CLASS1 =
         "Col1";
     public static final String TABLE_COLUMN_CLASS2 =
-        "Col2";    
+        "Col2";
     public static final String TABLE_COLUMN_CLASS =
             "Col";  // Originally was "columnClasses"
     public static final String TABLE_COLUMN_HEADER_CLASS =
-        "ColHdr";  // Originally was "columnClasses"    
+        "ColHdr";  // Originally was "columnClasses"
     public static final String TABLE_COLUMN_HEADER_CLASS1 =
-        "ColHdr1";  // Originally was "columnClasses" 
+        "ColHdr1";  // Originally was "columnClasses"
     public static final String TABLE_COLUMN_HEADER_CLASS2 =
-        "ColHdr2";  // Originally was "columnClasses"     
+        "ColHdr2";  // Originally was "columnClasses"
     public static final String PANEL_GROUP_DEFAULT_STYLE_CLASS = "icePnlGrp";
     public static final String PANEL_GRID_DEFAULT_STYLE_CLASS = "icePnlGrd";
     public static final String ROW = "Row";
@@ -169,7 +169,7 @@ public class CSS_DEFAULT {
     public static final String PANEL_TAB_SET_DEFAULT_TABPANEL =
             "TbPnl";// Originally was "TabPanel"
     public static final String PANEL_TAB_CONTENTS_CLASS =
-        "Cnt";// Originally was "TabPanel"    
+        "Cnt";// Originally was "TabPanel"
     public static final String PANEL_TAB_HEADER_ICON_DEFAULT_CLASS = "HdrIcon";
     public static final String PANEL_TAB_HEADER_LABEL_DEFAULT_CLASS =
             "HdrLbl";
@@ -205,14 +205,14 @@ public class CSS_DEFAULT {
     public static String MENU_BAR_SUB_MENU_STYLE = "SubMenu";
     public static String MENU_BAR_SUB_MENU_INDICATOR_STYLE = "SubMenuInd";
     public static String MENU_BAR_VERTICAL_SUFFIX_STYLE = "Vrt";
-    
+
     public static String MENU_ITEM_STYLE = "iceMnuItm";
     public static String MENU_ITEM_LABEL_STYLE = "Label";
     public static String MENU_ITEM_IMAGE_STYLE = "Image";
-    
+
     public static String MENU_ITEM_SEPARATOR_STYLE = "iceMnuItmSep";
-    
-    
+
+
     public static String SUBMENU_DIVIDER_VERTICAL_STYLE =
             "iceSubMenuDividerVert";  // Originally was "submenuDividerVert"
     public static String SUBMENU_DIVIDER_STYLE =
@@ -256,6 +256,22 @@ public class CSS_DEFAULT {
      */
     public final static String DEFAULT_CALENDARINPUT_CLASS =
             "Input"; // Did not have an original name
+    /**
+     * The default style class name for the calendar previous month or year button
+     */
+    public final static String DEFAULT_CALENDARMOVEPREV_CLASS = "MovePrev";
+    /**
+     * The default style class name for the calendar next month or year button
+     */
+    public final static String DEFAULT_CALENDARMOVENEXT_CLASS = "MoveNext";
+    /**
+     * The default style class name for the calendar open popup button
+     */
+    public final static String DEFAULT_CALENDAROPENPOPUP_CLASS = "OpenPopup";
+    /**
+     * The default style class name for the calendar close popup button
+     */
+    public final static String DEFAULT_CALENDARCLOSEPOPUP_CLASS = "ClosePopup";
 
 
     public static final String DEFAULT_SELECT_INPUT = "iceSelInpTxt";
@@ -304,7 +320,7 @@ public class CSS_DEFAULT {
     public static final String ROW_SELECTION_SELECTED = "Selected";
     public static final String ROW_SELECTION_MOUSE_OVER = "MouseOver";
     public static final String ROW_SELECTION_SELECTED_MOUSE_OVER = "SelectedMouseOver";
-    
+
     // PanelCollapsible constants
     public static final String PANEL_COLLAPSIBLE_DEFAULT_STYLE_CLASS =
             "icePnlClpsbl";

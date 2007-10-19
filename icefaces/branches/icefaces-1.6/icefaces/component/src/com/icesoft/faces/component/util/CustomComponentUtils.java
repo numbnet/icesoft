@@ -533,11 +533,9 @@ public class CustomComponentUtils {
             if (submittedValue != null) {
                 if (submittedValue instanceof Date) {
                     return (Date) submittedValue;
-                } else {
-                    throw new IllegalArgumentException(
-                            "Expected submitted value of type Date for component : " +
-                            getPathToComponent(component));
                 }
+                // Else, some text was typed into the inputText, which didn't
+                //  validate. So, we should fall through to still use value
             }
         }
 
@@ -547,7 +545,7 @@ public class CustomComponentUtils {
             return (Date) value;
         } else {
             throw new IllegalArgumentException(
-                    "Expected submitted value of type Date for component : "
+                    "Expected value of type Date for component : "
                     + getPathToComponent(component));
         }
     }
