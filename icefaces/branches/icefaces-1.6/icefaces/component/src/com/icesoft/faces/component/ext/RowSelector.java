@@ -245,13 +245,23 @@ public class RowSelector extends UIComponentBase {
                 } if(rowSelector.getSelectionAction() != null){
                     rowSelector.getSelectionAction().invoke(facesContext, null);
                 }
-         
 
+                // ICE-2024: should clear the whole table, not just the displayed page.
+                if (!getMultiple().booleanValue()) {
+                    for (int i = 0; i < dataTable.getRowCount(); i++) {
+                        if (i != rowIndex) {
+                            dataTable.setRowIndex(i);
+                            setValue(Boolean.FALSE);
+                        }
+                    }
+                }
             } else {
+/* ICE-2024: see above.
                 if (Boolean.FALSE.equals(rowSelector.getMultiple())) {
                     // Clear all other selections
                     rowSelector.setValue(Boolean.FALSE);
                 }
+*/
             }
         } catch (Exception e) {
             e.printStackTrace();
