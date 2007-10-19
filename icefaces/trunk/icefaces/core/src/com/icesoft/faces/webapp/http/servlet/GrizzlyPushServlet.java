@@ -184,7 +184,6 @@ class GrizzlyEventResponder implements Runnable,
      * tcp communication is closed by the <code>CometHandler</code>
      */
     public void onTerminate(CometEvent event) throws IOException  {
-System.out.println("onTerminate " + this);
         onInterrupt(event);
     }
     
