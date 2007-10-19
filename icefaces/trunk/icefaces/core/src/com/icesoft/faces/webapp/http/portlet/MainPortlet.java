@@ -82,7 +82,7 @@ public class MainPortlet implements Portlet {
         addAttribute(renderRequest, Constants.PORTLET_KEY, PORTLET_MARKER);
 
         //Get the inital view that is configured in the portlet.xml file
-        PortletMode portletMode = portletMode = renderRequest.getPortletMode();
+        PortletMode portletMode = renderRequest.getPortletMode();
         String viewId = null;
         if (portletMode == PortletMode.VIEW) {
             viewId = portletConfig.getInitParameter(Constants.VIEW_KEY);
