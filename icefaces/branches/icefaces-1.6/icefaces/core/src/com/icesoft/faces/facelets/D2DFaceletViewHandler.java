@@ -252,25 +252,30 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         ExternalContext extCtx = context.getExternalContext();
         String viewId = actionId;
         if (extCtx.getRequestPathInfo() == null) {
-            String facesSuffix = actionId.substring(actionId.lastIndexOf('.'));
-            String viewSuffix = context.getExternalContext()
-                    .getInitParameter(ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-            if(viewSuffix != null) {
-                viewId = actionId.replaceFirst(facesSuffix, viewSuffix);
-            }
-            else {
+            String viewSuffix = context.getExternalContext().getInitParameter(
+                ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            if(viewSuffix == null) {
                 if(log.isErrorEnabled()) {
                     log.error(
                         "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
-                        " context parameter is not set in web.xml. " +
-                        "Please define the filename extension used for " +
-                        "your source JSF pages. Example:\n" +
-                        "<context-param>\n" +
-                        "  <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
-                        "  <param-value>.xhtml</param-value>\n" +
-                        "</context-param>");
+                            " context parameter is not set in web.xml. " +
+                            "Please define the filename extension used for " +
+                            "your source JSF pages. Example:\n" +
+                            "<context-param>\n" +
+                            " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
+                            " <param-value>.xhtml</param-value>\n" +
+                            "</context-param>");
                 }
-            }            
+            }
+            else {
+                int lastPeriod = actionId.lastIndexOf('.');
+                if(lastPeriod < 0) {
+                    viewId = actionId + viewSuffix;
+                }
+                else {
+                    viewId = actionId.substring(0, lastPeriod) + viewSuffix;
+                }
+            }
         }
         return viewId;
     }
