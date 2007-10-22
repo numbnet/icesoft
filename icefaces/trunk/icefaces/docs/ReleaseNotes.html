@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><!-- saved from url=(0022)http://internet.e-mail -->
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482;
-v1.7 DR#2 Release Notes</title> <style>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482; v1.7 DR#2 Release Notes</title> <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:80%;
@@ -58,7 +57,7 @@ in&nbsp;v1.7 DR#2 (this release)</h2>
 <br>ICEfaces v1.7 DR#2 is a Development Build that provides an
 early-access preview of new features, enhancements, and fixes that will
 be included in the upcoming ICEfaces v1.7 release. This build has been
-lightly tested and is unsuitable for Production use.<br><br>Please
+lightly tested and is unsuitable for production use.<br><br>Please
 review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a>
 prior to using this release.&nbsp; You may report any issues with
@@ -129,7 +128,7 @@ in&nbsp;v1.7 DR#1</h2>
 <br>ICEfaces v1.7 DR#1 is a Development Build that provides an
 early-access preview of new features, enhancements, and fixes that will
 be included in the upcoming ICEfaces v1.7 release. This build has only
-been lightly tested and is unsuitable for Production use.<br><br>Please
+been lightly tested and is unsuitable for production use.<br><br>Please
 review the <a href="#Known_Issues">Known Issues</a>
 prior to using this release.&nbsp; You may report any issues with
 this build to the ICEfaces <a href="http://www.icefaces.org/JForum/forums/show/25.page">Development
@@ -1420,7 +1419,11 @@ the entire visible region of the document or the component used to
 block user interaction with the document may not cover the entire page.
 To accomplish this a surrounding DIV sized to 100% width and height can
 be used to enclose all content in the document body. For example: <br>
-<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul><h3>JSF
+<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul> <ul><li>inputRichText
+<ul><li>The FCKeditor JavaScript library that is the basis for the
+ice:inputRichText component does not currently support the Opera
+browser. Support for Opera is planned prior to the 1.7 final release.</li></ul>
+</li></ul><h3>JSF
 1.2</h3>
 <ul> <li>ICEfaces must use JSF 1.1 "compatibility mode"
 within JSF 1.2
