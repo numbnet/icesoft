@@ -224,6 +224,23 @@ Ice.Menu = {
 	    	}
 	    	
 		}
+    },
+    appendHoverClasses: function(menuItem) {
+        var styleClasses = menuItem.className.replace(/^\s+|\s+$/g, "").split(/\s+/);
+        if (styleClasses[0] == "") return;
+
+        for (var i = 0; i < styleClasses.length; i++) {
+            if (styleClasses[i] == "portlet-menu-item-selected") {
+                menuItem.className += " portlet-menu-item-hover-selected";
+            } else {
+                menuItem.className += " " + styleClasses[i] + "-hover";
+            }
+        }
+    },
+    removeHoverClasses: function(menuItem) {
+        var n = menuItem.className.replace(/^\s+|\s+$/g, "").split(/\s+/).length / 2;
+        var regExp = new RegExp("( portlet-menu-item-hover-selected| \\S+-hover){" + n + "}$");
+        menuItem.className = menuItem.className.replace(regExp, "");
     }
 }
 document.documentElement.onclick = Ice.Menu.hideAll;
