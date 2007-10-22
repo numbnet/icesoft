@@ -43,23 +43,6 @@
         return container;
     };
 
-    This.DisconnectAllListenersAndPeers = function(e) {
-        var elements = e.getElementsByTagName('*');
-        for (var i = 0; i < elements.length; i++) {
-            var element = elements[i];
-            var peer = element.peer;
-            if (peer) {
-                //disconnect listeners
-                peer.eachListenerName(function(listenerName) {
-                    element[listenerName.toLowerCase()] = null;
-                });
-                //disconnect peers
-                element.peer = null;
-                peer.element = null;
-            }
-        }
-    };
-
     This.Element = Object.subclass({
         MouseListenerNames: [ 'onClick', 'onDblClick', 'onMouseDown', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp' ],
 
@@ -73,6 +56,10 @@
             return this.element.id;
         },
 
+        isSubmit: function() {
+            return false;
+        },
+
         replaceHtml: function(html) {
             this.withTemporaryContainer(function(container) {
                 container.innerHTML = html;
@@ -82,25 +69,25 @@
             });
         },
 
-        withAllChildElements: function(iterator) {
+        disconnectAllListenersAndPeers: function() {
             var elements = this.element.getElementsByTagName('*');
-            for (var i = 0; i < elements.length; i++) {
-                var peer = elements[i].peer;
-                if (peer) iterator(peer);
+            var length = elements.length;
+            for (var i = 0; i < length; i++) {
+                var element = elements[i];
+                var peer = element.peer;
+                if (peer) {
+                    //disconnect listeners
+                    peer.eachListenerName(function(listenerName) {
+                        element[listenerName.toLowerCase()] = null;
+                    });
+                    //disconnect peers
+                    element.peer = null;
+                    peer.element = null;
+                }
             }
         },
 
-        disconnectAllListenersAndPeers: /MSIE/.test(navigator.userAgent) ?
-                                        function() {
-                                            //cleanup in a different (pseudo) thread
-                                            This.DisconnectAllListenersAndPeers.delayFor(100)(this.element);
-                                        } :
-                                        function() {
-                                            This.DisconnectAllListenersAndPeers(this.element);
-                                        },
-
         serializeOn: function(query) {
-            this.serializeView(query);
         },
 
         sendOn: function(connection) {
@@ -142,7 +129,7 @@
             this.KeyListenerNames.each(iterator);
         },
 
-        serializeView: function(query) {
+        serializeViewOn: function(query) {
             var view;
             //traverse parents in search of 'viewIdentifier' property
             var parent = this.element;
@@ -260,7 +247,6 @@
                 case 'checkbox':
                 case 'radio': if (this.element.checked) query.add(this.element.name, this.element.value || 'on'); break;
             }
-            this.serializeView(query);
         },
 
         eachListenerName: function(iterator) {
@@ -286,7 +272,6 @@
                 var value = selectedOption.value || (selectedOption.value == '' ? '' : selectedOption.text);
                 query.add(this.element.name, value);
             }.bind(this));
-            this.serializeView(query);
         }
     });
 
@@ -307,26 +292,43 @@
 
         serializeOn: function(query) {
             query.add(this.element.name, this.element.value);
-            this.serializeView(query);
         }
     });
 
     This.FormElement = This.Element.subclass({
         FormListenerNames: [ 'onReset', 'onSubmit', 'submit' ],
 
-        formElements: /Safari/.test(navigator.userAgent) ? function() {
+        detectDefaultSubmit: function() {
+            var formElements = this.element.elements;
+            var length = formElements.length;
+            var defaultID = this.element.id + ':default';
+
+            for (var i = 0; i < length; i++) {
+                var formElement = formElements[i];
+                if (formElement.id == defaultID) {
+                    return This.Element.adaptToElement(formElement);
+                }
+            }
+
+            return null;
+        },
+
+        eachFormElement: /Safari/.test(navigator.userAgent) ? function(iterator) {
             //todo: find a more performant way to discard old form elements in Safari
-            var filteredElements = [];
+            var newestElements = [];
             $enumerate(this.element.elements).reverse().each(function(element) {
                 //Safari keeps old form elements around so they need to be discarded
-                if (!filteredElements.detect(function(filteredElement) {
-                    return element.id && filteredElement.element.id && filteredElement.element.id == element.id;
-                })) filteredElements.push(This.Element.adaptToElement(element));
+                if (!newestElements.detect(function(newestElement) {
+                    return element.id && newestElement.id && newestElement.id == element.id;
+                })) {
+                    newestElements.push(element);
+                    iterator(This.Element.adaptToElement(element));
+                }
             });
-
-            return filteredElements;
-        } : function() {
-            return $enumerate(this.element.elements).collect($element);
+        } : function(iterator) {
+            $enumerate(this.element.elements).each(function(e) {
+                iterator(This.Element.adaptToElement(e));
+            });
         },
 
     //captures normal form submit events and sends them through a XMLHttpRequest
@@ -354,10 +356,9 @@
         },
 
         serializeOn: function(query) {
-            this.formElements().each(function(formElement) {
+            this.eachFormElement(function(formElement) {
                 if (!formElement.isSubmit()) formElement.serializeOn(query);
             });
-            this.serializeView(query);
         },
 
         eachListenerName: function(iterator) {
@@ -430,19 +431,10 @@
         }
     });
 
-    This.FieldSetElement = This.Element.subclass({
-        isSubmit: function(html) {
-            return false;
-        }
-    });
-
-    This.ObjectElement = This.Element.subclass({
-        isSubmit: function(html) {
-            return false;
-        }
-    });
-
     This.AnchorElement = This.Element.subclass({
+        isSubmit: function() {
+            return true;
+        },
 
         focus: function() {
             var onFocusListener = this.element.onfocus;
@@ -453,7 +445,6 @@
 
         serializeOn: function(query) {
             if (this.element.name) query.add(this.element.name, this.element.name);
-            this.serializeView(query);
         },
 
         form: function() {

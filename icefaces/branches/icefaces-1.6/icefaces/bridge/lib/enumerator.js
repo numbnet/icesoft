@@ -38,7 +38,8 @@
         },
 
         _each: function(iterator) {
-            for (var i = 0; i < this.indexedObject.length; i++) iterator(this.indexedObject[i], i);
+            var length = this.indexedObject.length;
+            for (var i = 0; i < length; i++) iterator(this.indexedObject[i], i);
         },
 
         reverse: function() {
@@ -50,7 +51,8 @@
 
     This.ReverseEnumerator = This.Enumerator.subclass({
         _each: function(iterator) {
-            for (var i = (this.indexedObject.length - 1); i >= 0; i--) iterator(this.indexedObject[i], i);
+            var start = this.indexedObject.length - 1;
+            for (var i = start; i >= 0; i--) iterator(this.indexedObject[i], i);
         },
 
         reverse: function() {

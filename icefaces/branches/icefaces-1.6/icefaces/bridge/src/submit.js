@@ -37,8 +37,18 @@ function iceSubmitPartial(form, component, evt) {
         query.add('ice.submit.partial', true);
 
         $event(evt, component).serializeOn(query);
-        if (form && form.id) $element(form).serializeOn(query);
-        if (component && component.id) $element(component).serializeOn(query);
+        if (form && form.id) {
+            var f = $element(form);
+            f.serializeOn(query);
+            f.serializeViewOn(query);
+        }
+        if (component && component.id) {
+            var c = $element(component);
+            if (c.isSubmit()) {
+                c.serializeOn(query);
+                c.serializeViewOn(query);
+            }
+        }
     }).send();
     resetHiddenFieldsFor(form);
 }
@@ -51,17 +61,20 @@ function iceSubmit(aForm, aComponent, anEvent) {
     if (event.isKeyEvent()) {
         if (event.isEnterKey()) {
             //find a default submit element to submit the form
-            var submit = form ? form.formElements().detect(function(element) {
-                return element.id() == element.form().id() + ':default';
-            }) : null;
-
+            var submit = form ? form.detectDefaultSubmit() : null;
             //cancel the default action to block 'onclick' event on the submit element
             event.cancelDefaultAction();
             Ice.Parameter.Query.create(function(query) {
                 query.add('ice.submit.partial', false);
                 event.serializeOn(query);
-                if (submit) submit.serializeOn(query);
-                if (form) form.serializeOn(query);
+                if (submit) {
+                    submit.serializeOn(query);
+                    submit.serializeViewOn(query);
+                }
+                if (form) {
+                    form.serializeOn(query);
+                    form.serializeViewOn(query);
+                }
             }).send();
         }
     } else {
@@ -70,8 +83,14 @@ function iceSubmit(aForm, aComponent, anEvent) {
         Ice.Parameter.Query.create(function(query) {
             query.add('ice.submit.partial', false);
             event.serializeOn(query);
-            if (component) component.serializeOn(query);
-            if (form) form.serializeOn(query);
+            if (component && component.isSubmit()) {
+                component.serializeOn(query);
+                component.serializeViewOn(query);
+            }
+            if (form) {
+                form.serializeOn(query);
+                form.serializeViewOn(query);
+            }
         }).send();
     }
 

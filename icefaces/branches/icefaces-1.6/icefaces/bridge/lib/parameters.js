@@ -38,10 +38,7 @@
         },
 
         add: function(name, value) {
-            //discard duplicates.
-            if (!this.parameters.detect(function(parameter) {
-                return parameter.name == name && parameter.value == value;
-            })) this.parameters.push(new This.Association(name, value));
+            this.parameters.push(new This.Association(name, value));
         },
 
         addQuery: function(query) {
