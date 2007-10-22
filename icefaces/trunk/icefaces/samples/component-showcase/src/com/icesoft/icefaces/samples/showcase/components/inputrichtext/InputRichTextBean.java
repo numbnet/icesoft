@@ -3,7 +3,7 @@ import javax.faces.event.ValueChangeEvent;
 
 
 public class InputRichTextBean {
-	private String value;
+	private String value = "";
 
 	public void valueChange(ValueChangeEvent event) {
 		System.out.println("Value has been changed");
