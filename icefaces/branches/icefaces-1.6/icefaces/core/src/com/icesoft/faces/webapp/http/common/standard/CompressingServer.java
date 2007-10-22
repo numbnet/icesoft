@@ -66,7 +66,13 @@ public class CompressingServer implements Server {
 
         public void finishCompression() throws IOException {
             if (output != null) {
-                output.finish();
+                try {
+                    output.finish();
+                } catch (IOException e) {
+                    //a SocketException might be thrown if the browser closed
+                    //the connection before consuming the entire stream
+                    //do nothing!
+                }
             }
         }
     }
