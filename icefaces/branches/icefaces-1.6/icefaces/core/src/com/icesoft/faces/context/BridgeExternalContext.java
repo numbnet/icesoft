@@ -41,6 +41,7 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
 
@@ -203,6 +204,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public void dispose() {
+        DisposeBeans.in(requestMap);
         requestMap.clear();
         commandQueue.take();
     }

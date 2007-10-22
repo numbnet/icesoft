@@ -1,5 +1,8 @@
 package com.icesoft.faces.context;
 
+/**
+ * @deprecated use {@link DisposableBean} interface instead
+ */
 public interface ViewListener {
 
     /**

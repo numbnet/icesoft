@@ -29,6 +29,10 @@ import java.util.Map;
 public class View implements CommandQueue {
     private static final Log Log = LogFactory.getLog(View.class);
     private static final NOOP NOOP = new NOOP();
+    private static final Runnable DoNothing = new Runnable() {
+        public void run() {
+        }
+    };
     private Lock lock = new ReentrantLock();
     private BridgeExternalContext externalContext;
     private BridgeFacesContext facesContext;
@@ -43,6 +47,16 @@ public class View implements CommandQueue {
     private String sessionID;
     private Configuration configuration;
     private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private Runnable dispose = new Runnable() {
+        public void run() {
+            persistentFacesState.setCurrentInstance();
+            facesContext.setCurrentInstance();
+            notifyViewDisposal();
+            release();
+            facesContext.dispose();
+            externalContext.dispose();
+        }
+    };
 
     public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) throws Exception {
         this.sessionID = sessionID;
@@ -72,7 +86,6 @@ public class View implements CommandQueue {
                 }
             }
         });
-        this.notifyViewCreation();
     }
 
     public void updateOnXMLHttpRequest(Request request) throws Exception {
@@ -188,12 +201,9 @@ public class View implements CommandQueue {
     }
 
     public void dispose() {
-        this.persistentFacesState.setCurrentInstance();
-        this.facesContext.setCurrentInstance();
-        this.notifyViewDisposal();
-        this.release();
-        this.facesContext.dispose();
-        this.externalContext.dispose();
+        //dispose view only once
+        dispose.run();
+        dispose = DoNothing;
     }
 
     public void makeCurrent() {
@@ -201,18 +211,6 @@ public class View implements CommandQueue {
         persistentFacesState.setCurrentInstance();
         facesContext.setCurrentInstance();
         facesContext.applyBrowserDOMChanges();
-    }
-
-    private void notifyViewCreation() {
-        Iterator i = viewListeners.iterator();
-        while (i.hasNext()) {
-            try {
-                ViewListener listener = (ViewListener) i.next();
-                listener.viewCreated();
-            } catch (Throwable t) {
-                Log.warn("Failed to invoke view listener", t);
-            }
-        }
     }
 
     private void notifyViewDisposal() {
