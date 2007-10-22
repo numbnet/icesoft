@@ -65,12 +65,6 @@
                     }
                 });
             });
-            commandDispatcher.register('server-error', function(message) {
-                logger.error('Server side error');
-                logger.error(message.firstChild.data);
-                statusManager.serverError.on();
-                this.dispose();
-            }.bind(this));
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
@@ -102,6 +96,9 @@
             });
 
             this.connection.onServerError(function (response) {
+                logger.error('server side error');
+                statusManager.serverError.on();
+                this.connection.sendDisposeViews();
                 this.dispose();
                 $element(document.documentElement).replaceHtml(response.content());
                 scriptLoader.searchAndEvaluateScripts(document.documentElement);
