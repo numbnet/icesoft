@@ -359,6 +359,7 @@ public class TableRenderer
         String rowSelectionFunctionName = null;
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
+        Element hiddenInputNode = null;
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
@@ -368,7 +369,7 @@ public class TableRenderer
             rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
-            root.appendChild(rowSelectedField);
+            hiddenInputNode = rowSelectedField;
             rowSelectionFunctionName = "ice_tableRowClicked"; 
         }
 
@@ -421,6 +422,9 @@ public class TableRenderer
                         if(!rowSelectorCodeAdded && scriptNode != null){
                             td.appendChild(scriptNode);
                         }
+                        if (null != hiddenInputNode) {
+                        	td.appendChild(hiddenInputNode);
+                        }                        
                         writeColStyles(columnStyles, columnStylesMaxIndex,
                                        columnStyleIndex, td, colNumber++,
                                        uiComponent);
@@ -462,7 +466,7 @@ public class TableRenderer
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
-                                      columnStyleIndex, colNumber, width);
+                                      columnStyleIndex, colNumber, width, hiddenInputNode);
                         nextChild.encodeEnd(facesContext);
                         colNumber = uiData.getColNumber();
                     }
@@ -488,7 +492,8 @@ public class TableRenderer
                                DOMContext domContext, Node tr,
                                String[] columnStyles, int columnStylesMaxIndex,
                                int columnStyleIndex, int colNumber,
-                               String width) throws IOException {
+                               String width,
+                               Element rowSelectorHiddenField) throws IOException {
         UIColumns uiList = (UIColumns) columns;
         int rowIndex = uiList.getFirst();
         uiList.setRowIndex(rowIndex);
@@ -504,6 +509,9 @@ public class TableRenderer
             Iterator childs;
             childs = columns.getChildren().iterator();
             Element td = domContext.createElement(HTML.TD_ELEM);
+            if (null != rowSelectorHiddenField) {
+            	td.appendChild(rowSelectorHiddenField);
+            }             
             if (width != null) {
 
                 td.setAttribute("style",
