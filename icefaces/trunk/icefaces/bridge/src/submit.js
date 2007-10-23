@@ -31,25 +31,32 @@
  *
  */
 
+function currentConnection() {
+    var e = $enumerate(arguments).detect(function(i) {
+        return !!i;
+    });
+    return e.findConnection();
+}
+
 function iceSubmitPartial(form, component, evt) {
     form = (form ? form : component.form);
-    Ice.Parameter.Query.create(function(query) {
-        query.add('ice.submit.partial', true);
+    var query = new Ice.Parameter.Query();
 
-        $event(evt, component).serializeOn(query);
-        if (form && form.id) {
-            var f = $element(form);
-            f.serializeOn(query);
-            f.serializeViewOn(query);
+    query.add('ice.submit.partial', true);
+    $event(evt, component).serializeOn(query);
+    if (form && form.id) {
+        var f = $element(form);
+        f.serializeOn(query);
+        f.serializeViewOn(query);
+    }
+    if (component && component.id) {
+        var c = $element(component);
+        if (c.isSubmit()) {
+            c.serializeOn(query);
+            c.serializeViewOn(query);
         }
-        if (component && component.id) {
-            var c = $element(component);
-            if (c.isSubmit()) {
-                c.serializeOn(query);
-                c.serializeViewOn(query);
-            }
-        }
-    }).send();
+    }
+    query.sendOn(currentConnection($element(form), $element(component)));
     resetHiddenFieldsFor(form);
 }
 
@@ -57,6 +64,8 @@ function iceSubmit(aForm, aComponent, anEvent) {
     aForm = (aForm ? aForm : aComponent.form);
     var event = $event(anEvent, aComponent);
     var form = $element(aForm);
+    var query = new Ice.Parameter.Query();
+    query.add('ice.submit.partial', false);
     //all key events are discarded except when 'enter' is pressed...not good!
     if (event.isKeyEvent()) {
         if (event.isEnterKey()) {
@@ -64,34 +73,29 @@ function iceSubmit(aForm, aComponent, anEvent) {
             var submit = form ? form.detectDefaultSubmit() : null;
             //cancel the default action to block 'onclick' event on the submit element
             event.cancelDefaultAction();
-            Ice.Parameter.Query.create(function(query) {
-                query.add('ice.submit.partial', false);
-                event.serializeOn(query);
-                if (submit) {
-                    submit.serializeOn(query);
-                    submit.serializeViewOn(query);
-                }
-                if (form) {
-                    form.serializeOn(query);
-                    form.serializeViewOn(query);
-                }
-            }).send();
-        }
-    } else {
-        var component = aComponent && aComponent.id ? $element(aComponent) : null;
-
-        Ice.Parameter.Query.create(function(query) {
-            query.add('ice.submit.partial', false);
             event.serializeOn(query);
-            if (component && component.isSubmit()) {
-                component.serializeOn(query);
-                component.serializeViewOn(query);
+            if (submit) {
+                submit.serializeOn(query);
+                submit.serializeViewOn(query);
             }
             if (form) {
                 form.serializeOn(query);
                 form.serializeViewOn(query);
             }
-        }).send();
+            query.sendOn(currentConnection($element(aForm), $element(aComponent)));
+        }
+    } else {
+        var component = aComponent && aComponent.id ? $element(aComponent) : null;
+        event.serializeOn(query);
+        if (component && component.isSubmit()) {
+            component.serializeOn(query);
+            component.serializeViewOn(query);
+        }
+        if (form) {
+            form.serializeOn(query);
+            form.serializeViewOn(query);
+        }
+        query.sendOn(currentConnection($element(aForm), $element(aComponent)));
     }
 
     resetHiddenFieldsFor(aForm);

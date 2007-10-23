@@ -141,12 +141,16 @@
             this.categoryMatcher = /.*/;
             this.closeOnExit = true;
             this.toggle();
-            
+
             this.parentWindow.onKeyPress(function(e) {
                 var key = e.keyCode();
                 if ((key == 20 || key == 84) && e.isCtrlPressed() && e.isShiftPressed()) {
                     this.enable();
                 }
+            }.bind(this));
+            this.parentWindow.onUnload(function() {
+                window.logger.info('page unloaded!');
+                this.disable();
             }.bind(this));
         },
 
@@ -287,15 +291,13 @@
                 var elementDocument = this.log.ownerDocument;
                 var timestamp = (new Date()).toTimestamp();
                 var categoryName = category.join('.');
-                (timestamp + ' ' +
-                 priorityName + ' \t[' +
-                 categoryName + '] : ' +
-                 message +
+                ('[' + categoryName + '] : ' + message +
                  (exception ? ('\n' + exception) : '')).split('\n').each(function(line) {
                     if (line.containsWords()) {
                         var eventNode = elementDocument.createElement('div');
                         eventNode.style.padding = '3px';
                         eventNode.style.color = colorName;
+                        eventNode.setAttribute("title", timestamp + ' | ' + priorityName)
                         this.log.appendChild(eventNode).appendChild(elementDocument.createTextNode(line));
                     }
                 }.bind(this));

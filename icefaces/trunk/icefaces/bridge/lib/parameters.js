@@ -62,11 +62,6 @@
             connection.send(this);
         },
 
-        send: function() {
-            if (!connection) throw 'default connection not available';
-            this.sendOn(connection);
-        },
-
         serializeOn: function(query) {
             this.parameters.each(function(parameter) {
                 parameter.serializeOn(query);

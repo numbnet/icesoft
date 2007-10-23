@@ -50,7 +50,6 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- *
  * Used to send Javascript to the browser
  */
 public class JavascriptContext {
@@ -88,12 +87,12 @@ public class JavascriptContext {
     /**
      * URL of the ICE Bridge lib
      */
-    public static final String ICE_BRIDGE = "/xmlhttp"  + StartupTime.getStartupInc() + "icefaces-d2d.js";
+    public static final String ICE_BRIDGE = "/xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js";
 
     /**
      * URL of the ICE Extras lib
      */
-    public static final String ICE_EXTRAS = "/xmlhttp"  + StartupTime.getStartupInc() + "ice-extras.js";
+    public static final String ICE_EXTRAS = "/xmlhttp" + StartupTime.getStartupInc() + "ice-extras.js";
 
     /**
      * Include a script tag in the &lt;head&gt; section of the page with the src
@@ -160,6 +159,7 @@ public class JavascriptContext {
 
     /**
      * Add a javascript call to the request map
+     *
      * @param map
      * @param call
      */
@@ -174,6 +174,7 @@ public class JavascriptContext {
 
     /**
      * Add a javascript call to this request
+     *
      * @param facesContext
      * @return
      */
@@ -184,6 +185,7 @@ public class JavascriptContext {
 
     /**
      * Get javascript calls from the Request map
+     *
      * @param map
      * @return
      */
@@ -199,14 +201,13 @@ public class JavascriptContext {
         if ("".equals(code)) {
             return "";
         } else {
-            return "var c = function(){" + code +
-                   "};if(window.application){c();}else{window.onLoad(c)};"
-                    + randomComment();
+            return code + randomComment();
         }
     }
 
     /**
      * Get the focus call from the request map
+     *
      * @param map
      * @return
      */
@@ -239,7 +240,7 @@ public class JavascriptContext {
         //Get the real ID if a JSF component
         //UIComponent uiComponent = context.getViewRoot().findComponent(id);
 
-        UIComponent uiComponent =  D2DViewHandler.findComponent(id, context.getViewRoot());
+        UIComponent uiComponent = D2DViewHandler.findComponent(id, context.getViewRoot());
         if (uiComponent != null) {
             id = uiComponent.getClientId(context);
         }
@@ -247,7 +248,7 @@ public class JavascriptContext {
         String name = genFunctionName(id, effect);
 
         String call = "window['" + name + "'] =  function (){" +
-                      "id = '" + id + "';" + effect.toString() + "};";
+                "id = '" + id + "';" + effect.toString() + "};";
 
         addJavascriptCall(context, call);
         return name + "();";
@@ -265,14 +266,14 @@ public class JavascriptContext {
         if (effect == null || effect.isFired()) return;
         effect.setFired(true);
         Object viewRoot = context.getViewRoot();
-        try{
+        try {
 
-            
-       UIComponent uiComponent =  D2DViewHandler.findComponent(id, context.getViewRoot());
-        if (uiComponent != null) {
-            id = uiComponent.getClientId(context);
-        }
-        }catch(Exception e){
+
+            UIComponent uiComponent = D2DViewHandler.findComponent(id, context.getViewRoot());
+            if (uiComponent != null) {
+                id = uiComponent.getClientId(context);
+            }
+        } catch (Exception e) {
             /*Class clazz = context.getViewRoot().getClass();
             Method[] methods =clazz.getMethods();
             for(int i = 0; i < methods.length; i++){
@@ -333,6 +334,7 @@ public class JavascriptContext {
 
     /**
      * Get the Effect function for a given event
+     *
      * @param uiComponent
      * @param event
      * @param id
@@ -352,6 +354,7 @@ public class JavascriptContext {
 
     /**
      * Get the Effect for a givin function
+     *
      * @param uiComponent
      * @param event
      * @return
@@ -383,8 +386,7 @@ public class JavascriptContext {
         //48 - 57 / 0 - 9
         for (int i = 0; i < ca.length; i++) {
             int c = (int) ca[i];
-            if ((c > 64 && c < 91) || (c > 96 && c < 123) || (c > 47 && c < 58))
-            {
+            if ((c > 64 && c < 91) || (c > 96 && c < 123) || (c > 47 && c < 58)) {
                 sb.append(ca[i]);
             } else {
                 sb.append('_');
@@ -396,6 +398,7 @@ public class JavascriptContext {
 
     /**
      * Remove duplicate semi-colons from a givin string
+     *
      * @param s
      * @return
      */
@@ -421,7 +424,8 @@ public class JavascriptContext {
 
     /**
      * Set the application focus for the current request, overrides and setFocus call.
-     * Generally setFocus is used by components, while setApplicationFocus is used by the application. 
+     * Generally setFocus is used by components, while setApplicationFocus is used by the application.
+     *
      * @param id
      */
     public static void applicationFocus(FacesContext facesContext, String id) {
@@ -434,6 +438,7 @@ public class JavascriptContext {
 
     /**
      * Get the focus for the current request
+     *
      * @param context
      * @return
      */
@@ -449,6 +454,7 @@ public class JavascriptContext {
 
     /**
      * Add an effect call for the current request
+     *
      * @param effect
      * @param facesContext
      */
@@ -464,6 +470,7 @@ public class JavascriptContext {
 
     /**
      * Add fired effects as javascript calls
+     *
      * @param map
      */
     private static void addtEffectJavascriptCalls(Map map) {
@@ -477,7 +484,7 @@ public class JavascriptContext {
         while (iter.hasNext()) {
             Effect effect = (Effect) iter.next();
             if (effect.getSequence() == null &&
-                !(effect instanceof EffectQueue)) {
+                    !(effect instanceof EffectQueue)) {
                 String call =
                         "id = '" + effect.getId() + "';" + effect.toString();
                 addJavascriptCall(map, call);
@@ -503,6 +510,7 @@ public class JavascriptContext {
 
     /**
      * Build sequence of javascript effect calls
+     *
      * @param list
      * @param sequence
      * @return
@@ -516,7 +524,7 @@ public class JavascriptContext {
             Effect fx = (Effect) effectIter.next();
             String var = getVariableName(sequence, effect);
             lastCall = "var " + var + " = '" + fx.getId() + "';" +
-                       fx.toString(var, lastCall);
+                    fx.toString(var, lastCall);
             effect++;
         }
         return lastCall;
@@ -524,6 +532,7 @@ public class JavascriptContext {
 
     /**
      * Extra Javascript Effect Sequence from a map of effects
+     *
      * @param effect
      * @param sequencedEffects
      */
@@ -556,6 +565,7 @@ public class JavascriptContext {
 
     /**
      * Get variable name for an effect in a sequence
+     *
      * @param sequence
      * @param effect
      * @return

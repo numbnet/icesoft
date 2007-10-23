@@ -34,10 +34,8 @@
 [ Ice.Community ].as(function(This) {
 
     This.Application = Object.subclass({
-        initialize: function() {
-            var logger = window.logger = this.logger = new Ice.Log.Logger([ 'window' ]);
-            this.logHandler = window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(logger) : new Ice.Log.WindowLogHandler(logger, window);
-            var documentSynchronizer = new Ice.Document.Synchronizer(logger);
+        initialize: function(configuration) {
+            var logger = window.logger.child(configuration.session.substring(0, 4));
             var statusManager = new Ice.Status.StatusManager(configuration);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
@@ -71,16 +69,19 @@
                 this.dispose();
             }.bind(this));
 
-            window.identifier = Math.round(Math.random() * 10000).toString();
-            window.connection = this.connection = configuration.synchronous ? new Ice.Connection.SyncConnection(logger, configuration.connection, defaultParameters) : new This.Connection.AsyncConnection(logger, configuration.connection, defaultParameters, commandDispatcher);
+            var parameters = defaultParameters(configuration.session);
+            this.connection = configuration.synchronous ?
+                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
+                              new This.Connection.AsyncConnection(logger, configuration.connection, parameters, commandDispatcher);
 
-            window.onKeyPress(function(e) {
-                if (e.isEscKey()) e.cancelDefaultAction();
-            });
 
             window.onBeforeUnload(function() {
                 this.connection.sendDisposeViews();
                 this.connection.shutdown();
+            }.bind(this));
+
+            window.onUnload(function() {
+                this.dispose();
             }.bind(this));
 
             this.connection.onSend(function() {
@@ -89,10 +90,12 @@
 
             this.connection.onReceive(function(request) {
                 commandDispatcher.deserializeAndExecute(request.contentAsDOM().documentElement);
+                Ice.StateMon.checkAll();
+                Ice.StateMon.rebuild();
             });
 
             this.connection.onReceive(function() {
-                documentSynchronizer.synchronize();
+                window.documentSynchronizer.synchronize();
             });
 
             this.connection.onServerError(function (response) {
@@ -115,30 +118,31 @@
                 statusManager.connectionTrouble.on();
             });
 
-            this.connection.onSend(function(request) {
+            this.connection.onSend(function() {
                 statusManager.busy.on();
             });
 
-            this.connection.onReceive(function(request) {
+            this.connection.onReceive(function() {
                 statusManager.busy.off();
             });
 
-            this.logger.info('page loaded!');
+            logger.info('bridge loaded!');
         },
 
         dispose: function() {
             this.connection.shutdown();
-            this.logger.info('page unloaded!');
-            this.logHandler.disable();
             this.dispose = Function.NOOP;
         }
     });
+});
 
-    window.onLoad(function() {
-        this.application = new This.Application;
-    });
+window.logger = new Ice.Log.Logger([ 'window' ]);
+window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
 
-    window.onUnload(function() {
-        this.application.dispose();
-    });
+window.onLoad(function() {
+    window.documentSynchronizer = new Ice.Document.Synchronizer(window.logger);
+});
+
+window.onKeyPress(function(e) {
+    if (e.isEscKey()) e.cancelDefaultAction();
 });

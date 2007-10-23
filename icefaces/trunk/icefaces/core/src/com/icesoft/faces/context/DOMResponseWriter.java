@@ -318,23 +318,25 @@ public class DOMResponseWriter extends ResponseWriter {
             JavascriptContext.focus(context, focusId);
         }
 
-        Element script =
-                (Element) body.appendChild(document.createElement("script"));
-        script.setAttribute("id", JavascriptContext.DYNAMIC_CODE_ID);
-        script.setAttribute("language", "javascript");
+        Map session = context.getExternalContext().getSessionMap();
+        String sessionIdentifier = context.getIceFacesId();
+        String viewIdentifier = context.getViewNumber();
+        String prefix = sessionIdentifier + ':' + viewIdentifier + ':';
+
+        Element script = (Element) body.appendChild(document.createElement("script"));
+        script.setAttribute("id", prefix + "dynamic-code");
+        script.setAttribute("type", "text/javascript");
         String calls = JavascriptContext.getJavascriptCalls(context);
         script.appendChild(document.createTextNode(calls));
 
-        Map session = context.getExternalContext().getSessionMap();
-        ElementController.from(session).addInto(body);
-
-        String sessionIDScript = "window.session='" + context.getIceFacesId() + "';\n";
+        ElementController.from(session, sessionIdentifier, viewIdentifier).addInto(body);
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
-        String viewIDScript = "document.getElementById('configuration-script').parentNode.viewIdentifier=" + context.getViewNumber() + ";\n";
-        String viewsIDScript = "if (!window.views) window.views = []; window.views.push(" + context.getViewNumber() + ");\n";
-
-        String configurationScript =
-                "window.configuration = {" +
+        String startupScript =
+                "if (!window.views) window.views = []; window.views.push(" + viewIdentifier + ");\n" +
+                        "var container = document.getElementById('" + prefix + "configuration-script').parentNode;\n" +
+                        "container.viewIdentifier = " + viewIdentifier + ";" +
+                        "container.bridge = new Ice.Community.Application({" +
+                        "session: '" + sessionIdentifier + "'," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
                         "redirectURI: " + configuration.getAttribute("connectionLostRedirectURI", "null") + "," +
                         "connection: {" +
@@ -346,12 +348,12 @@ public class DOMResponseWriter extends ResponseWriter {
                         "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
                         "}" +
                         "}" +
-                        "};\n";
+                        "});";
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
-        configurationElement.setAttribute("id", "configuration-script");
-        configurationElement.setAttribute("language", "javascript");
-        configurationElement.appendChild(document.createTextNode(sessionIDScript + viewIDScript + viewsIDScript + configurationScript));
+        configurationElement.setAttribute("id", prefix + "configuration-script");
+        configurationElement.setAttribute("type", "text/javascript");
+        configurationElement.appendChild(document.createTextNode(startupScript));
         body.appendChild(configurationElement);
     }
 

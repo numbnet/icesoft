@@ -130,23 +130,34 @@
         },
 
         serializeViewOn: function(query) {
-            var view;
+            query.add("ice.view.active", this.findActiveView());
+        },
+
+        findActiveView: function() {
             //traverse parents in search of 'viewIdentifier' property
             var parent = this.element;
             while (parent) {
                 if (parent.viewIdentifier) {
-                    view = parent.viewIdentifier;
-                    break;
+                    return parent.viewIdentifier;
                 } else {
                     parent = parent.parentNode;
                 }
             }
 
-            if (view) {
-                query.add("ice.view.active", view);
-            } else {
-                throw 'viewIdentifier is missing';
+            throw 'viewIdentifier is missing';
+        },
+
+        findConnection: function() {
+            var parent = this.element;
+            while (parent) {
+                if (parent.bridge) {
+                    return parent.bridge.connection;
+                } else {
+                    parent = parent.parentNode;
+                }
             }
+
+            throw 'connection is not setup';
         }
     });
 

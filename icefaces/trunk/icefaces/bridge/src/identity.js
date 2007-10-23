@@ -35,13 +35,15 @@ function viewIdentifiers() {
     return window.views.asSet();
 }
 
-function defaultParameters() {
-    return Ice.Parameter.Query.create(function(query) {
-        query.add('ice.focus', currentFocus);
-        query.add('ice.window', window.identifier);
-        query.add('ice.session', window.session);
-        viewIdentifiers().each(function(view) {
-            query.add('ice.view.all', view);
-        });
-    });
+function defaultParameters(session) {
+    return function () {
+        return Ice.Parameter.Query.create(function(query) {
+            //query.add('ice.focus', currentFocus);
+            //query.add('ice.window', container.identifier);
+            query.add('ice.session', session);
+            viewIdentifiers().each(function(view) {
+                query.add('ice.view.all', view);
+            });
+        })
+    };
 }

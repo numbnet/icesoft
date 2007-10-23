@@ -9,14 +9,19 @@ import java.util.Random;
 
 public class ElementController implements Serializable {
     private transient final static Random RANDOM = new Random();
+    private String prefix;
     private transient String focusCode = "";
     private transient String selectCode = "";
     private transient String clickCode = "";
 
-    public static ElementController from(Map session) {
+    public ElementController(String sessionIdentifier, String viewIdentifier) {
+        prefix = sessionIdentifier + ':' + viewIdentifier + ':';
+    }
+
+    public static ElementController from(Map session, String sessionIdentifier, String viewIdentifier) {
         String key = ElementController.class.toString();
         if (!session.containsKey(key)) {
-            session.put(key, new ElementController());
+            session.put(key, new ElementController(sessionIdentifier, viewIdentifier));
         }
 
         return (ElementController) session.get(key);
@@ -42,15 +47,18 @@ public class ElementController implements Serializable {
         Document document = element.getOwnerDocument();
 
         Element focusElement = (Element) element.appendChild(document.createElement("script"));
-        focusElement.setAttribute("id", "focus-code");
+        focusElement.setAttribute("id", prefix + "focus-code");
+        focusElement.setAttribute("type", "text/javascript");
         focusElement.appendChild(document.createTextNode(focusCode));
 
         Element selectElement = (Element) element.appendChild(document.createElement("script"));
-        selectElement.setAttribute("id", "select-code");
+        selectElement.setAttribute("id", prefix + "select-code");
+        selectElement.setAttribute("type", "text/javascript");
         selectElement.appendChild(document.createTextNode(selectCode));
 
         Element clickElement = (Element) element.appendChild(document.createElement("script"));
-        clickElement.setAttribute("id", "click-code");
+        clickElement.setAttribute("id", prefix + "click-code");
+        clickElement.setAttribute("type", "text/javascript");
         clickElement.appendChild(document.createTextNode(clickCode));
     }
 }

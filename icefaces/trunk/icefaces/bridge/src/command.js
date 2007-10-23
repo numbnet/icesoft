@@ -53,13 +53,6 @@
         document.cookie = message.firstChild.data;
     };
 
-    This.ServerError = function(message) {
-        logger.error('Server side error');
-        logger.error(message.firstChild.data);
-        statusManager.serverError.on();
-        application.dispose();
-    };
-
     This.ParsingError = function(message) {
         logger.error('Parsing error');
         var errorNode = message.firstChild;

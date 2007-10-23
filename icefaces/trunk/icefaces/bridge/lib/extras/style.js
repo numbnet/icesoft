@@ -106,9 +106,7 @@ Ice.modal = {
             iframe.title = 'Ice Modal Frame';
             iframe.frameborder = "0";
             iframe.id = 'iceModalFrame';
-            var context = configuration.connection.context;
-            var dest = context + 'xmlhttp/blank';
-            iframe.src = dest;
+            iframe.src = 'about:blank';
             iframe.style.zIndex = 25000;
             iframe.style.opacity = 0.5;
             iframe.style.filter = 'alpha(opacity=50)';

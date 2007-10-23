@@ -96,7 +96,7 @@ public class ResourceDispatcher implements Server {
 
         public void respond(Response response) throws Exception {
             response.setHeader("ETag", encode(resource));
-            response.setHeader("Cache-Control", new String[]{"private"});
+            response.setHeader("Cache-Control", new String[]{"public"});
             response.setHeader("Content-Type", mimeType);
             response.setHeader("Last-Modified", resource.lastModified());
             response.writeBodyFrom(resource.open());

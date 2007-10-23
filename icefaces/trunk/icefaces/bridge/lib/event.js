@@ -105,12 +105,12 @@
 
         send: function() {
             this.cancel();
-            this.sendOn(connection);
+            this.sendOn(this.captured().findConnection());
         },
 
         sendFull: function() {
             this.cancel();
-            this.sendFullOn(connection);
+            this.sendFullOn(this.captured().findConnection());
         }
     });
 
