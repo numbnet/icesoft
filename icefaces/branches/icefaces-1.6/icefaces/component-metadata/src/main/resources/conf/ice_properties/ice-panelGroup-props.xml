@@ -205,7 +205,12 @@
 
 <property>
 	<description>
-		Height for scrollable panel
+	    <![CDATA[
+		Height for scrollable panel. You must need to define the measurement unit without any space (e.g.) <br/>
+		&lt;ice:panelGroup scrollHeight="50em" &gt; <br/> or <br/>
+        &lt;ice:panelGroup scrollHeight="50px" &gt; <br/>
+        		
+		]]> 
 	</description>
 	<property-name>scrollHeight</property-name>
 
@@ -220,7 +225,11 @@
 
 <property>
 	<description>
-		Width for scrollable panel.
+        <![CDATA[
+        Width for scrollable panel. You must need to define the measurement unit without any space (e.g.) <br/>
+        &lt;ice:panelGroup scrollWidth="50em" &gt; <br/> or <br/>
+        &lt;ice:panelGroup scrollWidth="50px" &gt; <br/>
+        ]]> 
 	</description>
 	<property-name>scrollWidth</property-name>
 	<property-class>java.lang.String</property-class>
