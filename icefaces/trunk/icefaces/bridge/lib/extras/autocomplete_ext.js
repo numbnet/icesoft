@@ -41,8 +41,8 @@
 // 
 // See scriptaculous.js for full license.
 
-var Autocompleter = {}
-Autocompleter.Finder = Class.create();
+var Autocompleter = {};
+
 Autocompleter.Finder = {
     list:new Array(),
     add: function(ele, autocomplete) {
@@ -51,11 +51,11 @@ Autocompleter.Finder = {
     find: function(id) {
         return this.list[id];
     }
-
-
 };
+
 Autocompleter.Base = function() {
 };
+
 Autocompleter.Base.prototype = {
     baseInitialize: function(element, update, options, rowC, selectedRowC) {
         this.element = $(element);
@@ -94,18 +94,13 @@ Autocompleter.Base.prototype = {
             this.options.tokens = new Array(this.options.tokens);
 
         this.observer = null;
-
         this.element.setAttribute('autocomplete', 'off');
-
         Element.hide(this.update);
-
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
         Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
-
     },
 
     show: function() {
-
         if (Element.getStyle(this.update, 'display') == 'none')this.options.onShow(this.element, this.update);
         if (!this.iefix &&
             (navigator.appVersion.indexOf('MSIE') > 0) &&
@@ -114,11 +109,10 @@ Autocompleter.Base.prototype = {
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                     'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="' + configuration.connection.context + '/xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
+                    'src="about:blank" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
-
     },
 
     fixIEOverlapping: function() {
@@ -129,8 +123,6 @@ Autocompleter.Base.prototype = {
     },
 
     hide: function() {
-
-
         this.stopIndicator();
         if (Element.getStyle(this.update, 'display') != 'none') this.options.onHide(this.element, this.update);
         if (this.iefix) Element.hide(this.iefix);
@@ -153,6 +145,7 @@ Autocompleter.Base.prototype = {
                     this.getUpdatedChoices(true, event);
             }
         }
+
         Ice.Autocompleter.logger.debug("Key Press");
         if (this.active)
             switch (event.keyCode) {
@@ -189,49 +182,35 @@ Autocompleter.Base.prototype = {
                     return;
 
             }
-        else
-            if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN)
-                return;
+        else {
+            if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN) return;
+        }
 
         this.changed = true;
         this.hasFocus = true;
-
-
         this.index = -1;
         //This is to avoid an element being select because the mouse just happens to be over the element when the list pops up
         this.skip_mouse_hover = true;
-        if (this.active)
-            this.render();
+        if (this.active) this.render();
         if (this.observer) clearTimeout(this.observer);
-        this.observer =
-        setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+        this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
     },
 
     activate: function() {
         this.changed = false;
         this.hasFocus = true;
-        //this.getUpdatedChoices();
     },
 
     onHover: function(event) {
         var element = Event.findElement(event, 'DIV');
-        if (this.index != element.autocompleteIndex)
-        {
-            if (!this.skip_mouse_hover)
-                this.index = element.autocompleteIndex;
-            //else
-            //Ice.Autocompleter.logger.error("Skip mouse hover");
-
+        if (this.index != element.autocompleteIndex) {
+            if (!this.skip_mouse_hover) this.index = element.autocompleteIndex;
             this.render();
         }
-    {
-        //Ice.Autocompleter.logger.error("Index Not equal");
-    }
         Event.stop(event);
     },
 
     onMove: function(event) {
-        //Ice.Autocompleter.logger.error("Mouse Move");
         if (this.skip_mouse_hover) {
             this.skip_mouse_hover = false;
             this.onHover(event);
@@ -313,7 +292,6 @@ Autocompleter.Base.prototype = {
 
     selectEntry: function() {
         this.active = false;
-
         if (this.index >= 0) {
             this.updateElement(this.getCurrentEntry());
             this.index = -1;
@@ -365,11 +343,8 @@ Autocompleter.Base.prototype = {
             } else {
                 this.entryCount = 0;
             }
-
             this.stopIndicator();
-
             this.index = -1;
-
             this.render();
         } else {
             Ice.Autocompleter.logger.debug("Not updating choices Not Changed[" + this.changed + "] hasFocus[" + this.hasFocus + "]");
@@ -381,13 +356,11 @@ Autocompleter.Base.prototype = {
         Event.observe(element, "click", this.onClick.bindAsEventListener(this));
         Event.observe(element, "mousemove", this.onMove.bindAsEventListener(this));
     },
+
     dispose:function() {
-
-
         for (var i = 0; i < this.entryCount; i++) {
             var entry = this.getEntry(i);
             entry.autocompleteIndex = i;
-
             Event.stopObserving(entry, "mouseover", this.onHover);
             Event.stopObserving(entry, "click", this.onClick);
             Event.stopObserving(entry, "mousemove", this.onMove);
@@ -461,7 +434,6 @@ Object.extend(Object.extend(Ajax.Autocompleter.prototype, Autocompleter.Base.pro
     onComplete: function(request) {
         this.updateChoices(request.responseText);
     }
-
 });
 
 
@@ -569,7 +541,6 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             Ice.Autocompleter.logger.debug("Sending partial submit");
             iceSubmitPartial(form, this.element, event);
         }
-
     },
 
     onComplete: function(request) {
@@ -584,22 +555,10 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
             //Ice.Autocompleter.logger.debug("Not showing due to hide force");
             return;
         }
-        if (this.update && this.update.id) {
-            var newEle = $(this.update.id);
-            if (newEle != this.update) {
-                //Ice.Autocompleter.logger.debug("Update Element replaced");
-                //this.update = newEle;
-            }
-        }
         this.hasFocus = true;
         Element.cleanWhitespace(this.update);
         this.updateChoices(text);
-        //Ice.Autocompleter.logger.debug("Update NOW");
-
         this.show();
-
         this.render();
-
     }
-
 });

@@ -39,10 +39,7 @@ Ice.Initializer = {
     addCall: function(id, call) {
         if (Ice.Initializer.loaded) {
             Ice.DnD.logger.debug("Call Ran");
-            //if(!Ice.Initializer.ranCalls[id]){
             eval(call);
-            //    Ice.Initializer.ranCalls[id] = true;
-            // }
         } else {
             rapper = new Object();
             rapper.call = call;
@@ -51,6 +48,7 @@ Ice.Initializer = {
             Ice.DnD.logger.debug("Call Queued");
         }
     },
+
     runQueuedCalls: function() {
         Ice.Initializer.loaded = true;
         ar = Ice.Initializer.queuedCalls;

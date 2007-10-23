@@ -30,46 +30,47 @@
  * this file under either the MPL or the LGPL License."
  *
  */
- var JSObjects = new Array();
- Ice.Repository = Class.create();
- Ice.Repository = {
+var JSObjects = new Array();
+Ice.Repository = Class.create();
+Ice.Repository = {
     obj:null,
-	getInstance:function(_id) {
-			if (JSObjects[_id] == null) {
-				JSObjects[_id] = eval(this.obj);
-			} 
-			return JSObjects[_id];
-	},
-	
-	register:function(_id, obj) { 
-			this.obj = obj;
-			if (JSObjects[_id] == null) {
-				JSObjects[_id] = this.obj;
-			}
-			return this.obj;
-	},
-	
-	remove:function(_id){
-			var removeArray = new Array();
-			for (key in JSObjects) {
-				if (key == _id) {
-				//	JSObjects["iceIndex"] = parseInt(JSObjects["iceIndex"]) - 1;
-				 	continue;
-				}
-				removeArray[key]  = JSObjects[key];
-			} 
-			JSObjects = removeArray;
-	},
-	
-	getAll:function() {
-		var tempArray = new Array();
-		var i = 0;
-		for (key in JSObjects) {
-				if (key.indexOf(':') > 0) {
-					tempArray[i++] = JSObjects[key];
-				}
-		} 
-		return tempArray;
-	}
- }
+
+    getInstance:function(_id) {
+        if (JSObjects[_id] == null) {
+            JSObjects[_id] = eval(this.obj);
+        }
+        return JSObjects[_id];
+    },
+
+    register:function(_id, obj) {
+        this.obj = obj;
+        if (JSObjects[_id] == null) {
+            JSObjects[_id] = this.obj;
+        }
+        return this.obj;
+    },
+
+    remove:function(_id) {
+        var removeArray = new Array();
+        for (key in JSObjects) {
+            if (key == _id) {
+                //	JSObjects["iceIndex"] = parseInt(JSObjects["iceIndex"]) - 1;
+                continue;
+            }
+            removeArray[key] = JSObjects[key];
+        }
+        JSObjects = removeArray;
+    },
+
+    getAll:function() {
+        var tempArray = new Array();
+        var i = 0;
+        for (key in JSObjects) {
+            if (key.indexOf(':') > 0) {
+                tempArray[i++] = JSObjects[key];
+            }
+        }
+        return tempArray;
+    }
+}
  

@@ -44,9 +44,11 @@ var IE = (Try.these(
             new ActiveXObject('Msxml2.XMLHTTP');
             return true;
         },
+
         function() {
             new ActiveXObject('Microsoft.XMLHTTP');
             return true;
         }
+
         ) || false);
 

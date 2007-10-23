@@ -34,21 +34,18 @@
 
 // Used to improve drag perofmance when many drop targets are present
 var DropRegions = {
-
     init:false,
     SCALE:10,
     map:[],
+
     register: function(drop) {
         var element = drop.element;
         var topLeft = Position.cumulativeOffset(element);
         var bottomRight = [topLeft[0] + element.offsetWidth, topLeft[1] + element.offsetHeight];
-
         var tlX = Math.round(topLeft[0] / this.SCALE);
         var tlY = Math.round(topLeft[1] / this.SCALE);
-
         var brX = Math.round(bottomRight[0] / this.SCALE) + 1;
         var brY = Math.round(bottomRight[1] / this.SCALE) + 1;
-
         var x = 0;
         var y = 0;
 
@@ -61,13 +58,11 @@ var DropRegions = {
                 this.map[x][y].push(drop);
             }
         }
-
     },
 
     drops: function(point) {
         var x = Math.round(point[0] / DropRegions.SCALE);
         var y = Math.round(point[1] / DropRegions.SCALE);
-
         if (this.map[x] == null)
             return [];
         if (this.map[x][y] == null)
@@ -84,17 +79,14 @@ Ice.DndEvent.prototype = {
     eventType:null,
     dragFire:null,
     dropFire:null,
+
     initialize: function() {
     },
+
     submit: function() {
         var ele = this.drag.element;
         if (this.drag.options.sort == true)return;
         thisEv = ele.id + '-' + this.eventType;
-        if (thisEv == Ice.DndEvent.lastEvent) {
-            //Ice.DnD.logger.debug("Duplicate Event [" + this.eventType + "] Ignored");
-            return;
-            //Don't send the same event twice
-        }
 
         try {
             Ice.DndEvent.lastEvent = thisEv;
@@ -137,9 +129,9 @@ Ice.DndEvent.prototype = {
                     Ice.DnD.logger.debug("Drag Form Field[" + fe[ii].name + "] Value [" + fe[ii].value + "]");
                 }
                 Ice.DnD.logger.debug("Submitting  drag form ID[" + form.id + "] CssUpdate [" + cssUpdate.value + "]!");
-                try{
+                try {
                     iceSubmitPartial(form, ele, nothingEvent);
-                }catch(formExcept){
+                } catch(formExcept) {
                     Ice.DnD.logger.error("error submitting dnd event", formExcept);
 
                 }
@@ -160,41 +152,38 @@ Ice.DndEvent.prototype = {
         }
         return;
     },
+
     populateDrag:function(ele, ignoreCss) {
         var fe = ele.getElementsByTagName('input');
         var ne = new Array();
-        var i =0;
+        var i = 0;
         // We only want hidden fields.
-        for(i=0;i<fe.length;i++){
-            
-            if(fe[i].type=='hidden'){
+        for (i = 0; i < fe.length; i++) {
+            if (fe[i].type == 'hidden') {
                 ne.push(fe[i]);
             }
         }
         fe = ne;
         fe[0].value = this.eventType;
         if (this.drop)fe[1].value = this.drop.element.id;
-        if (!ignoreCss)
-            Ice.DnD.StyleReader.upload(ele);
+        if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
         return true;
     },
+
     populateDrop:function(ele, ignoreCss) {
         var fe = ele.getElementsByTagName('input');
         var ne = new Array();
-        var i =0;
+        var i = 0;
         // We only want hidden fields.
-        for(i=0;i<fe.length;i++){
-
-            if(fe[i].type=='hidden'){
+        for (i = 0; i < fe.length; i++) {
+            if (fe[i].type == 'hidden') {
                 ne.push(fe[i]);
             }
         }
         fe = ne;
         fe[0].value = this.eventType;
         fe[1].value = this.drag.element.id;
-
-        if (!ignoreCss)
-            Ice.DnD.StyleReader.upload(ele);
+        if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
 
         return true;
     },
@@ -202,7 +191,6 @@ Ice.DndEvent.prototype = {
     ignoreEvent:function(mask) {
         if (!mask)return false;//No mask, no ignore
         var result = false;
-
         if (mask) {
             if (mask.indexOf(this.eventType) != -1) {
                 result = true;
@@ -214,13 +202,11 @@ Ice.DndEvent.prototype = {
 
 Ice.SortEvent = Class.create();
 Ice.SortEvent.prototype = {
-    initialize: function() {
-
-    },
-    start:function(){
+    start:function() {
         Ice.DnD.logger.debug('Starting Sort Event');
     },
-    end:function(){
+
+    end:function() {
         Ice.DnD.logger.debug('Ending Sort Event');
     }
 };

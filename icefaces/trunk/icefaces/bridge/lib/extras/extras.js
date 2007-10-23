@@ -35,13 +35,16 @@ Ice.DnD = Class.create();
 var IceLoaded = false;
 Ice.DnD.logger = Class.create();
 Ice.DnD.logger = {
-    debug:function(){},
-    warn:function(){},
-    error:function(){}
+    debug:function() {
+    },
+    warn:function() {
+    },
+    error:function() {
+    }
 };
+
 Ice.DnD = {
     log: function(s) {
-        //  dumblog(s);
         Ice.DnD.logger.debug(s);
     },
     DRAG_START:1,
@@ -49,47 +52,41 @@ Ice.DnD = {
     DROPPED:3,
     HOVER_START:4,
     HOVER_END:5,
-    init:function() {
 
+    init:function() {
         Ice.DnD.logger = window.logger.child('dragDrop');
-       
         Ice.StateMon.logger = window.logger.child('stateMon');
         Ice.StateMon.destroyAll();
         IceLoaded = true;
     },
+
     elementReplaced:function(ele) {
         var currentEle = $(ele.id);
-        if (currentEle != null && currentEle != ele) {
-
-            return true;
-        } else {
-
-            return false;
-        }
+        return currentEle != null && currentEle != ele;
     },
+
     check:function () {
-         Ice.StateMon.checkAll();
-     },
+        Ice.StateMon.checkAll();
+    },
 
     alreadyDrag:function(ele) {
         ele = $(ele)
         var found = false;
-        
         $A(Draggables.drags).each(function(drag) {
             if (drag.element && drag.element.id == ele.id) {
-                    found = true;
+                found = true;
             }
         });
         return found;
     },
 
-    sortableDraggable:function(ele){
+    sortableDraggable:function(ele) {
         ele = $(ele)
         var found = false;
 
         $A(Draggables.drags).each(function(drag) {
             if (drag.element && drag.element.id == ele.id) {
-                if(drag.options.sort){
+                if (drag.options.sort) {
                     found = true;
                 }
             }
@@ -103,68 +100,69 @@ Ice.DnD = {
         $(Droppables.drops).each(function(drop) {
             if (drop && drop.element.id == ele.id) {
 
-                    found = true;
+                found = true;
             }
         });
         return found;
     },
 
     alreadySort:function(ele) {
-
         var opts = Sortable.options(ele);
-        if(opts)return true;
+        if (opts)return true;
         return false;
-     }
+    }
 };
 
 Ice.PanelCollapsible = {
     fire:function(eleId, hdrEleId, styleCls, usrdfndCls) {
         var ele = document.getElementById(eleId);
         var hdrEle = document.getElementById(hdrEleId);
-        try{
-        if(Element.visible(ele)){
-	        hdrEle.className = Ice.PanelCollapsible.getStyleClass(styleCls, usrdfndCls, 'ColpsdHdr');
-            Ice.PanelCollapsible.collapse(eleId);
-        }else{
-	        hdrEle.className = Ice.PanelCollapsible.getStyleClass(styleCls, usrdfndCls, 'Hdr');
-            Ice.PanelCollapsible.expand(eleId);
-        }
-            }catch(eee){
+        try {
+            if (Element.visible(ele)) {
+                hdrEle.className = Ice.PanelCollapsible.getStyleClass(styleCls, usrdfndCls, 'ColpsdHdr');
+                Ice.PanelCollapsible.collapse(eleId);
+            } else {
+                hdrEle.className = Ice.PanelCollapsible.getStyleClass(styleCls, usrdfndCls, 'Hdr');
+                Ice.PanelCollapsible.expand(eleId);
+            }
+        } catch(eee) {
 
             console.log("Error in panel collapsible [" + eee + "]");
         }
 
     },
-    expand:function(eleId){
+
+    expand:function(eleId) {
         var ele = document.getElementById(eleId);
-        if(!Element.visible(ele)){
-            Effect.SlideDown(eleId,{uploadCSS:true,submit:true,duration:0.5});
+        if (!Element.visible(ele)) {
+            Effect.SlideDown(eleId, {uploadCSS:true,submit:true,duration:0.5});
         }
     },
-    collapse:function(eleId){
+
+    collapse:function(eleId) {
         var ele = document.getElementById(eleId);
-        if(Element.visible(ele)){
-            Effect.SlideUp(eleId,{uploadCSS:true,submit:true,duration:0.5});
+        if (Element.visible(ele)) {
+            Effect.SlideUp(eleId, {uploadCSS:true,submit:true,duration:0.5});
         }
     },
-    
+
     getStyleClass:function(styleCls, usrdfndCls, suffix) {
-		var activeClass = styleCls+suffix;
-    	if(usrdfndCls!=null) {
-			activeClass+= ' '+ usrdfndCls+suffix;
-		}
-		return activeClass;
+        var activeClass = styleCls + suffix;
+        if (usrdfndCls != null) {
+            activeClass += ' ' + usrdfndCls + suffix;
+        }
+        return activeClass;
     }
 }
 
-function ice_tableRowClicked(rowid, hdnFld){
-	try{ 
-		var fld = $(hdnFld);
-		fld.value = rowid;
-		var nothingEvent = new Object(); 
-		var form = Ice.util.findForm(fld);
-		iceSubmit(null,fld,nothingEvent);
-	}catch(e){
-		console.log("Error in rowSelector[" + e + "]");
-	}
+function ice_tableRowClicked(rowid, hdnFld) {
+    try {
+        var fld = $(hdnFld);
+        fld.value = rowid;
+        var nothingEvent = new Object();
+        var form = Ice.util.findForm(fld);
+        iceSubmit(null, fld, nothingEvent);
+    } catch(e) {
+        console.log("Error in rowSelector[" + e + "]");
+    }
 }

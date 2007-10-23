@@ -38,7 +38,6 @@
 
 
 var SortableObserver = Class.create();
-//SortableObserver.count = 0;
 SortableObserver.prototype = {
 
     initialize: function(element, observer) {
@@ -61,100 +60,86 @@ SortableObserver.prototype = {
         var newValue = Sortable.serialize(this.element);
         var options = Sortable.options(this.element);
         options.serializeValue = newValue;
-        if (this.lastValue != newValue){
+        if (this.lastValue != newValue) {
             this.observer(this.element)
-       }
-
-
+        }
     }
 }
-
 
 var Sortable = {
     sortables: {},
     sortableElements: Array(),
     kids:null,
-   _findRootElement: function(element) {
-    while (element.tagName != "BODY") {
-      if(element.id && Sortable.sortables[element.id]) return element;
-      element = element.parentNode;
-    }
-  },
+    _findRootElement: function(element) {
+        while (element.tagName != "BODY") {
+            if (element.id && Sortable.sortables[element.id]) return element;
+            element = element.parentNode;
+        }
+    },
 
-  options: function(element) {
-    element = Sortable._findRootElement($(element));
-    if(!element) return;
-    return Sortable.sortables[element.id];
-  },
+    options: function(element) {
+        element = Sortable._findRootElement($(element));
+        if (!element) return;
+        return Sortable.sortables[element.id];
+    },
 
- destroy: function(element){
-    var s = Sortable.options(element);
+    destroy: function(element) {
+        var s = Sortable.options(element);
 
-    if(s) {
-      Draggables.removeObserver(s.element);
-      s.droppables.each(function(d){ Droppables.remove(d) });
-      s.draggables.invoke('destroy');
+        if (s) {
+            Draggables.removeObserver(s.element);
+            s.droppables.each(function(d) {
+                Droppables.remove(d)
+            });
+            s.draggables.invoke('destroy');
 
-      delete Sortable.sortables[s.element.id];
-      var i =0;
-      var n = Array();
-      for(i=0;i<Sortable.sortableElements.length;i++){
-        if(Sortable.sortableElements[i] && Sortable.sortableElements[i].id != s.element.id){
-            n.push(Sortable.sortableElements[i]);
-        }        
-      }
-      Sortable.sortableElements = n;
-    }
-
-   
-  },
-
-   
-
+            delete Sortable.sortables[s.element.id];
+            var i = 0;
+            var n = Array();
+            for (i = 0; i < Sortable.sortableElements.length; i++) {
+                if (Sortable.sortableElements[i] && Sortable.sortableElements[i].id != s.element.id) {
+                    n.push(Sortable.sortableElements[i]);
+                }
+            }
+            Sortable.sortableElements = n;
+        }
+    },
 
     create: function(element, o, override) {
-            element = $(element);
-        if(Ice.DnD.alreadySort(element)){
-	        Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
-                return;
-	    }
-        var monitor = new Ice.SortableMonitor(element,o);
-        
-	    //Ice.DnD.logger.error('a');
-        //Ice.DnD.logger.error('b');
-        //Ice.DnD.logger.debug('Creating for ID [' + element.id + ']');
+        element = $(element);
+        if (Ice.DnD.alreadySort(element)) {
+            Ice.DnD.logger.debug('Sort ID [' + element.id + '] already created');
+            return;
+        }
+        var monitor = new Ice.SortableMonitor(element, o);
         var options = Object.extend({
-                element:     element,
-                tag:         'li',       // assumes li children, override with tag: 'tagname'
-                dropOnEmpty: false,
+            element:     element,
+            tag:         'li',       // assumes li children, override with tag: 'tagname'
+            dropOnEmpty: false,
 
-                overlap:     'vertical', // one of 'vertical', 'horizontal'
-                constraint:  'vertical', // one of 'vertical', 'horizontal', false
-                containment: element,    // also takes array of elements (or id's); or false
-                handle:      false,      // or a CSS class
-                only:        false,
-                hoverclass:  null,
-                ghosting:    false,
-                format:      null,
-                onChange:    Prototype.emptyFunction,
-                onUpdate:    Prototype.emptyFunction
+            overlap:     'vertical', // one of 'vertical', 'horizontal'
+            constraint:  'vertical', // one of 'vertical', 'horizontal', false
+            containment: element,    // also takes array of elements (or id's); or false
+            handle:      false,      // or a CSS class
+            only:        false,
+            hoverclass:  null,
+            ghosting:    false,
+            format:      null,
+            onChange:    Prototype.emptyFunction,
+            onUpdate:    Prototype.emptyFunction
         }, arguments[1] || {});
-        //            Ice.DnD.logger.error('c');
         // clear any old sortable with same element
         this.destroy(element);
-        //Ice.DnD.logger.error('d');
         // build options for the draggables
         var options_for_draggable = {
-                revert:      true,
-                ghosting:    options.ghosting,
-                constraint:  options.constraint,
-                handle:      options.handle,
-                // Sort flag is used by Drag and Drop javascript to avoid Drag and Drop events from being sent
-                sort:        true};
-
+            revert:      true,
+            ghosting:    options.ghosting,
+            constraint:  options.constraint,
+            handle:      options.handle,
+        // Sort flag is used by Drag and Drop javascript to avoid Drag and Drop events from being sent
+            sort:        true};
         if (options.starteffect)
             options_for_draggable.starteffect = options.starteffect;
-
         if (options.reverteffect)
             options_for_draggable.reverteffect = options.reverteffect;
         else
@@ -162,13 +147,10 @@ var Sortable = {
                 element.style.top = 0;
                 element.style.left = 0;
             };
-        //Ice.DnD.logger.error('e');
         if (options.endeffect)
             options_for_draggable.endeffect = options.endeffect;
-            //Ice.DnD.logger.error('f');
         if (options.zindex)
             options_for_draggable.zindex = options.zindex;
-        //Ice.DnD.logger.error('g');
         // build options for the droppables
         var options_for_droppable = {
             overlap:     options.overlap,
@@ -177,59 +159,43 @@ var Sortable = {
             onHover:     Sortable.onHover,
             greedy:      !options.dropOnEmpty,
             sort:        true
-            }
-        //Ice.DnD.logger.error('h');
+        }
         // fix for gecko engine
         Element.cleanWhitespace(element);
-        //Ice.DnD.logger.error('i');
         options.draggables = [];
         options.droppables = [];
 
-        // make it so
-        //Ice.DnD.logger.error('j');
         // drop on empty handling
         if (options.dropOnEmpty) {
-            //Ice.DnD.logger.error('j1');
             Droppables.add(element,
             {
                 containment: options.containment,
                 onHover: Sortable.onEmptyHover, greedy: false, sort:true});
-                //Ice.DnD.logger.error('j2');
             options.droppables.push(element);
         }
-            //Ice.DnD.logger.error('k');
         (this.findElements(element, options) || []).each(function(e) {
             // handles are per-draggable
-	        //Ice.DnD.logger.error('k1');
             var handle = options.handle ?
             // Element.childrenWithClassName(e, options.handle)[0] : e;
             // Above call will cause "not a function" error. See JIRA ICE-1705.
-                e.getElementsByClassName(options.handle)[0] : e;
-            //Ice.DnD.logger.error('k2');
+                         e.getElementsByClassName(options.handle)[0] : e;
             options.draggables.push(
-                new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
-                ///Ice.DnD.logger.error('k3');
-                Droppables.add(e, options_for_droppable);
-                //('k4');
-                options.droppables.push(e);
-                //Ice.DnD.logger.error('k5');
+                    new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
+            Droppables.add(e, options_for_droppable);
+            options.droppables.push(e);
         });
 
-        //Ice.DnD.logger.error('k-1');
         // keep reference
         this.sortables[element.id] = options;
         this.sortableElements.push(element);
         monitor.options = options;
-	    Ice.StateMon.add(monitor);
-        //Ice.DnD.logger.error('h');
+        Ice.StateMon.add(monitor);
         // for onupdate
         var observer = new SortableObserver(element, options.onUpdate);
         Draggables.addObserver(observer);
-
-        //Ice.DnD.logger.debug('Sortable created for id [' + element.id + ']');
     },
 
-    // return all suitable-for-sortable elements in a guaranteed order
+//return all suitable-for-sortable elements in a guaranteed order
     findElements: function(element, options) {
         if (!element.hasChildNodes()) return null;
         var elements = [];
@@ -237,13 +203,11 @@ var Sortable = {
             if (e.tagName && e.tagName.toUpperCase() == options.tag.toUpperCase() &&
                 (!options.only || (Element.hasClassName(e, options.only))))
                 elements.push(e);
-            
         });
         return (elements.length > 0 ? elements.flatten() : null);
     },
 
     onHover: function(element, dropon, overlap) {
-    //Ice.DnD.logger.debug("On Hover");
         if (overlap > 0.5) {
             Sortable.mark(dropon, 'before');
             if (dropon.previousSibling != element) {
@@ -286,7 +250,7 @@ var Sortable = {
     mark: function(dropon, position) {
         // mark on ghosting only
         var sortable = Sortable.options(dropon.parentNode);
-        if(!sortable) return;
+        if (!sortable) return;
         if (sortable && !sortable.ghosting) return;
 
         if (!Sortable._marker) {
@@ -323,5 +287,4 @@ var Sortable = {
             return item.id;
         }).join(";");
     }
-
 }

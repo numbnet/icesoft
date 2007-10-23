@@ -47,8 +47,6 @@ Droppables.show = function(point, element) {
     if (DropRegions.init) {
         dropsToScan = DropRegions.drops(point);
     }
-    //regionDrops = DropRegions.drops(point);
-    //regionDrops.each( function(drop) {
     dropsToScan.each(function(drop) {
         if (Position.within(drop.element, point[0], point[1])) {
             if (Droppables.isAffected(point, element, drop)) {
@@ -62,7 +60,6 @@ Droppables.show = function(point, element) {
             }
         }
         if (!DropRegions.init) {
-	        //Ice.DnD.logger.debug('Registering  ID[' + drop.element.id + ']');
             DropRegions.register(drop);
         }
     });
@@ -70,12 +67,12 @@ Droppables.show = function(point, element) {
 };
 
 Droppables.ORIGINAL_isAffected = Droppables.isAffected;
-Droppables.isAffected = function(point, element, drop){
+Droppables.isAffected = function(point, element, drop) {
     var result = false;
     result = Droppables.ORIGINAL_isAffected(point, element, drop);
-    if(result && drop.sort){
-        if(!Ice.DnD.sortableDraggable(element)){
-            result  = false;
+    if (result && drop.sort) {
+        if (!Ice.DnD.sortableDraggable(element)) {
+            result = false;
         }
     }
     return result;
@@ -83,13 +80,13 @@ Droppables.isAffected = function(point, element, drop){
 
 Droppables.ORIGINAL_add = Droppables.add;
 Droppables.add = function(ele, options) {
-     if(Ice.DnD.alreadyDrop(ele)){
-	        Ice.DnD.logger.debug('Droppable ID [' + ele.id + '] already created');
-                return;
-	    }
+    if (Ice.DnD.alreadyDrop(ele)) {
+        Ice.DnD.logger.debug('Droppable ID [' + ele.id + '] already created');
+        return;
+    }
     Droppables.ORIGINAL_add(ele, options);
-    if(!options.sort){
-        var monitor = new Ice.DroppableMonitor($(ele),options);
+    if (!options.sort) {
+        var monitor = new Ice.DroppableMonitor($(ele), options);
         Ice.StateMon.add(monitor);
     }
 }

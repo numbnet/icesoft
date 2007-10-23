@@ -39,39 +39,34 @@
 Draggable.prototype.dragGhost = false;
 Draggable.prototype.ORIGINAL_initialize = Draggable.prototype.initialize;
 Draggable.prototype.initialize = function(element) {
-//Ice.DnD.logger.error('kk-1');
-    if (Ice.DnD.alreadyDrag(element)){
-      //Ice.DnD.logger.error('kk-11');
-      Ice.DnD.logger.debug("Draggable [" + $(element).id  +"] has already been created");
-      return;
+    if (Ice.DnD.alreadyDrag(element)) {
+        Ice.DnD.logger.debug("Draggable [" + $(element).id + "] has already been created");
+        return;
     }
-//Ice.DnD.logger.error('kk-2');
     this.element = $(element);
-
     var ops = arguments[1];
     if (ops.dragGhost == true)
         this.dragGhost = true;
-    if (!ops.starteffect)ops.starteffect = function() {
+    if (!ops.starteffect) ops.starteffect = function() {
     };
-    if (!ops.endeffect)ops.endeffect = function() {
+    if (!ops.endeffect) ops.endeffect = function() {
     };
-    if(ops.handle){
+    if (ops.handle) {
         ops.handle = $(ops.handle);
         //Might not have the element the first time. When rebuilding we could have a ref to a non existing element
         ops.handle = $(ops.handle.id);
     }
-//Ice.DnD.logger.error('kk-3');
     this.ORIGINAL_initialize(this.element, ops);
-//Ice.DnD.logger.error('kk-4');
-    if(!ops.sort){
+    if (!ops.sort) {
         Ice.DnD.logger.debug("Draggable Created ID[" + this.element.id + "]");
         var monitor = new Ice.DraggableMonitor(this.element, ops);
         monitor.object = this;
         Ice.StateMon.add(monitor);
     }
 
-    Ice.DnD.logger.debug("Draggable [" + this.element.id  +"] created");
+    Ice.DnD.logger.debug("Draggable [" + this.element.id + "] created");
 };
+
 Draggable.prototype.ORIGINAL_startDrag = Draggable.prototype.startDrag;
 Draggable.prototype.startDrag = function(event) {
     if (this.dragGhost == true) {
@@ -140,7 +135,6 @@ Draggable.prototype.draw = function(point) {
 };
 
 Draggable.prototype.resize = function(event) {
-
 };
 
 
@@ -161,13 +155,11 @@ Draggable.prototype.updateDrag = function(event, pointer) {
         iceEv.drop = ad;
     }
 
-    this.hoveringDrop = (ad != null)?ad:null;
-
+    this.hoveringDrop = (ad != null) ? ad : null;
     if (!iceEv.eventType)iceEv.eventType = Ice.DnD.DRAG_START;
-
     iceEv.submit();
-
 };
+
 Draggable.prototype.ORIGINAL_finishDrag = Draggable.prototype.finishDrag;
 Draggable.prototype.finishDrag = function(event, success) {
     if (!this.options.sort) {
@@ -195,7 +187,7 @@ Draggable.prototype.finishDrag = function(event, success) {
         }
     }
 
-    
+
     this.ORIGINAL_finishDrag(event, success);
     DropRegions.init = false;
     DropRegions.map = [];
@@ -204,8 +196,8 @@ Draggable.prototype.finishDrag = function(event, success) {
             var form = Ice.util.findForm(this.element);
             var nothingEvent = new Object();
             Ice.DnD.logger.debug("Submitting Sortable [" + this.element + "]");
-            iceSubmit(form, this.element,nothingEvent);
-         } catch(ee) {
+            iceSubmit(form, this.element, nothingEvent);
+        } catch(ee) {
             Ice.DnD.logger.error('error submiting sortable element[' + this.element + '] Err Msg[' + ee + ']');
         }
     }
