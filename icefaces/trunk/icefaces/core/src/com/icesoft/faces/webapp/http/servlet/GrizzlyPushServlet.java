@@ -124,6 +124,7 @@ public class GrizzlyPushServlet
                 synchronouslyUpdatedViews, allUpdatedViews);
         CometEngine cometEngine = CometEngine.getEngine();
         CometContext cometContext = cometEngine.getCometContext(contextPath);
+        request.getParameter("rand");
         grizzlyResponder.attach(response);
         cometContext.addCometHandler(grizzlyResponder);
     }
