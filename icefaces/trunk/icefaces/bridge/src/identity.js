@@ -38,8 +38,7 @@ function viewIdentifiers() {
 function defaultParameters(session) {
     return function () {
         return Ice.Parameter.Query.create(function(query) {
-            //query.add('ice.focus', currentFocus);
-            //query.add('ice.window', container.identifier);
+            query.add('ice.focus', currentFocus);
             query.add('ice.session', session);
             viewIdentifiers().each(function(view) {
                 query.add('ice.view.all', view);
