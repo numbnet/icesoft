@@ -39,12 +39,36 @@
             var statusManager = new Ice.Status.StatusManager(configuration);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
+            var parameters = defaultParameters(configuration.session);
+            this.connection = configuration.synchronous ?
+                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
+                              new This.Connection.AsyncConnection(logger, configuration.connection, parameters, commandDispatcher);
 
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
-            commandDispatcher.register('redirect', Ice.Command.Redirect);
-            commandDispatcher.register('reload', Ice.Command.Reload);
             commandDispatcher.register('parsererror', Ice.Command.ParsingError);
+            commandDispatcher.register('redirect', function(element) {
+                //replace ampersand entities incorrectly decoded by Safari 2.0.4
+                var url = element.getAttribute("url").replace(/&#38;/g, "&");
+                logger.info('Redirecting to ' + url);
+                //avoid view disposal on navigation rules
+                if (url.contains('rvn=')) {
+                    this.connection.cancelDisposeViews();
+                }
+                window.location.href = url;
+            }.bind(this));
+            commandDispatcher.register('reload', function(element) {
+                logger.info('Reloading');
+                var url = window.location.href;
+                this.connection.cancelDisposeViews();
+                if (url.contains('rvn=')) {
+                    window.location.reload();
+                } else {
+                    var view = element.getAttribute('view');
+                    var queryPrefix = url.contains('?') ? '&' : '?';
+                    window.location.href = url + queryPrefix + 'rvn=' + view;
+                }
+            }.bind(this));
             commandDispatcher.register('macro', function(message) {
                 $enumerate(message.childNodes).each(function(subMessage) {
                     commandDispatcher.deserializeAndExecute(subMessage);
@@ -68,12 +92,6 @@
                 statusManager.sessionExpired.on();
                 this.dispose();
             }.bind(this));
-
-            var parameters = defaultParameters(configuration.session);
-            this.connection = configuration.synchronous ?
-                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
-                              new This.Connection.AsyncConnection(logger, configuration.connection, parameters, commandDispatcher);
-
 
             window.onBeforeUnload(function() {
                 this.connection.sendDisposeViews();
