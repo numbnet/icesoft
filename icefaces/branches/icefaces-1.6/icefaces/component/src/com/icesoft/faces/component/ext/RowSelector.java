@@ -223,6 +223,16 @@ public class RowSelector extends UIComponentBase {
         while (st.hasMoreTokens()) {
             int row = Integer.parseInt(st.nextToken());
             if (row == rowIndex) {
+            	if (this.getParent() instanceof UIColumns) {
+            		Object servedRow = this.getParent().getAttributes().get("rowServed");
+            		if (servedRow != null) {
+            			if (String.valueOf(servedRow).equals(String.valueOf(rowIndex))) {
+            				return;
+            			}
+            		} else {
+            			this.getParent().getAttributes().put("rowServed", String.valueOf(rowIndex));
+            		}
+            	}            	
                 rowClicked = true;
                 break;
             }
