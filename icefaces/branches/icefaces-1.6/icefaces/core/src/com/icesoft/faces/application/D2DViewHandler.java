@@ -435,6 +435,7 @@ public class D2DViewHandler extends ViewHandler {
 
         boolean reloadView = false;
         URLConnection viewConnection = null;
+        URL viewURL = null;
 
         if ((root.getChildCount() == 0) || (reloadInterval > -1)) {
             // We have not parsed the page yet;
@@ -448,7 +449,7 @@ public class D2DViewHandler extends ViewHandler {
                 return;
             }
             try {
-                URL viewURL = context.getExternalContext().getResource(viewId);
+                viewURL = context.getExternalContext().getResource(viewId);
                 if (null == viewURL) {
                     if (viewId.endsWith(".faces")) {
                         viewId = truncate(".faces", viewId);
@@ -488,6 +489,10 @@ public class D2DViewHandler extends ViewHandler {
                             new Long(currentTime));
                     if (lastModified > lastLoaded) {
                         reloadView = true;
+                        if (log.isDebugEnabled()) {
+                            log.debug( "View is modified, reloading " + 
+                                    String.valueOf(viewURL) );
+                        }
                     }
                 }
 
@@ -503,8 +508,16 @@ public class D2DViewHandler extends ViewHandler {
                 viewInput = new InputStreamReader(
                         viewConnection.getInputStream(), CHAR_ENCODING);
                 if (viewId.endsWith(".jsp")) {
+                    if (log.isDebugEnabled()) {
+                        log.debug( "JspPageToDocument transforming JSP page " + 
+                                String.valueOf(viewURL) );
+                    }
                     viewInput = JspPageToDocument.transform(viewInput);
                 } else if (viewId.endsWith(".jspx")) {
+                    if (log.isDebugEnabled()) {
+                        log.debug( "JspPageToDocument preprocessing JSP doc " + 
+                                String.valueOf(viewURL) );
+                    }
                     viewInput =
                             JspPageToDocument.preprocessJspDocument(viewInput);
                 }
@@ -516,6 +529,10 @@ public class D2DViewHandler extends ViewHandler {
             try {
                 //TODO: pass viewInput as an InputStream in order to give to the XML parser a chance to
                 //TODO: read the encoding type declared in the xml processing instruction (<?xml version="1.0" charset="..."?>)
+                if (log.isDebugEnabled()) {
+                    log.debug( "Parsing " + 
+                            String.valueOf(viewURL) );
+                }
                 parser.parse(viewInput, context);
                 root.getAttributes().put(LAST_LOADED_KEY,
                         new Long(System.currentTimeMillis()));
