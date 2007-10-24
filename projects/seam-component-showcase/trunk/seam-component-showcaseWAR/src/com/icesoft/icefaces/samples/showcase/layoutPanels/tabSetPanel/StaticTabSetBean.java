@@ -43,8 +43,6 @@ import com.icesoft.faces.component.ext.HtmlSelectOneRadio;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeListener;
 
-import javax.ejb.Remove;
-
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 
@@ -53,6 +51,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.End;
 
 import org.jboss.seam.annotations.Name;
@@ -273,7 +272,7 @@ public class StaticTabSetBean implements  Serializable{
 	public String getConvParam() {
 		return Manager.instance().getConversationIdParameter();
 	}
-	   @Remove
+	   @Destroy
 	   public void destroy() {
 		   log.info("destroying StaticTabSetBean");
 	   }

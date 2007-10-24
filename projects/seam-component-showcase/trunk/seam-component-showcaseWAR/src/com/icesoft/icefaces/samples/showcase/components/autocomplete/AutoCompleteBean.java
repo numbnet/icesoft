@@ -38,17 +38,13 @@ import static org.jboss.seam.ScopeType.PAGE;
 import com.icesoft.faces.component.selectinputtext.SelectInputText;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.Factory;
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.ScopeType;
 import org.jboss.seam.faces.FacesMessages;
 
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -194,9 +190,5 @@ public class AutoCompleteBean implements Serializable{
         this.matchesList = matchList;
     }
     
-	@Remove
-	@Destroy
-	public void destroy() {
-	 	log.info("seam destroying...");
-	}
+
 }

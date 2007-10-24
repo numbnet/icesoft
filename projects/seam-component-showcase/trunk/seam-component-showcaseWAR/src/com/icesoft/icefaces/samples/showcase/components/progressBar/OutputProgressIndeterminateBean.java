@@ -33,7 +33,7 @@
 
 package com.icesoft.icefaces.samples.showcase.components.progressBar;
 
-import javax.ejb.Remove;
+
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.async.render.RenderManager;
@@ -155,7 +155,7 @@ public class OutputProgressIndeterminateBean implements Renderable, Serializable
         this.runningTask = runningTask;
     }
 
-	@Destroy @Remove
+	@Destroy 
 	public void destroy(){
 		System.out.println("OutputProgressIndeterminate destroy");
 	}

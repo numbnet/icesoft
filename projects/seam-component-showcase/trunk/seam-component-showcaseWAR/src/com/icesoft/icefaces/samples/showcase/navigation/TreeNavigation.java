@@ -33,21 +33,20 @@
 
 package com.icesoft.icefaces.samples.showcase.navigation;
 
-import com.icesoft.faces.component.tree.Tree;
+
 import com.icesoft.icefaces.samples.showcase.util.StyleBean;
 
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Logger;
+
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.SESSION;
+
 import org.jboss.seam.ScopeType;
 import java.util.Enumeration;
 import java.io.Serializable;

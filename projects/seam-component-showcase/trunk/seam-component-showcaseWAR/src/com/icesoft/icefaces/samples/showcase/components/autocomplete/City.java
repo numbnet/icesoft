@@ -33,15 +33,12 @@
 
 package com.icesoft.icefaces.samples.showcase.components.autocomplete;
 
-//import org.jboss.seam.annotations.Name;
-//import javax.persistence.Entity;
 
 /**
  * <p>The City class is used for database information for the Autocomplete
  * (selectInputText) example.</p>
  */
-//@Entity
-//@Name("city")
+
 public class City {
 
     // attributes of each entry

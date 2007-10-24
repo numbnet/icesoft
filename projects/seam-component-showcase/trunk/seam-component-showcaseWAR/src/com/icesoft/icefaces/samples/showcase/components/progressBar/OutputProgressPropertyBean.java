@@ -39,7 +39,6 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.Manager;
 import org.jboss.seam.ScopeType;
 
-import javax.ejb.Remove;
 import javax.faces.event.ValueChangeEvent;
 import java.io.Serializable;
 
@@ -219,7 +218,7 @@ public class OutputProgressPropertyBean implements Serializable {
         labelPosition = (String) event.getNewValue();
     }
 
-	@Destroy @Remove
+	@Destroy 
 	public void destroy(){
 		System.out.println("OutputProgressProperty destroy");
 	}

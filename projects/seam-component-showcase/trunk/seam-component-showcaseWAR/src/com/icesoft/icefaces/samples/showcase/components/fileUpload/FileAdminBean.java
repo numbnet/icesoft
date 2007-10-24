@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-import javax.ejb.Remove;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
@@ -52,12 +51,10 @@ public class FileAdminBean implements Serializable{
 		"Number of files has been exceeded: Remove unwanted files before further uploads";
 	private long currentSize = 0;
 	private String remainingSpace;
-	private ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
 
-	//for checking purposes
-	private String convId;
-	private boolean longRunning;
-
+    private boolean updateList = false;
+    private String currentFileName="";
+    private String parentDir = "";
 	private InputFileBean fileUpload;
 	
 	/* the users list of files */
@@ -101,7 +98,7 @@ public class FileAdminBean implements Serializable{
 
 	public List<FileEntry> getFilesList() {
 		log.info("getFilesList");
-		if (filesList.isEmpty())buildFilesList();
+		if (this.fileUpload!=null && fileUpload.isUpdateFlag())buildFilesList();	
 		return filesList;
 	}
 	/*
@@ -110,9 +107,9 @@ public class FileAdminBean implements Serializable{
 	 * for this user.
 	 */
 	public void buildFilesList(){
-		log.info("buildFilesList");
 		/* get files from server directory */
 		List<FileEntry> tempList = refreshList();
+		log.info("buildFilesList tempList size="+tempList.size());
 		/*if they have exceeded max number of files or max size allowed, delete last file*/
     	if (tempList.size() > this.MAXFILESALLOWED){
 	    		log.info("MaxFilesExceeded");
@@ -139,13 +136,10 @@ public class FileAdminBean implements Serializable{
 		     		if (!listContains(fname))
 		     			filesList.add(fe);
 		     	}
-		     	if (!deletedEntries.isEmpty()){
-		     		for (int j=0; j<deletedEntries.size(); j++){
-		     			filesList.remove(deletedEntries.get(j));
-		     		}
-		     	}
 	     	}
 	    }
+    	if (fileUpload!=null)fileUpload.setUpdateFlag(false);
+    	this.updateList= false;
 	}
 	
 	public boolean listContains(String fname){
@@ -160,7 +154,7 @@ public class FileAdminBean implements Serializable{
 	/* may need to refresh the list more than once per each upload */
 	public ArrayList<FileEntry> refreshList(){
 		log.info("refreshList");
-	    String parentDir= null;
+	    parentDir= null;
 	    ArrayList<FileEntry> tempList = new ArrayList<FileEntry>();
 		currentSize=0;
 	    try {
@@ -197,14 +191,12 @@ public class FileAdminBean implements Serializable{
 	public void deleteCurrentFileEntry(){
 		log.info("deletecurrentFileEntry");
 		File f = getLastFile();
-		if (f!=null && f.exists()){
-			f.delete();
-			log.info("\t\t-> deleted "+f.getName());
-			//add the size back into remaining space
-			this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
-			buildFilesList();
-		}
-		else log.info("unable to delete file "+f.getName());
+		f.delete();
+		log.info("\t\t-> deleted "+f.getName());
+		//add the size back into remaining space
+		this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
+		FileEntry fe = this.getFileEntry(f.getName());
+		filesList.remove(fe);
 	}
 	/*
 	 * deletes the selected file(s) from the server
@@ -212,6 +204,8 @@ public class FileAdminBean implements Serializable{
 
 	public void deleteFiles(ActionEvent e) {
 		log.info("in deleteFiles with filesList size="+filesList.size());
+        ArrayList<FileEntry> deletedEntry = new ArrayList<FileEntry>();
+    	ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
 	     for (int i =0; i <filesList.size() ; i++) {
 	        FileEntry fr = (FileEntry)filesList.get(i);
 	        log.info("i="+i+" fr="+fr.toString());
@@ -219,23 +213,31 @@ public class FileAdminBean implements Serializable{
 	    	   //remove from the server and the filesList
 	          log.info("selected file to delete is "+fr.getFileName());
 	          deletedEntries.add(i);
+	             deletedEntry.add(fr);
 	          File f = new File(fr.getAbsolutePath());
-	          if(f.exists()){
+	//          if(f.exists()){
+
 	        	  f.delete();
 	        	  log.info("File "+f.getName()+" is deleted");
-	          }
-	          else log.info("File "+f.getName()+" NOT DELETED!!");
+//	          }
+//	          else log.info("File "+f.getName()+" NOT DELETED!!");
 	       }
 	   }
-	    buildFilesList();
+	     for (int i=0;i<deletedEntry.size();i++){
+	    	 log.info("\t deleteEntries is of size="+deletedEntries.size());
+	    	 boolean worked = filesList.remove(deletedEntry.get(i));
+	    	 log.info("\t after remove worked = "+worked+" & size="+deletedEntries.size());
+	     }
+	     log.info("\t\t end of deleteFiles & size="+filesList.size());
 	}
-	
-	public boolean filesListHasSelected(){
+
+	public FileEntry getFileEntry(String fileNm){
 		Iterator i = filesList.iterator();
 		while (i.hasNext()){
-			if (((FileEntry)i.next()).getSelected())return true;
+			FileEntry fe = (FileEntry)i.next();
+			if (fe.getSelected())return fe;
 		}
-		return false;
+		return null;		
 	}
 
 	public File getLastFile(){
@@ -258,17 +260,10 @@ public class FileAdminBean implements Serializable{
     	return remainingSpace;
     }
 
-    //checking stuff
-    public String getConvId(){
-    	log.info("convId="+convId);
-        return Manager.instance().getCurrentConversationId();
-    }
-    public boolean isLongRunning(){
-        Manager manager = Manager.instance();
-    	return manager.isLongRunningConversation();
-    }
-    
-	@Remove
+    /*
+     * can remove the renderManager and any files uploaded upon clean up
+     */
+//	@Remove
 	@Destroy
 	public void destroy() {
 		///can get rid of the uploaded files here unless have ejb3 container
@@ -276,13 +271,45 @@ public class FileAdminBean implements Serializable{
 	 	if (fileUpload.getRenderManager()!=null){
 	 		fileUpload.getRenderManager().dispose();
 	 	}
+	 	//delete uploaded files since the session is now over/destroyed
+	 	
+	 	try{
+		 	if (this.parentDir!=null){
+		        /* remove the files that have been uploaded during this session */
+		  		File[] files = null;
+			    File dir = new File(parentDir);
+			    /* use a FileFilter to only get files & not directories */
+			    if (dir!=null){
+			    	FileFilter fileFilter = new FileFilter(){
+			    		public boolean accept(File file){
+			    			return !file.isDirectory();
+			    		}
+			    	};
+			    	files = dir.listFiles(fileFilter);
+			    }
+			    if (files!=null){
+			    	for (int i=0; i< files.length; i++){
+			    		File f = (File)files[i];
+			    		String fname=f.getName();
+			    		if (f.exists()){
+			    			f.delete();
+	 		    			if (log.isDebugEnabled())log.debug("file: "+fname+" deleted");
+			    		}
+			    	}
+			    }
+		 	}
+	    } catch(Exception ex) {
+	    	/* no files to delete */
+ 	    	log.info("uploadDirectory is not set--no files to delete! exception");
+ 	    	ex.printStackTrace();
+	    } 	
 	}
 
-//	public int getPercent() {
-//		return percent;
-//	}
-//
-//	public void setPercent(int percent) {
-//		this.percent = percent;
-//	}
+	public String getCurrentFileName() {
+		if (fileUpload!=null)currentFileName=fileUpload.getCurrentFileName();
+		log.info("   fileName uploaded = "+currentFileName);
+		return currentFileName;
+	}
+
+
 }

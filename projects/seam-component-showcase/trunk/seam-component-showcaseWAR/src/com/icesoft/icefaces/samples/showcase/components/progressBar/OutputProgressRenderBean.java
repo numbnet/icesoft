@@ -33,34 +33,24 @@
 
 package com.icesoft.icefaces.samples.showcase.components.progressBar;
 
-import javax.ejb.Remove;
 import javax.faces.event.ActionEvent;
-import javax.faces.application.Application;
-import javax.faces.context.FacesContext;
 
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.IntervalRenderer;
-import com.icesoft.faces.component.outputprogress.OutputProgress;
+
 import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.icefaces.samples.showcase.components.fileUpload.FileAdminBean;
-import com.icesoft.icefaces.samples.showcase.components.progressBar.OutputProgressIndeterminateBean.LongOperationRunner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.seam.annotations.Begin;
+
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.In;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.annotations.intercept.BypassInterceptors;
-import org.jboss.seam.core.Manager;
-import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.ScopeType;
 
 
@@ -316,7 +306,7 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	        }
 	    } 	    
 	    
-		@Destroy @Remove
+		@Destroy 
 		public void destroy(){
 			cleanup();
 			System.out.println("OutputProgressRenderBean destroy");

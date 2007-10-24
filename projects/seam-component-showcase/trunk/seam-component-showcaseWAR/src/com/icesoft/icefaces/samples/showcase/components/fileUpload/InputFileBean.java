@@ -8,14 +8,12 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.faces.FacesMessages;
-import org.jboss.seam.annotations.Begin;
-import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.contexts.Contexts;
 
-import javax.ejb.Remove;
-import javax.ejb.Stateful;
+
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -34,7 +32,8 @@ import java.util.EventObject;
  * @since 0.3.0
  */
 
-import org.jboss.seam.annotations.Scope;
+
+
 //import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.ScopeType;
 
@@ -55,6 +54,7 @@ public class InputFileBean implements Renderable, Serializable{
 
 	private String currentFileName = "none";
 	private String uploadDirectory = "";
+	private boolean updateFlag = false;
 	
 	
     /**
@@ -117,7 +117,7 @@ public class InputFileBean implements Renderable, Serializable{
      * put comment in here
      */
 	public void setUploadDialog(boolean inDialog){
-		uploadDialog=inDialog;
+		this.uploadDialog=inDialog;
 	}
     public boolean getUploadDialog() {
         return this.uploadDialog;
@@ -127,15 +127,16 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
-        return percent;
+    	state= PersistentFacesState.getInstance(); 
+        return this.percent;
     }
 
     public void action(ActionEvent event) {
     	log.info("action version="+this);
 	     InputFile inputFile = (InputFile) event.getSource();
-	     currentFileName = inputFile.getFileInfo().getFileName();
 	     this.percent = inputFile.getFileInfo().getPercent();
 	     file = inputFile.getFile();
+	     currentFileName = file.getName();
 	     if (uploadDirectory.equals("")){
 	    	 /* put the uploadDirectory into a session attribute so files
 	    	  * can be cleaned up when session ends
@@ -156,9 +157,8 @@ public class InputFileBean implements Renderable, Serializable{
 	     }
 	     if (inputFile.getStatus() == InputFile.SAVED) {
 	    	 this.currentFileName = inputFile.getFileNamePattern();
-//	    	 FacesMessages.instance().add("File: is saved for #{fileUpload.currentFileName}");
-//	    	 Events.instance().raiseEvent("buildfiles");
-	    	 log.info("file is saved ");
+	 		 this.updateFlag = true;
+	    	 log.info("file is saved flag="+updateFlag);
 	    	 setError("");
 	     }
 	     if (inputFile.getStatus() == InputFile.INVALID) {
@@ -180,13 +180,20 @@ public class InputFileBean implements Renderable, Serializable{
     	
     	return null;
     }
-
+    public void updateFileList(){
+    	log.info("updateFileList() version="+this);
+        if (Contexts.getSessionContext().isSet("fileAdminBean")){
+       	 FileAdminBean fab = (FileAdminBean)Contexts.getSessionContext().get("fileAdminBean");
+       	 log.info("getting fileAdminBean from inside InputfileBean version FAB="+fab.toString());
+        }   	
+    }
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
 	 */
-  //   @Begin
     public void progress(EventObject event) {
-    	 log.info("progress version="+this);
+    	this.updateFlag = false;
+    	log.info("progress() flag="+updateFlag+ " version="+this);
+
         InputFile ifile = (InputFile) event.getSource(); 
 		this.percent = ifile.getFileInfo().getPercent();
 		if (renderManager != null) {
@@ -195,8 +202,12 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
      public String getCurrentFileName() {
-    	 if (!currentFileName.equals("none"))return currentFileName;
-    	 else return "";
+    	 if (file !=null){ log.info(" file.getName is "+this.file.getName());
+    	   return this.file.getName();
+    	 }
+//    	 log.info(" getCurrentFileName is"+this.currentFileName);
+//         return currentFileName;
+       	 else return "";
      }
      public String getUploadDirectory(){
     	 return this.uploadDirectory;
@@ -208,8 +219,8 @@ public class InputFileBean implements Renderable, Serializable{
      /*
       * crude error messaging
       */
- //   @End
  	public void setError(String msg) {
+ 		log.info("setError() version="+this);
 		errorMsg = msg;
 		if (log.isDebugEnabled())log.debug("errorMsg="+errorMsg);
 	}
@@ -218,7 +229,9 @@ public class InputFileBean implements Renderable, Serializable{
 	 * do this for now as not sure how jsp handles FacesMessages
 	 */
 
-	public String getErrorMsg(){return errorMsg;}
+	public String getErrorMsg(){
+		return errorMsg;
+	}
 	   /**
      * Method to determine if the upload dialog is open or not
      * put comment in here
@@ -238,9 +251,20 @@ public class InputFileBean implements Renderable, Serializable{
             this.uploadDialog = true;
     }
     
-	@Destroy @Remove
+	@Destroy 
 	public void destroy(){
 		log.info("destroy");
+//   	    updateFileList();
+	}
+
+
+	public boolean isUpdateFlag() {
+		return updateFlag;
+	}
+
+
+	public void setUpdateFlag(boolean updateFlag) {
+		this.updateFlag = updateFlag;
 	}
 }
 

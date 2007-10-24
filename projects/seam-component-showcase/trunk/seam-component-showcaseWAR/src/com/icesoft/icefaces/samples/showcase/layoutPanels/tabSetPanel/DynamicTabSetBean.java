@@ -37,7 +37,7 @@
 
 package com.icesoft.icefaces.samples.showcase.layoutPanels.tabSetPanel;
 
-import com.icesoft.faces.component.paneltabset.PanelTabSet;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +47,10 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.In;
+
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.PAGE;
+
 /**
  * The DynamicTabSetBean is the backing bean for the TabbedPane showcase
  * demonstration.  It is used to dynamically add and remove tabs used in 
