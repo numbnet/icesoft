@@ -36,6 +36,13 @@ public class Portlet extends UINamingContainer {
         ExternalContext extCtxt = facesCtxt.getExternalContext();
         Map requestMap = extCtxt.getRequestMap();
         namespace = (String) requestMap.get(Constants.NAMESPACE_KEY);
+        if( namespace != null ){
+
+            //ICE-2250 If there is a valid namespace, we need to set it so that the
+            //superclass instance is properly set otherwise the getClientId
+            //logic is incorrect since it does not use getId().
+            super.setId(namespace);
+        }
     }
 
     public String getId() {
