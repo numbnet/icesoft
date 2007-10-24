@@ -280,6 +280,10 @@ public class PanelTabSet
             if (tabChangeEvent.getComponent() == this) {
                 setSelectedIndex(tabChangeEvent.getNewTabIndex());
                 //getFacesContext().renderResponse();
+                ValueBinding vb = getValueBinding("selectedIndex");
+                if (vb != null) {
+                    vb.setValue(getFacesContext(), new Integer(tabChangeEvent.getNewTabIndex()));
+                }
             }
         }
         
