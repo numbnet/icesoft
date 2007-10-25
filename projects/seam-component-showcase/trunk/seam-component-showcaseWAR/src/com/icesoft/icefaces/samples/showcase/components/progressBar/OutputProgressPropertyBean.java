@@ -54,11 +54,7 @@ import java.io.Serializable;
 @Scope(ScopeType.PAGE)
 @Name("progressProperty")
 public class OutputProgressPropertyBean implements Serializable {
-	//checking stuff
-	private String convId;
-	private String longRunning;
-	private String convParam;
-	
+
 	  // switch between standard and indeterminate modes
     private String mode = "standard";
     
@@ -222,25 +218,5 @@ public class OutputProgressPropertyBean implements Serializable {
 	public void destroy(){
 		System.out.println("OutputProgressProperty destroy");
 	}
-
-	public String getConvId() {
-		return Manager.instance().getCurrentConversationId();
-	}
-
-	public void setConvId(String convId) {
-		this.convId = convId;
-	}
-
-	public String getLongRunning() {
-		return String.valueOf(Manager.instance().isLongRunningConversation());
-	}
-	public String getConvParam(){
-		return Manager.instance().getConversationIdParameter();
-	}
-
-	public void setLongRunning(String longRunning) {
-		this.longRunning = longRunning;
-	}
-	
 
 }

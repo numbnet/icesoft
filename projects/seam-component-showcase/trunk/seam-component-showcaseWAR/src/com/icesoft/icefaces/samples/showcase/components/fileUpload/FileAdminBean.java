@@ -267,7 +267,7 @@ public class FileAdminBean implements Serializable{
 	@Destroy
 	public void destroy() {
 		///can get rid of the uploaded files here unless have ejb3 container
-	 	log.info("seam destroying...");
+	 	log.info("FileInfoBean: seam destroying...");
 	 	if (fileUpload.getRenderManager()!=null){
 	 		fileUpload.getRenderManager().dispose();
 	 	}
@@ -293,6 +293,7 @@ public class FileAdminBean implements Serializable{
 			    		String fname=f.getName();
 			    		if (f.exists()){
 			    			f.delete();
+			    			log.info("\t\tfile: "+fname+" deleted");
 	 		    			if (log.isDebugEnabled())log.debug("file: "+fname+" deleted");
 			    		}
 			    	}
