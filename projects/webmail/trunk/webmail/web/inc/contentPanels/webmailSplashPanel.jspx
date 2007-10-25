@@ -10,9 +10,7 @@ array of the applications.
     <ice:panelGrid
             styleClass="contentLayoutGridStyle"
             columnClasses="contentLayoutGridColumn"
-            columns="1" border="0">
-
-        <f:verbatim>
+            columns="1" border="0">      
             
             <p><b>Webmail Feature Notes</b></p>
             <ul>
@@ -22,8 +20,6 @@ array of the applications.
                 <li>The user never has to hit the refresh button, a 'get mail' button or be redirected to another page to manage their mail and contacts.</li>
                 <li>Messages can be moved by dragging the envelope icon. </li>
             </ul>
-
-        </f:verbatim>
 
     </ice:panelGrid>
 </ice:form>

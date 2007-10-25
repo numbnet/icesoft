@@ -5,6 +5,12 @@
 
 <faces-config>
 
+    <application>
+        <view-handler>
+            com.icesoft.faces.facelets.D2DFaceletViewHandler
+        </view-handler>
+    </application>
+
     <managed-bean>
         <description>
             Manages render calls to the Faces Context.
@@ -176,7 +182,6 @@
     </navigation-rule>
     <!-- Logout button -->
     <navigation-rule>
-        <from-view-id>/webmail.iface</from-view-id>
         <navigation-case>
             <from-outcome>logoutSuccess</from-outcome>
             <to-view-id>/index.jsp</to-view-id>

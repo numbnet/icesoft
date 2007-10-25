@@ -2,7 +2,8 @@
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component">
+        xmlns:ice="http://www.icesoft.com/icefaces/component"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <!-- Setup internationalization  resouces files-->
 <f:loadBundle
@@ -41,17 +42,17 @@
     <f:facet name="north">
         <ice:panelGroup>
         <f:subview id="headerInclude">
-            <jsp:directive.include file="./inc/header.jspx"/>
+            <ui:include src="./inc/header.jspx"/>
         </f:subview>
         <f:subview id="controlsInclude">
-            <jsp:directive.include file="./inc/controls.jspx"/>
+            <ui:include src="./inc/controls.jspx"/>
         </f:subview>
         </ice:panelGroup>
     </f:facet>
 
     <f:facet name="west">
         <f:subview id="navInc">
-            <jsp:directive.include file="./inc/navigation.jspx"/>
+            <ui:include src="./inc/navigation.jspx"/>
         </f:subview>
     </f:facet>
 
@@ -73,71 +74,61 @@
                 -->
                 <ice:panelGroup id="webmailSplashPanel">
                     <f:subview id="wmsp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/webmailSplashPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/webmailSplashPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="mailAccountSplashPanel">
                     <f:subview id="masp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/mailAccountsSplashPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/mailAccountsSplashPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="emailFolderViewPanel">
                     <f:subview id="efvp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/emailFolderViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/emailFolderViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="emailEditViewPanel">
                     <f:subview id="eevp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/emailEditViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/emailEditViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="emailViewPanel" >
                     <f:subview id="evp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/emailViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/emailViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="tasksViewPanel" >
                     <f:subview id="tvp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/tasksViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/tasksViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="tasksEditViewPanel" >
                     <f:subview id="tevp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/tasksEditViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/tasksEditViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="settingsManagePanel" >
                     <f:subview id="smp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/settingsManagePanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/settingsManagePanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="contactsViewPanel" >
                     <f:subview id="cvp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/contactsViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/contactsViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 
                 <ice:panelGroup id="contactsEditViewPanel" >
                     <f:subview id="cevp">
-                        <jsp:directive.include
-                                file="./inc/contentPanels/contactsEditViewPanel.jspx"/>
+                        <ui:include src="./inc/contentPanels/contactsEditViewPanel.jspx"/>
                     </f:subview>
                 </ice:panelGroup>
 

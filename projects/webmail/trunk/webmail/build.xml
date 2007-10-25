@@ -43,15 +43,26 @@
     <!-- path to applicaiton libraries -->
     <property name="proj.lib.dir" location="lib/"/>
 
-    <property name="common.build.dir" location="../../../../icefaces/samples/etc/" />
+    <property name="common.build.dir" location="../../../../icefaces/trunk/icefaces/samples/etc/" />
 
     <patternset id="additional.compile.lib.jars"
             includes="servlet-api.jar " />
 
+    <patternset id="additional.icefaces.lib.jars.to.include"
+        includes="krysalis-jCharts-1.0.0-alpha-1.jar" />
+	
     <!-- common application build include -->
     <import file="${common.build.dir}/build-common.xml"/>
 
-
+     <!-- jars needed for form Facelets -->
+    <patternset id="facelets.jars"
+                includes="
+        icefaces-facelets.jar
+        el-api.jar
+        el-ri.jar
+        "
+            />
+	
     <!-- jars needed for form validation -->
     <patternset id="validation.jars"
                 includes="
@@ -115,6 +126,7 @@
         
         <copy todir="${app.lib.dir}" preservelastmodified="true">
             <fileset dir="${proj.lib.dir}">
+				<patternset refid="facelets.jars"/>
                 <patternset refid="hibernate.jars"/>
                 <patternset refid="validation.jars"/>
                 <patternset refid="javaMail.jars"/>

@@ -47,21 +47,13 @@
                                                     <ice:panelGrid columns="2">
                                                         
                                                         <ice:outputText value="Name:"/>
-                                                        <ice:inputText
-                                                            partialSubmit="true"
-                                                            style="width: 150px;height: 16px;"
-                                                            value="#{loginManager.loginBeanFactory.loginBean.userName}" />
+                                                        <ice:inputText value="#{loginManager.loginBeanFactory.loginBean.userName}"
+                                                            style="width: 150px;height: 16px;" />
                                                         
                                                         <ice:outputText value="Password:"/>
-                                                        <ice:inputSecret
-                                                            partialSubmit="true"
+                                                        <ice:inputSecret value="#{loginManager.loginBeanFactory.loginBean.userPassword}"
                                                             redisplay="true"
-                                                            style="width: 150px;height: 16px;"
-                                                            value="#{loginManager.loginBeanFactory.loginBean.userPassword}"
-                                                            actionListener="#{loginManager.loginBeanFactory.validateLoginBean}"
-                                                            action="#{webMailMediator.startWebmail}"
-                                                        />
-                                                        
+                                                            style="width: 150px;height: 16px;" />
                                                         <ice:outputText/>
                                                         <!--
                                             Login listener is called when the button is pressed
@@ -69,10 +61,7 @@
                                          -->
                                                         <ice:commandButton value="Login"
                                                                            title="#{msgs['webmail.login.loginButton']}"
-                                                                           actionListener="#{webMailMediator.startWebmail}"
-                                                                           
-                                                        />
-                                                        
+                                                                           actionListener="#{webMailMediator.startWebmail}" />                                                        
                                                         
                                                         <!-- Process bar popup window section-->
                                                         <ice:panelPopup
