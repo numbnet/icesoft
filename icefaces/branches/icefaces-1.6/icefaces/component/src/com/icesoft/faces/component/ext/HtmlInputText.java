@@ -55,6 +55,7 @@ import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 import javax.faces.component.ActionSource;
 import javax.faces.context.FacesContext;
@@ -117,17 +118,30 @@ public class HtmlInputText
         setRendererType(RENDERER_TYPE);
     }
 
+    /**
+     * @deprecated
+     * @return The converted text that the Renderer would output
+     */
     public String getText() {
-        return this.getConverter() == null ? (String) getValue() : this
-                .getConverter()
-                .getAsString(getFacesContext(), this, getValue());
+        return DomBasicRenderer.converterGetAsString(
+            FacesContext.getCurrentInstance(), this, getValue());
     }
 
+    /**
+     * Mimics the behaviour of a user entering some text and submitting it.
+     * The difference being that the processing is not kicked off from the
+     *  decode phase after a submit, but can be invoked from an actionListener
+     *  in a bean, in time for rendering. Just be aware that nothing is
+     *  being done in the proper phase.
+     * 
+     * @deprecated
+     * @param value Text String, like that which a user could have typed in
+     */
     public void changeText(String value) {
-        Object newValue = this.getConverter() == null ? value : this
-                .getConverter().getAsObject(getFacesContext(), this, value);
-        this.setSubmittedValue(newValue);
-        this.queueEvent(new ValueChangeEvent(this, getValue(), newValue));
+        setSubmittedValue(value);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        validate(facesContext);
+        updateModel(facesContext);
     }
 
 
