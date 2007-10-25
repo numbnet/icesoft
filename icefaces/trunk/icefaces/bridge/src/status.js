@@ -200,19 +200,15 @@
             overlay.style.filter = 'alpha(opacity=22)';
             this.container.appendChild(overlay);
 
-            var resize = function() {
-                var width;
-                var height;
-                if (this.container.tagName.toLowerCase() == 'body') {
-                    width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
-                    height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-                } else {
-                    width = this.container.offsetWidth;
-                    height = this.container.offsetHeight;
-                }
-                overlay.style.width = width + 'px';
-                overlay.style.height = height + 'px';
-            };
+            var resize = this.container.tagName.toLowerCase() == 'body' ?
+                         function() {
+                             overlay.style.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                             overlay.style.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                         } :
+                         function() {
+                             overlay.style.width = this.container.offsetWidth + 'px';
+                             overlay.style.height = this.container.offsetHeight + 'px';
+                         };
             resize();
             window.onResize(resize);
         }
