@@ -348,7 +348,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
                         "}" +
                         "}" +
-                        "});";
+                        "}, container);";
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
         configurationElement.setAttribute("id", prefix + "configuration-script");
@@ -412,7 +412,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         String sessionIdentifier = context.getIceFacesId();
         Element viewAndSessionScript = (Element) head.appendChild(document.createElement("script"));
-        viewAndSessionScript.setAttribute("language", "javascript");
+        viewAndSessionScript.setAttribute("type", "text/javascript");
         viewAndSessionScript.appendChild(document.createTextNode(
                 "window.session = '" + sessionIdentifier + "';"
         ));

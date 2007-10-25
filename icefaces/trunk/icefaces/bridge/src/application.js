@@ -34,9 +34,9 @@
 [ Ice.Community ].as(function(This) {
 
     This.Application = Object.subclass({
-        initialize: function(configuration) {
-            var logger = window.logger.child(configuration.session.substring(0, 4));
-            var statusManager = new Ice.Status.StatusManager(configuration);
+        initialize: function(configuration, container) {
+            var logger = window.logger.child(configuration.session.substring(0, 4) + '#' + container.viewIdentifier);
+            var statusManager = new Ice.Status.StatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
             var parameters = defaultParameters(configuration.session);

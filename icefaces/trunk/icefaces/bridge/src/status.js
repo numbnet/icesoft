@@ -161,7 +161,8 @@
     });
 
     This.StatusManager = Object.subclass({
-        initialize: function(configuration) {
+        initialize: function(configuration, container) {
+            this.container = container;
             var connectionLostRedirect = configuration.redirectURI ? new This.RedirectIndicator(configuration.redirectURI) : null;
             if ('connection-status'.asElement()) {
                 this.indicators = [];
@@ -173,7 +174,7 @@
                 this.sessionExpired = this.connectionLost;
                 this.serverError = this.connectionLost;
             } else {
-                this.busy = new This.PointerIndicator(document.body);
+                this.busy = new This.PointerIndicator(container);
                 var description = 'To reconnect click the Reload button on the browser or click the button below';
                 var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
                 var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
@@ -185,25 +186,32 @@
         },
 
         on: function() {
-            document.body.style.zIndex = '0';
-            window.frames[0].document.body.style.backgroundColor = 'white';
-
-            var panelContainer = document.getElementById('history-frame');
-            panelContainer.style.position = 'absolute';
-            panelContainer.style.display = 'block';
-            panelContainer.style.visibility = 'visible';
-            panelContainer.style.backgroundColor = 'white';
-            panelContainer.style.zIndex = '10000';
-            panelContainer.style.top = '0';
-            panelContainer.style.left = '0';
+            var overlay = this.container.ownerDocument.createElement('iframe');
+            overlay.setAttribute('src', 'about:blank');
+            overlay.setAttribute('frameborder', '0');
+            overlay.style.position = 'absolute';
+            overlay.style.display = 'block';
+            overlay.style.visibility = 'visible';
+            overlay.style.backgroundColor = 'white';
+            overlay.style.zIndex = '10000';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.opacity = 0.22;
+            overlay.style.filter = 'alpha(opacity=22)';
+            this.container.appendChild(overlay);
 
             var resize = function() {
-                var documentWidth = document.documentElement.scrollWidth;
-                var bodyWidth = document.body.scrollWidth;
-                var documentHeight = document.documentElement.scrollHeight;
-                var bodyHeight = document.body.scrollHeight;
-                panelContainer.style.width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) + 'px';
-                panelContainer.style.height = (bodyHeight > documentHeight ? bodyHeight : documentHeight) + 'px';
+                var width;
+                var height;
+                if (this.container.tagName.toLowerCase() == 'body') {
+                    width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+                    height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+                } else {
+                    width = this.container.offsetWidth;
+                    height = this.container.offsetHeight;
+                }
+                overlay.style.width = width + 'px';
+                overlay.style.height = height + 'px';
             };
             resize();
             window.onResize(resize);
