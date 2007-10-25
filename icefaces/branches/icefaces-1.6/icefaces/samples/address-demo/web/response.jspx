@@ -43,8 +43,8 @@
 	<title>ICEfaces Address Demo</title>
 	<script src="xmlhttp/icefaces-d2d.js" language="javascript"
 		type="text/javascript"></script>
-    <ice:outputStyle rel='stylesheet' type='text/css' href='./xmlhttp/css/xp/xp.css'/>
-    <ice:outputStyle href="./css/address.css" rel="stylesheet" type="text/css" />
+    <ice:outputStyle href='./xmlhttp/css/xp/xp.css'/>
+    <ice:outputStyle href="./css/address.css"/>
 	</head>
 	<body >
 	<div id="header">
