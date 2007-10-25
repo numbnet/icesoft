@@ -2,34 +2,20 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/antlr-runtime-3.0.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/backport-util-concurrent.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/commons-digester.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/commons-fileupload.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/commons-logging-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/drools-compiler-4.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/drools-core-4.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/groovy-all-1.1-BETA-1.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/icefaces.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/icefaces-comps.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/icefaces-facelets.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/janino-2.5.7.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-cache-jdk50.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-el.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-el-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-embedded-all.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-jaxws.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-saaj.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-seam.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-seam-debug.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jbpm-jpdl.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-impl.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/krysalis-jCharts-1.0.0-alpha-1.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/mvel14-1.2rc1.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="exploded-archives/seam-comp-showcase.war/WEB-INF/classes"/>
 </classpath>

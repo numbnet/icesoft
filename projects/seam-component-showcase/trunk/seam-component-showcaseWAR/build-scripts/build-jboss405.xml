@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<project name="Seam Component Showcase - Jboss-4.0.5.GA" default="noejb.archive" basedir=".">
+
+    <!-- Naming -->
+    <property name="Name"                   value="Seam Component Showcase for JBoss 4.0.5"/>
+
+    <!-- resources -->
+    <property name="resources.dir" value="resources-jboss" />
+	<property name="dist.dir" value="dist-jboss405" />
+	<property name="exploded-archives.dir" value="exploded-archives-jboss405" />
+      
+
+    <import file="build-common.xml"/>
+
+    <fileset id="noejb.war.lib.extras" dir="${seam.dir}">
+        <include name="lib/common*.jar"/>
+        <include name="lib/jsf-*.jar"/>
+        <include name="lib/jstl-*.jar"/>
+        <!-- Needed since JBoss 4.0.5 does not support JSP 2.0 -->
+        <include name="${icefaces.home}/lib/el-*.jar"/>
+    </fileset>
+       
+</project>
+
