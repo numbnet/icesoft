@@ -105,11 +105,8 @@ public class UIColumns extends UISeries {
                 if (!isRowAvailable()) {
                     break;
                 }
-                Iterator kids = facet.getChildren().iterator();
-                while (kids.hasNext()) {
-                    UIComponent kid = (UIComponent) kids.next();
-                    processKids(facesContext, phase, kid);
-                }
+                //process the header facet exactly once
+                processKids(facesContext, phase, facet);
             }
         } else {
             // clear row index
