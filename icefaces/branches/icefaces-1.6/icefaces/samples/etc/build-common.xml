@@ -48,6 +48,7 @@
 <patternset id="jsf.compile.jars" >
     <include name="myfaces-api.jar"  if="myfaces" />
     <include name="myfaces-impl.jar" if="myfaces" />
+    <include name="commons-lang.jar" if="myfaces"/>
     <include name="jsf-api.jar"  unless="myfaces" />
     <include name="jsf-impl.jar" unless="myfaces" />
 </patternset>
@@ -55,6 +56,7 @@
 <patternset id="jsf.deploy.jars" >
     <include name="myfaces-api.jar"  if="myfaces" />
     <include name="myfaces-impl.jar" if="myfaces" />
+    <include name="commons-lang.jar" if="myfaces"/>
     <include name="jsf-api.jar"  unless="myfaces" />
     <include name="jsf-impl.jar" unless="myfaces" />
     <exclude name="jsf-api.jar"      if="jsf12" />
