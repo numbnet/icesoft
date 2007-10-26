@@ -75,7 +75,6 @@ public class FileAdminBean implements Serializable{
 	}
 
 	public List<FileEntry> getFilesList() {
-		log.info("getFilesList");
 		if (this.fileUpload!=null && fileUpload.isUpdateFlag())buildFilesList();	
 		return filesList;
 	}
@@ -177,13 +176,11 @@ public class FileAdminBean implements Serializable{
 
 	public void deleteFiles(ActionEvent e) {
         ArrayList<FileEntry> deletedEntry = new ArrayList<FileEntry>();
-    	ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
 	    for (int i =0; i <filesList.size() ; i++) {
 	        FileEntry fr = (FileEntry)filesList.get(i);
 	        if (fr.getSelected().booleanValue()) {
 	    	   //remove from the server and the filesList
-	          log.info("selected file to delete is "+fr.getFileName());
-	          deletedEntries.add(i);
+	//          log.info("selected file to delete is "+fr.getFileName());
 	          deletedEntry.add(fr);
 	          File f = new File(fr.getAbsolutePath());
 	        	  f.delete();
@@ -191,7 +188,6 @@ public class FileAdminBean implements Serializable{
 	        }
 	    }
 	    for (int i=0;i<deletedEntry.size();i++){
-	    	 log.info("\t deleteEntries is of size="+deletedEntries.size());
 	    	 boolean worked = filesList.remove(deletedEntry.get(i));
 	//    	 log.info("\t after remove worked = "+worked+" & size="+deletedEntries.size());
 	     }

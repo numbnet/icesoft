@@ -59,7 +59,6 @@ public class FileEntry implements Serializable {
     }
  
     public void setSelected(Boolean selected) {
-    	System.out.println("set Selected to true for file="+this.fileName);
         this.selected = selected;
     }
 

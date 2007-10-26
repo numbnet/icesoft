@@ -40,7 +40,7 @@ import org.jboss.seam.ScopeType;
 @Name("fileUpload")
 @Scope(ScopeType.EVENT)
 public class InputFileBean implements Renderable, Serializable{
-	private boolean uploadDialog = true;
+	private boolean uploadDialog = false;
     private int percent = -1;
     private File file = null;
     
@@ -127,12 +127,11 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
- //   	state= PersistentFacesState.getInstance(); 
+    	state= PersistentFacesState.getInstance(); 
         return this.percent;
     }
 
     public void action(ActionEvent event) {
-    	log.info("action version="+this);
 	     InputFile inputFile = (InputFile) event.getSource();
 	     this.percent = inputFile.getFileInfo().getPercent();
 	     file = inputFile.getFile();
@@ -142,23 +141,18 @@ public class InputFileBean implements Renderable, Serializable{
 	    	  * can be cleaned up when session ends
 	    	  */
 	    	 uploadDirectory=file.getParent();
-	    	 log.info("uploadDirectory is:"+uploadDirectory);
+	    	 if (log.isDebugEnabled())log.debug("uploadDirectory is:"+uploadDirectory);
 	    	 try{
 	    		 FacesContext context = FacesContext.getCurrentInstance();
 	    		 HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
 	    		 session.setAttribute("uploadDirectory", uploadDirectory);
- 	    		 log.info("context path ="+context.getExternalContext().getRequestContextPath());
-//	    		 context.getExternalContext().getRequestMap().put("uploadDirectory", uploadDirectory);
-	    		 String attrCheck = (String)session.getAttribute("uploadDirectory");
-	    		 log.info("after setting attribute & attr.uploadDir="+attrCheck);
 	    	 }catch (Exception e){
 	    		 setError("Error setting session attribute for uploadDirectory");
 	    	 }
 	     }
 	     if (inputFile.getStatus() == InputFile.SAVED) {
 	    	 this.currentFileName = inputFile.getFileNamePattern();
-	 		 this.updateFlag = true;
-	    	 log.info("file is saved flag="+updateFlag);
+	    	 this.updateFlag=true;
 	    	 setError("");
 	     }
 	     if (inputFile.getStatus() == InputFile.INVALID) {
@@ -173,27 +167,15 @@ public class InputFileBean implements Renderable, Serializable{
 	         inputFile.getFileInfo().getException().printStackTrace();
 	         setError(msgUnknownSize);
 	    }
-	     else setError("nothing");
+	     else setError("no error");  //just now for debug
     }
-    public String act(){
-    	log.info("act() version="+this);
-    	
-    	return null;
-    }
-    public void updateFileList(){
-    	log.info("updateFileList() version="+this);
-        if (Contexts.getSessionContext().isSet("fileAdminBean")){
-       	 FileAdminBean fab = (FileAdminBean)Contexts.getSessionContext().get("fileAdminBean");
-       	 log.info("getting fileAdminBean from inside InputfileBean version FAB="+fab.toString());
-        }   	
-    }
+
+
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
 	 */
     public void progress(EventObject event) {
     	this.updateFlag = false;
-    	log.info("progress() flag="+updateFlag+ " version="+this);
-
         InputFile ifile = (InputFile) event.getSource(); 
 		this.percent = ifile.getFileInfo().getPercent();
 		if (renderManager != null) {
@@ -202,11 +184,9 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
      public String getCurrentFileName() {
-    	 if (file !=null){ log.info(" file.getName is "+this.file.getName());
+    	 if (file !=null){ 
     	   return this.file.getName();
     	 }
-//    	 log.info(" getCurrentFileName is"+this.currentFileName);
-//         return currentFileName;
        	 else return "";
      }
      public String getUploadDirectory(){
@@ -220,7 +200,6 @@ public class InputFileBean implements Renderable, Serializable{
       * crude error messaging
       */
  	public void setError(String msg) {
- 		log.info("setError() version="+this);
 		errorMsg = msg;
 		if (log.isDebugEnabled())log.debug("errorMsg="+errorMsg);
 	}
