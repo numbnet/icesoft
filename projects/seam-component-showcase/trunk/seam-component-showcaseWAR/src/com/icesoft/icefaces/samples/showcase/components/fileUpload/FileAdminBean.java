@@ -33,7 +33,6 @@ import org.jboss.seam.ScopeType;
  * Due to browser limitations, only 1 instance of an InputfileBean
  * may be enabled at a time.  
  * 
- * @author jguglielmin
  *
  */
 
@@ -41,7 +40,7 @@ import org.jboss.seam.ScopeType;
 @Scope(ScopeType.SESSION)
 public class FileAdminBean implements Serializable{
 	/* each user is allowed a max number of files =6 or 
-	 * max size allowance to upload of 10MB
+	 * max size allowance to upload of 10MB  --NOT implemented yet!
 	 */
 	private final int MAXFILESALLOWED=4;
 	private final int MAXSIZEALLOWED=1024000;
@@ -64,35 +63,14 @@ public class FileAdminBean implements Serializable{
            LogFactory.getLog(FileAdminBean.class);	
   	
     public void setFileUpload(InputFileBean ifb){
-    	log.info("setFileUpload");
-    	if (ifb==null){
-    		log.info("\t\t >>>creating new fileUpload");
-    	}
-    	else fileUpload=ifb;
-//		log.info("setFileUpload version="+fileUpload.toString());
-//		log.info("setFileUpload fileAdmin version="+this.toString());
+    	fileUpload=ifb;
     }
 
 	public InputFileBean getFileUpload(){
 		if (fileUpload==null){
-			log.info("inputFileBean is null");
+			if (log.isDebugEnabled())log.debug("getFileUpload() :inputFileBean is null->create new one");
     		fileUpload = new InputFileBean();
 		}
-		else {
-//			log.info("gettingInputFileBean percent="+fileUpload.getPercent());
-//			if (fileUpload.getPercent()>-1)this.percent=fileUpload.getPercent();
-		}
-//		log.info("getFileUpload version="+fileUpload.toString());
-//		log.info("getFileUpload fileAdmin version="+this.toString());
-//try{
-//   	 java.lang.reflect.Method[] methods = fileUpload.getClass().getMethods();
-//   	 for(int i = 0; i < methods.length; i++) {
-//   		 log.info(methods[i].toGenericString());
-//   	 }
-//}catch (Exception e){
-//	log.info("\t\t-> couldn't get list of methods for fileUpload "+e);
-//	//e.printStackTrace();
-//}
 		return this.fileUpload;
 	}
 
@@ -153,7 +131,6 @@ public class FileAdminBean implements Serializable{
 	
 	/* may need to refresh the list more than once per each upload */
 	public ArrayList<FileEntry> refreshList(){
-		log.info("refreshList");
 	    parentDir= null;
 	    ArrayList<FileEntry> tempList = new ArrayList<FileEntry>();
 		currentSize=0;
@@ -162,8 +139,6 @@ public class FileAdminBean implements Serializable{
    		  FacesContext context = FacesContext.getCurrentInstance();
 		  HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
 	      parentDir = (String)session.getAttribute("uploadDirectory");
-	      if (parentDir!=null)log.info("parentDir is "+parentDir);
-	      else log.info("uploadDirectory is null");
 	    }catch (Exception e) {}
 	    if (parentDir != null){
 		  File[] files = null;
@@ -189,10 +164,8 @@ public class FileAdminBean implements Serializable{
 	}
 	/* deletes currentFileEntry as it violates max Number of files or max allotted space */
 	public void deleteCurrentFileEntry(){
-		log.info("deletecurrentFileEntry");
 		File f = getLastFile();
 		f.delete();
-		log.info("\t\t-> deleted "+f.getName());
 		//add the size back into remaining space
 		this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
 		FileEntry fe = this.getFileEntry(f.getName());
@@ -203,32 +176,25 @@ public class FileAdminBean implements Serializable{
 	 */
 
 	public void deleteFiles(ActionEvent e) {
-		log.info("in deleteFiles with filesList size="+filesList.size());
         ArrayList<FileEntry> deletedEntry = new ArrayList<FileEntry>();
     	ArrayList<Integer> deletedEntries = new ArrayList<Integer>();
-	     for (int i =0; i <filesList.size() ; i++) {
+	    for (int i =0; i <filesList.size() ; i++) {
 	        FileEntry fr = (FileEntry)filesList.get(i);
-	        log.info("i="+i+" fr="+fr.toString());
 	        if (fr.getSelected().booleanValue()) {
 	    	   //remove from the server and the filesList
 	          log.info("selected file to delete is "+fr.getFileName());
 	          deletedEntries.add(i);
-	             deletedEntry.add(fr);
+	          deletedEntry.add(fr);
 	          File f = new File(fr.getAbsolutePath());
-	//          if(f.exists()){
-
 	        	  f.delete();
 	        	  log.info("File "+f.getName()+" is deleted");
-//	          }
-//	          else log.info("File "+f.getName()+" NOT DELETED!!");
-	       }
-	   }
-	     for (int i=0;i<deletedEntry.size();i++){
+	        }
+	    }
+	    for (int i=0;i<deletedEntry.size();i++){
 	    	 log.info("\t deleteEntries is of size="+deletedEntries.size());
 	    	 boolean worked = filesList.remove(deletedEntry.get(i));
-	    	 log.info("\t after remove worked = "+worked+" & size="+deletedEntries.size());
+	//    	 log.info("\t after remove worked = "+worked+" & size="+deletedEntries.size());
 	     }
-	     log.info("\t\t end of deleteFiles & size="+filesList.size());
 	}
 
 	public FileEntry getFileEntry(String fileNm){
@@ -263,7 +229,6 @@ public class FileAdminBean implements Serializable{
     /*
      * can remove the renderManager and any files uploaded upon clean up
      */
-//	@Remove
 	@Destroy
 	public void destroy() {
 		///can get rid of the uploaded files here unless have ejb3 container

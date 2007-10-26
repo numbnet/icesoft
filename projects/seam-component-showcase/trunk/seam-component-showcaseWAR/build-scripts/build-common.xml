@@ -338,38 +338,42 @@
         </testng>
     </target>
     
-	<target name="freshen" description="grab fresh icefaces jars">
-            <copy todir="${lib.dir}">
-              <fileset dir="${icefaces.home}/lib">
-                <include name="icefaces*.jar" />
-                <include name="backport-util-concurrent.jar" />	
-		        <include name="commons-fileupload.jar"/> 
-                <include name="commons-logging*.jar"/>
-                <include name="krysalis-*.jar"/>
-                <include name="commons-digester*.jar"/>
-  	    </fileset>
-            <fileset dir="${jboss.seam.home}">
-                <include name="jboss-seam.jar"/>
-                <include name="jboss-seam-debug.jar"/>
-                <include name="jboss-el.jar"/>
-            	<include name="hibernate-*.jar"/>
-            </fileset>
-                       
-            <fileset dir="${jboss.seam.home}/lib">
-                 <include name="jsf*.jar"/>
-                <include name="jboss-*.jar"/>
-                <exclude name="jboss-seam-gen*.jar"/>
-                 <include name="jbpm*.jar"/>
-                 <include name="jboss-el.jar" />
-                 <include name="antlr*.jar"/>
-                 <include name="servlet-api.jar"/>
-            </fileset>
-            <fileset dir="${jboss.seam.home}/drools/lib">
-                <include name="antlr*.jar"/>
-                <include name="mvel*.jar"/>
-                <include name="janino-*.jar"/>
-            </fileset>
-	</copy>
+	<target name="freshen" depends="init" description="grab fresh icefaces jars">
+	      <copy todir="${lib.dir}">
+	           <fileset dir="${icefaces.home}/lib">
+	             <include name="icefaces*.jar" />
+	             <include name="backport-util-concurrent.jar" />	
+			     <include name="commons-fileupload.jar"/> 
+	             <include name="commons-logging*.jar"/>
+	             <include name="krysalis-*.jar"/>
+	             <include name="commons-digester*.jar"/>
+		      </fileset>
+	         <fileset dir="${jboss.seam.home}/lib">
+	             <include name="jboss-seam.jar"/>
+	         	 <include name="cglib.jar"/>
+	         	 <include name="dom4j.jar"/>
+	             <include name="jboss-seam-debug.jar"/>
+	             <include name="jboss-el.jar"/>
+	         	<include name="hibernate*.jar"/>
+	              <include name="jsf*.jar"/>
+	              <include name="antlr.jar"/>
+	              <include name="jboss-seam-ui.jar"/>
+	         	  <include name="javassist.jar"/>
+	              <include name="jbpm*.jar"/>
+	              <include name="jboss-el.jar" />
+	              <include name="antlr*.jar"/>
+	              <include name="servlet-api.jar"/>
+	         	  <include name="jsf-api.jar"/>
+	         	  <include name="jsf-impl.jar"/>
+	         	  <include name="jstl.jar"/>
+	         	  <include name="persistence.jar"/>
+	         	  <include name="jta.jar"/>
+	         	  <include name="jboss-archive-browsing.jar"/>
+	         	  <include name="log4j.jar"/>
+	             <include name="mvel*.jar"/>
+	             <include name="janino*.jar"/>
+	         </fileset>
+		</copy>	    
 	</target>
 
 	<target name="purge" depends="undeploy" description="clean out jboss deployments of crashing applications"> 

@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-impl.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/krysalis-jCharts-1.0.0-alpha-1.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/jguglielmin/workspace/Tomcatwar-seam-comp-showcase/WebRoot/WEB-INF/lib/mvel14.jar"/>
 	<classpathentry kind="output" path="exploded-archives/seam-comp-showcase.war/WEB-INF/classes"/>
 </classpath>

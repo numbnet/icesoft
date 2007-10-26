@@ -29,6 +29,10 @@
 	     	<ant antfile="build-scripts/build-tomcat6.xml" />
 	   </target>
 	
+	   <target name="copy-libs" description="copy over libraries to project">
+	   	  <ant antfile="build-scripts/build-common.xml" target="freshen"/> 
+	   </target>
+	
 	   <target name="clean-all" description="Clean up all distributions">
 	     	<ant antfile="build-scripts/build-jboss.xml" target="clean" />
 	   	    <ant antfile="build-scripts/build-jboss405.xml" target="clean" />
@@ -38,8 +42,9 @@
 	    	<ant antfile="build-scripts/build-tomcat55.xml" target="clean" /> 
 	    	<ant antfile="build-scripts/build-tomcat6.xml" target="clean" />
 	   </target>
+	
 	<!--build-all will build all variations of this application
 	    The jboss server is the most recently released GA jboss AS -->
 	<target name="build-all" depends="jboss, jboss405, glassfish, weblogic92, websphere61, tomcat55, tomcat6" description="Build seam-comp-showcase for all supported application servers"/>
-
+ 
 </project>

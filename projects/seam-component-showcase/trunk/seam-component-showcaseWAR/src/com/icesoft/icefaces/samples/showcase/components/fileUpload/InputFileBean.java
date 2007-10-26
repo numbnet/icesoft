@@ -127,7 +127,7 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
-    	state= PersistentFacesState.getInstance(); 
+ //   	state= PersistentFacesState.getInstance(); 
         return this.percent;
     }
 
