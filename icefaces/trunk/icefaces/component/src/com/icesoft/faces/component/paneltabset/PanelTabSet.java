@@ -429,8 +429,7 @@ public class PanelTabSet
             return _bgcolor;
         }
         ValueBinding vb = getValueBinding("bgcolor");
-        return vb != null ? (String) vb.getValue(getFacesContext()) :
-               DEFAULT_BG_COLOR;
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
     private int border = 0;
