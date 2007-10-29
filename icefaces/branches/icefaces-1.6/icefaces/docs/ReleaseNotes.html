@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><!-- saved from url=(0022)http://internet.e-mail -->
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482;
-v1.6.1 Release Notes</title> <style>
+v1.6.2 Release Notes</title> <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:80%;
@@ -33,16 +33,17 @@ h4 {
 font-size: 110%
 }
 </style></head>
-
 <body><div style="border: 1px solid rgb(187, 187, 187);"><table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%"> <tbody> <tr> <td width="78%"> <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces&#8482;
-<br> </h1> <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.1
-Release Notes</h2> <p style="margin-left: 16px; margin-bottom: 12px;">August 31st,
+<br> </h1> <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.2
+Release Notes</h2> <p style="margin-left: 16px; margin-bottom: 12px;">November
+7th,
 2007</p> </td> <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br> </td> </tr> </tbody>
 </table></div><div><br><h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
-<ul> <li><a href="ReleaseNotes.html#Changes_161">Changes
+<ul> <li><a href="ReleaseNotes.html#Changes_162">Changes
 in This Release
-(v1.6.1)</a></li> <li><a href="ReleaseNotes.html#Changes_160">Changes in
+(v1.6.2)</a></li><li><a href="ReleaseNotes.html#Changes_161">Changes
+in&nbsp;v1.6.1</a></li> <li><a href="ReleaseNotes.html#Changes_160">Changes in
 v1.6.0<br> </a></li> <li><a href="#Supported_Platforms">Supported Browsers, Application
 Servers, and Tools</a></li> <li><a href="#Known_Issues">Known Issues</a></li> <li><a href="ReleaseNotes.html#About_ICEfaces">Support</a></li>
 <li><a href="ReleaseNotes.html#About_ICEfaces">About
@@ -50,18 +51,41 @@ ICEfaces </a></li> <li><a href="#License_Management">License information</a></li
 </ul>For release note information for earlier ICEfaces releases,
 refer to
 the <a href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
-Knowledge Base</a>.<br>
+Knowledge Base</a>.<br><br><h2><a name="Changes_162"></a>Changes
+in This Release (v1.6.2)</h2>
+<br>ICEfaces 1.6.2 is a maintenance release that includes over 50
+fixes and improvements. Significant improvments include:<br><h4>Improved Performance&nbsp;</h4>
+<ul class="contentIndent"><li>ICEfaces&nbsp;now
+supports&nbsp;JBoss Seam 2.0.0 (CR1 release or newer) in addition
+to Seam v1.2.1GA.</li><li>All&nbsp;&nbsp;&nbsp;</li></ul><h4>Improved Security&nbsp;</h4>
+<ul class="contentIndent"><li>ICEfaces 1.6.2 is a "Defect Free Project" (has no serious security
+vulnerabilities) as reported by the <a href="http://opensource.fortifysoftware.com/">Fortify Java Open Review Project</a>.</li></ul>See
+the Change
+Log
+below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
+JIRA Change Log</a> for more information on&nbsp;the changes
+in
+this
+release.<br><br>Please review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a> prior to
+using this release.<br><span style="font-weight: bold; color: rgb(153, 0, 0);"><br></span><h3><a name="ChangeLog_161"></a>Change
+Log</h3>
+<h4>Improvements</h4><ul><li>[<a href="http://jira.icefaces.org//browse/ICE-956">ICE-956</a>]
+- Tree performance issue with selectInputDate in Tree nodes</li></ul>
+<h4>Bug Fixes</h4><ul><li>[<a href="http://jira.icefaces.org//browse/ICE-597">ICE-597</a>]
+- Noisy ice:outputDeclaration error messages with Facelets</li></ul><br>
 <h2><a name="Changes_161"></a>Changes
-in This Release (v1.6.1)</h2>
+in&nbsp;v1.6.1</h2>
 <br>ICEfaces 1.6.1 is a maintenance release that includes over 80
 improvements and fixes. Significant improvments include:<br><h4>JBoss
 Seam 2.0 Support&nbsp;</h4>
 <ul class="contentIndent"><li>ICEfaces&nbsp;now
 supports&nbsp;JBoss Seam 2.0.0 (CR1 release or newer) in addition
 to Seam v1.2.1GA.</li><li>All significant "Known Issues"
-related to using ICEfaces 1.6.0 with Seam have been resolved in this release.</li></ul>See
-the <a href="ReleaseNotes.html#ChangeLog_161">Change
-Log</a>
+related to using ICEfaces 1.6.0 with Seam have been resolved in this
+release.</li></ul>See
+the Change
+Log
 below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
 JIRA Change Log</a> for more information on&nbsp;the changes
 in
@@ -69,7 +93,7 @@ this
 release.<br><br>Please review the <a href="ReleaseNotes.html#Known_Issues">Known
 Issues</a> prior to
 using this release.<br><br>
-<br><span style="font-weight: bold; color: rgb(153, 0, 0);">Compatiblity
+<br><span style="font-weight: bold; color: rgb(153, 0, 0);">Compatibility
 Alert</span><span style="color: rgb(153, 0, 0);">:</span>
 ICEfaces applications developed using&nbsp;ICEfaces v1.6.0 that use
 the<span style="font-weight: bold;">
@@ -88,8 +112,8 @@ Log</h3>
 <h4>Improvements</h4><ul><li>[<a href="http://jira.icefaces.org//browse/ICE-956">ICE-956</a>]
 - Tree performance issue with selectInputDate in Tree nodes</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1635">ICE-1635</a>]
 - row selector performance does not scale well</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1665">ICE-1665</a>]
-- Support Seam tags related to <s:selectItems> to allow more
-than a String to be returned. </s:selectItems></li><li>[<a href="http://jira.icefaces.org//browse/ICE-1837">ICE-1837</a>]
+- Support Seam tags related to <s:selectitems> to allow more
+than a String to be returned. </s:selectitems></li><li>[<a href="http://jira.icefaces.org//browse/ICE-1837">ICE-1837</a>]
 - Custom Component Tutorials - progress bar</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1866">ICE-1866</a>]
 - dataTable: bad performance when used with nested selectInputDate
 components</li><li>[<a href="http://jira.icefaces.org//browse/ICE-1909">ICE-1909</a>]
@@ -138,8 +162,8 @@ partialSubmit in UIData components</li>
 - Facelet View Handler throws nested forms FacesException when using a
 flow-through template</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1712">ICE-1712</a>]
-- <ice:selectInputDate> fails to set focus after date is
-selected from popup calender</ice:selectInputDate></li>
+- <ice:selectinputdate> fails to set focus after date is
+selected from popup calender</ice:selectinputdate></li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1722">ICE-1722</a>]
 - Seam redirection cause NullPointerException</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1741">ICE-1741</a>]
@@ -1191,13 +1215,7 @@ the entire visible region of the document or the component used to
 block user interaction with the document may not cover the entire page.
 To accomplish this a surrounding DIV sized to 100% width and height can
 be used to enclose all content in the document body. For example: <br>
-<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul><h3>Facelets</h3><ul>
-<li>When using an ice:outputDeclaration component in
-a Facelets
-document on a JBoss application server, several warning messages may be
-logged. These warnings do not affect the performance or behavior of the
-component and can be ignored.</li>
-</ul><h3>JSF 1.2</h3>
+<pre id="comment_text_1">&lt;html&gt;&lt;body&gt;<span style="font-weight: bold;">&lt;div style="width:100%;height:100%;"&gt;</span> ...<span>page content...</span> <span style="font-weight: bold;">&lt;/div&gt;</span>&lt;/body&gt;&lt;/html&gt; </pre></li></ul></ul><h3>JSF 1.2</h3>
 <ul> <li>ICEfaces must use JSF 1.1 "compatibility mode"
 within JSF 1.2
 environments. See the "JSF 1.2" topic in the "Using ICEfaces with Java
@@ -1211,25 +1229,16 @@ portlets
 using Liferay Portal 4.3.0.&nbsp; Using ICEfaces with other portal
 products has not been tested with this release.<br> </li>
 </ul><h3>Application Servers</h3>
-<ul style="font-weight: bold;"> <li>General</li>
-</ul><ul> <ul> <li>ICEfaces 1.6 does not
+<ul style="font-weight: bold;"> <li>General</li></ul><ul>
+<ul> <li>ICEfaces does not
 support session persistence. Some
 application servers enable distributable session features by default.
 In these cases serialization exceptions may appear in the log. Session
 distribution should be disabled when deploying ICEfaces applications.
-Support for session persistence is planned for a future release.<br>
-</li> </ul></ul><ul> <li><span style="font-weight: bold;">Apache
-Tomcat v5.5</span><br> </li>
-</ul><ul> <ul> <li>Tutorials bundled with the
-ICEfaces release will not build and
-deploy to Tomcat 5.5 with MyFaces due to a conflict related to
-jsp-api.jar.&nbsp; To build and deploy tutorials on Tomcat 5.5 with
-MyFaces, it is necessary to modify the <span style="font-style: italic; font-weight: bold;">.../install_dir/ICEfaces-1.5/icefaces/samples/tutorial/build.properties</span>
-and set <span style="font-style: italic; font-weight: bold;">tomcat55=true</span>
-prior to building the application.</li> </ul>
-</ul><ul> <ul> <li>Applications deployed to a
-Tomcat instance installed as a
-Windows service may experience the following error: <small>"SEVERE:
+Support for session persistence is planned for a future release.</li>
+</ul></ul><ul><ul><li>Due to an apparent
+bug in Tomcat 5.x, users have occasionally reported seeing the
+following error when using ICEfaces with Tomcat 5.x or JBoss 4.0.x: <small>"SEVERE:
 ICEfaces could not initialize JavaServer Faces. Please check that the
 JSF .jar files are installed correctly."<big> </big></small>This
 issue
@@ -1239,7 +1248,15 @@ can be resolved by including the following listener in the web.xml: <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 com.sun.faces.config.ConfigureListener <br>
 &nbsp;&nbsp;&nbsp; &lt;/listener-class&gt; <br>
-&lt;/listener&gt;</code></li> </ul>
+&lt;/listener&gt;</code></li></ul></ul><span style="font-weight: bold;"></span><span style="font-weight: bold;"></span><ul> <li><span style="font-weight: bold;">Apache
+Tomcat v5.5</span><br> </li>
+</ul><ul> <ul> <li>Tutorials bundled with the
+ICEfaces release will not build and
+deploy to Tomcat 5.5 with MyFaces due to a conflict related to
+jsp-api.jar.&nbsp; To build and deploy tutorials on Tomcat 5.5 with
+MyFaces, it is necessary to modify the <span style="font-style: italic; font-weight: bold;">.../install_dir/ICEfaces-1.5/icefaces/samples/tutorial/build.properties</span>
+and set <span style="font-style: italic; font-weight: bold;">tomcat55=true</span>
+prior to building the application.</li> </ul>
 </ul><ul> <li><span style="font-weight: bold;">Apache
 Tomcat v6.0</span><br> </li>
 </ul><div style="margin-left: 40px;">To use ICEfaces
