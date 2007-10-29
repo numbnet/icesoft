@@ -1,7 +1,5 @@
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.env.PortletEnvironmentRenderRequest;
-import com.icesoft.faces.env.ServletEnvironmentRequest;
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
@@ -39,7 +37,6 @@ public class View implements CommandQueue {
     private BridgeFacesContext facesContext;
     private PersistentFacesState persistentFacesState;
     private Map bundles = Collections.EMPTY_MAP;
-    private String requestURI;
     private Command currentCommand = NOOP;
     private String viewIdentifier;
     private ArrayList onPutListeners = new ArrayList();
@@ -69,14 +66,11 @@ public class View implements CommandQueue {
 
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
-                ServletEnvironmentRequest wrappedRequest = new ServletEnvironmentRequest(request);
-                requestURI = wrappedRequest.getRequestURI();
-                externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
+                externalContext = new ServletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor);
             }
 
             public void portlet(Object request, Object response, Object portletConfig) {
-                PortletEnvironmentRenderRequest wrappedRequest = new PortletEnvironmentRenderRequest(request);
-                externalContext = new PortletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor, portletConfig);
+                externalContext = new PortletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor, portletConfig);
             }
         });
         this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration, resourceDispatcher);
@@ -110,26 +104,23 @@ public class View implements CommandQueue {
     public void updateOnRequest(Request request) throws Exception {
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
-                HttpServletRequest wrappedRequest = new ServletEnvironmentRequest(request);
-                if (differentURI(wrappedRequest)) {
+                if (differentURI((HttpServletRequest) request)) {
                     //page redirect
-                    requestURI = wrappedRequest.getRequestURI();
                     externalContext.dispose();
-                    externalContext = new ServletExternalContext(viewIdentifier, wrappedRequest, response, View.this, configuration, sessionMonitor);
+                    externalContext = new ServletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor);
                     facesContext.dispose();
                     facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher);
                     //reuse  PersistentFacesState instance when page redirects occur                    
                     persistentFacesState.setFacesContext(facesContext);
                 } else {
                     //page reload
-                    externalContext.updateOnReload(wrappedRequest, response);
+                    externalContext.updateOnReload(request, response);
                 }
             }
 
             public void portlet(Object request, Object response, Object config) {
                 //page reload
-                PortletEnvironmentRenderRequest wrappedRequest = new PortletEnvironmentRenderRequest(request);
-                externalContext.updateOnReload(wrappedRequest, response);
+                externalContext.updateOnReload(request, response);
             }
         });
         makeCurrent();
@@ -156,8 +147,8 @@ public class View implements CommandQueue {
     public boolean differentURI(HttpServletRequest request) {
         // As a temporary fix, all GET requests are non-faces requests, and thus,
         // are considered different to force a new ViewRoot to be constructed.
-        return (SeamUtilities.isSeamEnvironment()) ||
-                !request.getRequestURI().equals(requestURI);
+        return SeamUtilities.isSeamEnvironment() ||
+                !request.getRequestURI().equals(((HttpServletRequest) externalContext.getRequest()).getRequestURI());
     }
 
     public void put(Command command) {
