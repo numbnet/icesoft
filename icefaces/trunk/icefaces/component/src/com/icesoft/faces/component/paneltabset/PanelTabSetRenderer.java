@@ -49,7 +49,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import javax.faces.FacesException;
-import javax.faces.el.ValueBinding;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
@@ -126,10 +125,6 @@ public class PanelTabSetRenderer
         String baseClass = tabSet.getStyleClass();
 
         int selectedIndex = tabSet.getSelectedIndex();
-        ValueBinding vb = tabSet.getValueBinding("selectedIndex");
-        if (vb != null) {
-            selectedIndex = ((Number) vb.getValue(facesContext)).intValue();
-        }
 
         // get the parentForm
         UIComponent parentForm = findForm(tabSet);
@@ -456,8 +451,10 @@ public class PanelTabSetRenderer
                     paramName = tabSet.getClientId(facesContext) + "." + tabIdx;
                     paramValue = (String) paramMap.get(paramName);
                     if (paramValue != null && paramValue.length() > 0) {
+                        int oldTabIdx = tabSet.getSelectedIndex();
+                        tabSet.setSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
-                                                             tabSet.getSelectedIndex(),
+                                                             oldTabIdx,
                                                              tabIdx));
                         return;
                     }
@@ -477,8 +474,10 @@ public class PanelTabSetRenderer
                     paramName = tabSet.getClientId(facesContext) + "." + tabIdx;
                     paramValue = (String) paramMap.get(paramName);
                     if (paramValue != null && paramValue.length() > 0) {
+                        int oldTabIdx = tabSet.getSelectedIndex();
+                        tabSet.setSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
-                                                             tabSet.getSelectedIndex(),
+                                                             oldTabIdx,
                                                              tabIdx));
                         return;
                     }

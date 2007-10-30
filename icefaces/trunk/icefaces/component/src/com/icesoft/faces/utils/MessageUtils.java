@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.component.UIComponent;
 
 /**
  * This class has been designed, so the custom components can get 
@@ -80,5 +81,20 @@ public class MessageUtils {
             classLoader = fallback.getClass().getClassLoader();
         }
         return classLoader;
+    }
+    
+    public static Object getComponentLabel(
+        FacesContext context, UIComponent comp)
+    {
+        Object label = comp.getAttributes().get("label");
+        if(nullOrEmptyString(label)) {
+            label = comp.getClientId(context);
+        }
+        return label;
+    }
+    
+    private static boolean nullOrEmptyString(Object ob) {
+        return ( (ob == null) ||
+                 ((ob instanceof String) && (ob.toString().length() == 0)) );
     }
 }
