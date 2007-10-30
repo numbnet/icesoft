@@ -82,6 +82,10 @@
                         address.asExtendedElement().replaceHtml(html);
                         logger.debug('applied update : ' + html);
                         scriptLoader.searchAndEvaluateScripts(address.asElement());
+                        if (Ice.StateMon) {
+                            Ice.StateMon.checkAll();
+                            Ice.StateMon.rebuild();
+                        }
                     } catch (e) {
                         logger.error('failed to insert element: ' + html, e);
                     }
@@ -108,8 +112,6 @@
 
             this.connection.onReceive(function(request) {
                 commandDispatcher.deserializeAndExecute(request.contentAsDOM().documentElement);
-                Ice.StateMon.checkAll();
-                Ice.StateMon.rebuild();
             });
 
             this.connection.onReceive(function() {
