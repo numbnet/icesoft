@@ -48,6 +48,7 @@
 package com.icesoft.faces.component.paneltabset;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.utils.UpdatableProperty;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 
@@ -212,6 +213,7 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
+        _selectedIndex.updateModel(context, this);
         applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
     }
 
@@ -275,18 +277,6 @@ public class PanelTabSet
      * @see javax.faces.component.UIComponent#broadcast(javax.faces.event.FacesEvent)
      */
     public void broadcast(FacesEvent event) throws AbortProcessingException {
-        if (event instanceof TabChangeEvent) {
-            TabChangeEvent tabChangeEvent = (TabChangeEvent) event;
-            if (tabChangeEvent.getComponent() == this) {
-                setSelectedIndex(tabChangeEvent.getNewTabIndex());
-                //getFacesContext().renderResponse();
-                ValueBinding vb = getValueBinding("selectedIndex");
-                if (vb != null) {
-                    vb.setValue(getFacesContext(), new Integer(tabChangeEvent.getNewTabIndex()));
-                }
-            }
-        }
-        
         super.broadcast(event);
         
         if (event instanceof TabChangeEvent) {
@@ -354,7 +344,7 @@ public class PanelTabSet
     /**
      * The current selected tab index.
      */
-    private Integer _selectedIndex = null;
+    private UpdatableProperty _selectedIndex = new UpdatableProperty("selectedIndex");
     /**
      * The current tab placement. <p>At this time only "top" and "bottom" are
      * supported.
@@ -392,26 +382,26 @@ public class PanelTabSet
      * @param selectedIndex
      */
     void setSelectedIndex(Integer selectedIndex) {
-        _selectedIndex = selectedIndex;
+        _selectedIndex.setValue(this, selectedIndex);
     }
 
     /**
      * @param selectedIndex
      */
     public void setSelectedIndex(int selectedIndex) {
-        _selectedIndex = new Integer(selectedIndex);
+        _selectedIndex.setValue(this, new Integer(selectedIndex));
     }
 
     /**
      * @return the value of selectedIndex
      */
     public int getSelectedIndex() {
-        if (_selectedIndex != null) {
-            return _selectedIndex.intValue();
+        Number selIdx = (Number) _selectedIndex.getValue(
+            FacesContext.getCurrentInstance(), this);
+        if(selIdx != null) {
+            return selIdx.intValue();
         }
-        ValueBinding vb = getValueBinding("selectedIndex");
-        Number v = vb != null ? (Number) vb.getValue(getFacesContext()) : null;
-        return v != null ? v.intValue() : DEFAULT_SELECTEDINDEX;
+        return DEFAULT_SELECTEDINDEX;
     }
 
     /**
@@ -567,7 +557,7 @@ public class PanelTabSet
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _selectedIndex = (Integer) values[1];
+        _selectedIndex = (UpdatableProperty) values[1];
         _bgcolor = (String) values[2];
         _tabChangeListener =
                 (MethodBinding) restoreAttachedState(context, values[3]);
