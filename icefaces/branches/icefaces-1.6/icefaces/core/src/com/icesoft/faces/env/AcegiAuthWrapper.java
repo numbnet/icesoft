@@ -34,27 +34,29 @@
 package com.icesoft.faces.env;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
 
-public class AcegiAuthWrapper {
-    Authentication auth;
+import java.security.Principal;
 
-    public AcegiAuthWrapper(Object auth) {
-        this.auth = (Authentication) auth;
+public class AcegiAuthWrapper implements AuthenticationVerifier {
+    Authentication authentication;
+
+    public AcegiAuthWrapper(Principal principal) {
+        this.authentication = (Authentication) principal;
     }
 
     public boolean isUserInRole(String role) {
-        if ((auth == null) || (auth.getPrincipal() == null) ||
-            (auth.getAuthorities() == null)) {
+        GrantedAuthority[] authorities = authentication.getAuthorities();
+        if (authentication.getPrincipal() == null || authorities == null) {
             return false;
         }
 
-        for (int i = 0; i < auth.getAuthorities().length; i++) {
-            if (role.equals(auth.getAuthorities()[i].getAuthority())) {
+        for (int i = 0; i < authorities.length; i++) {
+            if (role.equals(authorities[i].getAuthority())) {
                 return true;
             }
         }
 
         return false;
-
     }
 }

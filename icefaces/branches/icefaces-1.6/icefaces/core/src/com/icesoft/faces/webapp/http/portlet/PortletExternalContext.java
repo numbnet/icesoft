@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.portlet;
 import com.icesoft.faces.context.AbstractAttributeMap;
 import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.env.PortletEnvironmentRenderRequest;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
@@ -42,7 +43,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor, Object config) {
         super(viewIdentifier, commandQueue, configuration);
         this.config = (PortletConfig) config;
-        this.request = (RenderRequest) request;
+        this.request = new PortletEnvironmentRenderRequest(request);
         this.response = (RenderResponse) response;
         this.session = new ProxyPortletSession(this.request.getPortletSession()) {
             public void invalidate() {
@@ -177,7 +178,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
     public void updateOnReload(Object request, Object response) {
         Map previousRequestMap = this.requestMap;
-        this.request = (RenderRequest) request;
+        this.request = new PortletEnvironmentRenderRequest(request);
         this.requestMap = new RequestAttributeMap();
         //propagate entries
         this.requestMap.putAll(previousRequestMap);

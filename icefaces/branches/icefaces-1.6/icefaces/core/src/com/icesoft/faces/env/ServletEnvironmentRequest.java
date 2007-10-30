@@ -34,8 +34,6 @@
 package com.icesoft.faces.env;
 
 import com.icesoft.jasper.Constants;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -65,10 +63,6 @@ import java.util.Map;
  */
 public class ServletEnvironmentRequest extends CommonEnvironmentRequest
         implements HttpServletRequest {
-    private static final Log log =
-            LogFactory.getLog(ServletEnvironmentRequest.class);
-    private static final String ACEGI_AUTH_CLASS = "org.acegisecurity.Authentication";
-    private static Class acegiAuthClass;
     private HttpServletRequest request;
     private Map headers;
     private Cookie[] cookies;
@@ -92,33 +86,16 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private String localName;
     private String localAddr;
     private int localPort;
-    private AcegiAuthWrapper acegiAuthWrapper;
+    private AuthenticationVerifier authenticationVerifier;
 
-    static {
-        try {
-            acegiAuthClass = Class.forName(ACEGI_AUTH_CLASS);
-            if (log.isDebugEnabled()) {
-                log.debug("Acegi Security engaged.");
-            }
-        } catch (Throwable t) {
-            if (log.isDebugEnabled()) {
-                log.debug("Acegi Security not detected.");
-            }
-        }
-    }
-
-    public ServletEnvironmentRequest(Object request) {
+    public ServletEnvironmentRequest(Object request, AuthenticationVerifier authenticationVerifier) {
         this.request = (HttpServletRequest) request;
+        this.authenticationVerifier = authenticationVerifier;
         //Copy common data
         authType = this.request.getAuthType();
         contextPath = this.request.getContextPath();
         remoteUser = this.request.getRemoteUser();
         userPrincipal = this.request.getUserPrincipal();
-        if (null != acegiAuthClass) {
-            if (acegiAuthClass.isInstance(userPrincipal)) {
-                acegiAuthWrapper = new AcegiAuthWrapper(userPrincipal);
-            }
-        }
         requestedSessionId = this.request.getRequestedSessionId();
         requestedSessionIdValid = this.request.isRequestedSessionIdValid();
 
@@ -202,10 +179,7 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public boolean isUserInRole(String role) {
-        if (null != acegiAuthWrapper) {
-            return acegiAuthWrapper.isUserInRole(role);
-        }
-        return request.isUserInRole(role);
+        return authenticationVerifier.isUserInRole(role);
     }
 
     public Cookie[] getCookies() {

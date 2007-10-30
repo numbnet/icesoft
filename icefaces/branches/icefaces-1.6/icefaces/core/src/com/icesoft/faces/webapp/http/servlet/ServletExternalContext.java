@@ -3,9 +3,14 @@ package com.icesoft.faces.webapp.http.servlet;
 import com.icesoft.faces.context.AbstractAttributeMap;
 import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.env.AcegiAuthWrapper;
+import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.ServletEnvironmentRequest;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.servlet.ServletContext;
@@ -30,16 +35,32 @@ import java.util.Map;
 import java.util.Set;
 
 public class ServletExternalContext extends BridgeExternalContext {
-    private ServletContext context;
+    private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
+    private static Class AuthenticationClass;
+
+    static {
+        try {
+            AuthenticationClass = Class.forName("org.acegisecurity.Authentication");
+            Log.debug("Acegi Security detected.");
+        } catch (Throwable t) {
+            Log.debug("Acegi Security not detected.");
+        }
+    }
+
+    private final ServletContext context;
+    private final HttpSession session;
+    private final AuthenticationVerifier authenticationVerifier;
+    private HttpServletRequest initialRequest;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private HttpSession session;
 
     public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
+        this.authenticationVerifier = createAuthenticationVerifier();
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier);
         this.response = (HttpServletResponse) response;
-        this.session = new InterceptingHttpSession(this.request.getSession(), sessionMonitor);
+        this.session = new InterceptingHttpSession(this.initialRequest.getSession(), sessionMonitor);
         this.context = this.session.getServletContext();
         this.initParameterMap = new AbstractAttributeMap() {
             protected Object getAttribute(String key) {
@@ -110,7 +131,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public Object getRequest() {
-        return request;
+        return initialRequest;
     }
 
     public Object getResponse() {
@@ -144,12 +165,13 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
         responseCookieMap = Collections.synchronizedMap(new HashMap());
 
+        this.request = request;
         this.response = response;
     }
 
     public void updateOnReload(Object request, Object response) {
         Map previousRequestMap = this.requestMap;
-        this.request = (HttpServletRequest) request;
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier);
         this.requestMap = new RequestAttributeMap();
         //propagate entries
         this.requestMap.putAll(previousRequestMap);
@@ -167,35 +189,35 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public Locale getRequestLocale() {
-        return request.getLocale();
+        return initialRequest.getLocale();
     }
 
     public Iterator getRequestLocales() {
-        return new EnumerationIterator(request.getLocales());
+        return new EnumerationIterator(initialRequest.getLocales());
     }
 
     public String getRequestPathInfo() {
-        return convertEmptyStringToNull(requestPathInfo == null ? request.getPathInfo() : requestPathInfo);
+        return convertEmptyStringToNull(requestPathInfo == null ? initialRequest.getPathInfo() : requestPathInfo);
     }
 
     public String getRequestURI() {
-        String requestURI = (String) request.getAttribute("javax.servlet.forward.request_uri");
-        return requestURI == null ? request.getRequestURI() : requestURI;
+        String requestURI = (String) initialRequest.getAttribute("javax.servlet.forward.request_uri");
+        return requestURI == null ? initialRequest.getRequestURI() : requestURI;
     }
 
     public String getRequestContextPath() {
-        String contextPath = (String) request.getAttribute("javax.servlet.forward.context_path");
-        return contextPath == null ? request.getContextPath() : contextPath;
+        String contextPath = (String) initialRequest.getAttribute("javax.servlet.forward.context_path");
+        return contextPath == null ? initialRequest.getContextPath() : contextPath;
     }
 
     public String getRequestServletPath() {
         //crazy "workaround": solves the different behaviour MyFaces and Icefaces (including Sun-RI) need from this method
         boolean callFromMyfaces = new Exception().getStackTrace()[1].getClassName().startsWith("org.apache.myfaces");
         if (callFromMyfaces) {
-            return requestServletPath == null ? request.getServletPath() : requestServletPath;
+            return requestServletPath == null ? initialRequest.getServletPath() : requestServletPath;
         } else {
-            String servletPath = (String) request.getAttribute("javax.servlet.forward.servlet_path");
-            return servletPath == null ? request.getServletPath() : servletPath;
+            String servletPath = (String) initialRequest.getAttribute("javax.servlet.forward.servlet_path");
+            return servletPath == null ? initialRequest.getServletPath() : servletPath;
         }
     }
 
@@ -229,7 +251,7 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     public void dispatch(String path) throws IOException, FacesException {
         try {
-            request.getRequestDispatcher(path).forward(request, response);
+            initialRequest.getRequestDispatcher(path).forward(initialRequest, response);
         } catch (ServletException se) {
             throw new FacesException(se);
         }
@@ -244,19 +266,19 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public String getAuthType() {
-        return request.getAuthType();
+        return initialRequest.getAuthType();
     }
 
     public String getRemoteUser() {
-        return request.getRemoteUser();
+        return initialRequest.getRemoteUser();
     }
 
     public Principal getUserPrincipal() {
-        return request.getUserPrincipal();
+        return initialRequest.getUserPrincipal();
     }
 
     public boolean isUserInRole(String role) {
-        return request.isUserInRole(role);
+        return initialRequest.isUserInRole(role);
     }
 
     public Writer getWriter(String encoding) throws IOException {
@@ -297,19 +319,19 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     private class RequestAttributeMap extends AbstractCopyingAttributeMap {
         public Enumeration getAttributeNames() {
-            return request.getAttributeNames();
+            return initialRequest.getAttributeNames();
         }
 
         public Object getAttribute(String name) {
-            return request.getAttribute(name);
+            return initialRequest.getAttribute(name);
         }
 
         public void setAttribute(String name, Object value) {
-            request.setAttribute(name, value);
+            initialRequest.setAttribute(name, value);
         }
 
         public void removeAttribute(String name) {
-            request.removeAttribute(name);
+            initialRequest.removeAttribute(name);
         }
     }
 
@@ -335,6 +357,19 @@ public class ServletExternalContext extends BridgeExternalContext {
 
         public void invalidate() {
             sessionMonitor.shutdown();
+        }
+    }
+
+    private AuthenticationVerifier createAuthenticationVerifier() {
+        Principal principal = request.getUserPrincipal();
+        if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
+            return new AcegiAuthWrapper(principal);
+        } else {
+            return new AuthenticationVerifier() {
+                public boolean isUserInRole(String role) {
+                    return ServletExternalContext.this.request.isUserInRole(role);
+                }
+            };
         }
     }
 }
