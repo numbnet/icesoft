@@ -32,14 +32,6 @@
  */
 package com.icesoft.icefaces.samples.showcase.layoutPanels.tabSetPanel;
 
-import com.icesoft.faces.component.paneltabset.PanelTabSet;
-import com.icesoft.faces.component.paneltabset.TabChangeEvent;
-import com.icesoft.faces.component.paneltabset.TabChangeListener;
-import javax.faces.component.UIInput;
-import javax.faces.component.html.HtmlSelectOneRadio;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ValueChangeEvent;
-
 /**
  * The StaticTabSetBean class is a backing bean for the TabbedPane showcase
  * demonstration and is used to store the various states of the the
@@ -48,7 +40,7 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @since 0.3.0
  */
-public class StaticTabSetBean implements TabChangeListener{
+public class StaticTabSetBean {
     
     /**
      * The demo contains three tabs and thus we need three variables to store
@@ -57,7 +49,6 @@ public class StaticTabSetBean implements TabChangeListener{
     private boolean tabbedPane1Visible;
     private boolean tabbedPane2Visible;
     private boolean tabbedPane3Visible;
-    private HtmlSelectOneRadio selectedTabObject;
     
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
@@ -65,14 +56,11 @@ public class StaticTabSetBean implements TabChangeListener{
      */
     private String tabPlacement = "bottom";
 
-    // default tab focus.
-    private String selectedTabFocus = "1";
-
     /**
-     * Binding used by example to listen
+     * Determines the currently selected tab index. It's zero-based.
      */
-    private PanelTabSet tabSet;
-    
+    private long selectedIndex = 1;
+
     /**
      * Return the visibility of tab panel 1.
      *
@@ -131,52 +119,6 @@ public class StaticTabSetBean implements TabChangeListener{
     }
     
     /**
-     * Gets the tabbed pane object bound to this bean.
-     *
-     * @return bound tabbed pane.
-     */
-    public PanelTabSet getTabSet() {
-        return tabSet;
-    }
-    
-    /**
-     * Set a tabbed pane object which will be bound to this object
-     *
-     * @param tabSet new PanelTabSet object.
-     */
-    public void setTabSet(PanelTabSet tabSet) {
-        this.tabSet = tabSet;
-    }
-    
-    /**
-     * Called when the tab pane focus is to be changed.
-     *
-     * @param event new value is the new selected tab index.
-     */
-    public void selectTabFocus(ValueChangeEvent event) {
-        int index = Integer.parseInt((String) event.getNewValue());
-        tabSet.setSelectedIndex(index);
-    }
-    
-    /**
-     * Called when a tab is selected.
-     *
-     * @param event value is the selected tab.
-     */
-    public void selectTab(ValueChangeEvent event) {
-        UIInput component = (UIInput) event.getComponent();
-        int index = 1;
-        try {
-            index = Integer.parseInt(component.getValue().toString());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        tabSet.setSelectedIndex(index);
-    }
-    
-    /**
      * Gets the tab placement, either top or bottom.
      *
      * @return top if the tab is on the top of the component, bottom if the tab
@@ -196,64 +138,18 @@ public class StaticTabSetBean implements TabChangeListener{
     }
 
     /**
-     * Method is called when there has been a request to change the tab
-     * placement.
-     *
-     * @param event contains new tab placement data.
+     * Get the selected tab index, which is used both for the panelTabSet
+     *  and the selectOneRadio 
      */
-    public void selectTabPlacement(ValueChangeEvent event) {
-        tabPlacement = (String) event.getNewValue();
-    }
-    
-     /**
-     * Called when the table binding's tab focus changes.
-     *
-     * @param tabChangeEvent used to set the tab focus.
-     * @throws AbortProcessingException An exception that may be thrown by event
-      * listeners to terminate the processing of the current event.
-     */
-    public void processTabChange(TabChangeEvent tabChangeEvent)
-            throws AbortProcessingException {
-        setSelectedTabFocus(String.valueOf(tabChangeEvent.getNewTabIndex()));
-        if (selectedTabObject != null) {
-            selectedTabObject.setSubmittedValue(selectedTabFocus);
-        }
-    }
+    public long getSelectedIndex() {
+        return selectedIndex;
+	}
     
     /**
-     * Gets the currently selected tab.
-     *
-     * @return selectedTabFocus of the currently selected tab.
+     * Sets the selected tab index, called from both the panelTabSet and the
+     *  selectOneRadio, depending on which the user clicked on
      */
-    public String getSelectedTabFocus() {
-        return selectedTabFocus;
-    }
-
-    /**
-     * Sets the currently selected tab.
-     *
-     * @param selectedTabFocus new selected tab.
-     */
-    public void setSelectedTabFocus(String selectedTabFocus) {
-        this.selectedTabFocus = selectedTabFocus;
-    }
-    
-    /**
-     * Gets the currently selected tab object.
-     *
-     * @return selectedTabObject of the currently selected tab.
-     */
-    public HtmlSelectOneRadio getBindSelectedTabObject() {
-        return selectedTabObject;
-    }
-    
-    /**
-     * Sets the cuurently selected tab object.
-     *
-     * @param selectedTabObject new HtmlSelectOneRadia object.
-     */
-    public void setBindSelectedTabObject(HtmlSelectOneRadio selectedTabObject) {
-        this.selectedTabObject = selectedTabObject;
-    }
-    
+    public void setSelectedIndex(long selectedIndex) {
+        this.selectedIndex = selectedIndex;
+	}
 }

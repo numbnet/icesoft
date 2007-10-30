@@ -88,18 +88,17 @@ to show how visibility, focus and tab placement can be dynamically changed.
             <ice:outputText value="#{msgs['component.tabSet.tabFocus']}"/>
         </h3>
         <ice:selectOneRadio id="selectedTabFocus"
-                binding="#{staticTabbedPaneExample.bindSelectedTabObject}"
-                valueChangeListener="#{staticTabbedPaneExample.selectTab}"
                 partialSubmit="true"
-                value="#{staticTabbedPaneExample.selectedTabFocus}">
+                converter="javax.faces.Long"
+                value="#{staticTabbedPaneExample.selectedIndex}">
             <f:selectItem id="tab1Focus"
-                          itemValue="0"
+                          itemValue="#{0}"
                           itemLabel="#{msgs['component.tabSet.tab1']}"/>
             <f:selectItem id="tab2Focus"
-                          itemValue="1"
+                          itemValue="#{1}"
                           itemLabel="#{msgs['component.tabSet.tab2']}"/>
             <f:selectItem id="tab3Focus"
-                          itemValue="2"
+                          itemValue="#{2}"
                           itemLabel="#{msgs['component.tabSet.tab3']}"/>
         </ice:selectOneRadio>
 
@@ -111,8 +110,7 @@ to show how visibility, focus and tab placement can be dynamically changed.
                     value="#{msgs['component.tabSet.tabPlacement']}"/>
         </h3>
         <ice:selectOneRadio id="tabPlacement"
-                value="bottom"
-                valueChangeListener="#{staticTabbedPaneExample.selectTabPlacement}"
+                value="#{staticTabbedPaneExample.tabPlacement}"
                 partialSubmit="true">
             <f:selectItem id="top"
                           itemLabel="#{msgs['component.tabSet.top']}"
@@ -130,10 +128,8 @@ to show how visibility, focus and tab placement can be dynamically changed.
         style="margin-bottom:5px;margin-top:10px; width:350px;">
     <h3>&#160;</h3>
     <ice:panelTabSet id="staticTabSetPnl"
-                     binding="#{staticTabbedPaneExample.tabSet}"
-                     selectedIndex="1"
-                     tabPlacement="#{staticTabbedPaneExample.tabPlacement}"
-                     tabChangeListener="#{staticTabbedPaneExample.processTabChange}">
+                     selectedIndex="#{staticTabbedPaneExample.selectedIndex}"
+                     tabPlacement="#{staticTabbedPaneExample.tabPlacement}">
 
         <!-- Panel tab 1 defined with some basic content -->
         <ice:panelTab id="tab1Image"
@@ -199,6 +195,7 @@ to show how visibility, focus and tab placement can be dynamically changed.
         </p>
 
     </ice:panelTabSet>
+    <ice:messages/>
 </ice:panelGroup>
 
 <!-- Controls for Dynamic Tabs -->
@@ -240,12 +237,11 @@ to show how visibility, focus and tab placement can be dynamically changed.
         style="margin-bottom:5px;margin-top:10px; width:350px;">
     <h3>&#160;</h3>
     <ice:panelTabSet id="dynamicTabSet"
-                     binding="#{dynamicTabbedPaneExample.dynamicTabSet}" 
     				 var="tab"
                      value="#{dynamicTabbedPaneExample.tabs}"
+                     selectedIndex="#{dynamicTabbedPaneExample.selectedIndex}"
                      tabPlacement="bottom"
-                     styleClass="myTab"
-                     >
+                     styleClass="myTab">
         <ice:panelTab id="dynamicLabel" label="#{tab.label}">
             <ice:outputText id="dynamicContent" value="#{tab.content}"/>
         </ice:panelTab>
