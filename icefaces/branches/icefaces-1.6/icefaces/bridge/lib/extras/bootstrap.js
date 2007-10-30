@@ -30,42 +30,21 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
-var extrasInit = function() {
-     try{
-
-         Ice.DnD.init();
-          Ice.Autocompleter.logger = logger.child('autocomplete');
-
-
-    
-    if(connection && connection.onReceive){
-    connection.onReceive(function() {
-       
-	Ice.StateMon.checkAll();
-        Ice.StateMon.rebuild();
-
-
-    });
+window.onLoad(function() {
+    try {
+        Ice.DnD.init();
+        Ice.Autocompleter.logger = logger.child('autocomplete');
+    } catch (ee) {
+        alert('Error in extras bootstrap [' + ee + ']');
     }
-    
-    }catch(ee){
-         alert('Error in extras bootstrap [' + ee + ']');
-     }
+});
 
-};
-
-var extrasCleanup = function(){
- try{
-
-	Ice.StateMon.destroyAll();
-     
-     Autocompleter.Finder.list = new Array();
-    }catch(ee){
-         Ice.DnD.logger.debug('Unload Error [' + ee + ']');        
-    }    
-
-}
-window.onLoad(extrasInit);
-window.onUnload(extrasCleanup);
+window.onUnload(function() {
+    try {
+        Ice.StateMon.destroyAll();
+        Autocompleter.Finder.list = new Array();
+    } catch (ee) {
+        Ice.DnD.logger.debug('Unload Error [' + ee + ']');
+    }
+});
 

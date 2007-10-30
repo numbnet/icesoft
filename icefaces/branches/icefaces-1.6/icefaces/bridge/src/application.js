@@ -60,6 +60,11 @@
                         address.asExtendedElement().replaceHtml(html);
                         logger.debug('applied update : ' + html);
                         scriptLoader.searchAndEvaluateScripts(address.asElement());
+                        //todo: remove any reference to ice-extras.js code
+                        if (Ice.StateMon) {
+                            Ice.StateMon.checkAll();
+                            Ice.StateMon.rebuild();
+                        }
                     } catch (e) {
                         logger.error('failed to insert element: ' + html, e);
                     }
