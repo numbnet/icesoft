@@ -47,17 +47,19 @@
         </locale-config>
     </application>
 
-<!-- Phase Listener for injecting bean values manually and updating the submit button status (see PhaseSync for details). -->
+    <!-- Phase Listener for injecting bean values manually and updating the submit button status (see PhaseSync for details). -->
     <lifecycle>
         <phase-listener>
-            com.icesoft.applications.faces.address.PhaseSync</phase-listener>
+            com.icesoft.applications.faces.address.PhaseSync
+        </phase-listener>
     </lifecycle>
 
-<!-- Converter capitalizes the first letter in each word in a String. -->
+    <!-- Converter capitalizes the first letter in each word in a String. -->
     <converter>
         <converter-id>fixCaps</converter-id>
         <converter-class>
-            com.icesoft.applications.faces.address.WordCapitalizationConverter</converter-class>
+            com.icesoft.applications.faces.address.WordCapitalizationConverter
+        </converter-class>
     </converter>
 
     <managed-bean>
@@ -106,6 +108,7 @@
         <navigation-case>
             <from-outcome>submit</from-outcome>
             <to-view-id>/response.iface</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -114,6 +117,7 @@
         <navigation-case>
             <from-outcome>return</from-outcome>
             <to-view-id>/address.iface</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 
