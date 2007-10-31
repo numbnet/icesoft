@@ -150,7 +150,6 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
     	state=PersistentFacesState.getInstance();
     	if (percent==100){
     		if (!ir.isEmpty()){
-    			log.info("stopping ir 1");
     			ir.requestRender();
     			ir.requestStop();
     			this.disableStartButton = false;
@@ -215,7 +214,6 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	     * Start a new thread to do some work which is monitored for progress.
 	     */
 	    public void start(ActionEvent event) {
-	    	log.info("start IntervalRenderer");
 	    	setPercent(0);
 	    	if (!doneSetup){
 	    	    setupIntervalRenderer();
@@ -235,16 +233,13 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	        OutputProgressRenderBean outputBean;
 
 	        public LongOperationRunner(OutputProgressRenderBean outputBean) {
-	        	log.info("thread constructor");
 	            this.outputBean = outputBean;
 	        }
 
 	        public void run() {
-	        	log.info("thread run()");
 	            outputBean.setDisableStartButton(true);
 	            try {
 	                for (int i = 0; i <= 100; i += 10) {
-	                	log.info("i = "+i);
 	                    // pause the thread
 
 	                    // update the percent value
@@ -309,6 +304,5 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 		@Destroy 
 		public void destroy(){
 			cleanup();
-			System.out.println("OutputProgressRenderBean destroy");
 		} 
 	}

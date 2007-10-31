@@ -205,7 +205,6 @@ public class OutputProgressIndeterminateBean implements Renderable, Serializable
             } catch (RenderingException re) {
                 log.error("Rendering exception caught: ", re);
             }
-//            renderManager.requestRender(pbBean);
         }
     }
 }

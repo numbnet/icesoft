@@ -37,7 +37,6 @@ import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
 import javax.faces.event.ActionEvent;
-import org.jboss.seam.annotations.Name;
 
 /**
  * <p>The CartItem class represents a single type of item for sale in the Drag

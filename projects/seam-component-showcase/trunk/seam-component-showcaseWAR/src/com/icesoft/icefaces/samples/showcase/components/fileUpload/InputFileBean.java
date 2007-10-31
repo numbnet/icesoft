@@ -7,11 +7,15 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Destroy;
+import org.jboss.seam.annotations.End;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.contexts.Contexts;
+import org.jboss.seam.core.Manager;
 
 
 
@@ -38,7 +42,6 @@ import java.util.EventObject;
 import org.jboss.seam.ScopeType;
 
 @Name("fileUpload")
-@Scope(ScopeType.EVENT)
 public class InputFileBean implements Renderable, Serializable{
 	private boolean uploadDialog = false;
     private int percent = -1;
@@ -46,23 +49,16 @@ public class InputFileBean implements Renderable, Serializable{
     
     private String errorMsg = "";
 
-	private final String msgInvalid="Invalid File -- see server log for stack trace";
-	private final String msgUnknownSize="Unable to determine file size of requested file";
-
-	private final String msgSingleFileTooLarge=
-		"Individual File exceeds size limitation set in context-params";
-
 	private String currentFileName = "none";
 	private String uploadDirectory = "";
 	private boolean updateFlag = false;
-	
+
 	
     /**
      * Renderable Interface
      */
     private PersistentFacesState state;
     
-    @In
     private RenderManager renderManager;
 
     private static Log log =
@@ -72,8 +68,8 @@ public class InputFileBean implements Renderable, Serializable{
      * constructor
      */
     public InputFileBean() {
-    	log.info("initializing InputFileBean "+this.toString());
-        state = PersistentFacesState.getInstance();    
+        state = PersistentFacesState.getInstance(); 
+       	log.info("initializing InputFileBean "+this.toString()+" renderManager="+renderManager);
     }
 
  
@@ -84,6 +80,7 @@ public class InputFileBean implements Renderable, Serializable{
      */
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
+       	log.info("setRenderManager version="+this.renderManager);
     }
 
     /**
@@ -92,7 +89,7 @@ public class InputFileBean implements Renderable, Serializable{
      * @return RenderManager null
      */
     public RenderManager getRenderManager() {
-        return null;
+        return this.renderManager;
     }
 
     /**
@@ -101,6 +98,7 @@ public class InputFileBean implements Renderable, Serializable{
      * @return state the PersistantFacesState
      */
     public PersistentFacesState getState() {
+    	log.info("getting State="+state);
         return state;
     }
 
@@ -127,7 +125,9 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
-    	state= PersistentFacesState.getInstance(); 
+    	PersistentFacesState _state = PersistentFacesState.getInstance();
+    	if (_state!=null)state=_state;
+    	log.info("getPercent version="+this+" percent="+this.percent);
         return this.percent;
     }
 
@@ -157,30 +157,53 @@ public class InputFileBean implements Renderable, Serializable{
 	     }
 	     if (inputFile.getStatus() == InputFile.INVALID) {
 	         inputFile.getFileInfo().getException().printStackTrace();
-	         setError(msgInvalid);
 	     }
 	     if (inputFile.getStatus() == InputFile.SIZE_LIMIT_EXCEEDED) {
 	         inputFile.getFileInfo().getException().printStackTrace();
-	         setError(msgSingleFileTooLarge);
 	     }
 	     if (inputFile.getStatus() == InputFile.UNKNOWN_SIZE) {
 	         inputFile.getFileInfo().getException().printStackTrace();
-	         setError(msgUnknownSize);
 	    }
-	     else setError("no error");  //just now for debug
+	    // else setError("no error");  //just now for debug
     }
 
 
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
 	 */
+
     public void progress(EventObject event) {
     	this.updateFlag = false;
         InputFile ifile = (InputFile) event.getSource(); 
 		this.percent = ifile.getFileInfo().getPercent();
-		if (renderManager != null) {
-		    renderManager.requestRender(this);
-        }
+		log.info("percent="+this.percent+" version="+this);
+
+  	   PersistentFacesState _state = PersistentFacesState.getInstance();
+	   if(_state != null){
+		  state = _state;
+		  /**
+		   * don't do it this way as it doesn't work!!! state is null in 
+		   * renderManager.
+		   */
+//		  if (renderManager!=null){
+//			  renderManager.requestRender(this);
+//		  }
+		  /**
+		   * have to do it this way since Seam manages the contexts and
+		   * you don't always have access to the state.  Better to use
+		   * an old state rather than a null one!
+		   */
+			try{
+				state.execute();
+				state.render();
+			}catch(Exception re){
+				re.printStackTrace();
+			}
+			
+		}
+		else {
+			log.info("state is null");
+		}
     }
 
      public String getCurrentFileName() {
@@ -204,36 +227,25 @@ public class InputFileBean implements Renderable, Serializable{
 		if (log.isDebugEnabled())log.debug("errorMsg="+errorMsg);
 	}
 
-	/*
-	 * do this for now as not sure how jsp handles FacesMessages
-	 */
 
-	public String getErrorMsg(){
-		return errorMsg;
-	}
-	   /**
-     * Method to determine if the upload dialog is open or not
-     * put comment in here
-     */
-
-    /**
-     * Method to set the popup status of the file upload dialog 
-     *
-     */
     public void closeUploadDialog() {
             this.uploadDialog = false;
+//            Manager.instance().beginConversation();
+            log.info("closeUploadDialog dialog="+uploadDialog+" LR="+Manager.instance().isLongRunningConversation());
     }
     /**
      * Method to set the popup status of the file upload dialog 
      */
+
     public void openUploadDialog() {
             this.uploadDialog = true;
+ //           Manager.instance().beginConversation();
+            log.info("openUploadDialog dialog="+uploadDialog+" LR="+Manager.instance().isLongRunningConversation());
     }
     
-	@Destroy 
+ 	@Destroy 
 	public void destroy(){
-		log.info("destroy");
-//   	    updateFileList();
+		log.info("destroy InputFileBean");
 	}
 
 

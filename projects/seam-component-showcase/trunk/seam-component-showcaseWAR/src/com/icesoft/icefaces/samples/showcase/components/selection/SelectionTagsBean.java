@@ -103,7 +103,8 @@ public class SelectionTagsBean implements Serializable{
             new SelectItem("Vancouver"),
             new SelectItem("Toronto"),
             new SelectItem("Montreal"),
-            new SelectItem("Ottawa")};
+            new SelectItem("Ottawa"),
+            };
 
     private static final SelectItem[] CITIES_USA = new SelectItem[]{
             new SelectItem("Seattle"),

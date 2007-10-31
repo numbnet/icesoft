@@ -50,7 +50,7 @@ import java.io.Serializable;
  * @since 0.3.0
  */
 @Scope(PAGE)
-@Name("scrollerList")
+@Name("dataSortList")
 public class DataTablePaginatorBean extends SortableList implements Serializable{
 
     // table of person data

@@ -65,15 +65,13 @@ public class AutoCompleteDictionary {
     private static List dictionary;
 
     public AutoCompleteDictionary() {
-        // initialize the dictionary
+        // initialize the ditionary
         try {
-		    if (dictionary == null) {
-            	log.info("initializing dictionary");
-            	init();
-			}
+            log.info("initializing dictionary");
+            init();
         } catch (Exception e) {
             if (log.isErrorEnabled()) {
-                log.error("Error initializing sorting list");
+                log.error("Error initializtin sorting list");
             }
         }
     }
@@ -102,21 +100,8 @@ public class AutoCompleteDictionary {
             // compare ingnoring case, give the user a more automated feel when typing
             return s1.compareToIgnoreCase(s2);
         }
-   };
+    };
 
-   public List loadDictionary(){
-       try {
-		    if (dictionary == null) {
-           	log.info("initializing dictionary");
-           	init();
-			}
-       } catch (Exception e) {
-           if (log.isErrorEnabled()) {
-               log.error("Error initializing sorting list");
-           }
-       }
-       return dictionary;
-   }
     /**
      * Gets the dictionary of cities.
      *
@@ -128,7 +113,6 @@ public class AutoCompleteDictionary {
 
     private static void init() {
         // Raw list of xml cities.
-        log.info("AutoCompleteDictionary: init()");
         List cityList = null;
 
         // load the city dictionary from the compressed xml file.
@@ -138,7 +122,6 @@ public class AutoCompleteDictionary {
                 getExternalContext().getSession(true);
         String basePath =
                 session.getServletContext().getRealPath("/WEB-INF/resources");
-        System.out.println("\t basePath="+basePath);
         basePath += "/city.xml.zip";
 
         // extract the file
@@ -146,9 +129,7 @@ public class AutoCompleteDictionary {
         ZipFile zipFile;
         try {
             zipFile = new ZipFile(basePath);
-            System.out.println("zipFile is "+zipFile.getName());
             zipEntry = zipFile.getEntry("city.xml");
-            System.out.println("zipEntry is "+zipEntry.getName());
         }
         catch (Exception e) {
             log.error("Error retrieving records", e);
@@ -162,6 +143,7 @@ public class AutoCompleteDictionary {
                         new BufferedInputStream(
                                 zipFile.getInputStream(zipEntry));
                 XMLDecoder xDecoder = new XMLDecoder(dictionaryStream);
+                // get the city list.
                 cityList = (List) xDecoder.readObject();
                 dictionaryStream.close();
                 zipFile.close();
@@ -171,10 +153,6 @@ public class AutoCompleteDictionary {
                 return;
             } catch (IOException e) {
                 log.error("Error getting city list", e);
-                return;
-            }catch (Exception e){
-                System.out.println("Error :- unknown exception");
-                log.error("General error", e);
                 return;
             }
         }
@@ -193,7 +171,6 @@ public class AutoCompleteDictionary {
             // finally sort the list
             Collections.sort(dictionary, LABEL_COMPARATOR);
         }
-        else System.out.println("cityList is null--check that city.xml is in resources folder");
 
     }
 }

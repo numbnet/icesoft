@@ -34,6 +34,8 @@
 package com.icesoft.icefaces.samples.showcase.components.calendar;
 
 import java.util.Date;
+import java.util.TimeZone;
+
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
@@ -85,5 +87,9 @@ public class SelectInputDateBean implements Serializable{
      */
     public void setDate2(Date date) {
         date2 = date;
+    }
+    
+    public TimeZone getTimeZone() {
+        return java.util.TimeZone.getDefault();
     }
 }

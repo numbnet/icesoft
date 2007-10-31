@@ -23,7 +23,10 @@ import org.jboss.seam.annotations.Name;
 
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.Manager;
+import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.ScopeType;
+
+import com.icesoft.faces.async.render.RenderManager;
 
 
 
@@ -42,7 +45,7 @@ public class FileAdminBean implements Serializable{
 	/* each user is allowed a max number of files =6 or 
 	 * max size allowance to upload of 10MB  --NOT implemented yet!
 	 */
-	private final int MAXFILESALLOWED=4;
+	private final int MAXFILESALLOWED=2;
 	private final int MAXSIZEALLOWED=1024000;
 	private final String msgExceededAllocation=
 		"Allotted disc space exceeded: Remove unwanted files before further uploads";
@@ -50,11 +53,15 @@ public class FileAdminBean implements Serializable{
 		"Number of files has been exceeded: Remove unwanted files before further uploads";
 	private long currentSize = 0;
 	private String remainingSpace;
-
+	private String errorMsg="";
+	
     private boolean updateList = false;
     private String currentFileName="";
     private String parentDir = "";
 	private InputFileBean fileUpload;
+	@In
+	private FacesMessages facesMessages;
+	
 	
 	/* the users list of files */
 	private List<FileEntry> filesList = new ArrayList<FileEntry>();
@@ -90,17 +97,19 @@ public class FileAdminBean implements Serializable{
 		/*if they have exceeded max number of files or max size allowed, delete last file*/
     	if (tempList.size() > this.MAXFILESALLOWED){
 	    		log.info("MaxFilesExceeded");
+	    		facesMessages.addToControl("inputFileName", "Number of Files exceeds maximum allowed");
 	    		//get rid of the last uploaded file
-	    		fileUpload.setError(msgNumberFilesExceeded);
+	    		this.errorMsg=msgNumberFilesExceeded;
 	    		deleteCurrentFileEntry();
 	    }
 	    else if (currentSize > this.MAXSIZEALLOWED){
 	    		log.info("max size Exceeded");
 	    		fileUpload.setError(msgExceededAllocation);
-	    		deleteCurrentFileEntry();
+	     		deleteCurrentFileEntry();
 	    }
 	    else {
-	    	fileUpload.setError("");
+	    //	fileUpload.setError("");
+	    	log.info("no errors");
 	        /* calculate remaining allotted space */
 	     	remainingSpace=String.valueOf((MAXSIZEALLOWED-currentSize));
 	     	/* update the filesList from tempList */
@@ -163,11 +172,19 @@ public class FileAdminBean implements Serializable{
 	}
 	/* deletes currentFileEntry as it violates max Number of files or max allotted space */
 	public void deleteCurrentFileEntry(){
-		File f = getLastFile();
-		f.delete();
-		//add the size back into remaining space
-		this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
+		File f;
+		//see if there is a current entry
+		if (this.fileUpload!=null){
+			f = fileUpload.getFile();
+		}
+		//else just get last entry
+		else f = getLastFile();
 		FileEntry fe = this.getFileEntry(f.getName());
+		if (f.exists()){
+			f.delete();
+			//add the size back into remaining space
+			this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
+		}		
 		filesList.remove(fe);
 	}
 	/*
@@ -179,12 +196,13 @@ public class FileAdminBean implements Serializable{
 	    for (int i =0; i <filesList.size() ; i++) {
 	        FileEntry fr = (FileEntry)filesList.get(i);
 	        if (fr.getSelected().booleanValue()) {
-	    	   //remove from the server and the filesList
-	//          log.info("selected file to delete is "+fr.getFileName());
+	    	  //remove from the server and the filesList
 	          deletedEntry.add(fr);
 	          File f = new File(fr.getAbsolutePath());
-	        	  f.delete();
-	        	  log.info("File "+f.getName()+" is deleted");
+	          if (f.exists()) { 
+	        		f.delete();
+	        	    log.info("File "+f.getName()+" is deleted");
+	          }
 	        }
 	    }
 	    for (int i=0;i<deletedEntry.size();i++){
@@ -229,9 +247,9 @@ public class FileAdminBean implements Serializable{
 	public void destroy() {
 		///can get rid of the uploaded files here unless have ejb3 container
 	 	log.info("FileInfoBean: seam destroying...");
-	 	if (fileUpload.getRenderManager()!=null){
-	 		fileUpload.getRenderManager().dispose();
-	 	}
+//	 	if (fileUpload.getRenderManager()!=null){
+//	 		fileUpload.getRenderManager().dispose();
+//	 	}
 	 	//delete uploaded files since the session is now over/destroyed
 	 	
 	 	try{
@@ -271,6 +289,15 @@ public class FileAdminBean implements Serializable{
 		if (fileUpload!=null)currentFileName=fileUpload.getCurrentFileName();
 		log.info("   fileName uploaded = "+currentFileName);
 		return currentFileName;
+	}
+
+	public String getErrorMsg() {
+		log.info("getErrorMsg is "+errorMsg);
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
 	}
 
 

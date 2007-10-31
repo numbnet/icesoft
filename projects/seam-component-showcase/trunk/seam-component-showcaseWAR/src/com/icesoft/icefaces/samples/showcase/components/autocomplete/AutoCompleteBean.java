@@ -68,10 +68,6 @@ public class AutoCompleteBean implements Serializable{
 
 //    // list of cities, used for auto complete list.
 //    private static List dictionary;
-  
-    @In
-    private FacesMessages facesMessages;
-    
     @In
     private AutoCompleteDictionary autoCompleteDictionary;
     
@@ -189,6 +185,4 @@ public class AutoCompleteBean implements Serializable{
         }
         this.matchesList = matchList;
     }
-    
-
 }
