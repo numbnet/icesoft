@@ -86,6 +86,7 @@ public class View implements CommandQueue {
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
+                externalContext.insertPostbackKey();
             }
 
             public void portlet(Object request, Object response, Object config) {
