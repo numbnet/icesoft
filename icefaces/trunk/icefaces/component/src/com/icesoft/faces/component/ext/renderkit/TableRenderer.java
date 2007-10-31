@@ -351,10 +351,12 @@ public class TableRenderer
         }
         DOMContext.removeChildrenByTagName(root, HTML.TBODY_ELEM);
         Element tBody = (Element) domContext.createElement(HTML.TBODY_ELEM);
+/*
         if (CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT.
         							PORTLET_SECTION_BODY).length() > 1) {
         	tBody.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT.PORTLET_SECTION_BODY);
         }
+*/
         root.appendChild(tBody);
 
         HtmlDataTable uiData = (HtmlDataTable) uiComponent;
@@ -687,12 +689,15 @@ public class TableRenderer
     }
     
     String getPortletAlternateRowClass(String selectedClass, int rowIndex) {
-    	if ((rowIndex % 2) == 0) return selectedClass;
-    	if(selectedClass.indexOf(' ')> 1) {
-    		return  selectedClass.replaceFirst(" ", CoreUtils.getPortletStyleClass(" "+ PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE+ " "));
-    	} else {
-    		return selectedClass += CoreUtils.getPortletStyleClass(""+ PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE);
-    	}
+        String rowClass = PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE;
+        if ((rowIndex % 2) == 0) {
+            rowClass = PORTLET_CSS_DEFAULT.PORTLET_SECTION_BODY;
+        }
+        if (selectedClass.indexOf(' ') > 1) {
+            return selectedClass.replaceFirst(" ", CoreUtils.getPortletStyleClass(" " + rowClass + " "));
+        } else {
+            return selectedClass += CoreUtils.getPortletStyleClass("" + rowClass);
+        }
     }
     
 }
