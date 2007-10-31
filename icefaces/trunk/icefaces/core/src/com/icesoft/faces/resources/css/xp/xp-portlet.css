@@ -453,7 +453,7 @@
 
 
 * html .icePnlTbOn .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOn .RtMid {
@@ -553,7 +553,7 @@
 }
 
 * html .icePnlTbOff .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOff .RtMid {
@@ -654,7 +654,7 @@
 }
 
 * html .icePnlTbOver .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOver .RtMid {
@@ -787,7 +787,7 @@
 }
 
 * html .icePnlTbOnBtm .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOnBtm .RtMid {
@@ -887,7 +887,7 @@
 }
 
 * html .icePnlTbOffBtm .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOffBtm .RtMid {
@@ -988,7 +988,7 @@
 }
 
 * html .icePnlTbOverBtm .MidMid a {
-    width: 1%;
+    height: 1%;
 }
 
 .icePnlTbOverBtm .RtMid {
