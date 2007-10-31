@@ -144,7 +144,7 @@ public class ServletExternalContext extends BridgeExternalContext {
 
         requestParameterMap = Collections.synchronizedMap(new HashMap());
         requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
-        insertPostbackKey();
+        //#2139 removed call to insert postback key here. 
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
