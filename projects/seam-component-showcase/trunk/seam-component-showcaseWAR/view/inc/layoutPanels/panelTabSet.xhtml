@@ -35,30 +35,35 @@
 In this demonstration ice:panelTabSet is manipulated by the following controls
 to show how visibility, focus and tab placement can be dynamically changed.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-  <ice:panelTabSet styleClass="componentPanelTabSetLayout"> 
-    <!-- Controls to show/hide the table columns-->
-    <ice:panelTab label="#{msgs['tabbedHeadings.demo']}"> 
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Controls to show/hide the table columns
+-->
+<ice:panelTab id="icePanelTab" label="#{msgs['tabbedHeadings.demo']}">
 
-      <ice:panelGrid
-         styleClass="componentLayoutRootTable"
-         columns="1">
+<ice:panelGrid
+        styleClass="componentLayoutRootTable"
+        columns="1">
 
-      <!-- Static Panel Tab set example -->
-        <ice:panelGrid columnClasses="contentLayoutGridColumn" columns="2">
-          <!-- Controls for Static tabs -->
-          <ice:panelGrid>
-          <h3> <ice:outputText
+<!-- Static Panel Tab set example -->
+<ice:panelGrid columnClasses="contentLayoutGridColumn" columns="2">
+<!-- Controls for Static tabs -->
+<ice:panelGrid>
+    <h3>
+        <ice:outputText
                 value="#{msgs['component.tabSet.static.title']}"/>
-          </h3>
-          <!-- Tab Visibility Selection controls -->
-            <ice:panelGrid styleClass="tabPanelControls"
+    </h3>
+    <!-- Tab Visibility Selection controls -->
+    <ice:panelGrid styleClass="tabPanelControls"
                    columnClasses="contentLayoutGridColumn" columns="1">
-              <h3>  <ice:outputText
+        <h3>
+            <ice:outputText
                     value="#{msgs['component.tabSet.tabVisibility']}"/>
               </h3>
               <ice:panelGrid columns="6">
@@ -123,7 +128,7 @@ to show how visibility, focus and tab placement can be dynamically changed.
         styleClass="contentLayoutGridColumn"
         style="margin-bottom:5px;margin-top:10px; width:350px;">
 	    <h3>&#160;</h3>
-	    <ice:panelTabSet 
+   <ice:panelTabSet id="dynamicTabSet"
 	                     selectedIndex="#{staticTabbedPane.selectedIndex}"
 	                     tabPlacement="#{staticTabbedPane.tabPlacement}">
 	

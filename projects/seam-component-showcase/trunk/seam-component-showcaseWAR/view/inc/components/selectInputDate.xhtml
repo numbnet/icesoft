@@ -37,11 +37,12 @@ a selectInputDate. The selectInputDate can be displayed inline or can be popped
 up by
 the click of a button.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
             <!--
               Example include, also see source code include.
             -->
@@ -61,18 +62,22 @@ the click of a button.
 
                             </ice:outputText>
 
-                            <ice:outputText value="#{dateSelect.date1}">
-                                <f:convertDateTime pattern="MM/dd/yyyy"/>
+                            <ice:outputText id="defaultSelectedDate" 
+                                            value="#{dateSelect.date1}">
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
                             </ice:outputText>
                         </h4>
                         <!-- Calendar Component -->
-                        <ice:selectInputDate
-                                imageDir="#{styleBean.imageDirectory}"
+                        <ice:selectInputDate id="date1"
                                 value="#{dateSelect.date1}"
                                 highlightClass="weekend: august:"
                                 highlightUnit="DAY_OF_WEEK: MONTH"
-                                highlightValue="1,7: 8"
-                                />
+                                highlightValue="1,7: 8">
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
+                        </ice:selectInputDate>
+
                         <ul>
                             <li>Weekends have dark gray backgrounds</li>
                             <li>August days are bold</li>
@@ -84,25 +89,28 @@ the click of a button.
                     <ice:panelGroup styleClass="calBorderHighlight" >
 
                         <h3>
-                            <ice:outputText
+                            <ice:outputText id="popupSelectedDate"
                                     value="#{msgs['components.dateSelect.popup']}"/>
                         </h3>
                         <!-- Display the selected date -->
                         <br/>
                         <h4>
-                            <ice:outputText
+                            <ice:outputText id="popupSelectedDateTxt"
                                     value="#{msgs['components.dateSelect.selectedDate']}"/>
                             <ice:outputText value="#{dateSelect.date2}">
 
-                                <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
                             </ice:outputText>
                         </h4>
                         <!-- Calendar Component -->
                         <ice:selectInputDate id="date2"
                                              value="#{dateSelect.date2}"
-                                             imageDir="#{styleBean.imageDirectory}"
-                                             renderAsPopup="true"/>
-
+                                             renderAsPopup="true">
+                                <f:convertDateTime pattern="MM/dd/yyyy"
+                                                   timeZone="#{dateSelect.timeZone}"/>
+                        </ice:selectInputDate>
+                        <ice:messages/>
                     </ice:panelGroup>
 
             </ice:panelTab>

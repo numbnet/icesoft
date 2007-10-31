@@ -35,11 +35,12 @@
         In this demonstration, ice:dataTable is used to display data. There is
         a control on the data to hide/show the table columns.
         -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
     <!--
       Controls to show/hide the table columns
     -->
@@ -57,7 +58,7 @@
                 </h4>
             </ice:panelGroup>
 
-            <ice:panelGrid columns="2">
+            <ice:panelGrid id="icePanelGrid" columns="2">
                 <!-- Edit rank colum -->
                 <ice:outputText styleClass="propertyLabel"
                                 value="#{msgs['component.table.row.panelPositioned.positionable.column.label']}"/>
@@ -67,25 +68,27 @@
                                 value="#{msgs['component.table.row.panelPositioned.fixed.column.label']}"/>
 
                 <!-- Positioned Panel, can be manipulated by the user -->
-                <ice:panelPositioned var="person"
+                <ice:panelPositioned id="people"
+                                     var="person"
                                      value="#{panelPositioned.people}"
                                      styleClass="positionPanelContainer"
                                      listener="#{panelPositioned.changed}"
                                      constraint="vertical">
                     <ice:panelGroup style="cursor:move;">
 
-                        <ice:outputText value="#{person.name}"/>
+                        <ice:outputText id="name" value="#{person.name}"/>
 
                     </ice:panelGroup>
 
                 </ice:panelPositioned>
 
                 <!-- Shows the dataset manaipulated by the panelPostioned Component -->
-                <ice:panelSeries var="person"
+                <ice:panelSeries id="peopleCurrent"
+                                 var="person"
                                  value="#{panelPositioned.people}"
                                  styleClass="positionPanelContainer" >
                     <ice:panelGroup effect="#{person.effect}">
-                        <ice:outputText
+                        <ice:outputText id="nameWithRank"
                                 value="#{person.nameWithRank}"/>
                     </ice:panelGroup>
                 </ice:panelSeries>

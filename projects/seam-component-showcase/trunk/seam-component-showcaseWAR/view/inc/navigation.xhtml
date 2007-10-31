@@ -46,12 +46,12 @@
         <h3>
             <ice:outputText value="#{msgs['theme.title']}"/>
         </h3>
-        <ice:selectOneRadio value="#{styleBean.currentStyle}">
-            <f:selectItem itemLabel="#{msgs['theme.xp']}" itemValue="xp"/>
-            <f:selectItem itemLabel="#{msgs['theme.royale']}"
+        <ice:selectOneRadio id ="currentStyle" value="#{styleBean.currentStyle}">
+            <f:selectItem id = "xpTheme" itemLabel="#{msgs['theme.xp']}" itemValue="xp"/>
+            <f:selectItem id ="royaleTheme" itemLabel="#{msgs['theme.royale']}"
                           itemValue="royale"/>
         </ice:selectOneRadio>
-        <ice:commandButton action="#{styleBean.changeStyle}"
+        <ice:commandButton id ="changeStyle" action="#{styleBean.changeStyle}"
                            value="Change Theme"/>
                            
  
@@ -70,9 +70,8 @@
          
     </ice:panelGrid>
 
-    <div class="navTree">
-        <ice:tree 
-                id="navigationTreeId"
+    <div class="navTree" id="navTree">
+        <ice:tree id="tree"
                 value="#{treeNavigation.model}"
                 var="item"
                 hideRootNode="false"
@@ -87,9 +86,9 @@
 
                 <f:facet name="content">
                     <ice:panelGroup style="display: inline">
-                        <ice:commandLink
+                        <ice:commandLink id="contentVisibleAction"
                                 actionListener="#{item.userObject.contentVisibleAction}">
-                            <ice:outputText
+                            <ice:outputText id="menuText"
                                     value="#{item.userObject.menuDisplayText}"/>
                         </ice:commandLink>
                     </ice:panelGroup>

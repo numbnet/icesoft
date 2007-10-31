@@ -36,16 +36,17 @@ In this demonstration, selectInputText elements are used to autocomplete
 information from a database of
 USA Address information.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
   ..
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
     <ice:panelGrid columns="1"
                    styleClass="componentLayoutRootTable">
@@ -78,10 +79,10 @@ USA Address information.
                             value="#{msgs['component.autoComplete.plainDirections']}"/>
                 </h4>
 
-                <ice:selectInputText
+                <ice:selectInputText id="AutoCmpTxt"
                         rows="15" width="300"
                         valueChangeListener="#{autoCompleteBean.updateList}">
-                    <f:selectItems value="#{autoCompleteBean.list}"/>
+                    <f:selectItems id="AutoCmpTxtItms" value="#{autoCompleteBean.list}"/>
                 </ice:selectInputText>
                 <br/>
 
@@ -97,7 +98,7 @@ USA Address information.
                 </h4>
 
 
-                <ice:selectInputText
+                <ice:selectInputText id="AutoCmpTxtFace"
                         rows="6" width="300"
                         listVar="city"
                         valueChangeListener="#{autoCompleteBean.updateList}"
@@ -105,9 +106,9 @@ USA Address information.
                     <f:facet name="selectInputText">
                         <ice:panelGrid columns="3" style="margin-bottom:-20px;"
                                        columnClasses="cityCol,stateCol,zipCol">
-                            <ice:outputText value="#{city.city}"/>
-                            <ice:outputText value="#{city.state}"/>
-                            <ice:outputText value="#{city.zip}"/>
+                            <ice:outputText id="AutoCmpCty" value="#{city.city}"/>
+                            <ice:outputText id="AutoCmpSt" value="#{city.state}"/>
+                            <ice:outputText id="AutoCmpZip" value="#{city.zip}"/>
                         </ice:panelGrid>
                     </f:facet>
                 </ice:selectInputText>

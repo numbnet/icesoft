@@ -35,17 +35,17 @@
 In this demonstration ice:panelStack is manipulated by the following coontrols
 to show how the selected panel can be dynamically changed.
 -->
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
 <!--
   Controls to show/hide the table columns
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icePanelTab" label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid
             styleClass="componentLayoutRootTable"
             columns="1">
@@ -58,7 +58,7 @@ to show how the selected panel can be dynamically changed.
             </h3>
 
             <!-- Panel stack selection controls -->
-            <ice:selectOneRadio
+            <ice:selectOneRadio id="selectedPanel"
                     value="#{panelStack.selectedPanel}"
                     styleClass="selectOneMenu"
                     valueChangeListener="#{panelStack.selectedPanelChanged}"
@@ -87,18 +87,23 @@ to show how the selected panel can be dynamically changed.
                         <ice:outputText
                                 value="#{msgs['contentDemo.fruit.title']}"/>
                     </h3>
-                    <ice:selectOneRadio
+                    <ice:selectOneRadio id="selectedFruit"
                             value="#{panelStack.selectedFruit}"
                             partialSubmit="true">
-                        <f:selectItem itemValue="1"
+                        <f:selectItem id="fruitTyp1"
+                                      itemValue="1"
                                       itemLabel="#{msgs['contentDemo.fruit.type1']}"/>
-                        <f:selectItem itemValue="2"
+                        <f:selectItem id="fruitTyp2"
+                                      itemValue="2"
                                       itemLabel="#{msgs['contentDemo.fruit.type2']}"/>
-                        <f:selectItem itemValue="3"
+                        <f:selectItem id="fruitTyp3"
+                                      itemValue="3"
                                       itemLabel="#{msgs['contentDemo.fruit.type3']}"/>
-                        <f:selectItem itemValue="4"
+                        <f:selectItem id="fruitTyp4"
+                                      itemValue="4"
                                       itemLabel="#{msgs['contentDemo.fruit.type4']}"/>
-                        <f:selectItem itemValue="5"
+                        <f:selectItem id="fruitTyp5"
+                                      itemValue="5"
                                       itemLabel="#{msgs['contentDemo.fruit.type5']}"/>
                     </ice:selectOneRadio>
                     <br/>
@@ -109,18 +114,23 @@ to show how the selected panel can be dynamically changed.
                         <ice:outputText
                                 value="#{msgs['contentDemo.color.title']}"/>
                     </h3>
-                    <ice:selectOneRadio
+                    <ice:selectOneRadio id="selectedColor"
                             value="#{panelStack.selectedColor}"
                             partialSubmit="true">
-                        <f:selectItem itemValue="1"
+                        <f:selectItem id="colortyp1"
+                                      itemValue="1"
                                       itemLabel="#{msgs['contentDemo.color.type1']}"/>
-                        <f:selectItem itemValue="2"
+                        <f:selectItem id="colortyp2"
+                                      itemValue="2"
                                       itemLabel="#{msgs['contentDemo.color.type2']}"/>
-                        <f:selectItem itemValue="3"
+                        <f:selectItem id="colortyp3"
+                                      itemValue="3"
                                       itemLabel="#{msgs['contentDemo.color.type3']}"/>
-                        <f:selectItem itemValue="4"
+                        <f:selectItem id="colortyp4"
+                                      itemValue="4"
                                       itemLabel="#{msgs['contentDemo.color.type4']}"/>
-                        <f:selectItem itemValue="5"
+                        <f:selectItem id="colortyp5"
+                                      itemValue="5"
                                       itemLabel="#{msgs['contentDemo.color.type5']}"/>
                     </ice:selectOneRadio>
                     <br/>
@@ -131,18 +141,23 @@ to show how the selected panel can be dynamically changed.
                         <ice:outputText
                                 value="#{msgs['contentDemo.mineral.title']}"/>
                     </h3>
-                    <ice:selectOneRadio
+                    <ice:selectOneRadio id="selectedMineral"
                             value="#{panelStack.selectedMineral}"
                             partialSubmit="true">
-                        <f:selectItem itemValue="1"
+                        <f:selectItem id="mineraltyp1"
+                                      itemValue="1"
                                       itemLabel="#{msgs['contentDemo.mineral.type1']}"/>
-                        <f:selectItem itemValue="2"
+                        <f:selectItem id="mineraltyp2"
+                                      itemValue="2"
                                       itemLabel="#{msgs['contentDemo.mineral.type2']}"/>
-                        <f:selectItem itemValue="3"
+                        <f:selectItem id="mineraltyp3"
+                                      itemValue="3"
                                       itemLabel="#{msgs['contentDemo.mineral.type3']}"/>
-                        <f:selectItem itemValue="4"
+                        <f:selectItem id="mineraltyp4"
+                                      itemValue="4"
                                       itemLabel="#{msgs['contentDemo.mineral.type4']}"/>
-                        <f:selectItem itemValue="5"
+                        <f:selectItem id="mineraltyp5"
+                                      itemValue="5"
                                       itemLabel="#{msgs['contentDemo.mineral.type5']}"/>
                     </ice:selectOneRadio>
                     <br/>

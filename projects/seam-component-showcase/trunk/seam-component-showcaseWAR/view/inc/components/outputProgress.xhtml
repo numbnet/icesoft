@@ -37,15 +37,16 @@ coontrols
 to show how the progress bars status label and complete message can be
 dynamically changed.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 <!--
   Controls to show/hide the table columns
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
 <ice:panelGrid columns="1" cellspacing="2"
                styleClass="componentLayoutRootTable">
@@ -58,11 +59,12 @@ dynamically changed.
             <ice:outputText
                     value="#{msgs['component.progressBar.demo.selectMode']}"/>
         </h3>
-        <ice:selectOneRadio value="#{progressProperty.mode}"
+        <ice:selectOneRadio id="outputMode"
+                            value="#{progressProperty.mode}"
                             partialSubmit="true">
 
-            <f:selectItem itemValue="standard" itemLabel="Standard"/>
-            <f:selectItem itemValue="indeterminate"
+            <f:selectItem id="standardRb" itemValue="standard" itemLabel="Standard"/>
+            <f:selectItem id="indeterminateRb" itemValue="indeterminate"
                           itemLabel="Indeterminate"/>
         </ice:selectOneRadio>
         <br/>
@@ -77,7 +79,7 @@ dynamically changed.
         <!-- Controls the progress bar label alignment -->
         <!-- |left | right | top | topcenter | topright | bottom | bottomcenter | bottomright | embed | -->
 
-        <ice:selectOneMenu value="top"
+        <ice:selectOneMenu id="labelAlign" value="top"
                            valueChangeListener="#{progressProperty.progressPositionChanged}"
                            partialSubmit="true"
                            styleClass="progressSelectMenu">
@@ -114,11 +116,13 @@ dynamically changed.
             Controls the progress bar label, if no label is specified
             a percent is shown, otherwise the custom label is shown.
         -->
-        <ice:selectBooleanCheckbox value="#{progressProperty.customProgress}"
+        <ice:selectBooleanCheckbox id="customProgress"
+                                   value="#{progressProperty.customProgress}"
                                    partialSubmit="true"/>
 
-        <ice:inputText value="#{progressProperty.progressLabel}" 
-                         partialSubmit="true"/> 
+        <ice:inputText id="progressLabel"
+                       value="#{progressProperty.progressLabel}"
+                       partialSubmit="true"/>
     </ice:panelGroup>
 
 
@@ -133,11 +137,13 @@ dynamically changed.
             Controls the progress bar completed label, if no label is specified
             "Done" is shown.
         -->
-        <ice:selectBooleanCheckbox value="#{progressProperty.customComplete}"
+        <ice:selectBooleanCheckbox id="customComplete"
+                                   value="#{progressProperty.customComplete}"
                                    partialSubmit="true"/>
 
 
-        <ice:inputText value="#{progressProperty.progressCompleteLabel}"
+        <ice:inputText id="progressCompleteLabel"
+                       value="#{progressProperty.progressCompleteLabel}"
                        partialSubmit="true"/>
     </ice:panelGroup>
 </ice:panelGrid>
@@ -151,7 +157,7 @@ dynamically changed.
         <!-- Standard Mode -->
         <ice:panelGroup id="standard" style="width: 100%; height: 100%;">
             <ice:panelGrid columns="1">
-                <ice:outputText
+                <ice:outputText id="contentStandard"
                         value="#{msgs['component.progressBar.demo.content']}"
                         style="font-weight: bold;"/>
 
@@ -172,24 +178,23 @@ dynamically changed.
         <ice:panelGroup id="indeterminate" style="width: 100%; height: 100%;">
 
             <ice:panelGrid columns="1">
-                <ice:outputText
+                <ice:outputText id="content2Indeterminate"
                         value="#{msgs['component.progressBar.demo.content2']}"
                         style="font-weight: bold;"/>
 
-                <ice:outputProgress
+                <ice:outputProgress id="percentIndeterminate"
                         indeterminate="true"
                         label="#{progressProperty.progressLabelAfter}"
                         labelComplete="#{progressProperty.progressCompleteLabelAfter}"
                         labelPosition="#{progressProperty.labelPosition}"
                         value="#{progressIndeterminate.percent}"/>
 
-                <ice:commandButton
+                <ice:commandButton id="startIndeterminate"
                         actionListener="#{progressIndeterminate.longOperation}"
                         value="#{msgs['component.progressBar.startButton']}"
                         disabled="#{progressIndeterminate.runningTask}"/>
 
             </ice:panelGrid>
- 
         </ice:panelGroup>
 
     </ice:panelStack>

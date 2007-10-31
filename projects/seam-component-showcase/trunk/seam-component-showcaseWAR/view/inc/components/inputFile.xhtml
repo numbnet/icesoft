@@ -64,6 +64,12 @@ Once the file is uploaded, information about the file is displayed.
         <ice:panelGroup rendered="#{fileAdminBean.fileUpload.uploadDialog}"      
             style="background-color: #FFFFFF; width: 550px; height: 180px;   border: 1px solid #104675;">
             <strong>File Upload Component Dialog</strong>
+             <f:facet name="afterInvalidField">
+                <div styleClass="errors">
+               	    <ice:message/>
+               	</div>
+            </f:facet>
+
             <ice:panelGrid
                styleClass="componentLayoutRootTable"
                columns="1">
@@ -82,7 +88,7 @@ Once the file is uploaded, information about the file is displayed.
                </ice:panelGroup>
                    
             </ice:panelGrid>
-            <ice:outputText id="errorText" value="#{fileAdminBean.fileUpload.errorMsg}"/>
+            <ice:outputText id="errorText" value="#{fileAdminBean.errorMsg}"/>
                  <br />
             <ice:commandButton image="./images/fileUpload/end-dot.gif"
                                         action="#{fileAdminBean.fileUpload.closeUploadDialog}"

@@ -36,12 +36,12 @@ In this demonstration, ice:borderLayout is used to layout the different border
 layout configurations. The center panel has a list of options to allow you to
 change the border layout dynamically.
 -->
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
     <!--
       Controls to show/hide the table columns
     -->
@@ -56,27 +56,32 @@ change the border layout dynamically.
                 styleClass="formBorderHighlight">
 
             <ice:panelGrid columns="5">
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="northChk"
+                                           partialSubmit="true"
                                            value="true"
                                            valueChangeListener="#{borderLayout.north}">
                     <ice:outputText value="North"/>
                 </ice:selectBooleanCheckbox>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="westChk"
+                                           partialSubmit="true"
                                            value="true"
                                            valueChangeListener="#{borderLayout.west}">
                     <ice:outputText value="West"/>
                 </ice:selectBooleanCheckbox>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="centerChk"
+                                           partialSubmit="true"
                                            value="true"
                                            valueChangeListener="#{borderLayout.center}">
                     <ice:outputText value="Center"/>
                 </ice:selectBooleanCheckbox>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="eastChk"
+                                           partialSubmit="true"
                                            value="true"
                                            valueChangeListener="#{borderLayout.east}">
                     <ice:outputText value="East"/>
                 </ice:selectBooleanCheckbox>
-                <ice:selectBooleanCheckbox partialSubmit="true"
+                <ice:selectBooleanCheckbox id="southChk"
+                                           partialSubmit="true"
                                            value="true"
                                            valueChangeListener="#{borderLayout.south}">
                     <ice:outputText value="South"/>
@@ -94,11 +99,11 @@ change the border layout dynamically.
                          renderEast="#{borderLayout.renderEast}">
 
             <f:facet name="north">
-                <ice:outputText value="North"/>
+                <ice:outputText id="north" value="North"/>
             </f:facet>
 
             <f:facet name="west">
-                <ice:panelGrid columns="1">
+                <ice:panelGrid id="west" columns="1">
                     <ice:outputText value="W"/>
                     <ice:outputText value="e"/>
                     <ice:outputText value="s"/>
@@ -107,7 +112,7 @@ change the border layout dynamically.
             </f:facet>
 
             <f:facet name="east">
-                <ice:panelGrid columns="1">
+                <ice:panelGrid id="east" columns="1">
                     <ice:outputText value="E"/>
                     <ice:outputText value="a"/>
                     <ice:outputText value="s"/>
@@ -116,11 +121,11 @@ change the border layout dynamically.
             </f:facet>
 
             <f:facet name="center">
-                <ice:outputText value="Center"/>
+                <ice:outputText id="center" value="Center"/>
             </f:facet>
 
             <f:facet name="south">
-                <ice:outputText value="South"/>
+                <ice:outputText id="south" value="South"/>
             </f:facet>
         </ice:panelBorder>
 
