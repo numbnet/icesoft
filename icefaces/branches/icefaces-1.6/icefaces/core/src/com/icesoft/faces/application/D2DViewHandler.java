@@ -169,6 +169,10 @@ public class D2DViewHandler extends ViewHandler {
      */
     public UIViewRoot createView(FacesContext context, String viewId) {
         initializeParameters(context);
+        // #2139 Remove this token here as well
+        ExternalContext externalContext = context.getExternalContext();
+        externalContext.getRequestParameterMap().remove(
+                PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
 
         if (delegateView(viewId)) {
             return delegate.createView(context, viewId);
