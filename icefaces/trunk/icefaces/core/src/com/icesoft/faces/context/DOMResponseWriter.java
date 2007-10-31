@@ -329,7 +329,9 @@ public class DOMResponseWriter extends ResponseWriter {
         String calls = JavascriptContext.getJavascriptCalls(context);
         script.appendChild(document.createTextNode(calls));
 
-        ElementController.from(session, sessionIdentifier, viewIdentifier).addInto(body);
+        ElementController.from(session).addInto(sessionIdentifier + ":" + viewIdentifier, body);
+        String contextPath = context.getApplication().getViewHandler().getResourceURL(context, "/");
+        String asyncServerContextPath = "/" + configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", "")) + "/";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
                 "if (!window.views) window.views = []; window.views.push(" + viewIdentifier + ");\n" +
@@ -340,7 +342,9 @@ public class DOMResponseWriter extends ResponseWriter {
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
                         "redirectURI: " + configuration.getAttribute("connectionLostRedirectURI", "null") + "," +
                         "connection: {" +
-                        "context: '" + context.getApplication().getViewHandler().getResourceURL(context, "/") + "'," +
+                        "context: {" +
+                        "current: '" + contextPath + "'," +
+                        "async: '" + asyncServerContextPath + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 30000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 20000) + "," +
