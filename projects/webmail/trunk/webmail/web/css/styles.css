@@ -182,7 +182,7 @@ body {
     background-color: #66CCFF;
 }
 
-}
+
 /* feed back frorm */
 .feebackFormLink {
     color: blue;
@@ -388,4 +388,27 @@ width:50%;
 
 .iceSelInpTxtSelRow {
     color: #FFFFFF;
+}
+
+/* Styling for the MenuPopup Components */
+.iceMnuPopVrtTopSubMenu {
+    width:100px;
+}
+
+.iceMnuPopVrtItem {
+    width:100px;
+}
+
+.iceMnuPopVrtItem a {
+    text-align :left ;
+}
+
+.iceMnuPopVrtItem a div span {
+    color: #000000;
+    
+}
+
+
+.iceMnuItmImage, .iceMnuBarItemImage {
+    display :none ;
 }

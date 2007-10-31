@@ -134,8 +134,8 @@
                        columnClasses="emailColumnLeftAlign, emailColumnLeftAlign, emailColumnLeftAlign"
                        sortColumn="#{contactManager.contactListBean.sort}"
                        sortAscending="#{contactManager.contactListBean.ascending}">
-
-
+                       
+            
             <ice:column>
 
                 <ice:rowSelector value="#{contact.flag}" 
@@ -147,11 +147,35 @@
                                 value="#{msgs['webmail.contact.table.header.displayName']}" />
                     </ice:commandSortHeader>
                 </f:facet>
-                <ice:commandLink action="#{contactManager.navigateToEditContact}"
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:menuPopup id="contactsPopupMenu">
+                        <ice:menuItem id="addContact"
+                                      value="#{msgs['webmail.contact.select.add']}"
+                                      actionListener="#{contactManager.contactListBean.addContact}"
+                                      action="#{contactManager.navigateToEditContact}"
+                                      rendered="#{!contactManager.contactListBean.searchMode}"/>
+                        <ice:menuItem id="editContact"
+                                      value="#{msgs['webmail.contact.select.edit']}"
+                                      actionListener="#{contactManager.contactListBean.editContact}"
+                                      action="#{contactManager.navigateToEditContact}"
+                                      rendered="#{contactManager.contactListBean.checkCount == 1}"/>
+                        <ice:menuItem id="deleteContact"
+                                      value="#{msgs['webmail.contact.select.delete']}"
+                                      actionListener="#{contactManager.contactListBean.deleteContact}"
+                                      action="#{contactManager.navigateToContactList}"
+                                      rendered="#{contactManager.contactListBean.checkCount > 0}"/>
+                        <ice:menuItem id="mailContact"
+                                      value="#{msgs['webmail.contact.select.sendEmail']}"
+                                      actionListener="#{contactManager.sendEmailWithContact}"
+                                      action="#{mailManager.navigateToEditMessage}"
+                                      rendered="#{contactManager.contactListBean.checkCount > 0}"/>
+                    </ice:menuPopup>
+                    <!--<ice:commandLink action="#{contactManager.navigateToEditContact}"
                                  styleClass="dataTableLink"
-                                 actionListener="#{contact.selectThisContact}">
+                                 actionListener="#{contact.selectThisContact}">-->
                     <ice:outputText value="#{contact.model.displayName}&#160;" escape="false" />
-                </ice:commandLink>
+                    <!--</ice:commandLink>-->
+                </ice:panelGroup>
             </ice:column>
 
             <ice:column>
@@ -161,11 +185,13 @@
                                 value="#{msgs['webmail.contact.table.header.phoneNumber']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
-                <ice:commandLink action="#{contactManager.navigateToEditContact}"
-                                 styleClass="dataTableLink"
-                                 actionListener="#{contact.selectThisContact}">
-                    <ice:outputText value="#{contact.model.primaryPhone}&#160;" escape="false" />
-                </ice:commandLink>
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:commandLink action="#{contactManager.navigateToEditContact}"
+                                     styleClass="dataTableLink"
+                                     actionListener="#{contact.selectThisContact}">
+                        <ice:outputText value="#{contact.model.primaryPhone}&#160;" escape="false" />
+                    </ice:commandLink>
+                </ice:panelGroup>
             </ice:column>
 
             <ice:column>
@@ -175,11 +201,13 @@
                                 value="#{msgs['webmail.contact.table.header.email']}"/>
                     </ice:commandSortHeader>
                 </f:facet>
-                <ice:commandLink action="#{contactManager.navigateToEditContact}"
-                                 styleClass="dataTableLink"
-                                 actionListener="#{contact.selectThisContact}">
-                    <ice:outputText value="#{contact.model.primaryEmail}&#160;" escape="false" />
-                </ice:commandLink>
+                <ice:panelGroup menuPopup="contactsPopupMenu">
+                    <ice:commandLink action="#{contactManager.navigateToEditContact}"
+                                     styleClass="dataTableLink"
+                                     actionListener="#{contact.selectThisContact}">
+                        <ice:outputText value="#{contact.model.primaryEmail}&#160;" escape="false" />
+                    </ice:commandLink>
+                </ice:panelGroup>                
             </ice:column>
 
         </ice:dataTable>

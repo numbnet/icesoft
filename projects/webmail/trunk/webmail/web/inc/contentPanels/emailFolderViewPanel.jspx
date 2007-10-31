@@ -216,11 +216,38 @@ The email folder page, should list all mail in the respective current folder in 
                 <ice:outputText value="move"/>
             </f:facet>
             <ice:panelGroup
+                    menuPopup="mailMenuPopup"
                     draggable="true"
                     dragValue="#{msg}"
                     dragMask="dragging,drag_cancel,hover_start,hover_end"
                     dragOptions="dragGhost" >
                 <ice:graphicImage value="images/message_header.gif"/>
+                <ice:menuPopup id="mailMenuPopup">
+                    <ice:menuItem id="newEmail"
+                                  value="#{msgs['webmail.controls.newMail']}"
+                                  actionListener="#{mailManager.createNewMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"/>
+                    <ice:menuItem id="replyEmail"
+                                  value="#{msgs['webmail.email.folder.view.replyCommand']}"
+                                  actionListener="#{mailManager.replyToSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="replyAllEmail"
+                                  value="#{msgs['webmail.email.folder.view.replyAllCommand']}"
+                                  actionListener="#{mailManager.replyToAllSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="forwardEmail"
+                                  value="#{msgs['webmail.email.folder.view.forwardCommand']}"
+                                  actionListener="#{mailManager.forwardSelectedMessage}"
+                                  action="#{mailManager.navigateToEditMessage}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount == 1 }"/>
+                    <ice:menuItem id="deleteEmail"
+                                  value="#{msgs['webmail.email.folder.view.deleteCommand']}"
+                                  actionListener="#{mailManager.deleteSelectedMessage}"
+                                  action="#{mailManager.navigateToMessageList}"
+                                  rendered="#{mailManager.selectedMailAccount.selectedMailFolder.checkedCount != 0 }"/>
+                </ice:menuPopup>
             </ice:panelGroup>
         </ice:column>
         <!-- Sender column -->
@@ -230,7 +257,7 @@ The email folder page, should list all mail in the respective current folder in 
                     <ice:outputText value="#{msgs['webmail.email.folder.view.senderColumn']}"/>
                 </ice:commandSortHeader>
             </f:facet>
-            <ice:panelGroup>
+            <ice:panelGroup menuPopup="mailMenuPopup">
                 <ice:commandLink action="#{mailManager.navigateToViewMessage}"
                         styleClass="dataTableLink"
                         actionListener="#{msg.changeSelectedMessage}">
@@ -245,7 +272,7 @@ The email folder page, should list all mail in the respective current folder in 
 	                    <ice:outputText value="#{msgs['webmail.email.folder.view.toColumn']}"/>
 	                </ice:commandSortHeader>
 	            </f:facet>
-	            <ice:panelGroup>
+	            <ice:panelGroup menuPopup="emailMenuPopup">
 	                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
                                      styleClass="dataTableLink"
                                      actionListener="#{msg.changeSelectedMessage}">
@@ -260,11 +287,13 @@ The email folder page, should list all mail in the respective current folder in 
                     <ice:outputText value="#{msgs['webmail.email.folder.view.subjectColumn']}"/>
                 </ice:commandSortHeader>
             </f:facet>
-            <ice:commandLink action="#{mailManager.navigateToViewMessage}"
-                    styleClass="dataTableLink"
-                    actionListener="#{msg.changeSelectedMessage}">
-                  <ice:outputText value="#{msg.wrappedHtmlSubject}&#160;" escape="false" />
-            </ice:commandLink>
+            <ice:panelGroup menuPopup="emailMenuPopup">
+                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                                 styleClass="dataTableLink"
+                                 actionListener="#{msg.changeSelectedMessage}">
+                    <ice:outputText value="#{msg.wrappedHtmlSubject}&#160;" escape="false" />
+                </ice:commandLink>
+            </ice:panelGroup>
         </ice:column>
         <!-- Date column -->
         <ice:column>
@@ -273,12 +302,13 @@ The email folder page, should list all mail in the respective current folder in 
                     <ice:outputText value="#{msgs['webmail.email.folder.view.dateColumn']}"/>
                 </ice:commandSortHeader>
             </f:facet>
-            <ice:commandLink action="#{mailManager.navigateToViewMessage}"
-                             styleClass="dataTableLink"
-                             actionListener="#{msg.changeSelectedMessage}">
-            	<ice:outputText value="#{msg.wrappedHtmlSendDateString}&#160;" escape="false" />
-            </ice:commandLink>
-            
+            <ice:panelGroup menuPopup="emailMenuPopup">
+                <ice:commandLink action="#{mailManager.navigateToViewMessage}"
+                                 styleClass="dataTableLink"
+                                 actionListener="#{msg.changeSelectedMessage}">
+                    <ice:outputText value="#{msg.wrappedHtmlSendDateString}&#160;" escape="false" />
+                </ice:commandLink>
+            </ice:panelGroup>
         </ice:column>
     </ice:dataTable>
 
