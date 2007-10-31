@@ -42,17 +42,17 @@ public class ElementController implements Serializable {
         Document document = element.getOwnerDocument();
 
         Element focusElement = (Element) element.appendChild(document.createElement("script"));
-        focusElement.setAttribute("id", prefix + ":focus-code");
+        focusElement.setAttribute("id", prefix + "focus-code");
         focusElement.setAttribute("type", "text/javascript");
         focusElement.appendChild(document.createTextNode(focusCode));
 
         Element selectElement = (Element) element.appendChild(document.createElement("script"));
-        selectElement.setAttribute("id", prefix + ":select-code");
+        selectElement.setAttribute("id", prefix + "select-code");
         selectElement.setAttribute("type", "text/javascript");
         selectElement.appendChild(document.createTextNode(selectCode));
 
         Element clickElement = (Element) element.appendChild(document.createElement("script"));
-        clickElement.setAttribute("id", prefix + ":click-code");
+        clickElement.setAttribute("id", prefix + "click-code");
         clickElement.setAttribute("type", "text/javascript");
         clickElement.appendChild(document.createTextNode(clickCode));
     }

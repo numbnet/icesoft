@@ -329,7 +329,7 @@ public class DOMResponseWriter extends ResponseWriter {
         String calls = JavascriptContext.getJavascriptCalls(context);
         script.appendChild(document.createTextNode(calls));
 
-        ElementController.from(session).addInto(sessionIdentifier + ":" + viewIdentifier, body);
+        ElementController.from(session).addInto(prefix, body);
         String contextPath = context.getApplication().getViewHandler().getResourceURL(context, "/");
         String asyncServerContextPath = "/" + configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", "")) + "/";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
