@@ -106,7 +106,6 @@
         <navigation-case>
             <from-outcome>submit</from-outcome>
             <to-view-id>/response.iface</to-view-id>
-            <redirect/>
         </navigation-case>
     </navigation-rule>
 
@@ -115,7 +114,6 @@
         <navigation-case>
             <from-outcome>return</from-outcome>
             <to-view-id>/address.iface</to-view-id>
-            <redirect/>
         </navigation-case>
     </navigation-rule>
 

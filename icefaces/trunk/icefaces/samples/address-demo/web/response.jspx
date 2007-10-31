@@ -45,6 +45,7 @@
 		type="text/javascript"></script>
     <ice:outputStyle href='./xmlhttp/css/xp/xp.css'/>
     <ice:outputStyle href="./css/address.css"/>
+    <ice:outputStyle href="./css/response.css"/>
 	</head>
 	<body >
 	<div id="header">

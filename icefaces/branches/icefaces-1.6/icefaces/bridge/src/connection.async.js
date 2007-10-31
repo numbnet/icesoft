@@ -212,7 +212,7 @@
             try {
                 this.sendChannel.postSynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
-                    request.close();
+                    request.on(Connection.Receive, Connection.Close);
                 });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);
