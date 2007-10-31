@@ -224,13 +224,13 @@ public class ContactManager implements WebmailBase {
         contactEditNavigation = new NavigationContent();
         contactEditNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        contactEditNavigation.setTemplateName("contactsEditViewPanel");
+        contactEditNavigation.setTemplateName("./inc/contentPanels/contactsEditViewPanel.jspx");
         contactEditNavigation.setMenuContentTitle("Contact-Edit");
 
         contactNavigation = new NavigationContent();
         contactNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        contactNavigation.setTemplateName("contactsViewPanel");
+        contactNavigation.setTemplateName("./inc/contentPanels/contactsViewPanel.jspx");
         contactNavigation.setMenuContentTitle("Contacts");
 
         // do a little clean up incase the api is used incorrectly.

@@ -90,7 +90,7 @@ public class NavigationTree implements WebmailBase {
         rootObject.setNavigationSelection(navigationBean);
         rootObject.setMenuDisplayText("webmail.navigation.rootNode.link");
         rootObject.setMenuContentTitle("webmail.navigation.rootNode.title");
-        rootObject.setTemplateName("webmailSplashPanel");
+        rootObject.setTemplateName("./inc/contentPanels/webmailSplashPanel.jspx");
         rootObject.setPageContent(true);
 
         rootTreeNode = new DefaultMutableTreeNode(rootObject);
@@ -128,7 +128,7 @@ public class NavigationTree implements WebmailBase {
             mailAccountsFolder.setNavigationSelection(navigationBean);
             mailAccountsFolder.setMenuDisplayText("webmail.navigation.mailAccounts.link");
             mailAccountsFolder.setMenuContentTitle("webmail.navigation.mailAccounts.title");
-            mailAccountsFolder.setTemplateName("mailAccountsSplashPanel");
+            mailAccountsFolder.setTemplateName("./inc/contentPanels/mailAccountsSplashPanel.jspx");
 
             // create node and set callback
             mailAccountRootNode = new DefaultMutableTreeNode(mailAccountsFolder);
@@ -146,7 +146,7 @@ public class NavigationTree implements WebmailBase {
             taskFolder.setTasksManager(mediator.getTasksManager());
             taskFolder.setMenuDisplayText("webmail.navigation.tasks.link");
             taskFolder.setMenuContentTitle("webmail.navigation.tasks.title");
-            taskFolder.setTemplateName("tasksViewPanel");
+            taskFolder.setTemplateName("./inc/contentPanels/tasksViewPanel.jspx");
             taskFolder.setPageContent(true);
 
             // create node and set callback
@@ -166,7 +166,7 @@ public class NavigationTree implements WebmailBase {
             contactFolder.setContactManager(mediator.getContactManager());
             contactFolder.setMenuDisplayText("webmail.navigation.contacts.link");
             contactFolder.setMenuContentTitle("webmail.navigation.contacts.title");
-            contactFolder.setTemplateName("contactsViewPanel");
+            contactFolder.setTemplateName("./inc/contentPanels/contactsViewPanel.jspx");
             contactFolder.setPageContent(true);
 
             // create node and set callback
@@ -234,7 +234,7 @@ public class NavigationTree implements WebmailBase {
             userObject.setMenuContentTitle(
                     WebmailMediator.getMessageBundle().getString("webmail.mailAccount") +
                             " - " + mailAccount.getEmail());
-            userObject.setTemplateName("mailAccountSplashPanel");
+            userObject.setTemplateName("./inc/contentPanels/mailAccountsSplashPanel.jspx");
             DefaultMutableTreeNode branchNode = new DefaultMutableTreeNode(userObject);
             userObject.setWrapper(branchNode);
 
@@ -273,7 +273,7 @@ public class NavigationTree implements WebmailBase {
         userObject.setMenuContentTitle(
                 WebmailMediator.getMessageBundle().getString("webmail.mailAccount") +
                         " - " + mailFolder.getMailAccount().getEmail());
-        userObject.setTemplateName("emailFolderViewPanel");
+        userObject.setTemplateName("./inc/contentPanels/emailFolderViewPanel.jspx");
 
         DefaultMutableTreeNode folderNode = new DefaultMutableTreeNode(userObject);
         parentNode.add(folderNode);

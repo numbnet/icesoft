@@ -63,76 +63,8 @@
                Main Component content;
                controls which template will be viewed
             -->
-            <ice:panelStack
-                    id="templatePanelStack"
-                    styleClass="webmailContentPanelStack"
-                    selectedPanel="#{navigationManager.navigationSelectionBean.selectedPanel.templateName}">
+            <ui:include src="#{navigationManager.navigationSelectionBean.selectedPanel.templateName}"/>
 
-                <!--
-                  Content Panels for various content related to the webmail
-                  applications
-                -->
-                <ice:panelGroup id="webmailSplashPanel">
-                    <f:subview id="wmsp">
-                        <ui:include src="./inc/contentPanels/webmailSplashPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="mailAccountSplashPanel">
-                    <f:subview id="masp">
-                        <ui:include src="./inc/contentPanels/mailAccountsSplashPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="emailFolderViewPanel">
-                    <f:subview id="efvp">
-                        <ui:include src="./inc/contentPanels/emailFolderViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="emailEditViewPanel">
-                    <f:subview id="eevp">
-                        <ui:include src="./inc/contentPanels/emailEditViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="emailViewPanel" >
-                    <f:subview id="evp">
-                        <ui:include src="./inc/contentPanels/emailViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="tasksViewPanel" >
-                    <f:subview id="tvp">
-                        <ui:include src="./inc/contentPanels/tasksViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="tasksEditViewPanel" >
-                    <f:subview id="tevp">
-                        <ui:include src="./inc/contentPanels/tasksEditViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="settingsManagePanel" >
-                    <f:subview id="smp">
-                        <ui:include src="./inc/contentPanels/settingsManagePanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="contactsViewPanel" >
-                    <f:subview id="cvp">
-                        <ui:include src="./inc/contentPanels/contactsViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-                <ice:panelGroup id="contactsEditViewPanel" >
-                    <f:subview id="cevp">
-                        <ui:include src="./inc/contentPanels/contactsEditViewPanel.jspx"/>
-                    </f:subview>
-                </ice:panelGroup>
-
-            </ice:panelStack>
         </ice:panelGroup>
     </f:facet>
 

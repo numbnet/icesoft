@@ -140,13 +140,13 @@ public class TasksManager implements WebmailBase {
         taskEditNavigation = new NavigationContent();
         taskEditNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        taskEditNavigation.setTemplateName("tasksEditViewPanel");
+        taskEditNavigation.setTemplateName("./inc/contentPanels/tasksEditViewPanel.jspx");
         taskEditNavigation.setMenuContentTitle("Task-edit");
 
         taskListNavigation = new NavigationContent();
         taskListNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        taskListNavigation.setTemplateName("tasksViewPanel");
+        taskListNavigation.setTemplateName("./inc/contentPanels/tasksViewPanel.jspx");
         taskListNavigation.setMenuContentTitle("Tasks");
 
         // do a little clean up in case the api is used incorrectly.

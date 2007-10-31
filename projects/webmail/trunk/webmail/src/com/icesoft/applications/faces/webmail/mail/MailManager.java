@@ -395,31 +395,31 @@ public class MailManager implements WebmailBase {
         messageEditNavigation = new NavigationContent();
         messageEditNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        messageEditNavigation.setTemplateName("emailEditViewPanel");
+        messageEditNavigation.setTemplateName("./inc/contentPanels/emailEditViewPanel.jspx");
         messageEditNavigation.setMenuContentTitle("Mail Message Edit");
         
         messageListNavigation = new NavigationContent();
         messageListNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        messageListNavigation.setTemplateName("emailFolderViewPanel");
+        messageListNavigation.setTemplateName("./inc/contentPanels/emailFolderViewPanel.jspx");
         messageListNavigation.setMenuContentTitle("Mail Folder");
         
         messageViewNavigation = new NavigationContent();
         messageViewNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        messageViewNavigation.setTemplateName("emailViewPanel");
+        messageViewNavigation.setTemplateName("./inc/contentPanels/emailViewPanel.jspx");
         messageViewNavigation.setMenuContentTitle("Mail Message View");
         
         messageSearchListNavigation = new NavigationContent();
         messageSearchListNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        messageSearchListNavigation.setTemplateName("emailFolderViewPanel");
+        messageSearchListNavigation.setTemplateName("./inc/contentPanels/emailFolderViewPanel.jspx");
         messageSearchListNavigation.setMenuContentTitle("Search Results");
         
         settingsNavigation = new NavigationContent();
         settingsNavigation.setNavigationSelection(
                 mediator.getNavigationManager().getNavigationSelectionBean());
-        settingsNavigation.setTemplateName("settingsManagePanel");
+        settingsNavigation.setTemplateName("./inc/contentPanels/settingsManagePanel.jspx");
         settingsNavigation.setMenuContentTitle("Settings");
         
         // Query the DB to find out how many mail accounts are associated with
