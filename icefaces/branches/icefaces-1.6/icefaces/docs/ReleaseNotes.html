@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><!-- saved from url=(0022)http://internet.e-mail -->
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482;
-v1.6.2 Release Notes</title> <style>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482; v1.6.2 Release Notes</title> <style>
 body, td, th, input {
 font-family:verdana,sans-serif;
 font-size:80%;
@@ -55,9 +54,7 @@ Knowledge Base</a>.<br><br><h2><a name="Changes_162"></a>Changes
 in This Release (v1.6.2)</h2>
 <br>ICEfaces 1.6.2 is a maintenance release that includes over 50
 fixes and improvements. Significant improvments include:<br><h4>Improved Performance&nbsp;</h4>
-<ul class="contentIndent"><li>ICEfaces&nbsp;now
-supports&nbsp;JBoss Seam 2.0.0 (CR1 release or newer) in addition
-to Seam v1.2.1GA.</li><li>All&nbsp;&nbsp;&nbsp;</li></ul><h4>Improved Security&nbsp;</h4>
+<ul class="contentIndent"><li>ICE</li></ul><h4>Improved Security&nbsp;</h4>
 <ul class="contentIndent"><li>ICEfaces 1.6.2 is a "Defect Free Project" (has no serious security
 vulnerabilities) as reported by the <a href="http://opensource.fortifysoftware.com/">Fortify Java Open Review Project</a>.</li></ul>See
 the Change
@@ -1228,7 +1225,11 @@ rich
 portlets
 using Liferay Portal 4.3.0.&nbsp; Using ICEfaces with other portal
 products has not been tested with this release.<br> </li>
-</ul><h3>Application Servers</h3>
+</ul><h3>Sample Applications</h3>
+<ul><li>The instructions for building the sample applications for use
+with Apache MyFaces in the ICEfaces Getting Started Guide are
+incorrect. The instructions incorrectly indicate&nbsp;to build myFaces
+by using '<code>ant -f build_myfaces.xml install</code>'. The correct command is '<code>ant -Dmyfaces=""</code>'.<br> </li></ul><h3>Application Servers</h3>
 <ul style="font-weight: bold;"> <li>General</li></ul><ul>
 <ul> <li>ICEfaces does not
 support session persistence. Some
