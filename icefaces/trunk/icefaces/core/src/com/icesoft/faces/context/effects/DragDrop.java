@@ -116,8 +116,6 @@ public class DragDrop {
             ea.addFunction("endeffect", "function(){}");
         }
         String call = "new Draggable('" + id + "'" + ea.toString();
-
-        JavascriptContext.addJavascriptCall(facesContext, call);
         return call;
     }
 

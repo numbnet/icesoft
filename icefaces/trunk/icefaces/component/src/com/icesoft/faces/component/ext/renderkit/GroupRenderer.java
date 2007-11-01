@@ -101,15 +101,18 @@ public class GroupRenderer
 
             }
 
-
+            Element rootSpan = (Element) domContext.getRootNode();
             if (dndType != null) {
                 DnDCache.getInstance(facesContext, true).put(
                         uiComponent.getClientId(facesContext),
                         (HtmlPanelGroup) uiComponent, facesContext);
-                addJavascriptCalls(uiComponent, dndType, null, facesContext);
+                String call = addJavascriptCalls(uiComponent, dndType, null, facesContext);
+                rootSpan.setAttribute(HTML.ONMOUSEMOVE_ATTR, call);
+                rootSpan.setAttribute(HTML.ONMOUSEOUT_ATTR, "Draggable.removeMe('"+ 
+                		uiComponent.getClientId(facesContext)+"');");
             }
 
-            Element rootSpan = (Element) domContext.getRootNode();
+
             if (styleClass != null) {
                 rootSpan.setAttribute("class", styleClass);
             }
@@ -183,7 +186,7 @@ public class GroupRenderer
                                           facesContext);
 
         } else if ("drop".equalsIgnoreCase(dndType)) {
-            calls += DragDrop.addDroptarget(
+            DragDrop.addDroptarget(
                     uiComponent.getClientId(facesContext), null, facesContext,
                     dropMask, hoverClass);
         } else if ("dragdrop".equalsIgnoreCase(dndType)) {
@@ -191,7 +194,7 @@ public class GroupRenderer
             calls += DragDrop.addDragable(uiComponent.getClientId(facesContext),
                                           handleId, dragOptions, dragMask,
                                           facesContext);
-            calls += DragDrop.addDroptarget(
+            DragDrop.addDroptarget(
                     uiComponent.getClientId(facesContext), null, facesContext,
                     dropMask, hoverClass);
         } else {

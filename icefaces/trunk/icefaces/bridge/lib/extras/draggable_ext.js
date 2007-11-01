@@ -39,9 +39,14 @@
 Draggable.prototype.dragGhost = false;
 Draggable.prototype.ORIGINAL_initialize = Draggable.prototype.initialize;
 Draggable.prototype.initialize = function(element) {
-    if (Ice.DnD.alreadyDrag(element)) {
+
+    var monitors = Ice.StateMon.monitors;
+    for (i = 0; i < monitors.length; i++) {
+        monitor = monitors[i];
+        if (monitor.id == element && monitor.type == 'Draggable') {
         Ice.DnD.logger.debug("Draggable [" + $(element).id + "] has already been created");
-        return;
+            return;
+        }
     }
     this.element = $(element);
     var ops = arguments[1];
@@ -69,6 +74,7 @@ Draggable.prototype.initialize = function(element) {
 
 Draggable.prototype.ORIGINAL_startDrag = Draggable.prototype.startDrag;
 Draggable.prototype.startDrag = function(event) {
+    this.dragging = true;
     if (this.dragGhost == true) {
         Ice.DnD.logger.debug('Init Drag Ghost ID[' + this.element.id + ']');
         Draggables.register(this);
@@ -137,6 +143,33 @@ Draggable.prototype.draw = function(point) {
 Draggable.prototype.resize = function(event) {
 };
 
+Draggable.removeMe = function(element) {
+    var monitors = Ice.StateMon.monitors;
+    var newMonitors = Array();
+    for (i = 0; i < monitors.length; i++) {
+        monitor = monitors[i];
+        try {
+            // remove only draggable monitors
+	        if (monitor.id == element && monitor.type == 'Draggable') {
+	           // don't remove while dragging
+	            if (monitor.object.dragging) {
+	                return;
+	            }
+	            try {
+	                monitor.destroyMe = true;
+	                monitor.destroy();
+	            } catch(destroyException) {
+	                logger.warn("Monitor [" + monitor.id + "] destroyed with exception [" + destroyException + "]");
+	            }
+	        }else {
+	            newMonitors.push(monitor);
+	        }
+	    } catch(ee) {
+	        logger.error("Error destroying monitor [" + monitor.id + "] Msg [" + ee + "]");
+	    }
+    }    
+    Ice.StateMon.monitors = newMonitors;
+}
 
 Draggable.prototype.ORIGINAL_updateDrag = Draggable.prototype.updateDrag;
 Draggable.prototype.updateDrag = function(event, pointer) {
@@ -163,6 +196,8 @@ Draggable.prototype.updateDrag = function(event, pointer) {
 Draggable.prototype.ORIGINAL_finishDrag = Draggable.prototype.finishDrag;
 Draggable.prototype.finishDrag = function(event, success) {
     if (!this.options.sort) {
+        //drag has finished, set the dragging to false. Used by the Draggable.removeMe()
+        this.dragging = false;
         if (success) {
             iceEv = new Ice.DndEvent();
             iceEv.drag = this;
@@ -184,6 +219,8 @@ Draggable.prototype.finishDrag = function(event, success) {
                 Element.remove(this._cursor);
                 this._cursor = null;
             }
+            //remove the draggable monitor when the drag has completed.
+            Draggable.removeMe(this.element.id);
         }
     }
 

@@ -80,9 +80,12 @@ Droppables.isAffected = function(point, element, drop) {
 
 Droppables.ORIGINAL_add = Droppables.add;
 Droppables.add = function(ele, options) {
-    if (Ice.DnD.alreadyDrop(ele)) {
-        Ice.DnD.logger.debug('Droppable ID [' + ele.id + '] already created');
-        return;
+    var monitors = Ice.StateMon.monitors;
+    for (i = 0; i < monitors.length; i++) {
+        monitor = monitors[i];
+        if (monitor.id == ele && monitor.type == 'Droppable') {
+            return;
+        }
     }
     Droppables.ORIGINAL_add(ele, options);
     if (!options.sort) {
