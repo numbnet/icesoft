@@ -264,7 +264,9 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
             pageIndex = 0;
         }
 
-        if (uiData.getFirst() % rows > 0) {
+        if (rows == 0) {
+            pageIndex = 1;
+        } else if (uiData.getFirst() % rows > 0) {
             pageIndex++;
         }
         return pageIndex;
