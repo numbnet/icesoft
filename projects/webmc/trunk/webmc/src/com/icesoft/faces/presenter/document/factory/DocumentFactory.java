@@ -3,6 +3,7 @@ package com.icesoft.faces.presenter.document.factory;
 import java.io.File;
 import com.icesoft.faces.presenter.document.UnknownPresentationDocument;
 import com.icesoft.faces.presenter.document.ZipPresentationDocument;
+import com.icesoft.faces.presenter.document.PptPresentationDocument;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 
@@ -22,6 +23,8 @@ public class DocumentFactory {
                                                       Presentation parent) {
         if (file.getName().toLowerCase().indexOf(".zip") != -1) {
             return new ZipPresentationDocument(parent);
+        } else if (file.getName().toLowerCase().endsWith(".ppt")) {
+            return new PptPresentationDocument(parent);
         } else {
             return new UnknownPresentationDocument(parent);
         }
