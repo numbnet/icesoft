@@ -32,6 +32,10 @@
  */
 
 [ Ice.Status = new Object ].as(function(This) {
+    This.NOOPIndicator = {
+        on: Function.NOOP,
+        off: Function.NOOP
+    };
 
     This.RedirectIndicator = Object.subclass({
         initialize: function(uri) {
@@ -106,54 +110,58 @@
 
         on: function() {
             this.panel.on();
-            messageContainer = document.createElement('div');
-            messageContainer.style.position = 'absolute';
-            messageContainer.style.textAlign = 'center';
-            messageContainer.style.zIndex = '10001';
-            messageContainer.style.color = 'black';
-            messageContainer.style.backgroundColor = 'white';
-            messageContainer.style.paddingLeft = '0';
-            messageContainer.style.paddingRight = '0';
-            messageContainer.style.paddingTop = '15px';
-            messageContainer.style.paddingBottom = '15px';
-            messageContainer.style.borderBottomColor = 'gray';
-            messageContainer.style.borderRightColor = 'gray';
-            messageContainer.style.borderTopColor = 'silver';
-            messageContainer.style.borderLeftColor = 'silver';
-            messageContainer.style.borderWidth = '2px';
-            messageContainer.style.borderStyle = 'solid';
-            messageContainer.style.width = '270px';
+            var messageContainer = document.createElement('div');
+            var messageContainerStyle = messageContainer.style;
+            messageContainerStyle.position = 'absolute';
+            messageContainerStyle.textAlign = 'center';
+            messageContainerStyle.zIndex = '10001';
+            messageContainerStyle.color = 'black';
+            messageContainerStyle.backgroundColor = 'white';
+            messageContainerStyle.paddingLeft = '0';
+            messageContainerStyle.paddingRight = '0';
+            messageContainerStyle.paddingTop = '15px';
+            messageContainerStyle.paddingBottom = '15px';
+            messageContainerStyle.borderBottomColor = 'gray';
+            messageContainerStyle.borderRightColor = 'gray';
+            messageContainerStyle.borderTopColor = 'silver';
+            messageContainerStyle.borderLeftColor = 'silver';
+            messageContainerStyle.borderWidth = '2px';
+            messageContainerStyle.borderStyle = 'solid';
+            messageContainerStyle.width = '270px';
             document.body.appendChild(messageContainer);
 
             var messageElement = document.createElement('div');
             messageElement.appendChild(document.createTextNode(this.message));
-            messageElement.style.marginLeft = '30px';
-            messageElement.style.textAlign = 'left';
-            messageElement.style.fontSize = '14px';
-            messageElement.style.fontSize = '14px';
-            messageElement.style.fontWeight = 'bold';
+            var messageElementStyle = messageElement.style;
+            messageElementStyle.marginLeft = '30px';
+            messageElementStyle.textAlign = 'left';
+            messageElementStyle.fontSize = '14px';
+            messageElementStyle.fontSize = '14px';
+            messageElementStyle.fontWeight = 'bold';
             messageContainer.appendChild(messageElement);
 
             var descriptionElement = document.createElement('div');
             descriptionElement.appendChild(document.createTextNode(this.description));
-            descriptionElement.style.fontSize = '11px';
-            descriptionElement.style.marginTop = '7px';
-            descriptionElement.style.marginBottom = '7px';
-            descriptionElement.style.fontWeight = 'normal';
+            var descriptionElementStyle = descriptionElement.style;
+            descriptionElementStyle.fontSize = '11px';
+            descriptionElementStyle.marginTop = '7px';
+            descriptionElementStyle.marginBottom = '7px';
+            descriptionElementStyle.fontWeight = 'normal';
             messageElement.appendChild(descriptionElement);
 
             var buttonElement = document.createElement('input');
             buttonElement.type = 'button';
             buttonElement.value = 'Reload';
-            buttonElement.style.fontSize = '11px';
-            buttonElement.style.fontWeight = 'normal';
+            var buttonElementStyle = buttonElement.style;
+            buttonElementStyle.fontSize = '11px';
+            buttonElementStyle.fontWeight = 'normal';
             buttonElement.onclick = function() {
                 window.location.reload();
             };
             messageContainer.appendChild(buttonElement);
             var resize = function() {
-                messageContainer.style.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
-                messageContainer.style.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
+                messageContainerStyle.left = ((window.width() - messageContainer.clientWidth) / 2) + 'px';
+                messageContainerStyle.top = ((window.height() - messageContainer.clientHeight) / 2) + 'px';
             }.bind(this);
             resize();
             window.onResize(resize);
@@ -163,51 +171,62 @@
     This.StatusManager = Object.subclass({
         initialize: function(configuration, container) {
             this.container = container;
-            var connectionLostRedirect = configuration.redirectURI ? new This.RedirectIndicator(configuration.redirectURI) : null;
-            if ('connection-status'.asElement()) {
-                this.indicators = [];
-                var connectionWorking = new This.ElementIndicator('connection-working', this.indicators);
-                var connectionIdle = new This.ElementIndicator('connection-idle', this.indicators);
-                this.busy = new This.ToggleIndicator(connectionWorking, connectionIdle);
-                this.connectionLost = connectionLostRedirect ? connectionLostRedirect : new This.ElementIndicator('connection-lost', this.indicators);
-                this.connectionTrouble = new This.ElementIndicator('connection-trouble', this.indicators);
-                this.sessionExpired = this.connectionLost;
-                this.serverError = this.connectionLost;
-            } else {
-                this.busy = new This.PointerIndicator(container);
-                var description = 'To reconnect click the Reload button on the browser or click the button below';
-                var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
-                var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
-                this.sessionExpired = new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
-                this.serverError = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
-                this.connectionLost = connectionLostRedirect ? connectionLostRedirect : new This.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, this);
-                this.connectionTrouble = { on: Function.NOOP, off: Function.NOOP };
-            }
+            this.busy = This.NOOPIndicator;
+            this.connectionLost = This.NOOPIndicator;
+            this.connectionTrouble = This.NOOPIndicator;
+            this.sessionExpired = This.NOOPIndicator;
+            this.serverError = This.NOOPIndicator;
+            //need to look for the status component after the page has loaded
+            //this relies on the bridge registering the 'onload' handler after
+            //the status component registering its own handler
+            window.onLoad(function() {
+                var connectionLostRedirect = configuration.redirectURI ? new This.RedirectIndicator(configuration.redirectURI) : null;
+                if (container.connectionStatus) {
+                    this.indicators = [];
+                    var connectionWorking = new This.ElementIndicator(container.connectionStatus.working, this.indicators);
+                    var connectionIdle = new This.ElementIndicator(container.connectionStatus.idle, this.indicators);
+                    this.busy = new This.ToggleIndicator(connectionWorking, connectionIdle);
+                    this.connectionLost = connectionLostRedirect ? connectionLostRedirect : new This.ElementIndicator(container.connectionStatus.lost, this.indicators);
+                    this.connectionTrouble = new This.ElementIndicator(container.connectionStatus.trouble, this.indicators);
+                    this.sessionExpired = this.connectionLost;
+                    this.serverError = this.connectionLost;
+                } else {
+                    this.busy = new This.PointerIndicator(container);
+                    var description = 'To reconnect click the Reload button on the browser or click the button below';
+                    var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
+                    var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+                    this.sessionExpired = new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
+                    this.serverError = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
+                    this.connectionLost = connectionLostRedirect ? connectionLostRedirect : new This.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, this);
+                    this.connectionTrouble = { on: Function.NOOP, off: Function.NOOP };
+                }
+            }.bind(this));
         },
 
         on: function() {
             var overlay = this.container.ownerDocument.createElement('iframe');
             overlay.setAttribute('src', 'about:blank');
             overlay.setAttribute('frameborder', '0');
-            overlay.style.position = 'absolute';
-            overlay.style.display = 'block';
-            overlay.style.visibility = 'visible';
-            overlay.style.backgroundColor = 'white';
-            overlay.style.zIndex = '10000';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.opacity = 0.22;
-            overlay.style.filter = 'alpha(opacity=22)';
+            var overlayStyle = overlay.style;
+            overlayStyle.position = 'absolute';
+            overlayStyle.display = 'block';
+            overlayStyle.visibility = 'visible';
+            overlayStyle.backgroundColor = 'white';
+            overlayStyle.zIndex = '10000';
+            overlayStyle.top = '0';
+            overlayStyle.left = '0';
+            overlayStyle.opacity = 0.22;
+            overlayStyle.filter = 'alpha(opacity=22)';
             this.container.appendChild(overlay);
 
             var resize = this.container.tagName.toLowerCase() == 'body' ?
                          function() {
-                             overlay.style.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
-                             overlay.style.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
+                             overlayStyle.width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) + 'px';
+                             overlayStyle.height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight) + 'px';
                          } :
                          function() {
-                             overlay.style.width = this.container.offsetWidth + 'px';
-                             overlay.style.height = this.container.offsetHeight + 'px';
+                             overlayStyle.width = this.container.offsetWidth + 'px';
+                             overlayStyle.height = this.container.offsetHeight + 'px';
                          };
             resize();
             window.onResize(resize);

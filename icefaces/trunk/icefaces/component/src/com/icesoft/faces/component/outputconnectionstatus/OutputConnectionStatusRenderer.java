@@ -37,7 +37,6 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -55,32 +54,47 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         if (!domContext.isInitialized()) {
+            String id = uiComponent.getClientId(facesContext);
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
             domContext.setRootNode(root);
 
-            root.setAttribute(HTML.ID_ATTR, "connection-status");
+            root.setAttribute(HTML.ID_ATTR, id);
             root.setAttribute(HTML.CLASS_ATTR, component.getStyleClass());
             String style = component.getStyle();
-            if(style != null && style.length() > 0)
+            if (style != null && style.length() > 0)
                 root.setAttribute(HTML.STYLE_ATTR, style);
             else
                 root.removeAttribute(HTML.STYLE_ATTR);
 
+            String idleID = id + ":connection-idle";
             root.appendChild(getNextNode(domContext,
-                                         component.getInactiveClass(),
-                                         component.getInactiveLabel(),
-                                         "connection-idle", true));
+                    component.getInactiveClass(),
+                    component.getInactiveLabel(),
+                    idleID, true));
+            String workingID = id + ":connection-working";
             root.appendChild(getNextNode(domContext, component.getActiveClass(),
-                                         component.getActiveLabel(),
-                                         "connection-working", false));
+                    component.getActiveLabel(),
+                    workingID, false));
+            String troubleID = id + ":connection-trouble";
             root.appendChild(getNextNode(domContext,
-                                         component.getCautionClass(),
-                                         component.getCautionLabel(),
-                                         "connection-trouble", false));
+                    component.getCautionClass(),
+                    component.getCautionLabel(),
+                    troubleID, false));
+            String lostID = id + ":connection-lost";
             root.appendChild(getNextNode(domContext,
-                                         component.getDisconnectedClass(),
-                                         component.getDisconnectedLabel(),
-                                         "connection-lost", false));
+                    component.getDisconnectedClass(),
+                    component.getDisconnectedLabel(),
+                    lostID, false));
+            Element script = (Element) domContext.createElement(HTML.SCRIPT_ELEM);
+            script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
+            script.appendChild(domContext.createTextNode(
+                    "window.onLoad(function() {'" + id + "'.asExtendedElement().findContainerFor('bridge').connectionStatus = {" +
+                            "idle: '" + idleID + "'," +
+                            "working: '" + workingID + "'," +
+                            "trouble: '" + troubleID + "'," +
+                            "lost: '" + lostID + "'" + "}});"
+            ));
+            root.appendChild(script);
         }
 
         domContext.stepOver();

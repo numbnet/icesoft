@@ -135,29 +135,24 @@
 
         findActiveView: function() {
             //traverse parents in search of 'viewIdentifier' property
-            var parent = this.element;
-            while (parent) {
-                if (parent.viewIdentifier) {
-                    return parent.viewIdentifier;
-                } else {
-                    parent = parent.parentNode;
-                }
-            }
-
-            throw 'viewIdentifier is missing';
+            return this.findContainerFor('viewIdentifier').viewIdentifier;
         },
 
         findConnection: function() {
+            return this.findContainerFor('bridge').bridge.connection;
+        },
+
+        findContainerFor: function(property) {
             var parent = this.element;
             while (parent) {
-                if (parent.bridge) {
-                    return parent.bridge.connection;
+                if (parent[property]) {
+                    return parent;
                 } else {
                     parent = parent.parentNode;
                 }
             }
 
-            throw 'connection is not setup';
+            throw 'couldn\'t find container for property: ' + property;
         }
     });
 
