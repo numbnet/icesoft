@@ -332,10 +332,11 @@ public class DOMResponseWriter extends ResponseWriter {
         ElementController.from(session).addInto(prefix, body);
         String contextPath = context.getApplication().getViewHandler().getResourceURL(context, "/");
         String asyncServerContextPath = "/" + configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", "")) + "/";
+        String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
                 "if (!window.views) window.views = []; window.views.push(" + viewIdentifier + ");\n" +
-                        "var container = document.getElementById('" + prefix + "configuration-script').parentNode;\n" +
+                        "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.viewIdentifier = " + viewIdentifier + ";" +
                         "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
@@ -355,10 +356,17 @@ public class DOMResponseWriter extends ResponseWriter {
                         "}, container);";
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
-        configurationElement.setAttribute("id", prefix + "configuration-script");
+        configurationElement.setAttribute("id", configurationID);
         configurationElement.setAttribute("type", "text/javascript");
         configurationElement.appendChild(document.createTextNode(startupScript));
         body.appendChild(configurationElement);
+
+        String markerID = prefix + "marker-script";
+        Element markerElement = (Element) body.appendChild(document.createElement("script"));
+        markerElement.setAttribute("id", markerID);
+        markerElement.setAttribute("type", "text/javascript");
+        markerElement.appendChild(document.createTextNode("'" + markerID + "'.asElement().parentNode.bridge = 'placeholder';"));
+        body.insertBefore(markerElement, body.getFirstChild());
     }
 
     private void enhanceHead(Element head) {

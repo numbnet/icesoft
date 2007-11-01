@@ -88,11 +88,11 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             Element script = (Element) domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(
-                    "window.onLoad(function() {'" + id + "'.asExtendedElement().findContainerFor('bridge').connectionStatus = {" +
+                    "'" + id + "'.asExtendedElement().findContainerFor('bridge').connectionStatus = {" +
                             "idle: '" + idleID + "'," +
                             "working: '" + workingID + "'," +
                             "trouble: '" + troubleID + "'," +
-                            "lost: '" + lostID + "'" + "}});"
+                            "lost: '" + lostID + "'" + "};"
             ));
             root.appendChild(script);
         }
