@@ -68,22 +68,14 @@ body {
 .headerTitleText {
     font-weight: bold;
     font-size: 12px;
+    margin: 10px;
+    position: absolute;
+    top: 20px;
 }
 
 .pageContentIncludeTitle, .headerUserText {
     font-weight: bold;
     font-size: 12px;
-}
-
-/* Main content include stack*/
-.webmailContentPanelStack {
-    vertical-align: top;
-    width: 100%;
-    height: 500px;
-}
-/* override default panel stack state */
-.icePnlStkRow, .icePnlStkCol {
-    vertical-align: top;
 }
 
 .contentLayoutGridStyle {
@@ -93,44 +85,6 @@ body {
 
 .contentLayoutGridColumn {
     vertical-align: top;
-}
-
-/* main border layout styles, we overide properties on west, center and north from themes */
-
-.mainBorderLayout {
-    vertical-align: top;
-    width: 100%;
-}
-
-.icePnlBrdrNorth {
-    background-color: #FFFFFF;
-    text-align: left;
-    vertical-align: top;
-    padding: 5px;
-}
-
-.icePnlBrdrWest {
-    background-color: #FFFFFF;
-    vertical-align: top;
-    text-align: left;
-    width: 30%;
-    padding: 5px;
-}
-
-.icePnlBrdrCenter{
-    background-color: #FFFFFF;
-    vertical-align: top;
-    text-align: left;
-    width: 70%;
-}
-
-/* Folder view styles */
-.folderViewAlignLeft {
-    text-align: left;
-}
-
-.folderViewAlignRight {
-    text-align: right;
 }
 
 /* task data table view  */
@@ -146,9 +100,6 @@ body {
     border: 1px solid #DEDEDE;
     text-align: left;
     width: 95%;
-}
-.emailControls {
-    border: 1px solid #DEDEDE;
 }
 
 .emailContent {
@@ -286,28 +237,12 @@ body {
 
 }
 
-.navigationParentBorder{
-    width: 290px;
-    height: 450px;
-    border: 1px solid #DEDEDE;
-    text-align: left;
-    table-layout: fixed;
-}
-
-.navigationParentBorder td{
-    width: 290px;
-    height: 450px;
-    vertical-align: top;
-    text-align: left;
-}
-
 .navigationItems{
     display: inline;
     text-align: left;
     padding: 0;
     margin: 0;
 }
-
 
 .navigationTreeLink.nodec, .dataTableLink.nodec, .commandLink.nodec {
    color: #0000FF;
@@ -361,6 +296,10 @@ body {
 }
 
 .outputConnectionStatus {
+	position: absolute;
+	top: 45px;
+	right: 110px;
+	
     width: 25px;
     height: 25px;
 }
@@ -390,6 +329,47 @@ width:50%;
     color: #FFFFFF;
 }
 
+/* STYLES ADDED FOR FACELETS TEMPLATING */
+#maincontainer{
+    width: 1000px; /*Width of main container*/
+    margin: 0 auto; /*Center container on page*/
+}
+
+#headersection{
+	height: 120px;	
+}
+
+#navigationsection{
+	float: left;
+    width: 290px;
+    margin-left: -1000px; /*Set left margin to -(MainContainerWidth)*/
+
+    height: 400px;    
+    border: 1px solid #DEDEDE;
+
+}
+
+#bodywrapper{
+	float: left;
+	width: 100%;
+}
+
+#bodysection{
+	margin-left: 290px; /*Set left margin to LeftColumnWidth*/
+}
+
+#footersection{
+    clear: left;
+    width: 100%;
+    text-align: center;
+    padding: 4px 0;
+}
+
+.innertube{
+    margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+    margin-top: 0;
+}
+
 /* Styling for the MenuPopup Components */
 .iceMnuPopVrtTopSubMenu {
     width:100px;
@@ -412,3 +392,10 @@ width:50%;
 .iceMnuItmImage, .iceMnuBarItemImage {
     display :none ;
 }
+
+.headerPanelGrid{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
