@@ -18,10 +18,10 @@ import java.util.Map;
 public class ViewBoundServer implements Server {
     private final static Command SessionExpired = new SessionExpired();
     private Map views;
-    private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private SessionDispatcher.Monitor sessionMonitor;
     private Server server;
 
-    public ViewBoundServer(Server server, SessionDispatcher.Listener.Monitor sessionMonitor, Map views) {
+    public ViewBoundServer(Server server, SessionDispatcher.Monitor sessionMonitor, Map views) {
         this.server = server;
         this.sessionMonitor = sessionMonitor;
         this.views = views;

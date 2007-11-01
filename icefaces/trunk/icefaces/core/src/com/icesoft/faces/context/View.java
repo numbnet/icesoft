@@ -44,7 +44,7 @@ public class View implements CommandQueue {
     private Collection viewListeners = new ArrayList();
     private String sessionID;
     private Configuration configuration;
-    private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private SessionDispatcher.Monitor sessionMonitor;
     private ResourceDispatcher resourceDispatcher;
     private Runnable dispose = new Runnable() {
         public void run() {
@@ -57,7 +57,7 @@ public class View implements CommandQueue {
         }
     };
 
-    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
+    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;

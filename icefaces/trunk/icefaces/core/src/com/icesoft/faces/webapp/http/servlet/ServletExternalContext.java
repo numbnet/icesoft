@@ -54,7 +54,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
-    public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor sessionMonitor) {
+    public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
         this.authenticationVerifier = createAuthenticationVerifier();
@@ -348,9 +348,9 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public class InterceptingHttpSession extends ProxyHttpSession {
-        private final SessionDispatcher.Listener.Monitor sessionMonitor;
+        private final SessionDispatcher.Monitor sessionMonitor;
 
-        public InterceptingHttpSession(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor) {
+        public InterceptingHttpSession(HttpSession session, SessionDispatcher.Monitor sessionMonitor) {
             super(session);
             this.sessionMonitor = sessionMonitor;
         }

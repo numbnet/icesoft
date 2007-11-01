@@ -66,7 +66,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private PseudoServlet servlet;
     private HttpSession session;
 
-    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
+    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
         this.session = session;
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);

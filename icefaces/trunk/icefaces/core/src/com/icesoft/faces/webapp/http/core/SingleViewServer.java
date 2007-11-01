@@ -16,12 +16,12 @@ public class SingleViewServer implements Server {
     private String sessionID;
     private ViewQueue allUpdatedViews;
     private Configuration configuration;
-    private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private Server server;
     private ResourceDispatcher resourceDispatcher;
 
-    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;

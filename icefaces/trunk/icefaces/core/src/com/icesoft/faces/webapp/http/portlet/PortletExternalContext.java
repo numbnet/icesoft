@@ -40,7 +40,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     private RenderResponse response;
     private PortletSession session;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Listener.Monitor monitor, Object config) {
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object config) {
         super(viewIdentifier, commandQueue, configuration);
         this.config = (PortletConfig) config;
         this.request = new PortletEnvironmentRenderRequest(request);

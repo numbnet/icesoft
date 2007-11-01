@@ -16,12 +16,12 @@ public class MultiViewServer implements Server {
     private ViewQueue asynchronouslyUpdatedViews;
     private String sessionID;
     private Configuration configuration;
-    private SessionDispatcher.Listener.Monitor sessionMonitor;
+    private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
     private Server server;
     private ResourceDispatcher resourceDispatcher;
 
-    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Listener.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         this.session = session;
         this.sessionID = sessionID;
         this.sessionMonitor = sessionMonitor;
