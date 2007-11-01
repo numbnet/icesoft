@@ -26,7 +26,7 @@ public class PanelCollapsible extends UICommand {
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
     private Boolean toggleOnClick = null; 
-    
+
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
@@ -40,6 +40,7 @@ public class PanelCollapsible extends UICommand {
     	Map map = context.getExternalContext().getRequestParameterMap();
     	String clientId = getClientId(context)+"Expanded";
     	if (map.containsKey(clientId) && !map.get(clientId).toString().equals("")) {
+            getAttributes().put(getMatureClientId()+"changedByDecode", "true");
     		boolean exp = Boolean.valueOf(map.get(clientId).toString()).booleanValue();
     		exp = !exp;
     		setExpanded(exp);
@@ -89,6 +90,7 @@ public class PanelCollapsible extends UICommand {
     	//this component instance.
   
         getAttributes().put(getMatureClientId(), Boolean.valueOf(expanded));
+
     }
     
     public String getStyle() {
@@ -213,11 +215,11 @@ public class PanelCollapsible extends UICommand {
   	   if (isExpanded()) {
   		   super.processDecodes(context);
   	   } else {//now process the children of the header only
-  		   UIComponent headerFacet = getFacet("header");
-  		   if(headerFacet != null){
-  			   headerFacet.processDecodes(context);
-  		   }
-       }
+  		 UIComponent headerFacet = getFacet("header");
+         if(headerFacet != null){
+         	headerFacet.processDecodes(context);
+         }
+  	   }
   	   decode(context);
      }
 
@@ -228,10 +230,10 @@ public class PanelCollapsible extends UICommand {
   	   if (isExpanded()) {
   		   super.processValidators(context);
   	   } else {//now process the children of the header only
-  		   UIComponent headerFacet = getFacet("header");
-  		   if(headerFacet != null){
-  			   headerFacet.processValidators(context);
-  		   }
+    		 UIComponent headerFacet = getFacet("header");
+             if(headerFacet != null){
+             	headerFacet.processValidators(context);
+             }
        }
      }
 
@@ -241,16 +243,17 @@ public class PanelCollapsible extends UICommand {
      public void processUpdates(FacesContext context) {
     	if (isExpanded()) {
     		super.processUpdates(context);
-    	} else {//now process the children of the header only
-  		   UIComponent headerFacet = getFacet("header");
-  		   if(headerFacet != null){
-  			   headerFacet.processUpdates(context);
-  		   }
-       }
+    	}  else {//now process the children of the header only
+     		 UIComponent headerFacet = getFacet("header");
+             if(headerFacet != null){
+             	headerFacet.processUpdates(context);
+             }
+      	}
         ValueBinding vb = getValueBinding("expanded");
         //Let bean to know that the component's expanded state 
         //has been changed by the decode method. 
-        if (vb != null) {
+        if (vb != null && getAttributes().get(getMatureClientId()+"changedByDecode") != null) {
+        	getAttributes().remove(getMatureClientId()+"changedByDecode");
             try {
             	vb.setValue(context, getAttributes().get(getClientId(getFacesContext())));
             	return;
