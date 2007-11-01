@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 public class ServletRequestResponse implements Request, Response {
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
@@ -152,7 +151,8 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void setHeader(String name, String value) {
-        //CR and LF embedded in headers can corrup the HTTP response
+        if (ignoreHeader(name, value)) return;
+        //CR and LF embedded in headers can corrupt the HTTP response
         value = HEADER_FIXER.matcher(value).replaceAll("");
         if ("Content-Type".equals(name)) {
             response.setContentType(value);
@@ -164,6 +164,7 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void setHeader(String name, String[] values) {
+        if (ignoreHeader(name, values)) return;
         for (int i = 0; i < values.length; i++) {
             String safeValue = HEADER_FIXER.matcher(values[i]).replaceAll("");
             response.addHeader(name, safeValue);
@@ -171,6 +172,7 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void setHeader(String name, Date value) {
+        if (ignoreHeader(name, value)) return;
         response.setDateHeader(name, value.getTime());
     }
 
@@ -229,5 +231,9 @@ public class ServletRequestResponse implements Request, Response {
     private void checkExistenceOf(String name) {
         if (request.getParameter(name) == null)
             throw new RuntimeException("Query does not contain parameter named: " + name);
+    }
+
+    private static boolean ignoreHeader(String name, Object value) {
+        return name == null || value == null;
     }
 }
