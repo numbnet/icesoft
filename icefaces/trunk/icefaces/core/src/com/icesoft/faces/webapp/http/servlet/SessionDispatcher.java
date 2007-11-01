@@ -182,7 +182,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void shutdown() {
             try {
-                SessionMonitors.remove(session);
+                SessionMonitors.remove(this);
                 notifySessionShutdown(session);
             } catch (IllegalStateException e) {
                 //session was already invalidated by the container
