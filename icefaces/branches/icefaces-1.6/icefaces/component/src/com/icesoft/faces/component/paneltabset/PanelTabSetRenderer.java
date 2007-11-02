@@ -430,6 +430,7 @@ public class PanelTabSetRenderer
         validateParameters(facesContext, uiComponent, PanelTabSet.class);
 
         PanelTabSet tabSet = (PanelTabSet) uiComponent;
+        tabSet.saveConsistentSelectedIndex();
         Map paramMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         int tabIdx = 0;
@@ -452,7 +453,7 @@ public class PanelTabSetRenderer
                     paramValue = (String) paramMap.get(paramName);
                     if (paramValue != null && paramValue.length() > 0) {
                         int oldTabIdx = tabSet.getSelectedIndex();
-                        tabSet.setSelectedIndex(tabIdx);
+                        tabSet.setSubmittedSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));
@@ -475,7 +476,7 @@ public class PanelTabSetRenderer
                     paramValue = (String) paramMap.get(paramName);
                     if (paramValue != null && paramValue.length() > 0) {
                         int oldTabIdx = tabSet.getSelectedIndex();
-                        tabSet.setSelectedIndex(tabIdx);
+                        tabSet.setSubmittedSelectedIndex(tabIdx);
                         tabSet.queueEvent(new TabChangeEvent(tabSet,
                                                              oldTabIdx,
                                                              tabIdx));

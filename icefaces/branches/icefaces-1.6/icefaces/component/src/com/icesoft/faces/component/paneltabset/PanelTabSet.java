@@ -107,7 +107,7 @@ public class PanelTabSet
 //            decode(context);
 
         int tabIdx = 0;
-        int selectedIndex = getSelectedIndex();
+        int selectedIndex = getConsistentSelectedIndex();
 
         if (super.getValue() != null) {
             int rowIndex = super.getFirst();
@@ -198,6 +198,7 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
+        _selectedIndex.validate(context, this);
         applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
     }
 
@@ -402,6 +403,40 @@ public class PanelTabSet
             return selIdx.intValue();
         }
         return DEFAULT_SELECTEDINDEX;
+    }
+    
+    /**
+     * The consistent selectedIndex should be saved away regardless of if
+     *  there's anything to decode, because applications may have a binding
+     *  to this component, and be calling setSelectedIndex(-) or even
+     *  setSubmittedSelectedIndex(-).  
+     */
+    void saveConsistentSelectedIndex() {
+        _selectedIndex.saveValue(FacesContext.getCurrentInstance(), this);
+    }
+        
+    /**
+     * There's a tricky issue where were have to update our selectedIndex in
+     *  the validation phase, and set its ValueBinding in the update model
+     *  phase, but we have to keep the old selectedIndex so that we know which
+     *  tab to be forwarding all the phases (including validate, update model,
+     *  and invoke application, but not render) invocations to.
+     * This should behave like getSelectedIndex() with default values, etc.
+     */
+    int getConsistentSelectedIndex() {
+        Number selIdx = (Number) _selectedIndex.getSavedValue(
+            FacesContext.getCurrentInstance(), this);
+        if(selIdx != null) {
+            return selIdx.intValue();
+        }
+        return DEFAULT_SELECTEDINDEX;
+    }
+    
+    /**
+     * Invoked on decode, to set which tab index the user clicked on
+     */
+    void setSubmittedSelectedIndex(int selectedIndex) {
+        _selectedIndex.setSubmittedValue(this, new Integer(selectedIndex));
     }
 
     /**
