@@ -168,15 +168,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * @return list of FacesMessages
      */
     public Iterator getMessages(String clientId) {
-        try {
-            return ((Vector) faceMessages.get(clientId)).iterator();
-        } catch (NullPointerException e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Cannot find clientId " + clientId +
-                        "from facesMessages");
+        Object obj = faceMessages.get(clientId);
+        if( obj == null ){
+            if (log.isTraceEnabled()) {
+                log.trace( clientId + " has no FacesMessages");
             }
             return Collections.EMPTY_LIST.iterator();
         }
+
+        return ((Vector)obj).iterator();
     }
 
     public RenderKit getRenderKit() {
