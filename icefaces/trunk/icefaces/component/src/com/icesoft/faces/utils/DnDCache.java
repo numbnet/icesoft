@@ -35,8 +35,11 @@ package com.icesoft.faces.utils;
 
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.panelpositioned.PanelPositionedValue;
+import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,14 +62,27 @@ public class DnDCache implements java.io.Serializable {
 
 
     public static DnDCache getInstance(FacesContext context, boolean encoding) {
-        String viewId = context.getViewRoot().getViewId();
-        Map map = context.getExternalContext().getSessionMap();
-        DnDCache cache = (DnDCache) map.get(SESSION_KEY);
-        if (cache == null) {
-            cache = new DnDCache();
-            map.put(SESSION_KEY, cache);
+        if (CoreUtils.isPortletEnvironment()) {
+            PortletSession portletSession = (PortletSession) context.
+                        getExternalContext().getSession(false);
+            DnDCache cache = (DnDCache) portletSession.getAttribute
+                              (SESSION_KEY, PortletSession.APPLICATION_SCOPE);
+            if (cache == null) {
+                cache = new DnDCache();
+                portletSession.setAttribute(SESSION_KEY,cache, 
+                        PortletSession.APPLICATION_SCOPE);
+            }
+            return cache;
+        } else {
+            String viewId = context.getViewRoot().getViewId();
+            Map map = context.getExternalContext().getSessionMap();
+            DnDCache cache = (DnDCache) map.get(SESSION_KEY);
+            if (cache == null) {
+                cache = new DnDCache();
+                map.put(SESSION_KEY, cache);
+            }
+            return cache;
         }
-        return cache;
     }
 
 
