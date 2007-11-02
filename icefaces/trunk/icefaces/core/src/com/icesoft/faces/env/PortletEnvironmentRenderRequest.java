@@ -64,16 +64,13 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
 
         //Some portal containers do not add the javax.servlet.include.*
         //attributes to the attribute names collection so they are not
-        //copied into our own collection.  So we do that here if
-        //necessary:
+        //copied into our own collection.  We do that here as necessary.
+        addExtraAttributes(Constants.INC_CONSTANTS);
 
-        String[] incKeys = Constants.INC_CONSTANTS;
-        for (int index = 0; index < incKeys.length; index++) {
-            String incVal = (String)this.request.getAttribute(incKeys[index]);
-            if( !attributes.containsKey(incKeys[index]) && incVal != null ){
-                attributes.put(incKeys[index], incVal);
-            }
-        }
+        //ICE-2247: Some javax.portlet.* constants to add as well as
+        //Liferay specific ones.
+        addExtraAttributes(Constants.PORTLET_CONSTANTS);
+        addExtraAttributes(Constants.LIFERAY_CONSTANTS);
 
         parameters = new HashMap();
         Enumeration parameterNames = this.request.getParameterNames();
@@ -88,6 +85,15 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
             String name = (String) propertyNames.nextElement();
             Enumeration values = this.request.getProperties(name);
             properties.put(name, Collections.list(values));
+        }
+    }
+
+    private void addExtraAttributes(String[] keys){
+        for (int index = 0; index < keys.length; index++) {
+            Object val = this.request.getAttribute(keys[index]);
+            if( !attributes.containsKey(keys[index]) && val != null ){
+                attributes.put(keys[index], val);
+            }
         }
     }
 
