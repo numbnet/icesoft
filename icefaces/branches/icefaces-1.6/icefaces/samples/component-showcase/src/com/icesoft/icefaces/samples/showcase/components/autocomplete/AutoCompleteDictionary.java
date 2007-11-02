@@ -40,8 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -120,15 +119,36 @@ public class AutoCompleteDictionary {
         // get the path of the compressed file
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
                 getExternalContext().getSession(true);
+/*
         String basePath =
                 session.getServletContext().getRealPath("/WEB-INF/resources");
         basePath += "/city.xml.zip";
+*/
+
+        File temp = null;
+        try {
+            InputStream is = session.getServletContext().getResourceAsStream("/WEB-INF/resources/city.xml.zip");
+            OutputStream os;
+            temp = File.createTempFile("city.xml", ".zip");
+            temp.deleteOnExit();
+            os = new FileOutputStream(temp);
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = is.read(buf)) > 0) {
+                os.write(buf, 0, len);
+            }
+            is.close();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // extract the file
         ZipEntry zipEntry;
         ZipFile zipFile;
         try {
-            zipFile = new ZipFile(basePath);
+            zipFile = new ZipFile(temp);
+//            zipFile = new ZipFile(basePath);
             zipEntry = zipFile.getEntry("city.xml");
         }
         catch (Exception e) {
