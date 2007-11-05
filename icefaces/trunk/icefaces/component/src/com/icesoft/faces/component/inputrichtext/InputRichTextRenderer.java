@@ -28,6 +28,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             root.appendChild(div);
             if (inputRichText.isToolbarOnly()) {
                 div.setAttribute(HTML.ID_ATTR, inputRichText.getId());
+                div.setAttribute(HTML.STYLE_ATTR, "width:"+ inputRichText.getWidth() +"px; height:"+ inputRichText.getHeight() +"px;");                
                 domContext.stepOver();
                 return;
             } else {
