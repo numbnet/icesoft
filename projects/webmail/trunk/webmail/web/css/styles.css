@@ -331,7 +331,7 @@ width:50%;
 
 /* STYLES ADDED FOR FACELETS TEMPLATING */
 #maincontainer{
-    width: 1000px; /*Width of main container*/
+    width: 985px; /*Width of main container*/
     margin: 0 auto; /*Center container on page*/
 }
 
@@ -342,7 +342,7 @@ width:50%;
 #navigationsection{
 	float: left;
     width: 290px;
-    margin-left: -1000px; /*Set left margin to -(MainContainerWidth)*/
+    margin-left: -985px; /*Set left margin to -(MainContainerWidth)*/
 
     height: 400px;    
     border: 1px solid #DEDEDE;
