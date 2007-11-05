@@ -63,7 +63,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +84,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private String viewNumber;
     private CommandQueue commandQueue;
     private Configuration configuration;
-    private Collection jsCodeURIs = new HashSet();
-    private Collection cssRuleURIs = new HashSet();
+    private Collection jsCodeURIs = new ArrayList();
+    private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
 
     public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, ResourceDispatcher resourceDispatcher) {
@@ -169,14 +168,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      */
     public Iterator getMessages(String clientId) {
         Object obj = faceMessages.get(clientId);
-        if( obj == null ){
+        if (obj == null) {
             if (log.isTraceEnabled()) {
-                log.trace( clientId + " has no FacesMessages");
+                log.trace(clientId + " has no FacesMessages");
             }
             return Collections.EMPTY_LIST.iterator();
         }
 
-        return ((Vector)obj).iterator();
+        return ((Vector) obj).iterator();
     }
 
     public RenderKit getRenderKit() {
@@ -421,36 +420,43 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI loadJavascriptCode(final Resource resource) {
-        URI uri = resourceDispatcher.registerResource("text/javascript", resource);
-        jsCodeURIs.add(uri.toString());
+        String uri = resourceDispatcher.registerResource("text/javascript", resource).toString();
+        if (!jsCodeURIs.contains(uri)) {
+            jsCodeURIs.add(uri);
+        }
         return resolve(uri);
     }
 
     public URI loadJavascriptCode(Resource resource, ResourceLinker.Handler linkerHandler) {
-        URI uri = resourceDispatcher.registerResource("text/javascript", resource, linkerHandler);
-        jsCodeURIs.add(uri.toString());
+        String uri = resourceDispatcher.registerResource("text/javascript", resource, linkerHandler).toString();
+        if (!jsCodeURIs.contains(uri)) {
+            jsCodeURIs.add(uri);
+        }
         return resolve(uri);
     }
 
     public URI loadCSSRules(Resource resource) {
-        URI uri = resourceDispatcher.registerResource("text/css", resource);
-        cssRuleURIs.add(uri.toString());
+        String uri = resourceDispatcher.registerResource("text/css", resource).toString();
+        if (!cssRuleURIs.contains(uri)) {
+            cssRuleURIs.add(uri);
+        }
         return resolve(uri);
     }
 
 
     public URI loadCSSRules(Resource resource, ResourceLinker.Handler linkerHandler) {
-        URI uri = resourceDispatcher.registerResource("text/css", resource, linkerHandler);
-        cssRuleURIs.add(uri.toString());
+        String uri = resourceDispatcher.registerResource("text/css", resource, linkerHandler).toString();
+        if (!cssRuleURIs.contains(uri)) {
+            cssRuleURIs.add(uri);
+        }
         return resolve(uri);
     }
 
-
     public URI registerResource(String mimeType, Resource resource) {
-        return resolve(resourceDispatcher.registerResource(mimeType, resource));
+        return resolve(resourceDispatcher.registerResource(mimeType, resource).toString());
     }
 
-    private URI resolve(URI uri) {
-        return URI.create(application.getViewHandler().getResourceURL(this, uri.toString()));
+    private URI resolve(String uri) {
+        return URI.create(application.getViewHandler().getResourceURL(this, uri));
     }
 }

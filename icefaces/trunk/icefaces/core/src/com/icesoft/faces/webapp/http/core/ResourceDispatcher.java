@@ -35,7 +35,7 @@ public class ResourceDispatcher implements Server {
         String name = prefix + encode(resource);
         if (!registered.contains(name)) {
             registered.add(name);
-            dispatcher.dispatchOn(".*" + name + "$", new ResourceServer(mimeType, resource));
+            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(mimeType, resource));
         }
 
         return URI.create(name);

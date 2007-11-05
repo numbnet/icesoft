@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class MainSessionBoundServlet implements PseudoServlet {
-    private static final String ResourcePrefix = "block/resource/";
+    private static final String ResourcePrefix = "/block/resource/";
     private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final SessionExpired SessionExpired = new SessionExpired();
