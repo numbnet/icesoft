@@ -694,7 +694,7 @@ public class TableRenderer
             rowClass = PORTLET_CSS_DEFAULT.PORTLET_SECTION_BODY;
         }
         if (selectedClass.indexOf(' ') > 1) {
-            return selectedClass.replaceFirst(" ", CoreUtils.getPortletStyleClass(" " + rowClass + " "));
+            return selectedClass.replaceFirst(" ", " " + CoreUtils.getPortletStyleClass(rowClass + " "));
         } else {
             return selectedClass += CoreUtils.getPortletStyleClass("" + rowClass);
         }
