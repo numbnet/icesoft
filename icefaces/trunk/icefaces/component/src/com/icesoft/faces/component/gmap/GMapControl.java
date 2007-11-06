@@ -20,6 +20,7 @@ public class GMapControl extends UIPanel{
     }
     
     private String name;
+    private String localeName;
     private String position;
 
 	public String getName() {
@@ -47,9 +48,16 @@ public class GMapControl extends UIPanel{
 	}
     
     public void encodeBegin(FacesContext context) throws IOException {
-    	JavascriptContext.addJavascriptCall(context, 
-    			"Ice.GoogleMap.addControl('"+ this.getParent().getClientId(context) 
-    			+"', '"+ getName() +"');");
+        String currentName = getName();
+        String mapClientId = this.getParent().getClientId(context); 
+        if (localeName != null && !localeName.equalsIgnoreCase(currentName)) {
+            //control name has been changed so removed the previous control
+            JavascriptContext.addJavascriptCall(context, 
+                  "Ice.GoogleMap.removeControl('"+ mapClientId +"', '"+ localeName +"');");
+        }
+        localeName = currentName;
+        JavascriptContext.addJavascriptCall(context, 
+        "Ice.GoogleMap.addControl('"+ mapClientId +"', '"+ currentName +"');");
     }
     
 }
