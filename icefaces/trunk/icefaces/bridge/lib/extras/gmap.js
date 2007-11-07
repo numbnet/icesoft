@@ -119,6 +119,24 @@ Ice.GoogleMap = {
         }
     },
 
+    removeOverlay:function(ele, overlayId) {
+        var gmapWrapper = Ice.GoogleMap.getGMapWrapper(ele);
+        var overlay = gmapWrapper.overlays[overlayId];
+        if (overlay != null) {
+            gmapWrapper.getRealGMap().removeOverlay(overlay);
+        } else {
+            //nothing found just return
+           return;
+        }
+        var newOvrLyArray = new Object();
+        for (overlayObj in gmapWrapper.overlays) {
+            if (overlayId != overlayObj) {
+                newOvrLyArray[overlayObj] = gmapWrapper.overlays[overlayObj];
+            }
+        }
+        gmapWrapper.overlays = newOvrLyArray;
+    },
+    
     locateAddress: function(clientId, address) {
         var gLatLng = function(point) {
             if (!point) {

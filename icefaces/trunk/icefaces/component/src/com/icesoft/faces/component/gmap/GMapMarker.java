@@ -2,8 +2,10 @@ package com.icesoft.faces.component.gmap;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.faces.component.UIComponent;
@@ -46,13 +48,38 @@ public class GMapMarker extends UIPanel{
 			    }
 			    kid.encodeEnd(context);
 			    if (kid instanceof GMapLatLng) {
-			    	point.add(kid.getAttributes().get("latLngScript"));
-			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ kid.getClientId(context)+"', 'new GMarker("+ kid.getAttributes().get("latLngScript") +")');");
+			    	String call = kid.getAttributes().get("latLngScript").toString();
+                    //if dynamically changed then remove the previous one
+			    	if (call.endsWith("changed")) {
+			    	    call = call.substring(0, call.length() - "changed".length());
+			    	    JavascriptContext.addJavascriptCall(context, 
+			    	            "Ice.GoogleMap.removeOverlay('"+ this.getParent()
+			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");			    	    
+			    	} 
+			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
+			    			"addOverlay('"+ this.getParent().getClientId(context)+
+			    			"', '"+ kid.getClientId(context)+"', 'new GMarker("+ call +")');");
 			    } else if(kid instanceof GMapLatLngs) {
-			    	StringTokenizer st = new StringTokenizer(kid.getAttributes().get("latLngsScript").toString(), ";");
+			        //The list of GMapLatLngs can be dynamic so first remove previously 
+			        //added markers
+			        Iterator it = point.iterator();
+			        while (it.hasNext()) {
+			            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
+			            		"removeOverlay('"+ this.getParent()
+			            		.getClientId(context)+"', '"+ it.next() +"');");		            
+			        }
+			        point.clear();
+			        //now add the fresh list of the markers
+			        StringTokenizer st = new StringTokenizer(kid.getAttributes()
+			                .get("latLngsScript").toString(), ";");
 			    	while(st.hasMoreTokens()) {
 			    		String[] scriptInfo =st.nextToken().split("kid-id");
-			    		JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ scriptInfo[1] +"', 'new GMarker("+ scriptInfo[0] +")');");
+			    		String call = scriptInfo[0];
+			    		String latLngId = scriptInfo[1];
+			    		point.add(latLngId);
+			    		JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
+			    				"addOverlay('"+ this.getParent().getClientId(context)+
+			    				"', '"+ latLngId +"', 'new GMarker("+ call +")');");
 			    	}
 			    }
 	     }

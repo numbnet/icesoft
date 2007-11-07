@@ -10,8 +10,9 @@ public class GMapLatLng extends UIPanel{
 	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMapLatLng";
     private String longitude;
     private String latitude;
-    
-	public GMapLatLng() {
+    private String localeLng;
+    private String localeLat;
+    public GMapLatLng() {
 		setRendererType(null);
 	}
 	
@@ -55,7 +56,18 @@ public class GMapLatLng extends UIPanel{
 		}
 
 		public void generateLatLngScript() {
-			String script = "new GLatLng("+ getLatitude() + ","+ getLongitude() +")";
+            String currentLat = getLatitude();
+            String currentLng = getLongitude();
+            String changed = "";
+            if (localeLat != null && !localeLat.equals(currentLat)) {
+                changed = "changed";
+            }
+            if (localeLng != null && !localeLng.equals(currentLng)) {
+                changed = "changed";
+            }
+            localeLat = currentLat;
+            localeLng = currentLng;
+			String script = "new GLatLng("+ getLatitude() + ","+ getLongitude() +")"+ changed;
 			getAttributes().put("latLngScript", script);
 		}
 
