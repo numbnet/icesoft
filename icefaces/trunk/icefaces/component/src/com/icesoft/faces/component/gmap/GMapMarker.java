@@ -50,12 +50,13 @@ public class GMapMarker extends UIPanel{
 			    if (kid instanceof GMapLatLng) {
 			    	String call = kid.getAttributes().get("latLngScript").toString();
                     //if dynamically changed then remove the previous one
-			    	if (call.endsWith("changed")) {
+			    	if (call.endsWith("changed") || !kid.isRendered()) {
 			    	    call = call.substring(0, call.length() - "changed".length());
 			    	    JavascriptContext.addJavascriptCall(context, 
 			    	            "Ice.GoogleMap.removeOverlay('"+ this.getParent()
-			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");			    	    
+			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");
 			    	} 
+			    	if (!kid.isRendered()) continue;
 			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
 			    			"addOverlay('"+ this.getParent().getClientId(context)+
 			    			"', '"+ kid.getClientId(context)+"', 'new GMarker("+ call +")');");
