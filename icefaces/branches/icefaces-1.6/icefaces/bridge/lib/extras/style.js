@@ -99,7 +99,8 @@ Ice.modal = {
         window.document.documentElement.onkeypress = function(e) {
             return Ice.modal.keypress(e);
         }
-
+        var modal = document.getElementById(target);
+        modal.style.visibility = 'hidden';
         var iframe = document.getElementById('iceModalFrame');
         if (!iframe) {
             iframe = document.createElement('iframe');
@@ -135,13 +136,13 @@ Ice.modal = {
             window.onResize(resize);
         }
 
-        var modal = document.getElementById(target);
 
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
         modal.style.position = 'absolute';
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
+        modal.style.visibility = 'visible';
     },
     stop:function(target) {
         if (Ice.modal.id == target) {
