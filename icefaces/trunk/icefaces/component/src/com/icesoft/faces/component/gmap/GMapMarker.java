@@ -50,13 +50,13 @@ public class GMapMarker extends UIPanel{
 			    if (kid instanceof GMapLatLng) {
 			    	String call = kid.getAttributes().get("latLngScript").toString();
                     //if dynamically changed then remove the previous one
-			    	if (call.endsWith("changed") || !kid.isRendered()) {
+			    	if (call.endsWith("changed") || !kid.isRendered() || !isRendered()) {
 			    	    call = call.substring(0, call.length() - "changed".length());
 			    	    JavascriptContext.addJavascriptCall(context, 
 			    	            "Ice.GoogleMap.removeOverlay('"+ this.getParent()
 			    	            .getClientId(context)+"', '"+ kid.getClientId(context)+"');");
 			    	} 
-			    	if (!kid.isRendered()) continue;
+			    	if (!kid.isRendered() || !isRendered()) continue;
 			    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap." +
 			    			"addOverlay('"+ this.getParent().getClientId(context)+
 			    			"', '"+ kid.getClientId(context)+"', 'new GMarker("+ call +")');");
@@ -70,7 +70,7 @@ public class GMapMarker extends UIPanel{
 			            		.getClientId(context)+"', '"+ it.next() +"');");		            
 			        }
 			        point.clear();
-			        if (!kid.isRendered()) continue;
+			        if (!kid.isRendered() || !isRendered()) continue;
 			        //now add the fresh list of the markers
 			        StringTokenizer st = new StringTokenizer(kid.getAttributes()
 			                .get("latLngsScript").toString(), ";");
