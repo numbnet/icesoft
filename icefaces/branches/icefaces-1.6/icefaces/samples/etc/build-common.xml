@@ -214,7 +214,7 @@
     </ear>
 </target>
 
-<target name="help" description="help information for building different versions of this application">
+<target name="parameterhelp" description="help information for building different versions of this application">
 	<echo level="info">
 	-Djsf12=""                  to build the web application archive (war file) for jsf1.2 version
 	-Djsf12="" -Dserverjsf=""   to build the web application archive (war file) for Jboss 4.2, GlassfishV2 and SUN App ServerPE9
