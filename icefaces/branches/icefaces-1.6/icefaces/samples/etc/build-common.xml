@@ -187,19 +187,19 @@
     </sequential>
 </macrodef>
 
-<target name="clean">
+<target name="clean" description="">
     <clean/>
 </target>
 
-<target name="compile">
+<target name="compile" description="">
     <compile/>
 </target>
 
-<target name="build.war" depends="compile">
+<target name="build.war" description="" depends="compile">
     <build.war/>
 </target>
 
-<target name="build.ear" depends="build.war">
+<target name="build.ear" description="" depends="build.war">
     <copy todir="conf" preservelastmodified="true">
         <fileset dir="${build.common.basedir}" includes="application.xml">
             <present present="srconly" targetdir="conf"/>
@@ -214,10 +214,11 @@
     </ear>
 </target>
 
-<target name="help">
+<target name="help" description="help information for building different versions of this application">
 	<echo level="info">
 	-Djsf12=""                  to build the web application archive (war file) for jsf1.2 version
-	-Djsf12="" -Dserverjsf=""   to build the web application archive (war file) for Jboss 4.2
+	-Djsf12="" -Dserverjsf=""   to build the web application archive (war file) for Jboss 4.2, GlassfishV2 and SUN App ServerPE9
+	-Dmyfaces=""                to build the web application archive (war file) for Facelets
 	</echo>
 </target>
 
