@@ -99,7 +99,8 @@ Ice.modal = {
         window.document.documentElement.onkeypress = function(e) {
             return Ice.modal.keypress(e);
         }
-
+        var modal = document.getElementById(target);
+        modal.style.visibility = 'hidden';
         var iframe = document.getElementById('iceModalFrame');
         if (!iframe) {
             iframe = document.createElement('iframe');
@@ -142,6 +143,7 @@ Ice.modal = {
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
+        modal.style.visibility = 'visible';        
     },
     stop:function(target) {
         if (Ice.modal.id == target) {
