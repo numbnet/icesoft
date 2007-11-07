@@ -34,15 +34,12 @@
 package com.icesoft.faces.component.panelpopup;
 
 import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
-import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -115,11 +112,11 @@ public class PanelPopupRenderer extends GroupRenderer {
             if (dndType != null) {
                 // Drag an drop needs some hidden fields
                 Element statusField = createHiddenField(domContext,
-                                                        facesContext,
-                                                        uiComponent, STATUS);
+                        facesContext,
+                        uiComponent, STATUS);
                 rootDiv.appendChild(statusField);
                 Element targetID = createHiddenField(domContext, facesContext,
-                                                     uiComponent, DROP);
+                        uiComponent, DROP);
                 rootDiv.appendChild(targetID);
             }
             // Write Modal Javascript so that on refresh it will still be modal.
@@ -128,8 +125,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             if (script != null) {
                 Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
                 scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
-                                       HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
-                script = "window.onLoad(function(){" + script + "});";
+                        HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
                 Node node = domContext.createTextNode(script);
                 scriptEle.appendChild(node);
                 rootDiv.appendChild(scriptEle);
@@ -138,17 +134,12 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         Element root = (Element) domContext.getRootNode();
         String style = ((PanelPopup) uiComponent).getStyle();
-        if(style != null && style.length() > 0)
+        if (style != null && style.length() > 0)
             root.setAttribute(HTML.STYLE_ATTR, style);
         else
             root.removeAttribute(HTML.STYLE_ATTR);
         try {
             root.setAttribute(HTML.CLASS_ATTR, styleClass);
-            String script =
-                    modalJavascript(modal, visible, facesContext, clientId);
-            if (script != null) {
-                JavascriptContext.addJavascriptCall(facesContext, script);
-            }
         } catch (Exception e) {
             log.error("Error rendering Modal Panel Popup ", e);
         }
@@ -178,7 +169,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             UIComponent header = panelPopup.getHeader();
 
             domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), headerTd);
+                    domContext.getRootNode(), headerTd);
 
             CustomComponentUtils.renderChild(facesContext, header);
         }
@@ -201,7 +192,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             UIComponent body = panelPopup.getBody();
 
             domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), bodyTd);
+                    domContext.getRootNode(), bodyTd);
 
             CustomComponentUtils.renderChild(facesContext, body);
         }
@@ -210,7 +201,7 @@ public class PanelPopupRenderer extends GroupRenderer {
             Element footerTr = domContext.createElement(HTML.TR_ELEM);
             footerTr.setAttribute(HTML.HEIGHT_ATTR, "15px");
             footerTr.setAttribute(HTML.STYLE_ATTR,
-                                  "text-align: right; float: right;");
+                    "text-align: right; float: right;");
             Element footerTd = domContext.createElement(HTML.TD_ELEM);
             footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
             Element img = domContext.createElement(HTML.IMG_ELEM);

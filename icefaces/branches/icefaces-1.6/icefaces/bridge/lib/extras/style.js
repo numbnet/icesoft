@@ -106,15 +106,13 @@ Ice.modal = {
             iframe.title = 'Ice Modal Frame';
             iframe.frameborder = "0";
             iframe.id = 'iceModalFrame';
-            var context = configuration.connection.context;
-            var dest = context + 'xmlhttp/blank';
-            iframe.src = dest;
+            iframe.src = 'about:blank';
             iframe.style.zIndex = 25000;
             iframe.style.opacity = 0.5;
             iframe.style.filter = 'alpha(opacity=50)';
 
             iframe.style.position = 'absolute';
-            iframe.style.visibility = 'visible';
+            iframe.style.visibility = 'hidden';
             iframe.style.backgroundColor = 'black';
 
             iframe.style.top = '0';
@@ -130,6 +128,7 @@ Ice.modal = {
                     var bodyHeight = document.body.scrollHeight;
                     frame.style.width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) + 'px';
                     frame.style.height = (bodyHeight > documentHeight ? bodyHeight : documentHeight) + 'px';
+                    frame.style.visibility = 'visible';
                 }
             };
             resize();
