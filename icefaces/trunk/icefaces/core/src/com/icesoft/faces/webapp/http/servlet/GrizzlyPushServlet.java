@@ -88,7 +88,9 @@ public class GrizzlyPushServlet
                     "ServletContext.getContextPath not defined", e );
         }
         CometEngine cometEngine = CometEngine.getEngine();
-        CometContext context = cometEngine.register(contextPath);    
+        CometContext context = cometEngine.register(contextPath);
+        //disable timeout thread
+        context.setExpirationDelay(-1);
     }
 
     public void destroy() {
