@@ -101,6 +101,7 @@ Ice.modal = {
         }
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
+        modal.style.position = 'absolute';        
         var iframe = document.getElementById('iceModalFrame');
         if (!iframe) {
             iframe = document.createElement('iframe');
@@ -139,7 +140,6 @@ Ice.modal = {
         var modal = document.getElementById(target);
 
         modal.style.zIndex = parseInt(iframe.style.zIndex) + 1;
-        modal.style.position = 'absolute';
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
