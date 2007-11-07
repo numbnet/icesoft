@@ -22,10 +22,7 @@ public class PageServer implements Server {
             response.setHeader("Expires", 0);//prevents proxy caching
             response.setHeader("Content-Type", "text/html");
             com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            synchronized (facesContext) {
-                lifecycle.execute(facesContext);
-                lifecycle.render(facesContext);
-            }
+            LifecycleExecutor.getLifecycleExecutor().apply(facesContext);
         }
     };
 
