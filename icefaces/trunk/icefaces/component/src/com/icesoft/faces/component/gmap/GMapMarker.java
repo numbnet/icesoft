@@ -70,6 +70,7 @@ public class GMapMarker extends UIPanel{
 			            		.getClientId(context)+"', '"+ it.next() +"');");		            
 			        }
 			        point.clear();
+			        if (!kid.isRendered()) continue;
 			        //now add the fresh list of the markers
 			        StringTokenizer st = new StringTokenizer(kid.getAttributes()
 			                .get("latLngsScript").toString(), ";");
