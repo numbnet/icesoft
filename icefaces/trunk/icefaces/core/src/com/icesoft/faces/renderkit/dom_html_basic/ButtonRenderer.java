@@ -123,12 +123,12 @@ public class ButtonRenderer extends DomBasicRenderer {
         // The logic here holds true when there is no image attribute
         // But suns JSF implementation allows for type button, we allow it as well.
         String typeAttribute =
-                ((String) uiComponent.getAttributes().get("type"))
-                        .toLowerCase();
+                ((String) uiComponent.getAttributes().get("type"));
         if (typeAttribute == null || (!typeAttribute.equals("reset") &&
                                       (!typeAttribute.equals("button")))) {
             typeAttribute = "submit";
         }
+        typeAttribute = typeAttribute.toLowerCase();
         uiComponent.getAttributes().put("type", typeAttribute);
 
         // If image attribute is specified, the type is "image"
