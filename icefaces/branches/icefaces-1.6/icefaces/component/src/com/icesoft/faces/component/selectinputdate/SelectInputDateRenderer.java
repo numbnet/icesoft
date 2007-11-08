@@ -712,7 +712,7 @@ public class SelectInputDateRenderer
                 }                
             }
             
-            String cellStyle = inputComponent.getHighlightDayCellClass() + inputComponent.getDayCellClass();            
+            String cellStyle = inputComponent.getDayCellClass() + " " + inputComponent.getHighlightDayCellClass();            
             
             
             if ((cal.get(Calendar.DAY_OF_MONTH) == day) &&
