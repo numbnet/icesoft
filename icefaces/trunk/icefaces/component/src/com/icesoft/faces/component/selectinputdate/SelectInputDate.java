@@ -852,10 +852,25 @@ public class SelectInputDate
     private String highlightDayClass ="";   
     
     String getHighlightDayCellClass() {
-        return highlightYearClass  + 
-        highlightMonthClass + 
-        highlightWeekClass + 
-        highlightDayClass;
+        StringBuffer sb = new StringBuffer(64);
+        if(highlightYearClass != null && highlightYearClass.length() > 0)
+            sb.append(highlightYearClass);
+        if(highlightMonthClass != null && highlightMonthClass.length() > 0) {
+            if(sb.length() > 0)
+                sb.append(' ');
+            sb.append(highlightMonthClass);
+        }
+        if(highlightWeekClass != null && highlightWeekClass.length() > 0) {
+            if(sb.length() > 0)
+                sb.append(' ');
+            sb.append(highlightWeekClass);
+        }
+        if(highlightDayClass != null && highlightDayClass.length() > 0) {
+            if(sb.length() > 0)
+                sb.append(' ');
+            sb.append(highlightDayClass);
+        }
+        return sb.toString();
     }
 
     String getHighlightMonthClass() {
@@ -880,13 +895,19 @@ public class SelectInputDate
 
     void addHighlightWeekClass(String highlightWeekClass) {
         if (this.highlightWeekClass.indexOf(highlightWeekClass) == -1) {
-            this.highlightWeekClass += (highlightWeekClass + " ");
+            if(this.highlightWeekClass == null || this.highlightWeekClass.length() == 0)
+                this.highlightWeekClass = highlightWeekClass;
+            else
+                this.highlightWeekClass = this.highlightWeekClass + " " + highlightWeekClass;
         }
     }
 
     void addHighlightDayClass(String highlightDayClass) {
         if (this.highlightDayClass.indexOf(highlightDayClass) == -1) {
-            this.highlightDayClass += (highlightDayClass + " ");
+            if(this.highlightDayClass == null || this.highlightDayClass.length() == 0)
+                this.highlightDayClass = highlightDayClass;
+            else
+                this.highlightDayClass = this.highlightDayClass + " " + highlightDayClass;
         }
     }
 
