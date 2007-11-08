@@ -218,7 +218,7 @@
 	<echo level="info">
 	-Djsf12=""                  to build the web application archive (war file) for jsf1.2 version
 	-Djsf12="" -Dserverjsf=""   to build the web application archive (war file) for Jboss 4.2, GlassfishV2 and SUN App ServerPE9
-	-Dmyfaces=""                to build the web application archive (war file) for Facelets
+	-Dmyfaces=""                to build the web application archive (war file) for MyFaces
 	</echo>
 </target>
 
