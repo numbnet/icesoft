@@ -19,6 +19,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 public class GMap extends UICommand{
 	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
+    private String DEFAULT_LONGITUDE = "-101.162109375";
+    private String DEFAULT_LATITUDE = "56.46249048388979";
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
@@ -57,7 +59,7 @@ public class GMap extends UICommand{
             return longitude;
         }
         ValueBinding vb = getValueBinding("longitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "-101.162109375";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : DEFAULT_LONGITUDE;
 	}
 
 	public String getLatitude() {
@@ -65,7 +67,7 @@ public class GMap extends UICommand{
             return latitude;
         }
         ValueBinding vb = getValueBinding("latitude");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "56.46249048388979";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : DEFAULT_LATITUDE;
 	}
 
 	public void setLongitude(String longitude) {
@@ -112,10 +114,19 @@ public class GMap extends UICommand{
     					"Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
     					"').getRealGMap().setZoom("+ getZoomLevel() +");");
     		} else { 
-    			JavascriptContext.addJavascriptCall(context, 
-    					"Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
-    					"').getRealGMap().setCenter(new GLatLng("+ getLatitude() 
-    					+", "+ getLongitude()+"), "+ getZoomLevel() +");");
+    		    String latitude = getLatitude();
+    		    String longitude = getLongitude();
+    		    try {
+    		        Float.parseFloat(latitude);
+    		        Float.parseFloat(longitude);
+                } catch (NumberFormatException e) {
+                    latitude = DEFAULT_LATITUDE;
+                    longitude = DEFAULT_LONGITUDE;
+                }
+                JavascriptContext.addJavascriptCall(context, 
+                        "Ice.GoogleMap.getGMapWrapper('"+ getClientId(context)+
+                        "').getRealGMap().setCenter(new GLatLng("+ latitude 
+                        +", "+ longitude +"), "+ getZoomLevel() +");");
     		}
     	}
     	JavascriptContext.addJavascriptCall(context, 
