@@ -101,7 +101,7 @@ Ice.modal = {
         }
         var modal = document.getElementById(target);
         modal.style.visibility = 'hidden';
-        modal.style.position = 'absolute';        
+        modal.style.position = 'absolute';
         var iframe = document.getElementById('iceModalFrame');
         if (!iframe) {
             iframe = document.createElement('iframe');
@@ -119,7 +119,8 @@ Ice.modal = {
 
             iframe.style.top = '0';
             iframe.style.left = '0';
-            document.body.appendChild(iframe);
+            //trick to avoid bug in IE, see http://support.microsoft.com/kb/927917
+            modal.parentNode.insertBefore(iframe, modal);
             var resize = function() {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame');
@@ -143,7 +144,7 @@ Ice.modal = {
         Ice.modal.target = modal;
         Ice.modal.id = target;
         Ice.modal.running = true;
-        modal.style.visibility = 'visible';        
+        modal.style.visibility = 'visible';
     },
     stop:function(target) {
         if (Ice.modal.id == target) {
