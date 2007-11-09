@@ -75,24 +75,6 @@ Ice.FCKeditor.prototype = {
 			this.thirdPartyObject.CreateIce(ele);	
 			}
 		}
-			
-
-	},
-	
-	value:function(ele, val) {
-	   var valueHolder = $(ele + 'valueHolder');
-    var value = valueHolder.value;
-		try {
-			var oEditor = FCKeditorAPI.GetInstance(ele) ;
-			if ( oEditor.EditMode == FCK_EDITMODE_WYSIWYG )
-			{
-				oEditor.SetHTML( value) ;
-				oEditor.Focus();
-			}
-			else
-				alert( 'You must be on WYSIWYG mode!' ) ;
-	 	} catch (err){
-	 	}
 	}
 }
 Object.extend(Ice.FCKeditor,  Ice.Repository);
