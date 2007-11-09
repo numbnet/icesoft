@@ -153,7 +153,9 @@ public class ServletRequestResponse implements Request, Response {
 
     public void setHeader(String name, String value) {
         //CR and LF embedded in headers can corrup the HTTP response
-        value = HEADER_FIXER.matcher(value).replaceAll("");
+        if (null != value) {
+            value = HEADER_FIXER.matcher(value).replaceAll("");
+        }
         if ("Content-Type".equals(name)) {
             response.setContentType(value);
         } else if ("Content-Length".equals(name)) {
