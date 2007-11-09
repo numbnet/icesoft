@@ -61,9 +61,8 @@ import java.util.Map;
  * exceptions being thrown.
  * <p/>
  */
-public class ServletEnvironmentRequest extends CommonEnvironmentRequest
+public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         implements HttpServletRequest {
-    private HttpServletRequest request;
     private Map headers;
     private Cookie[] cookies;
     private String method;
@@ -89,21 +88,21 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private AuthenticationVerifier authenticationVerifier;
 
     public ServletEnvironmentRequest(Object request, AuthenticationVerifier authenticationVerifier) {
-        this.request = (HttpServletRequest) request;
+        HttpServletRequest initialRequest = (HttpServletRequest) request;
         this.authenticationVerifier = authenticationVerifier;
         //Copy common data
-        authType = this.request.getAuthType();
-        contextPath = this.request.getContextPath();
-        remoteUser = this.request.getRemoteUser();
-        userPrincipal = this.request.getUserPrincipal();
-        requestedSessionId = this.request.getRequestedSessionId();
-        requestedSessionIdValid = this.request.isRequestedSessionIdValid();
+        authType = initialRequest.getAuthType();
+        contextPath = initialRequest.getContextPath();
+        remoteUser = initialRequest.getRemoteUser();
+        userPrincipal = initialRequest.getUserPrincipal();
+        requestedSessionId = initialRequest.getRequestedSessionId();
+        requestedSessionIdValid = initialRequest.isRequestedSessionIdValid();
 
         attributes = new Hashtable();
-        Enumeration attributeNames = this.request.getAttributeNames();
+        Enumeration attributeNames = initialRequest.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String name = (String) attributeNames.nextElement();
-            Object attribute = this.request.getAttribute(name);
+            Object attribute = initialRequest.getAttribute(name);
             if ((null != name) && (null != attribute)) {
                 attributes.put(name, attribute);
             }
@@ -119,62 +118,62 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
         String[] incAttrKeys = Constants.INC_CONSTANTS;
         for (int index = 0; index < incAttrKeys.length; index++) {
             String incAttrKey = incAttrKeys[index];
-            Object incAttrVal = this.request.getAttribute(incAttrKey);
+            Object incAttrVal = initialRequest.getAttribute(incAttrKey);
             if (incAttrVal != null) {
-                attributes.put(incAttrKey, this.request.getAttribute(incAttrKey));
+                attributes.put(incAttrKey, initialRequest.getAttribute(incAttrKey));
             }
         }
 
         headers = new HashMap();
-        Enumeration headerNames = this.request.getHeaderNames();
+        Enumeration headerNames = initialRequest.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String name = (String) headerNames.nextElement();
-            Enumeration values = this.request.getHeaders(name);
+            Enumeration values = initialRequest.getHeaders(name);
             headers.put(name, Collections.list(values));
         }
 
         parameters = new HashMap();
-        Enumeration parameterNames = this.request.getParameterNames();
+        Enumeration parameterNames = initialRequest.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
-            parameters.put(name, this.request.getParameterValues(name));
+            parameters.put(name, initialRequest.getParameterValues(name));
         }
 
-        scheme = this.request.getScheme();
-        serverName = this.request.getServerName();
-        serverPort = this.request.getServerPort();
-        locale = this.request.getLocale();
-        locales = Collections.list(this.request.getLocales());
-        secure = this.request.isSecure();
+        scheme = initialRequest.getScheme();
+        serverName = initialRequest.getServerName();
+        serverPort = initialRequest.getServerPort();
+        locale = initialRequest.getLocale();
+        locales = Collections.list(initialRequest.getLocales());
+        secure = initialRequest.isSecure();
 
         //Copy servlet specific data
-        cookies = this.request.getCookies();
-        method = this.request.getMethod();
-        pathInfo = this.request.getPathInfo();
-        pathTranslated = this.request.getPathTranslated();
-        queryString = this.request.getQueryString();
-        requestURI = this.request.getRequestURI();
-        requestURL = this.request.getRequestURL();
-        servletPath = this.request.getServletPath();
-        servletSession = this.request.getSession();
-        isRequestedSessionIdFromCookie = this.request.isRequestedSessionIdFromCookie();
-        isRequestedSessionIdFromURL = this.request.isRequestedSessionIdFromURL();
-        characterEncoding = this.request.getCharacterEncoding();
-        contentLength = this.request.getContentLength();
-        contentType = this.request.getContentType();
-        protocol = this.request.getProtocol();
-        remoteAddr = this.request.getRemoteAddr();
-        remoteHost = this.request.getRemoteHost();
-        initializeServlet2point4Properties();
+        cookies = initialRequest.getCookies();
+        method = initialRequest.getMethod();
+        pathInfo = initialRequest.getPathInfo();
+        pathTranslated = initialRequest.getPathTranslated();
+        queryString = initialRequest.getQueryString();
+        requestURI = initialRequest.getRequestURI();
+        requestURL = initialRequest.getRequestURL();
+        servletPath = initialRequest.getServletPath();
+        servletSession = initialRequest.getSession();
+        isRequestedSessionIdFromCookie = initialRequest.isRequestedSessionIdFromCookie();
+        isRequestedSessionIdFromURL = initialRequest.isRequestedSessionIdFromURL();
+        characterEncoding = initialRequest.getCharacterEncoding();
+        contentLength = initialRequest.getContentLength();
+        contentType = initialRequest.getContentType();
+        protocol = initialRequest.getProtocol();
+        remoteAddr = initialRequest.getRemoteAddr();
+        remoteHost = initialRequest.getRemoteHost();
+        initializeServlet2point4Properties(initialRequest);
     }
 
-    private void initializeServlet2point4Properties() {
-        ServletContext context = request.getSession().getServletContext();
+    private void initializeServlet2point4Properties(HttpServletRequest servletRequest) {
+        ServletContext context = servletRequest.getSession().getServletContext();
         if (context.getMajorVersion() > 1 && context.getMinorVersion() > 3) {
-            remotePort = this.request.getRemotePort();
-            localName = this.request.getLocalName();
-            localAddr = this.request.getLocalAddr();
-            localPort = this.request.getLocalPort();
+            remotePort = servletRequest.getRemotePort();
+            localName = servletRequest.getLocalName();
+            localAddr = servletRequest.getLocalAddr();
+            localPort = servletRequest.getLocalPort();
         }
     }
 
@@ -189,16 +188,16 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     public void setAttribute(String name, Object value) {
         super.setAttribute(name, value);
         try {
-            request.setAttribute(name, value);
+            activeRequest().setAttribute(name, value);
         } catch (Exception e) {
-            //ignore because the container disposed servletRequest by now 
+            //ignore because the container disposed servletRequest by now
         }
     }
 
     public void removeAttribute(String name) {
         super.removeAttribute(name);
         try {
-            request.removeAttribute(name);
+            activeRequest().removeAttribute(name);
         } catch (Exception e) {
             //ignore because the container disposed servletRequest by now
         }
@@ -266,7 +265,7 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public HttpSession getSession(boolean create) {
-        return request.getSession(create);
+        return activeRequest().getSession(create);
     }
 
     public HttpSession getSession() {
@@ -302,7 +301,7 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public ServletInputStream getInputStream() throws IOException {
-        return request.getInputStream();
+        return activeRequest().getInputStream();
     }
 
     public String getProtocol() {
@@ -310,7 +309,7 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public BufferedReader getReader() throws IOException {
-        return request.getReader();
+        return activeRequest().getReader();
     }
 
     public String getRemoteAddr() {
@@ -322,11 +321,11 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public RequestDispatcher getRequestDispatcher(String name) {
-        return request.getRequestDispatcher(name);
+        return activeRequest().getRequestDispatcher(name);
     }
 
     public String getRealPath(String path) {
-        return request.getRealPath(path);
+        return activeRequest().getRealPath(path);
     }
 
     public int getRemotePort() {
@@ -344,4 +343,6 @@ public class ServletEnvironmentRequest extends CommonEnvironmentRequest
     public int getLocalPort() {
         return localPort;
     }
+
+    protected abstract HttpServletRequest activeRequest();
 }

@@ -58,7 +58,11 @@ public class ServletExternalContext extends BridgeExternalContext {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
         this.authenticationVerifier = createAuthenticationVerifier();
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier);
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier) {
+            protected HttpServletRequest activeRequest() {
+                return ServletExternalContext.this.request;
+            }
+        };
         this.response = (HttpServletResponse) response;
         this.session = new InterceptingHttpSession(this.initialRequest.getSession(), sessionMonitor);
         this.context = this.session.getServletContext();
@@ -171,7 +175,11 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     public void updateOnReload(Object request, Object response) {
         Map previousRequestMap = this.requestMap;
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier);
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier) {
+            protected HttpServletRequest activeRequest() {
+                return ServletExternalContext.this.request;
+            }
+        };
         this.requestMap = new RequestAttributeMap();
         //propagate entries
         this.requestMap.putAll(previousRequestMap);
