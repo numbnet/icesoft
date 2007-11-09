@@ -105,6 +105,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     public static void notifySessionDestroyed(HttpSession session) {
+        SessionIDs.remove(session.getId());
+
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
