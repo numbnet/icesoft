@@ -97,7 +97,7 @@ public class InputRichText extends UIInput {
             return language;
         }
         ValueBinding vb = getValueBinding("language");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "da";
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "en";
     }
 
     /**

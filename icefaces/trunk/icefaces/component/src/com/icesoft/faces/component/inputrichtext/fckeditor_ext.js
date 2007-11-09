@@ -34,7 +34,7 @@
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
-	initialize:function(ele, val, lang, _for, basePath, width, height) {
+	initialize:function(ele, lang, _for, basePath, width, height) {
 	this._for = _for;
 	var valueHolder = $(ele + 'valueHolder');
 	var value = valueHolder.value;
@@ -123,9 +123,24 @@ function FCKeditorSave(editorInstance) {
 		}
 
     } else {
-		var element = $(editorInstance.Name);
-		element.value = editorInstance.GetXHTML(true);
-    }
+        var all = Ice.Repository.getAll();
+        for (i=0; i < all.length; i++) {   
+            var instanceName = all[i].thirdPartyObject.InstanceName;
+            var editIns = FCKeditorAPI.GetInstance(instanceName);
+            var element = $(editIns.Name);
+            //Save the dirty editor only that had the focus
+            if(editIns.IsDirty()) {
+                if (editIns.HasFocus) {
+                    element.value = editIns.GetXHTML(true);
+                } else {
+                    //set the value for editor
+                    var valueHolder = $(editIns.Name + 'valueHolder');
+                    valueHolder.value = editIns.GetXHTML(true);
+                }
+                editIns.ResetIsDirty();
+            }
+        }
+    } 
 	var form = Ice.util.findForm(element);
 	iceSubmit(form,element,new Object());
 	return false;

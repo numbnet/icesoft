@@ -35,18 +35,14 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 div.setAttribute(HTML.ID_ATTR, clientId + "editor");
             }
             StringBuffer call = new StringBuffer();
-            call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '','" + inputRichText.getLanguage() + "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + "', '" + inputRichText.getHeight() + "'));");
-            if (inputRichText.getValue() != null) {
-                call.append("Ice.FCKeditor.getInstance('" + clientId + "').value('" + clientId + "','');");
-            }
 
+            call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() + "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + "', '" + inputRichText.getHeight() + "'));");
             Element textFormat = (Element) domContext.createElement(HTML.INPUT_ELEM);
             textFormat.setAttribute(HTML.TYPE_ATTR, "hidden");
             textFormat.setAttribute(HTML.VALUE_ATTR, "text");
             textFormat.setAttribute(HTML.ID_ATTR, clientId + "Format");
             textFormat.setAttribute(HTML.NAME_ATTR, clientId + "Format");
             root.appendChild(textFormat);
-
             Element hiddenValueHolder = domContext.createElement(HTML.INPUT_ELEM);
             hiddenValueHolder.setAttribute(HTML.TYPE_ATTR, "hidden");
             hiddenValueHolder.setAttribute(HTML.ID_ATTR, clientId + "valueHolder");
