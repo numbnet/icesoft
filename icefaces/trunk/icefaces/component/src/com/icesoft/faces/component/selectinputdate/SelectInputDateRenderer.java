@@ -1035,13 +1035,7 @@ public class SelectInputDateRenderer
         Object clickedLink = requestParameterMap.get(linkId);
         String clientId = component.getClientId(facesContext);
 
-        Map parameter =
-                facesContext.getExternalContext().getRequestParameterMap();
-        String param =
-                (String) parameter.get(component.getClientId(facesContext));
         if (clickedLink != null) {
-
-
             if (log.isDebugEnabled()) {
                 log.debug("linkId::" + linkId + "  clickedLink::" +
                           clickedLink + "  clientId::" + clientId);
@@ -1150,10 +1144,12 @@ public class SelectInputDateRenderer
             log.debug("decodeUIInput::");
             log.debug("#################################");
         }
-        String inputTextDateId = component.getClientId(facesContext) +
-        SelectInputDate.CALENDAR_INPUTTEXT;
-        if (requestParameterMap.containsKey(inputTextDateId)) {
-            ((BridgeFacesContext)facesContext).setFocusId(inputTextDateId);
+        String inputDateTextId = component.getClientId(facesContext) +
+            SelectInputDate.CALENDAR_INPUTTEXT;
+        if (requestParameterMap.containsKey(inputDateTextId)) {
+            String inputDateButtonId = component.getClientId(facesContext) +
+                CALENDAR_BUTTON;
+            ((BridgeFacesContext)facesContext).setFocusId(inputDateButtonId);
         }
         CustomComponentUtils.decodeUIInput(facesContext, component);
         // not a navigation event
@@ -1196,7 +1192,7 @@ public class SelectInputDateRenderer
                     dateSelect.setSubmittedValue(null);
                 }
                 else if (String.valueOf(inputTextDate).trim().length() == 0) {
-                    dateSelect.setSubmittedValue(null);
+                    dateSelect.setSubmittedValue("");
                 }
                 else {
                     dateSelect.setSubmittedValue(inputTextDate);
