@@ -43,7 +43,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         }
 
         public Enumeration getAttributeNames() {
-            return Collections.enumeration(Collections.emptyList());
+            return Collections.enumeration(Collections.EMPTY_LIST);
         }
 
         public void removeAttribute(String name) {
