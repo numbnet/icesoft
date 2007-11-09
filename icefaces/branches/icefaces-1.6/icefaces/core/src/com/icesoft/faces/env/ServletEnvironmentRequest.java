@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.env;
 
+import com.icesoft.faces.webapp.http.servlet.RequestAttributes;
 import com.icesoft.jasper.Constants;
 
 import javax.servlet.RequestDispatcher;
@@ -47,7 +48,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -86,10 +86,12 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private String localAddr;
     private int localPort;
     private AuthenticationVerifier authenticationVerifier;
+    private HttpSession session;
 
-    public ServletEnvironmentRequest(Object request, AuthenticationVerifier authenticationVerifier) {
+    public ServletEnvironmentRequest(Object request, AuthenticationVerifier authenticationVerifier, HttpSession session) {
         HttpServletRequest initialRequest = (HttpServletRequest) request;
         this.authenticationVerifier = authenticationVerifier;
+        this.session = session;
         //Copy common data
         authType = initialRequest.getAuthType();
         contextPath = initialRequest.getContextPath();
@@ -98,7 +100,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         requestedSessionId = initialRequest.getRequestedSessionId();
         requestedSessionIdValid = initialRequest.isRequestedSessionIdValid();
 
-        attributes = new Hashtable();
+        attributes = new HashMap();
         Enumeration attributeNames = initialRequest.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String name = (String) attributeNames.nextElement();
@@ -187,20 +189,12 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
 
     public void setAttribute(String name, Object value) {
         super.setAttribute(name, value);
-        try {
-            activeRequest().setAttribute(name, value);
-        } catch (Exception e) {
-            //ignore because the container disposed servletRequest by now 
-        }
+        requestAttributes().setAttribute(name, value);
     }
 
     public void removeAttribute(String name) {
         super.removeAttribute(name);
-        try {
-            activeRequest().removeAttribute(name);
-        } catch (Exception e) {
-            //ignore because the container disposed servletRequest by now
-        }
+        requestAttributes().removeAttribute(name);
     }
 
     public long getDateHeader(String name) {
@@ -265,7 +259,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public HttpSession getSession(boolean create) {
-        return activeRequest().getSession(create);
+        return session;
     }
 
     public HttpSession getSession() {
@@ -301,7 +295,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public ServletInputStream getInputStream() throws IOException {
-        return activeRequest().getInputStream();
+        throw new UnsupportedOperationException("Use ResponseWriter instead");
     }
 
     public String getProtocol() {
@@ -309,7 +303,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public BufferedReader getReader() throws IOException {
-        return activeRequest().getReader();
+        throw new UnsupportedOperationException();
     }
 
     public String getRemoteAddr() {
@@ -321,11 +315,11 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public RequestDispatcher getRequestDispatcher(String name) {
-        return activeRequest().getRequestDispatcher(name);
+        throw new UnsupportedOperationException("Use navigation rules instead");
     }
 
     public String getRealPath(String path) {
-        return activeRequest().getRealPath(path);
+        return session.getServletContext().getRealPath(path);
     }
 
     public int getRemotePort() {
@@ -344,5 +338,5 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         return localPort;
     }
 
-    protected abstract HttpServletRequest activeRequest();
+    public abstract RequestAttributes requestAttributes();
 }

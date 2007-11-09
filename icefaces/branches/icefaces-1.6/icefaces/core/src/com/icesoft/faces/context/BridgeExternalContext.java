@@ -193,11 +193,15 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     }
 
+    public void release() {
+        resetRequestMap();
+    }
+
     /**
      * If in Standard request scope mode, remove all parameters from
      * the Request Map.
      */
-    public void resetRequestMap() {
+    protected void resetRequestMap() {
         if (standardScope) {
             requestMap.clear();
         }

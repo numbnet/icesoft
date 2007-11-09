@@ -185,7 +185,7 @@ public class View implements CommandQueue {
     public void release() {
         facesContext.release();
         persistentFacesState.release();
-        externalContext.resetRequestMap();
+        externalContext.release();
     }
 
     public BridgeFacesContext getFacesContext() {
