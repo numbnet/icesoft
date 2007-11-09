@@ -48,7 +48,6 @@
 package com.icesoft.faces.component.selectinputdate;
 
 import com.icesoft.faces.context.BridgeFacesContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
@@ -712,7 +711,7 @@ public class SelectInputDateRenderer
                 }                
             }
             
-            String cellStyle = inputComponent.getDayCellClass() + inputComponent.getHighlightDayCellClass();            
+            String cellStyle = inputComponent.getDayCellClass() + " " + inputComponent.getHighlightDayCellClass();            
             
             
             if ((cal.get(Calendar.DAY_OF_MONTH) == day) &&
