@@ -34,8 +34,24 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+//todo: try to refactor some of the inner classes into named classes
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
+    private static final RequestAttributes NOOPRequestAttributes = new RequestAttributes() {
+        public Object getAttribute(String name) {
+            return null;
+        }
+
+        public Enumeration getAttributeNames() {
+            return Collections.enumeration(Collections.emptyList());
+        }
+
+        public void removeAttribute(String name) {
+        }
+
+        public void setAttribute(String name, Object value) {
+        }
+    };
     private static Class AuthenticationClass;
 
     static {
@@ -50,6 +66,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     private final ServletContext context;
     private final HttpSession session;
     private final AuthenticationVerifier authenticationVerifier;
+    private RequestAttributes requestAttributes;
     private HttpServletRequest initialRequest;
     private HttpServletRequest request;
     private HttpServletResponse response;
@@ -57,15 +74,16 @@ public class ServletExternalContext extends BridgeExternalContext {
     public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
         this.request = (HttpServletRequest) request;
+        this.session = new InterceptingHttpSession(this.request.getSession(), sessionMonitor);
+        this.context = this.session.getServletContext();
         this.authenticationVerifier = createAuthenticationVerifier();
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier) {
-            protected HttpServletRequest activeRequest() {
-                return ServletExternalContext.this.request;
+        this.requestAttributes = new ActiveRequestAttributes();
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
+            public RequestAttributes requestAttributes() {
+                return requestAttributes;
             }
         };
         this.response = (HttpServletResponse) response;
-        this.session = new InterceptingHttpSession(this.initialRequest.getSession(), sessionMonitor);
-        this.context = this.session.getServletContext();
         this.initParameterMap = new AbstractAttributeMap() {
             protected Object getAttribute(String key) {
                 return context.getInitParameter(key);
@@ -175,9 +193,9 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     public void updateOnReload(Object request, Object response) {
         Map previousRequestMap = this.requestMap;
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier) {
-            protected HttpServletRequest activeRequest() {
-                return ServletExternalContext.this.request;
+        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
+            public RequestAttributes requestAttributes() {
+                return requestAttributes;
             }
         };
         this.requestMap = new RequestAttributeMap();
@@ -325,6 +343,12 @@ public class ServletExternalContext extends BridgeExternalContext {
         resetRequestMap();
     }
 
+    public void release() {
+        super.release();
+        //disable any changes on the request once the response was commited
+        requestAttributes = NOOPRequestAttributes;
+    }
+
     private class RequestAttributeMap extends AbstractCopyingAttributeMap {
         public Enumeration getAttributeNames() {
             return initialRequest.getAttributeNames();
@@ -375,9 +399,27 @@ public class ServletExternalContext extends BridgeExternalContext {
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
-                    return ServletExternalContext.this.request.isUserInRole(role);
+                    return request.isUserInRole(role);
                 }
             };
+        }
+    }
+
+    private class ActiveRequestAttributes implements RequestAttributes {
+        public Object getAttribute(String name) {
+            return request.getAttribute(name);
+        }
+
+        public Enumeration getAttributeNames() {
+            return request.getAttributeNames();
+        }
+
+        public void removeAttribute(String name) {
+            request.removeAttribute(name);
+        }
+
+        public void setAttribute(String name, Object value) {
+            request.setAttribute(name, value);
         }
     }
 }
