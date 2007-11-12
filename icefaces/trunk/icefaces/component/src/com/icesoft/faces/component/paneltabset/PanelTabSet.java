@@ -52,6 +52,7 @@ import com.icesoft.faces.utils.UpdatableProperty;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 
+import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UINamingContainer;
@@ -1091,5 +1092,17 @@ public class PanelTabSet
         }
         return Util.getQualifiedStyleClass(this, 
                 spacerClass);
+    }
+    
+    public String getClientId(FacesContext context) {
+        String clientId = super.getClientId(context);
+        if (super.getValue() == null) {
+            clientId += NamingContainer.SEPARATOR_CHAR + "0";
+        }
+        return clientId; 
+    }
+    
+    public String getClientIdForRootElement(FacesContext context){
+        return super.getClientId(context); 
     }
 }
