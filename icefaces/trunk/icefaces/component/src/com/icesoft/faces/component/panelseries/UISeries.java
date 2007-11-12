@@ -206,9 +206,7 @@ public class UISeries extends HtmlDataTable {
             }
             return (baseClientId);
         } else {
-            //even if there is no row, we should return the separator with the 0
-            //the findComponent() depends on this pattern            
-            return (baseClientId+ NamingContainer.SEPARATOR_CHAR +"0");
+            return (baseClientId);
         }
     }
 
