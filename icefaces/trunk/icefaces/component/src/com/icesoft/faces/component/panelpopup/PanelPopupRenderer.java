@@ -37,6 +37,7 @@ import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -219,7 +220,8 @@ public class PanelPopupRenderer extends GroupRenderer {
         CurrentStyle.apply(facesContext, uiComponent);
         // Rebroadcast Javascript to survive refresh
         if (dndType != null) {
-            addJavascriptCalls(uiComponent, "DRAG", handleId, facesContext);
+            String call = addJavascriptCalls(uiComponent, "DRAG", handleId, facesContext);
+            JavascriptContext.addJavascriptCall(facesContext, call);
         }
     }
 
