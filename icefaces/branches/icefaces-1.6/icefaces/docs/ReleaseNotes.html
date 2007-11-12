@@ -89,24 +89,26 @@ Knowledge Base</a>.<br>
 in This Release (v1.6.2)</h2>
 <br>
 ICEfaces 1.6.2 is a maintenance release that includes over 60
-fixes and improvements. Significant improvments include:<br>
-<h4>Improved Performance&nbsp;</h4>
+fixes and improvements. Significant improvements include:<br>
+<h4>Performance&nbsp;</h4>
 <ul class="contentIndent">
 <li>Significant client-side performance improvements have been
 made when handling large incremental changes to the UI, such as
 expanding or collapsing a tree node with a large number of child nodes,
 or updating a dataTable with a large number of rows and/or columns.</li>
 </ul>
-<h4>Improved Security&nbsp;</h4>
+<h4>Security&nbsp;</h4>
 <ul class="contentIndent">
 <li>ICEfaces 1.6.2 is a "Defect Free Project" (has no serious
 security
-vulnerabilities) as reported by the <a href="http://opensource.fortifysoftware.com/">Fortify Java
-Open Review Project</a>.</li>
+vulnerabilities) as reported by the <a target="_blank" href="http://opensource.fortifysoftware.com/">Fortify Java
+Open Review Project</a>.</li><li>A
+potentially serious issue that could result in Request parameter
+cross-over between sessions when running on application servers that
+reuse Request objects has been addressed in this release. See <a href="http://jira.icefaces.org/browse/ICE-2352" target="_blank">ICE-2352</a> for details.</li>
 </ul>
-
-<span style="font-weight: bold; color: rgb(153, 0, 0);">Compatibility
-Alert</span><span style="color: rgb(153, 0, 0);">:</span>&nbsp;The
+<span style="font-weight: bold; color: black;">Compatibility
+Alert</span><span style="color: black;">:</span>&nbsp;The
 <span style="font-weight: bold;">ice:selectInputDate</span>
 component has improved support for timezones which has affected the
 default timezone that it will now use if none is specified (see
@@ -128,7 +130,6 @@ timezone.</li>
 s:convertDateTime component uses&nbsp;the application server's
 local timezone as it's default, and not GMT.</li>
 </ul>
-
 See
 the Change
 Log
@@ -255,7 +256,9 @@ action/actionListener</li>
 - scrollHeight, scrollWidth, and columnWidths not working as expected</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2234">ICE-2234</a>]
 - Columns doesn't work with CommandSortHeader</li>
-<li>[<a href="http://jira.icefaces.org//browse/ICE-2292">ICE-2292</a>]
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2289">ICE-2289</a>]
+- The stateMonitor is being cleared and rebuilt on every update, so
+ping/pong causing stateMonitor to execute on every heart beat. </li><li>[<a href="http://jira.icefaces.org//browse/ICE-2292">ICE-2292</a>]
 - Divide by zero error in DataPaginator.java when zero rows exist in
 the model</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2316">ICE-2316</a>]
@@ -279,12 +282,7 @@ the model</li>
 - Document com.sun.faces.config.ConfigureListener work-around in
 Release Notes to avoid JSF initialization problems</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2155">ICE-2155</a>]
-- Clean up /lib/versions-licenses.html file issues</li>
-<li>[<a href="http://jira.icefaces.org//browse/ICE-2289">ICE-2289</a>]
-- The stateMonitor is being cleared and rebuilt on every update, so
-ping/pong causing stateMonitor to execute on every heart beat. </li>
-</ul>
-<br>
+- Clean up /lib/versions-licenses.html file issues</li></ul><br>
 <h2><a name="Changes_161"></a>Changes
 in&nbsp;v1.6.1</h2>
 <br>
@@ -1874,7 +1872,8 @@ Platform<br>
 Platform with
 JSF tools<br>
 </td>
-<td style="vertical-align: top; text-align: right;">3.2/1.5, 3.3/2.0<br>
+<td style="vertical-align: top; text-align: right;">3.2/1.5,
+3.3/2.0<br>
 </td>
 </tr>
 <tr>
@@ -1969,6 +1968,13 @@ configuration parameter in your web.xml file and forget
 to single quote the URL, the resulting js configuration string will be
 corrupted. <br>
 </li>
+</ul>
+<ul>
+<li>The <code>com.icesoft.faces.context.ViewListener</code> API is
+unreliable and has been deprecated in 1.6.2 (<a href="http://jira.icefaces.org/browse/ICE-1990" target="_blank">ICE-1990</a> and <a href="http://jira.icefaces.org/browse/ICE-1989" target="_blank">ICE-1989</a>).
+Applications should use the new
+<code>com.icesoft.faces.context.DisposableBean</code> API to receive Request, Session, or Application scope lifecycle
+notifications.</li>
 </ul>
 <h3>JSP Markup </h3>
 <ul>
@@ -2120,14 +2126,17 @@ be used to enclose all content in the document body. For example: <br>
 </ul>
 </ul>
 <h3>Facelets</h3>
-<ul><li>The from-view-id tag cannot be used when&nbsp;specifying a navigation-rule in&nbsp;the
+<ul>
+<li>The from-view-id tag cannot be used
+when&nbsp;specifying a navigation-rule in&nbsp;the
 faces-config.xml file. There is an issue&nbsp;with the
 ICEfaces/Facelets integration, where the view-id can sometimes have the
 filename extension (.xhtml), and sometimes have the URL extension
 (.iface), and so it will not match to the rule (<a href="http://jira.icefaces.org/browse/ICE-1957" target="_blank">ICE-1957</a>).
 A work-around is to duplicate the navigation-rules, with one set of
 from-view-ids using the .xhtml extension and the other set using the
-proper .iface extension.</li></ul>
+proper .iface extension.</li>
+</ul>
 <h3>JSF 1.2</h3>
 <ul>
 <li>ICEfaces must use JSF 1.1 "compatibility mode"
@@ -2369,6 +2378,5 @@ directory.</p>
 <p class="Body"><small><br>
 © Copyright
 2005-2007 ICEsoft Technologies, Inc.</small></p>
-
 </div>
 </body></html>
