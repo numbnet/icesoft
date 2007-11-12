@@ -108,20 +108,21 @@ public class PanelTabSetRenderer
         // get DOMContext using DOMContext static method getDOMContext
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
+        PanelTabSet tabSet = (PanelTabSet) uiComponent;
         // if the domContext has not been initialized
         // initialize it, create the Root Element
         if (!domContext.isInitialized()) {
             Element table = domContext.createRootElement(HTML.TABLE_ELEM);
             table.setAttribute(HTML.CELLPADDING_ATTR, "0");
             table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-            setRootElementId(facesContext, table, uiComponent);
+            table.setAttribute(HTML.ID_ATTR, tabSet.getClientIdForRootElement(facesContext));
         }
 
         FormRenderer.addHiddenField(facesContext,
                                     deriveCommonHiddenFieldName(
                                             facesContext, uiComponent));
 
-        PanelTabSet tabSet = (PanelTabSet) uiComponent;
+
         String baseClass = tabSet.getStyleClass();
 
         int selectedIndex = tabSet.getSelectedIndex();
