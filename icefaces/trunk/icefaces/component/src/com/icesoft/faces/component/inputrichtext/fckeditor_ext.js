@@ -76,8 +76,25 @@ Ice.FCKeditor.prototype = {
 			}
 		}
 	}
-}
+};
+
 Object.extend(Ice.FCKeditor,  Ice.Repository);
+
+Ice.FCKeditorUtility = Class.create();
+Ice.FCKeditorUtility = {
+    updateValue: function(ele) {
+        try {
+            var oEditor = FCKeditorAPI.GetInstance(ele) ;
+            if (oEditor != null) {
+                var valueHolder = $(ele + 'valueHolder');
+                var value = valueHolder.value;  
+                oEditor.SetHTML( value) ;
+                oEditor.Focus();
+            }
+        } catch(err) {}
+    }
+};
+
 FCKeditor.prototype.CreateIce = function(eleId)
 {
 	var editor = document.getElementById(eleId+'editor') ;
@@ -109,6 +126,8 @@ function FCKeditorSave(editorInstance) {
         for (i=0; i < all.length; i++) {   
             var instanceName = all[i].thirdPartyObject.InstanceName;
             var editIns = FCKeditorAPI.GetInstance(instanceName);
+            //if the editor is not visible on this view, just skip and continue
+            if (editIns == null) continue;
             var element = $(editIns.Name);
             //Save the dirty editor only that had the focus
             if(editIns.IsDirty()) {
