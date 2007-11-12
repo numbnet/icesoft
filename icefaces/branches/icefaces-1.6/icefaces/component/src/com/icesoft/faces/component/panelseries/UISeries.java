@@ -198,7 +198,7 @@ public class UISeries extends HtmlDataTable {
         if (getRowIndex() >= 0) {
             //this extra if is to produce the same ids among myfaces and sunri
             //myfaces uses the getRowIndex() and SunRI directly using the rowIndex 
-            //variable inside its getClientId()
+            //variable inside its getClientId().
             if (!baseClientId.endsWith(
                     "" + NamingContainer.SEPARATOR_CHAR + getRowIndex())) {
                 return (baseClientId + NamingContainer.SEPARATOR_CHAR +
@@ -206,9 +206,7 @@ public class UISeries extends HtmlDataTable {
             }
             return (baseClientId);
         } else {
-            //even if there is no row, we should return the separator with the 0
-            //the findComponent() depends on this pattern
-            return (baseClientId+ NamingContainer.SEPARATOR_CHAR +"0");
+            return (baseClientId);
         }
     }
 
