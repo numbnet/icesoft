@@ -729,7 +729,6 @@ public abstract class DomBasicRenderer extends Renderer {
                 baseStyle = "iceMsgs";
             }
             if (uiComponent.getRendererType().startsWith("com.icesoft.faces.Message")){
-            	System.out.println(severityStyleClass);
             	severityStyleClass = CoreUtils.addPortletStyleClassToQualifiedClass
             							(severityStyleClass, 
             							baseStyle + "Error", 
