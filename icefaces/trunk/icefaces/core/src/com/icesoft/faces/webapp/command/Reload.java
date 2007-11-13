@@ -19,8 +19,7 @@ public class Reload implements Command {
     }
 
     public Command coalesceWith(Macro macro) {
-        macro.addCommand(this);
-        return macro;
+        return this;
     }
 
     public Command coalesceWith(UpdateElements updateElements) {

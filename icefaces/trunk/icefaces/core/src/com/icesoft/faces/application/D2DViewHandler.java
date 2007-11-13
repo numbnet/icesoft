@@ -194,7 +194,6 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         root.setViewId(viewId);
-        context.setViewRoot(root);
         contextServletTable.put(DOMResponseWriter.RESPONSE_VIEWROOT, root);
 
         return root;
@@ -493,8 +492,8 @@ public class D2DViewHandler extends ViewHandler {
                     if (lastModified > lastLoaded) {
                         reloadView = true;
                         if (log.isDebugEnabled()) {
-                            log.debug( "View is modified, reloading " + 
-                                    String.valueOf(viewURL) );
+                            log.debug("View is modified, reloading " +
+                                    String.valueOf(viewURL));
                         }
                     }
                 }
@@ -512,14 +511,14 @@ public class D2DViewHandler extends ViewHandler {
                         viewConnection.getInputStream(), CHAR_ENCODING);
                 if (viewId.endsWith(".jsp")) {
                     if (log.isDebugEnabled()) {
-                        log.debug( "JspPageToDocument transforming JSP page " + 
-                                String.valueOf(viewURL) );
+                        log.debug("JspPageToDocument transforming JSP page " +
+                                String.valueOf(viewURL));
                     }
                     viewInput = JspPageToDocument.transform(viewInput);
                 } else if (viewId.endsWith(".jspx")) {
                     if (log.isDebugEnabled()) {
-                        log.debug( "JspPageToDocument preprocessing JSP doc " + 
-                                String.valueOf(viewURL) );
+                        log.debug("JspPageToDocument preprocessing JSP doc " +
+                                String.valueOf(viewURL));
                     }
                     viewInput =
                             JspPageToDocument.preprocessJspDocument(viewInput);
@@ -533,8 +532,8 @@ public class D2DViewHandler extends ViewHandler {
                 //TODO: pass viewInput as an InputStream in order to give to the XML parser a chance to
                 //TODO: read the encoding type declared in the xml processing instruction (<?xml version="1.0" charset="..."?>)
                 if (log.isDebugEnabled()) {
-                    log.debug( "Parsing " + 
-                            String.valueOf(viewURL) );
+                    log.debug("Parsing " +
+                            String.valueOf(viewURL));
                 }
                 parser.parse(viewInput, context);
                 root.getAttributes().put(LAST_LOADED_KEY,

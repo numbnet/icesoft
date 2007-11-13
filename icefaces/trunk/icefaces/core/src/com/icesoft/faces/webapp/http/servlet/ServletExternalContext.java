@@ -277,7 +277,7 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     public void dispatch(String path) throws IOException, FacesException {
         try {
-            initialRequest.getRequestDispatcher(path).forward(initialRequest, response);
+            request.getRequestDispatcher(path).forward(request, response);
         } catch (ServletException se) {
             throw new FacesException(se);
         }

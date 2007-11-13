@@ -33,8 +33,10 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.CommandQueue;
+import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
@@ -45,10 +47,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javax.el.ELContext;
+import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -67,10 +71,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 //for now extend BridgeFacesContext since there are so many 'instanceof' tests
 public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
     private static final Log log = LogFactory.getLog(BridgeFacesContext.class);
+    //todo: factor out the page template extension pattern to reuse it MainServlet.java as well (maybe in configuration)
+    private static final Pattern PageTemplatePattern = Pattern.compile(".*(\\.iface$|\\.jsf$|\\.faces$|\\.jsp$|\\.jspx$|\\.xhtml$|\\.seam$)");
     private Application application;
     private BridgeExternalContext externalContext;
     private HashMap faceMessages = new HashMap();
@@ -274,18 +281,24 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void setViewRoot(UIViewRoot viewRoot) {
-        //pointing this FacesContext to the new view
-        Map contextServletTable = D2DViewHandler.getContextServletTable(this);
-        if (null != contextServletTable) {
-            if (viewRoot != null) {
-                contextServletTable
-                        .put(DOMResponseWriter.RESPONSE_VIEWROOT, viewRoot);
-            } else {
-                contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
+        final String path = viewRoot.getViewId();
+        if (PageTemplatePattern.matcher(path).matches()) {
+            //pointing this FacesContext to the new view
+            Map contextServletTable = D2DViewHandler.getContextServletTable(this);
+            if (null != contextServletTable) {
+                if (viewRoot != null) {
+                    contextServletTable
+                            .put(DOMResponseWriter.RESPONSE_VIEWROOT, viewRoot);
+                } else {
+                    contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
+                }
             }
+            responseWriter = null;
+            this.viewRoot = viewRoot;
+        } else {
+            commandQueue.put(new Reload(viewNumber));
+            application.setViewHandler(new SwitchViewHandler(application.getViewHandler(), path));
         }
-        responseWriter = null;
-        this.viewRoot = viewRoot;
     }
 
     public String getIceFacesId() {
@@ -458,5 +471,33 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     private URI resolve(String uri) {
         return URI.create(application.getViewHandler().getResourceURL(this, uri));
+    }
+
+    private class DispatchingViewHandler extends ViewHandlerProxy {
+        private final String path;
+
+        public DispatchingViewHandler(ViewHandler originalHandler, String path) {
+            super(originalHandler);
+            this.path = path;
+        }
+
+        public void renderView(FacesContext context, UIViewRoot viewToRender) throws IOException, FacesException {
+            application.setViewHandler(handler);
+            externalContext.dispatch(path);
+        }
+    }
+
+    private class SwitchViewHandler extends ViewHandlerProxy {
+        private final String path;
+
+        public SwitchViewHandler(ViewHandler originalHandler, String path) {
+            super(originalHandler);
+            this.path = path;
+        }
+
+        public void renderView(FacesContext context, UIViewRoot viewToRender) throws IOException, FacesException {
+            application.setViewHandler(new DispatchingViewHandler(handler, path));
+            handler.renderView(context, viewToRender);
+        }
     }
 }
