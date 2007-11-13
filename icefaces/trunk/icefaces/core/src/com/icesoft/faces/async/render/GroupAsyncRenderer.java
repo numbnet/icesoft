@@ -136,7 +136,7 @@ public class GroupAsyncRenderer implements AsyncRenderer {
                     return;
                 }
             }
-            if (log.isWarnEnabled()) {
+            if (!group.isEmpty() && log.isWarnEnabled()) {
                 log.warn(name + " does not contain " + renderable);
             }
         }
@@ -208,8 +208,7 @@ public class GroupAsyncRenderer implements AsyncRenderer {
      */
     public void dispose() {
         requestStop();
-        group.clear();
-        group = null;
+        clear();
         renderManager.removeRenderer(this);
         name = null;
         renderManager = null;
