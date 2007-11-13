@@ -179,6 +179,7 @@
   <!ENTITY ice-selectOneListbox-props SYSTEM "ice_properties/ice-selectOneListbox-props.xml">
   <!ENTITY ice-selectOneMenu-props SYSTEM "ice_properties/ice-selectOneMenu-props.xml">
   <!ENTITY ice-selectOneRadio-props SYSTEM "ice_properties/ice-selectOneRadio-props.xml">
+  <!ENTITY ice-radio-props SYSTEM "ice_properties/ice-radio-props.xml">
   <!ENTITY ice-outputFormat-props SYSTEM "ice_properties/ice-outputFormat-props.xml">
   
   <!-- custom components properties -->
@@ -286,7 +287,9 @@
 
   <!ENTITY ice-selectoneRadio-component   SYSTEM "components/ice-selectoneRadio-component.xml">
   <!ENTITY ice-selectoneRadio-renderer    SYSTEM "components/ice-selectoneRadio-renderer.xml">
-  
+  <!ENTITY ice-radio-component   SYSTEM "components/ice-radio-component.xml">
+  <!ENTITY ice-radio-renderer    SYSTEM "components/ice-radio-renderer.xml">
+
   <!ENTITY ice-outputFormat-component   SYSTEM "components/ice-outputFormat-component.xml">
   <!ENTITY ice-outputFormat-renderer    SYSTEM "components/ice-outputFormat-renderer.xml">
   
@@ -453,6 +456,7 @@
 	&ice-selectoneListbox-component;
 	&ice-selectoneMenu-component;
 	&ice-selectoneRadio-component;
+	&ice-radio-component;
 	&ice-outputFormat-component;
 	&ice-inputhidden-component;
 	&ice-uicolumn-component;
@@ -525,6 +529,7 @@
 		&ice-selectoneListbox-renderer;
 		&ice-selectoneMenu-renderer;
 		&ice-selectoneRadio-renderer;
+		&ice-radio-renderer;
 		&ice-outputFormat-renderer;
 		&ice-inputhidden-renderer;
 		&ice-uicolumn-renderer;

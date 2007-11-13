@@ -44,9 +44,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 
 public class SelectManyCheckboxListRenderer extends MenuRenderer {
@@ -54,12 +52,19 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
+        if (uiComponent.getClass().getName().equals("com.icesoft.faces.component.ext.HtmlRadio")) {
+            renderOption(facesContext, uiComponent);
+            return;
+        }
         validateParameters(facesContext, uiComponent, null);
 
         int counter = 0;
 
         boolean renderVertically = false;
         String layout = (String) uiComponent.getAttributes().get("layout");
+        if (layout != null && layout.equals("spread")) {
+            return;
+        }
         if (layout != null) {
             renderVertically =
                     layout.equalsIgnoreCase("pageDirection") ? true : false;
@@ -265,8 +270,41 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 excludesStringArray);
     }
 
+    protected void renderOption(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    }
+
     protected void addJavaScript(FacesContext facesContext,
                                  UIComponent uiComponent, Element root,
                                  Set excludes) {
+    }
+
+    protected List getSelectItemList(UIComponent uiComponent) {
+        List list = new ArrayList();
+        Iterator iter = getSelectItems(uiComponent);
+        while (iter.hasNext()) {
+            Object o = iter.next();
+            if (o instanceof SelectItemGroup) {
+                addSelectItemGroupToList((SelectItemGroup) o, list);
+                continue;
+            }
+            list.add(o);
+        }
+        return list;
+    }
+
+    private void addSelectItemGroupToList(SelectItemGroup selectItemGroup, List list) {
+        SelectItem[] selectItems = selectItemGroup.getSelectItems();
+        if (selectItems == null || selectItems.length == 0) {
+            list.add(selectItemGroup);
+            return;
+        }
+        for (int i = 0; i < selectItems.length; i++) {
+            SelectItem selectItem = selectItems[i];
+            if (selectItem instanceof SelectItemGroup) {
+                addSelectItemGroupToList((SelectItemGroup) selectItem, list);
+                continue;
+            }
+            list.add(selectItem);
+        }
     }
 }
