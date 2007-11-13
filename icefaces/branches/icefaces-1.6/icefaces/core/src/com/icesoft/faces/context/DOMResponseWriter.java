@@ -326,7 +326,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         String sessionIDScript = "window.session='" + context.getIceFacesId() + "';\n";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
-        String viewIDScript = "document.getElementById('configuration-script').parentNode.viewIdentifier=" + context.getViewNumber() + ";\n";
+        String viewIDScript = "document.getElementById('configuration-script-" + context.getViewNumber() + "').parentNode.viewIdentifier=" + context.getViewNumber() + ";\n";
         String viewsIDScript = "if (!window.views) window.views = []; window.views.push(" + context.getViewNumber() + ");\n";
 
         String configurationScript =
@@ -345,7 +345,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "};\n";
 
         Element configurationElement = (Element) body.appendChild(document.createElement("script"));
-        configurationElement.setAttribute("id", "configuration-script");
+        configurationElement.setAttribute("id", "configuration-script-"+context.getViewNumber());
         configurationElement.setAttribute("language", "javascript");
         configurationElement.appendChild(document.createTextNode(sessionIDScript + viewIDScript + viewsIDScript + configurationScript));
         body.appendChild(configurationElement);

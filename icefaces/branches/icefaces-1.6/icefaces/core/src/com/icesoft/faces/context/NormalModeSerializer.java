@@ -39,12 +39,15 @@ public class NormalModeSerializer implements DOMSerializer {
                     document.getDocumentElement(), "body");
             if (null != body) {
 
+                //insert a containing element for bridge anchoring
+                writer.write("<div>\n");
                 //We need to include, for now, ICE_EXTRAS all the time to
                 //ensure that it is available.
                 writer.write( makeScriptEntry(JavascriptContext.ICE_BRIDGE));
                 writer.write( makeScriptEntry(JavascriptContext.ICE_EXTRAS));
 
                 writer.write(DOMUtils.childrenToString(body));
+                writer.write("</div>\n");
             }
         } else {
             if (log.isDebugEnabled()) {
