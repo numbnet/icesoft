@@ -28,8 +28,8 @@ public class Portlet extends UINamingContainer {
         FacesContext facesCtxt = getFacesContext();
 
         if( facesCtxt == null ){
-            if (log.isWarnEnabled()) {
-                log.warn("Could not access FacesContext");
+            if (log.isDebugEnabled()) {
+                log.debug("could not access FacesContext");
             }
             return;
         }
