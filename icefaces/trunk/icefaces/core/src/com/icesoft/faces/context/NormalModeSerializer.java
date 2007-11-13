@@ -1,16 +1,14 @@
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.application.StartupTime;
-import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.jasper.Constants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
-import javax.faces.context.ExternalContext;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
@@ -30,21 +28,24 @@ public class NormalModeSerializer implements DOMSerializer {
     public void serialize(Document document) throws IOException {
         Map requestMap = context.getExternalContext().getRequestMap();
 
-        if( isFragment(requestMap) ){
-            if( log.isDebugEnabled() ){
-                log.debug( "treating request as a fragment" );
+        if (isFragment(requestMap)) {
+            if (log.isDebugEnabled()) {
+                log.debug("treating request as a fragment");
             }
 
             Node body = DOMUtils.getChildByNodeName(
                     document.getDocumentElement(), "body");
             if (null != body) {
 
+                //insert a containing element for bridge anchoring
+                writer.write("<div>\n");
                 //We need to include, for now, ICE_EXTRAS all the time to
                 //ensure that it is available.
-                writer.write( makeScriptEntry(JavascriptContext.ICE_BRIDGE));
-                writer.write( makeScriptEntry(JavascriptContext.ICE_EXTRAS));
+                writer.write(makeScriptEntry(JavascriptContext.ICE_BRIDGE));
+                writer.write(makeScriptEntry(JavascriptContext.ICE_EXTRAS));
 
                 writer.write(DOMUtils.childrenToString(body));
+                writer.write("</div>\n");
             }
         } else {
             if (log.isDebugEnabled()) {
@@ -92,29 +93,29 @@ public class NormalModeSerializer implements DOMSerializer {
 
     private String makeScriptEntry(String src) {
         return "<script language='javascript' src='" +
-               CoreUtils.resolveResourceURL(context, src) +
-               "'></script>";
+                CoreUtils.resolveResourceURL(context, src) +
+                "'></script>";
     }
 
-    private boolean isFragment(Map requestMap){
+    private boolean isFragment(Map requestMap) {
         //TODO - assuming we can handle portlets just like includes, then
         //we can probably reduce the attributes that we check for.  We need
         //to be specific about when to use request URI and when to use servlet
         //path.
 
         String frag = (String) requestMap.get(Constants.INC_REQUEST_URI);
-        if( log.isDebugEnabled() ){
-            log.debug( Constants.INC_REQUEST_URI + " = " + frag );
+        if (log.isDebugEnabled()) {
+            log.debug(Constants.INC_REQUEST_URI + " = " + frag);
         }
-        if( frag != null ){
+        if (frag != null) {
             return true;
         }
 
-        frag = (String)requestMap.get(Constants.INC_SERVLET_PATH);
-        if( log.isDebugEnabled() ){
-            log.debug( Constants.INC_SERVLET_PATH + " = " + frag );
+        frag = (String) requestMap.get(Constants.INC_SERVLET_PATH);
+        if (log.isDebugEnabled()) {
+            log.debug(Constants.INC_SERVLET_PATH + " = " + frag);
         }
-        if( frag != null ){
+        if (frag != null) {
             return true;
         }
 
@@ -122,7 +123,7 @@ public class NormalModeSerializer implements DOMSerializer {
         //to put a portlet specific attribute back in, then we should
         //define our own.
         frag = (String) requestMap.get("com.sun.faces.portlet.INIT");
-        if( frag != null ){
+        if (frag != null) {
             return true;
         }
 
