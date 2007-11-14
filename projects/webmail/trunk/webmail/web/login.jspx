@@ -64,40 +64,27 @@
                                                                            actionListener="#{webMailMediator.startWebmail}" />                                                        
                                                         
                                                         <!-- Process bar popup window section-->
-                                                        <ice:panelPopup
-                                                            draggable="true"            
-                                                            rendered="#{mailManager.showModalPanel}"
-                                                            visible="#{mailManager.showModalPanel}"
-                                                            modal="true"
-                                                            style="z-index: 1000; position: middle; width: 350px; height: 150px;">
-                                                            
+                                                        <ice:panelPopup draggable="true"            
+                                                                        rendered="#{mailManager.showModalPanel}"
+                                                                        visible="#{mailManager.showModalPanel}"
+                                                                        modal="true"
+                                                                        styleClass="loginPopup">
                                                             <f:facet name="header">
                                                                 <ice:panelGrid width="100%" cellpadding="0"
-                                                                               cellspacing="0" columns="2"
-                                                                               columnClasses="dummy, popupButton">
-                                                                    <ice:outputText style="color:#000000;font-size:14px;"
-                                                                                    value="Login...."/>
-                                                                    
+                                                                               cellspacing="0" columns="2">
+                                                                    <ice:outputText styleClass="loginPopupHeader"
+                                                                                    value="Loading Webmail..."/>
                                                                     <ice:commandButton id="popupClose" type="button"
+                                                                                       styleClass="loginPopupClose"
                                                                                        image="images/popupclose.gif"
-                                                                                       actionListener="#{mailManager.closeModalPopup}"
-                                                                                       style="cursor: pointer; position:absolute; top: 0px; right: 0px;"/>
-                                                                    
+                                                                                       actionListener="#{mailManager.closeModalPopup}"/>
                                                                 </ice:panelGrid>
                                                             </f:facet>
-                                                            
                                                             <f:facet name="body">
-                                                                <ice:panelGrid width="100%" cellpadding="0"
-                                                                               cellspacing="0" columns="1"
-                                                                               styleClass="popupModalBody">
-                                                                    <ice:outputText
-                                                                        value="#{mailManager.processText}" 
-                                                                        style="color:#000000 ;font-size:14px;"/>
-                                                                    <ice:outputProgress
-                                                                        value="#{mailManager.process}"/>
-                                                                </ice:panelGrid>
+                                                                <ice:inputTextarea styleClass="loginPopupOutput"
+                                                                                   value="#{mailManager.processText}"
+                                                                                   readonly="true"/>
                                                             </f:facet>
-                                                            
                                                         </ice:panelPopup>
                                                     </ice:panelGrid>
                                                     <ice:inputHidden id="errorMessage"/>

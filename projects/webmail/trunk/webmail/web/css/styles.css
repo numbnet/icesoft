@@ -399,3 +399,39 @@ width:50%;
 	top: 0;
 }
 
+/* Styling for the Login Status Popup */
+.loginPopup { 
+    position: absolute;
+    top:35%;
+    left:40%;
+    z-index :25001;
+    width: 280px; 
+    height: 210px;
+    background-color :#FFFFFF ;
+}
+.icePnlPopHdr {
+    background-color: #FFFFFF;
+    color:#000000;
+    font-size:14px;
+}
+.loginPopupHeader {
+    color:#000000;
+    font-size:14px;
+}
+
+.loginPopupClose {
+   cursor: pointer; 
+   position:absolute; 
+   top: 4px; 
+   right: 4px;
+}
+
+.loginPopupOutput {
+   color:#000000 ;
+   font-size:14px;
+   height:155px;
+   width:250px;
+   background-color :#FFFFFF;
+   border: 1px solid #DEDEDE;
+   text-align : right;
+}

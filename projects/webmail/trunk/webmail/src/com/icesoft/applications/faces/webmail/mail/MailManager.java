@@ -475,23 +475,28 @@ public class MailManager implements WebmailBase {
                         mailAccountBean.getMailControl().createMailFolder(
                                 INBOX_FOLDER_NAME);
                         this.setProcess(80);
-                        this.setProcessText("Inbox Folder Initializing");
+                        this.setProcessText("Inbox Folder Initializing...............DONE! ");
                         mediator.renderHelper();
+                        
                         mailAccountBean.getMailControl().createMailFolder(
                                 TRASH_FOLDER_NAME);
                         this.setProcess(90);
-                        this.setProcessText("Trash Folder Initializing");
+                        this.setProcessText("Trash Folder Initializing..............DONE! ");
                         mediator.renderHelper();
+                        
                         mailAccountBean.getMailControl().createMailFolder(
                                 SENT_FOLDER_NAME);
                         this.setProcess(95);
-                        this.setProcessText("Sent Folder Initializing");
+                        this.setProcessText("Sent Folder Initializing................DONE! ");
                         mediator.renderHelper();
+                        
                         mailAccountBean.getMailControl().createMailFolder(
                                 DRAFT_FOLDER_NAME);
                         this.setProcess(99);
-                        this.setProcessText("Draft Folder Initializing");
+                        this.setProcessText("Draft Folder Initializing...............DONE! ");
+                        this.setProcessText("Starting Webmail.................................. ");
                         mediator.renderHelper();
+                        
                     }
                     
                     // refresh folder list in Bean, this must be done before
@@ -1538,7 +1543,12 @@ public class MailManager implements WebmailBase {
      * current intialization process of login webmail
      */
     public void setProcessText(String processText) {
-        this.processText = processText;
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+        this.processText = this.processText + processText;
     }
     
     /**
@@ -1577,7 +1587,7 @@ public class MailManager implements WebmailBase {
                     outputBean.getContactManager().setMediator(outputBean);
                     outputBean.getContactManager().init();
                     outputBean.getMailManager().setProcess(30);
-                    outputBean.getMailManager().setProcessText("Contact Manager Initializing");
+                    outputBean.getMailManager().setProcessText("Contact Manager Initializing.......DONE! ");
                     outputBean.renderHelper();
                     
                 }
@@ -1586,8 +1596,9 @@ public class MailManager implements WebmailBase {
                     outputBean.getTasksManager().setMediator(outputBean);
                     outputBean.getTasksManager().init();
                     outputBean.getMailManager().setProcess(50);
-                    outputBean.getMailManager().setProcessText("Tasks Manager Initializing");
+                    outputBean.getMailManager().setProcessText("Tasks Manager Initializing..........DONE! ");
                     outputBean.renderHelper();
+                    
                 }
                 
                 // init navigation manager, builds tree from difference manager data and update process value
@@ -1595,16 +1606,18 @@ public class MailManager implements WebmailBase {
                     outputBean.getNavigationManager().setMediator(outputBean);
                     outputBean.getNavigationManager().init();
                     outputBean.getMailManager().setProcess(75);
-                    outputBean.getMailManager().setProcessText("Navigation Manager Initializing");
+                    outputBean.getMailManager().setProcessText("Navigation Manager Initializing...DONE! ");
                     outputBean.renderHelper();
+                    
                 }
                 
                 // init mail manager, loads accounts from database and setup map
                 if (outputBean.getMailManager() != null) {
                     outputBean.getMailManager().setMediator(outputBean);
-                    outputBean.getMailManager().setProcessText("Mail Manager Initializing");
+                    outputBean.getMailManager().setProcessText("Mail Manager Initializing.............DONE! ");
                     outputBean.getMailManager().init();
                     outputBean.renderHelper();
+                    
                 }
             } catch (InterruptedException e) {
                 log.error("mail managers intialization error", e);
