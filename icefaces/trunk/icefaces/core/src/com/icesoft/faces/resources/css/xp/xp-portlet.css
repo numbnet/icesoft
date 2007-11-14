@@ -119,11 +119,11 @@
     width: 150px;
 }
 
-.iceSelInpDateOpenPopup {
+input.iceSelInpDateOpenPopup {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_button.gif" );
+    background-image: url(css-images/cal_button.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -131,11 +131,11 @@
     height: 16px;
 }
 
-.iceSelInpDateClosePopup {
+input.iceSelInpDateClosePopup {
     display: inline;
     text-decoration: none;
     background-color: transparent;
-    background-image: url( "./css-images/cal_off.gif" );
+    background-image: url(css-images/cal_off.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -145,7 +145,7 @@
 
 .iceSelInpDateMonthYear {
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url(css-images/table_col_header.gif);
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -165,7 +165,7 @@
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_left.gif" );
+    background-image: url(css-images/cal_arrow_left.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -177,7 +177,7 @@
     text-decoration: none;
     display: inline;
     background-color: transparent;
-    background-image: url( "./css-images/cal_arrow_right.gif" );
+    background-image: url(css-images/cal_arrow_right.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -252,7 +252,7 @@
 .iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2{ 
 /* was iceTblHeader */
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url(css-images/table_col_header.gif);
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: normal;
@@ -372,7 +372,7 @@
 
 .icePnlTbOn .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-top.gif" );
+    background-image: url(css-images/on-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -381,7 +381,7 @@
 
 .icePnlTbOn .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-top.gif" );
+    background-image: url(css-images/on-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -390,7 +390,7 @@
 
 .icePnlTbOn .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-top.gif" );
+    background-image: url(css-images/on-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -399,7 +399,7 @@
 
 .icePnlTbOn .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url(css-images/on-left-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -408,7 +408,7 @@
 
 .icePnlTbOn .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url(css-images/on-mid-mid.gif);
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -432,7 +432,7 @@
 
 .icePnlTbOn .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url(css-images/on-right-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -441,21 +441,21 @@
 
 .icePnlTbOn .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-bot.gif" );
+    background-image: url(css-images/on-left-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-bot.gif" );
+    background-image: url(css-images/on-mid-bot.gif);
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-bot.gif" );
+    background-image: url(css-images/on-right-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
@@ -473,7 +473,7 @@
 
 .icePnlTbOff .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top.gif" );
+    background-image: url(css-images/off-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -482,7 +482,7 @@
 
 .icePnlTbOff .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-top.gif" );
+    background-image: url(css-images/off-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -491,7 +491,7 @@
 
 .icePnlTbOff .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top.gif" );
+    background-image: url(css-images/off-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -500,7 +500,7 @@
 
 .icePnlTbOff .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url(css-images/off-left-mid.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -509,7 +509,7 @@
 
 .icePnlTbOff .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url(css-images/off-mid-mid.gif);
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -532,7 +532,7 @@
 
 .icePnlTbOff .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url(css-images/off-right-mid.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -541,21 +541,21 @@
 
 .icePnlTbOff .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url(css-images/off-left-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url(css-images/off-mid-bot.gif);
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url(css-images/off-right-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
@@ -574,7 +574,7 @@
 
 .icePnlTbOver .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-top.gif" );
+    background-image: url(css-images/over-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -583,7 +583,7 @@
 
 .icePnlTbOver .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-top.gif" );
+    background-image: url(css-images/over-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 5px;
@@ -592,7 +592,7 @@
 
 .icePnlTbOver .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-top.gif" );
+    background-image: url(css-images/over-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -601,7 +601,7 @@
 
 .icePnlTbOver .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url(css-images/over-left-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -610,7 +610,7 @@
 
 .icePnlTbOver .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url(css-images/over-mid-mid.gif);
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -633,7 +633,7 @@
 
 .icePnlTbOver .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url(css-images/over-right-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -642,21 +642,21 @@
 
 .icePnlTbOver .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-bot.gif" );
+    background-image: url(css-images/over-left-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOver .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-bot.gif" );
+    background-image: url(css-images/over-mid-bot.gif);
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOver .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-bot.gif" );
+    background-image: url(css-images/over-right-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
@@ -710,7 +710,7 @@
 
 .icePnlTbOnBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-top.gif" );
+    background-image: url(css-images/tbot-on-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -718,7 +718,7 @@
 
 .icePnlTbOnBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-top.gif" );
+    background-image: url(css-images/tbot-on-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -726,7 +726,7 @@
 
 .icePnlTbOnBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-top.gif" );
+    background-image: url(css-images/tbot-on-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -734,7 +734,7 @@
 
 .icePnlTbOnBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-left-mid.gif" );
+    background-image: url(css-images/on-left-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -743,7 +743,7 @@
 
 .icePnlTbOnBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-mid-mid.gif" );
+    background-image: url(css-images/on-mid-mid.gif);
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -766,7 +766,7 @@
 
 .icePnlTbOnBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/on-right-mid.gif" );
+    background-image: url(css-images/on-right-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -775,7 +775,7 @@
 
 .icePnlTbOnBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-left-bot.gif" );
+    background-image: url(css-images/tbot-on-left-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -783,7 +783,7 @@
 
 .icePnlTbOnBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-mid-bot.gif" );
+    background-image: url(css-images/tbot-on-mid-bot.gif);
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -791,7 +791,7 @@
 
 .icePnlTbOnBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-on-right-bot.gif" );
+    background-image: url(css-images/tbot-on-right-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -810,7 +810,7 @@
 
 .icePnlTbOffBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-top.gif" );
+    background-image: url(css-images/tbot-off-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -818,7 +818,7 @@
 
 .icePnlTbOffBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-top.gif" );
+    background-image: url(css-images/tbot-off-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -826,7 +826,7 @@
 
 .icePnlTbOffBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-top.gif" );
+    background-image: url(css-images/tbot-off-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -834,7 +834,7 @@
 
 .icePnlTbOffBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-mid.gif" );
+    background-image: url(css-images/off-left-mid.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -843,7 +843,7 @@
 
 .icePnlTbOffBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-mid.gif" );
+    background-image: url(css-images/off-mid-mid.gif);
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -866,7 +866,7 @@
 
 .icePnlTbOffBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-mid.gif" );
+    background-image: url(css-images/off-right-mid.gif);
     background-repeat: no-repeat;
     text-align: center;
     padding-top: 5px;
@@ -875,7 +875,7 @@
 
 .icePnlTbOffBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-left-bot.gif" );
+    background-image: url(css-images/tbot-off-left-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -883,7 +883,7 @@
 
 .icePnlTbOffBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-mid-bot.gif" );
+    background-image: url(css-images/tbot-off-mid-bot.gif);
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -891,7 +891,7 @@
 
 .icePnlTbOffBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-off-right-bot.gif" );
+    background-image: url(css-images/tbot-off-right-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -911,7 +911,7 @@
 
 .icePnlTbOverBtm .LftTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-top.gif" );
+    background-image: url(css-images/tbot-over-left-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -919,7 +919,7 @@
 
 .icePnlTbOverBtm .MidTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-top.gif" );
+    background-image: url(css-images/tbot-over-mid-top.gif);
     background-repeat: repeat-x;
     text-align: center;
     border: none;
@@ -927,7 +927,7 @@
 
 .icePnlTbOverBtm .RtTop {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-top.gif" );
+    background-image: url(css-images/tbot-over-right-top.gif);
     background-repeat: no-repeat;
     text-align: center;
     border: none;
@@ -935,7 +935,7 @@
 
 .icePnlTbOverBtm .LftMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-left-mid.gif" );
+    background-image: url(css-images/over-left-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -944,7 +944,7 @@
 
 .icePnlTbOverBtm .MidMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-mid-mid.gif" );
+    background-image: url(css-images/over-mid-mid.gif);
     background-repeat: repeat;
     text-align: center;
     border: none;
@@ -967,7 +967,7 @@
 
 .icePnlTbOverBtm .RtMid {
     background-color: transparent;
-    background-image: url( "./css-images/over-right-mid.gif" );
+    background-image: url(css-images/over-right-mid.gif);
     background-repeat: repeat-y;
     text-align: center;
     padding-top: 5px;
@@ -976,7 +976,7 @@
 
 .icePnlTbOverBtm .LftBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-left-bot.gif" );
+    background-image: url(css-images/tbot-over-left-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -984,7 +984,7 @@
 
 .icePnlTbOverBtm .MidBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-mid-bot.gif" );
+    background-image: url(css-images/tbot-over-mid-bot.gif);
     background-repeat: repeat-x;
     padding-bottom: 5px;
     border: none;
@@ -992,7 +992,7 @@
 
 .icePnlTbOverBtm .RtBtm {
     background-color: transparent;
-    background-image: url( "./css-images/tbot-over-right-bot.gif" );
+    background-image: url(css-images/tbot-over-right-bot.gif);
     background-repeat: no-repeat;
     padding-bottom: 5px;
     border: none;
@@ -1134,7 +1134,7 @@
     width: 100%;
     background-color: #2A6CC2;
     color: #FFFFFF;
-    background-image: url( ./css-images/cal_arrow_right.gif );
+    background-image: url(css-images/cal_arrow_right.gif);
     background-position: center right;
     background-repeat: no-repeat;
 }
@@ -1618,7 +1618,7 @@
 
 .icePnlPopHdr {
     background-color: #DEDEDE;
-    background-image: url( "./css-images/window_top.gif" );
+    background-image: url(css-images/window_top.gif);
     background-position: top;
     background-repeat: repeat-x;
     height: 2.0em;
@@ -1649,14 +1649,14 @@
 
 .iceOutProgIndetActv {
     background-color: #EFEFEF;
-    background-image: url( css-images/in_progress.gif );
+    background-image: url(css-images/in_progress.gif);
     background-position: center;
     background-repeat: repeat-x;
 }
 
 .iceOutProgIndetInactv {
     background-color: #EFEFEF;
-    background-image: url( css-images/in_progress_inactive.gif );
+    background-image: url(css-images/in_progress_inactive.gif);
     background-position: center;
     background-repeat: repeat-x;
 }
@@ -1675,7 +1675,7 @@
 
 .iceOutConStatInactv {
     position: absolute;
-    background-image: url( css-images/connect_idle.gif );
+    background-image: url(css-images/connect_idle.gif);
     background-position: top;
     background-repeat: no-repeat;
     width: 25px;
@@ -1684,7 +1684,7 @@
 
 .iceOutConStatActv {
     position: absolute;
-    background-image: url( css-images/connect_active.gif );
+    background-image: url(css-images/connect_active.gif);
     background-position: top;
     background-repeat: no-repeat;
     width: 25px;
@@ -1693,7 +1693,7 @@
 
 .iceOutConStatCaution {
     position: absolute;
-    background-image: url( css-images/connect_caution.gif );
+    background-image: url(css-images/connect_caution.gif);
     background-position: top;
     background-repeat: no-repeat;
     width: 25px;
@@ -1702,7 +1702,7 @@
 
 .iceOutConStatDisconnect {
     position: absolute;
-    background-image: url( css-images/connect_disconnected.gif );
+    background-image: url(css-images/connect_disconnected.gif);
     background-position: top;
     background-repeat: no-repeat;
     width: 25px;
@@ -1839,7 +1839,7 @@
 
 .icePnlTbOff .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url(css-images/off-left-top-dis.gif);
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -1850,7 +1850,7 @@
 
 .icePnlTbOff .MidTop-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url(css-images/off-mid-top-dis.gif);
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -1859,7 +1859,7 @@
 
 .icePnlTbOff .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url(css-images/off-right-top-dis.gif);
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -1907,21 +1907,21 @@
 
 .icePnlTbOff .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url(css-images/off-left-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOff .MidBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url(css-images/off-mid-bot.gif);
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOff .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url(css-images/off-right-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
@@ -1933,7 +1933,7 @@
 
 .icePnlTbOn .LftTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-image: url(css-images/off-left-top-dis.gif);
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -1944,7 +1944,7 @@
 
 .icePnlTbOn .MidTop-dis {
     background-color: #DEDEDE;
-    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-image: url(css-images/off-mid-top-dis.gif);
     background-repeat: repeat-x;
     text-align: center;
     padding-top: 1px;
@@ -1953,7 +1953,7 @@
 
 .icePnlTbOn .RtTop-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-image: url(css-images/off-right-top-dis.gif);
     background-repeat: no-repeat;
     background-position: bottom;
     text-align: center;
@@ -2000,21 +2000,21 @@
 
 .icePnlTbOn .LftBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-left-bot.gif" );
+    background-image: url(css-images/off-left-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
 
 .icePnlTbOn .MidBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-image: url(css-images/off-mid-bot.gif);
     background-repeat: repeat-x;
     border: none;
 }
 
 .icePnlTbOn .RtBtm-dis {
     background-color: transparent;
-    background-image: url( "./css-images/off-right-bot.gif" );
+    background-image: url(css-images/off-right-bot.gif);
     background-repeat: no-repeat;
     border: none;
 }
@@ -2381,7 +2381,7 @@ Disabled classes for the calendar controls
 .icePnlClpsblHdr, .icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr,
     .icePnlClpsblColpsdHdr-dis {
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-image: url(css-images/table_col_header.gif);
     background-position: bottom;
     background-repeat: repeat-x;
     font-weight: bold;
