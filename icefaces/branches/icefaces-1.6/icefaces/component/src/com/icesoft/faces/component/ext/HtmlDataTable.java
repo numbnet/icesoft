@@ -131,7 +131,7 @@ public class HtmlDataTable
         ValueBinding vb = getValueBinding("sortColumn");
         if (vb != null) {
             vb.setValue(getFacesContext(), this.sortColumn);
-            sortColumn = null;
+            this.sortColumn = null;
         }
     }
 
