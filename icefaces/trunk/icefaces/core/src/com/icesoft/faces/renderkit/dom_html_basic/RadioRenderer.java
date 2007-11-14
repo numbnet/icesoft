@@ -151,6 +151,10 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         if (!(forComponent instanceof UISelectOne)) {
             throw new IllegalStateException("Could not find UISelectOne component for radio button.");
         }
+        String layout = (String) forComponent.getAttributes().get("layout");
+        if (layout == null || !layout.equals("spread")) {
+            return;
+        }
         List selectItemList = getSelectItemList(forComponent);
         if (selectItemList.isEmpty()) {
             throw new IllegalStateException("Could not find select items for UISelectOne component.");

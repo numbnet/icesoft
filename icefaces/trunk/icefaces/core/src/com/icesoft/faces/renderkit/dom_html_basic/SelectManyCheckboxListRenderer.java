@@ -54,13 +54,14 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
+        validateParameters(facesContext, uiComponent, null);
+
         String componentName = uiComponent.getClass().getName();
         if (componentName.equals("com.icesoft.faces.component.ext.HtmlRadio") ||
                 componentName.equals("com.icesoft.faces.component.ext.HtmlCheckbox")) {
             renderOption(facesContext, uiComponent);
             return;
         }
-        validateParameters(facesContext, uiComponent, null);
 
         int counter = 0;
 
@@ -280,6 +281,10 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         UIComponent forComponent = findForComponent(facesContext, uiComponent);
         if (!(forComponent instanceof UISelectMany)) {
             throw new IllegalStateException("Could not find UISelectMany component for checkbox.");
+        }
+        String layout = (String) forComponent.getAttributes().get("layout");
+        if (layout == null || !layout.equals("spread")) {
+            return;
         }
         List selectItemList = getSelectItemList(forComponent);
         if (selectItemList.isEmpty()) {

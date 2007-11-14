@@ -35,7 +35,7 @@
 &base-props;
 <property>
     <description>
-        Client identifier of the component for which this element is a label.
+        ID of the selectManyCheckbox component to which this checkbox belongs.
     </description>
     <property-name>for</property-name>
     <property-extension>
@@ -47,7 +47,7 @@
 </property>
 <property>
     <description>
-        Client identifier of the component for which this element is a label.
+        Index of the SelectItem mapped to this checkbox, starting with zero.
     </description>
     <property-name>index</property-name>
     <property-class>int</property-class>

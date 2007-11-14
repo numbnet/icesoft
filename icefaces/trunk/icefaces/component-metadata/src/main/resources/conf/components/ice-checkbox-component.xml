@@ -34,10 +34,10 @@
 
 <component>
 	<description>
-A single-choice control represented as a set of radio-buttons
+A multiple-choice control represented as a checkbox.
 	</description>
 
-	<display-name>Select One Radio</display-name>
+	<display-name>Select Many Checkbox</display-name>
 	<component-type>
 		com.icesoft.faces.HtmlCheckbox
 	</component-type>

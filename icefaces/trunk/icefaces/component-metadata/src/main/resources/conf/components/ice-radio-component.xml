@@ -34,7 +34,7 @@
 
 <component>
 	<description>
-A single-choice control represented as a set of radio-buttons
+A single-choice control represented as a radio button.
 	</description>
 
 	<display-name>Select One Radio</display-name>
