@@ -494,7 +494,7 @@ public class MailManager implements WebmailBase {
                                 DRAFT_FOLDER_NAME);
                         this.setProcess(99);
                         this.setProcessText("Draft Folder Initializing...............DONE! ");
-                        this.setProcessText("Starting Webmail.................................. ");
+                        this.setProcessText("Starting Webmail................................");
                         mediator.renderHelper();
                         
                     }
