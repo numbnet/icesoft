@@ -33,6 +33,8 @@
 
 package com.icesoft.icefaces.samples.showcase.components.dragDrop;
 
+import java.io.Serializable;
+
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
@@ -45,7 +47,7 @@ import javax.faces.event.ActionEvent;
  * from the store.</p>
  */
 
-public class CartItem {
+public class CartItem implements Serializable{
     // item attributes
     private String key = null;
     private String name = "Unknown";

@@ -20,6 +20,7 @@
       <filter-name>Seam Filter</filter-name>
       <filter-class>org.jboss.seam.web.SeamFilter</filter-class>
    </filter>
+ 
 
    <filter-mapping>
       <filter-name>Seam Filter</filter-name>
@@ -28,6 +29,7 @@
     <listener>
       <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
    </listener>
+ 
     <!-- context parameters -->
    <context-param>
       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
@@ -37,10 +39,7 @@
       <param-name>facelets.DEVELOPMENT</param-name>
       <param-value>true</param-value>
    </context-param>
-    <context-param>
-       <param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
-       <param-value>100000000</param-value>         
-    </context-param>
+    
    <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
       <param-value>.xhtml</param-value>
@@ -71,10 +70,10 @@
         <param-value>true</param-value>
     </context-param>
     
-    <context-param>
+<context-param>
         <param-name>org.jboss.seam.core.init.debug</param-name>
-        <param-value>true</param-value>
-    </context-param>
+        <param-value>false</param-value>
+    </context-param> 
  
   <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -139,4 +138,14 @@
   </servlet-mapping>
   
  
+  <!-- <security-constraint> 
+       <display-name>Restrict raw XHTML Documents</display-name>
+       <web-resource-collection>
+           <web-resource-name>XHTML</web-resource-name>
+           <url-pattern>*.xhtml</url-pattern>
+       </web-resource-collection>
+       <auth-constraint>
+           <role-name>NONE</role-name>
+       </auth-constraint>
+   </security-constraint> -->
 </web-app>

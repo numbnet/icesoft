@@ -55,13 +55,14 @@ Once the file is uploaded, information about the file is displayed.
                this application on our .org site.  The uploaded files will be deleted
                by the IceAppSessionListener once the session is destroyed.
             </p>
-            <ice:commandButton image="./images/fileUpload/go_button.gif" 
-                                         action="#{fileAdminBean.fileUpload.openUploadDialog}"
-                                           alt="Open"/>    
-                  Select the Open button to search for the file you want to upload.                    
+            <ice:commandButton image="./images/fileUpload/arrow_#{fileAdminBean.fileUpload.uploadDialog}.gif" 
+                                         action="#{fileAdminBean.fileUpload.toggleDialog}"
+                                           alt="Open"/>   
+                  			#{msgs['component.fileUpload.openPanel']}                   
         </ice:panelGroup>
               
-        <ice:panelGroup rendered="#{fileAdminBean.fileUpload.uploadDialog}"      
+        <ice:panelGroup id="openFileUploadPanel" 
+            rendered="#{fileAdminBean.fileUpload.uploadDialog}"      
             style="background-color: #FFFFFF; width: 550px; height: 180px;   border: 1px solid #104675;">
             <strong>File Upload Component Dialog</strong>
              <f:facet name="afterInvalidField">
@@ -70,10 +71,11 @@ Once the file is uploaded, information about the file is displayed.
                	</div>
             </f:facet>
 
-            <ice:panelGrid
+            <ice:panelGrid  id="uploadPanelGrid"
                styleClass="componentLayoutRootTable"
                columns="1">
-               <ice:panelGroup styleClass="formBorderHighlight"
+               <ice:panelGroup     id="uploadGroup" 
+               			   styleClass="formBorderHighlight"
                                 style="text-align:left">
                    <ice:inputFile id="inputFileName"
                        progressListener="#{fileAdminBean.fileUpload.progress}"
@@ -82,22 +84,21 @@ Once the file is uploaded, information about the file is displayed.
                                     value="#{fileAdminBean.fileUpload.percent}"/>
                    <ice:outputText id="fileName"
                                 value="Uploading to File Name: #{fileAdminBean.fileUpload.currentFileName}"/>
- 
                       <br/>
-                   <ice:outputText value="Remaining space for file uploads: #{fileAdminBean.remainingSpace}"/>
+                   <ice:outputText id="spaceLabel" value="#{msgs['component.fileUpload.remainingSpace']}"/>
+                   <ice:outputText id="remainingSpace" value="#{fileAdminBean.remainingSpace}"/>  
                </ice:panelGroup>
                    
             </ice:panelGrid>
-            <ice:outputText id="errorText" value="#{fileAdminBean.errorMsg}"/>
-                 <br />
-            <ice:commandButton image="./images/fileUpload/end-dot.gif"
-                                        action="#{fileAdminBean.fileUpload.closeUploadDialog}"
-                                           alt="Close"/>  Close File Upload Dialog            
+            <ice:panelGroup id="errorPanel" >
+           		 <ice:outputText id="errorText"  rendered="#{fileAdminBean.error}"
+            			 value="#{msgs['component.fileUpload.errorMsg']}"/>
+            </ice:panelGroup>
         </ice:panelGroup>
 
-        <ice:panelGroup id="listOfFilesUploaded" styleClass="formborderHighlight"  >  
-              <strong>Project Files</strong>
-              <ice:outputText value="No Files uploaded" rendered="#{empty fileAdminBean.filesList}"/>
+        <ice:panelGroup id="listOfFilesUploaded"  >  
+              <strong>Project Files</strong> <br />
+              <ice:outputText value="#{msgs['component.fileUpload.emptyFilesList']}" rendered="#{empty fileAdminBean.filesList}"/>
          
               <ice:dataTable value="#{fileAdminBean.filesList}" var="entry" rendered="#{not empty fileAdminBean.filesList}"> 
                    <ice:column>                                  

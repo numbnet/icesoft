@@ -147,13 +147,13 @@ public class InputFileBean implements Renderable, Serializable{
 	    		 HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
 	    		 session.setAttribute("uploadDirectory", uploadDirectory);
 	    	 }catch (Exception e){
-	    		 setError("Error setting session attribute for uploadDirectory");
+	    		 log.info("error setting upload directory in session attribute ");
+	    		 e.printStackTrace();
 	    	 }
 	     }
 	     if (inputFile.getStatus() == InputFile.SAVED) {
 	    	 this.currentFileName = inputFile.getFileNamePattern();
 	    	 this.updateFlag=true;
-	    	 setError("");
 	     }
 	     if (inputFile.getStatus() == InputFile.INVALID) {
 	         inputFile.getFileInfo().getException().printStackTrace();
@@ -178,33 +178,38 @@ public class InputFileBean implements Renderable, Serializable{
 		this.percent = ifile.getFileInfo().getPercent();
 		log.info("percent="+this.percent+" version="+this);
 
-  	   PersistentFacesState _state = PersistentFacesState.getInstance();
-	   if(_state != null){
-		  state = _state;
-		  /**
-		   * don't do it this way as it doesn't work!!! state is null in 
-		   * renderManager.
-		   */
+  	   reRender();
+    }
+
+
+	protected void reRender() {
+		PersistentFacesState _state = PersistentFacesState.getInstance();
+		   if(_state != null){
+			  state = _state;
+			  /**
+			   * don't do it this way as it doesn't work!!! state is null in 
+			   * renderManager.
+			   */
 //		  if (renderManager!=null){
 //			  renderManager.requestRender(this);
 //		  }
-		  /**
-		   * have to do it this way since Seam manages the contexts and
-		   * you don't always have access to the state.  Better to use
-		   * an old state rather than a null one!
-		   */
-			try{
-				state.execute();
-				state.render();
-			}catch(Exception re){
-				re.printStackTrace();
+			  /**
+			   * have to do it this way since Seam manages the contexts and
+			   * you don't always have access to the state.  Better to use
+			   * an old state rather than a null one!
+			   */
+				try{
+					state.execute();
+					state.render();
+				}catch(Exception re){
+					re.printStackTrace();
+				}
+				
 			}
-			
-		}
-		else {
-			log.info("state is null");
-		}
-    }
+			else {
+				log.info("state is null");
+			}
+	}
 
      public String getCurrentFileName() {
     	 if (file !=null){ 
@@ -219,35 +224,16 @@ public class InputFileBean implements Renderable, Serializable{
      public File getFile(){
     	 return this.file;
      }
-     /*
-      * crude error messaging
-      */
- 	public void setError(String msg) {
-		errorMsg = msg;
-		if (log.isDebugEnabled())log.debug("errorMsg="+errorMsg);
-	}
+ 
 
+ 	public void toggleDialog(){
+ 		uploadDialog=!uploadDialog;
+ 	}
 
-    public void closeUploadDialog() {
-            this.uploadDialog = false;
-//            Manager.instance().beginConversation();
-            log.info("closeUploadDialog dialog="+uploadDialog+" LR="+Manager.instance().isLongRunningConversation());
-    }
-    /**
-     * Method to set the popup status of the file upload dialog 
-     */
-
-    public void openUploadDialog() {
-            this.uploadDialog = true;
- //           Manager.instance().beginConversation();
-            log.info("openUploadDialog dialog="+uploadDialog+" LR="+Manager.instance().isLongRunningConversation());
-    }
-    
  	@Destroy 
 	public void destroy(){
 		log.info("destroy InputFileBean");
 	}
-
 
 	public boolean isUpdateFlag() {
 		return updateFlag;

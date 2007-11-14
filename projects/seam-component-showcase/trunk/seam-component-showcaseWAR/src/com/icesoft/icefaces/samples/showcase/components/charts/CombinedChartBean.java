@@ -68,6 +68,7 @@ package com.icesoft.icefaces.samples.showcase.components.charts;
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 import com.icesoft.faces.context.effects.Effect;
+import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.context.effects.Pulsate;
 import org.jboss.seam.annotations.Name;
 import org.krysalis.jcharts.axisChart.AxisChart;
@@ -102,7 +103,7 @@ public class CombinedChartBean implements Serializable{
     private String clickedValue;
 
     //highlight effect when text is changed
-    private Effect effectOutputText;
+    private Effect effectOutputText =  new Highlight("#ffff99");;
 
     //local variable for the axis chart component of the combined chart
     private static AxisChart axisChart;
@@ -123,20 +124,25 @@ public class CombinedChartBean implements Serializable{
 
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             String[] legendLabels = {"Bugs", "Security Holes", "Backdoors"};
-            Paint[] paints = TestDataGenerator.getRandomPaints(3);
+            Paint[] paints = new Color[]{
+                                new Color(0xCAE1EF), 
+                                new Color(0xF78208),
+                                new Color(0x0D4274) };
 
             BarChartProperties barChartProperties = new BarChartProperties();
-            AxisChartDataSet axisChartDataSet = new AxisChartDataSet(data,
-                                                                     legendLabels,
-                                                                     paints,
-                                                                     ChartType.BAR,
-                                                                     barChartProperties);
+            AxisChartDataSet axisChartDataSet =
+                    new AxisChartDataSet(data,
+                                         legendLabels,
+                                         paints,
+                                         ChartType.BAR,
+                                         barChartProperties);
             dataSeries.addIAxisPlotDataSet(axisChartDataSet);
 
 
             data = TestDataGenerator.getRandomNumbers(2, 7, 1000, 5000);
             legendLabels = new String[]{"Patches", "New Patch Bugs"};
-            paints = new Paint[]{Color.black, Color.red};
+            paints = new Paint[]{ new Color(0x0D4274),
+                                new Color(0xF78208)};
 
             Stroke[] strokes = {LineChartProperties.DEFAULT_LINE_STROKE,
                                 LineChartProperties.DEFAULT_LINE_STROKE};
@@ -168,11 +174,11 @@ public class CombinedChartBean implements Serializable{
      * Method to tell the page to render or not based on the initialized flag
      *
      * @param component chart component which will be rendered.
-     *
-     * @return boolean true if OutputChart should be re-rendered; otherwise, false.
+     * @return boolean true if OutputChart should be re-rendered; otherwise,
+     *         false.
      */
     public boolean renderOnSubmit(OutputChart component) {
-        if(axisChart == null || component.getChart() == null)
+        if (axisChart == null || component.getChart() == null)
             buildAxisChart();
         component.setChart(axisChart);
 
@@ -195,7 +201,7 @@ public class CombinedChartBean implements Serializable{
                 setClickedValue(chart.getClickedImageMapArea().getXAxisLabel() +
                                 "  :  " +
                                 chart.getClickedImageMapArea().getValue());
-                effectOutputText = new Pulsate(2.0f);
+                effectOutputText.setFired(false);
             }
         }
     }

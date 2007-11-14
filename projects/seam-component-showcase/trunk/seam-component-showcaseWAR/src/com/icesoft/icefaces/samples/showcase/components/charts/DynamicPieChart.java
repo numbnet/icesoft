@@ -63,42 +63,33 @@ public class DynamicPieChart implements Serializable{
     
     //list of labels for the chart
     public List labels = new ArrayList();
-    
+
     //list of the data used by the chart
     public List data = new ArrayList();
-    
-    
+
     //list of the colors used in the pie chart
     private List paints = new ArrayList();
-    
-    
-    //a map of the sales data
-    private Map salesMap;
-    
-    
+
     //a temporary string for the current label
     private String label;
-    
+
     private float value;
-    
+
     //flag to determine if the chart is a 3D pie
     public boolean is3D = false;
-    
+
     //flag to determine if the graph needs rendering
     private boolean pieNeedsRendering = false;
-    
+
     //the temporary value for the selected color
     private Color selectedColor;
-    
-    
-    
+
     //index to delete from
     int deletInex = 0;
-    
+
     //list of items to delete
     private List deleteList = new ArrayList();
-    
-    
+
     //array of the available paints used in the chart
     public static final SelectItem[] availablePaints = new SelectItem[]{
         
@@ -123,24 +114,21 @@ public class DynamicPieChart implements Serializable{
     /**
      * Method to build the sales list and create the chart using the data from
      * the sales class
-     *
-     * @return list of sales items for charting.
      */
     public DynamicPieChart() {
-        salesMap = Sales.getSales();
-        Iterator it = salesMap.values().iterator();
+        Iterator it = Sales.getSales().values().iterator();
         double price;
         String label;
         int r = 3;
         while (it.hasNext()) {
-            
+
             Sales[] yearSale = (Sales[]) it.next();
             price = 0;
             label = "";
             for (int i = 0; i < yearSale.length; i++) {
                 price += (yearSale[i]).getPrice();
                 label = (yearSale[i]).getYear();
-                
+
             }
             labels.add(label);
             data.add(new Double(price));
@@ -148,17 +136,17 @@ public class DynamicPieChart implements Serializable{
             paints.add(AbstractChart.getColor((String)availablePaints[r].getValue()));
             r++;
         }
-        
+
     }
-    
-    
+
+
     /**
      * Method to call the rendering of the chart based on the pieNeedsRendering
      * flag
      *
      * @param component chart component which will be rendered.
-     *
-     * @return boolean true if OutputChart should be re-rendered; otherwise, false.
+     * @return boolean true if OutputChart should be re-rendered; otherwise,
+     *         false.
      */
     public boolean renderOnSubmit(OutputChart component) {
         if (pieNeedsRendering) {
@@ -168,11 +156,11 @@ public class DynamicPieChart implements Serializable{
             return false;
         }
     }
-    
+
     public void setIs3D(boolean i3D) {
         this.is3D = i3D;
     }
-    
+
     /**
      * Method to return whether chart is 3D or not
      *
@@ -181,13 +169,13 @@ public class DynamicPieChart implements Serializable{
     public boolean is3D() {
         return is3D;
     }
-    
-    
+
+
     public SelectItem[] getAvailablePaints() {
         return availablePaints;
     }
-    
-    
+
+
     /**
      * Method to listen for the change in color in the graph
      *
@@ -199,46 +187,46 @@ public class DynamicPieChart implements Serializable{
                     AbstractChart.getColor(event.getNewValue().toString());
         }
     }
-    
-    
+
+
     public String getLabel() {
         return label;
     }
-    
+
     public void setLabel(String label) {
         if (null == label || label.length() < 1) {
             label = " ";
         }
         this.label = label;
     }
-    
+
     public float getValue() {
         return value;
     }
-    
+
     public void setValue(float value) {
         this.value = value;
     }
-    
+
     /**
      * Method to add a value and a color to the chart
      *
      * @param event JSF action event.
      */
     public void addToChart(ActionEvent event) {
-        
-        
+
+
         paints.add(selectedColor);
-        
+
         labels.add(label);
-        
+
         data.add(new Double(value));
-        
+
         pieNeedsRendering = true;
-        
+
     }
-    
-    
+
+
     public List getDeleteList() {
         deleteList.clear();
         deleteList.add(new SelectItem("-1", "Select..."));
@@ -247,16 +235,16 @@ public class DynamicPieChart implements Serializable{
         }
         return deleteList;
     }
-    
+
     public void setDeleteList(List deleteList) {
         this.deleteList = deleteList;
     }
-    
+
     public boolean isDeleteAllowed() {
         return labels.size() > 2;
     }
-    
-    
+
+
     /**
      * Method to listen for an action to delete from the chart
      *
@@ -267,7 +255,7 @@ public class DynamicPieChart implements Serializable{
             deletInex = Integer.parseInt(event.getNewValue().toString());
         }
     }
-    
+
     /**
      * Method to delete an item from the chart
      *
@@ -281,27 +269,27 @@ public class DynamicPieChart implements Serializable{
             pieNeedsRendering = true;
         }
     }
-    
-    
+
+
     public List getData() {
         return data;
     }
-    
+
     public List getLabels() {
-        
+
         return labels;
     }
-    
+
     public List getPaints() {
-        
+
         return paints;
     }
-    
+
     public void setPaints(List paints) {
-       
-        
+
+
         this.paints = paints;
-       
+
     }
 }
 

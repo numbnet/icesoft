@@ -40,7 +40,6 @@ import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.async.render.IntervalRenderer;
 
-import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 
@@ -65,21 +64,20 @@ import java.io.Serializable;
  */
 @Scope(ScopeType.PAGE)
 @Name("progress")
-//@BypassInterceptors
-public class OutputProgressRenderBean implements Renderable, ViewListener, Serializable {
+public class OutputProgressRenderBean implements Renderable,  Serializable {
 	   private static Log log =
            LogFactory.getLog(OutputProgressRenderBean.class);	
     /**
      * Renderable Interface
      */
-	public static final String RENDERER_NAME = "demand";
+//	public static final String RENDERER_NAME = "demand";
     private PersistentFacesState state;
     private boolean doneSetup;
     private int myId; 
     private static int id;
     private IntervalRenderer ir;
-    private OnDemandRenderer renderer;
-    private int lastPercent;
+//    private OnDemandRenderer renderer;
+
    
     private RenderManager renderManager;
 
@@ -110,10 +108,12 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
     @In
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
-        if (renderManager !=null){
-          renderer = renderManager.getDelayRenderer(RENDERER_NAME);
-          renderer.add(this);
-        }
+        log.info("setRenderManager() and renderManager="+this.renderManager);
+//        if (renderManager !=null){
+//          renderer = renderManager.getDelayRenderer(RENDERER_NAME);
+//          renderer.add(this);
+//        }else 
+//        	log.info("\t\t renderManager is null");
     }
 
     /**
@@ -122,6 +122,7 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
      * @return RenderManager null
      */
     public RenderManager getRenderManager() {
+    	log.info("getRenderManager rm="+this.renderManager);
         return this.renderManager;
     }
 
@@ -140,35 +141,37 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	*/
 	 public OutputProgressRenderBean() {
 	        state = PersistentFacesState.getInstance();
-	        myId = ++id;  
+	        myId = ++id;  //can keep track of the renderable thread id for debug
 	    }
      /* 
      * @return the current percentage
+     * Since this is what is actually changes to push the render, get
+     * a fresh state each time
      */
     public int getPercent() {
     	//need to get state again in case seam has redirected to same view
-    	state=PersistentFacesState.getInstance();
-    	if (percent==100){
-    		if (!ir.isEmpty()){
-    			ir.requestRender();
-    			ir.requestStop();
-    			this.disableStartButton = false;
-    		}
-    		ir.requestRender();
-    		ir.requestStop();
-    	}
+    	PersistentFacesState _state=PersistentFacesState.getInstance();
+    	if (_state!=null)state=_state;
+	   	if (percent==100){
+	   		if (!ir.isEmpty()){
+	   			ir.requestRender();
+	   			ir.requestStop();
+	   			this.disableStartButton = false;
+	   		}
+	   		ir.requestRender();
+	   		ir.requestStop();
+	   	}
         return percent;
     }
 
 	private void setupIntervalRenderer() {
-		//	if (log.isTraceEnabled()){
-    			log.info(">>> new OutputProgressRenderBean renderable..."+myId);
-    		//}
-    		state.addViewListener(this);
-    		ir = renderManager.getIntervalRenderer("org.icesoft.clock.clockRenderer");
-    		ir.setInterval(1000);
-    		ir.add(this);
-    		ir.requestRender();
+		if (log.isDebugEnabled()){
+    			log.debug(">>> new OutputProgressRenderBean renderable..."+myId);
+    	}
+    	ir = renderManager.getIntervalRenderer("org.icesoft.clock.clockRenderer");
+    	ir.setInterval(1000);
+    	ir.add(this);
+    	ir.requestRender();
 	}
 	
 
@@ -214,12 +217,17 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	     * Start a new thread to do some work which is monitored for progress.
 	     */
 	    public void start(ActionEvent event) {
+	    	log.info("start the action");
 	    	setPercent(0);
 	    	if (!doneSetup){
+	    		log.info("setup the IR");
 	    	    setupIntervalRenderer();
-	    	}else ir.requestRender();
-	    	doneSetup = true;
-	    	log.info("starting thread");	    	
+	    	}else {
+	    		if (ir!=null)
+	    		     ir.requestRender();
+	    		else log.info("why is ir null????");
+	    	}
+	    	doneSetup = true;	    	
 	        Thread testThread = new Thread(new LongOperationRunner(this));
 	        testThread.start();	  
 	    }
@@ -234,14 +242,17 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 
 	        public LongOperationRunner(OutputProgressRenderBean outputBean) {
 	            this.outputBean = outputBean;
+	            log.info(" thread constructor & outputBean="+outputBean);
+	            
 	        }
 
 	        public void run() {
+	     
 	            outputBean.setDisableStartButton(true);
 	            try {
 	                for (int i = 0; i <= 100; i += 10) {
 	                    // pause the thread
-
+	                	log.info(" \t in loop & i="+i+" for outputBean="+outputBean);
 	                    // update the percent value
 	                    if (i>0)outputBean.setPercent(i);
 	                    Thread.sleep(300);
@@ -256,49 +267,28 @@ public class OutputProgressRenderBean implements Renderable, ViewListener, Seria
 	        }
 	    }
 	    
-	    
-	    public void reRender() {
-	        if (renderer != null) {
-	            renderer.requestRender();
-	        } else {
-	            if (log.isDebugEnabled()) {
-	                log.debug("OnDemandRenderer was not available (it was null)");
-	            }
-	        }
-	    }
 
-	    public void viewCreated() {
-	    	log.info("viewCreated()");
-	    }
-
-	    public void viewDisposed() {
-	    	log.info("*** View dispoded: "+myId);
-//	        if(log.isTraceEnabled() ) { 
-//	           log.trace("*** View disposed: " +myId );
-//	        } 
-	        cleanup();
-	    }
-
+	    /**
+	     * cleanup of interval renderer
+	     * 
+	     */
 	    private void cleanup() {
 	    	log.info("cleanup()");
 	        if (renderManager != null) {
-	        	log.info("cleanup & renderManager !=null");
 	            ir.remove(this);
-	            renderer.remove(this);
+//	            renderer.remove(this);
 	            if (ir.isEmpty() ) {
-	            	log.info("*** IntervaleRenderer Stopped");
-	                if(log.isTraceEnabled() ) { 
-	                   log.trace("*** IntervalRenderer Stopped " );
+	                if(log.isDebugEnabled() ) { 
+	                   log.debug("*** IntervalRenderer Stopped " );
 	                } 
 	                ir.requestStop();
 	            }
 	        }
 	        else if (!ir.isEmpty()){
-	        	log.info("trying to stop ir");
 	        	ir.remove(this);
 	        	ir.requestStop();
-	        	renderer.remove(this);
 	        }
+	        log.info("interval renderer stopped");
 	    } 	    
 	    
 		@Destroy 

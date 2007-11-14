@@ -60,7 +60,7 @@ import org.jboss.seam.annotations.Scope;
  */
 @Scope(ScopeType.PAGE)
 @Name("dynamicTabbedPaneExample")
-public class DynamicTabSetBean implements Serializable{
+public class DynamicTabSetBean{
 	   private static Log log =
            LogFactory.getLog(DynamicTabSetBean.class);   
     private int tabIndex;

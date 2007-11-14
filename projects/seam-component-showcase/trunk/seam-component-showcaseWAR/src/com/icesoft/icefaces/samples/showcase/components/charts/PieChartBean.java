@@ -33,17 +33,12 @@
 
 package com.icesoft.icefaces.samples.showcase.components.charts;
 
-import com.icesoft.faces.component.outputchart.AbstractChart;
 import com.icesoft.faces.component.outputchart.OutputChart;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,58 +58,63 @@ public class PieChartBean extends Chart implements Serializable{
     
     //list of labels for the chart
     protected static List labels = new ArrayList();
-    
+
     //list of the data used by the chart
     protected static List data = new ArrayList();
-    
+
     //list of the colors used in the pie chart
     private List paints;
-    
+
     //all sales
     private static List allSales = new ArrayList();
-    
+
     //list of the saled data from the sales class
     private static final List sales = buildSales();
-        
+
     //a map of the sales data
     private static Map salesMap;
-    
+
     //
     private static String clickedAreaValue = ChartMediator.DEFAULT_STRING;
-    
+
     //a temporary string for the current label
     private String label;
-    
+
     private float value;
-    
+
     //flag to determine if the chart is a 3D pie
     public static boolean is3D = false;
-    
+
     //flag to determine if the graph needs rendering
     private boolean pieNeedsRendering = false;
-    
+
     //the temporary value for the selected color
     private Color selectedColor;
-    
+
     //the highlight effect for when the value selected is changed
     private static Effect effectOutputText = new Highlight("#ffff99");
-    
+
     //index to delete from
     int deletInex = 0;
-    
+
     //list of items to delete
     private List deleteList = new ArrayList();
-    
-    
-    
-    
-    public PieChartBean(){
+
+
+
+
+    public PieChartBean() {
         super();
+        paints = new ArrayList();
+        paints.add(new Color(26, 86, 138)); //#1A568A
+        paints.add(new Color(76, 126, 167)); //#4C7EA7
+        paints.add(new Color(148, 179, 203)); //#94B3CB
+        paints.add(new Color(193, 211, 223)); //#C1D3DF
     }
-    
-    
-    
-    
+
+
+
+
     /**
      * Method to build the sales list and create the chart using the data from
      * the sales class
@@ -123,14 +123,14 @@ public class PieChartBean extends Chart implements Serializable{
      */
     public static List buildSales() {
         ArrayList salesTemp = new ArrayList();
-        
+
         salesMap = Sales.getSales();
-        
+
         Iterator it = salesMap.values().iterator();
         double price;
         String label;
         while (it.hasNext()) {
-            
+
             Sales[] yearSale = (Sales[]) it.next();
             price = 0;
             label = "";
@@ -139,23 +139,23 @@ public class PieChartBean extends Chart implements Serializable{
                 label = (yearSale[i]).getYear();
                 salesTemp.add(yearSale[i]);
                 allSales.add(yearSale[i]);
-           
+
             }
             labels.add(label);
             data.add(new Double(price));
-            
+
         }
         return salesTemp;
     }
-    
-    
+
+
     /**
      * Method to call the rendering of the chart based on the pieNeedsRendering
      * flag
      *
      * @param component chart component which will be rendered.
-     *
-     * @return boolean true if OutputChart should be re-rendered; otherwise, false.
+     * @return boolean true if OutputChart should be re-rendered; otherwise,
+     *         false.
      */
     public boolean renderOnSubmit(OutputChart component) {
         if (pieNeedsRendering) {
@@ -165,11 +165,11 @@ public class PieChartBean extends Chart implements Serializable{
             return false;
         }
     }
-    
+
     public static void setIs3D(boolean i3D) {
         is3D = i3D;
     }
-    
+
     /**
      * Method to return whether chart is 3D or not
      *
@@ -178,57 +178,51 @@ public class PieChartBean extends Chart implements Serializable{
     public static boolean is3D() {
         return is3D;
     }
-    
-    
-    
-    
-    
+
+
     public String getLabel() {
         return label;
     }
-    
+
     public void setLabel(String label) {
         if (null == label || label.length() < 1) {
             label = " ";
         }
         this.label = label;
     }
-    
+
     public float getValue() {
         return value;
     }
-    
+
     public void setValue(float value) {
         this.value = value;
     }
-    
-    
-    
-    
-    
+
+
     public String getClickedAreaValue() {
         return clickedAreaValue;
     }
-    
+
     public void setClickedAreaValue(String clickedAreaValue) {
-        this.clickedAreaValue = clickedAreaValue;
+        PieChartBean.clickedAreaValue = clickedAreaValue;
     }
-    
-    
+
+
     public Effect getEffectOutputText() {
         return effectOutputText;
     }
-    
+
     public void setEffectOutputText(Effect effectOutputText) {
-        this.effectOutputText = effectOutputText;
+        PieChartBean.effectOutputText = effectOutputText;
     }
-    
-    
-    
+
+
     /**
-     *Method to set the displayed table data to that corresponding
-     *with the year clicked
-     *@param String year clicked
+     * Method to set the displayed table data to that corresponding with the
+     * year clicked
+     *
+     * @param year clicked
      */
     public static void setSalesForYear(String year) {
         sales.clear();
@@ -237,24 +231,24 @@ public class PieChartBean extends Chart implements Serializable{
             sales.add(yearSales[i]);
         }
     }
-    
+
     public List getSales() {
-       return type.equalsIgnoreCase("pie3d") ? allSales : sales;
+        return type.equalsIgnoreCase("pie3d") ? allSales : sales;
     }
-    
-    
+
+
     public List getData() {
         return data;
     }
-    
+
     public List getLabels() {
         return labels;
     }
-    
+
     public List getPaints() {
         return paints;
     }
-    
+
     public void setPaints(List paints) {
         this.paints = paints;
     }

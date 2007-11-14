@@ -124,23 +124,7 @@ public class PageContentBean extends IceUserObject implements Serializable{
                 .getContextClassLoader());
     }
 
-    /**
-     * Gets the navigation callback.
-     *
-     * @return NavigationBean.
-     */
-//    public NavigationBean getNavigationSelection() {
-//        return navigationBean;
-//    }
 
-    /**
-     * Sets the navigation callback.
-     *
-     * @param navigationBean controls selected panel state.
-     */
-//    public void setNavigationSelection(NavigationBean navigationBean) {
-//        this.navigationBean = navigationBean;
-//    }
 
     /**
      * Gets the template name to display in the showcase.jspx.  The template is

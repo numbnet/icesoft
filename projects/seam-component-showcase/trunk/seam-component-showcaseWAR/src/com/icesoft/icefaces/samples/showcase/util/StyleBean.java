@@ -41,6 +41,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.Manager;
 import static org.jboss.seam.ScopeType.EVENT;
 import org.jboss.seam.ScopeType;
 import java.util.ArrayList;
@@ -148,14 +149,10 @@ public class StyleBean implements Serializable{
      *
      * @return the reload navigation attribute
      */
-    public String changeStyle() {
+    public void changeStyle() {
         currentStyle = tempStyle;
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
-
-        // manually update the icons in the navigation tree
-//        treeNavigation.refreshIcons(currentStyle);
-
-        return "reload";
+        Manager.instance().redirect(""); //only need this for the calendar for some reason
     }
 
     /**
@@ -167,15 +164,15 @@ public class StyleBean implements Serializable{
         return styleList;
     }
 
-    /**
-     * Provides the StyleBean with a reference to the TreeNavigation, enabling
-     * the StyleBean to use <code>refreshIcons()</code> to change the navigation
-     * icons based on the theme.
-     *
-     * @param treeNav
-     */
-    public void registerTree(TreeNavigation treeNav) {
-    	System.out.println("StyleBean: registerTree");
-//        this.treeNavigation = treeNav;
-    }
+//    /**
+//     * Provides the StyleBean with a reference to the TreeNavigation, enabling
+//     * the StyleBean to use <code>refreshIcons()</code> to change the navigation
+//     * icons based on the theme.
+//     *
+//     * @param treeNav
+//     */
+//    public void registerTree(TreeNavigation treeNav) {
+//    	System.out.println("StyleBean: registerTree");
+////        this.treeNavigation = treeNav;
+//    }
 }

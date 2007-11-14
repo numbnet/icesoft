@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
-            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
             xmlns:security="http://jboss.com/products/seam/security"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
@@ -10,12 +10,13 @@
                  http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
- <!-- <core:init debug="true" jndi-pattern="seam-comp-showcase/#{ejbName}/local"/> -->
-   <core:manager conversation-timeout="120000" 
+    <core:init debug="true" transaction-management-enabled="false"/> 
+
+    <core:manager conversation-timeout="120000" 
                   concurrent-request-timeout="500"
                   conversation-id-parameter="cid"/>
-    
-   <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
+                  
+<component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
    <component scope="APPLICATION" auto-create="true" name="autoCompleteDictionary" class="com.icesoft.icefaces.samples.showcase.components.autocomplete.AutoCompleteDictionary" /> 
-
+   <transaction:no-transaction/> 
 </components>
