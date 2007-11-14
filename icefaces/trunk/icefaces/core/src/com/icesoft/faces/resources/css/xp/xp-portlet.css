@@ -50,8 +50,7 @@
 */
 .iceInpTxt, .iceInpSecrt, .iceInpTxtArea {
     border: 1px solid #ABABAB;
-    background-color: #FFFFFF;
-    margin: 2px;
+    margin: 0px;
     padding: 2px;
 }
 
@@ -66,35 +65,30 @@
 
 .iceInpTxt, .iceInpSecrt {
     font-family: Arial, Helvetica, sans-serif;
-    color: #000000;
     padding: 2px;
 }
 
 .iceSelOneMnu, .iceSelMnyLb, .iceSelMnyMnu, .iceSelOneLb {
     font-family: Arial, Helvetica, sans-serif;
-    color: #000000;
-    padding: 2px;
+    padding: 1px;
 }
 
 .iceInpTxtArea {
     font-family: Arial, Helvetica, sans-serif;
-    color: #000000;
     padding: 2px;
 }
 
 .iceCmdLnk, .iceOutLnk {
     text-decoration: none;
     font-weight: normal;
-    color: #333333;
 }
 
 .iceOutTxt, .iceOutLbl {
     font-family: Arial, Helvetica, sans-serif;
-    color: #000000;
     padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-right: 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
 
 .iceCmdBtn {
@@ -247,9 +241,8 @@
 ----------- Data Table Component classes
 */
 .iceDatTbl { /* was iceDataTblOutline */
-    background-color: #FFFFFF;
     border: 1px solid #ABABAB;
-    margin: 10px;
+    margin: 0px;
 }
 
 .iceDatTbl table{
@@ -267,29 +260,18 @@
     color: #000000;
     border-right: 1px solid #CCCCCC;
     border-top: 1px solid #CCCCCC;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 4px;
-    padding-bottom: 4px;
 }
 
 /* data tables are rendered with alternating row colors */
 .iceDatTblRow1 { /* was iceTblRow1 */
-    background-color: #FFFFFF;
 }
 
 .iceDatTblRow2 { /* was iceTblRow2 */
-    background-color: #FFFFFF;
 }
 
 /* set the common attributes for the column classes */
 .iceDatTblCol, .iceDatTblCol1, .iceDatTblCol2{
 /*was column, column1, column2, column3*/
-    color: #000000;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 3px;
-    padding-bottom: 3px;
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
 	text-align:left;    
@@ -302,9 +284,6 @@
 ----- for datatable when cell content length exceeds-----
 */
 .iceDatTbl td span.iceOutTxt{
-	overflow: hidden;
-	display: block;
-	padding: 2px 0px;	
 }
 /* etc */
 
@@ -321,15 +300,12 @@
 
 .iceDatPgrTbl {
 /* the container for the pagination*/
-    background-color: #FFFFFF;
 }
 
 /* set the common attributes for the pagination numbers */
 .iceDatPgrScrCol a, .iceDatPgrCol a {
     text-decoration: none;
     font-weight: normal;
-    background-color: #FFFFFF;
-    color: #666666;
     display: block;
     padding-left: 5px;
     padding-right: 5px;
@@ -344,7 +320,6 @@
 .iceDatPgrScrCol a {
     color: #FFFFFF;
     border: 1px solid #2A6CC2;
-    background-color: #2A6CC2;
 }
 
 * html .iceDatPgrScrCol a {
@@ -353,7 +328,6 @@
 
 /* set the attributes for the mouseover on none-current pages */
 .iceDatPgrCol a:hover {
-    color: #000000;
     border: 1px solid #2A6CC2;
 }
 
@@ -697,6 +671,7 @@
 /* tabPanel */
 .icePnlTbSet { /* was iceTabSet*/
     width: 100%;
+    background: transparent;
 }
 
 .icePnlTbSetCnt { /*newly added class*/
@@ -707,7 +682,6 @@
     border-right: 1px solid #ABABAB;
     border-bottom: 1px solid #ABABAB;
     border-left: 1px solid #ABABAB;
-    background-color: #FFFFFF;
 }
 
 .icePnlTbSetCntBtm { /*was iceTabSetBottom*/
@@ -1692,7 +1666,7 @@
 */
 
 .iceOutConStat {
-    margin: 10px;
+    margin: 0px;
     width: 25px;
     height: 25px;
     border: none;
@@ -2427,7 +2401,6 @@ Disabled classes for the calendar controls
 
 .icePnlClpsblCnt, .icePnlClpsblColpsdCnt,
     .icePnlClpsblColpsdCnt-dis, .icePnlClpsblCnt-dis {
-    background-color: #EFEFEF;
     border: 1px solid #CCCCCC;
     border-top: none;
     padding-left: 5px;
