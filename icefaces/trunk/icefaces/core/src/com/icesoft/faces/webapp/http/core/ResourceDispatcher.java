@@ -9,6 +9,7 @@ import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.util.encoding.Base64;
 
 import java.net.URI;
@@ -21,10 +22,12 @@ public class ResourceDispatcher implements Server {
     private MimeTypeMatcher mimeTypeMatcher;
     private String prefix;
     private ArrayList registered = new ArrayList();
+    private SessionDispatcher.Monitor monitor;
 
-    public ResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher) {
+    public ResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor) {
         this.prefix = prefix;
         this.mimeTypeMatcher = mimeTypeMatcher;
+        this.monitor = monitor;
     }
 
     public void service(Request request) throws Exception {
@@ -64,13 +67,14 @@ public class ResourceDispatcher implements Server {
         registered.clear();
     }
 
-    private static class ResourceServer implements Server, ResponseHandler {
+    private class ResourceServer implements Server, ResponseHandler {
         private ResponseHandler notModified = new ResponseHandler() {
             public void respond(Response response) throws Exception {
                 response.setStatus(304);
                 response.setHeader("ETag", encode(resource));
                 response.setHeader("Date", new Date());
                 response.setHeader("Last-Modified", resource.lastModified());
+                response.setHeader("Expires", monitor.expiresBy());
             }
         };
         private String mimeType;
@@ -96,9 +100,10 @@ public class ResourceDispatcher implements Server {
 
         public void respond(Response response) throws Exception {
             response.setHeader("ETag", encode(resource));
-            response.setHeader("Cache-Control", new String[]{"public"});
+            response.setHeader("Cache-Control", "public");
             response.setHeader("Content-Type", mimeType);
             response.setHeader("Last-Modified", resource.lastModified());
+            response.setHeader("Expires", monitor.expiresBy());
             response.writeBodyFrom(resource.open());
         }
 

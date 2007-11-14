@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -173,6 +174,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void touchSession() {
             lastAccess = System.currentTimeMillis();
+        }
+
+        public Date expiresBy() {
+            return new Date(lastAccess + (session.getMaxInactiveInterval() * 1000));
         }
 
         public boolean isExpired() {

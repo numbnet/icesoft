@@ -71,7 +71,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
-        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher);
+        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
         final Server viewServlet;
         final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
