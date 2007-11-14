@@ -174,6 +174,7 @@
   <!ENTITY ice-panelGroup-props SYSTEM "ice_properties/ice-panelGroup-props.xml">
   <!ENTITY ice-selectBooleanCheckbox-props SYSTEM "ice_properties/ice-selectBooleanCheckbox-props.xml">       
   <!ENTITY ice-selectManyCheckbox-props SYSTEM "ice_properties/ice-selectManyCheckbox-props.xml">
+  <!ENTITY ice-checkbox-props SYSTEM "ice_properties/ice-checkbox-props.xml">
   <!ENTITY ice-selectManyListbox-props SYSTEM "ice_properties/ice-selectManyListbox-props.xml">
   <!ENTITY ice-selectManyMenu-props SYSTEM "ice_properties/ice-selectManyMenu-props.xml">
   <!ENTITY ice-selectOneListbox-props SYSTEM "ice_properties/ice-selectOneListbox-props.xml">
@@ -272,6 +273,8 @@
     
   <!ENTITY ice-selectmanyCheckbox-component   SYSTEM "components/ice-selectmanyCheckbox-component.xml">
   <!ENTITY ice-selectmanyCheckbox-renderer    SYSTEM "components/ice-selectmanyCheckbox-renderer.xml">
+  <!ENTITY ice-checkbox-component   SYSTEM "components/ice-checkbox-component.xml">
+  <!ENTITY ice-checkbox-renderer    SYSTEM "components/ice-checkbox-renderer.xml">
 
   <!ENTITY ice-selectmanyListbox-component   SYSTEM "components/ice-selectmanyListbox-component.xml">
   <!ENTITY ice-selectmanyListbox-renderer    SYSTEM "components/ice-selectmanyListbox-renderer.xml">
@@ -451,6 +454,7 @@
 	&ice-panelgrid-component;
 	&ice-selectBooleanCheckbox-component;
 	&ice-selectmanyCheckbox-component;
+	&ice-checkbox-component;
 	&ice-selectmanyListbox-component;
 	&ice-selectmanyMenu-component;
 	&ice-selectoneListbox-component;
@@ -524,6 +528,7 @@
 		&ice-panelgrid-renderer;
 		&ice-selectBooleanCheckbox-renderer;
 		&ice-selectmanyCheckbox-renderer;
+		&ice-checkbox-renderer;
 		&ice-selectmanyListbox-renderer;
 		&ice-selectmanyMenu-renderer;
 		&ice-selectoneListbox-renderer;

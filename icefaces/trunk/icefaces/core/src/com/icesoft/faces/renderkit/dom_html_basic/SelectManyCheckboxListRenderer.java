@@ -36,9 +36,11 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import org.w3c.dom.Node;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.component.UISelectMany;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.model.SelectItem;
@@ -52,7 +54,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
-        if (uiComponent.getClass().getName().equals("com.icesoft.faces.component.ext.HtmlRadio")) {
+        String componentName = uiComponent.getClass().getName();
+        if (componentName.equals("com.icesoft.faces.component.ext.HtmlRadio") ||
+                componentName.equals("com.icesoft.faces.component.ext.HtmlCheckbox")) {
             renderOption(facesContext, uiComponent);
             return;
         }
@@ -271,6 +275,71 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     }
 
     protected void renderOption(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        validateParameters(facesContext, uiComponent, null);
+
+        UIComponent forComponent = findForComponent(facesContext, uiComponent);
+        if (!(forComponent instanceof UISelectMany)) {
+            throw new IllegalStateException("Could not find UISelectMany component for checkbox.");
+        }
+        List selectItemList = getSelectItemList(forComponent);
+        if (selectItemList.isEmpty()) {
+            throw new IllegalStateException("Could not find select items for UISelectMany component.");
+        }
+
+        UISelectMany selectMany = (UISelectMany) forComponent;
+        int checkboxIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
+        if (checkboxIndex < 0) checkboxIndex = 0;
+        if (checkboxIndex >= selectItemList.size()) checkboxIndex = selectItemList.size() - 1;
+        SelectItem selectItem = (SelectItem) selectItemList.get(checkboxIndex);
+
+        String selectManyClientId = selectMany.getClientId(facesContext);
+        String checkboxClientId = selectManyClientId + ":_" + checkboxIndex;
+
+        String selectItemValue = formatComponentValue(facesContext, selectMany, selectItem.getValue());
+        String selectItemLabel = selectItem.getLabel();
+
+        boolean isChecked;
+        Object submittedValues[] = getSubmittedSelectedValues(selectMany);
+        if (submittedValues != null) {
+            isChecked = isSelected(selectItemValue, submittedValues);
+        } else {
+            Object selectedValues = getCurrentSelectedValues(selectMany);
+            isChecked = isSelected(selectItem.getValue(), selectedValues);
+        }
+
+        DOMContext domContext = DOMContext.attachDOMContext(facesContext, uiComponent);
+        if (domContext.isInitialized()) {
+            DOMContext.removeChildren(domContext.getRootNode());
+        } else {
+            domContext.createRootElement(HTML.SPAN_ELEM);
+        }
+        Node rootNode = domContext.getRootNode();
+        HashSet excludes = new HashSet();
+
+        Element input = domContext.createElement(HTML.INPUT_ELEM);
+        input.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_CHECKBOX);
+        input.setAttribute(HTML.ID_ATTR, checkboxClientId);
+        input.setAttribute(HTML.NAME_ATTR, selectManyClientId);
+        input.setAttribute(HTML.VALUE_ATTR, selectItemValue);
+        if (selectItem.isDisabled()) {
+            input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
+        }
+        if (isChecked) {
+            input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
+        }
+        addJavaScript(facesContext, selectMany, input, excludes);
+
+        Element label = domContext.createElement(HTML.LABEL_ATTR);
+        label.setAttribute(HTML.FOR_ATTR, checkboxClientId);
+        if (selectItemLabel != null) label.appendChild(domContext.createTextNode(selectItemLabel));
+
+        PassThruAttributeRenderer.renderAttributes(facesContext, selectMany, input, label, getExcludesArray(excludes));
+
+        rootNode.appendChild(input);
+        rootNode.appendChild(label);
+
+        domContext.stepOver();
+        domContext.streamWrite(facesContext, uiComponent);
     }
 
     protected void addJavaScript(FacesContext facesContext,
