@@ -364,7 +364,7 @@
                     <include name="jbpm-*.jar"/>
                 </fileset>
                 <fileset dir="${jboss.seam.home}/drools/lib">
-                    <include name="antlr-3.0ea8.jar"/>
+                    <include name="antlr*.jar"/>
                     <include name="drools*.jar"/>
                     <include name="janino*.jar"/>
                     <include name="stringtemplate-2.3b6.jar"/>
@@ -408,13 +408,18 @@
                  <include name="jbpm*.jar" />
                  <include name="jboss-el.jar" />
                  <include name="antlr-*.jar"/>
+                <include name="antlr.jar"/>
+                   <include name="mvel*.jar"/>
+                   <include name="drools-*.jar"/>
+                   <include name="janino-*.jar"/>
+            	<include name="ejb-api.jar"/>
             </fileset>
-            <fileset dir="${jboss.seam.home}/drools/lib">
-                <include name="antlr-*.jar"/>
+      <!--      <fileset dir="${jboss.seam.home}/drools/lib">
+                <include name="antlr.jar"/>
                 <include name="mvel*.jar"/>
                 <include name="drools-*.jar"/>
                 <include name="janino-*.jar"/>
-            </fileset>
+            </fileset> -->
 	</copy>
 	</target>
         
@@ -445,18 +450,38 @@
             </copy>
         </target>
         
-	<target name="ear-glassFish" depends="freshen-glassFish,ear-base" description="Build the EAR for jsf1.2 and Seam1.3.0"> 
-                <copy todir="${ear.dir}">
-			<fileset dir="${lib.dir}">
-                                <include name="jboss-el.jar" />
-                                <include name="thirdparty-all.jar"/>
-                                <include name="drools*.jar"/>
-                                <include name="mvel*.jar"/>
-                                <include name="janino*.jar"/>
-                                <include name="antlr*.jar"/>
+	<target name="ear-glassFish" depends="freshen-glassFish" description="Build the EAR for jsf1.2 and Seam1.3.0"> 
+        <copy todir="${ear.dir}">
+			<fileset dir="${basedir}">
+                 <include name="lib/jboss-el.jar" />
+                 <include name="lib/drools*.jar"/>
+                 <include name="lib/mvel*.jar"/>
+                 <include name="lib/janino*.jar"/>
+                 <include name="lib/antlr*.jar"/>
+				 <include name="lib/jbpm-jpdl.jar"/>
+				 <include name="lib/icefaces*.jar"/>
+				 <include name="lib/backport-util-concurrent.jar" />
+				<include name="lib/krysalis-jCharts-1.0.0-alpha-1.jar" />
+				<include name="lib/commons-fileupload.jar"/>
+				<include name="lib/commons-digester*.jar"/>
 			</fileset>
 		</copy>
-             <copy file="${basedir}/resources/META-INF/application-Glassfish.xml" tofile="${ear.dir}/META-INF/application.xml" 
+    	<copy todir="${ear.dir}/META-INF">
+    		<fileset dir="${basedir}/resources/META-INF">
+    			<include name="jboss-app.xml"/>
+    		</fileset>
+        </copy>
+		<copy todir="${ear.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="jboss-seam.jar"/>
+		    </fileset>
+		</copy>
+		<copy todir="${ear.dir}">
+			<fileset dir="${basedir}/resources">
+				<include name="security.drl"/>
+		    </fileset>
+		</copy>
+        <copy file="${basedir}/resources/META-INF/application-Glassfish.xml" tofile="${ear.dir}/META-INF/application.xml" 
                             preservelastmodified="true" overwrite="true"/>
 	</target>
         
