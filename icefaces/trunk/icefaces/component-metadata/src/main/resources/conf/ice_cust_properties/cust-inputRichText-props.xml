@@ -95,40 +95,6 @@
 </property>
 <property>
     <description>
-       <![CDATA[
-		<p>    
-        Multiple instances of inputRichText can use a single toolbar. This
-        is recommended when using inputRichText inside the dataTable, panelSeries
-        or ui:repeat.
-        The id must need to be provided when setting this attribute to be true, 
-        so the other instances of fckEditor can reference it using the for attribute. 
-        The following snippet would render a toolbar for two inputRichText instances.
-        <pre>
-        &lt;ice:inputRichText id="myEditor" toolbarOnly="true"/&gt;
-        &lt;ice:inputRichText for="myEditor"/&gt;
-        &lt;ice:inputRichText for="myEditor"/&gt;
-        </pre>
-        
-        The following example using inputRichText inside the dataTable.
-        <pre>
-        &lt;ice:inputRichText id="dtEditor" toolbarOnly="true"/&gt;
-        &lt;ice:dataTable var="employee"...&gt;
-            &lt;ice:column&gt;
-                 &lt;ice:inputRichText value="employee.resume" for="dtEditor"/&gt;
-            &lt;/ice:column&gt;
-        &lt;/ice:dataTable&gt;
-        </pre>
-		</p>
-		]]>                  
-    </description>    
-    <property-name>toolbarOnly</property-name>
-    <property-class>boolean</property-class>
-    <property-extension>
-        <category>ICE_LAYOUT</category>
-    </property-extension>
-</property>
-<property>
-    <description>
         The for attribute references the id of the inputRichText which toolbarOnly attribute is set to "true".
     </description>
     <property-name>for</property-name>

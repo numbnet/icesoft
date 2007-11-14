@@ -45,7 +45,6 @@ public class InputRichText extends UIInput {
     private String language;
     private String _for;
     private Boolean html;
-    private Boolean toolbarOnly;
     private String style;
     private String styleClass;
     private String width;
@@ -118,18 +117,8 @@ public class InputRichText extends UIInput {
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
     }
 
-    public boolean isToolbarOnly() {
-        if (toolbarOnly != null) {
-            return toolbarOnly.booleanValue();
-        }
-        ValueBinding vb = getValueBinding("toolbarOnly");
-        return vb != null ?
-                ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
-                false;
-    }
-
-    public void setToolbarOnly(boolean toolbarOnly) {
-        this.toolbarOnly = new Boolean(toolbarOnly);
+    boolean isToolbarOnly() {
+        return false;
     }
 
     public URI getBaseURI() {
