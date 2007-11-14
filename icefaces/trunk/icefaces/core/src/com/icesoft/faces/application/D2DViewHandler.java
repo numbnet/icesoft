@@ -128,6 +128,10 @@ public class D2DViewHandler extends ViewHandler {
             parser = new Parser(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } 
+        catch (Throwable te) {
+        	//this allows us to use facelets & jsf1.2 impl on J2EE AS  see ICE-2356
+        	log.info("ICEfaces JSP parser disabled. This is a facelets-only configuration."+te);
         }
     }
 
