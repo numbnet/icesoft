@@ -373,6 +373,8 @@ width:50%;
 /* Styling for the MenuPopup Components */
 .iceMnuPopVrtTopSubMenu {
     width:100px;
+    background-color:#FFFFFF;
+    border: 1px solid #CCCCCC;
 }
 
 .iceMnuPopVrtItem {
