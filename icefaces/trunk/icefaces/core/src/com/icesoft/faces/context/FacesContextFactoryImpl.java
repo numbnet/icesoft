@@ -44,6 +44,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import java.lang.reflect.Method;
 
+import com.icesoft.util.SeamUtilities;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.context.BridgeFacesContext;
+
 /**
  * This is the ICEfaces implementation of the FacesContextFactory.  We take
  * advantage of the delegation design provided by the JSF spec to create our
@@ -58,9 +63,6 @@ import java.lang.reflect.Method;
 public class FacesContextFactoryImpl extends FacesContextFactory {
 
     protected static Log log = LogFactory.getLog(FacesContextFactoryImpl.class);
-
-    public static final String SERVLET_KEY = "servletkey";
-    public static final String PERSISTENT = "persistent";
 
     private FacesContextFactory delegate;
 
@@ -95,6 +97,14 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
         // BridgeExternalContext is responsible for differentiating the type of environment
         // and delegating the calls appropriately.
         if (context instanceof ServletContext) {
+            if (SeamUtilities.isSpringEnvironment())  {
+                PersistentFacesState persistentState = 
+                        PersistentFacesState.getInstance();
+                BridgeFacesContext bcontext = 
+                        (BridgeFacesContext) persistentState.getFacesContext();
+                bcontext.setCurrentInstance();
+                return bcontext;
+            }
             return null;
         } else {
             throw new IllegalStateException("Unknown environment");
@@ -127,7 +137,7 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
             String portletType = null;
             try {
                 portletType = (String) getAttributeMethod
-                        .invoke(request, new Object[]{SERVLET_KEY});
+                        .invoke(request, new Object[]{PersistentFacesCommonlet.SERVLET_KEY});
             } catch (Exception e) {
                 if (log.isWarnEnabled()) {
                     log.warn("Reflection failure: request.getAttribute", e);
@@ -135,14 +145,14 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
             }
 
             if (portletType != null &&
-                    portletType.equalsIgnoreCase(PERSISTENT)) {
+                    portletType.equalsIgnoreCase(PersistentFacesCommonlet.PERSISTENT)) {
                 return false;
             }
         } else if (request instanceof ServletRequest) {
             String servletType = (String) ((ServletRequest) request)
-                    .getAttribute(SERVLET_KEY);
+                    .getAttribute(PersistentFacesCommonlet.SERVLET_KEY);
             if (servletType != null &&
-                    servletType.equalsIgnoreCase(PERSISTENT)) {
+                    servletType.equalsIgnoreCase(PersistentFacesCommonlet.PERSISTENT)) {
                 return false;
             }
         }

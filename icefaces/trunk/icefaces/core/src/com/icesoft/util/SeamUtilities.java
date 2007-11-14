@@ -11,6 +11,8 @@ import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.context.FacesContext;
 
+import org.springframework.webflow.execution.RequestContextHolder;
+
 /**
  * @author ICEsoft Technologies, Inc.
  *
@@ -66,10 +68,13 @@ public class SeamUtilities {
     private static String seamVersion = "none";
     private static Method seamVersionMethod;
     
+    private static String flowIdParameterName = null;
     private static String SPRING_CLASS_NAME = 
             "org.springframework.webflow.executor.jsf.FlowVariableResolver";
+    private static String SPRING_CONTEXT_HOLDER = 
+            "org.springframework.webflow.execution.RequestContextHolder";
 
-    private static boolean isSpringLoaded;
+    private static int springLoaded = 0;
 
     static {
         loadSeamEnvironment();
@@ -477,18 +482,32 @@ public class SeamUtilities {
      * Perform any needed Spring initialization.
      */
     private static void loadSpringEnvironment() {
-        Class flowVariableResolver = null;
+        Class springClass = null;
         try {
-            flowVariableResolver = Class.forName(SPRING_CLASS_NAME);
+            springClass = Class.forName(SPRING_CLASS_NAME);
         } catch (Throwable t)  {
             if (log.isDebugEnabled()) {
-                log.debug("Spring webflow not detected: " + t);
+                log.debug("Spring webflow 1.x not detected: " + t);
             }
         }
-        if (null != flowVariableResolver) {
-            isSpringLoaded = true;
+        if (null != springClass) {
+            springLoaded = 1;
             if (log.isDebugEnabled()) {
-                log.debug("Spring webflow detected: " + flowVariableResolver);
+                log.debug("Spring webflow detected: " + springClass);
+            }
+        }
+
+        try {
+            springClass = Class.forName(SPRING_CONTEXT_HOLDER);
+        } catch (Throwable t)  {
+            if (log.isDebugEnabled()) {
+                log.debug("Spring webflow 2.x not detected: " + t);
+            }
+        }
+        if (null != springClass) {
+            springLoaded = 2;
+            if (log.isDebugEnabled()) {
+                log.debug("Spring webflow detected: " + springClass);
             }
         }
 
@@ -500,7 +519,7 @@ public class SeamUtilities {
      * @return true if Spring WebFlow is enabled
      */
     public static boolean isSpringEnvironment() {
-        return isSpringLoaded;
+        return (springLoaded > 0);
     }
 
     /**
@@ -514,8 +533,25 @@ public class SeamUtilities {
         }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         //obtain key by evaluating expression with Spring VariableResolver
-        Object value = facesContext.getApplication()
-                .createValueBinding("#{flowExecutionKey}").getValue(facesContext);
+        Object value = null;
+        if (1 == springLoaded)  {
+            value = facesContext.getApplication()
+                    .createValueBinding("#{flowExecutionKey}")
+                    .getValue(facesContext);
+            if (null != value)  {
+                //Spring Web Flow 1.x confirmed
+                flowIdParameterName = "_flowExecutionKey";
+            }
+        } else if (2 == springLoaded) {
+            value = RequestContextHolder.getRequestContext()
+                    .getFlowExecutionContext().getKey().toString();
+            if (null != value)  {
+                //Spring Web Flow 2.x confirmed
+                flowIdParameterName = 
+                        "org.springframework.webflow.FlowExecutionKey";
+            }
+        }
+
         if (null == value) {
             return null;
         }
@@ -528,7 +564,7 @@ public class SeamUtilities {
      * @return the appropriate parameter name for the application
      */
     public static String getFlowIdParameterName() {
-        return "_flowExecutionKey";
+        return flowIdParameterName;
     }
 
 }
