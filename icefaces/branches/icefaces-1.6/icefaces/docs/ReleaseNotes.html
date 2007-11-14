@@ -48,7 +48,7 @@ font-size: 110%
 <h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.6.2
 Release Notes</h2>
 <p style="margin-left: 16px; margin-bottom: 12px;">November
-13th,
+14th,
 2007</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
@@ -102,10 +102,12 @@ or updating a dataTable with a large number of rows and/or columns.</li>
 <li>ICEfaces 1.6.2 is a "Defect Free Project" (has no serious
 security
 vulnerabilities) as reported by the <a target="_blank" href="http://opensource.fortifysoftware.com/">Fortify Java
-Open Review Project</a>.</li><li>A
+Open Review Project</a>.</li>
+<li>A
 potentially serious issue that could result in Request parameter
 cross-over between sessions when running on application servers that
-reuse Request objects has been addressed in this release. See <a href="http://jira.icefaces.org/browse/ICE-2352" target="_blank">ICE-2352</a> for details.</li>
+reuse Request objects has been addressed in this release. See <a href="http://jira.icefaces.org/browse/ICE-2352" target="_blank">ICE-2352</a>
+for details.</li>
 </ul>
 <span style="font-weight: bold; color: black;">Compatibility
 Alert</span><span style="color: black;">:</span>&nbsp;The
@@ -161,8 +163,8 @@ Log</h3>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1414">ICE-1414</a>]
 - The transparency of some theme images is incorrect.</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1537">ICE-1537</a>]
-- <ice:outputText> converter attribute not calling custom
-converter if value is a java.lang.String</ice:outputText></li>
+- <ice:outputtext> converter attribute not calling custom
+converter if value is a java.lang.String</ice:outputtext></li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-1679">ICE-1679</a>]
 - ParserUtils.java is hiding a useful error message contained within
 the SAXException</li>
@@ -258,7 +260,8 @@ action/actionListener</li>
 - Columns doesn't work with CommandSortHeader</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2289">ICE-2289</a>]
 - The stateMonitor is being cleared and rebuilt on every update, so
-ping/pong causing stateMonitor to execute on every heart beat. </li><li>[<a href="http://jira.icefaces.org//browse/ICE-2292">ICE-2292</a>]
+ping/pong causing stateMonitor to execute on every heart beat. </li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2292">ICE-2292</a>]
 - Divide by zero error in DataPaginator.java when zero rows exist in
 the model</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2316">ICE-2316</a>]
@@ -275,6 +278,9 @@ the model</li>
 - selectInputDate problems with clearing the date</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2352">ICE-2352</a>]
 - Request attributes crossover</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2362">ICE-2362</a>] - Modal popup z-index issue on IE6</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2366">ICE-2366</a>] - jsp:include not working when more than one include on a page</li>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-2371">ICE-2371</a>] - commandSortHeader graphical arrow goes out of sync</li>
 </ul>
 <h4>Tasks</h4>
 <ul>
@@ -282,7 +288,9 @@ the model</li>
 - Document com.sun.faces.config.ConfigureListener work-around in
 Release Notes to avoid JSF initialization problems</li>
 <li>[<a href="http://jira.icefaces.org//browse/ICE-2155">ICE-2155</a>]
-- Clean up /lib/versions-licenses.html file issues</li></ul><br>
+- Clean up /lib/versions-licenses.html file issues</li>
+</ul>
+<br>
 <h2><a name="Changes_161"></a>Changes
 in&nbsp;v1.6.1</h2>
 <br>
@@ -1970,10 +1978,13 @@ corrupted. <br>
 </li>
 </ul>
 <ul>
-<li>The <code>com.icesoft.faces.context.ViewListener</code> API is
-unreliable and has been deprecated in 1.6.2 (<a href="http://jira.icefaces.org/browse/ICE-1990" target="_blank">ICE-1990</a> and <a href="http://jira.icefaces.org/browse/ICE-1989" target="_blank">ICE-1989</a>).
+<li>The <code>com.icesoft.faces.context.ViewListener</code>
+API is
+unreliable and has been deprecated in 1.6.2 (<a href="http://jira.icefaces.org/browse/ICE-1990" target="_blank">ICE-1990</a>
+and <a href="http://jira.icefaces.org/browse/ICE-1989" target="_blank">ICE-1989</a>).
 Applications should use the new
-<code>com.icesoft.faces.context.DisposableBean</code> API to receive Request, Session, or Application scope lifecycle
+<code>com.icesoft.faces.context.DisposableBean</code>
+API to receive Request, Session, or Application scope lifecycle
 notifications.</li>
 </ul>
 <h3>JSP Markup </h3>
