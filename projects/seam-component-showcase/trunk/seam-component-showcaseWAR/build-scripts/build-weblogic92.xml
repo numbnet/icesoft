@@ -13,7 +13,7 @@
 
     <import file="build-common.xml"/>
 
-	<fileset id="noejb.war.lib.extras" dir="${seam.dir}">
+	<fileset id="noejb.war.lib.extras" dir="${basedir}">
 	      <!-- Seam deps -->
 	      <include name="lib/dom4j.jar" />
 	      <include name="lib/javassist.jar" />
@@ -28,8 +28,14 @@
 	      <include name="lib/jsf-api.jar" />
 	      <include name="lib/jsf-impl.jar" />
 	      <include name="lib/jstl.jar" />
-	      <include name="examples/hibernate2/lib/el-ri.jar" />
+	      <include name="lib/el-ri.jar" />
 	      <include name="lib/el-api.jar" />
+		
+		  <!-- ICEfaces dependencies -->
+		  <include name="lib/commons-el.jar"/>
+		  <include name="lib/commons-discovery.jar"/>
+	      <include name="lib/xml-apis.jar"/>
+		  <include name="lib/xercesImpl.jar"/>
 
 	      <!-- Hibernate and deps -->
 	      <include name="lib/hibernate.jar" />
@@ -37,9 +43,9 @@
 	      <include name="lib/hibernate-annotations.jar" />
 	      <include name="lib/hibernate-entitymanager.jar" />
 	      <include name="lib/hibernate-validator.jar" />
-	      <include name="examples/jpa/lib/jboss-archive-browsing.jar" />
+	      <include name="lib/jboss-archive-browsing.jar" />
 	      <include name="lib/persistence-api.jar" />
-	      <include name="examples/hibernate2/lib/cglib.jar" />
+	      <include name="lib/cglib.jar" />
 	      <include name="lib/antlr.jar" />
 	    </fileset>
 	

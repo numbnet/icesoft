@@ -87,10 +87,23 @@
         </copy>
     </target>
 	
-	<target name="noejb.archive" depends="noejb.war,archive" description="package war for distribution">
-		
+	<target name="noejb.archive" depends="war,noejb.war" description="package war for distribution">
+	     <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
 	</target>
     
+	<target name="noejb.archive.405" depends="war" description="package war for dist of jboss4.0.5">
+		 <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
+		 <copy todir="${war.dir}/WEB-INF/lib">
+			<fileset refid="noejb.war.lib.extras" />
+		 </copy>
+		<copy todir="${war.dir}/WEB-INF" overwrite="true">
+					<fileset dir="${resources.dir}/WEB-INF">
+				        <include name="web.xml"/>
+				    </fileset>
+			</copy>
+		 <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
+	</target>
+	
     <target name="noejb.war" depends="war" description="Copy extra libs for Tomcat6 deploy">
        <echo message="copying to dir ${war.dir}/WEB-INF/classes"/>
          <copy todir="${war.dir}/WEB-INF/classes">
@@ -106,6 +119,7 @@
 		<copy todir="${war.dir}">
 			<fileset refid="noejb.war.extras" />
 		</copy>
+    	
 		<!-- Copy in resources, with filtering -->
 		<copy todir="${war.dir}/WEB-INF" overwrite="true">
 				<fileset dir="${resources.dir}/WEB-INF">
@@ -192,17 +206,17 @@
             		<fileset dir="${component.docs.dir}"/>
         	</copy>	
         
-        <copy todir="${war.dir}/WEB-INF/lib">
-            <fileset dir="${lib.dir}">
-                <include name="jboss-seam.jar" />
-                <include name="jbpm*.jar" />
-                <include name="jboss-el.jar" />
-                <include name="commons-digester*.jar" />
-                <include name="commons-beanutils-*.jar" />
-		        <include name="icefaces*.jar" />
-		        <include name="backport-util-concurrent.jar" />
-		        <include name="commons-fileupload.jar"/> 	
-                <include name="krysalis-jCharts-*.jar"/>
+        <copy todir="${war.dir}/WEB-INF">
+            <fileset dir="${basedir}">
+                <include name="lib/jboss-seam.jar" />
+                <include name="lib/jbpm*.jar" />
+                <include name="lib/jboss-el.jar" />
+                <include name="lib/commons-digester*.jar" />
+                <include name="lib/commons-beanutils-*.jar" />
+		        <include name="lib/icefaces*.jar" />
+		        <include name="lib/backport-util-concurrent.jar" />
+		        <include name="lib/commons-fileupload.jar"/> 	
+                <include name="lib/krysalis-jCharts-*.jar"/>
 	    </fileset>
         </copy>
         
