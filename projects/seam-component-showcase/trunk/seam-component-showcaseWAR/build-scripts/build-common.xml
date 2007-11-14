@@ -361,6 +361,10 @@
 	             <include name="commons-logging*.jar"/>
 	             <include name="krysalis-*.jar"/>
 	             <include name="commons-digester*.jar"/>
+	           	 <include name="commons-el.jar"/>
+	           	 <include name="commons-discover.jar"/>
+	           	 <include name="xercesImpl.jar"/>
+	           	 <include name="xml-apis.jar"/>
 		      </fileset>
 	         <fileset dir="${jboss.seam.home}/lib">
 	             <include name="jboss-seam.jar"/>
@@ -380,12 +384,15 @@
 	         	  <include name="jsf-api.jar"/>
 	         	  <include name="jsf-impl.jar"/>
 	         	  <include name="jstl.jar"/>
-	         	  <include name="persistence.jar"/>
+	         	  <include name="persistence-api.jar"/>
 	         	  <include name="jta.jar"/>
 	         	  <include name="jboss-archive-browsing.jar"/>
 	         	  <include name="log4j.jar"/>
 	             <include name="mvel*.jar"/>
 	             <include name="janino*.jar"/>
+	         	 <include name="commons-beanutils.jar"/>
+	         	 <include name="commons-lang.jar"/>
+	         	<include name="el-*.jar"/>
 	         </fileset>
 		</copy>	    
 	</target>
