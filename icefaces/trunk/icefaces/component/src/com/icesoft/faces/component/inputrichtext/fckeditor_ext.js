@@ -128,6 +128,12 @@ function FCKeditorSave(editorInstance) {
             var editIns = FCKeditorAPI.GetInstance(instanceName);
             //if the editor is not visible on this view, just skip and continue
             if (editIns == null) continue;
+            //clear malformed parameters
+            var unwantedField = $(instanceName + "___Config");
+            if (unwantedField){
+                unwantedField.value = "";
+                unwantedField.name = unwantedField.id;
+            }
             var element = $(editIns.Name);
             //Save the dirty editor only that had the focus
             if(editIns.IsDirty()) {
@@ -142,6 +148,7 @@ function FCKeditorSave(editorInstance) {
             }
         }
     } 
+
 	var form = Ice.util.findForm(element);
 	iceSubmit(form,element,new Object());
 	return false;

@@ -47,6 +47,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             Element hiddenValueHolder = domContext.createElement(HTML.INPUT_ELEM);
             hiddenValueHolder.setAttribute(HTML.TYPE_ATTR, "hidden");
             hiddenValueHolder.setAttribute(HTML.ID_ATTR, clientId + "valueHolder");
+            hiddenValueHolder.setAttribute(HTML.NAME_ATTR, clientId + "valueHolder");            
             root.appendChild(hiddenValueHolder);
 
             if (inputRichText.getValue() != null) {
