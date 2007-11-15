@@ -384,6 +384,7 @@ public class TreeRenderer extends DomBasicRenderer {
 
         // efficiency and simplicity
         IceUserObject userObject = (IceUserObject) currentNode.getUserObject();
+        treeNodeDiv.setAttribute(HTML.TITLE_ATTR, userObject.getTooltip());
         // a branch node is a node that is not a leaf
         boolean isBranchNode = !userObject.isLeaf();
         boolean isExpanded = userObject.isExpanded();
