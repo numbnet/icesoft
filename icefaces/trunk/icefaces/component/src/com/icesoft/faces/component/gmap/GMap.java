@@ -70,12 +70,26 @@ public class GMap extends UICommand{
         return vb != null ? (String) vb.getValue(getFacesContext()) : DEFAULT_LATITUDE;
 	}
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+        //TODO need to be changed in the processUpdate. However this property is not 
+        //involved in any validator or convertor so it will not harm 
+        ValueBinding vb = getValueBinding("longitude");
+        if (vb != null) {
+            vb.setValue(getFacesContext(), longitude);
+            this.longitude = null;
+        }
+    }
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+        //TODO need to be changed in the processUpdate. However this property is not 
+        //involved in any validator or convertor so it will not harm 
+        ValueBinding vb = getValueBinding("latitude");
+        if (vb != null) {
+            vb.setValue(getFacesContext(), latitude);
+            this.latitude = null;
+        }		
 	}
 	
     public void decode(FacesContext facesContext) {
