@@ -21,8 +21,12 @@ public class GMapGeoXml extends UIPanel{
     }
     
     public void encodeBegin(FacesContext context) throws IOException {
-    	setRendererType(null);
-    	JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"', 'new GGeoXml(\""+ getUrl() +"\")');");
+        setRendererType(null);
+        if (!isRendered()) {
+            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.removeOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"');");
+        } else {
+            JavascriptContext.addJavascriptCall(context, "Ice.GoogleMap.addOverlay('"+ this.getParent().getClientId(context)+"', '"+ this.getClientId(context) +"', 'new GGeoXml(\""+ getUrl() +"\")');");
+        }
     }
 
 	public String getUrl() {
