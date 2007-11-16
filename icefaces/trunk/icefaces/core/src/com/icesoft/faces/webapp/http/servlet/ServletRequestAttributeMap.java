@@ -1,14 +1,14 @@
-package com.icesoft.faces.webapp.http.portlet;
+package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 
-import javax.portlet.PortletRequest;
+import javax.servlet.ServletRequest;
 import java.util.Enumeration;
 
-public class PortletRequestAttributeMap extends AbstractCopyingAttributeMap {
-    private PortletRequest request;
+public class ServletRequestAttributeMap extends AbstractCopyingAttributeMap {
+    private ServletRequest request;
 
-    public PortletRequestAttributeMap(PortletRequest request) {
+    public ServletRequestAttributeMap(ServletRequest request) {
         this.request = request;
         initialize();
     }

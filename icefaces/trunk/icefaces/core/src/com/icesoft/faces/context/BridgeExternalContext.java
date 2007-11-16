@@ -37,6 +37,7 @@
 
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
@@ -83,6 +84,22 @@ public abstract class BridgeExternalContext extends ExternalContext {
         public void setAttribute(String name, Object value) {
         }
     };
+    protected static final Dispatcher CannotDispatchOnXMLHTTPRequest = new Dispatcher() {
+        public void dispatch(String path) throws IOException, FacesException {
+            throw new IOException("Cannot dispatch on XMLHTTP request.");
+        }
+    };
+    protected static final AuthenticationVerifier UserInfoNotAvailable = new AuthenticationVerifier() {
+        public boolean isUserInRole(String role) {
+            throw new RuntimeException("Cannot determine if user in role. User information is not available.");
+        }
+    };
+    protected static final Dispatcher RequestNotAvailable = new Dispatcher() {
+        public void dispatch(String path) throws IOException, FacesException {
+            throw new IOException("No request available for dispatch.");
+        }
+    };
+
     private static String PostBackKey;
 
     static {
@@ -130,7 +147,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     public abstract void update(HttpServletRequest request, HttpServletResponse response);
 
-    public abstract void updateOnReload(Object request, Object response);
+    public abstract void updateOnPageLoad(Object request, Object response);
 
     public void addCookie(Cookie cookie) {
         responseCookieMap.put(cookie.getName(), cookie);
@@ -304,6 +321,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     public Map getRequestCookieMap() {
         return requestCookieMap;
+    }
+
+    protected void recreateParameterAndCookieMaps() {
+        requestParameterMap = Collections.synchronizedMap(new HashMap());
+        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
+        requestCookieMap = Collections.synchronizedMap(new HashMap());
+        responseCookieMap = Collections.synchronizedMap(new HashMap());
     }
 
     public interface Redirector {

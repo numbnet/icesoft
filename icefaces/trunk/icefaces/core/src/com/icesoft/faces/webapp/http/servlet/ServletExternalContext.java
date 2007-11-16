@@ -1,13 +1,9 @@
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.context.AbstractAttributeMap;
-import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.env.AcegiAuthWrapper;
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
-import com.icesoft.faces.env.ServletEnvironmentRequest;
-import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import org.apache.commons.logging.Log;
@@ -29,13 +25,11 @@ import java.net.URL;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-//todo: try to refactor some of the inner classes into named classes
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
     private static Class AuthenticationClass;
@@ -51,81 +45,23 @@ public class ServletExternalContext extends BridgeExternalContext {
 
     private final ServletContext context;
     private final HttpSession session;
-    private final AuthenticationVerifier authenticationVerifier;
+    private AuthenticationVerifier authenticationVerifier;
     private RequestAttributes requestAttributes;
     private HttpServletRequest initialRequest;
-    private HttpServletRequest request;
     private HttpServletResponse response;
+    private Dispatcher dispatcher;
 
-    public ServletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
+    public ServletExternalContext(String viewIdentifier, final Object req, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
-        this.request = (HttpServletRequest) request;
-        this.session = new InterceptingHttpSession(this.request.getSession(), sessionMonitor);
-        this.context = this.session.getServletContext();
-        this.authenticationVerifier = createAuthenticationVerifier();
-        this.requestAttributes = new ActiveRequestAttributes();
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
-            public RequestAttributes requestAttributes() {
-                return requestAttributes;
-            }
-        };
-        this.response = (HttpServletResponse) response;
-        this.initParameterMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return context.getInitParameter(key);
-            }
+        HttpServletRequest request = (HttpServletRequest) req;
+        session = new InterceptingServletSession(request.getSession(), sessionMonitor);
+        context = session.getServletContext();
+        initParameterMap = new ServletContextInitParameterMap(context);
+        applicationMap = new ServletContextAttributeMap(context);
+        sessionMap = new ServletSessionAttributeMap(session);
 
-            protected void setAttribute(String key, Object value) {
-                throw new IllegalAccessError("Read only map.");
-            }
-
-            protected void removeAttribute(String key) {
-                throw new IllegalAccessError("Read only map.");
-            }
-
-            protected Enumeration getAttributeNames() {
-                return context.getInitParameterNames();
-            }
-        };
-        this.applicationMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return context.getAttribute(key);
-            }
-
-            protected void setAttribute(String key, Object value) {
-                context.setAttribute(key, value);
-            }
-
-            protected void removeAttribute(String key) {
-                context.removeAttribute(key);
-            }
-
-            protected Enumeration getAttributeNames() {
-                return context.getAttributeNames();
-            }
-        };
-        this.sessionMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return session.getAttribute(key);
-            }
-
-            protected void setAttribute(String key, Object value) {
-                session.setAttribute(key, value);
-            }
-
-            protected void removeAttribute(String key) {
-                session.removeAttribute(key);
-            }
-
-            protected Enumeration getAttributeNames() {
-                return session.getAttributeNames();
-            }
-        };
-        this.requestMap = new RequestAttributeMap();
-        this.requestCookieMap = new HashMap();
-
-        this.update(this.request, this.response);
-        this.insertNewViewrootToken();
+        updateOnPageLoad(request, response);
+        insertNewViewrootToken();
         // #ICE-1722 default to normal mode before the first request
         switchToNormalMode();
     }
@@ -149,21 +85,17 @@ public class ServletExternalContext extends BridgeExternalContext {
     public void update(HttpServletRequest request, HttpServletResponse response) {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
-
-        requestParameterMap = Collections.synchronizedMap(new HashMap());
-        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
-        //#2139 removed call to insert postback key here. 
+        recreateParameterAndCookieMaps();
+        //#2139 removed call to insert postback key here.
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
-            Object value = request.getParameter(name);
-            requestParameterMap.put(name, value);
+            requestParameterMap.put(name, request.getParameter(name));
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
         applySeamLifecycleShortcut(persistSeamKey);
 
-        requestCookieMap = Collections.synchronizedMap(new HashMap());
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -171,23 +103,36 @@ public class ServletExternalContext extends BridgeExternalContext {
                 requestCookieMap.put(cookie.getName(), cookie);
             }
         }
-        responseCookieMap = Collections.synchronizedMap(new HashMap());
-
-        this.request = request;
+        requestAttributes = new ServletRequestAttributes(request);
+        authenticationVerifier = createAuthenticationVerifier(request);
+        dispatcher = CannotDispatchOnXMLHTTPRequest;
         this.response = response;
     }
 
-    public void updateOnReload(Object request, Object response) {
-        Map previousRequestMap = this.requestMap;
-        this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
+    public void updateOnPageLoad(final Object request, Object response) {
+        final HttpServletRequest servletRequest = (HttpServletRequest) request;
+        final HttpServletResponse servletResponse = (HttpServletResponse) response;
+
+        initialRequest = new ServletEnvironmentRequest(request, session) {
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
             }
+
+            public AuthenticationVerifier authenticationVerifier() {
+                return authenticationVerifier;
+            }
         };
-        this.requestMap = new RequestAttributeMap();
-        //propagate entries
-        this.requestMap.putAll(previousRequestMap);
-        this.update((HttpServletRequest) request, (HttpServletResponse) response);
+        requestMap = new ServletRequestAttributeMap(initialRequest);
+        update(servletRequest, servletResponse);
+        dispatcher = new Dispatcher() {
+            public void dispatch(String path) throws IOException, FacesException {
+                try {
+                    servletRequest.getRequestDispatcher(path).forward(servletRequest, servletResponse);
+                } catch (ServletException e) {
+                    throw new FacesException(e);
+                }
+            }
+        };
     }
 
     //todo: implement!
@@ -205,7 +150,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public Iterator getRequestLocales() {
-        return new EnumerationIterator(initialRequest.getLocales());
+        return Collections.list(initialRequest.getLocales()).iterator();
     }
 
     public String getRequestPathInfo() {
@@ -262,11 +207,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public void dispatch(String path) throws IOException, FacesException {
-        try {
-            request.getRequestDispatcher(path).forward(request, response);
-        } catch (ServletException se) {
-            throw new FacesException(se);
-        }
+        dispatcher.dispatch(path);
     }
 
     public void log(String message) {
@@ -326,31 +267,14 @@ public class ServletExternalContext extends BridgeExternalContext {
     public void switchToPushMode() {
         redirector = new CommandQueueRedirector();
         cookieTransporter = new CommandQueueCookieTransporter();
-        resetRequestMap();
     }
 
     public void release() {
         super.release();
         //disable any changes on the request once the response was commited
         requestAttributes = NOOPRequestAttributes;
-    }
-
-    private class RequestAttributeMap extends AbstractCopyingAttributeMap {
-        public Enumeration getAttributeNames() {
-            return initialRequest.getAttributeNames();
-        }
-
-        public Object getAttribute(String name) {
-            return initialRequest.getAttribute(name);
-        }
-
-        public void setAttribute(String name, Object value) {
-            initialRequest.setAttribute(name, value);
-        }
-
-        public void removeAttribute(String name) {
-            initialRequest.removeAttribute(name);
-        }
+        dispatcher = RequestNotAvailable;
+        authenticationVerifier = UserInfoNotAvailable;
     }
 
     /**
@@ -365,20 +289,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         return val == null || val.trim().length() == 0 ? null : val;
     }
 
-    public class InterceptingHttpSession extends ProxyHttpSession {
-        private final SessionDispatcher.Monitor sessionMonitor;
-
-        public InterceptingHttpSession(HttpSession session, SessionDispatcher.Monitor sessionMonitor) {
-            super(session);
-            this.sessionMonitor = sessionMonitor;
-        }
-
-        public void invalidate() {
-            sessionMonitor.shutdown();
-        }
-    }
-
-    private AuthenticationVerifier createAuthenticationVerifier() {
+    private static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
             return new AcegiAuthWrapper(principal);
@@ -388,24 +299,6 @@ public class ServletExternalContext extends BridgeExternalContext {
                     return request.isUserInRole(role);
                 }
             };
-        }
-    }
-
-    private class ActiveRequestAttributes implements RequestAttributes {
-        public Object getAttribute(String name) {
-            return request.getAttribute(name);
-        }
-
-        public Enumeration getAttributeNames() {
-            return request.getAttributeNames();
-        }
-
-        public void removeAttribute(String name) {
-            request.removeAttribute(name);
-        }
-
-        public void setAttribute(String name, Object value) {
-            request.setAttribute(name, value);
         }
     }
 }

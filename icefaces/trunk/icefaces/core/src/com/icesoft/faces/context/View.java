@@ -101,7 +101,7 @@ public class View implements CommandQueue {
         makeCurrent();
     }
 
-    public void updateOnRequest(Request request) throws Exception {
+    public void updateOnPageRequest(Request request) throws Exception {
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 if (differentURI((HttpServletRequest) request)) {
@@ -114,13 +114,13 @@ public class View implements CommandQueue {
                     persistentFacesState.setFacesContext(facesContext);
                 } else {
                     //page reload
-                    externalContext.updateOnReload(request, response);
+                    externalContext.updateOnPageLoad(request, response);
                 }
             }
 
             public void portlet(Object request, Object response, Object config) {
                 //page reload
-                externalContext.updateOnReload(request, response);
+                externalContext.updateOnPageLoad(request, response);
             }
         });
         makeCurrent();

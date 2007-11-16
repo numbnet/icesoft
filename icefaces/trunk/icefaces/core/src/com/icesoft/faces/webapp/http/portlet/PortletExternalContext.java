@@ -2,7 +2,6 @@ package com.icesoft.faces.webapp.http.portlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.env.AuthenticationVerifier;
-import com.icesoft.faces.env.PortletEnvironmentRenderRequest;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -30,7 +29,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -44,21 +42,6 @@ public class PortletExternalContext extends BridgeExternalContext {
 
         public boolean isWindowStateAllowed(WindowState windowState) {
             return false;
-        }
-    };
-    private static final Dispatcher RequestNotAvailable = new Dispatcher() {
-        public void dispatch(String path) throws IOException, FacesException {
-            throw new IOException("No request available for dispatch.");
-        }
-    };
-    private static final AuthenticationVerifier UserInfoNotAvailable = new AuthenticationVerifier() {
-        public boolean isUserInRole(String role) {
-            throw new RuntimeException("Cannot determine if user in role. User information is not available.");
-        }
-    };
-    private static final Dispatcher CannotDispatchOnXMLHTTPRequest = new Dispatcher() {
-        public void dispatch(String path) throws IOException, FacesException {
-            throw new IOException("Cannot dispatch on XMLHTTP request.");
         }
     };
     private static final Redirector NOOPRedirector = new Redirector() {
@@ -90,8 +73,9 @@ public class PortletExternalContext extends BridgeExternalContext {
         initParameterMap = new PortletContextInitParameterMap(context);
         applicationMap = new PortletContextAttributeMap(context);
         sessionMap = new PortletSessionAttributeMap(session);
-        updateOnReload(renderRequest, renderResponse);
+        updateOnPageLoad(renderRequest, renderResponse);
         insertNewViewrootToken();
+        switchToNormalMode();
     }
 
     public Object getSession(boolean create) {
@@ -133,13 +117,13 @@ public class PortletExternalContext extends BridgeExternalContext {
             }
         }
         allowMode = DoNotAllow;
+        requestAttributes = new ServletRequestAttributes(request);
         authenticationVerifier = new AuthenticationVerifier() {
             public boolean isUserInRole(String role) {
                 return request.isUserInRole(role);
             }
         };
         dispatcher = CannotDispatchOnXMLHTTPRequest;
-        requestAttributes = new ServletRequestAttributes(request);
     }
 
     public void update(final RenderRequest request, final RenderResponse response) {
@@ -157,28 +141,19 @@ public class PortletExternalContext extends BridgeExternalContext {
         applySeamLifecycleShortcut(persistSeamKey);
 
         allowMode = new PortletRequestAllowMode(request);
+        requestAttributes = new PortletRequestAttributes(request);
         authenticationVerifier = new AuthenticationVerifier() {
             public boolean isUserInRole(String role) {
                 return request.isUserInRole(role);
             }
         };
-        dispatcher = new Dispatcher() {
-            public void dispatch(String path) throws IOException, FacesException {
-                try {
-                    context.getRequestDispatcher(path).include(request, response);
-                } catch (PortletException e) {
-                    throw new FacesException(e);
-                }
-            }
-        };
-        requestAttributes = new PortletRequestAttributes(request);
 
         this.response = response;
     }
 
-    public void updateOnReload(Object request, Object response) {
-        RenderRequest renderRequest = (RenderRequest) request;
-        RenderResponse renderResponse = (RenderResponse) response;
+    public void updateOnPageLoad(Object request, Object response) {
+        final RenderRequest renderRequest = (RenderRequest) request;
+        final RenderResponse renderResponse = (RenderResponse) response;
         initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest) {
             public AllowMode allowMode() {
                 return allowMode;
@@ -194,6 +169,15 @@ public class PortletExternalContext extends BridgeExternalContext {
         };
         requestMap = new PortletRequestAttributeMap(initialRequest);
         update(renderRequest, renderResponse);
+        dispatcher = new Dispatcher() {
+            public void dispatch(String path) throws IOException, FacesException {
+                try {
+                    context.getRequestDispatcher(path).include(renderRequest, renderResponse);
+                } catch (PortletException e) {
+                    throw new FacesException(e);
+                }
+            }
+        };
     }
 
     public Map getRequestHeaderMap() {
@@ -311,10 +295,4 @@ public class PortletExternalContext extends BridgeExternalContext {
         requestAttributes = NOOPRequestAttributes;
     }
 
-    private void recreateParameterAndCookieMaps() {
-        requestParameterMap = Collections.synchronizedMap(new HashMap());
-        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
-        requestCookieMap = Collections.synchronizedMap(new HashMap());
-        responseCookieMap = Collections.synchronizedMap(new HashMap());
-    }
 }

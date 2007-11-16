@@ -40,7 +40,7 @@ public class SingleViewServer implements Server {
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         } else {
-            view.updateOnRequest(request);
+            view.updateOnPageRequest(request);
         }
 
         view.switchToNormalMode();

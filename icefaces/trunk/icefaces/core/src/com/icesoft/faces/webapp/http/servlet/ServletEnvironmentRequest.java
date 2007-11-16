@@ -31,8 +31,11 @@
  *
  */
 
-package com.icesoft.faces.env;
+package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.CommonEnvironmentRequest;
+import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.jasper.Constants;
 
 import javax.servlet.RequestDispatcher;
@@ -84,12 +87,10 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     private String localName;
     private String localAddr;
     private int localPort;
-    private AuthenticationVerifier authenticationVerifier;
     private HttpSession session;
 
-    public ServletEnvironmentRequest(Object request, AuthenticationVerifier authenticationVerifier, HttpSession session) {
+    public ServletEnvironmentRequest(Object request, HttpSession session) {
         HttpServletRequest initialRequest = (HttpServletRequest) request;
-        this.authenticationVerifier = authenticationVerifier;
         this.session = session;
         //Copy common data
         authType = initialRequest.getAuthType();
@@ -179,7 +180,7 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public boolean isUserInRole(String role) {
-        return authenticationVerifier.isUserInRole(role);
+        return authenticationVerifier().isUserInRole(role);
     }
 
     public Cookie[] getCookies() {
@@ -338,4 +339,6 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
     }
 
     public abstract RequestAttributes requestAttributes();
+
+    public abstract AuthenticationVerifier authenticationVerifier();
 }

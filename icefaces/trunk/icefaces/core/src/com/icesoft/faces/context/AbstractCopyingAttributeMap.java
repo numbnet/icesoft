@@ -1,14 +1,14 @@
 package com.icesoft.faces.context;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Collections;
 
 public abstract class AbstractCopyingAttributeMap extends HashMap {
 
-    public AbstractCopyingAttributeMap() {
+    protected void initialize() {
         Enumeration e = getAttributeNames();
         while (e.hasMoreElements()) {
             String key = String.valueOf(e.nextElement());

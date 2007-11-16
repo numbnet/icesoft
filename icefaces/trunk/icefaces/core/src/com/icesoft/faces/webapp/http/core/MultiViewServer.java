@@ -43,7 +43,7 @@ public class MultiViewServer implements Server {
                 views.put(redirectViewNumber, view);
                 ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
             } else {
-                view.updateOnRequest(request);
+                view.updateOnPageRequest(request);
                 view.switchToNormalMode();
             }
         } else {
