@@ -37,6 +37,7 @@
 
 package com.icesoft.faces.context;
 
+import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
@@ -45,6 +46,7 @@ import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
 
+import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.render.ResponseStateManager;
@@ -55,6 +57,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -64,6 +68,21 @@ import java.util.Map;
  * environment that we're running in (e.g. servlets, portlets).
  */
 public abstract class BridgeExternalContext extends ExternalContext {
+    protected static final RequestAttributes NOOPRequestAttributes = new RequestAttributes() {
+        public Object getAttribute(String name) {
+            return null;
+        }
+
+        public Enumeration getAttributeNames() {
+            return Collections.enumeration(Collections.EMPTY_LIST);
+        }
+
+        public void removeAttribute(String name) {
+        }
+
+        public void setAttribute(String name, Object value) {
+        }
+    };
     private static String PostBackKey;
 
     static {
@@ -294,6 +313,11 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public interface CookieTransporter {
         void send(Cookie cookie);
     }
+
+    public interface Dispatcher {
+        void dispatch(String path) throws IOException, FacesException;
+    }
+
 
     public class CommandQueueRedirector implements Redirector {
         public void redirect(String uri) {

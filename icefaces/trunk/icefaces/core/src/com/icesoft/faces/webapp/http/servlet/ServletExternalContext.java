@@ -5,6 +5,7 @@ import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.env.AcegiAuthWrapper;
 import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.env.ServletEnvironmentRequest;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -37,21 +38,6 @@ import java.util.Set;
 //todo: try to refactor some of the inner classes into named classes
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
-    private static final RequestAttributes NOOPRequestAttributes = new RequestAttributes() {
-        public Object getAttribute(String name) {
-            return null;
-        }
-
-        public Enumeration getAttributeNames() {
-            return Collections.enumeration(Collections.EMPTY_LIST);
-        }
-
-        public void removeAttribute(String name) {
-        }
-
-        public void setAttribute(String name, Object value) {
-        }
-    };
     private static Class AuthenticationClass;
 
     static {

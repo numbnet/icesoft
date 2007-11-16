@@ -1,12 +1,13 @@
 package com.icesoft.faces.webapp.http.portlet;
 
-import com.icesoft.faces.context.AbstractAttributeMap;
-import com.icesoft.faces.context.AbstractCopyingAttributeMap;
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.PortletEnvironmentRenderRequest;
+import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.ServletRequestAttributes;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
@@ -14,9 +15,11 @@ import javax.faces.FacesException;
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
+import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,79 +37,61 @@ import java.util.Map;
 import java.util.Set;
 
 public class PortletExternalContext extends BridgeExternalContext {
-    private PortletContext context;
-    private PortletConfig config;
-    private RenderRequest request;
+    private static final AllowMode DoNotAllow = new AllowMode() {
+        public boolean isPortletModeAllowed(PortletMode portletMode) {
+            return false;
+        }
+
+        public boolean isWindowStateAllowed(WindowState windowState) {
+            return false;
+        }
+    };
+    private static final Dispatcher RequestNotAvailable = new Dispatcher() {
+        public void dispatch(String path) throws IOException, FacesException {
+            throw new IOException("No request available for dispatch.");
+        }
+    };
+    private static final AuthenticationVerifier UserInfoNotAvailable = new AuthenticationVerifier() {
+        public boolean isUserInRole(String role) {
+            throw new RuntimeException("Cannot determine if user in role. User information is not available.");
+        }
+    };
+    private static final Dispatcher CannotDispatchOnXMLHTTPRequest = new Dispatcher() {
+        public void dispatch(String path) throws IOException, FacesException {
+            throw new IOException("Cannot dispatch on XMLHTTP request.");
+        }
+    };
+    private static final Redirector NOOPRedirector = new Redirector() {
+        public void redirect(String uri) {
+        }
+    };
+    private static final CookieTransporter NOOPCookieTransporter = new CookieTransporter() {
+        public void send(Cookie cookie) {
+        }
+    };
+    private final PortletContext context;
+    private final PortletConfig config;
+    private final PortletSession session;
+    private RenderRequest initialRequest;
     private RenderResponse response;
-    private PortletSession session;
+    private AllowMode allowMode;
+    private AuthenticationVerifier authenticationVerifier;
+    private Dispatcher dispatcher;
+    private RequestAttributes requestAttributes;
 
-    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object config) {
+    public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig) {
         super(viewIdentifier, commandQueue, configuration);
-        this.config = (PortletConfig) config;
-        this.request = new PortletEnvironmentRenderRequest(request);
-        this.response = (RenderResponse) response;
-        this.session = new ProxyPortletSession(this.request.getPortletSession()) {
-            public void invalidate() {
-                monitor.shutdown();
-            }
-        };
-        this.context = this.session.getPortletContext();
-        this.initParameterMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return context.getInitParameter(key);
-            }
+        final RenderRequest renderRequest = (RenderRequest) request;
+        final RenderResponse renderResponse = (RenderResponse) response;
 
-            protected void setAttribute(String key, Object value) {
-                throw new IllegalAccessError("Read only map.");
-            }
-
-            protected void removeAttribute(String key) {
-                throw new IllegalAccessError("Read only map.");
-            }
-
-            protected Enumeration getAttributeNames() {
-                return context.getInitParameterNames();
-            }
-        };
-        this.applicationMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return context.getAttribute(key);
-            }
-
-            protected void setAttribute(String key, Object value) {
-                context.setAttribute(key, value);
-            }
-
-            protected void removeAttribute(String key) {
-                context.removeAttribute(key);
-            }
-
-            protected Enumeration getAttributeNames() {
-                return context.getAttributeNames();
-            }
-        };
-        this.sessionMap = new AbstractAttributeMap() {
-            protected Object getAttribute(String key) {
-                return session.getAttribute(key);
-            }
-
-            protected void setAttribute(String key, Object value) {
-                session.setAttribute(key, value);
-            }
-
-            protected void removeAttribute(String key) {
-                session.removeAttribute(key);
-            }
-
-            protected Enumeration getAttributeNames() {
-                return session.getAttributeNames();
-            }
-        };
-        this.requestMap = new RequestAttributeMap();
-        this.requestCookieMap = new HashMap();
-
-        this.update(this.request, this.response);
-        this.insertNewViewrootToken();
+        config = (PortletConfig) portletConfig;
+        session = new InterceptingPortletSession(renderRequest.getPortletSession(), monitor);
+        context = session.getPortletContext();
+        initParameterMap = new PortletContextInitParameterMap(context);
+        applicationMap = new PortletContextAttributeMap(context);
+        sessionMap = new PortletSessionAttributeMap(session);
+        updateOnReload(renderRequest, renderResponse);
+        insertNewViewrootToken();
     }
 
     public Object getSession(boolean create) {
@@ -118,32 +103,28 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public Object getRequest() {
-        return request;
+        return initialRequest;
     }
 
     public Object getResponse() {
         return response;
     }
 
-    //todo: try to reuse functionality from the next method
-    public void update(HttpServletRequest request, HttpServletResponse response) {
+    public void update(final HttpServletRequest request, HttpServletResponse response) {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
+        recreateParameterAndCookieMaps();
 
-        requestParameterMap = Collections.synchronizedMap(new HashMap());
-        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
-        //#2139 removed call to insert postback key here. 
+        //#2139 removed call to insert postback key here.
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
-            Object value = request.getParameter(name);
-            requestParameterMap.put(name, value);
+            requestParameterMap.put(name, request.getParameter(name));
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
         applySeamLifecycleShortcut(persistSeamKey);
 
-        requestCookieMap = Collections.synchronizedMap(new HashMap());
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -151,38 +132,68 @@ public class PortletExternalContext extends BridgeExternalContext {
                 requestCookieMap.put(cookie.getName(), cookie);
             }
         }
-        responseCookieMap = Collections.synchronizedMap(new HashMap());
+        allowMode = DoNotAllow;
+        authenticationVerifier = new AuthenticationVerifier() {
+            public boolean isUserInRole(String role) {
+                return request.isUserInRole(role);
+            }
+        };
+        dispatcher = CannotDispatchOnXMLHTTPRequest;
+        requestAttributes = new ServletRequestAttributes(request);
     }
 
-    public void update(RenderRequest request, RenderResponse response) {
+    public void update(final RenderRequest request, final RenderResponse response) {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
-        requestParameterMap = new HashMap();
-        requestParameterValuesMap = new HashMap();
-        insertPostbackKey();
+        recreateParameterAndCookieMaps();
+
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
-            Object value = request.getParameter(name);
-            requestParameterMap.put(name, value);
+            requestParameterMap.put(name, request.getParameter(name));
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
         applySeamLifecycleShortcut(persistSeamKey);
 
-        requestCookieMap = new HashMap();
-        responseCookieMap = new HashMap();
+        allowMode = new PortletRequestAllowMode(request);
+        authenticationVerifier = new AuthenticationVerifier() {
+            public boolean isUserInRole(String role) {
+                return request.isUserInRole(role);
+            }
+        };
+        dispatcher = new Dispatcher() {
+            public void dispatch(String path) throws IOException, FacesException {
+                try {
+                    context.getRequestDispatcher(path).include(request, response);
+                } catch (PortletException e) {
+                    throw new FacesException(e);
+                }
+            }
+        };
+        requestAttributes = new PortletRequestAttributes(request);
 
         this.response = response;
     }
 
     public void updateOnReload(Object request, Object response) {
-        Map previousRequestMap = this.requestMap;
-        this.request = new PortletEnvironmentRenderRequest(request);
-        this.requestMap = new RequestAttributeMap();
-        //propagate entries
-        this.requestMap.putAll(previousRequestMap);
-        this.update((RenderRequest) request, (RenderResponse) response);
+        RenderRequest renderRequest = (RenderRequest) request;
+        RenderResponse renderResponse = (RenderResponse) response;
+        initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest) {
+            public AllowMode allowMode() {
+                return allowMode;
+            }
+
+            public AuthenticationVerifier authenticationVerifier() {
+                return authenticationVerifier;
+            }
+
+            public RequestAttributes requestAttributes() {
+                return requestAttributes;
+            }
+        };
+        requestMap = new PortletRequestAttributeMap(initialRequest);
+        update(renderRequest, renderResponse);
     }
 
     public Map getRequestHeaderMap() {
@@ -194,27 +205,27 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public Locale getRequestLocale() {
-        return request.getLocale();
+        return initialRequest.getLocale();
     }
 
     public Iterator getRequestLocales() {
-        return new EnumerationIterator(request.getLocales());
+        return new EnumerationIterator(initialRequest.getLocales());
     }
 
     public String getRequestPathInfo() {
-        return (String) request.getAttribute(Constants.INC_PATH_INFO);
+        return (String) initialRequest.getAttribute(Constants.INC_PATH_INFO);
     }
 
     public String getRequestURI() {
-        return (String) request.getAttribute(Constants.INC_REQUEST_URI);
+        return (String) initialRequest.getAttribute(Constants.INC_REQUEST_URI);
     }
 
     public String getRequestContextPath() {
-        return (String) request.getAttribute(Constants.INC_CONTEXT_PATH);
+        return (String) initialRequest.getAttribute(Constants.INC_CONTEXT_PATH);
     }
 
     public String getRequestServletPath() {
-        return (String) request.getAttribute(Constants.INC_SERVLET_PATH);
+        return (String) initialRequest.getAttribute(Constants.INC_SERVLET_PATH);
     }
 
     public Set getResourcePaths(String path) {
@@ -246,11 +257,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void dispatch(String path) throws IOException, FacesException {
-        try {
-            context.getRequestDispatcher(path).include(request, response);
-        } catch (PortletException e) {
-            throw new FacesException(e);
-        }
+        dispatcher.dispatch(path);
     }
 
     public void log(String message) {
@@ -262,19 +269,19 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public String getAuthType() {
-        return request.getAuthType();
+        return initialRequest.getAuthType();
     }
 
     public String getRemoteUser() {
-        return request.getRemoteUser();
+        return initialRequest.getRemoteUser();
     }
 
     public java.security.Principal getUserPrincipal() {
-        return request.getUserPrincipal();
+        return initialRequest.getUserPrincipal();
     }
 
     public boolean isUserInRole(String role) {
-        return request.isUserInRole(role);
+        return initialRequest.isUserInRole(role);
     }
 
     public Writer getWriter(String encoding) throws IOException {
@@ -286,17 +293,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void switchToNormalMode() {
-        redirector = new PortletExternalContext.Redirector() {
-            public void redirect(String uri) {
-                //cannot redirect
-            }
-        };
-
-        cookieTransporter = new PortletExternalContext.CookieTransporter() {
-            public void send(Cookie cookie) {
-                //cannot send cookie
-            }
-        };
+        redirector = NOOPRedirector;
+        cookieTransporter = NOOPCookieTransporter;
     }
 
     public void switchToPushMode() {
@@ -305,21 +303,18 @@ public class PortletExternalContext extends BridgeExternalContext {
         resetRequestMap();
     }
 
-    private class RequestAttributeMap extends AbstractCopyingAttributeMap {
-        public Enumeration getAttributeNames() {
-            return request.getAttributeNames();
-        }
+    public void release() {
+        super.release();
+        allowMode = DoNotAllow;
+        authenticationVerifier = UserInfoNotAvailable;
+        dispatcher = RequestNotAvailable;
+        requestAttributes = NOOPRequestAttributes;
+    }
 
-        public Object getAttribute(String name) {
-            return request.getAttribute(name);
-        }
-
-        public void setAttribute(String name, Object value) {
-            request.setAttribute(name, value);
-        }
-
-        public void removeAttribute(String name) {
-            request.removeAttribute(name);
-        }
+    private void recreateParameterAndCookieMaps() {
+        requestParameterMap = Collections.synchronizedMap(new HashMap());
+        requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
+        requestCookieMap = Collections.synchronizedMap(new HashMap());
+        responseCookieMap = Collections.synchronizedMap(new HashMap());
     }
 }

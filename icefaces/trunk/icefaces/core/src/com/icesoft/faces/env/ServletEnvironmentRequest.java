@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.env;
 
-import com.icesoft.faces.webapp.http.servlet.RequestAttributes;
 import com.icesoft.jasper.Constants;
 
 import javax.servlet.RequestDispatcher;

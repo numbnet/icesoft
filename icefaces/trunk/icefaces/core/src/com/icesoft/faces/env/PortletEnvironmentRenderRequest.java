@@ -1,5 +1,6 @@
 package com.icesoft.faces.env;
 
+import com.icesoft.faces.webapp.http.portlet.AllowMode;
 import com.icesoft.jasper.Constants;
 
 import javax.portlet.PortalContext;
@@ -17,9 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest implements RenderRequest {
-    private RenderRequest request;
-
+public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest implements RenderRequest {
     private PortletMode portletMode;
     private WindowState windowState;
     private PortletPreferences portletPreferences;
@@ -29,34 +28,32 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
     private ArrayList responseContentTypes;
     private Map properties;
 
-    public PortletEnvironmentRenderRequest(Object request) {
-        this.request = (RenderRequest) request;
-
-        portletMode = this.request.getPortletMode();
-        windowState = this.request.getWindowState();
-        portletPreferences = this.request.getPreferences();
-        portletSession = this.request.getPortletSession();
-        portalContext = this.request.getPortalContext();
-        responseContentType = this.request.getResponseContentType();
-        responseContentTypes = Collections.list(this.request.getResponseContentTypes());
-        authType = this.request.getAuthType();
-        remoteUser = this.request.getRemoteUser();
-        userPrincipal = this.request.getUserPrincipal();
-        requestedSessionId = this.request.getRequestedSessionId();
-        requestedSessionIdValid = this.request.isRequestedSessionIdValid();
-        scheme = this.request.getScheme();
-        serverName = this.request.getServerName();
-        serverPort = this.request.getServerPort();
-        locale = this.request.getLocale();
-        locales = Collections.list(this.request.getLocales());
-        secure = this.request.isSecure();
-        contextPath = this.request.getContextPath();
+    public PortletEnvironmentRenderRequest(PortletSession session, RenderRequest request) {
+        portletSession = session;
+        portletMode = request.getPortletMode();
+        windowState = request.getWindowState();
+        portletPreferences = request.getPreferences();
+        portalContext = request.getPortalContext();
+        responseContentType = request.getResponseContentType();
+        responseContentTypes = Collections.list(request.getResponseContentTypes());
+        authType = request.getAuthType();
+        remoteUser = request.getRemoteUser();
+        userPrincipal = request.getUserPrincipal();
+        requestedSessionId = request.getRequestedSessionId();
+        requestedSessionIdValid = request.isRequestedSessionIdValid();
+        scheme = request.getScheme();
+        serverName = request.getServerName();
+        serverPort = request.getServerPort();
+        locale = request.getLocale();
+        locales = Collections.list(request.getLocales());
+        secure = request.isSecure();
+        contextPath = request.getContextPath();
 
         attributes = new Hashtable();
-        Enumeration attributeNames = this.request.getAttributeNames();
+        Enumeration attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String name = (String) attributeNames.nextElement();
-            Object attribute = this.request.getAttribute(name);
+            Object attribute = request.getAttribute(name);
             if ((null != name) && (null != attribute)) {
                 attributes.put(name, attribute);
             }
@@ -65,52 +62,44 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
         //Some portal containers do not add the javax.servlet.include.*
         //attributes to the attribute names collection so they are not
         //copied into our own collection.  We do that here as necessary.
-        addExtraAttributes(Constants.INC_CONSTANTS);
+        addExtraAttributes(Constants.INC_CONSTANTS, request);
 
         //ICE-2247: Some javax.portlet.* constants to add as well as
         //Liferay specific ones.
-        addExtraAttributes(Constants.PORTLET_CONSTANTS);
-        addExtraAttributes(Constants.LIFERAY_CONSTANTS);
+        addExtraAttributes(Constants.PORTLET_CONSTANTS, request);
+        addExtraAttributes(Constants.LIFERAY_CONSTANTS, request);
 
         parameters = new HashMap();
-        Enumeration parameterNames = this.request.getParameterNames();
+        Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String name = (String) parameterNames.nextElement();
-            parameters.put(name, this.request.getParameterValues(name));
+            parameters.put(name, request.getParameterValues(name));
         }
 
         properties = new HashMap();
-        Enumeration propertyNames = this.request.getPropertyNames();
+        Enumeration propertyNames = request.getPropertyNames();
         while (propertyNames.hasMoreElements()) {
             String name = (String) propertyNames.nextElement();
-            Enumeration values = this.request.getProperties(name);
+            Enumeration values = request.getProperties(name);
             properties.put(name, Collections.list(values));
         }
     }
 
-    private void addExtraAttributes(String[] keys){
+    private void addExtraAttributes(String[] keys, RenderRequest request) {
         for (int index = 0; index < keys.length; index++) {
-            Object val = this.request.getAttribute(keys[index]);
-            if( !attributes.containsKey(keys[index]) && val != null ){
+            Object val = request.getAttribute(keys[index]);
+            if (!attributes.containsKey(keys[index]) && val != null) {
                 attributes.put(keys[index], val);
             }
         }
     }
 
     public boolean isWindowStateAllowed(WindowState windowState) {
-        try {
-            return request.isWindowStateAllowed(windowState);
-        } catch (Exception e) {
-            return false;
-        }
+        return allowMode().isWindowStateAllowed(windowState);
     }
 
     public boolean isPortletModeAllowed(PortletMode portletMode) {
-        try {
-            return request.isPortletModeAllowed(portletMode);
-        } catch (Exception e) {
-            return false;
-        }
+        return allowMode().isPortletModeAllowed(portletMode);
     }
 
     public PortletMode getPortletMode() {
@@ -160,7 +149,7 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
     }
 
     public boolean isUserInRole(String string) {
-        return request.isUserInRole(string);
+        return authenticationVerifier().isUserInRole(string);
     }
 
     public String getResponseContentType() {
@@ -170,4 +159,20 @@ public class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest im
     public Enumeration getResponseContentTypes() {
         return Collections.enumeration(responseContentTypes);
     }
+
+    public void removeAttribute(String name) {
+        super.removeAttribute(name);
+        requestAttributes().removeAttribute(name);
+    }
+
+    public void setAttribute(String name, Object value) {
+        super.setAttribute(name, value);
+        requestAttributes().setAttribute(name, value);
+    }
+
+    public abstract AllowMode allowMode();
+
+    public abstract AuthenticationVerifier authenticationVerifier();
+
+    public abstract RequestAttributes requestAttributes();
 }
