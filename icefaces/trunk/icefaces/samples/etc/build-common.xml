@@ -39,9 +39,12 @@
     <exclude name="jstl.jar"       if="serverjsf" />
     <exclude name="xercesImpl.jar" if="jsf12" />
     <exclude name="xml-apis.jar"   if="jsf12" />
+    <exclude name="icefaces.jar" if="just-ice" />
 </patternset>
 
-<patternset id="additional.icefaces.lib.jars.to.include"/>
+<patternset id="additional.icefaces.lib.jars.to.include">
+	<include name="just-ice.jar" if="just-ice" />
+</patternset>
 
 <patternset id="additional.compile.lib.jars"/>
 
