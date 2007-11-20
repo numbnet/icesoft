@@ -608,6 +608,8 @@ public class TableRenderer
             }
             RowSelector rs = getRowSelector(kid);
             if (rs != null) {
+                if(!rs.isRendered())
+                    return null;
                 return rs;
             }
         }
