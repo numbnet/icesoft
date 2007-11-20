@@ -157,15 +157,28 @@ Ice.DndEvent.prototype = {
         var fe = ele.getElementsByTagName('input');
         var ne = new Array();
         var i = 0;
+        
+        var status = null;
+        var dropID = null;
+        
         // We only want hidden fields.
         for (i = 0; i < fe.length; i++) {
             if (fe[i].type == 'hidden') {
-                ne.push(fe[i]);
+                if(fe[i].id.indexOf('status')> 1){
+                    status = fe[i];
+                }
+                if(fe[i].id.indexOf('dropID')> 1) {
+                    dropID = fe[i];
+                }
             }
         }
-        fe = ne;
-        fe[0].value = this.eventType;
-        if (this.drop)fe[1].value = this.drop.element.id;
+
+        if (status != null) {
+            status.value = this.eventType;
+        }
+        if (this.drop && dropID != null) {
+            dropID.value = this.drop.element.id;
+        }
         if (!ignoreCss) Ice.DnD.StyleReader.upload(ele);
         return true;
     },
