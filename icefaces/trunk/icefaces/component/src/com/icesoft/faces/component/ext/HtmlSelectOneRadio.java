@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.component.ext;
 
+import java.util.Iterator;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.taglib.Util;
@@ -565,6 +567,18 @@ public class HtmlSelectOneRadio
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
     }
+    
+    public void processValidators(FacesContext context) {
+        super.processValidators(context);
+        Iterator it = context.getMessages(this.getClientId(context));
+        if (it != null && it.hasNext()){
+            //this flag will be used by the setRequiredFalseOnAllChildrenExceptOne()
+            //method of the ReceiveSendUpdates.java
+            getAttributes().put(this.getClientId(context) + "hadMessage", "true");
+        } else {
+            getAttributes().remove(this.getClientId(context) + "hadMessage");            
+        }
+    }    
 }
 
 

@@ -98,12 +98,14 @@ public class ReceiveSendUpdates implements Server {
             UIComponent parent,
             UIComponent componentToAvoid, String clientIdToAvoid,
             Map alteredComponents) {
-
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         //turn off required simply with false for all but iterative case
-        ValueBinding FALSE_BINDING = FacesContext.getCurrentInstance()
+        ValueBinding FALSE_BINDING = facesContext
                 .getApplication().createValueBinding("#{false}");
 
         int length = parent.getChildCount();
+
         UIComponent next = null;
         for (int i = 0; i < length; i++) {
             next = (UIComponent) parent.getChildren().get(i);
@@ -126,7 +128,11 @@ public class ReceiveSendUpdates implements Server {
                     input.setValueBinding(REQUIRED, replacementBinding);
                     alteredComponents.put(input, valueBinding);
                 } else {
-                    if (input.isRequired() && input != componentToAvoid) {
+                    //the 'hadMessage' property is set by the processValidators()
+                    //method of the input component
+                    if (input.isRequired() && input != componentToAvoid &&
+                            input.getAttributes().get(input.getClientId(facesContext)
+                                    + "hadMessage") == null) {
                         input.setRequired(false);
                         alteredComponents.put(input, null);
                     }
