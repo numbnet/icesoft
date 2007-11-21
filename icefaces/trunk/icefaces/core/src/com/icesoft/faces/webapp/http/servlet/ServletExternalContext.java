@@ -94,6 +94,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
+        ((ServletEnvironmentRequest) initialRequest).setParameters(request);
         applySeamLifecycleShortcut(persistSeamKey);
 
         Cookie[] cookies = request.getCookies();

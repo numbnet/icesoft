@@ -179,6 +179,19 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         }
     }
 
+    public void setPathInfo(String pathInfo)  {
+        this.pathInfo = pathInfo;
+    }
+
+    public void setParameters(HttpServletRequest request)  {
+        parameters = new HashMap();
+        Enumeration parameterNames = request.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String name = (String) parameterNames.nextElement();
+            parameters.put(name, request.getParameterValues(name));
+        }
+    }
+
     public boolean isUserInRole(String role) {
         return authenticationVerifier().isUserInRole(role);
     }

@@ -277,11 +277,14 @@ public class D2DViewHandler extends ViewHandler {
 
         UIViewRoot root = null;
 
-        root = (UIViewRoot) contextServletTable
+        UIViewRoot cachedRoot = (UIViewRoot) contextServletTable
                 .get(DOMResponseWriter.RESPONSE_VIEWROOT);
 
-        if ((null != root) && (null != viewId) &&
-                (mungeViewId(viewId).equals(mungeViewId(root.getViewId())))) {
+        if ((null != cachedRoot) && (null != viewId) &&
+                ( mungeViewId(viewId)
+                        .equals(mungeViewId(cachedRoot.getViewId())) )) {
+            //Caching rarely takes place, but correct viewId is necessary
+            root = cachedRoot;
         }
 
         return root;
