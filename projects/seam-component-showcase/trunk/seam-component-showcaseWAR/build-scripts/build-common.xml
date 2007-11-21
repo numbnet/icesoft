@@ -359,12 +359,14 @@
 	             <include name="backport-util-concurrent.jar" />	
 			     <include name="commons-fileupload.jar"/> 
 	             <include name="commons-logging*.jar"/>
+	           	<include name="commons-collections.jar"/>
 	             <include name="krysalis-*.jar"/>
 	             <include name="commons-digester*.jar"/>
 	           	 <include name="commons-el.jar"/>
 	           	 <include name="commons-discover.jar"/>
 	           	 <include name="xercesImpl.jar"/>
 	           	 <include name="xml-apis.jar"/>
+	           	 <include name="el-ri.jar"/>
 		      </fileset>
 	         <fileset dir="${jboss.seam.home}/lib">
 	             <include name="jboss-seam.jar"/>
