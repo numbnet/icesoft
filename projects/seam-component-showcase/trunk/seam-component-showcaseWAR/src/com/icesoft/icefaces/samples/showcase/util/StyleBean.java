@@ -152,7 +152,7 @@ public class StyleBean implements Serializable{
     public void changeStyle() {
         currentStyle = tempStyle;
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
-        Manager.instance().redirect(""); //only need this for the calendar for some reason
+        Manager.instance().redirect("/showcase.seam"); //only need this for the calendar for some reason
     }
 
     /**
