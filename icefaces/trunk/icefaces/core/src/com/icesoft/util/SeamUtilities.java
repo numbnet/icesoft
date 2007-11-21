@@ -65,7 +65,7 @@ public class SeamUtilities {
 //    private static String conversationLongRunningParameter;
     
     // since seam1.3.0Alpha has api changes, detect which version we are using
-    private static String seamVersion = "none";
+    private static String seamVersion = "2.0.0.GA";
     private static Method seamVersionMethod;
     
     private static String flowIdParameterName = null;
@@ -295,37 +295,28 @@ public class SeamUtilities {
             // load classes
             seamManagerClass = Class.forName("org.jboss.seam.core.Manager");
             Class seamScopeTypeClass = Class.forName("org.jboss.seam.ScopeType");
-            
-
-
+ 
             // load method instances
             seamInstanceMethod = seamManagerClass.getMethod("instance",
                                                             seamClassArgs);
 
             Field fieldInstance = seamScopeTypeClass.getField("PAGE");
-
-            
             
             pageContextInstance = fieldInstance.get(seamScopeTypeClass);
-
 
             seamPageContextGetPrefixInstance = seamScopeTypeClass.getMethod(
                     "getPrefix", seamClassArgs);
             
             // for D2DSeamFaceletViewHandler need to know version 
+            // to load compiler for facelet creation. See ICE-2405
+           Class seamELResolver = null;
            try {
-               Class seamClass = Class.forName("org.jboss.seam.Seam");
-               seamVersionMethod = seamClass.getMethod("getVersion",null);
-               if (seamVersionMethod!=null){
-                   seamVersion = (String)seamVersionMethod.invoke(null,seamMethodNoArgs);
-            	   log.info("SeamUtilities: loadSeam.. seamVersion="+seamVersion);
-               }
-            } catch (NoSuchMethodException e){
-                    /* no getVersion method exists for Seam1.2.1 or earlier */
-            	    seamVersion="1.2.1.GA";
-            	    log.info("\t -->>>> seamVersion is null");
+         	   seamELResolver = Class.forName("org.jboss.seam.jsf.SeamELResolver");
+         	   if (seamELResolver !=null)seamVersion="1.2.1.GA";
+            } catch (Exception e){
+            	seamVersion="not1.2.1.GA";
             } 
-        	log.info("\t ->>> seamVersion="+seamVersion);
+        	if (log.isDebugEnabled())log.debug("\t ->>> Using seamVersion="+seamVersion);
             
             try {
                 seamAppendConversationMethodInstance =
