@@ -59,6 +59,7 @@ public class CommandLinkRenderer extends
         HtmlCommandLink link = (HtmlCommandLink) uiComponent;
         if (link.isDisabled()) {
             root.removeAttribute("onclick");
+            root.removeAttribute("href");            
         } else if (link.getPartialSubmit()) {
             UIComponent uiForm = findForm(uiComponent);
             if (uiForm == null) {

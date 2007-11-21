@@ -103,12 +103,23 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
-
+        boolean disabled = false;
+        try {
+            disabled = Boolean.valueOf(String.valueOf(
+                    uiComponent.getAttributes().get("disabled"))).booleanValue();
+        } catch (Exception e) {}
+        
         if (!domContext.isInitialized()) {
-            Element root = domContext.createElement("a");
+            Element root;
+            if (disabled) {
+                root = domContext.createElement("span");
+            } else {
+                root = domContext.createElement("a");
+                root.setAttribute("href", "# ");     
+            }
             domContext.setRootNode(root);
             setRootElementId(facesContext, root, uiComponent);
-            root.setAttribute("href", "# ");
+
         }
         Element root = (Element) domContext.getRootNode();
         DOMContext.removeChildren(root);
@@ -125,7 +136,9 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
         PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
                                                    new String[]{"onclick"});
-
+        if (disabled) {
+            root.removeAttribute("disabled");
+        }
         FormRenderer.addHiddenField(facesContext,
                                     deriveCommonHiddenFieldName(
                                             facesContext,
