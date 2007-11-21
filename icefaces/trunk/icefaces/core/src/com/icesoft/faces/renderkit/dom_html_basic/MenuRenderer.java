@@ -345,7 +345,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
                 root.setAttribute("class", styleClass);
             }
             if (!getMultipleText(uiComponent).equals("")) {
-                root.setAttribute("multiple", Boolean.TRUE.toString());
+                root.setAttribute("multiple", "multiple");
             }
         }
         Element root = (Element) domContext.getRootNode();
