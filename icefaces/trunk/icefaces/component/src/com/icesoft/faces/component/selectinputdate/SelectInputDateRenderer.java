@@ -59,6 +59,7 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.utils.MessageUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -75,6 +76,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import java.io.IOException;
 import java.text.DateFormatSymbols;
+import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -94,21 +96,57 @@ public class SelectInputDateRenderer
     private static final Log log =
             LogFactory.getLog(SelectInputDateRenderer.class);
 
-    private final String CALENDAR_TABLE = "_calendarTable";
-    private final String CALENDAR_BUTTON = "_calendarButton";
-    private final String CALENDAR_POPUP = "_calendarPopup";
-    private final String HIDDEN_FIELD_NAME = "showPopup";
-    private final String DATE_SELECTED = "dateSelected";
+    private static final String CALENDAR_TABLE = "_calendarTable";
+    private static final String CALENDAR_BUTTON = "_calendarButton";
+    private static final String CALENDAR_POPUP = "_calendarPopup";
+    private static final String HIDDEN_FIELD_NAME = "showPopup";
+    private static final String DATE_SELECTED = "dateSelected";
 
     // constants for navigation link ids
-    private final String PREV_MONTH = "_prevmo";
-    private final String NEXT_MONTH = "_nextmo";
-    private final String PREV_YEAR = "_prevyr";
-    private final String NEXT_YEAR = "_nextyr";
+    private static final String PREV_MONTH = "_prevmo";
+    private static final String NEXT_MONTH = "_nextmo";
+    private static final String PREV_YEAR = "_prevyr";
+    private static final String NEXT_YEAR = "_nextyr";
 
     // constant for selectinputdate links
-    private final String CALENDAR = "_calendar";
+    private static final String CALENDAR = "_calendar";
     
+    private static final String INPUT_TEXT_TITLE =
+        "com.icesoft.faces.component.selectinputdate.INPUT_TEXT_TITLE";
+    private static final String CALENDAR_TITLE =
+        "com.icesoft.faces.component.selectinputdate.CALENDAR_TITLE";
+    private static final String CALENDAR_SUMMARY =
+        "com.icesoft.faces.component.selectinputdate.CALENDAR_SUMMARY";
+    private static final String POPUP_CALENDAR_TITLE =
+        "com.icesoft.faces.component.selectinputdate.POPUP_CALENDAR_TITLE";
+    private static final String POPUP_CALENDAR_SUMMARY =
+        "com.icesoft.faces.component.selectinputdate.POPUP_CALENDAR_SUMMARY";
+    private static final String YEAR_MONTH_SUMMARY =
+        "com.icesoft.faces.component.selectinputdate.YEAR_MONTH_SUMMARY";
+    private static final String OPEN_POPUP_ALT =
+        "com.icesoft.faces.component.selectinputdate.OPEN_POPUP_ALT";
+    private static final String OPEN_POPUP_TITLE =
+        "com.icesoft.faces.component.selectinputdate.OPEN_POPUP_TITLE";
+    private static final String CLOSE_POPUP_ALT =
+        "com.icesoft.faces.component.selectinputdate.CLOSE_POPUP_ALT";
+    private static final String CLOSE_POPUP_TITLE =
+        "com.icesoft.faces.component.selectinputdate.CLOSE_POPUP_TITLE";
+    private static final String PREV_YEAR_ALT =
+        "com.icesoft.faces.component.selectinputdate.PREV_YEAR_ALT";
+    private static final String PREV_YEAR_TITLE =
+        "com.icesoft.faces.component.selectinputdate.PREV_YEAR_TITLE";
+    private static final String NEXT_YEAR_ALT =
+        "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_ALT";
+    private static final String NEXT_YEAR_TITLE =
+        "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_TITLE";
+    private static final String PREV_MONTH_ALT =
+        "com.icesoft.faces.component.selectinputdate.PREV_MONTH_ALT";
+    private static final String PREV_MONTH_TITLE =
+        "com.icesoft.faces.component.selectinputdate.PREV_MONTH_TITLE";
+    private static final String NEXT_MONTH_ALT =
+        "com.icesoft.faces.component.selectinputdate.NEXT_MONTH_ALT";
+    private static final String NEXT_MONTH_TITLE =
+        "com.icesoft.faces.component.selectinputdate.NEXT_MONTH_TITLE";
 
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
@@ -185,10 +223,14 @@ public class SelectInputDateRenderer
                     dateText.setAttribute("autocomplete",
                                           selectInputDate.getAutocomplete());
                 }
+                String tooltip = null;
                 // extract the popupdate format and use it as a tooltip
-                String tooltip = selectInputDate.getPopupDateFormat();
-                dateText.setAttribute(HTML.TITLE_ATTR,
-                                      "Date Format: " + tooltip);
+                tooltip = getMessageWithParamFromResource(
+                    facesContext, INPUT_TEXT_TITLE,
+                    selectInputDate.getSpecifiedPopupDateFormat());
+                if(tooltip != null) {
+                    dateText.setAttribute(HTML.TITLE_ATTR, tooltip);
+                }
                 if (selectInputDate.isDisabled()) {
                     dateText.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
                 }
@@ -236,8 +278,10 @@ public class SelectInputDateRenderer
                                 selectInputDate.getImageDir() + "spacer.gif");
                     }
                     calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
-                    calendarButton.setAttribute(HTML.ALT_ATTR, "Close Popup Calendar");
-                    calendarButton.setAttribute(HTML.TITLE_ATTR , "Close Popup Calendar");                
+                    addAttributeToElementFromResource(facesContext,
+                        CLOSE_POPUP_ALT, calendarButton, HTML.ALT_ATTR);
+                    addAttributeToElementFromResource(facesContext,
+                        CLOSE_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                 } else {
                     if (selectInputDate.isImageDirSet()) {
                         resolvedSrc = CoreUtils.resolveResourceURL(facesContext,
@@ -250,8 +294,10 @@ public class SelectInputDateRenderer
                                 selectInputDate.getImageDir() + "spacer.gif");
                     }
                     calendarButton.setAttribute(HTML.SRC_ATTR, resolvedSrc );
-                    calendarButton.setAttribute(HTML.ALT_ATTR, "Open Popup Calendar");
-                    calendarButton.setAttribute(HTML.TITLE_ATTR , "Open Popup Calendar");
+                    addAttributeToElementFromResource(facesContext,
+                        OPEN_POPUP_ALT, calendarButton, HTML.ALT_ATTR);
+                    addAttributeToElementFromResource(facesContext,
+                        OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
                     FormRenderer.addHiddenField(facesContext, parentForm.getClientId(facesContext)+ ":_idcl");
                     PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, null);
                     domContext.stepOver();
@@ -270,7 +316,8 @@ public class SelectInputDateRenderer
                                          clientId + CALENDAR_POPUP);
                 calendarDiv.setAttribute(HTML.STYLE_ELEM,
                           "position:absolute;z-index:10;");
-                calendarDiv.setAttribute(HTML.TITLE_ATTR, "A Popup Calendar where a date can be selected.");
+                addAttributeToElementFromResource(facesContext,
+                    POPUP_CALENDAR_TITLE, calendarDiv, HTML.TITLE_ATTR);
                 Element table = domContext.createElement(HTML.TABLE_ELEM);
                 table.setAttribute(HTML.ID_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.NAME_ATTR, clientId + CALENDAR_TABLE);
@@ -286,7 +333,8 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.ONMOUSEOUT_ATTR, mouseOut);
                 String mouseMove = selectInputDate.getOnmousemove();
                 table.setAttribute(HTML.ONMOUSEMOVE_ATTR, mouseMove);
-                table.setAttribute(HTML.SUMMARY_ATTR,"This table contains a Calendar where a date can be selected.");
+                addAttributeToElementFromResource(facesContext,
+                    POPUP_CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
                 calendarDiv.appendChild(table);
                 Text iframe = domContext.createTextNode("<!--[if lte IE"+
                         " 6.5]><iframe src='"+ CoreUtils.resolveResourceURL
@@ -304,6 +352,8 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.NAME_ATTR, clientId + CALENDAR_TABLE);
                 table.setAttribute(HTML.CLASS_ATTR,
                                    selectInputDate.getStyleClass());
+                addAttributeToElementFromResource(facesContext,
+                    CALENDAR_TITLE, table, HTML.TITLE_ATTR);
                 table.setAttribute(HTML.CELLPADDING_ATTR, "0");
                 table.setAttribute(HTML.CELLSPACING_ATTR, "0");
                 // set mouse events on table bug 372
@@ -313,7 +363,8 @@ public class SelectInputDateRenderer
                 table.setAttribute(HTML.ONMOUSEOUT_ATTR, mouseOut);
                 String mouseMove = selectInputDate.getOnmousemove();
                 table.setAttribute(HTML.ONMOUSEMOVE_ATTR, mouseMove);
-                table.setAttribute(HTML.SUMMARY_ATTR,"This table contains a Calendar where a date can be selected.");
+                addAttributeToElementFromResource(facesContext,
+                    CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
                 root.appendChild(table);
             }
         }
@@ -473,7 +524,8 @@ public class SelectInputDateRenderer
         table.setAttribute(HTML.CELLPADDING_ATTR, "0");
         table.setAttribute(HTML.CELLSPACING_ATTR, "0");
         table.setAttribute(HTML.WIDTH_ATTR, "100%");
-        table.setAttribute(HTML.SUMMARY_ATTR,"Month Year navigation header");
+        addAttributeToElementFromResource(facesContext,
+            YEAR_MONTH_SUMMARY, table, HTML.SUMMARY_ATTR);
 
         Element tr = domContext.createElement(HTML.TR_ELEM);
 
@@ -777,9 +829,11 @@ public class SelectInputDateRenderer
         }
 
         if (valueForLink == null) {
-            Text text = domContext.createTextNode(content);
-            td.setAttribute(HTML.TITLE_ATTR,weekdaysLong[weekDayIndex]);
-            td.appendChild(text);
+            if(content != null && content.length() > 0) {
+                Text text = domContext.createTextNode(content);
+                td.setAttribute(HTML.TITLE_ATTR,weekdaysLong[weekDayIndex]);
+                td.appendChild(text);
+            }
         } else {
             // set cursor to render into the td
             domContext.setCursorParent(td);
@@ -814,20 +868,33 @@ public class SelectInputDateRenderer
         int dayInt = cal.get(Calendar.DAY_OF_WEEK);
         dayInt = mapCalendarDayToCommonDay(dayInt);
         String day = weekdaysLong[dayInt];
-        String altText = "";
+        String altText = null;
+        String titleText = null;
         // assign special ids for navigation links
         if (content.equals("<")) {
             link.setId(component.getId() + this.PREV_MONTH);
-            altText = "Move to previous month " + month;
+            altText = getMessageWithParamFromResource(
+                facesContext, PREV_MONTH_ALT, month);
+            titleText = getMessageWithParamFromResource(
+                facesContext, PREV_MONTH_TITLE, month);
         } else if (content.equals(">")) {
             link.setId(component.getId() + this.NEXT_MONTH);
-            altText = "Move to next month " + month;
+            altText = getMessageWithParamFromResource(
+                facesContext, NEXT_MONTH_ALT, month);
+            titleText = getMessageWithParamFromResource(
+                facesContext, NEXT_MONTH_TITLE, month);
         } else if (content.equals(">>")) {
             link.setId(component.getId() + this.NEXT_YEAR);
-            altText = "Move to next year " + year;
+            altText = getMessageWithParamFromResource(
+                facesContext, NEXT_YEAR_ALT, year);
+            titleText = getMessageWithParamFromResource(
+                facesContext, NEXT_YEAR_TITLE, year);
         } else if (content.equals("<<")) {
             link.setId(component.getId() + this.PREV_YEAR);
-            altText = "Move to previous year " + year;
+            altText = getMessageWithParamFromResource(
+                facesContext, PREV_YEAR_ALT, year);
+            titleText = getMessageWithParamFromResource(
+                facesContext, PREV_YEAR_TITLE, year);
         } else {
             link.setId(component.getId() + "_" + content.hashCode() + this
                     .CALENDAR);
@@ -860,7 +927,10 @@ public class SelectInputDateRenderer
             img.setHeight("16");
             img.setWidth("17");
             img.setStyle("border:none;");
-            img.setAlt(altText);
+            if(altText != null)
+                img.setAlt(altText);
+            if(titleText != null)
+                img.setTitle(titleText);
             img.setId(component.getId() + "_" + content.hashCode() + "_img");
             img.setTransient(true);
             link.getChildren().add(img);
@@ -913,6 +983,30 @@ public class SelectInputDateRenderer
         }
 
 
+    }
+    
+    protected void addAttributeToElementFromResource(
+        FacesContext facesContext, String resName, Element elem, String attrib)
+    {
+        String res = MessageUtils.getResource(facesContext, resName);
+        if(res != null && res.length() > 0) {
+            elem.setAttribute(attrib, res);
+        }
+    }
+    
+    protected String getMessageWithParamFromResource(
+        FacesContext facesContext, String resName, String param)
+    {
+        String msg = null;
+        if(param != null && param.length() > 0) {
+            String messagePattern = MessageUtils.getResource(
+                facesContext, resName);
+            if(messagePattern != null && messagePattern.length() > 0) {
+                msg = MessageFormat.format(
+                    messagePattern, new Object[] {param});
+            }
+        }
+        return msg;
     }
     
     private int mapCalendarDayToCommonDay(int day) {

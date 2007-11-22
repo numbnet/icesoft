@@ -41,9 +41,15 @@ public class MessageUtils {
             try {
                 loadMessageInfo(bundleName, locale, messageId, messageInfo);
             } catch (Exception e)  {
-                log.warn(e + ", using " + ICE_MESSAGES_BUNDLE);
+                if(log.isWarnEnabled())
+                    log.warn(e + ", using " + ICE_MESSAGES_BUNDLE);
             }
         }
+        
+        //TODO Use defered evaluation of the parameters, like how
+        // JSF 1.2's javax.faces.component.MessageFactory.
+        // BindingFacesMessage does. ICE-2290.
+        
         //if not overridden then check in Icefaces message bundle.
         if (messageInfo[SUMMARY] == null && messageInfo[DETAIL]== null) {
             loadMessageInfo(ICE_MESSAGES_BUNDLE, locale, messageId, messageInfo);
@@ -83,12 +89,45 @@ public class MessageUtils {
         return classLoader;
     }
     
+    public static String getResource(FacesContext facesContext, String messageId) {
+        String ret = null;
+        Locale locale = facesContext.getViewRoot().getLocale();
+        String bundleName = facesContext.getApplication().getMessageBundle();
+        //see if the message has been overridden by the application
+        if (bundleName != null) {
+            ret = getResource(bundleName, locale, messageId);
+        }
+        if(ret == null) {
+            ret = getResource(ICE_MESSAGES_BUNDLE, locale, messageId);
+        }
+        return ret;
+    }
+    
+    protected static String getResource(
+        String bundleName, Locale locale, String messageId)
+    {
+        ResourceBundle bundle = ResourceBundle.getBundle(
+            bundleName, locale, getClassLoader(bundleName));
+        String ret = null;
+        try {
+            ret = bundle.getString(messageId);
+        } catch(Exception e) {}
+        return ret;
+    }
+    
     public static Object getComponentLabel(
         FacesContext context, UIComponent comp)
     {
         Object label = comp.getAttributes().get("label");
         if(nullOrEmptyString(label)) {
-            label = comp.getClientId(context);
+            //TODO When doing that MessageFactory stuff, uncomment this. ICE-2290.
+            ////ValueBinding vb = comp.getValueBinding("label");
+            ////if(vb != null) {
+            ////    label = vb;
+            ////}
+            ////else {
+                label = comp.getClientId(context);
+            ////}
         }
         return label;
     }
