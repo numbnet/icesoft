@@ -81,17 +81,15 @@ public class TextareaRenderer extends DomBasicInputRenderer {
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, component, null);
 
-        Integer rows =
-                (Integer) component.getAttributes().get("rows");
-        if (rows.intValue() > -1) {
+        Object rows = component.getAttributes().get("rows");
+        if (rows != null && ((Integer)rows).intValue() > -1) {
             root.setAttribute("rows", rows.toString());
         } else {
             root.setAttribute("rows", "2");
         }
         
-        Integer cols =
-                (Integer) component.getAttributes().get("cols");
-        if (cols.intValue() > -1) {
+        Object cols = component.getAttributes().get("cols");
+        if (cols != null && ((Integer)cols).intValue() > -1) {
             root.setAttribute("cols", cols.toString());
         } else {
             root.setAttribute("cols", "20");
