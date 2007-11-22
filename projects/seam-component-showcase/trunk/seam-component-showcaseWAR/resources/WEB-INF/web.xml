@@ -38,10 +38,6 @@
       <param-value>true</param-value>
    </context-param>
     <context-param>
-       <param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
-       <param-value>100000000</param-value>         
-    </context-param>
-   <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
       <param-value>.xhtml</param-value>
    </context-param>
@@ -132,11 +128,5 @@
         <servlet-name>SourceCode Reader</servlet-name>
         <url-pattern>/sourcecodeStream.html</url-pattern>
     </servlet-mapping>
-
-  <servlet-mapping>
-     <servlet-name>SourceCode Reader</servlet-name>
-     <url-pattern>/sourcecodeStream.html</url-pattern>
-  </servlet-mapping>
-  
  
 </web-app>
