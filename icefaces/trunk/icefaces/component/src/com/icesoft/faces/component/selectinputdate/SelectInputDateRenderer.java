@@ -224,11 +224,14 @@ public class SelectInputDateRenderer
                                           selectInputDate.getAutocomplete());
                 }
                 String tooltip = null;
-                // extract the popupdate format and use it as a tooltip
-                tooltip = getMessageWithParamFromResource(
-                    facesContext, INPUT_TEXT_TITLE,
-                    selectInputDate.getSpecifiedPopupDateFormat());
-                if(tooltip != null) {
+                tooltip = selectInputDate.getTitle();
+                if(tooltip == null || tooltip.length() == 0) {
+                    // extract the popupdate format and use it as a tooltip
+                    tooltip = getMessageWithParamFromResource(
+                        facesContext, INPUT_TEXT_TITLE,
+                        selectInputDate.getSpecifiedPopupDateFormat());
+                }
+                if(tooltip != null && tooltip.length() > 0) {
                     dateText.setAttribute(HTML.TITLE_ATTR, tooltip);
                 }
                 if (selectInputDate.isDisabled()) {
@@ -298,8 +301,11 @@ public class SelectInputDateRenderer
                         OPEN_POPUP_ALT, calendarButton, HTML.ALT_ATTR);
                     addAttributeToElementFromResource(facesContext,
                         OPEN_POPUP_TITLE, calendarButton, HTML.TITLE_ATTR);
-                    FormRenderer.addHiddenField(facesContext, parentForm.getClientId(facesContext)+ ":_idcl");
-                    PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, null);
+                    FormRenderer.addHiddenField(
+                        facesContext,
+                        parentForm.getClientId(facesContext)+ ":_idcl");
+                    PassThruAttributeRenderer.renderAttributes(
+                        facesContext, uiComponent, new String[] {"title"});
                     domContext.stepOver();
                     return ;
                 }
@@ -437,8 +443,8 @@ public class SelectInputDateRenderer
             // assumption we want the first table in tables. there should only be one
             Element table = (Element) tables.item(0);
 
-            PassThruAttributeRenderer
-                    .renderAttributes(facesContext, uiComponent, null);
+            PassThruAttributeRenderer.renderAttributes(
+                facesContext, uiComponent, new String[] {"title"});
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
 
@@ -472,8 +478,8 @@ public class SelectInputDateRenderer
             // assume table is the first child
             Element table = (Element) root.getFirstChild();
 
-            PassThruAttributeRenderer
-                    .renderAttributes(facesContext, uiComponent, null);
+            PassThruAttributeRenderer.renderAttributes(
+                facesContext, uiComponent, new String[] {"title"});
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
             table.appendChild(tr1);

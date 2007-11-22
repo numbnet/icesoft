@@ -45,6 +45,7 @@
 &events-props;
 &pass-thru-dir-props;
 &pass-thru-lang-props;
+&pass-thru-title-props;
 
 <property>
 	<description>
