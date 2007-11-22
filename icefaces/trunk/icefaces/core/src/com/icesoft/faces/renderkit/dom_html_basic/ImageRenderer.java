@@ -64,12 +64,6 @@ public class ImageRenderer extends DomBasicRenderer {
         String srcAttribute = processSrcAttribute(facesContext, uiGraphic);
         root.setAttribute("src", srcAttribute);
 
-        String altAttribute = (String) uiComponent.getAttributes().get("alt");
-        if (altAttribute == null) {
-            altAttribute = "";
-        }
-        root.setAttribute("alt", altAttribute);
-
         String styleClass = String.valueOf(uiComponent.getAttributes().get("styleClass"));
         if (styleClass != null) {
             root.setAttribute("class", styleClass);
@@ -80,6 +74,12 @@ public class ImageRenderer extends DomBasicRenderer {
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, uiComponent, null);
 
+        String altAttribute = (String) uiComponent.getAttributes().get("alt");
+        if (altAttribute == null) {
+            altAttribute = "";
+        }
+        root.setAttribute("alt", altAttribute);
+        
         domContext.stepOver();
 
         domContext.streamWrite(facesContext, uiComponent);

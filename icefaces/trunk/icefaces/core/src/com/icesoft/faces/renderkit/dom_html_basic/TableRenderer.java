@@ -417,6 +417,7 @@ public class TableRenderer extends DomBasicRenderer {
         Element spacerImg = domContext.createElement(HTML.IMG_ELEM);
         spacerImg.setAttribute(HTML.SRC_ATTR, url);
         spacerImg.setAttribute(HTML.BORDER_ATTR,"0");
+        spacerImg.setAttribute(HTML.ALT_ATTR, "");
         spacer.appendChild(spacerImg);
         return spacer;
     }
