@@ -6,32 +6,29 @@
 	     	<ant antfile="build-scripts/build-jboss.xml"/>
 	   </target>
 
-	   <target name="jboss405" description="Build seam-comp-showcase for deployment to JBoss 4.0.5.GA">
-	     	<ant antfile="build-scripts/build-jboss405.xml"/>
-	   </target>
-
-	   <target name="glassfish" description="Build seam-comp-showcase for deployment to Glassfish V2">
+	   <target name="glassfish" description="Build seam-comp-showcase for deployment to Glassfish V2 or V1">
 	     	<ant antfile="build-scripts/build-glassfish.xml"/>
 	   </target>
-
-	   <target name="weblogic92" description="Build seam-comp-showcase for deployment to WebLogic 9.2">
-	     	<ant antfile="build-scripts/build-weblogic92.xml"/>
-	   </target>
 	
-	   <target name="weblogic10" description="Build seam-comp-showcase for deployment to WebLogic 10">
-	     	<ant antfile="build-scripts/build-weblogic10.xml"/>
+	   <target name="weblogic" description="Build seam-comp-showcase for deployment to WebLogic 10 or 9.2">
+	     	<ant antfile="build-scripts/build-weblogic.xml"/>
 	   </target>
 
-	   <target name="websphere61" description="Build seam-comp-showcase for deployment to WebSphere 6.1.0.9">
-	     	<ant antfile="build-scripts/build-websphere61.xml"/>
-	   </target>
-
+	   <target name="tomcat6"  description="Build seam-comp-showcase for deployment to Tomcat 6">
+		     	<ant antfile="build-scripts/build-tomcat6.xml" />
+		   </target>
+	
 	   <target name="tomcat55" description="Build seam-comp-showcase for deployment to Tomcat 5.5">
 	     	<ant antfile="build-scripts/build-tomcat55.xml"/>
 	   </target>
-	   <target name="tomcat6"  description="Build seam-comp-showcase for deployment to Tomcat 6">
-	     	<ant antfile="build-scripts/build-tomcat6.xml" />
-	   </target>
+	
+	   <target name="jboss405" description="Build seam-comp-showcase for deployment to JBoss 4.0.5.GA">
+		     	<ant antfile="build-scripts/build-jboss405.xml"/>
+		   </target>
+	
+	<!--   <target name="websphere61" description="Build seam-comp-showcase for deployment to WebSphere 6.1.0.9">
+		     	<ant antfile="build-scripts/build-websphere61.xml"/>
+		   </target> -->
 	
 	   <target name="copy-libs" description="copy over libraries to project">
 	   	  <ant antfile="build-scripts/build-common.xml" target="freshen"/> 
@@ -47,8 +44,9 @@
 	    	<ant antfile="build-scripts/build-tomcat6.xml" target="clean" />
 	   </target>
 	
+	
 	<!--build-all will build all variations of this application
 	    The jboss server is the most recently released GA jboss AS -->
-	<target name="build-all" depends="jboss, jboss405, glassfish, weblogic92, websphere61, tomcat55, tomcat6" description="Build seam-comp-showcase for all supported application servers"/>
+	<target name="build-all" depends="jboss, jboss405, glassfish, weblogic,  tomcat55, tomcat6" description="Build seam-comp-showcase for all supported application servers"/>
  
 </project>

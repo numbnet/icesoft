@@ -36,7 +36,6 @@
 		<include name="META-INF/context.xml" />
 	</fileset>
 
- 	<target name="tomcat6-settings" description="check settings ">
 	    <echo message="ICEfaces home: ${icefaces.home}"/>
 		<echo message="Seam home: ${jboss.seam.home}"/>
 		<echo message="Jboss server: ${jboss.home}"/>
@@ -47,7 +46,7 @@
 		<echo message="dist dir: ${dist.dir}"/>
 		<echo message="war dir: ${war.dir}"/>
  		<echo message="war.resources: ${war.resources}"/>
-	</target>  
+
 
 
 </project>

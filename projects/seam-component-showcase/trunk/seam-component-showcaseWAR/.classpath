@@ -38,7 +38,6 @@
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jboss-seam-ui.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jbpm-jpdl.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-api-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-facelets.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jsf-impl-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="C:/ossrepoSeam-comp-showcase/trunk/seam-component-showcaseWAR/lib/jta.jar"/>
