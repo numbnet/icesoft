@@ -41,11 +41,11 @@ Once the file is uploaded, information about the file is displayed.
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-<!--  <ice:panelTabSet styleClass="componentPanelTabSetLayout"> -->
+   <ice:panelTabSet styleClass="componentPanelTabSetLayout"> 
             <!--
               Controls to show/hide the table columns
             -->
-  <!--  <ice:panelTab label="fileUploadNew"> -->
+    <ice:panelTab label="fileUploadNew">  
       <ice:panelGroup id="fileUploadIntro" >
             <p> The inputFile component renders a file input HTML element. Users specify 
                 a file to upload either by entering the path to a file directly, or by 
@@ -129,27 +129,27 @@ Once the file is uploaded, information about the file is displayed.
    
 	    </ice:panelGroup> 
 
-   <!--   </ice:panelTab> -->
+     </ice:panelTab>  
 
             <!--
               The bean is responsible for streaming html documentation to
                this placeholder
             -->
-   <!--         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
                 <iframe src="./docs/inputFileDoc.html"
                         class="includeIframe"
                         width="100%"></iframe>
-            </ice:panelTab> -->
+            </ice:panelTab>  
 
             <!--
               Template for component source code.  This servlet loads
               the component example jsp include as an xml stream
             -->
-      <!--      <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
                 <iframe src="./sourcecodeStream.html?path=./inc/components/inputFile.xhtml"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
 
-        </ice:panelTabSet> -->
+        </ice:panelTabSet>  
 </ice:form>
