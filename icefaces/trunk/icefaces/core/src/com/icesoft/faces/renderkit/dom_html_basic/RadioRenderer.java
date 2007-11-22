@@ -105,9 +105,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
             excludes.add("accesskey");
         }
 
-        Object selectItemValue = selectItem.getValue();  
-        
-        if (selectItemValue != null && String.valueOf(selectItemValue).equals(String.valueOf(componentValue))) {
+        if (isValueSelected(facesContext, selectItem, uiSelectOne)) {
             input.setAttribute("checked", "checked");
         } else {
             input.removeAttribute("checked");
@@ -169,13 +167,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         String selectOneClientId = selectOne.getClientId(facesContext);
         String radioClientId = selectOneClientId + ":_" + radioIndex;
 
-        String selectOneValue = null;
-        Object value = selectOne.getValue();
-        if (value != null && value.toString().length() != 0) selectOneValue = value.toString();
-
-        String selectItemValue = null;
-        value = selectItem.getValue();
-        if (value != null && value.toString().length() != 0) selectItemValue = value.toString();
+        String selectItemValue = formatComponentValue(facesContext, selectOne, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();
 
         DOMContext domContext = DOMContext.attachDOMContext(facesContext, uiComponent);
@@ -195,7 +187,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         if (selectItem.isDisabled()) {
             input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
         }
-        if (selectOneValue != null && selectItemValue != null && selectOneValue.equals(selectItemValue)) {
+        if (isValueSelected(facesContext, selectItem, selectOne)) {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
         }
         addJavaScript(facesContext, selectOne, input, excludes);

@@ -304,18 +304,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                                   selectItem.getValue());
         option.setAttribute("value", valueString);
 
-        Object submittedValues[] =
-                getSubmittedSelectedValues(uiComponent);
-        boolean isSelected;
-        if (submittedValues != null) {
-            isSelected = isSelected(valueString, submittedValues);
-        } else {
-            Object selectedValues =
-                    getCurrentSelectedValues(uiComponent);
-                isSelected = isSelected(selectItem.getValue(), selectedValues);
-        }
-
-        if (isSelected) {
+        if (isValueSelected(facesContext, selectItem, uiComponent)) {
             option.setAttribute("selected", "selected");
         }
         if (selectItem.isDisabled()) {
@@ -325,6 +314,16 @@ public class MenuRenderer extends DomBasicInputRenderer {
         Document doc = domContext.getDocument();
         Text labelNode = doc.createTextNode(selectItem.getLabel());
         option.appendChild(labelNode);
+    }
+
+    protected boolean isValueSelected(FacesContext facesContext, SelectItem selectItem, UIComponent uiComponent) {
+        Object submittedValues[] = getSubmittedSelectedValues(uiComponent);
+        if (submittedValues != null) {
+            String valueString = formatComponentValue(facesContext, uiComponent, selectItem.getValue());
+            return isSelected(valueString, submittedValues);
+        }
+        Object selectedValues = getCurrentSelectedValues(uiComponent);
+        return isSelected(selectItem.getValue(), selectedValues, facesContext, uiComponent);
     }
 
     void renderSelect(FacesContext facesContext, UIComponent uiComponent)
@@ -451,18 +450,21 @@ public class MenuRenderer extends DomBasicInputRenderer {
         }
     }
 
-    boolean isSelected(Object sentinel, Object selectedValues) {
+    boolean isSelected(Object sentinel, Object selectedValues, FacesContext facesContext, UIComponent uiComponent) {
         boolean isSelected = false;
          if (selectedValues == null || sentinel == null) {
             return isSelected;
         }
+        String formattedSelectedValue;
+        String formattedSentinel = formatComponentValue(facesContext, uiComponent, sentinel);
         int length = Array.getLength(selectedValues);
         for (int index = 0; index < length; index++) {
             Object nextSelectedValue = Array.get(selectedValues, index);
+            formattedSelectedValue = formatComponentValue(facesContext, uiComponent, nextSelectedValue);
             if (nextSelectedValue == null && sentinel == null) {
                 isSelected = true;
                 break;
-            } else if (sentinel.equals(nextSelectedValue)) {
+            } else if (nextSelectedValue != null && nextSelectedValue.equals(sentinel)) {
                 isSelected = true;
                 break;
             }else if (sentinel instanceof String) {
@@ -470,6 +472,13 @@ public class MenuRenderer extends DomBasicInputRenderer {
 	            	isSelected = true;
 	            	break;
             	}
+                if (formattedSelectedValue.equals(sentinel)) {
+                    isSelected = true;
+                    break;
+                }
+            } else if (formattedSelectedValue.equals(formattedSentinel)) {
+                isSelected = true;
+                break;
             }
         }
         return isSelected;

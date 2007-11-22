@@ -238,18 +238,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         inputElement.setAttribute("value", formattedOptionValue);
         inputElement.setAttribute("type", "checkbox");
 
-        boolean isSelected;
-        Object submittedValues[] =
-                getSubmittedSelectedValues(uiComponent);
-        if (submittedValues != null) {
-            isSelected = isSelected(formattedOptionValue, submittedValues);
-        } else {
-            Object selectedValues =
-                    getCurrentSelectedValues(uiComponent);
-            isSelected = isSelected(selectItem.getValue(), selectedValues);
-        }
-
-        if (isSelected) {
+        if (isValueSelected(facesContext, selectItem, uiComponent)) {
             inputElement.setAttribute("checked", Boolean.TRUE.toString());
         }
         if (disabled) {
@@ -303,15 +292,6 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         String selectItemValue = formatComponentValue(facesContext, selectMany, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();
 
-        boolean isChecked;
-        Object submittedValues[] = getSubmittedSelectedValues(selectMany);
-        if (submittedValues != null) {
-            isChecked = isSelected(selectItemValue, submittedValues);
-        } else {
-            Object selectedValues = getCurrentSelectedValues(selectMany);
-            isChecked = isSelected(selectItem.getValue(), selectedValues);
-        }
-
         DOMContext domContext = DOMContext.attachDOMContext(facesContext, uiComponent);
         if (domContext.isInitialized()) {
             DOMContext.removeChildren(domContext.getRootNode());
@@ -329,7 +309,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (selectItem.isDisabled()) {
             input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
         }
-        if (isChecked) {
+        if (isValueSelected(facesContext, selectItem, selectMany)) {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
         }
         addJavaScript(facesContext, selectMany, input, excludes);
