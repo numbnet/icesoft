@@ -34,6 +34,10 @@
 package com.icesoft.faces.component.menubar;
 
 import javax.faces.el.ValueBinding;
+import javax.faces.el.MethodBinding;
+import javax.faces.event.ActionListener;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import java.util.List;
 
 /**
@@ -90,5 +94,67 @@ public class MenuItems extends MenuItemBase {
     public void setValue(String value) {
 
         this.value = value;
+    }
+    
+    public List prepareChildren() {
+        List children = (List) getValue();
+        if(children != null && children.size() > 0) {
+            // extract the actionListener and action methodBindings from the MenuItems
+            // then attach them to the child MenuItem objects
+            ActionListener[] als = getActionListeners();
+            MethodBinding almb = getActionListener();
+            MethodBinding amb = getAction();
+            setParentsRecursive(this, children, als, almb, amb);
+        }
+        return children;
+    }
+    
+    private void setParentsRecursive(UIComponent parent, List children,
+                                     ActionListener[] als,
+                                     MethodBinding almb, MethodBinding amb) {
+        for (int i = 0; i < children.size(); i++) {
+            UIComponent nextChild = (UIComponent) children.get(i);
+            if( !(nextChild instanceof MenuItemBase) ) {
+                continue;
+            }
+            nextChild.setParent(parent);
+
+            // here's where we attach the action and actionlistener methodBindings to the MenuItem
+            MenuItemBase nextChildMenuItemBase = (MenuItemBase) nextChild;
+            if (null != als) {
+                for(int j = 0; j < als.length; j++) {
+                    nextChildMenuItemBase.removeActionListener(als[j]);
+                    nextChildMenuItemBase.addActionListener(als[j]);
+                }
+            }
+            if (null != almb) {
+                nextChildMenuItemBase.setActionListener(almb);
+            }
+            if (null != amb) {
+                nextChildMenuItemBase.setAction(amb);
+            }
+            
+            List grandChildren = nextChild.getChildren();
+            setParentsRecursive(nextChild, grandChildren, als, almb, amb);
+        }
+    }
+    
+    public void processDecodes(FacesContext context) {
+        if (context == null) {
+            throw new NullPointerException("context");
+        }
+        if (!isRendered()) {
+            return;
+        }
+        
+        List list = (List) getValue();
+        if(list != null) {
+            for (int j = 0; j < list.size(); j++) {
+                MenuItem item = (MenuItem) list.get(j);
+                item.processDecodes(context);
+            }
+        }
+        
+        super.processDecodes(context);
     }
 }

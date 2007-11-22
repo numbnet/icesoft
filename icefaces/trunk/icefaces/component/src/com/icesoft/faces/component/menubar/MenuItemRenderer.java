@@ -60,6 +60,7 @@ import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
 
 
 public class MenuItemRenderer extends MenuItemRendererBase {
@@ -195,7 +196,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             masterDiv = (Element) masterDiv.getParentNode();
         }
 
-        renderAnchor(facesContext, domContext, 0, (MenuItem) uiComponent,
+        renderAnchor(facesContext, domContext, (MenuItem) uiComponent,
                      topLevelDiv, menuComponent, vertical);
 
         if ((uiComponent.getChildCount() > 0) &&
@@ -412,6 +413,11 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                                          MenuBar menuComponent,
                                          UIComponent uiComponent,
                                          boolean vertical, Element masterDiv) {
+//StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+//System.out.println("renderChildrenRecursive()  "+ste.length+"  called in: " + this);
+//System.out.println("renderChildrenRecursive()  "+ste.length+"    uiComponent: " + uiComponent);
+//if(uiComponent instanceof MenuItem)
+//  System.out.println("renderChildrenRecursive()  "+ste.length+"    Name: " + ((MenuItem)uiComponent).getValue());
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // create the div that will hold all the sub menu items
@@ -426,54 +432,34 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         masterDiv.appendChild(submenuDiv);
         // check if this menuItem is disabled, if it is lets disable the  children
         // render each menuItem in this submenu
-        boolean disabled =((MenuItem)uiComponent).isDisabled();
-        for (int childIndex = 0; childIndex < uiComponent.getChildCount();
-             childIndex++) {
+        boolean disabled = false;
+        Boolean disObj = (Boolean) uiComponent.getAttributes().get("disabled");
+        if(disObj != null && disObj.booleanValue())
+            disabled = true;
+        for (int childIndex = 0; childIndex < uiComponent.getChildCount(); childIndex++) {
             UIComponent nextSubMenuItem =
-                    (UIComponent) uiComponent.getChildren().get(childIndex);
-            if (!(nextSubMenuItem instanceof UIParameter)) {
-                Element subMenuItemDiv =
-                        domContext.createElement(HTML.DIV_ELEM);
-                submenuDiv.appendChild(subMenuItemDiv);
-                if (nextSubMenuItem instanceof MenuItemSeparator) {
-                    renderSeparatorDiv(domContext, subMenuItemDiv, (MenuItemSeparator)nextSubMenuItem);
-                    continue;
-                }
-                String qualifiedName = ((MenuItem) nextSubMenuItem).getStyleClass();
-                subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
-                String subMenuItemClientId =
-                        nextSubMenuItem.getClientId(facesContext);
-                subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
-                if (nextSubMenuItem.getChildCount() > 0 &&
-                    ((MenuItem) nextSubMenuItem).isChildrenMenuItem()) {
-                    subMenuItemDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
-                            qualifiedName, qualifiedName, PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
-                    subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                                                expand(subMenuDivId,
-                                                       subMenuItemClientId +
-                                                       SUB, KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);");
-                } else {
-                    subMenuItemDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
-                            qualifiedName, qualifiedName, PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
-                    subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
-
-                }
-                subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
-                subMenuItemDiv.setAttribute(HTML.ID_ATTR,
-                                            nextSubMenuItem.getClientId(
-                                                    facesContext));
-                // if parent is disabled apply the disabled attribute value of the parent menuItem to this submenuItem
-                if (disabled) {
-                    ((MenuItem) nextSubMenuItem).setDisabled(disabled);
-                }
-                // add a command link if we need one
-                if (nextSubMenuItem instanceof MenuItem) {
-                    renderAnchor(facesContext, domContext, childIndex,
-                                 (MenuItem) nextSubMenuItem, subMenuItemDiv,
-                                 menuComponent, vertical);
-                }
+                (UIComponent) uiComponent.getChildren().get(childIndex);
+//System.out.println("renderChildrenRecursive()  "+ste.length+"      Render  childIndex: " + childIndex + "  child: " + nextSubMenuItem);
+            if(nextSubMenuItem instanceof MenuItem) {
+//System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItem  : " + ((MenuItem)nextSubMenuItem).getValue());
+                renderSubMenuItem(
+                    facesContext, domContext,
+                    (MenuItem) nextSubMenuItem, menuComponent,
+                    disabled, vertical,
+                    submenuDiv, subMenuDivId);
+            }
+            else if(nextSubMenuItem instanceof MenuItems) {
+//System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItems");
+                renderSubMenuItems(
+                    facesContext, domContext,
+                    (MenuItems) nextSubMenuItem, menuComponent,
+                    disabled, vertical,
+                    submenuDiv, subMenuDivId);
+            }
+            else if(nextSubMenuItem instanceof MenuItemSeparator) {
+//System.out.println("renderChildrenRecursive()  "+ste.length+"              MenuItemSeparator");
+                renderSubMenuItemSeparator(
+                    domContext, (MenuItemSeparator) nextSubMenuItem, submenuDiv);
             }
         }
 
@@ -481,26 +467,122 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         // check if parent is disabled , if it is the child items should also be disabled.
         // we should not render child MenuItems of a disabled menuItem
 
-        for (int childIndex = 0; childIndex < uiComponent.getChildCount();
-             childIndex++) {
+        for (int childIndex = 0; childIndex < uiComponent.getChildCount(); childIndex++) {
             UIComponent nextSubMenuItem =
-                    (UIComponent) uiComponent.getChildren().get(childIndex);
-            if (nextSubMenuItem.getChildCount() > 0){
-                renderChildrenRecursive(facesContext, menuComponent,
-                                        nextSubMenuItem, vertical, masterDiv);
+                (UIComponent) uiComponent.getChildren().get(childIndex);
+//System.out.println("renderChildrenRecursive()  "+ste.length+"      Recurse  childIndex: " + childIndex + "  child: " + nextSubMenuItem);
+            if(nextSubMenuItem instanceof MenuItem) {
+                MenuItem mi = (MenuItem) nextSubMenuItem;
+//System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItem  : " + mi.getValue());
+                if(mi.isChildrenMenuItem()) {
+                    renderChildrenRecursive(
+                        facesContext, menuComponent, mi,
+                        vertical, masterDiv);
+                }
+            }
+            else if(nextSubMenuItem instanceof MenuItems) {
+//System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItems");
+                MenuItems mis = (MenuItems) nextSubMenuItem;
+                List kids = mis.prepareChildren();
+                if(kids != null) {
+                    for(int kidIndex = 0; kidIndex < kids.size(); kidIndex++) {
+                        UIComponent nextKid = (UIComponent) kids.get(kidIndex);
+//System.out.println("renderChildrenRecursive()  "+ste.length+"      Recurse  kidIndex: " + kidIndex + "  kid: " + nextKid);
+                        if(nextKid instanceof MenuItem) {
+                            MenuItem mi = (MenuItem) nextKid;
+//System.out.println("renderChildrenRecursive()  "+ste.length+"               MenuItem  : " + mi.getValue());
+                            if(mi.isChildrenMenuItem()) {
+                                renderChildrenRecursive(
+                                    facesContext, menuComponent, mi,
+                                    vertical, masterDiv);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
+    
+    private void renderSubMenuItemSeparator(DOMContext domContext, MenuItemSeparator nextSubMenuItem, Element submenuDiv) {
+        Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
+        submenuDiv.appendChild(subMenuItemDiv);
+        renderSeparatorDiv(domContext, subMenuItemDiv, nextSubMenuItem);
+    }
+    
+    private void renderSubMenuItems(
+        FacesContext facesContext, DOMContext domContext,
+        MenuItems nextSubMenuItems, MenuBar menuComponent,
+        boolean disabled, boolean vertical,
+        Element submenuDiv, String subMenuDivId)
+    {
+        List children = nextSubMenuItems.prepareChildren();
+        if(children != null) {
+            for(int i = 0; i < children.size(); i++) {
+                MenuItemBase mib = (MenuItemBase) children.get(i);
+                if(mib instanceof MenuItem) {
+                    renderSubMenuItem(
+                        facesContext, domContext,
+                        (MenuItem) mib, menuComponent,
+                        disabled, vertical,
+                        submenuDiv, subMenuDivId);
+                }
+                else if(mib instanceof MenuItemSeparator) {
+                    renderSubMenuItemSeparator(
+                        domContext, (MenuItemSeparator) mib, submenuDiv);
+                }
+            }
+        }
+    }
+    
+    private void renderSubMenuItem(
+        FacesContext facesContext, DOMContext domContext,
+        MenuItem nextSubMenuItem, MenuBar menuComponent,
+        boolean disabled, boolean vertical,
+        Element submenuDiv, String subMenuDivId)
+    {
+        Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
+        submenuDiv.appendChild(subMenuItemDiv);
+        String qualifiedName = nextSubMenuItem.getStyleClass();
+        subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
+        String subMenuItemClientId = nextSubMenuItem.getClientId(facesContext);
+        subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
+        if (nextSubMenuItem.isChildrenMenuItem()) {
+            subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
+                CoreUtils.addPortletStyleClassToQualifiedClass(
+                    qualifiedName, qualifiedName,
+                    PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
+            subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
+                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+                expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
+                "Ice.Menu.appendHoverClasses(this);");
+        } else {
+            subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
+                CoreUtils.addPortletStyleClassToQualifiedClass(
+                    qualifiedName, qualifiedName,
+                    PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
+            subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
+                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
+        }
+        subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR,
+            "Ice.Menu.removeHoverClasses(this);");
+        // if parent is disabled apply the disabled attribute value of the parent menuItem to this submenuItem
+        if (disabled) {
+            nextSubMenuItem.setDisabled(disabled);
+        }
+        // add a command link if we need one
+        renderAnchor(facesContext, domContext,
+            nextSubMenuItem, subMenuItemDiv,
+            menuComponent, vertical);
+    }
+    
     /**
      * @param facesContext
      * @param domContext
-     * @param childIndex
      * @param nextSubMenuItem
      * @param subMenuItemDiv
      */
     private void renderAnchor(FacesContext facesContext, DOMContext domContext,
-                              int childIndex, MenuItem nextSubMenuItem,
+                              MenuItem nextSubMenuItem,
                               Element subMenuItemDiv,
                               MenuBar menuComponent, boolean vertical) {
 

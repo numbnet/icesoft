@@ -46,6 +46,7 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
+import java.util.Iterator;
 
 
 /**
@@ -250,24 +251,17 @@ public class MenuBar extends UICommand implements NamingContainer {
             return;
         }
 
-        decodeRecursive(this, context);
+        Iterator kids = getFacetsAndChildren();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            kid.processDecodes(context);
+        }
+        
         try {
             decode(context);
         } catch (RuntimeException e) {
             context.renderResponse();
             throw e;
-        }
-    }
-
-    /**
-     * @param component
-     * @param context
-     */
-    private void decodeRecursive(UIComponent component, FacesContext context) {
-        for (int i = 0; i < component.getChildCount(); i++) {
-            UIComponent next = (UIComponent) component.getChildren().get(i);
-            next.processDecodes(context);
-            decodeRecursive(next, context);
         }
     }
 

@@ -286,25 +286,14 @@ public class MenuItem extends MenuItemBase {
         for (int i = 0; i < children.size(); i++) {
             UIComponent nextChild = (UIComponent) children.get(i);
             if (nextChild instanceof UIParameter) {
+                UIParameter templateParam = (UIParameter) nextChild;
                 UIParameter param = new UIParameter();
-                param.setName(((UIParameter) nextChild).getName());
-                param.setValue(((UIParameter) nextChild).getValue());
+                param.setName(templateParam.getName());
+                param.setValue(templateParam.getValue());
                 link.getChildren().add(param);
             }
         }
     }
-
-    boolean isChildrenMenuItem() {
-        Iterator children = getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent child = (UIComponent) children.next();
-            if (child instanceof MenuItem) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     /**
      * <p>Set the value of the <code>enabledOnUserRole</code> property.</p>

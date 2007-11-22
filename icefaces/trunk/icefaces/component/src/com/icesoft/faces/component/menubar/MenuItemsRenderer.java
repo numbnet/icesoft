@@ -33,13 +33,10 @@
 
 package com.icesoft.faces.component.menubar;
 
-import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
-import javax.faces.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -51,56 +48,21 @@ public class MenuItemsRenderer extends DomBasicRenderer {
 
     public void encodeChildren(FacesContext context, UIComponent component)
             throws IOException {
+        if(!component.isRendered())
+            return;
         MenuItems menuItems = (MenuItems) component;
-        List children = (List) menuItems.getValue();
-        // extract the actionListener and action methodBindings from the MenuItems
-        // then attach them to the child MenuItem objects
-        ActionListener[] als = menuItems.getActionListeners();
-        MethodBinding almb = menuItems.getActionListener();
-        MethodBinding amb = menuItems.getAction();
-        setParentsRecursive(component, children, als, almb, amb);
+        List children = menuItems.prepareChildren();
         renderRecursive(context, children);
     }
 
     private void renderRecursive(FacesContext context, List children)
             throws IOException {
+        if(children == null)
+            return;
         for (int i = 0; i < children.size(); i++) {
             UIComponent nextChildMenuNode = (UIComponent) children.get(i);
-            encodeParentAndChildren(context, nextChildMenuNode);
-        }
-    }
-
-    private void setParentsRecursive(UIComponent parent, List children,
-                                     ActionListener[] als,
-                                     MethodBinding almb, MethodBinding amb) {
-        for (int i = 0; i < children.size(); i++) {
-            UIComponent nextChild = null;
-            if (!((nextChild =
-                    (UIComponent) children.get(i)) instanceof MenuItemBase)) {
-                throw new InvalidComponentTypeException(
-                        "MenuItemsRenderer expects MenuItemBase children");
-            }
-            nextChild.setParent(parent);
-
-            // here's where we attach the action and actionlistener methodBindings to the MenuItem
-            if( nextChild instanceof MenuItemBase ) {
-                MenuItemBase nextChildMenuItemBase = (MenuItemBase) nextChild;
-                if (null != als) {
-                    for(int j = 0; j < als.length; j++) {
-                        nextChildMenuItemBase.removeActionListener(als[j]);
-                        nextChildMenuItemBase.addActionListener(als[j]);
-                    }
-                }
-                if (null != almb) {
-                    nextChildMenuItemBase.setActionListener(almb);
-                }
-                if (null != amb) {
-                    nextChildMenuItemBase.setAction(amb);
-                }
-            }
-
-            List grandChildren = nextChild.getChildren();
-            setParentsRecursive(nextChild, grandChildren, als, almb, amb);
+            if(nextChildMenuNode.isRendered())
+                encodeParentAndChildren(context, nextChildMenuNode);
         }
     }
 }

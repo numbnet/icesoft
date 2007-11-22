@@ -42,6 +42,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import java.util.List;
+import java.util.Iterator;
 
 
 /**
@@ -66,52 +67,17 @@ public abstract class MenuItemBase extends UICommand
             return;
         }
 
-        decodeRecursive(this, context);
+        Iterator kids = getFacetsAndChildren();
+        while (kids.hasNext()) {
+            UIComponent kid = (UIComponent) kids.next();
+            kid.processDecodes(context);
+        }
+        
         try {
             decode(context);
         } catch (RuntimeException e) {
             context.renderResponse();
             throw e;
-        }
-    }
-
-    /**
-     * @param component
-     * @param context
-     */
-    private void decodeRecursive(UIComponent component, FacesContext context) {
-        if (component instanceof MenuItems) {
-            List list = (List) ((MenuItems) component).getValue();
-
-            for (int j = 0; j < list.size(); j++) {
-                MenuItem item = (MenuItem) list.get(j);
-                item.processDecodes(context);
-                decodeRecursiveItems(item, context);
-            }
-
-        }
-
-        for (int i = 0; i < component.getChildCount(); i++) {
-            UIComponent next = (UIComponent) component.getChildren().get(i);
-            if (next instanceof HtmlCommandLink) {
-                next.processDecodes(context);
-            }
-            decodeRecursive(next, context);
-        }
-    }
-
-    /**
-     * @param component
-     * @param context
-     */
-    private void decodeRecursiveItems(UIComponent component,
-                                      FacesContext context) {
-        for (int i = 0; i < component.getChildCount(); i++) {
-            UIComponent next = (UIComponent) component.getChildren().get(i);
-
-            next.processDecodes(context);
-
-            decodeRecursiveItems(next, context);
         }
     }
 
@@ -130,6 +96,23 @@ public abstract class MenuItemBase extends UICommand
         return;
 
     }
-
+    
+    boolean isChildrenMenuItem() {
+        if(getChildCount() == 0)
+            return false;
+        Iterator children = getChildren().iterator();
+        while (children.hasNext()) {
+            UIComponent child = (UIComponent) children.next();
+            if (child instanceof MenuItem) {
+                return true;
+            }
+            else if(child instanceof MenuItems) {
+                List menuItemsChildren = (List) child.getAttributes().get("value");
+                if(menuItemsChildren != null && menuItemsChildren.size() > 0)
+                    return true;
+            }
+        }
+        return false;
+    }
 
 }
