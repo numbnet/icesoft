@@ -131,11 +131,6 @@
         <servlet-name>SourceCode Reader</servlet-name>
         <url-pattern>/sourcecodeStream.html</url-pattern>
     </servlet-mapping>
-
-  <servlet-mapping>
-     <servlet-name>SourceCode Reader</servlet-name>
-     <url-pattern>/sourcecodeStream.html</url-pattern>
-  </servlet-mapping>
   
  
   <!-- <security-constraint> 
