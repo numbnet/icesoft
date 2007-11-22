@@ -36,6 +36,8 @@ package com.icesoft.faces.component.ext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import com.icesoft.faces.component.ext.taglib.Util;
+
 // We do not need this class, but Sun Studio Creator requires it.
 
 public class UIColumn extends javax.faces.component.UIColumn {
@@ -71,24 +73,36 @@ public class UIColumn extends javax.faces.component.UIColumn {
         this.id = id;
     }
 
-    // rendered
-    private String rendered = null;
 
-    public String getRendered() {
-        if (this.rendered != null) {
-            return this.rendered;
-        }
-        ValueBinding _vb = getValueBinding("rendered");
-        if (_vb != null) {
-            return (String) _vb.getValue(getFacesContext());
-        }
-        return null;
+    private String renderedOnUserRole = null;
+    /**
+     * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
     }
 
-    public void setRendered(String rendered) {
-        this.rendered = rendered;
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public String getRenderedOnUserRole() {
+        if (renderedOnUserRole != null) {
+            return renderedOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-
+    
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    }
+    
     /**
      * <p>Restore the state of this component.</p>
      */
@@ -97,7 +111,7 @@ public class UIColumn extends javax.faces.component.UIColumn {
         super.restoreState(_context, _values[0]);
         this.binding = (String) _values[1];
         this.id = (String) _values[2];
-        this.rendered = (String) _values[3];
+        this.renderedOnUserRole = (String) _values[3];
     }
 
     /**
@@ -108,7 +122,7 @@ public class UIColumn extends javax.faces.component.UIColumn {
         _values[0] = super.saveState(_context);
         _values[1] = this.binding;
         _values[2] = this.id;
-        _values[3] = this.rendered;
+        _values[3] = this.renderedOnUserRole;
         return _values;
     }
 
