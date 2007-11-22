@@ -128,11 +128,8 @@ public class ReceiveSendUpdates implements Server {
                     input.setValueBinding(REQUIRED, replacementBinding);
                     alteredComponents.put(input, valueBinding);
                 } else {
-                    //the 'hadMessage' property is set by the processValidators()
-                    //method of the input component
-                    if (input.isRequired() && input != componentToAvoid &&
-                            input.getAttributes().get(input.getClientId(facesContext)
-                                    + "hadMessage") == null) {
+                    if (input.isRequired() && input != componentToAvoid && 
+                            input.isValid()) {
                         input.setRequired(false);
                         alteredComponents.put(input, null);
                     }
