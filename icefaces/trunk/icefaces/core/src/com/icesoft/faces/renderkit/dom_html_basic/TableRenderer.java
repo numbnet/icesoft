@@ -68,7 +68,7 @@ public class TableRenderer extends DomBasicRenderer {
             root = domContext.createRootElement("table");
             setRootElementId(facesContext, root, uiComponent);
             PassThruAttributeRenderer.renderAttributes(
-                    facesContext, uiComponent, null);
+                    facesContext, uiComponent, new String[] { "rows" });
         }
         Element root = (Element) domContext.getRootNode();
         DOMContext.removeChildren(root);
