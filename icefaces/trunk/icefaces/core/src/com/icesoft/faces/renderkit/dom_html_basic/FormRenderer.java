@@ -106,7 +106,7 @@ public class FormRenderer extends DomBasicRenderer {
             //redirect form submits
             String redirectScript = "'" + formClientId + "'.asExtendedElement().captureAndRedirectSubmit();";
             Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
-            scriptElement.setAttribute("language", "javascript");
+            scriptElement.setAttribute("type", "text/javascript");
             scriptElement.appendChild(domContext.createTextNode(redirectScript));
             root.appendChild(scriptElement);
 
@@ -178,8 +178,8 @@ public class FormRenderer extends DomBasicRenderer {
         }
 
 
-        String contextClass = facesContext.getClass().toString();
-        root.setAttribute("context_type", contextClass);
+        //String contextClass = facesContext.getClass().toString();
+        //root.setAttribute("context_type", contextClass);
 
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, uiComponent, null);
