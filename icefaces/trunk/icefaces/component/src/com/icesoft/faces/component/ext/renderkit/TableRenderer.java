@@ -283,7 +283,7 @@ public class TableRenderer
         if (width != null) {
             th.setAttribute("style", "width:" + width + ";overflow:hidden;");
         }
-        th.setAttribute("colgroup", "col");
+        //th.setAttribute("colgroup", "col");
         UIComponent nextFacet = getFacetByName(nextColumn, facet);
 
         if (nextFacet != null) {
@@ -319,7 +319,7 @@ public class TableRenderer
                 if (width != null) {
                     th.setAttribute("style", "width:" + width + ";");
                 }
-                th.setAttribute("colgroup", "col");
+                //th.setAttribute("colgroup", "col");
                 domContext.setCursorParent(th);
                 domContext.streamWrite(facesContext, uiComponent,
                                        domContext.getRootNode(), th);

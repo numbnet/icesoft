@@ -200,7 +200,7 @@ public class TableRenderer extends DomBasicRenderer {
                     th.setAttribute("style",
                                     "width:" + width + ";overflow:hidden;");
                 }
-                th.setAttribute("colgroup", "col");
+                //th.setAttribute("colgroup", "col");
                 UIComponent nextFacet = getFacetByName(nextColumn, facet);
                 if (nextFacet != null) {
                     resetFacetChildId(nextFacet);
