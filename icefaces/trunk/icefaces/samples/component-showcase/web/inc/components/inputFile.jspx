@@ -53,7 +53,8 @@ Once the file is uploaded, information about the file is displayed.
                                     style="text-align:left">
                         <ice:inputFile id="inputFileName"
                                 progressListener="#{inputFile.progress}"
-                                actionListener="#{inputFile.action}"/>
+                                actionListener="#{inputFile.action}"
+                                file="#{inputFile.savedFile}"/>
                         <ice:outputProgress id="pro"
                                             value="#{inputFile.percent}"/>
                         <ice:outputText id="fileName"

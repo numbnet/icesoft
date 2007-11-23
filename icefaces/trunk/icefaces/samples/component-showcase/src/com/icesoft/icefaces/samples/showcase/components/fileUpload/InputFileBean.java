@@ -53,6 +53,7 @@ public class InputFileBean  implements Renderable {
 
     private int percent = -1;
     private File file = null;
+    private File savedFile = null;
 
     /**
      * Renderable Interface
@@ -120,6 +121,14 @@ public class InputFileBean  implements Renderable {
 
     public File getFile() {
         return file;
+    }
+    
+    public void setSavedFile(File file) {
+        this.savedFile = file;
+    }
+
+    public File getSavedFile() {
+        return savedFile;
     }
 
     public void action(ActionEvent event) {
