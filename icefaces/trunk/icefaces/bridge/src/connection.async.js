@@ -34,7 +34,7 @@
 [ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Command ].as(function(This, Connection, Ajax, Heartbeat, Command) {
 
     This.AsyncConnection = Object.subclass({
-        initialize: function(logger, configuration, defaultQuery, commandDispatcher) {
+        initialize: function(logger, sessionID, viewID, configuration, defaultQuery, commandDispatcher) {
             this.logger = logger.child('async-connection');
             this.sendChannel = new Ajax.Client(this.logger.child('ui'));
             this.receiveChannel = new Ajax.Client(this.logger.child('blocking'));
@@ -86,14 +86,18 @@
 
             //read/create cookie that contains the updated views
             try {
-                this.updatedViews = Ice.Cookie.lookup('updates');
+                this.updatedViews = Ice.Cookie.lookup(sessionID + '-updates');
             } catch (e) {
-                this.updatedViews = new Ice.Cookie('updates', '');
+                this.updatedViews = new Ice.Cookie(sessionID + '-updates', '');
             }
 
             //register command that handles the updated-views message
             commandDispatcher.register('updated-views', function(message) {
-                this.updatedViews.saveValue(message.firstChild.data);
+                $enumerate(message.childNodes).each(function(views) {
+                    var sessionID = views.getAttribute('for');
+                    var viewsIDs = views.firstChild.data;
+                    Ice.Cookie.lookup(sessionID + '-updates').saveValue(viewsIDs);
+                })
             }.bind(this));
 
 
@@ -134,7 +138,7 @@
                         commandDispatcher.register('pong', function() {
                             ping.pong();
                         });
-                        this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery().asURIEncodedString(), Connection.FormPost);
+                        this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery.asURIEncodedString(), Connection.FormPost);
                     }.bind(this));
 
                     this.heartbeat.onLostPongs(this.connectionDownListeners.broadcaster(), heartbeatRetries);
@@ -153,13 +157,13 @@
             this.updatesListenerProcess = function() {
                 try {
                     var views = this.updatedViews.loadValue().split(' ');
-                    if (views.intersect(viewIdentifiers()).isNotEmpty()) {
-                        this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                    if (views.include(viewID)) {
+                        this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
                             Connection.FormPost(request);
                             request.on(Connection.Receive, this.receiveCallback);
                             request.on(Connection.Receive, Connection.Close);
                         }.bind(this));
-                        this.updatedViews.saveValue(views.complement(viewIdentifiers()).join(' '));
+                        this.updatedViews.saveValue(views.complement([ viewID ]).join(' '));
                     }
                 } catch (e) {
                     this.logger.warn('failed to listen for updates', e);
@@ -173,7 +177,12 @@
             this.logger.debug("closing previous connection...");
             this.listener.close();
             this.logger.debug("connect...");
-            this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, this.defaultQuery().asURIEncodedString(), function(request) {
+            var compositeQuery = Ice.Parameter.Query.create(function(query) {
+                window.sessions.each(function(sessionID) {
+                    query.add('ice.session', sessionID);
+                });
+            });
+            this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, compositeQuery.asURIEncodedString(), function(request) {
                 this.sendXWindowCookie(request);
                 Connection.FormPost(request);
                 request.on(Connection.BadResponse, this.badResponseCallback);
@@ -187,7 +196,7 @@
         },
 
         send: function(query) {
-            var compoundQuery = query.addQuery(this.defaultQuery());
+            var compoundQuery = query.addQuery(this.defaultQuery);
             this.logger.debug('send > ' + compoundQuery.asString());
 
             this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
@@ -225,7 +234,7 @@
 
         sendDisposeViews: function() {
             try {
-                this.sendChannel.postSynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                this.sendChannel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
                     request.on(Connection.Receive, Connection.Close);
                 });

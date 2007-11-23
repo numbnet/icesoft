@@ -54,7 +54,7 @@ public class AsyncServerDetector implements Server {
                 }
             }
         } else {
-            server = new SendUpdatedViews(synchronouslyUpdatedViews, allUpdatedViews);
+            server = new SendUpdatedViews(icefacesID, synchronouslyUpdatedViews, allUpdatedViews);
         }
     }
 

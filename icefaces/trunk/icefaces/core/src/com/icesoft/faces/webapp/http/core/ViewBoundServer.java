@@ -28,12 +28,12 @@ public class ViewBoundServer implements Server {
     }
 
     public void service(Request request) throws Exception {
-        String viewNumber = request.getParameter("ice.view.active");
+        String viewNumber = request.getParameter("ice.view");
         if (viewNumber == null) {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {
                     response.setStatus(500);
-                    response.writeBody().write("Cannot match view instance. 'ice.view.active' parameter is missing.".getBytes());
+                    response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
                 }
             });
         } else {

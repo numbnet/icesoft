@@ -2,7 +2,6 @@ package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
-import com.icesoft.faces.webapp.command.Macro;
 import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -10,10 +9,6 @@ import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 
 public class SendUpdates implements Server {
@@ -41,27 +36,13 @@ public class SendUpdates implements Server {
         }
 
         public void writeTo(Writer writer) throws IOException {
-            HashSet viewIdentifierSet = new HashSet(Arrays.asList(request.getParameterAsStrings("ice.view.all")));
-            Iterator viewIdentifiers = viewIdentifierSet.iterator();
-            ArrayList commandList = new ArrayList(viewIdentifierSet.size());
-            while (viewIdentifiers.hasNext()) {
-                Object viewIdentifier = viewIdentifiers.next();
-                if (commandQueues.containsKey(viewIdentifier)) {
-                    CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
-                    commandList.add(queue.take());
-                }
-            }
-
-            final Command command;
-            if (commandList.size() > 1) {
-                Command[] commands = (Command[]) commandList.toArray(new Command[commandList.size()]);
-                command = new Macro(commands);
-            } else if (commandList.size() == 1) {
-                command = (Command) commandList.get(0);
+            String viewIdentifier = request.getParameter("ice.view");
+            if (commandQueues.containsKey(viewIdentifier)) {
+                CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
+                queue.take().serializeTo(writer);
             } else {
-                command = NOOP;
+                NOOP.serializeTo(writer);
             }
-            command.serializeTo(writer);
         }
     }
 }

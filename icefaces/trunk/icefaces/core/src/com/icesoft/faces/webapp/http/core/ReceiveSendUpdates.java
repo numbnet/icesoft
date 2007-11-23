@@ -13,11 +13,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 public class ReceiveSendUpdates implements Server {
@@ -33,8 +31,7 @@ public class ReceiveSendUpdates implements Server {
     }
 
     public void service(final Request request) throws Exception {
-        List viewIdentifiers = Arrays.asList(request.getParameterAsStrings("ice.view.all"));
-        synchronouslyUpdatedViews.addAll(viewIdentifiers);
+        synchronouslyUpdatedViews.add(request.getParameter("ice.view"));
 
         FacesContext context = FacesContext.getCurrentInstance();
         if (request.getParameterAsBoolean("ice.submit.partial", false)) {
@@ -98,7 +95,7 @@ public class ReceiveSendUpdates implements Server {
             UIComponent parent,
             UIComponent componentToAvoid, String clientIdToAvoid,
             Map alteredComponents) {
-        
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
         //turn off required simply with false for all but iterative case
         ValueBinding FALSE_BINDING = facesContext
@@ -128,7 +125,7 @@ public class ReceiveSendUpdates implements Server {
                     input.setValueBinding(REQUIRED, replacementBinding);
                     alteredComponents.put(input, valueBinding);
                 } else {
-                    if (input.isRequired() && input != componentToAvoid && 
+                    if (input.isRequired() && input != componentToAvoid &&
                             input.isValid()) {
                         input.setRequired(false);
                         alteredComponents.put(input, null);

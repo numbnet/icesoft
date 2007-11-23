@@ -293,7 +293,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         writer.write("<input type=\"hidden\" name=\"ice.component\" value=\"");
         writer.write(this.getClientId(context));
         writer.write("\"/>");
-        writer.write("<input type=\"hidden\" name=\"ice.view.active\"");
+        writer.write("<input type=\"hidden\" name=\"ice.view\"");
         writer.write(" value=\"" + context.getViewNumber() + "\"/>");
         writer.write("<input type=\"file\" name=\"upload\"");
         writer.write(" size=\"" + getInputTextSize() + "\"");

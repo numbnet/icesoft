@@ -35,14 +35,19 @@
 
     This.Application = Object.subclass({
         initialize: function(configuration, container) {
-            var logger = window.logger.child(configuration.session.substring(0, 4) + '#' + container.viewIdentifier);
+            var sessionID = configuration.session;
+            var viewID = container.viewIdentifier;
+            var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
             var statusManager = new Ice.Status.StatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
-            var parameters = defaultParameters(configuration.session);
+            var parameters = Ice.Parameter.Query.create(function(query) {
+                query.add('ice.session', sessionID);
+                query.add('ice.view', viewID);
+            });
             this.connection = configuration.synchronous ?
                               new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
-                              new This.Connection.AsyncConnection(logger, configuration.connection, parameters, commandDispatcher);
+                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
 
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);

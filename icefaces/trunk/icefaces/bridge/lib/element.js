@@ -130,7 +130,7 @@
         },
 
         serializeViewOn: function(query) {
-            query.add("ice.view.active", this.findActiveView());
+            query.add("ice.view", this.findActiveView());
         },
 
         findActiveView: function() {

@@ -23,15 +23,13 @@ public class ReceivePing implements Server, ResponseHandler {
     }
 
     public void service(Request request) throws Exception {
-        String[] viewIdentifiers = request.getParameterAsStrings("ice.view.all");
-        for (int i = 0; i < viewIdentifiers.length; i++) {
-            CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifiers[i]);
-            if (queue != null) {
-                queue.put(PONG);
-            } else {
-                if (log.isWarnEnabled()) {
-                    log.warn("could not get a valid queue for " + viewIdentifiers[i]);
-                }
+        String viewIdentifier = request.getParameter("ice.view");
+        CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
+        if (queue != null) {
+            queue.put(PONG);
+        } else {
+            if (log.isWarnEnabled()) {
+                log.warn("could not get a valid queue for " + viewIdentifier);
             }
         }
         request.respondWith(this);

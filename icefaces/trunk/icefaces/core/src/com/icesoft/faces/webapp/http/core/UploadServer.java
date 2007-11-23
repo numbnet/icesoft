@@ -57,7 +57,7 @@ public class UploadServer implements Server {
                         String name = item.getFieldName();
                         if ("ice.component".equals(name)) {
                             componentID = Streams.asString(item.openStream());
-                        } else if ("ice.view.active".equals(name)) {
+                        } else if ("ice.view".equals(name)) {
                             viewIdentifier = Streams.asString(item.openStream());
                         }
                     } else {

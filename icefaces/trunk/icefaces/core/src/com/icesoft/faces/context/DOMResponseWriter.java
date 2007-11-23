@@ -335,7 +335,7 @@ public class DOMResponseWriter extends ResponseWriter {
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
-                "if (!window.views) window.views = []; window.views.push(" + viewIdentifier + ");\n" +
+                "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.viewIdentifier = " + viewIdentifier + ";" +
                         "container.bridge = new Ice.Community.Application({" +
@@ -421,13 +421,6 @@ public class DOMResponseWriter extends ResponseWriter {
             link.setAttribute("type", "text/css");
             link.setAttribute("href", handler.getResourceURL(context, css));
         }
-
-        String sessionIdentifier = context.getIceFacesId();
-        Element viewAndSessionScript = (Element) head.appendChild(document.createElement("script"));
-        viewAndSessionScript.setAttribute("type", "text/javascript");
-        viewAndSessionScript.appendChild(document.createTextNode(
-                "window.session = '" + sessionIdentifier + "';"
-        ));
     }
 
     private Element fixHtml() {
