@@ -36,7 +36,7 @@
     This.Application = Object.subclass({
         initialize: function(configuration, container) {
             var sessionID = configuration.session;
-            var viewID = container.viewIdentifier;
+            var viewID = configuration.view;
             var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
             var statusManager = new Ice.Status.StatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);

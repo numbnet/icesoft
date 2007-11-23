@@ -80,12 +80,10 @@ public class SendUpdatedViews implements Server {
 
         public void writeTo(Writer writer) throws IOException {
             writer.write("<updated-views>");
-            writer.write("<views for=\"" + sessionID + "\">");
             for (int i = 0; i < viewIdentifiers.length; i++) {
-                writer.write(viewIdentifiers[i]);
+                writer.write(sessionID + ":" + viewIdentifiers[i]);
                 writer.write(' ');
             }
-            writer.write("</views>");
             writer.write("</updated-views>");
         }
     }

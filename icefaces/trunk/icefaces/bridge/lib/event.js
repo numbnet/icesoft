@@ -73,9 +73,7 @@
             Query.create(function(query) {
                 query.add('ice.submit.partial', false);
                 try {
-                    var capturingElement = this.captured();
-                    capturingElement.serializeOn(query);
-                    capturingElement.serializeViewOn(query);
+                    this.captured().serializeOn(query);
                     this.serializeOn(query);
                 } catch (e) {
                     this.serializeOn(query);
@@ -87,11 +85,8 @@
             Query.create(function(query) {
                 query.add('ice.submit.partial', false);
                 try {
-                    var capturingElement = this.captured();
-                    var form = this.form();
-                    capturingElement.serializeOn(query);
-                    form.serializeOn(query);
-                    form.serializeViewOn(query);
+                    this.captured().serializeOn(query);
+                    this.form().serializeOn(query);
                     this.serializeOn(query);
                 } catch (e) {
                     this.serializeOn(query);

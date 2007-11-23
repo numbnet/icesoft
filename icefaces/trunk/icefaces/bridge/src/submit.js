@@ -45,15 +45,12 @@ function iceSubmitPartial(form, component, evt) {
     query.add('ice.submit.partial', true);
     $event(evt, component).serializeOn(query);
     if (form && form.id) {
-        var f = $element(form);
-        f.serializeOn(query);
-        f.serializeViewOn(query);
+        $element(form).serializeOn(query);
     }
     if (component && component.id) {
         var c = $element(component);
         if (c.isSubmit()) {
             c.serializeOn(query);
-            c.serializeViewOn(query);
         }
     }
     query.sendOn(currentConnection($element(form), $element(component)));
@@ -76,11 +73,9 @@ function iceSubmit(aForm, aComponent, anEvent) {
             event.serializeOn(query);
             if (submit) {
                 submit.serializeOn(query);
-                submit.serializeViewOn(query);
             }
             if (form) {
                 form.serializeOn(query);
-                form.serializeViewOn(query);
             }
             query.sendOn(currentConnection($element(aForm), $element(aComponent)));
         }
@@ -89,11 +84,9 @@ function iceSubmit(aForm, aComponent, anEvent) {
         event.serializeOn(query);
         if (component && component.isSubmit()) {
             component.serializeOn(query);
-            component.serializeViewOn(query);
         }
         if (form) {
             form.serializeOn(query);
-            form.serializeViewOn(query);
         }
         query.sendOn(currentConnection($element(aForm), $element(aComponent)));
     }

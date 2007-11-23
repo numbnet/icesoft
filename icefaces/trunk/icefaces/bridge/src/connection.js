@@ -31,7 +31,7 @@
  *
  */
 
-[ Ice.Connection = new Object, Ice.Connection, Ice.Ajax ].as(function(This, Connection, Ajax) {
+[ Ice.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Parameter.Query ].as(function(This, Connection, Ajax, Query) {
     This.FormPost = function(request) {
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     };
@@ -97,8 +97,12 @@
         },
 
         send: function(query) {
-            this.logger.debug('send > ' + query.asString());
-            var compoundQuery = query.addQuery(this.defaultQuery());
+            var compoundQuery = new Query();
+            compoundQuery.addQuery(query);
+            compoundQuery.addQuery(this.defaultQuery);
+            compoundQuery.add('ice.focus', window.currentFocus);
+
+            this.logger.debug('send > ' + compoundQuery.asString());
             this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 This.FormPost(request);
                 request.on(Connection.Receive, this.receiveCallback);
@@ -135,7 +139,7 @@
 
         sendDisposeViews: function() {
             try {
-                this.channel.postSynchronously(this.disposeViewsURI, this.defaultQuery().asURIEncodedString(), function(request) {
+                this.channel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
                     request.on(Connection.Receive, Connection.Close);
                 });

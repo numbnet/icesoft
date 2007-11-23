@@ -31,7 +31,7 @@
  *
  */
 
-[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Command ].as(function(This, Connection, Ajax, Heartbeat, Command) {
+[ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Cookie, Ice.Parameter.Query ].as(function(This, Connection, Ajax, Heartbeat, Cookie, Query) {
 
     This.AsyncConnection = Object.subclass({
         initialize: function(logger, sessionID, viewID, configuration, defaultQuery, commandDispatcher) {
@@ -86,18 +86,14 @@
 
             //read/create cookie that contains the updated views
             try {
-                this.updatedViews = Ice.Cookie.lookup(sessionID + '-updates');
+                this.updatedViews = Cookie.lookup('updates');
             } catch (e) {
-                this.updatedViews = new Ice.Cookie(sessionID + '-updates', '');
+                this.updatedViews = new Cookie('updates', '');
             }
 
             //register command that handles the updated-views message
             commandDispatcher.register('updated-views', function(message) {
-                $enumerate(message.childNodes).each(function(views) {
-                    var sessionID = views.getAttribute('for');
-                    var viewsIDs = views.firstChild.data;
-                    Ice.Cookie.lookup(sessionID + '-updates').saveValue(viewsIDs);
-                })
+                this.updatedViews.saveValue(message.firstChild.data);
             }.bind(this));
 
 
@@ -108,7 +104,7 @@
             //this strategy is mainly employed to fix the window.onunload issue
             //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
             try {
-                this.listening = Ice.Cookie.lookup('bconn');
+                this.listening = Cookie.lookup('bconn');
                 this.listening.remove();
             } catch (e) {
                 //do nothing
@@ -120,10 +116,10 @@
             //that the connection is not started
             this.listenerInitializerProcess = function() {
                 try {
-                    this.listening = Ice.Cookie.lookup('bconn');
+                    this.listening = Cookie.lookup('bconn');
                 } catch (e) {
                     //start blocking connection since no other window has started it
-                    this.listening = new Ice.Cookie('bconn', 'started');
+                    this.listening = new Cookie('bconn', 'started');
                     //stop the previous heartbeat instance
                     this.heartbeat.stop();
                     //heartbeat setup
@@ -153,17 +149,18 @@
                 }
             }.bind(this).delayFor(200).repeatExecutionEvery(1000);
 
-            //get the updates for the updated views contained within this window
+            //get the updates for the view
             this.updatesListenerProcess = function() {
                 try {
                     var views = this.updatedViews.loadValue().split(' ');
-                    if (views.include(viewID)) {
+                    var fullViewID = sessionID + ':' + viewID;
+                    if (views.include(fullViewID)) {
                         this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
                             Connection.FormPost(request);
                             request.on(Connection.Receive, this.receiveCallback);
                             request.on(Connection.Receive, Connection.Close);
                         }.bind(this));
-                        this.updatedViews.saveValue(views.complement([ viewID ]).join(' '));
+                        this.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
                     }
                 } catch (e) {
                     this.logger.warn('failed to listen for updates', e);
@@ -177,12 +174,11 @@
             this.logger.debug("closing previous connection...");
             this.listener.close();
             this.logger.debug("connect...");
-            var compositeQuery = Ice.Parameter.Query.create(function(query) {
-                window.sessions.each(function(sessionID) {
-                    query.add('ice.session', sessionID);
-                });
+            var query = new Query();
+            window.sessions.each(function(sessionID) {
+                query.add('ice.session', sessionID);
             });
-            this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, compositeQuery.asURIEncodedString(), function(request) {
+            this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
                 this.sendXWindowCookie(request);
                 Connection.FormPost(request);
                 request.on(Connection.BadResponse, this.badResponseCallback);
@@ -196,9 +192,12 @@
         },
 
         send: function(query) {
-            var compoundQuery = query.addQuery(this.defaultQuery);
-            this.logger.debug('send > ' + compoundQuery.asString());
+            var compoundQuery = new Query();
+            compoundQuery.addQuery(query);
+            compoundQuery.addQuery(this.defaultQuery);
+            compoundQuery.add('ice.focus', window.currentFocus);
 
+            this.logger.debug('send > ' + compoundQuery.asString());
             this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 Connection.FormPost(request);
                 request.on(Connection.Receive, this.receiveCallback);

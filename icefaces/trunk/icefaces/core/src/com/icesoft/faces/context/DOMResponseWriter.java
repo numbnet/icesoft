@@ -337,9 +337,9 @@ public class DOMResponseWriter extends ResponseWriter {
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
-                        "container.viewIdentifier = " + viewIdentifier + ";" +
                         "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
+                        "view: " + viewIdentifier + "," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
                         "redirectURI: " + configuration.getAttribute("connectionLostRedirectURI", "null") + "," +
                         "connection: {" +

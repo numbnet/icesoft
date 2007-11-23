@@ -129,15 +129,6 @@
             this.KeyListenerNames.each(iterator);
         },
 
-        serializeViewOn: function(query) {
-            query.add("ice.view", this.findActiveView());
-        },
-
-        findActiveView: function() {
-            //traverse parents in search of 'viewIdentifier' property
-            return this.findContainerFor('viewIdentifier').viewIdentifier;
-        },
-
         findConnection: function() {
             return this.findContainerFor('bridge').bridge.connection;
         },
