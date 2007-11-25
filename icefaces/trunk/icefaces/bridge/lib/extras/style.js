@@ -94,7 +94,7 @@ Ice.modal = {
     target:null,
     oldListener:null,
     id:null,
-    start:function(target) {
+    start:function(target, iframeUrl) {
         Ice.modal.oldListener = window.document.documentElement.onkeypress;
         window.document.documentElement.onkeypress = function(e) {
             return Ice.modal.keypress(e);
@@ -108,7 +108,7 @@ Ice.modal = {
             iframe.title = 'Ice Modal Frame';
             iframe.frameborder = "0";
             iframe.id = 'iceModalFrame';
-            iframe.src = 'about:blank';
+            iframe.src = iframeUrl;
             iframe.style.zIndex = 25000;
             iframe.style.opacity = 0.5;
             iframe.style.filter = 'alpha(opacity=50)';

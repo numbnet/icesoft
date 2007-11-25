@@ -228,9 +228,10 @@ public class PanelPopupRenderer extends GroupRenderer {
     private String modalJavascript(Boolean modal, Boolean visible,
                                    FacesContext facesContext, String clientId) {
         String call = null;
+        String iframeUrl = CoreUtils.resolveResourceURL(facesContext,"/xmlhttp/blank"); 
         if (modal != null) {
             if (modal.booleanValue() && visible.booleanValue()) {
-                call = "Ice.modal.start('" + clientId + "');";
+                call = "Ice.modal.start('" + clientId + "', '"+ iframeUrl +"');";
                 if (log.isTraceEnabled()) {
                     log.trace("Starting Modal Function");
                 }
