@@ -164,8 +164,6 @@
             case 'script': e.peer = new This.ScriptElement(e); break;
             case 'title': e.peer = new This.TitleElement(e); break;
             case 'a': e.peer = new This.AnchorElement(e); break;
-            case 'fieldset': e.peer = new This.FieldSetElement(e); break;
-            case 'object': e.peer = new This.ObjectElement(e); break;
             case 'iframe': e.peer = new This.IFrameElement(e); break;
             case 'html': e.peer = new This.HtmlElement(e); break;
             default : e.peer = new This.Element(e); break;
