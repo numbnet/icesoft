@@ -36,6 +36,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.context.effects.CurrentStyle;
 import org.w3c.dom.Element;
 
 import javax.faces.component.EditableValueHolder;
@@ -118,6 +119,7 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         JavascriptContext.fireEffect(uiComponent, facesContext);
         LocalEffectEncoder.encodeLocalEffects(uiComponent, input, facesContext);
         renderPassThruAttributes(uiComponent, input);
+        CurrentStyle.apply(facesContext, uiComponent, input, null);
         HashSet excludes = new HashSet();
         addJavaScript(facesContext, uiComponent, input, excludes);
     }
