@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.portlet;
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.jasper.Constants;
 
 import javax.portlet.PortalContext;
@@ -12,15 +13,28 @@ import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.WindowState;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest implements RenderRequest {
+    private static final Collection PersistentRequestConstants = Arrays.asList(new String[]{
+            Constants.INC_CONTEXT_PATH,
+            Constants.INC_PATH_INFO,
+            Constants.INC_QUERY_STRING,
+            Constants.INC_REQUEST_URI,
+            Constants.INC_SERVLET_PATH,
+            Constants.PORTLET_CONFIG,
+            Constants.PORTLET_USERINFO});
+    private static final Collection RequestConstants = Arrays.asList(new String[]{
+            Constants.PORTLET_REQUEST,
+            Constants.PORTLET_RESPONSE});
     private PortletMode portletMode;
     private WindowState windowState;
     private PortletPreferences portletPreferences;
@@ -29,8 +43,9 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
     private String responseContentType;
     private ArrayList responseContentTypes;
     private Map properties;
+    private Map pseudoAPIAttributes;
 
-    public PortletEnvironmentRenderRequest(PortletSession session, RenderRequest request) {
+    public PortletEnvironmentRenderRequest(PortletSession session, RenderRequest request, Configuration configuration) {
         portletSession = session;
         portletMode = request.getPortletMode();
         windowState = request.getWindowState();
@@ -51,25 +66,22 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
         secure = request.isSecure();
         contextPath = request.getContextPath();
 
-        attributes = new Hashtable();
-        Enumeration attributeNames = request.getAttributeNames();
-        while (attributeNames.hasMoreElements()) {
-            String name = (String) attributeNames.nextElement();
-            Object attribute = request.getAttribute(name);
-            if ((null != name) && (null != attribute)) {
-                attributes.put(name, attribute);
-            }
-        }
+        Collection hiddenCustomAttributeNames = Arrays.asList(configuration.getAttribute("hiddenPortletAttributes", "").split(" "));
 
+        attributes = Collections.synchronizedMap(new HashMap());
+        populateMap(Collections.list(request.getAttributeNames()), attributes, request);
         //Some portal containers do not add the javax.servlet.include.*
         //attributes to the attribute names collection so they are not
         //copied into our own collection.  We do that here as necessary.
-        addExtraAttributes(Constants.INC_CONSTANTS, request);
-
+        populateMap(PersistentRequestConstants, attributes, request);
         //ICE-2247: Some javax.portlet.* constants to add as well as
-        //Liferay specific ones.
-        addExtraAttributes(Constants.PORTLET_CONSTANTS, request);
-        addExtraAttributes(Constants.LIFERAY_CONSTANTS, request);
+        populateMap(RequestConstants, attributes, request);
+        //add custom attributes
+        populateMap(hiddenCustomAttributeNames, attributes, request);
+
+        pseudoAPIAttributes = new HashMap();
+        populateMap(PersistentRequestConstants, pseudoAPIAttributes, request);
+        populateMap(hiddenCustomAttributeNames, pseudoAPIAttributes, request);
 
         parameters = new HashMap();
         Enumeration parameterNames = request.getParameterNames();
@@ -84,15 +96,6 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
             String name = (String) propertyNames.nextElement();
             Enumeration values = request.getProperties(name);
             properties.put(name, Collections.list(values));
-        }
-    }
-
-    private void addExtraAttributes(String[] keys, RenderRequest request) {
-        for (int index = 0; index < keys.length; index++) {
-            Object val = request.getAttribute(keys[index]);
-            if (!attributes.containsKey(keys[index]) && val != null) {
-                attributes.put(keys[index], val);
-            }
         }
     }
 
@@ -177,4 +180,19 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
     public abstract AuthenticationVerifier authenticationVerifier();
 
     public abstract RequestAttributes requestAttributes();
+
+    void repopulatePseudoAPIAttributes() {
+        attributes.putAll(pseudoAPIAttributes);
+    }
+
+    private static void populateMap(Collection keys, Map map, RenderRequest request) {
+        Iterator iterator = keys.iterator();
+        while (iterator.hasNext()) {
+            String name = (String) iterator.next();
+            final Object value = request.getAttribute(name);
+            if (name != null && value != null) {
+                map.put(name, value);
+            }
+        }
+    }
 }

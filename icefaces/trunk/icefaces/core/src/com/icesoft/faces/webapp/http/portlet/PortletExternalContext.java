@@ -55,18 +55,20 @@ public class PortletExternalContext extends BridgeExternalContext {
     private final PortletContext context;
     private final PortletConfig config;
     private final PortletSession session;
-    private RenderRequest initialRequest;
+    private PortletEnvironmentRenderRequest initialRequest;
     private RenderResponse response;
     private AllowMode allowMode;
     private AuthenticationVerifier authenticationVerifier;
     private Dispatcher dispatcher;
     private RequestAttributes requestAttributes;
+    private Configuration configuration;
 
     public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig) {
         super(viewIdentifier, commandQueue, configuration);
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
 
+        this.configuration = configuration;
         config = (PortletConfig) portletConfig;
         session = new InterceptingPortletSession(renderRequest.getPortletSession(), monitor);
         context = session.getPortletContext();
@@ -154,7 +156,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     public void updateOnPageLoad(Object request, Object response) {
         final RenderRequest renderRequest = (RenderRequest) request;
         final RenderResponse renderResponse = (RenderResponse) response;
-        initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest) {
+        initialRequest = new PortletEnvironmentRenderRequest(session, renderRequest, configuration) {
             public AllowMode allowMode() {
                 return allowMode;
             }
@@ -289,6 +291,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
     public void release() {
         super.release();
+        initialRequest.repopulatePseudoAPIAttributes();
         allowMode = DoNotAllow;
         authenticationVerifier = UserInfoNotAvailable;
         dispatcher = RequestNotAvailable;
