@@ -1,5 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
@@ -22,6 +25,7 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public class ServletRequestResponse implements Request, Response {
+    private final static Log log = LogFactory.getLog(ServletRequestResponse.class);
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     private static Pattern HEADER_FIXER = null;
 
@@ -45,7 +49,19 @@ public class ServletRequestResponse implements Request, Response {
             public void servlet(Object request, Object response) {
                 HttpServletRequest req = (HttpServletRequest) request;
                 String query = req.getQueryString();
-                URI uri = URI.create(req.getRequestURL().toString());
+                URI uri = null;
+                while (null == uri)  {
+                    try {
+                        uri = URI.create(req.getRequestURL().toString());
+                    } catch (NullPointerException e)  {
+                        //TODO remove this catch block when GlassFish bug is addressed
+                        if (log.isErrorEnabled()) {
+                            log.error("Null Protocol Scheme in request", e);
+                        }
+                        uri = URI.create("http://" + req.getServerName() + ":"
+                             + req.getServerPort() + req.getRequestURI());
+                    }
+                }
                 requestURI = (query == null ? uri : URI.create(uri + "?" + query));
             }
 
