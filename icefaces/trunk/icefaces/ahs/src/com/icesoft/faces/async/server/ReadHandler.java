@@ -32,10 +32,10 @@
 package com.icesoft.faces.async.server;
 
 import com.icesoft.faces.async.common.ExecuteQueue;
-import com.icesoft.faces.util.net.http.HttpParser;
-import com.icesoft.faces.util.net.http.HttpRequest;
+import com.icesoft.faces.net.http.HttpParser;
+import com.icesoft.faces.net.http.HttpRequest;
 
-import com.icesoft.util.net.http.HttpMessage;
+import com.icesoft.net.http.HttpMessage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

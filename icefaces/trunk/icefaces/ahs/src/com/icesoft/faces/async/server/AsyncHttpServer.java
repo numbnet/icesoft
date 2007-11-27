@@ -41,7 +41,7 @@ import com.icesoft.faces.async.server.nio.NioHttpConnectionAcceptor;
 import com.icesoft.faces.async.common.SessionManager;
 import com.icesoft.faces.async.common.ExecuteQueue;
 //import com.icesoft.faces.util.event.servlet.*;
-import com.icesoft.util.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.MessageServiceClient;
 
 import java.util.EventListener;
 import java.util.HashMap;

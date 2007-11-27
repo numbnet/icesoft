@@ -36,8 +36,8 @@ import com.icesoft.faces.async.common.messaging.PurgeMessageHandler;
 import com.icesoft.faces.async.common.messaging.AnnouncementMessageHandler;
 import com.icesoft.faces.async.servlet.UpdatedViewsQueueExceededException;
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.util.net.messaging.Message;
-import com.icesoft.util.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageServiceClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;

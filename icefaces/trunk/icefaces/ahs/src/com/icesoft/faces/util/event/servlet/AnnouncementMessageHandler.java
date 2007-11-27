@@ -31,13 +31,13 @@
  */
 package com.icesoft.faces.util.event.servlet;
 
-import com.icesoft.util.net.messaging.AbstractMessageHandler;
-import com.icesoft.util.net.messaging.Message;
-import com.icesoft.util.net.messaging.MessageHandler;
-import com.icesoft.util.net.messaging.MessageSelector;
-import com.icesoft.util.net.messaging.expression.Equal;
-import com.icesoft.util.net.messaging.expression.Identifier;
-import com.icesoft.util.net.messaging.expression.StringLiteral;
+import com.icesoft.net.messaging.AbstractMessageHandler;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.expression.Equal;
+import com.icesoft.net.messaging.expression.Identifier;
+import com.icesoft.net.messaging.expression.StringLiteral;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

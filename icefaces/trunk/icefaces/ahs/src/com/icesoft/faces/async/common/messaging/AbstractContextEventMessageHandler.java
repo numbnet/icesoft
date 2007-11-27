@@ -31,9 +31,9 @@
  */
 package com.icesoft.faces.async.common.messaging;
 
-import com.icesoft.util.net.messaging.AbstractMessageHandler;
-import com.icesoft.util.net.messaging.MessageHandler;
-import com.icesoft.util.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.AbstractMessageHandler;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageSelector;
 
 public abstract class AbstractContextEventMessageHandler
 extends AbstractMessageHandler

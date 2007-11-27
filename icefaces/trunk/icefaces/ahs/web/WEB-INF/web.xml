@@ -17,7 +17,7 @@
     </context-param>
 
     <context-param>
-        <param-name>com.icesoft.util.net.messaging.properties</param-name>
+        <param-name>com.icesoft.net.messaging.properties</param-name>
         <param-value>jboss.properties</param-value>
         <!--
         <param-value>jboss_ha.properties</param-value>

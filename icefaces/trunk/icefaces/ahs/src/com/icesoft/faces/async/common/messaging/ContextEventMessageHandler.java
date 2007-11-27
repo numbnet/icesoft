@@ -31,14 +31,14 @@
  */
 package com.icesoft.faces.async.common.messaging;
 
-import com.icesoft.util.net.messaging.Message;
-import com.icesoft.util.net.messaging.MessageHandler;
-import com.icesoft.util.net.messaging.MessageSelector;
-import com.icesoft.util.net.messaging.MessageServiceClient;
-import com.icesoft.util.net.messaging.TextMessage;
-import com.icesoft.util.net.messaging.expression.Equal;
-import com.icesoft.util.net.messaging.expression.Identifier;
-import com.icesoft.util.net.messaging.expression.StringLiteral;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.TextMessage;
+import com.icesoft.net.messaging.expression.Equal;
+import com.icesoft.net.messaging.expression.Identifier;
+import com.icesoft.net.messaging.expression.StringLiteral;
 
 import java.util.StringTokenizer;
 

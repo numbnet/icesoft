@@ -36,11 +36,11 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
-import com.icesoft.util.net.messaging.MessageServiceClient;
-import com.icesoft.util.net.messaging.MessageServiceException;
-import com.icesoft.util.net.messaging.jms.JMSAdapter;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfigurationProperties;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.net.messaging.jms.JMSAdapter;
+import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
+import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

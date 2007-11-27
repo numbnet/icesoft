@@ -32,19 +32,19 @@
 package com.icesoft.faces.async.common.messaging;
 
 import com.icesoft.faces.async.common.UpdatedViews;
-import com.icesoft.util.net.messaging.AbstractMessageHandler;
-import com.icesoft.util.net.messaging.Message;
-import com.icesoft.util.net.messaging.MessageHandler;
-import com.icesoft.util.net.messaging.MessageSelector;
-import com.icesoft.util.net.messaging.MessageServiceClient;
-import com.icesoft.util.net.messaging.TextMessage;
-import com.icesoft.util.net.messaging.expression.And;
-import com.icesoft.util.net.messaging.expression.Container;
-import com.icesoft.util.net.messaging.expression.Equal;
-import com.icesoft.util.net.messaging.expression.Identifier;
-import com.icesoft.util.net.messaging.expression.IsNull;
-import com.icesoft.util.net.messaging.expression.Or;
-import com.icesoft.util.net.messaging.expression.StringLiteral;
+import com.icesoft.net.messaging.AbstractMessageHandler;
+import com.icesoft.net.messaging.Message;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.TextMessage;
+import com.icesoft.net.messaging.expression.And;
+import com.icesoft.net.messaging.expression.Container;
+import com.icesoft.net.messaging.expression.Equal;
+import com.icesoft.net.messaging.expression.Identifier;
+import com.icesoft.net.messaging.expression.IsNull;
+import com.icesoft.net.messaging.expression.Or;
+import com.icesoft.net.messaging.expression.StringLiteral;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

@@ -31,8 +31,8 @@
  */
 package com.icesoft.faces.async.server;
 
-import com.icesoft.faces.util.net.http.HttpRequest;
-import com.icesoft.faces.util.net.http.HttpResponse;
+import com.icesoft.faces.net.http.HttpRequest;
+import com.icesoft.faces.net.http.HttpResponse;
 
 /**
  * <p>

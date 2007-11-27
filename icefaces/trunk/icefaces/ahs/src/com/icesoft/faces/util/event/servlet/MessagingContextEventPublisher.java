@@ -31,11 +31,11 @@
  */
 package com.icesoft.faces.util.event.servlet;
 
-import com.icesoft.util.net.messaging.MessageServiceClient;
-import com.icesoft.util.net.messaging.MessageServiceException;
-import com.icesoft.util.net.messaging.jms.JMSAdapter;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfigurationProperties;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.net.messaging.jms.JMSAdapter;
+import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
+import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 
 import javax.servlet.ServletContext;
 
