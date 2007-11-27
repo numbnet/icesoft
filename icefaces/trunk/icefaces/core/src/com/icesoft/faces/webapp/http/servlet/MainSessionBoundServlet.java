@@ -149,4 +149,8 @@ public class MainSessionBoundServlet implements PseudoServlet {
     public Collection getSynchronouslyUpdatedViews() {
         return synchronouslyUpdatedViews;
     }
+
+    public String getSessionID() {
+        return sessionID;
+    }
 }
