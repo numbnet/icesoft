@@ -7,6 +7,7 @@ import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.IdGenerator;
+import com.icesoft.util.SeamUtilities;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -59,6 +60,10 @@ public class MainServlet extends HttpServlet {
                 }
             };
 
+            if (SeamUtilities.isSpringEnvironment())  {
+                //Need to dispatch to the Spring resource server
+                dispatcher.dispatchOn("/spring/resources/", resourceServer);
+            }
             dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|block\\/|/spring/)", sessionServer);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
