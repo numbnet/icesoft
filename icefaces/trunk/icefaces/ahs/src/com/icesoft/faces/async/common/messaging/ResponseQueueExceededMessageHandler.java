@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
 import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
@@ -40,19 +40,18 @@ import com.icesoft.util.net.messaging.expression.Equal;
 import com.icesoft.util.net.messaging.expression.Identifier;
 import com.icesoft.util.net.messaging.expression.StringLiteral;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class PurgeMessageHandler
+public class ResponseQueueExceededMessageHandler
 extends AbstractMessageHandler
-implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "Purge";
+        implements MessageHandler {
+    protected static final String MESSAGE_TYPE = "ResponseQueueExceeded";
 
-    private static final Log LOG = LogFactory.getLog(PurgeMessageHandler.class);
+    private static final Log LOG =
+        LogFactory.getLog(ResponseQueueExceededMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -60,7 +59,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected PurgeMessageHandler() {
+    protected ResponseQueueExceededMessageHandler() {
         super(messageSelector);
     }
 
@@ -72,26 +71,24 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            Map _purgeMap = new HashMap();
             StringTokenizer _tokens =
-                new StringTokenizer(((TextMessage)message).getText());
-            while (_tokens.hasMoreTokens()) {
-                String _token = (String)_tokens.nextToken();
-                int _beginIndex = 0;
-                int _endIndex = _token.indexOf(";");
-                String _iceFacesId = _token.substring(_beginIndex, _endIndex);
-                _beginIndex = _endIndex + 1;
-                _purgeMap.put(
-                    _iceFacesId,
-                    new Long(Long.parseLong(_token.substring(_beginIndex))));
+                new StringTokenizer(
+                    ((TextMessage)message).getText(), ";");
+            if (callback != null) {
+                ((Callback)callback).
+                    responseQueueExceeded(
+                        _tokens.nextToken(), _tokens.nextToken());
             }
-            purgeUpdatedViews(_purgeMap);
         }
     }
 
-    public abstract void purgeUpdatedViews(final Map purgeMap);
-
     public String toString() {
         return getClass().getName();
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void responseQueueExceeded(
+            final String iceFacesId, final String viewNumber);
     }
 }

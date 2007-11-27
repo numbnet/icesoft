@@ -29,29 +29,26 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
 import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
 import com.icesoft.util.net.messaging.MessageHandler;
 import com.icesoft.util.net.messaging.MessageSelector;
-import com.icesoft.util.net.messaging.TextMessage;
 import com.icesoft.util.net.messaging.expression.Equal;
 import com.icesoft.util.net.messaging.expression.Identifier;
 import com.icesoft.util.net.messaging.expression.StringLiteral;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class ResponseQueueExceededMessageHandler
+public class AnnouncementMessageHandler
 extends AbstractMessageHandler
-        implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "ResponseQueueExceeded";
+implements MessageHandler {
+    protected static final String MESSAGE_TYPE = "Announcement";
 
     private static final Log LOG =
-        LogFactory.getLog(ResponseQueueExceededMessageHandler.class);
+        LogFactory.getLog(AnnouncementMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -59,7 +56,7 @@ extends AbstractMessageHandler
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected ResponseQueueExceededMessageHandler() {
+    protected AnnouncementMessageHandler() {
         super(messageSelector);
     }
 
@@ -70,18 +67,20 @@ extends AbstractMessageHandler
         if (LOG.isDebugEnabled()) {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
-        if (message instanceof TextMessage) {
-            StringTokenizer _tokens =
-                new StringTokenizer(
-                    ((TextMessage)message).getText(), ";");
-            responseQueueExceeded(_tokens.nextToken(), _tokens.nextToken());
+        if (callback != null) {
+            ((Callback)callback).
+                publishUpdatedViewsQueues(
+                    message.getStringProperty(Message.SOURCE_NODE_ADDRESS));
         }
     }
 
-    protected abstract void responseQueueExceeded(
-        final String iceFacesId, final String viewNumber);
-
     public String toString() {
         return getClass().getName();
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void publishUpdatedViewsQueues(
+            final String destinationNodeAddress);
     }
 }

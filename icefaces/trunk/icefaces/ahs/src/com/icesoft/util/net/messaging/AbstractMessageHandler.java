@@ -33,6 +33,7 @@ package com.icesoft.util.net.messaging;
 
 public abstract class AbstractMessageHandler
 implements MessageHandler {
+    protected Callback callback;
     protected MessageSelector messageSelector;
 
     protected AbstractMessageHandler() {
@@ -43,8 +44,16 @@ implements MessageHandler {
         this.messageSelector = messageSelector;
     }
 
+    public Callback getCallback() {
+        return callback;
+    }
+
     public MessageSelector getMessageSelector() {
         return messageSelector;
+    }
+
+    public void setCallback(final Callback callback) {
+        this.callback = callback;
     }
 
     public void setMessageSelector(final MessageSelector messageSelector) {

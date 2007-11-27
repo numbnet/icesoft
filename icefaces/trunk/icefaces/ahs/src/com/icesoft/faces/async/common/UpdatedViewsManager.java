@@ -29,27 +29,38 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
+package com.icesoft.faces.async.common;
 
+import com.icesoft.faces.async.common.messaging.MessageService;
+import com.icesoft.faces.async.common.messaging.PurgeMessageHandler;
+import com.icesoft.faces.async.common.messaging.AnnouncementMessageHandler;
+import com.icesoft.faces.async.servlet.UpdatedViewsQueueExceededException;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.util.net.messaging.Message;
 import com.icesoft.util.net.messaging.MessageServiceClient;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class UpdatedViewsQueueManager {
+public class UpdatedViewsManager
+implements AnnouncementMessageHandler.Callback, PurgeMessageHandler.Callback {
     private static final String PURGE_MESSAGE_TYPE = "Purge";
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
+    private static final String UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE =
+        "UpdatedViewsQueueExceeded";
 
     private static final Log LOG =
-        LogFactory.getLog(UpdatedViewsQueueManager.class);
+        LogFactory.getLog(UpdatedViewsManager.class);
 
-    private final AsyncHttpServer asyncHttpServer;
+    private final MessageService messageService;
     private final Map purgeMap = new HashMap();
     private final Map updatedViewsQueueMap = new HashMap();
 
@@ -57,12 +68,26 @@ public class UpdatedViewsQueueManager {
     private int updatedViewsQueueSize;
     private double updatedViewsQueueThreshold;
 
-    public UpdatedViewsQueueManager(final AsyncHttpServer asyncHttpServer)
+    public UpdatedViewsManager(
+        final Configuration configuration, final MessageService messageService)
     throws IllegalArgumentException {
-        if (asyncHttpServer == null) {
+        if (messageService == null) {
             throw new IllegalArgumentException("asyncHttpServer is null");
         }
-        this.asyncHttpServer = asyncHttpServer;
+        setPurgeMessageContents(
+            configuration.getAttribute(
+                "purgeMessageContents", "all"));
+        setUpdatedViewsQueueSize(
+            configuration.getAttributeAsInteger(
+                "updatedViewsQueueSize", 100));
+        setUpdatedViewsQueueThreshold(
+            configuration.getAttributeAsDouble(
+                "updatedViewsQueueThreshold", 0.7d));
+        this.messageService = messageService;
+        this.messageService.setCallback(
+            AnnouncementMessageHandler.Callback.class, this);
+        this.messageService.setCallback(
+            PurgeMessageHandler.Callback.class, this);
     }
 
     public String getPurgeMessageContents() {
@@ -77,40 +102,82 @@ public class UpdatedViewsQueueManager {
         return updatedViewsQueueThreshold;
     }
     
-    public UpdatedViews pull(
-        final String iceFacesId, final long sequenceNumber) {
+    public void publishUpdatedViewsQueues(final String destinationNodeAddress) {
+        synchronized (updatedViewsQueueMap) {
+            Properties _messageProperties = new Properties();
+            _messageProperties.setProperty(
+                Message.DESTINATION_NODE_ADDRESS, destinationNodeAddress);
+            Iterator _iceFacesIds = updatedViewsQueueMap.keySet().iterator();
+            while (_iceFacesIds.hasNext()) {
+                String _iceFacesId = (String)_iceFacesIds.next();
+                UpdatedViewsQueue _updatedViewsQueue =
+                    (UpdatedViewsQueue)updatedViewsQueueMap.get(_iceFacesId);
+                Iterator _updatedViewsIterator = _updatedViewsQueue.iterator();
+                while (_updatedViewsIterator.hasNext()) {
+                    UpdatedViews _updatedViews =
+                            (UpdatedViews)_updatedViewsIterator.next();
+                    StringBuffer _stringBuffer = new StringBuffer();
+                    Iterator _updatedViewIterator =
+                        _updatedViews.getUpdatedViewsSet().iterator();
+                    while (_updatedViewIterator.hasNext()) {
+                        if (_stringBuffer.length() != 0) {
+                            _stringBuffer.append(',');
+                        }
+                        _stringBuffer.append(_updatedViewIterator.next());
+                    }
+                    messageService.publish(
+                        _iceFacesId + ";" +
+                            _updatedViews.getSequenceNumber() + ";" +
+                            _stringBuffer.toString(),
+                        _messageProperties,
+                        UPDATED_VIEWS_MESSAGE_TYPE,
+                        MessageServiceClient.RESPONSE_TOPIC_NAME);
+                }
+            }
+        }
+    }
 
-        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
+    public List pull(
+        final Set iceFacesIdSet, final SequenceNumbers sequenceNumbers) {
+
+        if (iceFacesIdSet == null || iceFacesIdSet.isEmpty()) {
             return null;
         }
         synchronized (updatedViewsQueueMap) {
-            if (updatedViewsQueueMap.containsKey(iceFacesId)) {
-                UpdatedViewsQueue _updatedViewsQueue =
-                    (UpdatedViewsQueue)updatedViewsQueueMap.get(iceFacesId);
-                _updatedViewsQueue.purge(sequenceNumber);
-                UpdatedViews _updatedViews;
-                if (!_updatedViewsQueue.isEmpty()) {
-                    Iterator _updatedViewsQueueIterator =
-                        _updatedViewsQueue.iterator();
-                    _updatedViews =
-                        (UpdatedViews)_updatedViewsQueueIterator.next();
-                    while (_updatedViewsQueueIterator.hasNext()) {
-                        _updatedViews =
-                            UpdatedViews.merge(
-                                _updatedViews,
-                                (UpdatedViews)
-                                    _updatedViewsQueueIterator.next());
+            List _updatedViewsList = new ArrayList();
+            Iterator _iceFacesIds = iceFacesIdSet.iterator();
+            int _size = iceFacesIdSet.size();
+            for (int i = 0; i < _size; i++) {
+                String _iceFacesId = (String)_iceFacesIds.next();
+                if (updatedViewsQueueMap.containsKey(_iceFacesId)) {
+                    UpdatedViewsQueue _updatedViewsQueue =
+                        (UpdatedViewsQueue)
+                            updatedViewsQueueMap.get(_iceFacesId);
+                    Long _sequenceNumber = sequenceNumbers.get(_iceFacesId);
+                    if (_sequenceNumber != null) {
+                        _updatedViewsQueue.purge(_sequenceNumber.longValue());
                     }
-                } else {
-                    _updatedViews = null;
+                    UpdatedViews _updatedViews;
+                    if (!_updatedViewsQueue.isEmpty()) {
+                        Iterator _updatedViewsQueueIterator =
+                            _updatedViewsQueue.iterator();
+                        _updatedViews =
+                            (UpdatedViews)_updatedViewsQueueIterator.next();
+                        while (_updatedViewsQueueIterator.hasNext()) {
+                            _updatedViews =
+                                UpdatedViews.merge(
+                                    _updatedViews,
+                                    (UpdatedViews)
+                                        _updatedViewsQueueIterator.next());
+                        }
+                        _updatedViewsList.add(_updatedViews);
+                    }
                 }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Pulled pending updated views: " + iceFacesId);
-                }
-                return _updatedViews;
-            } else {
-                return null;
             }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Pulled pending updated views: " + iceFacesIdSet);
+            }
+            return _updatedViewsList;
         }
     }
 
@@ -136,7 +203,7 @@ public class UpdatedViewsQueueManager {
         }
     }
 
-    public void purgeAll(Map purgeMap) {
+    public void purgeUpdatedViews(Map purgeMap) {
         synchronized (updatedViewsQueueMap) {
             Iterator _iceFacesIds = purgeMap.keySet().iterator();
             while (_iceFacesIds.hasNext()) {
@@ -148,8 +215,7 @@ public class UpdatedViewsQueueManager {
         }
     }
 
-    public void push(final UpdatedViews updatedViews)
-    throws UpdatedViewsQueueExceededException {
+    public void push(final UpdatedViews updatedViews) {
         if (updatedViews != null) {
             String _iceFacesId = updatedViews.getICEfacesID();
             synchronized (updatedViewsQueueMap) {
@@ -165,15 +231,25 @@ public class UpdatedViewsQueueManager {
                 }
                 try {
                     _updatedViewsQueue.add(updatedViews);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Pushed pending updated views: " +
+                                _iceFacesId + " " +
+                                    "[size: " +
+                                        _updatedViewsQueue.getSize() + "]");
+                    }
                 } catch (UpdatedViewsQueueExceededException exception) {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(
+                            "Updated views queue exceeded: " +
+                                updatedViews.getICEfacesID());
+                    }
                     _updatedViewsQueue.clear();
-                    throw exception;
-                }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                        "Pushed pending updated views: " +
-                            _iceFacesId + " " +
-                                "[size: " + _updatedViewsQueue.getSize() + "]");
+                    messageService.publish(
+                        updatedViews.getICEfacesID(),
+                        new Properties(),
+                        UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE,
+                        MessageServiceClient.RESPONSE_TOPIC_NAME);
                 }
             }
         }
@@ -252,39 +328,11 @@ public class UpdatedViewsQueueManager {
             }
         }
         if (_purgeMessage.length() != 0) {
-            asyncHttpServer.getMessageServiceClient().publish(
+            messageService.publish(
                 _purgeMessage.toString(),
                 null,
                 PURGE_MESSAGE_TYPE,
                 MessageServiceClient.RESPONSE_TOPIC_NAME);
-        }
-    }
-
-    void publishUpdatedViewsQueues(final String destinationNodeAddress) {
-        synchronized (updatedViewsQueueMap) {
-            MessageServiceClient _messageServiceClient =
-                asyncHttpServer.getMessageServiceClient();
-            Properties _messageProperties = new Properties();
-            _messageProperties.setProperty(
-                Message.DESTINATION_NODE_ADDRESS, destinationNodeAddress);
-            Iterator _iceFacesIds = updatedViewsQueueMap.keySet().iterator();
-            while (_iceFacesIds.hasNext()) {
-                String _iceFacesId = (String)_iceFacesIds.next();
-                UpdatedViewsQueue _updatedViewsQueue =
-                    (UpdatedViewsQueue)updatedViewsQueueMap.get(_iceFacesId);
-                Iterator _updatedViewsIterator = _updatedViewsQueue.iterator();
-                while (_updatedViewsIterator.hasNext()) {
-                    UpdatedViews _updatedViews =
-                        (UpdatedViews)_updatedViewsIterator.next();
-                    _messageServiceClient.publish(
-                        _iceFacesId + ";" +
-                            _updatedViews.getSequenceNumber() + ";" +
-                            _updatedViews.getEntityBody(),
-                        _messageProperties,
-                        UPDATED_VIEWS_MESSAGE_TYPE,
-                        MessageServiceClient.RESPONSE_TOPIC_NAME);
-                }
-            }
         }
     }
 

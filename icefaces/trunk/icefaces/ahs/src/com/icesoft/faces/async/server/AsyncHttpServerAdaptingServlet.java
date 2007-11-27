@@ -31,7 +31,7 @@
  */
 package com.icesoft.faces.async.server;
 
-import com.icesoft.faces.async.server.messaging.UpdatedViewsQueueExceededMessageHandler;
+import com.icesoft.faces.async.common.messaging.UpdatedViewsQueueExceededMessageHandler;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
@@ -100,11 +100,11 @@ public class AsyncHttpServerAdaptingServlet
                     synchronouslyUpdatedViews.clear();
                     Set _viewIdentifierSet = new HashSet(allUpdatedViews);
                     if (!_viewIdentifierSet.isEmpty()) {
-                        final String[] _viewIdentifiers =
+                        String[] _viewIdentifiers =
                             (String[])
                                 _viewIdentifierSet.toArray(
                                     new String[_viewIdentifierSet.size()]);
-                        final StringWriter _stringWriter = new StringWriter();
+                        StringWriter _stringWriter = new StringWriter();
                         for (int i = 0; i < _viewIdentifiers.length; i++) {
                             if (i != 0) {
                                 _stringWriter.write(',');

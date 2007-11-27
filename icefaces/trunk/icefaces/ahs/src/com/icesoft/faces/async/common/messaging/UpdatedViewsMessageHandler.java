@@ -29,9 +29,9 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
-import com.icesoft.faces.async.server.UpdatedViews;
+import com.icesoft.faces.async.common.UpdatedViews;
 import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
 import com.icesoft.util.net.messaging.MessageHandler;
@@ -61,7 +61,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * @see        MessageServiceClient
  */
-public abstract class UpdatedViewsMessageHandler
+public class UpdatedViewsMessageHandler
 extends AbstractMessageHandler
         implements MessageHandler {
     protected static final String MESSAGE_TYPE = "UpdatedViews";
@@ -127,15 +127,20 @@ extends AbstractMessageHandler
             for (int i = 0; i < _tokenCount; i++) {
                 _updatedViewsSet.add(_tokens.nextToken());
             }
-            sendUpdatedViews(
-                new UpdatedViews(
-                    _iceFacesId, _sequenceNumber, _updatedViewsSet));
+            if (callback != null) {
+                ((Callback)callback).sendUpdatedViews(
+                    new UpdatedViews(
+                        _iceFacesId, _sequenceNumber, _updatedViewsSet));
+            }
         }
     }
 
-    public abstract void sendUpdatedViews(final UpdatedViews updatedViews);
-
     public String toString() {
         return getClass().getName();
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void sendUpdatedViews(final UpdatedViews updatedViews);
     }
 }

@@ -31,6 +31,8 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
+
 /**
  * <p>
  *   The <code>AbstractHandler</code> class provides a base implementation of
@@ -40,18 +42,13 @@ package com.icesoft.faces.async.server;
  * </p>
  */
 public abstract class AbstractHandler
-extends PooledObject
+extends com.icesoft.faces.async.common.AbstractHandler
 implements Handler, Runnable {
     /**
      * The Asynchronous HTTP Server associated with this
      * <code>AbstractHandler</code>.
      */
     protected AsyncHttpServer asyncHttpServer;
-    /**
-     * The handler pool responsible for creating this
-     * <code>AbstractHandler</code>.
-     */
-    protected HandlerPool handlerPool;
     /**
      * The HTTP connection that needs to be handled by this
      * <code>AbstractHandler</code>.
@@ -60,17 +57,17 @@ implements Handler, Runnable {
 
     /**
      * <p>
-     *   Constructs an <code>AbstractHandler</code> object with the specified
-     *   <code>httpConnection</code>.
+     *   Constructs an <code>AbstractHandler</code> object.
      * </p>
-     *
-     * @param      httpConnection
-     *                 the HTTP connection that is to be handled by the
-     *                 <code>AbstractHandler</code> to be created.
-     * @see        #setHttpConnection(HttpConnection)
      */
-    protected AbstractHandler(final HttpConnection httpConnection) {
-        setHttpConnection(httpConnection);
+    protected AbstractHandler(
+        final ExecuteQueue executeQueue, final AsyncHttpServer asyncHttpServer)
+    throws IllegalArgumentException {
+        super(executeQueue);
+        if (asyncHttpServer == null) {
+            throw new IllegalArgumentException("asyncHttpServer is null");
+        }
+        this.asyncHttpServer = asyncHttpServer;
     }
 
     public AsyncHttpServer getAsyncHttpServer() {
@@ -82,53 +79,16 @@ implements Handler, Runnable {
     }
 
     public void handle() {
-        if (httpConnection != null && asyncHttpServer != null) {
-            asyncHttpServer.getExecuteQueue().execute(this);
+        if (httpConnection != null) {
+            executeQueue.execute(this);
         }
     }
 
     public void reset() {
         httpConnection = null;
     }
-
-    public void setAsyncHttpServer(final AsyncHttpServer asyncHttpServer) {
-        this.asyncHttpServer = asyncHttpServer;
-    }
-
+    
     public void setHttpConnection(final HttpConnection httpConnection) {
         this.httpConnection = httpConnection;
-    }
-
-    /**
-     * <p>
-     *   Gets the associated handler pool of this <code>AbstractHandler</code>.
-     * </p>
-     *
-     * @return     the handler pool.
-     * @see        #setHandlerPool(HandlerPool)
-     */
-    protected HandlerPool getHandlerPool() {
-        return handlerPool;
-    }
-
-    /**
-     * <p>
-     *   Sets the associated handler pool of this <code>AbstractHandler</code>
-     *   to the specified <code>handlerPool</code>.
-     * </p>
-     *
-     * @param      handlerPool
-     *                 the new handler pool.
-     * @throws     IllegalArgumentException
-     *                 if the specified <code>handlerPool</code> is
-     *                 <code>null</code>.
-     * @see        #getHandlerPool()
-     */
-    protected void setHandlerPool(final HandlerPool handlerPool)
-    throws IllegalArgumentException {
-        if (handlerPool == null) {
-            throw new IllegalArgumentException("handlerPool is null");
-        }
-        this.handlerPool = handlerPool;
     }
 }

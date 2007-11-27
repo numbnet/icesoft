@@ -59,6 +59,10 @@ implements MessageHandler {
         this.messageHandler = messageHandler;
     }
 
+    public Callback getCallback() {
+        return null;
+    }
+
     public MessageSelector getMessageSelector() {
         return messageHandler.getMessageSelector();
     }
@@ -88,6 +92,10 @@ implements MessageHandler {
 
     public void setMessageSelector(final MessageSelector messageSelector) {
         messageHandler.setMessageSelector(messageSelector);
+    }
+
+    public void setCallback(final Callback callback) {
+        // do nothing.
     }
 
     public String toString() {

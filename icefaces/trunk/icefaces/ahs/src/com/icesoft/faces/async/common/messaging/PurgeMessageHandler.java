@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
 import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
@@ -40,16 +40,19 @@ import com.icesoft.util.net.messaging.expression.Equal;
 import com.icesoft.util.net.messaging.expression.Identifier;
 import com.icesoft.util.net.messaging.expression.StringLiteral;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class UpdatedViewsQueueExceededMessageHandler
+public class PurgeMessageHandler
 extends AbstractMessageHandler
-        implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "UpdatedViewsQueueExceeded";
+implements MessageHandler {
+    protected static final String MESSAGE_TYPE = "Purge";
 
-    private static final Log LOG =
-        LogFactory.getLog(UpdatedViewsQueueExceededMessageHandler.class);
+    private static final Log LOG = LogFactory.getLog(PurgeMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -57,7 +60,7 @@ extends AbstractMessageHandler
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected UpdatedViewsQueueExceededMessageHandler() {
+    protected PurgeMessageHandler() {
         super(messageSelector);
     }
 
@@ -69,7 +72,22 @@ extends AbstractMessageHandler
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            updatedViewsQueueExceeded(((TextMessage)message).getText());
+            Map _purgeMap = new HashMap();
+            StringTokenizer _tokens =
+                new StringTokenizer(((TextMessage)message).getText());
+            while (_tokens.hasMoreTokens()) {
+                String _token = _tokens.nextToken();
+                int _beginIndex = 0;
+                int _endIndex = _token.indexOf(";");
+                String _iceFacesId = _token.substring(_beginIndex, _endIndex);
+                _beginIndex = _endIndex + 1;
+                _purgeMap.put(
+                    _iceFacesId,
+                    new Long(Long.parseLong(_token.substring(_beginIndex))));
+            }
+            if (callback != null) {
+                ((Callback)callback).purgeUpdatedViews(_purgeMap);
+            }
         }
     }
 
@@ -77,5 +95,8 @@ extends AbstractMessageHandler
         return getClass().getName();
     }
 
-    protected abstract void updatedViewsQueueExceeded(final String iceFacesId);
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void purgeUpdatedViews(final Map purgeMap);
+    }
 }

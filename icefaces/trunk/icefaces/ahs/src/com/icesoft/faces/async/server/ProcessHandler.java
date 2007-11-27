@@ -31,6 +31,9 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
+import com.icesoft.faces.async.common.SequenceNumbers;
+import com.icesoft.faces.async.common.UpdatedViews;
 import com.icesoft.faces.util.net.http.HttpRequest;
 import com.icesoft.faces.util.net.http.HttpResponse;
 
@@ -42,8 +45,14 @@ import java.net.InetAddress;
 import java.net.ProtocolException;
 import java.net.UnknownHostException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.GZIPOutputStream;
@@ -114,41 +123,28 @@ public class ProcessHandler
 extends AbstractHandler
 implements Handler, Runnable {
     private static final String ICEFACES_ID = "ice.session";
-    private static final String UPDATED_VIEWS_START_TAG = "<updated-views>";
-    private static final String UPDATED_VIEWS_END_TAG = "</updated-views>";
 
     private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
 
-    private String iceFacesId;
-    private long sequenceNumber = -1;
-    private UpdatedViews updatedViews;
-
-    static {
-        if (LOG.isTraceEnabled()) {
-            LOG.warn(
-                "Log level TRACE is enabled. " +
-                "This will expose each node's address into the HTTP Responses!");
-        }
-    }
+    private Set iceFacesIdSet;
+    private SequenceNumbers sequenceNumbers;
+    private List updatedViewsList = new ArrayList();
 
     /**
      * <p>
-     *   Constructs a <code>ProcessHandler</code> object with the specified
-     *   <code>httpConnection</code>.
+     *   Constructs a <code>ProcessHandler</code> object.
      * </p>
-     *
-     * @param      httpConnection
-     *                 the HTTP connection that is to be handled by the
-     *                 <code>ProcessHandler</code> to be created.
      */
-    public ProcessHandler(final HttpConnection httpConnection) {
-        super(httpConnection);
+    public ProcessHandler(
+        final ExecuteQueue executeQueue, final AsyncHttpServer asyncHttpServer)
+    throws IllegalArgumentException {
+        super(executeQueue, asyncHttpServer);
     }
 
     public void reset() {
-        iceFacesId = null;
-        sequenceNumber = -1;
-        updatedViews = null;
+        iceFacesIdSet = null;
+        sequenceNumbers = null;
+        updatedViewsList.clear();
         super.reset();
     }
 
@@ -234,14 +230,16 @@ implements Handler, Runnable {
                                 HttpResponse.NOT_FOUND,
                                 "Not Found");
                     } else {
-                        if (iceFacesId == null) {
-                            extract();
+                        if (iceFacesIdSet == null) {
+                            extractICEfacesIDs();
                         }
-                        if (!asyncHttpServer.isValid(iceFacesId)) {
+                        // todo: refactor this!
+                        if (iceFacesIdSet.isEmpty()) {
                             if (LOG.isDebugEnabled()) {
                                 LOG.debug(
                                     "404 Not Found (" +
-                                        "ICEfaces ID: " + iceFacesId + ")");
+                                        "ICEfaces ID(s): " +
+                                            iceFacesIdSet + ")");
                             }
                             _httpResponse =
                                 new HttpResponse(
@@ -249,22 +247,28 @@ implements Handler, Runnable {
                                     HttpResponse.NOT_FOUND,
                                     "Not Found");
                         } else {
-                            if (sequenceNumber == -1) {
-                                extractSequenceNumber();
+                            if (sequenceNumbers == null) {
+                                extractSequenceNumbers();
                             }
-                            updatedViews =
-                                asyncHttpServer.pullPendingUpdatedViews(
-                                    iceFacesId, sequenceNumber);
-                            if (updatedViews != null) {
+                            // todo: refactor this!
+                            updatedViewsList =
+                                asyncHttpServer.getSessionManager().
+                                    getUpdatedViewsManager().pull(
+                                        iceFacesIdSet, sequenceNumbers);
+                            if (updatedViewsList == null ||
+                                updatedViewsList.isEmpty()) {
+
+                                // todo: refactor this!
+                                asyncHttpServer.getSessionManager().
+                                    getRequestManager().
+                                    push(iceFacesIdSet, this);
+                                return;
+                            } else {
                                 _httpResponse =
                                     new HttpResponse(
                                         HttpResponse.HTTP_11,
                                         HttpResponse.OK,
                                         "OK");
-                            } else {
-                                asyncHttpServer.pushPendingRequest(
-                                    iceFacesId, this);
-                                return;
                             }
                         }
                     }
@@ -274,8 +278,11 @@ implements Handler, Runnable {
         httpConnection.getTransaction().setHttpResponse(_httpResponse);
         addHeaderFields();
         addEntityBody();
-        handlerPool.getWriteHandler(httpConnection).handle();
-        handlerPool.returnProcessHandler(this);
+        WriteHandler _writeHandler =
+            new WriteHandler(executeQueue, asyncHttpServer);
+        _writeHandler.setHttpConnection(httpConnection);
+        _writeHandler.handle();
+        reset();
     }
 
     private boolean acceptable() {
@@ -495,15 +502,15 @@ implements Handler, Runnable {
                 "Sequence_Number=\"" + getSequenceNumberValue() + "\"",
                 true);
         }
-        if (LOG.isTraceEnabled()) {
-            try {
-                _httpResponse.putHeader(
-                    "X-Source-Node-Address",
-                    InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException exception) {
-                // do nothing.
-            }
-        }
+//        if (LOG.isTraceEnabled()) {
+//            try {
+//                _httpResponse.putHeader(
+//                    "X-Source-Node-Address",
+//                    InetAddress.getLocalHost().getHostAddress());
+//            } catch (UnknownHostException exception) {
+//                // do nothing.
+//            }
+//        }
     }
 
     private void addGeneralHeaderFields() {
@@ -613,16 +620,29 @@ implements Handler, Runnable {
             HttpResponse.SERVER, AsyncHttpServer.NAME, true);
     }
 
-    private void extract() {
+    private void extractICEfacesIDs() {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Extracting...");
+            LOG.debug("Extracting ICEfaces ID(s)...");
         }
-        final HttpRequest _httpRequest =
+        iceFacesIdSet = new HashSet();
+        HttpRequest _httpRequest =
             httpConnection.getTransaction().getHttpRequest();
         if (_httpRequest.getMethod().equalsIgnoreCase(HttpRequest.GET)) {
-            extractICEfacesID(
+            String[] _iceFacesIds =
                 httpConnection.getTransaction().getHttpRequest().
-                    getParameter(ICEFACES_ID));
+                    getParameters(ICEFACES_ID);
+            for (int i = 0; i < _iceFacesIds.length; i++) {
+                if (asyncHttpServer.getSessionManager().
+                        isValid(_iceFacesIds[i])) {
+
+                    iceFacesIdSet.add(_iceFacesIds[i]);
+                } else {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Invalid ICEfaces ID: " + _iceFacesIds[i] + ")");
+                    }
+                }
+            }
         } else if (
             _httpRequest.getMethod().equalsIgnoreCase(HttpRequest.POST)) {
 
@@ -642,92 +662,83 @@ implements Handler, Runnable {
                         new String(_httpRequest.getEntityBody().getBytes()),
                         "&");
             }
-            final int _tokenCount = _tokens.countTokens();
+            int _tokenCount = _tokens.countTokens();
             for (int i = 0; i < _tokenCount; i++) {
-                final String _token = _tokens.nextToken();
+                String _token = _tokens.nextToken();
                 if (_token.startsWith(ICEFACES_ID)) {
-                    extractICEfacesID(
-                        _token.substring(_token.indexOf("=") + 1));
+                    String _iceFacesId =
+                        _token.substring(_token.indexOf("=") + 1);
+                    if (asyncHttpServer.getSessionManager().
+                            isValid(_iceFacesId)) {
+
+                        iceFacesIdSet.add(_iceFacesId);
+                    } else {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug(
+                                "Invalid ICEfaces ID: " + _iceFacesId + ")");
+                        }
+                    }
                 }
             }
         }
+        httpConnection.getTransaction().getHttpRequest().
+            setICEfacesIDSet(iceFacesIdSet);
     }
 
-    private void extractICEfacesID(final String value) {
+    private void extractSequenceNumbers() {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Extracting ICEfaces ID...");
+            LOG.debug("Extracting Sequence Number(s)...");
         }
-        final StringTokenizer _iceFacesIds = new StringTokenizer(value, ",");
-        final int _tokenCount = _iceFacesIds.countTokens();
-        for (int i = 0; i < _tokenCount; i++) {
-            final String _iceFacesId = _iceFacesIds.nextToken();
-            if (_iceFacesId.trim().length() != 0) {
-                iceFacesId = _iceFacesId;
+        sequenceNumbers =
+            new SequenceNumbers(
                 httpConnection.getTransaction().getHttpRequest().
-                    setICEfacesID(iceFacesId);
-                break;
-            }
-        }
+                    getFieldValues(HttpRequest.X_WINDOW_COOKIE));
         if (LOG.isDebugEnabled()) {
-            LOG.debug("ICEfaces ID: " + iceFacesId);
-        }
-    }
-
-    private void extractSequenceNumber() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Extracting Sequence Number...");
-        }
-        final String[] _xWindowCookieFieldValues =
-            httpConnection.getTransaction().getHttpRequest().
-                getFieldValues(HttpRequest.X_WINDOW_COOKIE);
-        for (int i = 0; i < _xWindowCookieFieldValues.length; i++) {
-            final StringTokenizer _xWindowCookieValues =
-                new StringTokenizer(_xWindowCookieFieldValues[i], ";");
-            while (_xWindowCookieValues.hasMoreTokens()) {
-                final String _xWindowCookieValue =
-                    _xWindowCookieValues.nextToken().trim();
-                if (_xWindowCookieValue.startsWith("Sequence_Number")) {
-                    try {
-                        sequenceNumber =
-                            Long.parseLong(
-                                _xWindowCookieValue.substring(
-                                    _xWindowCookieValue.indexOf("\"") + 1,
-                                    _xWindowCookieValue.lastIndexOf("\"")));
-                    } catch (NumberFormatException exception) {
-                        // do nothing.
-                    }
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Sequence Number: " + sequenceNumber);
-                    }
-                    return;
-                }
-            }
+            LOG.debug("Sequence Number(s): " + sequenceNumbers);
         }
     }
 
     private byte[] getEntityBody() {
-        final StringBuffer _updates = new StringBuffer();
-        final Iterator _updatedViews =
-            updatedViews.getUpdatedViewsSet().iterator();
-        while (_updatedViews.hasNext()) {
-            _updates.append(_updatedViews.next());
-            _updates.append(' ');
+        StringBuffer _entityBody = new StringBuffer();
+        _entityBody.append("<updated-views>");
+        for (int i = 0, _size = updatedViewsList.size(); i < _size; i++) {
+            UpdatedViews _updatedViews = (UpdatedViews)updatedViewsList.get(i);
+            Set _updatedViewsSet = _updatedViews.getUpdatedViewsSet();
+            Iterator _updatedViewsIterator = _updatedViewsSet.iterator();
+            for (int j = 0, _jMax = _updatedViewsSet.size() ; j < _jMax; j++) {
+                if (j != 0) {
+                    _entityBody.append(" ");
+                }
+                _entityBody.
+                    append(_updatedViews.getICEfacesID()).append(":").
+                    append(_updatedViewsIterator.next());
+            }
         }
-        return
-            (
-                UPDATED_VIEWS_START_TAG +
-                    _updates.toString() +
-                UPDATED_VIEWS_END_TAG
-            ).getBytes();
+        _entityBody.append("</updated-views>\r\n\r\n");
+        try {
+            return _entityBody.toString().getBytes("UTF-8");
+        } catch (UnsupportedEncodingException exception) {
+            return _entityBody.toString().getBytes();
+        }
     }
 
     private String getSequenceNumberValue() {
-        return String.valueOf(updatedViews.getSequenceNumber());
+        StringBuffer _sequenceNumbers = new StringBuffer();
+        for (int i = 0, _size = updatedViewsList.size(); i < _size; i++) {
+            UpdatedViews _updatedViews = (UpdatedViews)updatedViewsList.get(i);
+            if (i != 0) {
+                _sequenceNumbers.append(",");
+            }
+            _sequenceNumbers.
+                append(_updatedViews.getICEfacesID()).append(":").
+                append(_updatedViews.getSequenceNumber());
+        }
+        return _sequenceNumbers.toString();
     }
 
     private HttpResponse handleException() {
-        final HttpResponse _httpResponse;
-        final Exception _exception = httpConnection.getException();
+        HttpResponse _httpResponse;
+        Exception _exception = httpConnection.getException();
         if (_exception instanceof ProtocolException) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("400 Bad Request (ProtocolException)");
@@ -747,7 +758,7 @@ implements Handler, Runnable {
                     HttpResponse.HTTP_11,
                     HttpResponse.INTERNAL_SERVER_ERROR,
                     "Internal Server Error");
-            final ByteArrayOutputStream _byteArrayOutputStream =
+            ByteArrayOutputStream _byteArrayOutputStream =
                 new ByteArrayOutputStream();
             _exception.printStackTrace(new PrintStream(_byteArrayOutputStream));
             _httpResponse.setEntityBody(
@@ -762,7 +773,7 @@ implements Handler, Runnable {
                     HttpResponse.HTTP_11,
                     HttpResponse.INTERNAL_SERVER_ERROR,
                     "Internal Server Error");
-            final ByteArrayOutputStream _byteArrayOutputStream =
+            ByteArrayOutputStream _byteArrayOutputStream =
                 new ByteArrayOutputStream();
             _exception.printStackTrace(new PrintStream(_byteArrayOutputStream));
             _httpResponse.setEntityBody(

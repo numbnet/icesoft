@@ -61,7 +61,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class JMSAdapter
 extends AbstractMessageServiceAdapter
-        implements MessageServiceAdapter {
+implements MessageServiceAdapter {
     private static final Log LOG = LogFactory.getLog(JMSAdapter.class);
 
     private JMSProviderConfiguration jmsProviderConfiguration;

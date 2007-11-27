@@ -29,38 +29,27 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
+import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
 import com.icesoft.util.net.messaging.MessageHandler;
 import com.icesoft.util.net.messaging.MessageSelector;
-import com.icesoft.util.net.messaging.MessageServiceClient;
 import com.icesoft.util.net.messaging.TextMessage;
 import com.icesoft.util.net.messaging.expression.Equal;
 import com.icesoft.util.net.messaging.expression.Identifier;
 import com.icesoft.util.net.messaging.expression.StringLiteral;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * <p>
- *   The <code>ContextEventMessageHandler</code> class is responsible for
- *   handling JMS messages with message type
- *   &quot;<code>ContextEvent</code>&quot;.
- * </p>
- *
- * @see        MessageServiceClient
- */
-public abstract class ContextEventMessageHandler
-extends AbstractContextEventMessageHandler
-implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "ContextEvent";
+public class UpdatedViewsQueueExceededMessageHandler
+extends AbstractMessageHandler
+        implements MessageHandler {
+    protected static final String MESSAGE_TYPE = "UpdatedViewsQueueExceeded";
 
     private static final Log LOG =
-        LogFactory.getLog(ContextEventMessageHandler.class);
+        LogFactory.getLog(UpdatedViewsQueueExceededMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -68,7 +57,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected ContextEventMessageHandler() {
+    protected UpdatedViewsQueueExceededMessageHandler() {
         super(messageSelector);
     }
 
@@ -80,35 +69,19 @@ implements MessageHandler {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
         if (message instanceof TextMessage) {
-            StringTokenizer _tokens =
-                new StringTokenizer(((TextMessage)message).getText(), ";");
-            String _event = _tokens.nextToken();
-            if (_event.equals("ContextDestroyed")) {
-                // message-body:
-                //     <event-name>
-                contextDestroyed();
-            } else if (_event.equals("ICEfacesIDDisposed")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>
-                iceFacesIdDisposed(_tokens.nextToken());
-            } else if (_event.equals("ICEfacesIDRetrieved")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>
-                iceFacesIdRetrieved(_tokens.nextToken());
-            } else if (_event.equals("SessionDestroyed")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>
-                sessionDestroyed(_tokens.nextToken());
-            } else if (_event.equals("ViewNumberRetrieved")) {
-                // message-body:
-                //     <event-name>;<ICEfaces ID>;<View Number>
-                viewNumberRetrieved(
-                    _tokens.nextToken(), _tokens.nextToken());
+            if (callback != null) {
+                ((Callback)callback).
+                    updatedViewsQueueExceeded(((TextMessage)message).getText());
             }
         }
     }
 
     public String toString() {
         return getClass().getName();
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void updatedViewsQueueExceeded(final String iceFacesId);
     }
 }

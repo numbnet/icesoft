@@ -29,35 +29,29 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
-
-import com.icesoft.faces.webapp.xmlhttp.Response;
+package com.icesoft.faces.async.common;
 
 import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.icesoft.faces.async.servlet.UpdatedViewsQueueExceededException;
 
-public class ResponseQueue {
-    private static final Log LOG = LogFactory.getLog(ResponseQueue.class);
+public class UpdatedViewsQueue {
+    private static final Log LOG = LogFactory.getLog(UpdatedViewsQueue.class);
 
     private final String iceFacesId;
-    private final String viewNumber;
-
-    private ResponseQueueManager responseQueueManager;
-    private int size;
-    private double threshold;
-
-    private final TreeSet responseQueue = new TreeSet();
+    private final TreeSet updatedViewsQueue = new TreeSet();
 
     private int purgeCounter;
+    private int size;
+    private double threshold;
+    private UpdatedViewsManager updatedViewsManager;
 
-    private long sequenceNumber;
-
-    public ResponseQueue(
-        final String iceFacesId, final String viewNumber,
-        final ResponseQueueManager responseQueueManager)
+    public UpdatedViewsQueue(
+        final String iceFacesId,
+        final UpdatedViewsManager updatedViewsManager)
     throws IllegalArgumentException {
         if (iceFacesId == null) {
             throw new IllegalArgumentException("iceFacesId is null");
@@ -65,74 +59,51 @@ public class ResponseQueue {
         if (iceFacesId.trim().length() == 0) {
             throw new IllegalArgumentException("iceFacesId is empty");
         }
-        if (viewNumber == null) {
-            throw new IllegalArgumentException("viewNumber is null");
-        }
-        if (viewNumber.trim().length() == 0) {
-            throw new IllegalArgumentException("viewNumber is empty");
-        }
         this.iceFacesId = iceFacesId;
-        this.viewNumber = viewNumber;
-        if (responseQueueManager != null) {
-            this.responseQueueManager = responseQueueManager;
-            this.size = this.responseQueueManager.getResponseQueueSize();
+        if (updatedViewsManager != null) {
+            this.updatedViewsManager = updatedViewsManager;
+            this.size =
+                this.updatedViewsManager.getUpdatedViewsQueueSize();
             this.threshold =
-                this.responseQueueManager.getResponseQueueThreshold();
+                this.updatedViewsManager.getUpdatedViewsQueueThreshold();
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Created " + this);
         }
     }
 
-    public void add(final Response response)
-    throws ResponseQueueExceededException {
-        if (response != null &&
-            response.getICEfacesID().equals(iceFacesId) &&
-            response.getViewNumber().equals(viewNumber)) {
+    public void add(final UpdatedViews updatedViews)
+    throws UpdatedViewsQueueExceededException {
+        if (updatedViews != null &&
+            updatedViews.getICEfacesID().equals(iceFacesId)) {
 
-            if (responseQueueManager != null && getSize() == size) {
-                throw new ResponseQueueExceededException();
+            if (updatedViewsManager != null && getSize() == size) {
+                throw new UpdatedViewsQueueExceededException();
             }
-            if (responseQueue.isEmpty()) {
-                responseQueue.add(response);
-            } else if (!response.isEmpty()) {
-                if (((Response)responseQueue.first()).isEmpty()) {
-                    responseQueue.clear();
-                }
-                responseQueue.add(response);
-            }
-            long _sequenceNumber = response.getSequenceNumber();
-            if (_sequenceNumber > sequenceNumber) {
-                sequenceNumber = _sequenceNumber;
-            }
+            updatedViewsQueue.add(updatedViews);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Response added to " + this);
+                LOG.debug("UpdatedViews added to " + this);
             }
         }
     }
 
-    public void addAll(final ResponseQueue responseQueue)
-    throws ResponseQueueExceededException {
-        if (responseQueue != null &&
-            responseQueue.iceFacesId.equals(iceFacesId) &&
-            responseQueue.viewNumber.equals(viewNumber)) {
+    public void addAll(final UpdatedViewsQueue updatedViewsQueue)
+    throws UpdatedViewsQueueExceededException {
+        if (updatedViewsQueue != null && !updatedViewsQueue.isEmpty() &&
+            updatedViewsQueue.iceFacesId.equals(iceFacesId)) {
 
-            Iterator _responses = responseQueue.responseQueue.iterator();
-            while (_responses.hasNext()) {
-                add((Response)_responses.next());
+            final Iterator _updatedViews = updatedViewsQueue.iterator();
+            while (_updatedViews.hasNext()) {
+                add((UpdatedViews)_updatedViews.next());
             }
         }
     }
 
     public void clear() {
-        responseQueue.clear();
+        updatedViewsQueue.clear();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Cleared " + this);
         }
-    }
-
-    public boolean contains(final Response response) {
-        return responseQueue.contains(response);
     }
 
     public String getICEfacesID() {
@@ -144,23 +115,23 @@ public class ResponseQueue {
     }
 
     public long getSequenceNumber() {
-        return sequenceNumber;
+        if (updatedViewsQueue.size() != 0) {
+            return ((UpdatedViews)updatedViewsQueue.last()).getSequenceNumber();
+        } else {
+            return 0;
+        }
     }
 
     public int getSize() {
-        return responseQueue.size();
-    }
-
-    public String getViewNumber() {
-        return viewNumber;
+        return updatedViewsQueue.size();
     }
 
     public boolean isEmpty() {
-        return responseQueue.isEmpty();
+        return updatedViewsQueue.isEmpty();
     }
 
     public Iterator iterator() {
-        return responseQueue.iterator();
+        return updatedViewsQueue.iterator();
     }
 
     public void purge(final long sequenceNumber) {
@@ -171,29 +142,29 @@ public class ResponseQueue {
         final long sequenceNumber, final boolean ignorePurgeCounter) {
 
         if (sequenceNumber > 0) {
-            Iterator _responses = responseQueue.iterator();
-            while (_responses.hasNext()) {
-                Response _response = (Response)_responses.next();
-                if (_response.getSequenceNumber() > sequenceNumber) {
+            final Iterator _updatedViewsIterator = iterator();
+            while (_updatedViewsIterator.hasNext()) {
+                final UpdatedViews _updatedViews =
+                    (UpdatedViews)_updatedViewsIterator.next();
+                if (_updatedViews.getSequenceNumber() > sequenceNumber) {
                     break;
                 }
-                _responses.remove();
+                _updatedViewsIterator.remove();
                 if (!ignorePurgeCounter) {
                     purgeCounter++;
                 }
-                if (responseQueueManager != null) {
-                    responseQueueManager.purged(
-                        iceFacesId, viewNumber, _response.getSequenceNumber());
+                if (updatedViewsManager != null) {
+                    updatedViewsManager.purged(
+                        iceFacesId, _updatedViews.getSequenceNumber());
                 }
             }
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Purged up to " + sequenceNumber + " from " + this);
             }
-            if (responseQueueManager != null &&
+            if (updatedViewsManager != null &&
                 purgeCounter > size * threshold) {
 
-                responseQueueManager.publishPurgeMessage(
-                    iceFacesId, viewNumber);
+                updatedViewsManager.publishPurgeMap(iceFacesId);
             }
         }
     }
@@ -204,8 +175,8 @@ public class ResponseQueue {
 
     public String toString() {
         return
-            "ResponseQueue [" + iceFacesId + "/" + viewNumber + "]:\r\n" +
-            "        sequence number : " + sequenceNumber + "\r\n" +
+            "UpdatedViewsQueue [" + iceFacesId + "]:\r\n" +
+            "        sequence number : " + getSequenceNumber() + "\r\n" +
             "        size            : " + getSize() + "\r\n" +
             "        purge counter   : " + purgeCounter;
     }

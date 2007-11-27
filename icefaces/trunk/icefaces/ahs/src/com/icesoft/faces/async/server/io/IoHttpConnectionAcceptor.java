@@ -31,11 +31,12 @@
  */
 package com.icesoft.faces.async.server.io;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.server.AbstractHttpConnectionAcceptor;
 import com.icesoft.faces.async.server.AsyncHttpServer;
+import com.icesoft.faces.async.server.HttpConnection;
 import com.icesoft.faces.async.server.HttpConnectionAcceptor;
 import com.icesoft.faces.async.server.ReadHandler;
-import com.icesoft.faces.async.server.HttpConnection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -54,9 +55,10 @@ implements HttpConnectionAcceptor {
     protected ServerSocket serverSocket;
 
     public IoHttpConnectionAcceptor(
-        final int port, final AsyncHttpServer asyncHttpServer)
+        final int port, final ExecuteQueue executeQueue,
+        final AsyncHttpServer asyncHttpServer)
     throws IllegalArgumentException {
-        super(port, asyncHttpServer);
+        super(port, executeQueue, asyncHttpServer);
     }
 
     public void closeSocket(final Socket socket) {
@@ -154,6 +156,17 @@ implements HttpConnectionAcceptor {
             _ioHttpConnection = new IoHttpConnection(socket, this);
             httpConnectionMap.put(socket, _ioHttpConnection);
         }
-        handlerPool.getReadHandler(_ioHttpConnection).handle();
+        try {
+            ReadHandler _readHandler =
+                new ReadHandler(executeQueue, asyncHttpServer);
+            _readHandler.setHttpConnection(_ioHttpConnection);
+            _readHandler.handle();
+        } catch (Exception exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "An error occurred while getting a read handler!",
+                    exception);
+            }
+        }
     }
 }

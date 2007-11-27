@@ -29,26 +29,38 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server.messaging;
+package com.icesoft.faces.async.common.messaging;
 
-import com.icesoft.util.net.messaging.AbstractMessageHandler;
 import com.icesoft.util.net.messaging.Message;
 import com.icesoft.util.net.messaging.MessageHandler;
 import com.icesoft.util.net.messaging.MessageSelector;
+import com.icesoft.util.net.messaging.MessageServiceClient;
+import com.icesoft.util.net.messaging.TextMessage;
 import com.icesoft.util.net.messaging.expression.Equal;
 import com.icesoft.util.net.messaging.expression.Identifier;
 import com.icesoft.util.net.messaging.expression.StringLiteral;
 
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class AnnouncementMessageHandler
-extends AbstractMessageHandler
+/**
+ * <p>
+ *   The <code>BufferedContextEventsMessageHandler</code> class is responsible
+ *   for handling JMS messages with message type
+ *   &quot;<code>BufferedContextEvents</code>&quot;.
+ * </p>
+ *
+ * @see        MessageServiceClient
+ */
+public class BufferedContextEventsMessageHandler
+extends AbstractContextEventMessageHandler
 implements MessageHandler {
-    protected static final String MESSAGE_TYPE = "Announcement";
+    protected static final String MESSAGE_TYPE = "BufferedContextEvents";
 
     private static final Log LOG =
-        LogFactory.getLog(AnnouncementMessageHandler.class);
+        LogFactory.getLog(BufferedContextEventsMessageHandler.class);
 
     private static MessageSelector messageSelector =
         new MessageSelector(
@@ -56,7 +68,7 @@ implements MessageHandler {
                 new Identifier(Message.MESSAGE_TYPE),
                 new StringLiteral(MESSAGE_TYPE)));
 
-    protected AnnouncementMessageHandler() {
+    protected BufferedContextEventsMessageHandler() {
         super(messageSelector);
     }
 
@@ -67,14 +79,50 @@ implements MessageHandler {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Handling:\r\n\r\n" + message);
         }
-        publishUpdatedViewsQueues(
-            message.getStringProperty(Message.SOURCE_NODE_ADDRESS));
+        if (message instanceof TextMessage) {
+            StringTokenizer _messages =
+                new StringTokenizer(((TextMessage)message).getText());
+            while (_messages.hasMoreTokens()) {
+                StringTokenizer _tokens =
+                    new StringTokenizer(_messages.nextToken(), ";");
+                String _event = _tokens.nextToken();
+                if (_event.equals("ContextDestroyed")) {
+                    // message-body:
+                    //     <event-name>
+                    if (callback != null) {
+                        ((Callback)callback).contextDestroyed();
+                    }
+                } else if (_event.equals("ICEfacesIDRetrieved")) {
+                    // message-body:
+                    //     <event-name>;<ICEfaces ID>
+                    if (callback != null) {
+                        ((Callback)callback).
+                            iceFacesIdRetrieved(_tokens.nextToken());
+                    }
+                } else if (_event.equals("SessionDestroyed")) {
+                    // message-body:
+                    //     <event-name>;<ICEfaces ID>
+                    if (callback != null) {
+                        ((Callback)callback).
+                            sessionDestroyed(_tokens.nextToken());
+                    }
+                } else if (_event.equals("ViewNumberRetrieved")) {
+                    // message-body:
+                    //     <event-name>;<ICEfaces ID>;<View Number>
+                    if (callback != null) {
+                        ((Callback)callback).
+                            viewNumberRetrieved(
+                                _tokens.nextToken(), _tokens.nextToken());
+                    }
+                }
+            }
+        }
     }
-
-    public abstract void publishUpdatedViewsQueues(
-        final String destinationNodeAddress);
 
     public String toString() {
         return getClass().getName();
     }
+
+    public static interface Callback
+    extends AbstractContextEventMessageHandler.Callback {}
 }

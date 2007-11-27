@@ -50,15 +50,7 @@ package com.icesoft.util.net.messaging;
  * @see        Message
  */
 public interface MessageHandler {
-    /**
-     * <p>
-     *   Handles the specified <code>message</code>.
-     * </p>
-     *
-     * @param      message
-     *                 the message to be handled.
-     */
-    public void handle(final Message message);
+    public Callback getCallback();
 
     /**
      * <p>
@@ -72,6 +64,18 @@ public interface MessageHandler {
 
     /**
      * <p>
+     *   Handles the specified <code>message</code>.
+     * </p>
+     *
+     * @param      message
+     *                 the message to be handled.
+     */
+    public void handle(final Message message);
+
+    public void setCallback(final Callback callback);
+
+    /**
+     * <p>
      *   Sets the MessageSelector of this MessageHandler to the specified
      *   <code>messageSelector</code>.
      * </p>
@@ -81,4 +85,6 @@ public interface MessageHandler {
      * @see        #getMessageSelector()
      */
     public void setMessageSelector(final MessageSelector messageSelector);
+
+    public static interface Callback { /* marker interface */ }
 }

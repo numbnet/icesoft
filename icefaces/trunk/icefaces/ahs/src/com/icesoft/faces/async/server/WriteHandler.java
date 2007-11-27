@@ -31,6 +31,7 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.util.net.http.HttpResponse;
 import com.icesoft.faces.util.net.http.HttpRequest;
 
@@ -59,16 +60,13 @@ implements Handler, Runnable {
 
     /**
      * <p>
-     *   Constructs a <code>WriteHandler</code> object with the specified
-     *   <code>httpConnection</code>.
+     *   Constructs a <code>WriteHandler</code> object.
      * </p>
-     *
-     * @param      httpConnection
-     *                 the HTTP connection that is to be handled by the
-     *                 <code>WriteHandler</code> to be created.
      */
-    public WriteHandler(final HttpConnection httpConnection) {
-        super(httpConnection);
+    public WriteHandler(
+        final ExecuteQueue executeQueue, final AsyncHttpServer asyncHttpServer)
+    throws IllegalArgumentException {
+        super(executeQueue, asyncHttpServer);
     }
 
     public void run() {
@@ -97,7 +95,7 @@ implements Handler, Runnable {
                 }
             }
             httpConnection.reset();
-            handlerPool.returnWriteHandler(this);
+            reset();
         }
     }
 }

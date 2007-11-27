@@ -85,112 +85,112 @@ public class AsyncServlet extends HttpServlet {
 
     public void init(final ServletConfig servletConfig)
     throws ServletException {
-        try {
-            AsyncHttpServerSettings _asyncHttpServerSettings =
-                new AsyncHttpServerSettings();
-            String blockingValue =
-                servletConfig.getInitParameter(BLOCKING_KEY);
-            if (blockingValue != null) {
-                _asyncHttpServerSettings.setBlocking(
-                    Boolean.valueOf(blockingValue).booleanValue());
-            }
-            String compressionValue =
-                servletConfig.getInitParameter(COMPRESSION_KEY);
-            if (compressionValue != null) {
-                _asyncHttpServerSettings.setCompression(
-                    Boolean.valueOf(compressionValue).booleanValue());
-            }
-            String persistentValue =
-                servletConfig.getInitParameter(PERSISTENT_KEY);
-            if (persistentValue != null) {
-                _asyncHttpServerSettings.setPersistent(
-                    Boolean.valueOf(persistentValue).booleanValue());
-            }
-            String portValue =
-                servletConfig.getInitParameter(PORT_KEY);
-            if (portValue != null) {
-                try {
-                    _asyncHttpServerSettings.setPort(
-                        Integer.parseInt(portValue));
-                } catch (NumberFormatException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error("Illegal port: " + portValue, exception);
-                    }
-                } catch (IllegalArgumentException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error("Illegal port: " + portValue);
-                    }
-                }
-            }
-            String executeQueueSizeValue =
-                servletConfig.getInitParameter(EXECUTE_QUEUE_SIZE_KEY);
-            if (executeQueueSizeValue != null) {
-                try {
-                    _asyncHttpServerSettings.setExecuteQueueSize(
-                        Integer.parseInt(executeQueueSizeValue));
-                } catch (NumberFormatException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "Illegal execute queue size: " +
-                                executeQueueSizeValue,
-                            exception);
-                    }
-                }
-            }
-            String responseQueueSize =
-                servletConfig.getInitParameter(RESPONSE_QUEUE_SIZE_KEY);
-            if (responseQueueSize != null) {
-                try {
-                    _asyncHttpServerSettings.setResponseQueueSize(
-                        Integer.parseInt(responseQueueSize));
-                    _asyncHttpServerSettings.setUpdatedViewsQueueSize(
-                        Integer.parseInt(responseQueueSize));
-                } catch (NumberFormatException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "Illegal response queue size: " + responseQueueSize,
-                            exception);
-                    }
-                }
-            }
-            String responseQueueThreshold =
-                servletConfig.getInitParameter(RESPONSE_QUEUE_THRESHOLD_KEY);
-            if (responseQueueThreshold != null) {
-                try {
-                    _asyncHttpServerSettings.setResponseQueueThreshold(
-                        Double.parseDouble(responseQueueThreshold));
-                    _asyncHttpServerSettings.setUpdatedViewsQueueThreshold(
-                        Double.parseDouble(responseQueueThreshold));
-                } catch (NumberFormatException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "Illegal response queue threshold: " +
-                                responseQueueThreshold,
-                            exception);
-                    }
-                }
-            }
-            String purgeMessageContents =
-                servletConfig.getInitParameter(PURGE_MESSAGE_CONTENTS_KEY);
-            if (purgeMessageContents != null) {
-                _asyncHttpServerSettings.setPurgeMessageContents(
-                    purgeMessageContents);
-            }
-            //Start the asyncHttpServer
-            asyncHttpServer =
-                new AsyncHttpServer(
-                    _asyncHttpServerSettings,
-                    servletConfig.getServletContext());
-            asyncHttpServer.start();
-            //Register the asyncHttpServer as the handler for responses
-//            ResponseStateManagerFactory.
-//                getResponseStateManager(servletConfig.getServletContext()).
-//                    setResponseHandler(asyncHttpServer);
-        } catch (Throwable throwable) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("An error occurred!", throwable);
-            }
-        }
+//        try {
+//            AsyncHttpServerSettings _asyncHttpServerSettings =
+//                new AsyncHttpServerSettings();
+//            String blockingValue =
+//                servletConfig.getInitParameter(BLOCKING_KEY);
+//            if (blockingValue != null) {
+//                _asyncHttpServerSettings.setBlocking(
+//                    Boolean.valueOf(blockingValue).booleanValue());
+//            }
+//            String compressionValue =
+//                servletConfig.getInitParameter(COMPRESSION_KEY);
+//            if (compressionValue != null) {
+//                _asyncHttpServerSettings.setCompression(
+//                    Boolean.valueOf(compressionValue).booleanValue());
+//            }
+//            String persistentValue =
+//                servletConfig.getInitParameter(PERSISTENT_KEY);
+//            if (persistentValue != null) {
+//                _asyncHttpServerSettings.setPersistent(
+//                    Boolean.valueOf(persistentValue).booleanValue());
+//            }
+//            String portValue =
+//                servletConfig.getInitParameter(PORT_KEY);
+//            if (portValue != null) {
+//                try {
+//                    _asyncHttpServerSettings.setPort(
+//                        Integer.parseInt(portValue));
+//                } catch (NumberFormatException exception) {
+//                    if (LOG.isErrorEnabled()) {
+//                        LOG.error("Illegal port: " + portValue, exception);
+//                    }
+//                } catch (IllegalArgumentException exception) {
+//                    if (LOG.isErrorEnabled()) {
+//                        LOG.error("Illegal port: " + portValue);
+//                    }
+//                }
+//            }
+//            String executeQueueSizeValue =
+//                servletConfig.getInitParameter(EXECUTE_QUEUE_SIZE_KEY);
+//            if (executeQueueSizeValue != null) {
+//                try {
+//                    _asyncHttpServerSettings.setExecuteQueueSize(
+//                        Integer.parseInt(executeQueueSizeValue));
+//                } catch (NumberFormatException exception) {
+//                    if (LOG.isErrorEnabled()) {
+//                        LOG.error(
+//                            "Illegal execute queue size: " +
+//                                executeQueueSizeValue,
+//                            exception);
+//                    }
+//                }
+//            }
+//            String responseQueueSize =
+//                servletConfig.getInitParameter(RESPONSE_QUEUE_SIZE_KEY);
+//            if (responseQueueSize != null) {
+//                try {
+//                    _asyncHttpServerSettings.setResponseQueueSize(
+//                        Integer.parseInt(responseQueueSize));
+//                    _asyncHttpServerSettings.setUpdatedViewsQueueSize(
+//                        Integer.parseInt(responseQueueSize));
+//                } catch (NumberFormatException exception) {
+//                    if (LOG.isErrorEnabled()) {
+//                        LOG.error(
+//                            "Illegal response queue size: " + responseQueueSize,
+//                            exception);
+//                    }
+//                }
+//            }
+//            String responseQueueThreshold =
+//                servletConfig.getInitParameter(RESPONSE_QUEUE_THRESHOLD_KEY);
+//            if (responseQueueThreshold != null) {
+//                try {
+//                    _asyncHttpServerSettings.setResponseQueueThreshold(
+//                        Double.parseDouble(responseQueueThreshold));
+//                    _asyncHttpServerSettings.setUpdatedViewsQueueThreshold(
+//                        Double.parseDouble(responseQueueThreshold));
+//                } catch (NumberFormatException exception) {
+//                    if (LOG.isErrorEnabled()) {
+//                        LOG.error(
+//                            "Illegal response queue threshold: " +
+//                                responseQueueThreshold,
+//                            exception);
+//                    }
+//                }
+//            }
+//            String purgeMessageContents =
+//                servletConfig.getInitParameter(PURGE_MESSAGE_CONTENTS_KEY);
+//            if (purgeMessageContents != null) {
+//                _asyncHttpServerSettings.setPurgeMessageContents(
+//                    purgeMessageContents);
+//            }
+//            //Start the asyncHttpServer
+//            asyncHttpServer =
+//                new AsyncHttpServer(
+//                    _asyncHttpServerSettings,
+//                    servletConfig.getServletContext());
+//            asyncHttpServer.start();
+//            //Register the asyncHttpServer as the handler for responses
+////            ResponseStateManagerFactory.
+////                getResponseStateManager(servletConfig.getServletContext()).
+////                    setResponseHandler(asyncHttpServer);
+//        } catch (Throwable throwable) {
+//            if (LOG.isErrorEnabled()) {
+//                LOG.error("An error occurred!", throwable);
+//            }
+//        }
     }
 
     protected void service(

@@ -55,16 +55,6 @@ public interface HttpConnectionAcceptor {
 
     /**
      * <p>
-     *   Gets the Asynchronous HTTP Server associated with this
-     *   <code>HttpConnectionAcceptor</code>.
-     * </p>
-     *
-     * @return     the Asynchronous HTTP Server.
-     */
-    public AsyncHttpServer getAsyncHttpServer();
-
-    /**
-     * <p>
      *   Gets the port this <code>HttpConnectionAcceptor</code> listens to to
      *   accept incoming HTTP connections.
      * </p>

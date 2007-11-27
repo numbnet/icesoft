@@ -31,12 +31,14 @@
  */
 package com.icesoft.faces.util.net.http;
 
+import java.util.Set;
+
 public class HttpRequest
 extends com.icesoft.util.net.http.HttpRequest {
     /** HTTP request header (extension): X-Window-Cookie. */
     public static final String X_WINDOW_COOKIE = "X-Window-Cookie";
 
-    private String iceFacesId;
+    private Set iceFacesIdSet;
     
     public HttpRequest(
         final String method, final String requestUri, final String httpVersion)
@@ -44,11 +46,11 @@ extends com.icesoft.util.net.http.HttpRequest {
         super(method, requestUri, httpVersion);
     }
 
-    public String getICEfacesID() {
-        return iceFacesId;
+    public Set getICEfacesIDSet() {
+        return iceFacesIdSet;
     }
 
-    public void setICEfacesID(final String iceFacesId) {
-        this.iceFacesId = iceFacesId;
+    public void setICEfacesIDSet(final Set iceFacesIdSet) {
+        this.iceFacesIdSet = iceFacesIdSet;
     }
 }

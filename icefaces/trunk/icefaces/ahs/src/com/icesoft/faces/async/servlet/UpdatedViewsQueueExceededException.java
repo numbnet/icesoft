@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
+package com.icesoft.faces.async.servlet;
 
 public class UpdatedViewsQueueExceededException
 extends Exception {

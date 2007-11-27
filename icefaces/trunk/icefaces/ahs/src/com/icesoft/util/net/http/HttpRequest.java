@@ -190,11 +190,11 @@ implements Cloneable, Serializable {
 
     private static final Log LOG = LogFactory.getLog(HttpRequest.class);
 
+    private final Map parameterMap = new HashMap();
+    private final Map cookieMap = new HashMap();
+
     private String method;
     private String requestUri;
-
-    private Map parameterMap = new HashMap();
-    private Map cookieMap = new HashMap();
 
     private long requestTime;
 
@@ -284,7 +284,11 @@ implements Cloneable, Serializable {
     }
 
     public String getParameter(final String name) {
-        return (String)parameterMap.get(name);
+        if (parameterMap.containsKey(name)) {
+            return ((String[])parameterMap.get(name))[0];
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -297,6 +301,10 @@ implements Cloneable, Serializable {
      */
     public Map getParameterMap() {
         return Collections.unmodifiableMap(parameterMap);
+    }
+
+    public String[] getParameters(final String name) {
+        return (String[])parameterMap.get(name);
     }
 
     /**
@@ -487,9 +495,18 @@ implements Cloneable, Serializable {
             for (int i = 0; i < _tokenCount; i++) {
                 String _parameter = _parameters.nextToken();
                 _index = _parameter.indexOf("=");
-                queryMap.put(
-                    _parameter.substring(0, _index),
-                    _parameter.substring(_index + 1));
+                String _name = _parameter.substring(0, _index);
+                String _value = _parameter.substring(_index + 1);
+                if (!queryMap.containsKey(_name)) {
+                    queryMap.put(_name, new String[] {_value});
+                } else {
+                    String[] _oldValues = (String[])queryMap.remove(_name);
+                    String[] _newValues = new String[_oldValues.length + 1];
+                    System.arraycopy(
+                        _oldValues, 0, _newValues, 0, _oldValues.length);
+                    _newValues[_newValues.length - 1] = _value;
+                    queryMap.put(_name, _newValues);
+                }
             }
         }
     }

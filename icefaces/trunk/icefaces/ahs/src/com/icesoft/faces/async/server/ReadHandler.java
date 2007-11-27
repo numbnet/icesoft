@@ -31,6 +31,7 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.util.net.http.HttpParser;
 import com.icesoft.faces.util.net.http.HttpRequest;
 
@@ -104,16 +105,13 @@ implements Handler, Runnable {
 
     /**
      * <p>
-     *   Constructs a <code>ReadHandler</code> object with the specified
-     *   <code>httpConnection</code>.
+     *   Constructs a <code>ReadHandler</code> object.
      * </p>
-     *
-     * @param      httpConnection
-     *                 the HTTP connection that is to be handled by the
-     *                 <code>ReadHandler</code> to be created.
      */
-    public ReadHandler(final HttpConnection httpConnection) {
-        super(httpConnection);
+    public ReadHandler(
+        final ExecuteQueue executeQueue, final AsyncHttpServer asyncHttpServer)
+    throws IllegalArgumentException {
+        super(executeQueue, asyncHttpServer);
     }
 
     public void reset() {
@@ -127,6 +125,7 @@ implements Handler, Runnable {
             buffer.delete(0, buffer.length() - 1);
         }
         entityBodyBuffer.reset();
+        super.reset();
     }
 
     public void run() {
@@ -150,12 +149,12 @@ implements Handler, Runnable {
                             httpConnection.requestClose();
                             if (httpConnection.getTransaction().
                                     hasHttpRequest()) {
-                                asyncHttpServer.cancelHttpRequest(
+                                asyncHttpServer.cancelRequest(
                                     httpConnection.getTransaction().
-                                        getHttpRequest().getICEfacesID());
+                                        getHttpRequest().getICEfacesIDSet());
                             }
                             httpConnection.reset();
-                            handlerPool.returnReadHandler(this);
+                            reset();
                             if (LOG.isTraceEnabled()) {
                                 LOG.trace(
                                     "Close: User-Agent closed the connection!");
@@ -356,90 +355,22 @@ implements Handler, Runnable {
                 }
             }
         }
-        handlerPool.getProcessHandler(httpConnection).handle();
+        try {
+            ProcessHandler _processHandler =
+                new ProcessHandler(executeQueue, asyncHttpServer);
+            _processHandler.setHttpConnection(httpConnection);
+            _processHandler.handle();
+        } catch (Exception exception) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(
+                    "An error occurred while borrowing a process handler!",
+                    exception);
+            }
+        }
         asyncHttpServer.getHttpConnectionAcceptor(asyncHttpServer.getPort()).
             doneReading(httpConnection);
-        handlerPool.returnReadHandler(this);
+        reset();
     }
-
-    /* OLD RUN */
-//    public void run() {
-//        BufferedReader _bufferedReader =
-//            new BufferedReader(
-//                new InputStreamReader(httpConnection.getInputStream()));
-//        String _line;
-//        try {
-//            _line = _bufferedReader.readLine();
-//            if (_line == null) {
-//                // User-Agent closed the connection?!
-//                // (Linux; Windows seems to throw a SocketException)
-//                httpConnection.requestClose();
-//                httpConnection.reset();
-//                handlerPool.returnReadHandler(this);
-//                return;
-//            }
-//            HttpRequest _httpRequest =
-//                (HttpRequest)HTTP_PARSER.parseRequestLine(_line);
-//            while (
-//                (_line = _bufferedReader.readLine()) != null &&
-//                _line.length() != 0) {
-//
-//                HTTP_PARSER.parseHeader(_line, _httpRequest);
-//            }
-//            if (_httpRequest.containsHeader(
-//                    HttpRequest.EntityBody.CONTENT_LENGTH)) {
-//
-//                char[] _chars =
-//                    new char[
-//                        _httpRequest.getFieldValueAsInt(
-//                            HttpRequest.EntityBody.CONTENT_LENGTH)];
-//                _bufferedReader.read(_chars);
-//                _httpRequest.setEntityBody(
-//                    new HttpRequest.EntityBody(
-//                        new String(_chars).getBytes("UTF-8")));
-//            }
-//            if (log.isDebugEnabled()) {
-//                log.debug(
-//                    "HTTP Request received from " +
-//                        httpConnection.getRemoteSocketAddress() + ":\r\n\r\n" +
-//                            _httpRequest.getMessage(true));
-//            }
-//            httpConnection.getTransaction().setHttpRequest(_httpRequest);
-//        } catch (SocketException exception) {
-//            // User-Agent closed the connection?!
-//            // (Windows; Linux seems to return null on a readLine() invocation)
-//            httpConnection.requestClose();
-//            httpConnection.reset();
-//            handlerPool.returnReadHandler(this);
-//            return;
-//        } catch (ProtocolException exception) {
-//            if (log.isErrorEnabled()) {
-//                log.error(
-//                    "An error occurred while " +
-//                        "parsing the incoming HTTP Request!",
-//                    exception);
-//            }
-//            httpConnection.setException(exception);
-//        } catch (IOException exception) {
-//            if (log.isErrorEnabled()) {
-//                log.error(
-//                    "An I/O error occurred while " +
-//                        "reading the incoming HTTP Request!",
-//                    exception);
-//            }
-//            httpConnection.setException(exception);
-//        } finally {
-//            try {
-//                _bufferedReader.close();
-//            } catch (IOException exception) {
-//                log.error(
-//                    "An I/O error occurred while closing the input stream",
-//                    exception);
-//            }
-//        }
-//        handlerPool.getProcessHandler(httpConnection).handle();
-//        handlerPool.returnReadHandler(this);
-//    }
 
     private void park() {
         asyncHttpServer.getHttpConnectionAcceptor(asyncHttpServer.getPort()).

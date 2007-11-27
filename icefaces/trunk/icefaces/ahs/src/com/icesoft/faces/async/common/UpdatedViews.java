@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
+package com.icesoft.faces.async.common;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -75,8 +75,8 @@ implements Comparable {
                 new ClassCastException(
                     "object is not an instance of UpdatedViews");
         }
-        final UpdatedViews _updatedViews = (UpdatedViews)object;
-        final int _result = iceFacesId.compareTo(_updatedViews.iceFacesId);
+        UpdatedViews _updatedViews = (UpdatedViews)object;
+        int _result = iceFacesId.compareTo(_updatedViews.iceFacesId);
         if (_result != 0) {
             return _result;
         } else if (sequenceNumber < _updatedViews.sequenceNumber) {
@@ -86,21 +86,6 @@ implements Comparable {
         } else {
             return 0;
         }
-    }
-
-    public String getEntityBody() {
-        final StringBuffer _entityBody = new StringBuffer();
-        _entityBody.append("<updated-views>");
-        final int _size = updatedViewsSet.size();
-        final Iterator _updatedViewsIterator = updatedViewsSet.iterator();
-        for (int i = 0; i < _size; i++) {
-            if (i != 0) {
-                _entityBody.append(" ");
-            }
-            _entityBody.append(_updatedViewsIterator.next());
-        }
-        _entityBody.append("<updated-views>");
-        return _entityBody.toString();
     }
 
     public String getICEfacesID() {
@@ -122,8 +107,7 @@ implements Comparable {
         if (!updatedViews1.iceFacesId.equals(updatedViews2.iceFacesId)) {
             _updatedViews = null;
         } else {
-            final Set _updatedViewsSet =
-                new HashSet(updatedViews1.updatedViewsSet);
+            Set _updatedViewsSet = new HashSet(updatedViews1.updatedViewsSet);
             _updatedViewsSet.addAll(updatedViews2.updatedViewsSet);
             _updatedViews =
                 new UpdatedViews(
@@ -138,11 +122,10 @@ implements Comparable {
 
     public String toString() {
         StringBuffer _string = new StringBuffer();
-        _string.append("UpdatedViews [ICEfaces ID: ");
-        _string.append(iceFacesId);
-        _string.append(", Sequence Number: ");
-        _string.append(sequenceNumber);
-        _string.append(", View Numbers: ");
+        _string.
+            append("UpdatedViews [ICEfaces ID: ").append(iceFacesId).
+            append(", Sequence Number: ").append(sequenceNumber).
+            append(", View Numbers: ");
         int _size = updatedViewsSet.size();
         Iterator _updatedViewsIterator = updatedViewsSet.iterator();
         for (int i = 0; i < _size; i++) {

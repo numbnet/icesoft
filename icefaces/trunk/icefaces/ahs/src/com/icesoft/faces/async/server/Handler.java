@@ -42,7 +42,7 @@ package com.icesoft.faces.async.server;
  * </p>
  */
 public interface Handler
-extends Runnable {
+extends com.icesoft.faces.async.common.Handler {
     /**
      * <p>
      *   Gets the Asynchronous HTTP Server associated with the
@@ -50,7 +50,6 @@ extends Runnable {
      * </p>
      *
      * @return     the Asynchronous HTTP Server.
-     * @see        #setAsyncHttpServer(AsyncHttpServer)
      */
     public AsyncHttpServer getAsyncHttpServer();
 
@@ -63,30 +62,6 @@ extends Runnable {
      * @see        #setHttpConnection(HttpConnection)
      */
     public HttpConnection getHttpConnection();
-
-    /**
-     * <p>
-     *   Handles the associated HTTP connection.
-     * </p>
-     *
-     * @see        #getHttpConnection()
-     * @see        #setHttpConnection(HttpConnection)
-     */
-    public void handle();
-
-    public void reset();
-    
-    /**
-     * <p>
-     *   Sets the Asynchronous HTTP Server associated with the
-     *   <code>Handler</code> to the specified <code>asyncHttpServer</code>.
-     * </p>
-     *
-     * @param      asyncHttpServer
-     *                 the new Asynchronous HTTP Server.
-     * @see        #getAsyncHttpServer()
-     */
-    public void setAsyncHttpServer(final AsyncHttpServer asyncHttpServer);
 
     /**
      * <p>

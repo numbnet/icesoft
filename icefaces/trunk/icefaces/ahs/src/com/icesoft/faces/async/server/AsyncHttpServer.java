@@ -36,32 +36,18 @@ package com.icesoft.faces.async.server;
  *       determine to go either all JMS or keep the listener option.
  */
 import com.icesoft.faces.async.server.io.IoHttpConnectionAcceptor;
-import com.icesoft.faces.async.server.messaging.AbstractContextEventMessageHandler;
-import com.icesoft.faces.async.server.messaging.AnnouncementMessageHandler;
-import com.icesoft.faces.async.server.messaging.BufferedContextEventsMessageHandler;
-import com.icesoft.faces.async.server.messaging.ContextEventMessageHandler;
-import com.icesoft.faces.async.server.messaging.PurgeMessageHandler;
-import com.icesoft.faces.async.server.messaging.UpdatedViewsMessageHandler;
+import com.icesoft.faces.async.common.messaging.MessageService;
 import com.icesoft.faces.async.server.nio.NioHttpConnectionAcceptor;
+import com.icesoft.faces.async.common.SessionManager;
+import com.icesoft.faces.async.common.ExecuteQueue;
 //import com.icesoft.faces.util.event.servlet.*;
-import com.icesoft.util.net.messaging.Message;
-import com.icesoft.util.net.messaging.MessageSelector;
 import com.icesoft.util.net.messaging.MessageServiceClient;
-import com.icesoft.util.net.messaging.MessageServiceException;
-import com.icesoft.util.net.messaging.expression.Or;
-import com.icesoft.util.net.messaging.jms.JMSAdapter;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.util.net.messaging.jms.JMSProviderConfigurationProperties;
 
 import java.util.EventListener;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
-import javax.servlet.ServletContext;
 import javax.swing.event.EventListenerList;
 
 import org.apache.commons.logging.Log;
@@ -76,28 +62,15 @@ import org.apache.commons.logging.LogFactory;
  * </p>
  */
 public class AsyncHttpServer
-/*implements ContextEventListener,*/ {
-    public static final String NAME = "Asynchronous HTTP Server 1.6";
+/*implements ContextEventListener*/ {
+    public static final String NAME = "Asynchronous HTTP Server 1.7";
 
-    private static final String ANNOUNCEMENT_MESSAGE_TYPE =
-        "Announcement";
-//    private static final String RESPONSE_QUEUE_EXCEEDED_MESSAGE_TYPE =
-//        "ResponseQueueExceeded";
-    private static final String UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE =
-        "UpdatedViewsQueueExceeded";
-
+    private static final String ANNOUNCEMENT_MESSAGE_TYPE = "Announcement";
     private static final Log LOG = LogFactory.getLog(AsyncHttpServer.class);
 
-    private EventListenerList asyncHttpServerListenerList =
+    private final EventListenerList asyncHttpServerListenerList =
         new EventListenerList();
-    private ExecuteQueue executeQueue = new ExecuteQueue();
-    private Map httpConnectionAcceptorMap = new HashMap();
-    private final Map pendingRequestMap = new HashMap();
-//    private final ResponseQueueManager responseQueueManager =
-//        new ResponseQueueManager(this);
-    private final Map sessionMap = new HashMap();
-    private final UpdatedViewsQueueManager updatedViewsQueueManager =
-        new UpdatedViewsQueueManager(this);
+    private final Map httpConnectionAcceptorMap = new HashMap();
 
     // Asynchronous HTTP Server properties with their default values:
     private boolean blocking;
@@ -105,152 +78,8 @@ public class AsyncHttpServer
     private boolean persistent;
     private int port;
 
-    private ServletContext servletContext;
-
-    private MessageServiceClient messageServiceClient;
-
-    private AnnouncementMessageHandler announcementMessageHandler =
-        new AnnouncementMessageHandler() {
-            public void publishUpdatedViewsQueues(
-                final String destinationNodeAddress) {
-
-                AsyncHttpServer.this.publishUpdatedViewsQueues(
-                    destinationNodeAddress);
-            }
-        };
-    private AbstractContextEventMessageHandler
-        contextEventMessageHandlerAdapter =
-            new AbstractContextEventMessageHandler() {
-                public String getMessageType() {
-                    return null;
-                }
-
-                public void handle(final Message message) {
-                    // do nothing.
-                }
-
-                public void contextDestroyed() {
-                    // do nothing.
-                }
-
-                public void iceFacesIdDisposed(final String iceFacesId) {
-                    sessionDestroyed(iceFacesId);
-                }
-
-                public void iceFacesIdRetrieved(final String iceFacesId) {
-                    synchronized (sessionMap) {
-                        if (!sessionMap.containsKey(iceFacesId)) {
-                            sessionMap.put(iceFacesId, new HashSet());
-                        }
-                    }
-                }
-
-                public void sessionDestroyed(final String iceFacesId) {
-                    synchronized (pendingRequestMap) {
-                        synchronized (sessionMap) {
-                            if (sessionMap.containsKey(iceFacesId)) {
-                                if (LOG.isDebugEnabled()) {
-                                    LOG.debug(
-                                        "Session Destroyed: " + iceFacesId);
-                                }
-                                sessionMap.remove(iceFacesId);
-                            }
-                            if (pendingRequestMap.containsKey(iceFacesId)) {
-                                ((ProcessHandler)
-                                    pendingRequestMap.remove(iceFacesId)).
-                                        handle();
-                            }
-                            updatedViewsQueueManager.remove(iceFacesId);
-                        }
-                    }
-                }
-
-                public void viewNumberRetrieved(
-                    final String iceFacesId, final String viewNumber) {
-
-                    synchronized (sessionMap) {
-                        if (sessionMap.containsKey(iceFacesId)) {
-                            Set _viewNumberSet =
-                                (Set)sessionMap.get(iceFacesId);
-                            if (!_viewNumberSet.contains(viewNumber)) {
-                                _viewNumberSet.add(viewNumber);
-                            }
-                        }
-                    }
-                }
-            };
-    private BufferedContextEventsMessageHandler
-        bufferedContextEventsMessageHandler =
-            new BufferedContextEventsMessageHandler() {
-                public void contextDestroyed() {
-                    contextEventMessageHandlerAdapter.contextDestroyed();
-                }
-
-                public void iceFacesIdDisposed(final String iceFacesId) {
-                    contextEventMessageHandlerAdapter.iceFacesIdDisposed(
-                        iceFacesId);
-                }
-
-                public void iceFacesIdRetrieved(final String iceFacesId) {
-                    contextEventMessageHandlerAdapter.iceFacesIdRetrieved(
-                        iceFacesId);
-                }
-
-                public void sessionDestroyed(final String iceFacesId) {
-                    contextEventMessageHandlerAdapter.sessionDestroyed(
-                        iceFacesId);
-                }
-
-                public void viewNumberRetrieved(
-                    final String iceFacesId, final String viewNumber) {
-
-                    contextEventMessageHandlerAdapter.viewNumberRetrieved(
-                        iceFacesId, viewNumber);
-                }
-            };
-    private ContextEventMessageHandler contextEventMessageHandler =
-        new ContextEventMessageHandler() {
-            public void contextDestroyed() {
-                contextEventMessageHandlerAdapter.contextDestroyed();
-            }
-
-            public void iceFacesIdDisposed(final String iceFacesId) {
-                contextEventMessageHandlerAdapter.iceFacesIdDisposed(
-                    iceFacesId);
-            }
-
-            public void iceFacesIdRetrieved(final String iceFacesId) {
-                contextEventMessageHandlerAdapter.iceFacesIdRetrieved(
-                    iceFacesId);
-            }
-
-            public void sessionDestroyed(final String iceFacesId) {
-                contextEventMessageHandlerAdapter.sessionDestroyed(iceFacesId);
-            }
-
-            public void viewNumberRetrieved(
-                final String iceFacesId, final String viewNumber) {
-
-                contextEventMessageHandlerAdapter.viewNumberRetrieved(
-                    iceFacesId, viewNumber);
-            }
-        };
-    private PurgeMessageHandler purgeMessageHandler =
-        new PurgeMessageHandler() {
-            public void purgeUpdatedViews(final Map purgeMap) {
-                AsyncHttpServer.this.purgeUpdatedViews(purgeMap);
-            }
-        };
-//    private ResponseMessageHandler responseMessageHandler =
-//        new ResponseMessageHandler() {
-//            public void sendResponse(Response response) {
-//                AsyncHttpServer.this.sendResponse(response);
-    private UpdatedViewsMessageHandler updatedViewsMessageHandler =
-        new UpdatedViewsMessageHandler() {
-            public void sendUpdatedViews(final UpdatedViews updatedViews) {
-                AsyncHttpServer.this.sendUpdatedViews(updatedViews);
-            }
-        };
+    private SessionManager sessionManager;
+    private MessageService messageService;
 
     /**
      * <p>
@@ -267,35 +96,35 @@ public class AsyncHttpServer
      */
     public AsyncHttpServer(
         final AsyncHttpServerSettings asyncHttpServerSettings,
-        final ServletContext servletContext)
+        final SessionManager sessionManager,
+        final MessageService messageService)
     throws IllegalArgumentException {
         if (asyncHttpServerSettings == null) {
             throw
                 new IllegalArgumentException("asyncHttpServerSettings is null");
         }
-        if (servletContext == null) {
-            throw new IllegalArgumentException("servletContext is null");
-        }
         setBlocking(asyncHttpServerSettings.isBlocking());
         setCompression(asyncHttpServerSettings.useCompression());
         setPersistent(asyncHttpServerSettings.isPersistent());
         setPort(asyncHttpServerSettings.getPort());
-        executeQueue =
-            new ExecuteQueue(asyncHttpServerSettings.getExecuteQueueSize());
-//        responseQueueManager.setResponseQueueSize(
-//            asyncHttpServerSettings.getResponseQueueSize());
-//        responseQueueManager.setResponseQueueThreshold(
-//            asyncHttpServerSettings.getResponseQueueThreshold());
-//        responseQueueManager.setPurgeMessageContents(
-//            asyncHttpServerSettings.getPurgeMessageContents());
-        updatedViewsQueueManager.setUpdatedViewsQueueSize(
-            asyncHttpServerSettings.getUpdatedViewQueueSize());
-        updatedViewsQueueManager.setUpdatedViewsQueueThreshold(
-            asyncHttpServerSettings.getUpdatedViewQueueThreshold());
-        updatedViewsQueueManager.setPurgeMessageContents(
-            asyncHttpServerSettings.getPurgeMessageContents());
 //        ContextEventRepeater.addListener(this);
-        this.servletContext = servletContext;
+        this.sessionManager = sessionManager;
+        this.messageService = messageService;
+        if (!blocking) {
+            httpConnectionAcceptorMap.put(
+                new Integer(port),
+                new NioHttpConnectionAcceptor(
+                    port,
+                    new ExecuteQueue(),
+                    this));
+        } else {
+            httpConnectionAcceptorMap.put(
+                new Integer(port),
+                new IoHttpConnectionAcceptor(
+                    port,
+                    new ExecuteQueue(),
+                    this));
+        }
     }
 
     /**
@@ -323,26 +152,13 @@ public class AsyncHttpServer
 //         */
 //    }
 
-    public void cancelHttpRequest(String iceFacesId) {
-        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
-            return;
+    public void cancelRequest(final Set iceFacesIdSet) {
+        // todo: refactor this!
+        com.icesoft.faces.async.common.Handler _handler =
+            sessionManager.getRequestManager().pull(iceFacesIdSet);
+        if (_handler != null) {
+            _handler.reset();
         }
-        ProcessHandler _processHandler = pullPendingRequest(iceFacesId);
-        if (_processHandler != null) {
-            _processHandler.getHandlerPool().
-                returnProcessHandler(_processHandler);
-        }
-    }
-
-    /**
-     * <p>
-     *   Gets the execute queue of this <code>AsyncHttpServer</code>.
-     * </p>
-     *
-     * @return     the execute queue.
-     */
-    public ExecuteQueue getExecuteQueue() {
-        return executeQueue;
     }
 
     /**
@@ -364,10 +180,6 @@ public class AsyncHttpServer
                 httpConnectionAcceptorMap.get(new Integer(port));
     }
 
-    public MessageServiceClient getMessageServiceClient() {
-        return messageServiceClient;
-    }
-
     /**
      * <p>
      *   Gets the port of this <code>AsyncHttpServer</code>.
@@ -378,6 +190,10 @@ public class AsyncHttpServer
      */
     public int getPort() {
         return port;
+    }
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
 //    public void iceFacesIdRetrieved(ICEfacesIDRetrievedEvent event) {
@@ -417,378 +233,6 @@ public class AsyncHttpServer
         return persistent;
     }
 
-    public boolean isValid(final String iceFacesId) {
-        synchronized (sessionMap) {
-            if (sessionMap.containsKey(iceFacesId)) {
-                return true;
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("ICEfaces ID '" + iceFacesId + "' is not valid!");
-                }
-                return false;
-            }
-        }
-    }
-
-    public boolean isValid(
-        final String iceFacesId, final String[] viewNumbers) {
-
-        synchronized (sessionMap) {
-            if (isValid(iceFacesId)) {
-                if (viewNumbers != null && viewNumbers.length != 0) {
-                    Set _viewNumberSet = (Set)sessionMap.get(iceFacesId);
-                    for (int i = 0; i < viewNumbers.length; i++) {
-                        if (!_viewNumberSet.contains(viewNumbers[i])) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug(
-                                    "View Number '" + viewNumbers[i] + "' " +
-                                        "is not valid!");
-                            }
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * <p>
-     *   Pulls the pending request, represented as a process handler, for the
-     *   specified <code>iceFacesId</code> off the queue.
-     * </p>
-     * <p>
-     *   If <code>iceFacesId</code> is <code>null</code> or empty, or if there
-     *   is no request in the queue for the <code>iceFacesId</code>,
-     *   <code>null</code> is returned.
-     * </p>
-     *
-     * @param      iceFacesId
-     *                 the ICEfaces ID that identifies the session of the
-     *                 requester.
-     * @return     the request or <code>null</code>.
-     * @see        #pushPendingRequest(String, ProcessHandler)
-     * @see        #pullPendingUpdatedViews(String, long)
-     * @see        #pushPendingUpdatedViews(UpdatedViews)
-     */
-    public ProcessHandler pullPendingRequest(final String iceFacesId) {
-        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
-            return null;
-        }
-        synchronized (pendingRequestMap) {
-            if (pendingRequestMap.containsKey(iceFacesId)) {
-                final ProcessHandler _processHandler =
-                    (ProcessHandler)pendingRequestMap.remove(iceFacesId);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Pulled pending request: " + iceFacesId);
-                }
-                return _processHandler;
-            }
-            return null;
-        }
-    }
-
-//    /**
-//     * <p>
-//     *   Pulls the pending request, represented as a process handler, for the
-//     *   specified <code>iceFacesId</code> and <code>viewNumber</code> off the
-//     *   queue.
-//     * </p>
-//     * <p>
-//     *   If either <code>iceFacesId</code> or <code>viewNumber</code> is
-//     *   <code>null</code> or empty, or if there is no request in the queue for
-//     *   the <code>iceFacesId</code>-<code>viewNumber</code> combination,
-//     *   <code>null</code> is returned.
-//     * </p>
-//     *
-//     * @param      iceFacesId
-//     *                 the ICEfaces ID that identifies the session of the
-//     *                 requester.
-//     * @param      viewNumber
-//     *                 the view number that identifies the view of the
-//     *                 requester.
-//     * @return     the request or <code>null</code>.
-//     * @see        #pushPendingRequest(String, String[], ProcessHandler)
-//     * @see        #pullPendingResponses(String, String[], String[][])
-//     * @see        #pushPendingResponse(Response)
-//     */
-//    public ProcessHandler pullPendingRequest(
-//        final String iceFacesId, final String viewNumber) {
-//
-//        if (iceFacesId == null || iceFacesId.trim().length() == 0 ||
-//            viewNumber == null || viewNumber.trim().length() == 0) {
-//
-//            return null;
-//        }
-//        synchronized (pendingRequestMap) {
-//            if (pendingRequestMap.containsKey(iceFacesId)) {
-//                final Map _map = (Map)pendingRequestMap.get(iceFacesId);
-//                final Iterator _keys = _map.keySet().iterator();
-//                while (_keys.hasNext()) {
-//                    final String[] _viewNumbers = (String[])_keys.next();
-//                    for (int i = 0; i < _viewNumbers.length; i++) {
-//                        if (viewNumber.equals(_viewNumbers[i])) {
-//                            final ProcessHandler _processHandler =
-//                                (ProcessHandler)_map.remove(_viewNumbers);
-//                            /*
-//                             * Removing the map every time it is empty causes
-//                             * quite the object churn. Ideally, the map often
-//                             * has a max size of 1. If the following code is
-//                             * activated, the map is constantly garbage
-//                             * collected and created again.
-//                             */
-////                            if (_map.isEmpty()) {
-////                                pendingRequestMap.remove(iceFacesId);
-////                            }
-//                            if (LOG.isDebugEnabled()) {
-//                                LOG.debug(
-//                                    "Pulled pending request: " +
-//                                        iceFacesId + "/" + viewNumber);
-//                            }
-//                            return _processHandler;
-//                        }
-//                    }
-//                 }
-//             }
-//             return null;
-//         }
-//    }
-
-//    /**
-//     * <p>
-//     *   Pulls the pending response(s) for the specified
-//     *   <code>iceFacesId</code>-<code>viewNumbers[i]</code> combinations off the
-//     *   queue.
-//     * </p>
-//     * <p>
-//     *   If either <code>iceFacesId</code> or <code>viewNumbers</code> is
-//     *   <code>null</code> or empty, or if there is no response in the queue for
-//     *   any <code>iceFacesId</code>-<code>viewNumbers[i]</code> combination,
-//     *   <code>null</code> is returned.
-//     * </p>
-//     *
-//     * @param      iceFacesId
-//     *                 the ICEfaces ID that identifies the session of the
-//     *                 requester.
-//     * @param      viewNumbers
-//     *                 the view numbers that identify the views of the
-//     *                 requester.
-//     * @param      sequenceNumbers
-//     * @return     the request or <code>null</code>.
-//     * @see        Response
-//     * @see        #pushPendingResponse(Response)
-//     * @see        #pullPendingRequest(String, String)
-//     * @see        #pushPendingRequest(String, String[], ProcessHandler)
-//     */
-//    public ResponseCollection pullPendingResponses(
-//        final String iceFacesId, final String[] viewNumbers,
-//        final String[][] sequenceNumbers) {
-//
-//        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
-//            return null;
-//        } else {
-//            return
-//                responseQueueManager.pull(
-//                    iceFacesId, viewNumbers, sequenceNumbers);
-//        }
-//    }
-
-    /**
-     * <p>
-     *   Pulls the pending updated views for the specified
-     *   <code>iceFacesId</code> off the queue.
-     * </p>
-     * <p>
-     *   If <code>iceFacesId</code> is <code>null</code> or empty, or if there
-     *   are no updated views in the queue for the <code>iceFacesId</code>,
-     *   <code>null</code> is returned.
-     * </p>
-     *
-     * @param      iceFacesId
-     *                 the ICEfaces ID that identifies the session of the
-     *                 requester.
-     * @param      sequenceNumber
-     * @return     the updated views or <code>null</code>.
-     * @see        #pushPendingUpdatedViews(UpdatedViews)
-     * @see        #pullPendingRequest(String)
-     * @see        #pushPendingRequest(String, ProcessHandler)
-     */
-    public UpdatedViews pullPendingUpdatedViews(
-        final String iceFacesId, final long sequenceNumber) {
-
-        if (iceFacesId == null || iceFacesId.trim().length() == 0) {
-            return null;
-        } else {
-            return updatedViewsQueueManager.pull(iceFacesId, sequenceNumber);
-        }
-    }
-
-    /**
-     * <p>
-     *   Pushes the specified <code>processHandler</code>, representing the
-     *   request, for the specified <code>iceFacesId</code> on the queue.
-     * </p>
-     * <p>
-     *   If <code>iceFacesId</code> is <code>null</code> or empty, or
-     *   <code>processHandler</code> is <code>null</code>, nothing is pushed on
-     *   the queue.
-     * </p>
-     *
-     * @param      iceFacesId
-     *                 the ICEfaces ID that identifies the session of the
-     *                 requester.
-     * @param      processHandler
-     *                 the process handler that represents the pending request.
-     * @see        #pullPendingRequest(String)
-     * @see        #pushPendingUpdatedViews(UpdatedViews)
-     * @see        #pullPendingUpdatedViews(String, long)
-     */
-    public void pushPendingRequest(
-        final String iceFacesId, final ProcessHandler processHandler) {
-
-        if (iceFacesId == null || iceFacesId.trim().length() == 0 ||
-            processHandler == null) {
-
-            return;
-        }
-        synchronized (pendingRequestMap) {
-            pendingRequestMap.put(iceFacesId, processHandler);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Pushed pending request: " + iceFacesId);
-            }
-        }
-    }
-
-//    /**
-//     * <p>
-//     *   Pushes the specified <code>processHandler</code>, representing the
-//     *   request, for the specified <code>iceFacesId</code> and
-//     *   <code>viewNumbers</code> on the queue.
-//     * </p>
-//     * <p>
-//     *   If either <code>iceFacesId</code> or <code>viewNumbers</code> is
-//     *   <code>null</code> or empty, or <code>processHandler</code> is
-//     *   <code>null</code>, nothing is pushed on the queue.
-//     * </p>
-//     *
-//     * @param      iceFacesId
-//     *                 the ICEfaces ID that identifies the session of the
-//     *                 requester.
-//     * @param      viewNumbers
-//     *                 the view numbers that identify the views of the
-//     *                 requester.
-//     * @param      processHandler
-//     *                 the process handler that represents the pending request.
-//     * @see        #pullPendingRequest(String, String)
-//     * @see        #pushPendingResponse(Response)
-//     * @see        #pullPendingResponses(String, String[], String[][])
-//     */
-//    public void pushPendingRequest(
-//        final String iceFacesId, final String[] viewNumbers,
-//        final ProcessHandler processHandler) {
-//
-//        if (iceFacesId == null || iceFacesId.trim().length() == 0 ||
-//            viewNumbers == null || viewNumbers.length == 0 ||
-//            processHandler == null) {
-//
-//            return;
-//        }
-//        synchronized (pendingRequestMap) {
-//            final Map _map;
-//            if (pendingRequestMap.containsKey(iceFacesId)) {
-//                _map = (Map)pendingRequestMap.get(iceFacesId);
-//                if (_map.containsKey(viewNumbers)) {
-//                    /*
-//                     * There already is a pending request from the requester
-//                     * (ICEfacesID-viewNumbers), meaning that the requester
-//                     * probably issued a reload. We should remove the request
-//                     * from the queue.
-//                     */
-//                    _map.remove(viewNumbers);
-//                }
-//            } else {
-//                _map = new HashMap();
-//                pendingRequestMap.put(iceFacesId, _map);
-//            }
-//            _map.put(viewNumbers, processHandler);
-//            if (LOG.isDebugEnabled()) {
-//                LOG.debug(
-//                    "Pushed pending request: " +
-//                        iceFacesId + "/" + viewNumbers);
-//            }
-//        }
-//    }
-
-//    /**
-//     * <p>
-//     *   Pushes the specified <code>response</code> on the queue.
-//     * </p>
-//     * <p>
-//     *   If <code>response</code> is <code>null</code>, nothing is pushed onto
-//     *   the queue.
-//     * </p>
-//     *
-//     * @param      response
-//     *                 the response.
-//     * @see        #pullPendingResponses(String, String[], String[][])
-//     * @see        #pushPendingRequest(String, String[], ProcessHandler)
-//     * @see        #pullPendingRequest(String, String)
-//     */
-//    public void pushPendingResponse(final Response response) {
-//        try {
-//            responseQueueManager.push(response);
-//        } catch (ResponseQueueExceededException exception) {
-//            if (LOG.isWarnEnabled()) {
-//                LOG.warn(
-//                    "Response queue exceeded: " +
-//                        response.getICEfacesID() + "/" +
-//                            response.getViewNumber());
-//            }
-//            Properties _messageProperties = new Properties();
-//            publish(
-//                response.getICEfacesID() + ";" + response.getViewNumber(),
-//                _messageProperties,
-//                RESPONSE_QUEUE_EXCEEDED_MESSAGE_TYPE,
-//                MessageServiceClient.RESPONSE_TOPIC_NAME);
-//        }
-//    }
-
-    /**
-     * <p>
-     *   Pushes the specified <code>updatedViews</code> on the queue. If the
-     *   <code>updatedViews</code> is <code>null</code> nothing is pushed onto
-     *   the queue.
-     * </p>
-     *
-     * @param      updatedViews
-     *                 the pending updated views to be queued.
-     * @see        #pullPendingUpdatedViews(String, long)
-     * @see        #pushPendingRequest(String, ProcessHandler)
-     * @see        #pullPendingRequest(String)
-     */
-    public void pushPendingUpdatedViews(final UpdatedViews updatedViews) {
-        if (updatedViews != null) {
-            try {
-                updatedViewsQueueManager.push(updatedViews);
-            } catch (UpdatedViewsQueueExceededException exception) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn(
-                        "Updated views queue exceeded: " +
-                            updatedViews.getICEfacesID());
-                }
-                Properties _messageProperties = new Properties();
-                publish(
-                    updatedViews.getICEfacesID(),
-                    _messageProperties,
-                    UPDATED_VIEWS_QUEUE_EXCEEDED_MESSAGE_TYPE,
-                    MessageServiceClient.RESPONSE_TOPIC_NAME);
-            }
-        }
-    }
-
     public boolean receiveBufferedEvents() {
         return true;
     }
@@ -808,61 +252,6 @@ public class AsyncHttpServer
 
         asyncHttpServerListenerList.remove(
             AsyncHttpServerListener.class, asyncHttpServerListener);
-    }
-
-//    /**
-//     * <p>
-//     *   Send the specified <code>response</code> to the requester. If no
-//     *   pending request could be found for the requester, the
-//     *   <code>response</code> will be put into the queue, so it can be send to
-//     *   the requester as soon as a new request becomes available.
-//     * </p>
-//     *
-//     * @param      response
-//     *                 the response to be send to the requester.
-//     * @throws     IllegalArgumentException
-//     *                 if the specified <code>response</code> is
-//     *                 <code>null</code>.
-//     */
-//    public void sendResponse(final Response response)
-//    throws IllegalArgumentException {
-//        if (response == null) {
-//            throw new IllegalArgumentException("response is null");
-//        }
-//        pushPendingResponse(response);
-//        final ProcessHandler _processHandler =
-//            pullPendingRequest(
-//                response.getICEfacesID(), response.getViewNumber());
-//        if (_processHandler != null) {
-//            _processHandler.handle();
-//        }
-//    }
-
-    /**
-     * <p>
-     *   Send the specified <code>updatedViews</code> to the requester. If no
-     *   pending request could be found for the requester, the
-     *   <code>updatedViews</code> will be put into the queue, so it can be send
-     *   to the requester as soon as a new request becomes available.
-     * </p>
-     *
-     * @param      updatedViews
-     *                 the updatedViews to be send to the requester.
-     * @throws     IllegalArgumentException
-     *                 if the specified <code>updatedViews</code> is
-     *                 <code>null</code>.
-     */
-    public void sendUpdatedViews(final UpdatedViews updatedViews)
-    throws IllegalArgumentException {
-        if (updatedViews == null) {
-            throw new IllegalArgumentException("updatedViews is null");
-        }
-        pushPendingUpdatedViews(updatedViews);
-        final ProcessHandler _processHandler =
-            pullPendingRequest(updatedViews.getICEfacesID());
-        if (_processHandler != null) {
-            _processHandler.handle();
-        }
     }
 
 //    public void sessionDestroyed(SessionDestroyedEvent event) {
@@ -979,33 +368,21 @@ public class AsyncHttpServer
      */
     public void start() {
         if (LOG.isInfoEnabled()) {
-            LOG.info("Starting " + NAME + "...");
+            LOG.info("[1] Sending announcements...");
         }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("[1] Starting Message Service Client...");
-        }
-        setUpMessageServiceClient(servletContext);
-        if (LOG.isInfoEnabled()) {
-            LOG.info("    done.");
-        }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("[2] Sending announcements...");
-        }
-        publish(
+        messageService.publish(
             AsyncHttpServer.class.getName(),
             null,
             ANNOUNCEMENT_MESSAGE_TYPE,
             MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        publish(
+        messageService.publish(
             AsyncHttpServer.class.getName(),
             null,
             ANNOUNCEMENT_MESSAGE_TYPE,
             MessageServiceClient.RESPONSE_TOPIC_NAME);
         if (LOG.isInfoEnabled()) {
             LOG.info("    done.");
-        }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("[3] Waiting...");
+            LOG.info("[2] Waiting...");
         }
         try {
             Thread.sleep(10 * 1000);
@@ -1014,26 +391,24 @@ public class AsyncHttpServer
         }
         if (LOG.isInfoEnabled()) {
             LOG.info("    done.");
+            LOG.info("[3] Start listening...");
         }
-        if (LOG.isInfoEnabled()) {
-            LOG.info("[4] Start listening...");
-        }
-        if (blocking) {
-            startBlocking();
-        } else {
-            startNonBlocking();
+        HttpConnectionAcceptor[] _httpConnectionAcceptors =
+            (HttpConnectionAcceptor[])
+                httpConnectionAcceptorMap.values().
+                    toArray(
+                        new HttpConnectionAcceptor[
+                            httpConnectionAcceptorMap.size()]);
+        for (int i = 0; i < _httpConnectionAcceptors.length; i++) {
+            _httpConnectionAcceptors[i].start();
         }
         if (LOG.isInfoEnabled()) {
             LOG.info("    done.");
-        }
-        if (LOG.isInfoEnabled()) {
             LOG.info(
                 NAME + " started!\r\n" +
                 "        blocking-mode          : " + blocking + "\r\n" +
                 "        persistent connections : " + persistent + "\r\n" +
-                "        HTTP compression       : " + compression + "\r\n" +
-                "        execute queue size     : " +
-                    executeQueue.getMaximumThreadPoolSize());
+                "        HTTP compression       : " + compression);
         }
         fireStartedEvent();
     }
@@ -1055,7 +430,6 @@ public class AsyncHttpServer
         if (LOG.isInfoEnabled()) {
             LOG.info("Stopping " + NAME + "...");
         }
-        tearDownMessageServiceClient();
         HttpConnectionAcceptor[] _httpConnectionAcceptors =
             (HttpConnectionAcceptor[])
                 httpConnectionAcceptorMap.values().
@@ -1129,153 +503,4 @@ public class AsyncHttpServer
             }
         }
     }
-
-    private void publish(
-        final String message, final Properties messageProperties,
-        final String messageType, final String topicName) {
-
-        messageServiceClient.publish(
-            message, messageProperties, messageType, topicName);
-    }
-
-//    private void publishResponseQueues(final String destinationNodeAddress) {
-//        responseQueueManager.publishResponseQueues(destinationNodeAddress);
-//    }
-
-    private void publishUpdatedViewsQueues(
-        final String destinationNodeAddress) {
-
-        updatedViewsQueueManager.publishUpdatedViewsQueues(
-            destinationNodeAddress);
-    }
-
-//    private void purgeResponses(final Map purgeMap) {
-//        responseQueueManager.purgeAll(purgeMap);
-//    }
-
-    private void purgeUpdatedViews(final Map purgeMap) {
-        updatedViewsQueueManager.purgeAll(purgeMap);
-    }
-
-    private void setUpMessageServiceClient(
-        final ServletContext servletContext) {
-
-        JMSProviderConfiguration _jmsProviderConfiguration =
-            new JMSProviderConfigurationProperties(servletContext);
-        messageServiceClient =
-            new MessageServiceClient(
-                _jmsProviderConfiguration,
-                new JMSAdapter(_jmsProviderConfiguration),
-                servletContext);
-        try {
-            messageServiceClient.subscribe(
-                MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
-                new MessageSelector(
-                    new Or(
-                        bufferedContextEventsMessageHandler.
-                            getMessageSelector().getExpression(),
-                        contextEventMessageHandler.
-                            getMessageSelector().getExpression())));
-        } catch (MessageServiceException exception) {
-            if (LOG.isFatalEnabled()) {
-                LOG.fatal(
-                    "Failed to subscribe to topic: " +
-                        MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
-                    exception);
-            }
-        }
-        try {
-            messageServiceClient.subscribe(
-                MessageServiceClient.RESPONSE_TOPIC_NAME,
-                new MessageSelector(
-                    new Or(
-                        announcementMessageHandler.
-                            getMessageSelector().getExpression(),
-                        new Or (
-                            updatedViewsMessageHandler.
-                                getMessageSelector().getExpression(),
-                            purgeMessageHandler.
-                                getMessageSelector().getExpression()))));
-        } catch (MessageServiceException exception) {
-            if (LOG.isFatalEnabled()) {
-                LOG.fatal(
-                    "Failed to subscribe to topic: " +
-                        MessageServiceClient.RESPONSE_TOPIC_NAME,
-                    exception);
-            }
-        }
-        messageServiceClient.addMessageHandler(
-            bufferedContextEventsMessageHandler,
-            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        messageServiceClient.addMessageHandler(
-            contextEventMessageHandler,
-            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        messageServiceClient.addMessageHandler(
-            announcementMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        messageServiceClient.addMessageHandler(
-                updatedViewsMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        messageServiceClient.addMessageHandler(
-            purgeMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        try {
-            messageServiceClient.start();
-        } catch (MessageServiceException exception) {
-            if (LOG.isFatalEnabled()) {
-                LOG.fatal("Failed to start message delivery!", exception);
-            }
-        }
-    }
-
-    private void startBlocking() {
-        HttpConnectionAcceptor _httpConnectionAcceptor =
-            new IoHttpConnectionAcceptor(port, this);
-        httpConnectionAcceptorMap.put(
-            new Integer(port), _httpConnectionAcceptor);
-        _httpConnectionAcceptor.start();
-    }
-
-    private void startNonBlocking() {
-        HttpConnectionAcceptor _httpConnectionAcceptor =
-            new NioHttpConnectionAcceptor(port, this);
-        httpConnectionAcceptorMap.put(
-            new Integer(port), _httpConnectionAcceptor);
-        _httpConnectionAcceptor.start();
-    }
-
-    private void tearDownMessageServiceClient() {
-        try {
-            messageServiceClient.stop();
-        } catch (MessageServiceException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Failed to stop message delivery!", exception);
-            }
-        }
-        messageServiceClient.removeMessageHandler(
-            bufferedContextEventsMessageHandler,
-            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        messageServiceClient.removeMessageHandler(
-            contextEventMessageHandler,
-            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        messageServiceClient.removeMessageHandler(
-            announcementMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        messageServiceClient.removeMessageHandler(
-                updatedViewsMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        messageServiceClient.removeMessageHandler(
-            purgeMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
-        try {
-            messageServiceClient.closeConnection();
-        } catch (MessageServiceException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(
-                    "Failed to close connection due to some internal error!",
-                    exception);
-            }
-        }
-    }
 }
-

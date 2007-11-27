@@ -29,15 +29,36 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
+package com.icesoft.faces.async.common.messaging;
 
-public class ResponseQueueExceededException
-extends Exception {
-    public ResponseQueueExceededException() {
+import com.icesoft.util.net.messaging.AbstractMessageHandler;
+import com.icesoft.util.net.messaging.MessageHandler;
+import com.icesoft.util.net.messaging.MessageSelector;
+
+public abstract class AbstractContextEventMessageHandler
+extends AbstractMessageHandler
+implements MessageHandler {
+    protected AbstractContextEventMessageHandler() {
         super();
     }
 
-    public ResponseQueueExceededException(final String message) {
-        super(message);
+    protected AbstractContextEventMessageHandler(
+        final MessageSelector messageSelector) {
+
+        super(messageSelector);
+    }
+
+    public static interface Callback
+    extends MessageHandler.Callback {
+        public void contextDestroyed();
+
+        public void iceFacesIdDisposed(final String iceFacesId);
+
+        public void iceFacesIdRetrieved(final String iceFacesId);
+
+        public void sessionDestroyed(final String iceFacesId);
+
+        public void viewNumberRetrieved(
+            final String iceFacesId, final String viewNumber);
     }
 }

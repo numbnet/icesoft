@@ -31,20 +31,37 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.ConfigurationException;
+
 public class AsyncHttpServerSettings {
     private boolean blocking = false;
     private boolean compression = true;
     private boolean persistent = true;
     private int port = 51315;
     private int executeQueueSize = 30;
-    private int responseQueueSize = 100;
-    private int updatedViewsQueueSize = 100;
-    private double responseQueueThreshold = 0.7d;
-    private double updatedViewsQueueThreshold = 0.7d;
-    private String purgeMessageContents = "all";
 
     public AsyncHttpServerSettings() {
         // do nothing.
+    }
+
+    public AsyncHttpServerSettings(final Configuration configuration) {
+        try {
+            setBlocking(configuration.getAttributeAsBoolean("blocking"));
+        } catch (ConfigurationException exception) { /* do nothing. */ }
+        try {
+            setCompression(configuration.getAttributeAsBoolean("compression"));
+        } catch (ConfigurationException exception) { /* do nothing. */ }
+        try {
+            setExecuteQueueSize(
+                configuration.getAttributeAsInteger("executeQueueSize"));
+        } catch (ConfigurationException exception) { /* do nothing. */ }
+        try {
+            setPersistent(configuration.getAttributeAsBoolean("persistent"));
+        } catch (ConfigurationException exception) { /* do nothing. */ }
+        try {
+            setPort(configuration.getAttributeAsInteger("port"));
+        } catch (ConfigurationException exception) { /* do nothing. */ }
     }
 
     public int getExecuteQueueSize() {
@@ -53,26 +70,6 @@ public class AsyncHttpServerSettings {
 
     public int getPort() {
         return port;
-    }
-
-    public String getPurgeMessageContents() {
-        return purgeMessageContents;
-    }
-
-    public int getResponseQueueSize() {
-        return responseQueueSize;
-    }
-
-    public double getResponseQueueThreshold() {
-        return responseQueueThreshold;
-    }
-
-    public int getUpdatedViewQueueSize() {
-        return updatedViewsQueueSize;
-    }
-
-    public double getUpdatedViewQueueThreshold() {
-        return updatedViewsQueueThreshold;
     }
 
     public boolean isBlocking() {
@@ -105,30 +102,6 @@ public class AsyncHttpServerSettings {
             throw new IllegalArgumentException("Illegal port: " + port);
         }
         this.port = port;
-    }
-
-    public void setPurgeMessageContents(final String purgeMessageContents) {
-        this.purgeMessageContents = purgeMessageContents;
-    }
-
-    public void setResponseQueueSize(final int responseQueueSize) {
-        this.responseQueueSize = responseQueueSize;
-    }
-
-    public void setResponseQueueThreshold(final double responseQueueThreshold) {
-        this.responseQueueThreshold = responseQueueThreshold;
-    }
-
-    public void setUpdatedViewsQueueSize(
-        final int updatedViewsQueueSize) {
-
-        this.updatedViewsQueueSize = updatedViewsQueueSize;
-    }
-
-    public void setUpdatedViewsQueueThreshold(
-        final double updatedViewsQueueThreshold) {
-
-        this.updatedViewsQueueThreshold = updatedViewsQueueThreshold;
     }
 
     public boolean useCompression() {

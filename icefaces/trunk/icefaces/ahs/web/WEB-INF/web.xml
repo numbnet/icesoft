@@ -13,13 +13,13 @@
     <!--  Define async server mode -->
     <context-param>
         <param-name>com.icesoft.faces.async.server</param-name>
-        <param-value>true</param-value>
+        <param-value>false</param-value>
     </context-param>
 
     <context-param>
         <param-name>com.icesoft.util.net.messaging.properties</param-name>
         <param-value>jboss.properties</param-value>
-        <!--       
+        <!--
         <param-value>jboss_ha.properties</param-value>
         <param-value>weblogic.properties</param-value>
         <param-value>websphere.properties</param-value>
@@ -32,18 +32,25 @@
     </listener>
     -->
 
-    <!-- Asynchronous Servlet -->
+    <!-- Asynchronous HTTP Servlet -->
     <servlet>
-        <servlet-name>Asynchronous Servlet</servlet-name>
-        <servlet-class>com.icesoft.faces.async.server.AsyncServlet</servlet-class>		
+        <servlet-name>Asynchronous HTTP Servlet</servlet-name>
+        <servlet-class>com.icesoft.faces.async.servlet.AsyncHttpServlet</servlet-class>
+        <!--
         <init-param>
             <param-name>com.icesoft.faces.async.server.port</param-name>
             <param-value>51315</param-value>
         </init-param>
+        -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Asynchronous HTTP Servlet</servlet-name>
+        <url-pattern>/block/*</url-pattern>
+    </servlet-mapping>
+
     <session-config>
-      <session-timeout>20</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
 </web-app>

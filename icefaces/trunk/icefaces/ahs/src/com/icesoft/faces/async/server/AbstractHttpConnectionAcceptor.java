@@ -31,6 +31,8 @@
  */
 package com.icesoft.faces.async.server;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
+
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,24 +48,29 @@ implements HttpConnectionAcceptor {
     private static final Log LOG =
         LogFactory.getLog(AbstractHttpConnectionAcceptor.class);
 
-    protected AsyncHttpServer asyncHttpServer;
-    protected HandlerPool handlerPool;
-    protected EventListenerList httpConnectionAcceptorListenerList =
+    protected final AsyncHttpServer asyncHttpServer;
+    protected final ExecuteQueue executeQueue;
+    protected final EventListenerList httpConnectionAcceptorListenerList =
         new EventListenerList();
-    protected Map httpConnectionMap = new HashMap();
-    protected int port;
+    protected final Map httpConnectionMap = new HashMap();
+    protected final int port;
+
     protected boolean stopRequested;
 
     protected AbstractHttpConnectionAcceptor(
-        final int port, final AsyncHttpServer asyncHttpServer)
+        final int port, final ExecuteQueue executeQueue,
+        final AsyncHttpServer asyncHttpServer)
     throws IllegalArgumentException {
         checkPort(port);
+        if (executeQueue == null) {
+            throw new IllegalArgumentException("executeQueue is null");
+        }
         if (asyncHttpServer == null) {
             throw new IllegalArgumentException("asyncHttpServer is null");
         }
         this.port = port;
+        this.executeQueue = executeQueue;
         this.asyncHttpServer = asyncHttpServer;
-        handlerPool = new HandlerPool(asyncHttpServer);
     }
 
     public void addHttpConnectionAcceptorListener(
@@ -72,10 +79,6 @@ implements HttpConnectionAcceptor {
         httpConnectionAcceptorListenerList.add(
             HttpConnectionAcceptorListener.class,
             httpConnectionAcceptorListener);
-    }
-
-    public AsyncHttpServer getAsyncHttpServer() {
-        return asyncHttpServer;
     }
 
     public int getPort() {

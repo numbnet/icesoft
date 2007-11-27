@@ -31,11 +31,12 @@
  */
 package com.icesoft.faces.async.server.nio;
 
+import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.server.AbstractHttpConnectionAcceptor;
 import com.icesoft.faces.async.server.AsyncHttpServer;
+import com.icesoft.faces.async.server.HttpConnection;
 import com.icesoft.faces.async.server.HttpConnectionAcceptor;
 import com.icesoft.faces.async.server.ReadHandler;
-import com.icesoft.faces.async.server.HttpConnection;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -43,7 +44,6 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.CancelledKeyException;
@@ -58,10 +58,10 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,6 +72,7 @@ implements HttpConnectionAcceptor {
     private static final Log LOG =
         LogFactory.getLog(NioHttpConnectionAcceptor.class);
 
+    private final Map pendingReadHandlerMap = new HashMap();
     private final ConcurrentLinkedQueue selectionKeyQueue =
         new ConcurrentLinkedQueue();
 
@@ -79,12 +80,11 @@ implements HttpConnectionAcceptor {
     private ServerSocket serverSocket;
     private ServerSocketChannel serverSocketChannel;
 
-    private Map pendingReadHandlerMap = new HashMap();
-
     public NioHttpConnectionAcceptor(
-        final int port, final AsyncHttpServer asyncHttpServer)
+        final int port, final ExecuteQueue executeQueue,
+        final AsyncHttpServer asyncHttpServer)
     throws IllegalArgumentException {
-        super(port, asyncHttpServer);
+        super(port, executeQueue, asyncHttpServer);
     }
 
     public void closeChannel(final SelectionKey selectionKey) {
@@ -557,7 +557,18 @@ implements HttpConnectionAcceptor {
                 ((ReadHandler)pendingReadHandlerMap.remove(_nioHttpConnection)).
                     handle();
             } else {
-                handlerPool.getReadHandler(_nioHttpConnection).handle();
+                try {
+                    ReadHandler _readHandler =
+                        new ReadHandler(executeQueue, asyncHttpServer);
+                    _readHandler.setHttpConnection(_nioHttpConnection);
+                    _readHandler.handle();
+                } catch (Exception exception) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(
+                            "An error occurred while getting a read handler!",
+                            exception);
+                    }
+                }
             }
         } catch (CancelledKeyException exception) {
             if (LOG.isErrorEnabled()) {
