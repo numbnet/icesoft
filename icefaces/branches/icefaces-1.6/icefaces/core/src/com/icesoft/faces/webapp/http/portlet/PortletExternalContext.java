@@ -177,11 +177,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void updateOnReload(Object request, Object response) {
-        Map previousRequestMap = this.requestMap;
         this.request = new PortletEnvironmentRenderRequest(request);
         this.requestMap = new RequestAttributeMap();
-        //propagate entries
-        this.requestMap.putAll(previousRequestMap);
         this.update((RenderRequest) request, (RenderResponse) response);
     }
 

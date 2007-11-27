@@ -191,15 +191,12 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public void updateOnReload(Object request, Object response) {
-        Map previousRequestMap = this.requestMap;
         this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
             }
         };
         this.requestMap = new RequestAttributeMap();
-        //propagate entries
-        this.requestMap.putAll(previousRequestMap);
         this.update((HttpServletRequest) request, (HttpServletResponse) response);
     }
 
