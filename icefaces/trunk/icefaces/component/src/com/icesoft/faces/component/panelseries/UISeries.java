@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.component.tree.TreeDataModel;
+import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.EditableValueHolder;
@@ -77,6 +78,7 @@ public class UISeries extends HtmlDataTable {
     protected transient DataModel dataModel = null;
     private int rowIndex = -1;
     protected Map savedChildren = new HashMap();
+    protected Map savedSeriesState = new HashMap();
     private String var = null;
 
 
@@ -162,14 +164,14 @@ public class UISeries extends HtmlDataTable {
 
 
     /**
-     * @see javax.faces.component.UIData#setVar(Stringvar)
+     * @see javax.faces.component.UIData#setVar(String)
      */
     public void setVar(String var) {
         this.var = var;
     }
 
     /**
-     * @see javax.faces.component.UIData#setValue(Objectvalue)
+     * @see javax.faces.component.UIData#setValue(Object)
      */
     public void setValue(Object value) {
         this.dataModel = null;
@@ -188,7 +190,7 @@ public class UISeries extends HtmlDataTable {
 
 
     /**
-     * @see javax.faces.component.UIData#getClientId(FacesContextcontext)
+     * @see javax.faces.component.UIData#getClientId(FacesContext)
      */
     public String getClientId(FacesContext context) {
         if (context == null) {
@@ -212,7 +214,7 @@ public class UISeries extends HtmlDataTable {
 
 
     /**
-     * @see javax.faces.component.UIData#queueEvent(FacesEventevent)
+     * @see javax.faces.component.UIData#queueEvent(FacesEvent)
      */
     public void queueEvent(FacesEvent event) {
         super.queueEvent(new RowEvent(this, event, getRowIndex()));
@@ -220,7 +222,7 @@ public class UISeries extends HtmlDataTable {
 
 
     /**
-     * @see javax.faces.component.UIData#broadcast(FacesEventevent)
+     * @see javax.faces.component.UIData#broadcast(FacesEvent)
      */
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         if (!(event instanceof RowEvent)) {
@@ -235,7 +237,7 @@ public class UISeries extends HtmlDataTable {
 
 
     /**
-     * @see javax.faces.component.UIData#encodeBegin(FacesContextcontext)
+     * @see javax.faces.component.UIData#encodeBegin(FacesContext)
      */
     public void encodeBegin(FacesContext context) throws IOException {
         dataModel = null;
@@ -443,6 +445,12 @@ public class UISeries extends HtmlDataTable {
                 savedChildren.put(clientId, isThisFormSubmitted);
             }
         }
+        if(component instanceof SeriesStateHolder) {
+            SeriesStateHolder ssh = (SeriesStateHolder) component;
+            String clientId = component.getClientId(facesContext);
+            Object state = ssh.saveSeriesState(facesContext);
+            savedSeriesState.put(clientId, state);
+        }
     }
 
     protected void restoreChild(FacesContext facesContext,
@@ -466,6 +474,14 @@ public class UISeries extends HtmlDataTable {
             }
             ((HtmlForm) component)
                     .setSubmitted(isThisFormSubmitted.booleanValue());
+        }
+        if(component instanceof SeriesStateHolder) {
+            SeriesStateHolder ssh = (SeriesStateHolder) component;
+            String clientId = component.getClientId(facesContext);
+            Object state = savedSeriesState.get(clientId);
+            if(state != null) {
+                ssh.restoreSeriesState(facesContext, state);
+            }
         }
     }
 
@@ -527,11 +543,12 @@ public class UISeries extends HtmlDataTable {
     }
 
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[4];
+        Object values[] = new Object[5];
         values[0] = super.saveState(context);
         values[1] = new Integer(rowIndex);
         values[2] = savedChildren;
-        values[3] = var;
+        values[3] = savedSeriesState;
+        values[4] = var;
         return (values);
     }
 
@@ -541,7 +558,8 @@ public class UISeries extends HtmlDataTable {
         super.restoreState(context, values[0]);
         rowIndex = ((Integer) values[1]).intValue();
         savedChildren = (Map) values[2];
-        var = (String) values[3];
+        savedSeriesState = (Map) values[3];
+        var = (String) values[4];
     }
 
     private boolean isValid(String id) {

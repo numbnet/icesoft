@@ -49,6 +49,7 @@ package com.icesoft.faces.component.paneltabset;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.utils.UpdatableProperty;
+import com.icesoft.faces.utils.SeriesStateHolder;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 
@@ -80,7 +81,8 @@ import java.util.List;
  * renderer type. </p>
  */
 public class PanelTabSet
-        extends UISeries {
+        extends UISeries
+        implements SeriesStateHolder {
 
 
     /**
@@ -555,7 +557,7 @@ public class PanelTabSet
     public Object saveState(FacesContext context) {
         Object values[] = new Object[29];
         values[0] = super.saveState(context);
-        values[1] = _selectedIndex;
+        values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
         values[3] = saveAttachedState(context, _tabChangeListener);
         values[4] = _style;
@@ -592,7 +594,7 @@ public class PanelTabSet
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        _selectedIndex = (UpdatableProperty) values[1];
+        _selectedIndex.restoreState(this, (Object[]) values[1]);
         _bgcolor = (String) values[2];
         _tabChangeListener =
                 (MethodBinding) restoreAttachedState(context, values[3]);
@@ -623,6 +625,17 @@ public class PanelTabSet
         title = (String) values[28];
     }
 
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object[] values = new Object[1];
+        values[0] = _selectedIndex.saveState(this);
+        return values;
+    }
+    
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object[] values = (Object[]) state;
+        _selectedIndex.restoreState(this, (Object[]) values[0]);
+    }
+        
     private String onclick;
     private String ondblclick;
     private String onmousedown = null;

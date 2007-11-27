@@ -1,3 +1,36 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ *
+ */
+
 package com.icesoft.faces.utils;
 
 import org.apache.commons.logging.Log;
@@ -9,7 +42,6 @@ import javax.faces.el.ValueBinding;
 import javax.faces.el.PropertyNotFoundException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-import javax.el.ELException;
 import java.io.Serializable;
 
 /**
@@ -196,7 +228,11 @@ public class UpdatableProperty implements Serializable {
     private String getDesc(UIComponent comp, String meth) {
         StringBuffer sb = new StringBuffer(256);
         if(comp != null) {
-            sb.append(comp.getClass().getName());
+            String className = comp.getClass().getName();
+            int index = className.lastIndexOf('.');
+            if(index >= 0)
+                className = className.substring(index+1);
+            sb.append(className);
             sb.append('.');
         }
         sb.append(meth);
@@ -207,5 +243,44 @@ public class UpdatableProperty implements Serializable {
             sb.append(comp.getClientId(FacesContext.getCurrentInstance()));
         }
         return sb.toString();
+    }
+    
+    public Object[] saveState(UIComponent comp) {
+//System.out.println(getDesc(comp, "SAVE_STATE"));
+//System.out.println("  name: " + name);
+//System.out.println("  savedValue: " + savedValue);
+//System.out.println("  haveSavedValue: " + haveSavedValue);
+//System.out.println("  submittedValue: " + submittedValue);
+//System.out.println("  setSubmittedInLocalValue: " + setSubmittedInLocalValue);
+//System.out.println("  value: " + value);
+//System.out.println("  setLocalValueInValueBinding: " + setLocalValueInValueBinding);
+        Object[] state = new Object[] {
+            name,
+            savedValue,
+            new Boolean(haveSavedValue),
+            submittedValue,
+            new Boolean(setSubmittedInLocalValue),
+            value,
+            new Boolean(setLocalValueInValueBinding)
+        };
+        return state;
+    }
+    
+    public void restoreState(UIComponent comp, Object[] state) {
+        name = (String) state[0];
+        savedValue = state[1];
+        haveSavedValue = ((Boolean) state[2]).booleanValue();
+        submittedValue = state[3];
+        setSubmittedInLocalValue = ((Boolean) state[4]).booleanValue();
+        value = state[5];
+        setLocalValueInValueBinding = ((Boolean) state[6]).booleanValue();
+//System.out.println(getDesc(comp, "RES_STATE"));
+//System.out.println("  name: " + name);
+//System.out.println("  savedValue: " + savedValue);
+//System.out.println("  haveSavedValue: " + haveSavedValue);
+//System.out.println("  submittedValue: " + submittedValue);
+//System.out.println("  setSubmittedInLocalValue: " + setSubmittedInLocalValue);
+//System.out.println("  value: " + value);
+//System.out.println("  setLocalValueInValueBinding: " + setLocalValueInValueBinding);
     }
 }
