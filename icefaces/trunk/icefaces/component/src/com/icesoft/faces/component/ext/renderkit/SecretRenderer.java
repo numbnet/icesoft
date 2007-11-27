@@ -37,18 +37,13 @@ import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputSecret;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.component.menubar.MenuItem;
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 
