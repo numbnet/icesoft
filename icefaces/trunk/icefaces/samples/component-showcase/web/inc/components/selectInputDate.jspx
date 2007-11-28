@@ -70,7 +70,6 @@ the click of a button.
                         </h4>
                         <!-- Calendar Component -->
                         <ice:selectInputDate id="date1"
-                                imageDir="#{styleBean.imageDirectory}"
                                 value="#{dateSelect.date1}"
                                 highlightClass="weekend: august:"
                                 highlightUnit="DAY_OF_WEEK: MONTH"
@@ -107,7 +106,7 @@ the click of a button.
                         <!-- Calendar Component -->
                         <ice:selectInputDate id="date2"
                                              value="#{dateSelect.date2}"
-                                             imageDir="#{styleBean.imageDirectory}"
+                                             title="#{msgs['components.dateSelect.title']}"  
                                              renderAsPopup="true">
                                 <f:convertDateTime pattern="MM/dd/yyyy"
                                                    timeZone="#{dateSelect.timeZone}"/>
