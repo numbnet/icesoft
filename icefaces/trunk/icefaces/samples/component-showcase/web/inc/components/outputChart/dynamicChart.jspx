@@ -101,7 +101,7 @@
                             <ice:commandButton value="#{msgs['component.chart.removeChartCommand.label']}"
                                                actionListener="#{dynamicPieChart.deleteChart}"
                                                rendered="#{dynamicPieChart.deleteAllowed}"/>
-                            <ice:outputText value="Minimum 2 pieces of data"
+                            <ice:outputText value="#{msgs['component.chart.removeChartCommand.explanation']}"
                                             rendered="#{not dynamicPieChart.deleteAllowed}"/>
                         </ice:panelGrid>
                     </ice:panelGrid>
@@ -109,7 +109,7 @@
 
                 <ice:panelGrid id="centerWrapperDynamicChart">
                     <ice:outputChart type="pie3d"
-                                     chartTitle="Pie3D Chart"
+                                     chartTitle="#{msgs['component.pie3dChart.title']}"
                                      labels="#{dynamicPieChart.labels}"
                                      width="350"
                                      height="350"

@@ -54,8 +54,7 @@ is used to specify the columns that can be sorted by clicking the column header.
 
                 <ice:panelGroup styleClass="formBorderHighlight">
 
-                    <h3 style="margin-bottom:15px;">Click a column heading to
-                        sort the table:</h3>
+                    <h3 style="margin-bottom:15px;"><ice:outputText value="#{msgs['component.commandsortheader.desc']}"/></h3>
                     <!--
                         Layout table columns with column headings and 5 table rows per page.
                         Specify sort columns with ice:commandSortHeader and whether to display
@@ -72,7 +71,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                             <f:facet name="header">
                                 <ice:commandSortHeader id="firstNameHeader" columnName="firstName"
                                                        arrow="true">
-                                    First Name
+                                    <ice:outputText value="#{msgs['component.commandsortheader.firstName']}"/>
                                 </ice:commandSortHeader>
                             </f:facet>
                             <ice:outputText id="firstName" value="#{person.firstName}"/>
@@ -82,7 +81,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                             <f:facet name="header">
                                 <ice:commandSortHeader id="lastNameHeader" columnName="lastName"
                                                        arrow="true">
-                                    Last Name
+                                    <ice:outputText value="#{msgs['component.commandsortheader.lastName']}"/>
                                 </ice:commandSortHeader>
                             </f:facet>
                             <ice:outputText id="lastName" value="#{person.lastName}"/>
@@ -92,7 +91,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                             <f:facet name="header">
                                 <ice:commandSortHeader id="phoneNoHeader" columnName="phoneNo"
                                                        arrow="true">
-                                    Phone No
+                                    <ice:outputText value="#{msgs['component.commandsortheader.phoneNo']}"/>
                                 </ice:commandSortHeader>
                             </f:facet>
                             <ice:outputText id="phoneNo" value="#{person.phoneNo}"/>
@@ -103,7 +102,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                                 <ice:commandSortHeader id="emailHeader" columnName="email"
                                                        arrow="true"
                                                        disabled="true">
-                                    E-mail
+                                    <ice:outputText value="#{msgs['component.commandsortheader.email']}"/>
                                 </ice:commandSortHeader>
                             </f:facet>
                             <ice:outputLink id="mailto" value="mailto:#{person.email}">

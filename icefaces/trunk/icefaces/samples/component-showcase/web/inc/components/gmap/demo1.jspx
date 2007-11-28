@@ -41,9 +41,9 @@
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo"
                    styleClass="componentLayoutRootTable" columns="1">
-        <ice:outputText value="The ice:gMap component with a default location set in the address attribute."/>
+        <ice:outputText value="#{msgs['component.gmap.demo1.desc']}"/>
         <ice:panelGroup styleClass="formBorderHighlight">                   
-            <ice:gMap address="New York City"/>
+            <ice:gMap address="#{msgs['component.gmap.demo1.address']}"/>
         </ice:panelGroup>
     </ice:panelGrid>
 

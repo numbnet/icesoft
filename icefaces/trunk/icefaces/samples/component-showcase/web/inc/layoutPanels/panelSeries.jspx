@@ -68,7 +68,7 @@ The content of the list is filled by iterating over a variable.
 
      </ice:panelGroup>
      <h3>
-        <ice:outputText value="Item List"/>
+        <ice:outputText value="#{msgs['component.panelSeries.itemList']}"/>
     </h3>
      <ice:panelGrid styleClass="formBorderHighlight" width="100%">
         <ice:panelSeries id="itemTable" value="#{cashier.itemTable}" var="item1">
@@ -107,14 +107,14 @@ The content of the list is filled by iterating over a variable.
                             image="#{styleBean.imageDirectory}add.gif"
                             style="height: 25px; width: 15px;"
                             actionListener="#{item1.incQuan}"
-                            title="Buy #{item1.name}"/>
+                            title="#{msgs['component.panelSeries.productSelection.buy']}#{item1.name}"/>
 
                     <ice:commandButton id="return"
                     	    styleClass="pnlSrsDemoBtn"                    
                             image="#{styleBean.imageDirectory}remove.gif"
                             style="height: 25px; width: 15px;"
                             actionListener="#{item1.decQuan}"
-                            title="Return #{item1.name}"
+                            title="#{msgs['component.panelSeries.productSelection.return']}#{item1.name}"
                             disabled="#{item1.quanMinusDisabled}"/>
                 </ice:panelGrid>
                 <ice:outputText id="subtotal"

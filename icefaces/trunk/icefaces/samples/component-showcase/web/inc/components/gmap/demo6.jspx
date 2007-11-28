@@ -44,7 +44,7 @@
     <ice:panelGrid id="gmapDemo"
                    styleClass="componentLayoutRootTable" columns="1">
          <f:facet name="header">
-            <ice:outputText value="View KML examples (geoxml-kml.html)"/>
+            <ice:outputText value="#{msgs['component.gmap.demo6.desc']}"/>
          </f:facet>
          <ice:panelGroup styleClass="formBorderHighlight">  
              <ice:gMap latitude="41.875696" longitude="-87.624207" zoomLevel="11">

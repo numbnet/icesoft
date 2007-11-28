@@ -53,7 +53,7 @@
                 <ice:panelGroup>
                     <h3>
                         <ice:outputText id="chartTitle"
-                                    value="#{msgs['component.chart.title']}"/>
+                                    value="#{msgs['component.chart.type.title']}"/>
                     </h3>
                     <ice:selectOneMenu value="#{chartMediator.chart}" partialSubmit="true"
                                        valueChangeListener="#{chartMediator.chartChanged}">
@@ -66,15 +66,15 @@
                 -->
                 <ice:panelGroup rendered="#{chartMediator.orientationChange}">
                     <h3>
-                        <ice:outputText value="Chart Orientation:"/>
+                        <ice:outputText value="#{msgs['component.chart.orientation.title']}"/>
                     </h3>
                     <ice:selectOneRadio value="false"
                                         valueChangeListener="#{chartMediator.selectOrientation}"
                                         partialSubmit="true">
                         <f:selectItem itemValue="true"
-                                      itemLabel="Horizontal"/>
+                                      itemLabel="#{msgs['component.chart.orientation.horiz']}"/>
                         <f:selectItem itemValue="false"
-                                      itemLabel="Vertical"/>
+                                      itemLabel="#{msgs['component.chart.orientation.vert']}"/>
                     </ice:selectOneRadio>
 
                 </ice:panelGroup>
@@ -128,23 +128,23 @@
                              rendered="#{!chartMediator.axis and !chartMediator.pie and chartMediator.pie3D}"/>
             <!-- Pie charts require a different data model. -->
             <ice:panelGroup rendered="#{!chartMediator.axis and !chartMediator.pie}">
-                <ice:outputText value="Year Specific Data:"/>
+                <ice:outputText value="#{msgs['component.chart.sales.title']}"/>
                 <ice:dataTable var="sale" value="#{pieChart.sales}">
                     <ice:column>
                         <f:facet name="header">
-                            <ice:outputText value="Product Name"/>
+                            <ice:outputText value="#{msgs['component.chart.sales.product']}"/>
                         </f:facet>
                         <ice:outputText value="#{sale.product}"/>
                     </ice:column>
                     <ice:column>
                         <f:facet name="header">
-                            <ice:outputText value="Price"/>
+                            <ice:outputText value="#{msgs['component.chart.sales.price']}"/>
                         </f:facet>
                         <ice:outputText value="#{sale.price}"/>
                     </ice:column>
                     <ice:column>
                         <f:facet name="header">
-                            <ice:outputText value="Year"/>
+                            <ice:outputText value="#{msgs['component.chart.sales.year']}"/>
                         </f:facet>
                         <ice:outputText value="#{sale.year}"/>
                     </ice:column>

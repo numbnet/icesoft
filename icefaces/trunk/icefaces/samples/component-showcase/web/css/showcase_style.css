@@ -969,13 +969,13 @@ em {
 }
 
 /* Panel stack example */
-.panelGroupColor, .panelGroupFruit, .panelGroupMineral {
+.panelGroupColour, .panelGroupFruit, .panelGroupMineral {
     padding: 10px;
     border: 1px solid;
     width: 380px;
 }
 
-.panelGroupColor {
+.panelGroupColour {
     background-color: whitesmoke;
 }
 

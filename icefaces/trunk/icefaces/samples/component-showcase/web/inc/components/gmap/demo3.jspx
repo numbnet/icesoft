@@ -41,14 +41,14 @@
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo3"
                    styleClass="componentLayoutRootTable">
-        <ice:outputText value="The ice:gMap component's locateAddress attribute is a boolean that will render a new location when set to true.  Selecting an address from the following list will change the address bound to the component, set the locateAddress attribute to true and render the new address."/>
+        <ice:outputText value="#{msgs['component.gmap.demo3.desc']}"/>
         <ice:selectOneMenu partialSubmit="true" value="#{gmap.address}" valueChangeListener="#{gmap.findAddress}" >
-            <f:selectItem itemValue="" itemLabel="--Select--" />
-            <f:selectItem itemValue="Tokyo" />
-            <f:selectItem itemValue="Mexico City"/>
-            <f:selectItem itemValue="New York" />
-            <f:selectItem itemValue="Sao Paulo" />
-            <f:selectItem itemValue="Mumbai" />
+            <f:selectItem itemValue="" itemLabel="#{msgs['component.gmap.demo3.select']}" />
+            <f:selectItem itemValue="#{msgs['component.gmap.demo3.city1']}" />
+            <f:selectItem itemValue="#{msgs['component.gmap.demo3.city2']}"/>
+            <f:selectItem itemValue="#{msgs['component.gmap.demo3.city3']}" />
+            <f:selectItem itemValue="#{msgs['component.gmap.demo3.city4']}" />
+            <f:selectItem itemValue="#{msgs['component.gmap.demo3.city5']}" />
         </ice:selectOneMenu>
         <ice:panelGroup styleClass="formBorderHighlight">              
             <ice:gMap address="#{gmap.address}" 

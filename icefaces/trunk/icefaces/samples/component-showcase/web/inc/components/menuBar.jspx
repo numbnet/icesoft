@@ -65,13 +65,13 @@ are shown but could easily be made to invoke application logic.
     </h4>
     <h3>
         <ice:outputText
-                value="#{msgs['component.menuBar.orientationLabel']}"/>
+                value="#{msgs['component.menuBar.orientation.label']}"/>
     </h3>
 
     <!-- toggle menu bar orientation -->
     <ice:selectOneRadio id="MenuSlctRadio" value="#{menuBar.orientation}" partialSubmit="true">
-        <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="Horizontal"/>
-        <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="Vertical"/>
+        <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="#{msgs['component.menuBar.orientation.horiz']}"/>
+        <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="#{msgs['component.menuBar.orientation.vert']}"/>
     </ice:selectOneRadio>
     <br />
     <!-- main menu declaration  -->

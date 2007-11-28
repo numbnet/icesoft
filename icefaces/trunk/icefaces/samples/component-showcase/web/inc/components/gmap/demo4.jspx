@@ -41,7 +41,7 @@
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo4"
                    styleClass="componentLayoutRootTable">
-        <ice:outputText value="You can nest the desired ice:gMapControl tags inside an ice:gMap tag.  If you leave this demo and return, you will find these controls maintain their state."/>
+        <ice:outputText value="#{msgs['component.gmap.demo4.desc']}"/>
         <ice:panelGroup styleClass="formBorderHighlight">  
 	        <ice:gMap>
 	            <ice:gMapControl name="GLargeMapControl"/> 

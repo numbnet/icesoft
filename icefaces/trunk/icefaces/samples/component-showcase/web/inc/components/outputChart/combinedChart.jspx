@@ -55,9 +55,9 @@
                     </h3>
                     <br/>
                     <ice:outputText
-                            value="This demonstration combines a bar chart with a line chart."/>
+                            value="#{msgs['component.combinedChart.desc1']}"/>
                     <ice:outputText effect="#{combinedChart.effectOutputText}"
-                                    value="Click image map for chart value: #{combinedChart.clickedValue}"/>
+                                    value="#{msgs['component.combinedChart.desc2']}#{combinedChart.clickedValue}"/>
                 </ice:panelGrid>
 
                 <ice:panelGrid id="centerWrapperCombinedChart">

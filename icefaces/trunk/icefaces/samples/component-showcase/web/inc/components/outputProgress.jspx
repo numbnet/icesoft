@@ -62,10 +62,8 @@ dynamically changed.
         <ice:selectOneRadio id="outputMode"
                             value="#{progressProperty.mode}"
                             partialSubmit="true">
-
-            <f:selectItem id="standardRb" itemValue="standard" itemLabel="Standard"/>
-            <f:selectItem id="indeterminateRb" itemValue="indeterminate"
-                          itemLabel="Indeterminate"/>
+            <f:selectItem id="standardRb" itemValue="standard" itemLabel="#{msgs['component.progressBar.demo.mode.standard']}"/>
+            <f:selectItem id="indeterminateRb" itemValue="indeterminate" itemLabel="#{msgs['component.progressBar.demo.mode.indeterminate']}"/>
         </ice:selectOneRadio>
         <br/>
     </ice:panelGroup>

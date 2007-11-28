@@ -41,7 +41,7 @@
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo5"
                    styleClass="componentLayoutRootTable">
-        <ice:outputText value="You can nest an ice:gMapMarker tag to display single or multiple locations on a map"/>
+        <ice:outputText value="#{msgs['component.gmap.demo5.desc']}"/>
         <ice:panelGroup styleClass="formBorderHighlight">  
 	        <ice:gMap latitude="39.10295" longitude="-94.58302">
 	            <ice:gMapMarker>

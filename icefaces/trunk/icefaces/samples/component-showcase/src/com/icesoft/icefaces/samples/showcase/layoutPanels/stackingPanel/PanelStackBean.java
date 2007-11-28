@@ -49,7 +49,7 @@ public class PanelStackBean {
     // currently selected fruit
     private String selectedFruit = "";
     // currently selected color
-    private String selectedColor = "";
+    private String selectedColour = "";
     // currently selected mineral
     private String selectedMineral = "";
 
@@ -100,21 +100,21 @@ public class PanelStackBean {
     }
 
     /**
-     * Sets the selected color name to the specified color name.
+     * Sets the selected colour name to the specified colour name.
      *
-     * @param selectedColor color name to be set as selected.
+     * @param selectedColour colour name to be set as selected.
      */
-    public void setSelectedColor(String selectedColor) {
-        this.selectedColor = selectedColor;
+    public void setSelectedColour(String selectedColour) {
+        this.selectedColour = selectedColour;
     }
 
     /**
-     * Gets the selected color name.
+     * Gets the selected colour name.
      *
-     * @return currently selected color.
+     * @return currently selected colour.
      */
-    public String getSelectedColor() {
-        return selectedColor;
+    public String getSelectedColour() {
+        return selectedColour;
     }
 
     /**

@@ -59,8 +59,8 @@ with more data than can be displayed in a single page.
         <ice:selectOneRadio id="paginatorLayout"
                             partialSubmit="true"
                             value="#{scrollerList.paginatorLayout}">
-            <f:selectItem id="hor" itemLabel="Horizontal" itemValue="hor"/>
-            <f:selectItem id="ver" itemLabel="Vertical" itemValue="ver"/>
+            <f:selectItem id="hor" itemLabel="#{msgs['component.dataPaginator.layout.horiz']}" itemValue="hor"/>
+            <f:selectItem id="ver" itemLabel="#{msgs['component.dataPaginator.layout.vert']}" itemValue="ver"/>
         </ice:selectOneRadio>
     </ice:panelGroup>
 
@@ -72,13 +72,14 @@ with more data than can be displayed in a single page.
                     value="#{msgs['component.dataPaginator.data.description']}"/>
         </h3>
 
-        <ice:commandButton value="Add Data" id="addContent"
+        <ice:commandButton id="addContent"
+                           value="#{msgs['component.dataPaginator.addcontent']}"
                            action="#{scrollerList.addContent}"
                            immediate="true"/>
-        <ice:commandButton value="Remove Data" id="removeConent"
+        <ice:commandButton id="removeConent"
+                           value="#{msgs['component.dataPaginator.remcontent']}"
                            action="#{scrollerList.removeContent}"
                            immediate="true"/>
-
     </ice:panelGroup>
 </ice:panelGrid>
 
@@ -98,7 +99,7 @@ with more data than can be displayed in a single page.
                        lastRowIndexVar="lastRowIndex"
                        pageCountVar="pageCount" pageIndexVar="pageIndex">
         <ice:outputFormat
-                value="{0} persons found, displaying {1} persons, from {2} to {3}. Page {4} / {5}."
+                value="#{msgs['component.dataPaginator.format']}"
                 styleClass="standard">
             <f:param value="#{rowsCount}"/>
             <f:param value="#{displayedRowsCountVar}"/>
