@@ -72,8 +72,9 @@ public class TomcatPushServlet
         ViewQueue allUpdatedViews = mainBound.getAllUpdatedViews();
         Collection synchronouslyUpdatedViews = 
                 mainBound.getSynchronouslyUpdatedViews();
-        allUpdatedViews.onPut( new EventResponder(
-                event, synchronouslyUpdatedViews, allUpdatedViews) );
+        String sessionID = mainBound.getSessionID();
+        allUpdatedViews.onPut( new EventResponder( event, sessionID,
+                synchronouslyUpdatedViews, allUpdatedViews) );
     }
     
     protected void end(CometEvent event, HttpServletRequest request, HttpServletResponse response)
@@ -119,10 +120,12 @@ class EventResponder implements Runnable {
     Collection synchronouslyUpdatedViews;
     CometEvent event;
     Writer writer;
+    String sessionID;
 
-    public EventResponder(CometEvent event, 
+    public EventResponder(CometEvent event, String sessionID,
             Collection synchronouslyUpdatedViews, 
             ViewQueue allUpdatedViews) {
+        this.sessionID = sessionID;
         this.event = event;
         this.synchronouslyUpdatedViews = synchronouslyUpdatedViews;
         this.allUpdatedViews = allUpdatedViews;
@@ -144,7 +147,8 @@ class EventResponder implements Runnable {
                 Iterator identifiers = viewIdentifiers.iterator();
                 writer.write("<updated-views>");
                 while (identifiers.hasNext()) {
-                    writer.write(identifiers.next().toString());
+                    Object identifier = identifiers.next();
+                    writer.write(sessionID + ":" + identifier);
                     writer.write(' ');
                 }
                 writer.write("</updated-views>");
