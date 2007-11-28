@@ -88,7 +88,7 @@
                 <include name="backport-util-concurrent.jar"/>
             </lib>
 
-            <lib file="${lib.dir}/${ant.project.name}.jar" />
+            <lib file="${dist.dir}/${ant.project.name}.jar" />
         </war>
     </target>
 
