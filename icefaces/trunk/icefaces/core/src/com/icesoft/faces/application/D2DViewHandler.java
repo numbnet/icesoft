@@ -88,8 +88,6 @@ public class D2DViewHandler extends ViewHandler {
         }
     }
 
-    private final static String DELEGATE_NONIFACE =
-            "com.icesoft.faces.delegateNonIface";
     private final static String ACTION_URL_SUFFIX =
             "com.icesoft.faces.actionURLSuffix";
     private final static String RELOAD_INTERVAL =
@@ -110,8 +108,6 @@ public class D2DViewHandler extends ViewHandler {
     public static final String DEFAULT_VIEW_ID = "default";
 
     private String actionURLSuffix;
-    protected boolean delegateNonIface = false;
-    protected boolean delegateNonIfaceDefault = false;
     protected boolean jsfStateManagement;
     //reloadInterval internally in milliseconds
     protected long reloadInterval;
@@ -128,10 +124,10 @@ public class D2DViewHandler extends ViewHandler {
             parser = new Parser(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } 
+        }
         catch (Throwable te) {
-        	//this allows us to use facelets & jsf1.2 impl on J2EE AS  see ICE-2356
-        	log.info("ICEfaces JSP parser disabled. This is a facelets-only configuration."+te);
+            //this allows us to use facelets & jsf1.2 impl on J2EE AS  see ICE-2356
+            log.info("ICEfaces JSP parser disabled. This is a facelets-only configuration." + te);
         }
     }
 
@@ -281,8 +277,8 @@ public class D2DViewHandler extends ViewHandler {
                 .get(DOMResponseWriter.RESPONSE_VIEWROOT);
 
         if ((null != cachedRoot) && (null != viewId) &&
-                ( mungeViewId(viewId)
-                        .equals(mungeViewId(cachedRoot.getViewId())) )) {
+                (mungeViewId(viewId)
+                        .equals(mungeViewId(cachedRoot.getViewId())))) {
             //Caching rarely takes place, but correct viewId is necessary
             root = cachedRoot;
         }
@@ -823,14 +819,8 @@ public class D2DViewHandler extends ViewHandler {
                 .getExternalContext().getRequestMap();
         //If it's served by the PersistentFacesServlet, do not
         //delegate
-        if (PersistentFacesCommonlet.PERSISTENT.equals(
-                requestMap.get(PersistentFacesCommonlet.SERVLET_KEY))) {
-            return false;
-        }
-        if (delegateNonIface) {
-            return (!viewId.endsWith(".iface"));
-        }
-        return false;
+        return !PersistentFacesCommonlet.PERSISTENT.
+                equals(requestMap.get(PersistentFacesCommonlet.SERVLET_KEY));
     }
 
     private void initializeParameters(FacesContext context) {
@@ -839,11 +829,9 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         ExternalContext ec = context.getExternalContext();
-        String delegateNonIfaceParameter = ec.getInitParameter(DELEGATE_NONIFACE);
         String reloadIntervalParameter = ec.getInitParameter(RELOAD_INTERVAL);
         String jsfStateManagementParameter = ec.getInitParameter(DO_JSF_STATE_MANAGEMENT);
         actionURLSuffix = ec.getInitParameter(ACTION_URL_SUFFIX);
-        delegateNonIface = delegateNonIfaceParameter == null ? delegateNonIfaceDefault : Boolean.valueOf(delegateNonIfaceParameter).booleanValue();
         try {
             reloadInterval = Long.parseLong(reloadIntervalParameter) * 1000;
         } catch (NumberFormatException e) {

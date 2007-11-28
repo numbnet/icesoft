@@ -38,6 +38,5 @@ import javax.faces.application.ViewHandler;
 public class D2DViewHandlerDelegating extends D2DViewHandler {
     public D2DViewHandlerDelegating(ViewHandler parent) {
         super(parent);
-        super.delegateNonIfaceDefault = true;
     }
 }
