@@ -363,7 +363,7 @@
 	             <include name="krysalis-*.jar"/>
 	             <include name="commons-digester*.jar"/>
 	           	 <include name="commons-el.jar"/>
-	           	 <include name="commons-discover.jar"/>
+	           	 <include name="commons-discovery.jar"/>
 	           	 <include name="xercesImpl.jar"/>
 	           	 <include name="xml-apis.jar"/>
 	           	 <include name="el-ri.jar"/>

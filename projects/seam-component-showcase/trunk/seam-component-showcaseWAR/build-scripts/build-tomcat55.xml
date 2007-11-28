@@ -17,8 +17,8 @@
     	<include name="lib/xml-apis.jar"/>
     	<include name="lib/xercesImpl.jar"/>
         <include name="lib/commons-*.jar"/>
-        <include name="lib/jsf-api-1.2.jar"/>
-    	<include name="lib/jsf-impl-1.2.jar"/>
+        <include name="lib/jsf-api.jar"/>
+    	<include name="lib/jsf-impl.jar"/>
         <include name="lib/jstl.jar"/>
     	<include name="lib/dom4j.jar" />
         <include name="lib/hibernate.jar"/>
