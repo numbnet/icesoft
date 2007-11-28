@@ -46,7 +46,8 @@
     
     <target name="jar" depends="compile">
 
-        <jar destfile="${lib.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
             <manifest>
                 <section name="com.icesoft.faces">
                     <attribute name="Implementation-Title" value="${product}"/>
@@ -58,6 +59,9 @@
                 <include name="**/*.properties"/>
             </fileset>
         </jar>
+        
+        <copy file="${dist.dir}/${ant.project.name}.jar" todir="../lib"/>
+
     </target>    
     
     <target name="clean">
@@ -66,7 +70,6 @@
     </target>
     
     <target name="build.war" depends="clean, jar">
-            <mkdir dir="${dist.dir}"/>
         <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
             <lib dir="${icefaces.dir}/lib">
                 <include name="commons-beanutils.jar" />

@@ -92,6 +92,10 @@
         <target name="tlddoc"/>
     </ice:ant>
 
+    <ice:ant antfile="ahs/build.xml">
+    	<target name="build.war"/>
+    </ice:ant>
+
     <delete dir="${dist.dir}/samples"/>
     <copy todir="${dist.dir}/samples" flatten="true">
         <fileset dir="samples" includes="**/*.war"/>
