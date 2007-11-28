@@ -69,3 +69,5 @@ Glassfish (tested with v1 & v2 but asynch stuff doesn't work yet properly with v
   * Deploy dist-glassfish/seam-comp-showcase.war as Web App
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
+Problems/Incompatibilities
+  * Tomcat 6.0 version 13 (Error listenerStart) version 14 - OK
