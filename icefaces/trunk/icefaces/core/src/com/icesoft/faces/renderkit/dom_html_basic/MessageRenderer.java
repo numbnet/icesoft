@@ -34,6 +34,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -166,8 +167,12 @@ public class MessageRenderer extends DomBasicRenderer {
             UIComponent forComponent =
                     findForComponent(facesContext, uiMessage);
             if (forComponent != null) {
+                if (messages == null || !messages.hasNext()) {
+                    CoreUtils.recoverFacesMessages(facesContext, forComponent);
+                }
                 messages = facesContext
                         .getMessages(forComponent.getClientId(facesContext));
+
             }
         }
         if (messages == null || !messages.hasNext()) {

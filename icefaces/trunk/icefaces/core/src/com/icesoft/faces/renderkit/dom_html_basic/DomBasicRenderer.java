@@ -125,6 +125,7 @@ public abstract class DomBasicRenderer extends Renderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
+        CoreUtils.recoverFacesMessages(facesContext, uiComponent);
         renderEnd(facesContext, uiComponent,
                   getValue(facesContext, uiComponent));
         DOMContext domContext =
