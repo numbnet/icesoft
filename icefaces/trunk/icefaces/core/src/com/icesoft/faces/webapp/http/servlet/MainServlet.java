@@ -5,7 +5,6 @@ import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.SeamUtilities;
 
@@ -60,7 +59,7 @@ public class MainServlet extends HttpServlet {
                 }
             };
 
-            if (SeamUtilities.isSpringEnvironment())  {
+            if (SeamUtilities.isSpringEnvironment()) {
                 //Need to dispatch to the Spring resource server
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
@@ -72,10 +71,6 @@ public class MainServlet extends HttpServlet {
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //set flag to indicate an ICEfaces request so that delegateNonIface
-        //will detect this and execute D2DViewHandler for it
-        request.setAttribute(PersistentFacesCommonlet.SERVLET_KEY,
-                PersistentFacesCommonlet.PERSISTENT);
         contextPath = request.getContextPath();
         try {
             dispatcher.service(request, response);

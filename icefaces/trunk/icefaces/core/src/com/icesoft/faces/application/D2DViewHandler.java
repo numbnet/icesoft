@@ -40,7 +40,6 @@ import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -175,8 +174,7 @@ public class D2DViewHandler extends ViewHandler {
         // # 2141 consume this parameter under JSF too, (no guarantee restore
         // view is ever called )
         if (SeamUtilities.isSeamEnvironment()) {
-            context.getExternalContext().getRequestParameterMap().remove(
-                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
+            ((BridgeExternalContext) context.getExternalContext()).removeSeamLifecycleShortcut();
         }
         UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
@@ -234,9 +232,7 @@ public class D2DViewHandler extends ViewHandler {
             }
 
             if (SeamUtilities.isSeamEnvironment()) {
-                if (servletExternalContext.getRequestParameterMap().remove(
-                        PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT) != null) {
-
+                if (servletExternalContext.removeSeamLifecycleShortcut()) {
                     if (log.isTraceEnabled()) {
                         log.trace("Seam Keyword shortcut found, new ViewRoot");
                     }
@@ -253,7 +249,6 @@ public class D2DViewHandler extends ViewHandler {
                 mungeViewId(viewId)
                         .equals(mungeViewId(
                                 currentRoot.getViewId()))) {
-//            purgeSeamContexts(context, currentRoot);
             return currentRoot;
         }
 
@@ -816,7 +811,7 @@ public class D2DViewHandler extends ViewHandler {
     //the delegate ViewHandler
     private boolean delegateView(FacesContext context) {
 
-        return ! (context instanceof BridgeFacesContext);
+        return !(context instanceof BridgeFacesContext);
     }
 
     private void initializeParameters(FacesContext context) {

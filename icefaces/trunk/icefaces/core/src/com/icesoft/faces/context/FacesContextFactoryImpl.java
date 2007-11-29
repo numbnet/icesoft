@@ -33,21 +33,10 @@
 
 package com.icesoft.faces.context;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.lifecycle.Lifecycle;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import java.lang.reflect.Method;
-
-import com.icesoft.util.SeamUtilities;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.context.BridgeFacesContext;
 
 /**
  * This is the ICEfaces implementation of the FacesContextFactory.  We take
@@ -61,13 +50,9 @@ import com.icesoft.faces.context.BridgeFacesContext;
  * ViewHandler and renders.
  */
 public class FacesContextFactoryImpl extends FacesContextFactory {
-
-    protected static Log log = LogFactory.getLog(FacesContextFactoryImpl.class);
-
     private FacesContextFactory delegate;
 
     public FacesContextFactoryImpl() {
-
     }
 
     public FacesContextFactoryImpl(FacesContextFactory delegate) {
@@ -76,88 +61,11 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
 
     public FacesContext getFacesContext(Object context, Object request,
                                         Object response,
-                                        Lifecycle lifecycle)
-            throws FacesException {
-
-        // If anything is null, we're not good to go.
-        if (context == null || request == null ||
-                response == null || lifecycle == null) {
-            throw new NullPointerException();
-        }
-
-        //If ICEfaces should not be handling this, then delegate the responsibility of
-        //providing the FacesContext to the delegated FacesContextFactory.
-        if (shouldDelegate(request)) {
-            return delegate
-                    .getFacesContext(context, request, response, lifecycle);
-        }
-
-        // Create a new external context that wraps up the context for the environment that
-        // we're currently running in as well as the request and response objects.  The
-        // BridgeExternalContext is responsible for differentiating the type of environment
-        // and delegating the calls appropriately.
-        if (context instanceof ServletContext) {
-            if (SeamUtilities.isSpringEnvironment())  {
-                PersistentFacesState persistentState = 
-                        PersistentFacesState.getInstance();
-                BridgeFacesContext bcontext = 
-                        (BridgeFacesContext) persistentState.getFacesContext();
-                bcontext.setCurrentInstance();
-                return bcontext;
-            }
-            return null;
-        } else {
-            throw new IllegalStateException("Unknown environment");
-        }
-    }
-
-    private boolean shouldDelegate(Object request) {
+                                        Lifecycle lifecycle) throws FacesException {
         if (delegate == null) {
-            return false;
+            throw new UnsupportedOperationException("ICEfaces cannot use this factory for instantiating FacesContext objects.");
+        } else {
+            return delegate.getFacesContext(context, request, response, lifecycle);
         }
-        //We must run without portlet.jar being present, so cannot use
-        //instanceof PortletRequest
-        //if (request instanceof PortletRequest) {
-        Method getAttributeMethod = null;
-        Class portletRequestClass = null;
-        try {
-            portletRequestClass =
-                    Class.forName("javax.portlet.PortletRequest");
-            getAttributeMethod = portletRequestClass
-                    .getMethod("getAttribute", new Class[]{String.class});
-        } catch (Throwable t) {
-            if (log.isDebugEnabled()) {
-                log.debug("Portlet classes not available");
-            }
-        }
-
-        if ((null != portletRequestClass) &&
-                (portletRequestClass.isInstance(request))) {
-            //now use our reflectively obtained method to get another attribute
-            String portletType = null;
-            try {
-                portletType = (String) getAttributeMethod
-                        .invoke(request, new Object[]{PersistentFacesCommonlet.SERVLET_KEY});
-            } catch (Exception e) {
-                if (log.isWarnEnabled()) {
-                    log.warn("Reflection failure: request.getAttribute", e);
-                }
-            }
-
-            if (portletType != null &&
-                    portletType.equalsIgnoreCase(PersistentFacesCommonlet.PERSISTENT)) {
-                return false;
-            }
-        } else if (request instanceof ServletRequest) {
-            String servletType = (String) ((ServletRequest) request)
-                    .getAttribute(PersistentFacesCommonlet.SERVLET_KEY);
-            if (servletType != null &&
-                    servletType.equalsIgnoreCase(PersistentFacesCommonlet.PERSISTENT)) {
-                return false;
-            }
-        }
-
-        return true;
     }
-
 }

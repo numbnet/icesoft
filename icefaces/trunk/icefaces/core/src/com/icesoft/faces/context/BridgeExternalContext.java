@@ -44,7 +44,6 @@ import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import com.icesoft.util.SeamUtilities;
 
 import javax.faces.FacesException;
@@ -99,7 +98,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
             throw new IOException("No request available for dispatch.");
         }
     };
-
+    private static final String SEAM_LIFECYCLE_SHORTCUT = "com.icesoft.faces.shortcutLifecycle";
     private static String PostBackKey;
 
     static {
@@ -203,7 +202,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     /**
      * Insert an object into the Parameter map, making JSF think
-     * the request is a postback. 
+     * the request is a postback.
      */
     protected void insertPostbackKey() {
         if (null != PostBackKey) {
@@ -226,11 +225,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
      * the view around for all types of requests
      */
     protected void insertNewViewrootToken() {
-        if (SeamUtilities.isSeamEnvironment()) {
-            requestParameterMap.put(
-                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
-                    Boolean.TRUE);
-        }
+        if (SeamUtilities.isSeamEnvironment()) setSeamLifecycleShortcut();
     }
 
     public void release() {
@@ -253,21 +248,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
         commandQueue.take();
     }
 
-    protected void applySeamLifecycleShortcut(boolean persistSeamKey) {
-        if (persistSeamKey) {
-            requestParameterMap.put(
-                    PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT,
-                    Boolean.TRUE);
-        }
+    public void setSeamLifecycleShortcut() {
+        requestParameterMap.put(SEAM_LIFECYCLE_SHORTCUT, Boolean.TRUE);
     }
 
-    protected boolean isSeamLifecycleShortcut() {
-        boolean persistSeamKey = false;
-        if (requestParameterMap != null) {
-            persistSeamKey = requestParameterMap.containsKey(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT);
-        }
+    public boolean removeSeamLifecycleShortcut() {
+        return requestParameterMap.remove(SEAM_LIFECYCLE_SHORTCUT) != null;
+    }
 
-        return persistSeamKey;
+    public boolean isSeamLifecycleShortcut() {
+        return requestParameterMap != null && requestParameterMap.containsKey(SEAM_LIFECYCLE_SHORTCUT);
     }
 
     public Map getApplicationMap() {
@@ -286,11 +276,11 @@ public abstract class BridgeExternalContext extends ExternalContext {
      * Override the JSF method, but do nothing here. JSF interjects an
      * interweaving response wrapper object that is unnecessary for us.
      *
-     * @since jsf 1.2_06
      * @param response new Response object
+     * @since jsf 1.2_06
      */
     public void setResponse(Object response) {
-    } 
+    }
 
     public String getInitParameter(String name) {
         return (String) initParameterMap.get(name);

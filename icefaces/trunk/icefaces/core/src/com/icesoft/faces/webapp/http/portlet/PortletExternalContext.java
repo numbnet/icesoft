@@ -109,7 +109,7 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
-        applySeamLifecycleShortcut(persistSeamKey);
+        if (persistSeamKey) setSeamLifecycleShortcut();
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -140,7 +140,7 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
-        applySeamLifecycleShortcut(persistSeamKey);
+        if (persistSeamKey) setSeamLifecycleShortcut();
 
         allowMode = new PortletRequestAllowMode(request);
         requestAttributes = new PortletRequestAttributes(request);

@@ -39,7 +39,6 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesCommonlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -264,8 +263,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public UIViewRoot getViewRoot() {
-        if (null != externalContext.getRequestParameterMap()
-                .get(PersistentFacesCommonlet.SEAM_LIFECYCLE_SHORTCUT)) {
+        if (externalContext.isSeamLifecycleShortcut()) {
             //ViewRoot and attributes being cached interferes with PAGE scope
             return null;
         }
