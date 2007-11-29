@@ -201,6 +201,10 @@ public abstract class BridgeExternalContext extends ExternalContext {
         requestMap.putAll(bundles);
     }
 
+    /**
+     * Insert an object into the Parameter map, making JSF think
+     * the request is a postback. 
+     */
     protected void insertPostbackKey() {
         if (null != PostBackKey) {
             requestParameterMap.put(PostBackKey, "not reload");
@@ -278,6 +282,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
         return requestMap;
     }
 
+    /**
+     * Override the JSF method, but do nothing here. JSF interjects an
+     * interweaving response wrapper object that is unnecessary for us.
+     *
+     * @since jsf 1.2_06
+     * @param response new Response object
+     */
+    public void setResponse(Object response) {
+    } 
+
     public String getInitParameter(String name) {
         return (String) initParameterMap.get(name);
     }
@@ -287,6 +301,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public void redirect(String requestURI) throws IOException {
+
         final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
         final String redirectURI;
         if (uri.isAbsolute()) {
