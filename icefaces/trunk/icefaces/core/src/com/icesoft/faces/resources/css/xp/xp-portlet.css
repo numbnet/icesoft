@@ -672,6 +672,7 @@ input.iceSelInpDateClosePopup {
 .icePnlTbSet { /* was iceTabSet*/
     width: 100%;
     background: transparent;
+    border-collapse: separate;
 }
 
 .icePnlTbSetCnt { /*newly added class*/
