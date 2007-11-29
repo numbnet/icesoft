@@ -34,8 +34,6 @@
 		  <!-- ICEfaces dependencies -->
 		  <include name="lib/commons-el.jar"/>
 		  <include name="lib/commons-discovery.jar"/>
-	      <include name="lib/xml-apis.jar"/>
-		  <include name="lib/xercesImpl.jar"/>
 
 	      <!-- Hibernate and deps -->
 	      <include name="lib/hibernate.jar" />

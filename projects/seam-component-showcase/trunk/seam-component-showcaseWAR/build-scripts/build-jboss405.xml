@@ -25,8 +25,6 @@
     	
     	<!-- icefaces dependencies for jboss-4.0.5 -->
     	<include name="lib/jstl*.jar"/>
-    	<include name="lib/xercesImpl.jar"/>
-    	<include name="lib/xml-apis.jar"/>
     </fileset>
 	
 	<fileset id="noejb.war.resource.extra" dir="${resources.dir}">
