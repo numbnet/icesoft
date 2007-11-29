@@ -242,6 +242,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
         return requestMap;
     }
 
+    /**
+     * Override the JSF method, but do nothing here. JSF interjects an
+     * interweaving response wrapper object that is unnecessary for us.
+     *
+     * @since jsf 1.2_06
+     * @param response new Response object
+     */
+    public void setResponse(Object response) {
+    } 
+
     public String getInitParameter(String name) {
         return (String) initParameterMap.get(name);
     }
