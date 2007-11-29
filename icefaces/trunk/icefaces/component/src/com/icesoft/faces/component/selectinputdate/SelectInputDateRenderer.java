@@ -208,6 +208,7 @@ public class SelectInputDateRenderer
                 Element dateText = domContext.createElement(HTML.INPUT_ELEM);
 //System.out.println("value: " + selectInputDate.getValue());
                 
+                dateText.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT); // ICE-2302
                 dateText.setAttribute(HTML.VALUE_ATTR,
                                       selectInputDate.getTextToRender());
                 dateText.setAttribute(HTML.ID_ATTR,
@@ -434,6 +435,7 @@ public class SelectInputDateRenderer
             // assumption input text is first child
             Element dateText = (Element) root.getFirstChild();
 //System.out.println("dateText  currentValue: " + currentValue);
+            dateText.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_TEXT); // ICE-2302
             dateText.setAttribute(
                 HTML.VALUE_ATTR,
                 selectInputDate.getTextToRender());

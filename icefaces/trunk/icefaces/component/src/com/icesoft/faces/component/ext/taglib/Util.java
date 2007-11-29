@@ -529,7 +529,10 @@ public class Util extends Object {
         String[] classes = styleClass.split(" ");
         StringBuffer name = new StringBuffer();
         for (int i =0; i <classes.length; i++) {
-            if (classes[i] != null && classes[i].endsWith(CSS_DEFAULT.DIS_SUFFIX)) {
+            if (classes[i] != null && classes[i].startsWith("portlet-")) { // ICE-2302
+                name.append(classes[i]);
+            }
+            else if (classes[i] != null && classes[i].endsWith(CSS_DEFAULT.DIS_SUFFIX)) {
                 name.append(classes[i].replaceAll(CSS_DEFAULT.DIS_SUFFIX, 
                         localClass + CSS_DEFAULT.DIS_SUFFIX));
             } else {
