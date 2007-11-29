@@ -140,7 +140,7 @@ public class D2DViewHandler extends ViewHandler {
     public void renderView(FacesContext context, UIViewRoot viewToRender)
             throws IOException, FacesException {
         initializeParameters(context);
-        if (delegateView(viewToRender.getViewId())) {
+        if (delegateView(context)) {
             delegate.renderView(context, viewToRender);
             return;
         }
@@ -169,7 +169,7 @@ public class D2DViewHandler extends ViewHandler {
     public UIViewRoot createView(FacesContext context, String viewId) {
         initializeParameters(context);
 
-        if (delegateView(viewId)) {
+        if (delegateView(context)) {
             return delegate.createView(context, viewId);
         }
         // # 2141 consume this parameter under JSF too, (no guarantee restore
@@ -352,7 +352,7 @@ public class D2DViewHandler extends ViewHandler {
 
     public String getActionURL(FacesContext context, String viewId) {
         //Maybe should always use delegate
-        if (delegateView(viewId)) {
+        if (delegateView(context)) {
             return delegate.getActionURL(context, viewId);
         }
 
@@ -698,7 +698,7 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public void writeState(FacesContext context) throws IOException {
-        if (delegateView(context.getViewRoot().getViewId())) {
+        if (delegateView(context)) {
             delegate.writeState(context);
         }
     }
