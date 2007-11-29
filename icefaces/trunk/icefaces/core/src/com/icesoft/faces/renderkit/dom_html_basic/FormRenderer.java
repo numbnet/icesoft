@@ -215,6 +215,16 @@ public class FormRenderer extends DomBasicRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // set static class variable for support of myfaces command link
         renderCommandLinkHiddenFields(facesContext, uiComponent);
+        
+        //check if the messages renderer asked to be rendered later,
+        //if yes, then re-render it
+        if (uiComponent.getAttributes().get("$ice-msgs$") != null)  {
+            UIComponent messages = (UIComponent)uiComponent.getAttributes().get("$ice-msgs$");
+            messages.encodeBegin(facesContext);
+            messages.encodeChildren(facesContext);
+            messages.encodeEnd(facesContext);
+        }
+        
         domContext.stepOver();
         domContext.endNode(facesContext, uiComponent, domContext.getRootNode());
     }

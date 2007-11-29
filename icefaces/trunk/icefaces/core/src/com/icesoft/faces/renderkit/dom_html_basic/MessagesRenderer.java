@@ -34,6 +34,8 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.util.DOMUtils;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -60,9 +62,17 @@ public class MessagesRenderer extends DomBasicRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UIMessages.class);
-
-        DOMContext domContext =
+        //this property will only be true when there wasn't any message found 
+        //on first rendering request of this component.
+        boolean renderLater = uiComponent.getAttributes().containsKey("$render-later$");
+        DOMContext domContext = null;
+        if (!renderLater) {
+            domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
+        } else {
+            domContext =
+                DOMContext.getDOMContext(facesContext, uiComponent); 
+        }
         if (domContext.isStreamWriting()) {
             writeStream(facesContext, uiComponent);
             return;
@@ -79,41 +89,43 @@ public class MessagesRenderer extends DomBasicRenderer {
         }
 
         if (!messagesIterator.hasNext()) {
+            UIComponent uiform = findForm(uiComponent);
+            //no data found yet, pass it to the FormRenderer to rerender it later
+            //on complete rendering of the entire form.
+            if (!renderLater && uiform != null) {
+                uiform.getAttributes().put("$ice-msgs$", uiComponent);
+                uiComponent.getAttributes().put("$render-later$", "true");
+            }
             domContext.stepOver();
             return;
         }
+        
+        if (renderLater) {
+            UIComponent uiform = findForm(uiComponent);
+            //second request has been made successfully, now remove the info 
+            if (uiform != null) {
+                uiform.getAttributes().remove("$ice-msgs$");
+                uiComponent.getAttributes().remove("$render-later$");
+            }                
+        }
+        
+        // the target element to which messages are appended; either td or span
+        Element parentTarget = null;
+        
         // layout
         boolean tableLayout = false; // default layout is list
         String layout = (String) uiComponent.getAttributes().get("layout");
         if (layout != null && layout.toLowerCase().equals("table")) {
             tableLayout = true;
-        }
-
-        // the target element to which messages are appended; either td or span
-        Element parentTarget = null;
-        if (tableLayout) {
-            if (!domContext.isInitialized()) {
-                parentTarget = domContext.createElement("table");
-                domContext.setRootNode(parentTarget);
-                setRootElementId(facesContext, parentTarget, uiComponent);
-            } else {
-                // remove previous messages
-                parentTarget = (Element) domContext.getRootNode();
-                DOMContext.removeChildrenByTagName(parentTarget, "tr");
-            }
+            parentTarget = domContext.createElement(HTML.TABLE_ELEM);
         } else {
-            if (!domContext.isInitialized()) {
-                Element list = domContext.createElement(HTML.UL_ELEM);
-                domContext.setRootNode(list);
-                parentTarget = list;
-                setRootElementId(facesContext, list, uiComponent);
-            } else {
-                // remove previous messages
-                parentTarget = (Element) domContext.getRootNode();
-                DOMContext.removeChildrenByTagName(parentTarget, HTML.LI_ELEM);
-            }
+            parentTarget = domContext.createElement(HTML.UL_ELEM);
         }
-
+        if (!domContext.isInitialized()) {
+            domContext.setRootNode(parentTarget);
+            setRootElementId(facesContext, parentTarget, uiComponent);
+        }
+        
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
 
