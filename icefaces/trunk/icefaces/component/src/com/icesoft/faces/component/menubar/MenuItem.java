@@ -75,6 +75,8 @@ public class MenuItem extends MenuItemBase {
     private Boolean disabled = null;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
+    private String title;
+    private String alt;
 
     /**
      * String constant defining default menu icon img
@@ -112,6 +114,13 @@ public class MenuItem extends MenuItemBase {
      * <p>Return the value of the <code>icon</code> property.</p>
      */
     public String getIcon() {
+        String ret = getSpecifiedIcon();
+        if( ret != null)
+            return ret;
+        return DEFAULT_ICON;
+    }
+    
+    public String getSpecifiedIcon() {
         if (icon != null) {
             return icon;
         }
@@ -119,7 +128,7 @@ public class MenuItem extends MenuItemBase {
         if (vb != null) {
             return (String) vb.getValue(getFacesContext());
         }
-        return DEFAULT_ICON;
+        return null;
     }
 
     /**
@@ -336,6 +345,50 @@ public class MenuItem extends MenuItemBase {
             return renderedOnUserRole;
         }
         ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * <p>Set the value of the <code>title</code> property.</p>
+     *
+     * @param title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     *
+     * @return String renderedOnUserRole
+     */
+    public String getTitle() {
+        if (title != null) {
+            return title;
+        }
+        ValueBinding vb = getValueBinding("title");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * <p>Set the value of the <code>alt</code> property.</p>
+     *
+     * @param alt
+     */
+    public void setAlt(String alt) {
+        this.alt = alt;
+    }
+    
+    /**
+     * <p>Return the value of the <code>alt</code> property.</p>
+     *
+     * @return String alt
+     */
+    public String getAlt() {
+        if (alt != null) {
+            return alt;
+        }
+        ValueBinding vb = getValueBinding("alt");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
