@@ -77,9 +77,9 @@ public class InputFileRenderer extends Renderer {
             try {
                 throw uploadException;
             } catch (FileUploadBase.FileSizeLimitExceededException e) {
-                context.addMessage(null, MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
+                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.SIZE_LIMIT_EXCEEDED_MESSAGE_ID));
             } catch (FileUploadBase.UnknownSizeException e) {
-                context.addMessage(null, MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
+                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
             } catch (FileUploadBase.InvalidContentTypeException e) {
                 String fileName = c.getFileInfo().getFileName();
                 if(fileName == null) {
@@ -89,7 +89,7 @@ public class InputFileRenderer extends Renderer {
                 }
                 if(fileName == null)
                     fileName = "";
-                context.addMessage(null, MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[] { fileName }));
+                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[] { fileName }));
             } catch (Throwable t) {
                 //ignore
             }

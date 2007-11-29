@@ -211,7 +211,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 fileInfo.reset();
                 file = null;
                 status = INVALID_NAME_PATTERN;
-                context.addMessage(null, MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
+                context.addMessage(getClientId(context), MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
                 notifyDone(bfc);
             }
         } catch (FileUploadBase.FileUploadIOException uploadException) {
