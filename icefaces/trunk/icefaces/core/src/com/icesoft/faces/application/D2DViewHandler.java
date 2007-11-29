@@ -213,7 +213,7 @@ public class D2DViewHandler extends ViewHandler {
         this.initializeParameters(context);
 
 
-        if (delegateView(viewId)) {
+        if (delegateView(context)) {
             return delegate.restoreView(context, viewId);
         }
 
@@ -814,13 +814,9 @@ public class D2DViewHandler extends ViewHandler {
 
     //Determine whether handling of the view should be delegated to
     //the delegate ViewHandler
-    private boolean delegateView(String viewId) {
-        Map requestMap = FacesContext.getCurrentInstance()
-                .getExternalContext().getRequestMap();
-        //If it's served by the PersistentFacesServlet, do not
-        //delegate
-        return !PersistentFacesCommonlet.PERSISTENT.
-                equals(requestMap.get(PersistentFacesCommonlet.SERVLET_KEY));
+    private boolean delegateView(FacesContext context) {
+
+        return ! (context instanceof BridgeFacesContext);
     }
 
     private void initializeParameters(FacesContext context) {
