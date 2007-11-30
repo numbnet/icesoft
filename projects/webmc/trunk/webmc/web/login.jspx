@@ -177,7 +177,9 @@
                                tabindex="1"
                                styleClass="loginInput"
                                binding="#{participant.loginBean.firstNameField}"/>
-                <ice:message for="firstName" errorClass="inputError"/>
+                <ice:panelGroup>
+                  <ice:message for="firstName" errorClass="inputError"/>
+                </ice:panelGroup>
             </td>
         </tr>
         <tr>
@@ -189,7 +191,9 @@
                                styleClass="loginInput"
                                converter="fixCaps" required="true"
                                partialSubmit="true" maxlength="20"/>
-                <ice:message for="lastName" errorClass="inputError"/>
+                <ice:panelGroup>
+                  <ice:message for="lastName" errorClass="inputError"/>
+                </ice:panelGroup>
             </td>
         </tr>
         <tr>
@@ -204,7 +208,9 @@
                                partialSubmit="true">
                     <f:validator validatorId="EmailValidator"/>
                 </ice:inputText>
-                <ice:message for="email" errorClass="inputError"/>
+                <ice:panelGroup>
+                  <ice:message for="email" errorClass="inputError"/>
+                </ice:panelGroup>
             </td>
         </tr>
             <tr>
@@ -243,8 +249,10 @@
                         <f:selectItems
                                 value="#{presentationMgr.presentationItems}"/>
                     </ice:selectOneMenu>
+                  <ice:panelGroup>
                     <ice:message for="existingPresentationName"
                                  errorClass="inputError"/>
+                  </ice:panelGroup>
                 </td>
             </tr>
             <tr>
@@ -261,7 +269,9 @@
                         <f:validator validatorId="PasswordValidator"/>
                         <f:param value="#{participant.loginBean.presentationName}"/>
                     </ice:inputSecret>
+                  <ice:panelGroup>
                     <ice:message for="viewPassword" errorClass="inputError"/>
+                  </ice:panelGroup>
                 </td>
             </tr>
             <tr>
@@ -297,8 +307,10 @@
                                    partialSubmit="true">
                         <f:validator validatorId="NameValidator"/>
                     </ice:inputText>
+                  <ice:panelGroup>
                     <ice:message for="newPresentationName"
                                  errorClass="inputError"/>
+                  </ice:panelGroup>
                 </td>
             </tr>
             <tr>
@@ -314,8 +326,10 @@
                                      action="#{participant.login}">
                         <f:validator validatorId="PasswordValidator"/>
                     </ice:inputSecret>
+                  <ice:panelGroup>
                     <ice:message for="moderatorPassword"
                                  errorClass="inputError"/>
+                  </ice:panelGroup>
                 </td>
             </tr>
             <tr>
