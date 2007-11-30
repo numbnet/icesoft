@@ -152,8 +152,13 @@ public class OutputProgress extends UIComponentBase {
             return value.intValue();
         }
         ValueBinding vb = getValueBinding("value");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext()))
-                .intValue() : 0;
+        if(vb != null) {
+            Integer val = (Integer) vb.getValue(getFacesContext());
+            if(val != null) {
+                return val.intValue();
+            }
+        }
+        return 0;
     }
 
     /**
