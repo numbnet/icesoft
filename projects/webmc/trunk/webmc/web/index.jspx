@@ -376,7 +376,7 @@
 </ul>
 
 <ice:panelPopup visible="#{participant.uploadDialog}" modal="true"
-                style="position: absolute; background-color: #FFFFFF; width: 500px; height: 235px; z-index:1001; top: 30%; left: 30%; border: 1px solid #104675;">
+                style="position: absolute; background-color: #FFFFFF; width: 550px; height: 235px; z-index:1001; top: 30%; left: 30%; border: 1px solid #104675;">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
             <strong>Upload a New Presentation (.zip file only)</strong>
@@ -390,7 +390,7 @@
                             value="Please upload the presentation ZIP file. Select the Browse button below to navigate your file system and select the ZIP file created for this presentation.  Once the file has been selected, choose the Upload button."/>
                 </div>
                 <ice:inputFile uniqueFolder="false"
-                               width="400"
+                               width="500"
                                actionListener="#{participant.presentation.load}"
                                progressListener="#{participant.presentation.progressChange}"
                                buttonClass="none"
