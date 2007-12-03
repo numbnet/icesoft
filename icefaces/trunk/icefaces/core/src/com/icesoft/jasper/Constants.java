@@ -148,12 +148,6 @@ public class Constants {
              PORTLET_RESPONSE,
              PORTLET_USERINFO};
 
-    public static final String LIFERAY_THEME_DISPLAY =
-            "THEME_DISPLAY";
-
-    public static final String[] LIFERAY_CONSTANTS =
-            {LIFERAY_THEME_DISPLAY};
-
     public static final String PORTLET_KEY = "com.icesoft.faces.PORTLET";
     public static final String VIEW_KEY = "com.icesoft.faces.VIEW";
     public static final String EDIT_KEY = "com.icesoft.faces.EDIT";
