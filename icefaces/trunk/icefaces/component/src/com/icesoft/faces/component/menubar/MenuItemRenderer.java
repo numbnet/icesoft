@@ -120,6 +120,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
+        if (!uiComponent.isRendered()) {
+            return;
+        }
+
         if (!(uiComponent.getParent() instanceof MenuBar) &&
             !(uiComponent.getParent() instanceof MenuItems)) {
             throw new InvalidComponentTypeException(
@@ -397,6 +401,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 //System.out.println("renderChildrenRecursive()  "+ste.length+"    uiComponent: " + uiComponent);
 //if(uiComponent instanceof MenuItem)
 //  System.out.println("renderChildrenRecursive()  "+ste.length+"    Name: " + ((MenuItem)uiComponent).getValue());
+        if (!uiComponent.isRendered()) {
+            return;
+        }
+        
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // create the div that will hold all the sub menu items
@@ -483,6 +491,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     }
     
     private void renderSubMenuItemSeparator(DOMContext domContext, MenuItemSeparator nextSubMenuItem, Element submenuDiv) {
+        if (!nextSubMenuItem.isRendered()) {
+            return;
+        }
         Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
         submenuDiv.appendChild(subMenuItemDiv);
         renderSeparatorDiv(domContext, subMenuItemDiv, nextSubMenuItem);
@@ -519,6 +530,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         boolean disabled, boolean vertical,
         Element submenuDiv, String subMenuDivId)
     {
+        if (!nextSubMenuItem.isRendered()) {
+            return;
+        }
+
         Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
         submenuDiv.appendChild(subMenuItemDiv);
         String qualifiedName = nextSubMenuItem.getStyleClass();
