@@ -78,9 +78,9 @@ public class CoreUtils {
     }
 
     /*
-     * This methods will help to retain the faces messages on the partialSubmit, 
-     * page refresh and the dynamic component rendering.
-     * It will be called by the two classes DomBasicRenderer and the MessageRenderer.
+     * This method will help to retain the faces messages on the partialSubmit, 
+     * the page refresh and the dynamic component rendering.
+     * It will be called by two classes the DomBasicRenderer and the MessageRenderer.
      * 
      * Calling it from the DomBasicRenderer insures that there will always be a 
      * message in the default messages Map, only if the component was invalid. 
@@ -98,7 +98,14 @@ public class CoreUtils {
     public static void recoverFacesMessages(FacesContext facesContext, UIComponent uiComponent) {
         if (!(uiComponent instanceof UIInput)) return;
         UIInput input = (UIInput) uiComponent;
-        String clientId = input.getClientId(facesContext); 
+        String clientId = input.getClientId(facesContext);
+        String localeFacesMsgId = clientId + "$ice-msg$";
+        String localeRequired = clientId + "$ice-req$";  
+        //save the required attribute, specifically for UIData
+        if (input.getAttributes().get(localeRequired) == null) {
+            // this property will be used by the UISeries.restoreRequiredAttribute()
+            input.getAttributes().put(localeRequired,new Boolean(input.isRequired()));
+        }
         //component is invalid there should be a message in the default messages map
         if (!input.isValid()) {
             Iterator messages = facesContext.getMessages(clientId);
@@ -108,17 +115,17 @@ public class CoreUtils {
             //if so, get the message from the component's map and add
             //it to the default messages map
             if (messages == null || !messages.hasNext()) {
-                if(input.getAttributes().get("$ice-msg$") != null) {
-                    message = (FacesMessage) input.getAttributes().get("$ice-msg$");
+                if(input.getAttributes().get(localeFacesMsgId) != null) {
+                    message = (FacesMessage) input.getAttributes().get(localeFacesMsgId);
                     facesContext.addMessage(clientId, message);
                 }
             } else {//if found, then store it to the component's message map,
                 //so can be served later.
                 message = (FacesMessage) messages.next();
-                input.getAttributes().put("$ice-msg$",message );
+                input.getAttributes().put(localeFacesMsgId,message );
             }
         } else { //component is valid, so remove the old message.
-            input.getAttributes().remove("$ice-msg$");
+            input.getAttributes().remove(localeFacesMsgId);
         }        
     }
 }

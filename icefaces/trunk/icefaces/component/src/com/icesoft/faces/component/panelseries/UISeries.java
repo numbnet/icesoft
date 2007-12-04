@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.panelseries;
 
+import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.tree.TreeDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
 
@@ -41,6 +42,7 @@ import javax.faces.component.EditableValueHolder;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UIInput;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
@@ -255,7 +257,7 @@ public class UISeries extends HtmlDataTable {
         if (!isRendered()) {
             return;
         }
-
+        restoreRequiredAttribute(context);
         dataModel = null;
         if (null == savedChildren || !keepSaved(context)) {
             savedChildren = new HashMap();
@@ -571,6 +573,28 @@ public class UISeries extends HtmlDataTable {
         }
         return true;
     }
+    
+    private void restoreRequiredAttribute(FacesContext context) {    
+        Iterator it = savedChildren.keySet().iterator();
+        while (it.hasNext()) {
+            String clientId = String.valueOf(it.next());
+            String localeRequired = clientId + "$ice-req$";
+            if (!savedChildren.containsKey(clientId)) continue;
+            ChildState state = (ChildState)savedChildren.get(clientId);
+            if (!state.isValid()) {
+                UIComponent component = D2DViewHandler.findComponent(clientId,  
+                                        context.getViewRoot());
+                if (component != null && component instanceof UIInput &&
+                        component.getAttributes().get(localeRequired)!= null ) {
+                    boolean required = ((Boolean)component.getAttributes()
+                                    .get(localeRequired)).booleanValue();
+                    if (required) {
+                               ((UIInput)component).setRequired(true);
+                    }           
+               }
+            }
+        }
+    }    
 
 }
 
