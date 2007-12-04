@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.j2eedt.core.MYECLIPSE_JAVAEE_5_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Seam/seam-auctionMonitor2Ear/lib/jboss-seam.jar"/>
+	<classpathentry kind="lib" path="C:/icefaces/icefaces/lib/icefaces-facelets.jar"/>
+	<classpathentry kind="lib" path="C:/icefaces/icefaces/lib/icefaces.jar"/>
+	<classpathentry kind="lib" path="C:/icefaces/icefaces/lib/icefaces-comps.jar"/>
+	<classpathentry kind="lib" path="C:/Seam/jboss-seam-2.0.0.GA/lib/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Seam/jboss-seam-2.0.0.GA/lib/hibernate-validator.jar"/>
+	<classpathentry kind="lib" path="C:/Seam/jboss-seam-2.0.0.GA/lib/hibernate.jar"/>
+	<classpathentry kind="lib" path="C:/icefaces/icefaces/lib/commons-logging-api.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>
