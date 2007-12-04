@@ -578,16 +578,16 @@ public class UISeries extends HtmlDataTable {
         Iterator it = savedChildren.keySet().iterator();
         while (it.hasNext()) {
             String clientId = String.valueOf(it.next());
-            String localeRequired = clientId + "$ice-req$";
+            String localRequired = clientId + "$ice-req$";
             if (!savedChildren.containsKey(clientId)) continue;
             ChildState state = (ChildState)savedChildren.get(clientId);
             if (!state.isValid()) {
                 UIComponent component = D2DViewHandler.findComponent(clientId,  
                                         context.getViewRoot());
                 if (component != null && component instanceof UIInput &&
-                        component.getAttributes().get(localeRequired)!= null ) {
+                        component.getAttributes().get(localRequired)!= null ) {
                     boolean required = ((Boolean)component.getAttributes()
-                                    .get(localeRequired)).booleanValue();
+                                    .get(localRequired)).booleanValue();
                     if (required) {
                                ((UIInput)component).setRequired(true);
                     }           

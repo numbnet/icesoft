@@ -99,12 +99,12 @@ public class CoreUtils {
         if (!(uiComponent instanceof UIInput)) return;
         UIInput input = (UIInput) uiComponent;
         String clientId = input.getClientId(facesContext);
-        String localeFacesMsgId = clientId + "$ice-msg$";
-        String localeRequired = clientId + "$ice-req$";  
+        String localFacesMsgId = clientId + "$ice-msg$";
+        String localRequired = clientId + "$ice-req$";  
         //save the required attribute, specifically for UIData
-        if (input.getAttributes().get(localeRequired) == null) {
+        if (input.getAttributes().get(localRequired) == null) {
             // this property will be used by the UISeries.restoreRequiredAttribute()
-            input.getAttributes().put(localeRequired,new Boolean(input.isRequired()));
+            input.getAttributes().put(localRequired,new Boolean(input.isRequired()));
         }
         //component is invalid there should be a message in the default messages map
         if (!input.isValid()) {
@@ -115,17 +115,17 @@ public class CoreUtils {
             //if so, get the message from the component's map and add
             //it to the default messages map
             if (messages == null || !messages.hasNext()) {
-                if(input.getAttributes().get(localeFacesMsgId) != null) {
-                    message = (FacesMessage) input.getAttributes().get(localeFacesMsgId);
+                if(input.getAttributes().get(localFacesMsgId) != null) {
+                    message = (FacesMessage) input.getAttributes().get(localFacesMsgId);
                     facesContext.addMessage(clientId, message);
                 }
             } else {//if found, then store it to the component's message map,
                 //so can be served later.
                 message = (FacesMessage) messages.next();
-                input.getAttributes().put(localeFacesMsgId,message );
+                input.getAttributes().put(localFacesMsgId,message );
             }
         } else { //component is valid, so remove the old message.
-            input.getAttributes().remove(localeFacesMsgId);
+            input.getAttributes().remove(localFacesMsgId);
         }        
     }
 }
