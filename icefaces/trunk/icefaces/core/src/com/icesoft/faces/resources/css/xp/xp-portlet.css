@@ -44,6 +44,9 @@
 =================== HTML Form Element Appearence ==============
 */
 
+fieldset {
+    border: 0px none ;  
+}
 
 /*
 =================== Style class definitions for ICE Standard Extended Component Appearance ==============

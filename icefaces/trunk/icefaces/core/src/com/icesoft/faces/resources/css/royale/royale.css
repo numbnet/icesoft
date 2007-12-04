@@ -59,6 +59,10 @@ input, textarea, select {
 textarea {
 }
 
+fieldset {
+    border: 0px none ;  
+}
+
 /* set the style elements for any of the select form elements   */
 select {
 }

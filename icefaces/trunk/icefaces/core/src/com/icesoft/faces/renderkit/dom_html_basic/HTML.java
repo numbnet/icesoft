@@ -488,7 +488,7 @@ public static final String[] MESSAGE_PASSTHROUGH_ATTRIBUTES =
     public static final String UL_ELEM = "ul";
     public static final String OL_ELEM = "ol";
     public static final String LI_ELEM = "li";
-
+    public static final String FIELDSET_ELEM = "fieldset";
 
     //HTML simple element constants
     public static final String BR_ELEM = "br";

@@ -34,6 +34,9 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.IceExtended;
+import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -42,6 +45,17 @@ import java.util.Set;
 
 public class SelectManyCheckboxListRenderer extends
                                             com.icesoft.faces.renderkit.dom_html_basic.SelectManyCheckboxListRenderer {
+
+    protected Element getTableElement(DOMContext domContext) {
+        return (Element) domContext.getRootNode().getFirstChild();
+    }
+    
+    protected Element createRootNode(DOMContext domContext) {
+        Element rootElement = domContext.createRootElement(HTML.FIELDSET_ELEM);
+        Element tableElement = domContext.createElement(HTML.TABLE_ELEM);
+        rootElement.appendChild(tableElement);
+        return rootElement;
+    }
 
     protected void addJavaScript(FacesContext facesContext,
                                  UIComponent uiComponent, Element root,

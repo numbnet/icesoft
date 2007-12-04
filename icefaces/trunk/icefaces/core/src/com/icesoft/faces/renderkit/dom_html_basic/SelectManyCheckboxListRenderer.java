@@ -81,20 +81,14 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
         Element rootTR = null;
-
         // remove all existing table rows from the root table
-        if (domContext.isInitialized()) {
-            DOMContext.removeChildrenByTagName(
-                    (Element) domContext.getRootNode(), "tr");
-        } else {
-            Element root = domContext.createElement("table");
-            domContext.setRootNode(root);
-            if (idNotNull(uiComponent)) {
-                setRootElementId(facesContext, root, uiComponent);
-            }
+        if (!domContext.isInitialized()) {
+            Element rootNode = createRootNode(domContext);
+            setRootElementId(facesContext, rootNode, uiComponent);
+            addJavaScript(facesContext, uiComponent, rootNode, new HashSet());            
         }
 
-        Element rootTable = (Element) domContext.getRootNode();
+        Element rootTable = getTableElement(domContext);
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
@@ -252,7 +246,6 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                     domContext.getDocument().createTextNode(selectItemLabel);
             inputElement.appendChild(textNode);
         }
-        addJavaScript(facesContext, uiComponent, inputElement, excludes);
         excludes.add("style");
         excludes.add("border");
         excludes.add("readonly");
@@ -361,4 +354,13 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             list.add(selectItem);
         }
     }
+    
+    protected Element getTableElement(DOMContext domContext) {
+        return (Element) domContext.getRootNode();
+    }
+    
+    protected Element createRootNode(DOMContext domContext) {
+        return (Element) domContext.createRootElement("table");
+    }
+    
 }
