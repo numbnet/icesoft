@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enterprise-project
+  version="1.0.0"
+  name="seam-auctionMonitor"
+  id="myeclipse.1196787429484"
+  j2ee-spec="5.0"
+  archive="seam-auctionMonitor.ear">
+  <project-modules>
+    <project-module
+      type="WEB"
+      name="seam-auctionMonitorWeb"
+      id="myeclipse.1196787429125"
+      context-root="/seam-auctionMonitorWeb"
+      j2ee-spec="5.0"
+      archive="seam-auctionMonitorWeb.war">
+      <attributes>
+        <attribute name="webrootdir" value="WebRoot" />
+      </attributes>
+    </project-module>
+    <project-module
+      type="EJB"
+      name="seam-auctionMonitorEJB"
+      id="myeclipse.1196787429453"
+      j2ee-spec="5.0"
+      archive="seam-auctionMonitorEJB.jar" />
+  </project-modules>
+</enterprise-project>
+
