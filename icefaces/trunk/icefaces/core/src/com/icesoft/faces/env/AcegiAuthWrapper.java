@@ -36,9 +36,14 @@ package com.icesoft.faces.env;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.security.Principal;
 
 public class AcegiAuthWrapper implements AuthenticationVerifier {
+    private static Log Log = LogFactory.getLog(AcegiAuthWrapper.class);
+
     Authentication authentication;
 
     public AcegiAuthWrapper(Principal principal) {
@@ -46,6 +51,9 @@ public class AcegiAuthWrapper implements AuthenticationVerifier {
     }
 
     public boolean isUserInRole(String role) {
+            if (Log.isTraceEnabled()) {
+        		Log.trace("ROLE: "+role);
+            }
         GrantedAuthority[] authorities = authentication.getAuthorities();
         if (authentication.getPrincipal() == null || authorities == null) {
             return false;

@@ -297,6 +297,11 @@ public class ServletExternalContext extends BridgeExternalContext {
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
+
+            if (Log.isTraceEnabled()) {
+                Log.trace("request.isUserInRole(role) is "+role);
+            }
+
                     return request.isUserInRole(role);
                 }
             };
