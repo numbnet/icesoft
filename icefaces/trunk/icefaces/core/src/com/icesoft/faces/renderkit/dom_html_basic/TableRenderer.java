@@ -76,7 +76,13 @@ public class TableRenderer extends DomBasicRenderer {
         if (styleClass != null && styleClass.length() > 0) {
             root.setAttribute("class", styleClass);
         }
-        root.setAttribute(HTML.CELLSPACING_ATTR, "0");
+        Object cellspacing = uiComponent.getAttributes().get(HTML.CELLSPACING_ATTR);
+        if (cellspacing != null) { 
+            root.setAttribute(HTML.CELLSPACING_ATTR, String.valueOf(cellspacing));
+        } else {
+            root.setAttribute(HTML.CELLSPACING_ATTR, "0");
+        }
+        
         if (isScrollable(uiComponent)) {
             Element tr = domContext.createElement("tr");  
             root.appendChild(tr);
