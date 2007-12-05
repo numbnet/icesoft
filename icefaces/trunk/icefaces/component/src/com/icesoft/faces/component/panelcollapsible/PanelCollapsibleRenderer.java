@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.FacesException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +57,10 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         		!panelCollapsible.isDisabled()) {
             FormRenderer.addHiddenField(facesContext, uiComponent.getClientId(facesContext)+ "Expanded");
             UIComponent form = findForm(uiComponent);
-        	header.setAttribute(HTML.ONCLICK_ATTR, 
+            if(form == null) {
+                throw new FacesException("PanelCollapsible must be contained within a form");                
+            }
+            header.setAttribute(HTML.ONCLICK_ATTR, 
                 "document.forms['"+ form.getClientId(facesContext) +"']" +
                       "['"+ uiComponent.getClientId(facesContext)+ "Expanded"+"'].value='"+ 
                       panelCollapsible.isExpanded()+"'; " +
