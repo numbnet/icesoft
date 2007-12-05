@@ -31,18 +31,18 @@
 ~
 -->
 
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo3"
                    styleClass="componentLayoutRootTable">
         <ice:outputText value="#{msgs['component.gmap.demo3.desc']}"/>
-        <ice:selectOneMenu partialSubmit="true" value="#{gmap.address}" valueChangeListener="#{gmap.findAddress}" >
+        <ice:selectOneMenu id="select1menu" partialSubmit="true" value="#{gmap.address}" valueChangeListener="#{gmap.findAddress}" >
             <f:selectItem itemValue="" itemLabel="#{msgs['component.gmap.demo3.select']}" />
             <f:selectItem itemValue="#{msgs['component.gmap.demo3.city1']}" />
             <f:selectItem itemValue="#{msgs['component.gmap.demo3.city2']}"/>
@@ -50,8 +50,8 @@
             <f:selectItem itemValue="#{msgs['component.gmap.demo3.city4']}" />
             <f:selectItem itemValue="#{msgs['component.gmap.demo3.city5']}" />
         </ice:selectOneMenu>
-        <ice:panelGroup styleClass="formBorderHighlight">              
-            <ice:gMap address="#{gmap.address}" 
+        <ice:panelGroup id="pnlgrp" styleClass="formBorderHighlight">              
+            <ice:gMap id="address" address="#{gmap.address}" 
                       locateAddress="#{gmap.locateAddress}"/>
         </ice:panelGroup>
     </ice:panelGrid>

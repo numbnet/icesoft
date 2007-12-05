@@ -31,22 +31,22 @@
 ~
 -->
 
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="gmapDemo5"
                    styleClass="componentLayoutRootTable">
         <ice:outputText value="#{msgs['component.gmap.demo5.desc']}"/>
-        <ice:panelGroup styleClass="formBorderHighlight">  
-	        <ice:gMap latitude="39.10295" longitude="-94.58302">
-	            <ice:gMapMarker>
-	                <ice:gMapLatLng latitude="51.067591" longitude="-114.084862"/>
-	                <ice:gMapLatLngs value="#{gmap.points}"/>      
+        <ice:panelGroup id="pnlgrp" styleClass="formBorderHighlight">  
+	        <ice:gMap id="gmap" latitude="39.10295" longitude="-94.58302">
+	            <ice:gMapMarker id="gmarker">
+	                <ice:gMapLatLng id="glatlng" latitude="51.067591" longitude="-114.084862"/>
+	                <ice:gMapLatLngs id="gmappnt" value="#{gmap.points}"/>      
 	            </ice:gMapMarker>
 	        </ice:gMap>
 	    </ice:panelGroup>
