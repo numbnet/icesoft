@@ -40,8 +40,6 @@ import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
-
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -205,11 +203,38 @@ public class HtmlCommandButton
     public boolean isDisabled() {
         if (!Util.isEnabledOnUserRole(this)) {
             return true;
-        } else {
-            return super.isDisabled();
+        } else {            
+            if (this.disabled_set) {
+                return this.disabled;
+            }
+    
+            ValueBinding _vb = getValueBinding("disabled");
+            if (_vb != null) {
+                Object _result = _vb.getValue(getFacesContext());
+                if (_result == null) {
+                    return false;
+                } else {
+                    return ((Boolean) _result).booleanValue();
+                }
+            } else {
+                return this.disabled;
+            }
         }
     }
 
+    private boolean disabled = false;
+    private boolean disabled_set = false;
+
+
+  /**
+   * <p>Set the value of the <code>disabled</code> property.</p>
+   */
+  public void setDisabled(boolean disabled) {
+    this.disabled = disabled;
+    this.disabled_set = true;
+  }
+    
+    
 
     /**
      * <p>Set the value of the <code>enabledOnUserRole</code> property.</p>
