@@ -31,30 +31,30 @@
 ~
 -->
 
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 <!--
   Controls to show/hide the table columns
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
     <ice:panelGrid id="inputRichTextDemo1"
                    styleClass="inputRichTextDemo" columns="1">
          <f:facet name="header">
             <ice:outputText value="#{msgs['component.inputRichTextFields.instructions']}"/>
          </f:facet>                   
-            <ice:inputRichText height="300" value="#{inputRichTextBean.value}" language="en" valueChangeListener="#{inputRichTextBean.valueChange}"/>
+            <ice:inputRichText id="iceInpRchTxt" height="300" value="#{inputRichTextBean.value}" language="en" valueChangeListener="#{inputRichTextBean.valueChange}"/>
                             <!-- Text Field output text -->
-            <ice:panelGrid styleClass="formBorderHighlight">
+            <ice:panelGrid id="icepnlgrd" styleClass="formBorderHighlight">
 
                 <h3>
                     <ice:outputText
                             value="#{msgs['component.inputRichTextFields.serverFeedback']}"/>
                 </h3>
-                <ice:outputText escape="false" value="#{inputRichTextBean.value}"/>
+                <ice:outputText id="iceOutput" escape="false" value="#{inputRichTextBean.value}"/>
             </ice:panelGrid>
                 
     </ice:panelGrid>
