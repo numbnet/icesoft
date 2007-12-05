@@ -1,91 +1,120 @@
-var Hash = function(obj) {
-  Object.extend(this, obj || {});
-};
-
-Object.extend(Hash, {
-  toQueryString: function(obj) {
-    var parts = [];
-    
-	  this.prototype._each.call(obj, function(pair) {
-      if (!pair.key) return;
-      
-      if (pair.value && pair.value.constructor == Array) {
-        var values = pair.value.compact();
-        if (values.length < 2) pair.value = values.reduce();
-        else {
-        	key = encodeURIComponent(pair.key);
-          values.each(function(value) {
-            value = value != undefined ? encodeURIComponent(value) : '';
-            parts.push(key + '=' + encodeURIComponent(value));
-          });
-          return;
-        }
-      }
-      if (pair.value == undefined) pair[1] = '';
-      parts.push(pair.map(encodeURIComponent).join('='));
-	  });
-    
-    return parts.join('&');
-  }
-});
-
-Object.extend(Hash.prototype, Enumerable);
-Object.extend(Hash.prototype, {
-  _each: function(iterator) {
-    for (var key in this) {
-      var value = this[key];
-      if (value && value == Hash.prototype[key]) continue;
-      
-      var pair = [key, value];
-      pair.key = key;
-      pair.value = value;
-      iterator(pair);
-    }
-  },
-  
-  keys: function() {
-    return this.pluck('key');
-  },
-  
-  values: function() {
-    return this.pluck('value');
-  },
-  
-  merge: function(hash) {
-    return $H(hash).inject(this, function(mergedHash, pair) {
-      mergedHash[pair.key] = pair.value;
-      return mergedHash;
-    });
-  },
-
-  remove: function() {
-    var result;
-    for(var i = 0, length = arguments.length; i < length; i++) {
-      var value = this[arguments[i]];
-      if (value !== undefined){
-        if (result === undefined) result = value;
-        else {
-          if (result.constructor != Array) result = [result];
-          result.push(value)
-        }
-      }
-      delete this[arguments[i]];
-    }
-    return result;
-  },
-  
-  toQueryString: function() {
-    return Hash.toQueryString(this);
-  },
-  
-  inspect: function() {
-    return '#<Hash:{' + this.map(function(pair) {
-      return pair.map(Object.inspect).join(': ');
-    }).join(', ') + '}>';
-  }
-});
-
 function $H(object) {
-  if (object && object.constructor == Hash) return object;
   return new Hash(object);
 };
+
+var Hash = Class.create(Enumerable, (function() {
+  if (function() {
+    var i = 0, Test = function(value) { this.key = value };
+    Test.prototype.key = 'foo';
+    for (var property in new Test('bar')) i++;
+    return i > 1;
+  }()) {
+    function each(iterator) {
+      var cache = [];
+      for (var key in this._object) {
+        var value = this._object[key];
+        if (cache.include(key)) continue;
+        cache.push(key);
+        var pair = [key, value];
+        pair.key = key;
+        pair.value = value;
+        iterator(pair);
+      }
+    }
+  } else {
+    function each(iterator) {
+      for (var key in this._object) {
+        var value = this._object[key], pair = [key, value];
+        pair.key = key;
+        pair.value = value;
+        iterator(pair);
+      }
+    }
+  }
+  
+  function toQueryPair(key, value) {
+    if (Object.isUndefined(value)) return key;
+    return key + '=' + encodeURIComponent(String.interpret(value));
+  }
+
+  return {
+    initialize: function(object) {
+      this._object = Object.isHash(object) ? object.toObject() : Object.clone(object);
+    },
+
+    _each: each,
+
+    set: function(key, value) { 
+      return this._object[key] = value;
+    },
+
+    get: function(key) {
+      return this._object[key];
+    },
+
+    unset: function(key) {
+      var value = this._object[key];
+      delete this._object[key];
+      return value;
+    },
+
+    toObject: function() {
+      return Object.clone(this._object);
+    },
+
+    keys: function() {
+      return this.pluck('key');
+    },
+
+    values: function() {
+      return this.pluck('value');
+    },
+
+    index: function(value) {
+      var match = this.detect(function(pair) { 
+        return pair.value === value; 
+      });
+      return match && match.key;
+    },
+
+    merge: function(object) {
+      return this.clone().update(object);
+    },
+
+    update: function(object) {
+      return new Hash(object).inject(this, function(result, pair) {
+        result.set(pair.key, pair.value);
+        return result;
+      });
+    },
+
+    toQueryString: function() {
+      return this.map(function(pair) {
+        var key = encodeURIComponent(pair.key), values = pair.value;
+
+        if (values && typeof values == 'object') {
+          if (Object.isArray(values))
+            return values.map(toQueryPair.curry(key)).join('&');
+        }
+        return toQueryPair(key, values);
+      }).join('&');
+    },
+
+    inspect: function() {
+      return '#<Hash:{' + this.map(function(pair) {
+        return pair.map(Object.inspect).join(': ');
+      }).join(', ') + '}>';
+    },
+
+    toJSON: function() {
+      return Object.toJSON(this.toObject());
+    },
+
+    clone: function() {
+      return new Hash(this);
+    }
+  }
+})());
+
+Hash.prototype.toTemplateReplacements = Hash.prototype.toObject;
+Hash.from = $H;

@@ -4,7 +4,7 @@ function $(element) {
       elements.push($(arguments[i]));
     return elements;
   }
-  if (typeof element == 'string')
+  if (Object.isString(element))
     element = document.getElementById(element);
   return Element.extend(element);
 }
@@ -15,63 +15,51 @@ if (Prototype.BrowserFeatures.XPath) {
     var query = document.evaluate(expression, $(parentElement) || document,
       null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
     for (var i = 0, length = query.snapshotLength; i < length; i++)
-      results.push(query.snapshotItem(i));
+      results.push(Element.extend(query.snapshotItem(i)));
     return results;
   };
 }
 
-document.getElementsByClassName = function(className, parentElement) {
-  if (Prototype.BrowserFeatures.XPath) {
-    var q = ".//*[contains(concat(' ', @class, ' '), ' " + className + " ')]";
-    return document._getElementsByXPath(q, parentElement);
-  } else {
-    var children = ($(parentElement) || document.body).getElementsByTagName('*');
-    var elements = [], child;
-    for (var i = 0, length = children.length; i < length; i++) {
-      child = children[i];
-      if (Element.hasClassName(child, className))
-        elements.push(Element.extend(child));
-    }
-    return elements;
-  }
-};
-
 /*--------------------------------------------------------------------------*/
 
-if (!window.Element)
-  var Element = new Object();
+if (!window.Node) var Node = { };
 
-Element.extend = function(element) {
-  if (!element || _nativeExtensions || element.nodeType == 3) return element;
-  
-  if (!element._extended && element.tagName && element != window) {
-    var methods = Object.clone(Element.Methods), cache = Element.extend.cache;
-    
-    if (element.tagName == 'FORM')
-      Object.extend(methods, Form.Methods);
-    if (['INPUT', 'TEXTAREA', 'SELECT'].include(element.tagName)) 
-      Object.extend(methods, Form.Element.Methods);
-    
-    Object.extend(methods, Element.Methods.Simulated);
-      
-    for (var property in methods) {
-      var value = methods[property];
-      if (typeof value == 'function' && !(property in element))
-        element[property] = cache.findOrStore(value);
-    }
-  }
-  
-  element._extended = true;
-  return element;
-};
+if (!Node.ELEMENT_NODE) {
+  // DOM level 2 ECMAScript Language Binding
+  Object.extend(Node, {
+    ELEMENT_NODE: 1,
+    ATTRIBUTE_NODE: 2,
+    TEXT_NODE: 3,
+    CDATA_SECTION_NODE: 4,
+    ENTITY_REFERENCE_NODE: 5,
+    ENTITY_NODE: 6,
+    PROCESSING_INSTRUCTION_NODE: 7,
+    COMMENT_NODE: 8,
+    DOCUMENT_NODE: 9,
+    DOCUMENT_TYPE_NODE: 10,
+    DOCUMENT_FRAGMENT_NODE: 11,
+    NOTATION_NODE: 12
+  });
+}
 
-Element.extend.cache = {
-  findOrStore: function(value) {
-    return this[value] = this[value] || function() {
-      return value.apply(null, [this].concat($A(arguments)));
+(function() {
+  var element = this.Element;
+  this.Element = function(tagName, attributes) {
+    attributes = attributes || { };
+    tagName = tagName.toLowerCase();
+    var cache = Element.cache;
+    if (Prototype.Browser.IE && attributes.name) {
+      tagName = '<' + tagName + ' name="' + attributes.name + '">';
+      delete attributes.name;
+      return Element.writeAttribute(document.createElement(tagName), attributes);
     }
-  }
-};
+    if (!cache[tagName]) cache[tagName] = Element.extend(document.createElement(tagName));
+    return Element.writeAttribute(cache[tagName].cloneNode(false), attributes);
+  };
+  Object.extend(this.Element, element || { });
+}).call(window);
+
+Element.cache = { };
 
 Element.Methods = {
   visible: function(element) {
@@ -100,28 +88,74 @@ Element.Methods = {
     return element;
   },
 
-  update: function(element, html) {
-    html = typeof html == 'undefined' ? '' : html.toString();
-    $(element).innerHTML = html.stripScripts();
-    setTimeout(function() {html.evalScripts()}, 10);
-    return element;
-  },
-  
-  replace: function(element, html) {
+  update: function(element, content) {
     element = $(element);
-    html = typeof html == 'undefined' ? '' : html.toString();
-    if (element.outerHTML) {
-      element.outerHTML = html.stripScripts();
-    } else {
-      var range = element.ownerDocument.createRange();
-      range.selectNodeContents(element);
-      element.parentNode.replaceChild(
-        range.createContextualFragment(html.stripScripts()), element);
-    }
-    setTimeout(function() {html.evalScripts()}, 10);
+    if (content && content.toElement) content = content.toElement();
+    if (Object.isElement(content)) return element.update().insert(content);
+    content = Object.toHTML(content);
+    element.innerHTML = content.stripScripts();
+    content.evalScripts.bind(content).defer();
     return element;
   },
   
+  replace: function(element, content) {
+    element = $(element);
+    if (content && content.toElement) content = content.toElement();
+    else if (!Object.isElement(content)) {
+      content = Object.toHTML(content);
+      var range = element.ownerDocument.createRange();
+      range.selectNode(element);
+      content.evalScripts.bind(content).defer();
+      content = range.createContextualFragment(content.stripScripts());
+    }
+    element.parentNode.replaceChild(content, element);
+    return element;
+  },
+  
+  insert: function(element, insertions) {
+    element = $(element);
+    
+    if (Object.isString(insertions) || Object.isNumber(insertions) ||
+        Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
+          insertions = {bottom:insertions};
+    
+    var content, t, range;
+    
+    for (position in insertions) {
+      content  = insertions[position];
+      position = position.toLowerCase();
+      t = Element._insertionTranslations[position];
+
+      if (content && content.toElement) content = content.toElement();
+      if (Object.isElement(content)) {
+        t.insert(element, content);
+        continue;
+      }
+    
+      content = Object.toHTML(content);
+      
+      range = element.ownerDocument.createRange();
+      t.initializeRange(element, range);
+      t.insert(element, range.createContextualFragment(content.stripScripts()));
+      
+      content.evalScripts.bind(content).defer();
+    }
+    
+    return element;
+  },
+  
+  wrap: function(element, wrapper, attributes) {
+    element = $(element);
+    if (Object.isElement(wrapper))
+      $(wrapper).writeAttribute(attributes || { });
+    else if (Object.isString(wrapper)) wrapper = new Element(wrapper, attributes);
+    else wrapper = new Element('div', wrapper);
+    if (element.parentNode)
+      element.parentNode.replaceChild(wrapper, element);
+    wrapper.appendChild(element);
+    return wrapper;
+  },
+
   inspect: function(element) {
     element = $(element);
     var result = '<' + element.tagName.toLowerCase();
@@ -147,7 +181,13 @@ Element.Methods = {
   },
   
   descendants: function(element) {
-    return $A($(element).getElementsByTagName('*'));
+    return $A($(element).getElementsByTagName('*')).each(Element.extend);
+  },
+  
+  firstDescendant: function(element) {
+    element = $(element).firstChild;
+    while (element && element.nodeType != 1) element = element.nextSibling;
+    return $(element);
   },
   
   immediateDescendants: function(element) {
@@ -171,46 +211,93 @@ Element.Methods = {
   },
   
   match: function(element, selector) {
-    if (typeof selector == 'string')
+    if (Object.isString(selector))
       selector = new Selector(selector);
     return selector.match($(element));
   },
   
   up: function(element, expression, index) {
-    return Selector.findElement($(element).ancestors(), expression, index);
+    element = $(element);
+    if (arguments.length == 1) return $(element.parentNode);
+    var ancestors = element.ancestors();
+    return expression ? Selector.findElement(ancestors, expression, index) :
+      ancestors[index || 0];
   },
   
   down: function(element, expression, index) {
-    return Selector.findElement($(element).descendants(), expression, index);
+    element = $(element);
+    if (arguments.length == 1) return element.firstDescendant();
+    var descendants = element.descendants();
+    return expression ? Selector.findElement(descendants, expression, index) :
+      descendants[index || 0];
   },
 
   previous: function(element, expression, index) {
-    return Selector.findElement($(element).previousSiblings(), expression, index);
+    element = $(element);
+    if (arguments.length == 1) return $(Selector.handlers.previousElementSibling(element));
+    var previousSiblings = element.previousSiblings();
+    return expression ? Selector.findElement(previousSiblings, expression, index) :
+      previousSiblings[index || 0];
   },
   
   next: function(element, expression, index) {
-    return Selector.findElement($(element).nextSiblings(), expression, index);
+    element = $(element);
+    if (arguments.length == 1) return $(Selector.handlers.nextElementSibling(element));
+    var nextSiblings = element.nextSiblings();
+    return expression ? Selector.findElement(nextSiblings, expression, index) :
+      nextSiblings[index || 0];
   },
   
-  getElementsBySelector: function() {
+  select: function() {
     var args = $A(arguments), element = $(args.shift());
     return Selector.findChildElements(element, args);
   },
   
-  getElementsByClassName: function(element, className) {
-    return document.getElementsByClassName(className, element);
+  adjacent: function() {
+    var args = $A(arguments), element = $(args.shift());
+    return Selector.findChildElements(element.parentNode, args).without(element);
+  },
+  
+  identify: function(element) {
+    element = $(element);
+    var id = element.readAttribute('id'), self = arguments.callee;
+    if (id) return id;
+    do { id = 'anonymous_element_' + self.counter++ } while ($(id));
+    element.writeAttribute('id', id);
+    return id;
   },
   
   readAttribute: function(element, name) {
     element = $(element);
-    if (document.all && !window.opera) {
-      var t = Element._attributeTranslations;
+    if (Prototype.Browser.IE) {
+      var t = Element._attributeTranslations.read;
       if (t.values[name]) return t.values[name](element, name);
-      if (t.names[name])  name = t.names[name];
-      var attribute = element.attributes[name];
-      if(attribute) return attribute.nodeValue;
-    }    
+      if (t.names[name]) name = t.names[name];
+      if (name.include(':')) {
+        return (!element.attributes || !element.attributes[name]) ? null : 
+         element.attributes[name].value;
+      }
+    }
     return element.getAttribute(name);
+  },
+  
+  writeAttribute: function(element, name, value) {
+    element = $(element);
+    var attributes = { }, t = Element._attributeTranslations.write;
+    
+    if (typeof name == 'object') attributes = name;
+    else attributes[name] = value === undefined ? true : value;
+    
+    for (var attr in attributes) {
+      var name = t.names[attr] || attr, value = attributes[attr];
+      if (t.values[attr]) name = t.values[attr](element, value);
+      if (value === false || value === null)
+        element.removeAttribute(name);
+      else if (value === true)
+        element.setAttribute(name, name);
+      else element.setAttribute(name, value);
+    }
+    return element;
   },
   
   getHeight: function(element) {
@@ -228,39 +315,28 @@ Element.Methods = {
   hasClassName: function(element, className) {
     if (!(element = $(element))) return;
     var elementClassName = element.className;
-    if (elementClassName.length == 0) return false;
-    if (elementClassName == className || 
-        elementClassName.match(new RegExp("(^|\\s)" + className + "(\\s|$)")))
-      return true;
-    return false;
+    return (elementClassName.length > 0 && (elementClassName == className || 
+      new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
   },
 
   addClassName: function(element, className) {
     if (!(element = $(element))) return;
-    Element.classNames(element).add(className);
+    if (!element.hasClassName(className))
+      element.className += (element.className ? ' ' : '') + className;
     return element;
   },
 
   removeClassName: function(element, className) {
     if (!(element = $(element))) return;
-    Element.classNames(element).remove(className);
+    element.className = element.className.replace(
+      new RegExp("(^|\\s+)" + className + "(\\s+|$)"), ' ').strip();
     return element;
   },
   
   toggleClassName: function(element, className) {
     if (!(element = $(element))) return;
-    Element.classNames(element)[element.hasClassName(className) ? 'remove' : 'add'](className);
-    return element;
-  },
-  
-  observe: function() {
-    Event.observe.apply(Event, arguments);
-    return $A(arguments).first();
-  },
-  
-  stopObserving: function() {
-    Event.stopObserving.apply(Event, arguments);
-    return $A(arguments).first();
+    return element[element.hasClassName(className) ?
+      'removeClassName' : 'addClassName'](className);
   },
   
   // removes whitespace-only text node children
@@ -277,11 +353,25 @@ Element.Methods = {
   },
   
   empty: function(element) {
-    return $(element).innerHTML.match(/^\s*$/);
+    return $(element).innerHTML.blank();
   },
   
   descendantOf: function(element, ancestor) {
     element = $(element), ancestor = $(ancestor);
+
+    if (element.compareDocumentPosition)
+      return (element.compareDocumentPosition(ancestor) & 8) === 8;
+      
+    if (element.sourceIndex && !Prototype.Browser.Opera) {
+      var e = element.sourceIndex, a = ancestor.sourceIndex,
+       nextAncestor = ancestor.nextSibling;
+      if (!nextAncestor) {
+        do { ancestor = ancestor.parentNode; }
+        while (!(nextAncestor = ancestor.nextSibling) && ancestor.parentNode);
+      }
+      if (nextAncestor) return (e > a && e < nextAncestor.sourceIndex);      
+    }
+    
     while (element = element.parentNode)
       if (element == ancestor) return true;
     return false;
@@ -289,62 +379,49 @@ Element.Methods = {
   
   scrollTo: function(element) {
     element = $(element);
-    var pos = Position.cumulativeOffset(element);
+    var pos = element.cumulativeOffset();
     window.scrollTo(pos[0], pos[1]);
     return element;
   },
   
   getStyle: function(element, style) {
     element = $(element);
-    if (['float','cssFloat'].include(style))
-      style = (typeof element.style.styleFloat != 'undefined' ? 'styleFloat' : 'cssFloat');
-    style = style.camelize();
+    style = style == 'float' ? 'cssFloat' : style.camelize();
     var value = element.style[style];
     if (!value) {
-      if (document.defaultView && document.defaultView.getComputedStyle) {
-        var css = document.defaultView.getComputedStyle(element, null);
-        value = css ? css[style] : null;
-      } else if (element.currentStyle) {
-        value = element.currentStyle[style];
-      }
+      var css = document.defaultView.getComputedStyle(element, null);
+      value = css ? css[style] : null;
     }
-    
-    if((value == 'auto') && ['width','height'].include(style) && (element.getStyle('display') != 'none'))
-      value = element['offset'+style.capitalize()] + 'px';
-    
-    if (window.opera && ['left', 'top', 'right', 'bottom'].include(style))
-      if (Element.getStyle(element, 'position') == 'static') value = 'auto';
-    if(style == 'opacity') {
-      if(value) return parseFloat(value);
-      if(value = (element.getStyle('filter') || '').match(/alpha\(opacity=(.*)\)/))  
-        if(value[1]) return parseFloat(value[1]) / 100;  
-      return 1.0; 
-    }
+    if (style == 'opacity') return value ? parseFloat(value) : 1.0;
     return value == 'auto' ? null : value;
   },
   
-  setStyle: function(element, style) {
+  getOpacity: function(element) {
+    return $(element).getStyle('opacity');
+  },
+  
+  setStyle: function(element, styles) {
     element = $(element);
-    for (var name in style) {
-      var value = style[name];
-      if(name == 'opacity') {
-        if (value == 1) {
-          value = (/Gecko/.test(navigator.userAgent) &&
-            !/Konqueror|Safari|KHTML/.test(navigator.userAgent)) ? 0.999999 : 1.0;
-          if(/MSIE/.test(navigator.userAgent) && !window.opera)
-            element.style.filter = element.getStyle('filter').replace(/alpha\([^\)]*\)/gi,'');
-        } else if(value == '') {
-          if(/MSIE/.test(navigator.userAgent) && !window.opera)
-            element.style.filter = element.getStyle('filter').replace(/alpha\([^\)]*\)/gi,'');
-        } else {
-          if(value < 0.00001) value = 0;  
-          if(/MSIE/.test(navigator.userAgent) && !window.opera)
-            element.style.filter = element.getStyle('filter').replace(/alpha\([^\)]*\)/gi,'') +
-              'alpha(opacity='+value*100+')';
-        }
-      } else if(['float','cssFloat'].include(name)) name = (typeof element.style.styleFloat != 'undefined') ? 'styleFloat' : 'cssFloat';
-      element.style[name.camelize()] = value;
+    var elementStyle = element.style, match;
+    if (Object.isString(styles)) {
+      element.style.cssText += ';' + styles;
+      return styles.include('opacity') ?
+        element.setOpacity(styles.match(/opacity:\s*(\d?\.?\d*)/)[1]) : element;
     }
+    for (var property in styles)
+      if (property == 'opacity') element.setOpacity(styles[property]);
+      else 
+        elementStyle[(property == 'float' || property == 'cssFloat') ?
+          (elementStyle.styleFloat === undefined ? 'cssFloat' : 'styleFloat') : 
+            property] = styles[property];
+
+    return element;
+  },
+  
+  setOpacity: function(element, value) {
+    element = $(element);
+    element.style.opacity = (value == 1 || value === '') ? '' : 
+      (value < 0.00001) ? 0 : value;
     return element;
   },
   
@@ -403,8 +480,8 @@ Element.Methods = {
   makeClipping: function(element) {
     element = $(element);
     if (element._overflow) return element;
-    element._overflow = element.style.overflow || 'auto';
-    if ((Element.getStyle(element, 'overflow') || 'visible') != 'hidden')
+    element._overflow = Element.getStyle(element, 'overflow') || 'auto';
+    if (element._overflow !== 'hidden')
       element.style.overflow = 'hidden';
     return element;
   },
@@ -415,264 +492,711 @@ Element.Methods = {
     element.style.overflow = element._overflow == 'auto' ? '' : element._overflow;
     element._overflow = null;
     return element;
-  }
-};
-
-Object.extend(Element.Methods, {childOf: Element.Methods.descendantOf});
-
-Element._attributeTranslations = {};
-
-Element._attributeTranslations.names = {
-  colspan:   "colSpan",
-  rowspan:   "rowSpan",
-  valign:    "vAlign",
-  datetime:  "dateTime",
-  accesskey: "accessKey",
-  tabindex:  "tabIndex",
-  enctype:   "encType",
-  maxlength: "maxLength",
-  readonly:  "readOnly",
-  longdesc:  "longDesc"
-};
-
-Element._attributeTranslations.values = {
-  _getAttr: function(element, attribute) {
-    return element.getAttribute(attribute, 2);
   },
-  
-  _flag: function(element, attribute) {
-    return $(element).hasAttribute(attribute) ? attribute : null;
+
+  cumulativeOffset: function(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      element = element.offsetParent;
+    } while (element);
+    return Element._returnOffset(valueL, valueT);
   },
-  
-  style: function(element) {
-    return element.style.cssText.toLowerCase();
-  },
-  
-  title: function(element) {
-    var node = element.getAttributeNode('title');
-    return node.specified ? node.nodeValue : null;
-  }
-};
 
-Object.extend(Element._attributeTranslations.values, {
-  href: Element._attributeTranslations.values._getAttr,
-  src:  Element._attributeTranslations.values._getAttr,
-  disabled: Element._attributeTranslations.values._flag,
-  checked:  Element._attributeTranslations.values._flag,
-  readonly: Element._attributeTranslations.values._flag,
-  multiple: Element._attributeTranslations.values._flag
-});
-
-Element.Methods.Simulated = {
-  hasAttribute: function(element, attribute) {
-    var t = Element._attributeTranslations;
-    attribute = t.names[attribute] || attribute;
-    return $(element).getAttributeNode(attribute).specified;
-  }
-};
-
-// IE is missing .innerHTML support for TABLE-related elements
-if (document.all && !window.opera){
-  Element.Methods.update = function(element, html) {
-    element = $(element);
-    html = typeof html == 'undefined' ? '' : html.toString();
-    var tagName = element.tagName.toUpperCase();  
-    if (['THEAD','TBODY','TR','TD'].include(tagName)) {
-      var div = document.createElement('div');
-      switch (tagName) {
-        case 'THEAD':
-        case 'TBODY':
-          div.innerHTML = '<table><tbody>' +  html.stripScripts() + '</tbody></table>';
-          depth = 2;
-          break;
-        case 'TR':
-          div.innerHTML = '<table><tbody><tr>' +  html.stripScripts() + '</tr></tbody></table>';
-          depth = 3;
-          break;
-        case 'TD':
-          div.innerHTML = '<table><tbody><tr><td>' +  html.stripScripts() + '</td></tr></tbody></table>';
-          depth = 4;
+  positionedOffset: function(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      element = element.offsetParent;
+      if (element) {
+        if (element.tagName == 'BODY') break;
+        var p = Element.getStyle(element, 'position');
+        if (p == 'relative' || p == 'absolute') break;
       }
-      $A(element.childNodes).each(function(node){
-        element.removeChild(node)
-      });
-      depth.times(function(){ div = div.firstChild });
+    } while (element);
+    return Element._returnOffset(valueL, valueT);
+  },
+
+  absolutize: function(element) {
+    element = $(element);
+    if (element.getStyle('position') == 'absolute') return;
+    // Position.prepare(); // To be done manually by Scripty when it needs it.
+
+    var offsets = element.positionedOffset();
+    var top     = offsets[1];
+    var left    = offsets[0];
+    var width   = element.clientWidth;
+    var height  = element.clientHeight;
+
+    element._originalLeft   = left - parseFloat(element.style.left  || 0);
+    element._originalTop    = top  - parseFloat(element.style.top || 0);
+    element._originalWidth  = element.style.width;
+    element._originalHeight = element.style.height;
+
+    element.style.position = 'absolute';
+    element.style.top    = top + 'px';
+    element.style.left   = left + 'px';
+    element.style.width  = width + 'px';
+    element.style.height = height + 'px';
+    return element;
+  },
+
+  relativize: function(element) {
+    element = $(element);
+    if (element.getStyle('position') == 'relative') return;
+    // Position.prepare(); // To be done manually by Scripty when it needs it.
+
+    element.style.position = 'relative';
+    var top  = parseFloat(element.style.top  || 0) - (element._originalTop || 0);
+    var left = parseFloat(element.style.left || 0) - (element._originalLeft || 0);
+
+    element.style.top    = top + 'px';
+    element.style.left   = left + 'px';
+    element.style.height = element._originalHeight;
+    element.style.width  = element._originalWidth;
+    return element;
+  },
+
+  cumulativeScrollOffset: function(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.scrollTop  || 0;
+      valueL += element.scrollLeft || 0; 
+      element = element.parentNode;
+    } while (element);
+    return Element._returnOffset(valueL, valueT);
+  },
   
-      $A(div.childNodes).each(
-        function(node){ element.appendChild(node) });
-    } else {
-      element.innerHTML = html.stripScripts();
+  getOffsetParent: function(element) {
+    if (element.offsetParent) return $(element.offsetParent);
+    if (element == document.body) return $(element);
+    
+    while ((element = element.parentNode) && element != document.body)
+      if (Element.getStyle(element, 'position') != 'static')
+        return $(element);
+
+    return $(document.body);
+  },
+
+  viewportOffset: function(forElement) {
+    var valueT = 0, valueL = 0;
+
+    var element = forElement;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+
+      // Safari fix
+      if (element.offsetParent == document.body &&
+        Element.getStyle(element, 'position') == 'absolute') break;
+
+    } while (element = element.offsetParent);
+
+    element = forElement;
+    do {
+      if (!Prototype.Browser.Opera || element.tagName == 'BODY') {
+        valueT -= element.scrollTop  || 0;
+        valueL -= element.scrollLeft || 0;
+      }
+    } while (element = element.parentNode);
+
+    return Element._returnOffset(valueL, valueT);
+  },
+
+  clonePosition: function(element, source) {
+    var options = Object.extend({
+      setLeft:    true,
+      setTop:     true,
+      setWidth:   true,
+      setHeight:  true,
+      offsetTop:  0,
+      offsetLeft: 0
+    }, arguments[2] || { });
+
+    // find page position of source
+    source = $(source);
+    var p = source.viewportOffset();
+
+    // find coordinate system to use
+    element = $(element);
+    var delta = [0, 0];
+    var parent = null;
+    // delta [0,0] will do fine with position: fixed elements, 
+    // position:absolute needs offsetParent deltas
+    if (Element.getStyle(element, 'position') == 'absolute') {
+      parent = element.getOffsetParent();
+      delta = parent.viewportOffset();
     }
-    setTimeout(function() {html.evalScripts()}, 10);
+
+    // correct by body offsets (fixes Safari)
+    if (parent == document.body) {
+      delta[0] -= document.body.offsetLeft;
+      delta[1] -= document.body.offsetTop; 
+    }
+
+    // set position
+    if (options.setLeft)   element.style.left  = (p[0] - delta[0] + options.offsetLeft) + 'px';
+    if (options.setTop)    element.style.top   = (p[1] - delta[1] + options.offsetTop) + 'px';
+    if (options.setWidth)  element.style.width = source.offsetWidth + 'px';
+    if (options.setHeight) element.style.height = source.offsetHeight + 'px';
     return element;
   }
 };
 
-Object.extend(Element, Element.Methods);
+Element.Methods.identify.counter = 1;
 
-var _nativeExtensions = false;
-
-if(/Konqueror|Safari|KHTML/.test(navigator.userAgent))
-  ['', 'Form', 'Input', 'TextArea', 'Select'].each(function(tag) {
-    var className = 'HTML' + tag + 'Element';
-    if(window[className]) return;
-    var klass = window[className] = {};
-    klass.prototype = document.createElement(tag ? tag.toLowerCase() : 'div').__proto__;
-  });
-
-Element.addMethods = function(methods) {
-  Object.extend(Element.Methods, methods || {});
-  
-  function copy(methods, destination, onlyIfAbsent) {
-    onlyIfAbsent = onlyIfAbsent || false;
-    var cache = Element.extend.cache;
-    for (var property in methods) {
-      var value = methods[property];
-      if (!onlyIfAbsent || !(property in destination))
-        destination[property] = cache.findOrStore(value);
-    }
-  }
-  
-  if (typeof HTMLElement != 'undefined') {
-    copy(Element.Methods, HTMLElement.prototype);
-    copy(Element.Methods.Simulated, HTMLElement.prototype, true);
-    copy(Form.Methods, HTMLFormElement.prototype);
-    [HTMLInputElement, HTMLTextAreaElement, HTMLSelectElement].each(function(klass) {
-      copy(Form.Element.Methods, klass.prototype);
-    });
-    _nativeExtensions = true;
-  }
-}
-
-var Toggle = new Object();
-Toggle.display = Element.toggle;
-
-/*--------------------------------------------------------------------------*/
-
-Abstract.Insertion = function(adjacency) {
-  this.adjacency = adjacency;
-}
-
-Abstract.Insertion.prototype = {
-  initialize: function(element, content) {
-    this.element = $(element);
-    this.content = content.stripScripts();
-    
-    if (this.adjacency && this.element.insertAdjacentHTML) {
-      try {
-        this.element.insertAdjacentHTML(this.adjacency, this.content);
-      } catch (e) {
-        var tagName = this.element.tagName.toUpperCase();
-        if (['TBODY', 'TR'].include(tagName)) {
-          this.insertContent(this.contentFromAnonymousTable());
-        } else {
-          throw e;
-        }
-      }
-    } else {
-      this.range = this.element.ownerDocument.createRange();
-      if (this.initializeRange) this.initializeRange();
-      this.insertContent([this.range.createContextualFragment(this.content)]);
-    }
-
-    setTimeout(function() {content.evalScripts()}, 10);   
-  },
-  
-  contentFromAnonymousTable: function() {
-    var div = document.createElement('div');
-    div.innerHTML = '<table><tbody>' + this.content + '</tbody></table>';
-    return $A(div.childNodes[0].childNodes[0].childNodes);
-  }
-}
-
-var Insertion = new Object();
-
-Insertion.Before = Class.create();
-Insertion.Before.prototype = Object.extend(new Abstract.Insertion('beforeBegin'), {
-  initializeRange: function() {
-    this.range.setStartBefore(this.element);
-  },
-  
-  insertContent: function(fragments) {
-    fragments.each((function(fragment) {
-      this.element.parentNode.insertBefore(fragment, this.element);
-    }).bind(this));
-  }
+Object.extend(Element.Methods, {
+  getElementsBySelector: Element.Methods.select,
+  childElements: Element.Methods.immediateDescendants
 });
 
-Insertion.Top = Class.create();
-Insertion.Top.prototype = Object.extend(new Abstract.Insertion('afterBegin'), {
-  initializeRange: function() {
-    this.range.selectNodeContents(this.element);
-    this.range.collapse(true);
-  },
-  
-  insertContent: function(fragments) {
-    fragments.reverse(false).each((function(fragment) {
-      this.element.insertBefore(fragment, this.element.firstChild);
-    }).bind(this));
-  }
-});
-
-Insertion.Bottom = Class.create();
-Insertion.Bottom.prototype = Object.extend(new Abstract.Insertion('beforeEnd'), {
-  initializeRange: function() {
-    this.range.selectNodeContents(this.element);
-    this.range.collapse(this.element);
-  },
-  
-  insertContent: function(fragments) {
-    fragments.each((function(fragment) {
-      this.element.appendChild(fragment);
-    }).bind(this));
-  }
-});
-
-Insertion.After = Class.create();
-Insertion.After.prototype = Object.extend(new Abstract.Insertion('afterEnd'), {
-  initializeRange: function() {
-    this.range.setStartAfter(this.element);
-  },
-  
-  insertContent: function(fragments) {
-    fragments.each((function(fragment) {
-      this.element.parentNode.insertBefore(fragment, 
-        this.element.nextSibling);
-    }).bind(this));
-  }
-});
-
-/*--------------------------------------------------------------------------*/
-
-Element.ClassNames = Class.create();
-Element.ClassNames.prototype = {
-  initialize: function(element) {
-    this.element = $(element);
-  },
-
-  _each: function(iterator) {
-    this.element.className.split(/\s+/).select(function(name) {
-      return name.length > 0;
-    })._each(iterator);
-  },
-  
-  set: function(className) {
-    this.element.className = className;
-  },
-  
-  add: function(classNameToAdd) {
-    if (this.include(classNameToAdd)) return;
-    this.set($A(this).concat(classNameToAdd).join(' '));
-  },
-  
-  remove: function(classNameToRemove) {
-    if (!this.include(classNameToRemove)) return;
-    this.set($A(this).without(classNameToRemove).join(' '));
-  },
-  
-  toString: function() {
-    return $A(this).join(' ');
+Element._attributeTranslations = {
+  write: {
+    names: {
+      className: 'class',
+      htmlFor:   'for'      
+    }, 
+    values: { }
   }
 };
 
-Object.extend(Element.ClassNames.prototype, Enumerable);
+
+if (!document.createRange || Prototype.Browser.Opera) {
+  Element.Methods.insert = function(element, insertions) {
+    element = $(element);
+
+    if (Object.isString(insertions) || Object.isNumber(insertions) ||
+        Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
+          insertions = { bottom: insertions };
+    
+    var t = Element._insertionTranslations, content, position, pos, tagName;
+    
+    for (position in insertions) {
+      content  = insertions[position];
+      position = position.toLowerCase();
+      pos      = t[position];
+
+      if (content && content.toElement) content = content.toElement();
+      if (Object.isElement(content)) {
+        pos.insert(element, content);
+        continue;
+      }
+     
+      content = Object.toHTML(content);
+      tagName = ((position == 'before' || position == 'after')
+        ? element.parentNode : element).tagName.toUpperCase();
+     
+      if (t.tags[tagName]) {
+        var fragments = Element._getContentFromAnonymousElement(tagName, content.stripScripts());
+        if (position == 'top' || position == 'after') fragments.reverse();
+        fragments.each(pos.insert.curry(element));
+      }
+      else element.insertAdjacentHTML(pos.adjacency, content.stripScripts());
+      
+      content.evalScripts.bind(content).defer();
+    }
+    
+    return element;
+  };
+}
+
+if (Prototype.Browser.Opera) { 
+  Element.Methods._getStyle = Element.Methods.getStyle; 
+  Element.Methods.getStyle = function(element, style) { 
+    switch(style) { 
+      case 'left': 
+      case 'top': 
+      case 'right': 
+      case 'bottom': 
+        if (Element._getStyle(element, 'position') == 'static') return null; 
+      default: return Element._getStyle(element, style); 
+    }
+  };
+  Element.Methods._readAttribute = Element.Methods.readAttribute; 
+  Element.Methods.readAttribute = function(element, attribute) { 
+    if (attribute == 'title') return element.title; 
+    return Element._readAttribute(element, attribute);
+  };  
+}
+
+else if (Prototype.Browser.IE) {
+  $w('positionedOffset getOffsetParent viewportOffset').each(function(method) {
+    Element.Methods[method] = Element.Methods[method].wrap(
+      function(proceed, element) {
+        element = $(element);
+        var position = element.getStyle('position');
+        if (position != 'static') return proceed(element);
+        element.setStyle({ position: 'relative' });
+        var value = proceed(element);
+        element.setStyle({ position: position });
+        return value;
+      }
+    );
+  });
+  
+  Element.Methods.getStyle = function(element, style) {
+    element = $(element);
+    style = (style == 'float' || style == 'cssFloat') ? 'styleFloat' : style.camelize();
+    var value = element.style[style];
+    if (!value && element.currentStyle) value = element.currentStyle[style];
+
+    if (style == 'opacity') {
+      if (value = (element.getStyle('filter') || '').match(/alpha\(opacity=(.*)\)/))
+        if (value[1]) return parseFloat(value[1]) / 100;
+      return 1.0;
+    }
+
+    if (value == 'auto') {
+      if ((style == 'width' || style == 'height') && (element.getStyle('display') != 'none'))
+        return element['offset' + style.capitalize()] + 'px';
+      return null;
+    }
+    return value;
+  };
+  
+  Element.Methods.setOpacity = function(element, value) {
+    function stripAlpha(filter){
+      return filter.replace(/alpha\([^\)]*\)/gi,'');
+    }
+    element = $(element);
+    var currentStyle = element.currentStyle;
+    if ((currentStyle && !currentStyle.hasLayout) ||
+      (!currentStyle && element.style.zoom == 'normal'))
+        element.style.zoom = 1;
+    
+    var filter = element.getStyle('filter'), style = element.style;
+    if (value == 1 || value === '') {
+      (filter = stripAlpha(filter)) ?
+        style.filter = filter : style.removeAttribute('filter');
+      return element;
+    } else if (value < 0.00001) value = 0;
+    style.filter = stripAlpha(filter) +
+      'alpha(opacity=' + (value * 100) + ')';
+    return element;   
+  };
+
+  Element._attributeTranslations = {
+    read: {
+      names: {
+        'class': 'className',
+        'for':   'htmlFor'
+      },
+      values: {
+        _getAttr: function(element, attribute) {
+          return element.getAttribute(attribute, 2);
+        },
+        _getAttrNode: function(element, attribute) {
+          var node = element.getAttributeNode(attribute);
+          return node ? node.value : "";
+        },
+        _getEv: function(element, attribute) {
+          var attribute = element.getAttribute(attribute);
+          return attribute ? attribute.toString().slice(23, -2) : null;
+        },
+        _flag: function(element, attribute) {
+          return $(element).hasAttribute(attribute) ? attribute : null;
+        },
+        style: function(element) {
+          return element.style.cssText.toLowerCase();
+        },
+        title: function(element) {
+          return element.title;
+        }
+      }
+    }
+  };
+  
+  Element._attributeTranslations.write = {
+    names: Object.clone(Element._attributeTranslations.read.names),
+    values: {
+      checked: function(element, value) {
+        element.checked = !!value;
+      },
+      
+      style: function(element, value) {
+        element.style.cssText = value ? value : '';
+      }
+    }
+  };
+  
+  Element._attributeTranslations.has = {};
+    
+  $w('colSpan rowSpan vAlign dateTime accessKey tabIndex ' +
+      'encType maxLength readOnly longDesc').each(function(attr) {
+    Element._attributeTranslations.write.names[attr.toLowerCase()] = attr;
+    Element._attributeTranslations.has[attr.toLowerCase()] = attr;
+  });
+  
+  (function(v) {
+    Object.extend(v, {
+      href:        v._getAttr,
+      src:         v._getAttr,
+      type:        v._getAttr,
+      action:      v._getAttrNode,
+      disabled:    v._flag,
+      checked:     v._flag,
+      readonly:    v._flag,
+      multiple:    v._flag,
+      onload:      v._getEv,
+      onunload:    v._getEv,
+      onclick:     v._getEv,
+      ondblclick:  v._getEv,
+      onmousedown: v._getEv,
+      onmouseup:   v._getEv,
+      onmouseover: v._getEv,
+      onmousemove: v._getEv,
+      onmouseout:  v._getEv,
+      onfocus:     v._getEv,
+      onblur:      v._getEv,
+      onkeypress:  v._getEv,
+      onkeydown:   v._getEv,
+      onkeyup:     v._getEv,
+      onsubmit:    v._getEv,
+      onreset:     v._getEv,
+      onselect:    v._getEv,
+      onchange:    v._getEv
+    });
+  })(Element._attributeTranslations.read.values);
+}
+
+else if (Prototype.Browser.Gecko && /rv:1\.8\.0/.test(navigator.userAgent)) {
+  Element.Methods.setOpacity = function(element, value) {
+    element = $(element);
+    element.style.opacity = (value == 1) ? 0.999999 : 
+      (value === '') ? '' : (value < 0.00001) ? 0 : value;
+    return element;
+  };
+}
+
+else if (Prototype.Browser.WebKit) {
+  Element.Methods.setOpacity = function(element, value) {
+    element = $(element);
+    element.style.opacity = (value == 1 || value === '') ? '' :
+      (value < 0.00001) ? 0 : value;
+    
+    if (value == 1)
+      if(element.tagName == 'IMG' && element.width) { 
+        element.width++; element.width--;
+      } else try {
+        var n = document.createTextNode(' ');
+        element.appendChild(n);
+        element.removeChild(n);
+      } catch (e) { }
+    
+    return element;
+  };
+  
+  // Safari returns margins on body which is incorrect if the child is absolutely
+  // positioned.  For performance reasons, redefine Position.cumulativeOffset for
+  // KHTML/WebKit only.
+  Element.Methods.cumulativeOffset = function(element) {
+    var valueT = 0, valueL = 0;
+    do {
+      valueT += element.offsetTop  || 0;
+      valueL += element.offsetLeft || 0;
+      if (element.offsetParent == document.body)
+        if (Element.getStyle(element, 'position') == 'absolute') break;
+        
+      element = element.offsetParent;
+    } while (element);
+    
+    return Element._returnOffset(valueL, valueT);
+  };
+}
+
+if (Prototype.Browser.IE || Prototype.Browser.Opera) {
+  // IE and Opera are missing .innerHTML support for TABLE-related and SELECT elements
+  Element.Methods.update = function(element, content) {
+    element = $(element);
+    
+    if (content && content.toElement) content = content.toElement();
+    if (Object.isElement(content)) return element.update().insert(content);
+    
+    content = Object.toHTML(content);
+    var tagName = element.tagName.toUpperCase();
+    
+    if (tagName in Element._insertionTranslations.tags) {
+      $A(element.childNodes).each(function(node) { element.removeChild(node) });
+      Element._getContentFromAnonymousElement(tagName, content.stripScripts())
+        .each(function(node) { element.appendChild(node) });
+    }
+    else element.innerHTML = content.stripScripts();
+    
+    content.evalScripts.bind(content).defer();
+    return element;
+  };
+}
+
+if (document.createElement('div').outerHTML) {
+  Element.Methods.replace = function(element, content) {
+    element = $(element);
+    
+    if (content && content.toElement) content = content.toElement();
+    if (Object.isElement(content)) {
+      element.parentNode.replaceChild(content, element);
+      return element;
+    }
+
+    content = Object.toHTML(content);
+    var parent = element.parentNode, tagName = parent.tagName.toUpperCase();
+    
+    if (Element._insertionTranslations.tags[tagName]) {
+      var nextSibling = element.next();
+      var fragments = Element._getContentFromAnonymousElement(tagName, content.stripScripts());
+      parent.removeChild(element);
+      if (nextSibling)
+        fragments.each(function(node) { parent.insertBefore(node, nextSibling) });
+      else 
+        fragments.each(function(node) { parent.appendChild(node) });
+    }
+    else element.outerHTML = content.stripScripts();
+    
+    content.evalScripts.bind(content).defer();
+    return element;
+  };
+}
+
+Element._returnOffset = function(l, t) {
+  var result = [l, t];
+  result.left = l;
+  result.top = t;
+  return result;
+};
+
+Element._getContentFromAnonymousElement = function(tagName, html) {
+  var div = new Element('div'), t = Element._insertionTranslations.tags[tagName];
+  div.innerHTML = t[0] + html + t[1];
+  t[2].times(function() { div = div.firstChild });
+  return $A(div.childNodes);
+};
+
+Element._insertionTranslations = {
+  before: {
+    adjacency: 'beforeBegin',
+    insert: function(element, node) {
+      element.parentNode.insertBefore(node, element);
+    },
+    initializeRange: function(element, range) {
+      range.setStartBefore(element);      
+    }
+  },
+  top: {
+    adjacency: 'afterBegin',
+    insert: function(element, node) {
+      element.insertBefore(node, element.firstChild);
+    },
+    initializeRange: function(element, range) {
+      range.selectNodeContents(element);
+      range.collapse(true);
+    }
+  },
+  bottom: {
+    adjacency: 'beforeEnd',
+    insert: function(element, node) {
+      element.appendChild(node);
+    }
+  },
+  after: {
+    adjacency: 'afterEnd',
+    insert: function(element, node) {
+      element.parentNode.insertBefore(node, element.nextSibling);
+    },
+    initializeRange: function(element, range) {
+      range.setStartAfter(element);
+    }
+  },
+  tags: {
+    TABLE:  ['<table>',                '</table>',                   1],
+    TBODY:  ['<table><tbody>',         '</tbody></table>',           2],
+    TR:     ['<table><tbody><tr>',     '</tr></tbody></table>',      3],
+    TD:     ['<table><tbody><tr><td>', '</td></tr></tbody></table>', 4],
+    SELECT: ['<select>',               '</select>',                  1]
+  }
+};
+
+(function() {
+  this.bottom.initializeRange = this.top.initializeRange;
+  Object.extend(this.tags, {
+    THEAD: this.tags.TBODY,
+    TFOOT: this.tags.TBODY,
+    TH:    this.tags.TD
+  });
+}).call(Element._insertionTranslations);
+
+Element.Methods.Simulated = {
+  hasAttribute: function(element, attribute) {
+    attribute = Element._attributeTranslations.has[attribute] || attribute;
+    var node = $(element).getAttributeNode(attribute);
+    return node && node.specified;
+  }
+};
+
+Element.Methods.ByTag = { };
+
+Object.extend(Element, Element.Methods);
+
+if (!Prototype.BrowserFeatures.ElementExtensions && 
+    document.createElement('div').__proto__) {
+  window.HTMLElement = { };
+  window.HTMLElement.prototype = document.createElement('div').__proto__;
+  Prototype.BrowserFeatures.ElementExtensions = true;
+}
+
+Element.extend = (function() {
+  if (Prototype.BrowserFeatures.SpecificElementExtensions)
+    return Prototype.K;
+  
+  var Methods = { }, ByTag = Element.Methods.ByTag;
+  
+  var extend = Object.extend(function(element) {
+    if (!element || element._extendedByPrototype || 
+        element.nodeType != 1 || element == window) return element;
+
+    var methods = Object.clone(Methods),
+      tagName = element.tagName, property, value;
+    
+    // extend methods for specific tags
+    if (ByTag[tagName]) Object.extend(methods, ByTag[tagName]);
+    
+    for (property in methods) {
+      value = methods[property];
+      if (Object.isFunction(value) && !(property in element))
+        element[property] = value.methodize();
+    }
+    
+    element._extendedByPrototype = Prototype.emptyFunction;
+    return element;
+    
+  }, { 
+    refresh: function() {
+      // extend methods for all tags (Safari doesn't need this)
+      if (!Prototype.BrowserFeatures.ElementExtensions) {
+        Object.extend(Methods, Element.Methods);
+        Object.extend(Methods, Element.Methods.Simulated);
+      }
+    }
+  });
+  
+  extend.refresh();
+  return extend;
+})();
+
+Element.hasAttribute = function(element, attribute) {
+  if (element.hasAttribute) return element.hasAttribute(attribute);
+  return Element.Methods.Simulated.hasAttribute(element, attribute);
+};
+
+Element.addMethods = function(methods) {
+  var F = Prototype.BrowserFeatures, T = Element.Methods.ByTag;
+  
+  if (!methods) {
+    Object.extend(Form, Form.Methods);
+    Object.extend(Form.Element, Form.Element.Methods);
+    Object.extend(Element.Methods.ByTag, {
+      "FORM":     Object.clone(Form.Methods),
+      "INPUT":    Object.clone(Form.Element.Methods),
+      "SELECT":   Object.clone(Form.Element.Methods),
+      "TEXTAREA": Object.clone(Form.Element.Methods)
+    });
+  }
+  
+  if (arguments.length == 2) {
+    var tagName = methods;
+    methods = arguments[1];
+  }
+  
+  if (!tagName) Object.extend(Element.Methods, methods || { });  
+  else {
+    if (Object.isArray(tagName)) tagName.each(extend);
+    else extend(tagName);
+  }
+  
+  function extend(tagName) {
+    tagName = tagName.toUpperCase();
+    if (!Element.Methods.ByTag[tagName])
+      Element.Methods.ByTag[tagName] = { };
+    Object.extend(Element.Methods.ByTag[tagName], methods);
+  }
+
+  function copy(methods, destination, onlyIfAbsent) {
+    onlyIfAbsent = onlyIfAbsent || false;
+    for (var property in methods) {
+      var value = methods[property];
+      if (!Object.isFunction(value)) continue;
+      if (!onlyIfAbsent || !(property in destination))
+        destination[property] = value.methodize();
+    }
+  }
+  
+  function findDOMClass(tagName) {
+    var klass;
+    var trans = {       
+      "OPTGROUP": "OptGroup", "TEXTAREA": "TextArea", "P": "Paragraph", 
+      "FIELDSET": "FieldSet", "UL": "UList", "OL": "OList", "DL": "DList",
+      "DIR": "Directory", "H1": "Heading", "H2": "Heading", "H3": "Heading",
+      "H4": "Heading", "H5": "Heading", "H6": "Heading", "Q": "Quote", 
+      "INS": "Mod", "DEL": "Mod", "A": "Anchor", "IMG": "Image", "CAPTION": 
+      "TableCaption", "COL": "TableCol", "COLGROUP": "TableCol", "THEAD": 
+      "TableSection", "TFOOT": "TableSection", "TBODY": "TableSection", "TR":
+      "TableRow", "TH": "TableCell", "TD": "TableCell", "FRAMESET": 
+      "FrameSet", "IFRAME": "IFrame"
+    };
+    if (trans[tagName]) klass = 'HTML' + trans[tagName] + 'Element';
+    if (window[klass]) return window[klass];
+    klass = 'HTML' + tagName + 'Element';
+    if (window[klass]) return window[klass];
+    klass = 'HTML' + tagName.capitalize() + 'Element';
+    if (window[klass]) return window[klass];
+    
+    window[klass] = { };
+    window[klass].prototype = document.createElement(tagName).__proto__;
+    return window[klass];
+  }
+  
+  if (F.ElementExtensions) {
+    copy(Element.Methods, HTMLElement.prototype);
+    copy(Element.Methods.Simulated, HTMLElement.prototype, true);
+  }
+  
+  if (F.SpecificElementExtensions) {
+    for (var tag in Element.Methods.ByTag) {
+      var klass = findDOMClass(tag);
+      if (Object.isUndefined(klass)) continue;
+      copy(T[tag], klass.prototype);
+    }
+  }  
+
+  Object.extend(Element, Element.Methods);
+  delete Element.ByTag;
+  
+  if (Element.extend.refresh) Element.extend.refresh();
+  Element.cache = { };
+};
+
+document.viewport = {
+  getDimensions: function() {
+    var dimensions = { };
+    $w('width height').each(function(d) {
+      var D = d.capitalize();
+      dimensions[d] = self['inner' + D] || 
+       (document.documentElement['client' + D] || document.body['client' + D]);
+    });
+    return dimensions;
+  },
+
+  getWidth: function() {
+    return this.getDimensions().width;
+  },
+
+  getHeight: function() {
+    return this.getDimensions().height;
+  },
+  
+  getScrollOffsets: function() {
+    return Element._returnOffset(
+      window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop);
+  }
+};

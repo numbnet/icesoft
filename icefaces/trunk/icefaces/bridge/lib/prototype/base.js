@@ -1,19 +1,70 @@
+/* Based on Alex Arnell's inheritance implementation. */
 var Class = {
   create: function() {
-    return function() { 
+    var parent = null, properties = $A(arguments);
+    if (Object.isFunction(properties[0]))
+      parent = properties.shift();
+    
+    function klass() {
       this.initialize.apply(this, arguments);
     }
+    
+    Object.extend(klass, Class.Methods);
+    klass.superclass = parent;
+    klass.subclasses = [];
+    
+    if (parent) {
+      var subclass = function() { };
+      subclass.prototype = parent.prototype;
+      klass.prototype = new subclass;
+      parent.subclasses.push(klass);
+    }
+    
+    for (var i = 0; i < properties.length; i++)
+      klass.addMethods(properties[i]);
+      
+    if (!klass.prototype.initialize)
+      klass.prototype.initialize = Prototype.emptyFunction;
+    
+    klass.prototype.constructor = klass;
+    
+    return klass;
   }
-}
+};
 
-var Abstract = new Object();
+Class.Methods = {
+  addMethods: function(source) {
+    var ancestor   = this.superclass && this.superclass.prototype;
+    var properties = Object.keys(source);
+    
+    if (!Object.keys({ toString: true }).length)
+      properties.push("toString", "valueOf");
+    
+    for (var i = 0, length = properties.length; i < length; i++) {
+      var property = properties[i], value = source[property];
+      if (ancestor && Object.isFunction(value) &&
+          value.argumentNames().first() == "$super") {
+        var method = value, value = Object.extend((function(m) { 
+          return function() { return ancestor[m].apply(this, arguments) };
+        })(property).wrap(method), {
+          valueOf:  function() { return method },
+          toString: function() { return method.toString() }  
+        });
+      }
+      this.prototype[property] = value;
+    }
+    
+    return this;
+  }
+};
+
+var Abstract = { };
 
 Object.extend = function(destination, source) {
-  for (var property in source) {
+  for (var property in source)
     destination[property] = source[property];
-  }
   return destination;
-}
+};
 
 Object.extend(Object, {
   inspect: function(object) {
@@ -25,6 +76,37 @@ Object.extend(Object, {
       if (e instanceof RangeError) return '...';
       throw e;
     }
+  },
+  
+  toJSON: function(object) {
+    var type = typeof object;
+    switch (type) {
+      case 'undefined':
+      case 'function':
+      case 'unknown': return;
+      case 'boolean': return object.toString();
+    }
+    
+    if (object === null) return 'null';
+    if (object.toJSON) return object.toJSON();
+    if (Object.isElement(object)) return;
+    
+    var results = [];
+    for (var property in object) {
+      var value = Object.toJSON(object[property]);
+      if (value !== undefined)
+        results.push(property.toJSON() + ': ' + value);
+    }
+    
+    return '{' + results.join(', ') + '}';
+  },
+  
+  toQueryString: function(object) {
+    return $H(object).toQueryString();
+  },
+  
+  toHTML: function(object) {
+    return object && object.toHTML ? object.toHTML() : String.interpret(object);
   },
   
   keys: function(object) {
@@ -42,40 +124,100 @@ Object.extend(Object, {
   },
   
   clone: function(object) {
-    return Object.extend({}, object);
-  }
-});
-
-Function.prototype.bind = function() {
-  var __method = this, args = $A(arguments), object = args.shift();
-  return function() {
-    return __method.apply(object, args.concat($A(arguments)));
-  }
-}
-
-Function.prototype.bindAsEventListener = function(object) {
-  var __method = this, args = $A(arguments), object = args.shift();
-  return function(event) {
-    return __method.apply(object, [( event || window.event)].concat(args).concat($A(arguments)));
-  }
-}
-
-Object.extend(Number.prototype, {
-  toColorPart: function() {
-    var digits = this.toString(16);
-    if (this < 16) return '0' + digits;
-    return digits;
-  },
-
-  succ: function() {
-    return this + 1;
+    return Object.extend({ }, object);
   },
   
-  times: function(iterator) {
-    $R(0, this, true).each(iterator);
-    return this;
+  isElement: function(object) {
+    return object && object.nodeType == 1;
+  },
+  
+  isArray: function(object) {
+    return object && object.constructor === Array;
+  },
+  
+  isHash: function(object) {
+    return object instanceof Hash;
+  },
+  
+  isFunction: function(object) {
+    return typeof object == "function";
+  },
+  
+  isString: function(object) {
+    return typeof object == "string";
+  },
+  
+  isNumber: function(object) {
+    return typeof object == "number";
+  },
+  
+  isUndefined: function(object) {
+    return typeof object == "undefined";
   }
 });
+
+Object.extend(Function.prototype, {
+  argumentNames: function() {
+    var names = this.toString().match(/^[\s\(]*function[^(]*\((.*?)\)/)[1].split(",").invoke("strip");
+    return names.length == 1 && !names[0] ? [] : names;
+  },
+  
+  bind: function() {
+    if (arguments.length < 2 && arguments[0] === undefined) return this;
+    var __method = this, args = $A(arguments), object = args.shift();
+    return function() {
+      return __method.apply(object, args.concat($A(arguments)));
+    }
+  },
+  
+  bindAsEventListener: function() {
+    var __method = this, args = $A(arguments), object = args.shift();
+    return function(event) {
+      return __method.apply(object, [event || window.event].concat(args));
+    }
+  },
+  
+  curry: function() {
+    if (!arguments.length) return this;
+    var __method = this, args = $A(arguments);
+    return function() {
+      return __method.apply(this, args.concat($A(arguments)));
+    }
+  },
+
+  delay: function() { 
+    var __method = this, args = $A(arguments), timeout = args.shift() * 1000; 
+    return window.setTimeout(function() {
+      return __method.apply(__method, args);
+    }, timeout);
+  },
+  
+  wrap: function(wrapper) {
+    var __method = this;
+    return function() {
+      return wrapper.apply(this, [__method.bind(this)].concat($A(arguments))); 
+    }
+  },
+  
+  methodize: function() {
+    if (this._methodized) return this._methodized;
+    var __method = this;
+    return this._methodized = function() {
+      return __method.apply(null, [this].concat($A(arguments)));
+    };
+  }
+});
+
+Function.prototype.defer = Function.prototype.delay.curry(0.01);
+
+Date.prototype.toJSON = function() {
+  return '"' + this.getUTCFullYear() + '-' +
+    (this.getUTCMonth() + 1).toPaddedString(2) + '-' +
+    this.getUTCDate().toPaddedString(2) + 'T' +
+    this.getUTCHours().toPaddedString(2) + ':' +
+    this.getUTCMinutes().toPaddedString(2) + ':' +
+    this.getUTCSeconds().toPaddedString(2) + 'Z"';
+};
 
 var Try = {
   these: function() {
@@ -86,17 +228,22 @@ var Try = {
       try {
         returnValue = lambda();
         break;
-      } catch (e) {}
+      } catch (e) { }
     }
 
     return returnValue;
   }
-}
+};
+
+RegExp.prototype.match = RegExp.prototype.test;
+
+RegExp.escape = function(str) {
+  return String(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+};
 
 /*--------------------------------------------------------------------------*/
 
-var PeriodicalExecuter = Class.create();
-PeriodicalExecuter.prototype = {
+var PeriodicalExecuter = Class.create({
   initialize: function(callback, frequency) {
     this.callback = callback;
     this.frequency = frequency;
@@ -107,6 +254,10 @@ PeriodicalExecuter.prototype = {
 
   registerCallback: function() {
     this.timer = setInterval(this.onTimerEvent.bind(this), this.frequency * 1000);
+  },
+
+  execute: function() {
+    this.callback(this);
   },
   
   stop: function() {
@@ -119,10 +270,10 @@ PeriodicalExecuter.prototype = {
     if (!this.currentlyExecuting) {
       try {
         this.currentlyExecuting = true;
-        this.callback(this);
+        this.execute();
       } finally {
         this.currentlyExecuting = false;
       }
     }
   }
-}
+});

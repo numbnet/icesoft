@@ -122,6 +122,7 @@
                 <file name="string.js"/>
                 <file name="enumerable.js"/>
                 <file name="array.js"/>
+                <file name="number.js"/>
                 <file name="hash.js"/>
                 <file name="range.js"/>
             </filelist>
@@ -207,14 +208,16 @@
                 <file name="event.js"/>
                 <file name="form.js"/>
                 <file name="position.js"/>
+                <file name="deprecated.js"/>                
             </filelist>
             <filelist dir="${lib.dir}/scriptaculous">
-                <file name="scriptaculous.js"/>
+                <!--file name="scriptaculous.js"/-->
                 <file name="builder.js"/>
                 <file name="effects.js"/>
                 <file name="dragdrop.js"/>
                 <file name="controls.js"/>
                 <file name="slider.js"/>
+                <file name="sound.js"/>
             </filelist>
             <filelist dir="${extras.dir}">
                 <file name="extras.js"/>
