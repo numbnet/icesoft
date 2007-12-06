@@ -576,12 +576,12 @@ public class UISeries extends HtmlDataTable {
     
     private void restoreRequiredAttribute(FacesContext context) {    
         Iterator it = savedChildren.keySet().iterator();
-        while (it.hasNext()) {
+        while (it!= null && it.hasNext()) {
             String clientId = String.valueOf(it.next());
             String localRequired = clientId + "$ice-req$";
             if (!savedChildren.containsKey(clientId)) continue;
             ChildState state = (ChildState)savedChildren.get(clientId);
-            if (!state.isValid()) {
+            if (state != null && !state.isValid()) {
                 UIComponent component = D2DViewHandler.findComponent(clientId,  
                                         context.getViewRoot());
                 if (component != null && component instanceof UIInput &&
