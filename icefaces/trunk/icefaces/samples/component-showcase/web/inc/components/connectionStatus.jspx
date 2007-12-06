@@ -39,17 +39,17 @@ In this demonstration ice:connectionStatus different icons are displayed.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+        <ice:panelTabSet id="pnltabset" styleClass="componentPanelTabSetLayout">
             <!--
             Example include, also see source code include.
             -->
-            <ice:panelTab id="icepnltabset" label="#{msgs['tabbedHeadings.demo']}">
+            <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-                <ice:panelGrid
+                <ice:panelGrid id="pnlgrid1"
                         styleClass="componentLayoutRootTable"
                         columns="1">
 
-                    <ice:panelGrid styleClass="formBorderHighlight">
+                    <ice:panelGrid id="pnlgrid2" styleClass="formBorderHighlight">
                         <h3>
                             <ice:outputText
                                     value="#{msgs['component.connectionStatus.title']}"/>
@@ -59,7 +59,7 @@ In this demonstration ice:connectionStatus different icons are displayed.
                                     value="#{msgs['component.connectionStatus.explanation']}"/>
                         </p>
 
-                        <ice:panelGrid columns="5"
+                        <ice:panelGrid id="pnlgrid3" columns="5"
                                        styleClass="connectionStatusGraphics">
 
                             <ice:outputText value="Theme"/>
