@@ -33,6 +33,9 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
@@ -65,6 +68,7 @@ import java.util.Map;
  */
 public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         implements HttpServletRequest {
+    private final static Log log = LogFactory.getLog(ServletEnvironmentRequest.class);
     private Map headers;
     private Cookie[] cookies;
     private String method;
@@ -155,7 +159,17 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         pathTranslated = initialRequest.getPathTranslated();
         queryString = initialRequest.getQueryString();
         requestURI = initialRequest.getRequestURI();
-        requestURL = initialRequest.getRequestURL();
+        try {
+            requestURL = initialRequest.getRequestURL();
+        } catch (NullPointerException e)  {
+            //TODO remove this catch block when GlassFish bug is addressed
+            if (log.isErrorEnabled()) {
+                log.error("Null Protocol Scheme in request", e);
+            }
+            HttpServletRequest req = initialRequest;
+            requestURL = new StringBuffer( "http://" + req.getServerName() 
+                    + ":" + req.getServerPort() + req.getRequestURI() );
+        }
         servletPath = initialRequest.getServletPath();
         servletSession = initialRequest.getSession();
         isRequestedSessionIdFromCookie = initialRequest.isRequestedSessionIdFromCookie();
