@@ -169,7 +169,10 @@ public class PortletExternalContext extends BridgeExternalContext {
                 return requestAttributes;
             }
         };
+        Map previousRequestMap = requestMap == null ? Collections.EMPTY_MAP : requestMap;
         requestMap = new PortletRequestAttributeMap(initialRequest);
+        //propagate attributes
+        requestMap.putAll(previousRequestMap);
         update(renderRequest, renderResponse);
         dispatcher = new Dispatcher() {
             public void dispatch(String path) throws IOException, FacesException {

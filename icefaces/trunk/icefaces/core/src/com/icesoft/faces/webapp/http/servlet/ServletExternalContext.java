@@ -123,7 +123,10 @@ public class ServletExternalContext extends BridgeExternalContext {
                 return authenticationVerifier;
             }
         };
+        Map previousRequestMap = requestMap == null ? Collections.EMPTY_MAP : requestMap;
         requestMap = new ServletRequestAttributeMap(initialRequest);
+        //propagate attributes
+        requestMap.putAll(previousRequestMap);
         update(servletRequest, servletResponse);
         dispatcher = new Dispatcher() {
             public void dispatch(String path) throws IOException, FacesException {
