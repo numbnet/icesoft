@@ -75,6 +75,8 @@ public class PortletExternalContext extends BridgeExternalContext {
         initParameterMap = new PortletContextInitParameterMap(context);
         applicationMap = new PortletContextAttributeMap(context);
         sessionMap = new PortletSessionAttributeMap(session);
+        requestMap = Collections.EMPTY_MAP;
+
         updateOnPageLoad(renderRequest, renderResponse);
         insertNewViewrootToken();
         switchToNormalMode();
@@ -169,7 +171,7 @@ public class PortletExternalContext extends BridgeExternalContext {
                 return requestAttributes;
             }
         };
-        Map previousRequestMap = requestMap == null ? Collections.EMPTY_MAP : requestMap;
+        Map previousRequestMap = requestMap;
         requestMap = new PortletRequestAttributeMap(initialRequest);
         //propagate attributes
         requestMap.putAll(previousRequestMap);

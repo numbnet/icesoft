@@ -59,6 +59,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         initParameterMap = new ServletContextInitParameterMap(context);
         applicationMap = new ServletContextAttributeMap(context);
         sessionMap = new ServletSessionAttributeMap(session);
+        requestMap = Collections.EMPTY_MAP;
 
         updateOnPageLoad(request, response);
         insertNewViewrootToken();
@@ -123,7 +124,7 @@ public class ServletExternalContext extends BridgeExternalContext {
                 return authenticationVerifier;
             }
         };
-        Map previousRequestMap = requestMap == null ? Collections.EMPTY_MAP : requestMap;
+        Map previousRequestMap = requestMap;
         requestMap = new ServletRequestAttributeMap(initialRequest);
         //propagate attributes
         requestMap.putAll(previousRequestMap);
