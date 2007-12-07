@@ -111,6 +111,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             if(browserType == OPERA_MOBILE){
                                 extention = OPERA_MOBILE_EXTENTION;
                             }
+                            // W3C spec: To make a style sheet preferred, set the rel attribute to "stylesheet" and name the style sheet with the title attribute
+                            ieStyleEle.setAttribute(HTML.TITLE_ATTR, extention);
                             String hrefURL = CoreUtils.resolveResourceURL(facesContext, start + extention + CSS_EXTENTION);
                             ieStyleEle.setAttribute(HTML.HREF_ATTR, hrefURL);
                             styleEle.getParentNode().appendChild(ieStyleEle);
