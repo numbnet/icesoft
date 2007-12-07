@@ -93,6 +93,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection jsCodeURIs = new ArrayList();
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
+    private ELContext elContext = null;
 
     public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         setCurrentInstance(this);
@@ -132,7 +133,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public ELContext getELContext() {
-        ELContext elContext = new ELContextImpl(application);
+        if (null != elContext)  {
+            return elContext;
+        }
+        elContext = new ELContextImpl(application);
         elContext.putContext(FacesContext.class, this);
         UIViewRoot root = getViewRoot();
         if (null != root) {
