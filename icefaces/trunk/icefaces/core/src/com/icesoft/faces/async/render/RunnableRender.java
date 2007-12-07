@@ -138,9 +138,9 @@ class RunnableRender implements Runnable {
             if (SeamUtilities.isSeamEnvironment() ) {
                 testSession(state);
             }
-            state.execute();
-            state.render();
-             
+            // #2459 use fully synchronized version internally.     
+            state.executeAndRender();
+
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
 
