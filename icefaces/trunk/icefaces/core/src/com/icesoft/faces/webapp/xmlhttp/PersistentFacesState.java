@@ -63,6 +63,12 @@ import java.util.Map;
  * using the public static getInstance() method.  The recommended approach is to
  * call this method from a mangaged-bean constructor and use the instance
  * obtained for any {@link #render} requests.
+ * <p/>
+ * Application writers that make calls to the <code>execute</code> and
+ * <code>render</code> methods should be aware of the potential for deadlock
+ * conditions if this code is coupled with a third party framework
+ * (eg. Spring Framework) that does its own resource locking.
+ *
  */
 public class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
@@ -231,6 +237,12 @@ public class PersistentFacesState implements Serializable {
      * Execute  the view associated with this <code>PersistentFacesState</code>.
      * This is typically followed immediatly by a call to
      * {@link PersistentFacesState#render}.
+     * <p/>
+     * This method obtains and releases the monitor on the FacesContext object.
+     * If starting a JSF lifecycle causes 3rd party frameworks to perform locking
+     * of their resources, releasing this monitor between the call to this method
+     * and the call to {@link PersistentFacesState#render} can allow deadlocks
+     * to occur. Use {@link PersistentFacesState#executeAndRender} instead
      */
     public void execute() throws RenderingException {
         facesContext.setCurrentInstance();
@@ -266,6 +278,22 @@ public class PersistentFacesState implements Serializable {
         }
     }
 
+    /**
+     * Execute the JSF lifecycle (essentially calling <code> execute()</code> and
+     * <code>render()</code> ) without releasing the FacesContext monitor
+     * at any point between.
+     * @since 1.7
+     * 
+     * @exception RenderingException if there is an exception rendering the View
+     */
+    public void executeAndRender() throws RenderingException {
+
+        synchronized (facesContext) {
+            execute();
+            render();
+        }
+    }
+
 
     public ClassLoader getRenderableClassLoader() {
         return renderableClassLoader;
@@ -275,7 +303,9 @@ public class PersistentFacesState implements Serializable {
      * @deprecated use {@link com.icesoft.faces.context.DisposableBean} interface instead
      */
     public void addViewListener(ViewListener listener) {
-        viewListeners.add(listener);
+        if (!viewListeners.contains( listener ) ) {
+            viewListeners.add(listener);
+        }
     }
 
     private class RenderRunner implements Runnable {
@@ -296,8 +326,8 @@ public class PersistentFacesState implements Serializable {
             try {
                 Thread.sleep(delay);
                 // JIRA #1377 Call execute before render.
-                execute();
-                render();
+                // #2459 use fully synchronized version internally.
+                executeAndRender();
             } catch (RenderingException e) {
                 if (log.isDebugEnabled()) {
                     log.debug("renderLater failed ", e);
