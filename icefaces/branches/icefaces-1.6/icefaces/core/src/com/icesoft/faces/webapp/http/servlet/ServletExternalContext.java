@@ -26,13 +26,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
@@ -191,12 +185,15 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     public void updateOnReload(Object request, Object response) {
+        Map previousRequestMap = this.requestMap;
         this.initialRequest = new ServletEnvironmentRequest(request, authenticationVerifier, session) {
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
             }
         };
         this.requestMap = new RequestAttributeMap();
+        //propagate entries
+        this.requestMap.putAll(previousRequestMap);
         this.update((HttpServletRequest) request, (HttpServletResponse) response);
     }
 

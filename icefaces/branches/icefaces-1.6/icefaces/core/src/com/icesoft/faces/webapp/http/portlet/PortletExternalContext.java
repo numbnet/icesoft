@@ -11,12 +11,7 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
 import javax.faces.FacesException;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
+import javax.portlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +20,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PortletExternalContext extends BridgeExternalContext {
     private PortletContext context;
@@ -177,8 +166,11 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void updateOnReload(Object request, Object response) {
+        Map previousRequestMap = this.requestMap;
         this.request = new PortletEnvironmentRenderRequest(request);
         this.requestMap = new RequestAttributeMap();
+        //propagate entries
+        this.requestMap.putAll(previousRequestMap);
         this.update((RenderRequest) request, (RenderResponse) response);
     }
 
