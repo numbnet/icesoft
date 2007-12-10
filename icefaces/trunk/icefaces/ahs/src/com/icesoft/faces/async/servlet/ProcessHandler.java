@@ -9,10 +9,8 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.net.URI;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,7 +24,6 @@ implements Handler, Runnable {
     private static final int STATE_RESPONSE_IS_READY = 3;
     private static final int STATE_DONE = 4;
 
-    private static final String ICEFACES_ID = "ice.session";
     private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
 
     private final SessionManager sessionManager;
@@ -52,13 +49,6 @@ implements Handler, Runnable {
         this.request = request;
         this.iceFacesIdSet = iceFacesIdSet;
         this.sessionManager = sessionManager;
-    }
-
-    public void reset() {
-//        state = STATE_UNINITIALIZED;
-//        iceFacesIdSet = null;
-//        sequenceNumbers = null;
-//        updatedViewsList = null;
     }
 
     public void run() {
@@ -98,31 +88,8 @@ implements Handler, Runnable {
                     }
                     return;
                 }
-//                if (LOG.isDebugEnabled()) {
-//                    LOG.debug("Extracting ICEfaces ID(s)...");
-//                }
-//                iceFacesIdSet = new HashSet();
-//                String[] _iceFacesIds =
-//                    request.getParameterAsStrings(ICEFACES_ID);
-//                for (int i = 0; i < _iceFacesIds.length; i++) {
-//                    if (sessionManager.isValid(_iceFacesIds[i])) {
-//                        iceFacesIdSet.add(_iceFacesIds[i]);
-//                    } else {
-//                        if (LOG.isDebugEnabled()) {
-//                            LOG.debug(
-//                                "Invalid ICEfaces ID: " +
-//                                    _iceFacesIds[i] + ")");
-//                        }
-//                    }
-//                }
-//                if (LOG.isDebugEnabled()) {
-//                    LOG.debug("ICEfaces ID(s): " + iceFacesIdSet);
-//                }
                 if (iceFacesIdSet.isEmpty()) {
                     if (LOG.isDebugEnabled()) {
-//                        LOG.debug(
-//                            "404 Not Found (" +
-//                                "ICEfaces ID(s): " + _iceFacesIds + ")");
                         LOG.debug(
                             "404 Not Found (ICEfaces ID(s))");
                     }
