@@ -21,8 +21,6 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
     public void apply(FacesContext facesContext)  {
         FlowExecutor flowExecutor = (FlowExecutor) 
                 SpringWebFlowInstantiationServlet.getFlowExecutor();
-        System.out.println("PageServer: FlowExecutor is  " + flowExecutor);
-        System.out.println("PageServer: FacesContext is  " + facesContext);
         ExternalContext externalContext = facesContext.getExternalContext();
         ServletContext servletContext = (ServletContext) externalContext.getContext();
         HttpServletRequest servletRequest = (HttpServletRequest) externalContext.getRequest();

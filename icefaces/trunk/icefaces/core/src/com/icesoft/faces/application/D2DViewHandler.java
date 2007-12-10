@@ -286,6 +286,10 @@ public class D2DViewHandler extends ViewHandler {
             root = cachedRoot;
         }
 
+        if (SeamUtilities.isSpring1Environment())  {
+            return cachedRoot;
+        }
+
         return root;
     }
 
