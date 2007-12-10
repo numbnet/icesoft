@@ -46,4 +46,11 @@
     "
 />
 
+<target name="tomcat6.0">
+	<antcall target="build.war">
+		<param name="jsf12" value=""/>
+		<param name="serverel" value=""/>
+	</antcall>
+</target>
+
 </project>
