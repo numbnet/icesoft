@@ -579,7 +579,8 @@ public class UISeries extends HtmlDataTable {
         while (it!= null && it.hasNext()) {
             String clientId = String.valueOf(it.next());
             String localRequired = clientId + "$ice-req$";
-            if (!savedChildren.containsKey(clientId)) continue;
+            if (!savedChildren.containsKey(clientId)
+                    || !(savedChildren.get(clientId) instanceof ChildState)) continue;
             ChildState state = (ChildState)savedChildren.get(clientId);
             if (state != null && !state.isValid()) {
                 UIComponent component = D2DViewHandler.findComponent(clientId,  
