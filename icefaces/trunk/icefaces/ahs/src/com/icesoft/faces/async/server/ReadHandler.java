@@ -288,7 +288,7 @@ implements Handler, Runnable {
                                     entityBodyBuffer.toByteArray();
                                 if (LOG.isTraceEnabled()) {
                                     LOG.trace(
-                                        "Header: " +
+                                        "Entity-Body: " +
                                             "[" +
                                                 new String(
                                                     _entityBody, "UTF-8") +
@@ -355,18 +355,10 @@ implements Handler, Runnable {
                 }
             }
         }
-        try {
-            ProcessHandler _processHandler =
-                new ProcessHandler(executeQueue, asyncHttpServer);
-            _processHandler.setHttpConnection(httpConnection);
-            _processHandler.handle();
-        } catch (Exception exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(
-                    "An error occurred while borrowing a process handler!",
-                    exception);
-            }
-        }
+        ProcessHandler _processHandler =
+            new ProcessHandler(executeQueue, asyncHttpServer);
+        _processHandler.setHttpConnection(httpConnection);
+        _processHandler.handle();
         asyncHttpServer.getHttpConnectionAcceptor(asyncHttpServer.getPort()).
             doneReading(httpConnection);
         reset();
