@@ -139,6 +139,14 @@ public class D2DViewHandler extends ViewHandler {
     public void renderView(FacesContext context, UIViewRoot viewToRender)
             throws IOException, FacesException {
         initializeParameters(context);
+
+        if (SeamUtilities.isSpringEnvironment())  {
+            context = BridgeFacesContext.unwrap(context);
+            if (context instanceof BridgeFacesContext)  {
+                ((BridgeFacesContext) context).setCurrentInstance();
+            }
+        }
+
         if (delegateView(context)) {
             delegate.renderView(context, viewToRender);
             return;

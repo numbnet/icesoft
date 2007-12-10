@@ -475,6 +475,35 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return URI.create(application.getViewHandler().getResourceURL(this, uri));
     }
 
+    /**
+     * Check the delegation chain for a BridgeFacesContext wrapped by another
+     *
+     * @param facesContext
+     * return BridgeFacesContext (if found) or input FacesContext
+     */
+    public static FacesContext unwrap(FacesContext facesContext)  {
+        if (facesContext instanceof BridgeFacesContext)  {
+            return facesContext;
+        }
+        FacesContext result = facesContext;
+        try {
+            Method delegateMethod = facesContext.getClass()
+                    .getDeclaredMethod("getDelegate", new Class[] {});
+            delegateMethod.setAccessible(true);
+            Object delegate = delegateMethod
+                    .invoke(facesContext, (Object[]) null);
+            if (delegate instanceof BridgeFacesContext)  {
+                result = (FacesContext) delegate;
+                if (log.isDebugEnabled()) {
+                    log.debug("BridgeFacesContext delegate of " + facesContext);
+                }
+            }
+        } catch (Exception e)  {
+        }
+
+        return result;
+    }
+
     private class DispatchingViewHandler extends ViewHandlerProxy {
         private final String path;
 

@@ -488,6 +488,7 @@ public class SeamUtilities {
             }
         }
 
+        springClass = null;
         try {
             springClass = Class.forName(SPRING_CONTEXT_HOLDER);
         } catch (Throwable t)  {

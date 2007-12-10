@@ -33,10 +33,15 @@
 
 package com.icesoft.faces.context;
 
+import javax.servlet.ServletContext;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.lifecycle.Lifecycle;
+
+import com.icesoft.util.SeamUtilities;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.context.BridgeFacesContext;
 
 /**
  * This is the ICEfaces implementation of the FacesContextFactory.  We take
@@ -62,6 +67,18 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
     public FacesContext getFacesContext(Object context, Object request,
                                         Object response,
                                         Lifecycle lifecycle) throws FacesException {
+        //In the case of Spring Web Flow 2.0, return the BridgeFacesContext
+        //already created for this request
+        if (context instanceof ServletContext) {
+            if (SeamUtilities.isSpringEnvironment())  {
+                PersistentFacesState persistentState = 
+                        PersistentFacesState.getInstance();
+                BridgeFacesContext bcontext = 
+                        (BridgeFacesContext) persistentState.getFacesContext();
+                bcontext.setCurrentInstance();
+                return bcontext;
+            }
+        }
         if (delegate == null) {
             throw new UnsupportedOperationException("ICEfaces cannot use this factory for instantiating FacesContext objects.");
         } else {
