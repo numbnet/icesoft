@@ -117,7 +117,7 @@ and must be dismissed before the application's functionality will return.
                     rendered="true"
                     visible="#{popup.showModalPanel}"
                     modal="true"
-                    style="z-index:1001;  width: 300px; height: 150px; top:35%; left:35%;">
+                    style="z-index:1001;  width: 300px; height: 150px;">
 
         <f:facet name="header">
             <ice:outputText styleClass="popupTitle"

@@ -106,9 +106,6 @@ public class PanelPopupRenderer extends GroupRenderer {
             table.setAttribute(HTML.WIDTH_ATTR, "100%");
 
             rootDiv.appendChild(table);
-            if (modal != null && modal.booleanValue()) {
-                dndType = null;
-            }
             // extracted from GroupRenderer encodeBegin
             if (dndType != null) {
                 // Drag an drop needs some hidden fields

@@ -129,9 +129,22 @@ Ice.modal = {
                     var bodyWidth = document.body.scrollWidth;
                     var documentHeight = document.documentElement.scrollHeight;
                     var bodyHeight = document.body.scrollHeight;
-                    frame.style.width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) + 'px';
-                    frame.style.height = (bodyHeight > documentHeight ? bodyHeight : documentHeight) + 'px';
+                    var width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) ;
+                    var height = (bodyHeight > documentHeight ? bodyHeight : documentHeight)
+                    frame.style.width = width + 'px';
+                    frame.style.height =  height + 'px';
                     frame.style.visibility = 'visible';
+                    var modalWidth = 100;
+                    var modalHeight = 100;
+                    try {
+                        modalWidth = modal.style.width.split("px")[0];
+                        modalHeight = modal.style.height.split("px")[0];               
+                    } catch (e) {}
+                    modalWidth = parseInt(modalWidth) /2;
+                    modalHeight = parseInt(modalHeight) /2;
+                    modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
+                    modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
+
                 }
             };
             resize();
