@@ -679,6 +679,9 @@ implements Handler, Runnable {
         }
         httpConnection.getTransaction().getHttpRequest().
             setICEfacesIDSet(iceFacesIdSet);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("ICEfaces ID(s): " + iceFacesIdSet);
+        }
     }
 
     private void extractSequenceNumbers() {
