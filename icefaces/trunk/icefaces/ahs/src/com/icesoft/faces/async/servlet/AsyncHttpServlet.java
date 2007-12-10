@@ -38,7 +38,7 @@ extends HttpServlet {
     public void destroy() {
         super.destroy();
         if (asyncHttpServer != null) {
-            asyncHttpServer.start();
+            asyncHttpServer.stop();
         }
         pathDispatcher.shutdown();
     }
