@@ -32,6 +32,8 @@
  */
 package com.icesoft.faces.context;
 
+import java.lang.reflect.Method;
+
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
