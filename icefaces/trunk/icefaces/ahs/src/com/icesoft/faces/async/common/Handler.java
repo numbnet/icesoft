@@ -40,6 +40,4 @@ package com.icesoft.faces.async.common;
 public interface Handler
 extends Runnable {
     public void handle();
-
-    public void reset();
 }

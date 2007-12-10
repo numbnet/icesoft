@@ -137,13 +137,6 @@ implements Handler, Runnable {
         super(executeQueue, asyncHttpServer);
     }
 
-    public void reset() {
-        iceFacesIdSet = null;
-        sequenceNumbers = null;
-        updatedViewsList.clear();
-        super.reset();
-    }
-
     public void run() {
         HttpResponse _httpResponse;
         if (httpConnection.hasException()) {
@@ -278,7 +271,6 @@ implements Handler, Runnable {
             new WriteHandler(executeQueue, asyncHttpServer);
         _writeHandler.setHttpConnection(httpConnection);
         _writeHandler.handle();
-        reset();
     }
 
     private boolean acceptable() {

@@ -95,7 +95,6 @@ implements Handler, Runnable {
                 }
             }
             httpConnection.reset();
-            reset();
         }
     }
 }

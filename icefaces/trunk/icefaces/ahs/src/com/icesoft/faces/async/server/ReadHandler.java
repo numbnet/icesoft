@@ -114,20 +114,6 @@ implements Handler, Runnable {
         super(executeQueue, asyncHttpServer);
     }
 
-    public void reset() {
-        httpRequest = null;
-        state = STATE_UNINITIALIZED;
-        inputStream = null;
-        beginIndex = 0;
-        endIndex = 0;
-        length = 0;
-        if (buffer.length() != 0) {
-            buffer.delete(0, buffer.length() - 1);
-        }
-        entityBodyBuffer.reset();
-        super.reset();
-    }
-
     public void run() {
         inputStream = httpConnection.getInputStream();
         try {
@@ -154,7 +140,6 @@ implements Handler, Runnable {
                                         getHttpRequest().getICEfacesIDSet());
                             }
                             httpConnection.reset();
-                            reset();
                             if (LOG.isTraceEnabled()) {
                                 LOG.trace(
                                     "Close: User-Agent closed the connection!");
@@ -361,7 +346,6 @@ implements Handler, Runnable {
         _processHandler.handle();
         asyncHttpServer.getHttpConnectionAcceptor(asyncHttpServer.getPort()).
             doneReading(httpConnection);
-        reset();
     }
 
     private void park() {

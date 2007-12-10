@@ -84,10 +84,6 @@ implements Handler, Runnable {
         }
     }
 
-    public void reset() {
-        httpConnection = null;
-    }
-    
     public void setHttpConnection(final HttpConnection httpConnection) {
         this.httpConnection = httpConnection;
     }

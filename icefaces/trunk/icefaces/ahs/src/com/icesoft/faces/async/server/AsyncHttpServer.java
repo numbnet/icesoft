@@ -156,9 +156,6 @@ public class AsyncHttpServer
         // todo: refactor this!
         com.icesoft.faces.async.common.Handler _handler =
             sessionManager.getRequestManager().pull(iceFacesIdSet);
-        if (_handler != null) {
-            _handler.reset();
-        }
     }
 
     /**

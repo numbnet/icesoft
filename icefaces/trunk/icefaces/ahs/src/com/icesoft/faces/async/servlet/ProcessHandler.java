@@ -51,9 +51,6 @@ implements Handler, Runnable {
         this.sessionManager = sessionManager;
     }
 
-    public void reset() {
-    }
-
     public void run() {
         switch (state) {
             case STATE_UNINITIALIZED :
