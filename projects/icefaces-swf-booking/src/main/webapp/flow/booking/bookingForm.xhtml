@@ -47,11 +47,9 @@
 				<h:outputLabel for="checkinDate">Check In Date:</h:outputLabel>
 			</div>
 			<div class="input">
-				<sf:clientDateValidator required="true" >
 		        	<h:inputText id="checkinDate" value="#{booking.checkinDate}" required="true">
 	                	<f:convertDateTime pattern="yyyy-MM-dd" timeZone="EST"/>
 	                </h:inputText>
-               	</sf:clientDateValidator>
 			</div>
 		</div>
 		<div class="field">
@@ -59,11 +57,9 @@
 				<h:outputLabel for="checkoutDate">Check Out Date:</h:outputLabel>
 			</div>
 			<div class="input">
-				<sf:clientDateValidator required="true">
 					<h:inputText id="checkoutDate" value="#{booking.checkoutDate}" required="true">
 						<f:convertDateTime pattern="yyyy-MM-dd" timeZone="EST"/>
 					</h:inputText>
-				</sf:clientDateValidator>
 			</div>
 		</div>
 		<div class="field">
@@ -91,9 +87,7 @@
 				<h:outputLabel for="creditCard">Credit Card #:</h:outputLabel>
 			</div>
 			<div class="input">
-				<sf:clientTextValidator required="true" regExp="[0-9]{16}" invalidMessage="A 16-digit credit card number is required.">
 					<h:inputText id="creditCard" value="#{booking.creditCard}" required="true"/>
-				</sf:clientTextValidator>
 			</div>
 		</div>
 		<div class="field">
@@ -101,9 +95,7 @@
 				<h:outputLabel for="creditCardName">Credit Card Name:</h:outputLabel>
 			</div>
 			<div class="input">
-				<sf:clientTextValidator required="true">
 					<h:inputText id="creditCardName" value="#{booking.creditCardName}" required="true"/>
-				</sf:clientTextValidator>
 			</div>
 		</div>
 		<div class="field">
@@ -121,9 +113,7 @@
 		</div>
 
 			<div class="buttonGroup">
-				<sf:validateAllOnClick>
 					<h:commandButton id="proceed" action="proceed" value="Proceed"/>
-				</sf:validateAllOnClick>
 				<h:commandButton id="cancel" immediate="true" value="Cancel" action="cancel"/>
 			</div>
 	</fieldset>

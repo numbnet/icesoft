@@ -9,11 +9,11 @@
 <ui:define name="content">
 <h:form id="displayHotelsForm">
 	<div class="section">
-			<sf:commandLink ajaxEnabled="false" value="Return to Main" action="changeSearch"/>
+			<h:commandLink value="Return to Main" action="changeSearch"/>
 			<h2>Hotel Results</h2>
 			<p>
 				<b>Search Criteria:</b> #{searchCriteria}<br/>
-				<sf:commandLink value="Edit Criteria" onclick="dijit.byId('dialog1').show();" action="changeSearch" renderIds="hotelSearchFragment"/>
+				<h:commandLink value="Edit Criteria" action="changeSearch" />
 			</p>
 			<h:outputText id="noHotelsTxt" value="No Hotels Found" rendered="#{hotels.rowCount==0}"/>
 			<h:dataTable id="hotels" styleClass="summary" value="#{hotels}" var="hotel" rendered="#{hotels.rowCount > 0}">
@@ -36,27 +36,20 @@
 				<h:column>
 					<f:facet name="header">Action</f:facet>
 					<!-- @TODO - THIS LINK DOES NOT WORK ON MYFACES 1.2.0 WHEN AJAX IS ENABLED BECAUSE THEY HAVE NOT IMPLEMENTED UIData.invokeOnComponent -->
-					<sf:commandLink id="viewHotelLink" value="View Hotel" ajaxEnabled="false" action="selectHotel"/>
+					<h:commandLink id="viewHotelLink" value="View Hotel"  action="selectHotel"/>
 				</h:column>
 			</h:dataTable>
 			<div class="next">
-				<sf:commandLink id="nextPageLink" value="More Results" actionListener="#{searchCriteria.nextPageListener}"
+				<h:commandLink id="nextPageLink" value="More Results" actionListener="#{searchCriteria.nextPageListener}"
 					rendered="#{not empty hotels and hotels.rowCount == searchCriteria.pageSize}"
-					processIds="displayHotelsForm"/>
+					/>
 			</div>
 			<div class="prev">
-				<sf:commandLink id="prevPageLink" value="Previous results" actionListener="#{searchCriteria.prevPageListener}" 
+				<h:commandLink id="prevPageLink" value="Previous results" actionListener="#{searchCriteria.prevPageListener}" 
 					rendered="#{searchCriteria.page > 0}"
-					processIds="displayHotelsForm"/>
+					/>
 			</div>
 	</div>
 </h:form>
-<script type="text/javascript">
-	dojo.require("dijit.Dialog");
-	dojo.require("dojo.parser");
-</script>
-<div dojoType="dijit.Dialog" id="dialog1" title="First Dialog">
-	<div id="hotelSearch"> </div>
-</div>
 </ui:define>
 </ui:composition>

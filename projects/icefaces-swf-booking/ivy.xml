@@ -14,10 +14,20 @@
     <dependency org="log4j" name="log4j" rev="1.2.14"/>
     <dependency org="taglibs" name="standard" rev="1.1.2"/>
     <dependency org="jstl" name="jstl" rev="1.1.2"/>
-    <dependency org="com.sun.facelets" name="jsf-facelets" rev="1.1.13"/>
+    <dependency org="commons-fileupload" name="commons-fileupload" rev="1.2"/>
+    <dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="2.2"/>
+
+<!--    <dependency org="com.sun.facelets" name="jsf-facelets" rev="1.1.13"/> -->
 	<dependency org="aopalliance" name="aopalliance" rev="1.0" />
-    <dependency org="org.springframework" name="spring-faces" rev="latest.integration" conf="global->jsf12"/>
-    <dependency org="org.springframework" name="spring-webflow" rev="latest.integration" conf="global->default"/>
+    <dependency org="org.springframework" name="spring-faces" rev="latest.integration" conf="global->jsf12">
+        <exclude module="myfaces-api"/>
+        <exclude module="myfaces-impl"/>
+    </dependency>
+    <dependency org="org.springframework" name="spring-webflow" rev="latest.integration" conf="global->default">
+        <exclude module="myfaces-api"/>
+        <exclude module="myfaces-impl"/>
+    </dependency>
+
     <dependency org="org.springframework" name="spring-aop" rev="2.5"/>
     <dependency org="org.springframework" name="spring-orm" rev="2.5"/>
     <dependency org="org.springframework" name="spring-jdbc" rev="2.5"/>

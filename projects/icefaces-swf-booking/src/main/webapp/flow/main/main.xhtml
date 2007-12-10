@@ -20,9 +20,7 @@
 						<fieldset>
 							<div class="searchGroup">
 								<div class="searchField">
-								<sf:clientTextValidator promptMessage="Search hotels by name, address, city or zip.">
-									<h:inputText id="searchString" value="#{searchCriteria.searchString}" style="width: 165px; height: 15px;"/>
-								</sf:clientTextValidator>
+									<h:inputText id="searchString" value="#{searchCriteria.searchString}" style="width: 165px; height: 20;"/>
 								</div>
 								<div class="searchSize">
 								   	<h:outputLabel for="pageSize">Maximum results:</h:outputLabel>
@@ -33,7 +31,7 @@
 									</h:selectOneMenu>  
 						   		</div>
 								<div class="searchButton">
-									<sf:commandButton id="findHotels" value="Find Hotels" ajaxEnabled="false" actionListener="#{searchCriteria.findHotelsListener}" action="findHotels"/>
+									<h:commandButton id="findHotels" value="Find Hotels"  actionListener="#{searchCriteria.findHotelsListener}" action="findHotels"/>
 								</div>
 							</div>
 					    </fieldset>
@@ -76,7 +74,7 @@
 					<h:column>
 						<f:facet name="header">Action</f:facet>
 						<!-- @TODO - THIS LINK DOES NOT WORK ON MYFACES 1.2.0 WHEN AJAX IS ENABLED BECAUSE THEY HAVE NOT IMPLEMENTED UIData.invokeOnComponent -->			
-						<sf:commandLink id="cancel" value="Cancel" ajaxEnabled="false" processIds="bookingsSection" action="cancelBooking"/>
+						<h:commandLink id="cancel" value="Cancel" action="cancelBooking"/>
 					</h:column>
 				</h:dataTable>
 			</h:form>
