@@ -56,6 +56,7 @@ public class RequestManager {
             while (_entries.hasNext()) {
                 Map.Entry _entry = (Map.Entry)_entries.next();
                 if (((Set)_entry.getKey()).contains(iceFacesId)) {
+                    _entries.remove();
                     return (Handler)_entry.getValue();
                 }
             }
