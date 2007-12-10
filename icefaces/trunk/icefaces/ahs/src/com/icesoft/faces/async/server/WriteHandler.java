@@ -82,8 +82,8 @@ implements Handler, Runnable {
                         "HTTP Response send to " +
                             httpConnection.getRemoteSocketAddress() + ":\r\n" +
                             "[" +
-                                _httpRequest != null ?
-                                    _httpRequest.getRequestLine() : null +
+                                (_httpRequest != null ?
+                                    _httpRequest.getRequestLine() : null) +
                             "]\r\n\r\n" +
                             _httpResponse.getMessage(false));
                 }
