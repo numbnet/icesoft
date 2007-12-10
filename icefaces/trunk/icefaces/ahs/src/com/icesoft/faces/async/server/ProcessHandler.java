@@ -495,7 +495,7 @@ implements Handler, Runnable {
         if (_httpResponse.isSuccessful()) {
             _httpResponse.putHeader(
                 HttpResponse.X_SET_WINDOW_COOKIE,
-                "Sequence_Number=\"" + getSequenceNumberValue() + "\"",
+                "Sequence_Numbers=\"" + getSequenceNumberValue() + "\"",
                 true);
         }
 //        if (LOG.isTraceEnabled()) {
