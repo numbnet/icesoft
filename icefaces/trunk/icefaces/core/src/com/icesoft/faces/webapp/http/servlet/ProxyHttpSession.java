@@ -21,7 +21,7 @@ public class ProxyHttpSession implements HttpSession {
     }
 
     public long getLastAccessedTime() {
-        return getLastAccessedTime();
+        return session.getLastAccessedTime();
     }
 
     public ServletContext getServletContext() {
