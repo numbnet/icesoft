@@ -116,6 +116,11 @@ public class GMap extends UICommand{
     
     public void encodeBegin(FacesContext context) throws IOException {
     	super.encodeBegin(context);
+    	//assume it page refresh
+    	if(context.getExternalContext().getRequestParameterMap() != null &&
+    	        context.getExternalContext().getRequestParameterMap().size() == 0) {
+    	    initilized = false;
+    	}
     	if ((isLocateAddress() || !initilized) && (getAddress() != null 
     			&& getAddress().length() > 2)) {
         	JavascriptContext.addJavascriptCall(context, 
