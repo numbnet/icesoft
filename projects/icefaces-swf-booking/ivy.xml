@@ -20,12 +20,8 @@
 <!--    <dependency org="com.sun.facelets" name="jsf-facelets" rev="1.1.13"/> -->
 	<dependency org="aopalliance" name="aopalliance" rev="1.0" />
     <dependency org="org.springframework" name="spring-faces" rev="latest.integration" conf="global->jsf12">
-        <exclude module="myfaces-api"/>
-        <exclude module="myfaces-impl"/>
     </dependency>
     <dependency org="org.springframework" name="spring-webflow" rev="latest.integration" conf="global->default">
-        <exclude module="myfaces-api"/>
-        <exclude module="myfaces-impl"/>
     </dependency>
 
     <dependency org="org.springframework" name="spring-aop" rev="2.5"/>
