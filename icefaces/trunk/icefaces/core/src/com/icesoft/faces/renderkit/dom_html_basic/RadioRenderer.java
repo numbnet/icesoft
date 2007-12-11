@@ -119,12 +119,11 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
                                                           uiSelectOne,
                                                           selectItem.getValue())));
 
-        addJavaScript(facesContext, uiSelectOne, input, excludes);
         // style is rendered on containing table
         excludes.add("style");
         excludes.add("readonly");
         excludes.add("disabled");
-
+        excludes.add("onclick");
         PassThruAttributeRenderer.
                 renderAttributes(
                         facesContext, uiSelectOne, getExcludesArray(excludes));
