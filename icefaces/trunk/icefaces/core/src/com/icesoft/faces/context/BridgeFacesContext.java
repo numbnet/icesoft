@@ -32,9 +32,6 @@
  */
 package com.icesoft.faces.context;
 
-import java.lang.reflect.Method;
-
-import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -62,16 +59,9 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Pattern;
 
 //for now extend BridgeFacesContext since there are so many 'instanceof' tests
@@ -95,7 +85,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection jsCodeURIs = new ArrayList();
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
-    private ELContext elContext = null;
+    private ELContext elContext;
 
     public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         setCurrentInstance(this);
@@ -135,7 +125,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public ELContext getELContext() {
-        if (null != elContext)  {
+        if (null != elContext) {
             return elContext;
         }
         elContext = new ELContextImpl(application);
@@ -256,7 +246,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // As a result of the Get, a new ViewRoot is created, and in our code, the
         // createAndSetResponseWriter method is not called until the renderResponse phase,
         // but when the result of a Seam actionMethod hack is a redirect, renderResponse
-        // is not called, and the responseWriter will not have a value. 
+        // is not called, and the responseWriter will not have a value.
         //
         // Trying to create a Noop DomResponseWriter is problematic since the constructor
         // of DRW does lots of initialization which needs something more than can
@@ -273,13 +263,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             //ViewRoot and attributes being cached interferes with PAGE scope
             return null;
         }
-        if (null == viewRoot) {
-            Map contextServletTable = D2DViewHandler.getContextServletTable(this);
-            if (null != contextServletTable) {
-                viewRoot = (UIViewRoot) contextServletTable
-                        .get(DOMResponseWriter.RESPONSE_VIEWROOT);
-            }
-        }
 
         return this.viewRoot;
     }
@@ -288,15 +271,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         final String path = viewRoot.getViewId();
         if (PageTemplatePattern.matcher(path).matches()) {
             //pointing this FacesContext to the new view
-            Map contextServletTable = D2DViewHandler.getContextServletTable(this);
-            if (null != contextServletTable) {
-                if (viewRoot != null) {
-                    contextServletTable
-                            .put(DOMResponseWriter.RESPONSE_VIEWROOT, viewRoot);
-                } else {
-                    contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
-                }
-            }
             responseWriter = null;
             this.viewRoot = viewRoot;
         } else {
@@ -380,8 +354,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void dispose() {
-        String key = viewNumber + "/" + D2DViewHandler.DOM_CONTEXT_TABLE;
-        externalContext.getSessionMap().remove(key);
     }
 
     public void applyBrowserDOMChanges() {
@@ -480,27 +452,26 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     /**
      * Check the delegation chain for a BridgeFacesContext wrapped by another
      *
-     * @param facesContext
-     * return BridgeFacesContext (if found) or input FacesContext
+     * @param facesContext return BridgeFacesContext (if found) or input FacesContext
      */
-    public static FacesContext unwrap(FacesContext facesContext)  {
-        if (facesContext instanceof BridgeFacesContext)  {
+    public static FacesContext unwrap(FacesContext facesContext) {
+        if (facesContext instanceof BridgeFacesContext) {
             return facesContext;
         }
         FacesContext result = facesContext;
         try {
             Method delegateMethod = facesContext.getClass()
-                    .getDeclaredMethod("getDelegate", new Class[] {});
+                    .getDeclaredMethod("getDelegate", new Class[]{});
             delegateMethod.setAccessible(true);
             Object delegate = delegateMethod
                     .invoke(facesContext, (Object[]) null);
-            if (delegate instanceof BridgeFacesContext)  {
+            if (delegate instanceof BridgeFacesContext) {
                 result = (FacesContext) delegate;
                 if (log.isDebugEnabled()) {
                     log.debug("BridgeFacesContext delegate of " + facesContext);
                 }
             }
-        } catch (Exception e)  {
+        } catch (Exception e) {
         }
 
         return result;

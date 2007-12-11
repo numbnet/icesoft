@@ -37,7 +37,6 @@ import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.sun.facelets.Facelet;
 import com.sun.facelets.FaceletFactory;
-import com.sun.facelets.util.ReflectionUtil;
 import com.sun.facelets.compiler.Compiler;
 import com.sun.facelets.compiler.SAXCompiler;
 import com.sun.facelets.compiler.TagLibraryConfig;
@@ -47,6 +46,7 @@ import com.sun.facelets.impl.ResourceResolver;
 import com.sun.facelets.tag.TagDecorator;
 import com.sun.facelets.tag.TagLibrary;
 import com.sun.facelets.tag.jsf.ComponentSupport;
+import com.sun.facelets.util.ReflectionUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -57,13 +57,12 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
-import javax.servlet.http.HttpServletResponse;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
  * <B>D2DViewHandler</B> is the ICEfaces Facelet ViewHandler implementation
@@ -117,7 +116,7 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         // Use a TagLibrary to create UIXhtmlComponents from all xhtml Tags
         c.addTagLibrary(new UIXhtmlTagLibrary());
         c.addTagDecorator(new UIXhtmlTagDecorator());
-        
+
         c.addTagDecorator(new JspTagDetector());
 
         // Load libraries
@@ -225,19 +224,19 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         }
         if (resourceResolver == null)
             resourceResolver = new DefaultResourceResolver();
-        
+
         resourceResolver = preChainResourceResolver(resourceResolver);
-        
+
         return new DefaultFaceletFactory(c, resourceResolver, refreshPeriod);
     }
-    
+
     /**
      * When D2DFaceletViewHandler is setting up the ResourceResolver for
-     *  Facelets, it uses this callback to allow for any subclass to
-     *  define a ResourceResolver of higher precedence, that would have
-     *  first crack at resolving resources, and then could delegate to
-     *  the standard mechanism.
-     * 
+     * Facelets, it uses this callback to allow for any subclass to
+     * define a ResourceResolver of higher precedence, that would have
+     * first crack at resolving resources, and then could delegate to
+     * the standard mechanism.
+     *
      * @param after The standard ResourceResolver that Facelets would ordinarily use
      * @return Either the new pre-chained ResourceResolver if one is being added,
      *         or just the given one if nothing is being chained in
@@ -252,26 +251,24 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         String viewId = actionId;
         if (extCtx.getRequestPathInfo() == null) {
             String viewSuffix = context.getExternalContext().getInitParameter(
-                ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-            if(viewSuffix == null) {
-                if(log.isErrorEnabled()) {
+                    ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            if (viewSuffix == null) {
+                if (log.isErrorEnabled()) {
                     log.error(
-                        "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
-                            " context parameter is not set in web.xml. " +
-                            "Please define the filename extension used for " +
-                            "your source JSF pages. Example:\n" +
-                            "<context-param>\n" +
-                            " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
-                            " <param-value>.xhtml</param-value>\n" +
-                            "</context-param>");
+                            "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
+                                    " context parameter is not set in web.xml. " +
+                                    "Please define the filename extension used for " +
+                                    "your source JSF pages. Example:\n" +
+                                    "<context-param>\n" +
+                                    " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
+                                    " <param-value>.xhtml</param-value>\n" +
+                                    "</context-param>");
                 }
-            }
-            else {
+            } else {
                 int lastPeriod = actionId.lastIndexOf('.');
-                if(lastPeriod < 0) {
+                if (lastPeriod < 0) {
                     viewId = actionId + viewSuffix;
-                }
-                else {
+                } else {
                     viewId = actionId.substring(0, lastPeriod) + viewSuffix;
                 }
             }
@@ -285,7 +282,6 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         }
         BridgeFacesContext context = (BridgeFacesContext) facesContext;
         try {
-            clearSession(context);
             ResponseWriter responseWriter = context.createAndSetResponseWriter();
 
             UIViewRoot viewToRender = context.getViewRoot();
@@ -332,7 +328,7 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             throw new FacesException("Problem in renderResponse: " + e.getMessage(), e);
         }
     }
-    
+
     /*
     protected void handleFaceletFileNotFoundException(FacesContext context)
             throws FacesException, IOException {
@@ -387,56 +383,54 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             }
         }
     }
-    
+
     /**
      * For performance reasons, when there aren't id collisions
-     *   we want this to be as fast as possible.  When there are
-     *   collisions, then we'll take some extra time to do a second
-     *   pass to provide more information
+     * we want this to be as fast as possible.  When there are
+     * collisions, then we'll take some extra time to do a second
+     * pass to provide more information
      * It could have all been done in one pass, but that would penalise
-     *   the typical case, where there are not duplicate ids
-     * 
+     * the typical case, where there are not duplicate ids
+     *
      * @param comp UIComponent to recurse down through, searching for
      *             duplicate ids. Should be the UIViewRoot
      */
     protected static void verifyUniqueComponentIds(
-        FacesContext context, UIComponent comp)
-    {
+            FacesContext context, UIComponent comp) {
         if (!log.isDebugEnabled())
             return;
-        
+
         HashMap ids = new HashMap(512);
         ArrayList duplicateIds = new ArrayList(256);
         quicklyDetectDuplicateComponentIds(comp, ids, duplicateIds);
-        
-        if(!duplicateIds.isEmpty()) {
+
+        if (!duplicateIds.isEmpty()) {
             HashMap duplicateIds2comps = new HashMap(512);
             compileDuplicateComponentIds(comp, duplicateIds2comps, duplicateIds);
             reportDuplicateComponentIds(context, duplicateIds2comps, duplicateIds);
         }
     }
-    
+
     /**
      * Do the least amount of work to find if there are any duplicate ids,
-     *   with the assumption being that we won't typically find any
+     * with the assumption being that we won't typically find any
      * We also mention any null ids, just to be safe
-     * 
-     * @param comp  UIComponent to recurse down through, searching for
-     *              duplicate ids.
-     * @param ids  HashMap<String id, String id> allows for detecting
-     *             if an id has already been encountered or not
-     * @param duplicateIds  ArrayList<String id> duplicate ids encountered
-     *                      as we recurse down
+     *
+     * @param comp         UIComponent to recurse down through, searching for
+     *                     duplicate ids.
+     * @param ids          HashMap<String id, String id> allows for detecting
+     *                     if an id has already been encountered or not
+     * @param duplicateIds ArrayList<String id> duplicate ids encountered
+     *                     as we recurse down
      */
     private static void quicklyDetectDuplicateComponentIds(
-        UIComponent comp, HashMap ids, ArrayList duplicateIds)
-    {
+            UIComponent comp, HashMap ids, ArrayList duplicateIds) {
         String id = comp.getId();
         if (id == null) {
             log.debug("UIComponent has null id: " + comp);
         } else {
             if (ids.containsKey(id)) {
-                if(!duplicateIds.contains(id))
+                if (!duplicateIds.contains(id))
                     duplicateIds.add(id);
             } else {
                 ids.put(id, id);
@@ -448,26 +442,25 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             quicklyDetectDuplicateComponentIds(child, ids, duplicateIds);
         }
     }
-    
+
     /**
      * Make a list of every UIComponent that has a duplicate id, as found
-     *  in the duplicateIds parameter.
-     * 
-     * @param comp  UIComponent to recurse down through, searching for
-     *              duplicate ids.
-     * @param duplicateIds2comps  HashMap< String id, ArrayList<UIComponent> >
-     *                            save every UIComponent with one of the
-     *                            duplicate ids, so we can list them all
-     * @param duplicateIds  ArrayList<String id> duplicate ids encountered
-     *                      before
+     * in the duplicateIds parameter.
+     *
+     * @param comp               UIComponent to recurse down through, searching for
+     *                           duplicate ids.
+     * @param duplicateIds2comps HashMap< String id, ArrayList<UIComponent> >
+     *                           save every UIComponent with one of the
+     *                           duplicate ids, so we can list them all
+     * @param duplicateIds       ArrayList<String id> duplicate ids encountered
+     *                           before
      */
     private static void compileDuplicateComponentIds(
-        UIComponent comp, HashMap duplicateIds2comps, ArrayList duplicateIds)
-    {
+            UIComponent comp, HashMap duplicateIds2comps, ArrayList duplicateIds) {
         String id = comp.getId();
         if (id != null && duplicateIds.contains(id)) {
             ArrayList duplicateComps = (ArrayList) duplicateIds2comps.get(id);
-            if(duplicateComps == null) {
+            if (duplicateComps == null) {
                 duplicateComps = new ArrayList();
                 duplicateIds2comps.put(id, duplicateComps);
             }
@@ -479,42 +472,41 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             compileDuplicateComponentIds(child, duplicateIds2comps, duplicateIds);
         }
     }
-    
+
     /**
      * Given a list of duplicate ids, and a mapping to each list of
-     *   UIComponents sharing each id, log this info so that the user
-     *   can most easily debug their application.
-     * 
-     * @param duplicateIds2comps  HashMap< String id, ArrayList<UIComponent> >
-     *                            for each duplicated id, the UIComponents
-     *                            sharing that id
-     * @param duplicateIds  ArrayList<String id> duplicate ids encountered
-     *                      before
+     * UIComponents sharing each id, log this info so that the user
+     * can most easily debug their application.
+     *
+     * @param duplicateIds2comps HashMap< String id, ArrayList<UIComponent> >
+     *                           for each duplicated id, the UIComponents
+     *                           sharing that id
+     * @param duplicateIds       ArrayList<String id> duplicate ids encountered
+     *                           before
      */
     private static void reportDuplicateComponentIds(
-        FacesContext context, HashMap duplicateIds2comps, ArrayList duplicateIds)
-    {
+            FacesContext context, HashMap duplicateIds2comps, ArrayList duplicateIds) {
         // We don't simply iterate over duplicateIds2comps's keys, since that
         //  sequence is will probably not be very useful, whereas duplicateIds
         //  is sequenced in the order that we encountered the ids in the
         //  component tree, and thus in the source .xhtml file.
-        
+
         int numDuplicateIds = duplicateIds.size();
         log.debug("There were " + numDuplicateIds + " ids found which are duplicates, meaning that multiple UIComponents share that same id");
-        for(int i = 0; i < numDuplicateIds; i++) {
+        for (int i = 0; i < numDuplicateIds; i++) {
             String id = (String) duplicateIds.get(i);
             ArrayList duplicateComps = (ArrayList) duplicateIds2comps.get(id);
-            StringBuffer sb = new StringBuffer(512); 
+            StringBuffer sb = new StringBuffer(512);
             sb.append("Duplicate id: ");
             sb.append(id);
             sb.append(".  Number of UIComponents sharing that id: ");
             sb.append(Integer.toString(duplicateComps.size()));
             sb.append('.');
-            for(int c = 0; c < duplicateComps.size(); c++) {
+            for (int c = 0; c < duplicateComps.size(); c++) {
                 UIComponent comp = (UIComponent) duplicateComps.get(c);
                 sb.append("\n  clientId: ");
                 sb.append(comp.getClientId(context));
-                if(comp.isTransient())
+                if (comp.isTransient())
                     sb.append(".  TRANSIENT");
                 sb.append(".  component: ");
                 sb.append(comp.toString());

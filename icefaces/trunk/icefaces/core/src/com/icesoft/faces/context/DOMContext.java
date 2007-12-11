@@ -108,7 +108,7 @@ public class DOMContext implements java.io.Serializable {
         }
         Node cursorParent = domWriter.getCursorParent();
         Document doc = domWriter.getDocument();
-        Map domContexts = domWriter.getDomResponseContexts();
+        Map domContexts = domWriter.getDomContexts();
 
         DOMContext context = null;
         String clientId =
@@ -185,7 +185,7 @@ public class DOMContext implements java.io.Serializable {
             domWriter = createTemporaryDOMResponseWriter(responseWriter, facesContext);
         }
         Document doc = domWriter.getDocument();
-        Map domContexts = domWriter.getDomResponseContexts();
+        Map domContexts = domWriter.getDomContexts();
 
         DOMContext context = null;
         String clientId =

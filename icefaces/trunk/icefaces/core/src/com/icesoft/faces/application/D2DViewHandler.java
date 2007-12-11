@@ -35,7 +35,6 @@ package com.icesoft.faces.application;
 
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
-import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
@@ -66,8 +65,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -97,9 +94,6 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.openAjaxHub";
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
-    // Key for storing ICEfaces auxillary data in the session
-    public static final String DOM_CONTEXT_TABLE =
-            "com.icesoft.faces.sessionAuxiliaryData";
     public static final String CHAR_ENCODING = "UTF-8";
     public static final String HTML_CONTENT_TYPE =
             "text/html;charset=" + CHAR_ENCODING;
@@ -140,9 +134,9 @@ public class D2DViewHandler extends ViewHandler {
             throws IOException, FacesException {
         initializeParameters(context);
 
-        if (SeamUtilities.isSpringEnvironment())  {
+        if (SeamUtilities.isSpringEnvironment()) {
             context = BridgeFacesContext.unwrap(context);
-            if (context instanceof BridgeFacesContext)  {
+            if (context instanceof BridgeFacesContext) {
                 ((BridgeFacesContext) context).setCurrentInstance();
             }
         }
@@ -187,20 +181,14 @@ public class D2DViewHandler extends ViewHandler {
         UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
 
-        Map contextServletTable =
-                getContextServletTable(context);
         if (null == viewId) {
             root.setViewId("default");
             context.setViewRoot(root);
-            contextServletTable
-                    .put(DOMResponseWriter.RESPONSE_VIEWROOT, root);
             Locale locale = calculateLocale(context);
             root.setLocale(locale);
             return root;
         }
-
         root.setViewId(viewId);
-        contextServletTable.put(DOMResponseWriter.RESPONSE_VIEWROOT, root);
 
         return root;
     }
@@ -217,21 +205,14 @@ public class D2DViewHandler extends ViewHandler {
      */
     public UIViewRoot restoreView(FacesContext context, String viewId) {
         this.initializeParameters(context);
-
-
         if (delegateView(context)) {
             return delegate.restoreView(context, viewId);
         }
-
-        UIViewRoot currentRoot = context.getViewRoot();
         //MyFaces expects path to match current view
         ExternalContext externalContext = context.getExternalContext();
-
         if (externalContext instanceof ServletExternalContext) {
-
             ServletExternalContext servletExternalContext =
                     (ServletExternalContext) externalContext;
-
             servletExternalContext.setRequestServletPath(viewId);
 
             if (null != externalContext.getRequestPathInfo()) {
@@ -253,76 +234,14 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
+        UIViewRoot currentRoot = context.getViewRoot();
         if (null != currentRoot &&
                 mungeViewId(viewId)
                         .equals(mungeViewId(
                                 currentRoot.getViewId()))) {
             return currentRoot;
-        }
-
-        Map contextServletTable =
-                getContextServletTable(context);
-        Map domResponseContexts;
-        if (contextServletTable
-                .containsKey(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE)) {
-            domResponseContexts = (Map) contextServletTable
-                    .get(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE);
         } else {
-            //todo: figure out what these maps are doing and re-implement functionality
-            domResponseContexts = Collections.synchronizedMap(new HashMap());
-            contextServletTable.put(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE,
-                    domResponseContexts);
-        }
-
-        UIViewRoot root = null;
-
-        UIViewRoot cachedRoot = (UIViewRoot) contextServletTable
-                .get(DOMResponseWriter.RESPONSE_VIEWROOT);
-
-        if ((null != cachedRoot) && (null != viewId) &&
-                (mungeViewId(viewId)
-                        .equals(mungeViewId(cachedRoot.getViewId())))) {
-            //Caching rarely takes place, but correct viewId is necessary
-            root = cachedRoot;
-        }
-
-        if (SeamUtilities.isSpring1Environment())  {
-            return cachedRoot;
-        }
-
-        return root;
-    }
-
-
-    private static Map getContextServletTables(FacesContext context) {
-        Map sessionMap = context.getExternalContext().getSessionMap();
-        String viewNumber = "-";
-        if (context instanceof BridgeFacesContext) {
-            viewNumber = ((BridgeFacesContext) context).getViewNumber();
-        }
-
-        String treeKey = viewNumber + "/" + DOM_CONTEXT_TABLE;
-        Map contextTable;
-        if (sessionMap.containsKey(treeKey)) {
-            contextTable = (Map) sessionMap.get(treeKey);
-        } else {
-            contextTable = new HashMap();
-            sessionMap.put(treeKey, contextTable);
-        }
-
-        return contextTable;
-    }
-
-    public static Map getContextServletTable(FacesContext context) {
-        Map domContextTables = getContextServletTables(context);
-        String servletRequestPath =
-                getServletRequestPath(context);
-        if (domContextTables.containsKey(servletRequestPath)) {
-            return (Map) domContextTables.get(servletRequestPath);
-        } else {
-            Map domContextTable = Collections.synchronizedMap(new HashMap());
-            domContextTables.put(servletRequestPath, domContextTable);
-            return domContextTable;
+            return null;
         }
     }
 
@@ -442,7 +361,6 @@ public class D2DViewHandler extends ViewHandler {
                     root.getChildCount() + " children");
         }
 
-        clearSession(context);
         ResponseWriter responseWriter = context.createAndSetResponseWriter();
 
         boolean reloadView = false;
@@ -694,14 +612,6 @@ public class D2DViewHandler extends ViewHandler {
             sb.append(close);
             sb.append('\n');
         }
-    }
-
-    protected void clearSession(FacesContext context) {
-        Map contextServletTable =
-                getContextServletTable(context);
-        contextServletTable.remove(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE);
-        contextServletTable.remove(DOMResponseWriter.RESPONSE_VIEWROOT);
-        contextServletTable.remove(DOMResponseWriter.RESPONSE_DOM);
     }
 
     public void writeState(FacesContext context) throws IOException {

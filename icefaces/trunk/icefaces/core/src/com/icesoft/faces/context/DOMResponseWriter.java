@@ -74,24 +74,12 @@ import java.util.Map;
  */
 public class DOMResponseWriter extends ResponseWriter {
     private static final Log log = LogFactory.getLog(DOMResponseWriter.class);
-    public static final String STREAM_WRITING = "com.icesoft.faces.streamWriting";
-    //DOM and current node being written to for this ResponseWriter
     public static final String DOCTYPE_PUBLIC = "com.icesoft.doctype.public";
     public static final String DOCTYPE_SYSTEM = "com.icesoft.doctype.system";
     public static final String DOCTYPE_ROOT = "com.icesoft.doctype.root";
     public static final String DOCTYPE_OUTPUT = "com.icesoft.doctype.output";
-    public static final String DOCTYPE_PRETTY_PRINTING =
-            "com.icesoft.doctype.prettyprinting";
+    public static final String DOCTYPE_PRETTY_PRINTING = "com.icesoft.doctype.prettyprinting";
 
-    public static final String RESPONSE_DOM = "com.icesoft.domResponseDocument";
-    public static final String RESPONSE_DOM_ID =
-            "com.icesoft.domResponseDocumentID";
-    public static final String OLD_DOM = "com.icesoft.oldDocument";
-    public static final String RESPONSE_VIEWROOT =
-            "com.icesoft.domResponseViewRoot";
-    //Hashtable of DOMContext objects associated with each component
-    public static final String RESPONSE_CONTEXTS_TABLE =
-            "com.icesoft.domResponseContexts";
     private static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
@@ -104,15 +92,14 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private static boolean isStreamWritingFlag = false;
-    private Document document;
-    private Node cursor;
-    private Map domResponseContexts;
-    private Map contextServletTable;
-    private BridgeFacesContext context;
-    private DOMSerializer serializer;
-    private Configuration configuration;
-    private Collection jsCode;
-    private Collection cssCode;
+    private final Map domContexts = new HashMap();
+    private final Document document = DOCUMENT_BUILDER.newDocument();
+    private final BridgeFacesContext context;
+    private final DOMSerializer serializer;
+    private final Configuration configuration;
+    private final Collection jsCode;
+    private final Collection cssCode;
+    private Node cursor = document;
 
     public DOMResponseWriter(FacesContext context, DOMSerializer serializer, Configuration configuration, Collection jsCode, Collection cssCode) {
         this.serializer = serializer;
@@ -126,11 +113,12 @@ public class DOMResponseWriter extends ResponseWriter {
                     "ICEfaces requires the PersistentFacesServlet. " +
                             "Please check your web.xml servlet mappings");
         }
-        this.initialize();
+        boolean streamWritingParam = configuration.getAttributeAsBoolean("streamWriting", false);
+        isStreamWritingFlag = Beans.isDesignTime() || streamWritingParam;
     }
 
-    Map getDomResponseContexts() {
-        return domResponseContexts;
+    Map getDomContexts() {
+        return domContexts;
     }
 
     public Node getCursorParent() {
@@ -150,31 +138,6 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void startDocument() throws IOException {
-    }
-
-    private void initialize() {
-        contextServletTable = D2DViewHandler.getContextServletTable(context);
-        // contexts for each component
-        if (contextServletTable
-                .containsKey(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE)) {
-            domResponseContexts = (Map) contextServletTable
-                    .get(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE);
-        }
-        if (null == domResponseContexts) {
-            domResponseContexts = new HashMap();
-            contextServletTable.put(DOMResponseWriter.RESPONSE_CONTEXTS_TABLE,
-                    domResponseContexts);
-        }
-        // viewroot, application
-        contextServletTable.put(DOMResponseWriter.RESPONSE_VIEWROOT,
-                context.getViewRoot());
-        cursor = document = DOCUMENT_BUILDER.newDocument();
-        contextServletTable.put(DOMResponseWriter.RESPONSE_DOM, document);
-        boolean streamWritingParam = "true".equalsIgnoreCase(
-                context.getExternalContext().getInitParameter(
-                        DOMResponseWriter.STREAM_WRITING));
-        DOMResponseWriter.isStreamWritingFlag =
-                Beans.isDesignTime() || streamWritingParam;
     }
 
     public void endDocument() throws IOException {
