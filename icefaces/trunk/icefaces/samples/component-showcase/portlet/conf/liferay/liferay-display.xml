@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 4.0.0//EN" "http://www.liferay.com/dtd/liferay-display_4_0_0.dtd">
+
+<display>
+  	<category name="ICEfaces">
+        <portlet id="components_textEntry" />
+        <portlet id="components_selection" />
+        <portlet id="components_buttonsAndLinks" />
+        <portlet id="components_calendar" />
+        <portlet id="components_tree" />
+        <portlet id="components_autocomplete" />
+        <portlet id="components_dragAndDrop" />
+        <portlet id="components_menubar" />
+        <portlet id="components_effects" />
+        <portlet id="components_connectionStatus" />
+        <portlet id="components_table_table" />
+        <portlet id="components_table_columns" />
+        <portlet id="components_table_sortableHeader" />
+        <portlet id="components_table_dataPaging" />
+        <portlet id="components_table_expandableTable" />
+        <portlet id="components_table_tableRowSelection" />
+        <portlet id="components_progressBar" />
+        <portlet id="components_fileUpload" />
+        <portlet id="components_charts_charts" />
+        <portlet id="components_charts_dynamicChart" />
+        <portlet id="components_charts_combiningCharts" />
+    </category>
+</display>
