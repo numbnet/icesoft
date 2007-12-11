@@ -116,9 +116,9 @@ public class GMap extends UICommand{
     
     public void encodeBegin(FacesContext context) throws IOException {
     	super.encodeBegin(context);
-    	//assume it page refresh
+    	//assume it page refresh/redirect
     	if(context.getExternalContext().getRequestParameterMap() != null &&
-    	        context.getExternalContext().getRequestParameterMap().size() == 0) {
+    	        context.getExternalContext().getRequestParameterMap().size() <= 1) {
     	    initilized = false;
     	}
     	if ((isLocateAddress() || !initilized) && (getAddress() != null 
