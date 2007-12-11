@@ -135,10 +135,15 @@ implements
         if (updatedViews == null) {
             throw new IllegalArgumentException("updatedViews is null");
         }
-        updatedViewsManager.push(updatedViews);
-        Handler _handler = requestManager.pull(updatedViews.getICEfacesID());
-        if (_handler != null) {
-            _handler.handle();
+        synchronized (sessionMap) {
+            if (isValid(updatedViews.getICEfacesID())) {
+                updatedViewsManager.push(updatedViews);
+                Handler _handler =
+                    requestManager.pull(updatedViews.getICEfacesID());
+                if (_handler != null) {
+                    _handler.handle();
+                }
+            }
         }
     }
 
