@@ -1,0 +1,34 @@
+
+This ICEfaces demonstration application is designed for Spring 2.1 with Spring-webflow 1.0.4 and 1.0.5. 
+This project is meant to fit into the Spring build structure in the following, version dependent, 
+locations. 
+
+Spring 1.0.4
+{Spring-installation-directory}/spring-webflow-1.0.4/projects 
+
+
+Spring 1.0.5
+{Spring-installation-directory}/spring-webflow-1.0.5/projects/spring-webflow-samples 
+
+
+If installing to the Spring 1.0.5 (or subsequent version), the project.properties 
+file must reflect the additional directory level, as follows: 
+
+# The location of the common build system
+common.build.dir=${basedir}/../../common-build
+
+
+The project directory does not contain a version of ICEfaces. Obtain the current ICEfaces 
+libs from http://www.icefaces.org/main/downloads/os-downloads.iface 
+
+They are placed in the icefaces-swf-sellitem-jsf/lib/global directory. 
+
+Build the project using one of several build targets in the rich Spring ecosystem. With 
+a few properties defined, you can deploy and manage a Tomcat installation from the 
+ant build script. These properties are undefined in the checked in project, but 
+
+ant clean war 
+
+should deposit the project war file in the {project-directory}/target/artifacts/war directory. 
+
+This target is suitable for Apache Tomcat 6.0.14. 
