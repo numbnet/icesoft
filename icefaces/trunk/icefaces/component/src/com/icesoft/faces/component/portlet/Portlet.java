@@ -5,6 +5,8 @@ import com.icesoft.jasper.Constants;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -24,25 +26,28 @@ public class Portlet extends UINamingContainer {
     private String style;
     private String styleClass;
 
-    public Portlet() {
-        FacesContext facesCtxt = getFacesContext();
-
-        if( facesCtxt == null ){
-            if (log.isDebugEnabled()) {
-                log.debug("could not access FacesContext");
+    public void encodeBegin(FacesContext context) throws IOException {
+        if (namespace == null) {
+            FacesContext facesCtxt = getFacesContext();
+    
+            if( facesCtxt == null ){
+                if (log.isDebugEnabled()) {
+                    log.debug("could not access FacesContext");
+                }
+                return;
             }
-            return;
+            ExternalContext extCtxt = facesCtxt.getExternalContext();
+            Map requestMap = extCtxt.getRequestMap();
+            namespace = (String) requestMap.get(Constants.NAMESPACE_KEY);
+            if( namespace != null ){
+    
+                //ICE-2250 If there is a valid namespace, we need to set it so that the
+                //superclass instance is properly set otherwise the getClientId
+                //logic is incorrect since it does not use getId().
+                super.setId(namespace);
+            }
         }
-        ExternalContext extCtxt = facesCtxt.getExternalContext();
-        Map requestMap = extCtxt.getRequestMap();
-        namespace = (String) requestMap.get(Constants.NAMESPACE_KEY);
-        if( namespace != null ){
-
-            //ICE-2250 If there is a valid namespace, we need to set it so that the
-            //superclass instance is properly set otherwise the getClientId
-            //logic is incorrect since it does not use getId().
-            super.setId(namespace);
-        }
+        super.encodeBegin(context);
     }
 
     public String getId() {

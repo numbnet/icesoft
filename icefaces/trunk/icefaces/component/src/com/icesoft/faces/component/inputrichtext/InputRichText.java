@@ -51,17 +51,6 @@ public class InputRichText extends UIInput {
     private String height;
     private URI baseURI;
 
-    public InputRichText() {
-        ResourceRegistry registry =
-                (ResourceRegistry) FacesContext.getCurrentInstance();
-        if (registry != null) {
-            baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
-            registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
-        } else {
-            //LOG fckeditor's library has not loaded, component will not work as desired
-        }
-    }
-
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -81,6 +70,20 @@ public class InputRichText extends UIInput {
         super.decode(facesContext);
     }
 
+    public void encodeBegin(FacesContext context) throws IOException {
+        if (baseURI == null) {
+            System.out.println("URI CREATED JUST ONE");
+            ResourceRegistry registry =
+                (ResourceRegistry) FacesContext.getCurrentInstance();
+            if (registry != null) {
+                baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
+                registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
+            } else {
+                //LOG fckeditor's library has not loaded, component will not work as desired
+            }
+        }
+        super.encodeBegin(context);
+    }
     /**
      * <p>Set the value of the <code>language</code> property.</p>
      */
