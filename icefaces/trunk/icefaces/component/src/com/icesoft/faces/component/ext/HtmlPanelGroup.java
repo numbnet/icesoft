@@ -633,6 +633,30 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         this.menuPopup = menuPopup;
     }
 
+    /**
+     * The menuContext attribute is a write-only ValueBinding for receiving
+     *  contextual information on which component was clicked on, and
+     *  summoned the menuPopup.
+     * As such, this method serves no purpose, beyond facilitating IDE's code
+     *  auto-completion, and shouldn't actually be called by any Java code.
+     *  
+     * @return Nothing
+     */
+    public Object getMenuContext() {
+        return null;
+    }
+    
+    /**
+     * The menuContext attribute is a write-only ValueBinding for receiving
+     *  contextual information on which component was clicked on, and
+     *  summoned the menuPopup.
+     * As such, this method serves no purpose, beyond facilitating IDE's code
+     *  auto-completion, and shouldn't actually be called by any Java code.
+     *  
+     * @param param Not used
+     */
+    public void setMenuContext(Object param) {
+    }
 
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>

@@ -39,12 +39,9 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.Debug;
-import com.icesoft.faces.application.D2DViewHandler;
 import org.w3c.dom.Element;
 
-import javax.faces.FactoryFinder;
 import javax.faces.application.Application;
-import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.NamingContainer;
@@ -234,26 +231,6 @@ public abstract class DomBasicRenderer extends Renderer {
 //        if(converter instanceof javax.faces.convert.DateTimeConverter)
 //            System.out.println("DomBasicRenderer.converterGetAsString()  timeZone: " + ((javax.faces.convert.DateTimeConverter)converter).getTimeZone());
         return ret;
-    }
-    
-    public static void renderMenuPopupHandler(
-        FacesContext facesContext, UIComponent comp, Element elem)
-    {
-        String id = (String) comp.getAttributes().get("menuPopup");
-        if(id == null)
-            return;
-        UIComponent menuPopup = D2DViewHandler.findComponent(id, comp);
-        if(menuPopup == null) {
-            throw new IllegalArgumentException(
-                "Could not find the MenuPopup UIComponent referenced by " +
-                "attribute menuPopup=\""+id+"\" in UIComponent of type: " +
-                comp.getClass().getName() + " with id: \""+comp.getId()+"\"");
-        }
-        String clientId = menuPopup.getClientId(facesContext);
-        String handler =
-            "Ice.Menu.contextMenuPopup(event, '"+clientId+"_sub');return false;";
-        elem.setAttribute(HTML.ONCONTEXTMENU_ATTR, handler);
-        // oncontextmenu="Ice.Menu.contextMenuPopup(event, 'iceform:icepnltabset:menuP_sub');return false;"
     }
     
     /**

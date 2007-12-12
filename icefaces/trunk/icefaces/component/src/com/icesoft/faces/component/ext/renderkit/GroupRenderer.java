@@ -37,6 +37,7 @@ import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
+import com.icesoft.faces.component.menupopup.MenuPopupHelper;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.DragDrop;
@@ -143,7 +144,7 @@ public class GroupRenderer
 
 
             CurrentStyle.apply(facesContext, uiComponent, null, extraStyle);
-            renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
+            MenuPopupHelper.renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
             domContext.streamWrite(facesContext, uiComponent,
                                    domContext.getRootNode(), rootSpan);
             domContext.stepInto(uiComponent);
@@ -239,6 +240,7 @@ public class GroupRenderer
         if (log.isTraceEnabled()) {
             log.trace("GroupRenderer:decode");
         }
+        MenuPopupHelper.decodeMenuContext(context, component);
         if (component instanceof HtmlPanelGroup) {
             HtmlPanelGroup panel = (HtmlPanelGroup) component;
             String dndType = getDndType(component);

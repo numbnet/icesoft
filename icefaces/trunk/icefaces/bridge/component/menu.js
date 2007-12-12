@@ -34,6 +34,7 @@
 
 Ice.Menu = Class.create();
 Ice.Menu = {
+    menuContext:null,
     currentMenu:null,
     openMenus:new Array(0),
     printOpenMenus:function() {
@@ -67,6 +68,7 @@ Ice.Menu = {
         }
         Ice.Menu.openMenus = new Array();
         Ice.Menu.currentMenu = null;
+        Ice.Menu.menuContext = null;
     },
     getPosition: function(element,positionProperty) {
 	    var position = 0;
@@ -134,6 +136,11 @@ Ice.Menu = {
             }
             
             Ice.Menu.showPopup(posx, posy, popupMenu);
+        }
+    },
+    setMenuContext: function(mnuCtx) {
+        if(Ice.Menu.menuContext == null) {
+            Ice.Menu.menuContext = mnuCtx;
         }
     },
     hideOrphanedMenusNotRelatedTo: function(hoverMenu) {

@@ -46,3 +46,23 @@
 		</editor-class>
 	</property-extension>
 </property>
+<property>
+	<description>
+        Specify a write-only ValueBinding, on which will be set
+        a com.icesoft.faces.component.menupopup.MenuContextEvent
+        object, providing contextual information on which
+        component the menuPopup was summoned by/for.
+    </description>
+	<property-name>menuContext</property-name>
+	<property-class>java.lang.Object</property-class>
+	<property-extension>
+		<category>DATA</category>
+		<editor-class>
+			&valueBindingEditor;
+		</editor-class>
+		<named-value>
+			<name>ignoreIsBound</name>
+			<value>true</value>
+		</named-value>
+	</property-extension>
+</property>
