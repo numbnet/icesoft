@@ -47,13 +47,12 @@
                                    styleClass="formBorderHighlight"
                                    columnClasses="contentLayoutGridColumn">
                         <h3>
-                            <ice:outputText id="columnsTitle"
-                                            value="#{msgs['component.columns.title']}"/>
+                            <ice:outputText value="#{msgs['component.columns.title']}"/>
                         </h3>
                         <br/>
-                        <ice:outputText id="columnsText" value="The ice:columns component will dynamically 
-                            generate columns of ASCII characters based on the number of columns
-                             entered."/>
+                        <ice:outputText value="#{msgs['component.columns.desc1']}"/>
+                        <br/>
+                        <ice:outputText value="#{msgs['component.columns.desc2']}"/>
                         <br/>
                         <ice:panelGroup id="columnsInputGroup">
                             <ice:outputLabel id="columnsOutputLabel"
@@ -76,16 +75,21 @@
                                        value="#{columnsBean.rowDataModel}"
                                        columnClasses="columnsColumn"
                                        rows="#{columnsBean.rows}">
+                            <f:attribute name="menuContext" value="#{columnsBean.menuContext}"/>
 
                             <ice:columns id="columnDataModel" value="#{columnsBean.columnDataModel}"
                                          var="column">
+                                <f:attribute name="menuContext" value="#{columnsBean.menuContext}"/>
                                 <f:facet name="header">
                                     <ice:panelGroup >
                                         <ice:outputText id="rowData" value="#{columnsBean.columnDataModel.rowData}"/>
                                     </ice:panelGroup>
                                 </f:facet>
                                 <!-- display the table cell values-->
-                                <ice:panelGroup style="text-align: center; white-space: nowrap;" >
+                                <ice:panelGroup style="text-align: center; white-space: nowrap;"
+                                                menuPopup=":iceform:icepnltabset:0:cellPopup"
+                                                menuContext="#{columnsBean.menuContext}"
+                                                styleClass="#{columnsBean.cellStyleClass}">
                                     <ice:outputText id="cellValue"
                                             value="#{columnsBean.cellValue}"/>
 
@@ -95,8 +99,12 @@
 
                         </ice:dataTable>
                     </ice:panelGroup>
-
+                    
                 </ice:panelGrid>
+                <ice:menuPopup id="cellPopup">
+                    <ice:menuItem value="Select Cell"
+                                  actionListener="#{columnsBean.cellSelection}"/>
+                </ice:menuPopup>
             </ice:panelTab>
 
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">

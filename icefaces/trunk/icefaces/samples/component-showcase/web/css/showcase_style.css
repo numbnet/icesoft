@@ -1089,10 +1089,7 @@ em {
 .columnsColumn, .columnsNestedColumn, .columnsNestedBoldColumn {
     white-space: nowrap;
     color: #000000;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding: 0px;
     text-align: center;
 }
 
@@ -1253,4 +1250,10 @@ em {
 
 .inputRichTextDemoCol1{
     width:700px;
+}
+
+.columnsSelectedCell {
+    background-color:#2A6CC2;
+    font-weight: bold;
+    padding:0px;
 }

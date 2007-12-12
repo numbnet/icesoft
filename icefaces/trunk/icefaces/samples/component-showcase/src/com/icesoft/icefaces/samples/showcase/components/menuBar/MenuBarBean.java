@@ -33,6 +33,10 @@
 
 package com.icesoft.icefaces.samples.showcase.components.menuBar;
 
+import com.icesoft.faces.component.menupopup.MenuContextEvent;
+import com.icesoft.faces.context.effects.EffectBuilder;
+import com.icesoft.faces.context.effects.Effect;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -53,6 +57,10 @@ public class MenuBarBean {
 
     // orientation of the menubar ("horizontal" or "vertical")
     private String orientation = "horizontal";
+    
+    private Boolean lastContextWasText;
+    
+    private Effect effect;
 
     /**
      * Get the param value for the menu item which fired the event.
@@ -102,8 +110,17 @@ public class MenuBarBean {
         String myParam = (String) params.get("myParam");
         if (myParam != null && myParam.length() > 0) {
             setParam(myParam);
+            
+            // User context-clicked on certain menu items
+            if( lastContextWasText != null &&
+                (myParam.equals("Highlight") ||
+                 myParam.equals("Pulsate")) )
+            {
+                effect = EffectBuilder.build(myParam);
+                effect.setDuration(2.5f);
+            }
         } else {
-            setParam("not defined");
+            setParam("Not Defined");
         }
 
     }
@@ -125,4 +142,33 @@ public class MenuBarBean {
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
+    
+    public void setTextContext(MenuContextEvent e) {
+        if(e.isTerminal())
+            lastContextWasText = Boolean.TRUE;
+    }
+    
+    public void setImageContext(MenuContextEvent e) {
+        if(e.isTerminal())
+            lastContextWasText = Boolean.FALSE;
+    }
+    
+    public Effect getTextEffect() {
+        if(lastContextWasText != null &&
+           lastContextWasText.booleanValue())
+        {
+            return effect;
+        }
+        return null;
+    }
+    
+    public Effect getImageEffect() {
+        if(lastContextWasText != null &&
+           !lastContextWasText.booleanValue())
+        {
+            return effect;
+        }
+        return null;
+    }
+    
 }

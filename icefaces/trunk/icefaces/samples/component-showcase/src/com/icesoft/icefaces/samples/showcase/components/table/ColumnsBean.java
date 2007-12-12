@@ -33,9 +33,13 @@
 
 package com.icesoft.icefaces.samples.showcase.components.table;
 
+import com.icesoft.faces.component.menupopup.MenuContextEvent;
+
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.faces.component.UIData;
 import java.util.ArrayList;
 
 /**
@@ -65,6 +69,9 @@ public class ColumnsBean {
     private String table[][];
     
     private static final int ROW_CONSTANT = 13;
+    
+    private int lastSelectedRow = -1;
+    private int lastSelectedColumn = -1;
     
     public ColumnsBean() {
 
@@ -141,7 +148,23 @@ public class ColumnsBean {
         return "-";
     }
     
-    
+    public String getCellStyleClass() {
+        if (rowDataModel.isRowAvailable() &&
+            columnDataModel.isRowAvailable()) {
+
+            // get the index of the row and column that this method is being
+            // called for
+            int row = rowDataModel.getRowIndex();
+            int col = columnDataModel.getRowIndex();
+            
+            if(lastSelectedRow >= 0 && lastSelectedColumn >= 0 &&
+               lastSelectedRow == row && lastSelectedColumn == col)
+            {
+                return "columnsSelectedCell";
+            }
+        }
+        return null;
+    }
 
     private void  calculateRows(){
         // calculate the number of columns.
@@ -190,12 +213,34 @@ public class ColumnsBean {
         
         rowDataModel = new ListDataModel(rowList);
         columnDataModel = new ListDataModel(columnList);
-        
+        lastSelectedRow = -1;
+        lastSelectedColumn = -1;
     }
 
    private String getChar(int i){
         i += 65;
         return String.valueOf((char)i);
+    }
+    
+    public void setMenuContext(MenuContextEvent e) {
+        if(e.isTerminal()) {
+            // <dataTable>
+            //   <columns>
+            //     <panelGroup>  Terminal
+            MenuContextEvent columnsEvent = e.getOuter();
+            int column = ((UIData) columnsEvent.getComponent()).getRowIndex();
+            MenuContextEvent dataTableEvent = columnsEvent.getOuter();
+            int row = ((UIData) dataTableEvent.getComponent()).getRowIndex();
+            if(row >= 0 && column >= 0) {
+                lastSelectedRow = row;
+                lastSelectedColumn = column;
+            }
+        }
+    }
+    
+    public void cellSelection(ActionEvent e) {
+        // Just needed to give an actionListener to the MenuItem
+        //  so that it would do a submit to the server.
     }
 
     /**

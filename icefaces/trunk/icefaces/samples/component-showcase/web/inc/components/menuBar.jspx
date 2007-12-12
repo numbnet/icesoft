@@ -174,7 +174,9 @@ are shown but could easily be made to invoke application logic.
                 style="height: 175px ">
     
     <ice:panelGroup id="clickingSection"
-                    menuPopup="menuPopupText">
+                    effect="#{menuBar.textEffect}"
+                    menuPopup="menuPopupText"
+                    menuContext="#{menuBar.textContext}">
     <h3>
         <ice:outputText
                 value="#{msgs['component.menuPopup.instructions']}"/>
@@ -185,37 +187,34 @@ are shown but could easily be made to invoke application logic.
     </h4>
     </ice:panelGroup>
     <ice:panelGroup id="clickingImageSection"
-                    menuPopup="menuPopupImage">	    
-    <ice:graphicImage value="images/panelSeries/Ice Berg.jpg"
-                      alt="Ice Berg"
-                      width="100"
-                      height="75"/>
+                    effect="#{menuBar.imageEffect}"
+                    menuPopup="menuPopupImage"
+                    menuContext="#{menuBar.imageContext}">
+        <ice:graphicImage value="images/panelSeries/Ice Berg.jpg"
+                          alt="Ice Berg"
+                          width="100"
+                          height="75"/>
     </ice:panelGroup>
     <br/>
     <ice:menuPopup id="menuPopupImage">
         <!-- File menu -->
-        <ice:menuItem value="File" id="file" >
-            <ice:menuItem actionListener="#{menuBar.primaryListener}"
-                          id="open" value="Open" icon="images/menu/open.gif">
-                <f:param name="myParam" value="Open"/>
-            </ice:menuItem>
-            <ice:menuItem id="close" value="Close"
+        <ice:menuItem id="img" value="Image">
+            <ice:menuItem id="pulsate" value="Pulsate"
                           actionListener="#{menuBar.primaryListener}">
-                <f:param name="myParam" value="Close"/>
+                <f:param name="myParam" value="Pulsate"/>
             </ice:menuItem>
         </ice:menuItem>
     </ice:menuPopup>
     <ice:menuPopup id="menuPopupText">
         <!-- File menu -->
-        <ice:menuItem value="File" id="file" >
-            <ice:menuItem id="recent" value="Recent"
+        <ice:menuItem id="text" value="Text" >
+            <ice:menuItem id="doc" value="Document"
                           icon="images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
-                <f:param name="myParam" value="Recent"/>
-                <ice:menuItem id="file1"
-                              value="File 1"
+                <f:param name="myParam" value="Document"/>
+                <ice:menuItem id="highlight" value="Highlight"
                               actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="File 1"/>
+                    <f:param name="myParam" value="Highlight"/>
                 </ice:menuItem>
             </ice:menuItem>
         </ice:menuItem>
