@@ -356,6 +356,7 @@
 	      <copy todir="${lib.dir}">
 	           <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />
+				 <exclude name="icefaces-ahs.jar"/>
 	             <include name="backport-util-concurrent.jar" />	
 			     <include name="commons-fileupload.jar"/> 
 	             <include name="commons-logging*.jar"/>
