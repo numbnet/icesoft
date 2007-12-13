@@ -6,13 +6,7 @@
 <faces-config>
 
    <application>
-      <locale-config>
-         <default-locale>en</default-locale>
-         <supported-locale>fr</supported-locale>
-         <supported-locale>en</supported-locale>
-         <supported-locale>en_US</supported-locale>
-      </locale-config>
-      <message-bundle>messages</message-bundle>
+      <message-bundle>com.icesoft.icefaces.samples.showcase.resources.messages</message-bundle>
       <view-handler>com.icesoft.faces.facelets.D2DSeamFaceletViewHandler</view-handler>
    </application>
 
