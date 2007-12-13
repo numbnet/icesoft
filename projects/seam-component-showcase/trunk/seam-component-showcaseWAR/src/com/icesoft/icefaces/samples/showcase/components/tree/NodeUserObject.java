@@ -85,7 +85,7 @@ public class NodeUserObject extends IceUserObject {
         }
         ResourceBundle messages = ResourceBundle.getBundle(
                 "com.icesoft.icefaces.samples.showcase.resources.messages",
-                locale);
+                locale,Thread.currentThread().getContextClassLoader());
 
         // assign labels
         try {
