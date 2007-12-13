@@ -64,7 +64,6 @@ public class InputRichText extends UIInput {
         String clientId = getClientId(facesContext);
         if (map.containsKey(clientId)) {
             String newValue = map.get(clientId).toString().replace('\n', ' ');
-            System.out.println(newValue);
             setSubmittedValue(newValue);
         }
         super.decode(facesContext);
@@ -72,7 +71,6 @@ public class InputRichText extends UIInput {
 
     public void encodeBegin(FacesContext context) throws IOException {
         if (baseURI == null) {
-            System.out.println("URI CREATED JUST ONE");
             ResourceRegistry registry =
                 (ResourceRegistry) FacesContext.getCurrentInstance();
             if (registry != null) {
