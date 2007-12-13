@@ -205,6 +205,7 @@ public class SelectInputDateRenderer
                 if (log.isTraceEnabled()) {
                     log.trace("Render as popup");
                 }
+                selectInputDate.setStyle("min-width:172px;" + selectInputDate.getStyle()); // ICE-2492
                 Element dateText = domContext.createElement(HTML.INPUT_ELEM);
 //System.out.println("value: " + selectInputDate.getValue());
                 
