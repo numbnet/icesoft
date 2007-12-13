@@ -12,16 +12,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.WindowState;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentRequest implements RenderRequest {
     private static final Collection PersistentRequestConstants = Arrays.asList(new String[]{
@@ -61,8 +52,6 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
         scheme = request.getScheme();
         serverName = request.getServerName();
         serverPort = request.getServerPort();
-        locale = request.getLocale();
-        locales = Collections.list(request.getLocales());
         secure = request.isSecure();
         contextPath = request.getContextPath();
 

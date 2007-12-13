@@ -33,13 +33,12 @@
 
 package com.icesoft.faces.webapp.http.servlet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.CommonEnvironmentRequest;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.jasper.Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -148,8 +147,6 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         scheme = initialRequest.getScheme();
         serverName = initialRequest.getServerName();
         serverPort = initialRequest.getServerPort();
-        locale = initialRequest.getLocale();
-        locales = Collections.list(initialRequest.getLocales());
         secure = initialRequest.isSecure();
 
         //Copy servlet specific data
@@ -161,14 +158,14 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         requestURI = initialRequest.getRequestURI();
         try {
             requestURL = initialRequest.getRequestURL();
-        } catch (NullPointerException e)  {
+        } catch (NullPointerException e) {
             //TODO remove this catch block when GlassFish bug is addressed
             if (log.isErrorEnabled()) {
                 log.error("Null Protocol Scheme in request", e);
             }
             HttpServletRequest req = initialRequest;
-            requestURL = new StringBuffer( "http://" + req.getServerName() 
-                    + ":" + req.getServerPort() + req.getRequestURI() );
+            requestURL = new StringBuffer("http://" + req.getServerName()
+                    + ":" + req.getServerPort() + req.getRequestURI());
         }
         servletPath = initialRequest.getServletPath();
         servletSession = initialRequest.getSession();
@@ -193,11 +190,11 @@ public abstract class ServletEnvironmentRequest extends CommonEnvironmentRequest
         }
     }
 
-    public void setPathInfo(String pathInfo)  {
+    public void setPathInfo(String pathInfo) {
         this.pathInfo = pathInfo;
     }
 
-    public void setParameters(HttpServletRequest request)  {
+    public void setParameters(HttpServletRequest request) {
         parameters = new HashMap();
         Enumeration parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {

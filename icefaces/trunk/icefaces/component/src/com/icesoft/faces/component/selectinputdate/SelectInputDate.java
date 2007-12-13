@@ -36,23 +36,16 @@ package com.icesoft.faces.component.selectinputdate;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.context.BridgeFacesContext;
 
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.faces.convert.Converter;
 import javax.faces.convert.DateTimeConverter;
+import javax.faces.el.ValueBinding;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * SelectInputDate is a JSF component class that represents an ICEfaces input
@@ -161,7 +154,7 @@ public class SelectInputDate
     private final String DEFAULT_CLOSEPOPUP = "cal_off.gif";
 
     public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
-    
+
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
      */
@@ -216,29 +209,29 @@ public class SelectInputDate
         if (date != null) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             String ret = resolveDateTimeConverter(facesContext).getAsString(
-                facesContext, this, date);
+                    facesContext, this, date);
             return ret;
         } else {
             return "";
         }
     }
-    
+
     public String getTextToRender() {
         Object submittedValue = getSubmittedValue();
-        if(submittedValue != null) {
-            if(submittedValue instanceof Date)
-                return formatDate( (Date) submittedValue );
+        if (submittedValue != null) {
+            if (submittedValue instanceof Date)
+                return formatDate((Date) submittedValue);
             else {
                 // If the submittedValue had passed validation, then it
                 //  would already be null and value would be a Date,
                 //  so we're dealing with bogus text that we're outputting
                 //  so the user can fix it
-                return submittedValue.toString(); 
+                return submittedValue.toString();
             }
         }
-        return formatDate( (Date) getValue() );
+        return formatDate((Date) getValue());
     }
-    
+
     /**
      * To properly function, selectInputDate needs to use the same timezone
      * in the inputText field as well as the calendar, which is accomplished
@@ -246,44 +239,41 @@ public class SelectInputDate
      * the required Converter behaviours, as we as gives access to its
      * TimeZone object. If developers require a custom Converter, then they
      * must subclass javax.faces.convert.DateTimeConverter.
-     * 
+     *
      * @return DateTimeConverter
      */
     public DateTimeConverter resolveDateTimeConverter(FacesContext context) {
         DateTimeConverter converter = null;
         Converter compConverter = getConverter();
-        if(compConverter instanceof DateTimeConverter) {
+        if (compConverter instanceof DateTimeConverter) {
             converter = (DateTimeConverter) compConverter;
-        }
-        else {
+        } else {
             Converter appConverter = context.getApplication().createConverter(
-                java.util.Date.class);
-            if(appConverter instanceof DateTimeConverter) {
+                    java.util.Date.class);
+            if (appConverter instanceof DateTimeConverter) {
                 converter = (DateTimeConverter) appConverter;
-            }
-            else {
+            } else {
                 converter = new DateTimeConverter();
             }
         }
-        
+
         // For backwards compatibility, if they specify the popupDateFormat
         //  attribute, then that takes precedence over the DateTimeConverter's
         //  original pattern or other settings relating to its DateFormat
         String pattern = getSpecifiedPopupDateFormat();
-        if(pattern != null && pattern.trim().length() > 0)
+        if (pattern != null && pattern.trim().length() > 0)
             converter.setPattern(pattern);
-        
+
         return converter;
     }
-    
+
     public TimeZone resolveTimeZone(FacesContext context) {
         DateTimeConverter converter = resolveDateTimeConverter(context);
         return converter.getTimeZone();
     }
-    
+
     public Locale resolveLocale(FacesContext context) {
-        DateTimeConverter converter = resolveDateTimeConverter(context);
-        return converter.getLocale();
+        return context.getViewRoot().getLocale();
     }
 
     /**
@@ -373,8 +363,8 @@ public class SelectInputDate
      *         used.
      */
     public String getMonthYearRowClass() {
-        return Util.getQualifiedStyleClass(this, 
-                CSS_DEFAULT.DEFAULT_YEARMONTHHEADER_CLASS, 
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_YEARMONTHHEADER_CLASS,
                 isDisabled());
     }
 
@@ -388,17 +378,17 @@ public class SelectInputDate
      */
     public String getWeekRowClass() {
         return Util.getQualifiedStyleClass(this,
-                        CSS_DEFAULT.DEFAULT_WEEKHEADER_CLASS, 
-                        isDisabled());
+                CSS_DEFAULT.DEFAULT_WEEKHEADER_CLASS,
+                isDisabled());
     }
 
     /**
      * @return the style class name used for the input text of the calendar.
      */
     public String getCalendarInputClass() {
-        return Util.getQualifiedStyleClass(this, 
-                                CSS_DEFAULT.DEFAULT_CALENDARINPUT_CLASS, 
-                                isDisabled());
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_CALENDARINPUT_CLASS,
+                isDisabled());
     }
 
     /**
@@ -409,9 +399,9 @@ public class SelectInputDate
      *         cells
      */
     public String getDayCellClass() {
-        return Util.getQualifiedStyleClass(this, 
-                                CSS_DEFAULT.DEFAULT_DAYCELL_CLASS, 
-                                isDisabled()); 
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_DAYCELL_CLASS,
+                isDisabled());
     }
 
     /**
@@ -463,10 +453,10 @@ public class SelectInputDate
      * @return styleClass
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                                    styleClass,
-                                    CSS_DEFAULT.DEFAULT_CALENDAR, 
-                                    "styleClass", isDisabled());
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.DEFAULT_CALENDAR,
+                "styleClass", isDisabled());
     }
 
     /**
@@ -475,9 +465,9 @@ public class SelectInputDate
      * @return style class name used for the current day cell
      */
     public String getCurrentDayCellClass() {
-        return Util.getQualifiedStyleClass(this, 
-                                CSS_DEFAULT.DEFAULT_CURRENTDAYCELL_CLASS, 
-                                isDisabled());
+        return Util.getQualifiedStyleClass(this,
+                CSS_DEFAULT.DEFAULT_CURRENTDAYCELL_CLASS,
+                isDisabled());
     }
 
 
@@ -586,7 +576,7 @@ public class SelectInputDate
      */
     public String getPopupDateFormat() {
         String popupDateFormat = getSpecifiedPopupDateFormat();
-        if(popupDateFormat == null)
+        if (popupDateFormat == null)
             popupDateFormat = DEFAULT_POPUP_DATE_FORMAT;
         return popupDateFormat;
     }
@@ -594,7 +584,7 @@ public class SelectInputDate
     /**
      * If the popupDateFormat was specified, then return that, but not any
      * default values.
-     * 
+     *
      * @return popupDateFormat
      */
     protected String getSpecifiedPopupDateFormat() {
@@ -602,15 +592,15 @@ public class SelectInputDate
             return _popupDateFormat;
         }
         ValueBinding vb = getValueBinding("popupDateFormat");
-        if (vb != null ) {
+        if (vb != null) {
             return (String) vb.getValue(getFacesContext());
         }
         return null;
     }
-    
+
     /* (non-Javadoc)
-     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
-     */
+    * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
+    */
     public Object saveState(FacesContext context) {
         Object values[] = new Object[10];
         values[0] = super.saveState(context);
@@ -692,6 +682,7 @@ public class SelectInputDate
     }
 
     private String highlightClass;
+
     /**
      * <p>Set the value of the <code>highlightClass</code> property.</p>
      *
@@ -704,8 +695,8 @@ public class SelectInputDate
     /**
      * <p>Return the value of the <code>highlightClass</code> property.</p>
      *
-     * @return String highlightClass, if never set returns a blank string not 
-     * null
+     * @return String highlightClass, if never set returns a blank string not
+     *         null
      */
     public String getHighlightClass() {
         if (highlightClass != null) {
@@ -714,20 +705,21 @@ public class SelectInputDate
         ValueBinding vb = getValueBinding("highlightClass");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
     }
-    
+
     public void requestFocus() {
-    	if (isRenderAsPopup()) {
-        ((BridgeFacesContext) FacesContext.getCurrentInstance())
-                .setFocusId("null");
-        JavascriptContext.focus(FacesContext.getCurrentInstance(),
-                                this.getClientId(
-                                        FacesContext.getCurrentInstance())+ CALENDAR_INPUTTEXT);
-    	} else {
-    		//log: focus can only be set in popup mode
-    	}
+        if (isRenderAsPopup()) {
+            ((BridgeFacesContext) FacesContext.getCurrentInstance())
+                    .setFocusId("null");
+            JavascriptContext.focus(FacesContext.getCurrentInstance(),
+                    this.getClientId(
+                            FacesContext.getCurrentInstance()) + CALENDAR_INPUTTEXT);
+        } else {
+            //log: focus can only be set in popup mode
+        }
     }
-    
+
     private String highlightUnit;
+
     /**
      * <p>Set the value of the <code>highlightUnit</code> property.</p>
      *
@@ -740,8 +732,8 @@ public class SelectInputDate
     /**
      * <p>Return the value of the <code>highlightUnit</code> property.</p>
      *
-     * @return String highlightUnit, if never set returns a blank string not 
-     * null
+     * @return String highlightUnit, if never set returns a blank string not
+     *         null
      */
     public String getHighlightUnit() {
         if (highlightUnit != null) {
@@ -749,9 +741,10 @@ public class SelectInputDate
         }
         ValueBinding vb = getValueBinding("highlightUnit");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
-    }  
-    
+    }
+
     private String highlightValue;
+
     /**
      * <p>Set the value of the <code>highlightValue</code> property.</p>
      *
@@ -764,8 +757,8 @@ public class SelectInputDate
     /**
      * <p>Return the value of the <code>highlightValue</code> property.</p>
      *
-     * @return String highlightValue. if never set returns blank a string not 
-     * null
+     * @return String highlightValue. if never set returns blank a string not
+     *         null
      */
     public String getHighlightValue() {
         if (highlightValue != null) {
@@ -773,13 +766,14 @@ public class SelectInputDate
         }
         ValueBinding vb = getValueBinding("highlightValue");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
-    }     
-    
-    private Map hightlightRules = new HashMap(); 
+    }
+
+    private Map hightlightRules = new HashMap();
     private Map unitMap = new UnitMap();
+
     private void buildHighlightMap() {
         validateHighlight();
-        resetHighlightClasses(Calendar.YEAR); 
+        resetHighlightClasses(Calendar.YEAR);
     }
 
     private boolean validateHighlight() {
@@ -787,7 +781,7 @@ public class SelectInputDate
         String highlightClassArray[] = getHighlightClass().split(":");
         String highlightUnitArray[] = getHighlightUnit().split(":");
         String highlightValueArray[] = getHighlightValue().split(":");
-        if ((highlightClassArray.length  < 1 ) ||
+        if ((highlightClassArray.length < 1) ||
                 highlightClassArray[0].equals("") ||
                 highlightUnitArray[0].equals("") ||
                 highlightValueArray[0].equals("")) {
@@ -801,18 +795,18 @@ public class SelectInputDate
                     "need to be used together and should have corresponding values.\n" +
                     "Each entity can be separated using the : colon, e.g. \n" +
                     "highlightClass=\"weekend: newyear\" \n" +
-                    "highlightUnit=\"DAY_OF_WEEK: DAY_OF_YEAR\" \n"+
+                    "highlightUnit=\"DAY_OF_WEEK: DAY_OF_YEAR\" \n" +
                     "highlightValue=\"1, 7: 1\" "
-                    );
+            );
             return false;
         }
-        
-        for(int i = 0; i < highlightUnitArray.length; i++) {
+
+        for (int i = 0; i < highlightUnitArray.length; i++) {
             try {
                 int option = Integer.parseInt(highlightUnitArray[i].trim());
-                if (option <1 || option > 8) {
-                    System.out.println("[SelectInputDate:highlightUnit] \""+ highlightUnitArray[i].trim() +"\" " +
-                        "s not a valid unit value. Valid values are between 1 to 8");
+                if (option < 1 || option > 8) {
+                    System.out.println("[SelectInputDate:highlightUnit] \"" + highlightUnitArray[i].trim() + "\" " +
+                            "s not a valid unit value. Valid values are between 1 to 8");
                     return false;
                 }
             } catch (NumberFormatException exception) {
@@ -820,7 +814,7 @@ public class SelectInputDate
                     highlightUnitArray[i] = String.valueOf(unitMap.get(
                             highlightUnitArray[i].trim()));
                 } else {
-                    System.out.println("[SelectInputDate:highlightUnit] \""+ highlightUnitArray[i] +"\" is " +
+                    System.out.println("[SelectInputDate:highlightUnit] \"" + highlightUnitArray[i] + "\" is " +
                             "not a valid unit value, String representation " +
                             "of unit must match with java.util.Calendar contants (e.g.)" +
                             "\nYEAR, MONTH, WEEK_OF_YEAR, WEEK_OF_MONTH, DATE, DAY_OF_YEAR, " +
@@ -829,12 +823,12 @@ public class SelectInputDate
                 }
             }
             String[] value = highlightValueArray[i].replaceAll(" ", "").trim().split(",");
-            for (int j=0; j <value.length; j++ ) {
-                hightlightRules.put(highlightUnitArray[i].trim() + "$"+ value[j] , highlightClassArray[i]);
+            for (int j = 0; j < value.length; j++) {
+                hightlightRules.put(highlightUnitArray[i].trim() + "$" + value[j], highlightClassArray[i]);
             }
         }
 
-        
+
         return true;
     }
 
@@ -845,28 +839,28 @@ public class SelectInputDate
     void setHightlightRules(Map hightlightRules) {
         this.hightlightRules = hightlightRules;
     }
-    
+
     private String highlightYearClass = "";
-    private String highlightMonthClass ="";
-    private String highlightWeekClass =""; 
-    private String highlightDayClass ="";   
-    
+    private String highlightMonthClass = "";
+    private String highlightWeekClass = "";
+    private String highlightDayClass = "";
+
     String getHighlightDayCellClass() {
         StringBuffer sb = new StringBuffer(64);
-        if(highlightYearClass != null && highlightYearClass.length() > 0)
+        if (highlightYearClass != null && highlightYearClass.length() > 0)
             sb.append(highlightYearClass);
-        if(highlightMonthClass != null && highlightMonthClass.length() > 0) {
-            if(sb.length() > 0)
+        if (highlightMonthClass != null && highlightMonthClass.length() > 0) {
+            if (sb.length() > 0)
                 sb.append(' ');
             sb.append(highlightMonthClass);
         }
-        if(highlightWeekClass != null && highlightWeekClass.length() > 0) {
-            if(sb.length() > 0)
+        if (highlightWeekClass != null && highlightWeekClass.length() > 0) {
+            if (sb.length() > 0)
                 sb.append(' ');
             sb.append(highlightWeekClass);
         }
-        if(highlightDayClass != null && highlightDayClass.length() > 0) {
-            if(sb.length() > 0)
+        if (highlightDayClass != null && highlightDayClass.length() > 0) {
+            if (sb.length() > 0)
                 sb.append(' ');
             sb.append(highlightDayClass);
         }
@@ -895,7 +889,7 @@ public class SelectInputDate
 
     void addHighlightWeekClass(String highlightWeekClass) {
         if (this.highlightWeekClass.indexOf(highlightWeekClass) == -1) {
-            if(this.highlightWeekClass == null || this.highlightWeekClass.length() == 0)
+            if (this.highlightWeekClass == null || this.highlightWeekClass.length() == 0)
                 this.highlightWeekClass = highlightWeekClass;
             else
                 this.highlightWeekClass = this.highlightWeekClass + " " + highlightWeekClass;
@@ -904,20 +898,20 @@ public class SelectInputDate
 
     void addHighlightDayClass(String highlightDayClass) {
         if (this.highlightDayClass.indexOf(highlightDayClass) == -1) {
-            if(this.highlightDayClass == null || this.highlightDayClass.length() == 0)
+            if (this.highlightDayClass == null || this.highlightDayClass.length() == 0)
                 this.highlightDayClass = highlightDayClass;
             else
                 this.highlightDayClass = this.highlightDayClass + " " + highlightDayClass;
         }
     }
 
-    void resetHighlightClasses(int level)  {
+    void resetHighlightClasses(int level) {
         if (level <= Calendar.MONTH) {
             this.highlightMonthClass = "";
             this.highlightYearClass = "";
             this.highlightDayClass = "";
         }
-        this.highlightDayClass = ""; 
+        this.highlightDayClass = "";
         this.highlightWeekClass = "";
     }
 

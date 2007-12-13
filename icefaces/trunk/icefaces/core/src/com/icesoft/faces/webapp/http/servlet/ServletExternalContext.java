@@ -26,6 +26,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     private HttpServletRequest initialRequest;
     private HttpServletResponse response;
     private Dispatcher dispatcher;
+    private List locales;
 
     public ServletExternalContext(String viewIdentifier, final Object req, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor sessionMonitor) {
         super(viewIdentifier, commandQueue, configuration);
@@ -106,6 +108,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             }
         }
         requestAttributes = new ServletRequestAttributes(request);
+        locales = Collections.list(request.getLocales());
         authenticationVerifier = createAuthenticationVerifier(request);
         dispatcher = CannotDispatchOnXMLHTTPRequest;
         this.response = response;
@@ -122,6 +125,10 @@ public class ServletExternalContext extends BridgeExternalContext {
 
             public AuthenticationVerifier authenticationVerifier() {
                 return authenticationVerifier;
+            }
+
+            public Enumeration getLocales() {
+                return Collections.enumeration(locales);
             }
         };
         Map previousRequestMap = requestMap;
@@ -302,9 +309,9 @@ public class ServletExternalContext extends BridgeExternalContext {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
 
-            if (Log.isTraceEnabled()) {
-                Log.trace("request.isUserInRole(role) is "+role);
-            }
+                    if (Log.isTraceEnabled()) {
+                        Log.trace("request.isUserInRole(role) is " + role);
+                    }
 
                     return request.isUserInRole(role);
                 }

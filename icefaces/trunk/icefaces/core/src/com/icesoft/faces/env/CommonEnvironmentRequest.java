@@ -36,7 +36,6 @@ package com.icesoft.faces.env;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -55,10 +54,8 @@ public abstract class CommonEnvironmentRequest {
     protected String scheme;
     protected String serverName;
     protected int serverPort;
-    protected Locale locale;
     protected boolean secure;
     protected String contextPath;
-    protected List locales;
     protected Map attributes;
     protected Map parameters;
 
@@ -140,12 +137,11 @@ public abstract class CommonEnvironmentRequest {
     }
 
     public Locale getLocale() {
-        return locale;
+        Enumeration locales = getLocales();
+        return locales.hasMoreElements() ? (Locale) locales.nextElement() : Locale.getDefault();
     }
 
-    public Enumeration getLocales() {
-        return Collections.enumeration(locales);
-    }
+    public abstract Enumeration getLocales();
 
     public boolean isSecure() {
         return secure;

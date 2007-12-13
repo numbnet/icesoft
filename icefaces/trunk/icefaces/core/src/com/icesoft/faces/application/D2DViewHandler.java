@@ -44,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.NamingContainer;
@@ -167,7 +168,7 @@ public class D2DViewHandler extends ViewHandler {
      * @param viewId  ViewId identifying the root
      * @return A new viewRoot
      */
-    public UIViewRoot createView(FacesContext context, String viewId) {
+    public UIViewRoot createView(final FacesContext context, String viewId) {
         initializeParameters(context);
 
         if (delegateView(context)) {
@@ -178,17 +179,14 @@ public class D2DViewHandler extends ViewHandler {
         if (SeamUtilities.isSeamEnvironment()) {
             ((BridgeExternalContext) context.getExternalContext()).removeSeamLifecycleShortcut();
         }
-        UIViewRoot root = new UIViewRoot();
+        UIViewRoot root = new UIViewRoot() {
+            public void setLocale(Locale locale) {
+                super.setLocale(calculateLocale(context));
+            }
+        };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
-
-        if (null == viewId) {
-            root.setViewId("default");
-            context.setViewRoot(root);
-            Locale locale = calculateLocale(context);
-            root.setLocale(locale);
-            return root;
-        }
-        root.setViewId(viewId);
+        root.setLocale(calculateLocale(context));
+        root.setViewId(null == viewId ? "default" : viewId);
 
         return root;
     }
@@ -621,33 +619,29 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public Locale calculateLocale(FacesContext context) {
-        Iterator locales = context.getExternalContext().getRequestLocales();
-
-        while (locales.hasNext()) {
-            Locale locale = (Locale) locales.next();
-            Iterator supportedLocales = context.getApplication()
-                    .getSupportedLocales();
-
+        Application application = context.getApplication();
+        Iterator acceptedLocales = context.getExternalContext().getRequestLocales();
+        while (acceptedLocales.hasNext()) {
+            Locale acceptedLocale = (Locale) acceptedLocales.next();
+            Iterator supportedLocales = application.getSupportedLocales();
             while (supportedLocales.hasNext()) {
                 Locale supportedLocale = (Locale) supportedLocales.next();
-                if (locale.getLanguage()
-                        .equals(supportedLocale.getLanguage())) {
-
-                    if ((null == supportedLocale.getCountry()) ||
-                            ("".equals(supportedLocale.getCountry()))) {
-                        return supportedLocale;
-                    }
-
-                    if (locale.equals(supportedLocale)) {
-                        return supportedLocale;
-                    }
-
+                if (acceptedLocale.equals(supportedLocale)) {
+                    return supportedLocale;
+                }
+            }
+            supportedLocales = application.getSupportedLocales();
+            while (supportedLocales.hasNext()) {
+                Locale supportedLocale = (Locale) supportedLocales.next();
+                if (acceptedLocale.getLanguage().equals(supportedLocale.getLanguage()) &&
+                        supportedLocale.getCountry().length() == 0) {
+                    return supportedLocale;
                 }
             }
         }
-
-        Locale defaultLocale = context.getApplication().getDefaultLocale();
-        return (null == defaultLocale) ? Locale.getDefault() : defaultLocale;
+        // no match is found.
+        Locale defaultLocale = application.getDefaultLocale();
+        return defaultLocale == null ? Locale.getDefault() : defaultLocale;
     }
 
     public String calculateRenderKitId(FacesContext context) {

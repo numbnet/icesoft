@@ -11,14 +11,7 @@ import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 
 import javax.faces.FacesException;
-import javax.portlet.PortletConfig;
-import javax.portlet.PortletContext;
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletSession;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.WindowState;
+import javax.portlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +23,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -62,6 +56,7 @@ public class PortletExternalContext extends BridgeExternalContext {
     private Dispatcher dispatcher;
     private RequestAttributes requestAttributes;
     private Configuration configuration;
+    private List locales;
 
     public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig) {
         super(viewIdentifier, commandQueue, configuration);
@@ -144,6 +139,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
         if (persistSeamKey) setSeamLifecycleShortcut();
 
+        locales = Collections.list(request.getLocales());
         allowMode = new PortletRequestAllowMode(request);
         requestAttributes = new PortletRequestAttributes(request);
         authenticationVerifier = new AuthenticationVerifier() {
@@ -169,6 +165,10 @@ public class PortletExternalContext extends BridgeExternalContext {
 
             public RequestAttributes requestAttributes() {
                 return requestAttributes;
+            }
+
+            public Enumeration getLocales() {
+                return Collections.enumeration(locales);
             }
         };
         Map previousRequestMap = requestMap;
