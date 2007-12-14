@@ -48,7 +48,7 @@ public class SelectionTagsBean {
      */
     private static final SelectItem[] DRINK_ITEMS = new SelectItem[]{
             new SelectItem("Coke"),
-            new SelectItem("Fresca"),
+            new SelectItem("Pepsi"),
             new SelectItem("Sprite"),
     };
     private static final SelectItem[] LANGUAGE_ITEMS = new SelectItem[]{
