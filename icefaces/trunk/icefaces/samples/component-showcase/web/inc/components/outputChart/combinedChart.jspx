@@ -42,13 +42,8 @@
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-            <ice:panelGrid id="combinedChartRootTable"
-                           styleClass="componentLayoutRootTable" columns="1">
-
-                <ice:panelGrid id="combinedChartTopGrid" columns="1"
-                               styleClass="formBorderHighlight"
-                               style="width:100%;"
-                               columnClasses="contentLayoutGridColumn">
+                <ice:panelGroup id="combinedChartTopGrid"
+                               styleClass="formBorderHighlight">
                     <h3>
                         <ice:outputText id="combinedChartTitle"
                                         value="#{msgs['component.combinedChart.title']}"/>
@@ -58,15 +53,16 @@
                             value="#{msgs['component.combinedChart.desc1']}"/>
                     <ice:outputText effect="#{combinedChart.effectOutputText}"
                                     value="#{msgs['component.combinedChart.desc2']}#{combinedChart.clickedValue}"/>
-                </ice:panelGrid>
+                </ice:panelGroup>
 
-                <ice:panelGrid id="centerWrapperCombinedChart">
+                <ice:panelGroup id="centerWrapperCombinedChart">
+                    <center>
                     <ice:outputChart type="custom"
                                      renderOnSubmit="#{combinedChart.renderOnSubmit}"
                                      actionListener="#{combinedChart.action}"/>
-                </ice:panelGrid>
+                    </center>
+                </ice:panelGroup>
 
-            </ice:panelGrid>
 
         </ice:panelTab>
         <!--
@@ -85,6 +81,13 @@
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
             <iframe src="./sourcecodeStream.html?path=./inc/components/outputChart/combinedChart.jspx"
+                    class="includeIframe"
+                    width="100%"></iframe>
+        </ice:panelTab>
+
+
+        <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+            <iframe src="http://facestutorials.icefaces.org/tutorial/outputChart-tutorial.html"
                     class="includeIframe"
                     width="100%"></iframe>
         </ice:panelTab>

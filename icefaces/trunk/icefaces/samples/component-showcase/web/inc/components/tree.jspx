@@ -49,34 +49,27 @@ selects a node, the respective tree node name is displayed in an output field.
 -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid styleClass="componentLayoutRootTable" columns="1">
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-
-<ice:panelGroup styleClass="formBorderHighlight">
-
-    <h3>
-        <ice:outputText
-                value="#{msgs['components.tree.explanation']}"/>
-    </h3>
-    <ul>
-        <li>
+        <h3>
             <ice:outputText
-                    value="#{msgs['components.tree.explanation.point1']}"/>
-        </li>
+                    value="#{msgs['components.tree.explanation']}"/>
+        </h3>
+        <ul>
+            <li>
+                <ice:outputText
+                        value="#{msgs['components.tree.explanation.point1']}"/>
+            </li>
 
-        <li>
-            <ice:outputText
-                    value="#{msgs['components.tree.explanation.point3']}"/>
-        </li>
-    </ul>
-</ice:panelGroup>
+            <li>
+                <ice:outputText
+                        value="#{msgs['components.tree.explanation.point3']}"/>
+            </li>
+        </ul>
+    </ice:panelGroup>
 
-<!-- Layout the input fields and enable partial submits for them. -->
-<ice:panelGrid columns="2"
-               columnClasses="contentLayoutGridColumn"
-               cellpadding="5" style="width: 100%;">
-
-    <ice:panelGroup styleClass="treeContainer">
+    <ice:panelGroup styleClass="formBorderHighlight"
+                    style="float: left;width:350px;height:275px;overflow: scroll;" >
         <ice:tree id="tree"
                   value="#{treeExample.model}"
                   var="item"
@@ -115,17 +108,14 @@ selects a node, the respective tree node name is displayed in an output field.
     </ice:panelGroup>
 
     <!-- Show selected node title -->
-    <ice:panelGrid columns="1"
-                   styleClass="treeNodeControlButtonsBorder">
-        <ice:panelGroup>
-            <h3>
-                <ice:outputText
-                        style="font-weight: bold;"
-                        value="#{msgs['components.tree.selected']} "/>
-                <ice:outputText id="TreeSlctNode"
-                        value="#{treeExample.selectedNode}"/>
-            </h3>
-        </ice:panelGroup> 
+    <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
+        <h3>
+            <ice:outputText
+                    style="font-weight: bold;"
+                    value="#{msgs['components.tree.selected']} "/>
+            <ice:outputText id="TreeSlctNode"
+                    value="#{treeExample.selectedNode}"/>
+        </h3>
         <ice:selectOneMenu id="compTyp"
                 value="#{treeExample.componentToAdd}"
                 valueChangeListener="#{treeExample.componentTypeChanged}"
@@ -142,9 +132,8 @@ selects a node, the respective tree node name is displayed in an output field.
                     value="Delete"
                     disabled="#{treeExample.deleteDisabled}"/>
         </ice:panelGroup>
-    </ice:panelGrid>
-</ice:panelGrid>
-</ice:panelGrid>
+    </ice:panelGroup>
+
 </ice:panelTab>
 
 <!--
@@ -163,6 +152,12 @@ selects a node, the respective tree node name is displayed in an output field.
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe src="./sourcecodeStream.html?path=./inc/components/tree.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/tree-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

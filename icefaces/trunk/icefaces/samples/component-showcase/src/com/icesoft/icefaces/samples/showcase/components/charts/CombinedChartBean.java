@@ -156,7 +156,7 @@ public class CombinedChartBean {
 
             axisChart = new AxisChart(dataSeries, chartProperties,
                                       axisProperties,
-                                      legendProperties, 500, 500);
+                                      legendProperties, 350, 350);
 
         } catch (Exception e) {
             e.printStackTrace();

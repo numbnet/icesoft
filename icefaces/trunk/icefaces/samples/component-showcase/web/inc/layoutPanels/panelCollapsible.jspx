@@ -44,9 +44,6 @@
 
 <ice:panelTab id="demo" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid styleClass="componentLayoutRootTable"
-                columns="1" width="100%">
-
 <ice:panelGroup styleClass="formBorderHighlight">
     <h3>
         <ice:outputText
@@ -185,7 +182,6 @@
 </ice:panelCollapsible>
 </ice:panelGroup>
 
-</ice:panelGrid>
 
 </ice:panelTab>
 

@@ -49,8 +49,6 @@ clicks a selection or tabs out of a field.
 -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-    <ice:panelGrid columns="1" cellspacing="2"
-                   styleClass="componentLayoutRootTable">
 
         <!-- Description -->
         <ice:panelGroup styleClass="formBorderHighlight">
@@ -65,10 +63,9 @@ clicks a selection or tabs out of a field.
         </ice:panelGroup>
 
         <!-- selection tags -->
-        <ice:panelGroup styleClass="formBorderHighlight">
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left">
             <ice:panelGrid columns="2"
-                           columnClasses="selectionLabelColumn, selectionTagsColumn"
-                           styleClass="componentPropertySelection">
+                           columnClasses="selectionLabelColumn, selectionTagsColumn" >
                 <!-- Check box - new user -->
                 <ice:outputText styleClass="propertyLabel"
                                 value="#{msgs['component.selectionTags.newUser']}"/>
@@ -152,7 +149,7 @@ clicks a selection or tabs out of a field.
         </ice:panelGroup>
 
         <!-- displayed values -->
-        <ice:panelGroup styleClass="formBorderHighlight">
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left; width:300px;">
             <h3>
                 <ice:outputText
                         value="#{msgs['component.selectionTags.serverFeedback']}"/>
@@ -202,7 +199,8 @@ clicks a selection or tabs out of a field.
             </ice:panelGrid>
         </ice:panelGroup>
 
-    </ice:panelGrid>
+        <div class="clearer" />
+
 </ice:panelTab>
 <!--
   The bean is responsible for streaming html documentation to

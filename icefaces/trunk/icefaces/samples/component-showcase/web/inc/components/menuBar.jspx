@@ -49,9 +49,6 @@ are shown but could easily be made to invoke application logic.
 -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid
-        styleClass="componentLayoutRootTable"
-        columns="1">
 <!-- menubar -->
 <ice:panelGroup styleClass="formBorderHighlight"
                 style="height: 200px ">
@@ -237,7 +234,6 @@ are shown but could easily be made to invoke application logic.
     </ice:panelGrid>
 </ice:panelGroup>
 
-</ice:panelGrid>
 
 </ice:panelTab>
 
@@ -259,6 +255,13 @@ this placeholder
             src="./sourcecodeStream.html?path=./inc/components/menuBar.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/menuBar-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
+
 </ice:panelTabSet>
 
 </ice:form>

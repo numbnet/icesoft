@@ -46,125 +46,121 @@ to show how the selected panel can be dynamically changed.
   Controls to show/hide the table columns
 -->
 <ice:panelTab id="icePanelTab" label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid
-            styleClass="componentLayoutRootTable"
-            columns="1">
 
-        <ice:panelGroup styleClass="formBorderHighlight">
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-            <h3>
-                <ice:outputText
-                        value="#{msgs['components.panelStack.example.summary']}"/>
-            </h3>
+        <h3>
+            <ice:outputText
+                    value="#{msgs['components.panelStack.example.summary']}"/>
+        </h3>
 
-            <!-- Panel stack selection controls -->
-            <ice:selectOneRadio id="selectedPanel"
-                    value="#{panelStack.selectedPanel}"
-                    styleClass="selectOneMenu"
-                    valueChangeListener="#{panelStack.selectedPanelChanged}"
-                    partialSubmit="true">
-                <f:selectItem itemValue="fruit"
-                              itemLabel="#{msgs['contentDemo.fruit.title']}"/>
-                <f:selectItem itemValue="colour"
-                              itemLabel="#{msgs['contentDemo.colour.title']}"/>
-                <f:selectItem itemValue="mineral"
-                              itemLabel="#{msgs['contentDemo.mineral.title']}"/>
-            </ice:selectOneRadio>
-        </ice:panelGroup>
+        <!-- Panel stack selection controls -->
+        <ice:selectOneRadio id="selectedPanel"
+                value="#{panelStack.selectedPanel}"
+                styleClass="selectOneMenu"
+                valueChangeListener="#{panelStack.selectedPanelChanged}"
+                partialSubmit="true">
+            <f:selectItem itemValue="fruit"
+                          itemLabel="#{msgs['contentDemo.fruit.title']}"/>
+            <f:selectItem itemValue="colour"
+                          itemLabel="#{msgs['contentDemo.colour.title']}"/>
+            <f:selectItem itemValue="mineral"
+                          itemLabel="#{msgs['contentDemo.mineral.title']}"/>
+        </ice:selectOneRadio>
+    </ice:panelGroup>
 
-        <ice:panelGroup styleClass="formBorderHighlight">
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-            <!-- Panel Stack declaration - three panels, fruit, colour and minerals. -->
-            <ice:panelStack
-                    cellpadding="0"
-                    cellspacing="0"
-                    border="0"
-                    selectedPanel="#{panelStack.selectedPanel}"
-                    styleClass="">
-                <!-- Fruit Panel -->
-                <ice:panelGroup id="fruit" styleClass="panelGroupFruit">
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['contentDemo.fruit.title']}"/>
-                    </h3>
-                    <ice:selectOneRadio id="selectedFruit"
-                            value="#{panelStack.selectedFruit}"
-                            partialSubmit="true">
-                        <f:selectItem id="fruitTyp1"
-                                      itemValue="1"
-                                      itemLabel="#{msgs['contentDemo.fruit.type1']}"/>
-                        <f:selectItem id="fruitTyp2"
-                                      itemValue="2"
-                                      itemLabel="#{msgs['contentDemo.fruit.type2']}"/>
-                        <f:selectItem id="fruitTyp3"
-                                      itemValue="3"
-                                      itemLabel="#{msgs['contentDemo.fruit.type3']}"/>
-                        <f:selectItem id="fruitTyp4"
-                                      itemValue="4"
-                                      itemLabel="#{msgs['contentDemo.fruit.type4']}"/>
-                        <f:selectItem id="fruitTyp5"
-                                      itemValue="5"
-                                      itemLabel="#{msgs['contentDemo.fruit.type5']}"/>
-                    </ice:selectOneRadio>
-                    <br/>
-                </ice:panelGroup>
-                <!-- Colour Panel -->
-                <ice:panelGroup id="colour" styleClass="panelGroupColour">
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['contentDemo.colour.title']}"/>
-                    </h3>
-                    <ice:selectOneRadio id="selectedColour"
-                            value="#{panelStack.selectedColour}"
-                            partialSubmit="true">
-                        <f:selectItem id="colourtyp1"
-                                      itemValue="1"
-                                      itemLabel="#{msgs['contentDemo.colour.type1']}"/>
-                        <f:selectItem id="colourtyp2"
-                                      itemValue="2"
-                                      itemLabel="#{msgs['contentDemo.colour.type2']}"/>
-                        <f:selectItem id="colourtyp3"
-                                      itemValue="3"
-                                      itemLabel="#{msgs['contentDemo.colour.type3']}"/>
-                        <f:selectItem id="colourtyp4"
-                                      itemValue="4"
-                                      itemLabel="#{msgs['contentDemo.colour.type4']}"/>
-                        <f:selectItem id="colourtyp5"
-                                      itemValue="5"
-                                      itemLabel="#{msgs['contentDemo.colour.type5']}"/>
-                    </ice:selectOneRadio>
-                    <br/>
-                </ice:panelGroup>
-                <!-- Mineral Panel -->
-                <ice:panelGroup id="mineral" styleClass="panelGroupMineral">
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['contentDemo.mineral.title']}"/>
-                    </h3>
-                    <ice:selectOneRadio id="selectedMineral"
-                            value="#{panelStack.selectedMineral}"
-                            partialSubmit="true">
-                        <f:selectItem id="mineraltyp1"
-                                      itemValue="1"
-                                      itemLabel="#{msgs['contentDemo.mineral.type1']}"/>
-                        <f:selectItem id="mineraltyp2"
-                                      itemValue="2"
-                                      itemLabel="#{msgs['contentDemo.mineral.type2']}"/>
-                        <f:selectItem id="mineraltyp3"
-                                      itemValue="3"
-                                      itemLabel="#{msgs['contentDemo.mineral.type3']}"/>
-                        <f:selectItem id="mineraltyp4"
-                                      itemValue="4"
-                                      itemLabel="#{msgs['contentDemo.mineral.type4']}"/>
-                        <f:selectItem id="mineraltyp5"
-                                      itemValue="5"
-                                      itemLabel="#{msgs['contentDemo.mineral.type5']}"/>
-                    </ice:selectOneRadio>
-                    <br/>
-                </ice:panelGroup>
-            </ice:panelStack>
-        </ice:panelGroup>
-    </ice:panelGrid>
+        <!-- Panel Stack declaration - three panels, fruit, colour and minerals. -->
+        <ice:panelStack
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                selectedPanel="#{panelStack.selectedPanel}"
+                styleClass="">
+            <!-- Fruit Panel -->
+            <ice:panelGroup id="fruit" styleClass="panelGroupFruit">
+                <h3>
+                    <ice:outputText
+                            value="#{msgs['contentDemo.fruit.title']}"/>
+                </h3>
+                <ice:selectOneRadio id="selectedFruit"
+                        value="#{panelStack.selectedFruit}"
+                        partialSubmit="true">
+                    <f:selectItem id="fruitTyp1"
+                                  itemValue="1"
+                                  itemLabel="#{msgs['contentDemo.fruit.type1']}"/>
+                    <f:selectItem id="fruitTyp2"
+                                  itemValue="2"
+                                  itemLabel="#{msgs['contentDemo.fruit.type2']}"/>
+                    <f:selectItem id="fruitTyp3"
+                                  itemValue="3"
+                                  itemLabel="#{msgs['contentDemo.fruit.type3']}"/>
+                    <f:selectItem id="fruitTyp4"
+                                  itemValue="4"
+                                  itemLabel="#{msgs['contentDemo.fruit.type4']}"/>
+                    <f:selectItem id="fruitTyp5"
+                                  itemValue="5"
+                                  itemLabel="#{msgs['contentDemo.fruit.type5']}"/>
+                </ice:selectOneRadio>
+                <br/>
+            </ice:panelGroup>
+            <!-- Colour Panel -->
+            <ice:panelGroup id="colour" styleClass="panelGroupColour">
+                <h3>
+                    <ice:outputText
+                            value="#{msgs['contentDemo.colour.title']}"/>
+                </h3>
+                <ice:selectOneRadio id="selectedColour"
+                        value="#{panelStack.selectedColour}"
+                        partialSubmit="true">
+                    <f:selectItem id="colourtyp1"
+                                  itemValue="1"
+                                  itemLabel="#{msgs['contentDemo.colour.type1']}"/>
+                    <f:selectItem id="colourtyp2"
+                                  itemValue="2"
+                                  itemLabel="#{msgs['contentDemo.colour.type2']}"/>
+                    <f:selectItem id="colourtyp3"
+                                  itemValue="3"
+                                  itemLabel="#{msgs['contentDemo.colour.type3']}"/>
+                    <f:selectItem id="colourtyp4"
+                                  itemValue="4"
+                                  itemLabel="#{msgs['contentDemo.colour.type4']}"/>
+                    <f:selectItem id="colourtyp5"
+                                  itemValue="5"
+                                  itemLabel="#{msgs['contentDemo.colour.type5']}"/>
+                </ice:selectOneRadio>
+                <br/>
+            </ice:panelGroup>
+            <!-- Mineral Panel -->
+            <ice:panelGroup id="mineral" styleClass="panelGroupMineral">
+                <h3>
+                    <ice:outputText
+                            value="#{msgs['contentDemo.mineral.title']}"/>
+                </h3>
+                <ice:selectOneRadio id="selectedMineral"
+                        value="#{panelStack.selectedMineral}"
+                        partialSubmit="true">
+                    <f:selectItem id="mineraltyp1"
+                                  itemValue="1"
+                                  itemLabel="#{msgs['contentDemo.mineral.type1']}"/>
+                    <f:selectItem id="mineraltyp2"
+                                  itemValue="2"
+                                  itemLabel="#{msgs['contentDemo.mineral.type2']}"/>
+                    <f:selectItem id="mineraltyp3"
+                                  itemValue="3"
+                                  itemLabel="#{msgs['contentDemo.mineral.type3']}"/>
+                    <f:selectItem id="mineraltyp4"
+                                  itemValue="4"
+                                  itemLabel="#{msgs['contentDemo.mineral.type4']}"/>
+                    <f:selectItem id="mineraltyp5"
+                                  itemValue="5"
+                                  itemLabel="#{msgs['contentDemo.mineral.type5']}"/>
+                </ice:selectOneRadio>
+                <br/>
+            </ice:panelGroup>
+        </ice:panelStack>
+    </ice:panelGroup>
 </ice:panelTab>
 
 <!--
@@ -187,6 +183,11 @@ to show how the selected panel can be dynamically changed.
             width="100%"></iframe>
 </ice:panelTab>
 
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/stackingPanel-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
 
 </ice:panelTabSet>
 

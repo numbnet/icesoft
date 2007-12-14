@@ -80,10 +80,12 @@ public class PositionedPanelBean {
     }
 
     public List getPeople() {
+//        System.out.println(" Getting People ");
         return people;
     }
 
     public void setPeople(List people) {
+//        System.out.println(" Setting People ");
         this.people = people;
     }
 

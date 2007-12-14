@@ -48,84 +48,80 @@ The content of the list is filled by iterating over a variable.
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
 <!-- Cashier Example -->
-<ice:panelGrid
-        styleClass="componentLayoutRootTable"
-        columns="1">
 
     <ice:panelGroup styleClass="formBorderHighlight">
 
-        <!-- List Description -->
+    <!-- List Description -->
 
-        <h3>
-            <ice:outputText
-                    value="#{msgs['component.panelSeries.instructions']}"/>
-        </h3>
-        <h4>
-            <ice:outputText
-                    value="#{msgs['component.panelSeries.subInstructions']}"/>
-        </h4>
-
-
-     </ice:panelGroup>
-     <h3>
-        <ice:outputText value="#{msgs['component.panelSeries.itemList']}"/>
+    <h3>
+        <ice:outputText
+                value="#{msgs['component.panelSeries.instructions']}"/>
     </h3>
-     <ice:panelGrid styleClass="formBorderHighlight" width="100%">
-        <ice:panelSeries id="itemTable" value="#{cashier.itemTable}" var="item1">
-            <ice:panelGroup styleClass="seriesPanelItems" >
-                <ice:graphicImage id="itemImage"
-                                  width="100" height="100"
-                                  url="images/panelSeries/#{item1.name}.jpg"/>
-                <br />
-                <ice:panelGrid columns="2">
-                    <ice:outputText
-                            value="#{msgs['component.panelSeries.productLabel.name']}"
-                            styleClass="propertyLabel"/>
-                    <ice:outputText id="name" value="#{item1.name}"/>
+    <h4>
+        <ice:outputText
+                value="#{msgs['component.panelSeries.subInstructions']}"/>
+    </h4>
 
-                    <ice:outputText
-                            value="#{msgs['component.panelSeries.productLabel.unitPrice']}"
-                            styleClass="propertyLabel"/>
-                    <ice:outputText id="unitPrice" value="#{item1.unitPrice}">
-                        <f:convertNumber type="currency"/>
-                    </ice:outputText>
 
-                </ice:panelGrid>
+ </ice:panelGroup>
+ <h3>
+    <ice:outputText value="#{msgs['component.panelSeries.itemList']}"/>
+</h3>
+ <ice:panelGrid styleClass="formBorderHighlight" width="100%">
+    <ice:panelSeries id="itemTable" value="#{cashier.itemTable}" var="item1">
+        <ice:panelGroup styleClass="seriesPanelItems" >
+            <ice:graphicImage id="itemImage"
+                              width="100" height="100"
+                              url="images/panelSeries/#{item1.name}.jpg"/>
+            <br />
+            <ice:panelGrid columns="2">
+                <ice:outputText
+                        value="#{msgs['component.panelSeries.productLabel.name']}"
+                        styleClass="propertyLabel"/>
+                <ice:outputText id="name" value="#{item1.name}"/>
 
                 <ice:outputText
-                        value="#{msgs['component.panelSeries.productSelection.quantityLabel']}"
+                        value="#{msgs['component.panelSeries.productLabel.unitPrice']}"
                         styleClass="propertyLabel"/>
-
-                <ice:panelGrid columns="3">
-
-                    <div class="quantityLabel">
-                        <ice:outputText id="quantity" value="#{item1.quantity}"/>
-                    </div>
-
-                    <ice:commandButton id="buy"
-                    	    styleClass="pnlSrsDemoBtn"
-                            image="#{styleBean.imageDirectory}add.gif"
-                            style="height: 25px; width: 15px;"
-                            actionListener="#{item1.incQuan}"
-                            title="#{msgs['component.panelSeries.productSelection.buy']}#{item1.name}"/>
-
-                    <ice:commandButton id="return"
-                    	    styleClass="pnlSrsDemoBtn"                    
-                            image="#{styleBean.imageDirectory}remove.gif"
-                            style="height: 25px; width: 15px;"
-                            actionListener="#{item1.decQuan}"
-                            title="#{msgs['component.panelSeries.productSelection.return']}#{item1.name}"
-                            disabled="#{item1.quanMinusDisabled}"/>
-                </ice:panelGrid>
-                <ice:outputText id="subtotal"
-                                style="text-align:center;"
-                                value="#{item1.subtotal}">
+                <ice:outputText id="unitPrice" value="#{item1.unitPrice}">
                     <f:convertNumber type="currency"/>
                 </ice:outputText>
 
-            </ice:panelGroup>
-        </ice:panelSeries>
-    </ice:panelGrid>
+            </ice:panelGrid>
+
+            <ice:outputText
+                    value="#{msgs['component.panelSeries.productSelection.quantityLabel']}"
+                    styleClass="propertyLabel"/>
+
+            <ice:panelGrid columns="3">
+
+                <div class="quantityLabel">
+                    <ice:outputText id="quantity" value="#{item1.quantity}"/>
+                </div>
+
+                <ice:commandButton id="buy"
+                        styleClass="pnlSrsDemoBtn"
+                        image="#{styleBean.imageDirectory}add.gif"
+                        style="height: 25px; width: 15px;"
+                        actionListener="#{item1.incQuan}"
+                        title="#{msgs['component.panelSeries.productSelection.buy']}#{item1.name}"/>
+
+                <ice:commandButton id="return"
+                        styleClass="pnlSrsDemoBtn"
+                        image="#{styleBean.imageDirectory}remove.gif"
+                        style="height: 25px; width: 15px;"
+                        actionListener="#{item1.decQuan}"
+                        title="#{msgs['component.panelSeries.productSelection.return']}#{item1.name}"
+                        disabled="#{item1.quanMinusDisabled}"/>
+            </ice:panelGrid>
+            <ice:outputText id="subtotal"
+                            style="text-align:center;"
+                            value="#{item1.subtotal}">
+                <f:convertNumber type="currency"/>
+            </ice:outputText>
+
+        </ice:panelGroup>
+    </ice:panelSeries>
 
     <div style="clear: left" />
 
@@ -177,6 +173,12 @@ this placeholder
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe src="./sourcecodeStream.html?path=./inc/layoutPanels/panelSeries.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/seriesPanel-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

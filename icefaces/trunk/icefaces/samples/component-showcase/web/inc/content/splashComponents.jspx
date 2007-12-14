@@ -31,14 +31,7 @@
 ~
 -->
 
-<table
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ice="http://www.icesoft.com/icefaces/component"
-    styleClass="contentLayoutGridStyle" border="0">
-    <tr>
-        <td>
-    <br/>
+<div style="margin: 25px;margin-right:50px;">
     
     <p>The ICEfaces Component Suite provides a complete set of enhanced
         standard and custom JavaServer Faces (JSF) components. These
@@ -79,6 +72,4 @@
             the standard submit/response loop.<br/><br/>
         </li>
     </ul>
-    </td>
-    </tr>
-</table>
+</div>

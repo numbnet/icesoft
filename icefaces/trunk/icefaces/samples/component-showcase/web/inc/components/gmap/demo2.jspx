@@ -39,8 +39,8 @@
 <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid id="gmapDemo2"
-                   styleClass="componentLayoutRootTable" >
+    <ice:panelGroup id="gmapDemo2"
+                   styleClass="formBorderHighlight" >
         <ice:outputText  value="#{msgs['component.gmap.demo2.desc1']}"/>
         <ice:outputText  value="#{msgs['component.gmap.demo2.desc2']}"/>                            
         <ice:panelGroup id="pnlgrp1" >
@@ -51,7 +51,7 @@
             <ice:gMap id="address" address="#{gmap.geoCoderAddress}" 
                       locateAddress="#{gmap.locateAddress}"/>
         </ice:panelGroup>
-    </ice:panelGrid>
+    </ice:panelGroup>
 
 </ice:panelTab>
 <!--

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
-        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
 <!--
   ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -33,7 +31,8 @@
   ~ this file under either the MPL or the LGPL License."
   ~
   -->
-<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config >
     <application>
         <locale-config>
             <default-locale>en_US</default-locale>

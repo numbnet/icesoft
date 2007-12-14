@@ -46,25 +46,22 @@ Once the file is uploaded, information about the file is displayed.
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-                <ice:panelGrid
-                    styleClass="componentLayoutRootTable"
-                    columns="1">
-                    <ice:panelGroup styleClass="formBorderHighlight"
-                                    style="text-align:left">
-                        <ice:inputFile id="inputFileName"
-                                progressListener="#{inputFile.progress}"
-                                actionListener="#{inputFile.action}"
-                                file="#{inputFile.savedFile}"/>
-                        <ice:outputProgress id="pro"
-                                            value="#{inputFile.percent}"/>
-                        <ice:outputText id="fileName"
-                                value="File Name: #{inputFile.fileName}"/>
-                        <br/>
-                        <ice:outputText id="contentType"
-                                value="Content Type: #{inputFile.contentType}"/>
-                        <ice:messages/>
-                    </ice:panelGroup>
-                </ice:panelGrid>
+                <ice:panelGroup styleClass="formBorderHighlight"
+                                style="text-align:left">
+                    
+                    <ice:inputFile id="inputFileName"
+                            progressListener="#{inputFile.progress}"
+                            actionListener="#{inputFile.action}"
+                            file="#{inputFile.savedFile}"/>
+                    <ice:outputProgress id="pro"
+                                        value="#{inputFile.percent}"/>
+                    <ice:outputText id="fileName"
+                            value="File Name: #{inputFile.fileName}"/>
+                    <br/>
+                    <ice:outputText id="contentType"
+                            value="Content Type: #{inputFile.contentType}"/>
+                    <ice:messages/>
+                </ice:panelGroup>
 
             </ice:panelTab>
 
@@ -84,6 +81,11 @@ Once the file is uploaded, information about the file is displayed.
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
                 <iframe src="./sourcecodeStream.html?path=./inc/components/inputFile.jspx"
+                        class="includeIframe"
+                        width="100%"></iframe>
+            </ice:panelTab>
+            <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+                <iframe src="http://facestutorials.icefaces.org/tutorial/inputFile-tutorial.html"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>

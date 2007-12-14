@@ -1,5 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ice="http://www.icesoft.com/icefaces/component" >
@@ -7,9 +6,10 @@
     <f:loadBundle
         basename="com.icesoft.icefaces.samples.showcase.resources.messages"
         var="msgs" />
+
     <ice:outputDeclaration doctypeRoot="HTML"
-                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+        doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
     
     <head>
 
@@ -23,54 +23,32 @@
             header, left menu, and body components.  Follow the includes
             to see each individual components makeup.
         -->
-<table border="0" class="templateLayout" cellpadding="0" cellspacing="0" >
-    <tr>
-        <td valign="top" class="templateFooterGradient">
-            <div class="templateHeader">
-                <div class="templateHeaderTop">
-                    <ui:include src="./header.jspx" />
-                </div>
-                <div class="templateMain">
-                    <center>
-                        <div class="templateMainContent">
 
-<div class="templateConstraint">
+        <ui:include src="./header.jspx" />
 
-        <table border="0" cellpadding="0"
-               cellspacing="0" class="mainBorderLayout" width="100%">
-            <tr>
-                <td valign="top" width="150px">
-                    
-                    
-                    <ui:insert name="navigation">
-                        <ui:include src="./navigation.jspx" />
-                    </ui:insert>
-                </td>
-                <td valign="top">
-                    
-                    <ui:insert name="content">
-                        <ui:include src="./content-facelet.jspx" />
-                    </ui:insert>
-                </td>
-                <td></td>
-            </tr>
-            
-        </table>
-</div>
+        <div class="columnleft">
+             <ui:include src="./navigation.jspx" />
+        </div>
 
-                        </div>
-                    </center>
-                </div>
-            </div>
+        <div class="columnMiddle">
 
-        </td>
-    </tr>
-    <tr>
-        <td class="footerBackground">
-            <ui:include src="./footer.jspx" />
-        </td>
-    </tr>
- </table>
+            <!-- Demo Title -->
+            <div style="margin-top: 15px;" >
+                <h2><ice:outputText
+                    value="#{navigation.selectedPanel.menuContentTitle}"/></h2></div>
+
+            <ice:outputConnectionStatus styleClass="navConnectionStatus" />
+
+            <ui:insert name="content">
+                <ice:panelGroup styleClass="contentIncludePanelGroup">
+                    <ui:include src="#{navigation.selectedPanel.menuContentInclusionFile}"/>
+                </ice:panelGroup>
+            </ui:insert>
+
+        </div>
+
+        <!-- common footer layout markup -->
+        <ui:include src="./footer.jspx" />
 
         <!--
   PRELOAD IMAGES need for roleovers and layout in general, javascript is only

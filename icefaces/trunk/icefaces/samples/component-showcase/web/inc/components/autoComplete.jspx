@@ -48,123 +48,116 @@ USA Address information.
 -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-    <ice:panelGrid columns="1"
-                   styleClass="componentLayoutRootTable">
 
-        <!-- Description -->
-        <ice:panelGroup styleClass="formBorderHighlight">
+    <!-- Description -->
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-            <h3>
-                <ice:outputText
-                        value="#{msgs['component.autoComplete.instructions']}"/>
-            </h3>
-            <h4>
-                <ice:outputText
-                        value="#{msgs['component.autoComplete.subInstructions']}"/>
-            </h4>
+        <h3>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.instructions']}"/>
+        </h3>
+        <h4>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.subInstructions']}"/>
+        </h4>
 
-        </ice:panelGroup>
-
-        <ice:panelGrid columns="2" width="100%"
-                       columnClasses="selectInputTextCol,beanCol">
-
-            <!-- Auto complete variants-->
-            <ice:panelGroup styleClass="formBorderHighlight">
-                <h3>
-                    <ice:outputText
-                            value="#{msgs['component.autoComplete.plainTitle']}"/>
-                </h3>
-                <h4>
-                    <ice:outputText
-                            value="#{msgs['component.autoComplete.plainDirections']}"/>
-                </h4>
-
-                <ice:selectInputText id="AutoCmpTxt"
-                        rows="15" width="300"
-                        valueChangeListener="#{autoCompleteBean.updateList}">
-                    <f:selectItems id="AutoCmpTxtItms" value="#{autoCompleteBean.list}"/>
-                </ice:selectInputText>
-                <br/>
-
-                <br/>
-
-                <h3>
-                    <ice:outputText
-                            value="#{msgs['component.autoComplete.htmlTitle']}"/>
-                </h3>
-                <h4>
-                    <ice:outputText
-                            value="#{msgs['component.autoComplete.htmlDirections']}"/>
-                </h4>
+    </ice:panelGroup>
 
 
-                <ice:selectInputText id="AutoCmpTxtFace"
-                        rows="6" width="300"
-                        listVar="city"
-                        valueChangeListener="#{autoCompleteBean.updateList}"
-                        listValue="#{autoCompleteBean.list}">
-                    <f:facet name="selectInputText">
-                        <ice:panelGrid columns="3" style="margin-bottom:-20px;"
-                                       columnClasses="cityCol,stateCol,zipCol">
-                            <ice:outputText id="AutoCmpCty" value="#{city.city}"/>
-                            <ice:outputText id="AutoCmpSt" value="#{city.state}"/>
-                            <ice:outputText id="AutoCmpZip" value="#{city.zip}"/>
-                        </ice:panelGrid>
-                    </f:facet>
-                </ice:selectInputText>
-            </ice:panelGroup>
+    <!-- Auto complete variants-->
+    <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
+        <h3>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.plainTitle']}"/>
+        </h3>
+        <h4>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.plainDirections']}"/>
+        </h4>
 
-            <!-- Server-side values-->
-            <ice:panelGroup styleClass="formBorderHighlight"
-                            style="width:200px;">
-                <ice:panelGrid columns="1">
+        <ice:selectInputText id="AutoCmpTxt"
+                rows="15" width="300"
+                valueChangeListener="#{autoCompleteBean.updateList}">
+            <f:selectItems id="AutoCmpTxtItms" value="#{autoCompleteBean.list}"/>
+        </ice:selectInputText>
+        <br/>
 
-                    <!-- title -->
-                    <ice:panelGroup>
-                        <h3>
-                            <ice:outputText
-                                    value="#{msgs['component.autoComplete.serverFeedback']}"/>
-                        </h3>
+        <br/>
 
-                        <h4>
-                            <ice:outputText
-                                    value="#{msgs['component.autoComplete.subServerFeedback']}"/>
-                        </h4>
-                    </ice:panelGroup>
+        <h3>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.htmlTitle']}"/>
+        </h3>
+        <h4>
+            <ice:outputText
+                    value="#{msgs['component.autoComplete.htmlDirections']}"/>
+        </h4>
 
-                    <!-- backing values -->
-                    <ice:panelGrid columns="2">
-                        <ice:outputText
-                                value="#{msgs['component.autoComplete.resultCityLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="city"
-                                        value="#{autoCompleteBean.currentCity.city}"/>
-                        <ice:outputText
-                                value="#{msgs['component.autoComplete.resultStateLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="state"
-                                        value="#{autoCompleteBean.currentCity.state} #{autoCompleteBean.currentCity.stateCode}"/>
-                        <ice:outputText
-                                value="#{msgs['component.autoComplete.resultCountyLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="country"
-                                        value="#{autoCompleteBean.currentCity.country}"/>
-                        <ice:outputText
-                                value="#{msgs['component.autoComplete.resultZipLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="zip"
-                                        value="#{autoCompleteBean.currentCity.zip}"/>
-                        <ice:outputText
-                                value="#{msgs['component.autoComplete.resultAreaCodeLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="areaCode"
-                                        value="#{autoCompleteBean.currentCity.areaCode}"/>
-                    </ice:panelGrid>
+
+        <ice:selectInputText id="AutoCmpTxtFace"
+                rows="6" width="300"
+                listVar="city"
+                valueChangeListener="#{autoCompleteBean.updateList}"
+                listValue="#{autoCompleteBean.list}">
+            <f:facet name="selectInputText">
+                <ice:panelGrid columns="3" style="margin-bottom:-20px;"
+                               columnClasses="cityCol,stateCol,zipCol">
+                    <ice:outputText id="AutoCmpCty" value="#{city.city}"/>
+                    <ice:outputText id="AutoCmpSt" value="#{city.state}"/>
+                    <ice:outputText id="AutoCmpZip" value="#{city.zip}"/>
                 </ice:panelGrid>
+            </f:facet>
+        </ice:selectInputText>
+    </ice:panelGroup>
+
+    <!-- Server-side values-->
+    <ice:panelGroup styleClass="formBorderHighlight"
+                    style="float: left;width:300px;">
+        <ice:panelGrid columns="1">
+
+            <!-- title -->
+            <ice:panelGroup>
+                <h3>
+                    <ice:outputText
+                            value="#{msgs['component.autoComplete.serverFeedback']}"/>
+                </h3>
+
+                <h4>
+                    <ice:outputText
+                            value="#{msgs['component.autoComplete.subServerFeedback']}"/>
+                </h4>
             </ice:panelGroup>
 
+            <!-- backing values -->
+            <ice:panelGrid columns="2">
+                <ice:outputText
+                        value="#{msgs['component.autoComplete.resultCityLabel']}"
+                        styleClass="valueHeader"/>
+                <ice:outputText id="city"
+                                value="#{autoCompleteBean.currentCity.city}"/>
+                <ice:outputText
+                        value="#{msgs['component.autoComplete.resultStateLabel']}"
+                        styleClass="valueHeader"/>
+                <ice:outputText id="state"
+                                value="#{autoCompleteBean.currentCity.state} #{autoCompleteBean.currentCity.stateCode}"/>
+                <ice:outputText
+                        value="#{msgs['component.autoComplete.resultCountyLabel']}"
+                        styleClass="valueHeader"/>
+                <ice:outputText id="country"
+                                value="#{autoCompleteBean.currentCity.country}"/>
+                <ice:outputText
+                        value="#{msgs['component.autoComplete.resultZipLabel']}"
+                        styleClass="valueHeader"/>
+                <ice:outputText id="zip"
+                                value="#{autoCompleteBean.currentCity.zip}"/>
+                <ice:outputText
+                        value="#{msgs['component.autoComplete.resultAreaCodeLabel']}"
+                        styleClass="valueHeader"/>
+                <ice:outputText id="areaCode"
+                                value="#{autoCompleteBean.currentCity.areaCode}"/>
+            </ice:panelGrid>
         </ice:panelGrid>
-    </ice:panelGrid>
+    </ice:panelGroup>
 
 </ice:panelTab>
 
@@ -177,6 +170,12 @@ USA Address information.
     <iframe
             src="./sourcecodeStream.html?path=./inc/components/autoComplete.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/autocomplete-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

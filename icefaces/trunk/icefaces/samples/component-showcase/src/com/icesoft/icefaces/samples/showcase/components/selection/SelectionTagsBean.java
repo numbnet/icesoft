@@ -48,15 +48,13 @@ public class SelectionTagsBean {
      */
     private static final SelectItem[] DRINK_ITEMS = new SelectItem[]{
             new SelectItem("Coke"),
-            new SelectItem("Pepsi"),
+            new SelectItem("Fresca"),
             new SelectItem("Sprite"),
-            new SelectItem("7Up"),
     };
     private static final SelectItem[] LANGUAGE_ITEMS = new SelectItem[]{
             new SelectItem("Java"),
             new SelectItem("C#"),
             new SelectItem("C++"),
-            new SelectItem("C"),
             new SelectItem("COBOL"),
     };
     private static final SelectItem[] COMPONENT_ITEMS = new SelectItem[]{

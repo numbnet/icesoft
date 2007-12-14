@@ -40,134 +40,134 @@ a control on the data to hide/show the table columns.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
-        <!--
-          Controls to show/hide the table columns
-        -->
-        <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Controls to show/hide the table columns
+-->
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-            <ice:panelGrid
-                        styleClass="componentLayoutRootTable"
-                        columns="1">
+    <!-- Description -->
+    <ice:panelGroup styleClass="formBorderHighlight">
+        <h4>
+            <ice:outputText
+                    value="#{msgs['component.table.row.selection.instructions']}"/>
+        </h4>
+        <ice:panelGroup>
+            <ice:selectBooleanCheckbox
+                    id="multipleSelection"
+                    value="#{table.multipleSelection}"
+                    partialSubmit="true"
+                    valueChangeListener="#{table.selectionChanged}"/>
+            <ice:outputText
+                    value="#{msgs['component.table.row.selection.multiple']}"/>
+            <br/>
+            <ice:commandButton
+                    id="clearSelections"
+                    value="#{msgs['component.table.row.selection.clear']}"
+                    actionListener="#{table.clearSelections}"/>
+        </ice:panelGroup>
 
-                <!-- Description -->
-                <ice:panelGroup styleClass="formBorderHighlight">
-                    <h4>
-                        <ice:outputText
-                                value="#{msgs['component.table.row.selection.instructions']}"/>
-                    </h4>
-                    <ice:panelGroup>
-                        <ice:selectBooleanCheckbox
-                                id="multipleSelection"
-                                value="#{table.multipleSelection}"
-                                partialSubmit="true"
-                                valueChangeListener="#{table.selectionChanged}"/>
-                        <ice:outputText
-                                value="#{msgs['component.table.row.selection.multiple']}"/>
-                        <br />
-                        <ice:commandButton
-                                id="clearSelections"
-                                value="#{msgs['component.table.row.selection.clear']}"
-                                actionListener="#{table.clearSelections}" />
-                    </ice:panelGroup>
+    </ice:panelGroup>
 
-                </ice:panelGroup>
+    <!--
+        Table with RowSelector table
+    -->
+    <ice:panelGroup style="float: left;">
+        <ice:outputText
+                styleClass="propertyLabel"
+                value="#{msgs['component.table.row.selection.clicktoselect']}"/>
+        <ice:dataTable id="personsList" var="person"
+                       value="#{table.personsList}"
+                       rows="15" columnClasses="tableCol">
+            <ice:column>
+                <ice:rowSelector id="selected"
+                                 value="#{person.selected}"
+                                 multiple="#{table.multipleSelection}"
+                                 selectionListener="#{table.rowSelection}"/>
+                <f:facet name="header">
+                    <ice:outputText id="column1"
+                                    value="#{msgs['component.table.column1']}"/>
+                </f:facet>
+                <ice:outputText id="firstName"
+                                value="#{person.firstName}"/>
+            </ice:column>
 
-                <ice:panelGrid styleClass="rowSelectDmo" columns="2" cellpadding="3" cellspacing="2">
-                    <!--
-                        Table with RowSelector table
-                    -->
-                    <ice:panelGroup>
-                        <ice:outputText
-                                styleClass="propertyLabel"
-                                value="#{msgs['component.table.row.selection.clicktoselect']}"/>                    
-                    <ice:dataTable id="personsList" var="person" value="#{table.personsList}"
-                                   rows="15" columnClasses="tableCol" >
-                        <ice:column>
-                            <ice:rowSelector id="selected"
-                                             value="#{person.selected}"
-                                             multiple="#{table.multipleSelection}"
-                                             selectionListener="#{table.rowSelection}"/>
-                            <f:facet name="header">
-                                <ice:outputText id="column1"
-                                        value="#{msgs['component.table.column1']}"/>
-                            </f:facet>
-                            <ice:outputText id="firstName"
-                                        value="#{person.firstName}"/>
-                        </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="column2"
+                                    value="#{msgs['component.table.column2']}"/>
+                </f:facet>
+                <ice:outputText id="lastName"
+                                value="#{person.lastName}"/>
+            </ice:column>
 
-                        <ice:column>
-                            <f:facet name="header">
-                                <ice:outputText id="column2"
-                                        value="#{msgs['component.table.column2']}"/>
-                            </f:facet>
-                            <ice:outputText id="lastName"
-                                        value="#{person.lastName}"/>
-                        </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="column3"
+                                    value="#{msgs['component.table.column3']}"/>
+                </f:facet>
+                <ice:outputText id="phoneNo"
+                                value="#{person.phoneNo}"/>
+            </ice:column>
+        </ice:dataTable>
+    </ice:panelGroup>
 
-                        <ice:column>
-                            <f:facet name="header">
-                                <ice:outputText id="column3"
-                                        value="#{msgs['component.table.column3']}"/>
-                            </f:facet>
-                            <ice:outputText id="phoneNo"
-                                        value="#{person.phoneNo}"/>
-                        </ice:column>
-                    </ice:dataTable>
-                    </ice:panelGroup>
-                    <!-- selected values -->
-                    <ice:panelGroup>
-                        <ice:outputText id="results"
-                                styleClass="propertyLabel"
-                                value="#{msgs['component.table.row.selection.results']}"/>
-                        <ice:dataTable id="selectedRows" var="selectedPerson" value="#{table.selectedRows}"
-                                       rows="15" columnClasses="tableCol"
-                                >
-                            <ice:column>
-                                <f:facet name="header">
-                                    <ice:outputText id="selectedColumn1"
-                                            value="#{msgs['component.table.column1']}"/>
-                                </f:facet>
-                                <ice:outputText id="selectedFirstName"
-                                            value="#{selectedPerson.firstName}"/>
-                            </ice:column>
+    <!-- selected values -->
+    <ice:panelGroup style="float:left;padding-left: 25px;">
+        <ice:outputText id="results"
+                        styleClass="propertyLabel"
+                        value="#{msgs['component.table.row.selection.results']}"/>
+        <ice:dataTable id="selectedRows" var="selectedPerson"
+                       value="#{table.selectedRows}"
+                       rows="15" columnClasses="tableCol"
+                >
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="selectedColumn1"
+                                    value="#{msgs['component.table.column1']}"/>
+                </f:facet>
+                <ice:outputText id="selectedFirstName"
+                                value="#{selectedPerson.firstName}"/>
+            </ice:column>
 
-                            <ice:column>
-                                <f:facet name="header">
-                                    <ice:outputText id="selectedColumn2"
-                                            value="#{msgs['component.table.column2']}"/>
-                                </f:facet>
-                                <ice:outputText id="selectedLastName"
-                                            value="#{selectedPerson.lastName}"/>
-                            </ice:column>
-                        </ice:dataTable>
-                    </ice:panelGroup>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="selectedColumn2"
+                                    value="#{msgs['component.table.column2']}"/>
+                </f:facet>
+                <ice:outputText id="selectedLastName"
+                                value="#{selectedPerson.lastName}"/>
+            </ice:column>
+        </ice:dataTable>
+    </ice:panelGroup>
+</ice:panelTab>
 
-                </ice:panelGrid>
+<!--
+  The bean is responsible for streaming html documentation to
+  this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <iframe src="./docs/tableRowSelectionDoc.html" class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
 
-            </ice:panelGrid>
-        </ice:panelTab>
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <iframe
+            src="./sourcecodeStream.html?path=./inc/components/tableRowSelection.jspx"
+            class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
 
-        <!--
-          The bean is responsible for streaming html documentation to
-          this placeholder
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="./docs/tableRowSelectionDoc.html" class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
-
-        <!--
-          Template for component source code.  This servlet loads
-          the component example jsp include as an xml stream
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe
-                    src="./sourcecodeStream.html?path=./inc/components/tableRowSelection.jspx"
-                    class="includeIframe" width="100%"></iframe>
-        </ice:panelTab>
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
 
 
-    </ice:panelTabSet>
+</ice:panelTabSet>
 
 </ice:form>

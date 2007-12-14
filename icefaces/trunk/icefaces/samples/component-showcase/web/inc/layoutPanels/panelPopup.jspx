@@ -49,43 +49,38 @@ and must be dismissed before the application's functionality will return.
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-    <ice:panelGrid
-            styleClass="componentLayoutRootTable"
-            columns="1">
+    <!-- Application title  -->
+    <ice:panelGroup styleClass="formBorderHighlight">
+        <h3>
+            <ice:outputText id="title"
+                    value="#{msgs['component.popupPanel.title']}"/>
+        </h3>
+        <h4>
+            <ice:outputText id="instructions"
+                    value="#{msgs['component.popupPanel.instructions']}"/>
+        </h4>
 
-        <!-- Application title  -->
-        <ice:panelGroup styleClass="formBorderHighlight">
-            <h3>
-                <ice:outputText id="title"
-                        value="#{msgs['component.popupPanel.title']}"/>
-            </h3>
-            <h4>
-                <ice:outputText id="instructions"
-                        value="#{msgs['component.popupPanel.instructions']}"/>
-            </h4>
-
-            <!-- popup selection -->
-            <ice:panelGrid columns="2" styleClass="popupControls">
-                <ice:outputText styleClass="propertyLabel"
-                                value="#{msgs['component.popupPanel.draggable.controlLabel']}"/>
-                <ice:selectBooleanCheckbox id="draggableChk"
-                                           partialSubmit="true"
-                                           value="#{popup.showDraggablePanel}"/>
-                <ice:outputText styleClass="propertyLabel"
-                                value="#{msgs['component.popupPanel.modal.controlLabel']}"/>
-                <ice:selectBooleanCheckbox id="modalChk"
-                                           partialSubmit="true"
-                                           value="#{popup.showModalPanel}"/>
-            </ice:panelGrid>
-        </ice:panelGroup>
-    </ice:panelGrid>
+        <!-- popup selection -->
+        <ice:panelGrid columns="2" styleClass="popupControls">
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.draggable.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="draggableChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showDraggablePanel}"/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.modal.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="modalChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showModalPanel}"/>
+        </ice:panelGrid>
+    </ice:panelGroup>
 
     <!-- panel popup code, draggable type  -->
     <ice:panelPopup id="draggablePP"
             draggable="true"
             rendered="#{popup.showDraggablePanel}"
             visible="#{popup.showDraggablePanel}"
-            style="z-index: 1000; top: 300px; left: 300px; position: absolute; width: 300px; height: 150px;">
+            style="z-index: 1000; top: 30%; left: 30%; position: absolute; width: 300px; height: 150px;">
 
         <f:facet name="header">
             <ice:panelGrid id="draggablePanelGrid"
@@ -159,6 +154,12 @@ this placeholder
     <iframe
             src="./sourcecodeStream.html?path=./inc/layoutPanels/panelPopup.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/panelPopup-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

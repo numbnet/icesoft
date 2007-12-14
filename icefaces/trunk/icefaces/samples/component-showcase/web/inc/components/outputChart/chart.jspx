@@ -41,16 +41,16 @@
   Controls to show/hide the table columns
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGrid id="chartRootTable"
-                   styleClass="componentLayoutRootTable" columns="1">
+
 
         <ice:panelGroup id="chartTopGrid"
-                       styleClass="formBorderHighlight" style="width: 500px" >
+                       styleClass="formBorderHighlight"
+                       style="float:left;" >
 
 
-            <ice:panelGrid columns="2" style="width: 400px;">
+            <ice:panelGroup style="float:left;width: 400px;">
 
-                <ice:panelGroup>
+                <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 26px;">
                     <h3>
                         <ice:outputText id="chartTitle"
                                     value="#{msgs['component.chart.type.title']}"/>
@@ -64,7 +64,9 @@
                     panelGroup displayed when chart type is bar or barclustered to
                     toggle horizontal or vertical chart orientation.
                 -->
-                <ice:panelGroup rendered="#{chartMediator.orientationChange}">
+                <ice:panelGroup
+                        style="float:left;margin-right: 25px;margin-bottom: 26px;"
+                        rendered="#{chartMediator.orientationChange}">
                     <h3>
                         <ice:outputText value="#{msgs['component.chart.orientation.title']}"/>
                     </h3>
@@ -78,8 +80,8 @@
                     </ice:selectOneRadio>
 
                 </ice:panelGroup>
-            </ice:panelGrid>
-            <br/>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="clearer" /> 
             <ice:outputText effect="#{chartMediator.effectOutputText}"
                             value="#{chartMediator.clickedValue}"
                             rendered="#{chartMediator.axis and !chartMediator.pie3D}"/>
@@ -89,7 +91,9 @@
                             
        </ice:panelGroup>
 
-        <ice:panelGrid columns="2" id="centerWrapperChart">
+       <ice:panelGroup styleClass="clearer" /> 
+
+       <ice:panelGroup id="centerWrapperChart" >
             <ice:outputChart id="axisOutputChart"
                              type="#{chartMediator.chartObject.type}"
                              chartTitle="#{chartMediator.chartObject.type} Chart"
@@ -151,9 +155,7 @@
                 </ice:dataTable>
             </ice:panelGroup>
 
-        </ice:panelGrid>
-
-    </ice:panelGrid>
+        </ice:panelGroup>
 
 </ice:panelTab>
 <!--
@@ -172,6 +174,12 @@
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe src="./sourcecodeStream.html?path=./inc/components/outputChart/chart.jspx"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/outputChart-tutorial.html"
             class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>

@@ -45,13 +45,9 @@ with more data than can be displayed in a single page.
 
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid
-        styleClass="componentLayoutRootTable"
-        columns="1">
 
-<ice:panelGrid columns="2" styleClass="dataPagingBorderHighlight">
     <!-- Paginator layout, horizontal/vertical -->
-    <ice:panelGroup>
+    <ice:panelGroup styleClass="formBorderHighlight" style="float:left">
         <h3>
             <ice:outputText
                     value="#{msgs['component.dataPaginator.layout.description']}"/>
@@ -65,7 +61,7 @@ with more data than can be displayed in a single page.
     </ice:panelGroup>
 
     <!-- Add/remove data from table -->
-    <ice:panelGroup>
+    <ice:panelGroup styleClass="formBorderHighlight" style="float:left">
 
         <h3>
             <ice:outputText
@@ -81,36 +77,38 @@ with more data than can be displayed in a single page.
                            action="#{scrollerList.removeContent}"
                            immediate="true"/>
     </ice:panelGroup>
-</ice:panelGrid>
 
-<ice:panelGroup styleClass="formBorderHighlight">
-    <h3>
-        <ice:outputText value="#{msgs['component.dataPaginator.description']}"/>
-    </h3>
-</ice:panelGroup>
+    <ice:panelGroup styleClass="clearer" />
 
-<ice:panelGroup styleClass="formBorderHighlight">
+    <ice:panelGroup styleClass="formBorderHighlight">
+        <h3>
+            <ice:outputText value="#{msgs['component.dataPaginator.description']}"/>
+        </h3>
+    </ice:panelGroup>
+
+<ice:panelGroup styleClass="formBorderHighlight" style="float: left">
 
     <!-- Display counts about the table and the currently displayed page -->
-    <ice:dataPaginator id="dataScroll_2" for="data"
-                       rowsCountVar="rowsCount"
-                       displayedRowsCountVar="displayedRowsCountVar"
-                       firstRowIndexVar="firstRowIndex"
-                       lastRowIndexVar="lastRowIndex"
-                       pageCountVar="pageCount" pageIndexVar="pageIndex">
-        <ice:outputFormat
-                value="#{msgs['component.dataPaginator.format']}"
-                styleClass="standard">
-            <f:param value="#{rowsCount}"/>
-            <f:param value="#{displayedRowsCountVar}"/>
-            <f:param value="#{firstRowIndex}"/>
-            <f:param value="#{lastRowIndex}"/>
-            <f:param value="#{pageIndex}"/>
-            <f:param value="#{pageCount}"/>
-        </ice:outputFormat>
-    </ice:dataPaginator>
-
-    <ice:panelGrid columns="2">
+        <ice:panelGroup style="float: left" >
+        <ice:dataPaginator id="dataScroll_2" for="data"
+                           rowsCountVar="rowsCount"
+                           displayedRowsCountVar="displayedRowsCountVar"
+                           firstRowIndexVar="firstRowIndex"
+                           lastRowIndexVar="lastRowIndex"
+                           pageCountVar="pageCount" pageIndexVar="pageIndex">
+            <ice:outputFormat
+                    value="#{msgs['component.dataPaginator.format']}"
+                    styleClass="standard">
+                <f:param value="#{rowsCount}"/>
+                <f:param value="#{displayedRowsCountVar}"/>
+                <f:param value="#{firstRowIndex}"/>
+                <f:param value="#{lastRowIndex}"/>
+                <f:param value="#{pageIndex}"/>
+                <f:param value="#{pageCount}"/>
+            </ice:outputFormat>
+        </ice:dataPaginator>
+    </ice:panelGroup>
+    <ice:panelGroup style="float: left" >
         <!-- Layout table columns with column headings and 5 table rows per page -->
         <ice:dataTable id="data" var="person"
                        styleClass="dataPaginatorTable"
@@ -146,9 +144,12 @@ with more data than can be displayed in a single page.
                 </ice:outputLink>
             </ice:column>
         </ice:dataTable>
+    </ice:panelGroup>
+
+    <ice:panelGroup style="float: left" >
         <!-- Set up the buttons and links for browsing through the table
- No. of pages to fast forward or rewind: 3
- No. of direct links to pages: 4 -->
+         No. of pages to fast forward or rewind: 3
+         No. of direct links to pages: 4 -->
         <ice:dataPaginator id="dataScroll_3" for="data" fastStep="3"
                            rendered="#{scrollerList.vertical}"
                            pageCountVar="pageCount" pageIndexVar="pageIndex"
@@ -194,8 +195,9 @@ with more data than can be displayed in a single page.
             </f:facet>
         </ice:dataPaginator>
 
-    </ice:panelGrid>
+    </ice:panelGroup>
 </ice:panelGroup>
+<ice:panelGroup styleClass="clearer" />    
 
 <!-- Set up the buttons and links for browsing through the table
 No. of pages to fast forward or rewind: 3
@@ -245,7 +247,6 @@ No. of direct links to pages: 4 -->
     </f:facet>
 </ice:dataPaginator>
 
-</ice:panelGrid>
 </ice:panelTab>
 
 <!--
@@ -265,6 +266,12 @@ No. of direct links to pages: 4 -->
     <iframe
             src="./sourcecodeStream.html?path=./inc/components/dataPaginator.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

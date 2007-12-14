@@ -50,11 +50,8 @@ when the user presses the Enter key or tabs out of a field.
         <ice:panelTab id="icepnltab"
                       label="#{msgs['tabbedHeadings.demo']}">
 
-            <ice:panelGrid styleClass="componentLayoutRootTable"
-                           columns="1">
-
                 <!-- Text Field input -->
-                <ice:panelGrid styleClass="formBorderHighlight">
+                <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
 
                     <h3>
                         <ice:outputText
@@ -84,15 +81,14 @@ when the user presses the Enter key or tabs out of a field.
                                            cols="20" rows="4"
                                            partialSubmit="true"
                                            style="width:280px;height:80px;overflow: auto;"
-                                           styleClass="commentText"
                                            />
 
                     </ice:panelGrid>
 
-                </ice:panelGrid>
+                </ice:panelGroup>
 
                 <!-- Text Field output text -->
-                <ice:panelGrid styleClass="formBorderHighlight">
+                <ice:panelGroup styleClass="formBorderHighlight"  style="float: left;width:300px;">
 
                     <h3>
                         <ice:outputText
@@ -118,8 +114,8 @@ when the user presses the Enter key or tabs out of a field.
                                         value="#{textFields.comments}"
                                         styleClass="valueText"/>
                     </ice:panelGrid>
-                </ice:panelGrid>
-            </ice:panelGrid>
+                </ice:panelGroup>
+
         </ice:panelTab>
 
         <!--

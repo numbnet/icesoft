@@ -39,39 +39,35 @@
         <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
             
             <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
-                <ice:panelGrid id="columnsRootTable"
-                               styleClass="componentLayoutRootTable"
-                               columns="1">
 
-                    <ice:panelGrid id="columnsTopGrid" columns="1"
-                                   styleClass="formBorderHighlight"
-                                   columnClasses="contentLayoutGridColumn">
-                        <h3>
-                            <ice:outputText value="#{msgs['component.columns.title']}"/>
-                        </h3>
-                        <br/>
-                        <ice:outputText value="#{msgs['component.columns.desc1']}"/>
-                        <br/>
-                        <ice:outputText value="#{msgs['component.columns.desc2']}"/>
-                        <br/>
-                        <ice:panelGroup id="columnsInputGroup">
-                            <ice:outputLabel id="columnsOutputLabel"
-                                             for="columnsInput"
-                                             value="Columns: "/>
-                            <ice:inputText id="columnsInput" maxlength="3"
-                                           size="5"
-                                           valueChangeListener="#{columnsBean.updateTableColumns}"
-                                           value="#{columnsBean.columns}"
-                                           partialSubmit="true">
-                                <f:validateLongRange minimum="1" maximum="26"/>
-                            </ice:inputText>
-                            <ice:message id="columnsInputMessage"
-                                         for="columnsInput"/>
-                        </ice:panelGroup>
-                    </ice:panelGrid>
 
-                    <ice:panelGroup id="columnsContainer" styleClass="columnsContainer">
-                        <ice:dataTable id="dataTbl" var="item"
+                <ice:panelGroup styleClass="formBorderHighlight">
+                    <h3>
+                        <ice:outputText value="#{msgs['component.columns.title']}"/>
+                    </h3>
+                    <br/>
+                    <ice:outputText value="#{msgs['component.columns.desc1']}"/>
+                    <br/>
+                    <ice:outputText value="#{msgs['component.columns.desc2']}"/>
+                    <br/>
+                    <ice:panelGroup id="columnsInputGroup">
+                        <ice:outputLabel id="columnsOutputLabel"
+                                         for="columnsInput"
+                                         value="Columns: "/>
+                        <ice:inputText id="columnsInput" maxlength="3"
+                                       size="5"
+                                       valueChangeListener="#{columnsBean.updateTableColumns}"
+                                       value="#{columnsBean.columns}"
+                                       partialSubmit="true">
+                            <f:validateLongRange minimum="1" maximum="26"/>
+                        </ice:inputText>
+                        <ice:message id="columnsInputMessage"
+                                     for="columnsInput"/>
+                    </ice:panelGroup>
+                </ice:panelGroup>
+
+                <ice:panelGroup id="columnsContainer" styleClass="columnsContainer">
+                    <ice:dataTable id="dataTbl" var="item"
                                        value="#{columnsBean.rowDataModel}"
                                        columnClasses="columnsColumn"
                                        rows="#{columnsBean.rows}"
@@ -90,7 +86,7 @@
                                                 menuPopup=":::::iceform:icepnltabset:0:cellPopup"
                                                 menuContext="#{columnsBean.menuContext}"
                                                 styleClass="#{columnsBean.cellStyleClass}">
-                                                <!-- 
+                                                <!--
                                                 menuPopup: up 4 NamingContainers, with the special leading double delimiter
                                                 syntax (::) to denote moving up NamingContainers, not to UIViewRoot
                                                 (columns, dataTable, panelTabSet, form)
@@ -103,9 +99,8 @@
                             </ice:columns>
 
                         </ice:dataTable>
-                    </ice:panelGroup>
-                    
-                </ice:panelGrid>
+                </ice:panelGroup>
+
                 <ice:menuPopup id="cellPopup">
                     <ice:menuItem value="Select Cell"
                                   actionListener="#{columnsBean.cellSelection}"/>
@@ -123,6 +118,13 @@
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
+
+            <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+                <iframe src="http://facestutorials.icefaces.org/tutorial/columns-tutorial.html"
+                        class="includeIframe"
+                        width="100%"></iframe>
+            </ice:panelTab>
+
 
         </ice:panelTabSet>
 </ice:form>

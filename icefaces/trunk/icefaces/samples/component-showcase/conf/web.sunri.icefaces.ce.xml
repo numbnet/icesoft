@@ -45,7 +45,6 @@
         of the rich set of features available in the custom and extended
         components.
     </description>
-    
 
     <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>

@@ -42,10 +42,6 @@
 <!-- Demonstration -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-<!-- Root layout grid -->
-<ice:panelGrid
-        styleClass="componentLayoutRootTable"
-        columns="1">
 
 <!-- Description -->
 <ice:panelGroup styleClass="formBorderHighlight">
@@ -58,7 +54,7 @@
 </ice:panelGroup>
 
 <!-- Layout the links and buttons. -->
-<ice:panelGroup styleClass="formBorderHighlight">
+<ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
 
 <!-- Store  -->
 <h3>
@@ -93,106 +89,102 @@
     </div>
 </ice:panelSeries>
 
-
 <div style="clear: left;" />
 
 
+<ice:panelGroup style="margin-top: 10px;" >
     <!-- Cart Title -->
-    <br />
     <h3>
         <ice:outputText value="#{msgs['component.dragDrop.cart']}"
                         style="font-weight: bold; text-align:center"/>
     </h3>
 
-    <ice:panelGrid columns="2" border="0" columnClasses="contentLayoutGridColumn">
-    <!-- Cart items -->
-    <ice:dataTable id="DataTbl"
-            value="#{cart.purchasedList}"
-            var="item"
-            style="padding: 0px; margin: 0px;"
-            styleClass="cartLayoutTable"
-            footerClass="shoppingCartFooter"
-            columnClasses="cartImageColumn,cartNameColumn,cartPriceColumn,cartQuantityColumn, cartCostColumn,cartReturnColumn"
-            border="1" cellpadding="2" >
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.image']}"/>
-            </f:facet>
-            <ice:panelGroup>
-                <ice:graphicImage id="cartItemImage" url="#{item.imageSmall}"
-                                  styleClass="dragDropImageSmall"
-                                  alt="#{item.name}"/>
-            </ice:panelGroup>
-        </ice:column>
+        <!-- Cart items -->
+    <ice:panelGroup style="float: left;">
+        <ice:dataTable id="DataTbl"
+                value="#{cart.purchasedList}"
+                var="item"
+                style="padding: 0px; margin: 0px;"
+                styleClass="cartLayoutTable"
+                footerClass="shoppingCartFooter"
+                columnClasses="cartImageColumn,cartNameColumn,cartPriceColumn,cartQuantityColumn, cartCostColumn,cartReturnColumn"
+                border="1" cellpadding="2" >
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.image']}"/>
+                </f:facet>
+                <ice:panelGroup>
+                    <ice:graphicImage id="cartItemImage" url="#{item.imageSmall}"
+                                      styleClass="dragDropImageSmall"
+                                      alt="#{item.name}"/>
+                </ice:panelGroup>
+            </ice:column>
 
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.name']}"/>
-            </f:facet>
-            <ice:outputText id="DDNameout" value="#{item.name}"/>
-        </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.name']}"/>
+                </f:facet>
+                <ice:outputText id="DDNameout" value="#{item.name}"/>
+            </ice:column>
 
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.price']}"/>
-            </f:facet>
-            <ice:outputText id="DDPriceout" value="#{item.priceFormatted}"/>
-        </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.price']}"/>
+                </f:facet>
+                <ice:outputText id="DDPriceout" value="#{item.priceFormatted}"/>
+            </ice:column>
 
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.quantity']}"/>
-            </f:facet>
-            <ice:panelGroup effect="#{item.effect}" >
-                <ice:outputText id="DDQtyout" value="#{item.purchasedQuantity}" />    
-            </ice:panelGroup>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.quantity']}"/>
+                </f:facet>
+                <ice:panelGroup effect="#{item.effect}" >
+                    <ice:outputText id="DDQtyout" value="#{item.purchasedQuantity}" />
+                </ice:panelGroup>
 
-        </ice:column>
+            </ice:column>
 
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.cost']}"/>
-            </f:facet>
-            <ice:outputText id="DDCostout" value="#{item.productTotal}"/>
-        </ice:column>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.cost']}"/>
+                </f:facet>
+                <ice:outputText id="DDCostout" value="#{item.productTotal}"/>
+            </ice:column>
 
-        <ice:column>
-            <f:facet name="header">
-                <ice:outputText value="#{msgs['component.dragDrop.cart.returnOne']}"/>
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.returnOne']}"/>
+                </f:facet>
+                <ice:commandButton id="DDRtn" actionListener="#{item.returnOne}"
+                                   value="#{msgs['component.dragDrop.cart.return']}"/>
+            </ice:column>
+            <f:facet name="footer">
+                <ice:outputText id="DDTotalout"
+                        value="#{msgs['component.dragDrop.cart.total']} #{cart.totalPriceFormatted} (#{cart.purchasedCount} #{cart.itemString})"/>
             </f:facet>
-            <ice:commandButton id="DDRtn" actionListener="#{item.returnOne}"
-                               value="#{msgs['component.dragDrop.cart.return']}"/>
-        </ice:column>
-        <f:facet name="footer">
-            <ice:outputText id="DDTotalout" 
-                    value="#{msgs['component.dragDrop.cart.total']} #{cart.totalPriceFormatted} (#{cart.purchasedCount} #{cart.itemString})"/>
-        </f:facet>
-    </ice:dataTable>
+        </ice:dataTable>
+    </ice:panelGroup>
 
     <!-- Drop Zones -->
-    <ice:panelGroup styleClass="cartDropWrapper">
+    <ice:panelGroup styleClass="cartDropWrapper" style="margin-left: 5px;float:left;width:55px;">
         <ice:panelGroup id="cartDropTarget" dropTarget="true"
                         hoverclass="droptargethover"
                         styleClass="cartDropZone">
 
-            <!--<ice:panelGrid columns="2">-->
-                <ice:graphicImage value="images/shopping-cart.gif"
-                                  alt="Shopping Cart"
-                                  width="50" height="40"/>
-                <br/>
-                <ice:outputText
-                        styleClass="cartDropZonText1"
-                        value="#{msgs['component.dragDrop.cartZoneLabel2']}"/>
-            <!--</ice:panelGrid>-->
+            <ice:graphicImage value="images/shopping-cart.gif"
+                              alt="Shopping Cart"
+                              width="50" height="40"/>
+            <br/>
+            <ice:outputText
+                    styleClass="cartDropZonText1"
+                    value="#{msgs['component.dragDrop.cartZoneLabel2']}"/>
 
         </ice:panelGroup>
     </ice:panelGroup>
-    </ice:panelGrid>
-
+</ice:panelGroup>
 
 
 </ice:panelGroup>
-</ice:panelGrid>
 
 </ice:panelTab>
 
@@ -213,6 +205,12 @@ the component example jsp include as an xml stream
     <iframe
             src="./sourcecodeStream.html?path=./inc/components/dragDrop.jspx"
             class="includeIframe" width="100%"></iframe>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/dragDrop-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

@@ -45,57 +45,53 @@ a control on the data to hide/show the table columns.
       Controls to show/hide the table columns
     -->
     <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
-        <ice:panelGrid
-                styleClass="componentLayoutRootTable"
-                columns="1">
 
-            <ice:panelGrid columns="1" styleClass="formBorderHighlight"
-                           columnClasses="contentLayoutGridColumn">
-                <h3>
-                    <ice:outputText value="#{msgs['component.table.title']}"/>
-                </h3>
-                <ice:panelGroup>
-                    <ice:selectBooleanCheckbox id="FirstNameChk"
-                                               value="#{table.renderFirstName}"
-                                               partialSubmit="true"/>
-                    <ice:outputText
-                            value="#{msgs['component.table.column1']} "/>
-                    <ice:selectBooleanCheckbox id="LastNameChk"
-                                               value="#{table.renderLastName}"
-                                               partialSubmit="true"/>
-                    <ice:outputText
-                            value="#{msgs['component.table.column2']} "/>
-                    <ice:selectBooleanCheckbox id="EmailChk"
-                                               value="#{table.renderEmail}"
-                                               partialSubmit="true"/>
-                    <ice:outputText
-                            value="#{msgs['component.table.column4']} "/>
-                </ice:panelGroup>
-                <h3>
-                    <ice:outputText value="#{msgs['component.table.scrollable.title']}"/>
-                </h3>
-                <ice:panelGroup>
+        <ice:panelGroup styleClass="formBorderHighlight" >
+            <h3>
+                <ice:outputText value="#{msgs['component.table.title']}"/>
+            </h3>
+            <ice:panelGroup>
+                <ice:selectBooleanCheckbox id="FirstNameChk"
+                                           value="#{table.renderFirstName}"
+                                           partialSubmit="true"/>
+                <ice:outputText
+                        value="#{msgs['component.table.column1']} "/>
+                <ice:selectBooleanCheckbox id="LastNameChk"
+                                           value="#{table.renderLastName}"
+                                           partialSubmit="true"/>
+                <ice:outputText
+                        value="#{msgs['component.table.column2']} "/>
+                <ice:selectBooleanCheckbox id="EmailChk"
+                                           value="#{table.renderEmail}"
+                                           partialSubmit="true"/>
+                <ice:outputText
+                        value="#{msgs['component.table.column4']} "/>
+            </ice:panelGroup>
+            <h3>
+                <ice:outputText value="#{msgs['component.table.scrollable.title']}"/>
+            </h3>
+            <ice:panelGroup>
 
-                    <ice:outputText
-                            value="#{msgs['component.table.scrollable.height']} "/>
+                <ice:outputText
+                        value="#{msgs['component.table.scrollable.height']} "/>
 
-                    <ice:inputText id="ScrollHt"
-                            size="10"
-                            value="#{table.scrollableHeight}" />
+                <ice:inputText id="ScrollHt"
+                        size="10"
+                        value="#{table.scrollableHeight}" />
 
-                    <ice:selectBooleanCheckbox id="scrollable"
-                                               value="#{table.scrollable}"
-                                               partialSubmit="true"/>
-                    <ice:outputText
-                            value="#{msgs['component.table.scrollable']} "/>
+                <ice:selectBooleanCheckbox id="scrollable"
+                                           value="#{table.scrollable}"
+                                           partialSubmit="true"/>
+                <ice:outputText
+                        value="#{msgs['component.table.scrollable']} "/>
 
-                </ice:panelGroup>
-                <br/>
+            </ice:panelGroup>
+            <br/>
 
-                <!--
-                    Basic table
-                -->
-                <div style="width: 600px">
+            <!--
+                Basic table
+            -->
+            <div style="width: 600px">
                 <ice:dataTable id="iceDataTbl"
                                var="person"
                                value="#{scrollerList.persons}"
@@ -106,7 +102,7 @@ a control on the data to hide/show the table columns.
                         >
                     <ice:column rendered="#{table.renderFirstName}">
                         <f:facet name="header">
-                            <ice:outputText id="FirstNameColm" 
+                            <ice:outputText id="FirstNameColm"
                                     value="#{msgs['component.table.column1']}"/>
                         </f:facet>
                         <ice:outputText id="FirstName"
@@ -115,7 +111,7 @@ a control on the data to hide/show the table columns.
 
                     <ice:column rendered="#{table.renderLastName}">
                         <f:facet name="header">
-                            <ice:outputText id="LastNameColm" 
+                            <ice:outputText id="LastNameColm"
                                     value="#{msgs['component.table.column2']}"/>
                         </f:facet>
                         <ice:outputText id="LastName"
@@ -124,7 +120,7 @@ a control on the data to hide/show the table columns.
 
                     <ice:column rendered="#{table.renderEmail}">
                         <f:facet name="header">
-                            <ice:outputText id="EmailColm" 
+                            <ice:outputText id="EmailColm"
                                     value="#{msgs['component.table.column4']}"/>
                         </f:facet>
                         <ice:outputLink id="MailTo"
@@ -134,11 +130,9 @@ a control on the data to hide/show the table columns.
                         </ice:outputLink>
                     </ice:column>
                 </ice:dataTable>
-                </div>
-            </ice:panelGrid>
+            </div>
+        </ice:panelGroup>
 
-
-        </ice:panelGrid>
     </ice:panelTab>
 
     <!--
@@ -158,6 +152,12 @@ a control on the data to hide/show the table columns.
         <iframe
                 src="./sourcecodeStream.html?path=./inc/components/table.jspx"
                 class="includeIframe" width="100%"></iframe>
+    </ice:panelTab>
+
+    <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+        <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
+                class="includeIframe"
+                width="100%"></iframe>
     </ice:panelTab>
 
 

@@ -47,21 +47,15 @@ to show how visibility, focus and tab placement can be dynamically changed.
 -->
 <ice:panelTab id="icePanelTab" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid
-        styleClass="componentLayoutRootTable"
-        columns="1">
-
 <!-- Static Panel Tab set example -->
-<ice:panelGrid columnClasses="contentLayoutGridColumn" columns="2">
+<ice:panelGroup style="float:left;">
 <!-- Controls for Static tabs -->
-<ice:panelGrid>
-    <h3>
+    <h3 style="margin-left:5px;">
         <ice:outputText
                 value="#{msgs['component.tabSet.static.title']}"/>
     </h3>
     <!-- Tab Visibility Selection controls -->
-    <ice:panelGrid styleClass="tabPanelControls"
-                   columnClasses="contentLayoutGridColumn" columns="1">
+    <ice:panelGroup styleClass="formBorderHighlight" style="float:left;margin-right:10px;width:195px;" >
         <h3>
             <ice:outputText
                     value="#{msgs['component.tabSet.tabVisibility']}"/>
@@ -119,15 +113,12 @@ to show how visibility, focus and tab placement can be dynamically changed.
                           itemLabel="#{msgs['component.tabSet.bottom']}"
                           itemValue="bottom"/>
         </ice:selectOneRadio>
-    </ice:panelGrid>
+    </ice:panelGroup>
+</ice:panelGroup>
 
-</ice:panelGrid>
-
-<ice:panelGroup
-        styleClass="contentLayoutGridColumn"
-        style="margin-bottom:5px;margin-top:10px; width:350px;">
-    <h3>&#160;</h3>
-    <ice:panelTabSet id="staticTabSetPnl"
+<ice:panelGroup style="float:left;">
+    <h3 style="display:inline;" >&#160;</h3>
+    <ice:panelTabSet id="staticTabSetPnl" style="width: 350px;"
                      selectedIndex="#{staticTabbedPaneExample.selectedIndex}"
                      tabPlacement="#{staticTabbedPaneExample.tabPlacement}">
 
@@ -198,14 +189,17 @@ to show how visibility, focus and tab placement can be dynamically changed.
     <ice:messages/>
 </ice:panelGroup>
 
+<ice:panelGroup styleClass="clearer" />
+
 <!-- Controls for Dynamic Tabs -->
-<ice:panelGrid>
-    <h3>
+<!-- Static Panel Tab set example -->
+<ice:panelGroup style="float:left;">
+    <h3 style="margin-left:5px;">
         <ice:outputText
                 value="#{msgs['component.tabSet.dynamic.title']}"/>
     </h3>
     <!-- add a new tab -->
-    <ice:panelGrid columns="1" styleClass="tabPanelControls">
+    <ice:panelGroup styleClass="formBorderHighlight" style="float:left;margin-right:10px;width:195px;" >
         <h3>
             <ice:outputText
                     value="#{msgs['component.tabSet.addTab.title']}"/>
@@ -224,54 +218,45 @@ to show how visibility, focus and tab placement can be dynamically changed.
         <ice:inputTextarea id="newTabContent"
                            rows="3"
                            value="#{dynamicTabbedPaneExample.newTabContent}"/>
-
+        <br />
         <ice:commandButton id="addButton" value="Add Tab"
                            actionListener="#{dynamicTabbedPaneExample.addTab}"/>
 
-    </ice:panelGrid>
 
-</ice:panelGrid>
+        <h3 style="padding-top: 15px;">
+            <ice:outputText
+                    value="#{msgs['component.tabSet.removeTab.title']}"/>
+        </h3>
 
-<ice:panelGroup
-        styleClass="contentLayoutGridColumn"
-        style="margin-bottom:5px;margin-top:10px; width:350px;">
+        <ice:panelGrid columns="2">
+            <ice:selectOneMenu id="selectRemoveTab" value="#{dynamicTabbedPaneExample.removedTab}">
+                <f:selectItems id="removeTabItems" value="#{dynamicTabbedPaneExample.tabItems}"/>
+            </ice:selectOneMenu>
+
+
+            <ice:commandButton id="removeButton" value="Remove Tab"
+                               actionListener="#{dynamicTabbedPaneExample.removeTab}"/>
+        </ice:panelGrid>
+        
+    </ice:panelGroup>
+</ice:panelGroup>
+
+
+<ice:panelGroup style="float:left;">
     <h3>&#160;</h3>
     <ice:panelTabSet id="dynamicTabSet"
     				 var="tab"
                      value="#{dynamicTabbedPaneExample.tabs}"
                      selectedIndex="#{dynamicTabbedPaneExample.selectedIndex}"
                      tabPlacement="bottom"
-                     styleClass="myTab">
+                     styleClass="myTab"  style="width: 350px;">
         <ice:panelTab id="dynamicLabel" label="#{tab.label}">
             <ice:outputText id="dynamicContent" value="#{tab.content}"/>
         </ice:panelTab>
     </ice:panelTabSet>
 </ice:panelGroup>
 
-</ice:panelGrid>
-<!-- remove a new tab -->
-<ice:panelGrid style="position: relative;left: 06px;"
-               styleClass="tabPanelControls">
-
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.tabSet.removeTab.title']}"/>
-    </h3>
-
-    <ice:panelGrid columns="2">
-        <ice:selectOneMenu id="selectRemoveTab" value="#{dynamicTabbedPaneExample.removedTab}">
-            <f:selectItems id="removeTabItems" value="#{dynamicTabbedPaneExample.tabItems}"/>
-        </ice:selectOneMenu>
-
-
-        <ice:commandButton id="removeButton" value="Remove Tab"
-                           actionListener="#{dynamicTabbedPaneExample.removeTab}"/>
-    </ice:panelGrid>
-</ice:panelGrid>
-</ice:panelGrid>
-
 </ice:panelTab>
-
 <!--
   The bean is responsible for streaming html documentation to
   this placeholder
@@ -290,6 +275,13 @@ to show how visibility, focus and tab placement can be dynamically changed.
             src="./sourcecodeStream.html?path=./inc/layoutPanels/panelTabSet.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/tabset-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
+
 
 </ice:panelTabSet>
 

@@ -1,15 +1,11 @@
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-       
-        <td align="center" class="footerText" style="padding: 36px 20px 0 0;">
-        </td>
-        <td align="right" class="footerText" style="padding: 36px 20px 0 0;">
-            POWERED BY &#160;<a href="http://www.icefaces.org/product/"
-                                class="linkOrange"><strong>ICEfaces</strong></a>
-        </td>
-        <td align="right" width="121">
-            <img src="./images/template/footer_faces.jpg"
-                 alt="Powered by ICEfaces" width="121" height="95"/>
-        </td>
-    </tr>
-</table>
+<div class="footer_container">
+     <div class="footer_left" >
+         <div style="display:inline;float:left">&#160;  Copyright 2007
+             <a href="http://www.icesoft.com/" target="_blank" >ICEsoft Technologies Inc.</a></div>
+         <div style="display:inline;float:right"><i>Powered By
+             <a href="http://www.icefaces.org/" target="_blank" >ICEfaces</a></i></div>
+
+     </div>
+     <div class="footer_right" ><img src="./css/images/footer_faces.jpg" alt="ICEfaces" width="121"
+             height="95" border="0"/></div>
+</div>

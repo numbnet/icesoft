@@ -46,63 +46,59 @@
     -->
     <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-        <ice:panelGrid
-                styleClass="componentLayoutRootTable"
-                columns="1">
+        <!-- Description -->
+        <ice:panelGroup styleClass="formBorderHighlight">
+            <h4>
+                <ice:outputText
+                        value="#{msgs['component.table.row.panelPositioned.instruction']}"/>
+            </h4>
+        </ice:panelGroup>
 
-            <!-- Description -->
-            <ice:panelGroup styleClass="formBorderHighlight">
-                <h4>
-                    <ice:outputText 
-                            value="#{msgs['component.table.row.panelPositioned.instruction']}"/>
-                </h4>
-            </ice:panelGroup>
+        <ice:panelGroup style="float:left;margin-left:25px;margin-right:25px;">
+            <!-- Edit status colum -->
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.table.row.panelPositioned.fixed.column.label']}"/>
 
-            <ice:panelGrid id="icePanelGrid" columns="2">
-                <!-- Edit rank colum -->
-                <ice:outputText styleClass="propertyLabel"
-                                value="#{msgs['component.table.row.panelPositioned.positionable.column.label']}"/>
-
-                <!-- Edit status colum -->
-                <ice:outputText styleClass="propertyLabel"
-                                value="#{msgs['component.table.row.panelPositioned.fixed.column.label']}"/>
-
-                <!-- Positioned Panel, can be manipulated by the user -->
-                <ice:panelPositioned id="people"
-                                     var="person"
-                                     value="#{panelPositioned.people}"
-                                     styleClass="positionPanelContainer"
-                                     listener="#{panelPositioned.changed}"
-                                     constraint="vertical">
-                    <ice:panelGroup style="cursor:move;">
-
-                        <ice:outputText id="name" value="#{person.name}"/>
-
-                    </ice:panelGroup>
-
-                </ice:panelPositioned>
-
-                <!-- Shows the dataset manaipulated by the panelPostioned Component -->
-                <ice:panelSeries id="peopleCurrent"
+            <!-- Positioned Panel, can be manipulated by the user -->
+            <ice:panelPositioned id="people"
                                  var="person"
                                  value="#{panelPositioned.people}"
-                                 styleClass="positionPanelContainer" >
-                    <ice:panelGroup effect="#{person.effect}">
-                        <ice:outputText id="nameWithRank"
-                                value="#{person.nameWithRank}"/>
-                    </ice:panelGroup>
-                </ice:panelSeries>
+                                 styleClass="positionPanelContainer"
+                                 listener="#{panelPositioned.changed}"
+                                 constraint="vertical">
+                <ice:panelGroup style="cursor:move;">
 
+                    <ice:outputText id="name" value="#{person.name}"/>
 
-                <!-- spacer -->
-                <ice:panelGroup  style="height: 25px;" />
-                <ice:panelGroup visible="false" >
-                    <ice:outputText styleClass="propertyLabel"
-                                value="#{msgs['component.table.row.panelPositioned.changed.column.label']}"/>
                 </ice:panelGroup>
 
-            </ice:panelGrid>
-        </ice:panelGrid>
+            </ice:panelPositioned>
+        </ice:panelGroup>
+
+        <ice:panelGroup style="float:left;margin-left:25px;margin-right: 25px;">
+            <!-- Edit rank colum -->
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.table.row.panelPositioned.positionable.column.label']}"/>
+
+            <!-- Shows the dataset manaipulated by the panelPostioned Component -->
+            <ice:panelSeries id="peopleCurrent"
+                             var="person"
+                             value="#{panelPositioned.people}"
+                             styleClass="positionPanelContainer" >
+                <ice:panelGroup effect="#{person.effect}">
+                    <ice:outputText id="nameWithRank"
+                            value="#{person.nameWithRank}"/>
+                </ice:panelGroup>
+            </ice:panelSeries>
+
+
+            <!-- spacer -->
+            <ice:panelGroup  style="height: 25px;" />
+            <ice:panelGroup visible="false" >
+                <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.table.row.panelPositioned.changed.column.label']}"/>
+            </ice:panelGroup>
+        </ice:panelGroup>
 
     </ice:panelTab>
 

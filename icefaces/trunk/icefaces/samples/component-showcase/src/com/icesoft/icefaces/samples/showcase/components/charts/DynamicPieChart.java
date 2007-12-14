@@ -178,9 +178,9 @@ public class DynamicPieChart {
                     new Color(
                             Integer.parseInt(
                                     event.getNewValue().toString(), 16));
-            System.out.println("Hex Color: " + 
-                        Integer.parseInt(
-                                    event.getNewValue().toString(), 16));
+//            System.out.println("Hex Color: " +
+//                        Integer.parseInt(
+//                                    event.getNewValue().toString(), 16));
         }
     }
 
