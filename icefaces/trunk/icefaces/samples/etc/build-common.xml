@@ -17,6 +17,26 @@
 <dirname property="build.common.basedir" file="${ant.file.common}"/>
 <property name="icefaces.lib.dir" location="${build.common.basedir}/../../lib"/>
 
+<property name="portlet.base.dir" location="./build"/>
+<property name="portlet.web.content.dir" location="${portlet.base.dir}/web"/>
+<property name="portlet.web.dir" location="./portlet/web"/>
+<property name="portlet.web.inf.dir" location="${portlet.web.content.dir}/WEB-INF"/>
+<property name="portlet.app.lib.dir" location="${portlet.web.inf.dir}/lib"/>
+
+
+<property name="portlet.conf.dir" location="./portlet/conf"/>
+<property name="portlet.xml" value="portlet.xml"/>
+<property name="portlet.liferay.dir" location="${portlet.conf.dir}/liferay"/>
+
+<patternset id="liferay.xmls">
+	<exclude name="liferay-display.xml" unless="liferay"/>
+	<exclude name="liferay-plugin-package.xml" unless="liferay"/>
+	<exclude name="liferay-portlet.xml" unless="liferay"/>
+</patternset>
+
+<patternset id="portlet.jar" includes="portlet.jar"/>
+<!--/patternset-->
+
 <patternset id="common.icefaces.lib.jars.to.include"
     includes="
         backport-util-concurrent.jar
@@ -47,6 +67,10 @@
 </patternset>
 
 <patternset id="additional.compile.lib.jars"/>
+
+<patternset id="portlet.conf.files">
+	<include name="**/*.xml" if="liferay"/>
+</patternset>
 
 <patternset id="jsf.compile.jars" >
     <include name="myfaces-api.jar"  if="myfaces" />
@@ -146,6 +170,7 @@
                   <patternset refid="additional.icefaces.lib.jars.to.include"/>
                   <patternset refid="additional.compile.lib.jars"/>
                   <patternset refid="jsf.compile.jars" />
+                  <patternset refid="portlet.jar"/>
                 </fileset>
             </classpath>
             <add.javac.elements/>
@@ -190,6 +215,59 @@
     </sequential>
 </macrodef>
 
+<macrodef name="build.portlet.war">
+    <attribute name="war.file.name" default="${ant.project.name}.war"/>
+    <attribute name="web.xml" default="${web.inf.dir}/web.xml"/>
+    <element name="add.filesets" optional="true"/>
+
+    <sequential>
+        <mkdir dir="${dist.dir}"/>
+
+        <copy todir="${web.inf.dir}" preservelastmodified="true">
+            <fileset dir="${build.common.basedir}" includes="web.xml">
+                <present present="srconly" targetdir="${web.inf.dir}"/>
+            </fileset>
+        </copy>
+        
+
+        <copy todir="${portlet.web.content.dir}/portlet">
+        	<fileset dir="${portlet.web.dir}">
+			<include name="*.jspx"/>
+       		</fileset>
+       	</copy>
+        <copy todir="${portlet.web.content.dir}">
+       		
+        	<fileset dir="${web.content.dir}"/>
+        </copy>
+        <copy todir="${portlet.web.inf.dir}">
+       		<fileset dir="${portlet.conf.dir}">
+			<include name="${portlet.xml}"/>
+		</fileset>
+		<fileset dir="${portlet.liferay.dir}">
+			<patternset refid="liferay.xmls"/>
+		</fileset>
+        </copy>
+
+        <copy file="@{web.xml}" tofile="${portlet.web.inf.dir}/web.xml" preservelastmodified="true" overwrite="true"/>
+
+        <copy todir="${portlet.app.lib.dir}" preservelastmodified="true">
+            <fileset dir="${icefaces.lib.dir}">
+                <patternset refid="common.icefaces.lib.jars.to.include"/>
+                <patternset refid="additional.icefaces.lib.jars.to.include"/>
+            </fileset>
+            <fileset dir="${icefaces.lib.dir}">
+                <patternset refid="jsf.deploy.jars" />
+            </fileset>
+        </copy>
+
+        <war basedir="${portlet.web.content.dir}" destfile="${dist.dir}/@{war.file.name}" duplicate="fail"
+             webxml="${portlet.web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
+            <add.filesets/>
+        </war>
+        
+    </sequential>
+</macrodef>
+
 <target name="clean" description="">
     <clean/>
 </target>
@@ -200,6 +278,11 @@
 
 <target name="build.war" description="" depends="compile">
     <build.war/>
+</target>
+
+<target name="build.portlet.war" description="" depends="compile">
+	<property name="portlet" value="true"/>
+	<build.portlet.war/>
 </target>
 
 <target name="build.ear" description="" depends="build.war">
