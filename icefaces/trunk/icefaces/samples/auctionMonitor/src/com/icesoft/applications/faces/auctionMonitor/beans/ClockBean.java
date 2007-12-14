@@ -151,8 +151,7 @@ public class ClockBean implements Renderable, DisposableBean {
             log.info("Disposing ClockBean for a user - cleaning up");
         }
 
-        if (clock != null) {
-            clock.remove(this);
-        }
+        performCleanup();
+        
     }
 }
