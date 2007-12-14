@@ -337,6 +337,20 @@
 </target>
 -->
 
+<target name="build.portlet.jboss4.2.war" description="portlet version for Jboss4.2" depends="compile">
+	<antcall target="build.portlet.war">
+		<param name="jsf12" value=""/>
+		<param name="serverjsf" value=""/>
+	</antcall>
+</target>
+
+<target name="build.portlet.liferay.war" description="portlet version for liferay tomcat5"  depends="compile">
+	<property name="portlet" value="true"/>
+	<antcall target="build.portlet.war">
+		<param name="liferay" value=""/>
+	</antcall>
+</target>
+
 <target name="tomcat6.0" description="Tomcat 6.0">
 	<antcall target="build.war">
 		<param name="jsf12" value=""/>
