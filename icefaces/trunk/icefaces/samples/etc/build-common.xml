@@ -217,7 +217,7 @@
 
 <macrodef name="build.portlet.war">
     <attribute name="war.file.name" default="${ant.project.name}.war"/>
-    <attribute name="web.xml" default="${web.inf.dir}/web.xml"/>
+    <attribute name="web.xml" default="./conf/web.sunri.icefaces.portlet.xml"/>
     <element name="add.filesets" optional="true"/>
 
     <sequential>
