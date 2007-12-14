@@ -201,9 +201,14 @@
             <component-family>javax.faces.Panel</component-family>
             <renderer-type>com.icesoft.faces.PanelPopup</renderer-type>
             <renderer-class>com.icesoft.faces.component.panelpopup.PanelPopupRenderer</renderer-class>
-
         </renderer>
 
+        <renderer>
+            <component-family>javax.faces.Panel</component-family>
+            <renderer-type>com.icesoft.faces.PanelTooltipRenderer</renderer-type>
+            <renderer-class>com.icesoft.faces.component.paneltooltip.PanelTooltipRenderer</renderer-class>
+        </renderer>
+        
       <renderer>
             <component-family>com.icesoft.faces.OutputStyle</component-family>
             <renderer-type>com.icesoft.faces.style.OutputStyleRenderer</renderer-type>
@@ -422,6 +427,11 @@
     <component-class>com.icesoft.faces.component.panelpopup.PanelPopup</component-class>
   </component>
 
+  <component>
+    <component-type>com.icesoft.faces.PanelTooltip</component-type>
+    <component-class>com.icesoft.faces.component.paneltooltip.PanelTooltip</component-class>
+  </component>
+  
     <component>
       <component-type>com.icesoft.faces.OutputStyleComp</component-type>
       <component-class>com.icesoft.faces.component.style.OutputStyle</component-class>

@@ -4,8 +4,15 @@ import java.util.Iterator;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+
+import org.w3c.dom.Element;
+
+import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
@@ -127,5 +134,41 @@ public class CoreUtils {
         } else { //component is valid, so remove the old message.
             input.getAttributes().remove(localFacesMsgId);
         }        
+    }
+    public static int toolTipcounter = 1;
+    public static void addPanelTooltip(FacesContext facesContext, UIComponent uiComponent) {
+        DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
+        if (uiComponent.getAttributes().get("panelTooltip") == null) return;
+        String panelTooltipId = String.valueOf(uiComponent.getAttributes().get("panelTooltip"));
+        String delay = "500" ;
+        String autoHide = "onExit";
+        boolean dynamic = false;
+        String formId = "";
+        //if the id starts with :, means plain text title needs to be used
+        if (!panelTooltipId.startsWith(":") ) {
+            UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
+            if (panelTooltip != null/* && family type equals panelPopup*/) { 
+                //replace the id with the clientid
+                panelTooltipId = panelTooltip.getClientId(facesContext);
+                if (panelTooltip.getAttributes().get("autoHide") != null) {
+                    autoHide = String.valueOf(panelTooltip.getAttributes().get("autoHide"));
+                }
+                if (panelTooltip.getAttributes().get("dynamic") != null) {
+                    dynamic = ((Boolean)panelTooltip.getAttributes().get("dynamic")).booleanValue();
+                }                
+                if (panelTooltip.getAttributes().get("hoverDelay") != null) {
+                    delay = String.valueOf(panelTooltip.getAttributes().get("hoverDelay"));
+                }
+            }
+            UIComponent form = DomBasicRenderer.findForm(panelTooltip);
+            if (form != null) {
+                formId = form.getClientId(facesContext);
+            }
+        }
+
+        Element rootElement = (Element) domContext.getRootNode();
+        String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
+        onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ autoHide +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"');";
+        rootElement.setAttribute("onmouseover", onmouseover);
     }
 }

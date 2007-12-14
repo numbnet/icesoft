@@ -104,7 +104,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private String hoverclass;
     
     private String menuPopup;
-
+    private String panelTooltip;
     /**
      *
      */
@@ -809,6 +809,24 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
                     super.getStyleClass(),
                     CSS_DEFAULT.PANEL_GROUP_DEFAULT_STYLE_CLASS,
                     "styleClass");
+    }
+    
+    /**
+     * <p>Set the value of the <code>panelTooltip</code> property.</p>
+     */
+    public void setPanelTooltip(String panelTooltip) {
+        this.panelTooltip = panelTooltip;
+    }
+
+    /**
+     * <p>Return the value of the <code>panelTooltip</code> property.</p>
+     */
+    public String getPanelTooltip() {
+        if (panelTooltip != null) {
+            return panelTooltip;
+        }
+        ValueBinding vb = getValueBinding("panelTooltip");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
 }

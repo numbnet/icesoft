@@ -284,3 +284,15 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+    Hover class
+    </description>
+    <property-name>panelTooltip</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <is-hidden>true</is-hidden>
+    </property-extension>
+</property>

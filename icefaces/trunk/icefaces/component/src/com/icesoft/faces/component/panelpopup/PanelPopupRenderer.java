@@ -131,11 +131,7 @@ public class PanelPopupRenderer extends GroupRenderer {
         }
 
         Element root = (Element) domContext.getRootNode();
-        String style = ((PanelPopup) uiComponent).getStyle();
-        if (style != null && style.length() > 0)
-            root.setAttribute(HTML.STYLE_ATTR, style);
-        else
-            root.removeAttribute(HTML.STYLE_ATTR);
+
         try {
             root.setAttribute(HTML.CLASS_ATTR, styleClass);
         } catch (Exception e) {
@@ -179,6 +175,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 
 
             bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
+            bodyTr.setAttribute(HTML.ID_ATTR, clientId+"-tr");
             bodyTr.appendChild(bodyTd);
             // add body facet to body tr then add to table
             table.appendChild(bodyTr);
@@ -211,10 +208,12 @@ public class PanelPopupRenderer extends GroupRenderer {
             footerTr.appendChild(footerTd);
             table.appendChild(footerTr);
         }
-
+        
+        panelPopup.applyStyle(facesContext, root);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
-        CurrentStyle.apply(facesContext, uiComponent);
+
+        
         // Rebroadcast Javascript to survive refresh
         if (dndType != null) {
             String call = addJavascriptCalls(uiComponent, "DRAG", handleId, facesContext);

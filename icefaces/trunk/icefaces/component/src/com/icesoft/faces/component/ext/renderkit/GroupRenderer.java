@@ -44,6 +44,7 @@ import com.icesoft.faces.context.effects.DragDrop;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.DnDCache;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -211,6 +212,7 @@ public class GroupRenderer
         validateParameters(facesContext, uiComponent, null);
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
+        CoreUtils.addPanelTooltip(facesContext, uiComponent);
         domContext.stepOver();
 
     }

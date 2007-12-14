@@ -234,6 +234,7 @@
                 <file name="bootstrap.js"/>
                 <file name="gmap.js"/>
                 <file name="repository.js"/>
+                <file name="tooltip_panelpopup.js"/>                 
             </filelist>
             <filelist dir="${component.dir}">
                 <file name="menu.js"/>

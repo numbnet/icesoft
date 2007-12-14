@@ -36,11 +36,15 @@ package com.icesoft.faces.component.panelpopup;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+
+import org.w3c.dom.Element;
 
 /**
  * PanelPopup is a JSF component class that represents an ICEfaces popup panel.
@@ -277,4 +281,13 @@ public class PanelPopup
         ValueBinding vb = getValueBinding("title");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    public void applyStyle(FacesContext facesContext, Element root) {
+        String style = getStyle();
+        if (style != null && style.length() > 0)
+            root.setAttribute(HTML.STYLE_ATTR, style);
+        else
+            root.removeAttribute(HTML.STYLE_ATTR);
+        CurrentStyle.apply(facesContext, this);
+    }    
 }

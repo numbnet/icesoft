@@ -34,7 +34,6 @@
  
 ToolTipPanelPopup = Class.create({
   initialize: function(srcComp, tooltipCompId, event, autoHide, delay, dynamic, formId) {
-   logger.info ("1- ToolTip initilized");
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true"); 
@@ -44,8 +43,6 @@ ToolTipPanelPopup = Class.create({
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
     this.formId = formId;
-    logger.info('event found'+ event + 'Evene x' +Event.pointerX(event));
-
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -53,12 +50,9 @@ ToolTipPanelPopup = Class.create({
     if (autoHide == "onClick") {
         this.autoHide = "mousedown"
         this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
-      logger.info ("event registered as "+ this.autoHide ) ;
-
     } else if (autoHide == "onExit") {
         this.autoHide = "mouseout"
         this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
-     logger.info ("event registered as "+ this.autoHide) ;
     } else {
         this.autoHide = false;
     }
@@ -74,7 +68,6 @@ ToolTipPanelPopup = Class.create({
   },
 
   showPopup: function() {
-    logger.info("2- Show popup");
     if (this.isTooltipVisible()) return;
     this.addToVisibleList();
 
@@ -99,7 +92,6 @@ ToolTipPanelPopup = Class.create({
 
   hidePopupOnMouseOut: function(event) {
     if (!this.isTooltipVisible()) return;
-    logger.info("3- Hide popup mouseout");
     this.hidePopup(event);
     this.state = "hide";
     this.populateFields();
@@ -111,26 +103,20 @@ ToolTipPanelPopup = Class.create({
 
   hidePopupOnMouseClick: function(event) {
     if (!this.isTooltipVisible() || !Event.isLeftClick(event)) return;
-   
-    logger.info("3- Hide popup mouseclick" + this.tooltipCompId);
     var eventSrc = Event.element(event);
     if(this.srcOrchildOfSrcElement(eventSrc)) {
-       logger.info( "can not hide, its a src child");
         return;
     } else {
         this.hidePopup(event);
     }
     if (this.autoHide == "mousedown") {
-        logger.info("TOTAL LENGTH : " + visibleTooltipList.length);
         this.removedFromVisibleList();
-        logger.info("TOTAL LENGTH After Remove: " + visibleTooltipList.length);
     }
     this.dispose(event);
   },
 
 
  dispose: function(event) {
-    logger.info( "Hide pop called NEW LIST INDEX "+ visibleTooltipList.length);
     Event.stopObserving(document, this.autoHide, this.hideEvent);
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
 
@@ -150,7 +136,6 @@ ToolTipPanelPopup = Class.create({
   
   
   submit:function(state, event) {
-      logger.info("Submitting the Form");
       if (!event) event = new Object();
       this.state = state;
       this.populateFields();
@@ -170,7 +155,6 @@ ToolTipPanelPopup = Class.create({
 
   updateCordinate: function(event) {
     if (Event.element(event) != this.src) return;
-     logger.info( "updating cordinates"+ this.autoHide);
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
   },
@@ -213,56 +197,48 @@ ToolTipPanelPopup = Class.create({
         if (element.id == "iceTooltipInfo") return element;
     });
     if (!iceTooltipInfo) { 
-        logger.info("TOOLTIP Element not found creating one");
 	    iceTooltipInfo = document.createElement('input');
 	    iceTooltipInfo.id="iceTooltipInfo";
 	    iceTooltipInfo.name="iceTooltipInfo";            
 	    iceTooltipInfo.type="hidden";
         form.appendChild(iceTooltipInfo);
     }  else {
-            logger.info("TOOLTIP Element found REUSING IT");
+ 
     }
     iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId + 
                      "; tooltip_src_id="+ this.src.id+ 
                      "; tooltip_state="+ this.state +
                      "; tooltip_x="+ this.x +
                      "; tooltip_y="+ this.y;
-     logger.info("Fields are populated :: "+ iceTooltipInfo.value);  
     },
     
     addToVisibleList: function() {
         if (!this.isTooltipVisible()) {
-            logger.info("ADD: NOT in the visible list ADDINGGGGGG");
-            visibleTooltipList[parseInt(visibleTooltipList.length)] = this.tooltipCompId;
+            this.removedFromVisibleList('all');
+            visibleTooltipList[parseInt(visibleTooltipList.length)] = {tooltipId: this.tooltipCompId, srcCompId: this.srcCompId};
         } else {
-            logger.info("ADD: Already found in the visible list NOT ADDINGGGGGG");
         }
     },
     
-    removedFromVisibleList: function() {
-     logger.info("REMOVE: TRYING TO REMOVING");
-        if (this.isTooltipVisible()) {
-             logger.info("REMOVE: FOUND IN REMOVE LIST");
+    removedFromVisibleList: function(all) {
+        if (this.isTooltipVisible() || all) {
 	        var newList = new Array();
 		    var index = -1;
 		    for (i=0; i < visibleTooltipList.length; i++) {
-		        logger.info ("REMOVELIST : "+ visibleTooltipList[i]);
-		        if (visibleTooltipList[i] != this.tooltipCompId) {
+		        if (visibleTooltipList[i].tooltipId != this.tooltipCompId) {
 		            index = parseInt(index)+ 1;
 		            newList[index] = visibleTooltipList[i];
 		        }else {
-		         logger.info("REMOVE: FOUND in the visible list REMOVING");
 		        }
 		    }
 		    visibleTooltipList = newList;
 		} else {
-		logger.info("REMOVE: NOT FOUND in the visible list CANT REMOVE");
 		}
     },
     
     isTooltipVisible: function() {
         for (i=0; i < visibleTooltipList.length; i++) {
-            if (visibleTooltipList[i]== this.tooltipCompId) {
+            if (visibleTooltipList[i].tooltipId== this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
                 return true;
             }   
         }
