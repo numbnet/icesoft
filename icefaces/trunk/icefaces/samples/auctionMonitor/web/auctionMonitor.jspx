@@ -35,37 +35,39 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:outputDeclaration doctypeRoot="HTML"
+                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+
 <html>
 <head><title>Auction Monitor - Direct-to-DOM (D2D) Version</title>
-    <ice:outputStyle href="auction_styles.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <ice:outputStyle href="./css/demo_template.css"/>
+    <ice:outputStyle href="./css/auction_styles.css"/>
 </head>
 
-<body bgcolor="white">
-<ice:panelGroup id="headerDiv">
-    <table width="100%" cellpadding="0" cellspacing="0">
-        <tr style="background-image:url(images/header_background.gif); background-repeat:repeat-x;">
-            <td width="340">
-                <ice:graphicImage url="images/header_left.gif"
-                                  style="width: 338px; height: 60px;"/>
-            </td>
-            <td></td>
-            <td width="120" rowspan="2" align="right" valign="top">
-                <ice:graphicImage url="images/header_right.gif"
-                                  style="width: 119px; height: 102px;"/>
-            </td>
-        </tr>
-        <tr>
-            <td valign="top">
-                <ice:graphicImage url="images/monitor_logo.gif"
-                                  style="width: 315px; height: 60px;"/>
-            </td>
-            <td></td>
-        </tr>
-    </table>
-</ice:panelGroup>
+<body>
+<div>
+    <div class="header_right">
+        <img src="./css/images/banner_logo.jpg" alt="ICEfaces" width="267"
+             height="159"/>
+    </div>
+    <div class="header_container">
+        <div class="header_left">
+            <img src="./css/images/banner_hdr_auction.jpg"
+                 width="463" height="100"
+                 title="Component Suite Showcase"
+                 alt="Component Suite Showcase"/>
+        </div>
+
+        <div class="clearer"/>
+    </div>
+</div>
 
 <!-- Item List Start -->
-<h:form id="iceForm">
+<div id="auction_content">
+<ice:form id="iceForm">
     <div id="hiddenDiv">
         <ice:outputText value="#{AuctionBean.autoLoad}"/>
         <ice:outputText value="#{LogBean.autoLoad}"/>
@@ -73,11 +75,6 @@
         <ice:outputText value="#{ClockBean.autoLoad}"/>
     </div>
     <ice:commandButton id="default" image="./images/x.gif" value="Submit"/>
-
-    <div id="bandDiv"><h:outputText style="color: #000000;"
-                                    value="Direct-to-DOM (D2D) Version"/>
-    </div>
-    <br/>
 
     <div id="resultsDiv">
         <ice:dataTable width="100%" cellspacing="1" styleClass="bidTable"
@@ -207,12 +204,13 @@
         </ice:dataTable>
     </div>
     <span style="font-size: smaller;">* Item prices cannot be incremented by more then $1,000,000 per bid.</span>     
-</h:form>
-<br/>
+</ice:form>
+</div>
 <!-- Item List End -->
 
 <!-- Chat Start -->
-<h:form id="chat">
+<div id="chat_content">
+<ice:form id="chat">
     <ice:commandButton id="default" image="./images/x.gif" value="Submit"/>
 
     <div id="chatDiv">
@@ -333,11 +331,12 @@
             </table>
         </div>
     </div>
-</h:form>
-<br/>
+</ice:form>
+</div>
 <!-- Chat End -->
 
 <!-- Readme Start -->
+<div id="readme_content">
 <h:form>
     <div id="readmeDiv">
         <ice:commandButton type="button" image="#{ReadmeBean.buttonLabel}"
@@ -348,8 +347,23 @@
                         rendered="#{ReadmeBean.expanded}"/>
     </div>
 </h:form>
-<!-- Readme End -->
+</div>
 
+<!-- Readme End -->
+<div class="footer_container">
+    <div class="footer_left">
+        <div style="display:inline;float:left">&#160; Copyright 2007
+            <a href="http://www.icesoft.com/"
+               target="_blank">ICEsoft Technologies Inc.</a></div>
+        <div style="display:inline;float:right"><i>Powered By
+            <a href="http://www.icefaces.org/" target="_blank">ICEfaces</a></i>
+        </div>
+
+    </div>
+    <div class="footer_right"><img src="./css/images/footer_faces.jpg"
+                                   alt="ICEfaces" width="121"
+                                   height="95" border="0"/></div>
+</div>
 
 
 <!-- PRELOAD TAB IMAGES -->
