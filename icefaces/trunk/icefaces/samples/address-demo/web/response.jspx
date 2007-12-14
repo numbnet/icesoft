@@ -34,94 +34,117 @@
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <ice:outputDeclaration doctypeRoot="HTML"
-                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
-    <html>
-    <head>
-        <meta http-equiv="Content-Type"
-              content="text/html; charset=iso-8859-1"></meta>
-        <title>ICEfaces Address Demo</title>
-        <script src="xmlhttp/icefaces-d2d.js" language="javascript"
-                type="text/javascript"></script>
-        <ice:outputStyle href='./xmlhttp/css/xp/xp.css'/>
-        <ice:outputStyle href="./css/address.css"/>
-    </head>
-    <body>
-    <div id="header">
-        <img src="images/address-left.gif" alt="ICEsoft"/>
-        <img src="images/address-right.gif"
-             alt="ICEfaces Direct-to-DOM Technology" id="d2dlogo"/>
+
+<ice:outputDeclaration doctypeRoot="HTML"
+                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+    <title>ICEfaces Address Demo</title>
+    <ice:outputStyle href="./css/demo_template.css"/>
+    <ice:outputStyle href='./xmlhttp/css/xp/xp.css'/>
+    <ice:outputStyle href="./css/address.css"/>
+</head>
+<body>
+<div>
+    <div class="header_right">
+        <img src="./css/images/banner_logo.jpg" alt="ICEfaces" width="267"
+             height="159"/>
     </div>
+    <div class="header_container">
+        <div class="header_left">
+            <img src="./css/images/banner_hdr_address.jpg"
+                 width="463" height="100"
+                 title="Component Suite Showcase"
+                 alt="Component Suite Showcase"/>
+        </div>
 
-    <div id="addressLogo">
-        <img src="images/addressform_logo.gif" alt="AddressForm"/>
+        <div class="clearer"/>
     </div>
-    <div id="addressFormPanel">
-        <h1>AddressForm Results</h1>
+</div>
 
-        <ice:form id="iceForm">
-            <table cellspacing="5">
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="title"
-                                                             value="Title:"/>
-                    </td>
-                    <td class="resultValue"><ice:outputText id="title"
-                                                            value="#{address.elementContainer.title.value}"/>
-                    </td>
+<div id="addressFormPanel">
+    <h1>AddressForm Results</h1>
 
-                </tr>
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="firstname"
-                                                             value="First Name:"/>
-                    </td>
-                    <td class="resultValue"><ice:outputText id="firstname"
-                                                            value="#{address.elementContainer.firstName.value}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="lastname"
-                                                             value="Last Name:"/>
-                    </td>
-                    <td class="resultValue"><ice:outputText id="lastname"
-                                                            value="#{address.elementContainer.lastName.value}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="city"
-                                                             value="City:"/>
-                    </td>
-                    <td class="resultValue"><ice:outputText id="city"
-                                                            value="#{address.elementContainer.city.value}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="state"
-                                                             value="State:"/>
-                    </td>
-                    <td class="resultValue"><ice:outputText id="state"
-                                                            value="#{address.elementContainer.state.value}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="resultLabel"><ice:outputLabel for="zip"
-                                                             value="Zip:"/></td>
-                    <td class="resultValue"><ice:outputText id="zip"
-                                                            value="#{address.elementContainer.zip.value}"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align:right;">
-                        <ice:commandButton title="enter new address"
-                                           image="./images/new-address-button.gif"
-                                           accesskey="N"
-                                           id="Return" styleClass="buttons"
-                                           value="Enter New Address"
-                                           action="#{address.reset}"/>
-                    </td>
-                </tr>
-            </table>
-        </ice:form></div>
-    </body>
-    </html>
+    <ice:form id="iceForm">
+        <table cellspacing="5">
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="title"
+                                                         value="Title:"/>
+                </td>
+                <td class="resultValue"><ice:outputText id="title"
+                                                        value="#{address.elementContainer.title.value}"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="firstname"
+                                                         value="First Name:"/>
+                </td>
+                <td class="resultValue"><ice:outputText id="firstname"
+                                                        value="#{address.elementContainer.firstName.value}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="lastname"
+                                                         value="Last Name:"/>
+                </td>
+                <td class="resultValue"><ice:outputText id="lastname"
+                                                        value="#{address.elementContainer.lastName.value}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="city"
+                                                         value="City:"/>
+                </td>
+                <td class="resultValue"><ice:outputText id="city"
+                                                        value="#{address.elementContainer.city.value}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="state"
+                                                         value="State:"/>
+                </td>
+                <td class="resultValue"><ice:outputText id="state"
+                                                        value="#{address.elementContainer.state.value}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="resultLabel"><ice:outputLabel for="zip"
+                                                         value="Zip:"/></td>
+                <td class="resultValue"><ice:outputText id="zip"
+                                                        value="#{address.elementContainer.zip.value}"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:right;">
+                    <ice:commandButton title="enter new address"
+                                       image="./images/new-address-button.gif"
+                                       accesskey="N"
+                                       id="Return" styleClass="buttons"
+                                       value="Enter New Address"
+                                       action="#{address.reset}"/>
+                </td>
+            </tr>
+        </table>
+    </ice:form></div>
+
+<div class="footer_container">
+    <div class="footer_left">
+        <div style="display:inline;float:left">&#160; Copyright 2007
+            <a href="http://www.icesoft.com/"
+               target="_blank">ICEsoft Technologies Inc.</a></div>
+        <div style="display:inline;float:right"><i>Powered By
+            <a href="http://www.icefaces.org/" target="_blank">ICEfaces</a></i>
+        </div>
+
+    </div>
+    <div class="footer_right"><img src="./css/images/footer_faces.jpg"
+                                   alt="ICEfaces" width="121"
+                                   height="95" border="0"/></div>
+</div>
+</body>
+</html>
 </f:view>
