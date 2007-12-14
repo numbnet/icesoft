@@ -223,20 +223,33 @@ public class ColumnsBean {
     }
     
     public void setMenuContext(MenuContextEvent e) {
+//System.out.println("ColumnsBean.setMenuContext()");
+//System.out.println("  e: " + e);
         if(e.isTerminal()) {
+//System.out.println("  terminal");
             // <dataTable>
             //   <columns>
             //     <panelGroup>  Terminal
             MenuContextEvent columnsEvent = e.getOuter();
-            int column = ((UIData) columnsEvent.getComponent()).getRowIndex();
-            MenuContextEvent dataTableEvent = columnsEvent.getOuter();
-            int row = ((UIData) dataTableEvent.getComponent()).getRowIndex();
-            if(row >= 0 && column >= 0) {
-                lastSelectedRow = row;
-                lastSelectedColumn = column;
+            if(columnsEvent != null) {
+//System.out.println("  columnsEvent");
+                int column = ((UIData) columnsEvent.getComponent()).getRowIndex();
+                MenuContextEvent dataTableEvent = columnsEvent.getOuter();
+                if(dataTableEvent != null) {
+//System.out.println("  dataTableEvent");
+                    int row = ((UIData) dataTableEvent.getComponent()).getRowIndex();
+                    if(row >= 0 && column >= 0) {
+//System.out.println("  row, col");
+                        lastSelectedRow = row;
+                        lastSelectedColumn = column;
+                    }
+                }
             }
         }
     }
+    
+    // This dummy getter is necessary for JSP, but not Facelets
+    public MenuContextEvent getMenuContext() { return null; }
     
     public void cellSelection(ActionEvent e) {
         // Just needed to give an actionListener to the MenuItem

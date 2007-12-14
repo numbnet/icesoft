@@ -153,6 +153,10 @@ public class MenuBarBean {
             lastContextWasText = Boolean.FALSE;
     }
     
+    // These dummy getters are necessary for JSP, but not Facelets
+    public MenuContextEvent getTextContext() { return null; }
+    public MenuContextEvent getImageContext() { return null; }
+    
     public Effect getTextEffect() {
         if(lastContextWasText != null &&
            lastContextWasText.booleanValue())

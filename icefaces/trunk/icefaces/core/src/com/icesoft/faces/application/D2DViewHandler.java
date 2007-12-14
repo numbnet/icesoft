@@ -666,20 +666,23 @@ public class D2DViewHandler extends ViewHandler {
      * @param base
      */
     public static UIComponent findComponent(String clientId, UIComponent base) {
+//System.out.println("    findComponent()  clientId: " + clientId + "  base: " + base);
         // Set base, the parent component whose children are searched, to be the
         // nearest parent that is either 1) the view root if the id expression
         // is absolute (i.e. starts with the delimiter) or 2) the nearest parent
         // NamingContainer if the expression is relative (doesn't start with
         // the delimiter)
         String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-        if (clientId.startsWith(delimeter)) {
+        int count = getNumberOfLeadingNamingContainerSeparators(clientId);
+//System.out.println("      count: " + count);
+        if (count == 1) {
             // Absolute searches start at the root of the tree
             while (base.getParent() != null) {
                 base = base.getParent();
             }
             // Treat remainder of the expression as relative
-            clientId = clientId.substring(1);
-        } else {
+            clientId = clientId.substring(delimeter.length());
+        } else if(count == 0) {
             // Relative expressions start at the closest NamingContainer or root
             while (base.getParent() != null) {
                 if (base instanceof NamingContainer) {
@@ -687,6 +690,21 @@ public class D2DViewHandler extends ViewHandler {
                 }
                 base = base.getParent();
             }
+        } else if(count > 1) {
+            // Relative expressions start at the closest NamingContainer or root
+            int numNamingContainersUp = count - 1;
+//System.out.println("      numNamingContainersUp: " + numNamingContainersUp);
+            while (base.getParent() != null) {
+                if (base instanceof NamingContainer) {
+                    numNamingContainersUp--;
+//System.out.println("      NamingContainer["+numNamingContainersUp+"]: " + base);
+                    if(numNamingContainersUp == 0)
+                        break;
+                }
+                base = base.getParent();
+            }
+            clientId = clientId.substring(delimeter.length()*count);
+//System.out.println("      clientId: " + clientId);
         }
         // Evaluate the search expression (now guaranteed to be relative)
         String id = null;
@@ -717,6 +735,19 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         return result;
+    }
+    
+    // Allow multiple leading NamingContainer separator chars to allow for
+    //  findComponent() to search upwards, relatively, as described by:
+    //  http://myfaces.apache.org/trinidad/trinidad-api/apidocs/org/apache/myfaces/trinidad/component/core/nav/CoreSingleStepButtonBar.html#getPartialTriggers()
+    private static int getNumberOfLeadingNamingContainerSeparators(
+        String clientId)
+    {
+        int count = 0;
+        String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
+        for(int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
+            count++;
+        return count;
     }
 
     private static String truncate(String remove, String input) {
