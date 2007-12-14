@@ -181,7 +181,10 @@ public class D2DViewHandler extends ViewHandler {
         }
         UIViewRoot root = new UIViewRoot() {
             public void setLocale(Locale locale) {
-                super.setLocale(calculateLocale(context));
+                //ignore locale set by RestoreViewPhase since it is using the first locale in the Accept-Language list,
+                //instead it should calculate the locale
+                boolean ignore = "com.sun.faces.lifecycle.RestoreViewPhase".equals(new Exception().getStackTrace()[1].getClassName());
+                super.setLocale(ignore ? calculateLocale(context) : locale);
             }
         };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
@@ -682,7 +685,7 @@ public class D2DViewHandler extends ViewHandler {
             }
             // Treat remainder of the expression as relative
             clientId = clientId.substring(delimeter.length());
-        } else if(count == 0) {
+        } else if (count == 0) {
             // Relative expressions start at the closest NamingContainer or root
             while (base.getParent() != null) {
                 if (base instanceof NamingContainer) {
@@ -690,7 +693,7 @@ public class D2DViewHandler extends ViewHandler {
                 }
                 base = base.getParent();
             }
-        } else if(count > 1) {
+        } else if (count > 1) {
             // Relative expressions start at the closest NamingContainer or root
             int numNamingContainersUp = count - 1;
 //System.out.println("      numNamingContainersUp: " + numNamingContainersUp);
@@ -698,12 +701,12 @@ public class D2DViewHandler extends ViewHandler {
                 if (base instanceof NamingContainer) {
                     numNamingContainersUp--;
 //System.out.println("      NamingContainer["+numNamingContainersUp+"]: " + base);
-                    if(numNamingContainersUp == 0)
+                    if (numNamingContainersUp == 0)
                         break;
                 }
                 base = base.getParent();
             }
-            clientId = clientId.substring(delimeter.length()*count);
+            clientId = clientId.substring(delimeter.length() * count);
 //System.out.println("      clientId: " + clientId);
         }
         // Evaluate the search expression (now guaranteed to be relative)
@@ -736,16 +739,15 @@ public class D2DViewHandler extends ViewHandler {
 
         return result;
     }
-    
+
     // Allow multiple leading NamingContainer separator chars to allow for
     //  findComponent() to search upwards, relatively, as described by:
     //  http://myfaces.apache.org/trinidad/trinidad-api/apidocs/org/apache/myfaces/trinidad/component/core/nav/CoreSingleStepButtonBar.html#getPartialTriggers()
     private static int getNumberOfLeadingNamingContainerSeparators(
-        String clientId)
-    {
+            String clientId) {
         int count = 0;
         String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-        for(int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
+        for (int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
             count++;
         return count;
     }
