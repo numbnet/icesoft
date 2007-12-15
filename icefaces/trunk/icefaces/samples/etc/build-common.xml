@@ -17,18 +17,25 @@
 <dirname property="build.common.basedir" file="${ant.file.common}"/>
 <property name="icefaces.lib.dir" location="${build.common.basedir}/../../lib"/>
 
+<!--
 <property name="portlet.base.dir" location="./build"/>
 <property name="portlet.web.content.dir" location="${portlet.base.dir}/web"/>
+<property name="portlet.xml" value="portlet.xml"/>
+
+
+<property name="portlet.conf.dir" location="./portlet/conf"/>
 <property name="portlet.web.dir" location="./portlet/web"/>
 <property name="portlet.web.inf.dir" location="${portlet.web.content.dir}/WEB-INF"/>
 <property name="portlet.app.lib.dir" location="${portlet.web.inf.dir}/lib"/>
 
 
-<property name="portlet.conf.dir" location="./portlet/conf"/>
-<property name="portlet.xml" value="portlet.xml"/>
-<property name="portlet.liferay.dir" location="${portlet.conf.dir}/liferay"/>
+<property name="portlet.conf.liferay.dir" location="${portlet.conf.dir}/liferay"/>
+-->
+
+
 
 <patternset id="liferay.xmls">
+        <exclude name="web.sunri.icefaces.xml"/>
 	<exclude name="liferay-display.xml" unless="liferay"/>
 	<exclude name="liferay-plugin-package.xml" unless="liferay"/>
 	<exclude name="liferay-portlet.xml" unless="liferay"/>
@@ -218,6 +225,9 @@
 <macrodef name="build.portlet.war">
     <attribute name="war.file.name" default="${ant.project.name}.war"/>
     <attribute name="web.xml" default="./conf/web.sunri.icefaces.portlet.xml"/>
+    <attribute name="portlet.web.content.dir" default="build/web"/>
+    <attribute name="portlet.conf.dir" default="conf"/>    
+    <attribute name="portlet.conf.liferay.dir" default="conf"/>
     <element name="add.filesets" optional="true"/>
 
     <sequential>
@@ -229,28 +239,23 @@
             </fileset>
         </copy>
         
-
-        <copy todir="${portlet.web.content.dir}/portlet">
-        	<fileset dir="${portlet.web.dir}">
-			<include name="*.jspx"/>
-       		</fileset>
-       	</copy>
-        <copy todir="${portlet.web.content.dir}">
+         <copy todir="@{portlet.web.content.dir}">
        		
         	<fileset dir="${web.content.dir}"/>
         </copy>
-        <copy todir="${portlet.web.inf.dir}">
-       		<fileset dir="${portlet.conf.dir}">
-			<include name="${portlet.xml}"/>
+        
+        <copy todir="@{portlet.web.content.dir}/WEB-INF">
+       		<fileset dir="@{portlet.conf.dir}">
+			<include name="portlet.xml"/>
 		</fileset>
-		<fileset dir="${portlet.liferay.dir}">
+		<fileset dir="@{portlet.conf.liferay.dir}">
 			<patternset refid="liferay.xmls"/>
 		</fileset>
         </copy>
 
-        <copy file="@{web.xml}" tofile="${portlet.web.inf.dir}/web.xml" preservelastmodified="true" overwrite="true"/>
+        <copy file="@{web.xml}" tofile="@{portlet.web.content.dir}/WEB-INF/web.xml" preservelastmodified="true" overwrite="true"/>
 
-        <copy todir="${portlet.app.lib.dir}" preservelastmodified="true">
+        <copy todir="@{portlet.web.content.dir}/WEB-INF/lib" preservelastmodified="true">
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="common.icefaces.lib.jars.to.include"/>
                 <patternset refid="additional.icefaces.lib.jars.to.include"/>
@@ -260,8 +265,8 @@
             </fileset>
         </copy>
 
-        <war basedir="${portlet.web.content.dir}" destfile="${dist.dir}/@{war.file.name}" duplicate="fail"
-             webxml="${portlet.web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
+        <war basedir="@{portlet.web.content.dir}" destfile="${dist.dir}/@{war.file.name}" duplicate="fail"
+             webxml="@{portlet.web.content.dir}/WEB-INF/web.xml" excludes="WEB-INF/web.xml">
             <add.filesets/>
         </war>
         

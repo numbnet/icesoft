@@ -35,7 +35,8 @@
 
     <property file="build.properties"/>
     <property name="component.docs.dir" location="../../component/doc"/>
-
+    <property name="portlet.build.web.dir" value="build/web"/>
+    <property name="portlet.web.dir" value="portlet/web"/>
     <import file="../etc/build-common.xml"/>
 
     <patternset id="additional.icefaces.lib.jars.to.include"
@@ -76,8 +77,29 @@
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">
             <fileset dir="${component.docs.dir}"/>
         </copy>
+        <copy todir="${portlet.build.web.dir}/portlet">
+        	<fileset dir="${portlet.web.dir}">
+			<include name="*.jspx"/>
+       		</fileset>
+       	</copy>
+        <copy todir="${portlet.build.web.dir}">
+       		
+        	<fileset dir="${web.content.dir}"/>
+        </copy>
+        <!--
+        <copy todir="${portlet.web.inf.dir}">
+       		<fileset dir="${portlet.conf.dir}">
+			<include name="${portlet.xml}"/>
+		</fileset>
+		<fileset dir="${portlet.liferay.dir}">
+			<patternset refid="liferay.xmls"/>
+		</fileset>
+        </copy>
+        -->
         <property name="portlet" value="true"/>
-	<build.portlet.war/>
+	<build.portlet.war portlet.web.content.dir="build/web"
+            portlet.conf.dir="portlet/conf"
+            portlet.conf.liferay.dir="portlet/conf/liferay"/>
     </target>
 
     <target name="build.facelet.war" depends="compile"

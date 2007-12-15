@@ -38,5 +38,8 @@
 <target name="build.war" depends="compile">
     <build.war web.xml="conf/web.sunri.icefaces.xml"/>
 </target>
-
+<target name="build.portlet.war">
+    <build.portlet.war web.xml="conf/web.sunri.icefaces.xml"/>
+</target>
+    
 </project>
