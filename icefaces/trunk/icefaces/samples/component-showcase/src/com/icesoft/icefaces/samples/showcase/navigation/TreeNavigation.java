@@ -804,6 +804,21 @@ public class TreeNavigation {
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
+                
+                // Layout Panels menu -> Tab Set Panel
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.panelTooltipComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.panelTooltipComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelTooltip.jspx");
+                branchObject.setTemplateName("panelTooltipContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);                
             }
 
         }

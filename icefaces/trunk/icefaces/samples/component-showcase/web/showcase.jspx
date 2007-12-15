@@ -347,6 +347,11 @@
                     </f:subview>
                 </ice:panelGroup>
 
+                <ice:panelGroup id="panelTooltipContentPanel" styleClass="contentIncludePanelGroup" >
+                    <f:subview id="panelTooltipContentPanelSub">
+                        <jsp:directive.include file="inc/layoutPanels/panelTooltip.jspx" />
+                    </f:subview>
+                </ice:panelGroup>
         </ice:panelStack>
 
     </div>
