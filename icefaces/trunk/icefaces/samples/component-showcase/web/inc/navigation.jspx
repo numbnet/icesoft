@@ -72,12 +72,18 @@
                 </f:facet>
 
                 <f:facet name="content">
-                    <ice:panelGroup style="display: inline">
+                    <ice:panelGroup panelTooltip="treeTooltip" style="display: inline">
                         <ice:commandLink id="contentVisibleAction"
                                 actionListener="#{item.userObject.contentVisibleAction}">
                             <ice:outputText id="menuText"
                                     value="#{item.userObject.menuDisplayText}"/>
                         </ice:commandLink>
+		                <ice:panelTooltip id="treeTooltip"
+		                        autoHide="onExit" style="width:200px;">
+		                    <f:facet name="body">
+		                            <ice:outputLabel  value="click on #{item.userObject.menuDisplayText}"/>
+		                    </f:facet>
+		                </ice:panelTooltip>                         
                     </ice:panelGroup>
                 </f:facet>
 

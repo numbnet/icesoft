@@ -50,10 +50,15 @@ public class PanelTooltip extends PanelPopup{
 
     
     public void encodeBegin(FacesContext context) throws IOException {
-        if (isDynamic() && !getTooltipState().equals("show")) {
+        if ("false".equals(getAutoHide())) {
+            removeTooltipFromVisibleList(context);
+        }
+        if (isDynamic() && !getState().equals("show")) {
             return;
         }
         super.encodeBegin(context);
+        setValueChangeFired(false);
+        
     }
     
     public String getHoverDelay() {
@@ -134,6 +139,20 @@ public class PanelTooltip extends PanelPopup{
         }
     }    
     
+    public void processUpdates(FacesContext context) {
+            ValueBinding vb = getValueBinding("state");
+            if (vb != null) {
+                if (isValueChangeFired()) {
+                    vb.setValue(context, getTooltipInfo().getState());
+                } else {
+                    vb.setValue(context, getState());
+                }
+            }
+            super.processUpdates(context);
+    }
+    
+
+    
     public void addValueChangeListener(ValueChangeListener listener) {
         addFacesListener(listener);
     }
@@ -185,7 +204,7 @@ public class PanelTooltip extends PanelPopup{
         if (isValueChangeFired() || (isDynamic() 
                 && !cssUpdateReceived(facesContext))) {
             setValueChangeFired(false);
-            if (getTooltipState().equals("show")) {
+            if (getState().equals("show")) {
                 updatedStyle = setPropertyValue(updatedStyle, "top", getTooltipY(), true);
                 updatedStyle = setPropertyValue(updatedStyle, "left", getTooltipX(), true);            
             }
@@ -194,7 +213,6 @@ public class PanelTooltip extends PanelPopup{
         root.setAttribute(HTML.STYLE_ATTR, updatedStyle);
     }
     
-    //add true= replace or add, false = remove
     String setPropertyValue(String css, String propName, String value, boolean add) {
         String[] properties = css.split(";");
         boolean found = false;
@@ -203,8 +221,6 @@ public class PanelTooltip extends PanelPopup{
             String[] property = properties[i].split(":");
             if (property.length == 2) {
                 if (property[0].equalsIgnoreCase(propName)) {
-                  //if found and "add" is true then replace the value, otherwise 
-                  //don't add it into the new css, must need to be removed
                     if (add) {
                         found = true;
                         newCss.append(propName + ":"+ value + ";");
@@ -214,7 +230,7 @@ public class PanelTooltip extends PanelPopup{
                 }
             }
         }
-        if (add && !found) {//its a new entry add it
+        if (add && !found) {
             newCss.append(propName + ":" + value + ";");
         }
         return newCss.toString();
@@ -267,77 +283,78 @@ public class PanelTooltip extends PanelPopup{
         String[] entries = tooltipinfo.split(";");
         if (entries.length == 5){
             if (!entries[0].split("=")[1].equals(getClientId(getFacesContext()))) return;
-                if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))){
-                    ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).populateValues(entries);
-                } else {
-                    this.getAttributes().put("tooltip"+ getClientId(getFacesContext()), new TooltipInfo(entries));    
-                }
+                getTooltipInfo().populateValues(entries);
         }
     }
     
-    String getTooltipState() {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).getState();
-        }
-        return "hide";
+    public String getState() {
+        ValueBinding vb = getValueBinding("state");
+        return vb != null ? (String) vb.getValue(getFacesContext()):
+                            getTooltipInfo().getState();
+    }
+    
+    public void setState(String state) {
+        getTooltipInfo().setState(state);
     }
     
     String getTooltipSrcComp() {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).getSrc();
-        }
-        return null;
+        return getTooltipInfo().getSrc();
     }
     
     String getTooltipX() {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).getX();
-        }
-        return "100";
+        return getTooltipInfo().getX();
     }
     
     String getTooltipY() {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).getY();
-        }
-        return "100";
+        return getTooltipInfo().getY();
     }
     
     void setTooltipX(String x) {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).setX(x);
-        }
+        getTooltipInfo().setX(x);
     }
     
     void setTooltipY(String y) {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).setY(y);
-        }
+        getTooltipInfo().setY(y);
     }
     
     void setValueChangeFired (boolean eventFired) {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).setEventFired(eventFired);
-        }
+        getTooltipInfo().setEventFired(eventFired);
     }
     
     boolean isValueChangeFired () {
-        if (this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
-            return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext()))).isEventFired();
-        }
-        return false;
+        return getTooltipInfo().isEventFired();
     }
     
    boolean isDraggable() {
        return "true".equalsIgnoreCase(getDraggable());
    }
+
+   void removeTooltipFromVisibleList(FacesContext facesContext) {
+       String oldValue = getTooltipInfo().getState();
+       String newValue = getState();
+       if ("hide".equals(newValue) && !newValue.equals(oldValue)) {
+           //app is trying to hide the tooltip, synch the client
+           setState(getState());
+           JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.removeFromVisibleList('"+ getClientId(facesContext)+"');");
+       }
+   }
+   
+   TooltipInfo getTooltipInfo() {
+       if (!this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
+           this.getAttributes().put("tooltip"+ getClientId(getFacesContext()), new TooltipInfo());
+       }
+       return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext())));
+   }
+   
     class TooltipInfo {
         private String src = new String();
         private String state = "hide";
-        private String x;
-        private String y;
+        private String x = "0px";
+        private String y = "0px";
         private boolean eventFired;
-        
+        public TooltipInfo() {
+        }
+  
         public TooltipInfo(String info[]) {
             populateValues(info);
         }
@@ -346,13 +363,12 @@ public class PanelTooltip extends PanelPopup{
             String _src = info[1].split("=")[1];
             String _state = info[2].split("=")[1];
             if (!getState().equals(_state) || !getSrc().equals(_src)) {
+
                 //change the x and y only on valueChangeEvent
                 x = info[3].split("=")[1]+"px";
                 y = info[4].split("=")[1]+"px";
                 src = _src;
                 state = _state;
-                
-                System.out.println("Event has queed");
                 eventFired = true;
                 queueEvent(new ValueChangeEvent(PanelTooltip.this, getState(), _state));
                 FacesContext context = getFacesContext();

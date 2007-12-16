@@ -48,20 +48,61 @@ and must be dismissed before the application's functionality will return.
   Example include, also see source code include.
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+  <ice:panelGroup styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText
+                        value="Example 1"/>
+            </h3>
+            <h4>
+                <ice:outputText 
+                        value="This example is using a static panelTooltip with autoHide = 'onExit', To close this tooltip please move the mouse off"/>
+            </h4>
+            <ice:panelSeries  var="pnlPerson"
+                       value="#{scrollerList.persons}" rows="5"
+                     >
+                <ice:panelGroup style="float: left; width: 60px;"> 
+                <ice:panelGroup panelTooltip="pnlSerPanelToolTip" >
+                    <ice:outputText  value="#{pnlPerson.firstName}"/>
+                </ice:panelGroup>
+                <ice:panelTooltip id="pnlSerPanelToolTip"
+                        autoHide="onExit"
+                        style="width: 300px;">
+             
+                    <f:facet name="body">
+                        <ice:panelGroup>
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column1']} : "/>
+                                <ice:outputText value="#{pnlPerson.firstName}"/> <br/>
 
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column2']} : "/>
+                                <ice:outputText  value="#{pnlPerson.lastName}"/><br/>
+
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column3']} : "/>
+                                <ice:outputText  value="#{pnlPerson.phoneNo}"/><br/>
+
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column4']} : "/>
+                                <ice:outputText  value="#{pnlPerson.email}"/><br/>
+
+                        </ice:panelGroup>
+                    </f:facet>
+                </ice:panelTooltip>                
+             </ice:panelGroup>
+        </ice:panelSeries>
+        <br/>
+        <br/>
+    </ice:panelGroup>  
     <ice:panelGrid
             styleClass="componentLayoutRootTable"
-            columns="1">
+            columns="2">
 
         <!-- Application title  -->
         <ice:panelGroup styleClass="formBorderHighlight">
             <h3>
-                <ice:outputText id="title"
-                        value="Example 1"/>
+                <ice:outputText 
+                        value="Example 2"/>
             </h3>
             <h4>
-                <ice:outputText id="instructions"
-                        value="This example is using a dynamic panelTooltip, will be closed on mouseout event"/>
+                <ice:outputText 
+                        value="This panelTooltip example is dynamic and using autoHide = 'false', hoverDelay='2000' milliseconds. To close this window please click on the close button"/>
             </h4>
 
             <!-- popup selection -->
@@ -81,17 +122,18 @@ and must be dismissed before the application's functionality will return.
                 </ice:panelGroup>
                            
             </ice:panelGrid>
-            
         </ice:panelGroup>
-    </ice:panelGrid>
+        
+       </ice:panelGrid>
+      
     <ice:panelGroup styleClass="formBorderHighlight">
             <h3>
                 <ice:outputText
-                        value="Example 2"/>
+                        value="Example 3"/>
             </h3>
             <h4>
                 <ice:outputText 
-                        value="This example is using a draggable dynamic panelTooltip and will be closed on clicking outside the tooltip panel. "/>
+                        value="This example is using a draggable dynamic panelTooltip with autoHide = 'onClick', hoverDelay='1000' milliseconds, To close this tooltip please click outside the tooltip panel . "/>
             </h4>
             <ice:dataTable id="toolTipdata" var="person"
                        styleClass="dataPaginatorTable"
@@ -106,7 +148,7 @@ and must be dismissed before the application's functionality will return.
                 </ice:panelGroup>
                 <ice:panelTooltip id="recordPanelToolTip"
                         autoHide="onClick"
-                        delay="7000"
+                        hoverDelay="1000"
                         draggable="true"
                         style="width: 300px;">
             
@@ -164,24 +206,28 @@ and must be dismissed before the application's functionality will return.
             </ice:column>
         </ice:dataTable>
     </ice:panelGroup>
- 
+    
     <ice:panelTooltip id="provinceInfo"
-                autoHide="onExit"
-                dynamic="true"
-                hoverDelay="1000"
+                autoHide="false"
+                draggable="true"
+                hoverDelay="2000"
                 style="width: 200px;"
                 valueChangeListener="#{tooltip.stateListener}"
                 tooltipSrcComponent="#{tooltip.tooltipSrc}"
+                state = "#{tooltip.state}"
                 >
 
         <f:facet name="header">
-            <ice:panelGrid 
+            <ice:panelGrid id="draggablePanelGrid"
                            width="100%" cellpadding="0"
                            cellspacing="0" columns="2"
                            columnClasses="none, popupButton">
-                <ice:outputText value="#{msgs['component.popupPanel.draggable.title']}"/>
-
-            </ice:panelGrid>
+                <ice:outputText value="City names"/>
+                <ice:commandButton id="popupClose" type="button"
+                                   image="./images/popupPanel/popupclose.gif"
+                                   actionListener="#{tooltip.hideTooltip}"
+                                   style="cursor: pointer;"/>
+            </ice:panelGrid>        
         </f:facet>
 
         <f:facet name="body">

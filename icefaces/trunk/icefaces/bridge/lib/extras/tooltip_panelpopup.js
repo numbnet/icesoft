@@ -54,7 +54,7 @@ ToolTipPanelPopup = Class.create({
         this.autoHide = "mouseout"
         this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
     } else {
-        this.autoHide = false;
+        this.autoHide = "false";
     }
 
 
@@ -64,7 +64,7 @@ ToolTipPanelPopup = Class.create({
     Event.observe(document, this.autoHide , this.hideEvent);
     Event.observe(document, "mousemove", this.eventMouseMove);
 
-    this.timer = setTimeout(this.showPopup.bind(this), this.delay);
+    this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
   },
 
   showPopup: function() {
@@ -74,6 +74,10 @@ ToolTipPanelPopup = Class.create({
     if (this.dynamic) {
     //dynamic? set status=show, populatefields, and submit
       this.submit("show");
+      if (this.autoHide == "false") {
+        //reset the info
+        this.populateFields(true);
+      }
     } else {
         //static? just set the visibility= true 
        var tooltip = this.getTooltip();
@@ -188,28 +192,33 @@ ToolTipPanelPopup = Class.create({
       return $(this.tooltipCompId);
   },
   
-  populateFields: function() {
+  populateFields: function(reset) {
   // the following field should be rendered by the panelPoupRenderer if rendered as tooltip
 
-    var form = $(this.formId);
-    if (form == null) return;
-    var iceTooltipInfo = form.getElements().find( function(element) {
-        if (element.id == "iceTooltipInfo") return element;
-    });
-    if (!iceTooltipInfo) { 
-	    iceTooltipInfo = document.createElement('input');
-	    iceTooltipInfo.id="iceTooltipInfo";
-	    iceTooltipInfo.name="iceTooltipInfo";            
-	    iceTooltipInfo.type="hidden";
-        form.appendChild(iceTooltipInfo);
-    }  else {
- 
-    }
-    iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId + 
-                     "; tooltip_src_id="+ this.src.id+ 
-                     "; tooltip_state="+ this.state +
-                     "; tooltip_x="+ this.x +
-                     "; tooltip_y="+ this.y;
+
+	    var form = $(this.formId);
+	    if (form == null) return;
+	    var iceTooltipInfo = form.getElements().find( function(element) {
+	        if (element.id == "iceTooltipInfo") return element;
+	    });
+	    if (!iceTooltipInfo) { 
+		    iceTooltipInfo = document.createElement('input');
+		    iceTooltipInfo.id="iceTooltipInfo";
+		    iceTooltipInfo.name="iceTooltipInfo";            
+		    iceTooltipInfo.type="hidden";
+	        form.appendChild(iceTooltipInfo);
+	    }  else {
+	 
+	    }
+	    if (reset) {
+	       iceTooltipInfo.value = "";
+	    } else {
+	       iceTooltipInfo.value = "tooltip_id=" + this.tooltipCompId + 
+	                     "; tooltip_src_id="+ this.src.id+ 
+	                     "; tooltip_state="+ this.state +
+	                     "; tooltip_x="+ this.x +
+	                     "; tooltip_y="+ this.y;
+	    }
     },
     
     addToVisibleList: function() {
@@ -244,5 +253,20 @@ ToolTipPanelPopup = Class.create({
         }
         return false;
     }
-    
 });
+
+ToolTipPanelPopupUtil = {
+    removeFromVisibleList:function(comp_id) {
+        var newList = new Array();
+        var index = -1;
+        for (i=0; i < visibleTooltipList.length; i++) {
+            if (visibleTooltipList[i].tooltipId != comp_id) {
+                index = parseInt(index)+ 1;
+                newList[index] = visibleTooltipList[i];
+            }else {
+            }
+        }
+        visibleTooltipList = newList;  
+    }
+}
+    

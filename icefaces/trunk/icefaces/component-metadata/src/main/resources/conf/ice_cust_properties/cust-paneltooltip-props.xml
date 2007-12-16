@@ -149,3 +149,16 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+    </description>
+    <property-name>state</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
