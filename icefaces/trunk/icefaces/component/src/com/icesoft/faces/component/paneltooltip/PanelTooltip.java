@@ -84,6 +84,8 @@ public class PanelTooltip extends PanelPopup{
      * @return true if the tooltip is dynamic.
      */
     public boolean isDynamic() {
+        //if the tooltip is draggable its mean its dynamic as well 
+        if (isDraggable()) return true;
         if (dynamic != null) {
             return dynamic.booleanValue();
         }
@@ -326,7 +328,9 @@ public class PanelTooltip extends PanelPopup{
         return false;
     }
     
-   
+   boolean isDraggable() {
+       return "true".equalsIgnoreCase(getDraggable());
+   }
     class TooltipInfo {
         private String src = new String();
         private String state = "hide";
