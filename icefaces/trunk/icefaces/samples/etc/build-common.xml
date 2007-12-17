@@ -45,7 +45,7 @@
 <!--/patternset-->
 
 <patternset id="portlet.deploy.jars">
-    <include name="icefaces-ahs.jar"/>
+    <!--include name="icefaces-ahs.jar"/-->
 </patternset>
 
 <patternset id="common.icefaces.lib.jars.to.include"
