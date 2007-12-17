@@ -117,7 +117,11 @@ fieldset {
    display: block;
    filter: mask();
 } 
- 
+
+.iceSelInpDatePopup {
+    min-width: 172px;
+}
+
 .iceSelInpDateInput {
     width: 150px;
 }

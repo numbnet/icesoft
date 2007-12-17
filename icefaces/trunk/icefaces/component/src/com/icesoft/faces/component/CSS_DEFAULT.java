@@ -267,6 +267,10 @@ public class CSS_DEFAULT {
      */
     public final static String DEFAULT_CALENDARMOVENEXT_CLASS = "MoveNext";
     /**
+     * The default style class name for the popup calendar
+     */
+    public final static String DEFAULT_CALENDARPOPUP_CLASS = "Popup";
+    /**
      * The default style class name for the calendar open popup button
      */
     public final static String DEFAULT_CALENDAROPENPOPUP_CLASS = "OpenPopup";
