@@ -98,7 +98,7 @@ In this demonstration ice:connectionStatus different icons are displayed.
             this placeholder
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/outputConnectionStatusDoc.html"
+                <iframe src="/component-showcase/docs/outputConnectionStatusDoc.html"
                         class="includeIframe" width="100%"></iframe>
             </ice:panelTab>
 
@@ -108,7 +108,7 @@ In this demonstration ice:connectionStatus different icons are displayed.
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
                 <iframe
-                        src="./sourcecodeStream.html?path=./inc/components/connectionStatus.jspx"
+                        src="/component-showcase/sourcecodeStream.html?path=./inc/components/connectionStatus.jspx"
                         class="includeIframe" width="100%"></iframe>
             </ice:panelTab>
 

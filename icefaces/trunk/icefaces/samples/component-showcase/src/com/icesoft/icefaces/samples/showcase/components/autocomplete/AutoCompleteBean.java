@@ -168,7 +168,7 @@ public class AutoCompleteBean {
                 matchList.add(dictionary.get(insert + i));
             }
         } catch (Throwable e) {
-            log.error("Erorr finding autocomplete matches", e);
+            log.error("Error finding autocomplete matches", e);
         }
         // assign new matchList
         if (this.matchesList != null) {

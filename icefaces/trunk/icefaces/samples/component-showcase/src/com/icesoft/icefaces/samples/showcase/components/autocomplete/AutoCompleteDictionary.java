@@ -36,18 +36,18 @@ package com.icesoft.icefaces.samples.showcase.components.autocomplete;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 
 /**
@@ -61,17 +61,16 @@ public class AutoCompleteDictionary {
 
     private static Log log = LogFactory.getLog(AutoCompleteDictionary.class);
 
-    // list of cities.
+    // list of cities
     private static List dictionary;
+    private static final String DATA_RESOURCE_PATH = "/WEB-INF/resources/city.xml.zip";
 
     public AutoCompleteDictionary() {
-        // initialize the ditionary
         try {
-            log.info("initializing dictionary");
-            init();
+            loadCityData();
         } catch (Exception e) {
             if (log.isErrorEnabled()) {
-                log.error("Error initializtin sorting list");
+                log.error("could load city data for auto-complete", e);
             }
         }
     }
@@ -111,66 +110,55 @@ public class AutoCompleteDictionary {
         return dictionary;
     }
 
-    private static void init() {
-        // Raw list of xml cities.
-        List cityList = null;
+    private static void loadCityData() throws IOException {
 
-        // load the city dictionary from the compressed xml file.
+        log.info("loading city data for auto-complete");
 
-        // get the path of the compressed file
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().
-                getExternalContext().getSession(true);
-        String basePath =
-                session.getServletContext().getRealPath("/WEB-INF/resources");
-        basePath += "/city.xml.zip";
+        // Loading of the resource must be done the "JSF way" so that
+        // it is agnostic about it's environment (portlet vs servlet).
+        // First we get the resource as an InputStream
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        InputStream is = ec.getResourceAsStream(DATA_RESOURCE_PATH);
 
-        // extract the file
-        ZipEntry zipEntry;
-        ZipFile zipFile;
-        try {
-            zipFile = new ZipFile(basePath);
-            zipEntry = zipFile.getEntry("city.xml");
+        //Wrap the InputStream as a ZipInputStream since it
+        //is a zip file.
+        ZipInputStream zipStream = new ZipInputStream(is);
+
+        //Prime the stream by reading the first entry.  The way
+        //we have it currently configured, there should only be
+        //one.
+        ZipEntry firstEntry = zipStream.getNextEntry();
+
+        //Pass the ZipInputStream to the XMLDecoder so that it
+        //ca read in the list of cities and associated data.
+        XMLDecoder xDecoder = new XMLDecoder(zipStream);
+        List cityList = (List) xDecoder.readObject();
+
+        //Close the decoder and the stream.
+        xDecoder.close();
+        zipStream.close();
+
+        if (cityList == null) {
+            String message = "could not read city data from " + DATA_RESOURCE_PATH;
+            if (log.isErrorEnabled()) {
+                log.error(message);
+            }
+            throw new IOException(message);
         }
-        catch (Exception e) {
-            log.error("Error retrieving records", e);
-            return;
-        }
 
-        // get the xml stream and decode it.
-        if (zipFile.size() > 0 && zipEntry != null) {
-            try {
-                BufferedInputStream dictionaryStream =
-                        new BufferedInputStream(
-                                zipFile.getInputStream(zipEntry));
-                XMLDecoder xDecoder = new XMLDecoder(dictionaryStream);
-                // get the city list.
-                cityList = (List) xDecoder.readObject();
-                dictionaryStream.close();
-                zipFile.close();
-                xDecoder.close();
-            } catch (ArrayIndexOutOfBoundsException e) {
-                log.error("Error getting city list, not city objects", e);
-                return;
-            } catch (IOException e) {
-                log.error("Error getting city list", e);
-                return;
+        dictionary = new ArrayList(cityList.size());
+        City tmpCity;
+        for (int i = 0, max = cityList.size(); i < max; i++) {
+            tmpCity = (City) cityList.get(i);
+            if (tmpCity != null && tmpCity.getCity() != null) {
+                dictionary.add(new SelectItem(tmpCity, tmpCity.getCity()));
             }
         }
+        cityList.clear();
 
-        // Finally load the object from the xml file.
-        if (cityList != null) {
-            dictionary = new ArrayList(cityList.size());
-            City tmpCity;
-            for (int i = 0, max = cityList.size(); i < max; i++) {
-                tmpCity = (City) cityList.get(i);
-                if (tmpCity != null && tmpCity.getCity() != null) {
-                    dictionary.add(new SelectItem(tmpCity, tmpCity.getCity()));
-                }
-            }
-            cityList.clear();
-            // finally sort the list
-            Collections.sort(dictionary, LABEL_COMPARATOR);
-        }
+        Collections.sort(dictionary, LABEL_COMPARATOR);
 
     }
+
 }

@@ -133,7 +133,7 @@ and links that trigger submits.
                this placeholder
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/buttonAndLinksDoc.html"
+                <iframe src="/component-showcase/docs/buttonAndLinksDoc.html"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
@@ -143,7 +143,7 @@ and links that trigger submits.
               the component example jsp include as an xml stream
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe src="./sourcecodeStream.html?path=./inc/components/buttonsAndLinks.jspx"
+                <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/buttonsAndLinks.jspx"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>

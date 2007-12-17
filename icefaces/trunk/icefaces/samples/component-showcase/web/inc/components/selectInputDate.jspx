@@ -121,7 +121,7 @@ the click of a button.
                this placeholder
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/selectInputDateDoc.html"
+                <iframe src="/component-showcase/docs/selectInputDateDoc.html"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
@@ -132,7 +132,7 @@ the click of a button.
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
                 <iframe
-                        src="./sourcecodeStream.html?path=./inc/components/selectInputDate.jspx"
+                        src="/component-showcase/sourcecodeStream.html?path=./inc/components/selectInputDate.jspx"
                         class="includeIframe" width="100%"></iframe>
             </ice:panelTab>
         </ice:panelTabSet>

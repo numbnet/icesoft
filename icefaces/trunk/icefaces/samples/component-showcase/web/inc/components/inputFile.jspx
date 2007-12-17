@@ -70,7 +70,7 @@ Once the file is uploaded, information about the file is displayed.
                this placeholder
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/inputFileDoc.html"
+                <iframe src="/component-showcase/docs/inputFileDoc.html"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
@@ -80,7 +80,7 @@ Once the file is uploaded, information about the file is displayed.
               the component example jsp include as an xml stream
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe src="./sourcecodeStream.html?path=./inc/components/inputFile.jspx"
+                <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/inputFile.jspx"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>

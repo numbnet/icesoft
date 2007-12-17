@@ -116,7 +116,7 @@ is used to specify the columns that can be sorted by clicking the column header.
            this placeholder
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="./docs/commandSortheaderDoc.html"
+            <iframe src="/component-showcase/docs/commandSortheaderDoc.html"
                     class="includeIframe"
                     width="100%"></iframe>
         </ice:panelTab>
@@ -126,7 +126,7 @@ is used to specify the columns that can be sorted by clicking the column header.
           the component example jsp include as an xml stream
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe src="./sourcecodeStream.html?path=./inc/components/commandSortHeader.jspx"
+            <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/commandSortHeader.jspx"
                     class="includeIframe"
                     width="100%"></iframe>
         </ice:panelTab>

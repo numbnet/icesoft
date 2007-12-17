@@ -193,7 +193,7 @@ The bean is  responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/dragDropDoc.html" class="includeIframe"
+    <iframe src="/component-showcase/docs/dragDropDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
@@ -203,7 +203,7 @@ the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe
-            src="./sourcecodeStream.html?path=./inc/components/dragDrop.jspx"
+            src="/component-showcase/sourcecodeStream.html?path=./inc/components/dragDrop.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 

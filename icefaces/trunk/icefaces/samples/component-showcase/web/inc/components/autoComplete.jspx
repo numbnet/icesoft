@@ -162,13 +162,13 @@ USA Address information.
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/selectInputTextDoc.html" class="includeIframe"
+    <iframe src="/component-showcase/docs/selectInputTextDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe
-            src="./sourcecodeStream.html?path=./inc/components/autoComplete.jspx"
+            src="/component-showcase/sourcecodeStream.html?path=./inc/components/autoComplete.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 

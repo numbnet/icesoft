@@ -163,7 +163,7 @@
   this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/chartDoc.html"
+    <iframe src="/component-showcase/docs/chartDoc.html"
             class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
@@ -173,7 +173,7 @@
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe src="./sourcecodeStream.html?path=./inc/components/outputChart/chart.jspx"
+    <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/outputChart/chart.jspx"
             class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>

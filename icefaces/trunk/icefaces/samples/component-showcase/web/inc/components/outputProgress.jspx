@@ -204,7 +204,7 @@ dynamically changed.
    this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/outputProgressDoc.html" class="includeIframe"
+    <iframe src="/component-showcase/docs/outputProgressDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
@@ -214,7 +214,7 @@ dynamically changed.
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe
-            src="./sourcecodeStream.html?path=./inc/components/outputProgress.jspx"
+            src="/component-showcase/sourcecodeStream.html?path=./inc/components/outputProgress.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 

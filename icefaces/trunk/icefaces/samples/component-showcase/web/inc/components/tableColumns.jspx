@@ -108,13 +108,13 @@
             </ice:panelTab>
 
             <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/columnsDoc.html"
+                <iframe src="/component-showcase/docs/columnsDoc.html"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>
 
             <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe src="./sourcecodeStream.html?path=./inc/components/tableColumns.jspx"
+                <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/tableColumns.jspx"
                         class="includeIframe"
                         width="100%"></iframe>
             </ice:panelTab>

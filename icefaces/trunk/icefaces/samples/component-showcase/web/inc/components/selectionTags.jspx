@@ -207,7 +207,7 @@ clicks a selection or tabs out of a field.
   this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/selectionDoc.html" class="includeIframe"
+    <iframe src="/component-showcase/docs/selectionDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
@@ -216,8 +216,7 @@ clicks a selection or tabs out of a field.
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="./sourcecodeStream.html?path=./inc/components/selectionTags.jspx"
+    <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/selectionTags.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 

@@ -700,7 +700,7 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/effectsDoc.html" class="includeIframe"
+    <iframe src="/component-showcase/docs/effectsDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
@@ -710,7 +710,7 @@ this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe
-            src="./sourcecodeStream.html?path=./inc/components/effects.jspx"
+            src="/component-showcase/sourcecodeStream.html?path=./inc/components/effects.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 
