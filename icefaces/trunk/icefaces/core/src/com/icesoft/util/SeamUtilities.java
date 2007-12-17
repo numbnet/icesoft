@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
@@ -137,29 +138,35 @@ public class SeamUtilities {
         StringBuffer builder = new StringBuffer();
 
         String token;
-        boolean first = true; 
+        ArrayList tokenList = new ArrayList();
+
         while(st.hasMoreTokens() ){
             token = st.nextToken();
-            if ( (token.indexOf(conversationIdParameter) > -1)  ||
-                 (token.indexOf(conversationParentParameter) > -1) ||
-//                 (token.indexOf(conversationLongRunningParameter) > -1) ||
-                  token.indexOf("rvn") > -1 ) {
-                continue;
-            } 
+            if ( (token.indexOf(conversationIdParameter) == -1)  &&
+                 (token.indexOf(conversationParentParameter) == -1) &&
+                  token.indexOf("rvn") == -1 ) {
+
+                tokenList.add( token );
+            }
+        }
+
+        for (int pdx = 0; pdx < tokenList.size(); pdx ++ ) {
+
+            token = (String) tokenList.get(pdx);             
             builder.append(token);
 
-            if (st.hasMoreTokens() ) {
-                if (first) {
-                    builder.append('?');
-                    first = false;
-                } else {
-                    builder.append('&');
-                }
+            if (pdx == 0 && (tokenList.size() > 1)) {
+                builder.append('?');
+            } else if (pdx > 0 && (pdx < tokenList.size() -1))  {
+                builder.append('&');
             }
         }
 
         if (builder.length() > 0) {
             cleanedUrl = builder.toString();
+            if (log.isTraceEnabled()) {
+                log.trace("Cleaned URI: " + builder);
+            }
         } 
         // The manager instance is a singleton, but it's continuously destroyed
         // after each request and thus must be re-obtained during each redirect.
