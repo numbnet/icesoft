@@ -82,11 +82,12 @@
 			<include name="*.jspx"/>
        		</fileset>
        	</copy>
+
+        <!--
         <copy todir="${portlet.build.web.dir}">
        		
         	<fileset dir="${web.content.dir}"/>
         </copy>
-        <!--
         <copy todir="${portlet.web.inf.dir}">
        		<fileset dir="${portlet.conf.dir}">
 			<include name="${portlet.xml}"/>
