@@ -75,12 +75,12 @@
 </presetdef>
 
 <target name="build.all">
-<!--
+
     <ice:subant>
         <filelist dir="." files="core, component, component-metadata"/>
         <propertyset refid="product.info"/>
     </ice:subant>
--->
+
     <ice:subant target="build.war">
         <fileset dir="samples" includes="**/build.xml"/>
         <!--target name="build.war"/-->
