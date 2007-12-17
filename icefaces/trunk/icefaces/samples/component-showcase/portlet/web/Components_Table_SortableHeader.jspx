@@ -53,7 +53,7 @@
                         <ice:panelGroup id="commandSortHeaderContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="shSub">
                                 <jsp:directive.include
-                                    file="./inc/components/commandSortHeader.jspx" />
+                                    file="../inc/components/commandSortHeader.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>
