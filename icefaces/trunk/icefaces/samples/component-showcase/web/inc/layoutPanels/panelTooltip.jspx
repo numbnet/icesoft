@@ -126,7 +126,7 @@
             </h3>
             <h4>
                 <ice:outputText 
-                        value="This example is using a draggable dynamic panelTooltip with autoHide = 'onClick', hoverDelay='1000' milliseconds, To close this tooltip please click outside the tooltip panel . "/>
+                        value="This example is using a draggable dynamic panelTooltip with autoHide = 'onClick', hoverDelay='1000' milliseconds. To bring the tooltip up, please hover on the first name. To close this tooltip please click outside the tooltip panel . "/>
             </h4>
             <ice:dataTable id="toolTipdata" var="person"
                        styleClass="dataPaginatorTable"
