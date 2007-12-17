@@ -44,6 +44,10 @@
 <patternset id="portlet.jar" includes="portlet.jar"/>
 <!--/patternset-->
 
+<patternset id="portlet.deploy.jars">
+    <include name="icefaces-ahs.jar"/>
+</patternset>
+
 <patternset id="common.icefaces.lib.jars.to.include"
     includes="
         backport-util-concurrent.jar
@@ -112,6 +116,7 @@
         commons-logging.jar
         icefaces.jar
         icefaces-comps.jar
+        icefaces-ahs.jar
         el-api.jar
         jstl.jar
         xercesImpl.jar
@@ -259,6 +264,7 @@
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="common.icefaces.lib.jars.to.include"/>
                 <patternset refid="additional.icefaces.lib.jars.to.include"/>
+                <patternset refid="portlet.deploy.jars"/>
             </fileset>
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="jsf.deploy.jars" />
