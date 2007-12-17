@@ -35,19 +35,21 @@
 In this demonstration, a basic Tree is built and displayed. When a user
 selects a node, the respective tree node name is displayed in an output field.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet  id="icepnltabset" 
+                  styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-<ice:panelGrid styleClass="componentLayoutRootTable" columns="1" style="width:100%;">
+<ice:panelGrid styleClass="componentLayoutRootTable" columns="1">
 
 
 <ice:panelGroup styleClass="formBorderHighlight">
@@ -74,14 +76,13 @@ selects a node, the respective tree node name is displayed in an output field.
                columnClasses="contentLayoutGridColumn"
                cellpadding="5" style="width: 100%;">
 
-    <ice:panelGroup styleClass="treeContainer" >
+    <ice:panelGroup styleClass="treeContainer">
         <ice:tree id="tree"
                   value="#{treeExample.model}"
                   var="item"
                   hideRootNode="false"
                   hideNavigation="false"
-                  imageDir="#{styleBean.imageDirectory}"
-                  >
+                  imageDir="#{styleBean.imageDirectory}">
             <ice:treeNode>
                 <f:facet name="icon">
                     <ice:panelGroup style="display: inline">
@@ -89,21 +90,22 @@ selects a node, the respective tree node name is displayed in an output field.
                                 value="#{item.userObject.icon}"/>
                         <ice:commandLink
                                 actionListener="#{item.userObject.nodeClicked}">
-                            <ice:outputText
+                            <ice:outputText id="TreeNode"
                                     value="#{item.userObject.text}"/>
                         </ice:commandLink>
                     </ice:panelGroup>
                 </f:facet>
                 <f:facet name="content">
                     <ice:panelGroup style="display: inline">
-                        <ice:outputText value="#{item.userObject.value}"
+                        <ice:outputText id="TreeOutTxt"
+                                        value="#{item.userObject.value}"
                                         style="font-style: italic"
                                         rendered="#{item.userObject.componentType == 1}"/>
-                        <ice:inputText
+                        <ice:inputText id="TreeInTxt"
                                 value ="#{item.userObject.value}"
                                 valueChangeListener ="#{treeExample.changedValue}"
                                 rendered="#{item.userObject.componentType == 2}"/>
-                        <ice:commandButton
+                        <ice:commandButton id="TreeCmdBtn"
                                 value="#{item.userObject.value}"
                                 rendered="#{item.userObject.componentType == 3}"/>                    
                     </ice:panelGroup>
@@ -120,11 +122,11 @@ selects a node, the respective tree node name is displayed in an output field.
                 <ice:outputText
                         style="font-weight: bold;"
                         value="#{msgs['components.tree.selected']} "/>
-                <ice:outputText
+                <ice:outputText id="TreeSlctNode"
                         value="#{treeExample.selectedNode}"/>
             </h3>
         </ice:panelGroup> 
-        <ice:selectOneMenu
+        <ice:selectOneMenu id="compTyp"
                 value="#{treeExample.componentToAdd}"
                 valueChangeListener="#{treeExample.componentTypeChanged}"
                 partialSubmit="true">
@@ -132,10 +134,10 @@ selects a node, the respective tree node name is displayed in an output field.
                     value="#{treeExample.componentList}"/>
         </ice:selectOneMenu>
         <ice:panelGroup>
-            <ice:commandButton
+            <ice:commandButton id="Add"
                     actionListener="#{treeExample.addSelectedNode}"
                     value="Add"/>
-            <ice:commandButton
+            <ice:commandButton id="Del"
                     actionListener="#{treeExample.deleteSelectedNode}"
                     value="Delete"
                     disabled="#{treeExample.deleteDisabled}"/>

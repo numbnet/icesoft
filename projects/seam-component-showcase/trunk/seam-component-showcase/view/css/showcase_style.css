@@ -233,6 +233,7 @@ em {
 
 /* Component tabset labels */
 .componentPanelTabSetLayout{
+    width: 99%;
 
 }
 .componentPanelTabSetLayout .MiddleMiddle {
@@ -465,6 +466,12 @@ em {
 .selectionRadioGroup input {
     background-color: #efefef;
 }
+
+
+.selectionRadioGroup .iceInpTxt {
+    background-color: #FFFFFF;
+}
+
 
 
 .selectionRadioGroup, .selectionListBoxGroup {
@@ -713,6 +720,7 @@ em {
     border: 0;
     margin: 0;
     padding: 0;
+    padding-right: 4px;
 }
 
 .popupTitle span {
@@ -721,7 +729,7 @@ em {
     font-weight: bold;
     padding: 4px;
     color: #FFFFFF;
-    font-size: 1.10em;
+    font-size: 1.0em;
 }
 
 .popupModalBody {
@@ -736,11 +744,11 @@ em {
     margin-top: 40px;
 }
 
-.panelPopupHeader .iceOutTxt, .icePnlPopHdr {
+.icePnlPopHdr{
     text-align: center;
     vertical-align: middle;
     font-weight: bold;
-    padding: 4px;
+
     color: #FFFFFF;
     font-size: 1.10em;
 }
@@ -1177,6 +1185,7 @@ em {
     .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
     background-repeat: no-repeat;
     background-position: left top;
+    height: 17px;
 }
 .pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div{
     background-image: url( "../images/panelCollapsible/arrowDown.gif" );
@@ -1231,3 +1240,18 @@ em {
  overflow:hidden;
 }
 
+
+.rowSelectDmoCol1, .rowSelectDmoCol2 {
+    vertical-align : top;
+}
+
+.rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt{
+    padding: 8px;
+}
+/* Series panel example */
+.seriesPanelItems{
+    float: left;
+    margin: 2px;
+    padding: 8px;
+    border: 1px solid #999999;
+}

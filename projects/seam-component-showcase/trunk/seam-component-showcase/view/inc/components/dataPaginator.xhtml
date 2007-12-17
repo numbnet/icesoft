@@ -35,14 +35,15 @@
 In this demonstration, ice:datadataPaginator is used to page through a table
 with more data than can be displayed in a single page.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
 
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
 <ice:panelGrid
         styleClass="componentLayoutRootTable"
@@ -55,10 +56,11 @@ with more data than can be displayed in a single page.
             <ice:outputText
                     value="#{msgs['component.dataPaginator.layout.description']}"/>
         </h3>
-        <ice:selectOneRadio partialSubmit="true"
+        <ice:selectOneRadio id="paginatorLayout"
+                            partialSubmit="true"
                             value="#{scrollerList.paginatorLayout}">
-            <f:selectItem itemLabel="Horizontal" itemValue="hor"/>
-            <f:selectItem itemLabel="Vertical" itemValue="ver"/>
+            <f:selectItem id="hor" itemLabel="Horizontal" itemValue="hor"/>
+            <f:selectItem id="ver" itemLabel="Vertical" itemValue="ver"/>
         </ice:selectOneRadio>
     </ice:panelGroup>
 
@@ -115,31 +117,31 @@ with more data than can be displayed in a single page.
                        columnClasses="firstCol,lastCol,phoneCol,emailCol">
             <ice:column>
                 <f:facet name="header">
-                    <ice:outputText value="#{msgs['component.table.column1']}"/>
+                    <ice:outputText id="column1" value="#{msgs['component.table.column1']}"/>
                 </f:facet>
-                <ice:outputText value="#{person.firstName}"/>
+                <ice:outputText id="firstName" value="#{person.firstName}"/>
             </ice:column>
 
             <ice:column>
                 <f:facet name="header">
-                    <ice:outputText value="#{msgs['component.table.column2']}"/>
+                    <ice:outputText id="column2" value="#{msgs['component.table.column2']}"/>
                 </f:facet>
-                <ice:outputText value="#{person.lastName}"/>
+                <ice:outputText id="lastName" value="#{person.lastName}"/>
             </ice:column>
 
             <ice:column>
                 <f:facet name="header">
-                    <ice:outputText value="#{msgs['component.table.column3']}"/>
+                    <ice:outputText id="column3" value="#{msgs['component.table.column3']}"/>
                 </f:facet>
-                <ice:outputText value="#{person.phoneNo}"/>
+                <ice:outputText id="phoneNo" value="#{person.phoneNo}"/>
             </ice:column>
 
             <ice:column>
                 <f:facet name="header">
-                    <ice:outputText value="#{msgs['component.table.column4']}"/>
+                    <ice:outputText id="column4" value="#{msgs['component.table.column4']}"/>
                 </f:facet>
-                <ice:outputLink value="mailto:#{person.email}">
-                    <ice:outputText value="#{person.email}"/>
+                <ice:outputLink id="mailto" value="mailto:#{person.email}">
+                    <ice:outputText id="email" value="#{person.email}"/>
                 </ice:outputLink>
             </ice:column>
         </ice:dataTable>
@@ -154,36 +156,38 @@ with more data than can be displayed in a single page.
                            styleClass="formBorderHighlight"
                 >
             <f:facet name="first">
-                <ice:graphicImage
+                <ice:graphicImage id="firstpage_3"
                         url="#{styleBean.imageDirectory}arrow-first.gif"
                         style="border:none;"
                         title="#{msgs['component.dataPaginator.firstpage']}"/>
             </f:facet>
             <f:facet name="last">
-                <ice:graphicImage
+                <ice:graphicImage id="lastpage_3"
                         url="#{styleBean.imageDirectory}arrow-last.gif"
                         style="border:none;"
                         title="#{msgs['component.dataPaginator.lastpage']}"/>
             </f:facet>
             <f:facet name="previous">
-                <ice:graphicImage
+            <ice:graphicImage id="previouspage_3"
                         url="#{styleBean.imageDirectory}arrow-previous.gif"
                         style="border:none;"
                         title="#{msgs['component.dataPaginator.previouspage']}"/>
             </f:facet>
             <f:facet name="next">
-                <ice:graphicImage
+                <ice:graphicImage id="nextpage_3"
                         url="#{styleBean.imageDirectory}arrow-next.gif"
                         style="border:none;"
                         title="#{msgs['component.dataPaginator.nextpage']}"/>
             </f:facet>
             <f:facet name="fastforward">
-                <ice:graphicImage url="#{styleBean.imageDirectory}arrow-ff.gif"
+                <ice:graphicImage id="fastforward_3"
+                                  url="#{styleBean.imageDirectory}arrow-ff.gif"
                                   style="border:none;"
                                   title="#{msgs['component.dataPaginator.fastforward']}"/>
             </f:facet>
             <f:facet name="fastrewind">
-                <ice:graphicImage url="#{styleBean.imageDirectory}arrow-fr.gif"
+                <ice:graphicImage id="fastrewind_3"
+                                  url="#{styleBean.imageDirectory}arrow-fr.gif"
                                   style="border:none;"
                                   title="#{msgs['component.dataPaginator.fastbackward']}"/>
             </f:facet>
@@ -203,36 +207,38 @@ No. of direct links to pages: 4 -->
                    styleClass="formBorderHighlight"
                    rendered="#{!scrollerList.vertical}">
     <f:facet name="first">
-        <ice:graphicImage
+        <ice:graphicImage id="firstpage_1"
                 url="#{styleBean.imageDirectory}arrow-first.gif"
                 style="border:none;"
                 title="#{msgs['component.dataPaginator.firstpage']}"/>
     </f:facet>
     <f:facet name="last">
-        <ice:graphicImage
+        <ice:graphicImage id="lastpage_1"
                 url="#{styleBean.imageDirectory}arrow-last.gif"
                 style="border:none;"
                 title="#{msgs['component.dataPaginator.lastpage']}"/>
     </f:facet>
     <f:facet name="previous">
-        <ice:graphicImage
+        <ice:graphicImage id="previouspage_1"
                 url="#{styleBean.imageDirectory}arrow-previous.gif"
                 style="border:none;"
                 title="#{msgs['component.dataPaginator.previouspage']}"/>
     </f:facet>
     <f:facet name="next">
-        <ice:graphicImage
+        <ice:graphicImage id="nextpage_1"
                 url="#{styleBean.imageDirectory}arrow-next.gif"
                 style="border:none;"
                 title="#{msgs['component.dataPaginator.nextpage']}"/>
     </f:facet>
     <f:facet name="fastforward">
-        <ice:graphicImage url="#{styleBean.imageDirectory}arrow-ff.gif"
+        <ice:graphicImage id="fastforward_1"
+                          url="#{styleBean.imageDirectory}arrow-ff.gif"
                           style="border:none;"
                           title="#{msgs['component.dataPaginator.fastforward']}"/>
     </f:facet>
     <f:facet name="fastrewind">
-        <ice:graphicImage url="#{styleBean.imageDirectory}arrow-fr.gif"
+        <ice:graphicImage id="fastrewind_1"
+                          url="#{styleBean.imageDirectory}arrow-fr.gif"
                           style="border:none;"
                           title="#{msgs['component.dataPaginator.fastbackward']}"/>
     </f:facet>

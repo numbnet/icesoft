@@ -35,31 +35,31 @@
 In this demonstration, ice:inputFile is used to upload a file to the server.
 Once the file is uploaded, information about the file is displayed.
 -->
-<ice:form
+<ice:form id="iceform"
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
             <!--
               Controls to show/hide the table columns
             -->
             <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
                 <ice:panelGrid
-                        styleClass="componentLayoutRootTable"
-                        columns="1">
+                    styleClass="componentLayoutRootTable"
+                    columns="1">
                     <ice:panelGroup styleClass="formBorderHighlight"
                                     style="text-align:left">
-                        <ice:inputFile
+                        <ice:inputFile id="inputFileName"
                             progressListener="#{inputFileBackerBean.progressMonitor.progress}"
                             actionListener="#{inputFileBackerBean.actionMonitor.action}"/>
                         <ice:outputProgress id="pro"
                                             value="#{inputFileBackerBean.percent}"/>
-                        <ice:outputText
+                        <ice:outputText id="fileName"
                                 value="File Name: #{inputFileBackerBean.fileName}"/>
                         <br/>
-                        <ice:outputText
+                        <ice:outputText id="contentType"
                                 value="Content Type: #{inputFileBackerBean.contentType}"/>
                         <ice:messages/>
                     </ice:panelGroup>

@@ -93,11 +93,11 @@
 		<copy tofile="${jar.dir}/META-INF/persistence.xml" 
 			    file="${basedir}/resources/META-INF/persistence-${profile}.xml"
 		   overwrite="true"/>
-<!--	no database stuff to copy	<copy tofile="${jar.dir}/import.sql" 
-			    file="${basedir}/resources/import-${profile}.sql"
-		   overwrite="true"/> -->
-		   
-		   
+		<copy todir="${jar.dir}/com/icesoft/icefaces/samples/showcase/resources">
+			<fileset dir="${basedir}/resources"> 
+				<include name="messages*.properties"/>
+			</fileset>
+		</copy>		   
 	</target>
         <target name="war-base" depends="compile">
             	<copy todir="${war.dir}">
@@ -128,8 +128,8 @@
 		</copy>		
 		<copy todir="${war.dir}/WEB-INF/lib">
                     <fileset dir="${lib.dir}">
-                        <include name="jboss-seam-*.jar" />
-			<exclude name="jboss-seam-gen.jar" />
+                        <include name="jboss-seam-ui.jar" />
+                    	<include name="jboss-seam-debug"/>
                     </fileset>
 		</copy>
 		<copy todir="${war.dir}/WEB-INF/classes/com/icesoft/icefaces/samples/showcase/resources">
@@ -338,6 +338,8 @@
             <copy todir="${lib.dir}">
                 <fileset dir="${icefacesSourceDirectory}/lib">
                     <include name="icefaces*.jar" />
+   
+                    <exclude name="icefaces-ahs.jar"/>
                     <include name="backport-util-concurrent.jar" />
                     <include name="commons-fileupload.jar"/> 
                     <include name="commons-logging*.jar"/>
@@ -401,6 +403,8 @@
             <copy todir="${lib.dir}">
               <fileset dir="${icefacesSourceDirectory}/lib">
                 <include name="jsf*.jar"/>
+              	<exclude name="jsf-api.jar"/>
+              	<exclude name="jsf-impl.jar"/>
                 <include name="commons-digester*.jar"/>
   	    </fileset>
             <fileset dir="${jboss.seam.home}/lib">
@@ -437,6 +441,7 @@
                 </fileset>
 		<fileset dir="${lib.dir}">
 			<include name="icefaces*.jar" />
+                  <exclude name="icefaces-ahs.har"/>
 			<include name="backport-util-concurrent.jar" />
                         <include name="krysalis-jCharts-1.0.0-alpha-1.jar" />
 			<include name="commons-fileupload.jar"/> 
@@ -460,6 +465,7 @@
                  <include name="lib/antlr*.jar"/>
 				 <include name="lib/jbpm-jpdl.jar"/>
 				 <include name="lib/icefaces*.jar"/>
+                  <exclude name="lib/icefaces-ahs.jar"/>
 				 <include name="lib/backport-util-concurrent.jar" />
 				<include name="lib/krysalis-jCharts-1.0.0-alpha-1.jar" />
 				<include name="lib/commons-fileupload.jar"/>

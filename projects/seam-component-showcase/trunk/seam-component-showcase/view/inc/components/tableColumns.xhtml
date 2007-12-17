@@ -31,13 +31,14 @@
 ~
 -->
 
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
             
-            <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+            <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
                 <ice:panelGrid id="columnsRootTable"
                                styleClass="componentLayoutRootTable"
                                columns="1">
@@ -70,22 +71,22 @@
                         </ice:panelGroup>
                     </ice:panelGrid>
 
-                    <ice:panelGroup styleClass="columnsContainer">
-                        <ice:dataTable var="item"
+                    <ice:panelGroup id="columnsContainer" styleClass="columnsContainer">
+                        <ice:dataTable id="dataTbl" var="item"
                                        value="#{columnsBean.rowDataModel}"
                                        columnClasses="columnsColumn"
                                        rows="#{columnsBean.rows}">
 
-                            <ice:columns value="#{columnsBean.columnDataModel}"
+                            <ice:columns id="columnDataModel" value="#{columnsBean.columnDataModel}"
                                          var="column">
                                 <f:facet name="header">
                                     <ice:panelGroup >
-                                        <ice:outputText value="#{columnsBean.columnDataModel.rowData}"/>
+                                        <ice:outputText id="rowData" value="#{columnsBean.columnDataModel.rowData}"/>
                                     </ice:panelGroup>
                                 </f:facet>
                                 <!-- display the table cell values-->
                                 <ice:panelGroup style="text-align: center; white-space: nowrap;" >
-                                    <ice:outputText
+                                    <ice:outputText id="cellValue"
                                             value="#{columnsBean.cellValue}"/>
 
                                 </ice:panelGroup>

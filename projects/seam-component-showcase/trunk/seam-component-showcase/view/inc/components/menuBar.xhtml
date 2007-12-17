@@ -36,17 +36,18 @@ In this demonstration, ice:menuBar and ice:menuItem are
 used to build an application menubar. The memuItem selection events
 are shown but could easily be made to invoke application logic.
 -->
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
 <!--
   Example include, also see source code include.
 -->
-<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
 <ice:panelGrid
         styleClass="componentLayoutRootTable"
@@ -70,9 +71,9 @@ are shown but could easily be made to invoke application logic.
     </h3>
 
     <!-- toggle menu bar orientation -->
-    <ice:selectOneRadio value="#{menuBar.orientation}" partialSubmit="true">
-        <f:selectItem itemValue="horizontal" itemLabel="Horizontal"/>
-        <f:selectItem itemValue="vertical" itemLabel="Vertical"/>
+    <ice:selectOneRadio id="MenuSlctRadio" value="#{menuBar.orientation}" partialSubmit="true">
+        <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="Horizontal"/>
+        <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="Vertical"/>
     </ice:selectOneRadio>
 
 </ice:panelGroup>
@@ -86,10 +87,10 @@ are shown but could easily be made to invoke application logic.
     <ice:panelGrid columns="2">
         <ice:outputText value="#{msgs['component.menuBar.selection']}"
                         styleClass="valueHeader"/>
-        <ice:outputText value="#{menuBar.actionFired}" styleClass="valueText"/>
+        <ice:outputText id="MenuSlct" value="#{menuBar.actionFired}" styleClass="valueText"/>
         <ice:outputText value="#{msgs['component.menuBar.param']}"
                         styleClass="valueHeader"/>
-        <ice:outputText value="#{menuBar.param}" styleClass="valueText"/>
+        <ice:outputText id="MenuParamVal" value="#{menuBar.param}" styleClass="valueText"/>
     </ice:panelGrid>
 </ice:panelGroup>
 
