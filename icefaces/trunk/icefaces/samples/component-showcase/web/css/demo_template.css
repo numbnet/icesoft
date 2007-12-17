@@ -143,12 +143,11 @@ div.columnleft {
     width: 26px;
     float: left;
 }
-
+/* margin-left should be updated along with the relative position of */
 div.columnMiddle {
     min-height: 500px;
     margin-left: 265px;
     padding: 5px;
-    position: relative;
 
 }
 

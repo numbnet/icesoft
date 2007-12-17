@@ -89,7 +89,7 @@ with more data than can be displayed in a single page.
 <ice:panelGroup styleClass="formBorderHighlight" style="float: left">
 
     <!-- Display counts about the table and the currently displayed page -->
-        <ice:panelGroup style="float: left" >
+    <ice:panelGroup style="float: left" >
         <ice:dataPaginator id="dataScroll_2" for="data"
                            rowsCountVar="rowsCount"
                            displayedRowsCountVar="displayedRowsCountVar"
@@ -108,6 +108,7 @@ with more data than can be displayed in a single page.
             </ice:outputFormat>
         </ice:dataPaginator>
     </ice:panelGroup>
+    <ice:panelGroup styleClass="clearer" />
     <ice:panelGroup style="float: left" >
         <!-- Layout table columns with column headings and 5 table rows per page -->
         <ice:dataTable id="data" var="person"

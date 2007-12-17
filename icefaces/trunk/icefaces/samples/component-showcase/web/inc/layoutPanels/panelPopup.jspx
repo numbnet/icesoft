@@ -80,7 +80,7 @@ and must be dismissed before the application's functionality will return.
             draggable="true"
             rendered="#{popup.showDraggablePanel}"
             visible="#{popup.showDraggablePanel}"
-            style="z-index: 1000; top: 30%; left: 30%; position: absolute; width: 300px; height: 150px;">
+            style="z-index: 1000;top:269px;left:482px;position: absolute; width: 300px; height: 150px;">
 
         <f:facet name="header">
             <ice:panelGrid id="draggablePanelGrid"

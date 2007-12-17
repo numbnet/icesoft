@@ -31,13 +31,6 @@
 ~
 -->
 
-<!--
-In this demonstration, two types of popup panel components can be toggled on and
-off.
-The Draggable panel can be moved. The Modal panel cannot be moved, interrupts
-the application
-and must be dismissed before the application's functionality will return.
--->
 <ice:form id="iceform"
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
