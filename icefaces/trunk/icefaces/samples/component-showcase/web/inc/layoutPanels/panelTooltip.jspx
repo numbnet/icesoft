@@ -245,7 +245,7 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/panelPopupDoc.html" class="includeIframe"
+    <iframe src="./docs/panelTooltipDoc.html" class="includeIframe"
             width="100%"></iframe>
 </ice:panelTab>
 
@@ -255,7 +255,7 @@ this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
     <iframe
-            src="./sourcecodeStream.html?path=./inc/layoutPanels/panelPopup.jspx"
+            src="./sourcecodeStream.html?path=./inc/layoutPanels/panelTooltip.jspx"
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 
