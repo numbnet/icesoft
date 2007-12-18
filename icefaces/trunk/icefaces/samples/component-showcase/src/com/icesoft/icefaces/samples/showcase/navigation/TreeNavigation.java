@@ -231,22 +231,6 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
-
-                // component menu -> inputRichText
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.inputRichText");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.inputRichText");
-                branchObject.setMenuContentInclusionFile("./components/inputRichText.jspx");
-                branchObject.setTemplateName("inputRichTextPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-                
                 // component menu -> Selection
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
@@ -292,21 +276,6 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
-                // component menu -> Drag and Drop
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.dragDropSubmenuItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.dragDropSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/dragDrop.jspx");
-                branchObject.setTemplateName("dragDropContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
                 // component menu -> Calendar
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
@@ -322,14 +291,14 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
-                // component menu -> Tree
+                // component menu -> inputRichText
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.treeComponentSubmenuItem");
+                        "submenuDisplayText.inputRichText");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.treeComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tree.jspx");
-                branchObject.setTemplateName("treeContentPanel");
+                        "submenuContentTitle.inputRichText");
+                branchObject.setMenuContentInclusionFile("./components/inputRichText.jspx");
+                branchObject.setTemplateName("inputRichTextPanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -352,6 +321,51 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
+                // component menu -> Progress Indicator
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.outputProgressComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.outputProgressComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/outputProgress.jspx");
+                branchObject.setTemplateName("outputProgressContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+
+                // component menu -> File Upload
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.inputFileComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.inputFileComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/inputFile.jspx");
+                branchObject.setTemplateName("inputFileContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+
+                // component menu -> Drag and Drop
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.dragDropSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.dragDropSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/dragDrop.jspx");
+                branchObject.setTemplateName("dragDropContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+
                 //component menu -> Effects
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
@@ -360,6 +374,21 @@ public class TreeNavigation {
                         "submenuContentTitle.effectsSubmenuItem");
                 branchObject.setMenuContentInclusionFile("./components/effects.jspx");
                 branchObject.setTemplateName("effectsContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+
+                // component menu -> Tree
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.treeComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.treeComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/tree.jspx");
+                branchObject.setTemplateName("treeContentPanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -413,14 +442,14 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
 
-                // component menu -> Table -> Columns
+                // component menu -> Table -> Data Header
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.columnsComponentSubmenuItem");
+                        "submenuDisplayText.dataScrollerComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.columnsComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tableColumns.jspx");
-                branchObject.setTemplateName("columnsContentPanel");
+                        "submenuContentTitle.dataScrollerComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/dataPaginator.jspx");
+                branchObject.setTemplateName("tablePaginatorContentPanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -443,14 +472,14 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
 
-                // component menu -> Table -> Data Header
+                // component menu -> Table -> TableRowSelec5tion
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.dataScrollerComponentSubmenuItem");
+                        "submenuDisplayText.tableRowSelectionComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.dataScrollerComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/dataPaginator.jspx");
-                branchObject.setTemplateName("tablePaginatorContentPanel");
+                        "submenuContentTitle.tableRowSelectionComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/tableRowSelection.jspx");
+                branchObject.setTemplateName("tableRowSelectionContentPanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -473,50 +502,20 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
 
-                // component menu -> Table -> TableRowSelec5tion
+                // component menu -> Table -> Columns
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.tableRowSelectionComponentSubmenuItem");
+                        "submenuDisplayText.columnsComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.tableRowSelectionComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tableRowSelection.jspx");
-                branchObject.setTemplateName("tableRowSelectionContentPanel");
+                        "submenuContentTitle.columnsComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/tableColumns.jspx");
+                branchObject.setTemplateName("columnsContentPanel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
-
-                // component menu -> Progress Indicator
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.outputProgressComponentSubmenuItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.outputProgressComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/outputProgress.jspx");
-                branchObject.setTemplateName("outputProgressContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
-
-                // component menu -> File Upload
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.inputFileComponentSubmenuItem");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.inputFileComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/inputFile.jspx");
-                branchObject.setTemplateName("inputFileContentPanel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                branchNode.add(leafNode);
 
                 // component menu -> Chart
                 branchObject = new PageContentBean();
@@ -595,29 +594,14 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(googleMapNode);
 
-                // component menu -> GoogleMaps -> Demo1
+                // component menu -> GoogleMaps -> Demo4
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.demo1");
+                        "submenuDisplayText.demo4");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.demo1");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo1.jspx");
-                branchObject.setTemplateName("gmapDemo1Panel");
-                branchObject.setNavigationSelection(navigationBean);
-                leafNode = new DefaultMutableTreeNode(branchObject);
-                branchObject.setWrapper(leafNode);
-                branchObject.setLeaf(true);
-                // finally add the new custom component branch
-                googleMapNode.add(leafNode);
-
-                // component menu -> GoogleMaps -> Demo2
-                branchObject = new PageContentBean();
-                branchObject.setMenuDisplayText(
-                        "submenuDisplayText.demo2");
-                branchObject.setMenuContentTitle(
-                        "submenuContentTitle.demo2");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo2.jspx");
-                branchObject.setTemplateName("gmapDemo2Panel");
+                        "submenuContentTitle.demo4");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo4.jspx");
+                branchObject.setTemplateName("gmapDemo4Panel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -640,14 +624,14 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
 
-                // component menu -> GoogleMaps -> Demo4
+                // component menu -> GoogleMaps -> Demo2
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
-                        "submenuDisplayText.demo4");
+                        "submenuDisplayText.demo2");
                 branchObject.setMenuContentTitle(
-                        "submenuContentTitle.demo4");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo4.jspx");
-                branchObject.setTemplateName("gmapDemo4Panel");
+                        "submenuContentTitle.demo2");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo2.jspx");
+                branchObject.setTemplateName("gmapDemo2Panel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -669,7 +653,22 @@ public class TreeNavigation {
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
-                
+
+                // component menu -> GoogleMaps -> Demo1
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.demo1");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.demo1");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo1.jspx");
+                branchObject.setTemplateName("gmapDemo1Panel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                googleMapNode.add(leafNode);
+
 /*                // component menu -> GoogleMaps -> Demo6
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
