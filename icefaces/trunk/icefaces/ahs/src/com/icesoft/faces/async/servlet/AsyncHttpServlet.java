@@ -79,6 +79,7 @@ extends HttpServlet {
                 messageService.start();
                 asyncHttpServer.start();
             } else {
+                final ExecuteQueue _executeQueue = new ExecuteQueue();
                 SessionDispatcher _sessionDispatcher = new SessionDispatcher() {
                     protected PseudoServlet newServlet(
                         final HttpSession httpSession, final Monitor monitor) {
@@ -87,7 +88,7 @@ extends HttpServlet {
                             new SessionBoundServlet(
                                 _servletContextConfiguration,
                                 _sessionManager,
-                                new ExecuteQueue());
+                                _executeQueue);
                     }
                 };
                 pathDispatcher.dispatchOn(".*", _sessionDispatcher);
