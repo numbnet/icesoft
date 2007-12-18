@@ -1,5 +1,6 @@
 package com.icesoft.icefaces.samples.showcase.layoutPanels.tooltippanel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +12,23 @@ import javax.faces.component.ValueHolder;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import com.icesoft.faces.component.paneltabset.PanelTab;
-import com.icesoft.faces.component.paneltabset.PanelTabSet;
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
 
-public class TooltipBean {
+
+@Scope(ScopeType.PAGE)
+@Name("tooltip")
+public class TooltipBean implements Serializable{
     //source component for which the tooltip will be rendered/unrendered
-    UIComponent tooltipSrc;
+
+
+	UIComponent tooltipSrc;
     
     //current state of the tooltip
-    String state = "hide";
+    private String state = "hide";
     
     Map provinces = new HashMap (); 
     
