@@ -31,95 +31,95 @@
   ~
   -->
 
-<project name="component-showcase" default="build.war">
-
+<project name="component-showcase" default="help">
+    
     <property file="build.properties"/>
     <property name="component.docs.dir" location="../../component/doc"/>
     <property name="portlet.build.web.dir" value="build/web"/>
     <property name="portlet.web.dir" value="portlet/web"/>
     <import file="../etc/build-common.xml"/>
-
+    
     <patternset id="additional.icefaces.lib.jars.to.include"
                 includes="
                 krysalis-jCharts-1.0.0-alpha-1.jar
                 "
-            />
-
-
+    />
+    
+    
     <patternset id="additional.compile.lib.jars"
                 includes="
                 servlet-api.jar
                 "
-            />
-
-
+    />
+    
+    
     <!-- jars needed for form Facelets -->
     <patternset id="faclets.jars"
                 includes="
                 icefaces-facelets.jar
                 el-ri.jar
                 "
-            />
+    />
     <target name="clean" depends="common.clean">
         <delete dir="${web.content.dir}/docs"/>
     </target>
-
+    
     <target name="build.war" depends="compile"
             description="Creates a Sun RI version of component-showcase.">
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">
             <fileset dir="${component.docs.dir}"/>
         </copy>
-
+        
         <build.war web.xml="conf/web.sunri.icefaces.ce.xml"/>
     </target>
-
+    
     <target name="build.portlet.war" description="" depends="compile">
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">
             <fileset dir="${component.docs.dir}"/>
         </copy>
         <copy todir="${portlet.build.web.dir}/portlet">
-        	<fileset dir="${portlet.web.dir}">
-			<include name="*.jspx"/>
-       		</fileset>
-       	</copy>
-
-        <!--
-        <copy todir="${portlet.build.web.dir}">
-       		
-        	<fileset dir="${web.content.dir}"/>
+            <fileset dir="${portlet.web.dir}">
+                <include name="*.jspx"/>
+            </fileset>
         </copy>
-        <copy todir="${portlet.web.inf.dir}">
-       		<fileset dir="${portlet.conf.dir}">
-			<include name="${portlet.xml}"/>
-		</fileset>
-		<fileset dir="${portlet.liferay.dir}">
-			<patternset refid="liferay.xmls"/>
-		</fileset>
-        </copy>
-        -->
+        
         <property name="portlet" value="true"/>
-	<build.portlet.war portlet.web.content.dir="build/web"
-            portlet.conf.dir="portlet/conf"
-            portlet.conf.liferay.dir="portlet/conf/liferay"/>
+        <build.portlet.war portlet.web.content.dir="build/web"
+                    portlet.conf.dir="portlet/conf"
+                    portlet.conf.liferay.dir="portlet/conf/liferay"/>
     </target>
-
+    
     <target name="build.facelet.war" depends="compile"
-            description="Creates a Facelet version of component-showcase.">
+            description="Creates a facelets version of component-showcase.">
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">
             <fileset dir="${component.docs.dir}"/>
         </copy>
-
+        
         <copy todir="${app.lib.dir}" preservelastmodified="true">
-
+            
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="faclets.jars"/>
             </fileset>
         </copy>
+        
         <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
     </target>
+    
+    <target name="help">
+        <echo level="info">
+To build different versions of this application, please check common.help for available builds, "ant common.help"
+        </echo>
+    </target>
+    
+    <target name="build.portlet.jboss4.2.war" description="build portlet application for JBoss4.2">
+        <antcall target="build.portlet.jboss4.2.war"/>
+    </target>
 
-
-    <target name="build.facelet.ear" depends="build.facelet.war">
+    <target name="build.portlet.liferay.war" description="build a portlet application for Tomcat">
+        <antcall name="build.portlet.liferay.war"/>
+    </target>
+    
+    <target name="build.facelet.ear" description="facelets version for Seam" depends="build.facelet.war">
         <copy todir="conf" preservelastmodified="true">
             <fileset dir="${build.common.basedir}" includes="application.xml">
                 <present present="srconly" targetdir="conf"/>
@@ -128,10 +128,10 @@
                 <filter token="project_name" value="${ant.project.name}"/>
             </filterset>
         </copy>
-
+        
         <ear destfile="${dist.dir}/${ant.project.name}.ear" appxml="conf/application.xml">
             <fileset dir="${dist.dir}" includes="*.war"/>
         </ear>
     </target>
-
+    
 </project>

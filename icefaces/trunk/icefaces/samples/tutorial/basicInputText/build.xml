@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="basicInputText" default="build.war">
+<project name="basicInputText" default="help">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>

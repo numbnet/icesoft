@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="timezone2" default="build.war">
+<project name="timezone2" default="help">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>

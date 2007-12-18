@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="dragdrop2" default="build.war">
+<project name="dragdrop2" default="help">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>

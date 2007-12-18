@@ -31,15 +31,34 @@
   ~
   -->
 
-<project name="chat" default="build.war">
-
-<import file="../../etc/build-common.xml"/>
-
-<target name="build.war" depends="compile">
-    <build.war web.xml="conf/web.sunri.icefaces.xml"/>
-</target>
-<target name="build.portlet.war">
-    <build.portlet.war web.xml="conf/web.sunri.icefaces.xml"/>
-</target>
+<project name="chat" default="help">
     
+    <import file="../../etc/build-common.xml"/>
+    
+    <target name="build.war" depends="compile">
+        <build.war web.xml="conf/web.sunri.icefaces.xml"/>
+    </target>
+    <target name="build.portlet.war">
+        <build.portlet.war web.xml="conf/web.sunri.icefaces.xml"/>
+    </target>
+    
+    <target name="build.portlet.jboss4.2.war" description="build portlet application for JBoss4.2" depends="compile">
+        <property name="portlet.web.content.dir" location="web"/>
+        <property name="portlet.web.dir" location="web"/>
+        <antcall target="build.portlet.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
+    </target>
+    <target name="build.portlet.liferay.war" description="build portlet application for Tomcat">
+        <antcall name="build.portlet.liferay.war"/>
+    </target>
+    <target name="help">
+        <echo level="info">
+This application implements portlet version of chat application.
+Use the following target to build the application
+    build.portlet.liferay.war   - for Liferay Tomcat 5.x version
+    build.portlet.jboss4.2.war  - for JBoss4.2 version
+        </echo>
+    </target>
 </project>

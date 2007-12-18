@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="auctionMonitor" default="build.war">
+<project name="auctionMonitor" default="help">
 
 <import file="../etc/build-common.xml"/>
 

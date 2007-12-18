@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="tiles" default="build.war">
+<project name="tiles" default="help">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>

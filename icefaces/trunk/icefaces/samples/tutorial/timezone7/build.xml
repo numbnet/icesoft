@@ -32,25 +32,30 @@
   -->
 
 <project name="timezone7" default="build.war">
-
-<property file="../build.properties"/>
-<property name="common.build.file" location="../../etc/build-common.xml"/>
-
-<import file="${common.build.file}"/>
-
-<patternset id="additional.icefaces.lib.jars.to.include"
-    includes="
-        el-ri.jar
-        icefaces-facelets.jar
-        krysalis-jCharts-1.0.0-alpha-1.jar
-    "
-/>
-
-<target name="tomcat6.0">
-	<antcall target="build.war">
-		<param name="jsf12" value=""/>
-		<param name="serverel" value=""/>
-	</antcall>
-</target>
-
+    
+    <property file="../build.properties"/>
+    <property name="common.build.file" location="../../etc/build-common.xml"/>
+    
+    <import file="${common.build.file}"/>
+    
+    <patternset id="additional.icefaces.lib.jars.to.include"
+                includes="
+                el-ri.jar
+                icefaces-facelets.jar
+                krysalis-jCharts-1.0.0-alpha-1.jar
+                "
+    />
+    <target name="help">
+        <echo level="info">
+This application implements facelets version of timezone application.
+Please check common.help for available builds, "ant common.help"
+        </echo>
+    </target>
+    <target name="tomcat6.0" description="overwrite tomcat6.0 in build.common">
+        <antcall target="build.war">
+            <param name="jsf12" value=""/>
+            <param name="serverel" value=""/>
+        </antcall>
+    </target>
+    
 </project>
