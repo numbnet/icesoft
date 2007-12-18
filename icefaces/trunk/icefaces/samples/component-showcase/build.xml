@@ -121,6 +121,9 @@ To build different versions of this application, please check common.help for av
 
     <target name="build.portlet.jboss4.2.portal.ahs.war" depends="compile" description="build portlet application for JBoss4.2 portal with AHS">
         <property name="portlet" value="true"/>
+        <copy todir="build/web/WEB-INF">
+                <fileset dir="portlet/conf" includes="*.xml"/>
+        </copy>
         <antcall target="jboss.ahs.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
