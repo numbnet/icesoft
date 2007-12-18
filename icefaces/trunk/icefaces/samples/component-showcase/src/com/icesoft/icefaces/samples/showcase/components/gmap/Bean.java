@@ -38,8 +38,14 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+
 import com.icesoft.faces.component.gmap.GMapLatLng;
 
+@Scope(ScopeType.PAGE)
+@Name("gmap")
 public class Bean {
 	private String geoCoderAddress;
 	private String address = "";
