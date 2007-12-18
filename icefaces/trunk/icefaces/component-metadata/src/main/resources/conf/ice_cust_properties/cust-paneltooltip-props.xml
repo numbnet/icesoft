@@ -61,7 +61,20 @@
 <property>
     <description>
         <![CDATA[
-		]]>		
+        <p>
+        Space-separated list of CSS style class(es) to be applied when this 
+        element is rendered. This value must be passed through as the "class" 
+        attribute on generated markup.
+        </p>
+        <p>Defines the base class name for all style classes.
+        Default value is <b>icePnlTlTip</b></p>
+              </p><ul>
+                <li>icePnlTlTip</li>
+                <li>icePnlTlTipHdr</li>
+                <li>icePnlTlTipBody</li>
+                <li>icePnlTlTipFtr</li>
+              </ul>              
+        ]]>     	
     </description>
     <property-name>styleClass</property-name>
     <property-class>java.lang.String</property-class>

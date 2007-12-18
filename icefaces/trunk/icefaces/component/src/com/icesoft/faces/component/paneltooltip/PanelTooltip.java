@@ -15,6 +15,8 @@ import javax.faces.event.ValueChangeListener;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.application.D2DViewHandler;
+import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelpopup.PanelPopup;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
@@ -41,6 +43,8 @@ public class PanelTooltip extends PanelPopup{
     private Boolean dynamic; 
     
     private UIComponent tooltipSrcComponent;
+    
+    private String styleClass = null;
     
     public PanelTooltip() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -119,6 +123,23 @@ public class PanelTooltip extends PanelPopup{
         this.tooltipSrcComponent = tooltipSrcComponent;
     }
     
+    /* (non-Javadoc)
+     * @see javax.faces.component.html.HtmlPanelGroup#getStyleClass()
+     */
+     public String getStyleClass() {
+         return Util.getQualifiedStyleClass(this, 
+                     styleClass,
+                     CSS_DEFAULT.TOOLTIP_BASE,
+                     "styleClass");
+     }
+     
+     /* (non-Javadoc)
+      * @see javax.faces.component.html.HtmlPanelGroup#setStyleClass(java.lang.String)
+      */
+     public void setStyleClass(String styleClass) {
+         this.styleClass = styleClass;
+     }     
+     
     public void updateModal(FacesContext context) {
         ValueBinding vb = getValueBinding("tooltipSrcComponent");
         if (vb != null) {

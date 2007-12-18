@@ -1609,10 +1609,10 @@ input.iceSelInpDateClosePopup {
     padding-right: 1px;
 }
 /*
------------ PanelPopup ----------
+----------- PanelPopup & panelTooltip ----------
 */
 
-.icePnlPop {
+.icePnlPop, .icePnlTlTip {
     color: #666666;
     border-right: 2px solid #ABABAB;
     border-top: 1px solid #ABABAB;
@@ -1624,7 +1624,7 @@ input.iceSelInpDateClosePopup {
     z-index: 1000;
 }
 
-.icePnlPopHdr {
+.icePnlPopHdr, .icePnlTlTipHdr {
     background-color: #DEDEDE;
     background-image: url(css-images/window_top.gif);
     background-position: top;
@@ -1632,7 +1632,7 @@ input.iceSelInpDateClosePopup {
     height: 2.0em;
 }
 
-.icePnlPopHdr .iceOutTxt {
+.icePnlPopHdr .iceOutTxt, .icePnlTlTipHdr .iceOutTxt {
 	color:#FFFFFF;
 	font-size:1.1em;
 	font-weight:bold;
@@ -1641,11 +1641,11 @@ input.iceSelInpDateClosePopup {
 	vertical-align:middle;
 }
 
-.icePnlPopBody {
+.icePnlPopBody, .icePnlTlTipBody {
     padding: 10px;
 }
 
-.icePnlPopFtr {
+.icePnlPopFtr, .icePnlTlTipFtr {
     float: right;
     height: auto;
     background-color: #DDDDDD;

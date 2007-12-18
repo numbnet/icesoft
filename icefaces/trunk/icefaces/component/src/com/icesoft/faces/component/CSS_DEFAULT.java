@@ -146,6 +146,9 @@ public class CSS_DEFAULT {
             "iceOutFrmt";
     //public static final String PANEL_BORDER_DEFAULT_STYLE_CLASS = "Style"; // Originally was "pageStyleClass"
 
+    public static final String TOOLTIP_BASE =
+        "icePnlTlTip";
+    
     public static final String POPUP_BASE =
             "icePnlPop"; // Originally was "panelPopup"
     public static final String POPUP_DEFAULT_HEADER_CLASS =
