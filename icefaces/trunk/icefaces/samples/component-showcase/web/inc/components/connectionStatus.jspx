@@ -71,23 +71,23 @@ In this demonstration ice:connectionStatus different icons are displayed.
 
                         <ice:outputText value="XP" id="XP"/>
                         <ice:graphicImage id="connect_idleXP"
-                                url="./xmlhttp/css/xp/css-images/connect_idle.gif"/>
+                                url="/xmlhttp/css/xp/css-images/connect_idle.gif"/>
                         <ice:graphicImage id="connect_activeXP"
-                                url="./xmlhttp/css/xp/css-images/connect_active.gif"/>
+                                url="/xmlhttp/css/xp/css-images/connect_active.gif"/>
                         <ice:graphicImage id="connect_cautionXP"
-                                url="./xmlhttp/css/xp/css-images/connect_caution.gif"/>
+                                url="/xmlhttp/css/xp/css-images/connect_caution.gif"/>
                         <ice:graphicImage id="connect_disconnectedXP"
-                                url="./xmlhttp/css/xp/css-images/connect_disconnected.gif"/>
+                                url="/xmlhttp/css/xp/css-images/connect_disconnected.gif"/>
 
                         <ice:outputText value="Royale" id="Royale"/>
                         <ice:graphicImage id="connect_idleRoyale"
-                                url="./xmlhttp/css/royale/css-images/connect_idle.gif"/>
+                                url="/xmlhttp/css/royale/css-images/connect_idle.gif"/>
                         <ice:graphicImage id="connect_activeRoyale"
-                                url="./xmlhttp/css/royale/css-images/connect_active.gif"/>
+                                url="/xmlhttp/css/royale/css-images/connect_active.gif"/>
                         <ice:graphicImage id="connect_cautionRoyale"
-                                url="./xmlhttp/css/royale/css-images/connect_caution.gif"/>
+                                url="/xmlhttp/css/royale/css-images/connect_caution.gif"/>
                         <ice:graphicImage id="connect_disconnectedRoyale"
-                                url="./xmlhttp/css/royale/css-images/connect_disconnected.gif"/>
+                                url="/xmlhttp/css/royale/css-images/connect_disconnected.gif"/>
 
                     </ice:panelGrid>
                 </ice:panelGroup>
