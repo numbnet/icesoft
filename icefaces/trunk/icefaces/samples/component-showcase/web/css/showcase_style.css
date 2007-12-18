@@ -672,6 +672,9 @@ div.navThemeChange {
     width: 40px
 }
 
+.columnsColumn {
+    padding: 0px;
+}
 
 /* encapsulates the columns dataTable element and restricts it to the given size */
 .columnsContainer {
