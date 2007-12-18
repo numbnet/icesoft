@@ -36,6 +36,9 @@
     
     <patternset id="liferay.xmls">
         <exclude name="web.sunri.icefaces.xml"/>
+        <exclude name="web.sunri.icefaces.ce.xml"/>
+        <exclude name="web.sunri.icefaces.facelet.xml"/>
+        <exclude name="web.sunri.icefaces.portlet.xml"/>
         <exclude name="web.sunri.icefaces.portlet.ahs.xml"/>
         <exclude name="liferay-display.xml" unless="liferay"/>
         <exclude name="liferay-plugin-package.xml" unless="liferay"/>
@@ -210,7 +213,7 @@
             
             <copy file="@{web.xml}" tofile="${web.inf.dir}/web.xml" preservelastmodified="true" overwrite="true"/>
             
-            <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <copy todir="${app.lib.dir}" preservelastmodified="true" verbose="true">
                 <fileset dir="${icefaces.lib.dir}">
                     <patternset refid="common.icefaces.lib.jars.to.include"/>
                     <patternset refid="additional.icefaces.lib.jars.to.include"/>

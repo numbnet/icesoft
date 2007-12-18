@@ -122,6 +122,7 @@ To build different versions of this application, please check common.help for av
         <antcall target="jboss.ahs.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>
         </antcall>       
     </target>
     
@@ -132,10 +133,14 @@ To build different versions of this application, please check common.help for av
         </antcall>
     </target>
     <target name="jboss.ahs.war">
-        <build.portlet.war webxml="conf/web.sunri.icefaces.portlet.ahs.xml"/>
+        <build.portlet.war web.xml="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
     </target>
     <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 with AHS">
         <property name="portlet" value="true"/>
+        <copy todir="web/WEB-INF">
+                <fileset dir="portlet/conf/liferay" includes="*.xml"/>
+
+            </copy>
         <antcall target="jboss.ahs.war">
             <param name="liferay" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
