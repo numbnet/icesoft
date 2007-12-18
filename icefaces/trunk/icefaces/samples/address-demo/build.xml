@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="address" default="help">
+<project name="address" default="tomcat6.0">
 
 <import file="../etc/build-common.xml"/>
 

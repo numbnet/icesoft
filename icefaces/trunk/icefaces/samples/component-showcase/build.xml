@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="component-showcase" default="help">
+<project name="component-showcase" default="tomcat6.0">
     
     <property file="build.properties"/>
     <property name="component.docs.dir" location="../../component/doc"/>

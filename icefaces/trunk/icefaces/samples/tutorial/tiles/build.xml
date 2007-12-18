@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="tiles" default="help">
+<project name="tiles" default="tomcat6.0">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>

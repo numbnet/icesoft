@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="timezone1" default="help">
+<project name="timezone1" default="tomcat6.0">
 
 <property file="../build.properties"/>
 <property name="common.build.file" location="../../etc/build-common.xml"/>
