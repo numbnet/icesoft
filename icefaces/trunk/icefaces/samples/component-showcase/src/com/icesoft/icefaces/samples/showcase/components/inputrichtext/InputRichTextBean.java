@@ -33,12 +33,6 @@
 package com.icesoft.icefaces.samples.showcase.components.inputrichtext;
 import javax.faces.event.ValueChangeEvent;
 
-import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Scope;
-
-@Scope(ScopeType.PAGE)
-@Name("inputRichTextBean")
 public class InputRichTextBean {
 	private String value = "";
 
