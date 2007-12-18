@@ -31,7 +31,7 @@
   ~
   -->
 
-<project name="chat" default="build.portlet.jboss4.2.portal.ahs.war">
+<project name="chat" default="build.portlet.jboss4.2.portal.war">
     
     <import file="../../etc/build-common.xml"/>
     
