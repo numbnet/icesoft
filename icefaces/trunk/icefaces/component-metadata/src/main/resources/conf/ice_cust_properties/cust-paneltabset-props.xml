@@ -37,6 +37,7 @@
 &i18n-props;
 &value-props;
 &ice-att-title-props;
+&ice-att-menuContext-props;
 &base-props;
 &events-props;
 <property>

@@ -34,6 +34,8 @@
 &core-props;
 &value-props;
 &base-props;
+&ice-att-menuContext-props;
+
 <property>
 	<description>
 		Listener, called when list is changed

@@ -33,12 +33,11 @@
   -->
 
 <component>
-	<description>a single column of data with a dataTable</description>
+	<description>a single column of data within a dataTable</description>
 
 	<display-name>UIColumn</display-name>
 	<component-type>com.icesoft.faces.Column</component-type>
-	&base-props;
-    &ice-att-userrole-rendered-props;
+	&ice-uicolumn-props;
 	<component-extension>
 		<base-component-type>javax.faces.Column</base-component-type>
 		<component-family>javax.faces.Column</component-family>

@@ -138,6 +138,7 @@
   <!-- ICE core properties for each instance of the extended component -->
   <!ENTITY ice-att-style-props SYSTEM "ice_properties/ice-att-style-props.xml">
   <!ENTITY ice-att-menuPopup-props SYSTEM "ice_properties/ice-att-menuPopup-props.xml">
+  <!ENTITY ice-att-menuContext-props SYSTEM "ice_properties/ice-att-menuContext-props.xml">
   <!ENTITY ice-att-title-props SYSTEM "ice_properties/ice-att-title-props.xml">
   <!ENTITY ice-att-immediate-props SYSTEM "ice_properties/ice-att-immediate-props.xml">
   <!ENTITY ice-att-autoComplete-props SYSTEM "ice_properties/ice-att-autoComplete-props.xml">
@@ -161,6 +162,7 @@
   <!ENTITY ice-inputText-props SYSTEM "ice_properties/ice-inputText-props.xml">
   
   <!ENTITY ice-uicolumn-props SYSTEM "ice_properties/ice-uicolumn-props.xml">
+  <!ENTITY ice-uicolumns-props SYSTEM "ice_properties/ice-uicolumns-props.xml">
   
   <!ENTITY ice-inputHidden-props SYSTEM "ice_properties/ice-inputHidden-props.xml">  
   
