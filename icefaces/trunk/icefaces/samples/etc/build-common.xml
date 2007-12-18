@@ -36,16 +36,16 @@
     
     <patternset id="liferay.xmls">
         <exclude name="web.sunri.icefaces.xml"/>
+        <exclude name="web.sunri.icefaces.portlet.ahs.xml"/>
         <exclude name="liferay-display.xml" unless="liferay"/>
         <exclude name="liferay-plugin-package.xml" unless="liferay"/>
         <exclude name="liferay-portlet.xml" unless="liferay"/>
     </patternset>
     
     <patternset id="portlet.jar" includes="portlet.jar"/>
-    <!--/patternset-->
-    
+   
     <patternset id="portlet.deploy.jars">
-        <include name="icefaces-ahs.jar"/>
+        <include name="icefaces-ahs.jar" if="icefaces.ahs.enabled"/>
     </patternset>
     
     <patternset id="common.icefaces.lib.jars.to.include"
@@ -248,7 +248,7 @@
                 
                 <fileset dir="${web.content.dir}"/>
             </copy>
-            
+
             <copy todir="@{portlet.web.content.dir}/WEB-INF">
                 <fileset dir="@{portlet.conf.dir}">
                     <include name="portlet.xml"/>
