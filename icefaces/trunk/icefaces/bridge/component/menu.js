@@ -83,6 +83,9 @@ Ice.Menu = {
     	submenu=$(submenu);
     	submenuDiv=$(submenuDiv);
 	    if (submenu) {
+	        var menu = $(submenu);
+	        //menu is already visible, don't do anything
+            if (menu && menu.style.display=='') return;
             Ice.Menu.showMenuWithId(submenu);
             if (submenuDiv) {
             	var styleLeft = (Ice.Menu.getPosition(supermenu,"Left") + supermenu.offsetWidth) + "px";

@@ -178,15 +178,18 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 if (parentNode.getAttribute(HTML.NAME_ATTR).equals("TOP_LEVEL_SUBMENU")) {
                     supermenu += "_sub";
                 }
-                topLevelDiv.setAttribute(displayEvent,
-                                         "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                                         expand(supermenu, clientId + "_sub",
-                                                KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);");
+                String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+                expand(supermenu, clientId + "_sub",
+                        KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);";
+                
+                topLevelDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
+                topLevelDiv.setAttribute(displayEvent, call);
             } else {
-                topLevelDiv.setAttribute(displayEvent,
-                                         "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                                         expand("this", clientId + "_sub",
-                                                KEYWORD_NULL) + "Ice.Menu.appendHoverClasses(this);");
+                String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+                    expand("this", clientId + "_sub",
+                           KEYWORD_NULL) + "Ice.Menu.appendHoverClasses(this);";
+                topLevelDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
+                topLevelDiv.setAttribute(displayEvent, call);
             }
         } else {
             topLevelDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
@@ -541,14 +544,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String subMenuItemClientId = nextSubMenuItem.getClientId(facesContext);
         subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
         if (nextSubMenuItem.isChildrenMenuItem()) {
+            String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+            expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
+            "Ice.Menu.appendHoverClasses(this);";
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
                 CoreUtils.addPortletStyleClassToQualifiedClass(
                     qualifiedName, qualifiedName,
                     PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
-            subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
-                expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
-                "Ice.Menu.appendHoverClasses(this);");
+            subMenuItemDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
+            subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR, call);
         } else {
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
                 CoreUtils.addPortletStyleClassToQualifiedClass(
