@@ -35,6 +35,7 @@ package com.icesoft.icefaces.samples.showcase.components.expandableTable;
 
 
 import com.icesoft.icefaces.samples.showcase.util.StyleBean;
+import com.icesoft.icefaces.samples.showcase.components.expandableTable.*;
 
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;

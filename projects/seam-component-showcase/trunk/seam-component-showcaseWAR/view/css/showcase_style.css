@@ -276,7 +276,15 @@ em {
     margin: 5px;
     margin-top: 0;
     width: 250px;
-     background-color: white;
+    background-color: white;
+}
+
+div.navThemeChange {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: transparent;
+    width: 245px;
 }
 .navTree {
     background-color: white;
@@ -284,12 +292,8 @@ em {
 
 .navConnectionStatus {
     position: absolute;
-    top: 105px;
-    right:35px;
-}
-
-.navThemeChange .themeSelector {
-    text-align: right;
+    top: 150px;
+    right: 25px;
 }
 
 .labelSelector {
@@ -368,6 +372,8 @@ em {
     vertical-align: top; /*width: 100%;*/
     border: 1px solid #CCCCCC;
     padding: 10px;
+    margin-bottom: 5px;
+    margin-left: 5px;
 }
 
 .calBorderHighlight {
@@ -487,7 +493,7 @@ em {
 }
 
 .selectionRadioGroup {
-    width: 300px;
+    width: 275px;
 }
 
 .selectionListBoxGroup {
@@ -496,7 +502,7 @@ em {
 }
 
 .selectionListBoxGroup select {
-    width: 140px;
+    width: 100px;
     height: 70px;
 }
 
@@ -527,8 +533,9 @@ em {
 .weekend a span {
     color: white;
 }
-.august span{
-   font-weight: bold;
+
+.august span {
+    font-weight: bold;
 }
 
 .progressBarColumn {
@@ -603,15 +610,6 @@ em {
     text-align: left;
 }
 
-
-.cartDropZonText1 {
-
-}
-
-.dragDropImage {
-
-}
-
 .dragDropImageSrc {
     cursor: move;
     border: solid #999999 1px;
@@ -625,8 +623,7 @@ em {
 .cartDropWrapper {
     width: 100%;
     padding-left: 0;
-    padding-right: 0;
-    /*padding-top: 50px;*/
+    padding-right: 0; /*padding-top: 50px;*/
 }
 
 .cartDropParent {
@@ -655,7 +652,8 @@ em {
     border-bottom: 1px solid #CCCCCC;
     text-align: left;
 }
-.cartReturnColumn{
+
+.cartReturnColumn {
     width: 90px;
     text-align: center;
 }
@@ -672,14 +670,7 @@ em {
     width: 80px;
 }
 
-/*
-  List
-*/
-.listItemIcon {
-    vertical-align: top;
-}
-
-/*!*/
+/* grey box around content blocks */
 .formBorderHighlight table {
     border-collapse: collapse;
 }
@@ -699,15 +690,13 @@ em {
 .listReceipt{
     width: 100%;
 }
-.shoppingListItemName{
 
-}
-.shoppingListItemName, .shoppingListItemQuantity{
+.shoppingListItemName, .shoppingListItemQuantity {
     text-align: left;
     width: 150px;
 }
 
-.shoppingListValue{
+.shoppingListValue {
     text-align: right;
 }
 
@@ -841,7 +830,6 @@ em {
 
 /* paragraph describing component */
 .connectionExplanation {
-    margin: 0;
     margin-bottom: 5px; /*font-size:1.2em;*/
 }
 
@@ -969,13 +957,13 @@ em {
 }
 
 /* Panel stack example */
-.panelGroupColor, .panelGroupFruit, .panelGroupMineral {
+.panelGroupColour, .panelGroupFruit, .panelGroupMineral {
     padding: 10px;
     border: 1px solid;
-    width: 380px;
+    width: 421px;
 }
 
-.panelGroupColor {
+.panelGroupColour {
     background-color: whitesmoke;
 }
 
@@ -1178,56 +1166,58 @@ em {
     text-decoration: underline;
 }
 .pnlClpsblDemoHdr span, .pnlClpsblDemoHdr-dis span,
-    .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span{
+    .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span {
     padding-left: 20px;
 }
 .pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div,
-    .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
+    .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div {
     background-repeat: no-repeat;
     background-position: left top;
     height: 17px;
 }
-.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div{
+
+.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div {
     background-image: url( "../images/panelCollapsible/arrowDown.gif" );
 }
-.pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div{
+
+.pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div {
     background-image: url( "../images/panelCollapsible/arrowCollapsed.gif" );
 }
 
 .pnlBrdrDemoNorth, .pnlBrdrDemoEast, .pnlBrdrDemoWest, .pnlBrdrDemoCenter, .pnlBrdrDemoSouth {
-	border: 1px solid #CCCCCC;
-	padding: 5px;
-	vertical-align: top;
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+    vertical-align: top;
 }
 
 /* Panel Border Example*/
 .pnlBrdrDemo {
-    width:60%;
+    width: 60%;
 }
 .pnlBrdrDemoNorth {
-    background-color:#EEEEEE;
+    background-color: #EEEEEE;
     font-weight: bold;
     text-align: center;
-    height:60px;
+    height: 60px;
 }
 
 .pnlBrdrDemoEast {
-    background-color:#EEEEEE;
+    background-color: #EEEEEE;
     width: 20%;
 }
 
 .pnlBrdrDemoWest {
-    background-color:#EEEEEE;
+    background-color: #EEEEEE;
     width: 30%;
 }
 
 .pnlBrdrDemoCenter {
-    background-color:#EEEEEE;
+    background-color: #EEEEEE;
     width: 50%;
 }
 
 .pnlBrdrDemoSouth {
-    background-color:#EEEEEE;
+    background-color: #EEEEEE;
 }
 
 .mainBorderLayoutNorth {
@@ -1248,17 +1238,32 @@ em {
 }
 
 .rowSelectDmoCol1, .rowSelectDmoCol2 {
-    vertical-align : top;
+    vertical-align: top;
 }
 
-.rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt{
+.rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt {
     padding: 8px;
 }
 
 /* Series panel example */
-.seriesPanelItems{
+.seriesPanelItems {
     float: left;
     margin: 2px;
     padding: 8px;
     border: 1px solid #999999;
+}
+
+.inputRichTextDemoCol1 {
+    width: 700px;
+}
+
+.columnsSelectedCell {
+    background-color: #2A6CC2;
+    font-weight: bold;
+    padding: 0;
+}
+
+/* insure that tabset content is top aligned vertically. */
+.icePnlTbSetCnt {
+    vertical-align: top;
 }

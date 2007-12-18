@@ -57,8 +57,7 @@ import java.util.ResourceBundle;
  *
  * @since 0.3.0
  */
-//@Scope(ScopeType.CONVERSATION)    
-//@Name("pageContent")
+
 public class PageContentBean extends IceUserObject implements Serializable{
 	   private static Log log =
            LogFactory.getLog(PageContentBean.class);   
@@ -182,12 +181,9 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @return menu content title
      */
     public String getMenuContentTitle() {
-    	
         if (menuContentTitle != null && !menuContentTitle.equals("")) {
-//        	log.info("getMenuContentTitle ="+messages.getString(menuContentTitle));
             return messages.getString(menuContentTitle);
         } else {
-//        	log.info("getter menuContentTitle is null");
             return "";
         }
     }
@@ -200,9 +196,7 @@ public class PageContentBean extends IceUserObject implements Serializable{
     public void setMenuContentTitle(String menuContentTitle) {
         if (menuContentTitle != null) {
             this.menuContentTitle = menuContentTitle;
-//            log.info("setMenuContentTitle to "+messages.getString(menuContentTitle));
         } else {
-//        	log.info("setter menuContentTitle is null");
             this.menuContentTitle = "";
         }
     }
@@ -220,10 +214,8 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @param menuContentInclusionFile The server-side path to the file to be included
      */
     public void setMenuContentInclusionFile(String menuContentInclusionFile) {
-//    	log.info("setMenuContentInclusionFile to "+menuContentInclusionFile);
         this.menuContentInclusionFile = menuContentInclusionFile;
     }
-    
 
     /**
      * Does the node contain content.
@@ -248,11 +240,8 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * Sets the navigationSelectionBeans selected state
      */
     public void contentVisibleAction(ActionEvent event) {
-//    	log.info("contentVisibleAction for "+this.getMenuDisplayText());
          if (isPageContent()) {
-//         	log.info("setting "+this.getMenuDisplayText()+" to expanded");
             // only toggle the branch expansion if we have already selected the node
-  //          if (navigationBean.getSelectedPanel().equals(this)) {
                 // toggle the branch node expansion
                 setExpanded(!isExpanded());
  //               if (this.templateName.equals("tabbedPaneContentPanel")){
