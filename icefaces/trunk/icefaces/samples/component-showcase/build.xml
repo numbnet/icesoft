@@ -112,6 +112,7 @@ To build different versions of this application, please check common.help for av
     </target>
     
     <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
+        <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
@@ -119,6 +120,7 @@ To build different versions of this application, please check common.help for av
     </target>
 
     <target name="build.portlet.jboss4.2.portal.ahs.war" depends="compile" description="build portlet application for JBoss4.2 portal with AHS">
+        <property name="portlet" value="true"/>
         <antcall target="jboss.ahs.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
@@ -129,6 +131,8 @@ To build different versions of this application, please check common.help for av
     <target name="build.portlet.liferay.jboss4.2.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
         </antcall>
     </target>
@@ -137,11 +141,14 @@ To build different versions of this application, please check common.help for av
     </target>
     <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 with AHS">
         <property name="portlet" value="true"/>
-        <copy todir="web/WEB-INF">
+        <copy todir="build/web/WEB-INF">
                 <fileset dir="portlet/conf/liferay" includes="*.xml"/>
-
-            </copy>
+                <fileset dir="portlet/conf" includes="*.xml"/>
+        </copy>
+        
         <antcall target="jboss.ahs.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>        

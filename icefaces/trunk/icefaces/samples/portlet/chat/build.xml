@@ -63,8 +63,14 @@
         </antcall>  
     </target>
 
+    <target name="tomcat6.0" description="a redirect call to build.portlet.jboss4.2.portal.ahs.war">
+        <antcall target="build.portlet.jboss4.2.portal.ahs.war"/>
+    </target>
+    
     <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
         <antcall target="jboss.ahs.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>  
