@@ -124,6 +124,9 @@ To build different versions of this application, please check common.help for av
         <copy todir="build/web/WEB-INF">
                 <fileset dir="portlet/conf" includes="*.xml"/>
         </copy>
+        <copy todir="build/web/portlet">
+                <fileset dir="portlet/web" includes="*.jspx"/>
+        </copy>
         <antcall target="jboss.ahs.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
@@ -147,6 +150,7 @@ To build different versions of this application, please check common.help for av
         <copy todir="build/web/WEB-INF">
                 <fileset dir="portlet/conf/liferay" includes="*.xml"/>
                 <fileset dir="portlet/conf" includes="*.xml"/>
+                <fileset dir="portlet/web" includes="*.jspx"/>
         </copy>
         
         <antcall target="jboss.ahs.war">
