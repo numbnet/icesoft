@@ -55,7 +55,7 @@
                     <ice:outputText
                             value="#{msgs['component.inputRichTextFields.serverFeedback']}"/>
                 </h3>
-                <ice:outputText id="iceOutput" escape="true"
+                <ice:outputText id="iceOutput" escape="false"
                                 value="#{inputRichTextBean.value}"/>
             </ice:panelGroup>
 
