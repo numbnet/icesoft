@@ -250,6 +250,13 @@ public class TextRenderer extends DomBasicInputRenderer {
         addJavaScript(facesContext, uiComponent, root, currentValue, excludes);
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
+        String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
+        if (mousedownScript != null) {
+            mousedownScript+= ";this.focus();";
+        } else {
+            mousedownScript = "this.focus();";
+        }
+        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, mousedownScript);
         domContext.streamWrite(facesContext, uiComponent);
 
     }
