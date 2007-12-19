@@ -80,14 +80,11 @@ with more data than can be displayed in a single page.
 
     <ice:panelGroup styleClass="clearer" />
 
-    <ice:panelGroup styleClass="formBorderHighlight">
-        <h3>
-            <ice:outputText value="#{msgs['component.dataPaginator.description']}"/>
-        </h3>
-    </ice:panelGroup>
-
 <ice:panelGroup styleClass="formBorderHighlight" style="float: left">
 
+    <h3>
+        <ice:outputText value="#{msgs['component.dataPaginator.description']}"/>
+    </h3>
     <!-- Display counts about the table and the currently displayed page -->
     <ice:panelGroup style="float: left" >
         <ice:dataPaginator id="dataScroll_2" for="data"
@@ -197,56 +194,56 @@ with more data than can be displayed in a single page.
         </ice:dataPaginator>
 
     </ice:panelGroup>
-</ice:panelGroup>
-<ice:panelGroup styleClass="clearer" />    
 
-<!-- Set up the buttons and links for browsing through the table
-No. of pages to fast forward or rewind: 3
-No. of direct links to pages: 4 -->
-<ice:dataPaginator id="dataScroll_1"
-                   for="data" fastStep="3"
-                   pageCountVar="pageCount" pageIndexVar="pageIndex"
-                   paginator="true"
-                   paginatorMaxPages="4"
-                   styleClass="formBorderHighlight"
-                   rendered="#{!scrollerList.vertical}">
-    <f:facet name="first">
-        <ice:graphicImage id="firstpage_1"
-                url="#{styleBean.imageDirectory}arrow-first.gif"
-                style="border:none;"
-                title="#{msgs['component.dataPaginator.firstpage']}"/>
-    </f:facet>
-    <f:facet name="last">
-        <ice:graphicImage id="lastpage_1"
-                url="#{styleBean.imageDirectory}arrow-last.gif"
-                style="border:none;"
-                title="#{msgs['component.dataPaginator.lastpage']}"/>
-    </f:facet>
-    <f:facet name="previous">
-        <ice:graphicImage id="previouspage_1"
-                url="#{styleBean.imageDirectory}arrow-previous.gif"
-                style="border:none;"
-                title="#{msgs['component.dataPaginator.previouspage']}"/>
-    </f:facet>
-    <f:facet name="next">
-        <ice:graphicImage id="nextpage_1"
-                url="#{styleBean.imageDirectory}arrow-next.gif"
-                style="border:none;"
-                title="#{msgs['component.dataPaginator.nextpage']}"/>
-    </f:facet>
-    <f:facet name="fastforward">
-        <ice:graphicImage id="fastforward_1"
-                          url="#{styleBean.imageDirectory}arrow-ff.gif"
-                          style="border:none;"
-                          title="#{msgs['component.dataPaginator.fastforward']}"/>
-    </f:facet>
-    <f:facet name="fastrewind">
-        <ice:graphicImage id="fastrewind_1"
-                          url="#{styleBean.imageDirectory}arrow-fr.gif"
-                          style="border:none;"
-                          title="#{msgs['component.dataPaginator.fastbackward']}"/>
-    </f:facet>
-</ice:dataPaginator>
+    <!-- Set up the buttons and links for browsing through the table
+    No. of pages to fast forward or rewind: 3
+    No. of direct links to pages: 4 -->
+    <ice:panelGroup styleClass="clearer" />
+    <ice:dataPaginator id="dataScroll_1"
+                       for="data" fastStep="3"
+                       pageCountVar="pageCount" pageIndexVar="pageIndex"
+                       paginator="true"
+                       paginatorMaxPages="4"
+                       styleClass="formBorderHighlight"
+                       rendered="#{!scrollerList.vertical}">
+        <f:facet name="first">
+            <ice:graphicImage id="firstpage_1"
+                    url="#{styleBean.imageDirectory}arrow-first.gif"
+                    style="border:none;"
+                    title="#{msgs['component.dataPaginator.firstpage']}"/>
+        </f:facet>
+        <f:facet name="last">
+            <ice:graphicImage id="lastpage_1"
+                    url="#{styleBean.imageDirectory}arrow-last.gif"
+                    style="border:none;"
+                    title="#{msgs['component.dataPaginator.lastpage']}"/>
+        </f:facet>
+        <f:facet name="previous">
+            <ice:graphicImage id="previouspage_1"
+                    url="#{styleBean.imageDirectory}arrow-previous.gif"
+                    style="border:none;"
+                    title="#{msgs['component.dataPaginator.previouspage']}"/>
+        </f:facet>
+        <f:facet name="next">
+            <ice:graphicImage id="nextpage_1"
+                    url="#{styleBean.imageDirectory}arrow-next.gif"
+                    style="border:none;"
+                    title="#{msgs['component.dataPaginator.nextpage']}"/>
+        </f:facet>
+        <f:facet name="fastforward">
+            <ice:graphicImage id="fastforward_1"
+                              url="#{styleBean.imageDirectory}arrow-ff.gif"
+                              style="border:none;"
+                              title="#{msgs['component.dataPaginator.fastforward']}"/>
+        </f:facet>
+        <f:facet name="fastrewind">
+            <ice:graphicImage id="fastrewind_1"
+                              url="#{styleBean.imageDirectory}arrow-fr.gif"
+                              style="border:none;"
+                              title="#{msgs['component.dataPaginator.fastbackward']}"/>
+        </f:facet>
+    </ice:dataPaginator>
+</ice:panelGroup>
 
 </ice:panelTab>
 
