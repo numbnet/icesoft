@@ -105,6 +105,62 @@
         
         <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
     </target>
+    <target name="build.facelet.tomcat5.x.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Tomcat5.x.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target>  
+    <target name="build.facelet.jboss4.0.war" depends="compile"
+            description="Creates a facelets version of component-showcase for JBoss4.0.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target> 
+    <target name="build.facelet.tomcat6.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Tomcat6.x.">
+            <antcall target="build.facelet.war">
+                <param name="jsf12" value=""/>
+            </antcall>
+    </target>
+    <target name="build.facelet.jsf12.war" depends="compile"
+            description="Creates a facelets version of component-showcase for JSF1.2.">
+            <antcall target="build.facelet.war">
+                <param name="jsf12" value=""/>
+            </antcall>
+    </target>    <target name="build.facelet.jboss4.2.war" depends="compile"
+            description="Creates a facelets version of component-showcase for JBoss4.2.">
+            <antcall target="build.facelet.war">
+                <param name="jsf12" value=""/>
+                <param name="serverjsf" value=""/>
+            </antcall>
+    </target>
+    <target name="build.facelet.jetty6.1.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Jetty 6.1.">
+            <antcall target="build.facelet.war">
+                <param name="serverel" value=""/>
+            </antcall>
+    </target>
+    <target name="build.facelet.oc4j.war" depends="compile"
+            description="Creates a facelets version of component-showcase for OC4J.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target>    
+    <target name="build.facelet.glassfishv2.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Glassfishv2.">
+            <antcall target="build.facelet.war">
+                <param name="jsf12" value=""/>
+                <param name="serverjsf" value=""/>
+            </antcall>
+    </target>    
+    <target name="build.facelet.pe9.war" depends="compile"
+            description="Creates a facelets version of component-showcase for SUN Application Server PE9.">
+            <antcall target="build.facelet.war">
+                <param name="jsf12" value=""/>
+                <param name="serverjsf" value=""/>
+            </antcall>
+    </target>    
     
     <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
         <property name="portlet" value="true"/>

@@ -17,23 +17,6 @@
     <dirname property="build.common.basedir" file="${ant.file.common}"/>
     <property name="icefaces.lib.dir" location="${build.common.basedir}/../../lib"/>
     
-    <!--
-<property name="portlet.base.dir" location="./build"/>
-<property name="portlet.web.content.dir" location="${portlet.base.dir}/web"/>
-<property name="portlet.xml" value="portlet.xml"/>
-
-
-<property name="portlet.conf.dir" location="./portlet/conf"/>
-<property name="portlet.web.dir" location="./portlet/web"/>
-<property name="portlet.web.inf.dir" location="${portlet.web.content.dir}/WEB-INF"/>
-<property name="portlet.app.lib.dir" location="${portlet.web.inf.dir}/lib"/>
-
-
-<property name="portlet.conf.liferay.dir" location="${portlet.conf.dir}/liferay"/>
--->
-
-
-    
     <patternset id="liferay.xmls">
         <exclude name="web.sunri.icefaces.xml"/>
         <exclude name="web.sunri.icefaces.ce.xml"/>
@@ -324,7 +307,7 @@ build.war        - to build the web application archive (war file) for jsf1.1 ve
             It has been tested on the following servers:
             Tomcat5.x
             JBoss4.0.5
-            SAP NetWeaver 04
+            OC4J
             Weblogic 8.1
             Weblogic9.2
             Websphere6.0
@@ -338,7 +321,7 @@ build.myfaces.war - to build the web application archive (war file) for myfaces 
             It has been tested on the following servers:
             Tomcat5.x
             JBoss4.0.5
-            SAP NetWeaver 04
+            OC4J
             Weblogic 8.1
             Weblogic9.2
             Websphere6.0
@@ -380,14 +363,15 @@ Combinations:
     
     <!-- server specified -->
     <!--
+     -->
     <target name="tomcat5.x" depends="build.war" description="Tomcat 5.5"/>
-    <target name="sap04" depends="build.war" description="SAP NetWeaver 04"/>
+    <target name="oc4j" depends="build.war" description="OC4J"/>
     <target name="jboss4.0" depends="build.war" description="JBoss 4.0.5"/>
     <target name="weblogic8.1" depends="build.war" description="Weblogic 8.1"/>
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
     <target name="websphere6.0" depends="build.war" description="IBM Websphere 6.0.2"/>
                 <target name="websphere6.1" depends="build.war" description="IBM Websphere 6.1"/>
-    -->
+
    
     <target name="build.portlet.jboss4.2.war" depends="compile">
         <antcall target="build.portlet.war">
