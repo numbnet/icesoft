@@ -96,6 +96,14 @@ public class TextareaRenderer extends DomBasicInputRenderer {
         }
         HashSet excludes = new HashSet();
         addJavaScript(facesContext, component, root, currentValue, excludes);
+        //fix for ICE-2514
+        String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
+        if (mousedownScript != null) {
+            mousedownScript+= ";this.focus();";
+        } else {
+            mousedownScript = "this.focus();";
+        }
+        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, mousedownScript);    
         domContext.stepOver();
         domContext.streamWrite(facesContext, component);
     }
