@@ -11,6 +11,10 @@
     
  
     <!-- context parameters -->
+	<context-param>
+        <param-name>com.icesoft.faces.gmapKey</param-name>
+        <param-value>ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A</param-value>
+    </context-param>
    <context-param>
       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
       <param-value>server</param-value>
