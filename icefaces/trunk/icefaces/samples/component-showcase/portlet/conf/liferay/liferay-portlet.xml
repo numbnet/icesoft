@@ -232,7 +232,98 @@
 		<render-weight>1</render-weight>
 		<ajaxable>false</ajaxable>
     </portlet>
-  
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Rich Text Editor Portlet      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_rich_text_editor</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap Address Attribute      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_address_attribute</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap Controls      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_controls</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap Find Address      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_find_address</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap GeoCoder      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_geocoder</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap KML      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_kml</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: GMap Markers      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_markers</portlet-name>
+        <instanceable>true</instanceable>
+		<render-weight>1</render-weight>
+		<ajaxable>false</ajaxable>
+    </portlet>
+-->
+
     <!-- =================================================================== -->
 
     <role-mapper>

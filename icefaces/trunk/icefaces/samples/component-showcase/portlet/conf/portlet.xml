@@ -656,5 +656,236 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
-    
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Rich Text Editor      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_rich_text_editor</portlet-name>
+        <display-name>ICEfaces: Rich Text Editor</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Rich_Text_Editor.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Rich Text Editor</title>
+            <short-title>Rich Text Editor</short-title>
+            <keywords>ICEfaces Component Showcase Rich Text Editor</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - Address Attribute      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_address_attribute</portlet-name>
+        <display-name>ICEfaces: GMap Address Attribute</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_Address_Attribute.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap Address Attribute</title>
+            <short-title>GMap Address Attribute</short-title>
+            <keywords>ICEfaces Component Showcase GMap Address Attribute</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - Controls      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_controls</portlet-name>
+        <display-name>ICEfaces: GMap Controls</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_Controls.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap Controls</title>
+            <short-title>GMap Controls</short-title>
+            <keywords>ICEfaces Component Showcase GMap Controls</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - Find Address     -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_find_address</portlet-name>
+        <display-name>ICEfaces: GMap Find Address</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_Find_Address.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap Find Address</title>
+            <short-title>GMap Find Address</short-title>
+            <keywords>ICEfaces Component Showcase GMap Find Address</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - GeoCoder      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_geocoder</portlet-name>
+        <display-name>ICEfaces: GMap GeoCoder</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_Geocoder.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap GeoCoder</title>
+            <short-title>GMap GeoCoder</short-title>
+            <keywords>ICEfaces Component Showcase GMap GeoCoder</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - KML      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_kml</portlet-name>
+        <display-name>ICEfaces: GMap KML</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_KML.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap KML</title>
+            <short-title>GMap KML</short-title>
+            <keywords>ICEfaces Component Showcase GMap KML</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Google Map - Markers      -->
+    <!-- =================================================================== -->
+
+<!--
+    <portlet>
+        <portlet-name>components_gmap_markers</portlet-name>
+        <display-name>ICEfaces: GMap Markers</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_GMap_Markers.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: GMap Markers</title>
+            <short-title>GMap Markers</short-title>
+            <keywords>ICEfaces Component Showcase GMap Markers</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+-->
+
 </portlet-app>
