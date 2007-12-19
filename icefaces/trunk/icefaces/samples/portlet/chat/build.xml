@@ -52,7 +52,10 @@
         <build.portlet.war web.xml="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
     </target>    
     <target name="build.portlet.liferay.jboss4.2.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
-        <antcall target="build.portlet.liferay.war"/>
+        <antcall target="build.portlet.liferay.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
     </target>
     <target name="build.portlet">
         <build.portlet.war web.xml="${chat.xml}"/>
