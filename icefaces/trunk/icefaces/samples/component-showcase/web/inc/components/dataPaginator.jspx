@@ -85,6 +85,7 @@ with more data than can be displayed in a single page.
     <h3>
         <ice:outputText value="#{msgs['component.dataPaginator.description']}"/>
     </h3>
+    <br/>
     <!-- Display counts about the table and the currently displayed page -->
     <ice:panelGroup style="float: left" >
         <ice:dataPaginator id="dataScroll_2" for="data"
@@ -109,7 +110,7 @@ with more data than can be displayed in a single page.
     <ice:panelGroup style="float: left" >
         <!-- Layout table columns with column headings and 5 table rows per page -->
         <ice:dataTable id="data" var="person"
-                       styleClass="dataPaginatorTable"
+                       style="margin-left:0;"
                        value="#{scrollerList.persons}" rows="5"
                        columnClasses="firstCol,lastCol,phoneCol,emailCol">
             <ice:column>
@@ -204,6 +205,7 @@ with more data than can be displayed in a single page.
                        pageCountVar="pageCount" pageIndexVar="pageIndex"
                        paginator="true"
                        paginatorMaxPages="4"
+                       style="margin-left:0"
                        styleClass="formBorderHighlight"
                        rendered="#{!scrollerList.vertical}">
         <f:facet name="first">
