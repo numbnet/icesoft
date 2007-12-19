@@ -111,6 +111,30 @@
 
             </antcall>
     </target>  
+    <target name="build.facelet.weblogic8.1.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Weblogic 8.1.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target>
+    <target name="build.facelet.weblogic9.2.war" depends="compile"
+            description="Creates a facelets version of component-showcase for Weblogic 9.2.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target>
+    <target name="build.facelet.websphere6.0.war" depends="compile"
+            description="Creates a facelets version of component-showcase for IBM Websphere 6.0.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target> 
+    <target name="build.facelet.websphere6.1.war" depends="compile"
+            description="Creates a facelets version of component-showcase for IBM Websphere 6.1.">
+            <antcall target="build.facelet.war">
+
+            </antcall>
+    </target> 
     <target name="build.facelet.jboss4.0.war" depends="compile"
             description="Creates a facelets version of component-showcase for JBoss4.0.">
             <antcall target="build.facelet.war">
