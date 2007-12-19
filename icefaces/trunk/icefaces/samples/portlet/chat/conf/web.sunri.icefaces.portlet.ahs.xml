@@ -42,6 +42,10 @@
         <param-value>jboss.properties</param-value>
     </context-param>    
 
+    <listener>
+        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+    </listener>
+
     <!-- end of AHS config -->
     
     <servlet>
