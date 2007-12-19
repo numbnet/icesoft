@@ -714,12 +714,6 @@ this placeholder
             class="includeIframe" width="100%"></iframe>
 </ice:panelTab>
 
-<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
-    <iframe src="http://facestutorials.icefaces.org/tutorial/effects-tutorial.html"
-            class="includeIframe"
-            width="100%"></iframe>
-</ice:panelTab>
-
 </ice:panelTabSet>
 
 </ice:form>

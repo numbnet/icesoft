@@ -112,12 +112,6 @@ In this demonstration ice:connectionStatus different icons are displayed.
                         class="includeIframe" width="100%"></iframe>
             </ice:panelTab>
 
-            <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
-                <iframe src="http://facestutorials.icefaces.org/tutorial/connectionstatus-tutorial.html"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>
-
         </ice:panelTabSet>
 
 </ice:form>
