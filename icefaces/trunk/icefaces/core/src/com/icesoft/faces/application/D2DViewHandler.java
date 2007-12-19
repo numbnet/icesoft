@@ -44,7 +44,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
-import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.NamingContainer;
@@ -168,7 +167,7 @@ public class D2DViewHandler extends ViewHandler {
      * @param viewId  ViewId identifying the root
      * @return A new viewRoot
      */
-    public UIViewRoot createView(final FacesContext context, String viewId) {
+    public UIViewRoot createView(FacesContext context, String viewId) {
         initializeParameters(context);
 
         if (delegateView(context)) {
@@ -179,17 +178,17 @@ public class D2DViewHandler extends ViewHandler {
         if (SeamUtilities.isSeamEnvironment()) {
             ((BridgeExternalContext) context.getExternalContext()).removeSeamLifecycleShortcut();
         }
-        UIViewRoot root = new UIViewRoot() {
-            public void setLocale(Locale locale) {
-                //ignore locale set by RestoreViewPhase since it is using the first locale in the Accept-Language list,
-                //instead it should calculate the locale
-                boolean ignore = "com.sun.faces.lifecycle.RestoreViewPhase".equals(new Exception().getStackTrace()[1].getClassName());
-                super.setLocale(ignore ? calculateLocale(context) : locale);
-            }
-        };
+        UIViewRoot root = new UIViewRoot();
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
-        root.setLocale(calculateLocale(context));
-        root.setViewId(null == viewId ? "default" : viewId);
+
+        if (null == viewId) {
+            root.setViewId("default");
+            context.setViewRoot(root);
+            Locale locale = calculateLocale(context);
+            root.setLocale(locale);
+            return root;
+        }
+        root.setViewId(getRenderedViewId(context, viewId));
 
         return root;
     }
@@ -237,8 +236,8 @@ public class D2DViewHandler extends ViewHandler {
 
         UIViewRoot currentRoot = context.getViewRoot();
         if (null != currentRoot &&
-                mungeViewId(viewId)
-                        .equals(mungeViewId(
+                getRenderedViewId(context, viewId)
+                        .equals( getRenderedViewId(context,
                                 currentRoot.getViewId()))) {
             return currentRoot;
         } else {
@@ -622,29 +621,33 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public Locale calculateLocale(FacesContext context) {
-        Application application = context.getApplication();
-        Iterator acceptedLocales = context.getExternalContext().getRequestLocales();
-        while (acceptedLocales.hasNext()) {
-            Locale acceptedLocale = (Locale) acceptedLocales.next();
-            Iterator supportedLocales = application.getSupportedLocales();
+        Iterator locales = context.getExternalContext().getRequestLocales();
+
+        while (locales.hasNext()) {
+            Locale locale = (Locale) locales.next();
+            Iterator supportedLocales = context.getApplication()
+                    .getSupportedLocales();
+
             while (supportedLocales.hasNext()) {
                 Locale supportedLocale = (Locale) supportedLocales.next();
-                if (acceptedLocale.equals(supportedLocale)) {
-                    return supportedLocale;
-                }
-            }
-            supportedLocales = application.getSupportedLocales();
-            while (supportedLocales.hasNext()) {
-                Locale supportedLocale = (Locale) supportedLocales.next();
-                if (acceptedLocale.getLanguage().equals(supportedLocale.getLanguage()) &&
-                        supportedLocale.getCountry().length() == 0) {
-                    return supportedLocale;
+                if (locale.getLanguage()
+                        .equals(supportedLocale.getLanguage())) {
+
+                    if ((null == supportedLocale.getCountry()) ||
+                            ("".equals(supportedLocale.getCountry()))) {
+                        return supportedLocale;
+                    }
+
+                    if (locale.equals(supportedLocale)) {
+                        return supportedLocale;
+                    }
+
                 }
             }
         }
-        // no match is found.
-        Locale defaultLocale = application.getDefaultLocale();
-        return defaultLocale == null ? Locale.getDefault() : defaultLocale;
+
+        Locale defaultLocale = context.getApplication().getDefaultLocale();
+        return (null == defaultLocale) ? Locale.getDefault() : defaultLocale;
     }
 
     public String calculateRenderKitId(FacesContext context) {
@@ -669,23 +672,20 @@ public class D2DViewHandler extends ViewHandler {
      * @param base
      */
     public static UIComponent findComponent(String clientId, UIComponent base) {
-//System.out.println("    findComponent()  clientId: " + clientId + "  base: " + base);
         // Set base, the parent component whose children are searched, to be the
         // nearest parent that is either 1) the view root if the id expression
         // is absolute (i.e. starts with the delimiter) or 2) the nearest parent
         // NamingContainer if the expression is relative (doesn't start with
         // the delimiter)
         String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-        int count = getNumberOfLeadingNamingContainerSeparators(clientId);
-//System.out.println("      count: " + count);
-        if (count == 1) {
+        if (clientId.startsWith(delimeter)) {
             // Absolute searches start at the root of the tree
             while (base.getParent() != null) {
                 base = base.getParent();
             }
             // Treat remainder of the expression as relative
-            clientId = clientId.substring(delimeter.length());
-        } else if (count == 0) {
+            clientId = clientId.substring(1);
+        } else {
             // Relative expressions start at the closest NamingContainer or root
             while (base.getParent() != null) {
                 if (base instanceof NamingContainer) {
@@ -693,21 +693,6 @@ public class D2DViewHandler extends ViewHandler {
                 }
                 base = base.getParent();
             }
-        } else if (count > 1) {
-            // Relative expressions start at the closest NamingContainer or root
-            int numNamingContainersUp = count - 1;
-//System.out.println("      numNamingContainersUp: " + numNamingContainersUp);
-            while (base.getParent() != null) {
-                if (base instanceof NamingContainer) {
-                    numNamingContainersUp--;
-//System.out.println("      NamingContainer["+numNamingContainersUp+"]: " + base);
-                    if (numNamingContainersUp == 0)
-                        break;
-                }
-                base = base.getParent();
-            }
-            clientId = clientId.substring(delimeter.length() * count);
-//System.out.println("      clientId: " + clientId);
         }
         // Evaluate the search expression (now guaranteed to be relative)
         String id = null;
@@ -738,18 +723,6 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         return result;
-    }
-
-    // Allow multiple leading NamingContainer separator chars to allow for
-    //  findComponent() to search upwards, relatively, as described by:
-    //  http://myfaces.apache.org/trinidad/trinidad-api/apidocs/org/apache/myfaces/trinidad/component/core/nav/CoreSingleStepButtonBar.html#getPartialTriggers()
-    private static int getNumberOfLeadingNamingContainerSeparators(
-            String clientId) {
-        int count = 0;
-        String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-        for (int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
-            count++;
-        return count;
     }
 
     private static String truncate(String remove, String input) {
@@ -784,27 +757,45 @@ public class D2DViewHandler extends ViewHandler {
         parametersInitialized = true;
     }
 
-    //MyFaces processes the viewId before passing it to the ViewHandler
-    //so we have no idea of knowing what it really is. This function
-    //mimics the MyFaces process so we can compare ids modulo it
-    private static String mungeViewId(String viewId) {
-        String defaultSuffix = FacesContext.getCurrentInstance()
-                .getExternalContext()
-                .getInitParameter(ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
-        String suffix = defaultSuffix != null ?
-                defaultSuffix : ViewHandler.DEFAULT_SUFFIX;
-
-        int dot = viewId.lastIndexOf('.');
-        if (dot == -1) {
-            log
-                    .error("Assumed extension mapping, but there is no extension in " +
-                            viewId);
-        } else {
-            viewId = viewId.substring(0, dot) + suffix;
+    /**
+     * Obtain the viewId. This method removes the suffix from the action
+     * in whatever form it came from the servlet, and appends the default suffix
+     * parameter instead
+     *
+     * @param context current FacesContext
+     * @param actionId current view action id.
+     * @return The viewId with the proper suffix
+     */
+    protected String getRenderedViewId(FacesContext context, String actionId) {
+        ExternalContext extCtx = context.getExternalContext();
+        String viewId = actionId;
+        if (extCtx.getRequestPathInfo() == null) {
+            String viewSuffix = context.getExternalContext().getInitParameter(
+                    ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            if (viewSuffix == null) {
+                if (log.isErrorEnabled()) {
+                    log.error(
+                            "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
+                                    " context parameter is not set in web.xml. " +
+                                    "Please define the filename extension used for " +
+                                    "your source JSF pages. Example:\n" +
+                                    "<context-param>\n" +
+                                    " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
+                                    " <param-value>.xhtml</param-value>\n" +
+                                    "</context-param>");
+                }
+            } else {
+                int lastPeriod = actionId.lastIndexOf('.');
+                if (lastPeriod < 0) {
+                    viewId = actionId + viewSuffix;
+                } else {
+                    viewId = actionId.substring(0, lastPeriod) + viewSuffix;
+                }
+            }
         }
-
         return viewId;
     }
+
 
     private static UIComponent findComponent(UIComponent uiComponent,
                                              String componentId) {
