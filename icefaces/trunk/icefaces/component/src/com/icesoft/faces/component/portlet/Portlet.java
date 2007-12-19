@@ -26,63 +26,54 @@ public class Portlet extends UINamingContainer {
     private String style;
     private String styleClass;
 
-    public void encodeBegin(FacesContext context) throws IOException {
-        if (namespace == null) {
-            FacesContext facesCtxt = getFacesContext();
-
-            if (facesCtxt == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("could not access FacesContext");
-                }
-                return;
-            }
-            ExternalContext extCtxt = facesCtxt.getExternalContext();
-            Map requestMap = extCtxt.getRequestMap();
-            namespace = (String) requestMap.get(Constants.NAMESPACE_KEY);
-            if (namespace != null) {
-
-                //ICE-2250 If there is a valid namespace, we need to set it so that the
-                //superclass instance is properly set otherwise the getClientId
-                //logic is incorrect since it does not use getId().
-                super.setId(namespace);
-
-                //name space found, so now reset the ids of the portlet children recursively.
-                resetIdsRecursively(this);
-
-            }
-        }
-        super.encodeBegin(context);
-    }
-
-    // This method should force the children of the portlet component,
-    // to not to use the cached client id that was created when the
-    // namespace wasn't available.
-    
-    private void resetIdsRecursively(UIComponent component) {
-        component.setId(component.getId());
-        Iterator it = component.getChildren().iterator();
-        while(it.hasNext()) {
-            UIComponent child = (UIComponent)it.next();
-            resetIdsRecursively(child);
-       }
-    }
-
-
-
     public String getId() {
-        if (namespace != null) {
-            return namespace;
+        String ns = getNamespace();
+        if (ns != null) {
+            return ns;
         }
-        return super.getId();
+        String sid = super.getId();
+        return sid;
     }
 
     public void setId(String id) {
         //Always use the namespace if it is available.  Otherwise defer
         //to normal operations.  This should allow us to use the portlet
         //component in regular web apps without undue side effects.
-        if (namespace == null) {
+        String ns = getNamespace();
+        if (ns != null) {
+            super.setId(ns);
+        }
+        else {
             super.setId(id);
         }
+    }
+    
+    public String getClientId(FacesContext facesContext) {
+        String sclientId = super.getClientId(facesContext);
+        return sclientId;
+    }
+    
+    private synchronized String getNamespace() {
+        if (namespace == null) {
+            FacesContext facesCtxt = getFacesContext();
+            
+            if (facesCtxt == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Could not access FacesContext");
+                }
+                return null;
+            }
+            ExternalContext extCtxt = facesCtxt.getExternalContext();
+            if(extCtxt == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Could not access ExternalContext");
+                }
+                return null;
+            }
+            Map requestMap = extCtxt.getRequestMap();
+            namespace = (String) requestMap.get(Constants.NAMESPACE_KEY);
+        }
+        return namespace;
     }
 
     public String getStyle() {
