@@ -109,7 +109,7 @@
                              rendered="#{chartMediator.axis and !chartMediator.pie3D and !chartMediator.pie}"/>
             <!-- Pie charts require a different data model
             Axis charts have a 2 dimensional data model, Pie charts are 1 dimensional -->
-            <ice:outputChart id="pie2DOutputChart"
+            <ice:outputChart id="pie2DOutputChart" style="float:left;"
                              type="#{chartMediator.chartObject.type}"
                              width="350"
                              height="350"
@@ -120,7 +120,7 @@
                              actionListener="#{chartMediator.pieAction}"
                              renderOnSubmit="#{chartMediator.allCharts}"
                              rendered="#{!chartMediator.axis and !chartMediator.pie3D}"/>
-            <ice:outputChart id="pie3DOutputChart"
+            <ice:outputChart id="pie3DOutputChart" style="float:left;"
                              type="#{chartMediator.chartObject.type}"
                              width="350"
                              height="350"
