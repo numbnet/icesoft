@@ -93,7 +93,7 @@
 
        <ice:panelGroup styleClass="clearer" /> 
 
-       <ice:panelGroup id="centerWrapperChart" >
+       <ice:panelGroup id="centerWrapperChart" style="width:560px;">
             <ice:outputChart id="axisOutputChart"
                              type="#{chartMediator.chartObject.type}"
                              chartTitle="#{chartMediator.chartObject.type} Chart"
@@ -131,7 +131,7 @@
                              renderOnSubmit="#{chartMediator.allCharts}"
                              rendered="#{!chartMediator.axis and !chartMediator.pie and chartMediator.pie3D}"/>
             <!-- Pie charts require a different data model. -->
-            <ice:panelGroup rendered="#{!chartMediator.axis and !chartMediator.pie}">
+            <ice:panelGroup rendered="#{!chartMediator.axis and !chartMediator.pie}" style="width:200px; float:right;">
                 <ice:outputText value="#{msgs['component.chart.sales.title']}"/>
                 <ice:dataTable var="sale" value="#{pieChart.sales}">
                     <ice:column>
