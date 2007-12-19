@@ -47,8 +47,11 @@
     />
     <target name="help">
         <echo level="info">
+    ***********************************
+     *       Help info               *
+    ***********************************
 This application implements facelets version of timezone application.
-Please check common.help for available builds, "ant common.help"
+Please check common.help for additional information, "ant common.help"
         </echo>
     </target>
     <target name="tomcat6.0" description="overwrite tomcat6.0 in build.common">
@@ -56,6 +59,7 @@ Please check common.help for available builds, "ant common.help"
             <param name="jsf12" value=""/>
             <param name="serverel" value=""/>
         </antcall>
+        <antcall target="help"/>
     </target>
     
 </project>

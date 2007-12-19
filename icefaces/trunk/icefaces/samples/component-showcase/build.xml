@@ -106,12 +106,6 @@
         <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
     </target>
     
-    <target name="help">
-        <echo level="info">
-To build different versions of this application, please check common.help for available builds, "ant common.help"
-        </echo>
-    </target>
-    
     <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
