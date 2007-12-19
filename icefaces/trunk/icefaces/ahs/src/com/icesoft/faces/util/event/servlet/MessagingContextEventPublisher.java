@@ -149,9 +149,25 @@ implements ContextEventPublisher {
         } catch (MessageServiceException exception) {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal(
+                    "\r\n" +
+                    "\r\n" +
                     "Failed to subscribe to topic: " +
-                        MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
-                    exception);
+                        MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME + "\r\n" +
+                    "    Exception message: " +
+                        exception.getMessage() + "\r\n" +
+                    "    Exception cause: " +
+                        exception.getCause() + "\r\n\r\n" +
+                    "The icefaces-ahs.jar is included in the deployment, but " +
+                        "the JMS topics are not\r\n" +
+                    "configured correctly on the application server. If you " +
+                        "intended to use the\r\n" +
+                    "Asynchronous HTTP Server (AHS), please refer to the " +
+                        "ICEfaces Developer's Guide\r\n" +
+                    "for instructions on how to configure the JMS topics on " +
+                        "the application server.\r\n" +
+                    "If you did not intend to use AHS, please remove the " +
+                        "icefaces-ahs.jar from your\r\n" +
+                    "deployment and try again.\r\n");
             }
         }
         messageServiceClient.addMessageHandler(
