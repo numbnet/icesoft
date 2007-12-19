@@ -37,7 +37,7 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
     <f:loadBundle basename="com.icesoft.icefaces.samples.showcase.resources.messages" var="msgs" />
     <ice:outputDeclaration doctypeRoot="HTML" doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN" doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
-    <ice:portlet>
+    <ice:portlet style="width:450px;">
         <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
         <ice:outputStyle href="../css/showcase_style.css" />
                 <ice:panelGroup>
