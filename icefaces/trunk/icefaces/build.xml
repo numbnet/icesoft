@@ -81,7 +81,7 @@
         <propertyset refid="product.info"/>
     </ice:subant>
 
-    <ice:subant target="build.war">
+    <ice:subant target="tomcat6.0">
         <fileset dir="samples" includes="**/build.xml"/>
         <!--target name="build.war"/-->
         <propertyset refid="product.info"/>
