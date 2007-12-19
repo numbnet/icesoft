@@ -316,7 +316,9 @@
     
     <target name="help" description="help information for building different versions of this application">
         <echo level="info">
-            
+    ***********************************
+     *       Help info               *
+    ***********************************
 build.war        - to build the web application archive (war file) for jsf1.1 version 
             designed to be deployed under any server which supports jsf1.1 version of applications.
             It has been tested on the following servers:
@@ -342,11 +344,27 @@ build.myfaces.war - to build the web application archive (war file) for myfaces 
             Websphere6.0
             Websphere6.1
             
-* for available builds, please use "ant -projecthelp"
+* for advanced build of the application, 
+    please use "ant -projecthelp" and "ant help"
+    "ant paramhelp" for optional parameters passed to the build 
         </echo>
         
     </target>
-    
+    <target name="paramhelp">
+        <echo level="info">
+    -Djsf11=""      compile application for jsf1.1 
+    -Djsf12=""      compile application for jsf1.2 
+    -Dmyfaces=""    compile application for myfaces 
+    -Djust-ice=""   compile application using just-ice.jar instead of icefaces.jar
+                    for applying icefaces with other technoloies, jsf/myfaces etc.
+                    in the same application
+    -Dserverel=""   for jetty6.1 deployment
+
+Combinations:            
+    -Djsf12="" -Dserverjsf=""   
+        for application deployment on server, Glassfishv2, pe9, and JBoss4.2
+        </echo>
+    </target>
     <target name="build.myfaces.war" description="build the war file for myfaces version">
         <antcall target="build.war">
             <param name="myfaces" value=""/>
@@ -389,6 +407,7 @@ build.myfaces.war - to build the web application archive (war file) for myfaces 
         <antcall target="build.war">
             <param name="jsf12" value=""/>
         </antcall>
+        <antcall target="help"/>
     </target>
     <target name="jetty6.1" description="build war file for Jetty 6.1">
         <antcall target="build.war">

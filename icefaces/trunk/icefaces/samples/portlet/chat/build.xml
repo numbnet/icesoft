@@ -54,7 +54,42 @@
     <target name="build.portlet.liferay.jboss4.2.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
         <antcall target="build.portlet.liferay.war"/>
     </target>
+    <target name="build.portlet">
+        <build.portlet.war web.xml="${chat.xml}"/>
+    </target>
+    <target name="build.portlet.liferay.tomcat6.war" depends="compile" description="build a portlet application for Liferay Tomcat6.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="chat.xml" value="./conf/web.sunri.icefaces.xml"/>
+            <param name="jsf12" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>
     
+    <target name="build.portlet.liferay.tomcat5.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="chat.xml" value="./conf/web.sunri.icefaces.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>
+    <target name="build.portlet.liferay.jboss4.0.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="chat.xml" value="./conf/web.sunri.icefaces.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>    
+    <target name="build.portlet.liferay.jboss4.0.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x with AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="jboss.ahs.war">
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>
+        </antcall>
+    </target>
     <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal without AHS" depends="compile">
         <antcall target="jboss.ahs.war">
             <param name="jsf12" value=""/>
@@ -63,8 +98,8 @@
         </antcall>  
     </target>
 
-    <target name="tomcat6.0" description="a redirect call to build.portlet.jboss4.2.portal.ahs.war">
-        <antcall target="build.portlet.jboss4.2.portal.ahs.war"/>
+    <target name="tomcat6.0" description="a redirect call to build.portlet.jboss4.2.portal.war">
+        <antcall target="build.portlet.jboss4.2.portal.war"/>
     </target>
     
     <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">

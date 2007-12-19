@@ -84,7 +84,8 @@
         </copy>
         
         <property name="portlet" value="true"/>
-        <build.portlet.war portlet.web.content.dir="build/web"
+        <build.portlet.war web.xml="${comp.xml}"
+                    portlet.web.content.dir="build/web"
                     portlet.conf.dir="portlet/conf"
                     portlet.conf.liferay.dir="portlet/conf/liferay"/>
     </target>
@@ -114,6 +115,7 @@ To build different versions of this application, please check common.help for av
     <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
         </antcall>
@@ -127,16 +129,53 @@ To build different versions of this application, please check common.help for av
         <copy todir="build/web/portlet">
                 <fileset dir="portlet/web" includes="*.jspx"/>
         </copy>
-        <antcall target="jboss.ahs.war">
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>       
     </target>
     
+    <target name="build.portlet.liferay.tomcat6.war" depends="compile" description="build a portlet application for Liferay Tomcat6.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf12" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>
+    
+    <target name="build.portlet.liferay.tomcat5.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>
+    <target name="build.portlet.liferay.jboss4.0.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>
+    </target>    
+    <target name="build.portlet.liferay.jboss4.0.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x with AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>
+        </antcall>
+    </target>
+    
     <target name="build.portlet.liferay.jboss4.2.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
@@ -147,13 +186,15 @@ To build different versions of this application, please check common.help for av
     </target>
     <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 with AHS">
         <property name="portlet" value="true"/>
+        <!--
         <copy todir="build/web/WEB-INF">
                 <fileset dir="portlet/conf/liferay" includes="*.xml"/>
                 <fileset dir="portlet/conf" includes="*.xml"/>
                 <fileset dir="portlet/web" includes="*.jspx"/>
         </copy>
-        
-        <antcall target="jboss.ahs.war">
+        -->
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
