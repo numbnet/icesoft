@@ -44,6 +44,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.StateManager;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.NamingContainer;
@@ -178,17 +179,41 @@ public class D2DViewHandler extends ViewHandler {
         if (SeamUtilities.isSeamEnvironment()) {
             ((BridgeExternalContext) context.getExternalContext()).removeSeamLifecycleShortcut();
         }
-        UIViewRoot root = new UIViewRoot();
+        UIViewRoot root = new UIViewRoot() {
+            public void setLocale(Locale locale) {
+                //ignore locale set by RestoreViewPhase since it is using the first locale in the Accept-Language list,
+                //instead it should calculate the locale
+                int setLocaleIndex = -1;
+                int lifeCycleRestoreViewIndex = -1;
+                StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+                for(int i = 0; (i < 10 && i < ste.length); i++) {
+                    String className = ste[i].getClassName().toLowerCase();
+                    String methodName = ste[i].getMethodName().toLowerCase();
+                    if( setLocaleIndex == -1 &&
+                        methodName.indexOf("setlocale") >= 0 )
+                    {
+                        setLocaleIndex = i;
+                    }
+                    if( lifeCycleRestoreViewIndex == -1 &&
+                        className.indexOf("lifecycle") >= 0 &&
+                        (className.indexOf("restoreview") >= 0 ||
+                         methodName.indexOf("restoreview") >= 0) )
+                    {
+                        lifeCycleRestoreViewIndex = i;
+                        break;
+                    }
+                }
+                boolean ignore =
+                    setLocaleIndex >= 0 &&
+                    lifeCycleRestoreViewIndex >= 0 &&
+                    setLocaleIndex + 1 == lifeCycleRestoreViewIndex;
+                if(!ignore)
+                    super.setLocale(locale);
+            }
+        };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
-
-        if (null == viewId) {
-            root.setViewId("default");
-            context.setViewRoot(root);
-            Locale locale = calculateLocale(context);
-            root.setLocale(locale);
-            return root;
-        }
-        root.setViewId(getRenderedViewId(context, viewId));
+        root.setLocale(calculateLocale(context));
+        root.setViewId(null == viewId ? "default" : viewId);
 
         return root;
     }
@@ -621,33 +646,29 @@ public class D2DViewHandler extends ViewHandler {
     }
 
     public Locale calculateLocale(FacesContext context) {
-        Iterator locales = context.getExternalContext().getRequestLocales();
-
-        while (locales.hasNext()) {
-            Locale locale = (Locale) locales.next();
-            Iterator supportedLocales = context.getApplication()
-                    .getSupportedLocales();
-
+        Application application = context.getApplication();
+        Iterator acceptedLocales = context.getExternalContext().getRequestLocales();
+        while (acceptedLocales.hasNext()) {
+            Locale acceptedLocale = (Locale) acceptedLocales.next();
+            Iterator supportedLocales = application.getSupportedLocales();
             while (supportedLocales.hasNext()) {
                 Locale supportedLocale = (Locale) supportedLocales.next();
-                if (locale.getLanguage()
-                        .equals(supportedLocale.getLanguage())) {
-
-                    if ((null == supportedLocale.getCountry()) ||
-                            ("".equals(supportedLocale.getCountry()))) {
-                        return supportedLocale;
-                    }
-
-                    if (locale.equals(supportedLocale)) {
-                        return supportedLocale;
-                    }
-
+                if (acceptedLocale.equals(supportedLocale)) {
+                    return supportedLocale;
+                }
+            }
+            supportedLocales = application.getSupportedLocales();
+            while (supportedLocales.hasNext()) {
+                Locale supportedLocale = (Locale) supportedLocales.next();
+                if (acceptedLocale.getLanguage().equals(supportedLocale.getLanguage()) &&
+                        supportedLocale.getCountry().length() == 0) {
+                    return supportedLocale;
                 }
             }
         }
-
-        Locale defaultLocale = context.getApplication().getDefaultLocale();
-        return (null == defaultLocale) ? Locale.getDefault() : defaultLocale;
+        // no match is found.
+        Locale defaultLocale = application.getDefaultLocale();
+        return defaultLocale == null ? Locale.getDefault() : defaultLocale;
     }
 
     public String calculateRenderKitId(FacesContext context) {
@@ -672,20 +693,23 @@ public class D2DViewHandler extends ViewHandler {
      * @param base
      */
     public static UIComponent findComponent(String clientId, UIComponent base) {
+//System.out.println("    findComponent()  clientId: " + clientId + "  base: " + base);
         // Set base, the parent component whose children are searched, to be the
         // nearest parent that is either 1) the view root if the id expression
         // is absolute (i.e. starts with the delimiter) or 2) the nearest parent
         // NamingContainer if the expression is relative (doesn't start with
         // the delimiter)
         String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
-        if (clientId.startsWith(delimeter)) {
+        int count = getNumberOfLeadingNamingContainerSeparators(clientId);
+//System.out.println("      count: " + count);
+        if (count == 1) {
             // Absolute searches start at the root of the tree
             while (base.getParent() != null) {
                 base = base.getParent();
             }
             // Treat remainder of the expression as relative
-            clientId = clientId.substring(1);
-        } else {
+            clientId = clientId.substring(delimeter.length());
+        } else if (count == 0) {
             // Relative expressions start at the closest NamingContainer or root
             while (base.getParent() != null) {
                 if (base instanceof NamingContainer) {
@@ -693,6 +717,21 @@ public class D2DViewHandler extends ViewHandler {
                 }
                 base = base.getParent();
             }
+        } else if (count > 1) {
+            // Relative expressions start at the closest NamingContainer or root
+            int numNamingContainersUp = count - 1;
+//System.out.println("      numNamingContainersUp: " + numNamingContainersUp);
+            while (base.getParent() != null) {
+                if (base instanceof NamingContainer) {
+                    numNamingContainersUp--;
+//System.out.println("      NamingContainer["+numNamingContainersUp+"]: " + base);
+                    if (numNamingContainersUp == 0)
+                        break;
+                }
+                base = base.getParent();
+            }
+            clientId = clientId.substring(delimeter.length() * count);
+//System.out.println("      clientId: " + clientId);
         }
         // Evaluate the search expression (now guaranteed to be relative)
         String id = null;
@@ -723,6 +762,18 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         return result;
+    }
+
+    // Allow multiple leading NamingContainer separator chars to allow for
+    //  findComponent() to search upwards, relatively, as described by:
+    //  http://myfaces.apache.org/trinidad/trinidad-api/apidocs/org/apache/myfaces/trinidad/component/core/nav/CoreSingleStepButtonBar.html#getPartialTriggers()
+    private static int getNumberOfLeadingNamingContainerSeparators(
+            String clientId) {
+        int count = 0;
+        String delimeter = String.valueOf(NamingContainer.SEPARATOR_CHAR);
+        for (int index = 0; clientId.indexOf(delimeter, index) == index; index += delimeter.length())
+            count++;
+        return count;
     }
 
     private static String truncate(String remove, String input) {
