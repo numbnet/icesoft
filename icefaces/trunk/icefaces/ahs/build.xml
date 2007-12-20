@@ -67,6 +67,7 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
+        <delete file="async-http-server.war"/>
     </target>
     
     <target name="build.war" depends="clean, jar">
@@ -90,6 +91,9 @@
 
             <lib file="${dist.dir}/${ant.project.name}.jar" />
         </war>
+
+        <copy file="${dist.dir}/async-http-server.war" todir="."/>
+
     </target>
 
     <target name="build.src.bundle" depends="clean, jar, build.war">
