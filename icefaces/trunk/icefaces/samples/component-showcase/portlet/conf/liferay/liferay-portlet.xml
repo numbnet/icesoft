@@ -182,23 +182,27 @@
     <!-- ICEfaces Component-Showcase: Progress Bar Portlet                   -->
     <!-- =================================================================== -->
 
+<!--
     <portlet>
         <portlet-name>components_progressBar</portlet-name>
         <instanceable>true</instanceable>
 		<render-weight>1</render-weight>
 		<ajaxable>false</ajaxable>
     </portlet>
+-->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: File Upload Portlet                    -->
     <!-- =================================================================== -->
 
+<!--
     <portlet>
         <portlet-name>components_fileUpload</portlet-name>
         <instanceable>true</instanceable>
 		<render-weight>1</render-weight>
 		<ajaxable>false</ajaxable>
     </portlet>
+-->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: Charts - Charts Portlet                -->

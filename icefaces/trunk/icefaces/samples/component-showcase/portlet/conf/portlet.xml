@@ -506,6 +506,7 @@
     <!-- ICEfaces: Progress Bar Portlet                   -->
     <!-- =================================================================== -->
 
+<!--
     <portlet>
         <portlet-name>components_progressBar</portlet-name>
         <display-name>ICEfaces: Progress Bar</display-name>
@@ -532,11 +533,13 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
+-->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: File Upload Portlet                    -->
     <!-- =================================================================== -->
 
+<!--
     <portlet>
         <portlet-name>components_fileUpload</portlet-name>
         <display-name>ICEfaces: File Upload</display-name>
@@ -563,6 +566,7 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
+-->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Charts - Charts Portlet                -->
