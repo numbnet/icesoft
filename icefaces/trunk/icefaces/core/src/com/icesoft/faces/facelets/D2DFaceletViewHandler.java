@@ -318,6 +318,14 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
     }
     */
 
+    /**
+     * Fetch a string for logging purposes
+     * @return  .xhtml, a likely suffix for Facelets. 
+     */
+    protected String getDefaultSuffix() {
+        return ".xhtml";
+    }
+
     protected static void removeTransient(UIComponent c) {
         UIComponent d, e;
         if (c.getChildCount() > 0) {
