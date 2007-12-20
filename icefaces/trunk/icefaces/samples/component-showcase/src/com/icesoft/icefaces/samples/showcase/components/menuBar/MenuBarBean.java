@@ -114,7 +114,9 @@ public class MenuBarBean {
             // User context-clicked on certain menu items
             if( lastContextWasText != null &&
                 (myParam.equals("Highlight") ||
-                 myParam.equals("Pulsate")) )
+                 myParam.equals("Pulsate") ||
+                 myParam.equals("Appear") ||
+                 myParam.equals("Shake")) )
             {
                 effect = EffectBuilder.build(myParam);
                 effect.setDuration(2.5f);

@@ -204,7 +204,7 @@ are shown but could easily be made to invoke application logic.
     </ice:menuPopup>
     <ice:menuPopup id="menuPopupText">
         <!-- File menu -->
-        <ice:menuItem id="text" value="Text" >
+        <ice:menuItem id="text" value="Text Only" >
             <ice:menuItem id="doc" value="Document"
                           icon="/images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
@@ -213,7 +213,35 @@ are shown but could easily be made to invoke application logic.
                               actionListener="#{menuBar.primaryListener}">
                     <f:param name="myParam" value="Highlight"/>
                 </ice:menuItem>
+                <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Shake"/>
+                </ice:menuItem>
             </ice:menuItem>
+            <ice:menuItem id="appear" value="Fade In" actionListener="#{menuBar.primaryListener}">
+                <f:param name="myParam" value="Appear"/>
+            </ice:menuItem>
+        </ice:menuItem>
+        <ice:menuItem id="textAndOrImage" value="Text and/or Image">
+<!--
+            <ice:menuItem id="text" value="Text">
+                <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Appear"/>
+                </ice:menuItem>
+            </ice:menuItem>
+            <ice:menuItem id="image" value="Image">
+                <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Shake"/>
+                </ice:menuItem>
+            </ice:menuItem>
+            <ice:menuItem id="both" value="Both">
+                <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Appear"/>
+                </ice:menuItem>
+                <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Shake"/>
+                </ice:menuItem>
+            </ice:menuItem>
+-->
         </ice:menuItem>
     </ice:menuPopup>    
 </ice:panelGroup>
