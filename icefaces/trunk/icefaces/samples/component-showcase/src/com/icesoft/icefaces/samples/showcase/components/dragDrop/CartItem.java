@@ -88,7 +88,7 @@ public class CartItem {
         this.quantity = quantity;
 
         // large image for the store, small image for the cart
-        image = "./images/dragDrop/" + name.toLowerCase().replace(' ', '_');
+        image = "/images/dragDrop/" + name.toLowerCase().replace(' ', '_');
         imageSmall = image + "_small.jpg";
         image += ".jpg";
     }

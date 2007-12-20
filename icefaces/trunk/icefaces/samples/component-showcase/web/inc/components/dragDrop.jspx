@@ -171,7 +171,7 @@
                         hoverclass="droptargethover"
                         styleClass="cartDropZone">
 
-            <ice:graphicImage value="images/shopping-cart.gif"
+            <ice:graphicImage value="/images/shopping-cart.gif"
                               alt="Shopping Cart"
                               width="50" height="40"/>
             <br/>
