@@ -11,6 +11,7 @@ import com.icesoft.faces.component.panelpositioned.PanelPositionedEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.outputchart.OutputChart;
 
+import javax.faces.event.ValueChangeEvent;
 import java.util.EventObject;
 
 /**
@@ -46,6 +47,9 @@ public class IceComponentHandler extends ComponentHandler {
             else if( tag.getLocalName().equals("rowSelector") ) {
                 m.addRule( new MethodRule("selectionListener", null, new Class[] {RowSelectorEvent.class}) );
                 m.addRule( new MethodRule("selectionAction", null, new Class[0]) );
+            }
+            else if( tag.getLocalName().equals("panelTooltip") ) {
+                m.addRule( new MethodRule("valueChangeListener", null, new Class[] {ValueChangeEvent.class}) );
             }
         }
         return m;
