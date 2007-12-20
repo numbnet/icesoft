@@ -77,7 +77,7 @@ are shown but could easily be made to invoke application logic.
         <!-- File menu -->
         <ice:menuItem value="File" id="file" >
             <ice:menuItem actionListener="#{menuBar.primaryListener}"
-                          id="open" value="Open" icon="images/menu/open.gif">
+                          id="open" value="Open" icon="/images/menu/open.gif">
                 <f:param name="myParam" value="Open"/>
             </ice:menuItem>
             <ice:menuItem id="close" value="Close"
@@ -86,7 +86,7 @@ are shown but could easily be made to invoke application logic.
             </ice:menuItem>
             <ice:menuItemSeparator />
             <ice:menuItem id="recent" value="Recent"
-                          icon="images/menu/recent.gif"
+                          icon="/images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
                 <f:param name="myParam" value="Recent"/>
                 <ice:menuItem id="file1"
@@ -122,11 +122,11 @@ are shown but could easily be made to invoke application logic.
             </ice:menuItem>
 
             <ice:menuItem id="save"
-                          icon="images/menu/save.gif" value="Save"
+                          icon="/images/menu/save.gif" value="Save"
                           actionListener="#{menuBar.primaryListener}"/>
 
             <ice:menuItem id="print"
-                          icon="images/menu/print.gif" value="Print"
+                          icon="/images/menu/print.gif" value="Print"
                           actionListener="#{menuBar.primaryListener}"/>
         </ice:menuItem>
 
@@ -147,19 +147,19 @@ are shown but could easily be made to invoke application logic.
         <!-- View menu -->
         <ice:menuItem value="View" id="view">
             <ice:menuItem id="zoom_in" value="Zoom In"
-                          icon="images/menu/zoomin.gif"
+                          icon="/images/menu/zoomin.gif"
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
             <ice:menuItem id="zoom_out" value="Zoom Out"
-                          icon="images/menu/zoomout.gif"
+                          icon="/images/menu/zoomout.gif"
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
             <ice:menuItem id="fit_in_window" value="Fit In Window"
-                          icon="images/menu/fitinwindow.gif"
+                          icon="/images/menu/fitinwindow.gif"
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
             <ice:menuItem id="actual_size" value="Actual Size"
-                          icon="images/menu/actualsize.gif"
+                          icon="/images/menu/actualsize.gif"
                           actionListener="#{menuBar.primaryListener}">
             </ice:menuItem>
         </ice:menuItem>
@@ -187,7 +187,7 @@ are shown but could easily be made to invoke application logic.
                     effect="#{menuBar.imageEffect}"
                     menuPopup="menuPopupImage"
                     menuContext="#{menuBar.imageContext}">
-        <ice:graphicImage value="images/panelSeries/Ice Berg.jpg"
+        <ice:graphicImage value="/images/panelSeries/Ice Berg.jpg"
                           alt="Ice Berg"
                           width="100"
                           height="75"/>
@@ -206,7 +206,7 @@ are shown but could easily be made to invoke application logic.
         <!-- File menu -->
         <ice:menuItem id="text" value="Text" >
             <ice:menuItem id="doc" value="Document"
-                          icon="images/menu/recent.gif"
+                          icon="/images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
                 <f:param name="myParam" value="Document"/>
                 <ice:menuItem id="highlight" value="Highlight"
