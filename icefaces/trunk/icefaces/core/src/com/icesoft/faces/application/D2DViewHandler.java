@@ -772,28 +772,40 @@ public class D2DViewHandler extends ViewHandler {
         if (extCtx.getRequestPathInfo() == null) {
             String viewSuffix = context.getExternalContext().getInitParameter(
                     ViewHandler.DEFAULT_SUFFIX_PARAM_NAME);
+            // Log a debug message to help users with this parameter left undefined
             if (viewSuffix == null) {
-                if (log.isErrorEnabled()) {
-                    log.error(
+                if (log.isDebugEnabled()) {
+                    log.debug(
                             "The " + ViewHandler.DEFAULT_SUFFIX_PARAM_NAME +
                                     " context parameter is not set in web.xml. " +
                                     "Please define the filename extension used for " +
                                     "your source JSF pages. Example:\n" +
                                     "<context-param>\n" +
                                     " <param-name>javax.faces.DEFAULT_SUFFIX</param-name>\n" +
-                                    " <param-value>.xhtml</param-value>\n" +
+                                    " <param-value>" +
+                                    getDefaultSuffix() + "</param-value>\n" +
                                     "</context-param>");
                 }
+                viewSuffix = ViewHandler.DEFAULT_SUFFIX; 
+            }
+
+            int lastPeriod = actionId.lastIndexOf('.');
+            if (lastPeriod < 0) {
+                viewId = actionId + viewSuffix;
             } else {
-                int lastPeriod = actionId.lastIndexOf('.');
-                if (lastPeriod < 0) {
-                    viewId = actionId + viewSuffix;
-                } else {
-                    viewId = actionId.substring(0, lastPeriod) + viewSuffix;
-                }
+                viewId = actionId.substring(0, lastPeriod) + viewSuffix;
             }
         }
         return viewId;
+    }
+
+    /**
+     * Allow subclasses to override the suffix for logging purposes
+     *  
+     * @return  Default suffix for this technology type
+     */
+    protected String getDefaultSuffix() {
+        return ViewHandler.DEFAULT_SUFFIX;
     }
 
 
