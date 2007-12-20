@@ -6,6 +6,7 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +22,8 @@ implements PseudoServlet {
 
     public SessionBoundServlet(
         final Configuration configuration, final SessionManager sessionManager,
-        final ExecuteQueue executeQueue)
+        final ExecuteQueue executeQueue,
+        final SessionDispatcher.Monitor monitor)
     throws IllegalArgumentException {
         if (configuration == null) {
             throw new IllegalArgumentException("configuration is null");
@@ -35,7 +37,7 @@ implements PseudoServlet {
         PathDispatcherServer _pathDispatcherServer = new PathDispatcherServer();
         _pathDispatcherServer.dispatchOn(
             ".*block\\/receive\\-updated\\-views$",
-            new SendUpdatedViewsServer(sessionManager, executeQueue));
+            new SendUpdatedViewsServer(sessionManager, executeQueue, monitor));
         servlet =
             new EnvironmentAdaptingServlet(
                 _pathDispatcherServer, configuration);

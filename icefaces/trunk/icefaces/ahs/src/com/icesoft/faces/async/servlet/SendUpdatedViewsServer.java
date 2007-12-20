@@ -2,6 +2,7 @@ package com.icesoft.faces.async.servlet;
 
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.common.SessionManager;
 
@@ -18,9 +19,11 @@ implements Server {
 
     private final SessionManager sessionManager;
     private final ExecuteQueue executeQueue;
+    private final SessionDispatcher.Monitor monitor;
 
     public SendUpdatedViewsServer(
-        final SessionManager sessionManager, final ExecuteQueue executeQueue)
+        final SessionManager sessionManager, final ExecuteQueue executeQueue,
+        final SessionDispatcher.Monitor monitor)
     throws IllegalArgumentException {
         if (sessionManager == null) {
             throw new IllegalArgumentException("sessionManager is null");
@@ -28,8 +31,12 @@ implements Server {
         if (executeQueue == null) {
             throw new IllegalArgumentException("executeQueue is null");
         }
+        if (monitor == null) {
+            throw new IllegalArgumentException("monitor is null");
+        }
         this.sessionManager = sessionManager;
         this.executeQueue = executeQueue;
+        this.monitor = monitor;
     }
 
     public void service(final Request request)
@@ -54,6 +61,7 @@ implements Server {
         if (LOG.isDebugEnabled()) {
             LOG.debug("ICEfaces ID(s): " + _iceFacesIdSet);
         }
+        monitor.touchSession();
         new ProcessHandler(
             request, _iceFacesIdSet, sessionManager, executeQueue).handle();
     }

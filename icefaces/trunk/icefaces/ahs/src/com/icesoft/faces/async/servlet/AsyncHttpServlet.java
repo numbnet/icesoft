@@ -88,7 +88,8 @@ extends HttpServlet {
                             new SessionBoundServlet(
                                 _servletContextConfiguration,
                                 _sessionManager,
-                                _executeQueue);
+                                _executeQueue,
+                                monitor);
                     }
                 };
                 pathDispatcher.dispatchOn(".*", _sessionDispatcher);
