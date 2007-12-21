@@ -185,7 +185,7 @@ public class D2DViewHandler extends ViewHandler {
                 //instead it should calculate the locale
                 int setLocaleIndex = -1;
                 int lifeCycleRestoreViewIndex = -1;
-                StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+                StackTraceElement[] ste = (new RuntimeException()).getStackTrace();
                 for(int i = 0; (i < 10 && i < ste.length); i++) {
                     String className = ste[i].getClassName().toLowerCase();
                     String methodName = ste[i].getMethodName().toLowerCase();
@@ -212,7 +212,6 @@ public class D2DViewHandler extends ViewHandler {
             }
         };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
-        root.setLocale(calculateLocale(context));
         root.setViewId(null == viewId ? "default" : viewId);
 
         return root;
