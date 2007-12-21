@@ -145,6 +145,7 @@ public class PersistentFacesState implements Serializable {
     public void render() throws RenderingException {
         warn();
         facesContext.setCurrentInstance();
+        setCurrentInstance();
         facesContext.setFocusId("");
         synchronized (facesContext) {
             try {
@@ -246,6 +247,7 @@ public class PersistentFacesState implements Serializable {
      */
     public void execute() throws RenderingException {
         facesContext.setCurrentInstance();
+        setCurrentInstance();
         synchronized (facesContext) {
             try {
                 if (ImplementationUtil.isJSF12()) {
