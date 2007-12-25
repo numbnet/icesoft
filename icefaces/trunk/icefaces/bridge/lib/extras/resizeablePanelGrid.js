@@ -34,5 +34,25 @@ Resizable = Class.create({
   initialize: function(event) {
     this.source = Event.element(event);
     this.pointerLocation = parseInt(Event.pointerX(event));  
+  },
+  
+  getPreviousTd: function() {
+    if (this.source.parentNode.previousSibling.tagName == "TD") {
+        return this.source.parentNode.previousSibling;
+    } else {
+        return this.source.parentNode.previousSibling.previousSibling;
+    }
+  },
+
+  getTableElement: function() {
+    return this.source.parentNode.parentNode.parentNode.parentNode;
+  },
+
+  getNextTd: function() {
+    if (this.source.parentNode.nextSibling.tagName == "TD") {
+        return this.source.parentNode.nextSibling;
+    } else {
+        return this.source.parentNode.nextSibling.nextSibling;
+    }
   }
 });
