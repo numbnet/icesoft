@@ -32,10 +32,25 @@
  */
 Resizable = Class.create({
   initialize: function(event) {
+    this.print("Resizable initialized....");
     this.source = Event.element(event);
-    this.pointerLocation = parseInt(Event.pointerX(event));  
+    this.pointerLocation = parseInt(Event.pointerX(event));
+    this.eventMouseMove = this.resize.bindAsEventListener(this);
+    this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
+    this.resizeAction;
+    this.source.style.position = "absolute";
+    this.source.style.left= Event.pointerX(event) + "px";
+    Event.observe(document, "mousemove", this.eventMouseMove);
+    Event.observe(document, "mouseup", this.eventMouseUp);
+    this.origionalHeight = this.source.style.height;
+    this.source.style.height = Element.getHeight(this.getTableElement().parentNode);
   },
-  
+
+  print: function(msg) {
+    var divmsg = $('msgs');
+    divmsg.innerHTML +="<br/>"+ msg;
+  },
+
   getPreviousTd: function() {
     if (this.source.parentNode.previousSibling.tagName == "TD") {
         return this.source.parentNode.previousSibling;
@@ -54,5 +69,61 @@ Resizable = Class.create({
     } else {
         return this.source.parentNode.nextSibling.nextSibling;
     }
+  },
+
+  resize: function(event) {
+    var diff = this.getDifference(event);
+    var leftTdWidth = Element.getWidth(this.getPreviousTd());
+    if (this.resizeAction == "dec") {
+        if ((leftTdWidth - diff) < 40) {
+            this.detachEvent(event);
+        }
+    }
+    this.source.style.left = Event.pointerX(event) + "px";
+  },
+
+
+  detachEvent: function(event) {
+    //restore height
+    this.source.style.height =  this.origionalHeight;
+
+    var leftTdWidth = Element.getWidth(this.getPreviousTd());
+    var rightTdWidth = this.getNextTd();
+    var tableWidth = Element.getWidth(this.getTableElement());
+    var diff = this.getDifference(event);
+
+    if (this.resizeAction == "inc") {
+        this.getPreviousTd().style.width = leftTdWidth + diff
+        this.getTableElement().style.width = tableWidth + diff;
+
+        this.print("Diff "+ diff);
+        this.print("Td width "+ leftTdWidth + this.getPreviousTd().id);
+        this.print("Table width "+ tableWidth);
+
+
+    } else {
+        this.getPreviousTd().style.width = leftTdWidth - diff
+        this.getTableElement().style.width = tableWidth - diff;
+    }
+    Event.stopObserving(document, "mousemove", this.eventMouseMove);
+    Event.stopObserving(document, "mouseup", this.eventMouseUp);
+
+    this.source.style.position = "";
+
+  },
+
+  getDifference: function(event) {
+    var x = parseInt(Event.pointerX(event));
+    if (this.pointerLocation > x) {
+        this.resizeAction = "dec";
+        return this.pointerLocation - x;
+    } else {
+        this.resizeAction = "inc";
+        return x -this.pointerLocation;
+    }
   }
+
+
+
+
 });
