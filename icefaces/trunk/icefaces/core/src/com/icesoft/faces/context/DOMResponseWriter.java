@@ -280,7 +280,7 @@ public class DOMResponseWriter extends ResponseWriter {
         if (focusId != null && !focusId.equals("null")) {
             JavascriptContext.focus(context, focusId);
         }
-
+        ViewHandler handler = context.getApplication().getViewHandler();
         Map session = context.getExternalContext().getSessionMap();
         String sessionIdentifier = context.getIceFacesId();
         String viewIdentifier = context.getViewNumber();
@@ -293,7 +293,7 @@ public class DOMResponseWriter extends ResponseWriter {
         script.appendChild(document.createTextNode(calls));
 
         ElementController.from(session).addInto(prefix, body);
-        String contextPath = context.getApplication().getViewHandler().getResourceURL(context, "/");
+        String contextPath = handler.getResourceURL(context, "/");
         String asyncServerContextPath = "/" + configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", "")) + "/";
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
@@ -324,6 +324,16 @@ public class DOMResponseWriter extends ResponseWriter {
         configurationElement.appendChild(document.createTextNode(startupScript));
         body.appendChild(configurationElement);
 
+
+        Element noscript =
+                (Element) body.appendChild(document.createElement("noscript"));
+        Element noscriptMeta =
+                (Element) noscript.appendChild(document.createElement("meta"));
+        noscriptMeta.setAttribute("http-equiv", "refresh");
+        noscriptMeta
+                .setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
+
+        
         String markerID = prefix + "marker-script";
         Element markerElement = (Element) body.appendChild(document.createElement("script"));
         markerElement.setAttribute("id", markerID);
@@ -338,14 +348,6 @@ public class DOMResponseWriter extends ResponseWriter {
                 (Element) head.appendChild(document.createElement("meta"));
         meta.setAttribute("name", "icefaces");
         meta.setAttribute("content", "Rendered by ICEFaces D2D");
-
-        Element noscript =
-                (Element) head.appendChild(document.createElement("noscript"));
-        Element noscriptMeta =
-                (Element) noscript.appendChild(document.createElement("meta"));
-        noscriptMeta.setAttribute("http-equiv", "refresh");
-        noscriptMeta
-                .setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 
         //load libraries
         Collection libs = new ArrayList();
