@@ -361,6 +361,14 @@ public class TableRenderer
 
         HtmlDataTable uiData = (HtmlDataTable) uiComponent;
         int rowIndex = uiData.getFirst();
+        if (uiData.getRowCount() == 0) {
+            Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
+            tBody.appendChild(tr);
+            Element td = (Element) domContext.createElement(HTML.TD_ELEM);
+            tr.appendChild(td);            
+            domContext.stepOver();
+            return;
+        }        
         if (uiData.getRowCount() >=0 && uiData.getRowCount() <= rowIndex) {
             domContext.stepOver();
             return;
