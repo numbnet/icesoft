@@ -77,6 +77,7 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         UIOutput output = (UIOutput) uiComponent;
         String linkVal = getValue(facesContext, uiComponent);
 
+        
         if (!output.isRendered()) return;
 
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -85,7 +86,11 @@ public class OutputLinkRenderer extends DomBasicRenderer {
             throw new NullPointerException("ResponseWriter is null");
         }
 
-        writer.startElement("a", uiComponent);
+        if (!checkDisabled(uiComponent)) {
+            writer.startElement("a", uiComponent);
+        } else {
+            writer.startElement("span", uiComponent);
+        }
         writer.writeAttribute("id", uiComponent.getClientId(facesContext),
                               "id");
 
@@ -97,11 +102,12 @@ public class OutputLinkRenderer extends DomBasicRenderer {
 
         linkVal = appendParameters(facesContext, uiComponent, linkVal);
 
-        if (!checkDisabled(uiComponent))
+        if (!checkDisabled(uiComponent)) {
             writer.writeURIAttribute("href",
                                      facesContext
                                              .getExternalContext().encodeResourceURL(
                                              linkVal), "href");
+        } 
 
         PassThruAttributeWriter.renderAttributes(writer, uiComponent, null);
 
@@ -117,7 +123,12 @@ public class OutputLinkRenderer extends DomBasicRenderer {
      * @return boolean
      */
     protected boolean checkDisabled(UIComponent uiComponent) {
-        return false;
+        boolean disabled = false;
+        try {
+            return disabled = Boolean.valueOf(String.valueOf(
+                    uiComponent.getAttributes().get("disabled"))).booleanValue();
+        } catch (Exception e) {}
+        return disabled;
     }
 
     /**
