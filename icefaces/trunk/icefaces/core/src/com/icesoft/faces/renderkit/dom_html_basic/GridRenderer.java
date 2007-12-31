@@ -145,6 +145,13 @@ public class GridRenderer extends DomBasicRenderer {
         // not occupy a table cell.
         Iterator children = uiComponent.getChildren().iterator();
         if (children != null) {
+            if (!children.hasNext()) {
+                tr = (Element) domContext.createElement(HTML.TR_ELEM);
+                tr.setAttribute(HTML.STYLE_ATTR , "display: none;");
+                Element td = (Element) domContext.createElement(HTML.TD_ELEM);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            }
             int numberOfColumns = getConvertedColumnAttribute(uiComponent);
             int rowIndex =
                     -1;// this initial value ensures zero-based indexing in ids
@@ -196,7 +203,7 @@ public class GridRenderer extends DomBasicRenderer {
                 encodeParentAndChildren(facesContext, nextChild);
                 columnIndex++;
             }
-        }
+        } 
         renderFooterFacet(facesContext, uiComponent, domContext);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
