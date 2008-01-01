@@ -43,12 +43,11 @@ Resizable = Class.create({
     Event.observe(document, "mousemove", this.eventMouseMove);
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
-    this.source.style.height = Element.getHeight(this.getTableElement().parentNode);
+    this.source.style.height = (Element.getHeight(this.getTableElement().parentNode) -15) + "px";
   },
 
   print: function(msg) {
-    var divmsg = $('msgs');
-    divmsg.innerHTML +="<br/>"+ msg;
+    logger.info(msg);
   },
 
   getPreviousTd: function() {
@@ -93,8 +92,8 @@ Resizable = Class.create({
     var diff = this.getDifference(event);
 
     if (this.resizeAction == "inc") {
-        this.getPreviousTd().style.width = leftTdWidth + diff
-        this.getTableElement().style.width = tableWidth + diff;
+        this.getPreviousTd().style.width = leftTdWidth + diff + "px";
+    //    this.getTableElement().style.width = tableWidth + diff + "px";;
 
         this.print("Diff "+ diff);
         this.print("Td width "+ leftTdWidth + this.getPreviousTd().id);
@@ -102,8 +101,8 @@ Resizable = Class.create({
 
 
     } else {
-        this.getPreviousTd().style.width = leftTdWidth - diff
-        this.getTableElement().style.width = tableWidth - diff;
+        this.getPreviousTd().style.width = leftTdWidth - diff + "px";
+  //      this.getTableElement().style.width = tableWidth - diff + "px";
     }
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
     Event.stopObserving(document, "mouseup", this.eventMouseUp);
