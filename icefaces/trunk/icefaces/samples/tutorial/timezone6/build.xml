@@ -31,7 +31,9 @@
   ~
   -->
 
-<project name="timezone6" default="tomcat6.0">
+<project default="tomcat6.0">
+    
+    <property name="ant.project.name" value="timezone6"/>
     
     <property file="../build.properties"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>
@@ -48,7 +50,7 @@
     <target name="help">
         <echo level="info">
     ***********************************
-     *       Help info               *
+    *       Help info               *
     ***********************************            
 This application implements facelets version of timezone application.
 Please check common.help for available builds, "ant common.help"

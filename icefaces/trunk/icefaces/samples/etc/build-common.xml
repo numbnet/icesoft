@@ -1,4 +1,4 @@
-<project name="common">
+<project>
     
     <property name="build.sysclasspath" value="ignore"/>
     

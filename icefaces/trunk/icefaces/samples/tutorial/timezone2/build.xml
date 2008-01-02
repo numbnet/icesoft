@@ -31,18 +31,20 @@
   ~
   -->
 
-<project name="timezone2" default="tomcat6.0">
-
-<property file="../build.properties"/>
-<property name="common.build.file" location="../../etc/build-common.xml"/>
-
-<import file="${common.build.file}"/>
-
-<!--patternset id="additional.icefaces.lib.jars.to.include"
+<project default="tomcat6.0">
+    
+    <property name="ant.project.name" value="timezone2"/>
+    
+    <property file="../build.properties"/>
+    <property name="common.build.file" location="../../etc/build-common.xml"/>
+    
+    <import file="${common.build.file}"/>
+    
+    <!--patternset id="additional.icefaces.lib.jars.to.include"
     excludes="
         icefaces.jar
         icefaces-comps.jar
     "
 /-->
-
+    
 </project>

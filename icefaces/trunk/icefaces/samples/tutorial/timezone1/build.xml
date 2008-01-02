@@ -31,35 +31,37 @@
   ~
   -->
 
-<project name="timezone1" default="tomcat6.0">
-
-<property file="../build.properties"/>
-<property name="common.build.file" location="../../etc/build-common.xml"/>
-
-<import file="${common.build.file}"/>
-
-<patternset id="additional.icefaces.lib.jars.to.include"
-    excludes="
-        icefaces.jar
-        icefaces-comps.jar
-    "
->
-    <include name="commons-lang-2.1.jar" if="myfaces"/>
-    <include name="commons-lang.jar" if="myfaces"/>
-
-</patternset>
-
-<target name="help">
-    <echo level="info">
-This application implements regular jsf application without icefaces involved.
-Please check common.help for available builds, "ant common.help"
-    </echo>
+<project default="tomcat6.0">
+    
+    <property name="ant.project.name" value="timezone1"/>
+    
+    <property file="../build.properties"/>
+    <property name="common.build.file" location="../../etc/build-common.xml"/>
+    
+    <import file="${common.build.file}"/>
+    
+    <patternset id="additional.icefaces.lib.jars.to.include"
+                excludes="
+                icefaces.jar
+                icefaces-comps.jar
+                "
+    >
+        <include name="commons-lang-2.1.jar" if="myfaces"/>
+        <include name="commons-lang.jar" if="myfaces"/>
+        
+    </patternset>
+    
+    <target name="help">
+        <echo level="info">
+            This application implements regular jsf application without icefaces involved.
+            Please check common.help for available builds, "ant common.help"
+        </echo>
     </target>
-
-<target name="clean" depends="common.clean">
-    <delete quiet="true">
-        <fileset dir="${app.lib.dir}" includes="icefaces.jar, icefaces-comps.jar, commons-lang-2.1.jar"/>
-    </delete>
-</target>
-
+    
+    <target name="clean" depends="common.clean">
+        <delete quiet="true">
+            <fileset dir="${app.lib.dir}" includes="icefaces.jar, icefaces-comps.jar, commons-lang-2.1.jar"/>
+        </delete>
+    </target>
+    
 </project>

@@ -31,8 +31,10 @@
   ~
   -->
 
-<project name="timezone7" default="tomcat6.0">
+<project default="tomcat6.0">
     
+    <property name="ant.project.name" value="timezone7"/>
+
     <property file="../build.properties"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>
     

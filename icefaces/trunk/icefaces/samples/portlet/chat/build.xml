@@ -31,7 +31,9 @@
   ~
   -->
 
-<project name="chat" default="tomcat6.0">
+<project default="tomcat6.0">
+
+    <property name="ant.project.name" value="chat"/>
     
     <import file="../../etc/build-common.xml"/>
     

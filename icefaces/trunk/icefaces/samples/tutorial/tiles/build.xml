@@ -31,27 +31,29 @@
   ~
   -->
 
-<project name="tiles" default="tomcat6.0">
-
-<property file="../build.properties"/>
-<property name="common.build.file" location="../../etc/build-common.xml"/>
-
-<import file="${common.build.file}"/>
-
-<target name="clean" depends="common.clean">
-    <delete quiet="true">
-        <fileset dir="${app.lib.dir}" includes="*.jar">
-            <present targetdir="lib"/>
-        </fileset>
-    </delete>
-</target>
-
-<target name="pre.compile">
-    <copy todir="${app.lib.dir}" preservelastmodified="true">
-        <fileset dir="lib" includes="*.jar"/>
-    </copy>
-</target>
-
-<target name="compile" depends="clean, pre.compile, common.compile"/>
-
+<project default="tomcat6.0">
+    
+    <property name="ant.project.name" value="tiles"/>
+    
+    <property file="../build.properties"/>
+    <property name="common.build.file" location="../../etc/build-common.xml"/>
+    
+    <import file="${common.build.file}"/>
+    
+    <target name="clean" depends="common.clean">
+        <delete quiet="true">
+            <fileset dir="${app.lib.dir}" includes="*.jar">
+                <present targetdir="lib"/>
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="pre.compile">
+        <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <fileset dir="lib" includes="*.jar"/>
+        </copy>
+    </target>
+    
+    <target name="compile" depends="clean, pre.compile, common.compile"/>
+    
 </project>
