@@ -50,12 +50,12 @@
                 <ice:outputText 
                         value="This example is using a static panelTooltip with autoHide = 'onExit', To close this tooltip please move the mouse off"/>
             </h4>
-            <ice:panelSeries  var="pnlPerson"
+            <ice:panelSeries id="icepnlsrs" var="pnlPerson"
                        value="#{scrollerList.persons}" rows="5"
                      >
                 <ice:panelGroup style="float: left; width: 60px;"> 
                 <ice:panelGroup panelTooltip="pnlSerPanelToolTip" >
-                    <ice:outputText  value="#{pnlPerson.firstName}"/>
+                    <ice:outputText id="firstname" value="#{pnlPerson.firstName}"/>
                 </ice:panelGroup>
                 <ice:panelTooltip id="pnlSerPanelToolTip"
                         autoHide="onExit"
@@ -64,16 +64,16 @@
                     <f:facet name="body">
                         <ice:panelGroup>
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column1']} : "/>
-                                <ice:outputText value="#{pnlPerson.firstName}"/> <br/>
+                                <ice:outputText id="tooltip_firstname" value="#{pnlPerson.firstName}"/> <br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column2']} : "/>
-                                <ice:outputText  value="#{pnlPerson.lastName}"/><br/>
+                                <ice:outputText id="tooltip_lastname" value="#{pnlPerson.lastName}"/><br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column3']} : "/>
-                                <ice:outputText  value="#{pnlPerson.phoneNo}"/><br/>
+                                <ice:outputText id="tooltip_phoneno" value="#{pnlPerson.phoneNo}"/><br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column4']} : "/>
-                                <ice:outputText  value="#{pnlPerson.email}"/><br/>
+                                <ice:outputText id="tooltip_email" value="#{pnlPerson.email}"/><br/>
 
                         </ice:panelGroup>
                     </f:facet>
@@ -99,19 +99,19 @@
             </h4>
 
             <!-- popup selection -->
-            <ice:panelGrid columns="4" styleClass="popupControls" cellpadding="6"
+            <ice:panelGrid id="icepnlgrd" columns="4" styleClass="popupControls" cellpadding="6"
                                        cellspacing="6">
                 <ice:panelGroup panelTooltip="provinceInfo">
-                    <ice:outputText value="Alberta" />
+                    <ice:outputText id="alberta" value="Alberta" />
                 </ice:panelGroup>
                 <ice:panelGroup panelTooltip="provinceInfo">
-                    <ice:outputText value="Ontario" />
+                    <ice:outputText id="ontario" value="Ontario" />
                 </ice:panelGroup>
                 <ice:panelGroup panelTooltip="provinceInfo">
-                    <ice:outputText value="Nova Scotia" />
+                    <ice:outputText id="novascotia" value="Nova Scotia" />
                 </ice:panelGroup> 
                 <ice:panelGroup panelTooltip="provinceInfo">
-                    <ice:outputText value="Saskatchewan" />
+                    <ice:outputText id="saskatchewan" value="Saskatchewan" />
                 </ice:panelGroup>
                            
             </ice:panelGrid>
@@ -157,18 +157,18 @@
                     <f:facet name="body">
                         <ice:panelGroup>
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column1']} : "/>
-                                <ice:inputText value="#{person.firstName}"/> <br/>
+                                <ice:inputText id="tooltip_firstname" value="#{person.firstName}"/> <br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column2']} : "/>
-                                <ice:inputText  value="#{person.lastName}"/><br/>
+                                <ice:inputText id="tooltip_lastname" value="#{person.lastName}"/><br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column3']} : "/>
-                                <ice:inputText  value="#{person.phoneNo}"/><br/>
+                                <ice:inputText id="tooltip_phoneno" value="#{person.phoneNo}"/><br/>
 
                                 <ice:outputText style="display:inline" value="#{msgs['component.table.column4']} : "/>
-                                <ice:inputText  value="#{person.email}"/><br/>
+                                <ice:inputText id="tooltip_email" value="#{person.email}"/><br/>
                                 
-                                <ice:commandButton value="save"/>
+                                <ice:commandButton id="save" value="save"/>
                         </ice:panelGroup>
                     </f:facet>
             
@@ -228,9 +228,9 @@
                            width="100%" cellpadding="0"
                            cellspacing="0" columns="1"
                            styleClass="popupModalBody">
-                <ice:dataTable value="#{tooltip.cityList}" var="city">
+                <ice:dataTable id="cities" value="#{tooltip.cityList}" var="city">
                     <ice:column>
-                        <ice:outputText value="#{city}" />
+                        <ice:outputText id="cityname" value="#{city}" />
                     </ice:column>
                 </ice:dataTable>
             </ice:panelGrid>
