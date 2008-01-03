@@ -2416,6 +2416,10 @@ Disabled classes for the calendar controls
 }
 
 .iceGmp{}
+.iceGmpMapTd {
+    vertical-align: top;
+}
+
 .iceGmpMapTd div.gmap{
     width:600px;
     height:400px;

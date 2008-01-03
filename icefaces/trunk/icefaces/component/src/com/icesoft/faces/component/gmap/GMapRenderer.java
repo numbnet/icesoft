@@ -35,7 +35,6 @@ public class GMapRenderer extends DomBasicRenderer{
 	        	Element tr = domContext.createElement(HTML.TR_ELEM);
 	        	Element td = domContext.createElement(HTML.TD_ELEM);
 	        	td.setAttribute(HTML.CLASS_ATTR, gmap.getMapTdStyleClass());
-	        	td.setAttribute("VALIGN", "top");
 	        	container.appendChild(tr);
 	        	tr.appendChild(td);
 	        	
