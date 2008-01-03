@@ -204,8 +204,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         DOMContext.removeChildren(topLevelDiv);
         Element masterDiv = topLevelDiv;
+        String topLevelMenuId = menuComponent.getClientId(facesContext);
         while(masterDiv != null &&
-              !masterDiv.getAttribute(HTML.NAME_ATTR).equals("MENU") )
+              !masterDiv.getAttribute(HTML.ID_ATTR).equals(topLevelMenuId) )
         {
             masterDiv = (Element) masterDiv.getParentNode();
         }

@@ -68,9 +68,7 @@ public class MenuBarRenderer extends DomBasicRenderer {
         Element menuDiv = (Element) domContext.getRootNode();
         menuDiv.setAttribute(HTML.ID_ATTR,
                              uiComponent.getClientId(facesContext));
-        menuDiv.setAttribute(HTML.NAME_ATTR, "MENU");
-
-        
+       
         MenuBar menuComponent = (MenuBar) uiComponent;
         String defaultStyle = menuComponent.getComponentRootStyle();
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
