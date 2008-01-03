@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
+       
+        no-conversation-view-id="/home.xhtml"
+       login-view-id="/login.xhtml">
+                  
+
+    <page view-id="*" >
+        <navigation>
+            <rule if-outcome="home">
+                <redirect view-id="/home.xhtml"/>
+            </rule>
+        </navigation>
+		
+        <navigation from-action="#{identity.logout}">
+            <redirect view-id="/home.xhtml"/>
+        </navigation>
+
+        <navigation from-action="#{itemBid.cancel}">
+            <redirect view-id="/AuctionitemList.xhtml"/>
+        </navigation>
+		
+		
+    </page>
+
+
+   <page view-id="/main.xhtml"
+                no-conversation-view-id="/main.xhtml">
+         
+    </page>    
+    
+    <page view-id="/bidView.xhtml"
+             no-conversation-view-id="/bidView.xhtml">  
+    	    <navigation from-action="#{auctionView.removeView}">	      
+               <end-conversation/>
+    	        <redirect view-id="/main.xhtml"/>
+    	    </navigation>                       
+    </page>
+    
+ 
+
+    <page view-id="/home.xhtml">
+  
+        <navigation from-action="#{identity.login}">
+            <rule if="#{identity.loggedIn}">
+                <redirect view-id="/main.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation from-action="#{register.register}">
+            <rule if-outcome="login">
+                <redirect view-id="/main.xhtml"/>
+            </rule>
+        </navigation>
+        <navigation>
+            <rule if="#{identity.loggedIn}">
+                <redirect view-id="/main.xhtml"/>
+            </rule>
+        </navigation>
+    </page>
+	
+
+
+
+<!-- only admin can look at the list of bids and users in database -->
+    <page view-id="/BidList.xhtml">
+        <restrict>#{s:hasRole('admin')}</restrict>
+    </page>
+
+    <page view-id="/UserList.xhtml">
+        <restrict>#{s:hasRole('admin')}</restrict>
+    </page>
+       <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message>Not found</message>
+        </redirect>
+    </exception>
+
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message>Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message>You don't have permission to do this</message>
+        </redirect>
+    </exception>
+
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/login.xhtml">
+            <message>Please log in first</message>
+        </redirect>
+    </exception>
+    
+   <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/error.xhtml">
+            <message>Your session has timed out, please try again</message>
+        </redirect>
+    </exception>
+
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message>Unexpected error, please try again</message>
+        </redirect>
+    </exception>
+</pages>

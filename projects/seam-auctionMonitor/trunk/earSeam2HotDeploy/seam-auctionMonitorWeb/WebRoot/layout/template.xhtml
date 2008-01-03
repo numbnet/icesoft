@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"        
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<head> 
+    <ice:outputDeclaration doctypeRoot="HTML"
+        doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+        doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>  
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>seam-auctionMonitor-2</title>
+    <link rel='stylesheet' type='text/css' href='./xmlhttp/css/xp/xp.css'/>
+    <link href="stylesheet/theme.css" rel="stylesheet" type="text/css" />
+    <link href="stylesheet/auction_styles.css" rel="stylesheet" type="text/css" />   
+    
+</head>
+
+<body>
+
+    <ui:include src="menu.xhtml">
+        <ui:param name="projectName" value="seam-auctionMonitor-2"/>
+    </ui:include>
+    <ice:outputConnectionStatus activeLabel="requesting..." styleClass="connectionStatus"/>
+
+	<div class="body">
+		<ui:insert name="body"/>
+	</div>
+
+  <!--    <ice:panelGrid columns="2">
+        <ice:outputText value="conversationId:-"/>
+        <ice:outputText value="#{viewManager.convId}"/>
+        <ice:outputText value="isLongRunning:-"/>
+        <ice:outputText value="#{viewManager.longRunning}"/>
+    </ice:panelGrid> 
+ <div id="content">
+		<ui:insert name="content"/>
+	    <ui:include src="../conversations.xhtml" />
+</div>-->
+
+</body>
+</html>
