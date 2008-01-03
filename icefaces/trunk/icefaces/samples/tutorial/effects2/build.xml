@@ -31,9 +31,9 @@
   ~
   -->
 
-<project default="tomcat6.0">
+<project name="effects2" default="tomcat6.0">
     
-    <property name="ant.project.name" value="effects2"/>
+    <!--property name="ant.project.name" value="effects2"/-->
     
     <property file="../build.properties"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>

@@ -31,9 +31,9 @@
   ~
   -->
 
-<project default="tomcat6.0">
+<project name="component-showcase" default="tomcat6.0">
     
-    <property name="ant.project.name" value="component-showcase"/>
+    <!--property name="ant.project.name" value="component-showcase"/-->
 
     <property file="build.properties"/>
     <property name="component.docs.dir" location="../../component/doc"/>

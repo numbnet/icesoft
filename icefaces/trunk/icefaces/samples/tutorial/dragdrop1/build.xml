@@ -33,7 +33,7 @@
 
 <project name="dragdrop1" default="tomcat6.0">
     
-    <property name="ant.project.name" value="dragdrop1"/>
+    <!--property name="ant.project.name" value="dragdrop1"/-->
     
     <property file="../build.properties"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>
