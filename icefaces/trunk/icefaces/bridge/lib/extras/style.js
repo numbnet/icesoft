@@ -137,8 +137,8 @@ Ice.modal = {
                     var modalWidth = 100;
                     var modalHeight = 100;
                     try {
-                        modalWidth = modal.style.width.split("px")[0];
-                        modalHeight = modal.style.height.split("px")[0];               
+                        modalWidth = Element.getWidth(modal);
+                        modalHeight = Element.getHeight(modal);               
                     } catch (e) {}
                     modalWidth = parseInt(modalWidth) /2;
                     modalHeight = parseInt(modalHeight) /2;
@@ -209,7 +209,68 @@ Ice.modal = {
         }
         return false;
     }
+ };
+ 
+Ice.autoCentre = Class.create();
+Ice.autoCentre = {
+	id:null,
+	keepCentred:function(){
+		var scrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
+		var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+		var div = document.getElementById(Ice.autoCentre.id);
+		if( div ){
+			var x = Math.round( (Element.getWidth(document.body) - Element.getWidth(div)) / 2 + scrollX );
+			if( x < 0 ) x = 0;
+			var y = Math.round( ((window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - Element.getHeight(div)) / 2 + scrollY );
+			if( y < 0 ) y = 0;
+			x = x + "px"; y = y + "px";
+			Element.setStyle(div,{position:'absolute'});
+			Element.setStyle(div,{left: x});
+			Element.setStyle(div,{top:y});
+		}
+	},
+	start:function(target) {
+		Ice.autoCentre.id = target;
+		Ice.autoCentre.keepCentred();
+		Event.observe(window, 'resize', Ice.autoCentre.keepCentred);
+		Event.observe(window, 'scroll', Ice.autoCentre.keepCentred);
+	},
+	stop:function(target) {
+		if (Ice.autoCentre.id == target) {
+		Event.stopObserving(window, 'resize', Ice.autoCentre.keepCentred);
+		Event.stopObserving(window, 'scroll', Ice.autoCentre.keepCentred);
+	}
+ }
+};
 
-
+Ice.autoPosition = Class.create();
+Ice.autoPosition = {
+	id:null,
+	xPos:null,
+	yPos:null,
+	keepPositioned:function(){
+		var scrollX = window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft;
+		var scrollY = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+		var div = document.getElementById(Ice.autoPosition.id);
+		if( div ){
+			var x = Math.round( Ice.autoPosition.xPos + scrollX ) + "px";
+			var y = Math.round( Ice.autoPosition.yPos + scrollY ) + "px";
+			Element.setStyle(div,{position:'absolute'});
+			Element.setStyle(div,{left: x});
+			Element.setStyle(div,{top:y});
+		}
+	},
+	start:function(target,x,y) {
+		Ice.autoPosition.id = target;
+		Ice.autoPosition.xPos = x;
+		Ice.autoPosition.yPos = y;
+		Ice.autoPosition.keepPositioned();
+		Event.observe(window, 'scroll', Ice.autoPosition.keepPositioned);
+	},
+	stop:function(target) {
+		if (Ice.autoPosition.id == target) {
+ 			Event.stopObserving(window, 'scroll', Ice.autoPosition.keepPositioned);
+ 		}
+	}
 };
 

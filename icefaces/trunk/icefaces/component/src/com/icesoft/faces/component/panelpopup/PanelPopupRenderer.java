@@ -52,209 +52,247 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 /**
- * <p>PanelPopupRenderer is an extension of ICEfaces D2D GroupRenderer
- * responsible for rendering the PanelPopup component.</p>
+ * <p>
+ * PanelPopupRenderer is an extension of ICEfaces D2D GroupRenderer responsible
+ * for rendering the PanelPopup component.
+ * </p>
  */
 public class PanelPopupRenderer extends GroupRenderer {
-    private static Log log = LogFactory.getLog(PanelPopupRenderer.class);
+	private static Log log = LogFactory.getLog(PanelPopupRenderer.class);
 
-    /* (non-Javadoc)
-    * @see com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer#getRendersChildren()
-    */
-    public boolean getRendersChildren() {
-        return true;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer#getRendersChildren()
+	 */
+	public boolean getRendersChildren() {
+		return true;
+	}
 
-    /* (non-Javadoc)
-     * @see com.icesoft.faces.component.ext.renderkit.GroupRenderer#encodeBegin(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
-     */
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        validateParameters(facesContext, uiComponent, PanelPopup.class);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.icesoft.faces.component.ext.renderkit.GroupRenderer#encodeBegin(javax.faces.context.FacesContext,
+	 *      javax.faces.component.UIComponent)
+	 */
+	public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+			throws IOException {
+		validateParameters(facesContext, uiComponent, PanelPopup.class);
 
-        String styleClass =
-                (String) uiComponent.getAttributes().get("styleClass");
-        String headerClass =
-                (String) uiComponent.getAttributes().get("headerClass");
-        String bodyClass =
-                (String) uiComponent.getAttributes().get("bodyClass");
-        Boolean resizable =
-                null; // resizable functionality has not been implemented yet.
-        Boolean modal = (Boolean) uiComponent.getAttributes().get("modal");
-        if (log.isTraceEnabled()) {
-            log.trace("Value of modal is [" + modal + "]");
-        }
-        Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
+		String styleClass = (String) uiComponent.getAttributes().get(
+				"styleClass");
+		String headerClass = (String) uiComponent.getAttributes().get(
+				"headerClass");
+		String bodyClass = (String) uiComponent.getAttributes()
+				.get("bodyClass");
+		Boolean resizable = null; // resizable functionality has not been
+									// implemented yet.
+		Boolean modal = (Boolean) uiComponent.getAttributes().get("modal");
+		if (log.isTraceEnabled()) {
+			log.trace("Value of modal is [" + modal + "]");
+		}
+		Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
 
-        String dndType = getDndType(uiComponent);
+		String dndType = getDndType(uiComponent);
 
-        DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+		DOMContext domContext = DOMContext.attachDOMContext(facesContext,
+				uiComponent);
 
-        // initialize DOMContext
-        PanelPopup panelPopup = (PanelPopup) uiComponent;
+		// initialize DOMContext
+		PanelPopup panelPopup = (PanelPopup) uiComponent;
 
-        String clientId = uiComponent.getClientId(facesContext);
+		String clientId = uiComponent.getClientId(facesContext);
 
-        if (!domContext.isInitialized()) {
-            Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
-            setRootElementId(facesContext, rootDiv, uiComponent);
-            rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
-            Element table = domContext.createElement(HTML.TABLE_ELEM);
-            table.setAttribute(HTML.CELLPADDING_ATTR, "0");
-            table.setAttribute(HTML.CELLSPACING_ATTR, "0");
-            table.setAttribute(HTML.WIDTH_ATTR, "100%");
+		if (!domContext.isInitialized()) {
+			Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
+			setRootElementId(facesContext, rootDiv, uiComponent);
+			rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+			Element table = domContext.createElement(HTML.TABLE_ELEM);
+			table.setAttribute(HTML.CELLPADDING_ATTR, "0");
+			table.setAttribute(HTML.CELLSPACING_ATTR, "0");
+			table.setAttribute(HTML.WIDTH_ATTR, "100%");
 
-            rootDiv.appendChild(table);
-            // extracted from GroupRenderer encodeBegin
-            if (dndType != null) {
-                // Drag an drop needs some hidden fields
-                Element statusField = createHiddenField(domContext,
-                        facesContext,
-                        uiComponent, STATUS);
-                rootDiv.appendChild(statusField);
-                Element targetID = createHiddenField(domContext, facesContext,
-                        uiComponent, DROP);
-                rootDiv.appendChild(targetID);
-            }
-            // Write Modal Javascript so that on refresh it will still be modal.
-            String script =
-                    modalJavascript(modal, visible, facesContext, clientId);
-            if (script != null) {
-                Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
-                scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
-                        HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
-                Node node = domContext.createTextNode(script);
-                scriptEle.appendChild(node);
-                rootDiv.appendChild(scriptEle);
-            }
-        }
+			rootDiv.appendChild(table);
+			// extracted from GroupRenderer encodeBegin
+			if (dndType != null) {
+				// Drag an drop needs some hidden fields
+				Element statusField = createHiddenField(domContext,
+						facesContext, uiComponent, STATUS);
+				rootDiv.appendChild(statusField);
+				Element targetID = createHiddenField(domContext, facesContext,
+						uiComponent, DROP);
+				rootDiv.appendChild(targetID);
+			}
+			// Write Modal Javascript so that on refresh it will still be modal.
+			String script = modalJavascript(modal, visible, facesContext,
+					clientId);
+			if (script != null) {
+				Element scriptEle = domContext.createElement(HTML.SCRIPT_ELEM);
+				scriptEle.setAttribute(HTML.SCRIPT_LANGUAGE_ATTR,
+						HTML.SCRIPT_LANGUAGE_JAVASCRIPT);
+				Node node = domContext.createTextNode(script);
+				scriptEle.appendChild(node);
+				rootDiv.appendChild(scriptEle);
+			}
+		}
 
-        Element root = (Element) domContext.getRootNode();
+		Element root = (Element) domContext.getRootNode();
 
-        try {
-            root.setAttribute(HTML.CLASS_ATTR, styleClass);
-        } catch (Exception e) {
-            log.error("Error rendering Modal Panel Popup ", e);
-        }
-        // get tables , our table is the first and only one
-        NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
-        // assumption we want the first table in tables. there should only be one
-        Element table = (Element) tables.item(0);
-        // clean out child nodes and build a fresh selectinputdate
-        DOMContext.removeChildrenByTagName(table, HTML.TR_ELEM);
+		try {
+			root.setAttribute(HTML.CLASS_ATTR, styleClass);
+		} catch (Exception e) {
+			log.error("Error rendering Modal Panel Popup ", e);
+		}
+		// get tables , our table is the first and only one
+		NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
+		// assumption we want the first table in tables. there should only be
+		// one
+		Element table = (Element) tables.item(0);
+		// clean out child nodes and build a fresh selectinputdate
+		DOMContext.removeChildrenByTagName(table, HTML.TR_ELEM);
 
-        PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
-        String handleId = null;
-        if (panelPopup.getHeader() != null) {
-            Element headerTr = domContext.createElement(HTML.TR_ELEM);
-            Element headerTd = domContext.createElement(HTML.TD_ELEM);
-            headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
-            handleId = uiComponent.getClientId(facesContext) + "Handle";
-            headerTd.setAttribute(HTML.ID_ATTR, handleId);
-            headerTr.appendChild(headerTd);
-            // add header facet to header tr and add to table
-            table.appendChild(headerTr);
-            // set the cursor parent to the new table row Element
-            // to the new table row Element
-            domContext.setCursorParent(headerTd);
+		PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
+				null);
+		String handleId = null;
+		if (panelPopup.getHeader() != null) {
+			Element headerTr = domContext.createElement(HTML.TR_ELEM);
+			Element headerTd = domContext.createElement(HTML.TD_ELEM);
+			headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
+			handleId = uiComponent.getClientId(facesContext) + "Handle";
+			headerTd.setAttribute(HTML.ID_ATTR, handleId);
+			headerTr.appendChild(headerTd);
+			// add header facet to header tr and add to table
+			table.appendChild(headerTr);
+			// set the cursor parent to the new table row Element
+			// to the new table row Element
+			domContext.setCursorParent(headerTd);
 
-            UIComponent header = panelPopup.getHeader();
+			UIComponent header = panelPopup.getHeader();
 
-            domContext.streamWrite(facesContext, uiComponent,
-                    domContext.getRootNode(), headerTd);
+			domContext.streamWrite(facesContext, uiComponent, domContext
+					.getRootNode(), headerTd);
 
-            CustomComponentUtils.renderChild(facesContext, header);
-        }
+			CustomComponentUtils.renderChild(facesContext, header);
+		}
 
-        if (panelPopup.getBody() != null) {
+		if (panelPopup.getBody() != null) {
 
-            Element bodyTr = domContext.createElement(HTML.TR_ELEM);
-            Element bodyTd = domContext.createElement(HTML.TD_ELEM);
+			Element bodyTr = domContext.createElement(HTML.TR_ELEM);
+			Element bodyTd = domContext.createElement(HTML.TD_ELEM);
 
+			bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
+			bodyTr.setAttribute(HTML.ID_ATTR, clientId + "-tr");
+			bodyTr.appendChild(bodyTd);
+			// add body facet to body tr then add to table
+			table.appendChild(bodyTr);
+			// set the cursor parent to the new table row Element
+			// this will cause the renderChild method to append the child nodes
+			// to the new table row Element
+			domContext.setCursorParent(bodyTd);
 
-            bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
-            bodyTr.setAttribute(HTML.ID_ATTR, clientId+"-tr");
-            bodyTr.appendChild(bodyTd);
-            // add body facet to body tr then add to table
-            table.appendChild(bodyTr);
-            // set the cursor parent to the new table row Element
-            // this will cause the renderChild method to append the child nodes
-            // to the new table row Element
-            domContext.setCursorParent(bodyTd);
+			UIComponent body = panelPopup.getBody();
 
-            UIComponent body = panelPopup.getBody();
+			domContext.streamWrite(facesContext, uiComponent, domContext
+					.getRootNode(), bodyTd);
 
-            domContext.streamWrite(facesContext, uiComponent,
-                    domContext.getRootNode(), bodyTd);
+			CustomComponentUtils.renderChild(facesContext, body);
+		}
+		// if the popup is resizable render a resize handle
+		if (resizable != null && resizable.booleanValue()) {
+			Element footerTr = domContext.createElement(HTML.TR_ELEM);
+			footerTr.setAttribute(HTML.HEIGHT_ATTR, "15px");
+			footerTr.setAttribute(HTML.STYLE_ATTR,
+					"text-align: right; float: right;");
+			Element footerTd = domContext.createElement(HTML.TD_ELEM);
+			footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
+			Element img = domContext.createElement(HTML.IMG_ELEM);
+			img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
+					facesContext, "/xmlhttp/css/xp/css-images/resize.gif"));
+			img.setAttribute(HTML.STYLE_ATTR, "cursor: se-resize");
+			footerTd.appendChild(img);
+			footerTr.appendChild(footerTd);
+			table.appendChild(footerTr);
+		}
 
-            CustomComponentUtils.renderChild(facesContext, body);
-        }
-        // if the popup is resizable render a resize handle
-        if (resizable != null && resizable.booleanValue()) {
-            Element footerTr = domContext.createElement(HTML.TR_ELEM);
-            footerTr.setAttribute(HTML.HEIGHT_ATTR, "15px");
-            footerTr.setAttribute(HTML.STYLE_ATTR,
-                    "text-align: right; float: right;");
-            Element footerTd = domContext.createElement(HTML.TD_ELEM);
-            footerTd.setAttribute(HTML.STYLE_CLASS_ATTR, "panelPopupFooter");
-            Element img = domContext.createElement(HTML.IMG_ELEM);
-            img.setAttribute(HTML.SRC_ATTR, CoreUtils
-                    .resolveResourceURL(facesContext,
-                    "/xmlhttp/css/xp/css-images/resize.gif"));
-            img.setAttribute(HTML.STYLE_ATTR, "cursor: se-resize");
-            footerTd.appendChild(img);
-            footerTr.appendChild(footerTd);
-            table.appendChild(footerTr);
-        }
-        
-        panelPopup.applyStyle(facesContext, root);
-        domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
+		panelPopup.applyStyle(facesContext, root);
+		domContext.stepOver();
+		domContext.streamWrite(facesContext, uiComponent);
 
-        
-        // Rebroadcast Javascript to survive refresh
-        if (dndType != null) {
-            String call = addJavascriptCalls(uiComponent, "DRAG", handleId, facesContext);
-            JavascriptContext.addJavascriptCall(facesContext, call);
-        }
-    }
+		// Rebroadcast Javascript to survive refresh
+		if (dndType != null) {
+			String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
+					facesContext);
+			JavascriptContext.addJavascriptCall(facesContext, call);
+		}
 
-    private String modalJavascript(Boolean modal, Boolean visible,
-                                   FacesContext facesContext, String clientId) {
-        String call = null;
-        String iframeUrl = CoreUtils.resolveResourceURL(facesContext,"/xmlhttp/blank"); 
-        if (modal != null) {
-            if (modal.booleanValue() && visible.booleanValue()) {
-                call = "Ice.modal.start('" + clientId + "', '"+ iframeUrl +"');";
-                if (log.isTraceEnabled()) {
-                    log.trace("Starting Modal Function");
-                }
-            } else {
-                call = "Ice.modal.stop('" + clientId + "');";
-                if (log.isTraceEnabled()) {
-                    log.trace("Stopping modal function");
-                }
-            }
-        }
-        return call;
-    }
+		// autoPosition handling
+		String autoPositionJS = null;
+		if (panelPopup.getAutoPosition() != null) {
+			String positions = panelPopup.getAutoPosition();
+			String x = positions.substring(0, positions.indexOf(','));
+			String y = positions.substring(positions.indexOf(',') + 1);
+			autoPositionJS = "Ice.autoPosition.start('" + clientId + "'," + x
+					+ "," + y + ");";
+		} else {
+			autoPositionJS = "Ice.autoPosition.stop('" + clientId + "');";
+		}
+		JavascriptContext.addJavascriptCall(facesContext, autoPositionJS);
 
-    /* (non-Javadoc)
-     * @see com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer#encodeChildren(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
-     */
-    public void encodeChildren(FacesContext facesContext,
-                               UIComponent uiComponent) throws IOException {
-    }
+		// autoCentre handling
+		boolean autoCentre = panelPopup.isAutoCentre();
+		String centreJS;
+		if (autoCentre) {
+			centreJS = "Ice.autoCentre.start('" + clientId + "');";
 
-    /* (non-Javadoc)
-     * @see com.icesoft.faces.component.ext.renderkit.GroupRenderer#encodeEnd(javax.faces.context.FacesContext, javax.faces.component.UIComponent)
-     */
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        if (log.isTraceEnabled()) {
-            log.trace("Encode End Called");
-        }
-    }
+		} else {
+			centreJS = "Ice.autoCentre.stop('" + clientId + "');";
+		}
+		JavascriptContext.addJavascriptCall(facesContext, centreJS);
+
+	}
+
+	private String modalJavascript(Boolean modal, Boolean visible,
+			FacesContext facesContext, String clientId) {
+		String call = null;
+		String iframeUrl = CoreUtils.resolveResourceURL(facesContext,
+				"/xmlhttp/blank");
+		if (modal != null) {
+			if (modal.booleanValue() && visible.booleanValue()) {
+				call = "Ice.modal.start('" + clientId + "', '" + iframeUrl
+						+ "');";
+				if (log.isTraceEnabled()) {
+					log.trace("Starting Modal Function");
+				}
+			} else {
+				call = "Ice.modal.stop('" + clientId + "');";
+				if (log.isTraceEnabled()) {
+					log.trace("Stopping modal function");
+				}
+			}
+		}
+		return call;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer#encodeChildren(javax.faces.context.FacesContext,
+	 *      javax.faces.component.UIComponent)
+	 */
+	public void encodeChildren(FacesContext facesContext,
+			UIComponent uiComponent) throws IOException {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.icesoft.faces.component.ext.renderkit.GroupRenderer#encodeEnd(javax.faces.context.FacesContext,
+	 *      javax.faces.component.UIComponent)
+	 */
+	public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
+			throws IOException {
+		if (log.isTraceEnabled()) {
+			log.trace("Encode End Called");
+		}
+	}
 }
