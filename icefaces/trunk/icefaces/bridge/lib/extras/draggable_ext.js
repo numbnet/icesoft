@@ -80,12 +80,15 @@ Draggable.prototype.startDrag = function(event) {
         Draggables.register(this);
         try {
             this._ghost = this.element.cloneNode(true);
-            this.element.parentNode.insertBefore(this._ghost, this.element);
+            var form = Ice.util.findForm(this.element);
+            //According to the tld all Draggable panels must be contained in a form
+            form.appendChild(this._ghost);
             Position.absolutize(this._ghost);
             Element.makePositioned(this._ghost);
             this._original = this.element;
             Position.clone(this._original, this._ghost);
             var z = parseInt(this._original.style.zIndex);
+            this._ghost.style.left =  Event.pointerX(event) + "px";
             this._ghost.style.zIndex = ++z;
             this.element = this._ghost;
             this.eventResize = this.resize.bindAsEventListener(this);
@@ -178,6 +181,18 @@ Draggable.prototype.updateDrag = function(event, pointer) {
     ad = Droppables.affectedDrop;
     iceEv = new Ice.DndEvent();
     iceEv.drag = this;
+
+
+    if(this.dragGhost == true) {
+      var height = parseInt(this.element.offsetHeight) ;
+      var elementTop = parseInt(Element.getStyle(this.element, 'top').split("px")[0]) ;
+      var pointerTop =  Event.pointerY(event); 
+      var edge = height + elementTop;
+      var inRegion = (pointerTop > elementTop &&  pointerTop < edge );
+      if (!inRegion) {
+        this.element.style.top =  pointerTop + "px"; 
+      }
+    }
 
     if (this.hoveringDrop && !ad) {
         iceEv.eventType = Ice.DnD.HOVER_END;
