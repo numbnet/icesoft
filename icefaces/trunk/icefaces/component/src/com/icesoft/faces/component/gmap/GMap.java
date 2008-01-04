@@ -31,6 +31,7 @@ public class GMap extends UICommand{
     private String style = null;
     private String styleClass = null;
     private String renderedOnUserRole = null;
+    private boolean jsLibraryLoaded = false;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -40,20 +41,6 @@ public class GMap extends UICommand{
         return COMPONENET_TYPE;
     }
     
-    public GMap() {
-    	super();
-    	if (FacesContext.getCurrentInstance() == null) {
-    		//LOG: google map library is not loaded, please email us your enviroment 
-    		return;
-    	} 
-        String key = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
-        if(key != null) {
-        	JavascriptContext.includeLib("http://maps.google.com/maps?file=api&v=2&key="+ key, FacesContext.getCurrentInstance());
-        } else {
-        	//log you must need to define googlemap key in web.xml
-        }
-    }
-
 	public String getLongitude() {
        if (longitude != null) {
             return longitude;
@@ -115,6 +102,7 @@ public class GMap extends UICommand{
     }
     
     public void encodeBegin(FacesContext context) throws IOException {
+        loadJsLibrary(context);
     	super.encodeBegin(context);
     	//assume it page refresh/redirect
     	if(context.getExternalContext().getRequestParameterMap() != null &&
@@ -153,6 +141,16 @@ public class GMap extends UICommand{
     			getType() +"');");
     }
     
+    private void loadJsLibrary(FacesContext context) {
+        if (jsLibraryLoaded) return;
+        String key = context.getCurrentInstance().getExternalContext().getInitParameter("com.icesoft.faces.gmapKey");
+        if(key != null) {
+            JavascriptContext.includeLib("http://maps.google.com/maps?file=api&v=2&key="+ key, FacesContext.getCurrentInstance());
+            jsLibraryLoaded = true;
+        } else {
+            //log you must need to define googlemap key in web.xml
+        }        
+    }
 
 	public int getZoomLevel() {
        if (zoomLevel != null) {
