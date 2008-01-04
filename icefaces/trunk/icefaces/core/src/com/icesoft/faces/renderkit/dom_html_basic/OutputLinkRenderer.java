@@ -109,7 +109,21 @@ public class OutputLinkRenderer extends DomBasicRenderer {
                                              linkVal), "href");
         } 
 
-        PassThruAttributeWriter.renderAttributes(writer, uiComponent, null);
+        // ICE-2169
+        PassThruAttributeWriter.renderAttributes(writer, uiComponent, new String[]{HTML.STYLE_ATTR});
+        boolean isVisible = ((Boolean) uiComponent.getAttributes().get("visible")).booleanValue();
+        String style = (String) uiComponent.getAttributes().get(HTML.STYLE_ATTR);
+        if (!isVisible) {
+            if (style == null) {
+                style = "";
+            } else if (style.trim().length() == 0 || style.trim().endsWith(";")) {
+                // nothing
+            } else {
+                style += ";";
+            }
+            style += "display:none;";
+        }
+        if (style != null) writer.writeAttribute(HTML.STYLE_ATTR, style, HTML.STYLE_ATTR);
 
         String styleClass = (String) output.getAttributes().get("styleClass");
         if (styleClass != null)
