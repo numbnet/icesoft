@@ -203,7 +203,6 @@ public class View implements IView{
 
 	public PersistentFacesState getState() {
 		log.info("getState ");
-		state = updatePFS();
 		return state;
 	}
 
