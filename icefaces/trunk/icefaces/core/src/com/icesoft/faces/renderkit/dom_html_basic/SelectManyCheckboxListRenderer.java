@@ -87,20 +87,14 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             setRootElementId(facesContext, rootNode, uiComponent);
             addJavaScript(facesContext, uiComponent, rootNode, new HashSet());            
         }
-
+        Element rootNode = (Element) domContext.getRootNode();
         Element rootTable = getTableElement(domContext);
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
-            rootTable.setAttribute("class", styleClass);
+            rootNode.setAttribute("class", styleClass);
         }
-        String style = (String) uiComponent.getAttributes().get("style");
-        if (style != null && style.length() > 0) {
-            rootTable.setAttribute("style", style);
-        }
-        else {
-            rootTable.removeAttribute("style");
-        }
+
         rootTable.setAttribute("border", new Integer(border).toString());
 
         if (!renderVertically) {
