@@ -125,7 +125,12 @@ public class MessagesRenderer extends DomBasicRenderer {
             domContext.setRootNode(parentTarget);
             setRootElementId(facesContext, parentTarget, uiComponent);
         }
-        
+
+        // ICE-2174
+        Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
+        boolean isVisible = visible == null || visible.booleanValue();
+        if (!isVisible) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
+
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
 
@@ -173,9 +178,15 @@ public class MessagesRenderer extends DomBasicRenderer {
 
             boolean tooltip = getToolTipAttribute(uiComponent);
 
+            // ICE-2174
+            String title = (String) uiComponent.getAttributes().get("title");
+            if (title == null && tooltip && showSummary) title = summary;
+            if (title == null && tooltip && showDetail) title = detail;
+            if (title != null) nextMessageSpan.setAttribute(HTML.TITLE_ATTR, title);
+
             if (showSummary && showDetail && tooltip) {
                 // show summary as tooltip, detail as child span
-                nextMessageSpan.setAttribute("title", summary);
+                // nextMessageSpan.setAttribute("title", summary); commented out for ICE-2174
                 Text textNode = domContext.getDocument().createTextNode(detail);
                 nextMessageSpan.appendChild(textNode);
             } else {
