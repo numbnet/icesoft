@@ -89,11 +89,22 @@ public class MessageRenderer extends DomBasicRenderer {
         if (styleClass != null) {
             root.setAttribute("class", styleClass);
         }
-        if (style != null && style.length() > 0) {
-            root.setAttribute("style", style);
-        }
-        else {
-            root.removeAttribute("style");
+        Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
+        boolean isVisible = visible == null || visible.booleanValue();
+        if (isVisible) {
+            if (style != null && style.length() > 0) {
+                root.setAttribute("style", style);
+            } else {
+                root.removeAttribute("style");
+            }
+        } else { // ICE-2174
+            if (style == null) {
+                style = "";
+            } else if (style.trim().length() != 0 && !style.trim().endsWith(";")) {
+                style += ";";
+            }
+            style += "display:none;";
+            root.setAttribute(HTML.STYLE_ATTR, style);
         }
 
         // tooltip
@@ -107,8 +118,13 @@ public class MessageRenderer extends DomBasicRenderer {
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
         boolean showDetail = ((UIMessage) uiComponent).isShowDetail();
 
+        // ICE-2174
+        String title = (String) uiComponent.getAttributes().get("title");
+        if (title == null && tooltip && showSummary) title = summary;
+        if (title == null && tooltip && showDetail) title = detail;
+        if (title !=null) root.setAttribute(HTML.TITLE_ATTR, title);
+
         if (tooltip && showSummary && showDetail) {
-            root.setAttribute("title", summary);
             Text textNode = domContext.getDocument().createTextNode(detail);
             root.appendChild(textNode);
 
