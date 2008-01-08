@@ -230,6 +230,8 @@
                 <metainf dir="conf/just-ice"/>
             </add.metainfs>
         </build.jar>
+        <copy file="${dist.dir}/just-ice.jar" todir="${lib.dir}"
+              overwrite="true"/>
     </target>
 
     <target name="clean">
