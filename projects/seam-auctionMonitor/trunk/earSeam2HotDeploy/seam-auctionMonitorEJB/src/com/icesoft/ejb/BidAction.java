@@ -7,12 +7,11 @@ import java.util.Calendar;
 
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
+
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.SystemException;
 
 
 import org.jboss.seam.faces.FacesMessages;
@@ -27,8 +26,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.Transactional;
-import org.jboss.seam.annotations.async.Asynchronous;
-import org.jboss.seam.annotations.intercept.BypassInterceptors;
+
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.core.Manager;
 
@@ -72,7 +70,7 @@ public class BidAction implements IBidAction, Serializable {
     	log.info("passed into BidAction selectItem="+selectItem.getAuctionitem().getTitle());
     	
       	this.auctionitemBean=selectItem;
-    	log.info("in bid new value="+getBidInput());
+ //   	log.info("in bid new value="+getBidInput());
 	    // Validate input
 	    if ( getBidInput() <= auctionitemBean.getBid().getBidValue() )
 	    {

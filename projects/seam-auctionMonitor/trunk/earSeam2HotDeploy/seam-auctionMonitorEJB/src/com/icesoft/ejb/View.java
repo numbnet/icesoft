@@ -1,19 +1,17 @@
 package com.icesoft.ejb;
 
-import static javax.persistence.PersistenceContextType.EXTENDED;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.List;
 
-import javax.ejb.Init;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.Component;
@@ -28,15 +26,15 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Out;
-import org.jboss.seam.annotations.Scope;
+
 import org.jboss.seam.annotations.Synchronized;
 import org.jboss.seam.annotations.datamodel.DataModel;
-import org.jboss.seam.annotations.datamodel.DataModelSelection;
+
 import org.jboss.seam.annotations.web.RequestParameter;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.core.Manager;
-import static org.jboss.seam.ScopeType.EVENT;
+
 
 import com.icesoft.eb.Auctionitem;
 import com.icesoft.eb.AuctionitemBean;
@@ -67,23 +65,27 @@ public class View implements IView{
 	private IViewManager viewManager;
     
     @RequestParameter
-    private String searchString;
+    private String item1String;
+//    private String searchString;
+    
+    @RequestParameter
+    private String item2String;   
+    @RequestParameter
+    private String item3String;   
+       
     
 	private int pageSize=5;
 	
  	private String cid;
 	
-	private String pattern;
+	private long pattern1=-1,pattern2=-1,pattern3=-1;
 	private Integer page=0;
 
 	@In
 	private FacesMessages facesMessages;
-	
-    
-//	@DataModel(scope=ScopeType.PAGE)
-//	@DataModel
+	    
 	private List<AuctionitemBean> searchItems=null;
-
+	
 
 	@In(required=false)
 	@Out(required=false)
@@ -106,18 +108,11 @@ public class View implements IView{
 			Manager.instance().beginConversation();
 		log.info(" LR conversation is "+Manager.instance().isLongRunningConversation());
 
-		if (searchString!=null){
-			log.info("startUp() View version="+this);
-			setPattern();
-		}else {
-			log.info("searchString is null so");
-		}		
+		if (item1String!=null)log.info("ITEM 1 STRING="+item1String);
+		if (item2String!=null)log.info("ITEM 2 STRING="+item2String);
+		if (item3String!=null)log.info("ITEM 3 STRING="+item3String);
+		this.setPatterns();	
 		gotSearch=true;
-	}
-	
-	
-	public String getSearchString() {
-		return searchString;
 	}
 
 	
@@ -128,19 +123,9 @@ public class View implements IView{
 	
 	@Factory(scope=ScopeType.STATELESS)
  	public List<AuctionitemBean> getSearchItems() {
- 		log.info("getting searchItems & updating PFS");
- 		if (searchItems==null || searchItems.isEmpty()){
- 			log.info("%%having to rebuild searchList :-"+searchItems);
- 			loadList();
- //			searchItems = viewManager.getAuctionItemsList();
- 		}
- 		else {
- 			log.info("\t%% don't have to rebuild list :-"+searchItems);
- 			loadList();
- //			searchItems = viewManager.getAuctionItemsList();
- 		}
+    	loadList();
 		state=updatePFS();
-     log.info("get list of items size="+searchItems.size()+" version="+this);
+        log.info("get list of items size="+searchItems.size()+" View version="+this);
 		return searchItems;
 	}
 
@@ -152,36 +137,73 @@ public class View implements IView{
 //	@Factory(value="searchItems", scope=ScopeType.EVENT)
 //	@Factory(value="searchItems")
 	public void loadList(){
-		if (!gotSearch)startUp();
-	    log.info("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
-		searchItems = new ArrayList();       
+		//get old values of previous list for expanded
+		List<Boolean> expanded = getOldExpanded();
+//	    log.info("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
+		searchItems = new ArrayList();   
+		doTestList();
 		List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
 		            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
-		            " AND (lower(i.currency) like #{pattern} or lower(i.description) like #{pattern}" +
-		            " or lower(i.imageFile) like #{pattern} or lower(i.location) like #{pattern} or lower(i.seller) like #{pattern}" +
-		            " or lower(i.site) like #{pattern} or lower(i.title) like #{pattern})")
+		            " AND (i.itemId=:pattern1 or i.itemId=:pattern2" +
+		            " or i.itemId=:pattern3)")
+		            .setParameter("pattern1",pattern1)
+		            .setParameter("pattern2",pattern2)
+		            .setParameter("pattern3",pattern3)		            
 	                .setMaxResults(pageSize)
 	                .setFirstResult( page * pageSize )
 		            .getResultList();
-		 log.info("resultList has size="+resultList.size());
+ 		 log.info("resultList has size="+resultList.size());
 		 Object[] oa;
    /* should I bother adding the item if it is expired??? */
 		 for (Object o : resultList) {
-		    log.info("loading up the list");
+ 		    log.info("loading up the list");
 		    oa = (Object[]) o;
 		    AuctionitemBean auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1]);
 		    if (!setup){
 		      	 String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
-			     log.info("addomg view to renderGroup ="+renderGroup);
-		       	 renderManager.getOnDemandRenderer(renderGroup).add(this);		  	
+			     log.info("adding view to renderGroup ="+renderGroup);
+		       	 renderManager.getOnDemandRenderer(renderGroup).add(this);	
 		    }
-		    else log.info("View has already been setup");
-		    log.info("adding item = "+auctionitemBean.getAuctionitem().getTitle());
+//		    else log.info("View has already been setup");
+//		    log.info("adding item = "+auctionitemBean.getAuctionitem().getTitle());
 		    searchItems.add(auctionitemBean);	
 		 }
+		 //restore old expanded bid values
+		 if (expanded.size()>0){
+			 log.info("\t\t\t have some expanded values to update");
+			 for (int i=0;i<expanded.size();i++){
+				 searchItems.get(i).setExpanded(expanded.get(i));
+				 log.info("\t\t\t set i="+i+" to "+expanded.get(i));
+			 }
+		 }
 		 setup=true; 
-		 log.info ("searchItems list is now of size="+searchItems.size());
-	}	
+//		 log.info ("searchItems list is now of size="+searchItems.size());
+	}
+	
+	private List<Boolean> getOldExpanded(){
+		List<Boolean> expanded = new ArrayList<Boolean>();
+		if (searchItems !=null && searchItems.size()>0){
+			log.info("\t\t\t HAVE PREV LIST");
+			for (int i=0; i<searchItems.size();i++){
+				expanded.add(searchItems.get(i).isExpanded());
+			}
+		}
+		return expanded;
+	}
+	public void doTestList(){
+		log.info("finding value for pattern1="+pattern1);
+		Query query=em.createQuery(
+				"from Auctionitem i where i.itemId=:pattern1 or i.itemId=:pattern2 or i.itemId=:pattern3");
+		query.setParameter("pattern1", pattern1);
+		query.setParameter("pattern2", pattern2);
+		query.setParameter("pattern3", pattern3);
+		List testList = query.getResultList();
+		for (int i= 0; i< testList.size(); i++) {
+	//		log.info("have a value for this pattern i="+i);
+			Auctionitem au = (Auctionitem)testList.get(i);
+			log.info("auctionitem["+i+"] is ="+au.getTitle());
+		}if (testList.isEmpty()) log.info("testList is empty!");
+	}
 	
 	@Observer("bidUpdated")
 	public void updateDataModel(String itemId) {
@@ -191,7 +213,7 @@ public class View implements IView{
 	
     @Destroy @Remove
 	public void destroy() {
-	   System.out.println("View: destroy");
+	   log.info("View: destroy version="+this);
 		cleanup();
 	}
 
@@ -202,17 +224,17 @@ public class View implements IView{
 	public int getPage(){return this.page;}
 
 	public PersistentFacesState getState() {
-		log.info("getState ");
+	//	log.info("getState ");
 		return state;
 	}
 
 	private PersistentFacesState updatePFS(){
  		PersistentFacesState state_1 = PersistentFacesState.getInstance();
  		if (state_1 !=null){
- 			log.info("####   updating PFS");
+ //			log.info("####   updating PFS");
  			state=state_1;
  		}
- 		else log.info("####  PFS is null!!! using stale state");
+ //		else log.info("####  PFS is null!!! using stale state");
  		return state;
 	}
 	
@@ -240,15 +262,22 @@ public class View implements IView{
 	        	}
 	         }
          }
+		else log.info("search items is null  ?  Why is that, Judy?");
 	}
 
-	public void setPattern() {	
-			pattern=getSearchPattern();
-			log.info("View: pattern is "+pattern+" for searchString="+searchString);
+	public void setPatterns() {	
+		try{
+			pattern1=Long.parseLong(item1String);
+			pattern2=Long.parseLong(item2String);
+			pattern3=Long.parseLong(item3String);
+		}catch (NumberFormatException nfe){
+			log.info("Can't parse Long from request params");
+		}
+//			log.info("View: pattern is "+pattern+" for searchString="+searchString);
 	}
- 	public void setSearchString(String sIn){this.searchString=sIn;}
+ //	public void setSearchString(String sIn){this.searchString=sIn;}
 
-	private String getSearchPattern()
+	private String getSearchPattern(String searchString)
 	{
 	   return searchString==null ?
 	         "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
@@ -258,14 +287,11 @@ public class View implements IView{
 		cleanup();
 		log.info("after cleanup()");
 	}
-	
-	public boolean haveString(){
-		return !searchString.equals("");
-	}
+
 
 	public String getCid(){
-		return "cid";
-		//return Manager.instance().getCurrentConversationId();
+	//	return "cid";
+		return Manager.instance().getCurrentConversationId();
 	}
 	public void setCid(String cIn){
 		this.cid=cIn;

@@ -624,3 +624,22 @@ b.rtop b.r4, b.rbottom b.r4{
 	text-align:left;
 	float:left;
 }
+
+/* drag & drop */
+.viewDropZone {
+    border: thin solid rgb( 200, 200, 200 );
+    padding-top: 5px;
+    height: 200px;
+    width: 800px;
+    text-align: center;
+    vertical-align: middle;
+}
+.droptargethover {
+    background-color: #ffff99;
+}
+
+/* for smaller icons in session scoped datatable */
+.smallItemImage{
+   border: 0px solid;
+   height: 30px;
+}
