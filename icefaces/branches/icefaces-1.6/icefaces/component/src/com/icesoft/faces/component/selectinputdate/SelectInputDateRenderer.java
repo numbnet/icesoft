@@ -53,6 +53,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
+import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
@@ -168,6 +169,9 @@ public class SelectInputDateRenderer
                 if (log.isTraceEnabled()) {
                     log.trace("Render as popup");
                 }
+                // ICE-2492
+                root.setAttribute(HTML.CLASS_ATTR,
+                        Util.getQualifiedStyleClass(uiComponent, CSS_DEFAULT.DEFAULT_CALENDARPOPUP_CLASS, false));
                 Element dateText = domContext.createElement(HTML.INPUT_ELEM);
 //System.out.println("value: " + selectInputDate.getValue());
                 
