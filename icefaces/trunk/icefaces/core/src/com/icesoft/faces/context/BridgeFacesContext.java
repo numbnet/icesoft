@@ -38,6 +38,7 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
@@ -503,5 +504,39 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             application.setViewHandler(new DispatchingViewHandler(handler, path));
             handler.renderView(context, viewToRender);
         }
+    }
+
+
+    public boolean isContentIncluded() {
+        //TODO - assuming we can handle portlets just like includes, then
+        //we can probably reduce the attributes that we check for.  We need
+        //to be specific about when to use request URI and when to use servlet
+        //path.
+        Map requestMap = externalContext.getRequestMap();
+        String frag = (String) requestMap.get(Constants.INC_REQUEST_URI);
+        if (log.isDebugEnabled()) {
+            log.debug(Constants.INC_REQUEST_URI + " = " + frag);
+        }
+        if (frag != null) {
+            return true;
+        }
+
+        frag = (String) requestMap.get(Constants.INC_SERVLET_PATH);
+        if (log.isDebugEnabled()) {
+            log.debug(Constants.INC_SERVLET_PATH + " = " + frag);
+        }
+        if (frag != null) {
+            return true;
+        }
+
+        //This type of check should no longer be required.  If we need
+        //to put a portlet specific attribute back in, then we should
+        //define our own.
+        frag = (String) requestMap.get("com.sun.faces.portlet.INIT");
+        if (frag != null) {
+            return true;
+        }
+
+        return false;
     }
 }

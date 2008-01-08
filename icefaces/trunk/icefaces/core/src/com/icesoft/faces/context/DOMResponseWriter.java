@@ -249,6 +249,10 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void enhanceBody(Element body) {
+        if (context.isContentIncluded()) {
+            appendContentReferences(body);
+        }
+
         //id required for forwarded (server-side) redirects
         body.setAttribute("id", "document:body");
         Element iframe = document.createElement("iframe");
@@ -324,16 +328,11 @@ public class DOMResponseWriter extends ResponseWriter {
         configurationElement.appendChild(document.createTextNode(startupScript));
         body.appendChild(configurationElement);
 
-
-        Element noscript =
-                (Element) body.appendChild(document.createElement("noscript"));
-        Element noscriptMeta =
-                (Element) noscript.appendChild(document.createElement("meta"));
+        Element noscript = (Element) body.appendChild(document.createElement("noscript"));
+        Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
         noscriptMeta.setAttribute("http-equiv", "refresh");
-        noscriptMeta
-                .setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
+        noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 
-        
         String markerID = prefix + "marker-script";
         Element markerElement = (Element) body.appendChild(document.createElement("script"));
         markerElement.setAttribute("id", markerID);
@@ -343,19 +342,29 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void enhanceHead(Element head) {
-        ViewHandler handler = context.getApplication().getViewHandler();
-        Element meta =
-                (Element) head.appendChild(document.createElement("meta"));
+        Element meta = (Element) head.appendChild(document.createElement("meta"));
         meta.setAttribute("name", "icefaces");
         meta.setAttribute("content", "Rendered by ICEFaces D2D");
 
+        Element noscript = (Element) head.appendChild(document.createElement("noscript"));
+        Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
+        noscriptMeta.setAttribute("http-equiv", "refresh");
+        String jsBlockedURL = context.getApplication().getViewHandler().getResourceURL(context, "/xmlhttp/javascript-blocked");
+        noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
+
+        if (!context.isContentIncluded()) {
+            appendContentReferences(head);
+        }
+    }
+
+    private void appendContentReferences(Element container) {
         //load libraries
         Collection libs = new ArrayList();
         if (context.getExternalContext().getInitParameter(D2DViewHandler.INCLUDE_OPEN_AJAX_HUB) != null) {
             libs.add("/xmlhttp/openajax.js");
         }
         libs.add("/xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
-        //todo: refactor how extral libraries are loaded into the bridge; always include extra libraries for now
+        //todo: refactor how external libraries are loaded into the bridge; always include extra libraries for now
         libs.add("/xmlhttp" + StartupTime.getStartupInc() + "ice-extras.js");
         if (context.getExternalContext().getRequestMap().get(Constants.INC_SERVLET_PATH) == null) {
             String[] componentLibs = JavascriptContext.getIncludedLibs(context);
@@ -368,11 +377,11 @@ public class DOMResponseWriter extends ResponseWriter {
         }
         libs.addAll(jsCode);
 
+        ViewHandler handler = context.getApplication().getViewHandler();
         Iterator libIterator = libs.iterator();
         while (libIterator.hasNext()) {
             String lib = (String) libIterator.next();
-            Element script = (Element) head
-                    .appendChild(document.createElement("script"));
+            Element script = (Element) container.appendChild(document.createElement("script"));
             script.setAttribute("type", "text/javascript");
             script.setAttribute("src", handler.getResourceURL(context, lib));
         }
@@ -380,8 +389,7 @@ public class DOMResponseWriter extends ResponseWriter {
         Iterator cssIterator = cssCode.iterator();
         while (cssIterator.hasNext()) {
             String css = (String) cssIterator.next();
-            Element link = (Element) head
-                    .appendChild(document.createElement("link"));
+            Element link = (Element) container.appendChild(document.createElement("link"));
             link.setAttribute("rel", "stylesheet");
             link.setAttribute("type", "text/css");
             link.setAttribute("href", handler.getResourceURL(context, css));
