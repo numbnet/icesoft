@@ -32,7 +32,6 @@
  */
 
 [ Ice.Community.Connection = new Object, Ice.Connection, Ice.Ajax, Ice.Reliability.Heartbeat, Ice.Cookie, Ice.Parameter.Query ].as(function(This, Connection, Ajax, Heartbeat, Cookie, Query) {
-
     This.AsyncConnection = Object.subclass({
         initialize: function(logger, sessionID, viewID, configuration, defaultQuery, commandDispatcher) {
             this.logger = logger.child('async-connection');
@@ -97,7 +96,6 @@
             }.bind(this));
 
 
-            //todo: employ a 2-phase mechanism for the markers (since no synchronization construct are available)
             //remove the blocking connection marker so that everytime a new
             //window (== bridge instance) is opened the blocking connection will
             //be re-established
@@ -110,50 +108,74 @@
                 //do nothing
             }
 
+            var connect = function() {
+                this.logger.debug("closing previous connection...");
+                this.listener.close();
+                this.logger.debug("connect...");
+                var query = new Query();
+                window.sessions.each(function(sessionID) {
+                    query.add('ice.session', sessionID);
+                });
+                this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
+                    this.sendXWindowCookie(request);
+                    Connection.FormPost(request);
+                    request.on(Connection.BadResponse, this.badResponseCallback);
+                    request.on(Connection.ServerError, this.serverErrorCallback);
+                    request.on(Connection.Receive, this.receiveCallback);
+                    request.on(Connection.Receive, this.receiveXWindowCookie);
+                    request.on(Connection.Receive, connect.delayFor(150));
+                }.bind(this));
+            }.bind(this);
+
+            //heartbeat setup
+            var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 20000;
+            var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 3000;
+            var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
+            var initializeConnection = function() {
+                //stop the previous heartbeat instance
+                this.heartbeat.stop();
+                this.heartbeat = new Heartbeat(heartbeatInterval, heartbeatTimeout, this.logger);
+                this.heartbeat.onPing(function(ping) {
+                    //re-register a pong command on every ping
+                    commandDispatcher.register('pong', function() {
+                        ping.pong();
+                    });
+                    this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery.asURIEncodedString(), Connection.FormPost);
+                }.bind(this));
+
+                this.heartbeat.onLostPongs(this.connectionDownListeners.broadcaster(), heartbeatRetries);
+                this.heartbeat.onLostPongs(this.connectionTroubleListeners.broadcaster());
+                this.heartbeat.onLostPongs(function() {
+                    this.logger.debug('retry to connect...');
+                    connect();
+                }.bind(this));
+
+                this.heartbeat.start();
+                connect();
+            }.bind(this);
+
             //monitor if the blocking connection needs to be started
             //
             //the blocking connection will be started by the window noticing
             //that the connection is not started
-            this.listenerInitializerProcess = function() {
+            var fullViewID = sessionID + ':' + viewID;
+            this.blockingConnectionMonitor = function() {
                 try {
                     this.listening = Cookie.lookup('bconn');
+                    if (this.listening.value == fullViewID) {
+                        this.listening.saveValue('acquired');
+                        //start blocking connection since no other window has started it
+                        initializeConnection();
+                    }
                 } catch (e) {
-                    //start blocking connection since no other window has started it
-                    this.listening = new Cookie('bconn', 'started');
-                    //stop the previous heartbeat instance
-                    this.heartbeat.stop();
-                    //heartbeat setup
-                    var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 20000;
-                    var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 3000;
-                    var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
-
-                    this.heartbeat = new Heartbeat(heartbeatInterval, heartbeatTimeout, this.logger);
-
-                    this.heartbeat.onPing(function(ping) {
-                        //re-register a pong command on every ping
-                        commandDispatcher.register('pong', function() {
-                            ping.pong();
-                        });
-                        this.sendChannel.postAsynchronously(this.pingURI, this.defaultQuery.asURIEncodedString(), Connection.FormPost);
-                    }.bind(this));
-
-                    this.heartbeat.onLostPongs(this.connectionDownListeners.broadcaster(), heartbeatRetries);
-                    this.heartbeat.onLostPongs(this.connectionTroubleListeners.broadcaster());
-                    this.heartbeat.onLostPongs(function() {
-                        this.logger.debug('retry to connect...');
-                        this.connect();
-                    }.bind(this));
-
-                    this.heartbeat.start();
-                    this.connect();
+                    this.listening = new Cookie('bconn', fullViewID);
                 }
-            }.bind(this).delayFor(200).repeatExecutionEvery(1000);
+            }.bind(this).repeatExecutionEvery(1000);
 
             //get the updates for the view
-            this.updatesListenerProcess = function() {
+            this.updatesMonitor = function() {
                 try {
                     var views = this.updatedViews.loadValue().split(' ');
-                    var fullViewID = sessionID + ':' + viewID;
                     if (views.include(fullViewID)) {
                         this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
                             Connection.FormPost(request);
@@ -168,27 +190,6 @@
             }.bind(this).repeatExecutionEvery(300);
 
             this.logger.info('asynchronous mode');
-        },
-
-        connect: function() {
-            this.logger.debug("closing previous connection...");
-            this.listener.close();
-            this.logger.debug("connect...");
-            var query = new Query();
-            window.sessions.each(function(sessionID) {
-                query.add('ice.session', sessionID);
-            });
-            this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
-                this.sendXWindowCookie(request);
-                Connection.FormPost(request);
-                request.on(Connection.BadResponse, this.badResponseCallback);
-                request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.Receive, this.receiveCallback);
-                request.on(Connection.Receive, this.receiveXWindowCookie);
-                request.on(Connection.Receive, function() {
-                    this.connect();
-                }.bind(this).delayFor(150));
-            }.bind(this));
         },
 
         send: function(query) {
@@ -248,7 +249,6 @@
                 this.shutdown = Function.NOOP;
                 //avoid sending XMLHTTP requests that might create new sessions on the server
                 this.send = Function.NOOP;
-                this.connect = Function.NOOP
                 this.heartbeat.stop();
                 this.listening.remove();
                 this.listener.close();
@@ -259,8 +259,8 @@
                     listeners.clear();
                 });
 
-                [ this.updatesListenerProcess, this.listenerInitializerProcess ].eachWithGuard(function(process) {
-                    process.cancel();
+                [ this.updatesMonitor, this.blockingConnectionMonitor ].eachWithGuard(function(monitor) {
+                    monitor.cancel();
                 });
             }
         }

@@ -40,20 +40,20 @@
         response.close();
     };
 
-    This.BadResponse = function(request) {
-        return request.isComplete() && !request.isResponseValid();
+    This.BadResponse = function(response) {
+        return response.isComplete() && !response.isResponseValid();
     }
 
-    This.ServerError = function(request) {
-        return request.isComplete() && request.isServerError();
+    This.ServerError = function(response) {
+        return response.isComplete() && response.isServerError();
     }
 
-    This.Receive = function(request) {
-        return request.isOkAndComplete();
+    This.Receive = function(response) {
+        return response.isOkAndComplete() && response.content() != '';
     }
 
-    This.Ok = function(request) {
-        return request.isOkAndComplete();
+    This.Ok = function(response) {
+        return response.isOkAndComplete();
     }
 
     This.SyncConnection = Object.subclass({
