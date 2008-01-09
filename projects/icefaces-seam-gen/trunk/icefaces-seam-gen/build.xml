@@ -2,7 +2,7 @@
 
 <project name="seam-gen" default="help" basedir=".">
 
-    <!-- taskdefs -->
+	<!-- taskdefs -->
 	
     <taskdef name="packageDirectory" 
         classname="org.jboss.seam.tool.PackageDirectoryTask" 
@@ -24,50 +24,49 @@
         classname="org.jboss.seam.tool.PrintTask"
         classpath="../jboss-seam-gen.jar"/>
 	
-    <taskdef name="pathFixer" 
-             classname="org.jboss.seam.tool.FixPathTask" 
-             classpath="../jboss-seam-gen.jar"/>
+	<taskdef name="pathFixer" 
+		        classname="org.jboss.seam.tool.FixPathTask" 
+		        classpath="../jboss-seam-gen.jar"/>
     
+	<!-- properties -->
+    
+    <!-- Give user a chance to override without editing this file or typing -D -->
+    <property file="${basedir}/build.properties" />
 
+ <!-- <property name="icefacesLibDirectory" value="c:/ossrepoTrunk/lib" /> -->
     
-    <target name="init-properties">
-        <!-- Give user a chance to override without editing this file or typing -D -->
-        <property file="${basedir}/build.properties" />
+     <packageDirectory property="action.dir" package="action/${action.package}"/>
+    <packageDirectory property="model.dir" package="model/${model.package}"/>
+    <packageDirectory property="test.dir" package="test/${test.package}"/>
+	<pathFilename property="driver.file" path="${driver.jar}"/>
+	
+    <condition property="hibernate.hbm2ddl.auto" value="update">
+        <and>
+            <equals arg1="${database.exists}" arg2="n"/>
+            <equals arg1="${database.drop}" arg2="n"/>
+        </and>
+    </condition>
+    <condition property="hibernate.hbm2ddl.auto" value="validate">
+        <and>
+            <equals arg1="${database.exists}" arg2="y"/>
+            <equals arg1="${database.drop}" arg2="n"/>
+        </and>
+    </condition>
+    <condition property="hibernate.hbm2ddl.auto" value="create-drop">
+        <equals arg1="${database.drop}" arg2="y"/>
+    </condition>
+    <condition property="project.war" value="true">
+        <equals arg1="${project.type}" arg2="war"/>
+    </condition>
     
-    	<!-- Import properties from seam itself -->
-    	<property file="../build.properties" />
-    	
-        <packageDirectory property="action.dir" package="action/${action.package}"/>
-        <packageDirectory property="model.dir" package="model/${model.package}"/>
-        <packageDirectory property="test.dir" package="test/${test.package}"/>
-        <pathFilename property="driver.file" path="${driver.jar}"/>
-        
-        <condition property="hibernate.hbm2ddl.auto" value="update">
-            <and>
-                <equals arg1="${database.exists}" arg2="n"/>
-                <equals arg1="${database.drop}" arg2="n"/>
-            </and>
-        </condition>
-        <condition property="hibernate.hbm2ddl.auto" value="validate">
-            <and>
-                <equals arg1="${database.exists}" arg2="y"/>
-                <equals arg1="${database.drop}" arg2="n"/>
-            </and>
-        </condition>
-        <condition property="hibernate.hbm2ddl.auto" value="create-drop">
-            <equals arg1="${database.drop}" arg2="y"/>
-        </condition>
-        <condition property="project.war" value="true">
-            <equals arg1="${project.type}" arg2="war"/>
-        </condition>
-        <property name="project.home" value="${workspace.home}/${project.name}"/>
-        
+    <property name="project.home" value="${workspace.home}/${project.name}"/>
+    
 	<!-- filtersets and filesets -->
-        
-        <condition property="schema.property" value="&#xa;         &lt;property name=&quot;hibernate.default_schema&quot; value=&quot;${hibernate.default_schema}&quot;/&gt;">
-            <isset property="hibernate.default_schema"/>
-        </condition>
-        <condition property="schema.property" value="">
+	
+	<condition property="schema.property" value="&#xa;         &lt;property name=&quot;hibernate.default_schema&quot; value=&quot;${hibernate.default_schema}&quot;/&gt;">
+	    <isset property="hibernate.default_schema"/>
+	</condition>
+	<condition property="schema.property" value="">
 	    <not><isset property="hibernate.default_schema"/></not>
 	</condition>
 	
@@ -78,89 +77,40 @@
 	    <not><isset property="hibernate.default_catalog"/></not>
 	</condition>
 
-        <condition property="icefaces.home" value="&#xa;         &lt;property name=&quot;icefaces.home&quot; value=&quot;${icefaces.home}&quot;/&gt;">
-            <isset property="icefaces.home"/>
-        </condition>
-        <condition property="icefaces.home" value="">
-            <not><isset property="icefaces.home"/></not>
-        </condition>
-        
-        <condition property="icefaces.property">
-             <and>
-                 <isset property="icefaces.home"/>
-                 <not><equals arg1="${icefaces.home}" arg2=""/></not>
-             </and>
-        </condition>
+    <filterset id="jdbc">
+        <filter token="jdbcUrl" value="${hibernate.connection.url}"/>
+        <filter token="driverClass" value="${hibernate.connection.driver_class}"/>
+        <filter token="username" value="${hibernate.connection.username}"/>
+        <filter token="password" value="${hibernate.connection.password}"/>
+    	<filter token="catalogProperty" value="${catalog.property}"/>
+    	<filter token="schemaProperty" value="${schema.property}"/>
+    </filterset>
 
-        <condition property="view.dir" value="icefaces/.">
-            <isset property="icefaces.property"/>
-        </condition>
-        <condition property="script.dir" value="icefaces/build-scripts" >
-            <isset property="icefaces.property"/>
-        </condition>        
-        <condition property="resources.dir" value="icefaces/resources" >
-            <isset property="icefaces.property"/>
-        </condition>          
-        <condition property="view.dir" value=".">
-            <not><isset property="icefaces.property"/></not>
-        </condition>     
-        <condition property="script.dir" value="./build-scripts">
-            <not><isset property="icefaces.property"/></not>
-        </condition>   
-        <condition property="resources.dir" value="./resources">
-            <not><isset property="icefaces.property"/></not>
-        </condition>                       
-        <condition property="filter.dir" value="${basedir}/icefaces/view">
-            <isset property="icefaces.property"/>
-        </condition>
-        <condition property="filter.dir" value="${basedir}/view">
-            <not><isset property="icefaces.property"/></not>
-        </condition>
-        <condition property="icefaces.lib" value="${icefaces.home}/lib">
-             <isset property="icefaces.property"/>
-         </condition>
-         <condition property="icefaces.lib" value="../lib">
-             <not><isset property="icefaces.property"/></not>
-         </condition>  
-        <filterset id="jdbc">
-            <filter token="jdbcUrl" value="${hibernate.connection.url}"/>
-            <filter token="driverClass" value="${hibernate.connection.driver_class}"/>
-            <filter token="username" value="${hibernate.connection.username}"/>
-            <filter token="password" value="${hibernate.connection.password}"/>
-            <filter token="catalogProperty" value="${catalog.property}"/>
-            <filter token="schemaProperty" value="${schema.property}"/>
-        </filterset>
-    	
-    	<echo message="${jboss.home}"/>
-        
-        <filterset id="project">
-            <filter token="projectName" value="${project.name}" />
-            <filter token="jbossHome" value="${jboss.home}" />
-            <filter token="iceHome" value="${icefaces.home}" />
-            <filter token="hbm2ddl" value="${hibernate.hbm2ddl.auto}"/>
-            <filter token="driverJar" value="${driver.file}"/>
-        	<filter token="schemaVersion" value="${version}" />
-        </filterset>
-        
-        <fileset id="view" dir="${filter.dir}">
-            <include name="home.xhtml"/>
-    	    <include name="error.xhtml"/>
-    	    <include name="login.xhtml"/>
-    	    <include name="login.page.xml"/>
-            <include name="index.html"/>
-            <include name="layout/*"/>
-            <include name="stylesheet/*"/>
-    	    <include name="img/*"/>
-    	    <exclude name="**/*.ftl"/>
-        </fileset>
-    	
-    </target>
+    <filterset id="project">
+        <filter token="projectName" value="${project.name}" />
+        <filter token="jbossHome" value="${jboss.home}" />
+    	<filter token="hbm2ddl" value="${hibernate.hbm2ddl.auto}"/>
+    	<filter token="driverJar" value="${driver.file}"/>
+    	<filter token="iceHome" value="${icefaces.home}" />
+    </filterset>
     
-    <fileset id="seam" dir="../">
-        <include name="jboss-seam*.jar"/>
-        <exclude name="jboss-seam-gen.jar"/>
+    <fileset id="view" dir="${basedir}/view">
+        <include name="home.xhtml"/>
+    	<include name="error.xhtml"/>
+    	<include name="login.xhtml"/>
+    	<include name="login.page.xml"/>
+        <include name="index.html"/>
+        <include name="layout/*"/>
+        <include name="stylesheet/*"/>
+      	<exclude name="**/*.ftl"/>
     </fileset>
-    
+	
+    <fileset id="seam" dir="../">
+       <include name="jboss-seam*.jar"/>
+       <exclude name="jboss-seam-gen.jar"/>
+   </fileset>
+
+	
 	<!-- targets -->
 
     <target name="setup-filters">
@@ -185,72 +135,70 @@
     
     <target name="setup"
     	description="Prompt for settings">
-        <property file="${basedir}/build.properties" prefix="old" />
-
-        <echo message="Welcome to seam-gen :-)"/>
-        <property name="old.workspace.home" value="C:/Projects"/>
+        <echo message="Welcome to ICEFaces-seam-gen :-)"/>
+        <property name="workspace.home" value="C:/Projects"/>
         <input addproperty="workspace.home.new" 
-                   message="Enter your Java project workspace (the directory that contains your Seam projects) [${old.workspace.home}]" 
-              defaultvalue="${old.workspace.home}"/>
+                   message="Enter your Java project workspace (the directory that contains your Seam projects) [${workspace.home}]" 
+              defaultvalue="${workspace.home}"/>
     	<pathFixer property="workspace.home.new" />
         
-        <property name="old.icefaces.home" value=""/>
-        <input addproperty="icefaces.home.new" 
-                   message="Enter your ICEfaces home directory (leave blank to omit ICEfaces) [${old.icefaces.home}]" 
-              defaultvalue="${old.icefaces.home}"/>
-    	<pathFixer property="icefaces.home.new" />
-        
-        <property name="old.jboss.home" value="C:/Program Files/jboss-4.2.0.GA"/>
+        <property name="jboss.home" value="C:/Servers/EJB3jboss-4.0.5.GA"/>
         <input addproperty="jboss.home.new" 
-                   message="Enter your JBoss home directory [${old.jboss.home}]" 
-              defaultvalue="${old.jboss.home}"/>
+                   message="Enter your JBoss home directory [${jboss.home}]" 
+              defaultvalue="${jboss.home}"/>
     	<pathFixer property="jboss.home.new" />
         
-        <property name="old.project.name" value="myproject"/>
+	<property name="icefaces.home" value="C:/ossrepoTrunk"/>
+        <input addproperty="icefaces.home.new" 
+                   message="Enter your icefaces home directory [${icefaces.home}]" 
+              defaultvalue="${icefaces.home}"/>
+    	<pathFixer property="icefaces.home.new" />
+
+        <property name="project.name" value="myproject"/>
         <input addproperty="project.name.new" 
-                   message="Enter the project name [${old.project.name}]" 
-              defaultvalue="${old.project.name}"/>
+                   message="Enter the project name [${project.name}]" 
+              defaultvalue="${project.name}"/>
         
-        <property name="old.project.type" value="ear"/>
+        <property name="project.type" value="ear"/>
         <input addproperty="project.type.new" 
-                   message="Is this project deployed as an EAR (with EJB components) or a WAR (with no EJB support) [${old.project.type}] " 
+                   message="Is this project deployed as an EAR (with EJB components) or a WAR (with no EJB support) [${project.type}] " 
         	     validargs="ear,war,"
-              defaultvalue="${old.project.type}"/>
+              defaultvalue="${project.type}"/>
         
-        <property name="old.action.package" value="com.mydomain.${project.name.new}"/>
+        <property name="action.package" value="com.mydomain.${project.name.new}"/>
         <input addproperty="action.package.new" 
-                   message="Enter the Java package name for your session beans [${old.action.package}]" 
-              defaultvalue="${old.action.package}"/>
+                   message="Enter the Java package name for your session beans [${action.package}]" 
+              defaultvalue="${action.package}"/>
         
-        <property name="old.model.package" value="${action.package.new}"/>
+        <property name="model.package" value="${action.package.new}"/>
         <input addproperty="model.package.new" 
-                   message="Enter the Java package name for your entity beans [${old.model.package}]" 
-              defaultvalue="${old.model.package}"/>
+                   message="Enter the Java package name for your entity beans [${model.package}]" 
+              defaultvalue="${model.package}"/>
         
-        <property name="old.test.package" value="${action.package.new}.test"/>
+        <property name="test.package" value="${action.package.new}.test"/>
         <input addproperty="test.package.new" 
-                   message="Enter the Java package name for your test cases [${old.test.package}]" 
-              defaultvalue="${old.test.package}"/>
+                   message="Enter the Java package name for your test cases [${test.package}]" 
+              defaultvalue="${test.package}"/>
     	
-    	<condition property="database.type.default" value="${old.database.type}">
-    		<isset property="old.database.type"/>
+    	<condition property="database.type.default" value="${database.type}">
+    		<isset property="database.type"/>
     	</condition>
     	<property name="database.type.default" value="hsql"/>
         <input addproperty="database.type.new" 
-                   message="What kind of database are you using? [${database.type.default}] "
+                   message="What kind of database are you using? [${database.type.default}] " 
         	     validargs="hsql,mysql,oracle,postgres,mssql,db2,sybase,enterprisedb,"
               defaultvalue="${database.type.default}"/>
     	
     	<!-- if the database type did not change, default to the previous values -->
     	
-    	<condition property="hibernate.dialect.default" value="${old.hibernate.dialect}">
-    		<equals arg1="${old.database.type}" arg2="${database.type.new}"/>
+    	<condition property="hibernate.dialect.default" value="${hibernate.dialect}">
+    		<equals arg1="${database.type}" arg2="${database.type.new}"/>
     	</condition>
-    	<condition property="hibernate.connection.url.default" value="${old.hibernate.connection.url}">
-    		<equals arg1="${old.database.type}" arg2="${database.type.new}"/>
+    	<condition property="hibernate.connection.url.default" value="${hibernate.connection.url}">
+    		<equals arg1="${database.type}" arg2="${database.type.new}"/>
     	</condition>
-    	<condition property="hibernate.connection.driver_class.default" value="${old.hibernate.connection.driver_class}">
-    		<equals arg1="${old.database.type}" arg2="${database.type.new}"/>
+    	<condition property="hibernate.connection.driver_class.default" value="${hibernate.connection.driver_class}">
+    		<equals arg1="${database.type}" arg2="${database.type.new}"/>
     	</condition>
     	
     	<!-- otherwise default to the defaults for the database type -->
@@ -340,10 +288,10 @@
                    message="Enter the Hibernate dialect for your database [${hibernate.dialect.default}]" 
               defaultvalue="${hibernate.dialect.default}"/>
         
-        <property name="old.driver.jar" value="lib/hsqldb.jar"/>
+        <property name="driver.jar" value="lib/hsqldb.jar"/>
         <input addproperty="driver.jar.new"
-                   message="Enter the filesystem path to the JDBC driver jar [${old.driver.jar}]" 
-              defaultvalue="${old.driver.jar}"/>
+                   message="Enter the filesystem path to the JDBC driver jar [${driver.jar}]" 
+              defaultvalue="${driver.jar}"/>
                 
         <input addproperty="hibernate.connection.driver_class.new" 
                    message="Enter JDBC driver class for your database [${hibernate.connection.driver_class.default}]" 
@@ -353,40 +301,40 @@
                    message="Enter the JDBC URL for your database [${hibernate.connection.url.default}]" 
               defaultvalue="${hibernate.connection.url.default}"/>
         
-        <property name="old.hibernate.connection.username" value="sa"/>
+        <property name="hibernate.connection.username" value="sa"/>
         <input addproperty="hibernate.connection.username.new" 
-                   message="Enter database username [${old.hibernate.connection.username}]" 
-              defaultvalue="${old.hibernate.connection.username}"/>
+                   message="Enter database username [${hibernate.connection.username}]" 
+              defaultvalue="${hibernate.connection.username}"/>
                 
-        <property name="old.hibernate.connection.password" value=""/>
+        <property name="hibernate.connection.password" value=""/>
         <input addproperty="hibernate.connection.password.new" 
-                   message="Enter database password [${old.hibernate.connection.password}]" 
-              defaultvalue="${old.hibernate.connection.password}"/>
+                   message="Enter database password [${hibernate.connection.password}]" 
+              defaultvalue="${hibernate.connection.password}"/>
                 
-        <property name="old.hibernate.default_schema" value=""/>
+        <property name="hibernate.default_schema" value=""/>
     	<condition property="hibernate.default_schema.new" value="">
             <equals arg1="${database.type.new}" arg2="mysql"/>
     	</condition>
         <input addproperty="hibernate.default_schema.new" 
-                   message="Enter the database schema name (it is OK to leave this blank) [${old.hibernate.default_schema}]" 
-              defaultvalue="${old.hibernate.default_schema}"/>
+                   message="Enter the database schema name (it is OK to leave this blank) [${hibernate.default_schema}]" 
+              defaultvalue="${hibernate.default_schema}"/>
                 
-        <property name="old.hibernate.default_catalog" value=""/>
+        <property name="hibernate.default_catalog" value=""/>
         <input addproperty="hibernate.default_catalog.new" 
-                   message="Enter the database catalog name (it is OK to leave this blank) [${old.hibernate.default_catalog}]" 
-              defaultvalue="${old.hibernate.default_catalog}"/>
+                   message="Enter the database catalog name (it is OK to leave this blank) [${hibernate.default_catalog}]" 
+              defaultvalue="${hibernate.default_catalog}"/>
                 
-        <property name="old.database.exists" value="n"/>
+        <property name="database.exists" value="n"/>
         <input addproperty="database.exists.new" 
-                   message="Are you working with tables that already exist in the database? [${old.database.exists}] "
+                   message="Are you working with tables that already exist in the database? [${database.exists}] "
         	     validargs="y,n,"
-              defaultvalue="${old.database.exists}"/>
+              defaultvalue="${database.exists}"/>
 
-        <property name="old.database.drop" value="n"/>
+        <property name="database.drop" value="n"/>
         <input addproperty="database.drop.new" 
-                   message="Do you want to drop and recreate the database tables and data in import.sql each time you deploy? [${old.database.drop}] "
+                   message="Do you want to drop and recreate the database tables and data in import.sql each time you deploy? [${database.drop}] "
         	     validargs="y,n,"
-              defaultvalue="${old.database.drop}"/>
+              defaultvalue="${database.drop}"/>
     	
     	<condition property="hibernate.default_schema.key" value="hibernate.default_schema">
     	    <not><equals arg1="${hibernate.default_schema.new}" arg2=""/></not>
@@ -405,16 +353,16 @@
         <propertyfile file="build.properties">
             <entry key="workspace.home" value="${workspace.home.new}"/>
             <entry key="project.name" value="${project.name.new}"/>
-            <entry key="project.type" value="${project.type.new}"/>
+        	<entry key="project.type" value="${project.type.new}"/>
             <entry key="jboss.home" value="${jboss.home.new}"/>
-            <entry key="icefaces.home" value="${icefaces.home.new}"/> 
+		<entry key="icefaces.home" value="${icefaces.home.new}"/>
             <entry key="action.package" value="${action.package.new}"/>
             <entry key="model.package" value="${model.package.new}"/>
             <entry key="test.package" value="${test.package.new}"/>
             <entry key="database.type" value="${database.type.new}"/>
-            <entry key="database.exists" value="${database.exists.new}"/>
-            <entry key="database.drop" value="${database.drop.new}"/>
-            <entry key="driver.jar" value="${driver.jar.new}"/>
+        	<entry key="database.exists" value="${database.exists.new}"/>
+        	<entry key="database.drop" value="${database.drop.new}"/>
+        	<entry key="driver.jar" value="${driver.jar.new}"/>
             <entry key="hibernate.dialect" value="${hibernate.dialect.new}"/>
             <entry key="hibernate.connection.driver_class" value="${hibernate.connection.driver_class.new}"/>
             <entry key="hibernate.connection.url" value="${hibernate.connection.url.new}"/>
@@ -423,13 +371,12 @@
             <entry key="hibernate.connection.password" value="${hibernate.connection.password.new}"/>
             <entry key="${hibernate.default_schema.key}" value="${hibernate.default_schema.new}"/>
             <entry key="${hibernate.default_catalog.key}" value="${hibernate.default_catalog.new}"/>
-            <entry key="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider"/> <!-- yuck! -->
         </propertyfile>
-        
+    	
     	<echo message="Installing JDBC driver jar to JBoss server"/>
-        <copy file="${driver.jar.new}" todir="${jboss.home.new}/server/default/lib"/>
+    	<copy file="${driver.jar.new}" todir="${jboss.home.new}/server/default/lib"/>
         
-        <echo message="Type 'seam new-project' to create the new project"/>
+    	<echo message="Type 'ant new-project' to create the new project"/>
     </target>
     
     <target name="action-input">
@@ -459,8 +406,8 @@
         <property name="bean.file" value="${project.home}/src/${action.dir}/${bean.name}.java"/>
         <property name="interface.file" value="${project.home}/src/${action.dir}/${interface.name}.java"/>
         <property name="page.file" value="${project.home}/view/${page.name}.xhtml"/>
-        <property name="test.file" value="${project.home}/src/${test.dir}/${interface.name}Test.java"/>
-        <property name="testng.file" value="${project.home}/src/${test.dir}/${interface.name}Test.xml"/>
+        <property name="test.file" value="${project.home}/test/${test.dir}/${interface.name}Test.java"/>
+        <property name="testng.file" value="${project.home}/test/${test.dir}/${interface.name}Test.xml"/>
 
     </target>
     
@@ -526,28 +473,28 @@
     </target>
 
     <target name="copy-lib">
-          <echo message="Copying Seam jars to the ${project.home}/lib directory..." />
-          <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
-           <copy todir="${project.home}/lib" overwrite="true">
-               <fileset dir="../lib">
-           	      <exclude name="jsf-facelets.jar" if="icefaces.property"/>
-           	      <exclude name="ajax4jsf*.jar" if="icefaces.property"/>
-               	  <exclude name="richfaces*.jar" if="icefaces.property"/>
-               </fileset>
-              <fileset dir="../drools/lib"/>
-              <fileset refid="seam"/>
-              <fileset file="${driver.jar}"/>
-    	      <fileset dir="${icefaces.lib}" > 
-    	          <include name="icefaces*.jar" if="icefaces.property"/> 
-    		      <include name="backport-util-concurrent.jar" if="icefaces.property"/> 
-    		      <include name="commons-fileupload.jar" if="icefaces.property"/> 
-    		      <include name="commons-digester.jar" if="icefaces.property"/> 
-    	      </fileset> 
-          </copy>  	
-        <echo message="Copying JBoss Embedded configuration to the ${project.home}/bootstrap directory..." />
-          <copy todir="${project.home}/bootstrap" overwrite="true">
-            <fileset dir="../bootstrap" />
-          </copy>
+        <echo message="Copying Seam jars to the ${project.home}/lib directory..." />
+
+        <copy todir="${project.home}/lib" overwrite="true">
+            <fileset dir="../lib"> 
+	        <exclude name="jsf-facelets.jar" />
+	        <exclude name="ajax4jsf.jar" />
+		  <exclude name="icefaces*.jar" />
+	    </fileset> 
+            <fileset dir="../drools/lib"/>
+	    <fileset dir="${icefaces.home}/lib"> 
+	           <include name="icefaces*.jar" /> 
+		     <include name="backport-util-concurrent.jar" /> 
+		     <include name="commons-fileupload.jar" />
+	    </fileset> 
+            <fileset refid="seam"/>
+        	<fileset file="${driver.jar}"/>
+        </copy>
+
+        <echo message="Copying Embeddable EJB3 configuration to the ${project.home}/embedded-ejb directory..." />
+          <copy todir="${project.home}/embedded-ejb" overwrite="true">
+            <fileset dir="../embedded-ejb" />
+        </copy>
         
     </target>
 	
@@ -555,11 +502,11 @@
         <echo message="Copying resources needed for WAR deployment to the ${project.home}/resources directory..." />
 
 		<copy tofile="${project.home}/resources/WEB-INF/components.xml" 
-                file="${resources.dir}/WEB-INF/components-war.xml">
+                file="${basedir}/resources/WEB-INF/components-war.xml">
             <filterset refid="project"/>
         </copy>
         <copy tofile="${project.home}/build.xml" 
-                file="${script.dir}/build-war.xml">
+                file="${basedir}/build-scripts/build-war.xml">
             <filterset refid="project"/>
         </copy>
         <copy todir="${project.home}/resources">
@@ -572,25 +519,23 @@
         </copy>
 		<copy todir="${project.home}/src/action" file="${basedir}/resources/seam.properties"/>
 		<copy todir="${project.home}/src/model" file="${basedir}/resources/seam.properties"/>
+
 	</target>
     
 	<target name="file-copy-ear" unless="project.war">
         <echo message="Copying resources needed for EAR deployment to the ${project.home}/resources directory..." />
 		
 	    <copy tofile="${project.home}/resources/WEB-INF/components.xml" 
-	             file="${resources.dir}/WEB-INF/components.xml">
+	             file="${basedir}/resources/WEB-INF/components.xml">
 	         <filterset refid="project"/>
 	     </copy>
         <copy tofile="${project.home}/build.xml" 
-                file="${script.dir}/build.xml">
+                file="${basedir}/build-scripts/build.xml">
             <filterset refid="project"/>
         </copy>
-		<copy todir="${project.home}" overwrite="true">
-		    <fileset file="../validate.xml"/>
-		</copy>
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
-            	<include name="META-INF/application.xml" unless="icefaces.property"/>
+            	<include name="META-INF/application.xml"/>
             	<include name="META-INF/jboss-app.xml"/>
             	<include name="META-INF/ejb-jar.xml"/>
             	<include name="META-INF/persistence*.xml"/>
@@ -599,23 +544,10 @@
             <filterset refid="project"/>
             <filterset refid="jdbc"/>
         </copy>
-        <copy todir="${project.home}/resources" overwrite="true">
-             <fileset dir="${resources.dir}">
-             	 <include name="META-INF/application.xml" if="icefaces.property"/>
-             </fileset>
-             <filterset refid="project"/>
-             <filterset refid="jdbc"/>
-        </copy>  	
 	</target>
     
     <target name="file-copy" depends="file-copy-war,file-copy-ear,setup-filters">
                 
- 	   <copy todir="${project.home}/view/img" overwrite="true">
- 		<fileset dir="${basedir}/icefaces/view/img">
- 			<include name="*.*" if="icefaces.property"/>
- 	    </fileset>
- 	   </copy>
-    	
         <copy todir="${project.home}/resources">
             <fileset dir="${basedir}/resources/">
             	<exclude name="datasource-ds.xml"/>
@@ -646,9 +578,9 @@
         </copy>
 
         <copy tofile="${project.home}/resources/seam-gen.reveng.xml" 
-                file="${basedir}/hibernatetools/seam-gen.reveng.xml">
-            <filterset refid="project"/>
-        </copy>
+                  file="${basedir}/hibernatetools/seam-gen.reveng.xml">
+              <filterset refid="project"/>
+          </copy>
 
         <copy tofile="${project.home}/.settings/org.hibernate.eclipse.console.prefs" 
                 file="${basedir}/hibernatetools/.settings/org.hibernate.eclipse.console.prefs">
@@ -689,27 +621,28 @@
             <fileset refid="view"/>
             <filterset refid="project"/>
         </copy>
-    	
-        <copy todir="${project.home}/src/${action.dir}" file="${basedir}/src/Authenticator.java">
+        
+        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/Authenticator.java">
+            <filterset refid="filters"/>
+        </copy>
+        <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBean.java">
+            <filterset refid="filters"/>
+        </copy>    
+         <copy todir="${project.home}/src/action/${action.dir}" file="${basedir}/src/TimerBeanImpl.java">
             <filterset refid="filters"/>
         </copy>
     	
-        <copy todir="${project.home}/src/${action.dir}" >
-        	<fileset dir="${basedir}/icefaces/src/">
-        		<include name="Timer*.java" if="icefaces.property"/>
-        	</fileset>
-            <filterset refid="filters"/>     
-        </copy> 
-    	
+ 
+        
         <copy todir="${project.home}">
-            <fileset dir="${script.dir}">
+            <fileset dir="${basedir}/build-scripts">
             	<exclude name="build*.xml"/>
             </fileset>
             <filterset refid="project"/>
         </copy>
                         
         <mkdir dir="${project.home}/src/model"/>
-    	<mkdir dir="${project.home}/src/action"/>
+	  <mkdir dir="${project.home}/src/action"/>
     	<mkdir dir="${project.home}/src/test"/>
 
         <mkdir dir="${project.home}/nbproject"/>
@@ -717,19 +650,17 @@
             <fileset dir="${basedir}/nbproject" />
             <filterset refid="project"/>
         </copy>
-        <copy todir="${project.home}/resources" overwrite="true">
-            <fileset dir="${resources.dir}">
-                <include name="components.properties" if="icefaces.property"/>
-                <include name="WEB-INF/web.xml" if="icefaces.property"/>
-                <include name="WEB-INF/faces-config.xml" if="icefaces.property"/>
-            </fileset>
-            <filterset refid="project"/>
-            <filterset refid="jdbc"/>
-         </copy>  	
     </target>
+
+	<target name="copy-images" >
+	   <copy todir="${project.home}/view/img">
+		<fileset file="${basedir}/view/img/*"/>
+	   </copy>
+	</target>
+
     
-    <target name="validate-project" depends="init-properties, validate-workspace">
-        <fail message="No project name specified (run 'seam new-project' first)">
+    <target name="validate-project" depends="validate-workspace">
+        <fail message="No project name specified (run 'ant new-project' first)">
             <condition>
                 <or>
                     <not><isset property="project.name"/></not>
@@ -740,7 +671,7 @@
     </target>
 
     <target name="validate-workspace">
-        <fail message="No eclipse workspace specified (run 'seam setup' first)">
+        <fail message="No eclipse workspace specified (run 'ant setup' first)">
             <condition>
                 <or>
                     <not><isset property="workspace.home"/></not>
@@ -750,21 +681,21 @@
         </fail>
     </target>
 
-    <target name="new-project" depends="validate-project,copy-lib,file-copy"
+    <target name="new-project" depends="validate-project,copy-lib,file-copy,copy-images"
             description="Create a new project">
         <echo message="A new Seam project named '${project.name}' was created in the ${workspace.home} directory"/>
-    	<echo message="Type 'seam explode' and go to http://localhost:8080/${project.name}"/>
-    	<echo message="Eclipse Users: Add the project into Eclipse using File > New > Project and select General > Project (not Java Project)"/>
+    	<echo message="Type 'ant explode' and go to http://localhost:8080/${project.name}"/>
+    	<echo message="Eclipse Users: Add the project as a new Java project from inside Eclipse"/>
     	<echo message="NetBeans Users: Open the project in NetBeans"/>
     </target>
 
     <target name="update-project" depends="validate-project,copy-lib"
         description="Update project dependencies">
         <echo message="Updated project '${project.name}' with the latest Seam jars" />
-    	<echo message="Type 'seam restart' to update the exploded deployment"/>
+    	<echo message="Type 'ant restart' to update the exploded deployment"/>
     </target>
 
-    <target name="delete-project" depends="validate-project,unexplode,undeploy"
+    <target name="delete-project" depends="validate-project"
         description="Delete the project">
         <echo message="Deleting the entire project in ${project.home}" />
         <delete dir="${project.home}" />
@@ -789,10 +720,10 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/action.xhtml" tofile="${page.file}">
+        <copy file="view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-action-war" depends="validate-project,action-input,setup-filters" if="project.war">
@@ -806,10 +737,10 @@
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/action.xhtml" tofile="${page.file}">
+        <copy file="view/action.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-form-war" depends="validate-project,action-input,setup-filters" if="project.war">
@@ -820,13 +751,13 @@
         <copy file="test/FormTest.java" tofile="${test.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/form.xhtml" tofile="${page.file}">
+        <copy file="view/form.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-form-ear" depends="validate-project,action-input,setup-filters" unless="project.war">
@@ -840,13 +771,13 @@
         <copy file="test/FormTest.java" tofile="${test.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/form.xhtml" tofile="${page.file}">
+        <copy file="view/form.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
         <copy file="test/testng.xml" tofile="${testng.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-query" depends="validate-project,query-input,setup-filters">
@@ -855,11 +786,11 @@
             <filterset refid="filters"/>
         </copy>
 
-        <copy file="${view.dir}/view/query.xhtml" tofile="${page.file}">
+        <copy file="view/query.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
 
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-conversation" depends="validate-project,action-input,setup-filters">
@@ -870,10 +801,10 @@
         <copy file="src/Conversation.java" tofile="${interface.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/conversation.xhtml" tofile="${page.file}">
+        <copy file="view/conversation.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${page.name}.seam"/>
     </target>
 
     <target name="new-entity" depends="validate-project,entity-input,setup-filters"
@@ -888,19 +819,17 @@
         <copy file="src/EntityList.java" tofile="${list.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/edit.xhtml" tofile="${page.file}">
+        <copy file="view/edit.xhtml" tofile="${page.file}">
             <filterset refid="filters"/>
         </copy>
-        <copy file="${view.dir}/view/list.xhtml" tofile="${masterPage.file}">
+        <copy file="view/list.xhtml" tofile="${masterPage.file}">
             <filterset refid="filters"/>
         </copy>
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}/${masterPage.name}.seam"/>
     </target>
 
 	<target name="generate-entities" depends="validate-project"
         description="Reverse engineer entities from the database">
-		
-		<echo message="Reverse engineering database using JDBC driver ${driver.jar}"/>
 
 	    <taskdef name="hibernate" 
 	             classname="org.hibernate.tool.ant.HibernateToolTask">
@@ -913,19 +842,17 @@
 	        </classpath>
 	    </taskdef>
 		
-<echo>project=${project.home}</echo>
-<echo>model=${model.package}</echo>		
-        <hibernate templatepath="${view.dir}">
+		<hibernate templatepath=".">
             <jdbcconfiguration propertyfile="build.properties" 
-                                packagename="${model.package}"
-                                 revengfile="${project.home}/resources/seam-gen.reveng.xml"
-                           detectmanytomany="false"/>
+            	                packagename="${model.package}"
+						revengfile="${project.home}/resources/seam-gen.reveng.xml"
+                           		detectmanytomany="false"/>
         	
         	<property key="hibernatetool.util.toolclass" 
         		    value="org.jboss.seam.tool.Util"/>
         	
             <hbm2java jdk5="true" ejb3="true" destdir="${project.home}/src/model"/> 
-        	<hbmtemplate filepattern="{class-name}List.xhtml"
+     	<hbmtemplate filepattern="{class-name}List.xhtml"
         	                template="view/list.xhtml.ftl" 
         		             destdir="${project.home}/view"
         	                 foreach="entity"/>
@@ -963,6 +890,7 @@
                              foreach="entity"/>
 		</hibernate>
 
+
 		<taskdef name="javaformatter" 
 			 classname="org.hibernate.tool.ant.JavaFormatterTask">
 	        <classpath>
@@ -978,7 +906,7 @@
 		  </fileset>
 		</javaformatter>
 
-        <echo message="Type 'seam restart' and go to http://localhost:8080/${project.name}"/>
+        <echo message="Type 'ant restart' and go to http://localhost:8080/${project.name}"/>
 
     </target>
 	
@@ -1024,25 +952,25 @@
         <ant antfile="${project.home}/build.xml" target="clean" inheritall="false"/>
     </target>
 
-    <target name="reset"
-            description="Delete the settings">
-        <delete file="build.properties"/>
-    </target>
-    
-    <target name="settings" depends="init-properties"
-            description="Print the settings">
-        <echo message="Java project workspace: ${workspace.home}"/>
-        <echo message="JBoss home: ${jboss.home}"/>
-        <echo message="Project name: ${project.name}"/>
-        <echo message="Project type: ${project.type}"/>
-        <echo message="Hibernate dialect: ${hibernate.dialect}"/>
-        <echo message="JDBC URL: ${hibernate.connection.url}"/>
-        <echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
-        <echo message="Database username: ${hibernate.connection.username}"/>
-        <echo message="Database password: ${hibernate.connection.password}"/>
-	    <echo message="ICEfaces home: ${icefaces.home}"/>
-    </target>
-    
+	<target name="reset"
+        description="Delete the settings">
+		<delete file="build.properties"/>
+	</target>
+	
+	<target name="settings"
+        description="Print the settings">
+		<echo message="Java project workspace: ${workspace.home}"/>
+		<echo message="JBoss home: ${jboss.home}"/>
+		<echo message="Project name: ${project.name}"/>
+		<echo message="Project type: ${project.type}"/>
+		<echo message="Hibernate dialect: ${hibernate.dialect}"/>
+		<echo message="JDBC URL: ${hibernate.connection.url}"/>
+		<echo message="JDBC driver class: ${hibernate.connection.driver_class}"/>
+		<echo message="Database username: ${hibernate.connection.username}"/>
+		<echo message="Database password: ${hibernate.connection.password}"/>
+		<echo message="icefaces home directory: ${icefaces.home}" />
+	</target>
+
     <target name="help">
         <print file="README"/>
     </target>

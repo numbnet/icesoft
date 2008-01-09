@@ -5,25 +5,31 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
-                xmlns:a="https://ajax4jsf.dev.java.net/ajax"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
     <h:messages globalOnly="true" styleClass="message"/>
 
-    <rich:panel>
-        <f:facet name="header">@pageName@</f:facet>
-    
-        <h:form id="@componentName@Form">
-        
-            <h:commandButton id="@methodName@" value="@methodName@!" 
+  <ice:form id="@componentName@Form">
+     <ice:panelGroup  id="actionFormId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                      	<ice:outputText id="action@pageName@Id" value="@pageName@" />
+                  </td>
+              </tr>
+          </table>
+          
+          <div class="actionButtons">
+            <ice:commandButton id="@methodName@" value="@methodName@!" 
                              action="#{@componentName@.@methodName@}"/>     			  
+          </div>
+
         
-        </h:form>
-        
-    </rich:panel>
+    </ice:panelGroup>
+  </ice:form>
 
 </ui:define>
 

@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page PUBLIC
+          "-//JBoss/Seam Pages Configuration DTD 1.2//EN"
+          "http://jboss.com/products/seam/pages-1.2.dtd">
+
 <#assign entityName = pojo.shortName>
 <#assign componentName = util.lower(entityName)>
 <#assign homeName = componentName + "Home">
 <#assign masterPageName = entityName + "List">
 <#assign pageName = entityName>
-<page xmlns="http://jboss.com/products/seam/pages"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.0.xsd"
-      no-conversation-view-id="/${masterPageName}.xhtml"
-      login-required="true">
+<page no-conversation-view-id="/${masterPageName}.xhtml"
+               login-required="true">
    
    <begin-conversation join="true"/>
    

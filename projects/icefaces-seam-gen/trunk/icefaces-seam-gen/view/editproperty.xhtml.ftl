@@ -9,53 +9,47 @@
             <s:decorate id="${componentProperty.name}Decoration" template="layout/edit.xhtml">
                 <ui:define name="label">${componentProperty.name}</ui:define>
 <#if propertyType == "date">
-                <h:inputText id="${componentProperty.name}" 
-                      maxlength="10"
-                           size="10"
+                        <ice:selectInputDate id="${componentProperty.name}Id" 
+                              renderAsPopup="true"
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
 <#if !column.nullable>
                        required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                    <s:convertDateTime type="date" dateStyle="short" pattern="MM/dd/yyyy"/>
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
-                <s:selectDate for="${componentProperty.name}">
-                    <h:graphicImage url="img/dtpick.gif" style="margin-left:5px"/>
-                </s:selectDate>
+                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">                                         value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+                                
+                           </ice:selectInputDate>
 <#elseif propertyType == "time">
-                <h:inputText id="${componentProperty.name}" 
-                           size="5"
+                        <ice:inputText id="${componentProperty.name}Id" 
+                                   size="5"
 <#if !column.nullable>
                        required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+                             value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
                     <s:convertDateTime type="time"/>
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                        </ice:inputText>
 <#elseif propertyType == "timestamp">
-                <h:inputText id="${componentProperty.name}" 
-                           size="16"
+                        <ice:inputText id="${componentProperty.name}Id" 
+                                   size="16"
 <#if !column.nullable>
                        required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                     <s:convertDateTime type="both" dateStyle="short"/>
-                     <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                  value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+                             <s:convertDateTime type="both" dateStyle="short"/>
+                        </ice:inputText>
 <#elseif propertyType == "big_decimal">
-                <h:inputText id="${componentProperty.name}" 
+                        <ice:inputText id="${componentProperty.name}Id" 
+                              partialSubmit="true"
 <#if !column.nullable>
                        required="true"
 </#if>
                           value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}"
                            size="${column.precision+7}">
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                        </ice:inputText>
 <#elseif propertyType == "big_integer">
-                <h:inputText id="${componentProperty.name}" 
+                        <ice:inputText id="${componentProperty.name}Id" 
+					partialSubmit="true"
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -64,8 +58,7 @@
 </#if>
                           value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}"
                            size="${column.precision+6}">
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                        </ice:inputText>
 <#elseif propertyType == "boolean" || propertyType == "yes_no" || propertyType == "true_false">
                  <h:selectBooleanCheckbox id="${componentProperty.name}"
 <#if !column.nullable>
@@ -98,7 +91,7 @@
 <#else>
 <#assign size = column.length>
 </#if>
-                <h:inputText id="${componentProperty.name}" 
+                <ice:inputText id="${componentProperty.name}" 
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -108,22 +101,22 @@
                           size="${size}"
                      maxlength="${column.length}"
                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                         partialSubmit="true"
+                 </ice:inputText>
 </#if>
 <#else>
-                <h:inputText id="${componentProperty.name}"
+                <ice:inputText id="${componentProperty.name}"
 <#if !column.nullable>
                        required="true"
 </#if>
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
-                    <a:support event="onblur" reRender="${componentProperty.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                  value="${'#'}{${homeName}.instance.${property.name}.${componentProperty.name}}">
+                        partialSubmit="true"
+                 </ice:inputText>
 </#if>
-            </s:decorate>
+               </s:decorate>
 </#foreach>
 <#else>
 <#assign column = property.columnIterator.next()>
@@ -132,53 +125,49 @@
             <s:decorate id="${property.name}Decoration" template="layout/edit.xhtml">
                 <ui:define name="label">${property.name}</ui:define>
 <#if propertyType == "date">
-                <h:inputText id="${property.name}" 
-                      maxlength="10"
-                           size="10"
+                           <ice:selectInputDate id="${property.name}Id" 
+                              renderAsPopup="true"
+
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
 <#if !column.nullable>
                        required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}}">
-                    <s:convertDateTime type="date" dateStyle="short" pattern="MM/dd/yyyy"/>
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
-                <s:selectDate for="${property.name}">
-                    <h:graphicImage url="img/dtpick.gif" style="margin-left:5px"/>
-                </s:selectDate>
+                                  value="${'#'}{${homeName}.instance.${property.name}}">
+                         </ice:selectInputDate>
 <#elseif propertyType == "time">
-                <h:inputText id="${property.name}" 
-                           size="5"
+                        <ice:inputText id="${property.name}Id" 
+                                   size="5"
+					partialSubmit="true"
 <#if !column.nullable>
-                       required="true"
+                               required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}}">
-                    <s:convertDateTime type="time"/>
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                  value="${'#'}{${homeName}.instance.${property.name}}">
+                            <s:convertDateTime type="time"/>
+                        </ice:inputText>
 <#elseif propertyType == "timestamp">
-                <h:inputText id="${property.name}" 
-                           size="16"
+                        <ice:inputText id="${property.name}Id" 
+                                     size="16"
+			    partialSubmit="true"
 <#if !column.nullable>
-                       required="true"
+                                required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}}">
-                    <s:convertDateTime type="both" dateStyle="short"/>
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                   value="${'#'}{${homeName}.instance.${property.name}}">
+                            <s:convertDateTime type="both" dateStyle="short"/>
+                        </ice:inputText>
 <#elseif propertyType == "big_decimal">
-                <h:inputText id="${property.name}" 
+                        <ice:inputText id="${property.name}Id" 
+			    partialSubmit="true"
 <#if !column.nullable>
-                       required="true"
+                                 required="true"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}}"
-                           size="${column.precision+7}">
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                    value="${'#'}{${homeName}.instance.${property.name}}"
+                                     size="${column.precision+7}">
+                        </ice:inputText>
 <#elseif propertyType == "big_integer">
-                <h:inputText id="${property.name}" 
+                        <ice:inputText id="${property.name}Id"
+			                partialSubmit="true"
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
@@ -188,7 +177,8 @@
                           value="${'#'}{${homeName}.instance.${property.name}}"
                            size="${column.precision+6}"/>
 <#elseif propertyType == "boolean" || propertyType == "yes_no" || propertyType == "true_false">
-                <h:selectBooleanCheckbox id="${property.name}"
+                        <ice:selectBooleanCheckbox id="${property.name}Id"
+					partialSubmit="true"
 <#if !column.nullable>
                                    required="true"
 </#if>
@@ -219,30 +209,30 @@
 <#else>
 <#assign size = column.length>
 </#if>
-                <h:inputText id="${property.name}" 
+                        <ice:inputText id="${property.name}Id" 
+			    partialSubmit="true"
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
 <#if !column.nullable>
                        required="true"
 </#if>
-                           size="${size}"
-                      maxlength="${column.length}"
-                          value="${'#'}{${homeName}.instance.${property.name}}">
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                   size="${size}"
+                              maxlength="${column.length}"
+                                  value="${'#'}{${homeName}.instance.${property.name}}">
+                        </ice:inputText>
 </#if>
 <#else>
-                <h:inputText id="${property.name}"
+                        <ice:inputText id="${property.name}Id"
+			    partialSubmit="true"
 <#if !column.nullable>
                        required="true"
 </#if>
 <#if propertyIsId>
                        disabled="${'#'}{${homeName}.managed}"
 </#if>
-                          value="${'#'}{${homeName}.instance.${property.name}}">
-                    <a:support event="onblur" reRender="${property.name}Decoration" bypassUpdates="true"/>
-                </h:inputText>
+                                    value="${'#'}{${homeName}.instance.${property.name}}">
+                        </ice:inputText>
 </#if>
             </s:decorate>
 </#if>

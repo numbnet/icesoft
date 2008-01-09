@@ -5,19 +5,23 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
-                xmlns:a="https://ajax4jsf.dev.java.net/ajax"
+		    xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
 
     <h:messages globalOnly="true" styleClass="message"/>
     
-    <h:form id="@componentName@Form">
+    <ice:form id="@componentName@formId">
 
-        <rich:panel>
-            <f:facet name="header">@pageName@</f:facet>
-    
+     <ice:panelGroup  id="formSearchGroupId" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">		
+				<ice:outputText id="formSearchTextId" value="@pageName@"/>
+                 </td>
+              </tr>
+          </table> 
             <s:decorate id="valueDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">Value</ui:define>
                 <h:inputText id="value" required="true"
@@ -25,15 +29,14 @@
             </s:decorate>
             
             <div style="clear:both"/>
-            
-        </rich:panel>
+
+        </ice:panelGroup>
 
         <div class="actionButtons">
             <h:commandButton id="@methodName@" value="@methodName@" 
-                    action="#{@componentName@.@methodName@}"/>     			  
+                action="#{@componentName@.@methodName@}"/>     			  
         </div>
-
-    </h:form>
+    </ice:form>
     
 </ui:define>
 

@@ -5,6 +5,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"   
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
@@ -13,31 +14,33 @@
     <p>Generated query page</p>
     
     <h:messages globalOnly="true" styleClass="message"/>
-    
+    <ice:form id="queryFormId">
     <h:outputText value="No results from search" 
+                    id="queryOutputTextId"
             rendered="#{empty @componentName@.resultList}"/>
-    <f:subview id="results" rendered="#{not empty @componentName@.resultList}">
-        <h:dataTable id="@componentName@"
+    <f:subview id="queryResultsId" rendered="#{not empty @componentName@.resultList}">
+        <ice:dataTable id="@componentName@Table"
                      var="item"
-                     value="#{@componentName@.resultList}">
-            <h:column>
+		columnClasses="allCols"
+                   value="#{@componentName@.resultList}">
+            <ice:column id="column@componentName@list">
                 <f:facet name="header">Result</f:facet>
                 #{item}
-            </h:column>
-        </h:dataTable>
+            </ice:column>
+        </ice:dataTable>
 
        <div class="tableControl">
             <s:link view="/@pageName@.xhtml"
                     rendered="#{@componentName@.previousExists}"
                     value="&lt;&lt; First Page"
-                    id="firstPage">
+                    id="firstPageLinkId">
                 <f:param name="firstResult" value="0"/>
             </s:link>
 
             <s:link view="/@pageName@.xhtml"
                     rendered="#{@componentName@.previousExists}"
                     value="&lt; Previous Page"
-                    id="previousPage">
+                    id="previousPageLinkId">
                 <f:param name="firstResult"
                          value="#{@componentName@.previousFirstResult}"/>
             </s:link>
@@ -45,7 +48,7 @@
             <s:link view="/@pageName@.xhtml"
                     rendered="#{@componentName@.nextExists}"
                     value="Next Page &gt;"
-                    id="nextPage">
+                    id="nextPageLinkId">
                 <f:param name="firstResult"
                          value="#{@componentName@.nextFirstResult}"/>
             </s:link>
@@ -53,7 +56,7 @@
             <s:link view="/@pageName@.xhtml"
                     rendered="#{@componentName@.nextExists}"
                     value="Last Page &gt;&gt;"
-                    id="lastPage">
+                    id="lastPageLinkId">
                 <f:param name="firstResult"
                          value="#{@componentName@.lastFirstResult}"/>
             </s:link>
@@ -63,6 +66,7 @@
 
 
     </f:subview>
+  </ice:form>
 </ui:define>
 
 </ui:composition>

@@ -5,18 +5,23 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:rich="http://richfaces.ajax4jsf.org/rich"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
                 template="layout/template.xhtml">
                        
 <ui:define name="body">
-    
+
     <h:messages globalOnly="true" styleClass="message"/>
     
-    <h:form id="@componentName@Form">
-
-        <rich:panel>
-            <f:facet name="header">@pageName@</f:facet>
-    
+    <ice:form id="@componentName@EditForm">
+       <ice:panelGroup  id="edit@componentName@Id" styleClass="formBorderHighlight">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td class="iceDatTblColHdr2">
+                      <ice:outputText id="edit@pagename@Id" value="@pagename@"/>/>
+                  </td>
+              </tr>
+          </table>
+	
             <s:decorate id="nameDecoration" template="layout/edit.xhtml">
                 <ui:define name="label">Name</ui:define>
                 <h:inputText id="name" required="true"
@@ -24,29 +29,27 @@
             </s:decorate>
             
             <div style="clear:both"/>
-            
-        </rich:panel>
+       </ice:panelGroup>
 
         <div class="actionButtons">
-            <h:commandButton id="save" 
+            <h:commandButton id="edit@homeName@save" 
                           value="Save" 
                          action="#{@homeName@.persist}"
                        rendered="#{!@homeName@.managed}"/>                   
-            <h:commandButton id="update" 
+            <h:commandButton id="edit@homeName@update" 
                           value="Save" 
                          action="#{@homeName@.update}"
                        rendered="#{@homeName@.managed}"/>                  
-            <h:commandButton id="delete" 
+            <h:commandButton id="edit@homeName@delete" 
                           value="Delete" 
                          action="#{@homeName@.remove}"
                        rendered="#{@homeName@.managed}"/>
             <s:button propagation="end" 
-                               id="done" 
+                               id="edit@homeName@done" 
                             value="Done"
                              view="/@masterPageName@.xhtml"/>
         </div>
-        
-    </h:form>
+    </ice:form>
     
 </ui:define>
 
