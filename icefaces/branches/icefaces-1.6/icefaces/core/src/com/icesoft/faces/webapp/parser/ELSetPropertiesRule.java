@@ -37,6 +37,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.digester.Rule;
 import org.xml.sax.Attributes;
 
+import java.lang.reflect.Method;
+
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.context.FacesContext;
@@ -91,6 +93,22 @@ public class ELSetPropertiesRule extends Rule {
                         values.put(name, 
                                 getValueExpression(facesContext, name, value));
                     }
+                } else {
+                    //reflection based code as mentioned above.  More likely
+                    //to be correct, but performance may not be as good,
+                    //so only applying it in a specific case
+                    if ("name".equals(name))  {
+                        Method setNameMethod = null;
+                        try {
+                            setNameMethod = top.getClass().getMethod("setName", 
+                                    new Class[] { ValueExpression.class } );
+                        } catch (Exception e)  { }
+                        if (null != setNameMethod)  {
+                            values.put(name, 
+                                getValueExpression(facesContext, name, value));
+                        }
+                    }
+
                 }
 
             }
