@@ -110,7 +110,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                   </ice:dataTable>        
                 </ice:panelGroup>
                 <ice:panelGroup>
-                <ice:outputText value="groupOn dept + subdept" /><br/>    
+                <ice:outputText value="apply grouping on the department column only, but groupOn dept + subdept" /><br/>    
                 <ice:dataTable 
                                value="#{groupBean.employees}"
                                var="employee"
