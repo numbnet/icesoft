@@ -12,6 +12,7 @@ public class HeaderRow extends UIPanel {
     private String styleClass = null;
     private String colspan = null;
     private String rowspan = null;
+    private String renderedOnUserRole = null;
     
     public String getComponentType() {
         return COMPONENT_TYPE;
@@ -88,4 +89,33 @@ public class HeaderRow extends UIPanel {
         ValueBinding vb = getValueBinding("rowspan");
         return vb != null ? (String) vb.getValue(getFacesContext()) :null;
     }    
+    
+    
+    /**
+     * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
+    }
+
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public String getRenderedOnUserRole() {
+        if (renderedOnUserRole != null) {
+            return renderedOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    }       
 }
