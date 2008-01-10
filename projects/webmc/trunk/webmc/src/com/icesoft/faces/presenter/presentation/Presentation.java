@@ -476,6 +476,11 @@ public class Presentation extends PresentationInfo {
         }
         return names;
     }
+
+    public String getSkypeScript()  {
+        String skypeURL = "skype:" + getSkypeNames() + "?call";
+        return "window.open('" + skypeURL + "','skypewindow','width=10,height=10');";
+    }
     
     /**
      * Method to remove a participants skype name from the call list

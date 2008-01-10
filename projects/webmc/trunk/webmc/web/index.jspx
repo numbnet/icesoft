@@ -230,7 +230,7 @@
     <td>
         
         <ice:outputLink rendered="#{participant.moderator}"
-                        value="skype:#{participant.presentation.skypeNames}?call"
+                        onclick="#{participant.presentation.skypeScript}"
                         title="Start Skype conference call">
             <img src="resources/images/call_blue_transparent_34x34.png"/>
         </ice:outputLink>
