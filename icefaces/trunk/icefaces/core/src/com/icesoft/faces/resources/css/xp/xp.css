@@ -288,7 +288,7 @@ fieldset {
 	border-collapse:collapse;
 }
 
-.iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2{ 
+.iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol{ 
 /* was iceTblHeader */
     background-color: #EFEFEF;
     background-image: url( "./css-images/table_col_header.gif" );

@@ -35,13 +35,14 @@ package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
+import com.icesoft.faces.component.ext.HeaderRow;
+import com.icesoft.faces.component.ext.ColumnGroup;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
 
@@ -163,6 +164,7 @@ public class TableRenderer
                 			.PORTLET_SECTION_HEADER);
             	}
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
+                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);               
                 renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
             } else {
             	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
@@ -171,6 +173,7 @@ public class TableRenderer
                 			.PORTLET_SECTION_FOOTER);
             	}            	
                 renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);                 
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
              
             }
@@ -240,6 +243,82 @@ public class TableRenderer
                 tbodyTr.appendChild(domContext.createElement(HTML.TD_ELEM));
             }
     }
+ 
+    private void renderColumnGroup(FacesContext facesContext, 
+            UIComponent uiComponent,
+            UIComponent headerFacet,
+            Element thead,
+            String facetClass,
+            String element
+            ) throws IOException{
+        
+        DOMContext domContext =
+            DOMContext.getDOMContext(facesContext, uiComponent);
+        if (headerFacet== null || !(headerFacet instanceof ColumnGroup)) return;
+        if (!headerFacet.isRendered()) return;
+        String sourceClass = CSS_DEFAULT.TABLE_HEADER_CLASS;
+        if (!"th".equals(element)) {
+            sourceClass = CSS_DEFAULT.TABLE_FOOTER_CLASS;
+        }
+        String baseClass= Util.getQualifiedStyleClass(uiComponent, "ColGrp"+sourceClass);
+        
+        Iterator children = headerFacet.getChildren().iterator();
+        while (children.hasNext()) {
+            UIComponent child = (UIComponent) children.next();
+            if (child instanceof HeaderRow) {
+                Element tr = domContext.createElement("tr");
+                String rowStyleClass = ((HeaderRow)child).getStyleClass();
+                if (rowStyleClass == null) {
+                    rowStyleClass = baseClass.replaceAll(sourceClass, sourceClass+"Row");
+                } else {
+                    rowStyleClass = baseClass.replaceAll(sourceClass, sourceClass+"Row ") + rowStyleClass;
+                }
+                tr.setAttribute(HTML.CLASS_ATTR, rowStyleClass);
+                String rowStyle = ((HeaderRow)child).getStyle();
+                if (rowStyle != null) {
+                    tr.setAttribute(HTML.STYLE_ATTR, rowStyle);
+                }
+                thead.appendChild(tr);                
+                Iterator columns = child.getChildren().iterator();
+                while (columns.hasNext()) {
+                    UIComponent column = (UIComponent) columns.next();
+                    if (!(column instanceof UIColumn)) {
+                        continue;
+                    }
+                    Element th = domContext.createElement(element);
+                    tr.appendChild(th);     
+                    String styleClass = ((com.icesoft.faces.component.ext.UIColumn)
+                            column).getStyleClass();    
+                    if(styleClass == null) {
+                        styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col");
+                    } else {
+                        styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col ")+ styleClass;                        
+                    }
+                    th.setAttribute(HTML.CLASS_ATTR, styleClass);
+                    String colspan = ((com.icesoft.faces.component.ext.UIColumn)
+                                                column).getColspan();
+                    if (colspan != null) {
+                        th.setAttribute(HTML.COLSPAN_ATTR, colspan);
+                    }
+                    String rowspan = ((com.icesoft.faces.component.ext.UIColumn)
+                                                column).getRowspan();
+                    if (rowspan != null) {
+                         th.setAttribute(HTML.ROWSPAN_ATTR, rowspan);
+                    }
+
+                    String style = ((com.icesoft.faces.component.ext.UIColumn)column)
+                                                        .getStyle();
+                    if (style != null) {
+                        th.setAttribute(HTML.STYLE_ATTR, style);
+                    }
+                    
+                    domContext.setCursorParent(th);
+                    encodeParentAndChildren(facesContext, column);                    
+                }
+            }
+        }
+    }
+    
     private void renderTableHeader(FacesContext facesContext, 
                                     UIComponent uiComponent,
                                     UIComponent headerFacet,
@@ -250,7 +329,7 @@ public class TableRenderer
         DOMContext domContext =
             DOMContext.getDOMContext(facesContext, uiComponent);
         if (headerFacet != null && headerFacet.isRendered()) {
-            
+            if (headerFacet instanceof ColumnGroup)return;
             resetFacetChildId(headerFacet);
             Element tr = domContext.createElement("tr");
             thead.appendChild(tr);

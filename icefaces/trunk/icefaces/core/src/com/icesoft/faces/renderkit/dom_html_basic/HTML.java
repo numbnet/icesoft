@@ -444,6 +444,7 @@ public static final String[] MESSAGE_PASSTHROUGH_ATTRIBUTES =
     public static final String METHOD_ATTR = "method";
     public static final String ACTION_ATTR = "action";
     public static final String COLSPAN_ATTR = "colspan";
+    public static final String ROWSPAN_ATTR = "rowspan";    
     public static final String SCOPE_ATTR = "scope";
     public static final String LABEL_ATTR = "label";
     public static final String SELECTED_ATTR = "selected";

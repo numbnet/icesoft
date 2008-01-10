@@ -290,7 +290,7 @@ input {
 	border-collapse:collapse;
 }
 
-.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2 { /* was iceTblHeader */
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol { /* was iceTblHeader */
 /*the header of a data tables */
     background-color: #026AFF;
     background-image: url( "./css-images/table_col_header.gif" );

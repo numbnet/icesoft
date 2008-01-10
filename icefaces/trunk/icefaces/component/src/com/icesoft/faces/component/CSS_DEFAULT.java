@@ -92,6 +92,8 @@ public class CSS_DEFAULT {
             "Row1"; // Originally was "rowClasses1"
     public static final String TABLE_ROW_CLASS2 =
             "Row2"; // Originally was "rowClasses2"
+    public static final String TABLE_COLUMN_GROUP_CLASS = "ColGrp";
+        
     public static final String TABLE_COLUMN_CLASS1 =
         "Col1";
     public static final String TABLE_COLUMN_CLASS2 =

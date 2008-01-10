@@ -208,7 +208,7 @@
             <renderer-type>com.icesoft.faces.PanelTooltipRenderer</renderer-type>
             <renderer-class>com.icesoft.faces.component.paneltooltip.PanelTooltipRenderer</renderer-class>
         </renderer>
-        
+ 
       <renderer>
             <component-family>com.icesoft.faces.OutputStyle</component-family>
             <renderer-type>com.icesoft.faces.style.OutputStyleRenderer</renderer-type>
@@ -749,6 +749,16 @@
         <component-class>com.icesoft.faces.component.ext.UIColumn</component-class>
     </component>
 
+    <component>
+        <component-type>com.icesoft.faces.HeaderRow</component-type>
+        <component-class>com.icesoft.faces.component.ext.HeaderRow</component-class>
+    </component>
+
+    <component>
+        <component-type>com.icesoft.faces.ColumnGroup</component-type>
+        <component-class>com.icesoft.faces.component.ext.ColumnGroup</component-class>
+    </component>
+        
     <component>
         <component-type>com.icesoft.faces.dragdrop.PanelPositioned</component-type>
         <component-class>com.icesoft.faces.component.panelpositioned.PanelPositioned</component-class>

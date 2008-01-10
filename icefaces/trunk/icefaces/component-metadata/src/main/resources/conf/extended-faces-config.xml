@@ -56,7 +56,6 @@
   <!ENTITY message-common-props     SYSTEM "properties/message-common-props.xml">    
   <!ENTITY escape-props        		SYSTEM "properties/escape-props.xml"> 
   <!ENTITY select-common-props      SYSTEM "properties/select-common-props.xml">     
-
   <!ENTITY uicolumn-props           SYSTEM "properties/uicolumn-props.xml">
   <!ENTITY uicommand-props          SYSTEM "properties/uicommand-props.xml">
   <!ENTITY uidata-props             SYSTEM "properties/uidata-props.xml">
@@ -160,7 +159,8 @@
   <!ENTITY ice-graphicImage-props SYSTEM "ice_properties/ice-graphicImage-props.xml">
   <!ENTITY ice-inputSecret-props SYSTEM "ice_properties/ice-inputSecret-props.xml">
   <!ENTITY ice-inputText-props SYSTEM "ice_properties/ice-inputText-props.xml">
-  
+  <!ENTITY ice-headerrow-props SYSTEM "ice_properties/ice-headerrow-props.xml">
+  <!ENTITY ice-columngroup-props SYSTEM "ice_properties/ice-columngroup-props.xml">
   <!ENTITY ice-uicolumn-props SYSTEM "ice_properties/ice-uicolumn-props.xml">
   <!ENTITY ice-uicolumns-props SYSTEM "ice_properties/ice-uicolumns-props.xml">
   
@@ -305,6 +305,12 @@
   <!ENTITY ice-uicolumn-component   SYSTEM "components/ice-uicolumn-component.xml">
   <!ENTITY ice-uicolumn-renderer	SYSTEM "components/ice-uicolumn-renderer.xml">
   
+  <!ENTITY ice-headerrow-component   SYSTEM "components/ice-headerrow-component.xml">
+  <!ENTITY ice-headerrow-renderer    SYSTEM "components/ice-headerrow-renderer.xml">
+
+  <!ENTITY ice-columngroup-component   SYSTEM "components/ice-columngroup-component.xml">
+  <!ENTITY ice-columngroup-renderer    SYSTEM "components/ice-columngroup-renderer.xml">
+    
   <!ENTITY ice-uicolumns-component   SYSTEM "components/ice-uicolumns-component.xml">
   <!ENTITY ice-uicolumns-renderer	SYSTEM "components/ice-uicolumns-renderer.xml">
    
@@ -469,6 +475,8 @@
 	&ice-radio-component;
 	&ice-outputFormat-component;
 	&ice-inputhidden-component;
+	&ice-headerrow-component;
+    &ice-columngroup-component;	
 	&ice-uicolumn-component;
 	&ice-uicolumns-component;
 	
@@ -494,7 +502,7 @@
 	&tree-component;
 	&treenode-component;
 	&panelpopup-component;
-    &paneltooltip-component;	
+    &paneltooltip-component;
 	&portlet-component;
 	&menuPopup-component;
 	&menu-component;
@@ -544,6 +552,8 @@
 		&ice-radio-renderer;
 		&ice-outputFormat-renderer;
 		&ice-inputhidden-renderer;
+        &ice-headerrow-renderer;
+        &ice-columngroup-renderer;       
 		&ice-uicolumn-renderer;
 		&ice-uicolumns-renderer;
 		

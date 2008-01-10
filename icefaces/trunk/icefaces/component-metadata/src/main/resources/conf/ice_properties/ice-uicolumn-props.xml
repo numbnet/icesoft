@@ -34,3 +34,50 @@
 &base-props;
 &ice-att-userrole-rendered-props;
 &ice-att-menuContext-props;
+&core-props;  
+
+<property>
+    <description>
+       <![CDATA[
+        colspan
+        ]]>     
+    </description>  
+    <property-name>colspan</property-name>
+        <property-class>String</property-class>
+    <property-extension>
+        <category>JAVASCRIPT</category>
+        <editor-class>
+            &javascriptEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+       <![CDATA[
+        rowspan
+        ]]>     
+    </description>  
+    <property-name>rowspan</property-name>
+        <property-class>String</property-class>
+    <property-extension>
+        <category>JAVASCRIPT</category>
+        <editor-class>
+            &javascriptEditor;
+        </editor-class>
+    </property-extension>
+</property>
+<property>
+    <description>
+        <![CDATA[
+
+        ]]>
+    </description>
+    <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

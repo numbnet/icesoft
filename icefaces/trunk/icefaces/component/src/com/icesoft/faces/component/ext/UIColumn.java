@@ -36,6 +36,7 @@ package com.icesoft.faces.component.ext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
 // We do not need this class, but Sun Studio Creator requires it.
@@ -50,7 +51,10 @@ public class UIColumn extends javax.faces.component.UIColumn {
     public String getFamily() {
         return "javax.faces.Column";
     }
-
+    private String colspan = null;
+    private String rowspan = null;
+    private String style = null;
+    private String styleClass = null;
     // binding
     private String binding = null;
 
@@ -150,4 +154,76 @@ public class UIColumn extends javax.faces.component.UIColumn {
      */
     public void setMenuContext(Object param) {
     }
+
+    /**
+     * <p>Set the value of the <code>colspan</code> property.</p>
+     */
+    public void setColspan(String colspan) {
+        this.colspan = colspan;
+    }
+
+    /**
+     * <p>Return the value of the <code>colspan</code> property.</p>
+     */
+    public String getColspan() {
+        if (colspan != null) {
+            return colspan;
+        }
+        ValueBinding vb = getValueBinding("colspan");
+        return vb != null ? (String) vb.getValue(getFacesContext()) :null;
+    }
+    
+    /**
+     * <p>Set the value of the <code>rowspan</code> property.</p>
+     */
+    public void setRowspan(String rowspan) {
+        this.rowspan = rowspan;
+    }
+
+    /**
+     * <p>Return the value of the <code>rowspan</code> property.</p>
+     */
+    public String getRowspan() {
+        if (rowspan != null) {
+            return rowspan;
+        }
+        ValueBinding vb = getValueBinding("rowspan");
+        return vb != null ? (String) vb.getValue(getFacesContext()) :null;
+    }    
+    
+    /**
+     * <p>Set the value of the <code>style</code> property.</p>
+     */
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    /**
+     * <p>Return the value of the <code>style</code> property.</p>
+     */
+    public String getStyle() {
+        if (style != null) {
+            return style;
+        }
+        ValueBinding vb = getValueBinding("style");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>styleClass</code> property.</p>
+     */
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
+    /**
+     * <p>Return the value of the <code>styleClass</code> property.</p>
+     */
+    public String getStyleClass() {
+        if (styleClass != null) {
+            return styleClass;
+        }
+        ValueBinding vb = getValueBinding("styleClass");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }    
 }
