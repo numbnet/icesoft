@@ -665,7 +665,6 @@
     <!-- ICEfaces: Rich Text Editor      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_rich_text_editor</portlet-name>
         <display-name>ICEfaces: Rich Text Editor</display-name>
@@ -692,13 +691,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - Address Attribute      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_address_attribute</portlet-name>
         <display-name>ICEfaces: GMap Address Attribute</display-name>
@@ -725,13 +722,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - Controls      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_controls</portlet-name>
         <display-name>ICEfaces: GMap Controls</display-name>
@@ -758,13 +753,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - Find Address     -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_find_address</portlet-name>
         <display-name>ICEfaces: GMap Find Address</display-name>
@@ -791,13 +784,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - GeoCoder      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_geocoder</portlet-name>
         <display-name>ICEfaces: GMap GeoCoder</display-name>
@@ -824,13 +815,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - KML      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_kml</portlet-name>
         <display-name>ICEfaces: GMap KML</display-name>
@@ -857,13 +846,11 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - Markers      -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_gmap_markers</portlet-name>
         <display-name>ICEfaces: GMap Markers</display-name>
@@ -890,6 +877,5 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
 </portlet-app>
