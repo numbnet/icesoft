@@ -61,6 +61,16 @@
         <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
           
+  <managed-bean>
+        <description>
+            
+        </description>
+        <managed-bean-name>groupBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.samples.showcase.components.table.GroupBean
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>    
           
     <managed-bean>
         <description>
