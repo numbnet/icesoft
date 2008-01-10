@@ -537,11 +537,14 @@ public class TableRenderer
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
                         Element td = domContext.createElement(HTML.TD_ELEM);
-
+                        String iceColumnStyle = null;
+                        String iceColumnStyleClass = null;
                         //we want to perform this operation on ice:column only
                         if (nextChild instanceof com.icesoft.faces.component.ext.UIColumn) {
                             com.icesoft.faces.component.ext.UIColumn iceColumn = 
                                 (com.icesoft.faces.component.ext.UIColumn)nextChild;
+                            iceColumnStyle = iceColumn.getStyle();
+                            iceColumnStyleClass = iceColumn.getStyleClass();
                             if (iceColumn.getGroupOn() != null) {
                                 if (iceColumn.groupFound()) {
                                     Element groupedTd = iceColumn.getGroupedTd();
@@ -572,7 +575,24 @@ public class TableRenderer
                             td.setAttribute("style", "width:" + width +
                             ";overflow:hidden;");                            
                         }
-                                                 
+                        if (iceColumnStyle != null) {
+                            String existingStyle = td.getAttribute(HTML.STYLE_ATTR);
+                            if (existingStyle != null) {
+                                td.setAttribute(HTML.STYLE_ATTR, existingStyle + ";"+ iceColumnStyle);
+                            } else {
+                                td.setAttribute(HTML.STYLE_ATTR, iceColumnStyle);
+                            }
+                        }
+                        
+                        if (iceColumnStyleClass != null) {
+                            String existingStyleClass = td.getAttribute(HTML.CLASS_ATTR);
+                            if (existingStyleClass != null) {
+                                td.setAttribute(HTML.CLASS_ATTR, existingStyleClass + " "+ iceColumnStyleClass);
+                            } else {
+                                td.setAttribute(HTML.CLASS_ATTR, iceColumnStyleClass);
+                            }
+                        }                        
+                        
                         tr.appendChild(td);
                         // if column styles exist, then apply the appropriate one
 
