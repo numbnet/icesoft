@@ -10,19 +10,7 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
-import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
-import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.webapp.http.core.DisposeViews;
-import com.icesoft.faces.webapp.http.core.IDVerifier;
-import com.icesoft.faces.webapp.http.core.MultiViewServer;
-import com.icesoft.faces.webapp.http.core.ReceivePing;
-import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
-import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.webapp.http.core.SendUpdates;
-import com.icesoft.faces.webapp.http.core.SingleViewServer;
-import com.icesoft.faces.webapp.http.core.UploadServer;
-import com.icesoft.faces.webapp.http.core.ViewBoundServer;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.util.IdGenerator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -124,21 +112,25 @@ public class MainSessionBoundServlet implements PseudoServlet {
             CommandQueue commandQueue = (CommandQueue) i.next();
             commandQueue.put(SessionExpired);
         }
-        ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
-        try {
-            //wait for the for the bridge to receive the 'session-expire' command
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            //do nothing
-        } finally {
-            servlet.shutdown();
-        }
+        new Thread() {
+            public void run() {
+                try {
+                    //wait for the for the bridge to receive the 'session-expire' command
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    //do nothing
+                } finally {
+                    ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
+                    servlet.shutdown();
 
-        Iterator viewIterator = views.values().iterator();
-        while (viewIterator.hasNext()) {
-            View view = (View) viewIterator.next();
-            view.dispose();
-        }
+                    Iterator viewIterator = views.values().iterator();
+                    while (viewIterator.hasNext()) {
+                        View view = (View) viewIterator.next();
+                        view.dispose();
+                    }
+                }
+            }
+        }.start();
     }
 
     //Exposing queues for Tomcat 6 Ajax Push

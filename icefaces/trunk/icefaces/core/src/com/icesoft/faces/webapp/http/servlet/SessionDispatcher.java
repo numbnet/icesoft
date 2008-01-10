@@ -92,7 +92,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    public static void notifySessionShutdown(HttpSession session) {
+    public static void notifySessionShutdown(final HttpSession session) {
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
@@ -102,7 +102,19 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 Log.error(e);
             }
         }
-        session.invalidate();
+        new Thread() {
+            public void run() {
+                try {
+                    //wait a bit so the server can notify the bridge
+                    //that the session is about to expire
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    //do nothing
+                } finally {
+                    session.invalidate();
+                }
+            }
+        }.start();
     }
 
     public static void notifySessionDestroyed(HttpSession session) {
