@@ -165,14 +165,18 @@ public class TableRenderer
             	}
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
                 renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);               
-                renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                if (childHeaderFacetExists) {
+                    renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                }
             } else {
             	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
             			.PORTLET_SECTION_FOOTER).length() > 1) {
                 	thead.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT
                 			.PORTLET_SECTION_FOOTER);
             	}            	
-                renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                if (childHeaderFacetExists) {
+                    renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                }
                 renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);                 
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
              
@@ -350,6 +354,7 @@ public class TableRenderer
             }
         }
     }
+
     private void processUIColumnHeader(FacesContext facesContext,
                                        UIComponent uiComponent,
                                        UIColumn nextColumn, Element tr,
