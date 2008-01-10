@@ -537,6 +537,22 @@ public class TableRenderer
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
                         Element td = domContext.createElement(HTML.TD_ELEM);
+
+                        //we want to perform this operation on ice:column only
+                        if (nextChild instanceof com.icesoft.faces.component.ext.UIColumn) {
+                            com.icesoft.faces.component.ext.UIColumn iceColumn = 
+                                (com.icesoft.faces.component.ext.UIColumn)nextChild;
+                            if (iceColumn.getGroupOn() != null) {
+                                if (iceColumn.groupFound()) {
+                                    Element groupedTd = iceColumn.getGroupedTd();
+                                    groupedTd.setAttribute(HTML.ROWSPAN_ATTR, String.valueOf(iceColumn.getGroupCount()));
+                                    continue;
+                                } else {
+                                    iceColumn.setGroupedTd(td); 
+                                }
+                            }
+                        }                        
+                        
                         if(!rowSelectorCodeAdded && scriptNode != null){
                             td.appendChild(scriptNode);
                         }

@@ -36,6 +36,8 @@ package com.icesoft.faces.component.ext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
+import org.w3c.dom.Element;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
@@ -55,6 +57,10 @@ public class UIColumn extends javax.faces.component.UIColumn {
     private String rowspan = null;
     private String style = null;
     private String styleClass = null;
+    private String groupOn = null;
+    private String previousGroupValue = null;
+    private int groupCount = 1;
+    private Element groupedTd;
     // binding
     private String binding = null;
 
@@ -226,4 +232,51 @@ public class UIColumn extends javax.faces.component.UIColumn {
         ValueBinding vb = getValueBinding("styleClass");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }    
+    
+    /**
+     * <p>Set the value of the <code>groupOn</code> property.</p>
+     */
+    public void setGroupOn(String groupOn) {
+        this.groupOn = groupOn;
+    }
+
+    /**
+     * <p>Return the value of the <code>groupOn</code> property.</p>
+     */
+    public String getGroupOn() {
+        if (groupOn != null) {
+            return groupOn;
+        }
+        ValueBinding vb = getValueBinding("groupOn");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }  
+    
+    public boolean groupFound() {
+        if (previousGroupValue == null) {
+            previousGroupValue = getGroupOn();
+            return false;
+        }
+        boolean result = previousGroupValue.equals(getGroupOn()); 
+        previousGroupValue = getGroupOn();
+        if (result) {
+            groupCount++;
+        } else {
+            groupCount = 1;
+        }
+        return result;
+    }
+    
+    public int getGroupCount() {
+        return groupCount;
+    }
+
+    public Element getGroupedTd() {
+        return groupedTd;
+    }
+
+    public void setGroupedTd(Element groupedTd) {
+        this.groupedTd = groupedTd;
+    }
+    
+    
 }
