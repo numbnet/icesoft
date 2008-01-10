@@ -36,58 +36,58 @@ var currentFocus;
 Ice.Focus = new Object();
 Ice.Focus.userInterupt = false;
 
-Ice.Focus.userInterupt = function (e){
+Ice.Focus.userInterupt = function (e) {
     window.logger.debug('Interup pressed');
-    if(Ice.Focus.userInterupt == false){
+    if (Ice.Focus.userInterupt == false) {
         window.logger.debug('User action. Set focus will be ignored.');
         Ice.Focus.userInterupt = true;
     }
 
 }
 
-Ice.Focus.setFocus = function(id){
+Ice.Focus.setFocus = function(id) {
     // This delay is required for focusing newly rendered components on IE 
     // ICE-1247
-    window.setTimeout("Ice.Focus.setFocusNow('" + id + "');",100);  
+    window.setTimeout("Ice.Focus.setFocusNow('" + id + "');", 100);
 };
 
-Ice.Focus.setFocusNow = function(id){
-    if((Ice.Focus.userInterupt==false) && (id != '') && (id != 'undefined')){
-        try{
+Ice.Focus.setFocusNow = function(id) {
+    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined')) {
+        try {
             id.asExtendedElement().focus();
             setFocus(id);
             var ele = document.getElementById(id);
-            if(ele){
+            if (ele) {
                 ele.focus();
-            }else{
-                window.logger.debug('Focus Failed. No element for id [' + id + "]");                
+            } else {
+                window.logger.info('Cannot set focus, no element for id [' + id + "]");
             }
             window.logger.debug('Focus Set on [' + id + "]");
-        }catch(e){
-            window.logger.error('Failed to set focus on [' + id +']',e);               
+        } catch(e) {
+            window.logger.info('Cannot set focus, no element for id [' + id + ']', e);
         }
-    }else{
+    } else {
         window.logger.debug('Focus interupted. Not Set on [' + id + ']');
     }
 };
 
 
-document.onKeyDown = function(listener){
+document.onKeyDown = function(listener) {
     var previousListener = document.onkeydown;
-    document.onkeydown = previousListener!=null ? function(e){
+    document.onkeydown = previousListener != null ? function(e) {
         listener(Ice.EventModel.Event.adaptToKeyEvent(e));
         previousListener(e);
-    } : function(e){
+    } : function(e) {
         listener(Ice.EventModel.Event.adaptToKeyEvent(e));
     };
 };
 
-document.onMouseDown = function(listener){
+document.onMouseDown = function(listener) {
     var previousListener = document.onmousedown;
-    document.onmousedown = previousListener!=null ? function(e){
+    document.onmousedown = previousListener != null ? function(e) {
         listener(e);
         previousListener(e);
-    } : function(e){
+    } : function(e) {
         listener(e);
     };
 };
