@@ -25,8 +25,8 @@ public class MainPortlet extends GenericPortlet {
 
     private static Log log = LogFactory.getLog(MainPortlet.class);
 
-    private static final String PORTLET_MARKER = "portlet";
-    private PortletConfig portletConfig;
+    public static final String PORTLET_MARKER = "portlet";
+    protected PortletConfig portletConfig;
 
     public MainPortlet() {
         super();
@@ -40,22 +40,22 @@ public class MainPortlet extends GenericPortlet {
     protected void doEdit(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
         String viewId = getViewID(Constants.EDIT_KEY);
-        doInclude(renderRequest,renderResponse,viewId);
+        doInclude(renderRequest, renderResponse, viewId);
     }
 
     protected void doHelp(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
         String viewId = getViewID(Constants.HELP_KEY);
-        doInclude(renderRequest,renderResponse,viewId);
+        doInclude(renderRequest, renderResponse, viewId);
     }
 
     protected void doView(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
         String viewId = getViewID(Constants.VIEW_KEY);
-        doInclude(renderRequest,renderResponse,viewId);
+        doInclude(renderRequest, renderResponse, viewId);
     }
 
-    private String getViewID(String key) throws PortletException {
+    protected String getViewID(String key) throws PortletException {
         String viewId = portletConfig.getInitParameter(key);
         if (viewId != null) {
             return viewId;
@@ -70,11 +70,11 @@ public class MainPortlet extends GenericPortlet {
     /**
      * The doInclude method is called to properly set up and call the request dispatcher
      * to the MainServlet of the ICEfaces framework.
-     * 
-     * @param renderRequest the original RenderRequest
+     *
+     * @param renderRequest  the original RenderRequest
      * @param renderResponse the original RenderResponse
-     * @param viewId the id of the view to dispatch
-     * @throws IOException thrown by the dispatcher.include call
+     * @param viewId         the id of the view to dispatch
+     * @throws IOException      thrown by the dispatcher.include call
      * @throws PortletException thrown by the dispatcher.include call
      */
     protected void doInclude(RenderRequest renderRequest, RenderResponse renderResponse, String viewId)
