@@ -517,6 +517,21 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
 
+                // component menu -> Table -> ColumnGroup
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.columnGroupComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.columnGroupComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/columnGroup.jspx");
+                branchObject.setTemplateName("columnGroupContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode2.add(leafNode);
+                
                 // component menu -> Chart
                 branchObject = new PageContentBean();
                 branchObject.setExpanded(false);

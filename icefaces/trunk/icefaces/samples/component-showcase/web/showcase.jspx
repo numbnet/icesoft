@@ -193,6 +193,14 @@
                 </f:subview>
             </ice:panelGroup>
 
+            <ice:panelGroup id="columnGroupContentPanel"  >
+                <f:subview id="cgSub">
+                    <!-- ColumnGroup component include -->
+                    <jsp:directive.include
+                        file="./inc/components/columnGroup.jspx" />
+                </f:subview>
+            </ice:panelGroup>
+            
             <ice:panelGroup id="inputFileContentPanel"  >
                 <f:subview id="ifSub">
                     <!-- File Upload component include -->
