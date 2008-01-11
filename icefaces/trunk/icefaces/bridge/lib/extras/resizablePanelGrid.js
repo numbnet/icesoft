@@ -30,54 +30,55 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-Resizable = Class.create({
-  initialize: function(event) {
-    this.print("Resizable initialized....");
+Ice.Resizable = Class.create({
+  initialize: function(event, elementIndex, vertical) {
+    this.elementIndex = elementIndex;
+
+    //resize handler
     this.source = Event.element(event);
+    this.vertical = vertical || true;
+    //initial pointer location
     this.pointerLocation = parseInt(Event.pointerX(event));
+
     this.eventMouseMove = this.resize.bindAsEventListener(this);
     this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
+
     this.resizeAction;
+
     this.source.style.position = "absolute";
     this.source.style.left= Event.pointerX(event) + "px";
+
     Event.observe(document, "mousemove", this.eventMouseMove);
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
-    this.source.style.height = (Element.getHeight(this.getTableElement().parentNode) -15) + "px";
   },
 
   print: function(msg) {
     logger.info(msg);
   },
 
-  getPreviousTd: function() {
-    if (this.source.parentNode.previousSibling.tagName == "TD") {
-        return this.source.parentNode.previousSibling;
-    } else {
-        return this.source.parentNode.previousSibling.previousSibling;
-    }
-  },
+  getPreviousElement: function() {},
 
-  getTableElement: function() {
-    return this.source.parentNode.parentNode.parentNode.parentNode;
-  },
+  getContainerElement: function() {},
 
-  getNextTd: function() {
-    if (this.source.parentNode.nextSibling.tagName == "TD") {
-        return this.source.parentNode.nextSibling;
-    } else {
-        return this.source.parentNode.nextSibling.nextSibling;
-    }
-  },
+  getNextElement: function() {},
 
   resize: function(event) {
     var diff = this.getDifference(event);
-    var leftTdWidth = Element.getWidth(this.getPreviousTd());
     if (this.resizeAction == "dec") {
-        if ((leftTdWidth - diff) < 40) {
-            this.detachEvent(event);
+    var leftElementWidth = Element.getWidth(this.getPreviousElement());
+        if ((leftElementWidth - diff) < 20) {
+           this.source.style.backgroundColor = "red";
+           return;
+        }
+    } else {
+        var rightElementWidth = Element.getWidth(this.getNextElement());
+        if ((rightElementWidth - diff) < 20) {
+           this.source.style.backgroundColor = "red";
+           return;
         }
     }
+    this.source.style.backgroundColor = "green";
     this.source.style.left = Event.pointerX(event) + "px";
   },
 
@@ -86,29 +87,30 @@ Resizable = Class.create({
     //restore height
     this.source.style.height =  this.origionalHeight;
 
-    var leftTdWidth = Element.getWidth(this.getPreviousTd());
-    var rightTdWidth = this.getNextTd();
-    var tableWidth = Element.getWidth(this.getTableElement());
+    var leftElementWidth = Element.getWidth(this.getPreviousElement());
+    var rightElementWidth = this.getNextElement();
+    var tableWidth = Element.getWidth(this.getContainerElement());
     var diff = this.getDifference(event);
 
     if (this.resizeAction == "inc") {
-        this.getPreviousTd().style.width = leftTdWidth + diff + "px";
-    //    this.getTableElement().style.width = tableWidth + diff + "px";;
+        this.getPreviousElement().style.width = leftElementWidth + diff + "px";
+    //    this.getContainerElement().style.width = tableWidth + diff + "px";;
 
         this.print("Diff "+ diff);
-        this.print("Td width "+ leftTdWidth + this.getPreviousTd().id);
+        this.print("Td width "+ leftElementWidth + this.getPreviousElement().id);
         this.print("Table width "+ tableWidth);
 
 
     } else {
-        this.getPreviousTd().style.width = leftTdWidth - diff + "px";
-  //      this.getTableElement().style.width = tableWidth - diff + "px";
+        this.getPreviousElement().style.width = leftElementWidth - diff + "px";
+  //      this.getContainerElement().style.width = tableWidth - diff + "px";
     }
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
     Event.stopObserving(document, "mouseup", this.eventMouseUp);
 
     this.source.style.position = "";
-
+    this.source.style.left= Event.pointerX(event) + "px";
+    this.source.style.backgroundColor = "green";
   },
 
   getDifference: function(event) {
@@ -121,8 +123,38 @@ Resizable = Class.create({
         return x -this.pointerLocation;
     }
   }
+});
 
+Ice.ResizableGrid = Class.create(Ice.Resizable, {
+  initialize: function($super, event) {
+    $super(event);
+    this.source.style.height = (Element.getHeight(this.getContainerElement()) -55) + "px";
+  }
+});
 
+Ice.ResizableGrid.addMethods({
+  getDifference: function($super, event) {
+    return $super(event);
+  },
 
+  getContainerElement: function() {
+      return this.source.parentNode.parentNode.parentNode.parentNode;
+  },
+
+  getPreviousElement: function() {
+    if (this.source.parentNode.previousSibling.tagName == "TD") {
+        return this.source.parentNode.previousSibling;
+    } else {
+        return this.source.parentNode.previousSibling.previousSibling;
+    }
+  },
+
+  getNextElement: function() {
+    if (this.source.parentNode.nextSibling.tagName == "TD") {
+        return this.source.parentNode.nextSibling;
+    } else {
+        return this.source.parentNode.nextSibling.nextSibling;
+    }
+  }
 
 });
