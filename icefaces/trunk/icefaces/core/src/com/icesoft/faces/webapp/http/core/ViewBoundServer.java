@@ -46,20 +46,32 @@ public class ViewBoundServer implements Server {
                     }
                 });
             } else {
-                try {
-                    view.updateOnXMLHttpRequest(request);
-                    sessionMonitor.touchSession();
-                    server.service(request);
-                } catch (FacesException e) {
-                    //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
-                    Throwable nestedException = e.getCause();
-                    if (nestedException == null || nestedException instanceof Error) {
-                        throw e;
-                    } else {
-                        throw (Exception) nestedException;
+                
+                // #2615. Without the following synchronization, the following
+                // problems can occur. Assume HTTP-1 has a request and is in some
+                // phase of the JSF lifecycle. Another partial submit request
+                // arrives on HTTP-2 immediately after. It wont hit synchronization
+                // until the renderCycle.. methods of ReceiveSendUpdates object.
+                // This means that HTTP-2 is free to modify the requestParameter maps
+                // via the updateOnXMLHttpRequest method on the view. Further, once HTTP-1
+                // releases the monitor and HTTP-2 gets it, the outbound thread can
+                // clear the requestMap member variable via view.release() below
+                synchronized(view) {
+                    try {
+                        view.updateOnXMLHttpRequest(request);
+                        sessionMonitor.touchSession();
+                        server.service(request);
+                    } catch (FacesException e) {
+                        //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
+                        Throwable nestedException = e.getCause();
+                        if (nestedException == null || nestedException instanceof Error) {
+                            throw e;
+                        } else {
+                            throw (Exception) nestedException;
+                        }
+                    } finally {
+                        view.release();
                     }
-                } finally {
-                    view.release();
                 }
             }
         }
