@@ -38,9 +38,12 @@
 
 <property>
     <description>
-       <![CDATA[
-        colspan
-        ]]>     
+       <![CDATA[<p>
+        This is exactly an html colspan attribute. Due to the iterative nature 
+        of the table body, this attribute is not suitable inside the body of the 
+        dataTable. So this attribute will only be apply on the columns that are 
+        descendent of the colmnGroup component.
+        </p>]]>     
     </description>  
     <property-name>colspan</property-name>
         <property-class>String</property-class>
@@ -53,9 +56,14 @@
 </property>
 <property>
     <description>
-       <![CDATA[
-        rowspan
-        ]]>     
+       <![CDATA[<p>
+        This is exactly an html rowspan attribute. Due to the iterative nature 
+        of the table body, this attribute is not suitable inside the body of the 
+        dataTable. So this attribute will only be apply on the columns that are 
+        descendent of the colmnGroup component. <br/>
+        <b>Hint: </b> The groupOn attribute might give you the result, which you 
+        need from the rowspan inside the body of the table. 
+        </p>]]>     
     </description>  
     <property-name>rowspan</property-name>
         <property-class>String</property-class>
@@ -68,8 +76,12 @@
 </property>
 <property>
     <description>
-        <![CDATA[
-
+        <![CDATA[<p>
+        Space-separated list of CSS style class(es) to be applied when
+        this element is rendered. This value must be passed through as
+        the "class" attribute on generated markup. <p>
+        If this attribute is defined on the column, the new styleClass will be 
+        extending the existing styleClasses.
         ]]>
     </description>
     <property-name>styleClass</property-name>
@@ -83,8 +95,26 @@
 </property>
 <property>
     <description>
-        <![CDATA[
-
+        <![CDATA[ <p>
+              The groupOn attribute, enables the application to show the one to 
+              many relationship in the tabular format. Only the distinct values will 
+              be rendered for the grouped column, and its rowspan value will be 
+              set to its none distinct count.  </p>
+              <b> Note: </b>
+               <ul>
+                 <li> Application must provide the sorted data for the grouped column.          
+                 <li> This attribute is just for the layout, it does not have any effect 
+              on the underlying dataModel.
+              </ul>
+              &lt;ice:dataTable var="employee" .. &gt;<br/>
+                    &nbsp;&nbsp;&lt;ice:column groupOn="#{employee.deptName}" &gt;<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:outputText value="#{employee.deptName}"/&gt;<br/>
+                    &nbsp;&nbsp;&lt;/ice:colum&gt;<br/>
+                    &nbsp;&nbsp;&lt;ice:column &gt;<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:outputText value="#{employee.name}"/&gt;<br/>
+                    &nbsp;&nbsp;&lt;/ice:colum&gt;<br/>                    
+                    .....<br/>
+             &lt;/ice:dataTable .. &gt;               
         ]]>
     </description>
     <property-name>groupOn</property-name>
