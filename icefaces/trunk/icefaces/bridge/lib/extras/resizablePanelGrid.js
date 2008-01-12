@@ -52,7 +52,7 @@ Ice.Resizable = Class.create({
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
     this.disableTextSelection();
-
+    this.source.style.backgroundColor = "green";
 
   },
 
