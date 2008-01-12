@@ -51,6 +51,9 @@ Ice.Resizable = Class.create({
     Event.observe(document, "mousemove", this.eventMouseMove);
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
+    this.disableTextSelection();
+
+
   },
 
   print: function(msg) {
@@ -88,12 +91,14 @@ Ice.Resizable = Class.create({
     this.source.style.height =  this.origionalHeight;
 
     var leftElementWidth = Element.getWidth(this.getPreviousElement());
-    var rightElementWidth = this.getNextElement();
+    var rightElementWidth = Element.getWidth(this.getNextElement());
     var tableWidth = Element.getWidth(this.getContainerElement());
     var diff = this.getDifference(event);
 
     if (this.resizeAction == "inc") {
-        this.getPreviousElement().style.width = leftElementWidth + diff + "px";
+        this.getPreviousElement().style.width = (leftElementWidth + diff) + "px";
+        this.getNextElement().style.width = (rightElementWidth - diff) + "px"
+
     //    this.getContainerElement().style.width = tableWidth + diff + "px";;
 
         this.print("Diff "+ diff);
@@ -102,7 +107,9 @@ Ice.Resizable = Class.create({
 
 
     } else {
-        this.getPreviousElement().style.width = leftElementWidth - diff + "px";
+        this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
+        this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+
   //      this.getContainerElement().style.width = tableWidth - diff + "px";
     }
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
@@ -110,7 +117,7 @@ Ice.Resizable = Class.create({
 
     this.source.style.position = "";
     this.source.style.left= Event.pointerX(event) + "px";
-    this.source.style.backgroundColor = "green";
+    this.source.style.backgroundColor = "black";
   },
 
   getDifference: function(event) {
@@ -122,6 +129,12 @@ Ice.Resizable = Class.create({
         this.resizeAction = "inc";
         return x -this.pointerLocation;
     }
+  },
+
+  disableTextSelection:function() {
+    this.source.style.unselectable = "on";
+    this.source.style.MozUserSelect = "none";
+    this.source.style.KhtmlUserSelect ="none";
   }
 });
 
