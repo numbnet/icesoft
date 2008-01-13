@@ -182,3 +182,13 @@
         </named-value>       
     </property-extension>      	
 </property>
+<property>
+    <description>
+        Resizable.
+    </description>
+    <property-name>resizable</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_ADVANCED</category>
+    </property-extension>
+</property>

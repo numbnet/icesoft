@@ -53,7 +53,7 @@ Ice.Resizable = Class.create({
     this.origionalHeight = this.source.style.height;
     this.disableTextSelection();
     this.source.style.backgroundColor = "green";
-
+    this.source.style.border= "1px dashed"; 
   },
 
   print: function(msg) {
@@ -117,7 +117,8 @@ Ice.Resizable = Class.create({
 
     this.source.style.position = "";
     this.source.style.left= Event.pointerX(event) + "px";
-    this.source.style.backgroundColor = "black";
+    this.source.style.backgroundColor = "#EFEFEF";
+    this.source.style.border = "none";
   },
 
   getDifference: function(event) {
@@ -141,7 +142,7 @@ Ice.Resizable = Class.create({
 Ice.ResizableGrid = Class.create(Ice.Resizable, {
   initialize: function($super, event) {
     $super(event);
-    this.source.style.height = (Element.getHeight(this.getContainerElement()) -55) + "px";
+    this.source.style.height = (Element.getHeight(this.getContainerElement())) + "px";
   }
 });
 
@@ -155,7 +156,7 @@ Ice.ResizableGrid.addMethods({
   },
 
   getPreviousElement: function() {
-    if (this.source.parentNode.previousSibling.tagName == "TD") {
+    if (this.source.parentNode.previousSibling.tagName == "TH") {
         return this.source.parentNode.previousSibling;
     } else {
         return this.source.parentNode.previousSibling.previousSibling;
@@ -163,7 +164,7 @@ Ice.ResizableGrid.addMethods({
   },
 
   getNextElement: function() {
-    if (this.source.parentNode.nextSibling.tagName == "TD") {
+    if (this.source.parentNode.nextSibling.tagName == "TH") {
         return this.source.parentNode.nextSibling;
     } else {
         return this.source.parentNode.nextSibling.nextSibling;

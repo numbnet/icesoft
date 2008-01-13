@@ -305,7 +305,16 @@ fieldset {
     padding-bottom: 4px;
 }
 
-/* data tables are rendered with alternating row colors */
+.iceDatTblResBor, .iceDatTblResHdlr {
+    margin:0px;; 
+    padding:0px;
+    border-width: 0px;
+    width:1px;
+    background-color: #EFEFEF;
+    background-image: url( "./css-images/table-border.gif" );
+    background-repeat: repeat-y;    
+}
+	/* data tables are rendered with alternating row colors */
 .iceDatTblRow1 { /* was iceTblRow1 */
     background-color: #FFFFFF;
 }

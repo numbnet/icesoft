@@ -60,6 +60,7 @@ public class HtmlDataTable
     private String renderedOnUserRole = null;
     private String sortColumn = null;
     private Boolean sortAscending = null;
+    private Boolean resizable = null;
     private static final boolean DEFAULT_SORTASCENDING = true;
     
     private Boolean scrollable = null;
@@ -421,6 +422,20 @@ public class HtmlDataTable
                 super.getFooterClass(),
                 CSS_DEFAULT.TABLE_FOOTER_CLASS,
                 "footerClass");
+    }
+    
+    public boolean isResizable() {
+        if (resizable != null) {
+            return resizable.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("resizable");
+        return vb != null ?
+               ((Boolean) vb.getValue(getFacesContext())).booleanValue() :
+               false;
+    }
+
+    public void setResizable(boolean resizable) {
+        this.resizable = new Boolean(resizable);
     }
 
 }
