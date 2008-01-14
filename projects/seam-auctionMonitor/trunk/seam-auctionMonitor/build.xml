@@ -347,6 +347,18 @@
 		    	 <include name="hibernate*.jar"/>
 		    	 <include name="ejb-api.jar"/>
 		    	 <include name="jsf-*.jar"/>
+		    	 <include name="antlr.jar"/>
+		    	 <include name="commons-logging.jar"/>
+		    	  <include name="core.jar"/>
+		    	  <include name="el-api.jar"/>
+		    	  <include name="janino.jar"/>
+		    	  <include name="jgroups.jar"/>
+		    	  <include name="jstl.jar"/>
+		    	  <include name="testng.jar"/>
+		    	  <include name="servlet-api.jar"/>
+		    	 <include name="hsqldb.jar"/>
+		    	 <include name="jboss-embedded-api.jar"/>
+		    	 <include name="jta.jar"/>
 			</fileset>
 		</copy>
 	</target>
