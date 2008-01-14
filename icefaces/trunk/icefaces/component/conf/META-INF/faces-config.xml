@@ -243,6 +243,12 @@
           <renderer-type>com.icesoft.faces.Portlet</renderer-type>
           <renderer-class>com.icesoft.faces.component.portlet.PortletRenderer</renderer-class>
       </renderer>
+
+      <renderer>
+          <component-family>com.icesoft.faces.OutputMedia</component-family>
+          <renderer-type>com.icesoft.faces.OutputMedia</renderer-type>
+          <renderer-class>com.icesoft.faces.component.outputmedia.OutputMediaRenderer</renderer-class>
+      </renderer>
         <!--<renderer>
             <component-family>com.icesoft.faces.SliderFamily</component-family>
             <renderer-type>com.icesoft.faces.SliderRenderer</renderer-type>
@@ -450,6 +456,11 @@
     <component>
       <component-type>com.icesoft.faces.Portlet</component-type>
       <component-class>com.icesoft.faces.component.portlet.Portlet</component-class>
+    </component>
+
+    <component>
+        <component-type>com.icesoft.faces.OutputMedia</component-type>
+        <component-class>com.icesoft.faces.component.outputmedia.OutputMedia</component-class>
     </component>
 
   <!-- extended components -->
