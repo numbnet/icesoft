@@ -83,6 +83,7 @@ Ice.Resizable = Class.create({
     }
     this.source.style.backgroundColor = "green";
     this.source.style.left = Event.pointerX(event) + "px";
+    this.source.style.cursor="e-resize";
   },
 
 
@@ -119,6 +120,7 @@ Ice.Resizable = Class.create({
     this.source.style.left= Event.pointerX(event) + "px";
     this.source.style.backgroundColor = "#EFEFEF";
     this.source.style.border = "none";
+    this.enableTextSelection();
   },
 
   getDifference: function(event) {
@@ -133,9 +135,17 @@ Ice.Resizable = Class.create({
   },
 
   disableTextSelection:function() {
+    this.getContainerElement().onselectstart = function () { return false; }
     this.source.style.unselectable = "on";
     this.source.style.MozUserSelect = "none";
     this.source.style.KhtmlUserSelect ="none";
+  },
+  
+    enableTextSelection:function() {
+    this.getContainerElement().onselectstart = function () { return true; }
+    this.source.style.unselectable = "";
+    this.source.style.MozUserSelect = "";
+    this.source.style.KhtmlUserSelect = "";
   }
 });
 

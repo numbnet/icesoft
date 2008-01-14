@@ -220,7 +220,8 @@ public class TableRenderer
                                           (UIColumn) nextColumn, tr, domContext,
                                           facet, element, width,
                                           columnIndex,
-                                          styleIndex);
+                                          styleIndex,
+                                          !childColumns.hasNext());
                     columnIndex++;
                 } else if (nextColumn instanceof UIColumns) {
                     columnIndex = processUIColumnsHeader(facesContext,
@@ -360,12 +361,14 @@ public class TableRenderer
                                        UIColumn nextColumn, Element tr,
                                        DOMContext domContext, String facet,
                                        String element, String width, int columnIndex,
-                                       int styleIndex)
+                                       int styleIndex,
+                                       boolean lastChild)
             throws IOException {
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         Element th = domContext.createElement(element);
         tr.appendChild(th);
-        if (htmlDataTable.isResizable()) {
+        
+        if (htmlDataTable.isResizable() && !lastChild) {
             Element handlerTd = domContext.createElement(element);
             handlerTd.setAttribute("valign", "top");
             handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
