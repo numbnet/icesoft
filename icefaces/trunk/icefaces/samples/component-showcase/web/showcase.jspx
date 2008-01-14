@@ -251,6 +251,13 @@
                 </f:subview>
             </ice:panelGroup>
 
+            <ice:panelGroup id="resizableColumnsContentPanel" >
+                <f:subview id="rcolSub">
+                    <!-- Table include -->
+                    <jsp:directive.include file="./inc/components/resizableColumns.jspx" />
+                </f:subview>
+            </ice:panelGroup>        
+
             <ice:panelGroup id="tableExpandableContentPanel" >
                 <f:subview id="teSub">
                     <!-- Expandable Table include -->

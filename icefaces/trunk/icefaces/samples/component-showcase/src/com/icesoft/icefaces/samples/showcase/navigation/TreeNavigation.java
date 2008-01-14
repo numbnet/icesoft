@@ -547,6 +547,21 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);                
                 
+                // component menu -> Table -> resizable columns
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.tableResizableColumnsSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.tableResizableColumnsSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/resizableColumns.jspx");
+                branchObject.setTemplateName("resizableColumnsContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode2.add(leafNode);  
+                
                 // component menu -> Chart
                 branchObject = new PageContentBean();
                 branchObject.setExpanded(false);
