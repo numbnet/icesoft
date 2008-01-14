@@ -14,7 +14,7 @@
     <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
     
     <ice:form id="bidderForm" styleClass="edit">
-	<ice:panelAccordion expanded="#{userList.openStatus}" styleClass="accordion2"
+	<ice:panelCollapsible expanded="#{userList.openStatus}" 
 				actionListener="#{userList.toggle}" >
 	   <f:facet name="header">
            <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
@@ -51,7 +51,7 @@
             </ice:panelGrid>
    
 	</ice:panelGroup>
-   </ice:panelAccordion>
+   </ice:panelCollapsible>
         
         <div class="actionButtons">
             <ice:commandButton id="search" value="Search" action="/UserList.xhtml"/>

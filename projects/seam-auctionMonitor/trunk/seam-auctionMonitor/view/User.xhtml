@@ -14,8 +14,8 @@
         <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
 
 
-        <ice:panelAccordion expanded="#{userHome.openStatus}" styleClass="accordion2"
-                            actionListener="#{userHome.toggle}">
+        <ice:panelCollapsible expanded="#{userHome.openStatus}" 
+                           actionListener="#{userHome.toggle}">
             <f:facet name="header">
                 <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
                     <ice:outputText value="userHome"/>
@@ -35,7 +35,7 @@
                     <div style="clear:both"/>
                 </ice:panelGrid>
             </ice:panelGroup>
-        </ice:panelAccordion>
+        </ice:panelCollapsible>
 
         <div class="actionButtons">
 

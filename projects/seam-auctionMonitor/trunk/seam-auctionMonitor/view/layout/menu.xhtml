@@ -1,17 +1,17 @@
-<div class="menuButtons"
-     xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:ice="http://www.icesoft.com/icefaces/component"
-     xmlns:s="http://jboss.com/products/seam/taglib">
-    <ice:panelGrid columns="2" columnClasses="leftMenu,rightMenu">
-        <ice:panelGroup>
-            <ice:outputText value="#{projectName}:"/>
-            <s:link view="/home.xhtml" value="Home"/>
-            <s:link view="/AuctionitemList.xhtml"
-                    value="Auction Item List"
-                    propagation="none" rendered="#{identity.loggedIn}"/>
+<div class="menuButtons" 
+		xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ice="http://www.icesoft.com/icefaces/component"  
+		xmlns:s="http://jboss.com/products/seam/taglib">
+                   <ice:panelGrid id="menuPanelGrid" columns="2" columnClasses="leftMenu,rightMenu">
+                            <ice:panelGroup id="menuPanelGroupLeft" >                                       
+                                <h:outputText id="menuProjectName" value="#{projectName}:"/>
+                                <s:link id="menuHomeId" view="/home.xhtml" value="Home"/>
+             <s:link view="/main.xhtml"
+                    value="View Manager Page"
+                    propogation="none"/>
             <s:link view="/BidList.xhtml"
                     value="Bid List (admin only)" disabled="#{!s:hasRole('admin')}"
                     propagation="none" rendered="#{identity.loggedIn}"/>
@@ -26,4 +26,6 @@
             <s:link view="/home.xhtml" action="#{identity.logout}" value="Logout" rendered="#{identity.loggedIn}"/>
         </ice:panelGroup>
     </ice:panelGrid>
+
+      
 </div>

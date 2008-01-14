@@ -14,7 +14,7 @@
 <h:messages globalOnly="true" styleClass="message" id="globalMessages"/>
 
 <ice:form id="bidForm" styleClass="edit">
-    <ice:panelAccordion styleClass="accordion2" expanded="true">
+    <ice:panelCollapsible styleClass="accordion2" expanded="true">
         <f:facet name="header">
             <ice:outputText value="Bid Search"/>
         </f:facet>
@@ -29,7 +29,7 @@
                 <ice:inputText value="#{exampleBid.bidValue}"/>
             </ice:panelGrid>
         </ice:panelGroup>
-    </ice:panelAccordion>
+    </ice:panelCollapsible>
 
     <div class="actionButtons">
         <ice:commandButton value="Search" action="/BidList.xhtml"/>

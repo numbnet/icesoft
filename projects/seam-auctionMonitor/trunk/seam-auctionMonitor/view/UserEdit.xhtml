@@ -15,7 +15,7 @@
 
 <ice:form id="biddereditForm" styleClass="edit">
 
-<ice:panelAccordion expanded="#{userHome.openStatus}" styleClass="accordion2"
+<ice:panelCollapsible expanded="#{userHome.openStatus}" 
                     actionListener="#{userHome.toggle}">
     <f:facet name="header">
         <ice:panelGrid id="accordionHeaderStyle" columns="2" columnClasses="leftMenu,rightMenu">
@@ -99,7 +99,7 @@
             </ice:panelGrid>
         </s:validateAll>
     </ice:panelGroup>
-</ice:panelAccordion>
+</ice:panelCollapsible>
 
 <div class="actionButtons">
 

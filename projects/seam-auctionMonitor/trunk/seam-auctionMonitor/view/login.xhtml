@@ -8,21 +8,27 @@
                 xmlns:ice="http://www.icesoft.com/icefaces/component"
                 template="layout/template.xhtml">
 
-    <ui:define name="body">
-        <!--<h:messages globalOnly="true" styleClass="message"/>-->
-        <ice:panelGrid columns="2" columnClasses="leftMenu,leftMenu">
-            <img src="img/ICEfaces-logo.gif" alt="Icefaces and Seam: AuctionMonitor"/>
-            <ice:panelGroup>
-                <p> Welcome to seam-auctionMonitor. 
-                    This ICEfaces 1.7 + Seam 2.0.0.GA enabled Application
-                </p>             
-            </ice:panelGroup>
-     
-        </ice:panelGrid>
- 
-        <h:messages styleClass="message"/>
+  <ui:define name="body">
 
-     <div class="loginHeader">
+      <s:link view="/home.xhtml" propagation="none"><div class="icefaces-logo"></div></s:link>
+  
+      <br class="clear"/>
+  
+      <table width="100%" cellspacing="0" cellpadding="0" class="colourBar">
+        <tr>
+          <td class="lc1"/>
+          <td class="lc2"/>
+          <td class="lc3"/>
+          <td class="lc4"/>
+          <td class="lc5"/>
+          <td class="lc6"/>
+          <td class="lc7"/>
+        </tr>
+      </table>
+     
+      <h:messages globalOnly="true"/>
+      
+      <div class="loginHeader">
         Must Log In To Bid On An Item
       </div>
       
@@ -78,7 +84,6 @@
       <hr class="thinLine"/>
       
       <hr class="baseLine"/>
-     
-
-    </ui:define>
+      
+ </ui:define>
 </ui:composition>

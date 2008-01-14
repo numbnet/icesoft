@@ -1,0 +1,156 @@
+
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                template="layout/template.xhtml">
+
+		<ui:define name="body">
+		
+
+		<h:messages globalOnly="true" styleClass="message"
+				id="globalMessages" /> 
+
+		<div id="resultsDiv" rendered="#{not empty searchItems}">
+			   <ice:form id="bidForm" >
+				 <ice:dataTable cellspacing="1" styleClass="bidTable"
+					value="#{searchItems}" var="item"
+					rowClasses="rowClass1,rowClass2" id="iceTable">
+					<!--  Title -->
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText id="itemTitle" value="Title" />
+						</f:facet>
+						<ice:panelGrid columns="2" >
+							<ice:graphicImage id="itemImageIcon"
+								value="#{item.auctionitem.imageFile}" style="border: 0px solid;" 
+								title="#{item.auctionitem.description}"/>
+							<ice:outputText id="title" value="#{item.auctionitem.title}" />
+						</ice:panelGrid>
+					</ice:column>
+
+					<!--  contract/expand column -->
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="Bid Count/BidHistory" />
+						</f:facet>
+						<ice:panelGroup id="bidHistoryDetail" width="180px">
+							<ice:panelGrid columns="2" styleClass="groupRowIndentStyle">
+								<!--  render the expand/contract if there is an image -->
+								<ice:commandLink id="expandCmdLnk"
+									actionListener="#{item.pressExpandButton}">
+									<ice:graphicImage id="expandContractImage"
+										value="#{item.expandTriangleImage}"
+										style="border: 0px solid;" />
+								</ice:commandLink>
+								<ice:outputText value="#{item.auctionitem.bidCount}" />
+							</ice:panelGrid>
+							<ice:panelGroup id="bidHistoryNested"
+								rendered="#{item.expanded}">
+								<ice:dataTable id="nestedTable" scrollable="true"
+									value="#{item.auctionitem.viewbids}" var="hist"
+									rendered="#{not empty item.auctionitem.bids}">
+									<ice:column id="nestedUser">
+										<f:facet name="header">
+											<ice:outputText value="User" />
+										</f:facet>
+										<ice:outputText value="#{hist.user}" />
+									</ice:column>
+									<ice:column id="nestedBidValue">
+										<f:facet name="header">
+											<ice:outputText value="BidValue" />
+										</f:facet>
+										<ice:outputText value="#{hist.bidValue}">
+											<f:convertNumber type="currency" currencySymbol="$" />
+										</ice:outputText>
+									</ice:column>
+									<ice:column id="nestedTime">
+										<f:facet name="header">
+											<ice:outputText value="TimeStamp" />
+										</f:facet>
+										<ice:outputText value="#{hist.timestamp}">
+											<s:convertDateTime type="both" dateStyle="full" />
+										</ice:outputText>
+									</ice:column>
+								</ice:dataTable>
+			
+								<div rendered="#{empty item.auctionitem.bids}">
+								    <ice:outputText value="No bids for this item"/>
+								</div>
+							</ice:panelGroup>
+						</ice:panelGroup>
+					</ice:column>
+					<!-- Time Remaining -->
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="TimeRemaining" />
+						</f:facet>
+						<ice:panelGroup>
+							<ice:outputText value="#{item.timeLeftString}"
+								style="display: inherit;">
+							</ice:outputText>
+						</ice:panelGroup>
+					</ice:column>
+					<!-- Current Price -->
+					<ice:column>
+					   <f:facet name="header">
+					      <ice:outputText value="CurrentPrice"/>
+					   </f:facet>
+					   <ice:panelGroup>
+					      <ice:outputText value="#{item.bid.bidValue}" effect="#{item.bidEffect}">
+					         <f:convertNumber type="currency" currencySymbol="$"/>
+					      </ice:outputText>
+					      <ice:outputText value="min bid= #{item.minBid}">
+					         <f:convertNumber type="currency" currencySymbol="$"/>
+					      </ice:outputText>
+
+					   </ice:panelGroup>
+					</ice:column>
+					<!-- Bid action -->
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="Action" />
+						</f:facet>
+						<ice:panelGroup rendered="#{!item.bidding}">
+							<s:link value="Bid" action="#{bidAction.selectItem(item)}"
+								rendered="#{!item.expired}" />
+							<ice:outputText value="EXPIRED" rendered="#{item.expired}"
+								styleClass="#{item.expiredStyleClass}" />
+						</ice:panelGroup>
+						 <ice:panelGroup rendered="#{item.owner}">
+					          &smiley; you win
+					      </ice:panelGroup>
+					      <ice:panelGroup rendered="#{not item.owner}">
+					          &sadsmiley;  bid Again
+					      </ice:panelGroup>
+						<!-- or -->
+						<ice:panelGroup rendered="#{not item.expired}">
+							<ice:inputText id="item_localBid" value="#{item.bidInput}"
+								size="6" style="text-align:right" />
+							<ice:commandButton id="image_button_bid_accept"
+								image="img/button_bid_accept.gif"
+								title="Place a bid on '#{item.auctionitem.title}'"
+								action="#{bidAction.bid(item)}"
+								style="border: 0px;width: 15px;height:15px;" />
+							<ice:commandButton id="image_button_bid_decline" immediate="true"
+								image="img/button_bid_decline.gif" action="#{bidAction.cancel}"
+								style="border: 0px;width: 15px;height:15px" />
+
+						</ice:panelGroup>
+					</ice:column>
+
+				</ice:dataTable>
+				
+			 </ice:form>
+			</div>
+		<s:button view="/main.xhtml" propagation="none" value="createNewView"/>
+        <ice:outputText value="#{auctionView.cid}"/>
+        <ice:outputText value="#{auctionView.viewName}"/>
+		</ui:define>
+
+	</ui:composition>
