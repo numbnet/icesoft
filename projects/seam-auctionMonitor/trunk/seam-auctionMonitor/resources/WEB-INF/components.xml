@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <components xmlns="http://jboss.com/products/seam/components"
             xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
             xmlns:drools="http://jboss.com/products/seam/drools"
-            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:transaction="http://jboss.com/products/seam/transaction"
             xmlns:fwk="http://jboss.com/products/seam/framework"
+            xmlns:security="http://jboss.com/products/seam/security"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation=
-                    "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-1.1.xsd
-                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-1.1.xsd
-                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-1.1.xsd
-                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-1.1.xsd">
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.0.xsd 
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.0.xsd 
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.0.xsd
+                 http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.0.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.0.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.0.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
-    <core:init debug="true" jndi-pattern="@jndiPattern@"/>
+    <core:init debug="true" jndi-pattern="seam-auctionMonitor/#{ejbName}/local"/>
 
     <component scope="APPLICATION" auto-create="true" name="renderManager"
                class="com.icesoft.faces.async.render.RenderManager"/>
 
     <core:manager concurrent-request-timeout="500"
                   conversation-timeout="3600000"
-                  conversation-id-parameter="cid"
-                  conversation-is-long-running-parameter="clr"/>
+                  conversation-id-parameter="cid"/>
 
-    <core:managed-persistence-context name="entityManager"
-                                      auto-create="true"
-                                      persistence-unit-jndi-name="java:/seam-auctionMonitorEntityManagerFactory"/>
-
-    <core:ejb installed="@embeddedEjb@"/>
-
-    <!-- add this in for noConversationViewID -->
-    <component name="org.jboss.seam.core.pages">
-        <property name="noConversationViewId">/AuctionitemList.xhtml</property>
-    </component>
+   <persistence:managed-persistence-context name="entityManager"
+                                     auto-create="true"
+                      persistence-unit-jndi-name="java:/seam-auctionMonitorEntityManagerFactory"/>
 
     <!-- next stuff is auto generated and we can use it if we want to implement the security rules  -->
     <drools:rule-base name="securityRules">
@@ -45,11 +42,12 @@
                        remember-me="true"/>
 
     <event type="org.jboss.seam.notLoggedIn">
-        <action expression="#{redirect.captureCurrentView}"/>
+        <action execute="#{redirect.captureCurrentView}"/>
     </event>
+    
     <event type="org.jboss.seam.postAuthenticate">
-        <action expression="#{redirect.returnToCapturedView}"/>
-    </event>
+        <action execute="#{redirect.returnToCapturedView}"/>
+    </event>    
 
     <component name="exampleUser" class="com.icesoft.eb.User"/>
     <component name="exampleItem" class="com.icesoft.eb.Auctionitem"/>
@@ -61,6 +59,8 @@
             <value>lower(b.auctionItem.title) like lower('%' + #{exampleItem.title} + '%')</value>
             <value>b.bidValue > #{exampleBid.bidValue}</value>
         </fwk:restrictions>
-    </fwk:entity-query>
+    </fwk:entity-query> 
 
+        
+      
 </components>
