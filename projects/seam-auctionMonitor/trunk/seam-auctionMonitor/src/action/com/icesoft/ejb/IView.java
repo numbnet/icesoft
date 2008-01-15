@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import com.icesoft.eb.AuctionitemBean;
 import com.icesoft.faces.async.render.Renderable;

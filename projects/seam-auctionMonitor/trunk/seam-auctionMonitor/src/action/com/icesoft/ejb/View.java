@@ -12,6 +12,7 @@ import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Transient;
 
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.Component;
@@ -26,6 +27,8 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Observer;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.TransactionPropagationType;
+import org.jboss.seam.annotations.Transactional;
 import org.jboss.seam.core.Conversation;
 
 import org.jboss.seam.annotations.Synchronized;
@@ -47,7 +50,7 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
-//@Synchronized(timeout=1000)
+ //@Synchronized(timeout=1000)
 @Stateful
 @Name("auctionView")
 @Scope(ScopeType.CONVERSATION)
@@ -58,7 +61,7 @@ public class View implements IView{
 	private boolean setup = false;
 	private boolean gotViewName= false;
 	
-	@PersistenceContext
+  @PersistenceContext
  	private EntityManager em;
 	
     
@@ -80,10 +83,12 @@ public class View implements IView{
 	private long pattern1=-1,pattern2=-1,pattern3=-1;
 	private Integer page=0;
 
-	@In
-	private FacesMessages facesMessages;
+//	@In
+//	private FacesMessages facesMessages;
+	
+	private String stringMsg="";
 	    
-	private transient List<AuctionitemBean> searchItems=null;
+	private transient List<AuctionitemBean> searchItems;
 	
 
 	@In(required=false)
@@ -120,6 +125,7 @@ public class View implements IView{
 		return this.auctionitemBean;
 	}
 	
+
 	@Factory(scope=ScopeType.STATELESS)
  	public List<AuctionitemBean> getSearchItems() {
     	loadList();
@@ -139,7 +145,7 @@ public class View implements IView{
 		//get old values of previous list for expanded
 		List<Boolean> expanded = getOldExpanded();
 //	    log.info("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
-		searchItems = new ArrayList();   
+		searchItems = new ArrayList<AuctionitemBean>();   
 //		doTestList();
 		List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
 		            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
@@ -174,7 +180,7 @@ public class View implements IView{
 //			 log.info("\t\t\t have some expanded values to update");
 			 for (int i=0;i<expanded.size();i++){
 				 searchItems.get(i).setExpanded(expanded.get(i));
-				 log.info("\t\t\t set i="+i+" to "+expanded.get(i));
+//				 log.info("\t\t\t set i="+i+" to "+expanded.get(i));
 			 }
 			 createViewName();
 		 }
@@ -288,12 +294,7 @@ public class View implements IView{
 	}
  //	public void setSearchString(String sIn){this.searchString=sIn;}
 
-	private String getSearchPattern(String searchString)
-	{
-	   return searchString==null ?
-	         "%" : '%' + searchString.toLowerCase().replace('*', '%') + '%';
-	}
-//	@End
+
 	public void removeView(){
 		cleanup();
 		log.info("after cleanup()");

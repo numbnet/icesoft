@@ -148,7 +148,7 @@ public class AuctionitemBean implements Serializable{
     
     public void pressExpandButton(ActionEvent e){  
         expanded = !expanded;
-    	System.out.println(" after pressExpandButton & expanded="+expanded);
+  //  	System.out.println(" after pressExpandButton & expanded="+expanded);
     }
     
     public String getExpandTriangleImage() {
@@ -304,21 +304,22 @@ public class AuctionitemBean implements Serializable{
     }  
     
     public boolean isOwner(){
-    	System.out.println("Bid owner is ="+bid.getUser().getUsername());
-    	if(this.user!=null)
-    		System.out.println("current user =" + this.user.getUsername());
-    	else {
-    		System.out.println("user is null");
+  //  	System.out.println("Bid owner is ="+bid.getUser().getUsername());
+ //   	if(this.user!=null)
+  //  		System.out.println("current user =" + this.user.getUsername());
+//    	else {
+    	if (user==null){
+  //  		System.out.println("user is null");
     		user = (User)Component.getInstance("user");
-    		if (user!=null)System.out.println(" got it anyways & user = "+user.getUsername());
-    		else System.out.println(" still null!!!");
+//    		if (user!=null)System.out.println(" got it anyways & user = "+user.getUsername());
+ //   		else System.out.println(" still null!!!");
     	}
     	
     	if (!this.auctionitem.getBids().isEmpty() || auctionitem.getBids()!=null){
     		//have bids on this item....see whose is the highest.
     		Bid bid = getMaxBid();
     		if (bid!=null){
-	    		System.out.println("owner of bid = "+bid.getUser().getUsername());
+	//    		System.out.println("owner of bid = "+bid.getUser().getUsername());
 	    		 if (bid.getUser().getUsername().equals(user.getUsername()))owner=true;
 	    		
     		}
@@ -332,16 +333,16 @@ public class AuctionitemBean implements Serializable{
     	
     	if (!auctionitem.getBids().isEmpty()){
     		b = auctionitem.getBids().get(0);
-    		System.out.println("in getMaxBid & bidValue="+b.getBidValue());
+//    		System.out.println("in getMaxBid & bidValue="+b.getBidValue());
     		for (int i=1; i<auctionitem.getBids().size(); i++){
-    			System.out.println(" i="+i+" bid is :"+auctionitem.getBids().get(i).getBidValue());
+//    			System.out.println(" i="+i+" bid is :"+auctionitem.getBids().get(i).getBidValue());
     		
     		
     			if (auctionitem.getBids().get(i).getBidValue() > b.getBidValue())
     				b=auctionitem.getBids().get(i);
     		}
     	}
-    	System.out.println("out of loop in getMaxBid");
+//    	System.out.println("out of loop in getMaxBid");
     	return b;
     }
     

@@ -25,6 +25,7 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.annotations.TransactionPropagationType;
 import org.jboss.seam.annotations.Transactional;
 
 import org.jboss.seam.ScopeType;
@@ -42,15 +43,15 @@ import com.icesoft.util.SeamUtilities;
 public class BidAction implements IBidAction, Serializable {
 	AuctionitemBean auctionitemBean;
 
-	@In(required=false) 
+	@In(create=true) 
 	@Out(required=false)
 	private Bid bid;
 
 	@PersistenceContext
 	private EntityManager em;
 	
-	@In(create=true)
-	private FacesMessages facesMessages;
+//	@In
+//	private FacesMessages facesMessages;
 	
 	@In
 	private User user;
@@ -70,15 +71,16 @@ public class BidAction implements IBidAction, Serializable {
 	    // Validate input
 	    if ( getBidInput() <= auctionitemBean.getBid().getBidValue() )
 	    {
-	           facesMessages.add("Bid must be higher than existing price");
+	    	log.info("Bid must be higher than existing price");
+//	           facesMessages.add("Bid must be higher than existing price");
 	     }
 	    else if ( getBidInput() > 999999 )
 	    {
-	    	facesMessages.add("Bid must be less than $1,000,000");
+//	    	facesMessages.add("Bid must be less than $1,000,000");
 	    }
 	    else if (getBidInput()-auctionitemBean.getBid().getBidValue() < auctionitemBean.getAuctionitem().getPrice() )
 	    {
-	    	facesMessages.add("Bids on this item must be in increments of " + auctionitemBean.getAuctionitem().getPrice());
+//	    	facesMessages.add("Bids on this item must be in increments of " + auctionitemBean.getAuctionitem().getPrice());
 	    }
 	    else{
 	    	log.info("VALID BID !!!!! of "+getBidInput());
@@ -105,8 +107,10 @@ public class BidAction implements IBidAction, Serializable {
 				em.flush();
 				String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
 				log.info("before calling new render for this item's group="+renderGroup);
+//				Transaction.instance().commit();
 				makeRenderCall(renderGroup);
-				facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+//				facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
+				log.info("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
 
 		    }catch (Exception e){
 		    	log.info("OK....>>>>> SOMETHING WRONG WITH BID!!!");
@@ -115,12 +119,16 @@ public class BidAction implements IBidAction, Serializable {
 	    }    
 	}
 	
- //   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+//    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+//    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	@Transactional(TransactionPropagationType.REQUIRED)
     public void makeRenderCall(String renderGroup){
    // 	SeamUtilities.setCid(Manager.instance().getCurrentConversationId());
-    	renderManager.getOnDemandRenderer(renderGroup).requestRender();
-    	log.info("at end of makeRenderCall & cid="+Manager.instance().getCurrentConversationId());
+    	try{
+ //   	    Transaction.instance().begin();
+    	    renderManager.getOnDemandRenderer(renderGroup).requestRender();
+    	    log.info("\t\tEND of makeRenderCall & cid="+Manager.instance().getCurrentConversationId());
+    	}catch (Exception e){log.info("problem with making the render Call ");}
     }
     
 
