@@ -106,6 +106,15 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
+        Enumeration headerParameterNames = request.getHeaderNames();
+        while (headerParameterNames.hasMoreElements()) {
+            String name = (String) headerParameterNames.nextElement();
+            requestHeaderMap.put(name, request.getHeader(name));
+            // there is no getHeaderValues equivalent in the servletRequest!
+            // A case of overexuberant method copying in the ExternalContext api?
+            requestHeaderValuesMap.put(name, request.getHeader(name));
+        }
+
         if (persistSeamKey) setSeamLifecycleShortcut();
 
         Cookie[] cookies = request.getCookies();
@@ -188,11 +197,11 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public Map getRequestHeaderMap() {
-        return Collections.EMPTY_MAP;
+        return requestHeaderMap;
     }
 
     public Map getRequestHeaderValuesMap() {
-        return Collections.EMPTY_MAP;
+        return requestHeaderValuesMap;
     }
 
     public Locale getRequestLocale() {
