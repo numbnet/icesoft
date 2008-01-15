@@ -43,7 +43,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             Log.debug("Acegi Security not detected.");
         }
     }
-
+                                        
     private final ServletContext context;
     private final HttpSession session;
     private AuthenticationVerifier authenticationVerifier;
@@ -88,6 +88,7 @@ public class ServletExternalContext extends BridgeExternalContext {
     public void update(HttpServletRequest request, HttpServletResponse response) {
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
+
         recreateParameterAndCookieMaps();
         //#2139 removed call to insert postback key here.
         Enumeration parameterNames = request.getParameterNames();
@@ -95,6 +96,15 @@ public class ServletExternalContext extends BridgeExternalContext {
             String name = (String) parameterNames.nextElement();
             requestParameterMap.put(name, request.getParameter(name));
             requestParameterValuesMap.put(name, request.getParameterValues(name));
+        }
+
+        Enumeration headerParameterNames = request.getHeaderNames();
+        while (headerParameterNames.hasMoreElements()) {
+            String name = (String) headerParameterNames.nextElement();
+            requestHeaderMap.put(name, request.getHeader(name));
+            // there is no getHeaderValues equivalent in the servletRequest!
+            // A case of overexuberant method copying in the ExternalContext api?
+            requestHeaderValuesMap.put(name, request.getHeader(name));
         }
 
         ((ServletEnvironmentRequest) initialRequest).setParameters(request);
@@ -147,14 +157,12 @@ public class ServletExternalContext extends BridgeExternalContext {
         };
     }
 
-    //todo: implement!
     public Map getRequestHeaderMap() {
-        return Collections.EMPTY_MAP;
+        return requestHeaderMap;
     }
 
-    //todo: implement!
     public Map getRequestHeaderValuesMap() {
-        return Collections.EMPTY_MAP;
+        return requestHeaderValuesMap;
     }
 
     public Locale getRequestLocale() {
