@@ -101,10 +101,8 @@ public class ServletExternalContext extends BridgeExternalContext {
         Enumeration headerParameterNames = request.getHeaderNames();
         while (headerParameterNames.hasMoreElements()) {
             String name = (String) headerParameterNames.nextElement();
-            requestHeaderMap.put(name, request.getHeader(name));
-            // there is no getHeaderValues equivalent in the servletRequest!
-            // A case of overexuberant method copying in the ExternalContext api?
-            requestHeaderValuesMap.put(name, request.getHeader(name));
+            requestHeaderMap.put(name, request.getHeader(name));            
+            requestHeaderValuesMap.put(name, request.getHeaders(name));
         }
 
         ((ServletEnvironmentRequest) initialRequest).setParameters(request);
