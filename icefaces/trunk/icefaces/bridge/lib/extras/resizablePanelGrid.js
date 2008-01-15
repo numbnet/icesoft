@@ -53,7 +53,8 @@ Ice.Resizable = Class.create({
     this.origionalHeight = this.source.style.height;
     this.disableTextSelection();
     this.source.style.backgroundColor = "green";
-    this.source.style.border= "1px dashed"; 
+    this.source.style.border= "1px dashed";
+    this.deadPoint = 20;
   },
 
   print: function(msg) {
@@ -70,13 +71,13 @@ Ice.Resizable = Class.create({
     var diff = this.getDifference(event);
     if (this.resizeAction == "dec") {
     var leftElementWidth = Element.getWidth(this.getPreviousElement());
-        if ((leftElementWidth - diff) < 20) {
+        if ((leftElementWidth - diff) < this.deadPoint) {
            this.source.style.backgroundColor = "red";
            return;
         }
     } else {
         var rightElementWidth = Element.getWidth(this.getNextElement());
-        if ((rightElementWidth - diff) < 20) {
+        if ((rightElementWidth - diff) < this.deadPoint) {
            this.source.style.backgroundColor = "red";
            return;
         }
@@ -90,7 +91,21 @@ Ice.Resizable = Class.create({
   detachEvent: function(event) {
     //restore height
     this.source.style.height =  this.origionalHeight;
+    if (this.getDifference(event) > 0) {
+        this.adjustPosition(event);
+    }
 
+    Event.stopObserving(document, "mousemove", this.eventMouseMove);
+    Event.stopObserving(document, "mouseup", this.eventMouseUp);
+
+    this.source.style.position = "";
+    this.source.style.left= Event.pointerX(event) + "px";
+    this.source.style.backgroundColor = "#EFEFEF";
+    this.source.style.border = "none";
+    this.enableTextSelection();
+  },
+
+  adjustPosition:function(event) {
     var leftElementWidth = Element.getWidth(this.getPreviousElement());
     var rightElementWidth = Element.getWidth(this.getNextElement());
     var tableWidth = Element.getWidth(this.getContainerElement());
@@ -113,14 +128,6 @@ Ice.Resizable = Class.create({
 
   //      this.getContainerElement().style.width = tableWidth - diff + "px";
     }
-    Event.stopObserving(document, "mousemove", this.eventMouseMove);
-    Event.stopObserving(document, "mouseup", this.eventMouseUp);
-
-    this.source.style.position = "";
-    this.source.style.left= Event.pointerX(event) + "px";
-    this.source.style.backgroundColor = "#EFEFEF";
-    this.source.style.border = "none";
-    this.enableTextSelection();
   },
 
   getDifference: function(event) {
@@ -140,7 +147,7 @@ Ice.Resizable = Class.create({
     this.source.style.MozUserSelect = "none";
     this.source.style.KhtmlUserSelect ="none";
   },
-  
+
     enableTextSelection:function() {
     this.getContainerElement().onselectstart = function () { return true; }
     this.source.style.unselectable = "";
