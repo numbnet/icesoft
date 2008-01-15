@@ -106,14 +106,19 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestParameterValuesMap.put(name, request.getParameterValues(name));
         }
 
-        Enumeration headerParameterNames = request.getHeaderNames();
-        while (headerParameterNames.hasMoreElements()) {
-            String name = (String) headerParameterNames.nextElement();
-            requestHeaderMap.put(name, request.getHeader(name));
-            // there is no getHeaderValues equivalent in the servletRequest!
-            // A case of overexuberant method copying in the ExternalContext api?
-            requestHeaderValuesMap.put(name, request.getHeader(name));
-        }
+
+        Object req = request.getAttribute("javax.portlet.request");
+
+        if ((req != null) && (req instanceof PortletRequest) ) {
+            PortletRequest portletRequest = (PortletRequest) req; 
+
+            Enumeration propertyNames = portletRequest.getPropertyNames();
+            while (propertyNames.hasMoreElements()) {
+                String name = (String) propertyNames.nextElement();
+                requestHeaderMap.put(name, portletRequest.getProperty(name));
+                requestHeaderValuesMap.put(name, portletRequest.getProperties(name));
+            }
+        } 
 
         if (persistSeamKey) setSeamLifecycleShortcut();
 
