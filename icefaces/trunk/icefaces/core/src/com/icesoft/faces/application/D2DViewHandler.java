@@ -130,6 +130,13 @@ public class D2DViewHandler extends ViewHandler {
         this.delegate = delegate;
     }
 
+    public void initView(FacesContext facesContext)  {
+        //TODO implement ExternalContext.setRequestCharacterEncoding
+        //so that this method can use the default implementation on
+        //JSF 1.2
+        //super.initView(facesContext);
+    }
+
     // Render the components
     public void renderView(FacesContext context, UIViewRoot viewToRender)
             throws IOException, FacesException {
