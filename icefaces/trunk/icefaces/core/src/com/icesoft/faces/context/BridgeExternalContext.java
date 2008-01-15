@@ -129,6 +129,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected Map requestParameterValuesMap;
     protected Map requestCookieMap;
     protected Map responseCookieMap;
+    protected Map requestHeaderMap;
+    protected Map requestHeaderValuesMap;
 
     protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration) {
         this.viewIdentifier = viewIdentifier;
@@ -333,6 +335,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
         requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
         requestCookieMap = Collections.synchronizedMap(new HashMap());
         responseCookieMap = Collections.synchronizedMap(new HashMap());
+        requestHeaderMap =  Collections.synchronizedMap(new HashMap());
+        requestHeaderValuesMap =  Collections.synchronizedMap(new HashMap());
     }
 
     public interface Redirector {
