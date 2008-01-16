@@ -278,5 +278,7 @@ public class UIColumn extends javax.faces.component.UIColumn {
         this.groupedTd = groupedTd;
     }
     
-    
+    public void resetGroupState() {
+        previousGroupValue = null;
+    }
 }

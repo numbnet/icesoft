@@ -510,13 +510,13 @@ public class TableRenderer
         String columnStyles[] = getColumnStyleClasses(uiComponent);
         int columnStyleIndex;
         int columnStylesMaxIndex = columnStyles.length - 1;
+        resetGroupState(uiData);
         while (uiData.isRowAvailable()) {
             columnStyleIndex = 0;
             String selectedClass = null;
             if (rowStylesMaxIndex >= 0) {
                selectedClass = rowStyles[rowStyleIndex];
             }
-            
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound && toggleOnClick) {
@@ -856,4 +856,13 @@ public class TableRenderer
         }
     }
     
+    void resetGroupState(UIComponent uiComponent) {
+        Iterator childs = uiComponent.getChildren().iterator();
+        while(childs.hasNext()) {
+            UIComponent child = (UIComponent) childs.next();
+            if (child instanceof com.icesoft.faces.component.ext.UIColumn) {
+                ((com.icesoft.faces.component.ext.UIColumn)child).resetGroupState();
+            }
+        }
+    }
 }
