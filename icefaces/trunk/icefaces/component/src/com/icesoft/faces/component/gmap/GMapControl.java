@@ -50,14 +50,21 @@ public class GMapControl extends UIPanel{
     public void encodeBegin(FacesContext context) throws IOException {
         String currentName = getName();
         String mapClientId = this.getParent().getClientId(context); 
+        if (!isRendered()) {
+            removeControl(context, mapClientId);
+            return;
+        }
         if (localeName != null && !localeName.equalsIgnoreCase(currentName)) {
             //control name has been changed so removed the previous control
-            JavascriptContext.addJavascriptCall(context, 
-                  "Ice.GoogleMap.removeControl('"+ mapClientId +"', '"+ localeName +"');");
+            removeControl(context, mapClientId);
         }
         localeName = currentName;
         JavascriptContext.addJavascriptCall(context, 
         "Ice.GoogleMap.addControl('"+ mapClientId +"', '"+ currentName +"');");
     }
     
+    private void removeControl(FacesContext facesContext, String mapId) {
+        JavascriptContext.addJavascriptCall(facesContext, 
+                "Ice.GoogleMap.removeControl('"+ mapId +"', '"+ localeName +"');");
+    }
 }
