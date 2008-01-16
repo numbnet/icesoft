@@ -166,6 +166,11 @@
         </concat>
     </target>
 
+    <target name="do.compress" unless="no-compress">
+        <echo message="Compressing ..."/>
+        <compress src="${src.script}"/>
+    </target>
+
     <target name="build" depends="build.base"
             description="Collate code for community edition">
         <concat destfile="${script}" append="yes" fixlastline="yes">
@@ -176,7 +181,9 @@
                 <file name="application.js"/>
             </filelist>
         </concat>
-        <compress src="${script}"/>
+        <ant target="do.compress" inheritAll="true">
+            <property name="src.script" value="${script}"/>
+        </ant>
         <echo message="Appending open ajax script"/>
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <path location="${script.open.ajax}"/>
@@ -241,7 +248,9 @@
                 <file name="menu.js"/>
             </filelist>
         </concat>
-        <compress src="${extras.script}"/>
+        <ant target="do.compress" inheritAll="true">
+            <property name="src.script" value="${extras.script}"/>
+        </ant>
         <echo message="Appending open ajax extras script"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <path location="${extras.script.open.ajax}"/>
@@ -277,7 +286,9 @@
                 <file name="OpenAjax.js"/>
             </filelist>
         </concat>
-        <compress src="${open.ajax.script}"/>
+        <ant target="do.compress" inheritAll="true">
+            <property name="src.script" value="${open.ajax.script}"/>
+        </ant>
     </target>
 
     <target name="clean">
