@@ -221,13 +221,32 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    
+    <target name="build.portlet.liferay.tomcat6.ahs.war" depends="compile" description="build a portlet application for Liferay Tomcat6.x with AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
+            <param name="el-ri" value=""/>
+            <param name="jsf12" value=""/>
+            <param name="liferay" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>   
+        </antcall>
+    </target>    
     <target name="build.portlet.liferay.tomcat5.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x without AHS">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf11" value=""/>
             <param name="liferay" value=""/>
+        </antcall>
+    </target>
+    <target name="build.portlet.liferay.tomcat5.ahs.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x with AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
+            <param name="el-ri" value=""/>
+            <param name="jsf11" value=""/>
+            <param name="liferay" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>            
         </antcall>
     </target>
     <target name="build.portlet.liferay.jboss4.0.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x without AHS">

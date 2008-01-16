@@ -29,7 +29,10 @@
     </patternset>
     
     <patternset id="portlet.jar" includes="portlet.jar"/>
-   
+    <patternset id="portlet.optional.jars">
+        <include name="el-ri.jar" if="el-ri"/>
+    </patternset>        
+    
     <patternset id="portlet.deploy.jars">
         <include name="icefaces-ahs.jar" if="icefaces.ahs.enabled"/>
     </patternset>
@@ -251,6 +254,7 @@
                     <patternset refid="common.icefaces.lib.jars.to.include"/>
                     <patternset refid="additional.icefaces.lib.jars.to.include"/>
                     <patternset refid="portlet.deploy.jars"/>
+                    <!--patternset refid="portlet.optional.jars"/-->
                 </fileset>
                 <fileset dir="${icefaces.lib.dir}">
                     <patternset refid="jsf.deploy.jars" />
