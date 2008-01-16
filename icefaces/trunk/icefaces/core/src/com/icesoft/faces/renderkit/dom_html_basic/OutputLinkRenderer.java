@@ -77,7 +77,7 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         UIOutput output = (UIOutput) uiComponent;
         String linkVal = getValue(facesContext, uiComponent);
 
-        
+
         if (!output.isRendered()) return;
 
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -92,7 +92,7 @@ public class OutputLinkRenderer extends DomBasicRenderer {
             writer.startElement("span", uiComponent);
         }
         writer.writeAttribute("id", uiComponent.getClientId(facesContext),
-                              "id");
+                "id");
 
         if (null == linkVal || 0 == linkVal.length()) {
             linkVal = "";
@@ -104,14 +104,15 @@ public class OutputLinkRenderer extends DomBasicRenderer {
 
         if (!checkDisabled(uiComponent)) {
             writer.writeURIAttribute("href",
-                                     facesContext
-                                             .getExternalContext().encodeResourceURL(
-                                             linkVal), "href");
-        } 
+                    facesContext
+                            .getExternalContext().encodeResourceURL(
+                            linkVal), "href");
+        }
 
         // ICE-2169
         PassThruAttributeWriter.renderAttributes(writer, uiComponent, new String[]{HTML.STYLE_ATTR});
-        boolean isVisible = ((Boolean) uiComponent.getAttributes().get("visible")).booleanValue();
+        Boolean visibleAttribute = (Boolean) uiComponent.getAttributes().get("visible");
+        boolean isVisible = visibleAttribute == null ? true : visibleAttribute.booleanValue();
         String style = (String) uiComponent.getAttributes().get(HTML.STYLE_ATTR);
         if (!isVisible) {
             if (style == null) {
@@ -141,7 +142,8 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         try {
             return disabled = Boolean.valueOf(String.valueOf(
                     uiComponent.getAttributes().get("disabled"))).booleanValue();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return disabled;
     }
 
