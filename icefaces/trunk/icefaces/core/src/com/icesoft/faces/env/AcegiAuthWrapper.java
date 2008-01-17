@@ -51,9 +51,12 @@ public class AcegiAuthWrapper implements AuthenticationVerifier {
     }
 
     public boolean isUserInRole(String role) {
-            if (Log.isTraceEnabled()) {
-        		Log.trace("ROLE: "+role);
-            }
+        if (null == authentication)  {
+            return false;
+        }
+        if (Log.isTraceEnabled()) {
+            Log.trace("isUserInRole ROLE: "+role);
+        }
         GrantedAuthority[] authorities = authentication.getAuthorities();
         if (authentication.getPrincipal() == null || authorities == null) {
             return false;

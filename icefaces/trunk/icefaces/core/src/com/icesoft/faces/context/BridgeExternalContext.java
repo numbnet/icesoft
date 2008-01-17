@@ -385,7 +385,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
+        if ( (AuthenticationClass != null)  &&  ((null == principal) || 
+                AuthenticationClass.isInstance(principal))  )  {
             return new AcegiAuthWrapper(principal);
         } else {
             return new AuthenticationVerifier() {

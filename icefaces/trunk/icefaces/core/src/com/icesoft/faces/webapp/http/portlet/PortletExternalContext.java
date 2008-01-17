@@ -318,7 +318,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     //but request is a PortletRequest
     private static AuthenticationVerifier createAuthenticationVerifier(final PortletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
+        if ( (AuthenticationClass != null)  &&  ((null == principal) || 
+                AuthenticationClass.isInstance(principal))  )  {
             return new AcegiAuthWrapper(principal);
         } else {
             return new AuthenticationVerifier() {
