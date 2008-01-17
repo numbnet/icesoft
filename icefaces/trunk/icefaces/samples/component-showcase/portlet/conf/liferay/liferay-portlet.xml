@@ -47,7 +47,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: Drag & Drop Portlet                   -->
+    <!-- ICEfaces Component-Showcase: Drag & Drop Portlet                    -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -182,14 +182,12 @@
     <!-- ICEfaces Component-Showcase: Progress Bar Portlet                   -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_progressBar</portlet-name>
         <instanceable>true</instanceable>
 		<render-weight>1</render-weight>
 		<ajaxable>false</ajaxable>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: File Upload Portlet                    -->
@@ -238,7 +236,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: Rich Text Editor Portlet      -->
+    <!-- ICEfaces Component-Showcase: Rich Text Editor Portlet               -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -249,7 +247,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap Address Attribute      -->
+    <!-- ICEfaces Component-Showcase: GMap Address Attribute                 -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -260,7 +258,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap Controls      -->
+    <!-- ICEfaces Component-Showcase: GMap Controls                          -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -271,7 +269,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap Find Address      -->
+    <!-- ICEfaces Component-Showcase: GMap Find Address                      -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -282,7 +280,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap GeoCoder      -->
+    <!-- ICEfaces Component-Showcase: GMap GeoCoder                          -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -293,7 +291,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap KML      -->
+    <!-- ICEfaces Component-Showcase: GMap KML                               -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -304,7 +302,7 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap Markers      -->
+    <!-- ICEfaces Component-Showcase: GMap Markers                           -->
     <!-- =================================================================== -->
 
     <portlet>

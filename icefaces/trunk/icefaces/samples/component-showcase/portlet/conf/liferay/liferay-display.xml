@@ -19,8 +19,8 @@
         <portlet id="components_table_dataPaging"/>
         <portlet id="components_table_expandableTable"/>
         <portlet id="components_table_tableRowSelection"/>
-<!--
         <portlet id="components_progressBar"/>
+<!--
         <portlet id="components_fileUpload"/>
 -->
         <portlet id="components_charts_charts"/>
