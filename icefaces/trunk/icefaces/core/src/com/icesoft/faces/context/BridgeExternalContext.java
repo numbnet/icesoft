@@ -38,6 +38,7 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.env.AuthenticationVerifier;
+import com.icesoft.faces.env.AcegiAuthWrapper;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
@@ -45,6 +46,8 @@ import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.util.SeamUtilities;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -53,6 +56,7 @@ import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -68,6 +72,18 @@ import java.util.Map;
  * environment that we're running in (e.g. servlets, portlets).
  */
 public abstract class BridgeExternalContext extends ExternalContext {
+    private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
+    protected static Class AuthenticationClass;
+
+    static {
+        try {
+            AuthenticationClass = Class.forName("org.acegisecurity.Authentication");
+            Log.debug("Acegi Security detected.");
+        } catch (Throwable t) {
+            Log.debug("Acegi Security not detected.");
+        }
+    }
+
     protected static final RequestAttributes NOOPRequestAttributes = new RequestAttributes() {
         public Object getAttribute(String name) {
             return null;
@@ -91,6 +107,9 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected static final AuthenticationVerifier UserInfoNotAvailable = new AuthenticationVerifier() {
         public boolean isUserInRole(String role) {
             throw new RuntimeException("Cannot determine if user in role. User information is not available.");
+        }
+        public boolean isReusable()  {
+            return true;
         }
     };
     protected static final Dispatcher RequestNotAvailable = new Dispatcher() {
@@ -363,5 +382,36 @@ public abstract class BridgeExternalContext extends ExternalContext {
             commandQueue.put(new SetCookie(cookie));
         }
     }
+
+    protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
+            return new AcegiAuthWrapper(principal);
+        } else {
+            return new AuthenticationVerifier() {
+                public boolean isUserInRole(String role) {
+
+                    if (Log.isTraceEnabled()) {
+                        Log.trace("request.isUserInRole(role) is " + role);
+                    }
+
+                    return request.isUserInRole(role);
+                }
+
+                public boolean isReusable()  {
+                    return false;
+                }
+            };
+        }
+    }
+
+    protected static AuthenticationVerifier releaseVerifier(
+            AuthenticationVerifier verifier)  {
+        if (verifier.isReusable())  {
+            return verifier;
+        }
+        return UserInfoNotAvailable;
+    }
+
 
 }

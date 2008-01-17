@@ -67,4 +67,12 @@ public class AcegiAuthWrapper implements AuthenticationVerifier {
 
         return false;
     }
+    
+    public boolean isReusable()  {
+        //this object can be re-used across multiple requests
+        //because it contains a reference to the Principal only,
+        //not the actual request object
+        return true;
+    }
+
 }

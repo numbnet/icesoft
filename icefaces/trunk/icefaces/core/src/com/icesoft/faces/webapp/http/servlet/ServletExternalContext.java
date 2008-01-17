@@ -1,7 +1,6 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
-import com.icesoft.faces.env.AcegiAuthWrapper;
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -33,16 +32,6 @@ import java.util.Set;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
-    private static Class AuthenticationClass;
-
-    static {
-        try {
-            AuthenticationClass = Class.forName("org.acegisecurity.Authentication");
-            Log.debug("Acegi Security detected.");
-        } catch (Throwable t) {
-            Log.debug("Acegi Security not detected.");
-        }
-    }
                                         
     private final ServletContext context;
     private final HttpSession session;
@@ -292,7 +281,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         //disable any changes on the request once the response was commited
         requestAttributes = NOOPRequestAttributes;
         dispatcher = RequestNotAvailable;
-        authenticationVerifier = UserInfoNotAvailable;
+        authenticationVerifier = releaseVerifier(authenticationVerifier);
     }
 
     /**
@@ -307,21 +296,4 @@ public class ServletExternalContext extends BridgeExternalContext {
         return val == null || val.trim().length() == 0 ? null : val;
     }
 
-    private static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
-        Principal principal = request.getUserPrincipal();
-        if (AuthenticationClass != null && AuthenticationClass.isInstance(principal)) {
-            return new AcegiAuthWrapper(principal);
-        } else {
-            return new AuthenticationVerifier() {
-                public boolean isUserInRole(String role) {
-
-                    if (Log.isTraceEnabled()) {
-                        Log.trace("request.isUserInRole(role) is " + role);
-                    }
-
-                    return request.isUserInRole(role);
-                }
-            };
-        }
-    }
 }
