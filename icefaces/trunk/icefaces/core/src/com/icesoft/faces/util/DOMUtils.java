@@ -51,6 +51,9 @@ import java.util.Vector;
 public class DOMUtils {
     private static int DEFAULT_DOM_STRING_PRESIZE = 4096;
     private static int DEFAULT_NODE_STRING_PRESIZE = 256;
+    private static String TAGS_THAT_CAN_CLOSE_SHORT =
+            "img, input, br, hr, meta, base, link, frame, col, area";
+
 
     public static String DocumentTypetoString(String publicID, String systemID,
                                               String root) {
@@ -109,10 +112,8 @@ public class DOMUtils {
 
             case Node.ELEMENT_NODE:
                 String name = node.getNodeName();
-                if (name.equalsIgnoreCase("br")) {
-                    stringbuffer.append("<br>");
-                    break;
-                }
+                //#2393 removed limited test for <br>
+                
                 stringbuffer.append("<");
                 stringbuffer.append(name);
                 NamedNodeMap attributes = node.getAttributes();
@@ -125,15 +126,12 @@ public class DOMUtils {
                     stringbuffer.append("\"");
                 }
 
-                //recognize empty elements and close them
-                //Fine for XML, but confuses some browsers
-                /*
-                if ( !node.hasChildNodes() )
-                {
-                    stringbuffer.append(" />\n");
+
+                // #2393 allow short closing of certain tags
+                if ( !node.hasChildNodes() && xmlShortClosingAllowed(node) ) {
+                    stringbuffer.append(" />");
                     break;
-                }
-                */
+                }                        
 
                 stringbuffer.append(">");
                 // recurse on each child
@@ -201,6 +199,19 @@ public class DOMUtils {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Check if short closing form is allowed. Short closing is of the form
+     * <code> <xxx /></code> 
+     * @param node Node
+     * @return true if allowed
+     */
+    private static boolean xmlShortClosingAllowed(Node node) {
+        short nodeType = node.getNodeType();
+        String nodeName = node.getNodeName().toLowerCase();
+        return (nodeType == Node.ELEMENT_NODE &&
+                TAGS_THAT_CAN_CLOSE_SHORT.indexOf(nodeName) > -1);
     }
 
     /* Return the first child of the given nodeName under the given node.
@@ -382,7 +393,6 @@ public class DOMUtils {
      * "false"
      *
      * @param uiComponent
-     * @param valueTextRequiresEscape
      * @return
      */
     public static boolean escapeIsRequired(UIComponent uiComponent) {
@@ -424,7 +434,7 @@ public class DOMUtils {
             } else if (ch == '"') {
                 buffer.append("&quot;");
             } else if (ch >= 0xA0 && ch <= 0xff) {
-                buffer.append("&" + escapeAnsi(ch) + ";");
+                buffer.append("&").append(escapeAnsi(ch)).append(";");
             } else if (ch == 0x20AC) {//special case for euro symbol
                 buffer.append("&euro;");
             } else {
