@@ -23,6 +23,7 @@
         <exclude name="web.sunri.icefaces.facelet.xml"/>
         <exclude name="web.sunri.icefaces.portlet.xml"/>
         <exclude name="web.sunri.icefaces.portlet.ahs.xml"/>
+        <exclude name="web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
         <exclude name="liferay-display.xml" unless="liferay"/>
         <exclude name="liferay-plugin-package.xml" unless="liferay"/>
         <exclude name="liferay-portlet.xml" unless="liferay"/>
