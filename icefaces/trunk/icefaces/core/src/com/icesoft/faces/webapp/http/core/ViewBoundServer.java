@@ -56,7 +56,7 @@ public class ViewBoundServer implements Server {
                 // via the updateOnXMLHttpRequest method on the view. Further, once HTTP-1
                 // releases the monitor and HTTP-2 gets it, the outbound thread can
                 // clear the requestMap member variable via view.release() below
-                synchronized(view) {
+                synchronized(view.getFacesContext()) {
                     try {
                         view.updateOnXMLHttpRequest(request);
                         sessionMonitor.touchSession();
