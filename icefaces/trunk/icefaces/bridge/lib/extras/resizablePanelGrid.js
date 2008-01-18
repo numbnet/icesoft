@@ -68,20 +68,7 @@ Ice.Resizable = Class.create({
   getNextElement: function() {},
 
   resize: function(event) {
-    var diff = this.getDifference(event);
-    if (this.resizeAction == "dec") {
-    var leftElementWidth = Element.getWidth(this.getPreviousElement());
-        if ((leftElementWidth - diff) < this.deadPoint) {
-           this.source.style.backgroundColor = "red";
-           return;
-        }
-    } else {
-        var rightElementWidth = Element.getWidth(this.getNextElement());
-        if ((rightElementWidth - diff) < this.deadPoint) {
-           this.source.style.backgroundColor = "red";
-           return;
-        }
-    }
+    if (this.deadEnd(event)) return;
     this.source.style.backgroundColor = "green";
     this.source.style.left = Event.pointerX(event) + "px";
     this.source.style.cursor="e-resize";
@@ -91,7 +78,7 @@ Ice.Resizable = Class.create({
   detachEvent: function(event) {
     //restore height
     this.source.style.height =  this.origionalHeight;
-    if (this.getDifference(event) > 0) {
+    if (this.getDifference(event) > 0 && !this.deadEnd(event)) {
         this.adjustPosition(event);
     }
 
@@ -139,6 +126,24 @@ Ice.Resizable = Class.create({
         this.resizeAction = "inc";
         return x -this.pointerLocation;
     }
+  },
+
+  deadEnd: function(event) {
+    var diff = this.getDifference(event);
+    if (this.resizeAction == "dec") {
+    var leftElementWidth = Element.getWidth(this.getPreviousElement());
+        if ((leftElementWidth - diff) < this.deadPoint) {
+           this.source.style.backgroundColor = "red";
+           return true;
+        }
+    } else {
+        var rightElementWidth = Element.getWidth(this.getNextElement());
+        if ((rightElementWidth - diff) < this.deadPoint) {
+           this.source.style.backgroundColor = "red";
+           return true;
+        }
+    }
+    return false;
   },
 
   disableTextSelection:function() {
