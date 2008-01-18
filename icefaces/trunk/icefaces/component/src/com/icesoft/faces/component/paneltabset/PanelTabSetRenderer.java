@@ -170,6 +170,18 @@ public class PanelTabSetRenderer
                                 HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]);
             }
         }
+        // ICE-2337
+        Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
+        if (visible != null && !visible.booleanValue()) {
+            String style = table.getAttribute(HTML.STYLE_ATTR);
+            if (style == null) {
+                style = "";
+            } else if (style.trim().length() > 0 && !style.trim().endsWith(";")) {
+                style += ";";
+            }
+            style += "display:none;";
+            table.setAttribute(HTML.STYLE_ATTR, style);
+        }
 
 //        table.removeAttribute(HTML.BGCOLOR_ATTR);
 
