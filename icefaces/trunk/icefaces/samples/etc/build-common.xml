@@ -160,7 +160,7 @@
             <mkdir dir="${app.lib.dir}"/>
             
             <javac destdir="${classes.dir}" sourcepath=""
-                   source="${compile.source}" target="${compile.target}" debug="${compile.debug}" failonerror="@failonerror"
+                   source="${compile.source}" target="${compile.target}" debug="${compile.debug}" failonerror="@{failonerror}"
             >
                 <src location="${src.dir}"/>
                 <include name="**/*.java"/>
@@ -214,6 +214,7 @@
                  webxml="${web.inf.dir}/web.xml" excludes="WEB-INF/web.xml">
                 <add.filesets/>
             </war>
+            
         </sequential>
     </macrodef>
     
@@ -396,7 +397,7 @@ Combinations:
         <antcall target="build.war">
             <param name="jsf12" value=""/>
         </antcall>
-        <antcall target="help"/>
+        <echo message="For Help Information, please use 'ant help'"/>
     </target>
     <target name="jetty6.1" description="build war file for Jetty 6.1">
         <antcall target="build.war">
