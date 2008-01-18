@@ -42,18 +42,15 @@ Ice.Resizable = Class.create({
 
     this.eventMouseMove = this.resize.bindAsEventListener(this);
     this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
-
-    this.resizeAction;
-
-    this.source.style.position = "absolute";
-    this.source.style.left= Event.pointerX(event) + "px";
-
     Event.observe(document, "mousemove", this.eventMouseMove);
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
     this.disableTextSelection();
-    this.source.style.backgroundColor = "green";
-    this.source.style.border= "1px dashed";
+
+    this.getGhost().style.position = "absolute";
+    this.getGhost().style.backgroundColor = "green";
+    this.getGhost().style.border= "1px dashed";
+
     this.deadPoint = 20;
   },
 
@@ -67,11 +64,15 @@ Ice.Resizable = Class.create({
 
   getNextElement: function() {},
 
+  getGhost:function() {
+    return this.source;
+  },
+
   resize: function(event) {
     if (this.deadEnd(event)) return;
-    this.source.style.backgroundColor = "green";
-    this.source.style.left = Event.pointerX(event) + "px";
-    this.source.style.cursor="e-resize";
+    this.getGhost().style.backgroundColor = "green";
+    this.getGhost().style.left = Event.pointerX(event) + "px";
+    this.getGhost().style.cursor="e-resize";
   },
 
 
@@ -165,6 +166,7 @@ Ice.ResizableGrid = Class.create(Ice.Resizable, {
   initialize: function($super, event) {
     $super(event);
     this.source.style.height = (Element.getHeight(this.getContainerElement())) + "px";
+    this.getGhost().style.left= Event.pointerX(event) + "px";
   }
 });
 
