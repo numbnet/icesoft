@@ -68,6 +68,13 @@ Ice.Resizable = Class.create({
     return this.source;
   },
 
+  finalize: function (event) {
+    this.source.style.position = "";
+    this.source.style.left= Event.pointerX(event) + "px";
+    this.source.style.backgroundColor = "#EFEFEF";
+    this.source.style.border = "none";
+  },
+
   resize: function(event) {
     if (this.deadEnd(event)) return;
     this.getGhost().style.backgroundColor = "green";
@@ -85,12 +92,8 @@ Ice.Resizable = Class.create({
 
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
     Event.stopObserving(document, "mouseup", this.eventMouseUp);
-
-    this.source.style.position = "";
-    this.source.style.left= Event.pointerX(event) + "px";
-    this.source.style.backgroundColor = "#EFEFEF";
-    this.source.style.border = "none";
     this.enableTextSelection();
+    this.finalize(event);
   },
 
   adjustPosition:function(event) {
@@ -134,13 +137,13 @@ Ice.Resizable = Class.create({
     if (this.resizeAction == "dec") {
     var leftElementWidth = Element.getWidth(this.getPreviousElement());
         if ((leftElementWidth - diff) < this.deadPoint) {
-           this.source.style.backgroundColor = "red";
+           this.getGhost().style.backgroundColor = "red";
            return true;
         }
     } else {
         var rightElementWidth = Element.getWidth(this.getNextElement());
         if ((rightElementWidth - diff) < this.deadPoint) {
-           this.source.style.backgroundColor = "red";
+           this.getGhost().style.backgroundColor = "red";
            return true;
         }
     }
@@ -193,6 +196,93 @@ Ice.ResizableGrid.addMethods({
     } else {
         return this.source.parentNode.nextSibling.nextSibling;
     }
+  }
+});
+
+Ice.PanelDivider = Class.create(Ice.Resizable, {
+  initialize: function($super, event) {
+    $super(event);
+    this.deadPoint = 40;
+    var spliterWidth = Element.getWidth(this.source);
+    var mouseLeft = Event.pointerX(event);
+    this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
+    this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+  }
+});
+
+Ice.PanelDivider.addMethods({
+  getDifference: function($super, event) {
+    return $super(event);
+  },
+
+  getContainerElement: function() {
+      return this.source.parentNode;
+  },
+
+
+  getPreviousElement: function() {
+    if (this.source.previousSibling.tagName == "DIV") {
+        return this.source.previousSibling;
+    } else {
+        return this.source.previousSibling.previousSibling;
+    }
+  },
+
+  getNextElement: function() {
+    if (this.source.nextSibling.tagName == "DIV") {
+        return this.source.nextSibling;
+    } else {
+        return this.source.nextSibling.nextSibling;
+    }
+  },
+
+  getGhost: function() {
+    if(!this.ghost) {
+        this.ghost = this.source.cloneNode(true);
+        this.source.parentNode.appendChild(this.ghost);
+        this.ghost.style.width = Element.getWidth(this.source) + "px";
+    }
+
+    return this.ghost;
+  },
+
+  finalize: function (event) {
+    Element.remove(this.ghost);
+  },
+
+  adjustPosition:function(event) {
+    var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
+    var rightElementWidth = (Element.getWidth(this.getNextElement()));
+    //FF or safari
+    if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
+        leftElementWidth = parseInt(leftElementWidth)-2;
+        rightElementWidth = parseInt(rightElementWidth)-2;
+    }
+
+    var tableWidth = Element.getWidth(this.getContainerElement());
+    var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
+    var diff = this.getDifference(event);
+
+    if (this.resizeAction == "inc") {
+        this.getPreviousElement().style.width = (leftElementWidth + diff)  + "px";
+        this.getNextElement().style.width = (rightElementWidth - diff) + "px"
+
+    //    this.getContainerElement().style.width = tableWidth + diff + "px";;
+
+
+
+
+    } else {
+        this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
+        this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+
+  //      this.getContainerElement().style.width = tableWidth - diff + "px";
+    }
+
+     leftElementWidth = Element.getWidth(this.getPreviousElement());
+     rightElementWidth = Element.getWidth(this.getNextElement());
+     tableWidth = Element.getWidth(this.getContainerElement());
+
   }
 
 });
