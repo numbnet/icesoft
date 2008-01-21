@@ -88,7 +88,6 @@ Ice.Resizable = Class.create({
         this.getGhost().style.cursor="e-resize";
         this.getGhost().style.left = Event.pointerX(event) + "px";
     }
-
   },
 
 
@@ -149,13 +148,25 @@ Ice.Resizable = Class.create({
   deadEnd: function(event) {
     var diff = this.getDifference(event);
     if (this.resizeAction == "dec") {
-    var leftElementWidth = Element.getWidth(this.getPreviousElement());
+        var leftElementWidth;
+        if(this.horizontal) {
+            leftElementWidth = Element.getHeight(this.getPreviousElement());
+        } else {
+            leftElementWidth = Element.getWidth(this.getPreviousElement());
+        }
+
         if ((leftElementWidth - diff) < this.deadPoint) {
            this.getGhost().style.backgroundColor = "red";
            return true;
         }
     } else {
-        var rightElementWidth = Element.getWidth(this.getNextElement());
+        var rightElementWidth;
+        if(this.horizontal) {
+            rightElementWidth = Element.getHeight(this.getNextElement());
+        } else {
+            rightElementWidth = Element.getWidth(this.getNextElement());
+        }
+
         if ((rightElementWidth - diff) < this.deadPoint) {
            this.getGhost().style.backgroundColor = "red";
            return true;
@@ -216,7 +227,7 @@ Ice.ResizableGrid.addMethods({
 Ice.PanelDivider = Class.create(Ice.Resizable, {
   initialize: function($super, event, horizontal) {
     $super(event, horizontal);
-    this.deadPoint = 40;
+    this.deadPoint = 20;
     if (this.horizontal) {
         var spliterHeight = Element.getHeight(this.source);
         var mouseTop = Event.pointerY(event);
@@ -279,6 +290,12 @@ Ice.PanelDivider.addMethods({
 
         logger.info("leftHeight "+ leftElementHeight);
         logger.info("rightElementHeight "+ rightElementHeight);
+
+        if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
+            leftElementHeight = parseInt(leftElementHeight)-2;
+            leftElementHeight = parseInt(leftElementHeight)-2;
+        }
+
 
         var tableHeight = Element.getWidth(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
