@@ -802,3 +802,19 @@ div.navThemeChange {
 .icePnlTbSetCnt {
     vertical-align: top;
 }
+
+
+.myDvrPanel1, .myDvrPanel2  {
+    width:400px;
+    height:200px; 
+}
+.myDvrPanel3Fst {
+    width:30%;  
+}
+.myDvrPanel3Snd {
+    width:69%;  
+}
+
+.myDvrPanel3Child {
+    width:99%;  
+}

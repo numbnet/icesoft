@@ -803,7 +803,21 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
                 
-
+                // component menu -> Panel Divider
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.panelDividerSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.panelDividerSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelDivider.jspx");
+                branchObject.setTemplateName("panelDividerContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                
                 // component menu -> Panel Series
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(

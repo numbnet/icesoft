@@ -375,6 +375,12 @@
                         <jsp:directive.include file="inc/layoutPanels/panelTooltip.jspx" />
                     </f:subview>
                 </ice:panelGroup>
+
+                <ice:panelGroup id="panelDividerContentPanel" styleClass="contentIncludePanelGroup" >
+                    <f:subview id="panelDividerContentPanelSub">
+                        <jsp:directive.include file="inc/layoutPanels/panelDivider.jspx" />
+                    </f:subview>
+                </ice:panelGroup>                
         </ice:panelStack>
 
     </div>
