@@ -2519,7 +2519,7 @@ Disabled classes for the calendar controls
 
 .icePnlDvrSpt {
     width:1%;
-    height:400px; 
+    height:100%; 
     display:inline; 
     background-color: #EFEFEF; 
     border: 1px solid #ABABAB;
