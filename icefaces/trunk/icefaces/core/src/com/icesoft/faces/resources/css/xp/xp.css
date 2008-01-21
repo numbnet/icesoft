@@ -2503,13 +2503,12 @@ Disabled classes for the calendar controls
 }
 
 /* panel divider */
-.icePnlDvr {
+.icePnlDvr, .icePnlDvrHor {
     width:800px; 
     height:400px;
-    overflow:auto;
 }
 
-.icePnlDvrLft,  .icePnlDvrRgt{
+.icePnlDvrFst,  .icePnlDvrSnd{
     width:48%; 
     height:100%; 
     display:block; 
@@ -2520,7 +2519,7 @@ Disabled classes for the calendar controls
 
 .icePnlDvrSpt {
     width:1%;
-    height:100%; 
+    height:400px; 
     display:inline; 
     background-color: #EFEFEF; 
     border: 1px solid #ABABAB;
@@ -2528,4 +2527,19 @@ Disabled classes for the calendar controls
     cursor: e-resize;
 }
 	
+.icePnlDvrHorFst,  .icePnlDvrHorSnd{
+    width:100%;
+    height:49%;
+    display:block;
+    border: 1px solid #ABABAB;
+    overflow:auto;
+    display:block;
+}
 
+.icePnlDvrHorSpt {
+    width:100%;
+    height:2px;
+    background-color: #EFEFEF;
+    border: 1px solid #ABABAB;
+    cursor: n-resize;
+}

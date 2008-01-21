@@ -355,9 +355,9 @@ public class CSS_DEFAULT {
     public static final String INPUT_RICH_TEXT = "iceInpRchTxt";
     
     public static final String PANEL_DIVIDER_BASE = "icePnlDvr";
-    public static final String PANEL_DIVIDER_LEFT_PANE = PANEL_DIVIDER_BASE+ "Lft";
-    public static final String PANEL_DIVIDER_RIGHT_PANE = PANEL_DIVIDER_BASE+"Rgt";
-    public static final String PANEL_DIVIDER_TOP_PANE = PANEL_DIVIDER_BASE+"Top";
-    public static final String PANEL_DIVIDER_BOTTOM_PANE = PANEL_DIVIDER_BASE+ "Btm";
-    public static final String PANEL_DIVIDER_SPLITER = PANEL_DIVIDER_BASE+"Spt";   
+    public static final String PANEL_DIVIDER_HOR_BASE = "icePnlDvrHor";
+    public static final String PANEL_DIVIDER_FIRST_PANE = "Fst";
+    public static final String PANEL_DIVIDER_SECOND_PANE = "Snd";
+    public static final String PANEL_DIVIDER_SPLITTER = "Spt";   
+    
 }

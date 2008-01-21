@@ -24,6 +24,7 @@ public class PanelDivider extends UIPanel{
     private String styleClass =  null;
     
     private String renderedOnUserRole = null;
+    private String orientation = null;
     
     public PanelDivider() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -69,9 +70,33 @@ public class PanelDivider extends UIPanel{
 
     public String getStyleClass() {
         return Util.getQualifiedStyleClass(this, styleClass,
-                CSS_DEFAULT.PANEL_DIVIDER_BASE, "styleClass");
+                isHorizontal()? CSS_DEFAULT.PANEL_DIVIDER_HOR_BASE : 
+                    CSS_DEFAULT.PANEL_DIVIDER_BASE, "styleClass");
     }
     
+    /**
+     * <p>Return the value of the <code>firstPane</code> property.</p>
+     */
+    public String getFirstPaneClass() {
+        return Util.getQualifiedStyleClass(this,
+                               CSS_DEFAULT.PANEL_DIVIDER_FIRST_PANE);
+    }
+    
+    /**
+     * <p>Return the value of the <code>secondPane</code> property.</p>
+     */
+    public String getSecondPaneClass() {
+        return Util.getQualifiedStyleClass(this,
+                               CSS_DEFAULT.PANEL_DIVIDER_SECOND_PANE);
+    }
+    
+    /**
+     * <p>Return the value of the <code>southClass</code> property.</p>
+     */
+    public String getSplitterClass() {
+        return Util.getQualifiedStyleClass(this,
+                               CSS_DEFAULT.PANEL_DIVIDER_SPLITTER);
+    }
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
      */
@@ -99,4 +124,26 @@ public class PanelDivider extends UIPanel{
         }
         return super.isRendered();
     }    
+    
+    /**
+     * <p>Set the value of the <code>orientation</code> property.</p>
+     */
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
+    }
+
+    /**
+     * <p>Return the value of the <code>orientation</code> property.</p>
+     */
+    public String getOrientation() {
+        if (orientation != null) {
+            return orientation;
+        }
+        ValueBinding vb = getValueBinding("orientation");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "vertical";
+    } 
+    
+    boolean isHorizontal() {
+        return "horizontal".equalsIgnoreCase(getOrientation());
+    }
 }

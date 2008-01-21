@@ -82,11 +82,13 @@ Ice.Resizable = Class.create({
     if (this.deadEnd(event)) return;
     this.getGhost().style.backgroundColor = "green";
     if(this.horizontal) {
+        this.getGhost().style.cursor="n-resize";
         this.getGhost().style.top = Event.pointerY(event) + "px";
     } else {
+        this.getGhost().style.cursor="e-resize";
         this.getGhost().style.left = Event.pointerX(event) + "px";
     }
-    this.getGhost().style.cursor="e-resize";
+
   },
 
 
