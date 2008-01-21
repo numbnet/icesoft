@@ -209,6 +209,7 @@
   <!ENTITY ice-cust-menuPopup-props SYSTEM "ice_cust_properties/cust-menuPopup-props.xml">
   <!ENTITY ice-cust-outputConnectionStatus-props SYSTEM "ice_cust_properties/cust-outputConnectionStatus-props.xml">
   <!ENTITY ice-cust-panelpopup-props SYSTEM "ice_cust_properties/cust-panelpopup-props.xml">
+  <!ENTITY ice-cust-panelDivider-props SYSTEM "ice_cust_properties/cust-panelDivider-props.xml">  
   <!ENTITY ice-cust-paneltooltip-props SYSTEM "ice_cust_properties/cust-paneltooltip-props.xml">
   <!ENTITY ice-cust-panelSeries-props SYSTEM "ice_cust_properties/cust-panelSeries-props.xml">
   <!ENTITY ice-cust-panelstack-props SYSTEM "ice_cust_properties/cust-panelstack-props.xml">
@@ -379,6 +380,9 @@
   <!ENTITY panelpopup-component   SYSTEM "custom/panelpopup-component.xml">
   <!ENTITY panelpopup-renderer    SYSTEM "custom/panelpopup-renderer.xml">
 
+  <!ENTITY panelDivider-component   SYSTEM "custom/panelDivider-component.xml">
+  <!ENTITY panelDivider-renderer    SYSTEM "custom/panelDivider-renderer.xml">
+
   <!ENTITY paneltooltip-component   SYSTEM "custom/paneltooltip-component.xml">
   <!ENTITY paneltooltip-renderer    SYSTEM "custom/paneltooltip-renderer.xml">
   
@@ -506,6 +510,7 @@
 	&tree-component;
 	&treenode-component;
 	&panelpopup-component;
+    &panelDivider-component;	
     &paneltooltip-component;
 	&portlet-component;
 	&menuPopup-component;
@@ -584,7 +589,8 @@
 		&tree-renderer;
 		&treenode-renderer;
 		&panelpopup-renderer;
-        &paneltooltip-renderer;		
+        &panelDivider-renderer;		
+        &paneltooltip-renderer;	
 		&portlet-renderer;
 		&menuPopup-renderer;
 		&menu-renderer;

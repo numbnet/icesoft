@@ -2501,3 +2501,31 @@ Disabled classes for the calendar controls
 .iceInpRchTxt {
     width:100%;
 }
+
+/* panel divider */
+.icePnlDvr {
+    width:800px; 
+    height:400px;
+    overflow:auto;
+}
+
+.icePnlDvrLft,  .icePnlDvrRgt{
+    width:48%; 
+    height:100%; 
+    display:block; 
+    border: 1px solid #ABABAB;
+    float:left;	
+    overflow:auto;
+}
+
+.icePnlDvrSpt {
+    width:1%;
+    height:100%; 
+    display:inline; 
+    background-color: #EFEFEF; 
+    border: 1px solid #ABABAB;
+    float:left;
+    cursor: e-resize;
+}
+	
+
