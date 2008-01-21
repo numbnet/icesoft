@@ -20,9 +20,7 @@
         <portlet id="components_table_expandableTable"/>
         <portlet id="components_table_tableRowSelection"/>
         <portlet id="components_progressBar"/>
-<!--
         <portlet id="components_fileUpload"/>
--->
         <portlet id="components_charts_charts"/>
         <portlet id="components_charts_dynamicChart"/>
         <portlet id="components_charts_combiningCharts"/>

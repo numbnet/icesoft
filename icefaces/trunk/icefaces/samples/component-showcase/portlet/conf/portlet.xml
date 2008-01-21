@@ -4,7 +4,7 @@
              version="1.0"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
-    
+
     <!-- =================================================================== -->
     <!-- ICEfaces: Text Entry Portlet                                        -->
     <!-- =================================================================== -->
@@ -537,7 +537,6 @@
     <!-- ICEfaces: File Upload Portlet                                       -->
     <!-- =================================================================== -->
 
-<!--
     <portlet>
         <portlet-name>components_fileUpload</portlet-name>
         <display-name>ICEfaces: File Upload</display-name>
@@ -564,7 +563,6 @@
             <role-name>user</role-name>
         </security-role-ref>
     </portlet>
--->
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Charts - Charts Portlet                                   -->
