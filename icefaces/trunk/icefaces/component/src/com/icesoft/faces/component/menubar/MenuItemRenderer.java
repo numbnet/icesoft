@@ -455,7 +455,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
         }
         // ICE-2066
-        Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe class=\"iceIEIFrameFix\" style=\"top:0;width:100%\"></iframe><![endif]-->");
+        Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
+                CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
+                "\" class=\"iceIEIFrameFix\" style=\"top:0;width:100%\"></iframe><![endif]-->");
         submenuDiv.appendChild(iframe);
 
         // recurse
