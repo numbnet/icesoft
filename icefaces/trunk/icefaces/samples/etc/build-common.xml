@@ -424,24 +424,8 @@ Combinations:
     </target>
     
     <!-- Pluto Portlet -->
-  <!-- Pluto Assembly -->  
-<!--
-  <property name="pluto.src.dir" location="/pluto-1.1.4"/>
-  <property name="pluto.install.dir" location="/pluto-tomcat-5.5.25"/>
-  
   <path id="pluto-classes">
-    <fileset dir="${pluto.src.dir}/pluto-ant-tasks/target"       
-             includes="**/*.jar"/>
-    <fileset dir="${pluto.src.dir}/pluto-util/target"            
-             includes="**/*.jar"/>
-    <fileset dir="${pluto.src.dir}/pluto-descriptor-api/target"  
-             includes="**/*.jar"/>
-    <fileset dir="${pluto.src.dir}/pluto-descriptor-impl/target" 
-             includes="**/*.jar"/>
-    <fileset dir="${pluto.install.dir}/shared/lib"               
-             includes="**/*.jar"/>
-    <fileset dir="${pluto.install.dir}/bin"                      
-             includes="**/*.jar"/>
+    <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
   </path>
 
 
@@ -456,6 +440,5 @@ Combinations:
                    portletxml="portlet/conf/portlet.xml" 
                    destfile="conf/web.sunri.icefaces.portlet.pluto.xml"/>
   </target>
-    
--->    
+ 
 </project>
