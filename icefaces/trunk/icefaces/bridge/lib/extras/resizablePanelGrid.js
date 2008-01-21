@@ -31,14 +31,17 @@
  *
  */
 Ice.Resizable = Class.create({
-  initialize: function(event, elementIndex, vertical) {
-    this.elementIndex = elementIndex;
+  initialize: function(event, horizontal) {
 
     //resize handler
     this.source = Event.element(event);
-    this.vertical = vertical || true;
+    this.horizontal = horizontal;
     //initial pointer location
-    this.pointerLocation = parseInt(Event.pointerX(event));
+    if (this.horizontal) {
+        this.pointerLocation = parseInt(Event.pointerY(event));
+    } else {
+        this.pointerLocation = parseInt(Event.pointerX(event));
+    }
 
     this.eventMouseMove = this.resize.bindAsEventListener(this);
     this.eventMouseUp = this.detachEvent.bindAsEventListener(this);
@@ -46,7 +49,6 @@ Ice.Resizable = Class.create({
     Event.observe(document, "mouseup", this.eventMouseUp);
     this.origionalHeight = this.source.style.height;
     this.disableTextSelection();
-
     this.getGhost().style.position = "absolute";
     this.getGhost().style.backgroundColor = "green";
     this.getGhost().style.border= "1px dashed";
@@ -76,9 +78,14 @@ Ice.Resizable = Class.create({
   },
 
   resize: function(event) {
+    this.getGhost().style.visibility="";
     if (this.deadEnd(event)) return;
     this.getGhost().style.backgroundColor = "green";
-    this.getGhost().style.left = Event.pointerX(event) + "px";
+    if(this.horizontal) {
+        this.getGhost().style.top = Event.pointerY(event) + "px";
+    } else {
+        this.getGhost().style.left = Event.pointerX(event) + "px";
+    }
     this.getGhost().style.cursor="e-resize";
   },
 
@@ -122,7 +129,12 @@ Ice.Resizable = Class.create({
   },
 
   getDifference: function(event) {
-    var x = parseInt(Event.pointerX(event));
+    var x;
+     if (this.horizontal) {
+        x = parseInt(Event.pointerY(event));
+     } else {
+        x = parseInt(Event.pointerX(event));
+     }
     if (this.pointerLocation > x) {
         this.resizeAction = "dec";
         return this.pointerLocation - x;
@@ -200,13 +212,20 @@ Ice.ResizableGrid.addMethods({
 });
 
 Ice.PanelDivider = Class.create(Ice.Resizable, {
-  initialize: function($super, event) {
-    $super(event);
+  initialize: function($super, event, horizontal) {
+    $super(event, horizontal);
     this.deadPoint = 40;
-    var spliterWidth = Element.getWidth(this.source);
-    var mouseLeft = Event.pointerX(event);
-    this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
-    this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+    if (this.horizontal) {
+        var spliterHeight = Element.getHeight(this.source);
+        var mouseTop = Event.pointerY(event);
+        this.getGhost().style.top = (mouseTop - (spliterHeight )) + "px";
+        //this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+    } else {
+        var spliterWidth = Element.getWidth(this.source);
+        var mouseLeft = Event.pointerX(event);
+        this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
+        this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+    }
   }
 });
 
@@ -241,6 +260,7 @@ Ice.PanelDivider.addMethods({
         this.ghost = this.source.cloneNode(true);
         this.source.parentNode.appendChild(this.ghost);
         this.ghost.style.width = Element.getWidth(this.source) + "px";
+        this.getGhost().style.visibility="hidden";
     }
 
     return this.ghost;
@@ -251,37 +271,68 @@ Ice.PanelDivider.addMethods({
   },
 
   adjustPosition:function(event) {
-    var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
-    var rightElementWidth = (Element.getWidth(this.getNextElement()));
-    //FF or safari
-    if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
-        leftElementWidth = parseInt(leftElementWidth)-2;
-        rightElementWidth = parseInt(rightElementWidth)-2;
-    }
+   if (this.horizontal) {
+        var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
+        var rightElementHeight = (Element.getHeight(this.getNextElement()));
 
-    var tableWidth = Element.getWidth(this.getContainerElement());
-    var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
-    var diff = this.getDifference(event);
+        logger.info("leftHeight "+ leftElementHeight);
+        logger.info("rightElementHeight "+ rightElementHeight);
 
-    if (this.resizeAction == "inc") {
-        this.getPreviousElement().style.width = (leftElementWidth + diff)  + "px";
-        this.getNextElement().style.width = (rightElementWidth - diff) + "px"
+        var tableHeight = Element.getWidth(this.getContainerElement());
+        var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
+        var diff = this.getDifference(event);
+        logger.info("tableHeight "+ tableHeight);
+        logger.info("totalHeight "+ totalHeight);
+        logger.info("diff "+ diff);
 
-    //    this.getContainerElement().style.width = tableWidth + diff + "px";;
+        if (this.resizeAction == "inc") {
+            this.getPreviousElement().style.height = (leftElementHeight + diff)  + "px";
+            this.getNextElement().style.height = (rightElementHeight - diff) + "px"
+
+        //    this.getContainerElement().style.width = tableWidth + diff + "px";;
 
 
 
 
-    } else {
-        this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
-        this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+        } else {
+            this.getPreviousElement().style.height = (leftElementHeight - diff) + "px";
+            this.getNextElement().style.height = (rightElementHeight + diff) + "px"
 
-  //      this.getContainerElement().style.width = tableWidth - diff + "px";
-    }
+      //      this.getContainerElement().style.width = tableWidth - diff + "px";
+        }
 
-     leftElementWidth = Element.getWidth(this.getPreviousElement());
-     rightElementWidth = Element.getWidth(this.getNextElement());
-     tableWidth = Element.getWidth(this.getContainerElement());
+
+
+
+   } else {
+        var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
+        var rightElementWidth = (Element.getWidth(this.getNextElement()));
+        //FF or safari
+        if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
+            leftElementWidth = parseInt(leftElementWidth)-2;
+            rightElementWidth = parseInt(rightElementWidth)-2;
+        }
+
+        var tableWidth = Element.getWidth(this.getContainerElement());
+        var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
+        var diff = this.getDifference(event);
+
+        if (this.resizeAction == "inc") {
+            this.getPreviousElement().style.width = (leftElementWidth + diff)  + "px";
+            this.getNextElement().style.width = (rightElementWidth - diff) + "px"
+
+        //    this.getContainerElement().style.width = tableWidth + diff + "px";;
+
+
+
+
+        } else {
+            this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
+            this.getNextElement().style.width = (rightElementWidth + diff) + "px"
+
+      //      this.getContainerElement().style.width = tableWidth - diff + "px";
+        }
+     }
 
   }
 
