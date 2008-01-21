@@ -31,6 +31,10 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         }
 
         Element container = (Element) domContext.getRootNode();        
+        String style = panelDivider.getStyle();
+        if (style != null) {
+            container.setAttribute(HTML.STYLE_ATTR, style);
+        }
         Element dividerContainer = (Element) domContext.createElement(HTML.DIV_ELEM);
         container.setAttribute(HTML.CLASS_ATTR, panelDivider.getStyleClass());
         dividerContainer.setAttribute(HTML.CLASS_ATTR, panelDivider.getSplitterClass());
