@@ -122,8 +122,9 @@ public class PanelPopupRenderer extends GroupRenderer {
             String origStyle = panelPopup.getStyle();
             width = origStyle.substring(origStyle.indexOf("width"), origStyle.indexOf(";", origStyle.indexOf("width")) + 1);
             height = origStyle.substring(origStyle.indexOf("height"), origStyle.indexOf(";", origStyle.indexOf("height")) + 1);
-            Text iframe = domContext.createTextNode("<!--[if lte IE" +
-                    " 6.5]><iframe class=\"iceIEIFrameFix\" style=\"" + width + height + "\"></iframe><![endif]-->");
+            Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
+                    CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
+                    "\" class=\"iceIEIFrameFix\" style=\"" + width + height + "\"></iframe><![endif]-->");
             rootDiv.appendChild(iframe);
 
 			// extracted from GroupRenderer encodeBegin
