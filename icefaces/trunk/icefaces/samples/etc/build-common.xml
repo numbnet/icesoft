@@ -428,18 +428,8 @@ Combinations:
 <!--
   <property name="pluto.src.dir" location="/pluto-1.1.4"/>
   <property name="pluto.install.dir" location="/pluto-tomcat-5.5.25"/>
--->
   
   <path id="pluto-classes">
-    <!--
-      Pluto Ant Tasks depend upon the following libraries:
-        * pluto-ant-tasks-${version}.jar
-        * pluto-util-${version}.jar
-        * DONE pluto-descriptor-api-${version}.jar
-        * DONE pluto-descriptor-util-${version}.jar
-        * DONE commons-logging-1.0.4.jar
-        * DONE castor-1.1.1.jar
-      -->
     <fileset dir="${pluto.src.dir}/pluto-ant-tasks/target"       
              includes="**/*.jar"/>
     <fileset dir="${pluto.src.dir}/pluto-util/target"            
@@ -467,6 +457,5 @@ Combinations:
                    destfile="conf/web.sunri.icefaces.portlet.pluto.xml"/>
   </target>
     
-<!--
 -->    
 </project>
