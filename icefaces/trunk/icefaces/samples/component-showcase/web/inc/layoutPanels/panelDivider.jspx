@@ -47,7 +47,40 @@
                         value="Panel Divider"/>
             </h3>
 
-
+			<ice:panelGrid columns="2">
+			       <ice:panelDivider styleClass="myDvrPanel1">
+			           <f:facet name="first">
+					    <p>The ICEfaces Component Suite provides a complete set of enhanced
+					        standard and custom JavaServer Faces (JSF) components. These
+					        components provide the following additional benefits over other JSF
+					    components:</p>
+			           </f:facet>
+			           
+			           <f:facet name="second"> 
+                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                            standard and custom JavaServer Faces (JSF) components. These
+                            components provide the following additional benefits over other JSF
+                        components:</p>
+			           </f:facet>  
+			       </ice:panelDivider> 
+			       
+			       <ice:panelDivider orientation="horizontal"  styleClass="myDvrPanel2">
+			            <f:facet name="first">
+                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                            standard and custom JavaServer Faces (JSF) components. These
+                            components provide the following additional benefits over other JSF
+                        components:</p>
+			            </f:facet>
+			            
+			            <f:facet name="second"> 
+                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                            standard and custom JavaServer Faces (JSF) components. These
+                            components provide the following additional benefits over other JSF
+                        components:</p>
+			            </f:facet>  
+			        </ice:panelDivider>  
+			</ice:panelGrid>            
+        <br/>
             <ice:panelDivider styleClass="myDvrPanel3">
                 <f:facet name="first">
                             <ul>
@@ -86,43 +119,7 @@
                         </f:facet>
                         </ice:panelDivider>  
                 </f:facet>  
-            </ice:panelDivider> </br>
-            
-			<ice:panelGrid columns="2">
-			       <ice:panelDivider styleClass="myDvrPanel1">
-			           <f:facet name="first">
-					    <p>The ICEfaces Component Suite provides a complete set of enhanced
-					        standard and custom JavaServer Faces (JSF) components. These
-					        components provide the following additional benefits over other JSF
-					    components:</p>
-			           </f:facet>
-			           
-			           <f:facet name="second"> 
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
-                            standard and custom JavaServer Faces (JSF) components. These
-                            components provide the following additional benefits over other JSF
-                        components:</p>
-			           </f:facet>  
-			       </ice:panelDivider> 
-			       
-			       <ice:panelDivider orientation="horizontal"  styleClass="myDvrPanel2">
-			            <f:facet name="first">
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
-                            standard and custom JavaServer Faces (JSF) components. These
-                            components provide the following additional benefits over other JSF
-                        components:</p>
-			            </f:facet>
-			            
-			            <f:facet name="second"> 
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
-                            standard and custom JavaServer Faces (JSF) components. These
-                            components provide the following additional benefits over other JSF
-                        components:</p>
-			            </f:facet>  
-			        </ice:panelDivider>  
-			</ice:panelGrid>            
-        <br/>
-        <br/>
+            </ice:panelDivider> 
     </ice:panelGroup>  
   
 </ice:panelTab>
