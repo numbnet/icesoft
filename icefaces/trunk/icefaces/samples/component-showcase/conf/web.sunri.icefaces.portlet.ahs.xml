@@ -34,12 +34,12 @@
   -->
 
 <!DOCTYPE web-app PUBLIC
-  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-  "http://java.sun.com/dtd/web-app_2_3.dtd">
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
 
-   <display-name>ICEfaces Component Showcase</display-name>
+    <display-name>ICEfaces Component Showcase</display-name>
     <description>
         ICEfaces Component Showcase was designed to make developers aware
         of the rich set of features available in the custom and extended
@@ -48,9 +48,10 @@
 
     <context-param>
         <param-name>com.icesoft.faces.gmapKey</param-name>
-        <param-value>ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A</param-value>
+        <param-value>ABQIAAAADlu0ZiSTam64EKaCQr9eTRTOTuQNzJNXRlYRLknj4cQ89tFfpxTEqxQnVWL4k55OPICgF5_SOZE06A
+        </param-value>
     </context-param>
-    
+
     <context-param>
         <param-name>com.icesoft.faces.debugDOMUpdate</param-name>
         <param-value>false</param-value>
@@ -64,12 +65,12 @@
             See JSF Specification 2.5.2
         </description>
     </context-param>
-    
+
     <context-param>
         <param-name>com.icesoft.faces.uploadDirectory</param-name>
         <param-value>upload</param-value>
     </context-param>
-    
+
     <!-- concurrent DOM views -->
     <context-param>
         <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
@@ -80,11 +81,7 @@
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
         <param-value>false</param-value>
     </context-param>
-    
-    <listener>
-        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-    </listener>
-    
+
     <!-- AHS config -->
     <context-param>
         <param-name>com.icesoft.faces.asyncServerContext</param-name>
@@ -99,24 +96,29 @@
     <context-param>
         <param-name>com.icesoft.net.messaging.properties</param-name>
         <param-value>jboss.properties</param-value>
-    </context-param>    
+    </context-param>
 
     <!-- end of AHS config -->
-    
+
+    <listener>
+        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+    </listener>
+
+
     <!-- Source Code reader servlet-->
     <servlet>
         <servlet-name>SourceCode Reader</servlet-name>
         <servlet-class>com.icesoft.icefaces.samples.showcase.util.SourceCodeLoaderServlet</servlet-class>
     </servlet>
-    
+
     <!-- file upload Servlet -->
     <servlet>
-         <servlet-name>uploadServlet</servlet-name>
-         <servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
-         <load-on-startup> 1 </load-on-startup>
+        <servlet-name>uploadServlet</servlet-name>
+        <servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
-     
-   
+
+
     <!-- Faces Servlet -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -127,22 +129,22 @@
     <servlet>
         <servlet-name>Persistent Faces Servlet</servlet-name>
         <servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
-        <load-on-startup> 1 </load-on-startup>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>Blocking Servlet</servlet-name>
         <servlet-class>com.icesoft.faces.webapp.xmlhttp.BlockingServlet</servlet-class>
-        <load-on-startup> 1 </load-on-startup>
+        <load-on-startup>1</load-on-startup>
     </servlet>
-    
-   <!-- extension mapping -->
-    
-	<servlet-mapping>
-         <servlet-name>uploadServlet</servlet-name>
-         <url-pattern>/uploadHtml</url-pattern>
-    </servlet-mapping>   
-	
+
+    <!-- extension mapping -->
+
+    <servlet-mapping>
+        <servlet-name>uploadServlet</servlet-name>
+        <url-pattern>/uploadHtml</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>Persistent Faces Servlet</servlet-name>
         <url-pattern>*.iface</url-pattern>
@@ -157,18 +159,18 @@
         <servlet-name>Blocking Servlet</servlet-name>
         <url-pattern>/block/*</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>SourceCode Reader</servlet-name>
         <url-pattern>/sourcecodeStream.html</url-pattern>
     </servlet-mapping>
 
     <session-config>
-      <session-timeout>30</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
-    
+
     <!-- Welcome files -->
-    <welcome-file-list>    
+    <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
