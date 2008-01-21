@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -99,12 +100,25 @@ public class PanelPopupRenderer extends GroupRenderer {
             Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
             setRootElementId(facesContext, rootDiv, uiComponent);
             rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
+            rootDiv.setAttribute(HTML.STYLE_ELEM, "display:none;position:absolute;overflow:hidden;"); // ICE-1490
             Element table = domContext.createElement(HTML.TABLE_ELEM);
             table.setAttribute(HTML.CELLPADDING_ATTR, "0");
             table.setAttribute(HTML.CELLSPACING_ATTR, "0");
             table.setAttribute(HTML.WIDTH_ATTR, "100%");
-
+            table.setAttribute(HTML.STYLE_ATTR, "position:absolute;"); // ICE-1490
             rootDiv.appendChild(table);
+
+            // ICE-1490
+            String width;
+            String height;
+            String origStyle = panelPopup.getStyle();
+            width = origStyle.substring(origStyle.indexOf("width"), origStyle.indexOf(";", origStyle.indexOf("width")) + 1);
+            height = origStyle.substring(origStyle.indexOf("height"), origStyle.indexOf(";", origStyle.indexOf("height")) + 1);
+            Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
+                    CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
+                    "\" class=\"iceIEIFrameFix\" style=\"" + width + height + "\"></iframe><![endif]-->");
+            rootDiv.appendChild(iframe);
+
             if (modal != null && modal.booleanValue()) {
                 dndType = null;
             }

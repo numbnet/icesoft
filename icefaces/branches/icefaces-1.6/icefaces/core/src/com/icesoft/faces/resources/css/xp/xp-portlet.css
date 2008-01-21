@@ -114,7 +114,7 @@
 /*margin:10px;*/
 }
 
-.iceSelInpDateIFrameFix {
+.iceSelInpDateIFrameFix, .iceIEIFrameFix {
    z-index: -1;
    position: absolute;
    display: block;
