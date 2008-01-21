@@ -423,6 +423,47 @@ Combinations:
         </antcall>
     </target>
     
+    <!-- Pluto Portlet -->
+  <!-- Pluto Assembly -->  
+  <property name="pluto.src.dir" location="/pluto-1.1.4"/>
+  <property name="pluto.install.dir" location="/pluto-tomcat-5.5.25"/>
+  
+  <path id="pluto-classes">
+    <!--
+      Pluto Ant Tasks depend upon the following libraries:
+        * pluto-ant-tasks-${version}.jar
+        * pluto-util-${version}.jar
+        * DONE pluto-descriptor-api-${version}.jar
+        * DONE pluto-descriptor-util-${version}.jar
+        * DONE commons-logging-1.0.4.jar
+        * DONE castor-1.1.1.jar
+      -->
+    <fileset dir="${pluto.src.dir}/pluto-ant-tasks/target"       
+             includes="**/*.jar"/>
+    <fileset dir="${pluto.src.dir}/pluto-util/target"            
+             includes="**/*.jar"/>
+    <fileset dir="${pluto.src.dir}/pluto-descriptor-api/target"  
+             includes="**/*.jar"/>
+    <fileset dir="${pluto.src.dir}/pluto-descriptor-impl/target" 
+             includes="**/*.jar"/>
+    <fileset dir="${pluto.install.dir}/shared/lib"               
+             includes="**/*.jar"/>
+    <fileset dir="${pluto.install.dir}/bin"                      
+             includes="**/*.jar"/>
+  </path>
+
+
+  <typedef name="passemble" 
+           classname="org.apache.pluto.ant.AssembleTask"
+           classpathref="pluto-classes"/>
+
+
+  <target name="pluto-assemble">
+        <echo message="Assembling..."/>
+        <passemble webxml="conf/web.sunri.icefaces.ce.xml" 
+                   portletxml="portlet/conf/portlet.xml" 
+                   destfile="conf/web.sunri.icefaces.portlet.pluto.xml"/>
+  </target>
     
     
 </project>

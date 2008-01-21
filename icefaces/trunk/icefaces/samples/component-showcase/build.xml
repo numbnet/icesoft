@@ -312,4 +312,17 @@
         </ear>
     </target>
     
+    <!-- Pluto Portlet -->
+    <target name="build.portlet.pluto.tomcat5.war" 
+            depends="compile" 
+            description="Build a portlet application for Pluto on Tomcat 5.x without AHS">
+        <property name="portlet" value="true"/>
+        <antcall target="pluto-assemble">
+        </antcall>
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.pluto.xml"/>
+            <param name="jsf11" value=""/>
+            <param name="pluto" value=""/>
+        </antcall>
+    </target>
 </project>
