@@ -424,6 +424,7 @@ Combinations:
     </target>
     
     <!-- Pluto Portlet -->
+    <!--
   <path id="pluto-classes">
     <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
   </path>
@@ -440,5 +441,5 @@ Combinations:
                    portletxml="portlet/conf/portlet.xml" 
                    destfile="conf/web.sunri.icefaces.portlet.pluto.xml"/>
   </target>
- 
+ -->
 </project>
