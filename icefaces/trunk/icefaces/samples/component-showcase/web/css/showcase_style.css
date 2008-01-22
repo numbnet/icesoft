@@ -808,13 +808,8 @@ div.navThemeChange {
     width:400px;
     height:200px; 
 }
-.myDvrPanel3Fst {
-    width:30%;  
-}
-.myDvrPanel3Snd {
-    width:68%;  
-}
 
 .myDvrPanel3Child {
     width:99%;  
+    height:99%; 
 }

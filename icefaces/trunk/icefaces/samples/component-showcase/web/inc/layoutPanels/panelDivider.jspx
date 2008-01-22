@@ -50,17 +50,17 @@
 			<ice:panelGrid columns="2">
 			       <ice:panelDivider styleClass="myDvrPanel1">
 			           <f:facet name="first">
-					    <p>The ICEfaces Component Suite provides a complete set of enhanced
+					    <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced
 					        standard and custom JavaServer Faces (JSF) components. These
 					        components provide the following additional benefits over other JSF
-					    components:</p>
+					    components:</ice:panelGroup>
 			           </f:facet>
 			           
 			           <f:facet name="second"> 
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                        <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced
                             standard and custom JavaServer Faces (JSF) components. These
                             components provide the following additional benefits over other JSF
-                        components:</p>
+                        components:</ice:panelGroup>
 			           </f:facet>  
 			       </ice:panelDivider> 
 			       
@@ -81,7 +81,7 @@
 			        </ice:panelDivider>  
 			</ice:panelGrid>            
         <br/>
-            <ice:panelDivider styleClass="myDvrPanel3">
+            <ice:panelDivider styleClass="myDvrPanel3" position="30">
                 <f:facet name="first">
                             <ul>
                                 <li>Smooth, incremental page updates without full-page
@@ -105,17 +105,20 @@
                 <f:facet name="second"> 
                        <ice:panelDivider orientation="horizontal"  styleClass="myDvrPanel3Child">
                         <f:facet name="first">
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                        <ice:panelGroup style="padding:6px;">
+                            The ICEfaces Component Suite provides a complete set of enhanced
                             standard and custom JavaServer Faces (JSF) components. These
                             components provide the following additional benefits over other JSF
-                        components:</p>
+                        components:
+                        </ice:panelGroup>
                         </f:facet>
                         
                         <f:facet name="second"> 
-                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+                        <ice:panelGroup style="padding:6px;">
+                        The ICEfaces Component Suite provides a complete set of enhanced
                             standard and custom JavaServer Faces (JSF) components. These
                             components provide the following additional benefits over other JSF
-                        components:</p>
+                        components:</ice:panelGroup>
                         </f:facet>
                         </ice:panelDivider>  
                 </f:facet>  
