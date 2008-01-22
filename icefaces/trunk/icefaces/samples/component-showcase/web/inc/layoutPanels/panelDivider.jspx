@@ -47,7 +47,7 @@
                         value="Panel Divider"/>
             </h3>
 
-			<ice:panelGrid columns="2">
+			<ice:panelGrid columns="2" styleClass="dvrPnlGrd">
 			       <ice:panelDivider styleClass="myDvrPanel1">
 			           <f:facet name="first">
 					    <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced

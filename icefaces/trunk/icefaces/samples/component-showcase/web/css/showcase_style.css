@@ -813,3 +813,7 @@ div.navThemeChange {
     width:99%;  
     height:99%; 
 }
+
+.dvrPnlGrdCol1, .dvrPnlGrdCol2 {
+	padding:3px;
+}
