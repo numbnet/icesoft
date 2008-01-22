@@ -245,6 +245,7 @@ public class ViewManager implements IViewManager, Serializable{
  //   	log.info("in remove for item ="+e.getComponent().getClass().getName());
     	log.info("want to remove from viewList item="+item.getTitle());
     	viewList.remove(item);	
+		 updateItemStrings();
     }
 	public String getItem1String() {
 		return item1String;

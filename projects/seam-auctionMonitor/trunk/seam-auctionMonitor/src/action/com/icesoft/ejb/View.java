@@ -3,6 +3,8 @@ package com.icesoft.ejb;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.util.List;
 
@@ -143,7 +145,8 @@ public class View implements IView{
 //	@Factory(value="searchItems")
 	public void loadList(){
 		//get old values of previous list for expanded
-		List<Boolean> expanded = getOldExpanded();
+        Map<Long, Boolean> expanded = getOldExpanded();
+        setPatterns();
 //	    log.info("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
 		searchItems = new ArrayList<AuctionitemBean>();   
 //		doTestList();
@@ -175,17 +178,21 @@ public class View implements IView{
 		    searchItems.add(auctionitemBean);
 		 }
 		 createViewName();
+         
 		 //restore old expanded bid values
-		 if (expanded.size()>0){
-//			 log.info("\t\t\t have some expanded values to update");
-			 for (int i=0;i<expanded.size();i++){
-				 searchItems.get(i).setExpanded(expanded.get(i));
-//				 log.info("\t\t\t set i="+i+" to "+expanded.get(i));
-			 }
-			 createViewName();
-		 }
+         if (searchItems.size() > 0)  {
+             for (int i=0; i < searchItems.size() ;i++)  {
+                AuctionitemBean searchItem = searchItems.get(i);
+                Boolean oldState = 
+                        expanded.get(searchItem.getAuctionitem().getItemId());
+                if (null != oldState)  {
+                    searchItem.setExpanded(oldState);
+                }
+             }
+             createViewName();
+         }
+
 		 setup=true; 
-//		 log.info ("searchItems list is now of size="+searchItems.size());
 	}
 
 
@@ -197,15 +204,17 @@ public class View implements IView{
 		 }
 	}
 	
-	private List<Boolean> getOldExpanded(){
-		List<Boolean> expanded = new ArrayList<Boolean>();
+
+	private Map<Long, Boolean> getOldExpanded(){
+		Map<Long, Boolean> expanded = new HashMap<Long, Boolean>();
 		if (searchItems !=null && searchItems.size()>0){
-//			log.info("\t\t\t HAVE PREV LIST");
 			for (int i=0; i<searchItems.size();i++){
-				expanded.add(searchItems.get(i).isExpanded());
+				expanded.put(searchItems.get(i).getAuctionitem().getItemId(),
+                searchItems.get(i).isExpanded());
 			}
 		}
 		return expanded;
+
 	}
 	public void doTestList(){
 		log.info("finding value for pattern1="+pattern1);
@@ -283,17 +292,18 @@ public class View implements IView{
 	}
 
 	public void setPatterns() {	
-		try{
-			if (item1String!=null)pattern1=Long.parseLong(item1String);
-			if (item1String!=null)pattern2=Long.parseLong(item2String);
-			if (item1String!=null)pattern3=Long.parseLong(item3String);
-		}catch (NumberFormatException nfe){
-			log.info("Can't parse Long from request params");
-		}
-//			log.info("View: pattern is "+pattern+" for searchString="+searchString);
+        if (item1String != null)  { pattern1 = parseLong(item1String); }
+        if (item1String != null)  { pattern2 = parseLong(item2String); }
+        if (item1String != null)  { pattern3 = parseLong(item3String); }
 	}
- //	public void setSearchString(String sIn){this.searchString=sIn;}
 
+    long parseLong(String longString)  {
+        try {
+            return Long.parseLong(longString);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 
 	public void removeView(){
 		cleanup();
