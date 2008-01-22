@@ -424,6 +424,7 @@ public class TableRenderer extends DomBasicRenderer {
         spacerImg.setAttribute(HTML.SRC_ATTR, url);
         spacerImg.setAttribute(HTML.BORDER_ATTR,"0");
         spacerImg.setAttribute(HTML.ALT_ATTR, "");
+        spacerImg.setAttribute(HTML.STYLE_ATTR, "width:1px"); // ICE-2417
         spacer.appendChild(spacerImg);
         return spacer;
     }

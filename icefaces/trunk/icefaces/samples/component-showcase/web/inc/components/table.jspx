@@ -123,11 +123,13 @@ a control on the data to hide/show the table columns.
                             <ice:outputText id="EmailColm"
                                     value="#{msgs['component.table.column4']}"/>
                         </f:facet>
+                        <ice:panelGroup style="width:160px;overflow:hidden;">
                         <ice:outputLink id="MailTo"
                                 value="mailto:#{person.email}">
                             <ice:outputText id="Email"
                                     value="#{person.email}"/>
                         </ice:outputLink>
+                        </ice:panelGroup>
                     </ice:column>
                 </ice:dataTable>
             </div>

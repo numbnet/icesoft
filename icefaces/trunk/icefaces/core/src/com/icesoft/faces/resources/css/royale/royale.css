@@ -299,6 +299,7 @@ input {
     font-weight: normal;
     text-align: center;
     color: #FFFFFF;
+    border-right: 1px solid #026AFF;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 4px;
