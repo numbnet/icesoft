@@ -30,13 +30,16 @@ public class PanelDividerRenderer extends DomBasicRenderer{
             setRootElementId(facesContext, container, uiComponent);
         }
 
-        Element container = (Element) domContext.getRootNode();        
+        Element root = (Element) domContext.getRootNode();        
+        Element container = (Element)domContext.createElement(HTML.DIV_ELEM);
+        root.appendChild(container);
+        container.setAttribute(HTML.CLASS_ATTR, panelDivider.getContainerClass());
         String style = panelDivider.getStyle();
         if (style != null) {
-            container.setAttribute(HTML.STYLE_ATTR, style);
+            root.setAttribute(HTML.STYLE_ATTR, style);
         }
         Element dividerContainer = (Element) domContext.createElement(HTML.DIV_ELEM);
-        container.setAttribute(HTML.CLASS_ATTR, panelDivider.getStyleClass());
+        root.setAttribute(HTML.CLASS_ATTR, panelDivider.getStyleClass());
         dividerContainer.setAttribute(HTML.CLASS_ATTR, panelDivider.getSplitterClass());
         if(panelDivider.isHorizontal()) {
             dividerContainer.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.PanelDivider(event, true);");
@@ -68,13 +71,14 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         } else {
             facet = panelDivider.getSecondFacet();
             pane.setAttribute(HTML.ID_ATTR, clientId+= "Second");    
-            pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getSecondPaneClass());            
+            pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getSecondPaneClass());  
         }
+        pane.setAttribute(HTML.STYLE_ATTR, panelDivider.getPanePosition(isFrist));
         if (facet == null ) {
             //log message facet required
             return;
         }
-        Element container = (Element) domContext.getRootNode();  
+        Element container = (Element) domContext.getRootNode().getFirstChild();  
         container.appendChild(pane);
         domContext.setCursorParent(pane);
         CustomComponentUtils.renderChild(facesContext, facet);

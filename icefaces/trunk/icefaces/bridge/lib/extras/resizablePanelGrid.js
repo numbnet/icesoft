@@ -248,7 +248,7 @@ Ice.PanelDivider.addMethods({
   },
 
   getContainerElement: function() {
-      return this.source.parentNode;
+      return this.source.parentNode.parentNode;
   },
 
 
@@ -328,8 +328,8 @@ Ice.PanelDivider.addMethods({
         var rightElementWidth = (Element.getWidth(this.getNextElement()));
         //FF or safari
         if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
-            leftElementWidth = parseInt(leftElementWidth)-2;
-            rightElementWidth = parseInt(rightElementWidth)-2;
+        //    leftElementWidth = parseInt(leftElementWidth)-2;
+         //   rightElementWidth = parseInt(rightElementWidth)-2;
         }
 
         var tableWidth = Element.getWidth(this.getContainerElement());

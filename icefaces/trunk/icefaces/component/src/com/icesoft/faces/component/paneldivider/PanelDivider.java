@@ -22,8 +22,11 @@ public class PanelDivider extends UIPanel{
     private String style = null;
     
     private String styleClass =  null;
+
+    private Integer position = null;
     
     private String renderedOnUserRole = null;
+   
     private String orientation = null;
     
     public PanelDivider() {
@@ -97,6 +100,15 @@ public class PanelDivider extends UIPanel{
         return Util.getQualifiedStyleClass(this,
                                CSS_DEFAULT.PANEL_DIVIDER_SPLITTER);
     }
+    
+    /**
+     * <p>Return the value of the <code>southClass</code> property.</p>
+     */
+    public String getContainerClass() {
+        return Util.getQualifiedStyleClass(this,
+                               CSS_DEFAULT.PANEL_DIVIDER_CONTAINER);
+    }
+    
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
      */
@@ -145,5 +157,38 @@ public class PanelDivider extends UIPanel{
     
     boolean isHorizontal() {
         return "horizontal".equalsIgnoreCase(getOrientation());
+    }
+    
+    /**
+     * <p>Set the value of the <code>position</code> property.</p>
+     */
+    public void setPosition(int position) {
+        this.position = new Integer(position);
+    }
+
+    /**
+     * <p>Return the value of the <code>position</code> property.</p>
+     */
+    public int getposition() {
+        if (position != null) {
+            return position.intValue();
+        }
+        ValueBinding vb = getValueBinding("position");
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 50;
+    }
+    
+    String getPanePosition(boolean first) {
+        int pos = getposition();
+        int panPos = 0;
+        if (first) {
+            panPos = pos-1;
+        } else {
+            panPos = 98 - pos;        
+        }
+        String unit = "height:100%;width:";
+        if(isHorizontal()) {
+            unit = "width:100%;height:";
+        }
+        return unit + panPos + "%;";
     }
 }

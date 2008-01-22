@@ -358,6 +358,7 @@ public class CSS_DEFAULT {
     public static final String PANEL_DIVIDER_HOR_BASE = "icePnlDvrHor";
     public static final String PANEL_DIVIDER_FIRST_PANE = "Fst";
     public static final String PANEL_DIVIDER_SECOND_PANE = "Snd";
-    public static final String PANEL_DIVIDER_SPLITTER = "Spt";   
+    public static final String PANEL_DIVIDER_SPLITTER = "Spt"; 
+    public static final String PANEL_DIVIDER_CONTAINER = "Cnt";    
     
 }
