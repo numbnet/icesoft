@@ -169,7 +169,7 @@ public class PanelDivider extends UIPanel{
     /**
      * <p>Return the value of the <code>position</code> property.</p>
      */
-    public int getposition() {
+    public int getPosition() {
         if (position != null) {
             return position.intValue();
         }
@@ -178,7 +178,7 @@ public class PanelDivider extends UIPanel{
     }
     
     String getPanePosition(boolean first) {
-        int pos = getposition();
+        int pos = getPosition();
         int panPos = 0;
         if (first) {
             panPos = pos-1;
