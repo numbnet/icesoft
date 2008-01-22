@@ -161,23 +161,19 @@ public class View implements IView{
 	                .setFirstResult( page * pageSize )
 		            .getResultList();
 // 		 log.info("resultList has size="+resultList.size());
-		 Object[] oa;
-   /* should I bother adding the item if it is expired??? */
-		 for (Object o : resultList) {
- //		    log.info("loading up the list");
-		    oa = (Object[]) o;
-		    AuctionitemBean auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1]);
-		    if (!setup){
-		      	 String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
-//			     log.info("adding view to renderGroup ="+renderGroup);
-		       	 renderManager.getOnDemandRenderer(renderGroup).add(this);	
-			     this.viewName+=" :" + auctionitemBean.getAuctionitem().getTitle();
-		    }
-//		    else log.info("View has already been setup");
-//		    log.info("adding item = "+auctionitemBean.getAuctionitem().getTitle());
-		    searchItems.add(auctionitemBean);
-		 }
-		 createViewName();
+
+        Object[] oa;
+        String viewNameBuf = "";
+        for (Object o : resultList) {
+            oa = (Object[]) o;
+            AuctionitemBean auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1]);
+            String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
+            renderManager.getOnDemandRenderer(renderGroup).add(this);	
+            viewNameBuf += " :" + auctionitemBean.getAuctionitem().getTitle();
+            searchItems.add(auctionitemBean);
+        }
+        this.viewName = viewNameBuf;
+        createViewName();
          
 		 //restore old expanded bid values
          if (searchItems.size() > 0)  {
