@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -52,6 +53,10 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         container.appendChild(dividerContainer);
         dividerContainer.setAttribute(HTML.ID_ATTR, "divider");
         renderPane(facesContext, uiComponent, false);
+        String clientId = uiComponent.getClientId(facesContext);
+        addHiddenField(domContext, root, clientId, PanelDivider.FIRST_PANL_STYLE, panelDivider.getPanePosition(true));
+        addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
+        addHiddenField(domContext, root, clientId, PanelDivider.IN_PERCENT, "");
         domContext.stepOver();
     }
     
@@ -82,5 +87,20 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         container.appendChild(pane);
         domContext.setCursorParent(pane);
         CustomComponentUtils.renderChild(facesContext, facet);
+    }
+    
+    private void addHiddenField(DOMContext domContext, 
+            Element root, 
+            String clientId, 
+            String name,
+            String value) {
+            Element hidden = domContext.createElement(HTML.INPUT_ELEM);
+            hidden.setAttribute(HTML.ID_ATTR, clientId + name);
+            hidden.setAttribute(HTML.NAME_ATTR, clientId + name);
+            if (value != null) {
+            hidden.setAttribute(HTML.VALUE_ATTR, value);
+            }
+            hidden.setAttribute(HTML.TYPE_ATTR, "hidden");
+            root.appendChild(hidden);      
     }
 }

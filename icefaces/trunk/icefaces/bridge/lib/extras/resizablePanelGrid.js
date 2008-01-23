@@ -297,62 +297,52 @@ Ice.PanelDivider.addMethods({
         }
 
 
-        var tableHeight = Element.getWidth(this.getContainerElement());
+        var tableHeight = Element.getHeight(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
         var diff = this.getDifference(event);
         logger.info("tableHeight "+ tableHeight);
         logger.info("totalHeight "+ totalHeight);
         logger.info("diff "+ diff);
-
+        var inPercent;
         if (this.resizeAction == "inc") {
             this.getPreviousElement().style.height = (leftElementHeight + diff)  + "px";
             this.getNextElement().style.height = (rightElementHeight - diff) + "px"
-
-        //    this.getContainerElement().style.width = tableWidth + diff + "px";;
-
-
-
-
+            inPercent = (leftElementHeight + diff) /tableHeight  ;
         } else {
             this.getPreviousElement().style.height = (leftElementHeight - diff) + "px";
             this.getNextElement().style.height = (rightElementHeight + diff) + "px"
-
-      //      this.getContainerElement().style.width = tableWidth - diff + "px";
+            inPercent = (leftElementHeight - diff) / tableHeight ;
         }
-
-
-
-
    } else {
         var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
         var rightElementWidth = (Element.getWidth(this.getNextElement()));
-        //FF or safari
-        if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
-        //    leftElementWidth = parseInt(leftElementWidth)-2;
-         //   rightElementWidth = parseInt(rightElementWidth)-2;
-        }
 
         var tableWidth = Element.getWidth(this.getContainerElement());
         var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
         var diff = this.getDifference(event);
-
         if (this.resizeAction == "inc") {
             this.getPreviousElement().style.width = (leftElementWidth + diff)  + "px";
             this.getNextElement().style.width = (rightElementWidth - diff) + "px"
-
-        //    this.getContainerElement().style.width = tableWidth + diff + "px";;
-
-
-
-
+            inPercent = (leftElementWidth + diff) /totalWidth  ;
         } else {
             this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
             this.getNextElement().style.width = (rightElementWidth + diff) + "px"
-
-      //      this.getContainerElement().style.width = tableWidth - diff + "px";
+            inPercent = (leftElementWidth - diff) / totalWidth ;
         }
      }
-
+        this.submitInfo(event, inPercent);
+  },
+  
+  submitInfo:function(event, inPercent) {
+        var form = Ice.util.findForm(this.source);
+        var clientId = this.getContainerElement().id;
+        var firstPaneStyleElement  = $(clientId + "FirstPane");
+        var secondPaneStyleElement  = $(clientId + "SecondPane");
+        var inPercentElement  = $(clientId + "InPercent");        
+        firstPaneStyleElement.value = this.getPreviousElement().style.cssText;
+        secondPaneStyleElement.value = this.getNextElement().style.cssText; 
+        inPercentElement.value = Math.round(inPercent * 100)+1;
+        iceSubmitPartial(form,this.source,event);
   }
 
 });

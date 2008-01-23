@@ -1,5 +1,8 @@
 package com.icesoft.faces.component.paneldivider;
 
+import java.io.IOException;
+import java.util.Map;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
@@ -19,22 +22,64 @@ public class PanelDivider extends UIPanel{
      */
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.PanelDividerRenderer";
 
+    public static final String FIRST_PANL_STYLE= "FirstPane";
+    
+    public static final String SECOND_PANL_STYLE= "SecondPane";
+    
+    public static final String IN_PERCENT= "InPercent";
+    
     private String style = null;
     
     private String styleClass =  null;
 
-    private Integer position = null;
+    private Integer dividerPosition  = null;
     
     private String renderedOnUserRole = null;
    
     private String orientation = null;
+    
+    private boolean decoded = false;
+    
+    private String firstPaneStyle;
+    private String secondPaneStyle;
+    private int DEFAULT_POSITION = 50;
     
     public PanelDivider() {
         setRendererType(DEFAULT_RENDERER_TYPE);
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
                                      FacesContext.getCurrentInstance());
     }
+
+    public void decode(FacesContext facesContext) {
+        Map map = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = getClientId(facesContext);
+        if (map.containsKey(clientId + FIRST_PANL_STYLE)) {
+            firstPaneStyle = String.valueOf(map.get(clientId + FIRST_PANL_STYLE));
+            secondPaneStyle = String.valueOf(map.get(clientId + SECOND_PANL_STYLE)); 
+        }
+        if (map.containsKey(clientId + IN_PERCENT) 
+                && map.get(clientId + IN_PERCENT) != null && 
+                        !"".equals(map.get(clientId + IN_PERCENT))) {
+            DEFAULT_POSITION =  Integer.valueOf(String.valueOf(map.get(clientId + IN_PERCENT))).intValue();
+            decoded = true;
+        }
+    }
     
+    public void encodeEnd(FacesContext context) throws IOException {
+        decoded = false;
+    }
+    
+    public void processUpdates(FacesContext context) {
+        ValueBinding vb = getValueBinding("dividerPosition");
+        if (vb != null) {
+            vb.setValue(context, new Integer(DEFAULT_POSITION));
+        } else {
+            if (dividerPosition  != null) {
+                dividerPosition  = new Integer(DEFAULT_POSITION);
+            }
+        }
+        super.processUpdates(context);
+}
     /**
      * @return the "first" facet.
      */
@@ -160,25 +205,32 @@ public class PanelDivider extends UIPanel{
     }
     
     /**
-     * <p>Set the value of the <code>position</code> property.</p>
+     * <p>Set the value of the <code>dividerPosition</code> property.</p>
      */
-    public void setPosition(int position) {
-        this.position = new Integer(position);
+    public void setDividerPosition(int dividerPosition) {
+        this.dividerPosition = new Integer(dividerPosition);
     }
 
     /**
-     * <p>Return the value of the <code>position</code> property.</p>
+     * <p>Return the value of the <code>dividerPosition</code> property.</p>
      */
-    public int getPosition() {
-        if (position != null) {
-            return position.intValue();
+    public int getDividerPosition() {
+        if (dividerPosition != null) {
+            return dividerPosition.intValue();
         }
-        ValueBinding vb = getValueBinding("position");
-        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 50;
+        ValueBinding vb = getValueBinding("dividerPosition");
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : DEFAULT_POSITION;
     }
     
     String getPanePosition(boolean first) {
-        int pos = getPosition();
+        if (decoded) {
+            if (first) {
+                return firstPaneStyle;
+            } else {
+                return secondPaneStyle;
+            }
+        }
+        int pos = getDividerPosition();
         int panPos = 0;
         if (first) {
             panPos = pos-1;

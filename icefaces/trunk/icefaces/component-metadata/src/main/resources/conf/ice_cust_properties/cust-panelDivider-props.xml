@@ -53,7 +53,7 @@
 
         ]]>               
     </description>
-    <property-name>position</property-name>
+    <property-name>dividerPosition</property-name>
     <property-class>int</property-class>
     <property-extension>
         <category>ADVANCED</category>
