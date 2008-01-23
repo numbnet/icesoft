@@ -104,7 +104,7 @@ a control on the data to hide/show the table columns.
     -->
     <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
         <iframe
-                src="/component-showcase/sourcecodeStream.html?path=./inc/components/table.jspx"
+                src="/component-showcase/sourcecodeStream.html?path=./inc/components/resizableColumns.jspx"
                 class="includeIframe" width="100%"></iframe>
     </ice:panelTab>
 
