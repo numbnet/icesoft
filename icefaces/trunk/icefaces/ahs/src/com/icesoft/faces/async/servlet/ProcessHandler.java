@@ -6,6 +6,8 @@ import com.icesoft.faces.async.common.Handler;
 import com.icesoft.faces.async.common.SequenceNumbers;
 import com.icesoft.faces.async.common.SessionManager;
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.net.URI;
@@ -25,6 +27,19 @@ implements Handler, Runnable {
     private static final int STATE_DONE = 4;
 
     private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
+
+    private static final ResponseHandler EMPTY_RESPONSE_HANDLER =
+        new ResponseHandler() {
+            public void respond(final Response response)
+            throws Exception {
+                // general header fields
+                response.setHeader("Pragma", "no-cache");
+                response.setHeader("Cache-Control", "no-cache, no-store");
+                // entity header fields
+                response.setHeader("Content-Length", 0);
+                response.setHeader("Content-Type", "text/xml");
+            }
+        };
 
     private final SessionManager sessionManager;
     private final Request request;
@@ -107,6 +122,24 @@ implements Handler, Runnable {
                     return;
                 }
                 extractSequenceNumbers();
+                // checking pending request...
+                ProcessHandler _processHandler =
+                    (ProcessHandler)
+                        sessionManager.getRequestManager().pull(iceFacesIdSet);
+                if (_processHandler != null) {
+                    // respond to pending request.
+                    try {
+                        _processHandler.request.respondWith(
+                            EMPTY_RESPONSE_HANDLER);
+                    } catch (Exception exception) {
+                        if (LOG.isErrorEnabled()) {
+                            LOG.error(
+                                "An error occurred while " +
+                                    "trying to response with: 200 OK!",
+                                exception);
+                        }
+                    }
+                }
                 state = STATE_WAITING_FOR_RESPONSE;
             case STATE_WAITING_FOR_RESPONSE :
                 if (LOG.isTraceEnabled()) {
