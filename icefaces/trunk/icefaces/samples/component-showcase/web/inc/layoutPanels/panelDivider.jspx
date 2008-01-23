@@ -81,7 +81,7 @@
 			        </ice:panelDivider>  
 			</ice:panelGrid>            
         <br/>
-            <ice:panelDivider styleClass="myDvrPanel3" position="30">
+            <ice:panelDivider styleClass="myDvrPanel3" dividerPosition="30">
                 <f:facet name="first">
                             <ul>
                                 <li>Smooth, incremental page updates without full-page
