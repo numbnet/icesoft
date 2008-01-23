@@ -1567,6 +1567,8 @@
     background-color: #DDDDDD;
     padding: 0px;
     z-index: 1000;
+    width: 300px;
+    height: 150px;
 }
 
 .icePnlPopHdr {

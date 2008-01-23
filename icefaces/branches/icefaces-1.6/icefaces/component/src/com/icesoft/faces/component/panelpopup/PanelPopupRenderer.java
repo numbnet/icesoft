@@ -109,14 +109,9 @@ public class PanelPopupRenderer extends GroupRenderer {
             rootDiv.appendChild(table);
 
             // ICE-1490
-            String width;
-            String height;
-            String origStyle = panelPopup.getStyle();
-            width = origStyle.substring(origStyle.indexOf("width"), origStyle.indexOf(";", origStyle.indexOf("width")) + 1);
-            height = origStyle.substring(origStyle.indexOf("height"), origStyle.indexOf(";", origStyle.indexOf("height")) + 1);
             Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
                     CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
-                    "\" class=\"iceIEIFrameFix\" style=\"" + width + height + "\"></iframe><![endif]-->");
+                    "\" class=\"iceIEIFrameFix\" style=\"width:100%;height:100%;\"></iframe><![endif]-->");
             rootDiv.appendChild(iframe);
 
             if (modal != null && modal.booleanValue()) {
