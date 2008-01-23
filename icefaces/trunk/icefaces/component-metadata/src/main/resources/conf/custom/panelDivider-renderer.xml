@@ -35,9 +35,26 @@
 <renderer>
          <description>
              <![CDATA[ 
-             <p>
-                The panelDivider           
-             </p>
+<p>
+          The panelDivider component creates a spilttable panel. The position of 
+          the divider can be defined using the "dividerPosition" attribute. The
+          orientation of the spilttable panel can be set to the vertical or the 
+          horizontal using the "orientation" attribute.
+        </p><p>
+          The component requires two named facets ("first", "second") to define each pane. (e.g.)<br/>
+
+&lt;ice:panelDivider styleClass="myDvrPanel1"&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;f:facet name="first"&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:outputText value="left"/&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;/f:facet&gt;<br/><br/>
+     
+&nbsp;&nbsp;&nbsp;&lt;f:facet name="second"&gt; <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ice:outputText value="second"/&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;/f:facet&gt;<br/>  
+&lt;/ice:panelDivider&gt; 
+           
+        </p>
+        
              ]]>
          </description>
     <component-family>javax.faces.Panel</component-family>
