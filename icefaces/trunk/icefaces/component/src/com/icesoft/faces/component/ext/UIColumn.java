@@ -280,5 +280,6 @@ public class UIColumn extends javax.faces.component.UIColumn {
     
     public void resetGroupState() {
         previousGroupValue = null;
+        groupCount = 1;
     }
 }
