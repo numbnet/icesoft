@@ -10,6 +10,7 @@
     <property name="docs.dir" location="docs"/>
     <property name="dist.dir" location="dist"/>
     <property name="bin.dir" location="bin"/>
+    <property name="web.xml" location="web/WEB-INF/web.xml"/>
     
     <property name="build.dir" location="build"/>
     <property name="build.lib.dir" location="${build.dir}/lib"/>
@@ -17,7 +18,7 @@
     <property name="compile.debug" value="true"/>
     
     <condition property="release.type.suffix" value="${release.type}" else="">
-	<not><equals arg1="${release.type}" arg2="" trim="true"/></not>
+        <not><equals arg1="${release.type}" arg2="" trim="true"/></not>
     </condition>
     
     <property name="product.version" value="${version.primary}.${version.secondary}.${version.tertiary}"/>
@@ -26,7 +27,7 @@
     
     <path id="compile.run.classpath">
         <pathelement location="${build.classes.dir}"/>
-
+        
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
         <fileset dir="${icefaces.dir}/lib" includes="**/*.jar"/>
         <pathelement location="${icefaces.jar}" />
@@ -45,7 +46,7 @@
     </target>    
     
     <target name="jar" depends="compile">
-
+        
         <mkdir dir="${dist.dir}"/>
         <jar destfile="${dist.dir}/${ant.project.name}.jar" basedir="${build.classes.dir}" duplicate="preserve">
             <manifest>
@@ -61,7 +62,7 @@
         </jar>
         
         <copy file="${dist.dir}/${ant.project.name}.jar" todir="../lib"/>
-
+        
     </target>    
     
     <target name="clean">
@@ -71,7 +72,7 @@
     </target>
     
     <target name="build.war" depends="clean, jar">
-        <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="web/WEB-INF/web.xml" duplicate="fail">
+        <war destfile="${dist.dir}/async-http-server.war" basedir="web" excludes="WEB-INF/web*.xml" webxml="${web.xml}" duplicate="fail">
             <lib dir="${icefaces.dir}/lib">
                 <include name="commons-beanutils.jar" />
                 <include name="commons-collections.jar" />
@@ -88,14 +89,14 @@
                 <include name="jstl.jar" />
                 <include name="backport-util-concurrent.jar"/>
             </lib>
-
+            
             <lib file="${dist.dir}/${ant.project.name}.jar" />
         </war>
-
+        
         <copy file="${dist.dir}/async-http-server.war" todir="."/>
-
+        
     </target>
-
+    
     <target name="build.src.bundle" depends="clean, jar, build.war">
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
@@ -114,6 +115,106 @@
                 <include name="build.*"/>
             </zipfileset>
         </zip>
+    </target>
+    
+    <target name="create.xml">
+        <echo message="${server.config}"/>
+        <echo message="${property.config}"/>
+        <replaceregexp file="${web.xml}" match="param-value>servlet" replace="param-value>${server.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>server" replace="param-value>${server.config}" byline="true"/>
+
+        <replaceregexp file="${web.xml}" match="param-value>jboss.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>activemq.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>jboss_ha.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>weblogic.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>weblogic.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>websphere.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>websphere_ha.properties" replace="param-value>${property.config}" byline="true"/>
+    </target>
+    
+    <target name="build.server.jboss.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="jboss.properties"/>
+        </ant>
+        <ant target="build.war"/>
+    </target>
+    <target name="build.server.jboss-ha.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="jboss_ha.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.server.tomcat.activemq.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="activemq.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.server.weblogic.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="weblogic.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.server.websphere.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="websphere.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.server.websphere-ha.war">
+        <ant target="create.xml">
+            <property name="server.config" value="server"/>
+            <property name="property.config" value="websphere_ha.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.jboss.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="jboss.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.jboss-ha.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="jboss_ha.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.tomcat.activemq.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="activemq.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.weblogic.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="weblogic.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.websphere.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="websphere.properties"/>
+        </ant>
+        <ant target="build.war"/>        
+    </target>
+    <target name="build.servlet.websphere-ha.war">
+        <ant target="create.xml">
+            <property name="server.config" value="servlet"/>
+            <property name="property.config" value="websphere_ha.properties"/>
+        </ant>
+        <ant target="build.war"/>        
     </target>
     
 </project>

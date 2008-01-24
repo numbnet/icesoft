@@ -11,19 +11,12 @@
 
     <context-param>
         <param-name>com.icesoft.faces.async.service</param-name>
-        <param-value>servlet</param-value>
+        <param-value>server</param-value>
     </context-param>
 
     <context-param>
         <param-name>com.icesoft.net.messaging.properties</param-name>
         <param-value>jboss.properties</param-value>
-        <!--
-        <param-value>activemq.properties</param-value>
-        <param-value>jboss_ha.properties</param-value>
-        <param-value>weblogic.properties</param-value>
-        <param-value>websphere.properties</param-value>
-        <param-value>websphere_ha.properties</param-value>
-        -->
     </context-param>
 
     <!--
