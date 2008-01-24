@@ -29,6 +29,13 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>columnGroup</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.ColumnGroup</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>columns</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Columns</component-type>
@@ -103,6 +110,21 @@
 		<component>
 			<component-type>com.icesoft.faces.GMapMarker</component-type>
 			<renderer-type>com.icesoft.faces.GMapMarkerRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>headerRow</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HeaderRow</component-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>checkbox</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HtmlCheckbox</component-type>
+			<renderer-type>com.icesoft.faces.Checkbox</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -243,6 +265,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>radio</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HtmlRadio</component-type>
+			<renderer-type>com.icesoft.faces.Radio</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>selectBooleanCheckbox</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlSelectBooleanCheckbox</component-type>
@@ -371,6 +401,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>outputMedia</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.OutputMedia</component-type>
+			<renderer-type>com.icesoft.faces.OutputMedia</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>outputStyle</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.OutputStyleComp</component-type>
@@ -383,6 +421,14 @@
 		<component>
 			<component-type>com.icesoft.faces.PanelCollapsible</component-type>
 			<renderer-type>com.icesoft.faces.PanelCollapsibleRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>panelDivider</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.PanelDivider</component-type>
+			<renderer-type>com.icesoft.faces.PanelDividerRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -423,6 +469,14 @@
 		<component>
 			<component-type>com.icesoft.faces.PanelTabSet</component-type>
 			<renderer-type>com.icesoft.faces.TabbedPane</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>panelTooltip</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.PanelTooltip</component-type>
+			<renderer-type>com.icesoft.faces.PanelTooltipRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
