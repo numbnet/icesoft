@@ -100,12 +100,10 @@ public class ReceiveSendUpdates implements Server {
         //turn off required simply with false for all but iterative case
         ValueBinding FALSE_BINDING = facesContext
                 .getApplication().createValueBinding("#{false}");
-
-        int length = parent.getChildCount();
-
-        UIComponent next = null;
-        for (int i = 0; i < length; i++) {
-            next = (UIComponent) parent.getChildren().get(i);
+        
+        Iterator kidsAndFacets = parent.getFacetsAndChildren();
+        while (kidsAndFacets.hasNext()) {
+            UIComponent next = (UIComponent) kidsAndFacets.next();
             if (next instanceof UIInput) {
                 UIInput input = (UIInput) next;
                 ValueBinding valueBinding =
