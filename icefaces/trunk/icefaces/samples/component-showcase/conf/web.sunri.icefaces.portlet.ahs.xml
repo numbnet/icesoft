@@ -84,13 +84,13 @@
 
     <!-- AHS config -->
     <context-param>
-        <param-name>com.icesoft.faces.asyncServerContext</param-name>
+        <param-name>com.icesoft.faces.blockingRequestHandlerContext</param-name>
         <param-value>async-http-server</param-value>
     </context-param>
 
     <context-param>
-        <param-name>com.icesoft.faces.async.server</param-name>
-        <param-value>true</param-value>
+        <param-name>com.icesoft.faces.blockingRequestHandler</param-name>
+        <param-value>icefaces-ahs</param-value>
     </context-param>
 
     <context-param>
