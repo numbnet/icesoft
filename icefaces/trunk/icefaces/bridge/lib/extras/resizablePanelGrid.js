@@ -291,12 +291,6 @@ Ice.PanelDivider.addMethods({
         logger.info("leftHeight "+ leftElementHeight);
         logger.info("rightElementHeight "+ rightElementHeight);
 
-        if (Prototype.Browser.Gecko || Prototype.Browser.WebKit) {
-            leftElementHeight = parseInt(leftElementHeight)-2;
-            leftElementHeight = parseInt(leftElementHeight)-2;
-        }
-
-
         var tableHeight = Element.getHeight(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
         var diff = this.getDifference(event);
@@ -341,7 +335,7 @@ Ice.PanelDivider.addMethods({
         var inPercentElement  = $(clientId + "InPercent");        
         firstPaneStyleElement.value = this.getPreviousElement().style.cssText;
         secondPaneStyleElement.value = this.getNextElement().style.cssText; 
-        inPercentElement.value = Math.round(inPercent * 100)+1;
+        inPercentElement.value = Math.round(inPercent * 100);
         iceSubmitPartial(form,this.source,event);
   }
 
