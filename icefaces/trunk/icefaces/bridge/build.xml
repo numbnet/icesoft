@@ -166,7 +166,7 @@
         </concat>
     </target>
 
-    <target name="do.compress" unless="no-compress">
+    <target name="do.compress" if="do-compress">
         <echo message="Compressing ..."/>
         <compress src="${src.script}"/>
     </target>
@@ -184,6 +184,7 @@
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${script}"/>
         </ant>
+        
         <echo message="Appending open ajax script"/>
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <path location="${script.open.ajax}"/>
