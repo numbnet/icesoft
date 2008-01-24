@@ -43,6 +43,61 @@
         return container;
     };
 
+    This.Update = Object.subclass({
+        initialize: function(element) {
+            this.element = element;
+            var tag = element.getAttribute('tag');
+            this.startTag = function(html) {
+                html.push('<');
+                html.push(tag);
+                this.eachAttribute(function(name, value) {
+                    html.push(' ');
+                    html.push(name);
+                    html.push('="');
+                    html.push(value);
+                    html.push('"');
+                });
+                html.push('>');
+            };
+            this.endTag = function(html) {
+                html.push('</');
+                html.push(tag);
+                html.push('>');
+            };
+        },
+
+        eachAttribute: function(iterator) {
+            $enumerate(this.element.getElementsByTagName('attribute')).each(function(attribute) {
+                iterator(attribute.getAttribute('name'), attribute.getAttribute('value'));
+            });
+        },
+
+        content: function() {
+            var contentElement = this.element.getElementsByTagName('content')[0];
+            if (contentElement.firstChild) {
+                return contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>');
+            } else {
+                return '';
+            }
+        },
+
+        asHTML: function() {
+            var html = [];
+            this.startTag(html);
+            html.push(this.content());
+            this.endTag(html);
+            return html.join('');
+        },
+
+        asString: function() {
+            var html = [];
+            this.startTag(html);
+            html.push('...');
+            this.endTag(html);
+            return html.join('');
+        }
+    });
+
     This.Element = Object.subclass({
         MouseListenerNames: [ 'onClick', 'onDblClick', 'onMouseDown', 'onMouseMove', 'onMouseOut', 'onMouseOver', 'onMouseUp' ],
 
@@ -58,6 +113,10 @@
 
         isSubmit: function() {
             return false;
+        },
+
+        updateDOM: function(update) {
+            this.replaceHtml(update.asHTML());
         },
 
         replaceHtml: function(html) {
@@ -119,7 +178,7 @@
             this.defaultReplaceHostElementWith(newElement);
         },
 
-    //hide deleted elements -- Firefox 1.0.x renders tables after they are removed from the document.
+        //hide deleted elements -- Firefox 1.0.x renders tables after they are removed from the document.
         displayOff: /Safari/.test(navigator.userAgent) ? Function.NOOP : function() {
             this.element.style.display = 'none';
         },
@@ -225,8 +284,8 @@
             ['className', 'title', 'lang'].each(iterator);
             //input element attributes
             ['name', 'value', 'checked', 'disabled', 'readOnly',
-                    'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
-                    'tabIndex', 'accessKey', 'accept'].each(iterator);
+                'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
+                'tabIndex', 'accessKey', 'accept'].each(iterator);
             //'dir' attribute cannot be updated dynamically in IE 7
             //'type' attribute cannot be updated dynamically in Firefox 2.0
         },
@@ -292,6 +351,7 @@
 
     This.FormElement = This.Element.subclass({
         FormListenerNames: [ 'onReset', 'onSubmit', 'submit' ],
+        FormAttributeNames: [ 'acceptcharset', 'action', 'enctype', 'method', 'name', 'target' ],
 
         detectDefaultSubmit: function() {
             var formElements = this.element.elements;
@@ -326,7 +386,7 @@
             });
         },
 
-    //captures normal form submit events and sends them through a XMLHttpRequest
+        //captures normal form submit events and sends them through a XMLHttpRequest
         captureOnSubmit: function() {
             var previousOnSubmit = this.element.onsubmit;
             this.element.onsubmit = function(event) {
@@ -336,7 +396,7 @@
             };
         },
 
-    //redirect normal form submits through a XMLHttpRequest
+        //redirect normal form submits through a XMLHttpRequest
         redirectSubmit: function() {
             var previousSubmit = this.element.submit;
             this.element.submit = function() {
@@ -348,6 +408,25 @@
         captureAndRedirectSubmit: function() {
             this.captureOnSubmit();
             this.redirectSubmit();
+        },
+
+        updateDOM: function(update) {
+            this.disconnectAllListenersAndPeers();
+            this.element.innerHTML = update.content();
+            var remove = function(name) {
+                this.element[name] = null;
+            }.bind(this);
+            this.FormAttributeNames.each(function(name) {
+                this.element.removeAttribute(name);
+            }.bind(this));
+            this.eachListenerName(remove);
+            update.eachAttribute(function(name, value) {
+                try {
+                    this.element.setAttribute(name, value);
+                } catch (e) {
+                    logger.error('failed to set attribute ' + name + ':' + value, e);
+                }
+            }.bind(this));
         },
 
         serializeOn: function(query) {
@@ -363,54 +442,19 @@
         }
     });
 
-    This.HtmlElement = This.Element.subclass({
-        replaceHtml: function(html) {
-            var outerHTML = function(tag) {
-                var start = new RegExp('\<' + tag + '[^\<]*\>', 'g').exec(html);
-                var end = new RegExp('\<\/' + tag + '\>', 'g').exec(html);
-                return html.substring(start.index, end.index + end[0].length);
-            };
-
-            var documentBody = document.body;
-            new This.BodyElement(documentBody).replaceHtml(outerHTML('body'));
-            var documentTitle = document.getElementsByTagName('title')[0];
-            new This.TitleElement(documentTitle).replaceHtml(outerHTML('title'));
-            var documentHead = document.getElementsByTagName('head')[0];
-            //replacing the head in IE removes the title
-            if (documentHead && !/MSIE/.test(navigator.userAgent)) {
-                new This.HeadElement(documentHead).replaceHtml(outerHTML('head'));
-            }
-        }
-    });
-
-    This.HeadElement = This.Element.subclass({
-        replaceHtml: function(html) {
-            $enumerate(this.element.childNodes).each(function(e) {
-                this.element.removeChild(e);
-            }.bind(this));
-            this.withTemporaryContainer(function(container) {
-                container.innerHTML = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
-                $enumerate(container.childNodes).each(function(e) {
-                    this.element.appendChild(e);
-                    //todo: evaluate script nodes
-                }.bind(this));
-            });
-            //todo: replace the attributes
-        }
-    });
 
     This.BodyElement = This.Element.subclass({
-        replaceHtml: function(html) {
+        updateDOM: function(update) {
             this.disconnectAllListenersAndPeers();
-            this.element.innerHTML = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+            this.element.innerHTML = update.content();
         }
     });
 
     This.ScriptElement = This.Element.subclass({
-        replaceHtml: function(html) {
+        updateDOM: function(update) {
             //if script element is updated its code will be evaluate in IE (thus evaluating it twice)
             //evaluate code in the 'window' context
-            var scriptCode = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+            var scriptCode = update.content();
             if (scriptCode != '' && scriptCode != ';') {
                 var evalFunc = function() {
                     eval(scriptCode);
@@ -421,8 +465,8 @@
     });
 
     This.TitleElement = This.Element.subclass({
-        replaceHtml: function(html) {
-            this.element.ownerDocument.title = html.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+        updateDOM: function(update) {
+            this.element.ownerDocument.title = update.content();
         }
     });
 
@@ -456,7 +500,6 @@
     This.TableCellElement = This.Element.subclass({
         replaceHtml: function(html) {
             this.withTemporaryContainer(function(container) {
-                //very bizarre hack to account for innerHTML not allowing top level TR and TD
                 container.innerHTML = '<TABLE>' + html + '</TABLE>';
                 var newElement = container.firstChild;
                 while ((null != newElement) && (this.element.id != newElement.id)) {
@@ -496,8 +539,8 @@
 
         eachAttributeName: function(iterator) {
             ['title', 'lang', 'dir', 'class', 'style', 'align', 'frameborder',
-                    'width', 'height', 'hspace', 'ismap', 'longdesc', 'marginwidth',
-                    'marginheight', 'name', 'scrolling'].each(iterator);
+                'width', 'height', 'hspace', 'ismap', 'longdesc', 'marginwidth',
+                'marginheight', 'name', 'scrolling'].each(iterator);
         }
     });
 

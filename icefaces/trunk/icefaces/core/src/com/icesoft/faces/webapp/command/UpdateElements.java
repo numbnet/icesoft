@@ -1,7 +1,9 @@
 package com.icesoft.faces.webapp.command;
 
 import com.icesoft.faces.util.DOMUtils;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -80,12 +82,24 @@ public class UpdateElements implements Command {
             if (update == null) continue;
             writer.write("<update address=\"");
             writer.write(update.getAttribute("id"));
-            writer.write("\"><![CDATA[");
-            String content = DOMUtils.nodeToString(update);
+            writer.write("\" tag=\"" + update.getTagName() + "\">");
+
+            NamedNodeMap attributes = update.getAttributes();
+            for (int j = 0; j < attributes.getLength(); j++) {
+                Attr attribute = (Attr) attributes.item(j);
+                writer.write("<attribute name=\"");
+                writer.write(attribute.getName());
+                writer.write("\" value=\"");
+                writer.write(attribute.getValue());
+                writer.write("\"/>");
+            }
+
+            writer.write("<content><![CDATA[");
+            String content = DOMUtils.childrenToString(update);
             content = START_CDATA.matcher(content).replaceAll("<!#cdata#");
             content = END_CDATA.matcher(content).replaceAll("##>");
             writer.write(content);
-            writer.write("]]></update>");
+            writer.write("]]></content></update>");
         }
         writer.write("</updates>");
     }

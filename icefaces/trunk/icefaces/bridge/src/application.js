@@ -83,16 +83,16 @@
                 $enumerate(element.getElementsByTagName('update')).each(function(updateElement) {
                     try {
                         var address = updateElement.getAttribute('address');
-                        var html = updateElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>');
-                        address.asExtendedElement().replaceHtml(html);
-                        logger.debug('applied update : ' + html);
+                        var update = new Ice.ElementModel.Update(updateElement);
+                        address.asExtendedElement().updateDOM(update);
+                        logger.debug('applied update : ' + update.asString());
                         scriptLoader.searchAndEvaluateScripts(address.asElement());
                         if (Ice.StateMon) {
                             Ice.StateMon.checkAll();
                             Ice.StateMon.rebuild();
                         }
                     } catch (e) {
-                        logger.error('failed to insert element: ' + html, e);
+                        logger.error('failed to insert element: ' + update.asString(), e);
                     }
                 });
             });
