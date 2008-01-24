@@ -61,15 +61,30 @@ extends HttpServlet {
                     new UpdatedViewsManager(
                         _servletConfigConfiguration, messageService),
                     messageService);
-            boolean _asyncHttpServer;
+            String _asyncService;                           // new property name
             try {
-                _asyncHttpServer =
+                _asyncService =
+                    _servletContextConfiguration.getAttribute("async.service");
+            } catch (ConfigurationException exception) {
+                _asyncService = null;
+            }
+            boolean _asyncServer;                           // old property name
+            try {
+                _asyncServer =
                     _servletContextConfiguration.getAttributeAsBoolean(
                         "async.server");
             } catch (ConfigurationException exception) {
-                _asyncHttpServer = false;
+                _asyncServer = false;
             }
-            if (_asyncHttpServer) {
+            if ((_asyncService != null &&
+                    _asyncService.equalsIgnoreCase("server")) ||
+                (_asyncService == null && _asyncServer)) {
+
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(
+                        "Starting the Asynchronous HTTP Server " +
+                            "in server-mode...");
+                }
                 asyncHttpServer =
                     new AsyncHttpServer(
                         new AsyncHttpServerSettings(
@@ -79,6 +94,21 @@ extends HttpServlet {
                 messageService.start();
                 asyncHttpServer.start();
             } else {
+                if (_asyncService != null &&
+                        !_asyncService.equalsIgnoreCase("servlet")) {
+
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(
+                            "Unknown property value for " +
+                                "com.icesoft.faces.async.service: " +
+                                    _asyncService);
+                    }
+                }
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(
+                        "Starting the Asynchronous HTTP Server " +
+                            "in servlet-mode...");
+                }
                 final ExecuteQueue _executeQueue = new ExecuteQueue();
                 SessionDispatcher _sessionDispatcher = new SessionDispatcher() {
                     protected PseudoServlet newServlet(

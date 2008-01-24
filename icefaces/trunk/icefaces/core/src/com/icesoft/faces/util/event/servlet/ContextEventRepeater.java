@@ -34,6 +34,8 @@
 package com.icesoft.faces.util.event.servlet;
 
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -88,19 +90,18 @@ import java.util.WeakHashMap;
  *
  */
 public class ContextEventRepeater
-        implements HttpSessionListener, ServletContextListener {
+implements HttpSessionListener, ServletContextListener {
+    private static final String MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME =
+        "com.icesoft.faces.util.event.servlet.MessagingContextEventPublisher";
+
+    private static final Log LOG =
+        LogFactory.getLog(ContextEventRepeater.class);
+
     //todo: fix it... this is just a temporary solution
     private static SessionDispatcher.Listener SessionDispatcherListener;
     static {
         SessionDispatcherListener = new SessionDispatcher.Listener();
     }
-
-    private static final String ASYNC_SERVER_KEY =
-        "com.icesoft.faces.async.server";
-    private static final String MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME =
-        "com.icesoft.faces.util.event.servlet.MessagingContextEventPublisher";
-
-    private static Log log = LogFactory.getLog(ContextEventRepeater.class);
 
     private static Map bufferedContextEvents = new HashMap();
     private static ContextEventPublisher contextEventPublisher;
@@ -110,15 +111,19 @@ public class ContextEventRepeater
      * Adds the specified <code>listener</code> to this
      * <code>ContextEventRepeater</code>. </p>
      *
-     * @param listener the listener to be added.
+     * @param contextEventListener the listener to be added.
      */
-    public synchronized static void addListener(ContextEventListener listener) {
-        if (listener == null || listeners.containsKey(listener)) {
+    public synchronized static void addListener(
+        final ContextEventListener contextEventListener) {
+
+        if (contextEventListener == null ||
+            listeners.containsKey(contextEventListener)) {
+
             return;
         }
-        listeners.put(listener, null);
-        if (listener.receiveBufferedEvents()) {
-            sendBufferedEvents(listener);
+        listeners.put(contextEventListener, null);
+        if (contextEventListener.receiveBufferedEvents()) {
+            sendBufferedEvents(contextEventListener);
         }
     }
 
@@ -129,7 +134,7 @@ public class ContextEventRepeater
      *
      * @param event the servlet context event.
      */
-    public synchronized void contextDestroyed(ServletContextEvent event) {
+    public synchronized void contextDestroyed(final ServletContextEvent event) {
         SessionDispatcherListener.contextDestroyed(event);
 
         ContextDestroyedEvent contextDestroyedEvent =
@@ -144,65 +149,67 @@ public class ContextEventRepeater
         if (contextEventPublisher != null) {
             contextEventPublisher.publish(contextDestroyedEvent);
         }
-        if (log.isInfoEnabled()) {
+        if (LOG.isInfoEnabled()) {
             ServletContext servletContext =
                     contextDestroyedEvent.getServletContext();
-            log.info(
+            LOG.info(
                 "Servlet Context Name: " +
                     servletContext.getServletContextName() + ", " +
                 "Server Info: " + servletContext.getServerInfo());
         }
     }
 
-    public synchronized void contextInitialized(ServletContextEvent event) {
+    public synchronized void contextInitialized(
+        final ServletContextEvent event) {
+
         SessionDispatcherListener.contextInitialized(event);
 
-        boolean _asyncServer;
-        String _asyncServerValue =
-                event.getServletContext().getInitParameter(ASYNC_SERVER_KEY);
-        if (_asyncServerValue != null) {
-            _asyncServer = Boolean.valueOf(_asyncServerValue).booleanValue();
-        } else {
-            _asyncServer = false;
-            if (log.isDebugEnabled()) {
-                log.debug("com.icesoft.faces.async.server not defined.");
-            }
-        }
-        if (_asyncServer) {
+        Configuration _configuration =
+            new ServletContextConfiguration(
+                "com.icesoft.faces", event.getServletContext());
+        // new property name
+        String _blockingRequestHandler =
+            _configuration.getAttribute("blockingRequestHandler", null);
+        // old property name
+        boolean _asyncServer =
+            _configuration.getAttributeAsBoolean("async.server", false);
+        if ((_blockingRequestHandler != null &&
+                _blockingRequestHandler.equalsIgnoreCase("icefaces-ahs")) ||
+            (_blockingRequestHandler == null && _asyncServer)) {
+
             try {
                 contextEventPublisher =
-                        (ContextEventPublisher)
-                                Class.forName(
-                                        MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME)
-                                        .
-                                                newInstance();
+                    (ContextEventPublisher)
+                        Class.forName(
+                            MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME).
+                                newInstance();
                 contextEventPublisher.setContextEventRepeater(this);
                 contextEventPublisher.publish(
-                        new ContextInitializedEvent(event));
+                    new ContextInitializedEvent(event));
             } catch (ClassNotFoundException exception) {
-                if (log.isDebugEnabled()) {
-                    log.debug("MessagingContextEventPublisher is not found!");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("MessagingContextEventPublisher is not found!");
                 }
             } catch (IllegalAccessException exception) {
-                if (log.isFatalEnabled()) {
-                    log.fatal(
-                            "Failed to access constructor of " +
+                if (LOG.isFatalEnabled()) {
+                    LOG.fatal(
+                        "Failed to access constructor of " +
                             "MessagingContextEventPublisher!",
-                            exception);
+                        exception);
                 }
             } catch (InstantiationException exception) {
-                if (log.isFatalEnabled()) {
-                    log.fatal(
-                            "Failed to " +
+                if (LOG.isFatalEnabled()) {
+                    LOG.fatal(
+                        "Failed to " +
                             "instantiate MessagingContextEventPublisher!",
-                            exception);
+                        exception);
                 }
             }
         }
     }
 
     public synchronized static void iceFacesIdDisposed(
-        HttpSession source, String iceFacesId) {
+        final HttpSession source, final String iceFacesId) {
 
         ICEfacesIDDisposedEvent iceFacesIdDisposedEvent =
             new ICEfacesIDDisposedEvent(source, iceFacesId);
@@ -215,8 +222,8 @@ public class ContextEventRepeater
         if (contextEventPublisher != null) {
             contextEventPublisher.publish(iceFacesIdDisposedEvent);
         }
-        if (log.isTraceEnabled()) {
-            log.trace(
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
                 "ICEfaces ID disposed: " +
                     iceFacesIdDisposedEvent.getICEfacesID());
         }
@@ -231,7 +238,7 @@ public class ContextEventRepeater
      * @param iceFacesId the ICEfaces ID.
      */
     public synchronized static void iceFacesIdRetrieved(
-        HttpSession source, String iceFacesId) {
+        final HttpSession source, final String iceFacesId) {
 
         ICEfacesIDRetrievedEvent iceFacesIdRetrievedEvent =
             new ICEfacesIDRetrievedEvent(source, iceFacesId);
@@ -244,8 +251,8 @@ public class ContextEventRepeater
         if (contextEventPublisher != null) {
             contextEventPublisher.publish(iceFacesIdRetrievedEvent);
         }
-        if (log.isTraceEnabled()) {
-            log.trace(
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
                 "ICEfaces ID retrieved: " +
                     iceFacesIdRetrievedEvent.getICEfacesID());
         }
@@ -255,18 +262,18 @@ public class ContextEventRepeater
      * Removes the specified <code>listener</code> from this
      * <code>ContextEventRepeater</code>. </p>
      *
-     * @param listener the listener to be removed.
+     * @param contextEventListener the listener to be removed.
      */
     public synchronized static void removeListener(
-            ContextEventListener listener) {
+        final ContextEventListener contextEventListener) {
 
-        if (listener == null) {
+        if (contextEventListener == null) {
             return;
         }
-        listeners.remove(listener);
+        listeners.remove(contextEventListener);
     }
 
-    public synchronized void sessionCreated(HttpSessionEvent event) {
+    public synchronized void sessionCreated(final HttpSessionEvent event) {
         SessionDispatcherListener.sessionCreated(event);
     }
 
@@ -276,7 +283,7 @@ public class ContextEventRepeater
      *
      * @param event the HTTP session event.
      */
-    public synchronized void sessionDestroyed(HttpSessionEvent event) {
+    public synchronized void sessionDestroyed(final HttpSessionEvent event) {
         SessionDispatcherListener.sessionDestroyed(event);
         //It's possible to have a valid session that does not contain an
         //icefacesID.  We should not bail out completely.  Simply log a message
@@ -286,28 +293,24 @@ public class ContextEventRepeater
         String icefacesID = (String) ((HttpSession) event.getSource())
                 .getAttribute("icefacesID");
         if (icefacesID == null || icefacesID.trim().length() < 1) {
-            if (log.isDebugEnabled()) {
-                log.debug("session does not contain and icefacesID");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("session does not contain and icefacesID");
             }
             return;
         }
-
         SessionDestroyedEvent sessionDestroyedEvent =
                 new SessionDestroyedEvent(event, icefacesID);
-
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
-                    sessionDestroyed(sessionDestroyedEvent);
+                sessionDestroyed(sessionDestroyedEvent);
         }
-
         removeBufferedEvents(event.getSession());
-
         if (contextEventPublisher != null) {
             contextEventPublisher.publish(sessionDestroyedEvent);
         }
-        if (log.isTraceEnabled()) {
-            log.trace("ICEfaces ID: " + sessionDestroyedEvent.getICEfacesID());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("ICEfaces ID: " + sessionDestroyedEvent.getICEfacesID());
         }
     }
 
@@ -320,38 +323,37 @@ public class ContextEventRepeater
      * @param viewNumber the view number.
      */
     public synchronized static void viewNumberRetrieved(
-            HttpSession source, String icefacesID, int viewNumber) {
+        final HttpSession source, final String icefacesID,
+        final int viewNumber) {
 
         ViewNumberRetrievedEvent viewNumberRetrievedEvent =
-                new ViewNumberRetrievedEvent(
-                        source, icefacesID,
-                        viewNumber);
-
+            new ViewNumberRetrievedEvent(source, icefacesID, viewNumber);
         bufferedContextEvents.put(viewNumberRetrievedEvent, source);
-
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
-                    viewNumberRetrieved(viewNumberRetrievedEvent);
+                viewNumberRetrieved(viewNumberRetrievedEvent);
         }
         if (contextEventPublisher != null) {
             contextEventPublisher.publish(viewNumberRetrievedEvent);
         }
-        if (log.isTraceEnabled()) {
-            log.trace(
-                    "View Number: " + viewNumberRetrievedEvent.getViewNumber());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(
+                "View Number: " + viewNumberRetrievedEvent.getViewNumber());
         }
     }
 
     ContextEvent[] getBufferedContextEvents() {
         Set _contextEventSet = bufferedContextEvents.keySet();
         return
-                (ContextEvent[])
-                        _contextEventSet.toArray(
-                                new ContextEvent[_contextEventSet.size()]);
+            (ContextEvent[])
+                _contextEventSet.toArray(
+                    new ContextEvent[_contextEventSet.size()]);
     }
 
-    private synchronized static void removeBufferedEvents(HttpSession session) {
+    private synchronized static void removeBufferedEvents(
+        final HttpSession session) {
+
         Iterator it = bufferedContextEvents.keySet().iterator();
         Object event = null;
         HttpSession bufferedSession = null;
@@ -366,17 +368,17 @@ public class ContextEventRepeater
     }
 
     private synchronized static void sendBufferedEvents(
-            ContextEventListener listener) {
+        final ContextEventListener contextEventListener) {
 
         Iterator it = bufferedContextEvents.keySet().iterator();
         while (it.hasNext()) {
             Object event = it.next();
             if (event instanceof ICEfacesIDRetrievedEvent) {
-                listener.iceFacesIdRetrieved(
-                        (ICEfacesIDRetrievedEvent) event);
+                contextEventListener.iceFacesIdRetrieved(
+                    (ICEfacesIDRetrievedEvent) event);
             } else if (event instanceof ViewNumberRetrievedEvent) {
-                listener.viewNumberRetrieved(
-                        (ViewNumberRetrievedEvent) event);
+                contextEventListener.viewNumberRetrieved(
+                    (ViewNumberRetrievedEvent) event);
             }
         }
     }

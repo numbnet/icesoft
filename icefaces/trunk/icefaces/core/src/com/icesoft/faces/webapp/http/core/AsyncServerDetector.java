@@ -14,17 +14,22 @@ public class AsyncServerDetector implements Server {
     private Server server;
 
     public AsyncServerDetector(String icefacesID, Collection synchronouslyUpdatedViews, ViewQueue allUpdatedViews, ServletContext servletContext, Configuration configuration) {
-        boolean useAsyncHttpServerByDefault;
-        try {
-            getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
-            useAsyncHttpServerByDefault = true;
-        } catch (ClassNotFoundException exception) {
-            useAsyncHttpServerByDefault = false;
-        }
+//        boolean useAsyncHttpServerByDefault;
+//        try {
+//            getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
+//            useAsyncHttpServerByDefault = true;
+//        } catch (ClassNotFoundException exception) {
+//            useAsyncHttpServerByDefault = false;
+//        }
+        // new property name
+        String blockingRequestHandler = configuration.getAttribute("blockingRequestHandler", null);
+        // old property name
+        boolean asyncServer = configuration.getAttributeAsBoolean("async.server", false);
+        if ((blockingRequestHandler != null && blockingRequestHandler.equalsIgnoreCase("icefaces-ahs")) ||
+            (blockingRequestHandler == null && asyncServer)) {
 
-        if (configuration.getAttributeAsBoolean("useAsyncHttpServer", useAsyncHttpServerByDefault)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Adapting to Asynchronous HTTP Server environment.");
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Adapting to Asynchronous HTTP Server environment.");
             }
             try {
                 server = (Server) this.getClass().getClassLoader().

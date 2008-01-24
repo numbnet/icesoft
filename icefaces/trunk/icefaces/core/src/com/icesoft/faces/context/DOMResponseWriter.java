@@ -294,7 +294,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         ElementController.from(session).addInto(prefix, body);
         String contextPath = handler.getResourceURL(context, "/");
-        String asyncServerContextPath = "/" + configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", "")) + "/";
+        String asyncServerContextPath = "/" + configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/";
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =

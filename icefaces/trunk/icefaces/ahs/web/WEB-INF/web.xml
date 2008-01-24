@@ -3,17 +3,15 @@
   "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
   "http://java.sun.com/dtd/web-app_2_3.dtd">
 
-
 <web-app>
     <display-name>Async Server</display-name>
     <description>
         ICEfaces Asynchronous HTTP Server
     </description>
 
-    <!--  Define async server mode -->
     <context-param>
-        <param-name>com.icesoft.faces.async.server</param-name>
-        <param-value>false</param-value>
+        <param-name>com.icesoft.faces.async.service</param-name>
+        <param-value>servlet</param-value>
     </context-param>
 
     <context-param>
@@ -24,6 +22,7 @@
         <param-value>jboss_ha.properties</param-value>
         <param-value>weblogic.properties</param-value>
         <param-value>websphere.properties</param-value>
+        <param-value>websphere_ha.properties</param-value>
         -->
     </context-param>
 
