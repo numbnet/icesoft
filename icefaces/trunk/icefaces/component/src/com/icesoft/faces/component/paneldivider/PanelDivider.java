@@ -3,6 +3,10 @@ package com.icesoft.faces.component.paneldivider;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
@@ -13,15 +17,16 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.JavascriptContext;
 
 public class PanelDivider extends UIPanel{
-    /**
-     * The component type.
-     */
+    private final Log log = LogFactory.getLog(PanelDivider.class);
+
     public static final String COMPONENT_TYPE = "com.icesoft.faces.PanelDivider";
-    /**
-     * The default renderer type.
-     */
+
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.PanelDividerRenderer";
 
+    private static final String INVALID_POSITION = " is invalid value for the position. " +
+    "The valid position is between  1 to 100. The default position is " +
+    "being applied [50]";
+    
     public static final String FIRST_PANL_STYLE= "FirstPane";
     
     public static final String SECOND_PANL_STYLE= "SecondPane";
@@ -43,6 +48,8 @@ public class PanelDivider extends UIPanel{
     private String firstPaneStyle;
     private String secondPaneStyle;
     private int DEFAULT_POSITION = 50;
+    private int submittedDividerPosition = -1;
+    private int previousDividerPosition = -1;
     
     public PanelDivider() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -60,26 +67,42 @@ public class PanelDivider extends UIPanel{
         if (map.containsKey(clientId + IN_PERCENT) 
                 && map.get(clientId + IN_PERCENT) != null && 
                         !"".equals(map.get(clientId + IN_PERCENT))) {
-            DEFAULT_POSITION =  Integer.valueOf(String.valueOf(map.get(clientId + IN_PERCENT))).intValue();
+            submittedDividerPosition =  Integer.valueOf(String.valueOf(map.get(clientId + IN_PERCENT))).intValue();
+            DEFAULT_POSITION = submittedDividerPosition;
             decoded = true;
+        } else {
+            decoded = false;
         }
+        previousDividerPosition = getDividerPosition();
+        super.decode(facesContext);
     }
     
-    public void encodeEnd(FacesContext context) throws IOException {
-        decoded = false;
+    public void encodeBegin(FacesContext facesContext) throws IOException {
+
+        super.encodeBegin(facesContext);
     }
     
+   
     public void processUpdates(FacesContext context) {
         ValueBinding vb = getValueBinding("dividerPosition");
-        if (vb != null) {
-            vb.setValue(context, new Integer(DEFAULT_POSITION));
-        } else {
-            if (dividerPosition  != null) {
-                dividerPosition  = new Integer(DEFAULT_POSITION);
+        if (decoded) {
+            if (vb != null) {
+                vb.setValue(context, new Integer(submittedDividerPosition));
+            } 
+            if (dividerPosition != null) {
+                dividerPosition = new Integer(submittedDividerPosition);
             }
         }
+        int pos = getDividerPosition();
+        if (!validatePosition(pos)) {
+            FacesMessage message = new FacesMessage("["+ pos + "] "+ INVALID_POSITION);;
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            context.addMessage(getClientId(context), message);
+            
+            log.info("["+ pos + "] "+ INVALID_POSITION);
+        }
         super.processUpdates(context);
-}
+    }
     /**
      * @return the "first" facet.
      */
@@ -223,24 +246,31 @@ public class PanelDivider extends UIPanel{
     }
     
     String getPanePosition(boolean first) {
-        if (decoded) {
+        if (!decoded && getDividerPosition() != previousDividerPosition) {
+            int pos = getDividerPosition();
+            if (!validatePosition(pos)) pos = 50;
+            int panPos = 0;
+            if (first) {
+                panPos = pos-1;
+            } else {
+                panPos = 98 - pos;        
+            }
+            String unit = "height:100%;width:";
+            if(isHorizontal()) {
+                unit = "width:100%;height:";
+            }
+            return unit + panPos + "%;";
+        } else {
             if (first) {
                 return firstPaneStyle;
             } else {
                 return secondPaneStyle;
             }
         }
-        int pos = getDividerPosition();
-        int panPos = 0;
-        if (first) {
-            panPos = pos-1;
-        } else {
-            panPos = 98 - pos;        
-        }
-        String unit = "height:100%;width:";
-        if(isHorizontal()) {
-            unit = "width:100%;height:";
-        }
-        return unit + panPos + "%;";
     }
+    
+    private boolean validatePosition(int position ) {
+        return (position > 0  && position <= 100);
+    }
+    
 }
