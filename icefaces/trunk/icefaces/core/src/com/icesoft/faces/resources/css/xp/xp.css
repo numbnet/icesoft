@@ -1393,7 +1393,7 @@ fieldset {
 
 .iceTreeRow img {
     border: 0px;
-    vertical-align: middle;
+    vertical-align: top;
     background-repeat: repeat-y;
     padding: 0px;
 }
