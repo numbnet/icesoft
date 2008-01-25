@@ -418,14 +418,14 @@ public class TableRenderer extends DomBasicRenderer {
 
     protected Element scrollBarSpacer(DOMContext domContext, FacesContext facesContext) {
         Element spacer = domContext.createElement("th");
-        //spacer.setAttribute("style", "width:20px;");
+        spacer.setAttribute(HTML.STYLE_ATTR, "padding:0"); // ICE-2654
         String url = getResourceURL(facesContext, "/xmlhttp/css/xp/css-images/selection_spacer.gif");
         Element spacerImg = domContext.createElement(HTML.IMG_ELEM);
         spacerImg.setAttribute(HTML.SRC_ATTR, url);
         spacerImg.setAttribute(HTML.BORDER_ATTR,"0");
         spacerImg.setAttribute(HTML.ALT_ATTR, "");
         spacerImg.setAttribute(HTML.STYLE_ATTR, "width:1px"); // ICE-2417
-        spacer.appendChild(spacerImg);
+//        spacer.appendChild(spacerImg); commented out for ICE-2654
         return spacer;
     }
 
