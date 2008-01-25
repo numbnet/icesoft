@@ -34,7 +34,7 @@
   -->
 
 <project name="bridge" default="build">
-    
+
     <property file="build.properties"/>
     <property name="words.obfuscation.excludes"
               location="words.obfuscation.excludes"/>
@@ -53,17 +53,6 @@
               location="${lib.dir}/openajax/bridge.open.ajax.js"/>
     <property name="extras.script" location="${build.dir}/bridge.extras.js"/>
     <property name="open.ajax.script" location="${build.dir}/openajax.js"/>
-    
-    <patternset id="prototype">
-        <include name="dom.js"/>
-        <include name="selector.js"/>
-        <include name="event.js"/>
-        <include name="position.js"/>
-        <include name="deprecated.js"/>
-        <include name="ajax.js" unless="do-compress"/>
-        <include name="form.js" unless="do-compress"/>
-    </patternset>            
-    
     <macrodef name="compress">
         <attribute name="src" description="The source file"/>
         <attribute name="dest" default="@{src}"
@@ -79,7 +68,7 @@
             </java>
         </sequential>
     </macrodef>
-    
+
     <macrodef name="register">
         <attribute name="src" description="The source file"/>
         <attribute name="depends" description="a dependency"/>
@@ -103,15 +92,15 @@
             </java>
         </sequential>
     </macrodef>
-    
-    
+
+
     <target name="prepare">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir.java}"/>
         <delete file="${script}"/>
         <touch file="${script}"/>
     </target>
-    
+
     <target name="build.RegisterProperties" depends="prepare">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir.java}"/>
@@ -123,8 +112,8 @@
             </classpath>
         </javac>
     </target>
-    
-    
+
+
     <target name="build.prototype" depends="build.RegisterProperties">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${lib.dir}/prototype">
@@ -139,7 +128,7 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="build.lib" depends="build.prototype">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${lib.dir}">
@@ -162,7 +151,7 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="build.base" depends="build.lib">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${src.dir}">
@@ -176,12 +165,12 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="do.compress" if="do-compress">
         <echo message="Compressing ..."/>
         <compress src="${src.script}"/>
     </target>
-    
+
     <target name="build" depends="build.base"
             description="Collate code for community edition">
         <concat destfile="${script}" append="yes" fixlastline="yes">
@@ -201,7 +190,7 @@
             <path location="${script.open.ajax}"/>
         </concat>
     </target>
-    
+
     <target name="build.test" depends="build.base,build.extras"
             description="Collate code for tests">
         <concat destfile="${script}" append="yes" fixlastline="yes">
@@ -212,27 +201,14 @@
             </filelist>
         </concat>
     </target>
-    
-    <target name="concat.rest" if="do-compress">
-        <echo message="concating non-compressed js files"/>
-        <concat destfile="${extras.script}" append="yes" fixlastline="yes">
-            <filelist dir="${lib.dir}/prototype">
-                <file name="ajax.js"/>
-                <file name="form.js"/>
-            </filelist>
-        </concat>
-    </target>
-    
+
+
     <target name="build.extras"
             description="Extra libraries used by specialized components.">
         <delete file="${extras.script}"/>
         <touch file="${extras.script}"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
-            
-            <fileset dir="${lib.dir}/prototype">
-                <patternset refid="prototype"/>
-            </fileset>
-            <!--
+
             <filelist dir="${lib.dir}/prototype">
                 <file name="ajax.js"/>
                 <file name="dom.js"/>
@@ -242,7 +218,6 @@
                 <file name="position.js"/>
                 <file name="deprecated.js"/>                
             </filelist>
-            -->
             <filelist dir="${lib.dir}/scriptaculous">
                 <!--file name="scriptaculous.js"/-->
                 <file name="builder.js"/>
@@ -277,16 +252,12 @@
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${extras.script}"/>
         </ant>
-        <ant target="concat.rest" inheritAll="true">
-            
-        </ant>
-        
         <echo message="Appending open ajax extras script"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <path location="${extras.script.open.ajax}"/>
         </concat>
     </target>
-    
+
     <target name="update.open.ajax.globals" depends="build,build.extras"
             description="update bridge and extras open ajax hub registration code">
         <delete file="${script.open.ajax}"/>
@@ -305,9 +276,9 @@
                   src="${extras.script}"
                   depends="${script}"
                   dest="${extras.script.open.ajax}"/>
-        
+
     </target>
-    
+
     <target name="build.open.ajax" description="Compress the open ajax lib">
         <delete file="${open.ajax.script}"/>
         <touch file="${open.ajax.script}"/>
@@ -320,15 +291,15 @@
             <property name="src.script" value="${open.ajax.script}"/>
         </ant>
     </target>
-    
+
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
-    
-    
+
+
     <target name="register.icefaces-d2d"
             depends="build, build.RegisterProperties">
-        
+
         <register libName="icefaces-d2d"
                   libUrl="http://www.icefaces.org/"
                   libVersion="1.5.3"
@@ -336,10 +307,10 @@
                   depends=""
                   dest="register.icefaces-d2d.js"/>
     </target>
-    
+
     <target name="register.ice-extras"
             depends="build, build.extras, build.RegisterProperties">
-        
+
         <register libName="ice-extras"
                   libUrl="http://www.icefaces.org/"
                   libVersion="1.5.3"
@@ -347,10 +318,10 @@
                   depends="${script}"
                   dest="register.ice-extras.js"/>
     </target>
-    
+
     <target name="build.open.ajax.test"
             description="Build bridge libs for Open Ajax hub tests"
             depends="build, build.extras"/>
-    
-    
+
+
 </project>
