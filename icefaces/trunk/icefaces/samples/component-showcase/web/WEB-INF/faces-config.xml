@@ -41,6 +41,14 @@
         </locale-config>
     </application>
 
+    <managed-bean>
+        <managed-bean-name>panelDividerBean</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.samples.showcase.components.paneldivider.PanelDividerBean
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
     <!-- FCKEditor  -->
     <managed-bean>
         <managed-bean-name>inputRichTextBean</managed-bean-name>
