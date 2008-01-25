@@ -245,8 +245,38 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     private void checkExistenceOf(String name) {
-        if (request.getParameter(name) == null)
+        if (request.getParameter(name) == null) {
+
+            // This block is removable once we find out why sometimes the request
+            // object appears a little corrupted.
+
+            int port = request.getRemotePort();
+            String host = request.getRemoteHost();
+            StringBuffer data = new StringBuffer("+ Request does not contain parameter '" + name + "' host: \n");
+            data.append("  Originator: ").append(host).append(":").append(port).append("\n");
+
+            Enumeration e = request.getParameterNames();
+            String key;
+            int i = 0;
+
+            while (e.hasMoreElements() ) {
+                key = (String) e.nextElement();
+                if (i == 0) {
+                    data.append("  Available request parameters are: \n");
+                }
+                data.append("  - parameter name: ").append(key).append(", value: " ).append(request.getParameter(key ) ).append("\n");
+                i ++;
+            }
+            if (i == 0) {
+                data.append("   Request map is empty!\n");
+            }
+
+            data.append("- SRR hashcode: ").append(this.hashCode() ).append(" Servlet request hash: ").append(request.hashCode());
+            log.debug(data.toString() );
+            // we can't just carry on. We seriously need those paramters ...
             throw new RuntimeException("Query does not contain parameter named: " + name);
+
+        }
     }
 
     private static boolean ignoreHeader(String name, Object value) {
