@@ -149,6 +149,7 @@ Ice.modal = {
             };
             resize();
             window.onResize(resize);
+            window.onScroll(resize);
         }
 
         var modal = document.getElementById(target);
