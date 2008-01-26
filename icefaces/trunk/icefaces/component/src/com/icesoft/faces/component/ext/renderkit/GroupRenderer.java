@@ -272,7 +272,7 @@ public class GroupRenderer
 
                 if (targetID != null && targetID.length() > 0) {
                     DnDCache dndCache = DnDCache.getInstance(context, false);
-                    targetDragValue = dndCache.getDragValue(targetID);
+                    targetDragValue = dndCache.getDragValue(panel.getClientId(context));
                     targetDropValue = dndCache.getDropValue(targetID);
 
                 }
