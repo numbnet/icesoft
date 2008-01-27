@@ -49,4 +49,5 @@ public interface IViewManager {
 	public void remove(Auctionitem item);
 	public void add(AuctionitemBean item);
 	public void clearView(ActionEvent event);
+	public void createView();
 }

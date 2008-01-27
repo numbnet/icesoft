@@ -18,7 +18,6 @@ public interface IView extends Serializable, Renderable{
   public int getPage();
   public List<AuctionitemBean> getSearchItems();
   
-  public AuctionitemBean getAuctionitemBean();
   public void setPatterns();
   public void startUp();
   
@@ -29,7 +28,7 @@ public interface IView extends Serializable, Renderable{
   public String getCid();
   public String getViewName();
   public void setCid(String cIn);
-  public void updateDataModel(String itemId);
   
   public String getItem1String();
+  public void createView();
 }

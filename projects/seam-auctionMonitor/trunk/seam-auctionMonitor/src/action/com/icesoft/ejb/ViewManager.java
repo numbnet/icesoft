@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 
+import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
@@ -133,7 +134,6 @@ public class ViewManager implements IViewManager, Serializable{
 	public void setSearchString(String searchString)
 	{
 	   this.searchString = searchString;
-//	   log.info("looking for "+this.searchString);
 	}
 	   
     @Remove @Destroy
@@ -241,8 +241,6 @@ public class ViewManager implements IViewManager, Serializable{
 	}
     public void remove(Auctionitem item) {
          //have to remove the currentItem from the list 
-    	//am thinking that panelSeries with contextMenu is best way to go
- //   	log.info("in remove for item ="+e.getComponent().getClass().getName());
     	log.info("want to remove from viewList item="+item.getTitle());
     	viewList.remove(item);	
 		 updateItemStrings();
@@ -274,6 +272,9 @@ public class ViewManager implements IViewManager, Serializable{
 		viewList.clear();
 	}
     
-
+	@Begin
+    public void createView(){
+    	log.info("creating View");
+    }
 	
 }

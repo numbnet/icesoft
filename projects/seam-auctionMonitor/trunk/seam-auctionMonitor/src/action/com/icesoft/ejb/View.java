@@ -52,7 +52,11 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
- //@Synchronized(timeout=1000)
+/**
+ * the actual bidding view kept in Conversational context
+ * 
+ *
+ */
 @Stateful
 @Name("auctionView")
 @Scope(ScopeType.CONVERSATION)
@@ -63,14 +67,12 @@ public class View implements IView{
 	private boolean setup = false;
 	private boolean gotViewName= false;
 	
-  @PersistenceContext
+    @PersistenceContext
  	private EntityManager em;
 	
     
     @RequestParameter
-    private String item1String;
-//    private String searchString;
-    
+    private String item1String; 
     @RequestParameter
     private String item2String;   
     @RequestParameter
@@ -84,9 +86,6 @@ public class View implements IView{
 	
 	private long pattern1=-1,pattern2=-1,pattern3=-1;
 	private Integer page=0;
-
-//	@In
-//	private FacesMessages facesMessages;
 	
 	private String stringMsg="";
 	    
@@ -97,7 +96,7 @@ public class View implements IView{
 	@Out(required=false)
 	private AuctionitemBean auctionitemBean;
 	
-    private PersistentFacesState state = PersistentFacesState.getInstance();
+    private transient PersistentFacesState state;
 	
 	@In
 	private transient RenderManager renderManager = null;
@@ -107,12 +106,7 @@ public class View implements IView{
 	
  	@Create
 	public void startUp(){
- //		log.debug("Create " + getClass().getName());
  		state = PersistentFacesState.getInstance();		
-		log.info(" LR conversation is "+Manager.instance().isLongRunningConversation());
-		if (!Manager.instance().isLongRunningConversation())
-			Manager.instance().beginConversation();
-		log.info(" LR conversation is "+Manager.instance().isLongRunningConversation());
 
 		if (item1String!=null)log.info("ITEM 1 STRING="+item1String);
 		if (item2String!=null)log.info("ITEM 2 STRING="+item2String);
@@ -121,18 +115,11 @@ public class View implements IView{
 
 	}
 
-	
-	public AuctionitemBean getAuctionitemBean(){
-//		log.info("getgin auctionitemBean version="+this.auctionitemBean.toString());
-		return this.auctionitemBean;
-	}
-	
 
 	@Factory(scope=ScopeType.STATELESS)
  	public List<AuctionitemBean> getSearchItems() {
     	loadList();
-		state=updatePFS();
- //       log.info("get list of items size="+searchItems.size()+" View version="+this);
+		state=getState();
 		return searchItems;
 	}
 
@@ -141,15 +128,12 @@ public class View implements IView{
      * as this data doesn't change at all.  The table with the updated info is the bid
      * table.  Look at this method later to possibly refactor.
      */
-//	@Factory(value="searchItems", scope=ScopeType.EVENT)
-//	@Factory(value="searchItems")
+
 	public void loadList(){
 		//get old values of previous list for expanded
         Map<Long, Boolean> expanded = getOldExpanded();
         setPatterns();
-//	    log.info("!!!!!!!!!!!!!!!!QUERYING!!!!!!!!!!!!!!! SEARCHSTRING: " + searchString);
 		searchItems = new ArrayList<AuctionitemBean>();   
-//		doTestList();
 		List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
 		            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
 		            " AND (i.itemId=:pattern1 or i.itemId=:pattern2" +
@@ -160,7 +144,6 @@ public class View implements IView{
 	                .setMaxResults(pageSize)
 	                .setFirstResult( page * pageSize )
 		            .getResultList();
-// 		 log.info("resultList has size="+resultList.size());
 
         Object[] oa;
         String viewNameBuf = "";
@@ -175,7 +158,7 @@ public class View implements IView{
         this.viewName = viewNameBuf;
         createViewName();
          
-		 //restore old expanded bid values
+		 //restore old expanded state
          if (searchItems.size() > 0)  {
              for (int i=0; i < searchItems.size() ;i++)  {
                 AuctionitemBean searchItem = searchItems.get(i);
@@ -210,28 +193,8 @@ public class View implements IView{
 			}
 		}
 		return expanded;
-
-	}
-	public void doTestList(){
-		log.info("finding value for pattern1="+pattern1);
-		Query query=em.createQuery(
-				"from Auctionitem i where i.itemId=:pattern1 or i.itemId=:pattern2 or i.itemId=:pattern3");
-		query.setParameter("pattern1", pattern1);
-		query.setParameter("pattern2", pattern2);
-		query.setParameter("pattern3", pattern3);
-		List testList = query.getResultList();
-		for (int i= 0; i< testList.size(); i++) {
-	//		log.info("have a value for this pattern i="+i);
-			Auctionitem au = (Auctionitem)testList.get(i);
-			log.info("auctionitem["+i+"] is ="+au.getTitle());
-		}if (testList.isEmpty()) log.info("testList is empty!");
 	}
 	
-	@Observer("bidUpdated")
-	public void updateDataModel(String itemId) {
-		log.info("Observer pattern for itemID="+itemId);
-	  // update the list by hitting the database   // only if the item is in this list
-	}
 	
     @Destroy @Remove
 	public void destroy() {
@@ -246,19 +209,9 @@ public class View implements IView{
 	public int getPage(){return this.page;}
 
 	public PersistentFacesState getState() {
-	//	log.info("getState ");
 		return state;
 	}
 
-	private PersistentFacesState updatePFS(){
- 		PersistentFacesState state_1 = PersistentFacesState.getInstance();
- 		if (state_1 !=null){
- //			log.info("####   updating PFS");
- 			state=state_1;
- 		}
- //		else log.info("####  PFS is null!!! using stale state");
- 		return state;
-	}
 	
 	public void renderingException(RenderingException renderingException) {
 	      if (renderingException instanceof TransientRenderingException ){
@@ -308,7 +261,6 @@ public class View implements IView{
 
 
 	public String getCid(){
-	 //	return "cid";
 		log.info("getCid ="+Manager.instance().getCurrentConversationId() );
 		return Manager.instance().getCurrentConversationId();
 	}
@@ -324,7 +276,11 @@ public class View implements IView{
 	public String getViewName(){
 		log.info("getting viewName of "+viewName);
 		return viewName;
-		//return Conversation.instance().getDescription();
+	}
+	
+	@Begin(id="viewName")
+	public void createView(){
+		
 	}
 
 }

@@ -16,7 +16,7 @@
 	<stringAttribute key="org.eclipse.ant.ui.ATTR_ANT_AUTO_TARGETS" value="explode,buildtest,"/>
 	<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="seam-auctionMonitor2Ear"/>
 	<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-		<listEntry value="/seam-auctionMonitor/build.xml"/>
+		<listEntry value="/seam-auctionMonitor2Ear/build.xml"/>
 	</listAttribute>
-	<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/seam-auctionMonitor/build.xml}"/>
+	<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/seam-auctionMonitor2Ear/build.xml}"/>
 </launchConfiguration>

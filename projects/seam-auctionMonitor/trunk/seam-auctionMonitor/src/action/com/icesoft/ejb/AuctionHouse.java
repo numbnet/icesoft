@@ -31,6 +31,10 @@ import com.icesoft.faces.async.render.RenderManager;
 
 /**
  * A central repository of Auctionitems.
+ * If the IntervalRenderer is to be implemented it would be done in
+ * this class.  Also, if we want to add new items or remove them
+ * from the view, it would be done here as well--to be implemented 
+ * later.
 */
 @Synchronized(timeout=1000)
 @Stateful
@@ -38,7 +42,7 @@ import com.icesoft.faces.async.render.RenderManager;
 @Scope(ScopeType.APPLICATION)
 @Name("auctionList")
  public class AuctionHouse implements IAuctionHouse{
-//public class AuctionHouse {
+
 	
 	@In
 	private transient EntityManager entityManager;
@@ -52,26 +56,10 @@ import com.icesoft.faces.async.render.RenderManager;
     private static List auctionitemList = new ArrayList();
     
     private List<Auctionitem> auctionitems;
-    //actually will use the id of the items (String) as renderGroups
-//    List<OnDemandRenderer> items = new ArrayList<OnDemandRenderer>();
+  
     private boolean initList = false;
     
-    /**
-     * By using @Unwrap when "auctionList" is injected 
-     * elsewhere, you get the List of auctionItems
-     * returned from this method
-     * Don't think I'll need this....
-     * @return items
-     */
- 
-//    public List<OnDemandRenderer> getItems(){
-//    	if (items ==null){
-//    		//have to setup our list of renderers
-//    		createList();
-//    		initList=true;
-//    	}
-//    	return items;
-//    }
+  
     
     /** have to create the list
      * 
@@ -103,20 +91,7 @@ import com.icesoft.faces.async.render.RenderManager;
 		}	 	
     }
     
- //   @Observer("itemAdded")
-    public void addItem(String createdItem){
-        //allow users to add auction items 
-    	//for the auction (eventually).
-    }
-    
- //   @Observer("itemExpired")
-    public void removeItem(String deletedItem){
-        //not sure what to do yet with items that have expired
-    	//but once the lists have all been updated that
-    	//the auction for this item has expired, then
-    	//we don't need a render group for it any more
-    }
-    
+ 
     @Destroy @Remove
     public void destroy() {
     	//need to remove all the renderGroups from the list

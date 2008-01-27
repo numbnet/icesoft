@@ -12,12 +12,6 @@
              <s:link view="/main.xhtml"
                     value="View Manager Page"
                     propogation="none"/>
-            <s:link view="/BidList.xhtml"
-                    value="Bid List (admin only)" disabled="#{!s:hasRole('admin')}"
-                    propagation="none" rendered="#{identity.loggedIn}"/>
-            <s:link view="/UserList.xhtml" disabled="#{!s:hasRole('admin')}"
-                    value="Bidder List (admin only)"
-                    propagation="none" rendered="#{identity.loggedIn}"/>
         </ice:panelGroup>
 
         <ice:panelGroup>

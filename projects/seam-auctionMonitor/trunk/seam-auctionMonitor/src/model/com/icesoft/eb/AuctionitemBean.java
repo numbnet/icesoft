@@ -148,11 +148,9 @@ public class AuctionitemBean implements Serializable{
     
     public void pressExpandButton(ActionEvent e){  
         expanded = !expanded;
-  //  	System.out.println(" after pressExpandButton & expanded="+expanded);
     }
     
     public String getExpandTriangleImage() {
-//    	System.out.println("getExpandTriangleImage");
         if (expanded) {
             return TRIANGLE_OPEN;
         } else {
@@ -161,7 +159,6 @@ public class AuctionitemBean implements Serializable{
     }
     
     public boolean isExpired(){
- //   	System.out.println(" aub isExpired");
        	Date endTimeCal = auctionitem.getExpires();
        	long endMillis = endTimeCal.getTime();
     	long millis = endMillis - Calendar.getInstance().getTime().getTime();
@@ -184,11 +181,9 @@ public class AuctionitemBean implements Serializable{
     }
 
     public long getTimeLeft(){
-//    	System.out.println("AUB getTimeLeft() version="+this);
       	Date endTimeCal = auctionitem.getExpires();
        	long endMillis = endTimeCal.getTime();
     	long millis = endMillis - Calendar.getInstance().getTime().getTime();
-//    	System.out.println("returning from getTimeLeft millis="+millis+" for item="+this.auctionitem.getTitle());
     	return millis;
     }
     
@@ -302,24 +297,21 @@ public class AuctionitemBean implements Serializable{
     public void setBidInput(double bidInput) {
         this.bidInput = bidInput;
     }  
-    
+    /**
+     * The users will want to know if they are the current "owner" of the item
+     * or whether they should bid again.
+     * 
+     * @return
+     */
     public boolean isOwner(){
-  //  	System.out.println("Bid owner is ="+bid.getUser().getUsername());
- //   	if(this.user!=null)
-  //  		System.out.println("current user =" + this.user.getUsername());
-//    	else {
     	if (user==null){
-  //  		System.out.println("user is null");
     		user = (User)Component.getInstance("user");
-//    		if (user!=null)System.out.println(" got it anyways & user = "+user.getUsername());
- //   		else System.out.println(" still null!!!");
     	}
     	
     	if (!this.auctionitem.getBids().isEmpty() || auctionitem.getBids()!=null){
     		//have bids on this item....see whose is the highest.
     		Bid bid = getMaxBid();
     		if (bid!=null){
-	//    		System.out.println("owner of bid = "+bid.getUser().getUsername());
 	    		 if (bid.getUser().getUsername().equals(user.getUsername()))owner=true;
 	    		
     		}
@@ -328,21 +320,20 @@ public class AuctionitemBean implements Serializable{
     	return this.owner;
     }
     
+    /**
+     * see what the maximum amount bid on this item currently is
+     * @return
+     */
     private Bid getMaxBid(){
     	Bid b = null;
     	
     	if (!auctionitem.getBids().isEmpty()){
     		b = auctionitem.getBids().get(0);
-//    		System.out.println("in getMaxBid & bidValue="+b.getBidValue());
-    		for (int i=1; i<auctionitem.getBids().size(); i++){
-//    			System.out.println(" i="+i+" bid is :"+auctionitem.getBids().get(i).getBidValue());
-    		
-    		
+    		for (int i=1; i<auctionitem.getBids().size(); i++){   		
     			if (auctionitem.getBids().get(i).getBidValue() > b.getBidValue())
     				b=auctionitem.getBids().get(i);
     		}
     	}
-//    	System.out.println("out of loop in getMaxBid");
     	return b;
     }
     
