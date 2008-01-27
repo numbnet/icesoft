@@ -35,32 +35,5 @@
 	<classpathentry kind="lib" path="lib/icefaces.jar"/>
 	<classpathentry kind="lib" path="lib/icefaces-comps.jar"/>
 	<classpathentry kind="lib" path="lib/icefaces-facelets.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/ejb-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/persistence-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/antlr-runtime.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/backport-util-concurrent.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/commons-digester.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/commons-fileupload.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/drools-compiler.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/drools-core.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate-entitymanager.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate-search.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/hibernate-validator.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/icefaces.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/icefaces-ahs.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/icefaces-comps.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/icefaces-facelets.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jboss-el.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jboss-seam.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jboss-seam-debug.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jboss-seam-ui.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jbpm-jpdl.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jsf-api.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jsf-facelets.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/jsf-impl.jar"/>
-	<classpathentry kind="lib" path="C:/ossrepoCheckout/trunk/seam-auctionMonitor/lib/mvel14.jar"/>
 	<classpathentry kind="output" path="test-build"/>
 </classpath>
