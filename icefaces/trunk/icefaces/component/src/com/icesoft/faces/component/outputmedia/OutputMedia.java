@@ -32,6 +32,8 @@
  */
 package com.icesoft.faces.component.outputmedia;
 
+import com.icesoft.faces.component.ext.taglib.Util;
+
 import javax.faces.component.UIComponentBase;
 import javax.faces.el.ValueBinding;
 import javax.faces.context.FacesContext;
@@ -41,6 +43,7 @@ public class OutputMedia extends UIComponentBase {
     private String height;
     private String mimeType;
     private String player;
+    private String renderedOnUserRole;
     private String source;
     private String standbyText;
     private String style;
@@ -127,6 +130,14 @@ public class OutputMedia extends UIComponentBase {
         this.player = player;
     }
 
+    public String getRenderedOnUserRole() {
+        return (String) getAttribute("renderedOnUserRole", renderedOnUserRole, null);
+    }
+
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
+    }
+
     private Object getAttribute(String name, Object localValue, Object defaultValue) {
         if (localValue != null) return localValue;
         ValueBinding vb = getValueBinding(name);
@@ -136,6 +147,10 @@ public class OutputMedia extends UIComponentBase {
         return value;
     }
 
+    public boolean isRendered() {
+        return super.isRendered() && Util.isRenderedOnUserRole(this);
+    }
+
     public Object saveState(FacesContext context) {
         return new Object[]{
                 super.saveState(context),
@@ -143,6 +158,7 @@ public class OutputMedia extends UIComponentBase {
                 height,
                 mimeType,
                 player,
+                renderedOnUserRole,
                 source,
                 standbyText,
                 style,
@@ -157,6 +173,7 @@ public class OutputMedia extends UIComponentBase {
                 "height",
                 "mimeType",
                 "player",
+                "renderedOnUserRole",
                 "source",
                 "standbyText",
                 "style",

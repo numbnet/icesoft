@@ -34,6 +34,7 @@
 
 &base-props;
 &core-props;
+&ice-att-userrole-rendered-props;
 <property>
     <description>
         URL of the media data object. Relative URL is relative to the current web page.
@@ -96,7 +97,8 @@
 </property>
 <property>
     <description>
-        MIME type of the media data.
+        MIME type of the media data. If not specified, the browser will try to find a suitable
+        player plugin based on the file extension.
     </description>
     <property-name>mimeType</property-name>
     <property-extension>

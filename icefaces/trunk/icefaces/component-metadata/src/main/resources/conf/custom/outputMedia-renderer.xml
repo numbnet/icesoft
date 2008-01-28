@@ -35,7 +35,7 @@
 <renderer>
 	<description>
 		<![CDATA[<p>Renders an object tag and an embed tag for playing a media object.
-		Parameter values specific to a player are specified using &lt;f:param&gt;.</p>]]>
+		Parameter values specific to a player should be specified using &lt;f:param&gt;.</p>]]>
 	</description>
 
 	<component-family>com.icesoft.faces.OutputMedia</component-family>
