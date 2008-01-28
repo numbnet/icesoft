@@ -69,7 +69,7 @@
         <ice:panelGroup id= "PnlGrp"
                         draggable="true"
                         dragListener="#{cart.cartListener}"
-                        dragValue="#{item.key}B"
+                        dragValue="#{item.key}"
                         dragOptions="dragGhost"
                         dragMask="dragging,drag_cancel,hover_end,hover_start"
                         dropMask="dragging,drag_cancel,hover_start,hover_end"
@@ -169,6 +169,7 @@
     <ice:panelGroup styleClass="cartDropWrapper" style="margin-left: 5px;float:left;width:55px;">
         <ice:panelGroup id="cartDropTarget" dropTarget="true"
                         hoverclass="droptargethover"
+                        dropValue="cartDropTarget"
                         styleClass="cartDropZone">
 
             <ice:graphicImage value="/images/shopping-cart.gif"
