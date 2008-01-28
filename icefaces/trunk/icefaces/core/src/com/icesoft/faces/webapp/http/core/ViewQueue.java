@@ -1,8 +1,9 @@
 package com.icesoft.faces.webapp.http.core;
 
-import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentLinkedQueue;
 
-public class ViewQueue extends LinkedBlockingQueue {
+public class ViewQueue extends ConcurrentLinkedQueue {
+
     private Runnable listener;
 
     public void onPut(Runnable listener) {
@@ -11,7 +12,7 @@ public class ViewQueue extends LinkedBlockingQueue {
 
     public void put(Object object) throws InterruptedException {
         if (!contains(object)) {
-            super.put(object);
+            super.add(object);
         }
         listener.run();
     }
