@@ -59,7 +59,7 @@
            <!-- drag the image to the lower panel to create view... -->
                 <ice:panelGroup id= "PnlIcon"
                         draggable="true"
-                        dragListener="#{viewManager.iconListener}"
+                        dragListener="#{viewManager.handleDrag}"
                         dragValue="#{auctionitemBean.auctionitem.itemId}"
                         dragOptions="dragGhost"
                         dragMask="dragging,drag_cancel,hover_end,hover_start"
@@ -187,6 +187,7 @@
                 actionListener="#{viewManager.clearView}" style=""/>
   <ice:panelGroup id="viewDropTarget"
                 dropTarget="true"
+                dropValue="cart"
                 hoverclass="droptargethover"
                 styleClass="viewDropZone">  
 
