@@ -9,6 +9,7 @@ public class DisplayEvent extends FacesEvent{
     private static final long serialVersionUID = 0L;
     UIComponent target = null;
     Object value = null;
+    boolean visible = false;
     
     public DisplayEvent(UIComponent component) {
         super(component);
@@ -25,17 +26,16 @@ public class DisplayEvent extends FacesEvent{
         this.value = value;
     }
 
-    public boolean isAppropriateListener(FacesListener listener) {
-        // TODO Auto-generated method stub
-        return false;
+    public DisplayEvent(UIComponent component, 
+                        UIComponent target, 
+                        Object value,
+                        boolean visible) {
+        super(component);
+        this.target = target;
+        this.value = value;
+        this.visible = visible;
     }
-
-
-    public void processListener(FacesListener listener) {
-        // TODO Auto-generated method stub
-        
-    }
-
+    
     public UIComponent getTarget() {
         return target;
     }
@@ -44,4 +44,17 @@ public class DisplayEvent extends FacesEvent{
         return value;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+    
+    public boolean isAppropriateListener(FacesListener listener) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+
+    public void processListener(FacesListener listener) {
+        // TODO Auto-generated method stub
+    }
 }
