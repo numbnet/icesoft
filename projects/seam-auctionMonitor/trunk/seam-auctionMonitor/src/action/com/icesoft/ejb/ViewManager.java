@@ -71,10 +71,7 @@ public class ViewManager implements IViewManager, Serializable{
 	
    @PersistenceContext(type=EXTENDED)
     EntityManager em;
-   
-   // effects
-   private Effect dragEffect;  
-   
+      
    @Factory(value="auctionItems", scope = ScopeType.EVENT)
 	public void loadList() {
 //	      log.info("!!!!!QUERYING!!!!! SEARCHSTRING: " + searchString);
@@ -160,46 +157,13 @@ public class ViewManager implements IViewManager, Serializable{
      * @param DragEvent event fired
      * @return void
      */
-    public void iconListener(DragEvent event) {
-        if (event.getEventType() == DndEvent.HOVER_START) {
-            String targetId = event.getTargetClientId();
-            if ((targetId != null) &&
-                (targetId.indexOf("cartDropTarget") != -1)) {
-                dragEffect = new Highlight();
-            }
+    public void handleDrag(DragEvent event) {
+        String targetId = String.valueOf(event.getTargetDragValue());
+        Auctionitem item = findAuctionitem(targetId);
+        if (!viewList.contains(item))  {
+            viewList.add(item);
         }
-        // only deal with DROPPED event types
-        if (event.getEventType() == DndEvent.DROPPED) {
-  //      	log.info("item is dropped");
-            String targetId = event.getTargetClientId();
-            if ((targetId != null) &&
-                (targetId.indexOf("viewDropTarget") != -1)) {           	
-                    String value = ((HtmlPanelGroup) event.getComponent())
-                        .getDragValue().toString();
-                    log.info("value dragged is "+value);
-                    //only add a dragged item if room in the view
-                    Auctionitem currentitem = null;
-                	if (viewList.size() < MAX_ITEMS_PER_VIEW)
-                      currentitem = findAuctionitem(value);
-                	if (currentitem !=null){
-                        // ensure the dropped target was the cart
-                        if (targetId.endsWith("viewDropTarget")) {
-                            // only add if it's not already there!!!
-   //                     	log.info("hit target area so add item to list");
-                        	if (viewList.contains(currentitem)){
-                        		log.info("\t\t!!!already contains item!!!!");
-                        	}
-                        	else {
-                        		viewList.add(currentitem);
-                        		updateItemStrings();
-                        	}
-                        }else log.info("\t\t!!!!didn't hit target area");
-                	}
-                	else {
-                		log.info("\t\t!!!!problem adding this item to the viewList");
-                	}
-            }
-        }
+        updateItemStrings();
     }
     
     /**
@@ -234,14 +198,14 @@ public class ViewManager implements IViewManager, Serializable{
     }
     
 	public void add(AuctionitemBean item){
-		log.info("trying to add "+item.getAuctionitem().getTitle()+" to list");
+		log.info("adding Auctionitem to viewList: " + item.getAuctionitem().getTitle());
 		Auctionitem ai = item.getAuctionitem();
 		 if (viewList.isEmpty() || !viewList.contains(ai))viewList.add(ai);
 		 updateItemStrings();
 	}
     public void remove(Auctionitem item) {
          //have to remove the currentItem from the list 
-    	log.info("want to remove from viewList item="+item.getTitle());
+    	log.info("removing item from viewList: " + item.getTitle());
     	viewList.remove(item);	
 		 updateItemStrings();
     }

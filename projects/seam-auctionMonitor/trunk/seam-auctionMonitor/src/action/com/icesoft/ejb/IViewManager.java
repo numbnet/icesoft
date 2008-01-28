@@ -45,7 +45,7 @@ public interface IViewManager {
 	public String getLongRunning();
 	
 	//for drag & drop
-	public void iconListener(DragEvent event);
+	public void handleDrag(DragEvent event);
 	public void remove(Auctionitem item);
 	public void add(AuctionitemBean item);
 	public void clearView(ActionEvent event);
