@@ -297,7 +297,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
         writer.emitImport("javax.faces.webapp.UIComponentTag");
         writer.emitImport("com.icesoft.faces.component.dragdrop.DragEvent");
         writer.emitImport("com.icesoft.faces.component.dragdrop.DropEvent");
-
+        writer.emitImport("com.icesoft.faces.component.DisplayEvent");
         writer.emitImport("com.icesoft.faces.component.outputchart.*");
         writer.emitImport("com.icesoft.faces.component.ext.*");
         writer.emitImport("com.icesoft.faces.component.panelpositioned.*");        
@@ -740,7 +740,29 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.outdent();
                     writer.emitExpression("}", true);
 
-                }
+                }   else if("displayListener".equalsIgnoreCase(name)){
+
+                    writer.emitExpression("if (isValueReference(" + var
+                            + ")) {", true);
+                    writer.indent();
+                    writer
+                            .emitExpression(
+                            "Class[] displayListenerArgs= new Class[]{DisplayEvent.class};",
+                            true);
+                    writer.emitExpression(
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
+                            + var + ", displayListenerArgs );", true);
+                    writer.emitExpression("_component.getAttributes().put(\""
+                            + name + "\", _mb);", true);
+                    writer.outdent();
+                    writer.emitExpression("} else {", true);
+                    writer.indent();
+                    writer.emitExpression("throw new IllegalArgumentException("
+                            + var + ");", true);
+                    writer.outdent();
+                    writer.emitExpression("}", true);
+
+                } 
                 else {
                     
                     throw new IllegalArgumentException(name);
