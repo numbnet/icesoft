@@ -40,7 +40,6 @@ import javax.faces.context.FacesContext;
 
 public class OutputMedia extends UIComponentBase {
     private String codebase;
-    private String height;
     private String mimeType;
     private String player;
     private String renderedOnUserRole;
@@ -48,7 +47,6 @@ public class OutputMedia extends UIComponentBase {
     private String standbyText;
     private String style;
     private String styleClass;
-    private String width;
 
     public OutputMedia() {
         setRendererType("com.icesoft.faces.OutputMedia");
@@ -64,22 +62,6 @@ public class OutputMedia extends UIComponentBase {
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    public String getWidth() {
-        return (String) getAttribute("width", width, null);
-    }
-
-    public void setWidth(String width) {
-        this.width = width;
-    }
-
-    public String getHeight() {
-        return (String) getAttribute("height", height, null);
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
     }
 
     public String getStyle() {
@@ -155,7 +137,6 @@ public class OutputMedia extends UIComponentBase {
         return new Object[]{
                 super.saveState(context),
                 codebase,
-                height,
                 mimeType,
                 player,
                 renderedOnUserRole,
@@ -163,14 +144,12 @@ public class OutputMedia extends UIComponentBase {
                 standbyText,
                 style,
                 styleClass,
-                width,
         };
     }
 
     public void restoreState(FacesContext context, Object state) {
         String[] attrNames = {
                 "codebase",
-                "height",
                 "mimeType",
                 "player",
                 "renderedOnUserRole",
@@ -178,7 +157,6 @@ public class OutputMedia extends UIComponentBase {
                 "standbyText",
                 "style",
                 "styleClass",
-                "width",
         };
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);

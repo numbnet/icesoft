@@ -49,30 +49,6 @@
 </property>
 <property>
     <description>
-        Could be pixels (n) or percentage (n%).
-    </description>
-    <property-name>width</property-name>
-    <property-extension>
-        <category>ICE_COMPONENT</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-<property>
-    <description>
-        Could be pixels (n) or percentage (n%).
-    </description>
-    <property-name>height</property-name>
-    <property-extension>
-        <category>ICE_COMPONENT</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-<property>
-    <description>
         Message displayed while loading the media data.
     </description>
     <property-name>standbyText</property-name>
@@ -97,8 +73,8 @@
 </property>
 <property>
     <description>
-        MIME type of the media data. If not specified, the browser will try to find a suitable
-        player plugin based on the file extension.
+        MIME type of the media data. If not specified, the browser will try to determine
+        the MIME type based on the media source file extension.
     </description>
     <property-name>mimeType</property-name>
     <property-extension>
@@ -111,8 +87,9 @@
 <property>
     <description>
         "windows", "flash", "quicktime" or "real". This sets the default values for the
-        "classid", "codebase", "pluginspage" attributes and the param name for specifying
-        the URL of the media data object.
+        object tag's classid and codebase attributes and param name used to specify
+        the URL of the media data object. It also sets the default value for the embed
+        tag's pluginspage attribute.
     </description>
     <property-name>player</property-name>
     <property-extension>

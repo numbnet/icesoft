@@ -118,8 +118,6 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         setElementAttr(object, "standby", mediaComponent, "standbyText");
         setElementAttr(object, HTML.ID_ATTR, idAndName);
         setElementAttr(object, HTML.NAME_ATTR, idAndName);
-        setElementAttr(object, HTML.WIDTH_ATTR, mediaComponent, HTML.WIDTH_ATTR);
-        setElementAttr(object, HTML.HEIGHT_ATTR, mediaComponent, HTML.HEIGHT_ATTR);
         setElementAttr(object, HTML.STYLE_ATTR, mediaComponent, HTML.STYLE_ATTR);
         setElementAttr(object, HTML.CLASS_ATTR, mediaComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(object, HTML.TYPE_ATTR, mediaComponent, "mimeType");
@@ -129,8 +127,6 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         setElementAttr(embed, HTML.SRC_ATTR, sourceURL);
         setElementAttr(embed, HTML.ID_ATTR, idAndName);
         setElementAttr(embed, HTML.NAME_ATTR, idAndName);
-        setElementAttr(embed, HTML.WIDTH_ATTR, mediaComponent, HTML.WIDTH_ATTR);
-        setElementAttr(embed, HTML.HEIGHT_ATTR, mediaComponent, HTML.HEIGHT_ATTR);
         setElementAttr(embed, HTML.STYLE_ATTR, mediaComponent, HTML.STYLE_ATTR);
         setElementAttr(embed, HTML.CLASS_ATTR, mediaComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(embed, HTML.TYPE_ATTR, mediaComponent, "mimeType");
