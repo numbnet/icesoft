@@ -33,13 +33,13 @@
  var visibleTooltipList = new Array();
  
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, autoHide, delay, dynamic, formId) {
+  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId) {
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true"); 
     this.tooltipCompId = tooltipCompId;
     this.srcCompId = srcComp.id;
-    this.autoHide = "mouseout";
+    this.hideOn = hideOn;
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
     this.formId = formId;
@@ -47,21 +47,18 @@ ToolTipPanelPopup = Class.create({
     event.cancelBubble = true;
     //attach events
 
-    if (autoHide == "onClick") {
-        this.autoHide = "mousedown"
+    if (this.hideOn == "mousedown") {
         this.hideEvent = this.hidePopupOnMouseClick.bindAsEventListener(this);
-    } else if (autoHide == "onExit") {
-        this.autoHide = "mouseout"
+    } else if (this.hideOn == "mouseout") {
         this.hideEvent = this.hidePopupOnMouseOut.bindAsEventListener(this);
     } else {
-        this.autoHide = "false";
+        this.hideOn = "none";
     }
-
 
     this.eventMouseMove = this.updateCordinate.bindAsEventListener(this);
     this.clearTimerEvent = this.clearTimer.bindAsEventListener(this);
     Event.observe(document, "mouseout" , this.clearTimerEvent);
-    Event.observe(document, this.autoHide , this.hideEvent);
+    Event.observe(document, this.hideOn , this.hideEvent);
     Event.observe(document, "mousemove", this.eventMouseMove);
 
     this.timer = setTimeout(this.showPopup.bind(this), parseInt(this.delay));
@@ -74,17 +71,13 @@ ToolTipPanelPopup = Class.create({
     if (this.dynamic) {
     //dynamic? set status=show, populatefields, and submit
       this.submit("show");
-      if (this.autoHide == "false") {
+      if (this.hideOn == "none") {
         //reset the info
         this.populateFields(true);
       }
     } else {
         //static? just set the visibility= true 
        var tooltip = this.getTooltip();
-       if (this.tooltipCompId.charAt(0)==':') {
-            //make visible true, so the page won't sbmuit
-             tooltip.innerHTML = this.tooltipCompId.substring(1);
-        }
         tooltip.style.visibility = "visible";
         tooltip.style.top = (parseInt(this.y) + parseInt(8)) +"px";
         tooltip.style.left = this.x+"px";
@@ -99,7 +92,7 @@ ToolTipPanelPopup = Class.create({
     this.hidePopup(event);
     this.state = "hide";
     this.populateFields();
-    if (this.autoHide == "mouseout") {
+    if (this.hideOn == "mouseout") {
         this.removedFromVisibleList();
     }
     this.dispose(event);
@@ -113,7 +106,7 @@ ToolTipPanelPopup = Class.create({
     } else {
         this.hidePopup(event);
     }
-    if (this.autoHide == "mousedown") {
+    if (this.hideOn == "mousedown") {
         this.removedFromVisibleList();
     }
     this.dispose(event);
@@ -121,7 +114,7 @@ ToolTipPanelPopup = Class.create({
 
 
  dispose: function(event) {
-    Event.stopObserving(document, this.autoHide, this.hideEvent);
+    Event.stopObserving(document, this.hideOn, this.hideEvent);
     Event.stopObserving(document, "mousemove", this.eventMouseMove);
 
    },
@@ -175,20 +168,6 @@ ToolTipPanelPopup = Class.create({
   },
 
   getTooltip: function () {
-    if (this.tooltipCompId.charAt(0)==':') {
-        var tooltip = $("ice_tooltip_element");
-        if (!tooltip) {
-            tooltip = document.createElement('div');
-            tooltip.id = "ice_tooltip_element";
-            tooltip.style.visibility = "hidden";
-            tooltip.style.position = "absolute" ;
-            tooltip.style.border = "1px solid" ;
-            tooltip.style.backgroundColor = "white";
-            
-            document.body.appendChild(tooltip);
-        }
-        return tooltip;
-    }
       return $(this.tooltipCompId);
   },
   

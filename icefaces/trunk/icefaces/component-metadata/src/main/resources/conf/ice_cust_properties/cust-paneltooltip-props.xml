@@ -35,7 +35,6 @@
 
 &ice-ext-core-styled-props;
 &base-props;
-&valuechangelistener-props;
 
 
 <property>
@@ -124,32 +123,32 @@
             <p>
         The following are the valid values for the autoHide attribute:
             <ul>
-                <li> onExit </li>
-                <li> onClick </li>
-                <li> false </li>
+                <li> mouseout </li>
+                <li> mousedown </li>
+                <li> none </li>
             </ul> 
             </p>
             <p>
-            <h3>  onExit :</h3> the tooltip will be hide (un-rdender or invisible, depending
+            <h3>  mouseout :</h3> the tooltip will be hide (un-rdender or invisible, depending
             on the dynamic attribute) when the user moves the mouse out of the 
             triggering component. 
             </p>
             
             <p>
-            <h3>  onClick :</h3> the tooltip will be hide (un-rdender or invisible, depending
+            <h3>  mousedown :</h3> the tooltip will be hide (un-rdender or invisible, depending
             on the dynamic attribute) when the user clicks any area outside of 
             the panelTooltip itself is clicked. 
             </p>  
             
             <p>
-            <h3>  false :</h3> the tooltip will not be hide until the application 
+            <h3>  none :</h3> the tooltip will not be hide until the application 
             changes the "state" of the tooltip from the "show" to "hide" using 
             the state attribute.<br/>
             <b>Note:</b> If the autoHide is set to false, the component becomes dynamic automatically.
             </p> 
         ]]>        
     </description>
-    <property-name>autoHide</property-name>
+    <property-name>hideOn</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
@@ -165,26 +164,6 @@
         component before the tooltip is displayed. 
     </description>
     <property-name>hoverDelay</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>ICE_COMPONENT</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-
-<property>
-    <description>
-        <![CDATA[    
-        The get the reference of the triggering component this attribute can be
-        bounded with the bean. After every successful state change this reference 
-        ensure to have a valid component. <br/> 
-        The valueChangeListener can get the benefit out of the tooltip source 
-        component.
-        ]]>         
-    </description>
-    <property-name>tooltipSrcComponent</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
@@ -215,5 +194,21 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+    </property-extension>
+</property>
+
+<property>
+    <description>
+        displayListener
+    </description>
+    
+    <property-name>displayListener</property-name>
+    <property-class>javax.faces.el.MethodBinding</property-class>
+        <property-extension>
+        <category>DRAGANDDROP</category>
+        <editor-class>
+            &methodBindingEditor;
+        </editor-class>
+        <is-bindable>true</is-bindable>
     </property-extension>
 </property>

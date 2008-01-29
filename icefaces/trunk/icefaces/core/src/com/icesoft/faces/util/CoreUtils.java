@@ -141,17 +141,17 @@ public class CoreUtils {
         if (uiComponent.getAttributes().get("panelTooltip") == null) return;
         String panelTooltipId = String.valueOf(uiComponent.getAttributes().get("panelTooltip"));
         String delay = "500" ;
-        String autoHide = "onExit";
+        String hideOn = "mouseout";
         boolean dynamic = false;
         String formId = "";
-        //if the id starts with :, means plain text title needs to be used
-        if (!panelTooltipId.startsWith(":") ) {
+
             UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
+            System.out.println("Tooltip Found..." + panelTooltip);
             if (panelTooltip != null/* && family type equals panelPopup*/) { 
                 //replace the id with the clientid
                 panelTooltipId = panelTooltip.getClientId(facesContext);
-                if (panelTooltip.getAttributes().get("autoHide") != null) {
-                    autoHide = String.valueOf(panelTooltip.getAttributes().get("autoHide"));
+                if (panelTooltip.getAttributes().get("hideOn") != null) {
+                    hideOn = String.valueOf(panelTooltip.getAttributes().get("hideOn"));
                 }
                 if (panelTooltip.getAttributes().get("dynamic") != null) {
                     dynamic = ((Boolean)panelTooltip.getAttributes().get("dynamic")).booleanValue();
@@ -164,11 +164,10 @@ public class CoreUtils {
             if (form != null) {
                 formId = form.getClientId(facesContext);
             }
-        }
 
         Element rootElement = (Element) domContext.getRootNode();
         String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
-        onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ autoHide +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"');";
+        onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"');";
         rootElement.setAttribute("onmouseover", onmouseover);
     }
 }

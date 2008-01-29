@@ -9,13 +9,13 @@ import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.DisplayEvent;
+import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelpopup.PanelPopup;
 import com.icesoft.faces.context.effects.CurrentStyle;
@@ -38,13 +38,15 @@ public class PanelTooltip extends PanelPopup{
 
     private String hoverDelay;
     
-    private String autoHide;
+    private String hideOn;
     
     private Boolean dynamic; 
     
     private UIComponent tooltipSrcComponent;
     
     private String styleClass = null;
+    
+    private MethodBinding displayListener;
     
     public PanelTooltip() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -54,7 +56,7 @@ public class PanelTooltip extends PanelPopup{
 
     
     public void encodeBegin(FacesContext context) throws IOException {
-        if ("false".equals(getAutoHide())) {
+        if ("none".equals(getHideOn())) {
             removeTooltipFromVisibleList(context);
         }
         if (isDynamic() && !getState().equals("show")) {
@@ -77,16 +79,16 @@ public class PanelTooltip extends PanelPopup{
         this.hoverDelay = hoverDelay;
     }
 
-    public String getAutoHide() {
-        if (autoHide != null) {
-            return autoHide;
+    public String getHideOn() {
+        if (hideOn != null) {
+            return hideOn;
         }
-        ValueBinding vb = getValueBinding("autoHide");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "onExit";
+        ValueBinding vb = getValueBinding("hideOn");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "mouseout";
     }
 
-    public void setAutoHide(String autoHide) {
-        this.autoHide = autoHide;
+    public void setHideOn(String hideOn) {
+        this.hideOn = hideOn;
     }
 
     /**
@@ -94,14 +96,14 @@ public class PanelTooltip extends PanelPopup{
      */
     public boolean isDynamic() {
         //if the tooltip is draggable its mean its dynamic as well 
-        if (isDraggable()) return true;
-        if (dynamic != null) {
-            return dynamic.booleanValue();
+        if (isDraggable() || 
+                displayListener != null ||
+                getValueBinding("visible") != null) {
+            return true;
         }
-        ValueBinding vb = getValueBinding("dynamic");
-        Boolean boolVal =
-                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
-        return boolVal != null ? boolVal.booleanValue() : false;
+        else {
+            return false;
+        }
     }
 
     /**
@@ -147,18 +149,7 @@ public class PanelTooltip extends PanelPopup{
         }        
     }
     
-    public void broadcast(FacesEvent event)
-    throws AbortProcessingException {
-        super.broadcast(event);
-            if (event instanceof ValueChangeEvent) {
-                FacesContext context = getFacesContext();
-                updateModal(context);
-                MethodBinding method = getValueChangeListener();
-                if (method != null) {
-                    method.invoke(context, new Object[] { event });
-                }
-        }
-    }    
+ 
     
     public void processUpdates(FacesContext context) {
             ValueBinding vb = getValueBinding("state");
@@ -172,37 +163,6 @@ public class PanelTooltip extends PanelPopup{
             super.processUpdates(context);
     }
     
-
-    
-    public void addValueChangeListener(ValueChangeListener listener) {
-        addFacesListener(listener);
-    }
-
-
-    public ValueChangeListener[] getValueChangeListeners() {
-        ValueChangeListener vcl[] = (ValueChangeListener [])
-        getFacesListeners(ValueChangeListener.class);
-        return (vcl);
-    }
-
-
-    public void removeValueChangeListener(ValueChangeListener listener) {
-        removeFacesListener(listener);
-    }
-
-    
-    private MethodBinding valueChangeMethod = null;
-
-
-    public MethodBinding getValueChangeListener() {
-        return (this.valueChangeMethod);
-    }
-
-
-    public void setValueChangeListener(MethodBinding valueChangeMethod) {
-        this.valueChangeMethod = valueChangeMethod;
-    }
-
     public void applyStyle(FacesContext facesContext, Element root) {
         super.applyStyle(facesContext, root);
         String updatedStyle = root.getAttribute(HTML.STYLE_ATTR);
@@ -294,17 +254,33 @@ public class PanelTooltip extends PanelPopup{
     
     public void decode(FacesContext context) {
         super.decode(context);
-        Map requestMap = context.getExternalContext().getRequestParameterMap();
+
+    }
+    
+    public static void decodeTooltip(FacesContext facesContext, 
+                                                UIComponent target) {
+        Map requestMap = facesContext.getExternalContext().getRequestParameterMap();
         if (requestMap.containsKey(ICE_TOOLTIP_INFO)) {
-            populateTooltipInfo(String.valueOf(requestMap.get(ICE_TOOLTIP_INFO)));
+            populateTooltipInfo(facesContext,
+                                target,                   
+                                String.valueOf(requestMap.get(ICE_TOOLTIP_INFO)));
         }
     }
     
-    void populateTooltipInfo(String tooltipinfo) {
+    public static void populateTooltipInfo(FacesContext facesContext,
+                                            UIComponent target,
+                                            String tooltipinfo
+            ) {
+
+        String tooltipId = ((HtmlPanelGroup)target).getPanelTooltip();
+        UIComponent tooltipComponent = D2DViewHandler.findComponent(tooltipId, target);
+        String tooltipClientId = tooltipComponent.getClientId(facesContext);
         String[] entries = tooltipinfo.split(";");
         if (entries.length == 5){
-            if (!entries[0].split("=")[1].equals(getClientId(getFacesContext()))) return;
-                getTooltipInfo().populateValues(entries);
+            if (!entries[0].split("=")[1].equals(tooltipClientId)) return;
+                TooltipInfo tooltipInfo = getTooltipInfo(tooltipComponent,
+                        tooltipClientId);
+                tooltipInfo.populateValues(entries);
         }
     }
     
@@ -360,84 +336,42 @@ public class PanelTooltip extends PanelPopup{
        }
    }
    
+   public static TooltipInfo getTooltipInfo(UIComponent tooltipComponent, String tooltipClientId) {
+       if (!tooltipComponent.getAttributes().containsKey("tooltip"+ tooltipClientId)) {
+           tooltipComponent.getAttributes().put("tooltip"+ tooltipClientId, new TooltipInfo());
+       }
+       return ((TooltipInfo)tooltipComponent.getAttributes().get("tooltip"+ tooltipClientId));
+   }
+   
    TooltipInfo getTooltipInfo() {
        if (!this.getAttributes().containsKey("tooltip"+ getClientId(getFacesContext()))) {
            this.getAttributes().put("tooltip"+ getClientId(getFacesContext()), new TooltipInfo());
        }
        return ((TooltipInfo)this.getAttributes().get("tooltip"+ getClientId(getFacesContext())));
    }
+    
+    /**
+     * <p>Return the value of the <code>displayListener</code> property.</p>
+     */
+    public MethodBinding getDisplayListener() {
+        return displayListener;
+    }
+
+    /**
+     * <p>Set the value of the <code>displayListener</code> property.</p>
+     */
+    public void setDisplayListener(MethodBinding displayListener) {
+        this.displayListener = displayListener;
+    }
+    
    
-    class TooltipInfo {
-        private String src = new String();
-        private String state = "hide";
-        private String x = "0px";
-        private String y = "0px";
-        private boolean eventFired;
-        public TooltipInfo() {
+    public void broadcast(FacesEvent event)
+    throws AbortProcessingException {
+        super.broadcast(event);
+        
+        if (displayListener != null) {
+            Object[] displayEvent = {(DisplayEvent) event};
+            displayListener.invoke(getFacesContext(), displayEvent);
         }
-  
-        public TooltipInfo(String info[]) {
-            populateValues(info);
-        }
-    
-        public void populateValues(String info[]) {
-            String _src = info[1].split("=")[1];
-            String _state = info[2].split("=")[1];
-            if (!getState().equals(_state) || !getSrc().equals(_src)) {
-
-                //change the x and y only on valueChangeEvent
-                x = info[3].split("=")[1]+"px";
-                y = info[4].split("=")[1]+"px";
-                src = _src;
-                state = _state;
-                eventFired = true;
-                queueEvent(new ValueChangeEvent(PanelTooltip.this, getState(), _state));
-                FacesContext context = getFacesContext();
-                UIComponent srcComp = D2DViewHandler.findComponent(getSrc(), context.getViewRoot());
-                setTooltipSrcComponent(srcComp);
-
-            }
-        }
-        public String getSrc() {
-            return src;
-        }
-    
-        public void setSrc(String src) {
-            this.src = src;
-        }
-    
-        public String getState() {
-            return state;
-        }
-    
-        public void setState(String state) {
-            this.state = state;
-        }
-    
-        public String getX() {
-            return x;
-        }
-    
-        public void setX(String x) {
-            this.x = x;
-            System.out.println("setting X = "+ x);            
-        }
-    
-        public String getY() {
-            return y;
-        }
-    
-        public void setY(String y) {
-            this.y = y;
-            System.out.println("setting Y = "+ y);
-        }
-
-        public boolean isEventFired() {
-            return eventFired;
-        }
-
-        public void setEventFired(boolean eventFired) {
-            this.eventFired = eventFired;
-        }
-    }    
+    }
 }

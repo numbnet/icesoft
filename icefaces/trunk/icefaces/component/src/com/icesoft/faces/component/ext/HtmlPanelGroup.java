@@ -38,6 +38,7 @@ import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.paneltooltip.PanelTooltip;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
@@ -113,6 +114,14 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         setRendererType(RENDERER_TYPE);
     }
 
+    public void decode(FacesContext context) {
+        super.decode(context);
+        if (panelTooltip != null) {
+            PanelTooltip.decodeTooltip(context, this);
+        }
+
+    }
+    
     public void setValueBinding(String s, ValueBinding vb) {
         if (s != null && (s.indexOf("effect") != -1 ||
                           s.indexOf("drag") != -1 || s.indexOf("drop") != -1)) {
