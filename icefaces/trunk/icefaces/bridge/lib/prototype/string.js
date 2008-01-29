@@ -31,7 +31,7 @@ Object.extend(String.prototype, {
   
   sub: function(pattern, replacement, count) {
     replacement = this.gsub.prepareReplacement(replacement);
-    count = count === undefined ? 1 : count;
+    count = Object.isUndefined(count) ? 1 : count;
     
     return this.gsub(pattern, function(match) {
       if (--count < 0) return match[0];
@@ -46,7 +46,7 @@ Object.extend(String.prototype, {
   
   truncate: function(length, truncation) {
     length = length || 30;
-    truncation = truncation === undefined ? '...' : truncation;
+    truncation = Object.isUndefined(truncation) ? '...' : truncation;
     return this.length > length ? 
       this.slice(0, length - truncation.length) + truncation : String(this);
   },
@@ -166,7 +166,9 @@ Object.extend(String.prototype, {
   },
 
   isJSON: function() {
-    var str = this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '');
+    var str = this;
+    if (str.blank()) return false;
+    str = this.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, '');
     return (/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(str);
   },
   
@@ -245,7 +247,8 @@ var Template = Class.create({
       if (before == '\\') return match[2];
       
       var ctx = object, expr = match[3];
-      var pattern = /^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/, match = pattern.exec(expr);
+      var pattern = /^([^.[]+|\[((?:.*?[^\\])?)\])(\.|\[|$)/;
+      match = pattern.exec(expr);
       if (match == null) return before;
 
       while (match != null) {
@@ -257,7 +260,7 @@ var Template = Class.create({
       }
       
       return before + String.interpret(ctx);
-    }.bind(this));
+    });
   }
 });
 Template.Pattern = /(^|.|\r|\n)(#\{(.*?)\})/;

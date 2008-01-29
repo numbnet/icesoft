@@ -8,9 +8,26 @@ var Selector = Class.create({
     this.compileMatcher();    
   },
   
+  shouldUseXPath: function() {
+    if (!Prototype.BrowserFeatures.XPath) return false;
+    
+    var e = this.expression;
+
+    // Safari 3 chokes on :*-of-type and :empty
+    if (Prototype.Browser.WebKit && 
+     (e.include("-of-type") || e.include(":empty")))
+      return false;
+    
+    // XPath can't do namespaced attributes, nor can it read
+    // the "checked" property from DOM nodes
+    if ((/(\[[\w-]*?:|:checked)/).test(this.expression))
+      return false;
+
+    return true;
+  },
+  
   compileMatcher: function() {
-    // Selectors with namespaced attributes can't use the XPath version
-    if (Prototype.BrowserFeatures.XPath && !(/(\[[\w-]*?:|:checked)/).test(this.expression))
+    if (this.shouldUseXPath())
       return this.compileXPathMatcher();
     
     var e = this.expression, ps = Selector.patterns, h = Selector.handlers, 
@@ -133,8 +150,12 @@ Object.extend(Selector, {
     },
     className:    "[contains(concat(' ', @class, ' '), ' #{1} ')]",
     id:           "[@id='#{1}']",
-    attrPresence: "[@#{1}]",
+    attrPresence: function(m) {
+      m[1] = m[1].toLowerCase();
+      return new Template("[@#{1}]").evaluate(m);
+    },
     attr: function(m) {
+      m[1] = m[1].toLowerCase();
       m[3] = m[5] || m[6];
       return new Template(Selector.xpath.operators[m[2]]).evaluate(m);
     },
@@ -163,7 +184,7 @@ Object.extend(Selector, {
       'enabled':     "[not(@disabled)]",
       'not': function(m) {
         var e = m[6], p = Selector.patterns,
-            x = Selector.xpath, le, m, v;
+            x = Selector.xpath, le, v;
             
         var exclusion = [];
         while (e && le != e && (/\S/).test(e)) {
@@ -220,13 +241,13 @@ Object.extend(Selector, {
   },
   
   criteria: {
-    tagName:      'n = h.tagName(n, r, "#{1}", c);   c = false;',  
-    className:    'n = h.className(n, r, "#{1}", c); c = false;',
-    id:           'n = h.id(n, r, "#{1}", c);        c = false;',
-    attrPresence: 'n = h.attrPresence(n, r, "#{1}"); c = false;',
+    tagName:      'n = h.tagName(n, r, "#{1}", c);      c = false;',  
+    className:    'n = h.className(n, r, "#{1}", c);    c = false;',
+    id:           'n = h.id(n, r, "#{1}", c);           c = false;',
+    attrPresence: 'n = h.attrPresence(n, r, "#{1}", c); c = false;',
     attr: function(m) {
       m[3] = (m[5] || m[6]);
-      return new Template('n = h.attr(n, r, "#{1}", "#{3}", "#{2}"); c = false;').evaluate(m);
+      return new Template('n = h.attr(n, r, "#{1}", "#{3}", "#{2}", c); c = false;').evaluate(m);
     },
     pseudo: function(m) {
       if (m[6]) m[6] = m[6].replace(/"/g, '\\"');
@@ -250,7 +271,8 @@ Object.extend(Selector, {
     tagName:      /^\s*(\*|[\w\-]+)(\b|$)?/,
     id:           /^#([\w\-\*]+)(\b|$)/,
     className:    /^\.([\w\-\*]+)(\b|$)/,
-    pseudo:       /^:((first|last|nth|nth-last|only)(-child|-of-type)|empty|checked|(en|dis)abled|not)(\((.*?)\))?(\b|$|(?=\s)|(?=:))/,
+    pseudo:      
+/^:((first|last|nth|nth-last|only)(-child|-of-type)|empty|checked|(en|dis)abled|not)(\((.*?)\))?(\b|$|(?=\s|[:+~>]))/,
     attrPresence: /^\[([\w]+)\]/,
     attr:         /\[((?:[\w-]*:)?[\w-]+)\s*(?:([!^$*~|]?=)\s*((['"])([^\4]*?)\4|([^'"][^\]]*?)))?\]/
   },
@@ -275,7 +297,7 @@ Object.extend(Selector, {
 
     attr: function(element, matches) {
       var nodeValue = Element.readAttribute(element, matches[1]);
-      return Selector.operators[matches[2]](nodeValue, matches[3]);
+      return nodeValue && Selector.operators[matches[2]](nodeValue, matches[5] || matches[6]);
     }    
   },
   
@@ -290,14 +312,15 @@ Object.extend(Selector, {
     
     // marks an array of nodes for counting
     mark: function(nodes) {
+      var _true = Prototype.emptyFunction;
       for (var i = 0, node; node = nodes[i]; i++)
-        node._counted = true;
+        node._countedByPrototype = _true;
       return nodes;
     },
     
     unmark: function(nodes) {
       for (var i = 0, node; node = nodes[i]; i++)
-        node._counted = undefined;    
+        node._countedByPrototype = undefined;    
       return nodes;  
     },
 
@@ -305,15 +328,15 @@ Object.extend(Selector, {
     // "ofType" flag indicates whether we're indexing for nth-of-type
     // rather than nth-child
     index: function(parentNode, reverse, ofType) {
-      parentNode._counted = true;
+      parentNode._countedByPrototype = Prototype.emptyFunction;
       if (reverse) {
         for (var nodes = parentNode.childNodes, i = nodes.length - 1, j = 1; i >= 0; i--) {
           var node = nodes[i];
-          if (node.nodeType == 1 && (!ofType || node._counted)) node.nodeIndex = j++;
+          if (node.nodeType == 1 && (!ofType || node._countedByPrototype)) node.nodeIndex = j++;
         }
       } else {
         for (var i = 0, j = 1, nodes = parentNode.childNodes; node = nodes[i]; i++)
-          if (node.nodeType == 1 && (!ofType || node._counted)) node.nodeIndex = j++;
+          if (node.nodeType == 1 && (!ofType || node._countedByPrototype)) node.nodeIndex = j++;
       }
     },
     
@@ -322,8 +345,8 @@ Object.extend(Selector, {
       if (nodes.length == 0) return nodes;
       var results = [], n;
       for (var i = 0, l = nodes.length; i < l; i++)
-        if (!(n = nodes[i])._counted) {
-          n._counted = true;
+        if (!(n = nodes[i])._countedByPrototype) {
+          n._countedByPrototype = Prototype.emptyFunction;
           results.push(Element.extend(n));
         }
       return Selector.handlers.unmark(results);
@@ -340,7 +363,7 @@ Object.extend(Selector, {
     child: function(nodes) {
       var h = Selector.handlers;
       for (var i = 0, results = [], node; node = nodes[i]; i++) {
-        for (var j = 0, children = [], child; child = node.childNodes[j]; j++)
+        for (var j = 0, child; child = node.childNodes[j]; j++)
           if (child.nodeType == 1 && child.tagName != '!') results.push(child);
       }
       return results;
@@ -375,7 +398,7 @@ Object.extend(Selector, {
     
     // TOKEN FUNCTIONS
     tagName: function(nodes, root, tagName, combinator) {
-      tagName = tagName.toUpperCase();
+      var uTagName = tagName.toUpperCase();
       var results = [], h = Selector.handlers;
       if (nodes) {
         if (combinator) {
@@ -388,7 +411,7 @@ Object.extend(Selector, {
           if (tagName == "*") return nodes;
         }
         for (var i = 0, node; node = nodes[i]; i++)
-          if (node.tagName.toUpperCase() == tagName) results.push(node);
+          if (node.tagName.toUpperCase() === uTagName) results.push(node);
         return results;
       } else return root.getElementsByTagName(tagName);
     },
@@ -435,16 +458,18 @@ Object.extend(Selector, {
       return results;
     },    
     
-    attrPresence: function(nodes, root, attr) {
+    attrPresence: function(nodes, root, attr, combinator) {
       if (!nodes) nodes = root.getElementsByTagName("*");
+      if (nodes && combinator) nodes = this[combinator](nodes);
       var results = [];
       for (var i = 0, node; node = nodes[i]; i++)
         if (Element.hasAttribute(node, attr)) results.push(node);
       return results;      
     },
     
-    attr: function(nodes, root, attr, value, operator) {
+    attr: function(nodes, root, attr, value, operator, combinator) {
       if (!nodes) nodes = root.getElementsByTagName("*");
+      if (nodes && combinator) nodes = this[combinator](nodes);
       var handler = Selector.operators[operator], results = [];
       for (var i = 0, node; node = nodes[i]; i++) {
         var nodeValue = Element.readAttribute(node, attr);
@@ -523,7 +548,7 @@ Object.extend(Selector, {
       var h = Selector.handlers, results = [], indexed = [], m;
       h.mark(nodes);
       for (var i = 0, node; node = nodes[i]; i++) {
-        if (!node.parentNode._counted) {
+        if (!node.parentNode._countedByPrototype) {
           h.index(node.parentNode, reverse, ofType);
           indexed.push(node.parentNode);
         }
@@ -561,7 +586,7 @@ Object.extend(Selector, {
       var exclusions = new Selector(selector).findElements(root);
       h.mark(exclusions);
       for (var i = 0, results = [], node; node = nodes[i]; i++)
-        if (!node._counted) results.push(node);
+        if (!node._countedByPrototype) results.push(node);
       h.unmark(exclusions);
       return results;
     },
@@ -594,12 +619,20 @@ Object.extend(Selector, {
     '~=': function(nv, v) { return (' ' + nv + ' ').include(' ' + v + ' '); },
     '|=': function(nv, v) { return ('-' + nv.toUpperCase() + '-').include('-' + v.toUpperCase() + '-'); }
   },
+  
+  split: function(expression) {
+    var expressions = [];
+    expression.scan(/(([\w#:.~>+()\s-]+|\*|\[.*?\])+)\s*(,|$)/, function(m) {
+      expressions.push(m[1].strip());
+    });
+    return expressions;
+  },
 
   matchElements: function(elements, expression) {
-    var matches = new Selector(expression).findElements(), h = Selector.handlers;
+    var matches = $$(expression), h = Selector.handlers;
     h.mark(matches);
     for (var i = 0, results = [], element; element = elements[i]; i++)
-      if (element._counted) results.push(element);
+      if (element._countedByPrototype) results.push(element);
     h.unmark(matches);
     return results;
   },
@@ -612,10 +645,7 @@ Object.extend(Selector, {
   },
   
   findChildElements: function(element, expressions) {
-    var exprs = expressions.join(','), expressions = [];
-    exprs.scan(/(([\w#:.~>+()\s-]+|\*|\[.*?\])+)\s*(,|$)/, function(m) {
-      expressions.push(m[1].strip());
-    });
+    expressions = Selector.split(expressions.join(','));
     var results = [], h = Selector.handlers;    
     for (var i = 0, l = expressions.length, selector; i < l; i++) {
       selector = new Selector(expressions[i].strip());
@@ -624,6 +654,25 @@ Object.extend(Selector, {
     return (l > 1) ? h.unique(results) : results;
   }
 });
+
+if (Prototype.Browser.IE) {
+  Object.extend(Selector.handlers, {
+    // IE returns comment nodes on getElementsByTagName("*").
+    // Filter them out.
+    concat: function(a, b) {
+      for (var i = 0, node; node = b[i]; i++)
+        if (node.tagName !== "!") a.push(node);
+      return a;
+    },
+    
+    // IE improperly serializes _countedByPrototype in (inner|outer)HTML.
+    unmark: function(nodes) {
+      for (var i = 0, node; node = nodes[i]; i++)
+        node.removeAttribute('_countedByPrototype');
+      return nodes;  
+    }
+  });  
+}
 
 function $$() {
   return Selector.findChildElements(document, $A(arguments));

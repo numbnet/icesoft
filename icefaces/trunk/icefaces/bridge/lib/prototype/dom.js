@@ -119,24 +119,28 @@ Element.Methods = {
         Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
           insertions = {bottom:insertions};
     
-    var content, t, range;
+    var content, insert, tagName, childNodes;
     
-    for (position in insertions) {
+    for (var position in insertions) {
       content  = insertions[position];
       position = position.toLowerCase();
-      t = Element._insertionTranslations[position];
+      insert = Element._insertionTranslations[position];
 
       if (content && content.toElement) content = content.toElement();
       if (Object.isElement(content)) {
-        t.insert(element, content);
+        insert(element, content);
         continue;
       }
     
       content = Object.toHTML(content);
       
-      range = element.ownerDocument.createRange();
-      t.initializeRange(element, range);
-      t.insert(element, range.createContextualFragment(content.stripScripts()));
+      tagName = ((position == 'before' || position == 'after')
+        ? element.parentNode : element).tagName.toUpperCase();
+      
+      childNodes = Element._getContentFromAnonymousElement(tagName, content.stripScripts());
+      
+      if (position == 'top' || position == 'after') childNodes.reverse();
+      childNodes.each(insert.curry(element));
       
       content.evalScripts.bind(content).defer();
     }
@@ -181,7 +185,7 @@ Element.Methods = {
   },
   
   descendants: function(element) {
-    return $A($(element).getElementsByTagName('*')).each(Element.extend);
+    return $(element).select("*");
   },
   
   firstDescendant: function(element) {
@@ -220,32 +224,31 @@ Element.Methods = {
     element = $(element);
     if (arguments.length == 1) return $(element.parentNode);
     var ancestors = element.ancestors();
-    return expression ? Selector.findElement(ancestors, expression, index) :
-      ancestors[index || 0];
+    return Object.isNumber(expression) ? ancestors[expression] :
+      Selector.findElement(ancestors, expression, index);
   },
   
   down: function(element, expression, index) {
     element = $(element);
     if (arguments.length == 1) return element.firstDescendant();
-    var descendants = element.descendants();
-    return expression ? Selector.findElement(descendants, expression, index) :
-      descendants[index || 0];
+    return Object.isNumber(expression) ? element.descendants()[expression] :
+      element.select(expression)[index || 0];
   },
 
   previous: function(element, expression, index) {
     element = $(element);
     if (arguments.length == 1) return $(Selector.handlers.previousElementSibling(element));
     var previousSiblings = element.previousSiblings();
-    return expression ? Selector.findElement(previousSiblings, expression, index) :
-      previousSiblings[index || 0];
+    return Object.isNumber(expression) ? previousSiblings[expression] :
+      Selector.findElement(previousSiblings, expression, index);   
   },
   
   next: function(element, expression, index) {
     element = $(element);
     if (arguments.length == 1) return $(Selector.handlers.nextElementSibling(element));
     var nextSiblings = element.nextSiblings();
-    return expression ? Selector.findElement(nextSiblings, expression, index) :
-      nextSiblings[index || 0];
+    return Object.isNumber(expression) ? nextSiblings[expression] :
+      Selector.findElement(nextSiblings, expression, index);
   },
   
   select: function() {
@@ -286,10 +289,11 @@ Element.Methods = {
     var attributes = { }, t = Element._attributeTranslations.write;
     
     if (typeof name == 'object') attributes = name;
-    else attributes[name] = value === undefined ? true : value;
+    else attributes[name] = Object.isUndefined(value) ? true : value;
     
     for (var attr in attributes) {
-      var name = t.names[attr] || attr, value = attributes[attr];
+      name = t.names[attr] || attr;
+      value = attributes[attr];
       if (t.values[attr]) name = t.values[attr](element, value);
       if (value === false || value === null)
         element.removeAttribute(name);
@@ -358,6 +362,7 @@ Element.Methods = {
   
   descendantOf: function(element, ancestor) {
     element = $(element), ancestor = $(ancestor);
+    var originalAncestor = ancestor;
 
     if (element.compareDocumentPosition)
       return (element.compareDocumentPosition(ancestor) & 8) === 8;
@@ -369,11 +374,12 @@ Element.Methods = {
         do { ancestor = ancestor.parentNode; }
         while (!(nextAncestor = ancestor.nextSibling) && ancestor.parentNode);
       }
-      if (nextAncestor) return (e > a && e < nextAncestor.sourceIndex);      
+      if (nextAncestor && nextAncestor.sourceIndex)
+       return (e > a && e < nextAncestor.sourceIndex);
     }
     
     while (element = element.parentNode)
-      if (element == ancestor) return true;
+      if (element == originalAncestor) return true;
     return false;
   },
   
@@ -412,7 +418,7 @@ Element.Methods = {
       if (property == 'opacity') element.setOpacity(styles[property]);
       else 
         elementStyle[(property == 'float' || property == 'cssFloat') ?
-          (elementStyle.styleFloat === undefined ? 'cssFloat' : 'styleFloat') : 
+          (Object.isUndefined(elementStyle.styleFloat) ? 'cssFloat' : 'styleFloat') : 
             property] = styles[property];
 
     return element;
@@ -513,7 +519,7 @@ Element.Methods = {
       if (element) {
         if (element.tagName == 'BODY') break;
         var p = Element.getStyle(element, 'position');
-        if (p == 'relative' || p == 'absolute') break;
+        if (p !== 'static') break;
       }
     } while (element);
     return Element._returnOffset(valueL, valueT);
@@ -662,72 +668,75 @@ Element._attributeTranslations = {
   }
 };
 
-
-if (!document.createRange || Prototype.Browser.Opera) {
-  Element.Methods.insert = function(element, insertions) {
-    element = $(element);
-
-    if (Object.isString(insertions) || Object.isNumber(insertions) ||
-        Object.isElement(insertions) || (insertions && (insertions.toElement || insertions.toHTML)))
-          insertions = { bottom: insertions };
-    
-    var t = Element._insertionTranslations, content, position, pos, tagName;
-    
-    for (position in insertions) {
-      content  = insertions[position];
-      position = position.toLowerCase();
-      pos      = t[position];
-
-      if (content && content.toElement) content = content.toElement();
-      if (Object.isElement(content)) {
-        pos.insert(element, content);
-        continue;
-      }
-     
-      content = Object.toHTML(content);
-      tagName = ((position == 'before' || position == 'after')
-        ? element.parentNode : element).tagName.toUpperCase();
-     
-      if (t.tags[tagName]) {
-        var fragments = Element._getContentFromAnonymousElement(tagName, content.stripScripts());
-        if (position == 'top' || position == 'after') fragments.reverse();
-        fragments.each(pos.insert.curry(element));
-      }
-      else element.insertAdjacentHTML(pos.adjacency, content.stripScripts());
-      
-      content.evalScripts.bind(content).defer();
-    }
-    
-    return element;
-  };
-}
-
 if (Prototype.Browser.Opera) { 
-  Element.Methods._getStyle = Element.Methods.getStyle; 
-  Element.Methods.getStyle = function(element, style) { 
-    switch(style) { 
-      case 'left': 
-      case 'top': 
-      case 'right': 
-      case 'bottom': 
-        if (Element._getStyle(element, 'position') == 'static') return null; 
-      default: return Element._getStyle(element, style); 
+  Element.Methods.getStyle = Element.Methods.getStyle.wrap( 
+    function(proceed, element, style) {
+      switch (style) {
+        case 'left': case 'top': case 'right': case 'bottom':
+          if (proceed(element, 'position') === 'static') return null;
+        case 'height': case 'width':
+          // returns '0px' for hidden elements; we want it to return null
+          if (!Element.visible(element)) return null;
+          
+          // returns the border-box dimensions rather than the content-box
+          // dimensions, so we subtract padding and borders from the value
+          var dim = parseInt(proceed(element, style), 10);
+          
+          if (dim !== element['offset' + style.capitalize()])
+            return dim + 'px';
+            
+          var properties;
+          if (style === 'height') {
+            properties = ['border-top-width', 'padding-top',
+             'padding-bottom', 'border-bottom-width'];
+          }
+          else {
+            properties = ['border-left-width', 'padding-left',
+             'padding-right', 'border-right-width'];            
+          }             
+          return properties.inject(dim, function(memo, property) {
+            var val = proceed(element, property);
+            return val === null ? memo : memo - parseInt(val, 10);              
+          }) + 'px';          
+        default: return proceed(element, style);
+      }
     }
-  };
-  Element.Methods._readAttribute = Element.Methods.readAttribute; 
-  Element.Methods.readAttribute = function(element, attribute) { 
-    if (attribute == 'title') return element.title; 
-    return Element._readAttribute(element, attribute);
-  };  
+  );
+  
+  Element.Methods.readAttribute = Element.Methods.readAttribute.wrap(
+    function(proceed, element, attribute) {
+      if (attribute === 'title') return element.title;
+      return proceed(element, attribute);
+    }
+  );  
 }
 
 else if (Prototype.Browser.IE) {
-  $w('positionedOffset getOffsetParent viewportOffset').each(function(method) {
+  // IE doesn't report offsets correctly for static elements, so we change them
+  // to "relative" to get the values, then change them back.  
+  Element.Methods.getOffsetParent = Element.Methods.getOffsetParent.wrap(
+    function(proceed, element) {
+      element = $(element);
+      var position = element.getStyle('position');
+      if (position !== 'static') return proceed(element);
+      element.setStyle({ position: 'relative' });
+      var value = proceed(element);
+      element.setStyle({ position: position });
+      return value;
+    }
+  );
+  
+  $w('positionedOffset viewportOffset').each(function(method) {
     Element.Methods[method] = Element.Methods[method].wrap(
       function(proceed, element) {
         element = $(element);
         var position = element.getStyle('position');
-        if (position != 'static') return proceed(element);
+        if (position !== 'static') return proceed(element);
+        // Trigger hasLayout on the offset parent so that IE6 reports
+        // accurate offsetTop and offsetLeft values for position: fixed.
+        var offsetParent = element.getOffsetParent();
+        if (offsetParent && offsetParent.getStyle('position') === 'fixed')
+          offsetParent.setStyle({ zoom: 1 });
         element.setStyle({ position: 'relative' });
         var value = proceed(element);
         element.setStyle({ position: position });
@@ -735,7 +744,7 @@ else if (Prototype.Browser.IE) {
       }
     );
   });
-  
+    
   Element.Methods.getStyle = function(element, style) {
     element = $(element);
     style = (style == 'float' || style == 'cssFloat') ? 'styleFloat' : style.camelize();
@@ -792,7 +801,7 @@ else if (Prototype.Browser.IE) {
           return node ? node.value : "";
         },
         _getEv: function(element, attribute) {
-          var attribute = element.getAttribute(attribute);
+          attribute = element.getAttribute(attribute);
           return attribute ? attribute.toString().slice(23, -2) : null;
         },
         _flag: function(element, attribute) {
@@ -809,7 +818,10 @@ else if (Prototype.Browser.IE) {
   };
   
   Element._attributeTranslations.write = {
-    names: Object.clone(Element._attributeTranslations.read.names),
+    names: Object.extend({
+      cellpadding: 'cellPadding',
+      cellspacing: 'cellSpacing'
+    }, Element._attributeTranslations.read.names),
     values: {
       checked: function(element, value) {
         element.checked = !!value;
@@ -889,7 +901,7 @@ else if (Prototype.Browser.WebKit) {
   };
   
   // Safari returns margins on body which is incorrect if the child is absolutely
-  // positioned.  For performance reasons, redefine Position.cumulativeOffset for
+  // positioned.  For performance reasons, redefine Element#cumulativeOffset for
   // KHTML/WebKit only.
   Element.Methods.cumulativeOffset = function(element) {
     var valueT = 0, valueL = 0;
@@ -929,7 +941,7 @@ if (Prototype.Browser.IE || Prototype.Browser.Opera) {
   };
 }
 
-if (document.createElement('div').outerHTML) {
+if ('outerHTML' in document.createElement('div')) {
   Element.Methods.replace = function(element, content) {
     element = $(element);
     
@@ -967,45 +979,25 @@ Element._returnOffset = function(l, t) {
 
 Element._getContentFromAnonymousElement = function(tagName, html) {
   var div = new Element('div'), t = Element._insertionTranslations.tags[tagName];
-  div.innerHTML = t[0] + html + t[1];
-  t[2].times(function() { div = div.firstChild });
+  if (t) {
+    div.innerHTML = t[0] + html + t[1];
+    t[2].times(function() { div = div.firstChild });
+  } else div.innerHTML = html;
   return $A(div.childNodes);
 };
 
 Element._insertionTranslations = {
-  before: {
-    adjacency: 'beforeBegin',
-    insert: function(element, node) {
-      element.parentNode.insertBefore(node, element);
-    },
-    initializeRange: function(element, range) {
-      range.setStartBefore(element);      
-    }
+  before: function(element, node) {
+    element.parentNode.insertBefore(node, element);
   },
-  top: {
-    adjacency: 'afterBegin',
-    insert: function(element, node) {
-      element.insertBefore(node, element.firstChild);
-    },
-    initializeRange: function(element, range) {
-      range.selectNodeContents(element);
-      range.collapse(true);
-    }
+  top: function(element, node) {
+    element.insertBefore(node, element.firstChild);
   },
-  bottom: {
-    adjacency: 'beforeEnd',
-    insert: function(element, node) {
-      element.appendChild(node);
-    }
+  bottom: function(element, node) {
+    element.appendChild(node);
   },
-  after: {
-    adjacency: 'afterEnd',
-    insert: function(element, node) {
-      element.parentNode.insertBefore(node, element.nextSibling);
-    },
-    initializeRange: function(element, range) {
-      range.setStartAfter(element);
-    }
+  after: function(element, node) {
+    element.parentNode.insertBefore(node, element.nextSibling);
   },
   tags: {
     TABLE:  ['<table>',                '</table>',                   1],
@@ -1017,7 +1009,6 @@ Element._insertionTranslations = {
 };
 
 (function() {
-  this.bottom.initializeRange = this.top.initializeRange;
   Object.extend(this.tags, {
     THEAD: this.tags.TBODY,
     TFOOT: this.tags.TBODY,
@@ -1047,7 +1038,7 @@ if (!Prototype.BrowserFeatures.ElementExtensions &&
 Element.extend = (function() {
   if (Prototype.BrowserFeatures.SpecificElementExtensions)
     return Prototype.K;
-  
+
   var Methods = { }, ByTag = Element.Methods.ByTag;
   
   var extend = Object.extend(function(element) {
@@ -1178,10 +1169,11 @@ Element.addMethods = function(methods) {
 document.viewport = {
   getDimensions: function() {
     var dimensions = { };
+    var B = Prototype.Browser;
     $w('width height').each(function(d) {
       var D = d.capitalize();
-      dimensions[d] = self['inner' + D] || 
-       (document.documentElement['client' + D] || document.body['client' + D]);
+      dimensions[d] = (B.WebKit && !document.evaluate) ? self['inner' + D] :
+        (B.Opera) ? document.body['client' + D] : document.documentElement['client' + D];
     });
     return dimensions;
   },

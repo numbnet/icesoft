@@ -1,20 +1,20 @@
 function $A(iterable) {
   if (!iterable) return [];
   if (iterable.toArray) return iterable.toArray();
-  var length = iterable.length, results = new Array(length);
+  var length = iterable.length || 0, results = new Array(length);
   while (length--) results[length] = iterable[length];
   return results;
 }
 
 if (Prototype.Browser.WebKit) {
-  function $A(iterable) {
+  $A = function(iterable) {
     if (!iterable) return [];
     if (!(Object.isFunction(iterable) && iterable == '[object NodeList]') &&
         iterable.toArray) return iterable.toArray();
-    var length = iterable.length, results = new Array(length);
+    var length = iterable.length || 0, results = new Array(length);
     while (length--) results[length] = iterable[length];
     return results;
-  }
+  };
 }
 
 Array.from = $A;
@@ -100,7 +100,7 @@ Object.extend(Array.prototype, {
     var results = [];
     this.each(function(object) {
       var value = Object.toJSON(object);
-      if (value !== undefined) results.push(value);
+      if (!Object.isUndefined(value)) results.push(value);
     });
     return '[' + results.join(', ') + ']';
   }

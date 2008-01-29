@@ -1,5 +1,5 @@
 var Prototype = {
-  Version: '1.6.0',
+  Version: '1.6.0.2',
   
   Browser: {
     IE:     !!(window.attachEvent && !window.opera),
@@ -27,6 +27,3 @@ var Prototype = {
 
 if (Prototype.Browser.MobileSafari)
   Prototype.BrowserFeatures.SpecificElementExtensions = false;
-  
-if (Prototype.Browser.WebKit)
-  Prototype.BrowserFeatures.XPath = false;

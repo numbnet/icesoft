@@ -65,7 +65,9 @@ Event.Methods = (function() {
 
     findElement: function(event, expression) {
       var element = Event.element(event);
-      return element.match(expression) ? element : element.up(expression);
+      if (!expression) return element;
+      var elements = [element].concat(element.ancestors());
+      return Selector.findElement(elements, expression, 0);
     },
 
     pointer: function(event) {
@@ -126,11 +128,11 @@ Event.extend = (function() {
 
 Object.extend(Event, (function() {
   var cache = Event.cache;
-  
+
   function getEventID(element) {
-    if (element._eventID) return element._eventID;
+    if (element._prototypeEventID) return element._prototypeEventID[0];
     arguments.callee.id = arguments.callee.id || 1;
-    return element._eventID = ++arguments.callee.id;
+    return element._prototypeEventID = [++arguments.callee.id];
   }
   
   function getDOMEventName(eventName) {
@@ -158,7 +160,7 @@ Object.extend(Event, (function() {
           return false;
       
       Event.extend(event);
-      handler.call(element, event)
+      handler.call(element, event);
     };
     
     wrapper.handler = handler;
@@ -240,11 +242,12 @@ Object.extend(Event, (function() {
       if (element == document && document.createEvent && !element.dispatchEvent)
         element = document.documentElement;
         
+      var event;
       if (document.createEvent) {
-        var event = document.createEvent("HTMLEvents");
+        event = document.createEvent("HTMLEvents");
         event.initEvent("dataavailable", true, true);
       } else {
-        var event = document.createEventObject();
+        event = document.createEventObject();
         event.eventType = "ondataavailable";
       }
 
@@ -257,7 +260,7 @@ Object.extend(Event, (function() {
         element.fireEvent(event.eventType, event);
       }
 
-      return event;
+      return Event.extend(event);
     }
   };
 })());
@@ -273,20 +276,21 @@ Element.addMethods({
 Object.extend(document, {
   fire:          Element.Methods.fire.methodize(),
   observe:       Element.Methods.observe.methodize(),
-  stopObserving: Element.Methods.stopObserving.methodize()
+  stopObserving: Element.Methods.stopObserving.methodize(),
+  loaded:        false
 });
 
 (function() {
   /* Support for the DOMContentLoaded event is based on work by Dan Webb, 
      Matthias Miller, Dean Edwards and John Resig. */
 
-  var timer, fired = false;
+  var timer;
   
   function fireContentLoadedEvent() {
-    if (fired) return;
+    if (document.loaded) return;
     if (timer) window.clearInterval(timer);
     document.fire("dom:loaded");
-    fired = true;
+    document.loaded = true;
   }
   
   if (document.addEventListener) {

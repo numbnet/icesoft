@@ -58,8 +58,11 @@ Ajax.Base = Class.create({
     Object.extend(this.options, options || { });
     
     this.options.method = this.options.method.toLowerCase();
+    
     if (Object.isString(this.options.parameters)) 
       this.options.parameters = this.options.parameters.toQueryParams();
+    else if (Object.isHash(this.options.parameters))
+      this.options.parameters = this.options.parameters.toObject();
   }
 });
 
@@ -186,7 +189,7 @@ Ajax.Request = Class.create(Ajax.Base, {
       
       var contentType = response.getHeader('Content-type');
       if (this.options.evalJS == 'force'
-          || (this.options.evalJS && contentType 
+          || (this.options.evalJS && this.isSameOrigin() && contentType 
           && contentType.match(/^\s*(text|application)\/(x-)?(java|ecma)script(;.*)?\s*$/i)))
         this.evalResponse();
     }
@@ -204,9 +207,18 @@ Ajax.Request = Class.create(Ajax.Base, {
     }
   },
   
+  isSameOrigin: function() {
+    var m = this.url.match(/^\s*https?:\/\/[^\/]*/);
+    return !m || (m[0] == '#{protocol}//#{domain}#{port}'.interpolate({
+      protocol: location.protocol,
+      domain: document.domain,
+      port: location.port ? ':' + location.port : ''
+    }));
+  },
+  
   getHeader: function(name) {
     try {
-      return this.transport.getResponseHeader(name);
+      return this.transport.getResponseHeader(name) || null;
     } catch (e) { return null }
   },
   
@@ -242,7 +254,7 @@ Ajax.Response = Class.create({
     
     if(readyState == 4) {
       var xml = transport.responseXML;
-      this.responseXML  = xml === undefined ? null : xml;
+      this.responseXML  = Object.isUndefined(xml) ? null : xml;
       this.responseJSON = this._getResponseJSON();
     }
   },
@@ -279,7 +291,8 @@ Ajax.Response = Class.create({
     if (!json) return null;
     json = decodeURIComponent(escape(json));
     try {
-      return json.evalJSON(this.request.options.sanitizeJSON);
+      return json.evalJSON(this.request.options.sanitizeJSON ||
+        !this.request.isSameOrigin());
     } catch (e) {
       this.request.dispatchException(e);
     }
@@ -288,10 +301,12 @@ Ajax.Response = Class.create({
   _getResponseJSON: function() {
     var options = this.request.options;
     if (!options.evalJSON || (options.evalJSON != 'force' && 
-      !(this.getHeader('Content-type') || '').include('application/json')))
-        return null;
+      !(this.getHeader('Content-type') || '').include('application/json')) || 
+        this.responseText.blank())
+          return null;
     try {
-      return this.transport.responseText.evalJSON(options.sanitizeJSON);
+      return this.responseText.evalJSON(options.sanitizeJSON ||
+        !this.request.isSameOrigin());
     } catch (e) {
       this.request.dispatchException(e);
     }
@@ -305,11 +320,11 @@ Ajax.Updater = Class.create(Ajax.Request, {
       failure: (container.failure || (container.success ? null : container))
     };
 
-    options = options || { };
+    options = Object.clone(options);
     var onComplete = options.onComplete;
-    options.onComplete = (function(response, param) {
+    options.onComplete = (function(response, json) {
       this.updateContent(response.responseText);
-      if (Object.isFunction(onComplete)) onComplete(response, param);
+      if (Object.isFunction(onComplete)) onComplete(response, json);
     }).bind(this);
 
     $super(url, options);
@@ -330,10 +345,6 @@ Ajax.Updater = Class.create(Ajax.Request, {
         else options.insertion(receiver, responseText);
       } 
       else receiver.update(responseText);
-    }
-    
-    if (this.success()) {
-      if (this.onComplete) this.onComplete.bind(this).defer();
     }
   }
 });
