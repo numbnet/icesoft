@@ -424,6 +424,7 @@ Combinations:
     </target>
     
     <!-- Pluto Portlet -->
+        <!-- Uncomment out for building pluto portlet applicaitons -->
     <!--
   <path id="pluto-classes">
     <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
@@ -431,7 +432,7 @@ Combinations:
 
 
   <typedef name="passemble" 
-           classname="org.apache.pluto.ant.AssembleTask"
+           classname="${pluto.task}"
            classpathref="pluto-classes"/>
 
 

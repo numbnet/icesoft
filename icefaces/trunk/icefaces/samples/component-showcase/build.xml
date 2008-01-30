@@ -39,6 +39,8 @@
     <property name="component.docs.dir" location="../../component/doc"/>
     <property name="portlet.build.web.dir" value="build/web"/>
     <property name="portlet.web.dir" value="portlet/web"/>
+            <property name="pluto.task" value="org.apache.pluto.ant.AssembleTask"/>
+    
     <import file="../etc/build-common.xml"/>
     
     <patternset id="additional.icefaces.lib.jars.to.include"
@@ -87,9 +89,9 @@
         
         <property name="portlet" value="true"/>
         <build.portlet.war web.xml="${comp.xml}"
-                    portlet.web.content.dir="build/web"
-                    portlet.conf.dir="portlet/conf"
-                    portlet.conf.liferay.dir="portlet/conf/liferay"/>
+                           portlet.web.content.dir="build/web"
+                           portlet.conf.dir="portlet/conf"
+                           portlet.conf.liferay.dir="portlet/conf/liferay"/>
     </target>
     
     <target name="build.facelet.war" depends="compile"
@@ -109,83 +111,83 @@
     </target>
     <target name="build.facelet.tomcat5.x.war" depends="compile"
             description="Creates a facelets version of component-showcase for Tomcat5.x.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target>  
     <target name="build.facelet.weblogic8.1.war" depends="compile"
             description="Creates a facelets version of component-showcase for Weblogic 8.1.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target>
     <target name="build.facelet.weblogic9.2.war" depends="compile"
             description="Creates a facelets version of component-showcase for Weblogic 9.2.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target>
     <target name="build.facelet.websphere6.0.war" depends="compile"
             description="Creates a facelets version of component-showcase for IBM Websphere 6.0.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target> 
     <target name="build.facelet.websphere6.1.war" depends="compile"
             description="Creates a facelets version of component-showcase for IBM Websphere 6.1.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target> 
     <target name="build.facelet.jboss4.0.war" depends="compile"
             description="Creates a facelets version of component-showcase for JBoss4.0.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target> 
     <target name="build.facelet.tomcat6.war" depends="compile"
             description="Creates a facelets version of component-showcase for Tomcat6.x.">
-            <antcall target="build.facelet.war">
-                <param name="jsf12" value=""/>
-            </antcall>
+        <antcall target="build.facelet.war">
+            <param name="jsf12" value=""/>
+        </antcall>
     </target>
     <target name="build.facelet.jsf12.war" depends="compile"
             description="Creates a facelets version of component-showcase for JSF1.2.">
-            <antcall target="build.facelet.war">
-                <param name="jsf12" value=""/>
-            </antcall>
+        <antcall target="build.facelet.war">
+            <param name="jsf12" value=""/>
+        </antcall>
     </target>    <target name="build.facelet.jboss4.2.war" depends="compile"
-            description="Creates a facelets version of component-showcase for JBoss4.2.">
-            <antcall target="build.facelet.war">
-                <param name="jsf12" value=""/>
-                <param name="serverjsf" value=""/>
-            </antcall>
+                         description="Creates a facelets version of component-showcase for JBoss4.2.">
+        <antcall target="build.facelet.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
     </target>
     <target name="build.facelet.jetty6.1.war" depends="compile"
             description="Creates a facelets version of component-showcase for Jetty 6.1.">
-            <antcall target="build.facelet.war">
-                <param name="serverel" value=""/>
-            </antcall>
+        <antcall target="build.facelet.war">
+            <param name="serverel" value=""/>
+        </antcall>
     </target>
     <target name="build.facelet.oc4j.war" depends="compile"
             description="Creates a facelets version of component-showcase for OC4J.">
-            <antcall target="build.facelet.war">
-
-            </antcall>
+        <antcall target="build.facelet.war">
+            
+        </antcall>
     </target>    
     <target name="build.facelet.glassfishv2.war" depends="compile"
             description="Creates a facelets version of component-showcase for Glassfishv2.">
-            <antcall target="build.facelet.war">
-                <param name="jsf12" value=""/>
-                <param name="serverjsf" value=""/>
-            </antcall>
+        <antcall target="build.facelet.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
     </target>    
     <target name="build.facelet.pe9.war" depends="compile"
             description="Creates a facelets version of component-showcase for SUN Application Server PE9.">
-            <antcall target="build.facelet.war">
-                <param name="jsf12" value=""/>
-                <param name="serverjsf" value=""/>
-            </antcall>
+        <antcall target="build.facelet.war">
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+        </antcall>
     </target>    
     
     <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
@@ -196,14 +198,14 @@
             <param name="serverjsf" value=""/>
         </antcall>
     </target>
-
+    
     <target name="build.portlet.jboss4.2.portal.ahs.war" depends="compile" description="build portlet application for JBoss4.2 portal with AHS">
         <property name="portlet" value="true"/>
         <copy todir="build/web/WEB-INF">
-                <fileset dir="portlet/conf" includes="*.xml"/>
+            <fileset dir="portlet/conf" includes="*.xml"/>
         </copy>
         <copy todir="build/web/portlet">
-                <fileset dir="portlet/web" includes="*.jspx"/>
+            <fileset dir="portlet/web" includes="*.jspx"/>
         </copy>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
@@ -312,20 +314,32 @@
         </ear>
     </target>
     
+    <target name="build.portlet.pluto.tomcat5.war">
+        <ant antfile="./build-pluto.xml" inheritAll="true">
+            <target name="build.portlet.pluto.tomcat5.war"/>
+        </ant>
+        
+    </target>
+        
+        
     <!-- Pluto Portlet -->
+        <!-- Uncomment out for building pluto portlet applicaitons -->
+        <!--    
+
     <target name="build.portlet.pluto.tomcat5.war" 
             depends="compile" 
             description="Build a portlet application for Pluto on Tomcat 5.x without AHS">
         <property name="portlet" value="true"/>
         
-        <!--
+
         <antcall target="pluto-assemble"/>
-        -->
+
         
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.pluto.xml"/>
             <param name="jsf11" value=""/>
             <param name="pluto" value=""/>
         </antcall>
-    </target>
+    </target>    
+    -->
 </project>
