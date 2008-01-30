@@ -78,7 +78,8 @@ implements ContextEventPublisher {
         // do nothing.
     }
 
-    public void publish(final ContextEvent event) {
+    public void publish(final ContextEvent event)
+    throws Exception {
         if (event instanceof ContextInitializedEvent) {
             ServletContext _servletContext =
                 ((ContextInitializedEvent)event).getNestedServletContextEvent().
@@ -132,9 +133,8 @@ implements ContextEventPublisher {
         }
     }
 
-    private void setUpMessageServiceClient(
-        final ServletContext servletContext) {
-
+    private void setUpMessageServiceClient(final ServletContext servletContext)
+    throws MessageServiceException {
         JMSProviderConfiguration _jmsProviderConfiguration =
             new JMSProviderConfigurationProperties(servletContext);
         messageServiceClient =
@@ -169,6 +169,7 @@ implements ContextEventPublisher {
                         "icefaces-ahs.jar from your\r\n" +
                     "deployment and try again.\r\n");
             }
+            throw exception;
         }
         messageServiceClient.addMessageHandler(
             announcementMessageHandler,
@@ -179,6 +180,7 @@ implements ContextEventPublisher {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal("Failed to start message delivery!", exception);
             }
+            throw exception;
         }
     }
 

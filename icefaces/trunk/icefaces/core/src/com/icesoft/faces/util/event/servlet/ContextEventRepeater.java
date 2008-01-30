@@ -147,7 +147,13 @@ implements HttpSessionListener, ServletContextListener {
         listeners.clear();
         bufferedContextEvents.clear();
         if (contextEventPublisher != null) {
-            contextEventPublisher.publish(contextDestroyedEvent);
+            try {
+                contextEventPublisher.publish(contextDestroyedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
         }
         if (LOG.isInfoEnabled()) {
             ServletContext servletContext =
@@ -184,8 +190,15 @@ implements HttpSessionListener, ServletContextListener {
                             MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME).
                                 newInstance();
                 contextEventPublisher.setContextEventRepeater(this);
-                contextEventPublisher.publish(
-                    new ContextInitializedEvent(event));
+                try {
+                    contextEventPublisher.publish(
+                        new ContextInitializedEvent(event));
+                } catch (Exception exception) {
+                    contextEventPublisher = null;
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Couldn't publish event!", exception);
+                    }
+                }
             } catch (ClassNotFoundException exception) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("MessagingContextEventPublisher is not found!");
@@ -220,7 +233,13 @@ implements HttpSessionListener, ServletContextListener {
                 iceFacesIdDisposed(iceFacesIdDisposedEvent);
         }
         if (contextEventPublisher != null) {
-            contextEventPublisher.publish(iceFacesIdDisposedEvent);
+            try {
+                contextEventPublisher.publish(iceFacesIdDisposedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -249,7 +268,13 @@ implements HttpSessionListener, ServletContextListener {
                 iceFacesIdRetrieved(iceFacesIdRetrievedEvent);
         }
         if (contextEventPublisher != null) {
-            contextEventPublisher.publish(iceFacesIdRetrievedEvent);
+            try {
+                contextEventPublisher.publish(iceFacesIdRetrievedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
@@ -307,7 +332,13 @@ implements HttpSessionListener, ServletContextListener {
         }
         removeBufferedEvents(event.getSession());
         if (contextEventPublisher != null) {
-            contextEventPublisher.publish(sessionDestroyedEvent);
+            try {
+                contextEventPublisher.publish(sessionDestroyedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace("ICEfaces ID: " + sessionDestroyedEvent.getICEfacesID());
@@ -335,7 +366,13 @@ implements HttpSessionListener, ServletContextListener {
                 viewNumberRetrieved(viewNumberRetrievedEvent);
         }
         if (contextEventPublisher != null) {
-            contextEventPublisher.publish(viewNumberRetrievedEvent);
+            try {
+                contextEventPublisher.publish(viewNumberRetrievedEvent);
+            } catch (Exception exception) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Couldn't publish event!", exception);
+                }
+            }
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(

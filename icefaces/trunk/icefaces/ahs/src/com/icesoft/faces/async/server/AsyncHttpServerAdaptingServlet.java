@@ -53,10 +53,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AsyncHttpServerAdaptingServlet
-        implements Server {
+implements Server {
     private static final String UPDATED_VIEWS_MESSAGE_TYPE = "UpdatedViews";
     private static final Log LOG =
-            LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
+        LogFactory.getLog(AsyncHttpServerAdaptingServlet.class);
 
     private static final Object messageServiceClientLock = new Object();
     private static MessageServiceClient messageServiceClient;
@@ -83,10 +83,9 @@ public class AsyncHttpServerAdaptingServlet
             };
 
     public AsyncHttpServerAdaptingServlet(
-        final String iceFacesId,
-        final Collection synchronouslyUpdatedViews,
-        final ViewQueue allUpdatedViews, final ServletContext servletContext) {
-
+        final String iceFacesId, final Collection synchronouslyUpdatedViews,
+        final ViewQueue allUpdatedViews, final ServletContext servletContext)
+    throws MessageServiceException {
         this.iceFacesId = iceFacesId;
         synchronized (messageServiceClientLock) {
             if (messageServiceClient == null) {
@@ -136,9 +135,8 @@ public class AsyncHttpServerAdaptingServlet
         tearDownMessageServiceClient();
     }
 
-    private void setUpMessageClientService(
-        final ServletContext servletContext) {
-
+    private void setUpMessageClientService(final ServletContext servletContext)
+    throws MessageServiceException {
         JMSProviderConfiguration _jmsProviderConfiguration =
             new JMSProviderConfigurationProperties(servletContext);
         messageServiceClient =
@@ -152,6 +150,7 @@ public class AsyncHttpServerAdaptingServlet
                 updatedViewsQueueExceededMessageHandler.getMessageSelector());
         } catch (MessageServiceException exception) {
             if (LOG.isFatalEnabled()) {
+                messageServiceClient = null;
                 LOG.fatal(
                     "\r\n" +
                     "\r\n" +
@@ -173,6 +172,7 @@ public class AsyncHttpServerAdaptingServlet
                         "icefaces-ahs.jar from your\r\n" +
                     "deployment and try again.\r\n");
             }
+            throw exception;
         }
         messageServiceClient.addMessageHandler(
             updatedViewsQueueExceededMessageHandler,
@@ -180,9 +180,11 @@ public class AsyncHttpServerAdaptingServlet
         try {
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
+            messageServiceClient = null;
             if (LOG.isFatalEnabled()) {
                 LOG.fatal("Failed to start message delivery!", exception);
             }
+            throw exception;
         }
     }
 

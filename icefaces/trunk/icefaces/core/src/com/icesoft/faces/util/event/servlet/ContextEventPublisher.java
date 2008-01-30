@@ -30,12 +30,12 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
 package com.icesoft.faces.util.event.servlet;
 
 public interface ContextEventPublisher {
-    public void publish(ContextEvent event);
+    public void publish(final ContextEvent event)
+    throws Exception;
 
     public void setContextEventRepeater(
-            ContextEventRepeater contextEventRepeater);
+        final ContextEventRepeater contextEventRepeater);
 }
