@@ -43,6 +43,7 @@ public class Person {
     private String email;
     private Boolean selected = Boolean.FALSE;
 
+    public Person() {}
     public Person(String firstName, String lastName, String phoneNo,
                   String email) {
         this.firstName = firstName;

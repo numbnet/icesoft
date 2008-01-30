@@ -42,6 +42,15 @@
     </application>
 
     <managed-bean>
+        <managed-bean-name>tooltipPerson</managed-bean-name>
+        <managed-bean-class>
+            com.icesoft.icefaces.samples.showcase.common.Person
+        </managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    
+    <managed-bean>
         <managed-bean-name>panelDividerBean</managed-bean-name>
         <managed-bean-class>
             com.icesoft.icefaces.samples.showcase.components.paneldivider.PanelDividerBean
