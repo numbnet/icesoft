@@ -48,7 +48,10 @@
 <p>The popupPanel contains two user defined regions which are defined using named
   facets. The facet names are "header" and "body".
 
- <p>This component provides general popup window behavior such as draggable and modal.</p>
+ <p>This component provides general popup window behavior such as draggable and modal. The 
+ component may also be used with the autoCentre, and autoPosition attributes to cause 
+ the popup to stick to either the centre of the viewable port of the browser window, 
+ or to the position specified in pixels from the top left of the window.</p>
 
  <p >The panelPopup component may be used in cases where a
 a popup window is appropriate.<br>
@@ -120,6 +123,88 @@ Example <br>
 
 
 </pre>
+
+
+
+<p >The following code shows how a popup using the autoCentre attribute can be created:</p>
+<pre class="Preformatted">
+
+&lt;ice:panelPopup id="autoCentrePP"
+        draggable="true"
+        rendered="#{popup.showAutoCentrePanel}"
+        visible="#{popup.showAutoCentrePanel}"
+        autoCentre="true"
+        style="z-index: 1000;width: 300px; height: 150px;"&gt;
+
+    &lt;f:facet name="header"&gt;
+        &lt;ice:panelGrid id="autoCentPanelGrid"
+                       width="100%" cellpadding="0"
+                       cellspacing="0" columns="2"
+                       columnClasses="none, popupButton"&gt;
+            &lt;ice:outputText value="Auto-Centre Popup Panel"/&gt;
+            &lt;ice:commandButton id="autoCentPopupClose" type="button"
+                               image="#{popup.closePopupImage}"
+                               actionListener="#{popup.closeAutoCentrePopup}"
+                               style="cursor: pointer;"/&gt;
+        &lt;/ice:panelGrid&gt;
+    &lt;/f:facet&gt;
+
+    &lt;f:facet name="body"&gt;
+        &lt;ice:panelGrid id="autoCentContent"
+                       width="100%" cellpadding="0"
+                       cellspacing="0" columns="1"
+                       styleClass="popupModalBody"&gt;
+            &lt;ice:outputText
+                    value="This Popup will remain centred even if you scroll or resize the window."/&gt;
+        &lt;/ice:panelGrid&gt;
+    &lt;/f:facet&gt;
+
+&lt;/ice:panelPopup&gt;
+
+
+</pre>
+
+
+
+<p >The following code shows how a popup using the autoPosition attribute can be created:</p>
+<pre class="Preformatted">
+
+&lt;ice:panelPopup id="autoPositionPP"
+        draggable="true"
+        rendered="#{popup.showAutoPositionPanel}"
+        visible="#{popup.showAutoPositionPanel}"
+        style="z-index: 1000;width: 300px; height: 150px;"
+        autoPosition="#{popup.autoPositionInput}"&gt;
+
+    &lt;f:facet name="header"&gt;
+        &lt;ice:panelGrid id="autoPosPanelGrid"
+                       width="100%" cellpadding="0"
+                       cellspacing="0" columns="2"
+                       columnClasses="none, popupButton"&gt;
+            &lt;ice:outputText value="Auto-Position Popup Panel"/&gt;
+            &lt;ice:commandButton id="autoPosPopupClose" type="button"
+                               image="#{popup.closePopupImage}"
+                               actionListener="#{popup.closeAutoPositionPopup}"
+                               style="cursor: pointer;"/&gt;
+        &lt;/ice:panelGrid&gt;
+    &lt;/f:facet&gt;
+
+    &lt;f:facet name="body"&gt;
+        &lt;ice:panelGrid id="autoPosContent"
+                       width="100%" cellpadding="0"
+                       cellspacing="0" columns="1"
+                       styleClass="popupModalBody"&gt;
+            &lt;ice:outputText
+                    value="This Popup will remain in the specified position even if you scroll or resize the window."/&gt;
+        &lt;/ice:panelGrid&gt;
+    &lt;/f:facet&gt;
+
+&lt;/ice:panelPopup&gt;
+
+</pre>
+
+
+
 
 <div
 style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
