@@ -28,7 +28,7 @@ public abstract class LifecycleExecutor {
             flowExecutor = SpringWebFlowInstantiationServlet.getFlowExecutor();
         } catch (Throwable t)  {
             if (log.isDebugEnabled()) {
-                log.debug("SpringWebFlow unavailable ", t);
+                log.debug("SpringWebFlow unavailable ");
             }
         }
         if (null != flowExecutor)  {
