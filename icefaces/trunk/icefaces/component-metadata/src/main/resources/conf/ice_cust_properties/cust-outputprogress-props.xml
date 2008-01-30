@@ -91,7 +91,11 @@
 </property>
 
 <property>
-	<description>Binding to an application bean.</description>
+	<description>
+	    <![CDATA[ <p>The percentage progress that should be depicted to the user, from 0 to 100 inclusive. 
+	    When <b>indeterminate</b>="true", 0 and 100 denote inactivity, and values between denote activity.</p>
+	    ]]>
+	</description>
 	<property-name>value</property-name>
 	<property-class>int</property-class>
 	<property-extension>

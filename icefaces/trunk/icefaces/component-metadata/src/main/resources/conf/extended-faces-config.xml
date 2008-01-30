@@ -58,6 +58,7 @@
   <!ENTITY select-common-props      SYSTEM "properties/select-common-props.xml">     
   <!ENTITY uicolumn-props           SYSTEM "properties/uicolumn-props.xml">
   <!ENTITY uicommand-props          SYSTEM "properties/uicommand-props.xml">
+  <!ENTITY uicommand-novalue-props  SYSTEM "properties/uicommand-novalue-props.xml">
   <!ENTITY uidata-props             SYSTEM "properties/uidata-props.xml">
   <!ENTITY uiform-props             SYSTEM "properties/uiform-props.xml">
   <!ENTITY uigraphic-props          SYSTEM "properties/uigraphic-props.xml">
@@ -77,6 +78,8 @@
   <!ENTITY uiselectone-props        SYSTEM "properties/uiselectone-props.xml">
 
   <!ENTITY value-props              SYSTEM "properties/value-props.xml">
+  <!ENTITY input-value-props        SYSTEM "properties/input-value-props.xml">
+  <!ENTITY series-value-props       SYSTEM "properties/series-value-props.xml">
   <!ENTITY core-props               SYSTEM "properties/core-props.xml">
   <!ENTITY events-props             SYSTEM "properties/events-props.xml">
   <!ENTITY focus-props              SYSTEM "properties/focus-props.xml">
@@ -225,6 +228,9 @@
   <!ENTITY ice-cust-style-props SYSTEM "ice_cust_properties/cust-style-props.xml">
   <!ENTITY ice-cust-panelPositioned-props SYSTEM "ice_cust_properties/cust-panelPositioned-props.xml">
   <!ENTITY ice-cust-portlet-props SYSTEM "ice_cust_properties/cust-portlet-props.xml">
+  <!--
+  <!ENTITY ice-cust-inputOutputText-props SYSTEM "ice_cust_properties/cust-inputOutputText-props.xml">
+  -->
   <!ENTITY ice-cust-outputMedia-props SYSTEM "ice_cust_properties/cust-outputMedia-props.xml">
 
   <!-- ICE Extended components -->
@@ -445,7 +451,12 @@
 
   <!ENTITY portlet-component   SYSTEM "custom/portlet-component.xml">
   <!ENTITY portlet-renderer    SYSTEM "custom/portlet-renderer.xml">
-
+  
+  <!--
+  <!ENTITY inputOutputText-component   SYSTEM "custom/inputOutputText-component.xml">
+  <!ENTITY inputOutputText-renderer    SYSTEM "custom/inputOutputText-renderer.xml">
+  -->
+  
   <!ENTITY outputMedia-component   SYSTEM "custom/outputMedia-component.xml">
   <!ENTITY outputMedia-renderer    SYSTEM "custom/outputMedia-renderer.xml">
 
@@ -532,6 +543,7 @@
     &effect-component;
     &outputMedia-component;
     <!-- &googlemap-component; -->
+    <!-- &inputOutputText-component; -->
     
     <render-kit>
 
@@ -611,6 +623,7 @@
         &effect-renderer;
         &outputMedia-renderer;	
         <!-- &googlemap-renderer; -->
+        <!-- &inputOutputText-renderer; -->
     </render-kit>
 
 </faces-config>

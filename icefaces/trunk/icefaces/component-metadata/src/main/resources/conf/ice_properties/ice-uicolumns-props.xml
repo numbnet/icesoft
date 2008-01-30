@@ -32,7 +32,7 @@
   ~
   -->
 &base-props; 
-&value-props;
+&series-value-props;
 &ice-att-menuContext-props;
 
 <property>

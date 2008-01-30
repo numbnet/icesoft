@@ -32,7 +32,7 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-&value-props;
+&input-value-props;
 
 <property>
 	<property-name>cols</property-name>

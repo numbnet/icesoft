@@ -33,7 +33,7 @@
   -->
 &ice-att-userrole-rendered-props;
 &ice-att-style-props;
-&uicommand-props;
+&uicommand-novalue-props;
 
 <property>
     <description>

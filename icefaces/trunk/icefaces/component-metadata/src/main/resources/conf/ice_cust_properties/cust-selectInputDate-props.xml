@@ -33,11 +33,10 @@
   -->
 
 &base-props;
-&value-props;
+&input-value-props;
 &ice-ext-core-styled-props;
 &ice-att-autoComplete-props;
 &ice-att-userrole-enabled-props;
-&value-props;
 &ice-att-immediate-props;
 &required-props;
 &validator-props;

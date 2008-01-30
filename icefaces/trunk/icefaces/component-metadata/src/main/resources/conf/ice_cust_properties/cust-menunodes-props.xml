@@ -33,5 +33,20 @@
   -->
 &base-props;
 &actionsource-props;
-&value-props;
 &ice-att-immediate-props;
+
+<property>
+	<description>A java.util.List of MenuItem objects.</description>
+	<property-name>value</property-name>
+	<property-class>java.lang.Object</property-class>
+	<property-extension>
+		<category>DATA</category>
+		<editor-class>
+			&valueBindingEditor;
+		</editor-class>
+		<named-value>
+			<name>ignoreIsBound</name>
+			<value>true</value>
+		</named-value>
+	</property-extension>
+</property>

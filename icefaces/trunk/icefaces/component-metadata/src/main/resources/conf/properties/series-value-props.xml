@@ -1,6 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-
-
+<?xml encoding='UTF-8'?>
 <!--
   ~  Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -33,25 +31,19 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-  
-&ice-ext-core-styled-props;
-&ice-effects-props;
-&ice-att-autoComplete-props;
-&ice-att-userrole-enabled-props;
-&ice-att-partialsubmit-props;
-&converter-props;
-&base-props;
-&required-props; 
-&validator-props;
-&input-value-props;
-&valuechangelistener-props;
-&pass-thru-dir-props;
-&pass-thru-accesskey-props;
-&pass-thru-lang-props;
-&events-props;
-&pass-thru-readonly-props;
-&pass-thru-title-props;
-&pass-thru-tabindex-props;
-&pass-thru-onselect-props;
-&pass-thru-onfocus-props;
-&pass-thru-onchange-props;
+
+<property>
+	<description>The data model for this component.</description>
+	<property-name>value</property-name>
+	<property-class>java.lang.Object</property-class>
+	<property-extension>
+		<category>DATA</category>
+		<editor-class>
+			&valueBindingEditor;
+		</editor-class>
+		<named-value>
+			<name>ignoreIsBound</name>
+			<value>true</value>
+		</named-value>
+	</property-extension>
+</property>

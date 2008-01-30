@@ -32,8 +32,6 @@
   ~
   -->
   
-&value-props;
-
 <!--  TODO: -->
 
 <property>
@@ -171,4 +169,26 @@
 	<property-extension>
 		<category>ICE_COMPONENT</category>
 	</property-extension>
-</property>       
+</property>
+
+<property>
+	<description>
+		<![CDATA[<p>A ValueBinding to a per dataTable row java.lang.Boolean 
+		property, which determines if that row is selected. Typically the 
+		ValueBinding refers to a property of the dataTable's <i>var</i>
+		attribute, but another strategy is to use a smart java.util.Map to 
+		centrally maintain the selection state.</p>]]>
+    </description>
+	<property-name>value</property-name>
+	<property-class>java.lang.Object</property-class>
+	<property-extension>
+		<category>DATA</category>
+		<editor-class>
+			&valueBindingEditor;
+		</editor-class>
+		<named-value>
+			<name>ignoreIsBound</name>
+			<value>true</value>
+		</named-value>
+	</property-extension>
+</property>

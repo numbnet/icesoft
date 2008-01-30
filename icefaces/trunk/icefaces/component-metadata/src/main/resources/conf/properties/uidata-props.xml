@@ -31,7 +31,7 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-&value-props;
+&series-value-props;
 &uicomponent-props;
 
 <property>

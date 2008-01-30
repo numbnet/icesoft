@@ -37,7 +37,6 @@
 &base-props;
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
-&value-props;
   <property>
 	<description>
 		Indicates whether an arrow, that shows the sort direction should be 

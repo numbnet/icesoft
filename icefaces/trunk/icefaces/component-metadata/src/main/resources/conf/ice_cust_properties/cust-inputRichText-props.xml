@@ -31,6 +31,8 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
+&input-value-props;
+
 <property>
     <description>
         CSS style(s) to be applied when this component is rendered.

@@ -31,7 +31,8 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-      &uioutput-props;
+      &uicomponent-props;
+      &input-value-props;
       &editable-props;
 
 

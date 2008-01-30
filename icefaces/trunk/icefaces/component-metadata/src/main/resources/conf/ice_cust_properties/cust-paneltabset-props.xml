@@ -35,7 +35,7 @@
 &ice-ext-core-styled-props;
 &ice-cust-table-props;
 &i18n-props;
-&value-props;
+&series-value-props;
 &ice-att-title-props;
 &ice-att-menuContext-props;
 &base-props;
