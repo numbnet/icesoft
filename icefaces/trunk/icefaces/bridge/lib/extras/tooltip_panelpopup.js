@@ -33,7 +33,7 @@
  var visibleTooltipList = new Array();
  
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId) {
+  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue) {
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true"); 
@@ -43,6 +43,7 @@ ToolTipPanelPopup = Class.create({
     this.x = Event.pointerX(event);
     this.y = Event.pointerY(event);
     this.formId = formId;
+    this.ctxValue = ctxValue
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -70,11 +71,13 @@ ToolTipPanelPopup = Class.create({
       if (this.isTooltipVisible(true)) {
          //its a dynamic tooltip, so remove all its childres
         var tooltip = this.getTooltip();
-        tooltip.style.visibility = "hidden";        
-        tooltip.style.display = "none;";
-        var table = tooltip.childNodes[0];
-        if (table) {
-            tooltip.removeChild(table);
+        if(tooltip) {
+	        tooltip.style.visibility = "hidden";        
+	        tooltip.style.display = "none;";
+	        var table = tooltip.childNodes[0];
+	        if (table) {
+	            tooltip.removeChild(table);
+	        }
         }
       }
     //dynamic? set status=show, populatefields, and submit
@@ -204,7 +207,8 @@ ToolTipPanelPopup = Class.create({
 	                     "; tooltip_src_id="+ this.src.id+ 
 	                     "; tooltip_state="+ this.state +
 	                     "; tooltip_x="+ this.x +
-	                     "; tooltip_y="+ this.y;
+	                     "; tooltip_y="+ this.y +
+	                     "; cntxValue="+ this.ctxValue;
 	    }
     },
     

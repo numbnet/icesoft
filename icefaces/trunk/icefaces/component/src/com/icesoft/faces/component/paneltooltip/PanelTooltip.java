@@ -274,10 +274,11 @@ public class PanelTooltip extends PanelPopup{
             ) {
 
         String tooltipId = ((HtmlPanelGroup)target).getPanelTooltip();
+        String contextValue = String.valueOf(((HtmlPanelGroup)target).getContextValue());
         UIComponent tooltipComponent = D2DViewHandler.findComponent(tooltipId, target);
         String tooltipClientId = tooltipComponent.getClientId(facesContext);
         String[] entries = tooltipinfo.split(";");
-        if (entries.length == 5){
+        if (entries.length == 6){
             if (!entries[0].split("=")[1].equals(tooltipClientId)) return;
                 TooltipInfo tooltipInfo = getTooltipInfo(tooltipComponent,
                         tooltipClientId);
@@ -285,7 +286,7 @@ public class PanelTooltip extends PanelPopup{
                 if (entries[1].split("=")[1].equals(target.getClientId(facesContext))) {
                     target.queueEvent(new DisplayEvent(tooltipComponent,
                             target,
-                            "This is value",
+                            contextValue,
                             "show".equalsIgnoreCase(tooltipInfo.getState())
                             ));
                 }
