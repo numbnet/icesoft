@@ -297,3 +297,15 @@
         <is-hidden>true</is-hidden>
     </property-extension>
 </property>
+
+<property>
+    <description>
+    Hover class
+    </description>
+    <property-name>contextValue</property-name>
+    <property-class>java.lang.Object</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <is-hidden>true</is-hidden>
+    </property-extension>
+</property>

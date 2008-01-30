@@ -106,6 +106,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     
     private String menuPopup;
     private String panelTooltip;
+    
+    private Object contextValue;
     /**
      *
      */
@@ -837,6 +839,23 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         ValueBinding vb = getValueBinding("panelTooltip");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    /**
+     * <p>Set the value of the <code>contextValue</code> property.</p>
+     */
+    public void setContextValue(Object contextValue) {
+        this.contextValue = contextValue;
+    }
 
+    /**
+     * <p>Return the value of the <code>contextValue</code> property.</p>
+     */
+    public Object getContextValue() {
+        if (contextValue != null) {
+            return contextValue;
+        }
+        ValueBinding vb = getValueBinding("contextValue");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 }
 

@@ -8,7 +8,7 @@ public class DisplayEvent extends FacesEvent{
 
     private static final long serialVersionUID = 0L;
     UIComponent target = null;
-    Object value = null;
+    Object contextValue = null;
     boolean visible = false;
     
     public DisplayEvent(UIComponent component) {
@@ -20,19 +20,19 @@ public class DisplayEvent extends FacesEvent{
         this.target = target;
     }
     
-    public DisplayEvent(UIComponent component, UIComponent target, Object value) {
+    public DisplayEvent(UIComponent component, UIComponent target, Object contextValue) {
         super(component);
         this.target = target;
-        this.value = value;
+        this.contextValue = contextValue;
     }
 
     public DisplayEvent(UIComponent component, 
                         UIComponent target, 
-                        Object value,
+                        Object contextValue,
                         boolean visible) {
         super(component);
         this.target = target;
-        this.value = value;
+        this.contextValue = contextValue;
         this.visible = visible;
     }
     
@@ -40,8 +40,8 @@ public class DisplayEvent extends FacesEvent{
         return target;
     }
 
-    public Object getValue() {
-        return value;
+    public Object getContextValue() {
+        return contextValue;
     }
 
     public boolean isVisible() {
