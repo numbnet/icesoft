@@ -61,9 +61,9 @@ public class TooltipBean {
     
    
     public void provinceDspListener(DisplayEvent event) {
-        UIComponent component = (UIComponent)event.getTarget().getChildren().get(0);
-        if (component instanceof UIOutput) {
-            cityList = (List)provinces.get(((ValueHolder)component).getValue());
+        String contextValue = String.valueOf(event.getContextValue());
+        if (contextValue != null) {
+            cityList = (List)provinces.get(contextValue);
         }
     }
 

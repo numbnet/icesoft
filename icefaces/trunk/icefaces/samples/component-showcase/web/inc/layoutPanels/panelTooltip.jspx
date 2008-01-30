@@ -105,16 +105,16 @@
             <!-- popup selection -->
             <ice:panelGrid id="icepnlgrd" columns="4" styleClass="popupControls" cellpadding="6"
                                        cellspacing="6">
-                <ice:panelGroup panelTooltip="provinceInfo">
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Alberta">
                     <ice:outputText id="alberta" value="Alberta" />
                 </ice:panelGroup>
-                <ice:panelGroup panelTooltip="provinceInfo">
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Ontario">
                     <ice:outputText id="ontario" value="Ontario" />
                 </ice:panelGroup>
-                <ice:panelGroup panelTooltip="provinceInfo">
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Nova Scotia">
                     <ice:outputText id="novascotia" value="Nova Scotia" />
                 </ice:panelGroup> 
-                <ice:panelGroup panelTooltip="provinceInfo">
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Saskatchewan">
                     <ice:outputText id="saskatchewan" value="Saskatchewan" />
                 </ice:panelGroup>
                            
