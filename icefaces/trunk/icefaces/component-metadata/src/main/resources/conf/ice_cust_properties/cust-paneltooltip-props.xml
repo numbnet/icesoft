@@ -175,30 +175,6 @@
 
 <property>
     <description>
-       <![CDATA[
-            <p>
-            It has the following two valid values:
-            <ul>
-                <li> show </li>
-                <li> hide </li>
-            </ul> 
-            The state of the component is maintained by the panelTooltip component
-            itself. Its recommended to bind this attribute only when autoHide="false"
-            is being used, to hide the tooltip. 
-        ]]>            
-    </description>
-    <property-name>state</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>ICE_COMPONENT</category>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-
-<property>
-    <description>
         displayListener
     </description>
     

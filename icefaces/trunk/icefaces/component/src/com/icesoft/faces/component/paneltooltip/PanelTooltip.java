@@ -35,7 +35,7 @@ public class PanelTooltip extends PanelPopup{
             "com.icesoft.faces.PanelTooltipRenderer";
 
     public static String ICE_TOOLTIP_INFO = "iceTooltipInfo";
-
+    
     private String hoverDelay;
     
     private String hideOn;
@@ -59,7 +59,7 @@ public class PanelTooltip extends PanelPopup{
         if ("none".equals(getHideOn())) {
             removeTooltipFromVisibleList(context);
         }
-        if (isDynamic() && !getState().equals("show")) {
+        if (isDynamic() && !isVisible()) {
             return;
         }
         super.encodeBegin(context);
@@ -152,14 +152,15 @@ public class PanelTooltip extends PanelPopup{
  
     
     public void processUpdates(FacesContext context) {
-            ValueBinding vb = getValueBinding("state");
+            ValueBinding vb = getValueBinding("visible");
             if (vb != null) {
                 if (isValueChangeFired()) {
-                    vb.setValue(context, getTooltipInfo().getState());
-                } else {
-                    vb.setValue(context, getState());
+                    vb.setValue(context, new Boolean("show".equals(getTooltipInfo().getState())));
                 }
-            }
+//                else {
+//                    vb.setValue(context, new Boolean("show".equals(getState())));
+//                }
+            } 
             super.processUpdates(context);
     }
     
@@ -281,16 +282,24 @@ public class PanelTooltip extends PanelPopup{
                 TooltipInfo tooltipInfo = getTooltipInfo(tooltipComponent,
                         tooltipClientId);
                 tooltipInfo.populateValues(entries);
+                if (entries[1].split("=")[1].equals(target.getClientId(facesContext))) {
+                    target.queueEvent(new DisplayEvent(tooltipComponent,
+                            target,
+                            "This is value",
+                            "show".equalsIgnoreCase(tooltipInfo.getState())
+                            ));
+                }
+                
         }
     }
     
-    public String getState() {
+    String getState() {
         ValueBinding vb = getValueBinding("state");
         return vb != null ? (String) vb.getValue(getFacesContext()):
                             getTooltipInfo().getState();
     }
     
-    public void setState(String state) {
+    void setState(String state) {
         getTooltipInfo().setState(state);
     }
     
@@ -327,11 +336,11 @@ public class PanelTooltip extends PanelPopup{
    }
 
    void removeTooltipFromVisibleList(FacesContext facesContext) {
-       String oldValue = getTooltipInfo().getState();
-       String newValue = getState();
-       if ("hide".equals(newValue) && !newValue.equals(oldValue)) {
+       boolean oldValue = "show".equals(getTooltipInfo().getState());
+       boolean show = isVisible();
+       if (!show && oldValue) {
            //app is trying to hide the tooltip, synch the client
-           setState(getState());
+           setState(isVisible()?"show":"hide");
            JavascriptContext.addJavascriptCall(facesContext, "ToolTipPanelPopupUtil.removeFromVisibleList('"+ getClientId(facesContext)+"');");
        }
    }
@@ -373,5 +382,18 @@ public class PanelTooltip extends PanelPopup{
             Object[] displayEvent = {(DisplayEvent) event};
             displayListener.invoke(getFacesContext(), displayEvent);
         }
+    }
+    
+    /**
+     * <p>Return the value of the <code>visible</code> property.</p>
+     */
+    public boolean isVisible() {
+        if (visible != null) {
+            return visible.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("visible");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : "show".equals(getTooltipInfo().getState());
     }
 }

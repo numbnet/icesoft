@@ -66,9 +66,17 @@ ToolTipPanelPopup = Class.create({
 
   showPopup: function() {
     if (this.isTooltipVisible()) return;
-    this.addToVisibleList();
-
     if (this.dynamic) {
+      if (this.isTooltipVisible(true)) {
+         //its a dynamic tooltip, so remove all its childres
+        var tooltip = this.getTooltip();
+        tooltip.style.visibility = "hidden";        
+        tooltip.style.display = "none;";
+        var table = tooltip.childNodes[0];
+        if (table) {
+            tooltip.removeChild(table);
+        }
+      }
     //dynamic? set status=show, populatefields, and submit
       this.submit("show");
       if (this.hideOn == "none") {
@@ -84,7 +92,7 @@ ToolTipPanelPopup = Class.create({
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
     }
-    
+    this.addToVisibleList();    
   },
 
   hidePopupOnMouseOut: function(event) {
@@ -224,11 +232,18 @@ ToolTipPanelPopup = Class.create({
 		}
     },
     
-    isTooltipVisible: function() {
+    isTooltipVisible: function(onlyTooltip) {
         for (i=0; i < visibleTooltipList.length; i++) {
-            if (visibleTooltipList[i].tooltipId== this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
-                return true;
-            }   
+            if (onlyTooltip) {
+                if (visibleTooltipList[i].tooltipId== this.tooltipCompId) {
+                    return true;
+                }             
+            } else {
+                if (visibleTooltipList[i].tooltipId== this.tooltipCompId && visibleTooltipList[i].srcCompId == this.srcCompId) {
+                    return true;
+                } 
+            }
+  
         }
         return false;
     }

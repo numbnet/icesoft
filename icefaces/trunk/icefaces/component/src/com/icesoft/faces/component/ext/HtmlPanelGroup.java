@@ -87,7 +87,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     private String renderedStyle;
 
     private Effect effect;
-    private Boolean visible = null;
+    protected Boolean visible = null;
     private String dragOptions;
 
     private Effect onclickeffect;
