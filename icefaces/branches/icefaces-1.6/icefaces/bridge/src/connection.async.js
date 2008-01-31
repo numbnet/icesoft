@@ -147,7 +147,7 @@
                     this.heartbeat.start();
                     this.connect();
                 }
-            }.bind(this).delayFor(200).repeatExecutionEvery(1000);
+            }.bind(this).repeatExecutionEvery(1000);
 
             //get the updates for the updated views contained within this window
             this.updatesListenerProcess = function() {
