@@ -3,10 +3,8 @@ package com.icesoft.faces.webapp.parser;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * This is a stubbed out version of the HttpServletResponse class.  Only the
+ * This is a stubbed out version of the HttpServletRequest class.  Only the
  * mimimum number of members required by the parser are implemented.
- *
- * @author Adnan Durrani
  */
 public class StubHttpServletRequest implements HttpServletRequest {
 
