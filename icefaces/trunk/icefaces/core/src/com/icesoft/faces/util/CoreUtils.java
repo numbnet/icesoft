@@ -140,7 +140,7 @@ public class CoreUtils {
         DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
         if (uiComponent.getAttributes().get("panelTooltip") == null) return;
         String panelTooltipId = String.valueOf(uiComponent.getAttributes().get("panelTooltip"));
-        String delay = "500" ;
+        int delay = 500 ;
         String hideOn = "mouseout";
         boolean dynamic = false;
         String formId = "";
@@ -157,7 +157,8 @@ public class CoreUtils {
                     dynamic = ((Boolean)panelTooltip.getAttributes().get("dynamic")).booleanValue();
                 }                
                 if (panelTooltip.getAttributes().get("hoverDelay") != null) {
-                    delay = String.valueOf(panelTooltip.getAttributes().get("hoverDelay"));
+                    delay = new Integer(String.valueOf(panelTooltip.getAttributes()
+                            .get("hoverDelay"))).intValue();
                 }
                 if (uiComponent.getAttributes().get("contextValue") != null) {
                     ctxValue = String.valueOf(uiComponent.getAttributes().get("contextValue"));

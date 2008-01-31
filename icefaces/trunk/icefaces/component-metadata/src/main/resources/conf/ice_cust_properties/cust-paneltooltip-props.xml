@@ -95,29 +95,6 @@
 </property>
 
 <property>
-            <description>
-        <![CDATA[            
-                If true, the panelTooltip will not be rendered until its required, 
-                in addition to that the "show" and "hide" event will require a round 
-                trip to the server. The valueChangeListener can be bound to monitor 
-                the "show" and "hide" state of the dynamic panelTooltip. <br/>  
-                If false, the panelTooltip will be rendered on the first render call 
-                and the "show" and "hide" event will not cause any round trip 
-                everything will be handled on the client side. <br/>
-                
-                <b>Note:</b> The component becomes dynamic automatically when 
-                its either draggable or autoHide is set to false. All dynamic 
-                tooltip must be contained in a form.
-        ]]>                  
-            </description>
-    <property-name>dynamic</property-name>
-    <property-class>boolean</property-class>
-    <property-extension>
-        <category>ICE_LAYOUT</category>
-    </property-extension>
-</property>
-
-<property>
     <description>
         <![CDATA[
             <p>
@@ -142,9 +119,7 @@
             
             <p>
             <h3>  none :</h3> the tooltip will not be hide until the application 
-            changes the "state" of the tooltip from the "show" to "hide" using 
-            the state attribute.<br/>
-            <b>Note:</b> If the autoHide is set to false, the component becomes dynamic automatically.
+            changes the "visible" attribute to be false<br/>
             </p> 
         ]]>        
     </description>
@@ -164,7 +139,7 @@
         component before the tooltip is displayed. 
     </description>
     <property-name>hoverDelay</property-name>
-    <property-class>java.lang.String</property-class>
+    <property-class>int</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
         <editor-class>

@@ -36,11 +36,9 @@ public class PanelTooltip extends PanelPopup{
 
     public static String ICE_TOOLTIP_INFO = "iceTooltipInfo";
     
-    private String hoverDelay;
+    private Integer hoverDelay;
     
     private String hideOn;
-    
-    private Boolean dynamic; 
     
     private UIComponent tooltipSrcComponent;
     
@@ -67,16 +65,16 @@ public class PanelTooltip extends PanelPopup{
         
     }
     
-    public String getHoverDelay() {
+    public int getHoverDelay() {
         if (hoverDelay != null) {
-            return hoverDelay;
+            return hoverDelay.intValue();
         }
         ValueBinding vb = getValueBinding("hoverDelay");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : "500";
+        return vb != null ? ((Integer) vb.getValue(getFacesContext())).intValue() : 500;
     }
 
-    public void setHoverDelay(String hoverDelay) {
-        this.hoverDelay = hoverDelay;
+    public void setHoverDelay(int hoverDelay) {
+        this.hoverDelay = new Integer(hoverDelay);
     }
 
     public String getHideOn() {
@@ -105,13 +103,6 @@ public class PanelTooltip extends PanelPopup{
             return false;
         }
     }
-
-    /**
-     * @param make tooltip dynamic
-     */
-    public void setDynamic(boolean dynamic) {
-        this.dynamic = Boolean.valueOf(dynamic);
-    }    
 
     public UIComponent getTooltipSrcComponent() {
         if (tooltipSrcComponent != null) {
