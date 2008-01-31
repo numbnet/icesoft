@@ -124,6 +124,7 @@ public class ComponentRuleSet extends RuleSetBase {
         Enumeration keys = table.keys();
         TagRule tagRule = new TagRule();
         XhtmlTagRule xhtmlTagRule = new XhtmlTagRule();
+        ViewTagRule viewTagRule = new ViewTagRule();
 
         digester.setRuleNamespaceURI(ruleNamespace);
 
@@ -132,9 +133,7 @@ public class ComponentRuleSet extends RuleSetBase {
             String tagType = (String) table.get(key);
 
             if (!key.equals("view")) {
-                /* We don't want to create view object during parsing
-                   as it will be created as the root of the component tree
-                   prior to parsing */
+
 
                 // Want to create tag object regardless of type;
                 digester.addObjectCreate(TAG_NEST + key, tagType);
@@ -160,8 +159,24 @@ public class ComponentRuleSet extends RuleSetBase {
                     digester.addRule(TAG_NEST + key, tagRule);
                 }
             } else {
+
+                // #2551 we do want to create the tag and wire for the viewTag
+                digester.addObjectCreate(TAG_NEST + key, tagType);
+                try {
+                    digester.addRule(TAG_NEST + key,
+                                     (Rule) setPropertiesRuleClass
+                                             .newInstance());
+                } catch (Exception e) {
+                    if (log.isDebugEnabled()) {
+                        log.debug(e.getMessage(), e);
+                    }
+                }
+                digester.addObjectCreate(TAG_NEST + key,
+                                         "com.icesoft.faces.webapp.parser.TagWire");
+                digester.addRule(TAG_NEST + key, viewTagRule);
+
                 // Capture the view tag class;
-                ((JsfJspDigester) digester).setViewTagClassName(tagType);
+//                ((JsfJspDigester) digester).setViewTagClassName(tagType);
                 viewTagClass = tagType;
             }
         }
@@ -196,9 +211,11 @@ abstract class BaseRule extends Rule {
     public void body(String namespace, String name, String text) {
 
         String bodyText = text.trim();
+//        System.out.println("Base Rule handles body: " + name);
         if (bodyText.length() > 0) {
             TagWire wire = (TagWire) digester.peek();
             Tag child = (Tag) digester.peek(1);
+//            System.out.println("TagWire: " + wire + " child: " + child);
             IceOutputTextTag bodyTextTag = new IceOutputTextTag();
             TagWire newWire = new TagWire();
             bodyTextTag.setValue(bodyText);
@@ -339,11 +356,65 @@ final class XhtmlTagRule extends BaseRule {
 
         // Save the tag;
         child.setTagName(new String(digester.getCurrentElementName()));
-
+                                
         // Deal with preceeding body text;
         dealWithPreceedingBodyText(parent, parentWire);
 
         // Wire up the tree;
         wireUpTheTag((Tag) child, parent, wire, parentWire);
+    }
+}
+
+/**
+ * A rule for processing the View Tag.  Need to save the viewTag
+ */
+final class ViewTagRule extends BaseRule {
+
+    /**
+     * Constructor.
+     */
+    public ViewTagRule() {
+        super();
+    }
+
+    /**
+     * Begin processing for the rule.  Saves attributes, saves tag name, deals
+     * with parent's preceeding body text, and wires up the tag processing
+     * tree.
+     *
+     * @param attributes Attributes for the tag.
+     * @throws Exception No exception is thrown.
+     */
+    public void begin(Attributes attributes) throws Exception {
+
+        // Get all the important bits off the digester stack;
+        TagWire wire = (TagWire) digester.peek();
+        Tag child = (Tag) digester.peek(1);
+
+        JsfJspDigester jsdig = (JsfJspDigester) digester;
+        jsdig.setViewWire ( wire );
+        
+        TagWire parentWire = (TagWire) digester.peek(2);
+        Tag parent = (Tag) digester.peek(3);
+
+        // the attributes haven't been set up yet? !
+        Attributes cloned = clone(attributes);
+        wire.setAttributes(cloned);
+       
+//        dealWithPreceedingBodyText(parent, parentWire, true);
+
+        // Wire up the tree;
+        wireUpTheTag(child, parent, wire, parentWire);
+    }
+
+    private Attributes clone(Attributes attributes) {
+        Attributes clone = new AttributesImpl(attributes);
+        for (int i = 0; i < clone.getLength(); i++) {
+            String name = attributes.getQName(i);
+            String value = attributes.getValue(name);
+            ((AttributesImpl) clone).setLocalName(i, name);
+            ((AttributesImpl) clone).setValue(i, value);
+        }
+        return clone;
     }
 }

@@ -53,6 +53,7 @@ import java.io.Reader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.List;
 
 /**
  * This is the JSFX parser.  It digests a JSFX file into a tag processing tree,
@@ -105,12 +106,14 @@ public class Parser {
         StubPageContext pageContext = new StubPageContext();
         //Get rid of old view root
         StubHttpServletResponse response = new StubHttpServletResponse();
-        pageContext.initialize(null, null, response, null, false, 1024, false);
+        StubHttpServletRequest request = new StubHttpServletRequest(); 
+        pageContext.initialize(null, request, response, null, false, 1024, false);
         Set componentIds = new HashSet();
 
         //placeholder tag and wire
         XhtmlTag rootTag = new XhtmlTag();
         rootTag.setTagName("ICEtag");
+
         rootTag.setParent(null);
         TagWire rootWire = new TagWire();
         rootWire.setTag(rootTag);
@@ -123,15 +126,24 @@ public class Parser {
         }
 
         try {
-            String viewTagClassName = digester.getViewTagClassName();
-            if (null == viewTagClassName)
-                throw new IllegalStateException(
-                        "ICEfaces parser unable to determine JSF implementation ViewTag class.");
-            Tag viewTag = (Tag) Class.forName(viewTagClassName).newInstance();
-            viewTag.setParent(null);
-            rootWire.setTag(viewTag);
 
-            executeJspLifecycle(rootWire, pageContext, context, componentIds);
+            // #2551 We have captured the real View Tag (from wherever it was in the tree)
+            // now we check to see if it's the first child of this fake root, and
+            // if not, make it so.
+            // We do this by taking all top level siblings of the fake root, and
+            // making them the first children of the real view root, and replacing
+            // the original viewRoot with its children in the hiearchy.
+            //  This duplicates what the previous code was doing, except the created
+            // ViewTag has the attributes set
+
+            TagWire realViewWire = digester.getViewWire();
+            Tag viewTag = realViewWire.getTag();
+
+            transmogrifyHierarchy(realViewWire, rootWire);
+            viewTag.setParent(null);
+
+            executeJspLifecycle(realViewWire, pageContext, context, componentIds);
+
             pageContext.removeAttribute(
                     "javax.faces.webapp.COMPONENT_TAG_STACK",
                     PageContext.REQUEST_SCOPE);
@@ -140,6 +152,8 @@ public class Parser {
             throw new FacesException("Failed to execute JSP lifecycle.", e);
         }
     }
+
+
 
     /**
      * This member mimicks the JSP tag processing lifecyle across the tag
@@ -202,4 +216,99 @@ public class Parser {
         // Do end tag processing;
         tag.doEndTag();
     }
+
+
+    /**
+     * This method will redo the topology of the parsed nodes. Previously, the
+     * viewTag was not parsed, and all attributes were lost. Now, the tag is parsed
+     * but it is no longer guaranteed to be the first child of the fake root node.
+     * This method fixes the hierarchy to make it match the previous result
+     * The changes required are to move the viewTag to be
+     * the first and only child of the fake root Tag, and to replace the viewTag
+     * in the hierarchy with its children, preserving order
+     *
+     * @param viewWire TagWire pointing to real parsed viewTag
+     * @param rootWire tagWire pointing to fake Root Tag.
+     */
+    private void transmogrifyHierarchy(TagWire viewWire, TagWire rootWire) {
+
+        Tag viewTag = viewWire.getTag();
+        List rootChildren = rootWire.getChildren();
+
+        // It should be impossible for the fake root to have no rootChildren. ?
+        if ((rootChildren.size() == 0) ||
+            ( ! ((TagWire) rootChildren.get(0)).getTag().equals( viewTag ) )) {
+
+            // The tag that originally had the viewTag as a child.
+            TagWire viewTagParent = findViewTagInHierarchy( viewWire, rootWire);
+            if (log.isDebugEnabled() ) {
+                log.debug("Replacing ViewTag in midst of hierarchy");
+            }
+            if (viewTagParent != null) {
+
+                // Put all the viewTag children into where the viewTag was, respecting order
+                viewTagParent.replaceTagWireWithChildren( viewWire );
+
+                // reparent all viewTag children to new parent
+                List viewTagParentChildren = viewTagParent.getChildren();
+                for (int idx = 0; idx < viewTagParentChildren.size(); idx ++ ) {
+                    TagWire r = (TagWire) viewTagParentChildren.get(idx);
+                    r.getTag().setParent( viewTagParent.getTag() );
+                }
+
+                // now replace all children of viewTag with those of the fake root
+                viewWire.getChildren().clear();
+                viewWire.getChildren().addAll( rootChildren );
+
+                // reparent
+                for (int idx = 0; idx < rootChildren.size(); idx ++ ) {
+                    TagWire r = (TagWire) rootChildren.get(idx);
+                    r.getTag().setParent( viewTag );
+                }
+            }
+        } else {
+            if (log.isDebugEnabled() ) {
+                log.debug("ViewTag is already at top of hierarchy");
+            } 
+        }
+    }
+
+    /**
+     * Recursive method to locate the original parent of a given tag 
+     * @param toFind The tagWire to find
+     * @param parent The TagWire to look in
+     * @return The TagWire parent containing the TagWire
+     */
+    private TagWire findViewTagInHierarchy( TagWire toFind, TagWire parent) {
+
+        List children = parent.getChildren();       
+        if (children.contains( toFind ) ) {
+            return parent;
+        }
+        // recurse through children of 'parent'
+        TagWire child;
+        for (int idx = 0; idx < children.size(); idx ++ ) {
+            child = findViewTagInHierarchy( toFind,
+                                            (TagWire) children.get( idx ));
+            if (child != null)  {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    // Debug stuff for making sure hierarchy is correct
+//    private void displayHierarchy(TagWire wire) {
+//
+//        indentIndex += 2;
+//        List children = wire.getChildren();
+//        TagWire child;
+//        for (int idx = 0; idx < children.size(); idx ++ ) {
+//            child = (TagWire) children.get( idx );
+//            System.out.println(indent.substring(0, indentIndex) + " -> " + child.getTag() );
+//            displayHierarchy( child );
+//        }
+//        indentIndex -= 2;
+//    }
+
 }

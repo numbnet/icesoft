@@ -74,25 +74,28 @@ public class ELSetPropertiesRule extends Rule {
                     //must be a JSF 1.1 tag
                     values.put(name, value);
                 } else if ("action".equals(name)) {
-                    values.put(name, 
-                            getMethodExpression( facesContext, name, value,
-                                    null ));
+                    values.put(name,
+                               getMethodExpression( facesContext, name, value,
+                                                    null ));
                 } else if ("actionListener".equals(name)) {
                     values.put(name,
-                            getMethodExpression(facesContext, name, value,
-                                    ActionEvent.class));
+                               getMethodExpression(facesContext, name, value,
+                                                   ActionEvent.class));
                 } else {
-                    values.put(name, 
-                            getValueExpression(facesContext, name, value));
+                    values.put(name,
+                               getValueExpression(facesContext, name, value));
                 }
                 if (top instanceof javax.faces.webapp.UIComponentELTag) {
                     //special case for 
                     //com.sun.faces.taglib.jsf_core.ParameterTag
                     //and potentially others
                     if ("name".equals(name))  {
-                        values.put(name, 
-                                getValueExpression(facesContext, name, value));
-                    }
+                        values.put(name,
+                                   getValueExpression(facesContext, name, value));
+                    } else if ("locale".equals(name)) {
+                        values.put(name,
+                                   getValueExpression(facesContext, name, value));
+                    } 
                 } else {
                     //reflection based code as mentioned above.  More likely
                     //to be correct, but performance may not be as good,
@@ -100,12 +103,12 @@ public class ELSetPropertiesRule extends Rule {
                     if ("name".equals(name))  {
                         Method setNameMethod = null;
                         try {
-                            setNameMethod = top.getClass().getMethod("setName", 
-                                    new Class[] { ValueExpression.class } );
+                            setNameMethod = top.getClass().getMethod("setName",
+                                                                     new Class[] { ValueExpression.class } );
                         } catch (Exception e)  { }
                         if (null != setNameMethod)  {
-                            values.put(name, 
-                                getValueExpression(facesContext, name, value));
+                            values.put(name,
+                                       getValueExpression(facesContext, name, value));
                         }
                     }
 

@@ -34,6 +34,7 @@
 package com.icesoft.faces.webapp.parser;
 
 import org.apache.commons.digester.Digester;
+import org.xml.sax.Attributes;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -51,6 +52,8 @@ public class JsfJspDigester extends Digester {
 
     Vector loadedNamespaces;
     String viewTagClassName;
+
+    TagWire viewWire;
 
     /**
      * Constructor.
@@ -107,7 +110,7 @@ public class JsfJspDigester extends Digester {
             tagMap.addTags(tldStream);
             ComponentRuleSet rules = new ComponentRuleSet(tagMap, namespaceURI);
             rules.addRuleInstances(this);
-            loadedNamespaces.add(namespaceURI);
+            loadedNamespaces.add(namespaceURI);                                        
 
             if (log.isDebugEnabled()) {
                 log.debug(
@@ -120,13 +123,34 @@ public class JsfJspDigester extends Digester {
         }
     }
 
-
+    /**
+     * @deprecated should no longer be needed
+     * @param className  name of class
+     */
     public void setViewTagClassName(String className) {
         viewTagClassName = className;
     }
 
+     /**
+     * @deprecated should no longer be needed
+     * @return className  parsed class name
+     */
     public String getViewTagClassName() {
         return viewTagClassName;
     }
 
+
+    
+    public TagWire getViewWire() {
+        return viewWire;
+    }
+
+    /**
+     * Save the parsed ViewTag TagWire instance
+     * #2551
+     * @param viewWire The TagWire referencing the viewTag 
+     */
+    public void setViewWire(TagWire viewWire) {
+        this.viewWire = viewWire;
+    }
 }

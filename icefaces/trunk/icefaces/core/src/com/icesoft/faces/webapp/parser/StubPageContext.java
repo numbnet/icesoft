@@ -70,7 +70,10 @@ public class StubPageContext extends PageContext {
                            int bufferSize, boolean autoFlush)
             throws IOException, IllegalStateException,
                    IllegalArgumentException {
+
         this.servletResponse = servletResponse;
+        // ICE-2551 keep a reference to stubRequest as well.  
+        this.servletRequest = servletRequest;
         externalContext = javax.faces.context.FacesContext.getCurrentInstance()
                 .getExternalContext();
     }

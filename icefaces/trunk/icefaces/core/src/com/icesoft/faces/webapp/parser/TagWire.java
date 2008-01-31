@@ -106,4 +106,33 @@ public class TagWire {
     public void setAttributes(Attributes attrs) {
         attributes = attrs;
     }
-}    
+
+
+    /**
+     * Replace a child of this tagWire with all its children, respecting
+     * the original order. Does nothing if child argument isn't a child
+     * of this TagWire
+     *  
+     * @param child The TagWire to replace
+     */
+    public void replaceTagWireWithChildren(TagWire child) {
+
+        TagWire myChild;
+        for (int idx = 0; idx < children.size(); idx ++ ) {
+            myChild = (TagWire) children.get(idx);
+            if (myChild.equals( child ) ) {
+                ArrayList newChildren = new ArrayList (  );
+
+                List temp = children.subList(0, idx);
+                newChildren.addAll(temp) ;
+                newChildren.addAll( child.getChildren() );
+
+                if (idx < children.size()-1 ) {
+                    temp = children.subList(idx+1, children.size());
+                    newChildren.addAll( temp );
+                }
+                children = newChildren;
+            }
+        }
+    }
+}
