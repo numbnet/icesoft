@@ -89,17 +89,27 @@ public class UpdateElements implements Command {
                 Attr attribute = (Attr) attributes.item(j);
                 writer.write("<attribute name=\"");
                 writer.write(attribute.getName());
-                writer.write("\" value=\"");
-                writer.write(attribute.getValue());
-                writer.write("\"/>");
+                String value = attribute.getValue();
+                if ("".equals(value)) {
+                    writer.write("\"/>");
+                } else {
+                    writer.write("\"><![CDATA[");
+                    writer.write(DOMUtils.escapeAnsi(value));
+                    writer.write("]]></attribute>");
+                }
             }
 
-            writer.write("<content><![CDATA[");
             String content = DOMUtils.childrenToString(update);
-            content = START_CDATA.matcher(content).replaceAll("<!#cdata#");
-            content = END_CDATA.matcher(content).replaceAll("##>");
-            writer.write(content);
-            writer.write("]]></content></update>");
+            if ("".equals(content)) {
+                writer.write("<content/>");
+            } else {
+                writer.write("<content><![CDATA[");
+                content = START_CDATA.matcher(content).replaceAll("<!#cdata#");
+                content = END_CDATA.matcher(content).replaceAll("##>");
+                writer.write(content);
+                writer.write("]]></content>");
+            }
+            writer.write("</update>");
         }
         writer.write("</updates>");
     }

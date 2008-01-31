@@ -68,17 +68,15 @@
 
         eachAttribute: function(iterator) {
             $enumerate(this.element.getElementsByTagName('attribute')).each(function(attribute) {
-                iterator(attribute.getAttribute('name'), attribute.getAttribute('value'));
+                var value = attribute.firstChild ? attribute.firstChild.data : '';
+                iterator(attribute.getAttribute('name'), value);
             });
         },
 
         content: function() {
             var contentElement = this.element.getElementsByTagName('content')[0];
-            if (contentElement.firstChild) {
-                return contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>');
-            } else {
-                return '';
-            }
+            return contentElement.firstChild ?
+                   contentElement.firstChild.data.replace(/<\!\#cdata\#/g, '<![CDATA[').replace(/\#\#>/g, ']]>') : '';
         },
 
         asHTML: function() {
