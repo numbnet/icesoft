@@ -42,6 +42,7 @@ public class PanelDivider extends UIPanel{
     private String renderedOnUserRole = null;
    
     private String orientation = null;
+    private String previousOrientation = null;
     
     private boolean decoded = false;
     
@@ -78,8 +79,8 @@ public class PanelDivider extends UIPanel{
     }
     
     public void encodeBegin(FacesContext facesContext) throws IOException {
-
         super.encodeBegin(facesContext);
+        previousOrientation = getOrientation();
     }
     
    
@@ -246,7 +247,8 @@ public class PanelDivider extends UIPanel{
     }
     
     String getPanePosition(boolean first) {
-        if (!decoded && getDividerPosition() != previousDividerPosition) {
+        if ((!decoded && getDividerPosition() != previousDividerPosition)
+                || !getOrientation().equals(previousOrientation)) {
             int pos = getDividerPosition();
             if (!validatePosition(pos)) pos = 50;
             int panPos = 0;
