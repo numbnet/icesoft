@@ -51,7 +51,7 @@
 
  <p>The panelTooltip can be draggable</p>
 
- <p>The hide functionality is controlled by the autoHide attribute. Please see the Tld doc for more details.</p>
+ <p>The hide functionality is controlled by the hideOn attribute. Please see the Tld doc for more details.</p>
 <div
 style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
 Example <br>
@@ -84,18 +84,18 @@ Example <br>
 
 &lt;ice:panelPopup id="dynamicTooltip"
 	draggable="true"
-	autoHide="onClick"
+	hideOn="mousedown"
 	style="width: 300px; height: 200px;"&gt;
 
 	&lt;f:facet name="header"&gt;
-		&lt;h:panelGrid width="100%" cellpadding="0" cellspacing="0" columns="2" columnClasses="popupIcon,popupTitle"&gt;
+		&lt;h:panelGrid width="100%" cellpadding="0" cellspacing="0"&gt;
 			&lt;h:outputText value="ICEfaces Popup Demo"/&gt;
 		&lt;/h:panelGrid&gt;
 	&lt;/f:facet&gt;
 
 
 	&lt;f:facet name="body"&gt;
-		&lt;h:panelGrid width="100%" cellpadding="0" cellspacing="0" column="1"&gt;
+		&lt;h:panelGrid width="100%" cellpadding="0" cellspacing="0" &gt;
 			&lt;h:outputText value="This Tooltip is draggable." /&gt;
 		&lt;/h:panelGrid&gt;
 	&lt;/f:facet&gt;
