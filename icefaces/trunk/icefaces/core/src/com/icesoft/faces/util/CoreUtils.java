@@ -147,7 +147,6 @@ public class CoreUtils {
         String ctxValue = "";
 
             UIComponent panelTooltip = D2DViewHandler.findComponent(panelTooltipId, uiComponent);
-            System.out.println("Tooltip Found..." + panelTooltip);
             if (panelTooltip != null/* && family type equals panelPopup*/) { 
                 //replace the id with the clientid
                 panelTooltipId = panelTooltip.getClientId(facesContext);

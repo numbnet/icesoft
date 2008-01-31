@@ -8,7 +8,6 @@ public class TooltipInfo {
     private String y = "0px";
     private boolean eventFired;
     public TooltipInfo() {
-        System.out.println("NEW TOOLTIP CREATED");
     }
     
     public TooltipInfo(String info[]) {
@@ -51,7 +50,6 @@ public class TooltipInfo {
     
     public void setX(String x) {
         this.x = x;
-        System.out.println("setting X = "+ x);            
     }
     
     public String getY() {
@@ -60,7 +58,6 @@ public class TooltipInfo {
     
     public void setY(String y) {
         this.y = y;
-        System.out.println("setting Y = "+ y);
     }
     
     public boolean isEventFired() {
