@@ -111,7 +111,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 } catch (InterruptedException e) {
                     //do nothing
                 } finally {
-                    session.invalidate();
+                    try {
+                        session.invalidate();
+                    } catch (Exception e) {
+                        Log.info("Session already invalidated.", e);
+                    }
                 }
             }
         }.start();
