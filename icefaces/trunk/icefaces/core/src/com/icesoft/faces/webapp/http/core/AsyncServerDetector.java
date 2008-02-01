@@ -29,8 +29,8 @@ public class AsyncServerDetector implements Server {
             (blockingRequestHandler == null && asyncServer) ||
             (useAsyncHttpServerByDefault)) {
 
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Adapting to Asynchronous HTTP Server environment.");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Adapting to Asynchronous HTTP Server environment.");
             }
             try {
                 server = (Server) this.getClass().getClassLoader().
