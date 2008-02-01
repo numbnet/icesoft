@@ -112,25 +112,13 @@ public class MainSessionBoundServlet implements PseudoServlet {
             CommandQueue commandQueue = (CommandQueue) i.next();
             commandQueue.put(SessionExpired);
         }
-        new Thread() {
-            public void run() {
-                try {
-                    //wait for the for the bridge to receive the 'session-expire' command
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    //do nothing
-                } finally {
-                    ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
-                    servlet.shutdown();
-
-                    Iterator viewIterator = views.values().iterator();
-                    while (viewIterator.hasNext()) {
-                        View view = (View) viewIterator.next();
-                        view.dispose();
-                    }
-                }
-            }
-        }.start();
+        ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
+        servlet.shutdown();
+        Iterator viewIterator = views.values().iterator();
+        while (viewIterator.hasNext()) {
+            View view = (View) viewIterator.next();
+            view.dispose();
+        }
     }
 
     //Exposing queues for Tomcat 6 Ajax Push

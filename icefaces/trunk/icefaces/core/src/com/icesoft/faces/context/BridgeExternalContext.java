@@ -37,8 +37,8 @@
 
 package com.icesoft.faces.context;
 
-import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.AcegiAuthWrapper;
+import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Redirect;
@@ -56,11 +56,11 @@ import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -108,7 +108,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
         public boolean isUserInRole(String role) {
             throw new RuntimeException("Cannot determine if user in role. User information is not available.");
         }
-        public boolean isReusable()  {
+
+        public boolean isReusable() {
             return true;
         }
     };
@@ -266,7 +267,6 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public void dispose() {
         DisposeBeans.in(requestMap);
         requestMap.clear();
-        commandQueue.take();
     }
 
     public void setSeamLifecycleShortcut() {
@@ -354,8 +354,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
         requestParameterValuesMap = Collections.synchronizedMap(new HashMap());
         requestCookieMap = Collections.synchronizedMap(new HashMap());
         responseCookieMap = Collections.synchronizedMap(new HashMap());
-        requestHeaderMap =  Collections.synchronizedMap(new HashMap());
-        requestHeaderValuesMap =  Collections.synchronizedMap(new HashMap());
+        requestHeaderMap = Collections.synchronizedMap(new HashMap());
+        requestHeaderValuesMap = Collections.synchronizedMap(new HashMap());
     }
 
     public interface Redirector {
@@ -385,8 +385,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if ( (AuthenticationClass != null)  &&  ((null == principal) || 
-                AuthenticationClass.isInstance(principal))  )  {
+        if ((AuthenticationClass != null) && ((null == principal) ||
+                AuthenticationClass.isInstance(principal))) {
             return new AcegiAuthWrapper(principal);
         } else {
             return new AuthenticationVerifier() {
@@ -399,7 +399,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
                     return request.isUserInRole(role);
                 }
 
-                public boolean isReusable()  {
+                public boolean isReusable() {
                     return false;
                 }
             };
@@ -407,8 +407,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     protected static AuthenticationVerifier releaseVerifier(
-            AuthenticationVerifier verifier)  {
-        if (verifier.isReusable())  {
+            AuthenticationVerifier verifier) {
+        if (verifier.isReusable()) {
             return verifier;
         }
         return UserInfoNotAvailable;

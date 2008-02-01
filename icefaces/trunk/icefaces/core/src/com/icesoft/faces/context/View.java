@@ -54,6 +54,8 @@ public class View implements CommandQueue {
             release();
             facesContext.dispose();
             externalContext.dispose();
+            //dispose view only once
+            dispose = DoNothing;
         }
     };
 
@@ -198,9 +200,7 @@ public class View implements CommandQueue {
     }
 
     public void dispose() {
-        //dispose view only once
         dispose.run();
-        dispose = DoNothing;
     }
 
     public void makeCurrent() {
