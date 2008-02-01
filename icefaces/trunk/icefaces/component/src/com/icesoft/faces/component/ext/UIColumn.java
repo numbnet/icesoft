@@ -137,31 +137,6 @@ public class UIColumn extends javax.faces.component.UIColumn {
     }
 
     /**
-     * The menuContext attribute is a write-only ValueBinding for receiving
-     *  contextual information on which component was clicked on, and
-     *  summoned the menuPopup.
-     * As such, this method serves no purpose, beyond facilitating IDE's code
-     *  auto-completion, and shouldn't actually be called by any Java code.
-     *  
-     * @return Nothing
-     */
-    public Object getMenuContext() {
-        return null;
-    }
-    
-    /**
-     * The menuContext attribute is a write-only ValueBinding for receiving
-     *  contextual information on which component was clicked on, and
-     *  summoned the menuPopup.
-     * As such, this method serves no purpose, beyond facilitating IDE's code
-     *  auto-completion, and shouldn't actually be called by any Java code.
-     *  
-     * @param param Not used
-     */
-    public void setMenuContext(Object param) {
-    }
-
-    /**
      * <p>Set the value of the <code>colspan</code> property.</p>
      */
     public void setColspan(String colspan) {

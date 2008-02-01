@@ -34,17 +34,11 @@
 package com.icesoft.faces.component.menupopup;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ContextActionEvent;
 import com.icesoft.faces.component.menubar.MenuBar;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
 
@@ -124,6 +118,20 @@ public class MenuPopup extends MenuBar {
     
     public String getComponentRootStyle() {
         return CSS_DEFAULT.MENU_POPUP_STYLE;
+    }
+    
+    public void queueEvent(FacesEvent e) {
+        if(e instanceof ActionEvent) {
+            UIComponent contextTarget = (UIComponent) getAttributes().get("contextTarget");
+            Object contextValue = getAttributes().get("contextValue");
+//System.out.println("MenuPopup.queueEvent()  e: " + e);
+//System.out.println("MenuPopup.queueEvent()  contextTarget: " + contextTarget);
+//System.out.println("MenuPopup.queueEvent()  contextValue: " + contextValue);
+            getAttributes().remove("contextTarget");
+            getAttributes().remove("contextValue");
+            e = new ContextActionEvent(e.getComponent(), contextTarget, contextValue);
+        }
+        super.queueEvent(e);
     }
 }
 

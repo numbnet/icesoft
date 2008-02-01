@@ -118,10 +118,9 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
 
     public void decode(FacesContext context) {
         super.decode(context);
-        if (panelTooltip != null) {
+        if (getPanelTooltip() != null) {
             PanelTooltip.decodeTooltip(context, this);
         }
-
     }
     
     public void setValueBinding(String s, ValueBinding vb) {
@@ -645,36 +644,11 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
     }
 
     /**
-     * The menuContext attribute is a write-only ValueBinding for receiving
-     *  contextual information on which component was clicked on, and
-     *  summoned the menuPopup.
-     * As such, this method serves no purpose, beyond facilitating IDE's code
-     *  auto-completion, and shouldn't actually be called by any Java code.
-     *  
-     * @return Nothing
-     */
-    public Object getMenuContext() {
-        return null;
-    }
-    
-    /**
-     * The menuContext attribute is a write-only ValueBinding for receiving
-     *  contextual information on which component was clicked on, and
-     *  summoned the menuPopup.
-     * As such, this method serves no purpose, beyond facilitating IDE's code
-     *  auto-completion, and shouldn't actually be called by any Java code.
-     *  
-     * @param param Not used
-     */
-    public void setMenuContext(Object param) {
-    }
-
-    /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[30];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
@@ -701,6 +675,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[27] = currentStyle;
         values[28] = visible;
         values[29] = menuPopup;
+        values[30] = panelTooltip;
+        values[31] = contextValue;
         return values;
 
     }
@@ -738,6 +714,8 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         currentStyle = (CurrentStyle) values[27];
         visible = (Boolean) values[28];
         menuPopup = (String) values[29];
+        panelTooltip = (String) values[30];
+        contextValue = values[31];
     }
 
     /**
@@ -839,23 +817,27 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         ValueBinding vb = getValueBinding("panelTooltip");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
+
     /**
-     * <p>Set the value of the <code>contextValue</code> property.</p>
+     * <p>Set the value of the <code>contextValue</code> property,
+     * which uniquely identifies the portion of the data model that
+     * is being represented within this panelGroup.</p>
      */
     public void setContextValue(Object contextValue) {
         this.contextValue = contextValue;
     }
-
+    
     /**
-     * <p>Return the value of the <code>contextValue</code> property.</p>
+     * <p>Return the value of the <code>contextValue</code> property,
+     * which uniquely identifies the portion of the data model that
+     * is being represented within this panelGroup.</p>
      */
     public Object getContextValue() {
-        if (contextValue != null) {
+        if(contextValue != null) {
             return contextValue;
         }
         ValueBinding vb = getValueBinding("contextValue");
-        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return vb != null ? vb.getValue(getFacesContext()) : null;
     }
 }
 

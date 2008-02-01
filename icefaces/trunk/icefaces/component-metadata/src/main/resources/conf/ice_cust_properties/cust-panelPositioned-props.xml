@@ -34,7 +34,6 @@
 &core-props;
 &series-value-props;
 &base-props;
-&ice-att-menuContext-props;
 
 <property>
 	<description>

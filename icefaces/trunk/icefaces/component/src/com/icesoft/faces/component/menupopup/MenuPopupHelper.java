@@ -16,40 +16,23 @@ public class MenuPopupHelper {
         FacesContext facesContext, UIComponent comp, Element elem)
     {
         StringBuffer handler = new StringBuffer(256);
-        
-        boolean needReturnFalse = false;
-        String id = (String) comp.getAttributes().get("menuPopup");
-        if(id != null && id.trim().length() > 0) {
-//System.out.println("MenuPopupHelper.renderMenuPopupHandler()  menuPopup: " + id);
-            UIComponent menuPopup = D2DViewHandler.findComponent(id, comp);
-            if(menuPopup == null) {
-                throw new IllegalArgumentException(
-                    "Could not find the MenuPopup UIComponent referenced by " +
-                    "attribute menuPopup=\""+id+"\" in UIComponent of type: " +
-                    comp.getClass().getName() + " with id: \""+comp.getId()+"\"");
-            }
+
+        UIComponent menuPopup = findMenuPopup(comp);
+        if(menuPopup != null) {
             String menuPopupClientId = menuPopup.getClientId(facesContext);
 //System.out.println("MenuPopupHelper.renderMenuPopupHandler()  menuPopupClientId: " + menuPopupClientId);
             handler.append("Ice.Menu.contextMenuPopup(event, '");
             handler.append(menuPopupClientId);
             handler.append("_sub');");
-            needReturnFalse = true;
-        }
-        
-        boolean haveMenuContext = checkHasMenuContext(comp);
-        if(haveMenuContext) {
-//System.out.println("MenuPopupHelper.renderMenuPopupHandler()  haveMenuContext");
+            
             String originatorClientId = comp.getClientId(facesContext);
             handler.append("Ice.Menu.setMenuContext('");
             handler.append(originatorClientId);
             handler.append("');");
-            //TODO I don't think we set needReturnFalse = true here, 
-            //  since we only want to stop the regular popup menu if
-            //  we hit a menuPopup section, not just a menuContext section 
+            
+            handler.append("return false;");
         }
         
-        if(needReturnFalse)
-            handler.append("return false;");
         if(handler.length() > 0) {
 //System.out.println("MenuPopupHelper.renderMenuPopupHandler()  handler: " + handler.toString());
             elem.setAttribute(HTML.ONCONTEXTMENU_ATTR, handler.toString());
@@ -66,41 +49,38 @@ public class MenuPopupHelper {
         if(requestMenuContext == null || requestMenuContext.length() == 0)
             return;
 //System.out.println("MenuPopupHelper.decodeMenuContext()    requestMenuContext: " + requestMenuContext);
-        boolean haveMenuContext = checkHasMenuContext(comp);
-//System.out.println("MenuPopupHelper.decodeMenuContext()    haveMenuContext: " + haveMenuContext);
-        if(!haveMenuContext)
-            return;
         String originatorClientId = comp.getClientId(facesContext);
 //System.out.println("MenuPopupHelper.decodeMenuContext()    originatorClientId: " + originatorClientId);
         if(!requestMenuContext.equals(originatorClientId))
             return;
 //System.out.println("MenuPopupHelper.decodeMenuContext()    *** MATCH");
         
-        MenuContextEvent inner = new MenuContextEvent(comp, null); 
-        UIComponent parent = comp.getParent();
-        while(parent != null) {
-            boolean parentHasMenuContext = checkHasMenuContext(parent);
-            if(parentHasMenuContext) {
-                inner = new MenuContextEvent(parent, inner); 
-            }
-            parent = parent.getParent();
-        }
-//System.out.println("MenuPopupHelper.decodeMenuContext()  outer-most: " + inner);
-        while(inner != null) {
-            inner.process(facesContext);
-            inner = inner.getInner();
+        UIComponent menuPopup = findMenuPopup(comp);
+        if(menuPopup != null) {
+            Object contextValue = comp.getAttributes().get("contextValue");
+//System.out.println("MenuPopupHelper.decodeMenuContext()    contextValue: " + contextValue);
+            menuPopup.getAttributes().put("contextTarget", comp);
+            if(contextValue == null)
+                menuPopup.getAttributes().remove("contextValue");
+            else
+                menuPopup.getAttributes().put("contextValue", contextValue);
         }
     }
     
-    private static boolean checkHasMenuContext(UIComponent comp) {
-        javax.faces.el.ValueBinding vb = comp.getValueBinding("menuContext");
-        if(vb != null) {
-//System.out.println("MenuPopupHelper.checkHasMenuContext()  menuContext: " + vb);
-            String vbExp = vb.getExpressionString();
-//System.out.println("MenuPopupHelper.checkHasMenuContext()  menuContext.expr: " + vbExp);
-            if(vbExp != null && vbExp.length() > 0)
-                return true;
+    private static UIComponent findMenuPopup(UIComponent comp) {
+        String id = (String) comp.getAttributes().get("menuPopup");
+        if(id != null && id.trim().length() > 0) {
+//System.out.println("MenuPopupHelper.findMenuPopup()  menuPopup: " + id);
+            UIComponent menuPopup = D2DViewHandler.findComponent(id, comp);
+            if(menuPopup == null) {
+                //TODO Suggest potentials
+                throw new IllegalArgumentException(
+                    "Could not find the MenuPopup UIComponent referenced by " +
+                    "attribute menuPopup=\""+id+"\" in UIComponent of type: " +
+                    comp.getClass().getName() + " with id: \""+comp.getId()+"\"");
+            }
+            return menuPopup;
         }
-        return false;
+        return null;
     }
 }

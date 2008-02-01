@@ -35,6 +35,7 @@
 
 &ice-ext-core-styled-props;
 &base-props;
+&ice-att-displayListener-props;
 
 
 <property>
@@ -145,21 +146,5 @@
         <editor-class>
             &stringEditor;
         </editor-class>
-    </property-extension>
-</property>
-
-<property>
-    <description>
-        displayListener
-    </description>
-    
-    <property-name>displayListener</property-name>
-    <property-class>javax.faces.el.MethodBinding</property-class>
-        <property-extension>
-        <category>DRAGANDDROP</category>
-        <editor-class>
-            &methodBindingEditor;
-        </editor-class>
-        <is-bindable>true</is-bindable>
     </property-extension>
 </property>

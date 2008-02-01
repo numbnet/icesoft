@@ -10,8 +10,8 @@ import com.icesoft.faces.component.ext.RowSelectorEvent;
 import com.icesoft.faces.component.panelpositioned.PanelPositionedEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.outputchart.OutputChart;
+import com.icesoft.faces.component.DisplayEvent;
 
-import javax.faces.event.ValueChangeEvent;
 import java.util.EventObject;
 
 /**
@@ -49,7 +49,7 @@ public class IceComponentHandler extends ComponentHandler {
                 m.addRule( new MethodRule("selectionAction", null, new Class[0]) );
             }
             else if( tag.getLocalName().equals("panelTooltip") ) {
-                m.addRule( new MethodRule("valueChangeListener", null, new Class[] {ValueChangeEvent.class}) );
+                m.addRule( new MethodRule("displayListener", null, new Class[] {DisplayEvent.class}) );
             }
         }
         return m;

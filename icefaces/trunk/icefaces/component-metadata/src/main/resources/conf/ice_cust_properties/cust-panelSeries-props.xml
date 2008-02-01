@@ -37,7 +37,6 @@
 
 &core-props;
 &uidata-props;
-&ice-att-menuContext-props;
 
 <property>
     <description>

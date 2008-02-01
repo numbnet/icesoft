@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~  Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -31,39 +32,20 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-&base-props; 
-&series-value-props;
 
 <property>
 	<description>
-		The number of rows to display, starting with the one identified
-		by the "first" property. If this value is set to zero, all
-		available rows in the underlying data model will be displayed.
+		A means of uniquely identifying this component, from the 
+		data model's perspective. For example, if this were on a 
+		dataTable's cell, then it would encapsulate some means of 
+		identifying the row and the column.
 	</description>
-	<property-name>rows</property-name>
-	<property-class>int</property-class>
+	<property-name>contextValue</property-name>
+	<property-class>java.lang.Object</property-class>
 	<property-extension>
-		<category>APPEARANCE</category>
+		<category>ICE_COMPONENT</category>
 		<editor-class>
-			&numberEditor;
+			&valueBindingEditor;
 		</editor-class>
-	</property-extension>
-</property>
-
-<property>
-	<description>
-		Name of a request-scope attribute under which the model data for
-		the row selected by the current value of the "rowIndex" property
-		(i.e. also the current value of the "rowData" property) will be
-		exposed.
-	</description>
-	<property-name>var</property-name>
-	<property-class>java.lang.String</property-class>	
-	<property-extension>
-		<category>DATA</category>		
-		<editor-class>
-			&stringEditor;
-		</editor-class>
-		<is-bindable>false</is-bindable>		
 	</property-extension>
 </property>

@@ -33,13 +33,12 @@
 
 package com.icesoft.icefaces.samples.showcase.components.table;
 
-import com.icesoft.faces.component.menupopup.MenuContextEvent;
+import com.icesoft.faces.component.ContextActionEvent;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import javax.faces.component.UIData;
 import java.util.ArrayList;
 
 /**
@@ -222,38 +221,22 @@ public class ColumnsBean {
         return String.valueOf((char)i);
     }
     
-    public void setMenuContext(MenuContextEvent e) {
-//System.out.println("ColumnsBean.setMenuContext()");
-//System.out.println("  e: " + e);
-        if(e.isTerminal()) {
-//System.out.println("  terminal");
-            // <dataTable>
-            //   <columns>
-            //     <panelGroup>  Terminal
-            MenuContextEvent columnsEvent = e.getOuter();
-            if(columnsEvent != null) {
-//System.out.println("  columnsEvent");
-                int column = ((UIData) columnsEvent.getComponent()).getRowIndex();
-                MenuContextEvent dataTableEvent = columnsEvent.getOuter();
-                if(dataTableEvent != null) {
-//System.out.println("  dataTableEvent");
-                    int row = ((UIData) dataTableEvent.getComponent()).getRowIndex();
-                    if(row >= 0 && column >= 0) {
-//System.out.println("  row, col");
-                        lastSelectedRow = row;
-                        lastSelectedColumn = column;
-                    }
-                }
-            }
+    public void cellSelection(ActionEvent e) {
+        if(e instanceof ContextActionEvent) {
+            ContextActionEvent se = (ContextActionEvent) e;
+            int[] currCellIndexes = (int[]) se.getContextValue();
+            lastSelectedRow = currCellIndexes[0];
+            lastSelectedColumn = currCellIndexes[1];
+//System.out.println("ColumnsBean.cellSelection()  lastSelectedRow: " + lastSelectedRow);
+//System.out.println("ColumnsBean.cellSelection()  lastSelectedColumn: " + lastSelectedColumn);
         }
     }
     
-    // This dummy getter is necessary for JSP, but not Facelets
-    public MenuContextEvent getMenuContext() { return null; }
-    
-    public void cellSelection(ActionEvent e) {
-        // Just needed to give an actionListener to the MenuItem
-        //  so that it would do a submit to the server.
+    public int[] getCurrentCellIndexes() {
+        return new int[] {
+            rowDataModel.getRowIndex(),
+            columnDataModel.getRowIndex()
+        };
     }
 
     /**

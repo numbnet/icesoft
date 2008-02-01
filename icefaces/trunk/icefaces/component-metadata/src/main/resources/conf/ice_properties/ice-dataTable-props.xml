@@ -33,7 +33,6 @@
   -->
   
 &ice-att-userrole-rendered-props;
-&ice-att-menuContext-props;
 &core-props;
 &table-props;
 &uidata-props;

@@ -173,7 +173,7 @@ are shown but could easily be made to invoke application logic.
     <ice:panelGroup id="clickingSection"
                     effect="#{menuBar.textEffect}"
                     menuPopup="menuPopupText"
-                    menuContext="#{menuBar.textContext}">
+                    contextValue="text">
     <h3>
         <ice:outputText
                 value="#{msgs['component.menuPopup.instructions']}"/>
@@ -186,7 +186,7 @@ are shown but could easily be made to invoke application logic.
     <ice:panelGroup id="clickingImageSection"
                     effect="#{menuBar.imageEffect}"
                     menuPopup="menuPopupImage"
-                    menuContext="#{menuBar.imageContext}">
+                    contextValue="image">
         <ice:graphicImage value="/images/panelSeries/Ice Berg.jpg"
                           alt="Ice Berg"
                           width="100"
