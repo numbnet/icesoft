@@ -176,7 +176,7 @@ public class ComponentRuleSet extends RuleSetBase {
                 digester.addRule(TAG_NEST + key, viewTagRule);
 
                 // Capture the view tag class;
-//                ((JsfJspDigester) digester).setViewTagClassName(tagType);
+                ((JsfJspDigester) digester).setViewTagClassName(tagType);
                 viewTagClass = tagType;
             }
         }

@@ -137,10 +137,22 @@ public class Parser {
             // ViewTag has the attributes set
 
             TagWire realViewWire = digester.getViewWire();
-            Tag viewTag = realViewWire.getTag();
-
-            transmogrifyHierarchy(realViewWire, rootWire);
-            viewTag.setParent(null);
+            Tag viewTag;
+            if (null != realViewWire)  {
+                viewTag = realViewWire.getTag();
+                transmogrifyHierarchy(realViewWire, rootWire);
+                viewTag.setParent(null);
+            } else {
+                //fallback case for pages with no view tag
+                String viewTagClassName = digester.getViewTagClassName();
+                if (null == viewTagClassName)
+                    throw new IllegalStateException(
+                            "ICEfaces parser unable to determine JSF implementation ViewTag class.");
+                viewTag = (Tag) Class.forName(viewTagClassName).newInstance();
+                rootWire.setTag(viewTag);
+                realViewWire = rootWire;
+                viewTag.setParent(null);
+            }
 
             executeJspLifecycle(realViewWire, pageContext, context, componentIds);
 
