@@ -39,7 +39,7 @@
     <ice:outputDeclaration doctypeRoot="HTML" doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN" doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
     <ice:portlet>
         <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
-        <ice:outputStyle href="../css/showcase_style.css" />
+        <ice:outputStyle href="../css/demo_template.css" />
                 <ice:panelGroup>
                     <ice:panelGrid styleClass="navConnectionStatus" columnClasses="statusLeft, statusRight" columns="2">
                         <ice:outputConnectionStatus />
