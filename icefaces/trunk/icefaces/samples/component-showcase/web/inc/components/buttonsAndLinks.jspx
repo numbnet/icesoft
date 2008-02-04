@@ -82,7 +82,7 @@ and links that trigger submits.
                         <ice:outputText styleClass="propertyLabel"
                                         value="#{msgs['component.buttonsAndLinks.imageButtonLabel']}"/>
                         <ice:commandButton id="BLImg"
-                                           image="images/button-submit.gif"
+                                           image="/images/button-submit.gif"
                                            actionListener="#{buttonsAndLinks.imageButtonListener}"
                                            styleClass=""/>
 
