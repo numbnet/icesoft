@@ -34,7 +34,7 @@
   -->
 
 <project name="bridge" default="build">
-    
+
     <property file="build.properties"/>
     <property name="words.obfuscation.excludes"
               location="words.obfuscation.excludes"/>
@@ -53,7 +53,7 @@
               location="${lib.dir}/openajax/bridge.open.ajax.js"/>
     <property name="extras.script" location="${build.dir}/bridge.extras.js"/>
     <property name="open.ajax.script" location="${build.dir}/openajax.js"/>
-    
+
     <macrodef name="compress">
         <attribute name="src" description="The source file"/>
         <attribute name="dest" default="@{src}"
@@ -69,7 +69,7 @@
             </java>
         </sequential>
     </macrodef>
-    
+
     <macrodef name="register">
         <attribute name="src" description="The source file"/>
         <attribute name="depends" description="a dependency"/>
@@ -93,14 +93,14 @@
             </java>
         </sequential>
     </macrodef>
-    
+
     <target name="prepare">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir.java}"/>
         <delete file="${script}"/>
         <touch file="${script}"/>
     </target>
-    
+
     <target name="build.RegisterProperties" depends="prepare">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.dir.java}"/>
@@ -112,7 +112,7 @@
             </classpath>
         </javac>
     </target>
-    
+
     <target name="build.prototype" depends="build.RegisterProperties">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${lib.dir}/prototype">
@@ -127,7 +127,7 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="build.lib" depends="build.prototype">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${lib.dir}">
@@ -150,7 +150,7 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="build.base" depends="build.lib">
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <filelist dir="${src.dir}">
@@ -164,12 +164,12 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="do.compress" unless="no-compress">
         <echo message="Compressing ..."/>
         <compress src="${src.script}"/>
     </target>
-    
+
     <target name="build" depends="build.base"
             description="Collate code for community edition">
         <concat destfile="${script}" append="yes" fixlastline="yes">
@@ -183,13 +183,13 @@
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${script}"/>
         </ant>
-        
+
         <echo message="Appending open ajax script"/>
         <concat destfile="${script}" append="yes" fixlastline="yes">
             <path location="${script.open.ajax}"/>
         </concat>
     </target>
-    
+
     <target name="build.test" depends="build.base,build.extras"
             description="Collate code for tests">
         <concat destfile="${script}" append="yes" fixlastline="yes">
@@ -200,7 +200,7 @@
             </filelist>
         </concat>
     </target>
-    
+
     <target name="do.concatenation.compress" unless="no-compress">
         <echo message="concatenating "/>
         <delete dir="${build.dir}/compress"/>
@@ -213,7 +213,7 @@
                 <include name="event.js"/>
                 <!--include name="form.js"/-->
                 <include name="position.js"/>
-                <include name="deprecated.js"/>                
+                <include name="deprecated.js"/>
             </fileset>
             <fileset dir="${lib.dir}/scriptaculous">
                 <!--include name="scriptaculous.js"/-->
@@ -239,14 +239,14 @@
                 <include name="bootstrap.js"/>
                 <include name="gmap.js"/>
                 <include name="repository.js"/>
-                <include name="tooltip_panelpopup.js"/> 
-                <include name="resizablePanelGrid.js"/>                  
+                <include name="tooltip_panelpopup.js"/>
+                <include name="resizablePanelGrid.js"/>
             </fileset>
             <fileset dir="${component.dir}">
                 <include name="menu.js"/>
             </fileset>
         </copy>
-        
+
         <!-- 
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/ajax.js"/>
@@ -262,7 +262,7 @@
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/event.js"/>
         </ant>
-        
+
         <!--
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/form.js"/>
@@ -274,78 +274,78 @@
         </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/deprecated.js"/>
-        </ant>        
-        
+        </ant>
+
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/builder.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/effects.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/dragdrop.js"/>
-        </ant>        
-        <ant target="do.compress" inheritAll="true">
+        </ant>
+        <!--ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/controls.js"/>
-        </ant>        
+        </ant-->
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/slider.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/sound.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/extras.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/extras_util.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/state_mon.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/style.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/initializer.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/dragdrop_custom.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/draggable_ext.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/droppable_ext.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/sortable_ext.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/autocomplete_ext.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/effects_ext.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/bootstrap.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/gmap.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/repository.js"/>
-        </ant>        
+        </ant>
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/tooltip_panelpopup.js"/>
-        </ant>        
-        <ant target="do.compress" inheritAll="true">
+        </ant>
+        <!--ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/resizablePanelGrid.js"/>
-        </ant>        
+        </ant-->
         <ant target="do.compress" inheritAll="true">
             <property name="src.script" value="${build.dir}/compress/menu.js"/>
-        </ant>     
-        
+        </ant>
+
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <filelist dir="${lib.dir}/prototype">
                 <file name="ajax.js"/>
@@ -360,8 +360,8 @@
             </filelist>
             <filelist dir="${build.dir}/compress">
                 <file name="position.js"/>
-                <file name="deprecated.js"/>                
-                
+                <file name="deprecated.js"/>
+
                 <!--file name="scriptaculous.js"/-->
                 <file name="builder.js"/>
                 <file name="effects.js"/>
@@ -369,7 +369,7 @@
                 <file name="controls.js"/>
                 <file name="slider.js"/>
                 <file name="sound.js"/>
-                
+
                 <file name="extras.js"/>
                 <file name="extras_util.js"/>
                 <file name="state_mon.js"/>
@@ -384,12 +384,12 @@
                 <file name="bootstrap.js"/>
                 <file name="gmap.js"/>
                 <file name="repository.js"/>
-                <file name="tooltip_panelpopup.js"/> 
-                <file name="resizablePanelGrid.js"/>                  
-                
+                <file name="tooltip_panelpopup.js"/>
+                <file name="resizablePanelGrid.js"/>
+
                 <file name="menu.js"/>
             </filelist>
-        </concat>          
+        </concat>
     </target>
 
     <target name="do.concatenation.no.compress" if="no-compress">
@@ -402,11 +402,11 @@
                 <file name="event.js"/>
                 <file name="form.js"/>
                 <file name="position.js"/>
-                <file name="deprecated.js"/>                
+                <file name="deprecated.js"/>
             </filelist>
 
             <filelist dir="${lib.dir}/scriptaculous">
-               
+
                 <file name="builder.js"/>
                 <file name="effects.js"/>
                 <file name="dragdrop.js"/>
@@ -429,30 +429,30 @@
                 <file name="bootstrap.js"/>
                 <file name="gmap.js"/>
                 <file name="repository.js"/>
-                <file name="tooltip_panelpopup.js"/> 
-                <file name="resizablePanelGrid.js"/>                  
+                <file name="tooltip_panelpopup.js"/>
+                <file name="resizablePanelGrid.js"/>
             </filelist>
             <filelist dir="${component.dir}">
                 <file name="menu.js"/>
             </filelist>
-        </concat>        
+        </concat>
     </target>
-    
+
     <target name="build.extras"
             description="Extra libraries used by specialized components.">
         <delete file="${extras.script}"/>
         <touch file="${extras.script}"/>
-        
+
         <!-- compress debug -->
         <ant target="do.concatenation.compress" inheritAll="true"></ant>
         <ant target="do.concatenation.no.compress" inheritAll="true"></ant>
-        
+
         <echo message="Appending open ajax extras script"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <path location="${extras.script.open.ajax}"/>
         </concat>
     </target>
-    
+
     <target name="update.open.ajax.globals" depends="build,build.extras"
             description="update bridge and extras open ajax hub registration code">
         <delete file="${script.open.ajax}"/>
@@ -471,9 +471,9 @@
                   src="${extras.script}"
                   depends="${script}"
                   dest="${extras.script.open.ajax}"/>
-        
+
     </target>
-    
+
     <target name="build.open.ajax" description="Compress the open ajax lib">
         <delete file="${open.ajax.script}"/>
         <touch file="${open.ajax.script}"/>
@@ -486,15 +486,15 @@
             <property name="src.script" value="${open.ajax.script}"/>
         </ant>
     </target>
-    
+
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
-    
-    
+
+
     <target name="register.icefaces-d2d"
             depends="build, build.RegisterProperties">
-        
+
         <register libName="icefaces-d2d"
                   libUrl="http://www.icefaces.org/"
                   libVersion="1.5.3"
@@ -502,10 +502,10 @@
                   depends=""
                   dest="register.icefaces-d2d.js"/>
     </target>
-    
+
     <target name="register.ice-extras"
             depends="build, build.extras, build.RegisterProperties">
-        
+
         <register libName="ice-extras"
                   libUrl="http://www.icefaces.org/"
                   libVersion="1.5.3"
@@ -513,10 +513,10 @@
                   depends="${script}"
                   dest="register.ice-extras.js"/>
     </target>
-    
+
     <target name="build.open.ajax.test"
             description="Build bridge libs for Open Ajax hub tests"
             depends="build, build.extras"/>
-    
-    
+
+
 </project>
