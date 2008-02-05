@@ -126,6 +126,12 @@
                 </f:subview>
             </ice:panelGroup>
 
+            <ice:panelGroup id="mediaContentPanel">
+                <f:subview id="mediaSub">
+                    <jsp:directive.include file="./inc/components/media.jspx" />
+                </f:subview>
+            </ice:panelGroup>
+
             <ice:panelGroup id="connectionStatusContentPanel" >
                 <f:subview id="csSub">
                     <!-- Connection Status include -->

@@ -381,6 +381,18 @@ public class TreeNavigation {
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
 
+                // component menu -> Media Players
+                branchObject = new PageContentBean();
+                branchObject.setMenuDisplayText("submenuDisplayText.mediaSubmenuItem");
+                branchObject.setMenuContentTitle("submenuContentTitle.mediaSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/media.jspx");
+                branchObject.setTemplateName("mediaContentPanel");
+                branchObject.setNavigationSelection(navigationBean);
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                branchNode.add(leafNode);
+
                 // component menu -> Tree
                 branchObject = new PageContentBean();
                 branchObject.setMenuDisplayText(
