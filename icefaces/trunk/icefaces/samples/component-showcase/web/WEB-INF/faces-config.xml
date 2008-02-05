@@ -410,6 +410,12 @@
         <managed-bean-class>com.icesoft.icefaces.samples.showcase.components.effects.Effects</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <!-- Media Beans -->
+    <managed-bean>
+        <managed-bean-name>media</managed-bean-name>
+        <managed-bean-class>com.icesoft.icefaces.samples.showcase.components.media.Media</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
     <!-- Positioned Panel -->
     <managed-bean>
         <managed-bean-name>panelPositioned</managed-bean-name>
