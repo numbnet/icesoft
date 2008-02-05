@@ -75,15 +75,20 @@ Ice.KeyNavigator = Class.create({
 Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
   initialize: function($super, event) {
     $super(event);
+    if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
+        this.vertical = true;
+    } else {
+        this.vertical = false;
+    }
   }
 });
 
 Ice.MenuBarKeyNavigator.addMethods({
   goEast: function(event) {
-    var rootItem = this.srcElement.up('.iceMnuBarItem');
+    var rootItem = this.srcElement.up('.'+this.getMenuBarItemClass());
     if (rootItem) {
         Element.removeClassName(rootItem, 'iceMnuBarItemhover');
-        var nextItem = rootItem.next('.iceMnuBarItem');
+        var nextItem = rootItem.next('.'+this.getMenuBarItemClass());
         if (nextItem) {
             Element.addClassName(nextItem, 'iceMnuBarItemhover');
             var anch = nextItem.down('a');
@@ -92,7 +97,7 @@ Ice.MenuBarKeyNavigator.addMethods({
         return;
     }
 
-    var submenu = this.srcElement.down('.iceMnuBarSubMenuInd');
+    var submenu = this.srcElement.down('.'+ this.getSubMenuIndClass());
     if (submenu) {
         var pdiv = this.srcElement.up('.iceMnuItm');
         var submnuDiv = $(pdiv.id+'_sub');
@@ -104,10 +109,10 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
 
   goWest: function(event) {
-    var rootItem = this.srcElement.up('.iceMnuBarItem');
+    var rootItem = this.srcElement.up('.'+this.getMenuBarItemClass());
     if (rootItem) {
         Element.removeClassName(rootItem, 'iceMnuBarItemhover');
-        var previousItem = rootItem.previous('.iceMnuBarItem');
+        var previousItem = rootItem.previous('.'+this.getMenuBarItemClass());
         if (previousItem) {
             Element.addClassName(previousItem, 'iceMnuBarItemhover');
             var anch = previousItem.down('a');
@@ -118,7 +123,7 @@ Ice.MenuBarKeyNavigator.addMethods({
 
     var submenu = this.srcElement.previous('.iceMnuItm');
     if (submenu == null) {
-        var pdiv = this.srcElement.up('.iceMnuBarSubMenu');
+        var pdiv = this.srcElement.up('.'+ this.getSubMenuClass());
         if (pdiv) {
             var owner = $(pdiv.id.substring(0, pdiv.id.length-4));
             if (owner) {
@@ -131,7 +136,7 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
 
   goSouth: function(event) {
-    var rootItem = this.srcElement.up('.iceMnuBarItem');
+    var rootItem = this.srcElement.up('.'+this.getMenuBarItemClass());
     if (rootItem) {
         Element.removeClassName(rootItem, 'iceMnuBarItemhover');
         var submenu = $(rootItem.id+'_sub');
@@ -159,5 +164,30 @@ Ice.MenuBarKeyNavigator.addMethods({
         Element.addClassName(previousItem, 'iceMnuItemhover');
         anch.focus();
     }
+  },
+
+  getMenuBarItemClass: function(event) {
+    if (this.vertical) {
+        return "iceMnuBarVrtItem";
+    } else {
+        return "iceMnuBarItem";
+    }
+  },
+
+  getSubMenuClass: function(event) {
+    if (this.vertical) {
+        return "iceMnuBarVrtSubMenu";
+    } else {
+        return "iceMnuBarSubMenu";
+    }
+  },
+
+  getSubMenuIndClass: function(event) {
+    if (this.vertical) {
+        return "iceMnuBarVrtSubMenuInd";
+    } else {
+        return "iceMnuBarSubMenuInd";
+    }
   }
+
 });
