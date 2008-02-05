@@ -42,6 +42,7 @@ Ice.KeyNavigator = Class.create({
   keydown: function(event) {
     this.srcElement = Event.element(event);
     switch(event.keyCode) {
+/*
         case Event.KEY_UP:
             this.goNorth(event);
             break;
@@ -53,12 +54,12 @@ Ice.KeyNavigator = Class.create({
         case Event.KEY_LEFT:
             this.goWest(event);
             break;
-
+*/
         case Event.KEY_RIGHT:
             this.goEast(event);
+            Event.stop(event);
             break;
     }
-    Event.stop(event);
   },
 
   goNorth: function(event) {},

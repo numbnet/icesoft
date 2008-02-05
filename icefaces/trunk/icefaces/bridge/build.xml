@@ -241,6 +241,7 @@
                 <include name="repository.js"/>
                 <include name="tooltip_panelpopup.js"/>
                 <include name="resizablePanelGrid.js"/>
+                <include name="keyboardNavigator.js"/>                   
             </fileset>
             <fileset dir="${component.dir}">
                 <include name="menu.js"/>
@@ -386,7 +387,7 @@
                 <file name="repository.js"/>
                 <file name="tooltip_panelpopup.js"/>
                 <file name="resizablePanelGrid.js"/>
-
+                <file name="keyboardNavigator.js"/>   
                 <file name="menu.js"/>
             </filelist>
         </concat>
@@ -431,6 +432,7 @@
                 <file name="repository.js"/>
                 <file name="tooltip_panelpopup.js"/>
                 <file name="resizablePanelGrid.js"/>
+                <file name="keyboardNavigator.js"/>                   
             </filelist>
             <filelist dir="${component.dir}">
                 <file name="menu.js"/>

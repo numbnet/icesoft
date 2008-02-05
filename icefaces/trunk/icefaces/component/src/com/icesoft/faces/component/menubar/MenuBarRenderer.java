@@ -36,6 +36,7 @@ package com.icesoft.faces.component.menubar;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
@@ -68,7 +69,10 @@ public class MenuBarRenderer extends DomBasicRenderer {
         Element menuDiv = (Element) domContext.getRootNode();
         menuDiv.setAttribute(HTML.ID_ATTR,
                              uiComponent.getClientId(facesContext));
-       
+        JavascriptContext.addJavascriptCall(facesContext, 
+                "new Ice.MenuBarKeyNavigator('" + 
+                uiComponent.getClientId(facesContext) +"');");
+        
         MenuBar menuComponent = (MenuBar) uiComponent;
         String defaultStyle = menuComponent.getComponentRootStyle();
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
