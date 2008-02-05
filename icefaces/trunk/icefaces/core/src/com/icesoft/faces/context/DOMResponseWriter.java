@@ -39,7 +39,6 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Attr;
@@ -299,7 +298,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
-                        "var container = '" + configurationID + "'.asElement().parentNode;\n" +
+                        "var container = '" + configurationID + "'.asExtendedElement().findContainerFor('bridge');\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
