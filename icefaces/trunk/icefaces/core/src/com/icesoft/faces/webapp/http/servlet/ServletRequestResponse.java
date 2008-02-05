@@ -1,12 +1,11 @@
 package com.icesoft.faces.webapp.http.servlet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.portlet.PortletArtifactWrapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -50,16 +49,16 @@ public class ServletRequestResponse implements Request, Response {
                 HttpServletRequest req = (HttpServletRequest) request;
                 String query = req.getQueryString();
                 URI uri = null;
-                while (null == uri)  {
+                while (null == uri) {
                     try {
                         uri = URI.create(req.getRequestURL().toString());
-                    } catch (NullPointerException e)  {
+                    } catch (NullPointerException e) {
                         //TODO remove this catch block when GlassFish bug is addressed
                         if (log.isErrorEnabled()) {
                             log.error("Null Protocol Scheme in request", e);
                         }
                         uri = URI.create("http://" + req.getServerName() + ":"
-                             + req.getServerPort() + req.getRequestURI());
+                                + req.getServerPort() + req.getRequestURI());
                     }
                 }
                 requestURI = (query == null ? uri : URI.create(uri + "?" + query));
@@ -254,25 +253,26 @@ public class ServletRequestResponse implements Request, Response {
             String host = request.getRemoteHost();
             StringBuffer data = new StringBuffer("+ Request does not contain parameter '" + name + "' host: \n");
             data.append("  Originator: ").append(host).append(":").append(port).append("\n");
+            data.append("  Path: ").append(requestURI.toString()).append("\n");
 
             Enumeration e = request.getParameterNames();
             String key;
             int i = 0;
 
-            while (e.hasMoreElements() ) {
+            while (e.hasMoreElements()) {
                 key = (String) e.nextElement();
                 if (i == 0) {
                     data.append("  Available request parameters are: \n");
                 }
-                data.append("  - parameter name: ").append(key).append(", value: " ).append(request.getParameter(key ) ).append("\n");
-                i ++;
+                data.append("  - parameter name: ").append(key).append(", value: ").append(request.getParameter(key)).append("\n");
+                i++;
             }
             if (i == 0) {
                 data.append("   Request map is empty!\n");
             }
 
-            data.append("- SRR hashcode: ").append(this.hashCode() ).append(" Servlet request hash: ").append(request.hashCode());
-            log.debug(data.toString() );
+            data.append("- SRR hashcode: ").append(this.hashCode()).append(" Servlet request hash: ").append(request.hashCode());
+            log.debug(data.toString());
             // we can't just carry on. We seriously need those paramters ...
             throw new RuntimeException("Query does not contain parameter named: " + name);
 
