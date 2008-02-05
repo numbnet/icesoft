@@ -266,8 +266,6 @@ public class RowSelector extends UIComponentBase {
                         }
                     }
                 }
-                // ICE-2186: skip validations.
-                facesContext.renderResponse();
             } else {
 /* ICE-2024: see above.
                 if (Boolean.FALSE.equals(rowSelector.getMultiple())) {

@@ -161,7 +161,7 @@ function ice_tableRowClicked(rowid, hdnFld) {
         fld.value = rowid;
         var nothingEvent = new Object();
         var form = Ice.util.findForm(fld);
-        iceSubmitPartial(null, fld, nothingEvent);
+        iceSubmit(null, fld, nothingEvent);
     } catch(e) {
         console.log("Error in rowSelector[" + e + "]");
     }
