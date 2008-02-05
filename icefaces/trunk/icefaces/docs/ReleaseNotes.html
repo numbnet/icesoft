@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-<!-- saved from url=(0022)http://internet.e-mail -->
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482; v1.7 DR#3 Release Notes</title>
+<html><head><!-- saved from url=(0022)http://internet.e-mail -->
+
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces&#8482; v1.7 Beta1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -34,8 +34,7 @@ font-weight: bold;
 h4 {
 font-size: 110%
 }
-</style>
-</head>
+</style></head>
 <body>
 <div style="border: 1px solid rgb(187, 187, 187);">
 <table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%">
@@ -45,11 +44,9 @@ font-size: 110%
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 <br>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7
-DR#3
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7 Beta1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">December
-20th, 2007</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">February 10th, 2008</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -61,8 +58,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="ReleaseNotes.html#Changes_17b1">Changes
+in&nbsp;v1.7 Beta1 (this release)</a></li>
 <li><a href="ReleaseNotes.html#Changes_17DR3">Changes
-in&nbsp;v1.7 DR#3 (this release)</a></li>
+in&nbsp;v1.7 DR#3</a></li>
 <li><a href="ReleaseNotes.html#Changes_17DR2">Changes
 in&nbsp;v1.7 DR#2</a></li>
 <li><a href="ReleaseNotes.html#Changes_17DR1">Changes
@@ -89,6 +88,273 @@ For release note information for earlier ICEfaces releases,
 refer to
 the <a href="http://support.icesoft.com/jive/category.jspa?categoryID=50">ICEfaces
 Knowledge Base</a>.<br>
+<br>
+<h2><a name="Changes_17b1"></a>Changes
+in&nbsp;v1.7 Beta1 (this release)</h2>
+<br>
+ICEfaces v1.7 Beta1 is a pre-release test build&nbsp;that provides a
+feature-complete preview of the new features, enhancements, and fixes
+that will
+be included in the upcoming ICEfaces v1.7 release. Although this build
+has successfully completed regression testing significant issues may
+still exist, thus, it is not recommended&nbsp;for production use.<br>
+<br>
+Please
+review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release.&nbsp; You may report any issues with
+this build to the ICEfaces <a href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback forum</a> or the ICEfaces <a href="http://jira.icefaces.org/">JIRA issue tracker</a>.<br>
+<br>
+<h4>Notable
+Enhancements&nbsp;</h4>
+<ul style="font-weight: bold;" class="contentIndent">
+<li>Components</li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Popup/Tooltip
+Panel</span>&nbsp;</li>
+<ul>
+<li>A new ice:panelTooltip component has been introduced in
+this release. This component can be associated with a panelGroup
+component to automatically display when the user hovers over the
+panelGroup for a configurable period of time.</li>
+<li>The panelTooltip can be configured to automatically
+hide when the user moves the mouse off the triggering component, clicks
+outside the panelTooltip, etc.</li>
+<li>The panelTooltip support both a static and dynamic
+usage mode so
+it's contents may be updated to reflect the source component triggering
+it's display at runtime.</li>
+<li>See the "Tooltip Panel" demo source in the Component
+Showcase sample application for a usage example.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">New
+SelectOneRadio, SelectManyCheckbox layout and grouping</span></li>
+<ul>
+<li>The ice:selectOneRadio and ice:selectManyCheckbox
+components can now support a "spread" layout capability that enables
+each radioButton or checkbox to be placed in different container
+components (e.g. across columns in a table, etc.).</li>
+<li>See the TLD documentation for ice:checkbox and
+ice:radiobutton for usage details.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Popup/Context
+Menu</span></li>
+<ul>
+<li>The ice:menuPopup component introduced in DR#2 can now
+be used on UIData components such as ice:dataTable and ice:panelSeries.
+See the Component Showcase "Columns" component demo source for a usage
+example.&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Drag
+&amp; Drop Performance Optimizations</span></li>
+<ul>
+<li>The panelGroup's draggable implemention has been
+optimized to drastically improve performance and scalabiliy when a
+large number of instances are used on a page, such as in dataTable rows
+or treeNodes.&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+</ul>
+</ul>
+<ul style="font-weight: bold;" class="contentIndent">
+<li>Portal Support</li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Enhanced&nbsp;support
+for&nbsp;mixing ICEfaces async. and synchronous portlets together
+on a page</span>&nbsp;</li>
+<ul>
+<li>It is now possible to deploy ICEfaces portlets sourced
+from multiple .war files to&nbsp;a single portal page, including
+mixing of both synchronous and asynchronous
+portlets.</li>
+<li>Support for multiple portlets in separate .war files
+requires configuring&nbsp;the new ICEfaces Async HTTP Server
+(AHS) servlet.</li>
+<li>Please review&nbsp;relevant limitations in this
+release in the <a href="#Anchor_KI_Portlets">Known Issues</a>
+section.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Support for
+JSR-168 Portlet Themes</span></li>
+<ul>
+<li>The
+ICEfaces Component Suite components now support the JSR-168 portlet
+theme style classes.&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">New
+"Developing Portlets with ICEfaces" section in the ICEfaces Developer's
+Guide</span></li>
+<ul>
+<li>See the updated documentation for detailed information
+on developing portlets using ICEfaces.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">New portlet
+sample applications</span></li>
+<ul>
+<li>A portlet version of the ICEfaces Component Showcase
+sample application&nbsp;demonstrates many of the ICEfaces
+components running as portlets.</li>
+<ul>
+<li>To build the portlet component showcase use one of
+the "build.portlet.xxx" ant build targets in the
+/samples/component-showcase directory.</li>
+</ul>
+<li>A new Async Chat portlet demonstrates using ICEfaces
+ajax-push within a portlet.</li>
+<ul>
+<li>Located in
+the&nbsp;"icefaces/samples/portlet/chat" directory.</li>
+</ul>
+</ul>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">Async HTTP
+Server (AHS)</span></li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Formerly a
+stand-alone project, the AHS is now included in the core ICEfaces
+distribution.</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">In addition
+to running as a server inside an application server, it can now run as
+a servlet as well</span></li>
+</ul>
+<ul>
+<ul>
+<li>Servlet configuration enables straightforward
+configuration and deployment for use with ICEfaces portlets.</li>
+<li>Can now be used in a portal environment to support
+multiple asynchronous ICEfaces portlets deployed from different WAR
+files.</li>
+</ul>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Configure
+as a server for additional scalability and robustness for asynchronous
+ICEfaces applications.</span></li>
+</ul>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">See the new
+"Introduction to the Asynchronous HTTP Server" section in the Advanced
+Topics chapter of the ICEfaces Developer's Guide for details.</span></li>
+</ul>
+</ul>
+<ul>
+<li><span style="font-weight: bold;">Spring
+Framework Support</span></li>
+</ul>
+<ul class="contentIndent">
+<ul>
+<li><span style="font-weight: bold;">Improved
+support for using ICEfaces with Spring and Spring Web Flow.</span></li>
+<ul>
+<li>See the new "Spring Framework Integration" section in
+the Advanced Topics chapter of the ICEfaces Developer's Guide for
+details.<span style="font-weight: bold;"><br>
+</span></li>
+</ul>
+</ul>
+</ul>
+<span style="font-weight: bold;"></span>
+<ul>
+<li><span style="font-weight: bold;">Documentation
+and Build Scripts</span>&nbsp;</li>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">The
+ICEfaces Getting Started Guide and ICEfaces Developer's Guide have been
+updated for ICEfaces 1.7 (draft).&nbsp;</span></li>
+</ul>
+</ul>
+<ul>
+<ul>
+<li><span style="font-weight: bold;">New&nbsp;Sample
+Application Build Targets</span></li>
+<ul>
+<li>The build
+system for the ICEfaces sample applications and tutorials included in
+the ICEfaces bundle has been enhanced to provide specific build targets
+for the most popular JEE application servers making it easier to create
+sample .war files that will deploy successfully to the application
+server of your choice.&nbsp;</li>
+</ul>
+<ul>
+<li>See
+the "Chapter 3 - Running the ICEfaces Sample Applications" in the
+ICEfaces Getting Started Guide for details.&nbsp;</li>
+</ul>
+</ul>
+</ul>
+<span style="font-weight: bold;"></span><span style="font-weight: bold;"></span>Refer
+the Change
+Log
+below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
+JIRA Change Log</a> for more information on&nbsp;the changes
+in
+this
+release.<br>
+<span style="font-weight: bold; color: rgb(153, 0, 0);"><br>
+</span>
+<h3>Change
+Log</h3>
+<h4>New Features</h4>
+<ul>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-732">ICE-732</a>]
+- Support for custom popups/tooltips on components (new
+ice:panelTooltip component)</li></ul>
+<h4>Improvements</h4>
+<ul>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1461">ICE-1461</a>]-
+OutputConnectionStatus doesn't work with more than one portlet</li></ul>
+<h4>Bug
+Fixes</h4>
+<ul>
+<li>[<a href="http://jira.icefaces.org//browse/ICE-1395">ICE-1395</a>]
+- Tree problem: setting "hideRootNode" equals "true" makes the whole
+tree unrendered</li></ul>
 <br>
 <h2><a name="Changes_17DR3"></a>Changes
 in&nbsp;v1.7 DR#3 (this release)</h2>
@@ -328,8 +594,8 @@ ICEfaces Getting Started Guide for details.&nbsp;</li>
 </ul>
 </ul>
 <span style="font-weight: bold;"></span><span style="font-weight: bold;"></span>Refer
-the <a href="ReleaseNotes.html#ChangeLog_17DR1">Change
-Log</a>
+the Change
+Log
 below or the&nbsp;<a target="_blank" href="http://jira.icefaces.org/browse/ICE?report=com.atlassian.jira.plugin.system.project:changelog-panel">ICEfaces
 JIRA Change Log</a> for more information on&nbsp;the changes
 in
@@ -2922,10 +3188,13 @@ browser. Support for Opera is planned prior to the 1.7 final release.</li>
 <ul>
 <li>ICEfaces must use JSF 1.1 "compatibility mode"
 within JSF 1.2
-environments. See the "JSF 1.2" topic in the "Using ICEfaces with Java
+environments. This can be done by setting the context init
+parameter&nbsp;'com.sun.faces.enableRestoreView11Compatibility' to
+'true' in your web.xml file. See the "JSF 1.2" topic in the "Using
+ICEfaces with Java
 EE
 Application Servers, IDEs, and Frameworks" chapter of the ICEfaces
-Getting Started Guide (pg. 54) for details.</li>
+Getting Started Guide for details.</li>
 </ul>
 <h3><a name="Anchor_KI_Portlets"></a>Portlets</h3>
 <ul>
