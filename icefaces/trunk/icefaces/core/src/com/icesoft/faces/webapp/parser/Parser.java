@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * This is the JSFX parser.  It digests a JSFX file into a tag processing tree,
@@ -73,6 +74,8 @@ import java.util.List;
 public class Parser {
     private static final Log log = LogFactory.getLog(Parser.class);
     private JsfJspDigester digester;
+
+    private int indentIndex;
 
     public Parser(InputStream fis) throws IOException {
         // Create digester and add rules;
@@ -125,6 +128,7 @@ public class Parser {
             digester.parse(page);
         }
 
+        TagWire realViewWire = null;
         try {
 
             // #2551 We have captured the real View Tag (from wherever it was in the tree)
@@ -136,7 +140,7 @@ public class Parser {
             //  This duplicates what the previous code was doing, except the created
             // ViewTag has the attributes set
 
-            TagWire realViewWire = digester.getViewWire();
+            realViewWire = digester.getViewWire();
             Tag viewTag;
             if (null != realViewWire)  {
                 viewTag = realViewWire.getTag();
@@ -161,6 +165,15 @@ public class Parser {
                     PageContext.REQUEST_SCOPE);
         } catch (Exception e) {
             log.error("Failed to execute JSP lifecycle.", e);
+            if (log.isDebugEnabled() ) {
+                
+                log.debug("Dumping Tag Hierarchy");
+                if (realViewWire != null) {
+                    displayHierarchy( realViewWire );
+                } else {
+                    displayHierarchy( rootWire );
+                } 
+            }
             throw new FacesException("Failed to execute JSP lifecycle.", e);
         }
     }
@@ -309,18 +322,24 @@ public class Parser {
         return null;
     }
 
-    // Debug stuff for making sure hierarchy is correct
-//    private void displayHierarchy(TagWire wire) {
-//
-//        indentIndex += 2;
-//        List children = wire.getChildren();
-//        TagWire child;
-//        for (int idx = 0; idx < children.size(); idx ++ ) {
-//            child = (TagWire) children.get( idx );
-//            System.out.println(indent.substring(0, indentIndex) + " -> " + child.getTag() );
-//            displayHierarchy( child );
-//        }
-//        indentIndex -= 2;
-//    }
+    /**
+     * In event of parse exception, dump out the contents of the tagwire
+     * tree. This is not very performant, but it doesn't need to be. Try to
+     * give the author some idea as to why the exception. #ICE-2716
+     * 
+     * @param wire The TagWire at the Root 
+     */
+    private void displayHierarchy(TagWire wire) {
 
+        char [] pad = new char[indentIndex];
+        Arrays.fill( pad, ' ');
+        log.debug( new String( pad )  + "Tag: " + wire.getTag() );
+
+        indentIndex += 2;
+        List children = wire.getChildren();
+        for (int idx = 0; idx < children.size(); idx ++ ) {
+             displayHierarchy((TagWire) children.get( idx ));
+        }
+        indentIndex -= 2;
+    }
 }
