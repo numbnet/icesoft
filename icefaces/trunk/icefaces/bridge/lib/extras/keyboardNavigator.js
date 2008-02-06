@@ -36,23 +36,25 @@ Ice.KeyNavigator = Class.create({
     this.component = $(componentId);
     this.keydownEvent = this.keydown.bindAsEventListener(this);
     Event.observe(this.component, "keydown", this.keydownEvent);
-
   },
 
   keydown: function(event) {
     this.srcElement = Event.element(event);
     switch(event.keyCode) {
-/*
+/*    
         case Event.KEY_UP:
             this.goNorth(event);
+            Event.stop(event);            
             break;
 
         case Event.KEY_DOWN:
             this.goSouth(event);
+            Event.stop(event);            
             break;
 
         case Event.KEY_LEFT:
             this.goWest(event);
+            Event.stop(event);            
             break;
 */
         case Event.KEY_RIGHT:
@@ -87,10 +89,10 @@ Ice.MenuBarKeyNavigator.addMethods({
   goEast: function(event) {
     var rootItem = this.srcElement.up('.'+this.getMenuBarItemClass());
     if (rootItem) {
-        Element.removeClassName(rootItem, 'iceMnuBarItemhover');
+//        Element.removeClassName(rootItem, 'iceMnuBarItemhover');
         var nextItem = rootItem.next('.'+this.getMenuBarItemClass());
         if (nextItem) {
-            Element.addClassName(nextItem, 'iceMnuBarItemhover');
+//            Element.addClassName(nextItem, 'iceMnuBarItemhover');
             var anch = nextItem.down('a');
             anch.focus();
         }
@@ -99,10 +101,11 @@ Ice.MenuBarKeyNavigator.addMethods({
 
     var submenu = this.srcElement.down('.'+ this.getSubMenuIndClass());
     if (submenu) {
+ //       Element.removeClassName(submenu, 'iceMnuBarItemhover');
         var pdiv = this.srcElement.up('.iceMnuItm');
+ //     Element.addClassName(pdiv, 'iceMnuBarItemhover');        
         var submnuDiv = $(pdiv.id+'_sub');
         var firstAnch = submnuDiv.down('a');
-        Element.show(submnuDiv);
         firstAnch.focus();
 
     }
@@ -122,6 +125,7 @@ Ice.MenuBarKeyNavigator.addMethods({
     }
 
     var submenu = this.srcElement.previous('.iceMnuItm');
+    Element.removeClassName(submenu, 'iceMnuItemhover');    
     if (submenu == null) {
         var pdiv = this.srcElement.up('.'+ this.getSubMenuClass());
         if (pdiv) {
@@ -142,22 +146,24 @@ Ice.MenuBarKeyNavigator.addMethods({
         var submenu = $(rootItem.id+'_sub');
         if (submenu) {
             var anch = submenu.down('a');
-            Element.addClassName(submenu, 'iceMnuItemhover');
+            Element.addClassName(submenu, 'iceMnuBarItemhover');
             anch.focus();
         }
         return;
     }
     var menuItem = this.srcElement.up('.iceMnuItm');
+    Element.removeClassName(menuItem, 'iceMnuBarItemhover');    
     var nextItem = menuItem.next('.iceMnuItm');
     if (nextItem) {
         var anch = nextItem.down('a');
-        Element.addClassName(nextItem, 'iceMnuItemhover');
+        Element.addClassName(nextItem, 'iceMnuBarItemhover');
         anch.focus();
     }
   },
 
   goNorth: function(event) {
     var menuItem = this.srcElement.up('.iceMnuItm');
+    Element.removeClassName(menuItem, 'iceMnuBarItemhover');    
     var previousItem = menuItem.previous('.iceMnuItm');
     if (previousItem ) {
         var anch = previousItem.down('a');
