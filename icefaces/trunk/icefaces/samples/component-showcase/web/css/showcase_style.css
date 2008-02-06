@@ -335,9 +335,8 @@ div.navThemeChange {
 
 
 .cartImageColumn, .cartNameColumn, .cartPriceColumn, .cartQuantityColumn,
-    .cartCostColumn, .cartReturnColumn, .shoppingCartFooter, .triangleColumn {
+    .cartCostColumn, .cartReturnColumn, .shoppingCartFooter, .triangleColumn, expandableTableColumn {
     white-space: nowrap;
-    color: #000000;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 3px;
@@ -346,6 +345,11 @@ div.navThemeChange {
     border-right: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
     text-align: left;
+}
+
+.cartImageColumn, .cartNameColumn, .cartPriceColumn, .cartQuantityColumn,
+    .cartCostColumn, .cartReturnColumn, .shoppingCartFooter, .triangleColumn {
+    color: #000000;
 }
 
 .cartReturnColumn {

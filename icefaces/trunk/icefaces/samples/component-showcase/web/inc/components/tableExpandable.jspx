@@ -52,7 +52,7 @@
                        value="#{salesRecordsManager.salesGroupRecordBeans}"
                        var="salesRecord" cellpadding="0"
                        width="550px"
-                       columnClasses="triangleColumn,cartNameColumn,cartQuantityColumn,cartQuantityColumn,cartPriceColumn,cartQuantityColumn">
+                       columnClasses="expandableTableColumn">
             <!-- contract/expand column -->
             <ice:column>
                 <ice:panelGroup styleClass="#{salesRecord.indentStyleClass}">
