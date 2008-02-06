@@ -168,7 +168,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String qualifiedName = ((MenuItem) uiComponent).
         getUserDefinedStyleClass(menuComponent.getItemStyleClass(), 
                 rootItemSubClass);
-        
+        String call = null;
         if (uiComponent.getChildCount() > 0) {
             topLevelDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
                     qualifiedName, rootItemSubClass, PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
@@ -179,17 +179,15 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 if (parentNode.getAttribute(HTML.NAME_ATTR).equals("TOP_LEVEL_SUBMENU")) {
                     supermenu += "_sub";
                 }
-                String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+                call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                 expand(supermenu, clientId + "_sub",
                         KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);";
                 
-                topLevelDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
                 topLevelDiv.setAttribute(displayEvent, call);
             } else {
-                String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+                call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                     expand("this", clientId + "_sub",
                            KEYWORD_NULL) + "Ice.Menu.appendHoverClasses(this);";
-                topLevelDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
                 topLevelDiv.setAttribute(displayEvent, call);
             }
         } else {
@@ -214,7 +212,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         renderAnchor(facesContext, domContext, (MenuItem) uiComponent,
                      topLevelDiv, menuComponent, vertical);
-
+        if (call != null) {
+            Element anch = (Element)topLevelDiv.getChildNodes().item(0);
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ topLevelDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
+        }
         if ((uiComponent.getChildCount() > 0) &&
             (((MenuItem) uiComponent).isChildrenMenuItem())) {
             renderChildrenRecursive(facesContext, menuComponent, uiComponent,
@@ -543,7 +544,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (!nextSubMenuItem.isRendered()) {
             return;
         }
-
+        String call = null;
         Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
         submenuDiv.appendChild(subMenuItemDiv);
         String qualifiedName = nextSubMenuItem.getStyleClass();
@@ -551,14 +552,13 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         String subMenuItemClientId = nextSubMenuItem.getClientId(facesContext);
         subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
         if (nextSubMenuItem.isChildrenMenuItem()) {
-            String call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
+            call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
             expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
             "Ice.Menu.appendHoverClasses(this);";
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
                 CoreUtils.addPortletStyleClassToQualifiedClass(
                     qualifiedName, qualifiedName,
                     PORTLET_CSS_DEFAULT.PORTLET_MENU_CASCADE_ITEM));
-            subMenuItemDiv.setAttribute(HTML.ONFOCUS_ATTR, call);
             subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR, call);
         } else {
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
@@ -581,6 +581,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         renderAnchor(facesContext, domContext,
             nextSubMenuItem, subMenuItemDiv,
             menuComponent, vertical);
+        if (call != null) {
+            Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ subMenuItemDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
+        }        
     }
     
     /**
