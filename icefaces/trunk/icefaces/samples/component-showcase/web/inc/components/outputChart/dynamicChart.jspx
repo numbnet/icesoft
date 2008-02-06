@@ -36,114 +36,116 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <ice:panelTabSet styleClass="componentPanelTabSetLayout">
-        <!--
-          Controls to show/hide the table columns
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet styleClass="componentPanelTabSetLayout">
+<!--
+  Controls to show/hide the table columns
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
 
-            <ice:panelGroup id="dynamicChartTopGrid"
-                           styleClass="formBorderHighlight">
-                <h3>
-                    <ice:outputText id="dynamicChartTitle"
-                                    value="#{msgs['component.dynamicChart.title']}"/>
-                </h3>
-                <br/>
-                <ice:panelGrid columns="2" columnClasses="addPieceColumn, removePieceColumn">
-                    <ice:panelGrid columns="2">
-                        <!-- add chart -->
-                        <ice:outputText
-                                    styleClass="propertyLabel"
-                                    value="#{msgs['component.chart.addChart.label']}"/>
-                        <ice:outputText value="" />
+    <ice:panelGroup id="dynamicChartTopGrid"
+                    styleClass="formBorderHighlight">
+        <h3>
+            <ice:outputText id="dynamicChartTitle"
+                            value="#{msgs['component.dynamicChart.title']}"/>
+        </h3>
+        <br/>
+        <ice:panelGrid columns="2" columnClasses="addPieceColumn, removePieceColumn">
+            <ice:panelGrid columns="2">
+                <!-- add chart -->
+                <ice:outputText
+                        styleClass="propertyLabel"
+                        value="#{msgs['component.chart.addChart.label']}"/>
+                <ice:outputText value=""/>
 
-                        <!-- color setting -->
-                        <ice:outputText value="Color :"/>
-                        <ice:selectOneMenu
-                                valueChangeListener="#{dynamicPieChart.paintChangeListener}">
-                            <f:selectItems
-                                    value="#{dynamicPieChart.availablePaints}"/>
-                        </ice:selectOneMenu>
+                <!-- color setting -->
+                <ice:outputText value="Color :"/>
+                <ice:selectOneMenu
+                        valueChangeListener="#{dynamicPieChart.paintChangeListener}">
+                    <f:selectItems
+                            value="#{dynamicPieChart.availablePaints}"/>
+                </ice:selectOneMenu>
 
-                        <!-- Label -->
-                        <ice:outputText value="Label :"/>
-                        <ice:inputText value="#{dynamicPieChart.label}"
-                                       required="false"/>
+                <!-- Label -->
+                <ice:outputText value="Label :"/>
+                <ice:inputText value="#{dynamicPieChart.label}"
+                               required="false"/>
 
-                        <!-- Data -->
-                        <ice:outputText value="Data "/>
-                        <ice:inputText value="#{dynamicPieChart.value}"/>
+                <!-- Data -->
+                <ice:outputText value="Data "/>
+                <ice:inputText value="#{dynamicPieChart.value}"/>
 
-                        <!-- Add command button -->
-                        <ice:outputText value="" />
-                        <ice:commandButton value="#{msgs['component.chart.addChartCommand.label']}"
-                                           actionListener="#{dynamicPieChart.addToChart}"/>
-                    </ice:panelGrid>
-                    <ice:panelGroup>
-                        <!-- remove chart -->
-                        <ice:outputText
-                                styleClass="propertyLabel"
-                                value="#{msgs['component.chart.removeChart.label']}"/>
+                <!-- Add command button -->
+                <ice:outputText value=""/>
+                <ice:commandButton value="#{msgs['component.chart.addChartCommand.label']}"
+                                   actionListener="#{dynamicPieChart.addToChart}"/>
+            </ice:panelGrid>
+            <ice:panelGroup>
+                <!-- remove chart -->
+                <ice:outputText
+                        styleClass="propertyLabel"
+                        value="#{msgs['component.chart.removeChart.label']}"/>
 
-                        <!-- chart to remove -->
-                        <ice:selectOneMenu
-                                valueChangeListener="#{dynamicPieChart.deleteListValueChangeListener}"
-                                partialSubmit="true"
-                                disabled="#{not dynamicPieChart.deleteAllowed}">
-                            <f:selectItems value="#{dynamicPieChart.deleteList}"/>
-                        </ice:selectOneMenu>
+                <!-- chart to remove -->
+                <ice:selectOneMenu
+                        valueChangeListener="#{dynamicPieChart.deleteListValueChangeListener}"
+                        partialSubmit="true"
+                        disabled="#{not dynamicPieChart.deleteAllowed}">
+                    <f:selectItems value="#{dynamicPieChart.deleteList}"/>
+                </ice:selectOneMenu>
 
-                        <!-- remove command button -->
-                        <ice:commandButton value="#{msgs['component.chart.removeChartCommand.label']}"
-                                           actionListener="#{dynamicPieChart.deleteChart}"
-                                           rendered="#{dynamicPieChart.deleteAllowed}"/>
-                        <ice:outputText value="#{msgs['component.chart.removeChartCommand.explanation']}"
-                                        rendered="#{not dynamicPieChart.deleteAllowed}"/>
-                    </ice:panelGroup>
-                </ice:panelGrid>
+                <!-- remove command button -->
+                <ice:commandButton value="#{msgs['component.chart.removeChartCommand.label']}"
+                                   actionListener="#{dynamicPieChart.deleteChart}"
+                                   rendered="#{dynamicPieChart.deleteAllowed}"/>
+                <ice:outputText value="#{msgs['component.chart.removeChartCommand.explanation']}"
+                                rendered="#{not dynamicPieChart.deleteAllowed}"/>
             </ice:panelGroup>
+        </ice:panelGrid>
+    </ice:panelGroup>
 
-            <ice:panelGroup id="centerWrapperDynamicChart">
-                <center>
-                <ice:outputChart type="pie3d"
-                                 chartTitle="#{msgs['component.pie3dChart.title']}"
-                                 labels="#{dynamicPieChart.labels}"
-                                 width="350"
-                                 height="350"
-                                 data="#{dynamicPieChart.data}"
-                                 colors="#{dynamicPieChart.paints}"
-                                 renderOnSubmit="#{dynamicPieChart.renderOnSubmit}"/>
-                </center>
-            </ice:panelGroup>
+    <ice:panelGroup id="centerWrapperDynamicChart">
+        <center>
+            <ice:outputChart type="pie3d"
+                             chartTitle="#{msgs['component.pie3dChart.title']}"
+                             labels="#{dynamicPieChart.labels}"
+                             width="350"
+                             height="350"
+                             data="#{dynamicPieChart.data}"
+                             colors="#{dynamicPieChart.paints}"
+                             renderOnSubmit="#{dynamicPieChart.renderOnSubmit}"/>
+        </center>
+    </ice:panelGroup>
 
-        </ice:panelTab>
-        <!--
-          The bean is responsible for streaming html documentation to
-          this placeholder
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="/component-showcase/docs/dynamicChartDoc.html"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+</ice:panelTab>
+<!--
+  The bean is responsible for streaming html documentation to
+  this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/dynamicChartDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
 
-        <!--
-          Template for component source code.  This servlet loads
-          the component example jsp include as an xml stream
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/outputChart/dynamicChart.jspx"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/outputChart/dynamicChart.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
 
-        <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
-            <iframe src="http://facestutorials.icefaces.org/tutorial/outputChart-tutorial.html"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/outputChart-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
 
-    </ice:panelTabSet>
+</ice:panelTabSet>
 
 </ice:form>

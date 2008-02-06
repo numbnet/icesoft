@@ -47,7 +47,7 @@ In this demonstration, various effects are applied to ice custom components.
 
 
 <!-- Effects parameters -->
-<ice:panelGroup styleClass="formBorderHighlight" >
+<ice:panelGroup styleClass="formBorderHighlight">
 
 <!-- select effect type, triggers panel tap switch
 for config parameters -->
@@ -128,7 +128,7 @@ for config parameters -->
     <ice:panelGrid columns="2"
                    columnClasses="attributeColumnLabel, attributeColumnValue">
 
-        <ice:commandButton value="#{msgs['effects.appearFade.appear']}"  
+        <ice:commandButton value="#{msgs['effects.appearFade.appear']}"
                            action="#{effects.appearFadeBean.appearAction}"/>
         <ice:commandButton value="#{msgs['effects.appearFade.fade']}"
                            action="#{effects.appearFadeBean.fadeAction}"/>
@@ -219,11 +219,11 @@ for config parameters -->
     <ice:panelGrid columns="2"
                    columnClasses="attributeColumnLabel, attributeColumnValue">
 
-         <ice:commandButton value="#{msgs['effects.puff.labels.invoke']}"
-                       action="#{effects.puff}"/>
+        <ice:commandButton value="#{msgs['effects.puff.labels.invoke']}"
+                           action="#{effects.puff}"/>
 
-         <ice:commandButton value="#{msgs['effects.puff.labels.reset']}"
-                       action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.puff.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 
@@ -234,11 +234,11 @@ for config parameters -->
     <ice:panelGrid columns="2"
                    columnClasses="attributeColumnLabel, attributeColumnValue">
 
-         <ice:commandButton value="#{msgs['effects.blindup.labels.invoke']}"
-                       action="#{effects.blindUp}"/>
+        <ice:commandButton value="#{msgs['effects.blindup.labels.invoke']}"
+                           action="#{effects.blindUp}"/>
 
-         <ice:commandButton value="#{msgs['effects.blindup.labels.reset']}"
-                       action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.blindup.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 
@@ -257,13 +257,13 @@ for config parameters -->
 <ice:panelGroup id="effectDropOutSpecMenu">
 
     <ice:panelGrid columns="2"
-               columnClasses="attributeColumnLabel, attributeColumnValue">
+                   columnClasses="attributeColumnLabel, attributeColumnValue">
 
-     <ice:commandButton value="#{msgs['effects.dropout.labels.invoke']}"
-                   action="#{effects.dropOut}"/>
+        <ice:commandButton value="#{msgs['effects.dropout.labels.invoke']}"
+                           action="#{effects.dropOut}"/>
 
-     <ice:commandButton value="#{msgs['effects.dropout.labels.reset']}"
-                   action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.dropout.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 
@@ -282,28 +282,28 @@ for config parameters -->
 <ice:panelGroup id="effectSlideUpSpecMenu">
 
     <ice:panelGrid columns="2"
-               columnClasses="attributeColumnLabel, attributeColumnValue">
+                   columnClasses="attributeColumnLabel, attributeColumnValue">
 
-     <ice:commandButton value="#{msgs['effects.slideup.labels.invoke']}"
-                   action="#{effects.slideUp}"/>
+        <ice:commandButton value="#{msgs['effects.slideup.labels.invoke']}"
+                           action="#{effects.slideUp}"/>
 
-     <ice:commandButton value="#{msgs['effects.slideup.labels.reset']}"
-                   action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.slideup.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 
 </ice:panelGroup>
 <!-- Squish effects  -->
 <ice:panelGroup id="effectSquishSpecMenu">
-    
+
     <ice:panelGrid columns="2"
-           columnClasses="attributeColumnLabel, attributeColumnValue">
+                   columnClasses="attributeColumnLabel, attributeColumnValue">
 
-     <ice:commandButton value="#{msgs['effects.squish.labels.invoke']}"
-                   action="#{effects.squish}"/>
+        <ice:commandButton value="#{msgs['effects.squish.labels.invoke']}"
+                           action="#{effects.squish}"/>
 
-     <ice:commandButton value="#{msgs['effects.squish.labels.reset']}"
-                   action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.squish.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 </ice:panelGroup>
@@ -316,13 +316,13 @@ for config parameters -->
 <ice:panelGroup id="effectShrinkSpecMenu">
 
     <ice:panelGrid columns="2"
-           columnClasses="attributeColumnLabel, attributeColumnValue">
+                   columnClasses="attributeColumnLabel, attributeColumnValue">
 
-         <ice:commandButton value="#{msgs['effects.shrink.labels.invoke']}"
-                       action="#{effects.shrink}"/>
+        <ice:commandButton value="#{msgs['effects.shrink.labels.invoke']}"
+                           action="#{effects.shrink}"/>
 
-         <ice:commandButton value="#{msgs['effects.shrink.labels.reset']}"
-                       action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.shrink.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 </ice:panelGroup>
@@ -330,13 +330,13 @@ for config parameters -->
 <ice:panelGroup id="effectFoldSpecMenu">
 
     <ice:panelGrid columns="2"
-           columnClasses="attributeColumnLabel, attributeColumnValue">
+                   columnClasses="attributeColumnLabel, attributeColumnValue">
 
-         <ice:commandButton value="#{msgs['effects.fold.labels.invoke']}"
-                       action="#{effects.fold}"/>
+        <ice:commandButton value="#{msgs['effects.fold.labels.invoke']}"
+                           action="#{effects.fold}"/>
 
-         <ice:commandButton value="#{msgs['effects.fold.labels.reset']}"
-                       action="#{effects.resetDisappearEffect}"/>
+        <ice:commandButton value="#{msgs['effects.fold.labels.reset']}"
+                           action="#{effects.resetDisappearEffect}"/>
 
     </ice:panelGrid>
 </ice:panelGroup>
@@ -372,7 +372,7 @@ content for the different effects -->
             <h3>Panel Group</h3>
             <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/><br />
+                    <ice:inputText value="#{effects.sampleData}"/><br/>
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -403,9 +403,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.appearFadeBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2" width="100%" >
+            <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/><br />
+                    <ice:inputText value="#{effects.sampleData}"/><br/>
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -437,9 +437,9 @@ content for the different effects -->
         <ice:panelGroup effect="#{effects.highlightBean.effectPanelGroup}"
                         styleClass="effectDemoPanelGroup">
             <h3>Panel Group</h3>
-            <ice:panelGrid columns="2" width="100%" >
+            <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/><br />
+                    <ice:inputText value="#{effects.sampleData}"/><br/>
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -471,7 +471,7 @@ content for the different effects -->
             <h3>Panel Group</h3>
             <ice:panelGrid columns="2" width="100%">
                 <ice:panelGroup>
-                    <ice:inputText value="#{effects.sampleData}"/><br />
+                    <ice:inputText value="#{effects.sampleData}"/><br/>
                     <ice:commandButton value="Command Button"/>
                 </ice:panelGroup>
                 <ice:graphicImage url="images/dragDrop/ice_sailer.jpg"
@@ -700,8 +700,10 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/effectsDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/effectsDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -709,9 +711,10 @@ this placeholder
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="/component-showcase/sourcecodeStream.html?path=./inc/components/effects.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/effects.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 </ice:panelTabSet>

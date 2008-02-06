@@ -134,9 +134,10 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/expandableDoc.html"
-            class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/expandableDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -144,9 +145,10 @@ Template for component source code. This servlet loads
 the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="/component-showcase/sourcecodeStream.html?path=./inc/components/tableExpandable.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/tableExpandable.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 

@@ -42,8 +42,8 @@ selects a node, the respective tree node name is displayed in an output field.
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-<ice:panelTabSet  id="icepnltabset" 
-                  styleClass="componentPanelTabSetLayout">
+<ice:panelTabSet id="icepnltabset"
+                 styleClass="componentPanelTabSetLayout">
 <!--
   Example include, also see source code include.
 -->
@@ -69,7 +69,7 @@ selects a node, the respective tree node name is displayed in an output field.
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="formBorderHighlight"
-                    style="float: left;width:350px;height:275px;overflow: scroll;" >
+                    style="float: left;width:350px;height:275px;overflow: scroll;">
         <ice:tree id="tree"
                   value="#{treeExample.model}"
                   var="item"
@@ -84,7 +84,7 @@ selects a node, the respective tree node name is displayed in an output field.
                         <ice:commandLink
                                 actionListener="#{item.userObject.nodeClicked}">
                             <ice:outputText id="TreeNode"
-                                    value="#{item.userObject.text}"/>
+                                            value="#{item.userObject.text}"/>
                         </ice:commandLink>
                     </ice:panelGroup>
                 </f:facet>
@@ -95,12 +95,12 @@ selects a node, the respective tree node name is displayed in an output field.
                                         style="font-style: italic"
                                         rendered="#{item.userObject.componentType == 1}"/>
                         <ice:inputText id="TreeInTxt"
-                                value ="#{item.userObject.value}"
-                                valueChangeListener ="#{treeExample.changedValue}"
-                                rendered="#{item.userObject.componentType == 2}"/>
+                                       value="#{item.userObject.value}"
+                                       valueChangeListener="#{treeExample.changedValue}"
+                                       rendered="#{item.userObject.componentType == 2}"/>
                         <ice:commandButton id="TreeCmdBtn"
-                                value="#{item.userObject.value}"
-                                rendered="#{item.userObject.componentType == 3}"/>                    
+                                           value="#{item.userObject.value}"
+                                           rendered="#{item.userObject.componentType == 3}"/>
                     </ice:panelGroup>
                 </f:facet>
             </ice:treeNode>
@@ -114,23 +114,23 @@ selects a node, the respective tree node name is displayed in an output field.
                     style="font-weight: bold;"
                     value="#{msgs['components.tree.selected']} "/>
             <ice:outputText id="TreeSlctNode"
-                    value="#{treeExample.selectedNode}"/>
+                            value="#{treeExample.selectedNode}"/>
         </h3>
         <ice:selectOneMenu id="compTyp"
-                value="#{treeExample.componentToAdd}"
-                valueChangeListener="#{treeExample.componentTypeChanged}"
-                partialSubmit="true">
+                           value="#{treeExample.componentToAdd}"
+                           valueChangeListener="#{treeExample.componentTypeChanged}"
+                           partialSubmit="true">
             <f:selectItems
                     value="#{treeExample.componentList}"/>
         </ice:selectOneMenu>
         <ice:panelGroup>
             <ice:commandButton id="Add"
-                    actionListener="#{treeExample.addSelectedNode}"
-                    value="Add"/>
+                               actionListener="#{treeExample.addSelectedNode}"
+                               value="Add"/>
             <ice:commandButton id="Del"
-                    actionListener="#{treeExample.deleteSelectedNode}"
-                    value="Delete"
-                    disabled="#{treeExample.deleteDisabled}"/>
+                               actionListener="#{treeExample.deleteSelectedNode}"
+                               value="Delete"
+                               disabled="#{treeExample.deleteDisabled}"/>
         </ice:panelGroup>
     </ice:panelGroup>
 
@@ -141,8 +141,10 @@ selects a node, the respective tree node name is displayed in an output field.
   this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/treeDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/treeDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -150,8 +152,10 @@ selects a node, the respective tree node name is displayed in an output field.
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/tree.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/tree.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">

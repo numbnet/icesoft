@@ -42,100 +42,104 @@ when the user presses the Enter key or tabs out of a field.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <ice:panelTabSet id="icepnltabset" 
-                    styleClass="componentPanelTabSetLayout">
-        <!--
-          Example include, also see source code include.
-        -->
-        <ice:panelTab id="icepnltab"
-                      label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet id="icepnltabset"
+                 styleClass="componentPanelTabSetLayout">
+    <!--
+      Example include, also see source code include.
+    -->
+    <ice:panelTab id="icepnltab"
+                  label="#{msgs['tabbedHeadings.demo']}">
 
-                <!-- Text Field input -->
-                <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
+        <!-- Text Field input -->
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
 
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['component.textFields.directions']}"/>
-                    </h3>
-                    <br/>
+            <h3>
+                <ice:outputText
+                        value="#{msgs['component.textFields.directions']}"/>
+            </h3>
+            <br/>
 
-                    <ice:panelGrid columns="2"
-                                   rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.textFields.name']}"/>
-                        <ice:inputText id="TxtName"
-                                       value="#{textFields.name}"
-                                       partialSubmit="true"/>
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.textFields.password']}"/>
-                        <ice:inputSecret id="TxtPw"
-                                         value="#{textFields.password}"
-                                         partialSubmit="true"
-                                         redisplay="true"/>
-                        <div style="padding-top:5px;">
-                            <ice:outputText styleClass="propertyLabel"
-                                            value="#{msgs['component.textFields.comments']}"/>
-                        </div>
-                        <ice:inputTextarea id="TxtCmt"
-                                           value="#{textFields.comments}"
-                                           cols="20" rows="4"
-                                           partialSubmit="true"
-                                           style="width:280px;height:80px;overflow: auto;"
-                                           />
+            <ice:panelGrid columns="2"
+                           rowClasses="textFieldNameRow, textFieldNameRow, textFieldCommentsRow">
+                <ice:outputText styleClass="propertyLabel"
+                                value="#{msgs['component.textFields.name']}"/>
+                <ice:inputText id="TxtName"
+                               value="#{textFields.name}"
+                               partialSubmit="true"/>
+                <ice:outputText styleClass="propertyLabel"
+                                value="#{msgs['component.textFields.password']}"/>
+                <ice:inputSecret id="TxtPw"
+                                 value="#{textFields.password}"
+                                 partialSubmit="true"
+                                 redisplay="true"/>
 
-                    </ice:panelGrid>
+                <div style="padding-top:5px;">
+                    <ice:outputText styleClass="propertyLabel"
+                                    value="#{msgs['component.textFields.comments']}"/>
+                </div>
+                <ice:inputTextarea id="TxtCmt"
+                                   value="#{textFields.comments}"
+                                   cols="20" rows="4"
+                                   partialSubmit="true"
+                                   style="width:280px;height:80px;overflow: auto;"
+                        />
 
-                </ice:panelGroup>
+            </ice:panelGrid>
 
-                <!-- Text Field output text -->
-                <ice:panelGroup styleClass="formBorderHighlight"  style="float: left;width:300px;">
+        </ice:panelGroup>
 
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['component.textFields.serverFeedback']}"/>
-                    </h3>
-                    <ice:panelGrid columns="2">
-                        <ice:outputText
-                                value="#{msgs['component.textFields.name']} "
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="TxtNameout"
-                                        value="#{textFields.name}"
-                                        styleClass="valueText"/>
-                        <ice:outputText
-                                value="#{msgs['component.textFields.password']} "
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="TxtPwout"
-                                        value="#{textFields.password}"
-                                        styleClass="valueText"/>
-                        <ice:outputText
-                                value="#{msgs['component.textFields.comments']} "
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="TxtCmtout"
-                                        value="#{textFields.comments}"
-                                        styleClass="valueText"/>
-                    </ice:panelGrid>
-                </ice:panelGroup>
+        <!-- Text Field output text -->
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left;width:300px;">
 
-        </ice:panelTab>
+            <h3>
+                <ice:outputText
+                        value="#{msgs['component.textFields.serverFeedback']}"/>
+            </h3>
+            <ice:panelGrid columns="2">
+                <ice:outputText
+                        value="#{msgs['component.textFields.name']} "
+                        styleClass="valueHeader"/>
+                <ice:outputText id="TxtNameout"
+                                value="#{textFields.name}"
+                                styleClass="valueText"/>
+                <ice:outputText
+                        value="#{msgs['component.textFields.password']} "
+                        styleClass="valueHeader"/>
+                <ice:outputText id="TxtPwout"
+                                value="#{textFields.password}"
+                                styleClass="valueText"/>
+                <ice:outputText
+                        value="#{msgs['component.textFields.comments']} "
+                        styleClass="valueHeader"/>
+                <ice:outputText id="TxtCmtout"
+                                value="#{textFields.comments}"
+                                styleClass="valueText"/>
+            </ice:panelGrid>
+        </ice:panelGroup>
 
-        <!--
-        The bean is responsible for streaming html documentation to
-        this placeholder
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="/component-showcase/docs/textEntryDoc.html" class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+    </ice:panelTab>
 
-        <!--
-          Template for component source code.  This servlet loads
-          the component example jsp include as an xml stream
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe
-                    src="/component-showcase/sourcecodeStream.html?path=./inc/components/textFields.jspx"
-                    class="includeIframe" width="100%"></iframe>
-        </ice:panelTab>
+    <!--
+    The bean is responsible for streaming html documentation to
+    this placeholder
+    -->
+    <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="docFrame"
+                        value="#{ctxtUtil['/docs/textEntryDoc.html']}"
+                        escape="false"/>
+    </ice:panelTab>
 
-    </ice:panelTabSet>
+    <!--
+      Template for component source code.  This servlet loads
+      the component example jsp include as an xml stream
+    -->
+    <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="srcFrame"
+                        value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/textFields.jspx']}"
+                        escape="false"/>
+    </ice:panelTab>
+
+</ice:panelTabSet>
 </ice:form>

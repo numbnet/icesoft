@@ -39,115 +39,118 @@ those buttons
 and links that trigger submits.
 -->
 <ice:form id="iceform"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component">
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
-            <!--
-              Example include, also see source code include.
-            -->
-            <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Example include, also see source code include.
+-->
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-                <ice:panelGroup  styleClass="formBorderHighlight" style="float: left;" >
+    <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
 
-                    <!-- Layout the links and buttons. -->
-                    <ice:panelGrid columns="2"
-                                   rowClasses="textFieldNameRow">
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"/>
-                        <!--ice:inputText value="#{buttonsAndLinks.inputText}" onblur="javascript:iceSubmitPartial(form,this,event)"/-->
-                        <ice:panelGroup>
-                            <ice:inputText id="BLTxt"
-                                    value="#{buttonsAndLinks.inputText}"/>
-                            <ice:outputText
-                                    value="#{msgs['component.buttonsAndLinks.inputTextNote']}"/>
-                        </ice:panelGroup>
+        <!-- Layout the links and buttons. -->
+        <ice:panelGrid columns="2"
+                       rowClasses="textFieldNameRow">
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"/>
+            <!--ice:inputText value="#{buttonsAndLinks.inputText}" onblur="javascript:iceSubmitPartial(form,this,event)"/-->
+            <ice:panelGroup>
+                <ice:inputText id="BLTxt"
+                               value="#{buttonsAndLinks.inputText}"/>
+                <ice:outputText
+                        value="#{msgs['component.buttonsAndLinks.inputTextNote']}"/>
+            </ice:panelGroup>
 
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.submitButtonLabel']}"/>
-                        <ice:commandButton id="BLCmdBtn"
-                                           type="submit" value="Submit"
-                                           actionListener="#{buttonsAndLinks.submitButtonListener}"/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.submitButtonLabel']}"/>
+            <ice:commandButton id="BLCmdBtn"
+                               type="submit" value="Submit"
+                               actionListener="#{buttonsAndLinks.submitButtonListener}"/>
 
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.resetButtonLabel']}"/>
-                        <ice:panelGroup>
-                            <ice:commandButton id="BLRset"
-                                                type="reset" value="Reset"/>
-                            <ice:outputText
-                                    value="#{msgs['component.buttonsAndLinks.resetButtonNote']}"/>
-                        </ice:panelGroup>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.resetButtonLabel']}"/>
+            <ice:panelGroup>
+                <ice:commandButton id="BLRset"
+                                   type="reset" value="Reset"/>
+                <ice:outputText
+                        value="#{msgs['component.buttonsAndLinks.resetButtonNote']}"/>
+            </ice:panelGroup>
 
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.imageButtonLabel']}"/>
-                        <ice:commandButton id="BLImg"
-                                           image="/images/button-submit.gif"
-                                           actionListener="#{buttonsAndLinks.imageButtonListener}"
-                                           styleClass=""/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.imageButtonLabel']}"/>
+            <ice:commandButton id="BLImg"
+                               image="/images/button-submit.gif"
+                               actionListener="#{buttonsAndLinks.imageButtonListener}"
+                               styleClass=""/>
 
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.commandLinkLabel']}"/>
-                        <ice:commandLink id="BLCmdLnk"
-                                         value="Submit"
-                                         actionListener="#{buttonsAndLinks.commandLinkListener}"/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.commandLinkLabel']}"/>
+            <ice:commandLink id="BLCmdLnk"
+                             value="Submit"
+                             actionListener="#{buttonsAndLinks.commandLinkListener}"/>
 
-                        <ice:outputText styleClass="propertyLabel"
-                                        value="#{msgs['component.buttonsAndLinks.outputLinkLabel']}"/>
-                        <ice:outputLink id="BLOutLnk"
-                                        value="http://www.icesoft.com"
-                                        target="_blank">
-                            <ice:outputText value="www.icesoft.com"
-                                            styleClass=""/>
-                        </ice:outputLink>
-                    </ice:panelGrid>
-                </ice:panelGroup>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.buttonsAndLinks.outputLinkLabel']}"/>
+            <ice:outputLink id="BLOutLnk"
+                            value="http://www.icesoft.com"
+                            target="_blank">
+                <ice:outputText value="www.icesoft.com"
+                                styleClass=""/>
+            </ice:outputLink>
+        </ice:panelGrid>
+    </ice:panelGroup>
 
-                <!-- Display the input value submitted, if any. -->
-                <ice:panelGroup styleClass="formBorderHighlight" style="float: left; width:200px;">
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['component.buttonsAndLinks.serverFeedback']}"/>
-                    </h3>
-                    <ice:panelGrid columns="2">
-                        <ice:outputText
-                                value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="BLTxtout"
-                                value="#{buttonsAndLinks.inputText}"
-                                styleClass="valueText"/>
+    <!-- Display the input value submitted, if any. -->
+    <ice:panelGroup styleClass="formBorderHighlight" style="float: left; width:200px;">
+        <h3>
+            <ice:outputText
+                    value="#{msgs['component.buttonsAndLinks.serverFeedback']}"/>
+        </h3>
+        <ice:panelGrid columns="2">
+            <ice:outputText
+                    value="#{msgs['component.buttonsAndLinks.inputTextLabel']}"
+                    styleClass="valueHeader"/>
+            <ice:outputText id="BLTxtout"
+                            value="#{buttonsAndLinks.inputText}"
+                            styleClass="valueText"/>
 
-                        <ice:outputText
-                                value="#{msgs['component.buttonsAndLinks.clickedLabel']}"
-                                styleClass="valueHeader"/>
-                        <ice:outputText id="BLClkd"
-                                value="#{buttonsAndLinks.clicked}"
-                                styleClass="valueText"/>
-                    </ice:panelGrid>
-                </ice:panelGroup>
+            <ice:outputText
+                    value="#{msgs['component.buttonsAndLinks.clickedLabel']}"
+                    styleClass="valueHeader"/>
+            <ice:outputText id="BLClkd"
+                            value="#{buttonsAndLinks.clicked}"
+                            styleClass="valueText"/>
+        </ice:panelGrid>
+    </ice:panelGroup>
 
-            </ice:panelTab>
+</ice:panelTab>
 
-            <!--
-              The bean is responsible for streaming html documentation to
-               this placeholder
-            -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="/component-showcase/docs/buttonAndLinksDoc.html"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>
+<!--
+  The bean is responsible for streaming html documentation to
+   this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/buttonAndLinksDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
 
-            <!--
-              Template for component source code.  This servlet loads
-              the component example jsp include as an xml stream
-            -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/buttonsAndLinks.jspx"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/buttonsAndLinks.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
 
-        </ice:panelTabSet>
+</ice:panelTabSet>
 
 </ice:form>

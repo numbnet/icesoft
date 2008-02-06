@@ -60,13 +60,15 @@ dynamically changed.
         <ice:selectOneRadio id="outputMode"
                             value="#{progressProperty.mode}"
                             partialSubmit="true">
-            <f:selectItem id="standardRb" itemValue="standard" itemLabel="#{msgs['component.progressBar.demo.mode.standard']}"/>
-            <f:selectItem id="indeterminateRb" itemValue="indeterminate" itemLabel="#{msgs['component.progressBar.demo.mode.indeterminate']}"/>
+            <f:selectItem id="standardRb" itemValue="standard"
+                          itemLabel="#{msgs['component.progressBar.demo.mode.standard']}"/>
+            <f:selectItem id="indeterminateRb" itemValue="indeterminate"
+                          itemLabel="#{msgs['component.progressBar.demo.mode.indeterminate']}"/>
         </ice:selectOneRadio>
     </ice:panelGroup>
 
     <!-- grouping border decoration -->
-    <ice:panelGroup style="float:none;margin-right: 25px;margin-bottom: 25px;" >
+    <ice:panelGroup style="float:none;margin-right: 25px;margin-bottom: 25px;">
         <h3>
             <ice:outputText
                     value="#{msgs['component.progressBar.labelAlign']}"/>
@@ -143,25 +145,25 @@ dynamically changed.
 
 </ice:panelGroup>
 
-<ice:panelGroup styleClass="clearer" />
+<ice:panelGroup styleClass="clearer"/>
 
-<ice:panelGroup styleClass="formBorderHighlight" >
+<ice:panelGroup styleClass="formBorderHighlight">
 
-    <ice:panelStack selectedPanel="#{progressProperty.mode}" >
+    <ice:panelStack selectedPanel="#{progressProperty.mode}">
 
         <!-- Standard Mode -->
         <ice:panelGroup id="standard" style="width: 100%; height: 100%;">
             <ice:panelGrid columns="1">
                 <ice:outputText id="contentStandard"
-                        value="#{msgs['component.progressBar.demo.content']}"
-                        style="font-weight: bold;"/>
+                                value="#{msgs['component.progressBar.demo.content']}"
+                                style="font-weight: bold;"/>
 
                 <ice:outputProgress id="percentStandard"
-                        value="#{progress.percent}"
-                        label="#{progressProperty.progressLabelAfter}"
-                        labelComplete="#{progressProperty.progressCompleteLabelAfter}"
-                        labelPosition="#{progressProperty.labelPosition}"
-                        binding="#{progress.progressBar}"/>
+                                    value="#{progress.percent}"
+                                    label="#{progressProperty.progressLabelAfter}"
+                                    labelComplete="#{progressProperty.progressCompleteLabelAfter}"
+                                    labelPosition="#{progressProperty.labelPosition}"
+                                    binding="#{progress.progressBar}"/>
 
                 <ice:commandButton id="startStandard"
                                    actionListener="#{progress.start}"
@@ -175,20 +177,20 @@ dynamically changed.
 
             <ice:panelGrid columns="1">
                 <ice:outputText id="content2Indeterminate"
-                        value="#{msgs['component.progressBar.demo.content2']}"
-                        style="font-weight: bold;"/>
+                                value="#{msgs['component.progressBar.demo.content2']}"
+                                style="font-weight: bold;"/>
 
                 <ice:outputProgress id="percentIndeterminate"
-                        indeterminate="true"
-                        label="#{progressProperty.progressLabelAfter}"
-                        labelComplete="#{progressProperty.progressCompleteLabelAfter}"
-                        labelPosition="#{progressProperty.labelPosition}"
-                        value="#{progressIndeterminate.percent}"/>
+                                    indeterminate="true"
+                                    label="#{progressProperty.progressLabelAfter}"
+                                    labelComplete="#{progressProperty.progressCompleteLabelAfter}"
+                                    labelPosition="#{progressProperty.labelPosition}"
+                                    value="#{progressIndeterminate.percent}"/>
 
                 <ice:commandButton id="startIndeterminate"
-                        actionListener="#{progressIndeterminate.longOperation}"
-                        value="#{msgs['component.progressBar.startButton']}"
-                        disabled="#{progressIndeterminate.runningTask}"/>
+                                   actionListener="#{progressIndeterminate.longOperation}"
+                                   value="#{msgs['component.progressBar.startButton']}"
+                                   disabled="#{progressIndeterminate.runningTask}"/>
 
             </ice:panelGrid>
         </ice:panelGroup>
@@ -203,8 +205,10 @@ dynamically changed.
    this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/outputProgressDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/outputProgressDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -212,9 +216,10 @@ dynamically changed.
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="/component-showcase/sourcecodeStream.html?path=./inc/components/outputProgress.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/outputProgress.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 </ice:panelTabSet>

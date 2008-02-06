@@ -37,35 +37,35 @@ with more data than can be displayed in a single page. ice:commandSortHeader
 is used to specify the columns that can be sorted by clicking the column header.
 -->
 <ice:form id="iceform"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component">
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
-    <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
-        <!--
-          Controls to show/hide the table columns
-        -->
-        <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Controls to show/hide the table columns
+-->
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-            <ice:panelGroup styleClass="formBorderHighlight">
+    <ice:panelGroup styleClass="formBorderHighlight">
 
-                <h3 style="margin-bottom:15px;"><ice:outputText value="#{msgs['component.tablegroup.desc']}"/></h3>
-<ice:panelGrid columns="3">
-                <ice:panelGroup>
-                <ice:outputText value="groupOn dept" /><br/>                
+        <h3 style="margin-bottom:15px;"><ice:outputText value="#{msgs['component.tablegroup.desc']}"/></h3>
+        <ice:panelGrid columns="3">
+            <ice:panelGroup>
+                <ice:outputText value="groupOn dept"/><br/>
                 <ice:dataTable id="groupingData"
                                value="#{groupBean.employees}"
                                var="employee"
-                               >
+                        >
                     <f:facet name="header">
-                      <ice:columnGroup>
-	                        <ice:headerRow>
-	                           <ice:column>Department </ice:column> 
-	                           <ice:column>Sub Department </ice:column> 
-	                           <ice:column>Name</ice:column>                           
-	                        </ice:headerRow>
-                        </ice:columnGroup>                        
+                        <ice:columnGroup>
+                            <ice:headerRow>
+                                <ice:column>Department </ice:column>
+                                <ice:column>Sub Department </ice:column>
+                                <ice:column>Name</ice:column>
+                            </ice:headerRow>
+                        </ice:columnGroup>
                     </f:facet>
                     <ice:column groupOn="#{employee.deptName}">
                         <ice:outputText id="deptname" value="#{employee.deptName}"/>
@@ -78,22 +78,22 @@ is used to specify the columns that can be sorted by clicking the column header.
                     <ice:column>
                         <ice:outputText id="employeeName" value="#{employee.name}"/>
                     </ice:column>
-                  </ice:dataTable>
-                </ice:panelGroup>
-                <ice:panelGroup>
-                <ice:outputText value="groupOn depat, groupOn Subdept" /><br/>                      
-                <ice:dataTable 
-                               value="#{groupBean.employees}"
-                               var="employee"
-                               >
+                </ice:dataTable>
+            </ice:panelGroup>
+            <ice:panelGroup>
+                <ice:outputText value="groupOn depat, groupOn Subdept"/><br/>
+                <ice:dataTable
+                        value="#{groupBean.employees}"
+                        var="employee"
+                        >
                     <f:facet name="header">
-                      <ice:columnGroup>
+                        <ice:columnGroup>
                             <ice:headerRow>
-                               <ice:column>Department </ice:column> 
-                               <ice:column>Sub Department </ice:column> 
-                               <ice:column>Name</ice:column>                           
+                                <ice:column>Department </ice:column>
+                                <ice:column>Sub Department </ice:column>
+                                <ice:column>Name</ice:column>
                             </ice:headerRow>
-                        </ice:columnGroup>                        
+                        </ice:columnGroup>
                     </f:facet>
                     <ice:column groupOn="#{employee.deptName}">
                         <ice:outputText value="#{employee.deptName}"/>
@@ -107,22 +107,22 @@ is used to specify the columns that can be sorted by clicking the column header.
                         <ice:outputText value="#{employee.name}"/>
                     </ice:column>
 
-                  </ice:dataTable>        
-                </ice:panelGroup>
-                <ice:panelGroup>
-                <ice:outputText value="apply grouping on the department column only, but groupOn dept + subdept" /><br/>    
-                <ice:dataTable 
-                               value="#{groupBean.employees}"
-                               var="employee"
-                               >
+                </ice:dataTable>
+            </ice:panelGroup>
+            <ice:panelGroup>
+                <ice:outputText value="apply grouping on the department column only, but groupOn dept + subdept"/><br/>
+                <ice:dataTable
+                        value="#{groupBean.employees}"
+                        var="employee"
+                        >
                     <f:facet name="header">
-                      <ice:columnGroup>
+                        <ice:columnGroup>
                             <ice:headerRow>
-                               <ice:column>Department </ice:column> 
-                               <ice:column>Sub Department </ice:column> 
-                               <ice:column>Name</ice:column>                           
+                                <ice:column>Department </ice:column>
+                                <ice:column>Sub Department </ice:column>
+                                <ice:column>Name</ice:column>
                             </ice:headerRow>
-                        </ice:columnGroup>                        
+                        </ice:columnGroup>
                     </f:facet>
                     <ice:column groupOn="#{employee.deptName}#{employee.subDeptName}">
                         <ice:outputText value="#{employee.deptName}"/>
@@ -136,40 +136,42 @@ is used to specify the columns that can be sorted by clicking the column header.
                         <ice:outputText value="#{employee.name}"/>
                     </ice:column>
 
-                  </ice:dataTable> 
-                </ice:panelGroup>                  
-             </ice:panelGrid>                  
+                </ice:dataTable>
             </ice:panelGroup>
+        </ice:panelGrid>
+    </ice:panelGroup>
 
-        </ice:panelTab>
+</ice:panelTab>
 
-        <!--
-          The bean is responsible for streaming html documentation to
-           this placeholder
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="/component-showcase/docs/columnGroupDoc.html"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+<!--
+  The bean is responsible for streaming html documentation to
+   this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/columnGroupDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
 
-        <!--
-          Template for component source code.  This servlet loads
-          the component example jsp include as an xml stream
-        -->
-        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/tableGrouping.jspx"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/tableGrouping.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
 
-        <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
-            <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
-                    class="includeIframe"
-                    width="100%"></iframe>
-        </ice:panelTab>
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
 
 
-    </ice:panelTabSet>
+</ice:panelTabSet>
 
 </ice:form>

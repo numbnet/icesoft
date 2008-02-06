@@ -42,26 +42,26 @@
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-                <ice:panelGroup id="combinedChartTopGrid"
-                               styleClass="formBorderHighlight">
-                    <h3>
-                        <ice:outputText id="combinedChartTitle"
-                                        value="#{msgs['component.combinedChart.title']}"/>
-                    </h3>
-                    <br/>
-                    <ice:outputText
-                            value="#{msgs['component.combinedChart.desc1']}"/>
-                    <ice:outputText effect="#{combinedChart.effectOutputText}"
-                                    value="#{msgs['component.combinedChart.desc2']}#{combinedChart.clickedValue}"/>
-                </ice:panelGroup>
+            <ice:panelGroup id="combinedChartTopGrid"
+                            styleClass="formBorderHighlight">
+                <h3>
+                    <ice:outputText id="combinedChartTitle"
+                                    value="#{msgs['component.combinedChart.title']}"/>
+                </h3>
+                <br/>
+                <ice:outputText
+                        value="#{msgs['component.combinedChart.desc1']}"/>
+                <ice:outputText effect="#{combinedChart.effectOutputText}"
+                                value="#{msgs['component.combinedChart.desc2']}#{combinedChart.clickedValue}"/>
+            </ice:panelGroup>
 
-                <ice:panelGroup id="centerWrapperCombinedChart">
-                    <center>
+            <ice:panelGroup id="centerWrapperCombinedChart">
+                <center>
                     <ice:outputChart type="custom"
                                      renderOnSubmit="#{combinedChart.renderOnSubmit}"
                                      actionListener="#{combinedChart.action}"/>
-                    </center>
-                </ice:panelGroup>
+                </center>
+            </ice:panelGroup>
 
 
         </ice:panelTab>
@@ -70,9 +70,10 @@
           this placeholder
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="/component-showcase/docs/combinedChartDoc.html"
-                    class="includeIframe"
-                    width="100%"></iframe>
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="docFrame"
+                            value="#{ctxtUtil['/docs/combinedChartDoc.html']}"
+                            escape="false"/>
         </ice:panelTab>
 
         <!--
@@ -80,9 +81,10 @@
           the component example jsp include as an xml stream
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/outputChart/combinedChart.jspx"
-                    class="includeIframe"
-                    width="100%"></iframe>
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="srcFrame"
+                            value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/outputChart/combinedChart.jspx']}"
+                            escape="false"/>
         </ice:panelTab>
 
 

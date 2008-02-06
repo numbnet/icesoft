@@ -42,99 +42,101 @@ the click of a button.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-        <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
-            <!--
-              Example include, also see source code include.
-            -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+    <!--
+      Example include, also see source code include.
+    -->
+    <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
-                <!-- Standard Calendar -->
-                <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
-                    <h3>
-                        <ice:outputText
-                                value="#{msgs['components.dateSelect.nonPopup']}"/>
-                    </h3>
-                    <br/>
-                    <!-- Display the selected date -->
-                    <h4>
-                        <ice:outputText
-                                value="#{msgs['components.dateSelect.selectedDate']}">
+        <!-- Standard Calendar -->
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
+            <h3>
+                <ice:outputText
+                        value="#{msgs['components.dateSelect.nonPopup']}"/>
+            </h3>
+            <br/>
+            <!-- Display the selected date -->
+            <h4>
+                <ice:outputText
+                        value="#{msgs['components.dateSelect.selectedDate']}">
 
-                        </ice:outputText>
+                </ice:outputText>
 
-                        <ice:outputText id="defaultSelectedDate"
-                                        value="#{dateSelect.date1}">
-                            <f:convertDateTime pattern="MM/dd/yyyy"
-                                               timeZone="#{dateSelect.timeZone}"/>
-                        </ice:outputText>
-                    </h4>
-                    <!-- Calendar Component -->
-                    <ice:selectInputDate id="date1"
-                            value="#{dateSelect.date1}"
-                            highlightClass="weekend: august:"
-                            highlightUnit="DAY_OF_WEEK: MONTH"
-                            highlightValue="1,7: 8">
-                            <f:convertDateTime pattern="MM/dd/yyyy"
-                                               timeZone="#{dateSelect.timeZone}"/>
-                    </ice:selectInputDate>
+                <ice:outputText id="defaultSelectedDate"
+                                value="#{dateSelect.date1}">
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:outputText>
+            </h4>
+            <!-- Calendar Component -->
+            <ice:selectInputDate id="date1"
+                                 value="#{dateSelect.date1}"
+                                 highlightClass="weekend: august:"
+                                 highlightUnit="DAY_OF_WEEK: MONTH"
+                                 highlightValue="1,7: 8">
+                <f:convertDateTime pattern="MM/dd/yyyy"
+                                   timeZone="#{dateSelect.timeZone}"/>
+            </ice:selectInputDate>
 
-                    <ul>
-                        <li>Weekends have dark gray backgrounds</li>
-                        <li>August days are bold</li>
-                    </ul>
-                </ice:panelGroup>
+            <ul>
+                <li>Weekends have dark gray backgrounds</li>
+                <li>August days are bold</li>
+            </ul>
+        </ice:panelGroup>
 
 
-                <!-- Popup Calendar -->
-                <ice:panelGroup styleClass="formBorderHighlight" style="float: left;" >
+        <!-- Popup Calendar -->
+        <ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
 
-                    <h3>
-                        <ice:outputText id="popupSelectedDate"
+            <h3>
+                <ice:outputText id="popupSelectedDate"
                                 value="#{msgs['components.dateSelect.popup']}"/>
-                    </h3>
-                    <!-- Display the selected date -->
-                    <br/>
-                    <h4>
-                        <ice:outputText id="popupSelectedDateTxt"
+            </h3>
+            <!-- Display the selected date -->
+            <br/>
+            <h4>
+                <ice:outputText id="popupSelectedDateTxt"
                                 value="#{msgs['components.dateSelect.selectedDate']}"/>
-                        <ice:outputText value="#{dateSelect.date2}">
+                <ice:outputText value="#{dateSelect.date2}">
 
-                            <f:convertDateTime pattern="MM/dd/yyyy"
-                                               timeZone="#{dateSelect.timeZone}"/>
-                        </ice:outputText>
-                    </h4>
-                    <!-- Calendar Component -->
-                    <ice:selectInputDate id="date2"
-                                         value="#{dateSelect.date2}"
-                                         title="#{msgs['components.dateSelect.title']}"
-                                         renderAsPopup="true">
-                            <f:convertDateTime pattern="MM/dd/yyyy"
-                                               timeZone="#{dateSelect.timeZone}"/>
-                    </ice:selectInputDate>
-                    <ice:messages/>
-                </ice:panelGroup>
+                    <f:convertDateTime pattern="MM/dd/yyyy"
+                                       timeZone="#{dateSelect.timeZone}"/>
+                </ice:outputText>
+            </h4>
+            <!-- Calendar Component -->
+            <ice:selectInputDate id="date2"
+                                 value="#{dateSelect.date2}"
+                                 title="#{msgs['components.dateSelect.title']}"
+                                 renderAsPopup="true">
+                <f:convertDateTime pattern="MM/dd/yyyy"
+                                   timeZone="#{dateSelect.timeZone}"/>
+            </ice:selectInputDate>
+            <ice:messages/>
+        </ice:panelGroup>
 
-            </ice:panelTab>
+    </ice:panelTab>
 
-            <!--
-              The bean is responsible for streaming html documentation to
-               this placeholder
-            -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="/component-showcase/docs/selectInputDateDoc.html"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>
+    <!--
+      The bean is responsible for streaming html documentation to
+       this placeholder
+    -->
+    <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="docFrame"
+                        value="#{ctxtUtil['/docs/selectInputDateDoc.html']}"
+                        escape="false"/>
+    </ice:panelTab>
 
-            <!--
-              Template for component source code.  This servlet loads
-              the component example jsp include as an xml stream
-            -->
-            <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe
-                        src="/component-showcase/sourcecodeStream.html?path=./inc/components/selectInputDate.jspx"
-                        class="includeIframe" width="100%"></iframe>
-            </ice:panelTab>
-        </ice:panelTabSet>
+    <!--
+      Template for component source code.  This servlet loads
+      the component example jsp include as an xml stream
+    -->
+    <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="srcFrame"
+                        value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/selectInputDate.jspx']}"
+                        escape="false"/>
+    </ice:panelTab>
+</ice:panelTabSet>
 
 </ice:form>

@@ -147,8 +147,10 @@ a control on the data to hide/show the table columns.
   this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/tableRowSelectionDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/tableRowSelectionDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -156,9 +158,10 @@ a control on the data to hide/show the table columns.
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="/component-showcase/sourcecodeStream.html?path=./inc/components/tableRowSelection.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/tableRowSelection.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 </ice:panelTabSet>

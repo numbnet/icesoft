@@ -31,8 +31,9 @@
   ~ this file under either the MPL or the LGPL License."
   ~
   -->
-<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
-<faces-config >
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+        "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config>
     <application>
         <locale-config>
             <default-locale>en</default-locale>
@@ -49,7 +50,7 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-    
+
     <managed-bean>
         <managed-bean-name>panelDividerBean</managed-bean-name>
         <managed-bean-class>
@@ -57,7 +58,7 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
     <!-- FCKEditor  -->
     <managed-bean>
         <managed-bean-name>inputRichTextBean</managed-bean-name>
@@ -67,28 +68,28 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
-  <managed-bean>
+    <managed-bean>
         <description>
-            
+
         </description>
         <managed-bean-name>tooltip</managed-bean-name>
         <managed-bean-class>
             com.icesoft.icefaces.samples.showcase.layoutPanels.tooltippanel.TooltipBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
-          
-  <managed-bean>
+    </managed-bean>
+
+    <managed-bean>
         <description>
-            
+
         </description>
         <managed-bean-name>groupBean</managed-bean-name>
         <managed-bean-class>
             com.icesoft.icefaces.samples.showcase.components.table.GroupBean
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>    
-          
+    </managed-bean>
+
     <managed-bean>
         <description>
 
@@ -453,6 +454,14 @@
         <managed-bean-class>com.icesoft.icefaces.samples.showcase.components.charts.ChartMediator</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+
+    <!-- Managed bean for utility methods -->
+    <managed-bean>
+        <managed-bean-name>ctxtUtil</managed-bean-name>
+        <managed-bean-class>com.icesoft.icefaces.samples.showcase.util.ContextUtilBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
     <navigation-rule>
         <description>Theme Reload</description>
         <from-view-id>/showcase.iface</from-view-id>

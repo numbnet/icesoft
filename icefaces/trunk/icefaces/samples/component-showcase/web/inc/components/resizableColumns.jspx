@@ -40,81 +40,78 @@ a control on the data to hide/show the table columns.
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
-    <!--
-      Controls to show/hide the table columns
-    -->
-    <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+    <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+        <!--
+          Controls to show/hide the table columns
+        -->
+        <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-             <h3>
+            <h3>
                 <ice:outputText value="Resize columns"/>
             </h3>
             <!--
                 Basic table
             -->
-                <ice:dataTable id="iceDataTbl"
-                               var="person"
-                               value="#{scrollerList.persons}"
-                               resizable="true"
-                               style="width:600px;"
-                        >
-                    <ice:column >
-                        <f:facet name="header">
-                                <ice:outputText id="nameCol" 
-                                    value="Name"/>
-                        </f:facet>
-                        <ice:outputText id="name" 
-                                value="#{person.firstName} #{person.lastName}"/>
-                    </ice:column>
+            <ice:dataTable id="iceDataTbl"
+                           var="person"
+                           value="#{scrollerList.persons}"
+                           resizable="true"
+                           style="width:600px;"
+                    >
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText id="nameCol"
+                                        value="Name"/>
+                    </f:facet>
+                    <ice:outputText id="name"
+                                    value="#{person.firstName} #{person.lastName}"/>
+                </ice:column>
 
-                    <ice:column>
-                        <f:facet name="header">
-                            <ice:outputText id="lngText1Lbl"
-                                    value="Long Text .."/>
-                        </f:facet>
-                                <ice:outputText id="lngText1"
-                                        value="The ICEfaces Component Suite fully supports customization of the appearance of each component via a set of predefined CSS style classes"/>
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText id="lngText1Lbl"
+                                        value="Long Text .."/>
+                    </f:facet>
+                    <ice:outputText id="lngText1"
+                                    value="The ICEfaces Component Suite fully supports customization of the appearance of each component via a set of predefined CSS style classes"/>
 
-                    </ice:column>
+                </ice:column>
 
-                    <ice:column >
-                        <f:facet name="header">
-                            <ice:outputText id="lngText2Lbl"
-                                    value="Long text ..."/>
-                        </f:facet>
-                        <ice:outputText id="lngText2"
+                <ice:column>
+                    <f:facet name="header">
+                        <ice:outputText id="lngText2Lbl"
+                                        value="Long text ..."/>
+                    </f:facet>
+                    <ice:outputText id="lngText2"
                                     value="Changing the appearance or theme of a web application developed with the ICEfaces Component Suite is as simple as changing the CSS style sheet used to alter the definitions of the predefined style class names used by the ICEfaces Component Suite components."/>
 
-                    </ice:column>
-                </ice:dataTable>
-    </ice:panelTab>
+                </ice:column>
+            </ice:dataTable>
+        </ice:panelTab>
 
-    <!--
-      The bean is responsible for streaming html documentation to
-      this placeholder
-    -->
-    <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-        <iframe src="/component-showcase/docs/dataTableDoc.html" class="includeIframe"
-                width="100%"></iframe>
-    </ice:panelTab>
+        <!--
+          The bean is responsible for streaming html documentation to
+          this placeholder
+        -->
+        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="docFrame"
+                            value="#{ctxtUtil['/docs/dataTableDoc.html']}"
+                            escape="false"/>
+        </ice:panelTab>
 
-    <!--
-      Template for component source code.  This servlet loads
-      the component example jsp include as an xml stream
-    -->
-    <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-        <iframe
-                src="/component-showcase/sourcecodeStream.html?path=./inc/components/resizableColumns.jspx"
-                class="includeIframe" width="100%"></iframe>
-    </ice:panelTab>
-
-    <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
-        <iframe src="http://facestutorials.icefaces.org/tutorial/dataTable-tutorial.html"
-                class="includeIframe"
-                width="100%"></iframe>
-    </ice:panelTab>
+        <!--
+          Template for component source code.  This servlet loads
+          the component example jsp include as an xml stream
+        -->
+        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="srcFrame"
+                            value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/resizableColumns.jspx']}"
+                            escape="false"/>
+        </ice:panelTab>
 
 
-</ice:panelTabSet>
+    </ice:panelTabSet>
 
 </ice:form>

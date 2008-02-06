@@ -32,48 +32,51 @@
 -->
 
 <ice:form id="iceform"
-        xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component">
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+    <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
-<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
-    <ice:panelGroup id="gmapDemo2"
-                   styleClass="formBorderHighlight" >
-        <ice:outputText  value="#{msgs['component.gmap.demo2.desc1']}"/>
-        <ice:outputText  value="#{msgs['component.gmap.demo2.desc2']}"/>                            
-        <ice:panelGroup id="pnlgrp1" >
-	        <ice:outputText value="#{msgs['component.gmap.demo2.find']}"/>
-	        <ice:inputText id="inadress" value="#{gmap.geoCoderAddress}" actionListener="#{gmap.enterKeyPressed}" />
-        </ice:panelGroup>
-        <ice:panelGroup id="pnlgrp2" styleClass="formBorderHighlight" >
-            <ice:gMap id="address" address="#{gmap.geoCoderAddress}" 
-                      locateAddress="#{gmap.locateAddress}"/>
-        </ice:panelGroup>
-    </ice:panelGroup>
+        <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+            <ice:panelGroup id="gmapDemo2"
+                            styleClass="formBorderHighlight">
+                <ice:outputText value="#{msgs['component.gmap.demo2.desc1']}"/>
+                <ice:outputText value="#{msgs['component.gmap.demo2.desc2']}"/>
+                <ice:panelGroup id="pnlgrp1">
+                    <ice:outputText value="#{msgs['component.gmap.demo2.find']}"/>
+                    <ice:inputText id="inadress" value="#{gmap.geoCoderAddress}"
+                                   actionListener="#{gmap.enterKeyPressed}"/>
+                </ice:panelGroup>
+                <ice:panelGroup id="pnlgrp2" styleClass="formBorderHighlight">
+                    <ice:gMap id="address" address="#{gmap.geoCoderAddress}"
+                              locateAddress="#{gmap.locateAddress}"/>
+                </ice:panelGroup>
+            </ice:panelGroup>
 
-</ice:panelTab>
-<!--
-  The bean is responsible for streaming html documentation to
-  this placeholder
--->
-<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/gmapDoc.html"
-            class="includeIframe"
-            width="100%"></iframe>
-</ice:panelTab>
+        </ice:panelTab>
+        <!--
+          The bean is responsible for streaming html documentation to
+           this placeholder
+        -->
+        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="docFrame"
+                            value="#{ctxtUtil['/docs/gmapDoc.html']}"
+                            escape="false"/>
+        </ice:panelTab>
 
-<!--
-  Template for component source code.  This servlet loads
-  the component example jsp include as an xml stream
--->
-<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe src="/component-showcase/sourcecodeStream.html?path=./inc/components/gmap/demo2.jspx"
-            class="includeIframe"
-            width="100%"></iframe>
-</ice:panelTab>
+        <!--
+          Template for component source code.  This servlet loads
+          the component example jsp include as an xml stream
+        -->
+        <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="srcFrame"
+                            value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/gmap/demo2.jspx']}"
+                            escape="false"/>
+        </ice:panelTab>
 
-</ice:panelTabSet>
+    </ice:panelTabSet>
 
 </ice:form>

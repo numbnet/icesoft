@@ -52,136 +52,137 @@ are shown but could easily be made to invoke application logic.
 <!-- menubar -->
 <ice:panelGroup styleClass="formBorderHighlight"
                 style="height: 200px ">
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.menuBar.instructions']}"/>
-    </h3>
-    <h4>
-        <ice:outputText
-                value="#{msgs['component.menuBar.subInstructions']}"/>
-    </h4>
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.menuBar.orientation.label']}"/>
-    </h3>
+<h3>
+    <ice:outputText
+            value="#{msgs['component.menuBar.instructions']}"/>
+</h3>
+<h4>
+    <ice:outputText
+            value="#{msgs['component.menuBar.subInstructions']}"/>
+</h4>
 
-    <!-- toggle menu bar orientation -->
-    <ice:selectOneRadio id="MenuSlctRadio" value="#{menuBar.orientation}" partialSubmit="true">
-        <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="#{msgs['component.menuBar.orientation.horiz']}"/>
-        <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="#{msgs['component.menuBar.orientation.vert']}"/>
-    </ice:selectOneRadio>
-    <br />
-    <!-- main menu declaration  -->
-    <ice:menuBar id="menuBar" orientation="#{menuBar.orientation}">
+<h3>
+    <ice:outputText
+            value="#{msgs['component.menuBar.orientation.label']}"/>
+</h3>
 
-        <!-- File menu -->
-        <ice:menuItem value="File" id="file" >
-            <ice:menuItem actionListener="#{menuBar.primaryListener}"
-                          id="open" value="Open" icon="/images/menu/open.gif">
-                <f:param name="myParam" value="Open"/>
-            </ice:menuItem>
-            <ice:menuItem id="close" value="Close"
+<!-- toggle menu bar orientation -->
+<ice:selectOneRadio id="MenuSlctRadio" value="#{menuBar.orientation}" partialSubmit="true">
+    <f:selectItem id="MenuHoriz" itemValue="horizontal" itemLabel="#{msgs['component.menuBar.orientation.horiz']}"/>
+    <f:selectItem id="MenuVert" itemValue="vertical" itemLabel="#{msgs['component.menuBar.orientation.vert']}"/>
+</ice:selectOneRadio>
+<br/>
+<!-- main menu declaration  -->
+<ice:menuBar id="menuBar" orientation="#{menuBar.orientation}">
+
+    <!-- File menu -->
+    <ice:menuItem value="File" id="file">
+        <ice:menuItem actionListener="#{menuBar.primaryListener}"
+                      id="open" value="Open" icon="/images/menu/open.gif">
+            <f:param name="myParam" value="Open"/>
+        </ice:menuItem>
+        <ice:menuItem id="close" value="Close"
+                      actionListener="#{menuBar.primaryListener}">
+            <f:param name="myParam" value="Close"/>
+        </ice:menuItem>
+        <ice:menuItemSeparator/>
+        <ice:menuItem id="recent" value="Recent"
+                      icon="/images/menu/recent.gif"
+                      actionListener="#{menuBar.primaryListener}">
+            <f:param name="myParam" value="Recent"/>
+            <ice:menuItem id="file1"
+                          value="File 1"
                           actionListener="#{menuBar.primaryListener}">
-                <f:param name="myParam" value="Close"/>
+                <f:param name="myParam" value="File 1"/>
             </ice:menuItem>
-            <ice:menuItemSeparator />
-            <ice:menuItem id="recent" value="Recent"
-                          icon="/images/menu/recent.gif"
-                          actionListener="#{menuBar.primaryListener}">
-                <f:param name="myParam" value="Recent"/>
-                <ice:menuItem id="file1"
-                              value="File 1"
-                              actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="File 1"/>
-                </ice:menuItem>
-                <ice:menuItem id="file2"
+            <ice:menuItem id="file2"
+                          actionListener="#{menuBar.primaryListener}"
+
+                          value="File 2">
+                <f:param name="myParam" value="File 2"/>
+                <ice:menuItem id="para1"
                               actionListener="#{menuBar.primaryListener}"
-
-                              value="File 2">
-                    <f:param name="myParam" value="File 2"/>
-                    <ice:menuItem id="para1"
-                                  actionListener="#{menuBar.primaryListener}"
-                                  value="Para 1">
-                        <f:param name="myParam" value="Para 1"/>
-                    </ice:menuItem>
-                    <ice:menuItem id="para2" value="Para 2"
-                                  actionListener="#{menuBar.primaryListener}">
-                        <f:param name="myParam" value="Para 2"/>
-                    </ice:menuItem>
-
-                    <ice:menuItem id="para3" value="Para 3"
-                                  actionListener="#{menuBar.primaryListener}"/>
-
+                              value="Para 1">
+                    <f:param name="myParam" value="Para 1"/>
                 </ice:menuItem>
-                <ice:menuItem value="File 3"
-                              id="file3"
+                <ice:menuItem id="para2" value="Para 2"
+                              actionListener="#{menuBar.primaryListener}">
+                    <f:param name="myParam" value="Para 2"/>
+                </ice:menuItem>
+
+                <ice:menuItem id="para3" value="Para 3"
                               actionListener="#{menuBar.primaryListener}"/>
-                <ice:menuItem value="File 4"
-                              id="file4"
-                              actionListener="#{menuBar.primaryListener}"/>
+
             </ice:menuItem>
-
-            <ice:menuItem id="save"
-                          icon="/images/menu/save.gif" value="Save"
+            <ice:menuItem value="File 3"
+                          id="file3"
                           actionListener="#{menuBar.primaryListener}"/>
-
-            <ice:menuItem id="print"
-                          icon="/images/menu/print.gif" value="Print"
+            <ice:menuItem value="File 4"
+                          id="file4"
                           actionListener="#{menuBar.primaryListener}"/>
         </ice:menuItem>
 
-        <!-- Edit menu -->
-        <ice:menuItem value="Edit" id="edit">
-            <ice:menuItem id="cut" value="Cut"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
-            <ice:menuItem id="copy" value="Copy"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
-            <ice:menuItem id="paste" value="Paste"
+        <ice:menuItem id="save"
+                      icon="/images/menu/save.gif" value="Save"
+                      actionListener="#{menuBar.primaryListener}"/>
 
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
+        <ice:menuItem id="print"
+                      icon="/images/menu/print.gif" value="Print"
+                      actionListener="#{menuBar.primaryListener}"/>
+    </ice:menuItem>
+
+    <!-- Edit menu -->
+    <ice:menuItem value="Edit" id="edit">
+        <ice:menuItem id="cut" value="Cut"
+                      actionListener="#{menuBar.primaryListener}">
         </ice:menuItem>
-
-        <!-- View menu -->
-        <ice:menuItem value="View" id="view">
-            <ice:menuItem id="zoom_in" value="Zoom In"
-                          icon="/images/menu/zoomin.gif"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
-            <ice:menuItem id="zoom_out" value="Zoom Out"
-                          icon="/images/menu/zoomout.gif"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
-            <ice:menuItem id="fit_in_window" value="Fit In Window"
-                          icon="/images/menu/fitinwindow.gif"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
-            <ice:menuItem id="actual_size" value="Actual Size"
-                          icon="/images/menu/actualsize.gif"
-                          actionListener="#{menuBar.primaryListener}">
-            </ice:menuItem>
+        <ice:menuItem id="copy" value="Copy"
+                      actionListener="#{menuBar.primaryListener}">
         </ice:menuItem>
+        <ice:menuItem id="paste" value="Paste"
 
-    </ice:menuBar>
+                      actionListener="#{menuBar.primaryListener}">
+        </ice:menuItem>
+    </ice:menuItem>
+
+    <!-- View menu -->
+    <ice:menuItem value="View" id="view">
+        <ice:menuItem id="zoom_in" value="Zoom In"
+                      icon="/images/menu/zoomin.gif"
+                      actionListener="#{menuBar.primaryListener}">
+        </ice:menuItem>
+        <ice:menuItem id="zoom_out" value="Zoom Out"
+                      icon="/images/menu/zoomout.gif"
+                      actionListener="#{menuBar.primaryListener}">
+        </ice:menuItem>
+        <ice:menuItem id="fit_in_window" value="Fit In Window"
+                      icon="/images/menu/fitinwindow.gif"
+                      actionListener="#{menuBar.primaryListener}">
+        </ice:menuItem>
+        <ice:menuItem id="actual_size" value="Actual Size"
+                      icon="/images/menu/actualsize.gif"
+                      actionListener="#{menuBar.primaryListener}">
+        </ice:menuItem>
+    </ice:menuItem>
+
+</ice:menuBar>
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="formBorderHighlight"
                 style="height: 175px ">
-    
+
     <ice:panelGroup id="clickingSection"
                     effect="#{menuBar.textEffect}"
                     menuPopup="menuPopupText"
                     contextValue="text">
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.menuPopup.instructions']}"/>
-    </h3>
-    <h4>
-        <ice:outputText
-                value="#{msgs['component.menuPopup.subInstructions']}"/>
-    </h4>
+        <h3>
+            <ice:outputText
+                    value="#{msgs['component.menuPopup.instructions']}"/>
+        </h3>
+        <h4>
+            <ice:outputText
+                    value="#{msgs['component.menuPopup.subInstructions']}"/>
+        </h4>
     </ice:panelGroup>
     <ice:panelGroup id="clickingImageSection"
                     effect="#{menuBar.imageEffect}"
@@ -204,7 +205,7 @@ are shown but could easily be made to invoke application logic.
     </ice:menuPopup>
     <ice:menuPopup id="menuPopupText">
         <!-- File menu -->
-        <ice:menuItem id="text" value="Text Only" >
+        <ice:menuItem id="text" value="Text Only">
             <ice:menuItem id="doc" value="Document"
                           icon="/images/menu/recent.gif"
                           actionListener="#{menuBar.primaryListener}">
@@ -222,28 +223,28 @@ are shown but could easily be made to invoke application logic.
             </ice:menuItem>
         </ice:menuItem>
         <ice:menuItem id="textAndOrImage" value="Text and/or Image">
-<!--
-            <ice:menuItem id="text" value="Text">
-                <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="Appear"/>
-                </ice:menuItem>
-            </ice:menuItem>
-            <ice:menuItem id="image" value="Image">
-                <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="Shake"/>
-                </ice:menuItem>
-            </ice:menuItem>
-            <ice:menuItem id="both" value="Both">
-                <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="Appear"/>
-                </ice:menuItem>
-                <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
-                    <f:param name="myParam" value="Shake"/>
-                </ice:menuItem>
-            </ice:menuItem>
--->
+            <!--
+                        <ice:menuItem id="text" value="Text">
+                            <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
+                                <f:param name="myParam" value="Appear"/>
+                            </ice:menuItem>
+                        </ice:menuItem>
+                        <ice:menuItem id="image" value="Image">
+                            <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
+                                <f:param name="myParam" value="Shake"/>
+                            </ice:menuItem>
+                        </ice:menuItem>
+                        <ice:menuItem id="both" value="Both">
+                            <ice:menuItem id="appear" value="Appear" actionListener="#{menuBar.primaryListener}">
+                                <f:param name="myParam" value="Appear"/>
+                            </ice:menuItem>
+                            <ice:menuItem id="shake" value="Shake" actionListener="#{menuBar.primaryListener}">
+                                <f:param name="myParam" value="Shake"/>
+                            </ice:menuItem>
+                        </ice:menuItem>
+            -->
         </ice:menuItem>
-    </ice:menuPopup>    
+    </ice:menuPopup>
 </ice:panelGroup>
 
 <!-- Server Side Backing Bean Values -->
@@ -270,8 +271,10 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="/component-showcase/docs/menuBarDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/menuBarDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -279,9 +282,10 @@ this placeholder
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="/component-showcase/sourcecodeStream.html?path=./inc/components/menuBar.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/menuBar.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
