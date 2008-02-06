@@ -3,6 +3,7 @@ package com.icesoft.faces.component;
 import javax.faces.component.UIComponent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
 
 public class ContextActionEvent extends ActionEvent {
     UIComponent target;
@@ -23,12 +24,10 @@ public class ContextActionEvent extends ActionEvent {
     }
     
     public boolean isAppropriateListener(FacesListener listener) {
-        // TODO Auto-generated method stub
-        return false;
+        return (listener instanceof ActionListener);
     }
-
-
+    
     public void processListener(FacesListener listener) {
-        // TODO Auto-generated method stub
+        ((ActionListener)listener).processAction(this);
     }
 }
