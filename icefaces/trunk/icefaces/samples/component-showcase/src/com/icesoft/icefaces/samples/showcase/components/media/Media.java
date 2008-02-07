@@ -52,7 +52,7 @@ public class Media {
 
         props = new Properties();
         props.setProperty("source", "http://icesoft.com/demo/icefaces-c3-demo.mov");
-        props.setProperty("style", "width:428px;height:330px;");
+        props.setProperty("style", "width:640px;height:496px;");
         props.setProperty("autoStartParamName", "autoplay");
         props.setProperty("autoStartParamValue", "true");
         props.setProperty("controlsParamName", "controller");
@@ -61,7 +61,7 @@ public class Media {
 
         props = new Properties();
         props.setProperty("source", "http://icesoft.com/demo/icefaces-c3-demo.wmv");
-        props.setProperty("style", "width:428px;height:350px;");
+        props.setProperty("style", "width:640px;height:525px;");
         props.setProperty("autoStartParamName", "autostart");
         props.setProperty("autoStartParamValue", "1"); // Firefox doesn't work with true/false
         props.setProperty("controlsParamName", "showcontrols");
