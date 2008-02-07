@@ -98,7 +98,7 @@
     </ice:ant>
 
     <ice:ant antfile="ahs/build.xml">
-    	<target name="build.war"/>
+    	<target name="build.servlet.jboss.war"/>
     </ice:ant>
 
     <delete dir="${dist.dir}/samples"/>

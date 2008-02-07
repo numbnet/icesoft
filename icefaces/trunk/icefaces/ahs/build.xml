@@ -97,7 +97,7 @@
         
     </target>
     
-    <target name="build.src.bundle" depends="clean, jar, build.war">
+    <target name="build.src.bundle" depends="clean, jar, build.servlet.jboss.war">
         <touch  file="${src.bundle.file}" mkdirs="true"/>
         <delete file="${src.bundle.file}"/>
         
