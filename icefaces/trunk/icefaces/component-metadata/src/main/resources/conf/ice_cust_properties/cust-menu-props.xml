@@ -137,3 +137,14 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        displayOnClick
+    </description>
+    <property-name>displayOnClick</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+    </property-extension>
+</property>

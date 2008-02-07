@@ -41,6 +41,7 @@ import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.CoreUtils;
@@ -182,21 +183,25 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                 expand(supermenu, clientId + "_sub",
                         KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);";
-                
-                topLevelDiv.setAttribute(displayEvent, call);
             } else {
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                     expand("this", clientId + "_sub",
                            KEYWORD_NULL) + "Ice.Menu.appendHoverClasses(this);";
+            }
+            if (menuComponent instanceof MenuPopup) {
                 topLevelDiv.setAttribute(displayEvent, call);
             }
         } else {
             topLevelDiv.setAttribute(HTML.CLASS_ATTR, CoreUtils.addPortletStyleClassToQualifiedClass(
                     qualifiedName, rootItemSubClass, PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
-            topLevelDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                     "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
+            if (menuComponent instanceof MenuPopup) {
+                topLevelDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
+                                       "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
+              }
         }
-        topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+        if (menuComponent instanceof MenuPopup) {
+            topLevelDiv.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.Menu.removeHoverClasses(this);");
+        }
         String title = ((MenuItem) uiComponent).getTitle();
         if(title != null && title.length() > 0)
             topLevelDiv.setAttribute(HTML.TITLE_ATTR, title);
@@ -212,10 +217,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         renderAnchor(facesContext, domContext, (MenuItem) uiComponent,
                      topLevelDiv, menuComponent, vertical);
-        if (call != null) {
-            Element anch = (Element)topLevelDiv.getChildNodes().item(0);
-            anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ topLevelDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
-        }
+
+        //Element anch = (Element)topLevelDiv.getChildNodes().item(0);
+        //anch.setAttribute(HTML.HREF_ATTR, "javascript:void();");        
         if ((uiComponent.getChildCount() > 0) &&
             (((MenuItem) uiComponent).isChildrenMenuItem())) {
             renderChildrenRecursive(facesContext, menuComponent, uiComponent,
@@ -568,8 +572,10 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
                 "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
         }
+        if (menuComponent instanceof MenuPopup) {
         subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR,
             "Ice.Menu.removeHoverClasses(this);");
+        }
         String title = nextSubMenuItem.getTitle();
         if(title != null && title.length() > 0)
             subMenuItemDiv.setAttribute(HTML.TITLE_ATTR, title);
@@ -584,7 +590,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (call != null) {
             Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
             anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ subMenuItemDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
-        }        
+        }   
+        
+
+//      Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+//      anch.setAttribute(HTML.HREF_ATTR, "javascript:void(0);");
+         
     }
     
     /**

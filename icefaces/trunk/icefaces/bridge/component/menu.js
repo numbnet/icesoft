@@ -253,4 +253,4 @@ Ice.Menu = {
         menuItem.className = menuItem.className.replace(regExp, "");
     }
 }
-document.documentElement.onclick = Ice.Menu.hideAll;
+

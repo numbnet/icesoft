@@ -75,13 +75,20 @@ Ice.KeyNavigator = Class.create({
 });
 
 Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
-  initialize: function($super, event) {
-    $super(event);
+  initialize: function($super, componentId, displayOnClick) {
+    $super(componentId);
+    this.displayOnClick = displayOnClick;
+    
+    this.hideAllEvent = this.hideAll.bindAsEventListener(this);
+    Event.observe(document, "click", this.hideAllEvent);
     if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
         this.vertical = true;
     } else {
         this.vertical = false;
     }
+    this.clicked = true;
+    this.configureRootItems();
+    
   }
 });
 
@@ -194,6 +201,81 @@ Ice.MenuBarKeyNavigator.addMethods({
     } else {
         return "iceMnuBarSubMenuInd";
     }
-  }
+  },
+  
+  getRootClass: function() {
+    if (this.vertical) {
+        return "iceMnuBarVrt";
+    } else {
+        return "iceMnuBar";
+    }  
+  },
+  
+  hover: function(event) {
+    if (this.clicked) {
+	    element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
+	    Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
+	    var submenu = $(element.id + '_sub');
+
+	    if (this.vertical) {
+	        var rootElement = element.up('.'+ this.getRootClass())
+	        Ice.Menu.show(rootElement,submenu,element);
+	    } else {
+	        Ice.Menu.show(element,submenu,null);
+	    }
+    }
+  },
+  
+  mousedown: function(event) {
+    element = Event.element(event);  
+    if (this.clicked) {
+        this.clicked = false;
+    } else {
+        this.clicked = true;    
+        this.hover(event);
+    }
+  },
+  
+  focus: function(event) {
+    this.hover(event);
+  },
+  
+  configureRootItems: function () {
+     mnuBarItem = this.component.down('.'+ this.getMenuBarItemClass());
+     this.registerEvents(mnuBarItem);
+  },
+  
+  registerEvents:function (mnuBarItem) {
+    if (mnuBarItem) {
+        this.hoverEvent = this.hover.bindAsEventListener(this);
+        Event.observe(mnuBarItem, "mouseover", this.hoverEvent);
+        
+        //add focus support 
+        var anch = mnuBarItem.down('a');
+        this.focusEvent = this.focus.bindAsEventListener(this);
+        Event.observe(anch, "focus", this.focusEvent);
+                
+        if (this.displayOnClick) { 
+            this.mousedownEvent = this.mousedown.bindAsEventListener(this);
+            Event.observe(mnuBarItem, "mousedown", this.mousedownEvent);
+            this.clicked = false;            
+        }
+        var sibling = mnuBarItem.next('.'+ this.getMenuBarItemClass());
+        if (sibling) {
+	        this.registerEvents(sibling);
+        }
+    }  
+  },
+  
+  hideAll:function(event) {
+      element = Event.element(event); 
+      var baritem = element.up('.'+ this.getMenuBarItemClass());
+      if (!(baritem && this.clicked)) {
+        Ice.Menu.hideAll();
+        if (this.displayOnClick) {       
+            this.clicked = false;
+        }         
+      }
+   }
 
 });

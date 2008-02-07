@@ -103,7 +103,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String style;
     private String renderedOnUserRole = null;
     private Boolean noIcons;
-
+    private Boolean displayOnClick;
     /**
      * default no args constructor
      */
@@ -381,6 +381,21 @@ public class MenuBar extends UICommand implements NamingContainer {
     
     public String getComponentRootStyle() {
         return CSS_DEFAULT.MENU_BAR_STYLE;
+    }
+    
+    public void setDisplayOnClick(boolean displayOnClick) {
+        this.displayOnClick = Boolean.valueOf(displayOnClick);
+    }
+    
+    public boolean isDisplayOnClick() {
+        if (displayOnClick != null) {
+            return displayOnClick.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("displayOnClick");
+        if (vb != null) {
+            return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+        }
+        return false;
     }
 }
 

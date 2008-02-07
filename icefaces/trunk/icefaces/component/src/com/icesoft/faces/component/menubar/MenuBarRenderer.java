@@ -69,11 +69,13 @@ public class MenuBarRenderer extends DomBasicRenderer {
         Element menuDiv = (Element) domContext.getRootNode();
         menuDiv.setAttribute(HTML.ID_ATTR,
                              uiComponent.getClientId(facesContext));
-        JavascriptContext.addJavascriptCall(facesContext, 
-                "new Ice.MenuBarKeyNavigator('" + 
-                uiComponent.getClientId(facesContext) +"');");
-        
         MenuBar menuComponent = (MenuBar) uiComponent;
+        String call = "new Ice.MenuBarKeyNavigator('" + 
+        uiComponent.getClientId(facesContext) +"', " +
+        menuComponent.isDisplayOnClick() +");";
+        JavascriptContext.addJavascriptCall(facesContext, call);
+        
+
         String defaultStyle = menuComponent.getComponentRootStyle();
         if (MenuBar.ORIENTATION_VERTICAL.equalsIgnoreCase(
                 menuComponent.getOrientation())){
