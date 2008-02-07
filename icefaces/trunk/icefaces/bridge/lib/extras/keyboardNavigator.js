@@ -41,6 +41,10 @@ Ice.KeyNavigator = Class.create({
   keydown: function(event) {
     this.srcElement = Event.element(event);
     switch(event.keyCode) {
+    
+        case Event.KEY_RETURN:
+            this.showMenu(event);
+            break;
 /*    
         case Event.KEY_UP:
             this.goNorth(event);
@@ -214,9 +218,8 @@ Ice.MenuBarKeyNavigator.addMethods({
   hover: function(event) {
     if (this.clicked) {
 	    element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
+        var submenu = $(element.id + '_sub');
 	    Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
-	    var submenu = $(element.id + '_sub');
-
 	    if (this.vertical) {
 	        var rootElement = element.up('.'+ this.getRootClass())
 	        Ice.Menu.show(rootElement,submenu,element);
@@ -276,6 +279,14 @@ Ice.MenuBarKeyNavigator.addMethods({
             this.clicked = false;
         }         
       }
+   },
+   
+   showMenu:function(event) {
+     element = Event.element(event);    
+     var baritem = element.up('.'+ this.getMenuBarItemClass());
+     if (baritem && this.displayOnClick) {
+        this.mousedown(event);
+     }
    }
 
 });

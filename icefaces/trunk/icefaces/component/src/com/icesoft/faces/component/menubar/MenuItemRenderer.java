@@ -182,11 +182,11 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 }
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                 expand(supermenu, clientId + "_sub",
-                        KEYWORD_THIS) + "Ice.Menu.appendHoverClasses(this);";
+                        KEYWORD_THIS) + "";
             } else {
                 call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
                     expand("this", clientId + "_sub",
-                           KEYWORD_NULL) + "Ice.Menu.appendHoverClasses(this);";
+                           KEYWORD_NULL) + "";
             }
             if (menuComponent instanceof MenuPopup) {
                 topLevelDiv.setAttribute(displayEvent, call);
@@ -196,7 +196,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     qualifiedName, rootItemSubClass, PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
             if (menuComponent instanceof MenuPopup) {
                 topLevelDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                                       "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
+                                       "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
               }
         }
         if (menuComponent instanceof MenuPopup) {
@@ -558,7 +558,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (nextSubMenuItem.isChildrenMenuItem()) {
             call = "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);" +
             expand(subMenuDivId, subMenuItemClientId + SUB, KEYWORD_THIS) +
-            "Ice.Menu.appendHoverClasses(this);";
+            "";
             subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
                 CoreUtils.addPortletStyleClassToQualifiedClass(
                     qualifiedName, qualifiedName,
@@ -570,7 +570,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     qualifiedName, qualifiedName,
                     PORTLET_CSS_DEFAULT.PORTLET_MENU_ITEM));
             subMenuItemDiv.setAttribute(HTML.ONMOUSEOVER_ATTR,
-                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);Ice.Menu.appendHoverClasses(this);");
+                "Ice.Menu.hideOrphanedMenusNotRelatedTo(this);");
         }
         if (menuComponent instanceof MenuPopup) {
         subMenuItemDiv.setAttribute(HTML.ONMOUSEOUT_ATTR,
