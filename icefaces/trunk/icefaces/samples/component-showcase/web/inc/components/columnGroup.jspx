@@ -114,9 +114,9 @@ is used to specify the columns that can be sorted by clicking the column header.
     -->
     <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
         <!-- ICE-2714: generating iframe markup to include context path -->
-        <ice:outputText id="docFrame"
-                        value="#{ctxtUtil['/docs/columnGroupDoc.html']}"
-                        escape="false"/>
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/dataTableDoc.html']}"
+                    escape="false"/>
     </ice:panelTab>
 
     <!--

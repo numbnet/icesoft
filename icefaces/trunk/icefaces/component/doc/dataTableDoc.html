@@ -58,6 +58,78 @@ Example<br>
 dataTable
 component:</p>
 <pre class="Preformatted">&lt;ice:dataTable<br>        var="car"<br>         value="#{list.cars}"<br>         sortColumn="#{list.sort}"<br>         sortAscending="#{list.ascending}"<br>         &gt;<br>  <br>        &lt;f:facet name="header"&gt;<br>                 &lt;ice:outputText value="(header table)"  /&gt;<br>         &lt;/f:facet&gt;<br> <br>        &lt;f:facet name="footer"&gt;<br>                 &lt;ice:outputText value="(footer table)"  /&gt;<br>         &lt;/f:facet&gt;<br>  <br>        &lt;ice:column&gt;<br>                &lt;f:facet name="header"&gt;<br>                         &lt;ice:outputText value="Type" /&gt;<br>                 &lt;/f:facet&gt;<br>                &lt;ice:outputText value="#{car.type}" /&gt;<br>                &lt;f:facet name="footer"&gt;<br>                         &lt;ice:outputText id="ftr1" value="(footer col1)"  /&gt;<br>                 &lt;/f:facet&gt;<br>        &lt;/ice:column&gt;<br>  <br>        &lt;ice:column&gt;<br>                &lt;f:facet name="header"&gt;<br>                         &lt;ice:outputText value="Color" /&gt;<br>                &lt;/f:facet&gt;<br>                &lt;ice:outputText value="#{car.color}" /&gt;<br>                &lt;f:facet name="footer"&gt;<br>                        &lt;ice:outputText id="ftr2" value="(footer col2)"  /&gt;<br>                &lt;/f:facet&gt;<br>        &lt;/ice:column&gt;<br> <br>&lt;/ice:dataTable&gt;<br>  <br></pre>
+
+<p> The following code shows how to create multiple columns. </p>
+
+ <pre class="Preformatted">
+ &lt;ice:dataTable ..&gt;
+ 	&lt;f:facet name="header"&gt;
+                    &lt;ice:columnGroup&gt;
+                        &lt;ice:headerRow&gt;
+                            &lt;ice:column rowspan="2"&gt;
+                                &lt;ice:outputText value="First Name"/&gt;
+                            &lt;/ice:column&gt;
+                            &lt;ice:column rowspan="2"&gt;
+                                &lt;ice:outputText value="Last Name"/&gt;
+                            &lt;/ice:column&gt;
+                            &lt;ice:column colspan="2"&gt;
+                                &lt;ice:outputText value="Contact Info"/&gt;
+                            &lt;/ice:column&gt;
+                        &lt;/ice:headerRow&gt;
+
+                        &lt;ice:headerRow&gt;
+                            &lt;ice:column&gt;
+                                &lt;ice:outputText value="Phone"/&gt;
+                            &lt;/ice:column&gt;
+                            &lt;ice:column&gt;
+                                &lt;ice:outputText value="Email"/&gt;
+                            &lt;/ice:column&gt;
+
+                        &lt;/ice:headerRow&gt;
+                    &lt;/ice:columnGroup&gt;
+                &lt;/f:facet&gt;
+                ......
+                ......
+&lt;/ice:dataTable&gt;
+
+<br></pre>
+
+<p> The following code shows how to make columns resizable.  </p>
+ <pre class="Preformatted">
+ &lt;ice:dataTable resizable="true" ..&gt;
+<br></pre>
+
+<p> The following code shows how to do logical row grouping.  </p>
+ <pre class="Preformatted">
+               &lt;ice:dataTable id="groupingData"
+                               value="#{groupBean.employees}"
+                               var="employee"
+                        &gt;
+                    &lt;f:facet name="header"&gt;
+                        &lt;ice:columnGroup&gt;
+                            &lt;ice:headerRow&gt;
+                                &lt;ice:column&gt;Department &lt;/ice:column&gt;
+                                &lt;ice:column&gt;Sub Department &lt;/ice:column&gt;
+                                &lt;ice:column&gt;Name&lt;/ice:column&gt;
+                            &lt;/ice:headerRow&gt;
+                        &lt;/ice:columnGroup&gt;
+                    &lt;/f:facet&gt;
+                    &lt;ice:column groupOn="#{employee.deptName}"&gt;
+                        &lt;ice:outputText id="deptname" value="#{employee.deptName}"/&gt;
+                    &lt;/ice:column&gt;
+
+                    &lt;ice:column&gt;
+                        &lt;ice:outputText id="subdeptname" value="#{employee.subDeptName}"/&gt;
+                    &lt;/ice:column&gt;
+
+                    &lt;ice:column&gt;
+                        &lt;ice:outputText id="employeeName" value="#{employee.name}"/&gt;
+                    &lt;/ice:column&gt;
+               &lt;/ice:dataTable&gt;
+
+<br></pre>
+
+
 <div
  style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
 Tag Summary<span

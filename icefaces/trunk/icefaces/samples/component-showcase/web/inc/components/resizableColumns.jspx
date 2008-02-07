@@ -96,8 +96,8 @@ a control on the data to hide/show the table columns.
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
             <!-- ICE-2714: generating iframe markup to include context path -->
             <ice:outputText id="docFrame"
-                            value="#{ctxtUtil['/docs/dataTableDoc.html']}"
-                            escape="false"/>
+                    value="#{ctxtUtil['/docs/dataTableDoc.html']}"
+                    escape="false"/>
         </ice:panelTab>
 
         <!--
