@@ -2335,7 +2335,7 @@ Disabled classes for the calendar controls
 /*
 ----------- Table Row Selection --------
 */
-.iceRowSelSelected {
+.iceRowSelSelected, .iceRowSelSelected td {
     background-color: #316AC5;
 }
 .iceRowSelSelected span {

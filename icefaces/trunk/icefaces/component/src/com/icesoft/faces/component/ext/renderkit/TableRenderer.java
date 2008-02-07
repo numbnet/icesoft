@@ -533,7 +533,9 @@ public class TableRenderer
                     selectedClass  += " "+ rowSelector.getStyleClass();
                     tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getMouseOverClass() +"'");                    
                 }
-                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'");
+//              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
+                tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='" +
+                        getPortletAlternateRowClass(selectedClass, rowIndex) + "'"); // ICE-2571
             }
             domContext.setCursorParent(tBody);
             tBody.appendChild(tr);
