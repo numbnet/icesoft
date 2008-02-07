@@ -221,7 +221,7 @@
                            columnClasses="none, popupButton">
                 <ice:outputText value="City names"/>
                 <ice:commandButton id="popupClose" type="button"
-                                   image="./images/popupPanel/popupclose.gif"
+                                   image="/images/popupPanel/popupclose.gif"
                                    actionListener="#{tooltip.hideTooltip}"
                                    style="cursor: pointer;"/>
             </ice:panelGrid>        
