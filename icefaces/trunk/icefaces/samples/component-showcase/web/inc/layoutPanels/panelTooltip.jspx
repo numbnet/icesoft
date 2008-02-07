@@ -48,9 +48,7 @@
             </h3>
             <h4>
                 <ice:outputText 
-                        value="Note: the panelTooltip will be considered dynamic if one of the following case is true: 1- draggable = true, 2- displayListener is defined, 3- visible attribute has a value binding"/> <br/>
-                <ice:outputText 
-                        value="This example is using a static panelTooltip with hideOn = 'mouseout', To close this tooltip please move the mouse off. As the panelTooltip is static so its been placed inside the panelSeries"/>
+                        value="This example is using a panelTooltip with hideOn = 'mouseout', To close this tooltip please move the mouse off. The panelTooltip is placed inside the panelSeries"/>
             </h4>
             <ice:panelSeries id="icepnlsrs" var="pnlPerson"
                        value="#{scrollerList.persons}" rows="5"
@@ -99,7 +97,7 @@
             </h3>
             <h4>
                 <ice:outputText 
-                        value="This panelTooltip example is dynamic and using hideOn = 'none', hoverDelay='2000' milliseconds. To close this window please click on the close button."/>
+                        value="This panelTooltip using hideOn = 'none', hoverDelay='1000' milliseconds. To close the tooltip window please click on the close button."/>
             </h4>
 
             <!-- popup selection -->
@@ -130,7 +128,7 @@
             </h3>
             <h4>
                 <ice:outputText 
-                        value="This example is using a draggable dynamic panelTooltip with hideOn = 'mousedown', hoverDelay='1000' milliseconds. To bring the tooltip up, please hover on the first name. To close this tooltip please click outside the tooltip panel. As the panelTooltip is dynamic it has been placed outside of the dataTable and contents are gernerated by the displayListener"/>
+                        value="This example is using a draggable panelTooltip with hideOn = 'mousedown', hoverDelay='1000' milliseconds. To bring the tooltip up, please hover on the first name of any row. To close this tooltip please click outside the tooltip panel. The panelTooltip is placed outside of the dataTable"/>
             </h4>
             <ice:dataTable id="toolTipdata" var="person"
                        styleClass="dataPaginatorTable"
@@ -210,7 +208,7 @@
     <ice:panelTooltip id="provinceInfo"
                 hideOn="none"
                 draggable="true"
-                hoverDelay="2000"
+                hoverDelay="1000"
                 style="width: 200px;height:200px;"
                 displayListener="#{tooltip.provinceDspListener}"
                 visible="#{tooltip.visible}"                
