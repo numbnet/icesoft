@@ -6,7 +6,7 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
 
     <!-- =================================================================== -->
-    <!-- ICEfaces: Text Entry Portlet                                        -->
+    <!-- ICEfaces: Text Entry Portlet                     -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -25,19 +25,10 @@
             <short-title>Text Entry</short-title>
             <keywords>ICEfaces Component Showcase Text Entry</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces: Selection Portlet                                         -->
+    <!-- ICEfaces: Selection Portlet                      -->
     <!-- =================================================================== -->
 
     <portlet>
@@ -56,15 +47,6 @@
             <short-title>Selection</short-title>
             <keywords>ICEfaces Component Showcase Selection</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -87,15 +69,6 @@
             <short-title>Buttons and Links</short-title>
             <keywords>ICEfaces Component Showcase Buttons Links</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -118,15 +91,6 @@
             <short-title>Autocomplete</short-title>
             <keywords>ICEfaces Component Showcase Autocomplete</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -149,15 +113,6 @@
             <short-title>Drag and Drop</short-title>
             <keywords>ICEfaces Component Showcase Drag Drop</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -180,15 +135,6 @@
             <short-title>Calendar</short-title>
             <keywords>ICEfaces Component Showcase Calendar</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -211,15 +157,6 @@
             <short-title>Tree</short-title>
             <keywords>ICEfaces Component Showcase Tree</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
 
@@ -243,15 +180,6 @@
             <short-title>Menubar</short-title>
             <keywords>ICEfaces Component Showcase Menubar</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -274,15 +202,6 @@
             <short-title>Effects</short-title>
             <keywords>ICEfaces Component Showcase Effects</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -305,15 +224,6 @@
             <short-title>Connection Status</short-title>
             <keywords>ICEfaces Component Showcase Connection Status</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -336,15 +246,6 @@
             <short-title>Table - Table</short-title>
             <keywords>ICEfaces Component Showcase Table</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -367,15 +268,6 @@
             <short-title>Table - Columns</short-title>
             <keywords>ICEfaces Component Showcase Table Columns</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -398,15 +290,6 @@
             <short-title>Table - Sortable Header</short-title>
             <keywords>ICEfaces Component Showcase Table Sortable Header</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -429,15 +312,6 @@
             <short-title>Data Paging</short-title>
             <keywords>ICEfaces Component Showcase Table Data Paging</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -460,15 +334,6 @@
             <short-title>Table - Expandable Table</short-title>
             <keywords>ICEfaces Component Showcase Table Expandable</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -491,15 +356,6 @@
             <short-title>Table - Table Row Selection</short-title>
             <keywords>ICEfaces Component Showcase Table Row Selection</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -522,15 +378,6 @@
             <short-title>Progress Bar</short-title>
             <keywords>ICEfaces Component Showcase Progress Bar</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -553,15 +400,6 @@
             <short-title>File Upload</short-title>
             <keywords>ICEfaces Component Showcase File Upload</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -584,15 +422,6 @@
             <short-title>Charts</short-title>
             <keywords>ICEfaces Component Showcase Charts</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -615,15 +444,6 @@
             <short-title>Dynamic Chart</short-title>
             <keywords>ICEfaces Component Showcase Dynamic Chart</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -646,15 +466,6 @@
             <short-title>Charts - Combining Charts</short-title>
             <keywords>ICEfaces Component Showcase Combining Charts</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -677,15 +488,6 @@
             <short-title>Rich Text Editor</short-title>
             <keywords>ICEfaces Component Showcase Rich Text Editor</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -708,15 +510,6 @@
             <short-title>GMap Address Attribute</short-title>
             <keywords>ICEfaces Component Showcase GMap Address Attribute</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -739,15 +532,6 @@
             <short-title>GMap Controls</short-title>
             <keywords>ICEfaces Component Showcase GMap Controls</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -770,15 +554,6 @@
             <short-title>GMap Find Address</short-title>
             <keywords>ICEfaces Component Showcase GMap Find Address</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -801,15 +576,6 @@
             <short-title>GMap GeoCoder</short-title>
             <keywords>ICEfaces Component Showcase GMap GeoCoder</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -832,15 +598,6 @@
             <short-title>GMap KML</short-title>
             <keywords>ICEfaces Component Showcase GMap KML</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
     </portlet>
 
     <!-- =================================================================== -->
@@ -863,15 +620,292 @@
             <short-title>GMap Markers</short-title>
             <keywords>ICEfaces Component Showcase GMap Markers</keywords>
         </portlet-info>
-        <security-role-ref>
-            <role-name>guest</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>power-user</role-name>
-        </security-role-ref>
-        <security-role-ref>
-            <role-name>user</role-name>
-        </security-role-ref>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Table - Column Grouping      -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_column_grouping</portlet-name>
+        <display-name>ICEfaces: Table - Column Grouping</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Datatable_Column_Grouping.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Table - Column Grouping</title>
+            <short-title>Column Grouping</short-title>
+            <keywords>ICEfaces Component Showcase Datatable Column Grouping</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Table - Row Grouping      -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_row_grouping</portlet-name>
+        <display-name>ICEfaces: Table - Row Grouping</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Datatable_Row_Grouping.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Table - Row Grouping</title>
+            <short-title>Row Grouping</short-title>
+            <keywords>ICEfaces Component Showcase Datatable Row Grouping</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Table - Resizable Columns      -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_resizable_columns</portlet-name>
+        <display-name>ICEfaces: Table - Resizable Columns</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Datatable_Resizable_Columns.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Table - Resizable Columns</title>
+            <short-title>Resizable Columns</short-title>
+            <keywords>ICEfaces Component Showcase Datatable Resizable Columns</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Border                                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_border</portlet-name>
+        <display-name>ICEfaces: Panel - Border</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Border.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Border</title>
+            <short-title>Panel - Border</short-title>
+            <keywords>ICEfaces Component Showcase Border Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Collapsible                                       -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_collapsible</portlet-name>
+        <display-name>ICEfaces: Panel - Collapsible</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Collapsible.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Collapsible</title>
+            <short-title>Panel - Collapsible</short-title>
+            <keywords>ICEfaces Component Showcase Collapsible Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Divider                                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_divider</portlet-name>
+        <display-name>ICEfaces: Panel - Divider</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Divider.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Divider</title>
+            <short-title>Panel - Divider</short-title>
+            <keywords>ICEfaces Component Showcase Divider Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Popup                                             -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_popup</portlet-name>
+        <display-name>ICEfaces: Panel - Popup</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Popup.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Popup</title>
+            <short-title>Panel - Popup</short-title>
+            <keywords>ICEfaces Component Showcase Popup Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Positioned                                        -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_positioned</portlet-name>
+        <display-name>ICEfaces: Panel - Positioned</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Positioned.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Positioned</title>
+            <short-title>Panel - Positioned</short-title>
+            <keywords>ICEfaces Component Showcase Positioned Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Series                                            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_series</portlet-name>
+        <display-name>ICEfaces: Panel - Series</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Series.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Series</title>
+            <short-title>Panel - Series</short-title>
+            <keywords>ICEfaces Component Showcase Series Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Stack                                             -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_stack</portlet-name>
+        <display-name>ICEfaces: Panel - Stack</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Stack.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Stack</title>
+            <short-title>Panel - Stack</short-title>
+            <keywords>ICEfaces Component Showcase Stack Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Tabset                                            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_tabset</portlet-name>
+        <display-name>ICEfaces: Panel - Tabset</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Tabset.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Tabset</title>
+            <short-title>Panel - Tabset</short-title>
+            <keywords>ICEfaces Component Showcase Tabset Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Panel - Tooltip                                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_tooltip</portlet-name>
+        <display-name>ICEfaces: Panel - Tooltip</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Panel_Tooltip.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Panel - Tooltip</title>
+            <short-title>Panel - Tooltip</short-title>
+            <keywords>ICEfaces Component Showcase Tooltip Panel</keywords>
+        </portlet-info>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: Media Player                                              -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_media_player</portlet-name>
+        <display-name>ICEfaces: Media Player</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+            <value>/portlet/Components_Media_Player.iface</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: Media Player</title>
+            <short-title>Media Player</short-title>
+            <keywords>ICEfaces Component Showcase Media Player</keywords>
+        </portlet-info>
     </portlet>
 
 </portlet-app>

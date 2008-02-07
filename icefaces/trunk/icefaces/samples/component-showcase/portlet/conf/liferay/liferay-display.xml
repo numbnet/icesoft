@@ -33,5 +33,19 @@
         <portlet id="components_gmap_kml"/>
         <portlet id="components_gmap_markers"/>
 
+        <portlet id="components_table_column_grouping"/>
+        <portlet id="components_table_resizable_columns"/>
+        <portlet id="components_table_row_grouping"/>
+        <portlet id="components_panel_border"/>
+        <portlet id="components_panel_collapsible"/>
+        <portlet id="components_panel_divider"/>
+        <portlet id="components_panel_popup"/>
+        <portlet id="components_panel_positioned"/>
+        <portlet id="components_panel_series"/>
+        <portlet id="components_panel_stack"/>
+        <portlet id="components_panel_tabset"/>
+        <portlet id="components_panel_tooltip"/>
+        <portlet id="components_media_player"/>
+
     </category>
 </display>

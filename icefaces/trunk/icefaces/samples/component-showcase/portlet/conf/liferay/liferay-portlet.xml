@@ -312,6 +312,149 @@
     </portlet>
 
     <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Datatable - Column Grouping            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_column_grouping</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Datatable - Resizable Columns          -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_resizable_columns</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Datatable - Row Grouping               -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_table_row_grouping</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Border                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_border</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Collapsible                      -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_collapsible</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Divider                          -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_divider</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Popup                            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_popup</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Positioned                       -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_positioned</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Series                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_series</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Stack                            -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_stack</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Tabset                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_tabset</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Panel Tooltip                          -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_panel_tooltip</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces Component-Showcase: Media Player                           -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>components_media_player</portlet-name>
+        <instanceable>true</instanceable>
+        <render-weight>1</render-weight>
+        <ajaxable>false</ajaxable>
+    </portlet>
+
+    <!-- =================================================================== -->
 
     <role-mapper>
         <role-name>administrator</role-name>

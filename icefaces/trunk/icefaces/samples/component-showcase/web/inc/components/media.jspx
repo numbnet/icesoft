@@ -64,7 +64,10 @@
         this placeholder
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <iframe src="./docs/outputMediaDoc.html" class="includeIframe" width="100%"></iframe>
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="docFrame"
+                            value="#{ctxtUtil['/docs/outputMediaDoc.html']}"
+                            escape="false"/>
         </ice:panelTab>
 
         <!--
@@ -72,8 +75,10 @@
           the component example jsp include as an xml stream
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-            <iframe src="./sourcecodeStream.html?path=./inc/components/media.jspx"
-                    class="includeIframe" width="100%"></iframe>
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="srcFrame"
+                            value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/media.jspx']}"
+                            escape="false"/>
         </ice:panelTab>
 
     </ice:panelTabSet>

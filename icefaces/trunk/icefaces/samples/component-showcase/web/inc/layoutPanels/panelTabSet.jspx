@@ -262,8 +262,10 @@ to show how visibility, focus and tab placement can be dynamically changed.
   this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/panelTabSetDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/panelTabSetDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -271,9 +273,10 @@ to show how visibility, focus and tab placement can be dynamically changed.
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="./sourcecodeStream.html?path=./inc/layoutPanels/panelTabSet.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelTabSet.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">

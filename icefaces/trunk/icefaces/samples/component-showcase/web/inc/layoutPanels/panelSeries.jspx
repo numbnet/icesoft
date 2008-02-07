@@ -162,8 +162,10 @@ The bean is responsible for streaming html documentation to
 this placeholder
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/panelSeriesDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/panelSeriesDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <!--
@@ -171,8 +173,10 @@ this placeholder
   the component example jsp include as an xml stream
 -->
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe src="./sourcecodeStream.html?path=./inc/layoutPanels/panelSeries.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelSeries.jspx']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
