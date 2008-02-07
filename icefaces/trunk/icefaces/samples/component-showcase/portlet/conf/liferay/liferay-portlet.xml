@@ -290,17 +290,6 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces Component-Showcase: GMap KML                               -->
-    <!-- =================================================================== -->
-
-    <portlet>
-        <portlet-name>components_gmap_kml</portlet-name>
-        <instanceable>true</instanceable>
-        <render-weight>1</render-weight>
-        <ajaxable>false</ajaxable>
-    </portlet>
-
-    <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: GMap Markers                           -->
     <!-- =================================================================== -->
 

@@ -579,28 +579,6 @@
     </portlet>
 
     <!-- =================================================================== -->
-    <!-- ICEfaces: Google Map - KML                                          -->
-    <!-- =================================================================== -->
-
-    <portlet>
-        <portlet-name>components_gmap_kml</portlet-name>
-        <display-name>ICEfaces: GMap KML</display-name>
-        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
-        <init-param>
-            <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_KML.iface</value>
-        </init-param>
-        <supports>
-            <mime-type>text/html</mime-type>
-        </supports>
-        <portlet-info>
-            <title>ICEfaces: GMap KML</title>
-            <short-title>GMap KML</short-title>
-            <keywords>ICEfaces Component Showcase GMap KML</keywords>
-        </portlet-info>
-    </portlet>
-
-    <!-- =================================================================== -->
     <!-- ICEfaces: Google Map - Markers                                      -->
     <!-- =================================================================== -->
 

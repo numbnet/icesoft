@@ -30,7 +30,6 @@
         <portlet id="components_gmap_controls"/>
         <portlet id="components_gmap_find_address"/>
         <portlet id="components_gmap_geocoder"/>
-        <portlet id="components_gmap_kml"/>
         <portlet id="components_gmap_markers"/>
 
         <portlet id="components_table_column_grouping"/>
