@@ -313,8 +313,8 @@ public class GroupRenderer
                 if (listener != null) {
 
                     DropEvent event = new DropEvent(component, type, targetID,
-                                                    targetDragValue,
-                                                    targetDropValue);
+                                                    targetDropValue,
+                                                    targetDragValue);
                     panel.queueEvent(event);
                 }
             }
