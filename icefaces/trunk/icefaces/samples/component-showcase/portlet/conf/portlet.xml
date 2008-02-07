@@ -610,7 +610,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Datatable_Column_Grouping.iface</value>
+            <value>/portlet/Components_Table_Column_Grouping.iface</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -632,7 +632,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Datatable_Row_Grouping.iface</value>
+            <value>/portlet/Components_Table_Row_Grouping.iface</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -654,7 +654,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Datatable_Resizable_Columns.iface</value>
+            <value>/portlet/Components_Table_Resizable_Columns.iface</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
