@@ -139,9 +139,11 @@
 </property>
 
 <property>
-    <description> <p>
+    <description> 
+       <![CDATA[<p>
         By default the sub menus are being displayed on the hover event. which
         can be replaced with the click event by setting this attribute to true.</p>
+        ]]>
     </description>
     <property-name>displayOnClick</property-name>
     <property-class>boolean</property-class>
