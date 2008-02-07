@@ -544,9 +544,8 @@ div.navThemeChange {
     color: #999999;
 }
 
-
+.sortHeaderFirstCol, .sortHeaderLastCol, .sortHeaderPhoneCol, .sortHeaderEmailCol,
 .firstCol, .lastCol, .phoneCol, .emailCol {
-    color: #000000;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 3px;
@@ -558,10 +557,16 @@ div.navThemeChange {
     white-space: nowrap;
 }
 
+.firstCol, .lastCol, .phoneCol, .emailCol {
+    color: #000000;
+}
+
+.sortHeaderFirstCol, .sortHeaderLastCol, .sortHeaderPhoneCol,
 .firstCol, .lastCol, .phoneCol {
     width: 70px;
 }
 
+.sortHeaderEmailCol,
 .emailCol {
     width: 180px;
 
