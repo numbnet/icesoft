@@ -283,7 +283,6 @@ Ice.MenuBarKeyNavigator.addMethods({
             this.clicked = false;
         }         
       }
-      Event.stop(event);
    },
    
    showMenu:function(event) {
