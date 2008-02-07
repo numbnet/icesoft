@@ -137,13 +137,10 @@ function FCKeditorSave(editorInstance) {
             var element = $(editIns.Name);
             //Save the dirty editor only that had the focus
             if(editIns.IsDirty()) {
-                if (editIns.HasFocus || Prototype.Browser.WebKit) {
-                    element.value = editIns.GetXHTML(true);
-                } else {
+               element.value = editIns.GetXHTML(true);
                     //set the value for editor
-                    var valueHolder = $(editIns.Name + 'valueHolder');
-                    valueHolder.value = editIns.GetXHTML(true);
-                }
+				var valueHolder = $(editIns.Name + 'valueHolder');
+                valueHolder.value = editIns.GetXHTML(true);
                 editIns.ResetIsDirty();
             }
         }
