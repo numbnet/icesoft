@@ -82,9 +82,10 @@ Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
   initialize: function($super, componentId, displayOnClick) {
     $super(componentId);
     this.displayOnClick = displayOnClick;
-    
+    Event.stopObserving(document, "click", this.hideAllEvent);  
     this.hideAllEvent = this.hideAll.bindAsEventListener(this);
     Event.observe(document, "click", this.hideAllEvent);
+    
     if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
         this.vertical = true;
     } else {
@@ -92,7 +93,6 @@ Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
     }
     this.clicked = true;
     this.configureRootItems();
-    
   }
 });
 
@@ -250,15 +250,19 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   registerEvents:function (mnuBarItem) {
     if (mnuBarItem) {
+        //menu orientation can be changed dynamically, so remove old reference
+        Event.stopObserving(mnuBarItem, "mouseover", this.hoverEvent);
         this.hoverEvent = this.hover.bindAsEventListener(this);
         Event.observe(mnuBarItem, "mouseover", this.hoverEvent);
         
         //add focus support 
         var anch = mnuBarItem.down('a');
+        Event.stopObserving(anch, "focus", this.focusEvent);        
         this.focusEvent = this.focus.bindAsEventListener(this);
         Event.observe(anch, "focus", this.focusEvent);
                 
         if (this.displayOnClick) { 
+            Event.stopObserving(mnuBarItem, "mousedown", this.mousedownEvent);
             this.mousedownEvent = this.mousedown.bindAsEventListener(this);
             Event.observe(mnuBarItem, "mousedown", this.mousedownEvent);
             this.clicked = false;            
@@ -279,6 +283,7 @@ Ice.MenuBarKeyNavigator.addMethods({
             this.clicked = false;
         }         
       }
+      Event.stop(event);
    },
    
    showMenu:function(event) {

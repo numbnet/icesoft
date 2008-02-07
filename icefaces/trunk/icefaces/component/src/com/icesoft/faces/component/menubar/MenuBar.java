@@ -35,8 +35,8 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UICommand;
@@ -46,6 +46,8 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
+
+import java.io.IOException;
 import java.util.Iterator;
 
 
@@ -396,6 +398,16 @@ public class MenuBar extends UICommand implements NamingContainer {
             return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
         }
         return false;
+    }
+
+    public void encodeBegin(FacesContext context) throws IOException {
+        if (!(this instanceof MenuPopup)) {
+            String call = "new Ice.MenuBarKeyNavigator('" + 
+            getClientId(context) +"', " +
+            isDisplayOnClick() +");";
+            JavascriptContext.addJavascriptCall(context, call);
+        }
+        super.encodeBegin(context);
     }
 }
 
