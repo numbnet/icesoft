@@ -73,7 +73,7 @@ are shown but could easily be made to invoke application logic.
 </ice:selectOneRadio>
 <br/>
 <!-- main menu declaration  -->
-<ice:menuBar id="menuBar" orientation="#{menuBar.orientation}">
+<ice:menuBar id="menuBar" displayOnClick="true" orientation="#{menuBar.orientation}">
 
     <!-- File menu -->
     <ice:menuItem value="File" id="file">
