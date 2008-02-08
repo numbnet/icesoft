@@ -181,7 +181,6 @@ public class View implements IView{
 
 	private void createViewName() {
 		if (!this.gotViewName){
-			 log.info("setting conversation description to "+viewName);
 			 Conversation.instance().setDescription(viewName);
 			 gotViewName=true;
 		 }
@@ -202,7 +201,6 @@ public class View implements IView{
 	
     @Destroy @Remove
 	public void destroy() {
-	   log.info("View: destroy version="+this);
 		cleanup();
 	}
 
@@ -221,9 +219,8 @@ public class View implements IView{
 	      if (renderingException instanceof TransientRenderingException ){
 	      }
 	      else if(renderingException instanceof FatalRenderingException){
-	    	  System.out.println("View: FatalRenderingException");
+	    	  log.info("View: FatalRenderingException " + renderingException);
 	    	  cleanup();
-
 	      }
 	}
 	
@@ -241,7 +238,6 @@ public class View implements IView{
 	        	}
 	         }
          }
-		else log.info("search items is null  ?  Why is that, Judy?");
 	}
 
 	public void setPatterns() {	
@@ -260,7 +256,6 @@ public class View implements IView{
 
 	public void removeView(){
 		cleanup();
-		log.info("after cleanup()");
 	}
 
 

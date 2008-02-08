@@ -78,7 +78,6 @@ public class ViewManager implements IViewManager, Serializable{
       
    @Factory(value="auctionItems", scope = ScopeType.EVENT)
 	public void loadList() {
-//	      log.info("!!!!!QUERYING!!!!! SEARCHSTRING: " + searchString);
 	       auctionItemsList = new ArrayList();       
 	       List resultList = em.createQuery("SELECT i, b FROM Auctionitem i LEFT JOIN i.bids b" +
 	            " WHERE (i.bids IS EMPTY OR b.timestamp = (SELECT MAX(b1.timestamp) FROM i.bids b1))" +
@@ -94,9 +93,8 @@ public class ViewManager implements IViewManager, Serializable{
 	           AuctionitemBean auctionitemBean = new AuctionitemBean(user, (Auctionitem) oa[0], (Bid) oa[1]);
 	           auctionItemsList.add(auctionitemBean);	
 	       }
-//	      log.info("size of auctionItems is "+auctionItemsList.size());
-		//return auctionItemsList;
 	}
+
 	@Factory(value="pattern", scope = ScopeType.EVENT)
 	public String getSearchPattern()
 	{
@@ -111,7 +109,6 @@ public class ViewManager implements IViewManager, Serializable{
 	 
 	
 	public void updateList(ValueChangeEvent event) {
-//	     log.info("AUTOCOMPLETE UPDATING LIST!!!");
 	      page = 0;
 	      setSearchString( (String) event.getNewValue() );
         loadList();
@@ -121,7 +118,6 @@ public class ViewManager implements IViewManager, Serializable{
 	}
 
 	  public List<AuctionitemBean> getAuctionItemsList(){
-   //       sort(getSort(), isAscending());
 		  if (searchString=="")loadList();
           return this.auctionItemsList;
   }
@@ -139,7 +135,6 @@ public class ViewManager implements IViewManager, Serializable{
 	   
     @Remove @Destroy
 	public void destroy() {
-		log.info("destroying session scoped bean");
 		
 	}
 	public String getConvId() {

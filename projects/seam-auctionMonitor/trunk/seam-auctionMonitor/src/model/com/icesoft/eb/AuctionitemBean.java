@@ -93,12 +93,10 @@ public class AuctionitemBean implements Serializable{
     
 
     public Auctionitem getAuctionitem() {
-//    	System.out.println("AUB: - getting auction item = "+auctionitem.getTitle()+" version="+auctionitem.toString());
         return auctionitem;
     }
 
     public void setAuctionitem(Auctionitem auctionitem) {
-//    	System.out.println("AUG: setAuction item version="+this);
     	this.auctionitem = auctionitem;
     }
 
@@ -139,7 +137,6 @@ public class AuctionitemBean implements Serializable{
     }
     
     public String getExpandedStyleClass() {
-  //  	System.out.println("getExpandedStyleClass");
         if (expanded) {
             return STYLE_CLASS_EXPANDED_ROW;
         } else {
@@ -337,7 +334,6 @@ public class AuctionitemBean implements Serializable{
     
     @Destroy @Remove
     public void destroy() {
-        System.out.println("destroying.....");
     }
    
  
