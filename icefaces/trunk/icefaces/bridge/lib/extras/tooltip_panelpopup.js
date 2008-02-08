@@ -68,18 +68,15 @@ ToolTipPanelPopup = Class.create({
   showPopup: function() {
     if (this.isTooltipVisible()) return;
     if (this.dynamic) {
-      if (this.isTooltipVisible(true)) {
          //its a dynamic tooltip, so remove all its childres
         var tooltip = this.getTooltip();
         if(tooltip) {
 	        tooltip.style.visibility = "hidden";        
-	        tooltip.style.display = "none;";
 	        var table = tooltip.childNodes[0];
 	        if (table) {
 	            tooltip.removeChild(table);
 	        }
         }
-      }
     //dynamic? set status=show, populatefields, and submit
       this.submit("show");
       if (this.hideOn == "none") {
