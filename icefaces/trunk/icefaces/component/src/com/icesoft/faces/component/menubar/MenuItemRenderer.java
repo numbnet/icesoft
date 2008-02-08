@@ -217,9 +217,12 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         renderAnchor(facesContext, domContext, (MenuItem) uiComponent,
                      topLevelDiv, menuComponent, vertical);
-
-        //Element anch = (Element)topLevelDiv.getChildNodes().item(0);
-        //anch.setAttribute(HTML.HREF_ATTR, "javascript:void();");        
+        if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
+            Element anch = (Element)topLevelDiv.getChildNodes().item(0);
+            String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
+            onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
+            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
+        }
         if ((uiComponent.getChildCount() > 0) &&
             (((MenuItem) uiComponent).isChildrenMenuItem())) {
             renderChildrenRecursive(facesContext, menuComponent, uiComponent,
@@ -587,11 +590,17 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         renderAnchor(facesContext, domContext,
             nextSubMenuItem, subMenuItemDiv,
             menuComponent, vertical);
+
+        Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
+
         if (call != null) {
-            Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
             anch.setAttribute(HTML.ONFOCUS_ATTR, "if( $('"+ subMenuItemDiv.getAttribute("id") +"_sub').style.display == 'none') { " + call + "}");
         }   
-        
+        if (menuComponent.getStyleClass().startsWith("iceMnuPop")) {
+            String onclick = anch.getAttribute(HTML.ONCLICK_ATTR);
+            onclick = onclick.replaceAll("return false;", "Ice.Menu.hideAll(); return false;");
+            anch.setAttribute(HTML.ONCLICK_ATTR, onclick);   
+        }        
 
 //      Element anch = (Element)subMenuItemDiv.getChildNodes().item(0);
 //      anch.setAttribute(HTML.HREF_ATTR, "javascript:void(0);");
