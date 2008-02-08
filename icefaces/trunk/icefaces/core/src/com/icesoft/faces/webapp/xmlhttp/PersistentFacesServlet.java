@@ -35,6 +35,23 @@ package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.webapp.http.servlet.MainServlet;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+
 //todo: deprecate this class
 public class PersistentFacesServlet extends MainServlet {
+    private ServletContext context;
+
+    public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+        context = servletConfig.getServletContext();
+    }
+
+    public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+        context.getNamedDispatcher("Blocking Servlet").forward(servletRequest, servletResponse);
+    }
 }
