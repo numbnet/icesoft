@@ -105,10 +105,8 @@ public class BidAction implements IBidAction, Serializable {
 			    //let render call update the last bid
 
 				em.flush();
-				String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
-				log.info("before calling new render for this item's group="+renderGroup);
-//				Transaction.instance().commit();
-				makeRenderCall(renderGroup);
+				String itemId = Long.toString(auctionitemBean.getAuctionitem().getItemId());
+                renderManager.getOnDemandRenderer(itemId).requestRender();
 //				facesMessages.add("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
 				log.info("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
 
@@ -119,18 +117,6 @@ public class BidAction implements IBidAction, Serializable {
 	    }    
 	}
 	
-//    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-//    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	@Transactional(TransactionPropagationType.REQUIRED)
-    public void makeRenderCall(String renderGroup){
-   // 	SeamUtilities.setCid(Manager.instance().getCurrentConversationId());
-    	try{
- //   	    Transaction.instance().begin();
-    	    renderManager.getOnDemandRenderer(renderGroup).requestRender();
-    	    log.info("\t\tEND of makeRenderCall & cid="+Manager.instance().getCurrentConversationId());
-    	}catch (Exception e){log.info("problem with making the render Call ");}
-    }
-    
 
     public void cancel(){
     	log.info("action is cancelled");

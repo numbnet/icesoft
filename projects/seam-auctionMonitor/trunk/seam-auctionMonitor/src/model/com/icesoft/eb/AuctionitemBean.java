@@ -83,7 +83,8 @@ public class AuctionitemBean implements Serializable{
     private String timeLeftStyleClass;
 
     
-    public AuctionitemBean(Auctionitem auctionitem, Bid bid){
+    public AuctionitemBean(User user, Auctionitem auctionitem, Bid bid)  {
+        this.user = user;
         this.auctionitem = auctionitem;
         this.bid = bid;
         auctionitem.setBidCount(auctionitem.getBids().size());
@@ -304,9 +305,6 @@ public class AuctionitemBean implements Serializable{
      * @return
      */
     public boolean isOwner(){
-    	if (user==null){
-    		user = (User)Component.getInstance("user");
-    	}
     	
     	if (!this.auctionitem.getBids().isEmpty() || auctionitem.getBids()!=null){
     		//have bids on this item....see whose is the highest.

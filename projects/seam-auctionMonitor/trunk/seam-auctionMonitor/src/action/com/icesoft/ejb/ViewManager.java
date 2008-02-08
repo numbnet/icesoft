@@ -29,6 +29,7 @@ import org.jboss.seam.core.Manager;
 import com.icesoft.eb.Auctionitem;
 import com.icesoft.eb.AuctionitemBean;
 import com.icesoft.eb.Bid;
+import com.icesoft.eb.User;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.dragdrop.DragEvent;
@@ -63,6 +64,9 @@ public class ViewManager implements IViewManager, Serializable{
 	
 	@In(value="renderManager")
 	RenderManager renderManager;
+
+    @In
+    private User user;
 	
 	private List<Auctionitem> viewList = new ArrayList<Auctionitem>();
 
@@ -87,7 +91,7 @@ public class ViewManager implements IViewManager, Serializable{
 	       Object[] oa;
 	       for (Object o : resultList) {
 	           oa = (Object[]) o;
-	           AuctionitemBean auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1]);
+	           AuctionitemBean auctionitemBean = new AuctionitemBean(user, (Auctionitem) oa[0], (Bid) oa[1]);
 	           auctionItemsList.add(auctionitemBean);	
 	       }
 //	      log.info("size of auctionItems is "+auctionItemsList.size());

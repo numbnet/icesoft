@@ -45,6 +45,7 @@ import org.jboss.seam.core.Manager;
 import com.icesoft.eb.Auctionitem;
 import com.icesoft.eb.AuctionitemBean;
 import com.icesoft.eb.Bid;
+import com.icesoft.eb.User;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
@@ -101,6 +102,9 @@ public class View implements IView{
 	@In
 	private transient RenderManager renderManager = null;
 
+    @In
+    private User user;
+
 	@Logger 
 	private Log log;
 	
@@ -149,7 +153,7 @@ public class View implements IView{
         String viewNameBuf = "";
         for (Object o : resultList) {
             oa = (Object[]) o;
-            AuctionitemBean auctionitemBean = new AuctionitemBean((Auctionitem) oa[0], (Bid) oa[1]);
+            AuctionitemBean auctionitemBean = new AuctionitemBean(user, (Auctionitem) oa[0], (Bid) oa[1]);
             String renderGroup = Long.toString(auctionitemBean.getAuctionitem().getItemId());
             renderManager.getOnDemandRenderer(renderGroup).add(this);	
             viewNameBuf += " :" + auctionitemBean.getAuctionitem().getTitle();
@@ -261,7 +265,6 @@ public class View implements IView{
 
 
 	public String getCid(){
-		log.info("getCid ="+Manager.instance().getCurrentConversationId() );
 		return Manager.instance().getCurrentConversationId();
 	}
 	public void setCid(String cIn){		
@@ -274,7 +277,6 @@ public class View implements IView{
 	}
 	
 	public String getViewName(){
-		log.info("getting viewName of "+viewName);
 		return viewName;
 	}
 	
