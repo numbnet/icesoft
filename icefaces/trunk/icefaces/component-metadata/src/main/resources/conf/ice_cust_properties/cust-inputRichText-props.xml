@@ -134,3 +134,22 @@
         </editor-class>
     </property-extension>
 </property>
+<property>
+    <description>
+       <![CDATA[    
+        There are two valid values for this field and its case sensitive.
+        <ul>
+            <li> Default </li>
+            <li> Basic </li>            
+        </ul>
+        ]]>
+    </description>
+    <property-name>toolbar</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

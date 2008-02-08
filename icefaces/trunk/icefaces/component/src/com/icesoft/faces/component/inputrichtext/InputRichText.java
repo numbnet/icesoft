@@ -50,7 +50,7 @@ public class InputRichText extends UIInput {
     private String width;
     private String height;
     private URI baseURI;
-
+    private String toolbar;
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -206,4 +206,22 @@ public class InputRichText extends UIInput {
         while ((len = input.read(buf)) > -1) output.write(buf, 0, len);
         return output.toByteArray();
     }
+    
+    /**
+     * <p>Set the value of the <code>toolbar</code> property.</p>
+     */
+    public void setToolbar(String toolbar) {
+        this.toolbar = toolbar;
+    }
+
+    /**
+     * <p>Return the value of the <code>toolbar</code> property.</p>
+     */
+    public String getToolbar() {
+        if (toolbar != null) {
+            return toolbar;
+        }
+        ValueBinding vb = getValueBinding("toolbar");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "Default";
+    }    
 }

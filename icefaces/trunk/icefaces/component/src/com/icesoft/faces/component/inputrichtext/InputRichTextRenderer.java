@@ -37,7 +37,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             }
             StringBuffer call = new StringBuffer();
 
-            call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() + "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + "', '" + inputRichText.getHeight() + "'));");
+            call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
+            		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
+            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"'));");
             Element textFormat = (Element) domContext.createElement(HTML.INPUT_ELEM);
             textFormat.setAttribute(HTML.TYPE_ATTR, "hidden");
             textFormat.setAttribute(HTML.VALUE_ATTR, "text");
