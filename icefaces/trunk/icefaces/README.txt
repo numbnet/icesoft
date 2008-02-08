@@ -10,7 +10,7 @@ the following characteristics:
   * Asynchronous page update driven from inside the standard JSF lifecycle.
   * Fine-grained user interaction during form entry.
 
-
+Please read the ICEfacesGettingStartedGuide.pdf in the /docs directory for comprehensive getting started instructions and information.
 
 Quick Start
 
@@ -19,7 +19,7 @@ Quick Start
    required.
 
 2. Copy the WAR files in the "dist/samples" directory to the "webapps"
-   directory of Apache Tomcat.
+   directory of Apache Tomcat 6.0.
 
 3. Try the sample applications at the following URLs
    http://localhost:8080/auctionMonitor/
@@ -29,13 +29,12 @@ Quick Start
 4. Build the tutorials individually by invoking "ant" in the individual
    tutorial directories. You also have the option to build against
    the MyFaces (open source) implementation of JSF by invoking ant
-   with the -Dmyfaces="" option.
+   with the -Dmyfaces="" option. Use "ant -p" to see all available
+   app. server targets.
 
 5. Install the tutorials by copying the WAR files from the tutorial
-   "dist" directories to the "webapps" directory of Apache Tomcat.
-   Consult ReleaseNotes.html in the docs folder for known deployment
-   issues and work arounds relating to the Sun Java System Application
-   Server and the BEA WegLogic Server.
+   "dist" directories to the "webapps" directory of Apache Tomcat 6.0.
+   Consult ReleaseNotes.html in the docs folder for additional information.
 
 6. Try the tutorial applications; for instance:
    http://localhost:8080/basicInputText/    (basic usage)
