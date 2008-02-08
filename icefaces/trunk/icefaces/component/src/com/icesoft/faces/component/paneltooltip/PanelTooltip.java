@@ -143,16 +143,18 @@ public class PanelTooltip extends PanelPopup{
  
     
     public void processUpdates(FacesContext context) {
-            ValueBinding vb = getValueBinding("visible");
-            if (vb != null) {
-                if (isValueChangeFired()) {
-                    vb.setValue(context, new Boolean("show".equals(getTooltipInfo().getState())));
-                }
-            } 
-            if (visible != null) {
-            	visible = new Boolean("show".equals(getTooltipInfo().getState()));
+        ValueBinding vb = getValueBinding("visible");
+        if (vb != null) {
+            Map map = (Map) context.getExternalContext().getSessionMap()
+            .get(CurrentStyle.class.getName());
+            if (isValueChangeFired() || ( map != null && map.containsKey(getClientId(context)) )) {
+                vb.setValue(context, new Boolean("show".equals(getTooltipInfo().getState())));
             }
-            super.processUpdates(context);
+        } 
+        if (visible != null) {
+        	visible = new Boolean("show".equals(getTooltipInfo().getState()));
+        }
+        super.processUpdates(context);
     }
     
     public void applyStyle(FacesContext facesContext, Element root) {
