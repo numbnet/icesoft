@@ -28,8 +28,6 @@ public class TooltipBean {
         List alberta = new ArrayList();
         alberta.add("Calgary");
         alberta.add("Edmonton");
-        alberta.add("Red Deer");
-        alberta.add("Lethbridge");
         alberta.add("Medicine Hat");
         alberta.add("Airdrie");
         provinces.put("Alberta", alberta);
@@ -37,8 +35,6 @@ public class TooltipBean {
         List ontario = new ArrayList();
         ontario.add("Toronto");
         ontario.add("Mississauga");
-        ontario.add("Hamilton");
-        ontario.add("Brampton");
         ontario.add("London");
         ontario.add("Windsor");       
         provinces.put("Ontario", ontario);
