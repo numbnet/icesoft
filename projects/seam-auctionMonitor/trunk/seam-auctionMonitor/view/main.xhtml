@@ -56,7 +56,7 @@
                        <ice:outputText id="itemNameId"
                                     value="Item Name"/>
                </f:facet>
-             <ice:panelGroup id="controlId">
+             <ice:panelGrid id="controlId" columns="2">
               <div style="float: left; width: 300px, margin: 2px; padding: 5px; margin-right: 20px; border: 1px solid #999999;">
            <!-- drag the image to the lower panel to create view... -->
                 <ice:panelGroup id= "PnlIcon"
@@ -80,7 +80,7 @@
                  <ice:commandButton id="addToViewId" image="./xmlhttp/css/xp/css-images/add.gif"
                                   style="height: 25px; width: 15px;"
                                  actionListener="#{viewManager.add(auctionitemBean)}" />
-               </ice:panelGroup>
+               </ice:panelGrid>
             </ice:column>
             <ice:column>
                 <f:facet name="header">
