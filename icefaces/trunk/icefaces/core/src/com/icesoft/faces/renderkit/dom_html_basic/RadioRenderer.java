@@ -53,13 +53,12 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
-                                Element rootTR, int counter,
+                                Element rootTable, Element rootTR, int counter,
                                 Object componentValue)
             throws IOException {
         UISelectOne uiSelectOne = (UISelectOne) uiComponent;
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiSelectOne);
-        Element rootTable = (Element) domContext.getRootNode();
+                DOMContext.getDOMContext(facesContext, uiSelectOne);
 
         Object submittedValue = uiSelectOne.getSubmittedValue();
         if (submittedValue == null) {

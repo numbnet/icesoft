@@ -141,12 +141,12 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                         ((SelectItemGroup) nextSelectItem).getSelectItems();
                 for (int i = 0; i < selectItemsArray.length; ++i) {
                     renderOption(facesContext, uiComponent, selectItemsArray[i],
-                                 renderVertically, nextTR, counter,
+                                 renderVertically, rootTable, nextTR, counter,
                                  componentValue);
                 }
             } else {
                 renderOption(facesContext, uiComponent, nextSelectItem,
-                             renderVertically, rootTR, counter,
+                             renderVertically, rootTable, rootTR, counter,
                              componentValue);
             }
         }
@@ -175,14 +175,12 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
-                                Element rootTR, int counter,
+                                Element rootTable, Element rootTR, int counter,
                                 Object componentValue)
             throws IOException {
 
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
-        Element rootTable = (Element) domContext.getRootNode();
-
+                DOMContext.getDOMContext(facesContext, uiComponent);
         boolean disabled = false;
         if (uiComponent.getAttributes().get("disabled") != null) {
             if ((uiComponent.getAttributes().get("disabled"))
