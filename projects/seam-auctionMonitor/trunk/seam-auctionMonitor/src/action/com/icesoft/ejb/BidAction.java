@@ -63,11 +63,9 @@ public class BidAction implements IBidAction, Serializable {
 	private transient RenderManager renderManager;
 	
     
-    public void bid(AuctionitemBean selectItem)
-	{
-    	log.info("passed into BidAction selectItem="+selectItem.getAuctionitem().getTitle());
-      	this.auctionitemBean=selectItem;
- //   	log.info("in bid new value="+getBidInput());
+    public void bid(AuctionitemBean selectItem)  {
+      	auctionitemBean=selectItem;
+
 	    // Validate input
 	    if ( getBidInput() <= auctionitemBean.getBid().getBidValue() )
 	    {
@@ -82,8 +80,7 @@ public class BidAction implements IBidAction, Serializable {
 	    {
 //	    	facesMessages.add("Bids on this item must be in increments of " + auctionitemBean.getAuctionitem().getPrice());
 	    }
-	    else{
-	    	log.info("VALID BID !!!!! of "+getBidInput());
+	    else  {
 	       // Persist new Bid
 		    try{
 		     	bid = new Bid();
@@ -98,7 +95,6 @@ public class BidAction implements IBidAction, Serializable {
 			    log.info("PERSISTING BID");
 
 			 	em.persist(bid);
-			    log.info("New bid on: #{bid.id} of #{bid.bidValue} for #{user.username}");
 
 		        // Make necessary changes to current view and call render.
 			    auctionitemBean.setBidding(false);
@@ -111,7 +107,6 @@ public class BidAction implements IBidAction, Serializable {
 				log.info("Thank you, #{user.name}, bid of #{bid.bidValue} accepted.");
 
 		    }catch (Exception e){
-		    	log.info("OK....>>>>> SOMETHING WRONG WITH BID!!!");
 		    	e.printStackTrace();    
 		    }
 	    }    
@@ -125,7 +120,6 @@ public class BidAction implements IBidAction, Serializable {
     @Remove @Destroy
 	public void destroy() {
 		// TODO Auto-generated method stub
-		log.info("destroying....");
 	}
     
     private double getBidInput() {
