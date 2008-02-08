@@ -48,14 +48,15 @@ change the border layout dynamically.
     <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
 
         <!-- Panel Visibility Control -->
-        <h3>
-            <ice:outputText
-                    value="#{msgs['component.panelLayout.placement']}"/>
-        </h3>
+
         <ice:panelGroup
                 styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText
+                        value="#{msgs['component.panelLayout.placement']}"/>
+            </h3>
 
-            <ice:panelGrid columns="5">
+            <ice:panelGrid columns="5" cellpadding="5px">
                 <ice:selectBooleanCheckbox id="northChk"
                                            partialSubmit="true"
                                            value="true"
@@ -88,7 +89,7 @@ change the border layout dynamically.
                 </ice:selectBooleanCheckbox>
             </ice:panelGrid>
         </ice:panelGroup>
-        <br />
+  
         <!-- Panel Layout -->
         <ice:panelBorder id="page"
                 styleClass="pnlBrdrDemo"
@@ -136,9 +137,10 @@ change the border layout dynamically.
       this placeholder
     -->
     <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-        <iframe src="./docs/panelBorderDoc.html"
-                class="includeIframe"
-                width="100%"></iframe>
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="docFrame"
+                        value="#{ctxtUtil['/docs/panelBorderDoc.html']}"
+                        escape="false"/>
     </ice:panelTab>
 
     <!--
@@ -146,9 +148,10 @@ change the border layout dynamically.
       the component example jsp include as an xml stream
     -->
     <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-        <iframe src="./sourcecodeStream.html?path=./inc/layoutPanels/panelBorder.xhtml"
-                class="includeIframe"
-                width="100%"></iframe>
+        <!-- ICE-2714: generating iframe markup to include context path -->
+        <ice:outputText id="srcFrame"
+                        value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelBorder.jspx']}"
+                        escape="false"/>
     </ice:panelTab>
 
 
