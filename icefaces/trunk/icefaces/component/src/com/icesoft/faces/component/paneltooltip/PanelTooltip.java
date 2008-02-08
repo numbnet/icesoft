@@ -148,10 +148,10 @@ public class PanelTooltip extends PanelPopup{
                 if (isValueChangeFired()) {
                     vb.setValue(context, new Boolean("show".equals(getTooltipInfo().getState())));
                 }
-//                else {
-//                    vb.setValue(context, new Boolean("show".equals(getState())));
-//                }
             } 
+            if (visible != null) {
+            	visible = new Boolean("show".equals(getTooltipInfo().getState()));
+            }
             super.processUpdates(context);
     }
     
