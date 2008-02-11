@@ -49,7 +49,7 @@
     &ice-cust-panelCollapsible-props;
 	<component-extension>
 	    <base-component-type>com.sun.faces.Component</base-component-type>
-		<component-family>javax.faces.Command</component-family>
+		<component-family>com.icesoft.faces.PanelCollapsible</component-family>
 		<renderer-type>com.icesoft.faces.PanelCollapsibleRenderer</renderer-type>  
 	</component-extension>
 </component>
