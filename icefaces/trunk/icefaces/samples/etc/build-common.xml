@@ -283,11 +283,24 @@
         <build.war/>
     </target>
     
-    <target name="build.portlet.war" depends="compile">
+    <target name="portlet.compile">
+        	
+        <ant target="compile">
+            <property name="portlet" value="true"/>
+        </ant>
+ </target>
+    
+    <target name="build.portlet.war" depends="portlet.compile">
+    <!--
         <property name="portlet" value="true"/>
+        -->
         <build.portlet.war/>
     </target>
     
+    <target name="make-help-doc">
+        <ant antfile="${build.common.basedir}/make-help.xml"/>
+    </target>
+   
     <target name="build.ear" depends="build.war">
         <copy todir="conf" preservelastmodified="true">
             <fileset dir="${build.common.basedir}" includes="application.xml">
@@ -376,23 +389,24 @@ Combinations:
     <target name="weblogic8.1" depends="build.war" description="Weblogic 8.1"/>
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
     <target name="websphere6.0" depends="build.war" description="IBM Websphere 6.0.2"/>
-                <target name="websphere6.1" depends="build.war" description="IBM Websphere 6.1"/>
+    <target name="websphere6.1" depends="build.war" description="IBM Websphere 6.1"/>
 
-   
+   <!--
     <target name="build.portlet.jboss4.2.war" depends="compile">
         <antcall target="build.portlet.war">
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
         </antcall>
     </target>
-    
+    -->
+    <!--
     <target name="build.portlet.liferay.war"  depends="compile">
         <property name="portlet" value="true"/>
         <antcall target="build.portlet.war">
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    
+    -->
     <target name="tomcat6.0" description="build war file for Tomcat 6.0">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
@@ -424,7 +438,6 @@ Combinations:
     </target>
     
     <!-- Pluto Portlet -->
-        <!-- Uncomment out for building pluto portlet applicaitons -->
     <!--
   <path id="pluto-classes">
     <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
@@ -432,7 +445,7 @@ Combinations:
 
 
   <typedef name="passemble" 
-           classname="${pluto.task}"
+           classname="org.apache.pluto.ant.AssembleTask"
            classpathref="pluto-classes"/>
 
 
