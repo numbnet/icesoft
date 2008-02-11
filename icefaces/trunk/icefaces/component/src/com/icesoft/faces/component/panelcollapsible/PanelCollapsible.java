@@ -18,7 +18,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 public class PanelCollapsible extends UICommand {
     public static final String COMPONENET_TYPE = "com.icesoft.faces.PanelCollapsible";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.PanelCollapsibleRenderer";
-    public static final String COMPONENT_FAMILY = "javax.faces.Command";
+    public static final String COMPONENT_FAMILY = "com.icesoft.faces.PanelCollapsible";
     private String style;
     private String styleClass;
     private boolean disabled = false;
@@ -27,13 +27,14 @@ public class PanelCollapsible extends UICommand {
     private String renderedOnUserRole = null;
     private Boolean toggleOnClick = null; 
 
+    public PanelCollapsible(){
+        setRendererType(DEFAULT_RENDERER_TYPE);
+    }
+    
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getRendererType() {
-        return DEFAULT_RENDERER_TYPE;
-    }
 
     public void decode(FacesContext context) {
     	super.decode(context);
