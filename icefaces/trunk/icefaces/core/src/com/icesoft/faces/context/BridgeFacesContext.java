@@ -369,7 +369,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             String id = inputElement.getAttribute("id");
             if (!"".equals(id) && parameters.containsKey(id)) {
                 String value = ((String[]) parameters.get(id))[0];
-                inputElement.setAttribute("value", value);
+                //empty string is implied (default) when 'value' attribute is missing
+                if (!"".equals(value) && inputElement.hasAttribute("value")) {
+                    inputElement.setAttribute("value", value);
+                }
             }
         }
 
