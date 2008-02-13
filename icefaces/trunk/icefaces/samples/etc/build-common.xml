@@ -93,58 +93,15 @@
         <include name="jsf-impl-1.2.jar" if="jsf12" />
         <exclude name="*.jar" if="serverjsf" />
     </patternset>
-    
-    <patternset id="icefaces.lib"
-                includes="
-                backport-util-concurrent.jar
-                commons-beanutils.jar
-                commons-collections.jar
-                commons-digester.jar
-                commons-discovery.jar
-                commons-el.jar
-                commons-fileupload.jar
-                commons-logging.jar
-                icefaces.jar
-                icefaces-comps.jar
-                icefaces-ahs.jar
-                el-api.jar
-                jstl.jar
-                xercesImpl.jar
-                xml-apis.jar
-                
-                myfaces-api.jar
-                myfaces-impl.jar
-                jsf-api.jar
-                jsf-impl.jar
-                jsf-api-1.2.jar
-                jsf-impl-1.2.jar
-                
-                krysalis-jCharts-1.0.0-alpha-1.jar
-                servlet-api.jar
-                icefaces-facelets.jar
-                el-ri.jar
-                
-                commons-lang.jar
-                commons-lang-2.1.jar
-    ">
-    </patternset>
-    
+
     <macrodef name="clean">
         <sequential>
             <delete includeemptydirs="true" quiet="true">
                 <fileset dir="${build.dir}"/>
                 <fileset dir="${dist.dir}"/>
                 <fileset dir="${classes.dir}" includes="**/*"/>
-                <fileset dir="${app.lib.dir}">
-                    <patternset refid="icefaces.lib"/>
-                </fileset>
-                <!--patternset refid="common.icefaces.lib.jars.to.include"/>
-                <patternset refid="additional.icefaces.lib.jars.to.include"/>
-            </fileset>
-            <fileset dir="${app.lib.dir}">
-                <patternset refid="jsf.deploy.jars" />
-            </fileset-->
-            </delete>
+                <fileset dir="${app.lib.dir}" includes="*"/>
+             </delete>
         </sequential>
     </macrodef>
     
@@ -236,10 +193,9 @@
             </copy>
             
             <copy todir="@{portlet.web.content.dir}">
-                
                 <fileset dir="${web.content.dir}"/>
             </copy>
-
+            
             <copy todir="@{portlet.web.content.dir}/WEB-INF">
                 <fileset dir="@{portlet.conf.dir}">
                     <include name="portlet.xml"/>
@@ -284,14 +240,14 @@
     </target>
     
     <target name="portlet.compile">
-        	
+        
         <ant target="compile">
             <property name="portlet" value="true"/>
         </ant>
- </target>
+    </target>
     
     <target name="build.portlet.war" depends="portlet.compile">
-    <!--
+        <!--
         <property name="portlet" value="true"/>
         -->
         <build.portlet.war/>
@@ -300,7 +256,7 @@
     <target name="make-help-doc">
         <ant antfile="${build.common.basedir}/make-help.xml"/>
     </target>
-   
+    <!--
     <target name="build.ear" depends="build.war">
         <copy todir="conf" preservelastmodified="true">
             <fileset dir="${build.common.basedir}" includes="application.xml">
@@ -315,7 +271,7 @@
             <fileset dir="${dist.dir}" includes="*.war"/>
         </ear>
     </target>
-    
+    -->
     <target name="help" description="help information for building different versions of this application">
         <echo level="info">
     ***********************************
@@ -371,7 +327,7 @@ Combinations:
         <antcall target="build.war">
             <param name="myfaces" value=""/>
         </antcall>
-        </target>
+    </target>
     
     <target name="build.jsf1.2.war" description="build the war file for jsf1.2 version">
         <antcall target="build.war">
@@ -390,8 +346,8 @@ Combinations:
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
     <target name="websphere6.0" depends="build.war" description="IBM Websphere 6.0.2"/>
     <target name="websphere6.1" depends="build.war" description="IBM Websphere 6.1"/>
-
-   <!--
+    
+    <!--
     <target name="build.portlet.jboss4.2.war" depends="compile">
         <antcall target="build.portlet.war">
             <param name="jsf12" value=""/>
@@ -436,24 +392,5 @@ Combinations:
             <param name="serverjsf" value=""/>
         </antcall>
     </target>
-    
-    <!-- Pluto Portlet -->
-    <!--
-  <path id="pluto-classes">
-    <fileset dir="${icefaces.lib.dir}" includes="**/*.jar"/>
-  </path>
 
-
-  <typedef name="passemble" 
-           classname="org.apache.pluto.ant.AssembleTask"
-           classpathref="pluto-classes"/>
-
-
-  <target name="pluto-assemble">
-        <echo message="Assembling..."/>
-        <passemble webxml="conf/web.sunri.icefaces.ce.xml" 
-                   portletxml="portlet/conf/portlet.xml" 
-                   destfile="conf/web.sunri.icefaces.portlet.pluto.xml"/>
-  </target>
- -->
 </project>
