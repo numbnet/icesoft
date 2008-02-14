@@ -43,9 +43,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.In;
 
+import org.jboss.seam.annotations.Begin;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.Manager;
 
 import org.jboss.seam.ScopeType;
 import java.util.Enumeration;
@@ -62,7 +64,7 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
-@Scope(ScopeType.SESSION)    
+@Scope(ScopeType.CONVERSATION)    
 @Name("treeNavigation")
 public class TreeNavigation implements Serializable{
 	   private static Log log =
@@ -156,6 +158,7 @@ public class TreeNavigation implements Serializable{
     /**
      * Utility method to build the entire navigation tree.
      */
+    @Begin
     private void init() {
         // set init flag
  //   	log.info("init()");
@@ -873,9 +876,6 @@ public class TreeNavigation implements Serializable{
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
-                
-                
- 
             }
 
     }
