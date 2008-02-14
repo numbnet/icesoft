@@ -33,13 +33,10 @@
 
 <project name="component-showcase" default="tomcat6.0">
     
-    <!--property name="ant.project.name" value="component-showcase"/-->
-
-    <property file="build.properties"/>
+    <property file="${build.common.basedir}/build.properties"/>
     <property name="component.docs.dir" location="../../component/doc"/>
-    <property name="portlet.build.web.dir" value="build/web"/>
+    <property name="build.web.dir" value="build/web"/>
     <property name="portlet.web.dir" value="portlet/web"/>
-    <property name="pluto.task" value="org.apache.pluto.ant.AssembleTask"/>
     
     <import file="../etc/build-common.xml"/>
     
@@ -49,13 +46,11 @@
                 "
     />
     
-    
     <patternset id="additional.compile.lib.jars"
                 includes="
                 servlet-api.jar
                 "
     />
-    
     
     <!-- jars needed for form Facelets -->
     <patternset id="faclets.jars"
@@ -64,30 +59,37 @@
                 el-ri.jar
                 "
     />
-    <target name="clean" depends="common.clean">
+    <target name="clean">
+        <clean/>
         <delete dir="${web.content.dir}/docs"/>
+    </target>
+    
+    <target name="copy.doc">
+        <copy todir="${web.content.dir}/docs" preservelastmodified="true">
+            <fileset dir="${component.docs.dir}"/>
+        </copy>        
+    </target>
+    <target name="copy.portlet.pages">
+        <copy todir="${build.web.dir}/portlet">
+            <fileset dir="${portlet.web.dir}">
+                <include name="*.jspx"/>
+            </fileset>
+        </copy>        
     </target>
     
     <target name="build.war" depends="compile"
             description="Creates a Sun RI version of component-showcase.">
-        <copy todir="${web.content.dir}/docs" preservelastmodified="true">
-            <fileset dir="${component.docs.dir}"/>
-        </copy>
-        
+                
+        <antcall target="copy.doc"/>
         <build.war web.xml="conf/web.sunri.icefaces.ce.xml"/>
+        
     </target>
     
-    <target name="build.portlet.war" description="" depends="compile">
-        <copy todir="${web.content.dir}/docs" preservelastmodified="true">
-            <fileset dir="${component.docs.dir}"/>
-        </copy>
-        <copy todir="${portlet.build.web.dir}/portlet">
-            <fileset dir="${portlet.web.dir}">
-                <include name="*.jspx"/>
-            </fileset>
-        </copy>
-        
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.war" depends="portlet.compile">
+
+        <antcall target="copy.doc"/>
+        <antcall target="copy.portlet.pages"/>
+
         <build.portlet.war web.xml="${comp.xml}"
                            portlet.web.content.dir="build/web"
                            portlet.conf.dir="portlet/conf"
@@ -96,12 +98,10 @@
     
     <target name="build.facelet.war" depends="compile"
             description="Creates a facelets version of component-showcase.">
-        <copy todir="${web.content.dir}/docs" preservelastmodified="true">
-            <fileset dir="${component.docs.dir}"/>
-        </copy>
-        
+
+        <antcall target="copy.doc"/>
+       
         <copy todir="${app.lib.dir}" preservelastmodified="true">
-            
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="faclets.jars"/>
             </fileset>
@@ -112,37 +112,31 @@
     <target name="build.facelet.tomcat5.x.war" depends="compile"
             description="Creates a facelets version of component-showcase for Tomcat5.x.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target>  
     <target name="build.facelet.weblogic8.1.war" depends="compile"
             description="Creates a facelets version of component-showcase for Weblogic 8.1.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target>
     <target name="build.facelet.weblogic9.2.war" depends="compile"
             description="Creates a facelets version of component-showcase for Weblogic 9.2.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target>
     <target name="build.facelet.websphere6.0.war" depends="compile"
             description="Creates a facelets version of component-showcase for IBM Websphere 6.0.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target> 
     <target name="build.facelet.websphere6.1.war" depends="compile"
             description="Creates a facelets version of component-showcase for IBM Websphere 6.1.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target> 
     <target name="build.facelet.jboss4.0.war" depends="compile"
             description="Creates a facelets version of component-showcase for JBoss4.0.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target> 
     <target name="build.facelet.tomcat6.war" depends="compile"
@@ -156,7 +150,8 @@
         <antcall target="build.facelet.war">
             <param name="jsf12" value=""/>
         </antcall>
-    </target>    <target name="build.facelet.jboss4.2.war" depends="compile"
+    </target>
+    <target name="build.facelet.jboss4.2.war" depends="compile"
                          description="Creates a facelets version of component-showcase for JBoss4.2.">
         <antcall target="build.facelet.war">
             <param name="jsf12" value=""/>
@@ -172,7 +167,6 @@
     <target name="build.facelet.oc4j.war" depends="compile"
             description="Creates a facelets version of component-showcase for OC4J.">
         <antcall target="build.facelet.war">
-            
         </antcall>
     </target>    
     <target name="build.facelet.glassfishv2.war" depends="compile"
@@ -190,8 +184,7 @@
         </antcall>
     </target>    
     
-    <target name="build.portlet.jboss4.2.portal.war" depends="compile" description="build portlet application for JBoss4.2 portal without AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.jboss4.2.portal.war" description="build portlet application for JBoss4.2 portal without AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
@@ -199,14 +192,7 @@
         </antcall>
     </target>
     
-    <target name="build.portlet.jboss4.2.portal.ahs.war" depends="compile" description="build portlet application for JBoss4.2 portal with AHS">
-        <property name="portlet" value="true"/>
-        <copy todir="build/web/WEB-INF">
-            <fileset dir="portlet/conf" includes="*.xml"/>
-        </copy>
-        <copy todir="build/web/portlet">
-            <fileset dir="portlet/web" includes="*.jspx"/>
-        </copy>
+    <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
@@ -215,16 +201,14 @@
         </antcall>       
     </target>
     
-    <target name="build.portlet.liferay.tomcat6.war" depends="compile" description="build a portlet application for Liferay Tomcat6.x without AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.tomcat6.war" description="build a portlet application for Liferay Tomcat6.x without AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet.liferay.tomcat6.ahs.war" depends="compile" description="build a portlet application for Liferay Tomcat6.x with AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.tomcat6.ahs.war" description="build a portlet application for Liferay Tomcat6.x with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
             <param name="el-ri" value=""/>
@@ -233,16 +217,14 @@
             <param name="icefaces.ahs.enabled" value=""/>   
         </antcall>
     </target>    
-    <target name="build.portlet.liferay.tomcat5.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x without AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.tomcat5.war" description="build a portlet application for Liferay Tomcat5.x without AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf11" value=""/>
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet.liferay.tomcat5.ahs.war" depends="compile" description="build a portlet application for Liferay Tomcat5.x with AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.tomcat5.ahs.war" description="build a portlet application for Liferay Tomcat5.x with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
             <param name="el-ri" value=""/>
@@ -251,16 +233,14 @@
             <param name="icefaces.ahs.enabled" value=""/>            
         </antcall>
     </target>
-    <target name="build.portlet.liferay.jboss4.0.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x without AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.jboss4.0.war" description="build a portlet application for Liferay JBoss4.0.x without AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf11" value=""/>
             <param name="liferay" value=""/>
         </antcall>
     </target>    
-    <target name="build.portlet.liferay.jboss4.0.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.0.x with AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.jboss4.0.ahs.war" description="build a portlet application for Liferay JBoss4.0.x with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf11" value=""/>
@@ -269,8 +249,7 @@
         </antcall>
     </target>
     
-    <target name="build.portlet.liferay.jboss4.2.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
-        <property name="portlet" value="true"/>
+    <target name="build.portlet.liferay.jboss4.2.war" description="build a portlet application for Liferay JBoss4.2 without AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.xml"/>
             <param name="jsf12" value=""/>
@@ -278,12 +257,8 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
-    <target name="jboss.ahs.war">
-        <build.portlet.war web.xml="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
-    </target>
-    <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="compile" description="build a portlet application for Liferay JBoss4.2 with AHS">
-        <property name="portlet" value="true"/>
 
+    <target name="build.portlet.liferay.jboss4.2.ahs.war" description="build a portlet application for Liferay JBoss4.2 with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
@@ -292,7 +267,7 @@
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>        
     </target>
-    
+    <!--
     <target name="build.facelet.ear" description="facelets version for Seam" depends="build.facelet.war">
         <copy todir="conf" preservelastmodified="true">
             <fileset dir="${build.common.basedir}" includes="application.xml">
@@ -307,12 +282,24 @@
             <fileset dir="${dist.dir}" includes="*.war"/>
         </ear>
     </target>
-    
+    -->
     <target name="build.portlet.pluto.tomcat5.war" description="N/A">
         <ant antfile="./build-pluto.xml" inheritAll="true">
             <target name="build.portlet.pluto.tomcat5.war"/>
         </ant>
-        
     </target>
+<!--
+    <property name="help.name" value="IceHelp"/>
+    <target name="use">
+        <echo message="${ant.project.name}"/>
 
+        <taskdef name="ice-help" classname="AddressHelp" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
+        <ice-help/>
+        <taskdef name="build-time" classname="BuildTime" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
+        <build-time/>
+
+	<taskdef name="ice-help" classname="BuildParser" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
+	<ice-help/>
+    </target>
+    -->
 </project>

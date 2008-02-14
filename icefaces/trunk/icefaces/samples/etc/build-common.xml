@@ -392,5 +392,29 @@ Combinations:
             <param name="serverjsf" value=""/>
         </antcall>
     </target>
+    <patternset id="faclets.jars"
+                includes="
+                icefaces-facelets.jar
+                el-ri.jar
+                krysalis-jCharts-1.0.0-alpha-1.jar
+                "
+    />
+    <target name="build.facelet.war" depends="compile"
+            description="a facelets version of application">
+        <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
+    </target>
 
+    <target name="change.flag" depends="check.all.flags">
+        <replaceregexp file="build.properties" match="#${flag}=(.*)" replace="${flag}=" byline="true"/>
+    </target>
+    
+    <target name="check.all.flags">
+        <replaceregexp file="build.properties" match="jsf12=(.*)" replace="#jsf12=" byline="true"/>
+        <replaceregexp file="build.properties" match="serverel=(.*)" replace="#serverel=" byline="true"/>
+        <replaceregexp file="build.properties" match="serverjsf=(.*)" replace="#serverjsf=" byline="true"/>
+        <replaceregexp file="build.properties" match="just-ice=(.*)" replace="#just-ice=" byline="true"/>
+        <replaceregexp file="build.properties" match="liferay=(.*)" replace="#liferay=" byline="true"/>
+        <replaceregexp file="build.properties" match="myfaces=(.*)" replace="#myfaces=" byline="true"/>
+
+    </target>    
 </project>
