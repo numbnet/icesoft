@@ -108,7 +108,7 @@
                 //do nothing
             }
 
-            var connect = function() {
+            this.connect = function() {
                 this.logger.debug("closing previous connection...");
                 this.listener.close();
                 this.logger.debug("connect...");
@@ -123,7 +123,8 @@
                     request.on(Connection.ServerError, this.serverErrorCallback);
                     request.on(Connection.Receive, this.receiveCallback);
                     request.on(Connection.Receive, this.receiveXWindowCookie);
-                    request.on(Connection.Receive, connect.delayFor(150));
+                    request.on(Connection.Receive, this.connect);
+                    request.on(Connection.Receive, Connection.Close);
                 }.bind(this));
             }.bind(this);
 
@@ -147,11 +148,11 @@
                 this.heartbeat.onLostPongs(this.connectionTroubleListeners.broadcaster());
                 this.heartbeat.onLostPongs(function() {
                     this.logger.debug('retry to connect...');
-                    connect();
+                    this.connect();
                 }.bind(this));
 
                 this.heartbeat.start();
-                connect();
+                this.connect();
             }.bind(this);
 
             //monitor if the blocking connection needs to be started
@@ -249,19 +250,20 @@
                 this.shutdown = Function.NOOP;
                 //avoid sending XMLHTTP requests that might create new sessions on the server
                 this.send = Function.NOOP;
+                this.connect = Function.NOOP;
                 this.heartbeat.stop();
-                this.listening.remove();
-                this.listener.close();
             } catch (e) {
                 //ignore, we really need to shutdown
             } finally {
                 [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners ].eachWithGuard(function(listeners) {
                     listeners.clear();
                 });
+                this.listener.close();
 
                 [ this.updatesMonitor, this.blockingConnectionMonitor ].eachWithGuard(function(monitor) {
                     monitor.cancel();
                 });
+                this.listening.remove();
             }
         }
     });

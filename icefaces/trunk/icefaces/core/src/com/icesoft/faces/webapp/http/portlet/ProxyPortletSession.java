@@ -1,5 +1,7 @@
 package com.icesoft.faces.webapp.http.portlet;
 
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+
 import javax.portlet.PortletContext;
 import javax.portlet.PortletSession;
 import java.util.Enumeration;
@@ -12,66 +14,130 @@ public class ProxyPortletSession implements PortletSession {
     }
 
     public Object getAttribute(String string) {
-        return session.getAttribute(string);
+        try {
+            return session.getAttribute(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Object getAttribute(String string, int i) {
-        return session.getAttribute(string, i);
+        try {
+            return session.getAttribute(string, i);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Enumeration getAttributeNames() {
-        return session.getAttributeNames();
+        try {
+            return session.getAttributeNames();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Enumeration getAttributeNames(int i) {
-        return session.getAttributeNames();
+        try {
+            return session.getAttributeNames();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public long getCreationTime() {
-        return session.getCreationTime();
+        try {
+            return session.getCreationTime();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public String getId() {
-        return session.getId();
+        try {
+            return session.getId();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public long getLastAccessedTime() {
-        return session.getLastAccessedTime();
+        try {
+            return session.getLastAccessedTime();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public int getMaxInactiveInterval() {
-        return session.getMaxInactiveInterval();
+        try {
+            return session.getMaxInactiveInterval();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void invalidate() {
-        session.invalidate();
+        try {
+            session.invalidate();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public boolean isNew() {
-        return session.isNew();
+        try {
+            return session.isNew();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void removeAttribute(String string) {
-        session.removeAttribute(string);
+        try {
+            session.removeAttribute(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void removeAttribute(String string, int i) {
-        session.removeAttribute(string, i);
+        try {
+            session.removeAttribute(string, i);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void setAttribute(String string, Object object) {
-        session.setAttribute(string, object);
+        try {
+            session.setAttribute(string, object);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void setAttribute(String string, Object object, int i) {
-        session.setAttribute(string, object, i);
+        try {
+            session.setAttribute(string, object, i);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void setMaxInactiveInterval(int i) {
-        session.setMaxInactiveInterval(i);
+        try {
+            session.setMaxInactiveInterval(i);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public PortletContext getPortletContext() {
-        return session.getPortletContext();
+        try {
+            return session.getPortletContext();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 }

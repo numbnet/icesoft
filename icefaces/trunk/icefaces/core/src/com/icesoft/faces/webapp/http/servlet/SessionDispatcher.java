@@ -8,8 +8,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +38,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     //synchronize access in case there are multiple SessionDispatcher instances created
     private synchronized static void notifyIfNew(HttpSession session) {
         if (!SessionIDs.contains(session.getId())) {
-            notifySessionCreated(session);
+            notifySessionInitialized(session);
         }
     }
 
@@ -69,17 +67,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private void sessionShutdown(HttpSession session) {
-        lookupServlet(session).shutdown();
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.remove(session.getId());
+        servlet.shutdown();
     }
 
-    private void sessionDestroyed(HttpSession session) {
-        sessionBoundServers.remove(session.getId());
-    }
-
-    private static void notifySessionCreated(HttpSession session) {
+    private static void notifySessionInitialized(HttpSession session) {
         SessionIDs.add(session.getId());
         Monitor monitor = new Monitor(session);
-        SessionMonitors.add(monitor);
 
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
@@ -92,7 +86,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    public static void notifySessionShutdown(final HttpSession session) {
+    public synchronized static void notifySessionShutdown(final HttpSession session) {
+        SessionIDs.remove(session.getId());
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
@@ -102,37 +97,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 Log.error(e);
             }
         }
-        new Thread() {
-            public void run() {
-                try {
-                    //wait a bit so the server can notify the bridge
-                    //that the session is about to expire
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    //do nothing
-                } finally {
-                    try {
-                        session.invalidate();
-                    } catch (Exception e) {
-                        Log.debug("Session already invalidated.");
-                    }
-                }
-            }
-        }.start();
-    }
 
-    public static void notifySessionDestroyed(HttpSession session) {
-        SessionIDs.remove(session.getId());
-
-        Iterator i = SessionDispatchers.iterator();
-        while (i.hasNext()) {
-            try {
-                SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
-                sessionDispatcher.sessionDestroyed(session);
-            } catch (Exception e) {
-                Log.error(e);
-            }
-        }
+        //invalidate session right away!
+        //see ICE-2731 -- delaying session invalidation doesn't work since JBoss+Catalina resuses session objects and
+        //IDs which causes a lot of confusion in applications that have logout processes (invalidate session and
+        //immediately initiate new session)
+        session.invalidate();
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
@@ -140,15 +110,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
         return ((SessionDispatcher) SessionDispatchers.get(0)).lookupServlet(session);
     }
 
-    public static class Listener implements HttpSessionListener, ServletContextListener {
+    public static class Listener implements ServletContextListener {
         private boolean run = true;
-
-        public void sessionCreated(HttpSessionEvent event) {
-        }
-
-        public void sessionDestroyed(HttpSessionEvent event) {
-            notifySessionDestroyed(event.getSession());
-        }
 
         public void contextInitialized(ServletContextEvent servletContextEvent) {
             Thread monitor = new Thread("Session Monitor") {
@@ -186,6 +149,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         private Monitor(HttpSession session) {
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
+            SessionMonitors.add(this);
         }
 
         public void touchSession() {
@@ -209,6 +173,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 notifySessionShutdown(session);
             } catch (IllegalStateException e) {
                 //session was already invalidated by the container
+                Log.debug("Session already invalidated.");
             } catch (Throwable t) {
                 //just inform that something went wrong
                 Log.warn("Failed to monitor session expiry", t);

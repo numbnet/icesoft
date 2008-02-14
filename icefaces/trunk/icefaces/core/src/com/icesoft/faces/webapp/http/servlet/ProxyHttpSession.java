@@ -1,5 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
@@ -13,70 +15,138 @@ public class ProxyHttpSession implements HttpSession {
     }
 
     public long getCreationTime() {
-        return session.getCreationTime();
+        try {
+            return session.getCreationTime();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public String getId() {
-        return session.getId();
+        try {
+            return session.getId();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public long getLastAccessedTime() {
-        return session.getLastAccessedTime();
+        try {
+            return session.getLastAccessedTime();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public ServletContext getServletContext() {
-        return session.getServletContext();
+        try {
+            return session.getServletContext();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void setMaxInactiveInterval(int i) {
-        session.setMaxInactiveInterval(i);
+        try {
+            session.setMaxInactiveInterval(i);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public int getMaxInactiveInterval() {
-        return session.getMaxInactiveInterval();
+        try {
+            return session.getMaxInactiveInterval();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public HttpSessionContext getSessionContext() {
-        return session.getSessionContext();
+        try {
+            return session.getSessionContext();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Object getAttribute(String string) {
-        return session.getAttribute(string);
+        try {
+            return session.getAttribute(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Object getValue(String string) {
-        return session.getValue(string);
+        try {
+            return session.getValue(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public Enumeration getAttributeNames() {
-        return session.getAttributeNames();
+        try {
+            return session.getAttributeNames();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public String[] getValueNames() {
-        return session.getValueNames();
+        try {
+            return session.getValueNames();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void setAttribute(String string, Object object) {
-        session.setAttribute(string, object);
+        try {
+            session.setAttribute(string, object);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void putValue(String string, Object object) {
-        session.putValue(string, object);
+        try {
+            session.putValue(string, object);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void removeAttribute(String string) {
-        session.removeAttribute(string);
+        try {
+            session.removeAttribute(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void removeValue(String string) {
-        session.removeValue(string);
+        try {
+            session.removeValue(string);
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public void invalidate() {
-        session.invalidate();
+        try {
+            session.invalidate();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 
     public boolean isNew() {
-        return session.isNew();
+        try {
+            return session.isNew();
+        } catch (IllegalStateException e) {
+            throw new SessionExpiredException(e);
+        }
     }
 }

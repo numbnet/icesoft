@@ -52,6 +52,7 @@ public class View implements CommandQueue {
             facesContext.setCurrentInstance();
             notifyViewDisposal();
             release();
+            take();
             facesContext.dispose();
             externalContext.dispose();
             //dispose view only once

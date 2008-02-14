@@ -16,7 +16,18 @@ import java.io.Writer;
 import java.util.Map;
 
 public class ViewBoundServer implements Server {
-    private final static Command SessionExpired = new SessionExpired();
+    private static final Command SessionExpired = new SessionExpired();
+    private static final FixedXMLContentHandler SessionExpiredHandler = new FixedXMLContentHandler() {
+        public void writeTo(Writer writer) throws IOException {
+            SessionExpired.serializeTo(writer);
+        }
+    };
+    private static final ResponseHandler MissingParameterHandler = new ResponseHandler() {
+        public void respond(Response response) throws Exception {
+            response.setStatus(500);
+            response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
+        }
+    };
     private Map views;
     private SessionDispatcher.Monitor sessionMonitor;
     private Server server;
@@ -30,23 +41,14 @@ public class ViewBoundServer implements Server {
     public void service(Request request) throws Exception {
         String viewNumber = request.getParameter("ice.view");
         if (viewNumber == null) {
-            request.respondWith(new ResponseHandler() {
-                public void respond(Response response) throws Exception {
-                    response.setStatus(500);
-                    response.writeBody().write("Cannot match view instance. 'ice.view' parameter is missing.".getBytes());
-                }
-            });
+            request.respondWith(MissingParameterHandler);
         } else {
             View view = (View) views.get(viewNumber);
             if (view == null) {
                 //todo: revisit this -- maybe the session was not created yet
-                request.respondWith(new FixedXMLContentHandler() {
-                    public void writeTo(Writer writer) throws IOException {
-                        SessionExpired.serializeTo(writer);
-                    }
-                });
+                request.respondWith(SessionExpiredHandler);
             } else {
-                
+
                 // #2615. Without the following synchronization, the following
                 // problems can occur. Assume HTTP-1 has a request and is in some
                 // phase of the JSF lifecycle. Another partial submit request
@@ -56,7 +58,7 @@ public class ViewBoundServer implements Server {
                 // via the updateOnXMLHttpRequest method on the view. Further, once HTTP-1
                 // releases the monitor and HTTP-2 gets it, the outbound thread can
                 // clear the requestMap member variable via view.release() below
-                synchronized(view.getFacesContext()) {
+                synchronized (view.getFacesContext()) {
                     try {
                         view.updateOnXMLHttpRequest(request);
                         sessionMonitor.touchSession();
@@ -69,6 +71,11 @@ public class ViewBoundServer implements Server {
                         } else {
                             throw (Exception) nestedException;
                         }
+                    } catch (SessionExpiredException e) {
+                        //exception thrown in the middle of JSF lifecycle
+                        //respond immediately with session-expired message to avoid any new connections
+                        //being initiated by the bridge.
+                        request.respondWith(SessionExpiredHandler);
                     } finally {
                         view.release();
                     }
