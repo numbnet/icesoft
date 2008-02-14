@@ -39,9 +39,12 @@ import com.icesoft.icefaces.samples.showcase.common.Person;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ActionEvent;
 
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.PAGE;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -53,10 +56,18 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
-@Scope(PAGE)
+@Scope(ScopeType.PAGE)
 @Name("table")
 public class TableBean implements Serializable{
-
+   //this could also extend EntityQuery like DataTablePaginatorBean
+   //but this illustrates how you can create framework in 
+   //components.xml and inject the results into a regular POJO
+   //since it is injected, the list is gotten fresh from the DB
+   //for each page refresh (in page scope). 
+	
+	@In("#{personsF.resultList}")
+	private List personListDB;
+	
     // column visibility, true to render false otherwise.
     private boolean renderFirstName = true;
     private boolean renderLastName = true;
@@ -68,11 +79,30 @@ public class TableBean implements Serializable{
     private boolean scrollable = true;
     // scrollable height property;
     private String scrollableHeight = "100px";
-    private Person[] personsList = DataTablePaginatorBean.buildPersonList();
 
-    public TableBean() {
+     @Out(scope=ScopeType.PAGE)
+    private Person[] personsList; 
+
+
+    @Create
+    public void init(){
+    	System.out.println("creating table bean");
+        if (personListDB!=null){
+        		 if (!personListDB.isEmpty()){
+        			 personsList= new Person[personListDB.size()];
+        			 for (int i=0; i<personListDB.size(); i++){
+        				 System.out.println(" entry="+i+" Person="+((Person)personListDB.get(i)).getLastName());
+        				 personsList[i]=(Person)personListDB.get(i);
+        			 }
+        			 
+        		 }
+        		 else{
+            		 System.out.println("personListDb is empty");
+            		 personsList = new Person[1];
+            	 }
+        }else System.out.println("personListDb is null!!!");
     }
-
+    
     /**
      * Is the first name column rendered?
      *

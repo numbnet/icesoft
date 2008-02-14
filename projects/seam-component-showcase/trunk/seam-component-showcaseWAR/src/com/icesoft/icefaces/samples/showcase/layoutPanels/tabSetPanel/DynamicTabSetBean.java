@@ -61,19 +61,17 @@ import org.jboss.seam.annotations.Scope;
 @Scope(ScopeType.PAGE)
 @Name("dynamicTabbedPaneExample")
 public class DynamicTabSetBean{
-	   private static Log log =
-           LogFactory.getLog(DynamicTabSetBean.class);   
+    
     private int tabIndex;
+    private int selectedIndex;
     private String newTabLabel;
     private String newTabContent;
     private List tabs = new ArrayList();
     private String removedTab;
-    private List tabItems = new ArrayList(); 
-    private int selectedIndex = 0;
-   
-//   private PanelTabSet dynamicTabSet;
+    private List tabItems = new ArrayList();
         
     public DynamicTabSetBean() {
+        
         //pre-defined two tabs into the panelTabSet
         Tab newTab1 = new Tab();
         newTab1.setLabel("Label1");
@@ -100,19 +98,16 @@ public class DynamicTabSetBean{
      * @param event remove button click.
      */
     public void removeTab(ActionEvent event) {
- //       int selectedIndex =  dynamicTabSet.getSelectedIndex();
         //remove from tabs
         for (int i = 0; i < tabs.size(); i++) {
             if (((Tab) tabs.get(i)).getIndex() ==
                 Integer.parseInt(removedTab)) {
                 tabs.remove(i);
                 if (selectedIndex  > i) {
-  //                  dynamicTabSet.setSelectedIndex((selectedIndex > 0)?
-                	setSelectedIndex((selectedIndex > 0)?
-                        (selectedIndex -1) : selectedIndex);
+                    if(selectedIndex > 0)
+                        selectedIndex--;
                 } else if (tabs.size() ==1) {
-//                    dynamicTabSet.setSelectedIndex(0);
-                	setSelectedIndex(0);
+                    selectedIndex = 0;
                 }
                 break;
             }
@@ -246,30 +241,14 @@ public class DynamicTabSetBean{
         this.tabs = tabs;
     }
     
-    /**
-     * Gets the dynamicTabSet PanelTabSet object.
-     *
-     * @return dynamicTabSet PanelTabSet object.
-     */
-//    public PanelTabSet getDynamicTabSet() {
-//        return dynamicTabSet;
-//    }
-    
-    /**
-     * Sets the dynamicTabSet PanelTabSet object.
-     *
-     * @param dynamicTabSet PanelTabSet object.
-     */
-//    public void setDynamicTabSet(PanelTabSet dynamicTabSet) {
-//        this.dynamicTabSet = dynamicTabSet;
-//    }
-	public int getSelectedIndex() {
-		return selectedIndex;
+    public int getSelectedIndex() {
+        return selectedIndex;
 	}
-
-	public void setSelectedIndex(int selectedIndex) {
-		this.selectedIndex = selectedIndex;
-	}  
+    
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+	}
+    
     /**
      * Inner class that represents a tab object with a label, content, and an
      * index.

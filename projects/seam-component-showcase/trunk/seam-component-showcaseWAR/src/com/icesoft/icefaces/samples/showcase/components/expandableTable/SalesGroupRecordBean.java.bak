@@ -51,7 +51,7 @@ import java.util.ArrayList;
  */
 public class SalesGroupRecordBean extends SalesGroupRecord {
     protected static final String DEFAULT_IMAGE_DIR =
-            "/xmlhttp/css/xp/css-images/";
+            "./xmlhttp/css/xp/css-images/";
     protected static final String SPACER_IMAGE =
             "tree_line_blank.gif";
 

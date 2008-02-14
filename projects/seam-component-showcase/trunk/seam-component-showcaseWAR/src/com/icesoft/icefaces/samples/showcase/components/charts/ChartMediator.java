@@ -194,7 +194,8 @@ public class ChartMediator implements Serializable{
      * Returns the chart String
      *@return String chart
      */
-    public String getChart() {        
+    public String getChart() {
+        
         return chart;
     }
     
@@ -204,7 +205,8 @@ public class ChartMediator implements Serializable{
      * Determines what type of graph it is based on the parameter passed in
      *@param String chart
      */
-    public void setChart(String chart) {    
+    public void setChart(String chart) {
+        
         if (wasChanged != null) {
             this.chart = wasChanged;
             wasChanged = null;
@@ -223,18 +225,22 @@ public class ChartMediator implements Serializable{
             axis = false;
             
             if (chart.equals(OutputChart.PIE3D_CHART_TYPE)) {
-                pie3D = true;      
+                pie3D = true;
+                
+                
             }
         } else {
             axis = true;
-        }       
+        }
+        
     }
     
     /*
      * Determines whether or not the application should render based on status change
      *@return boolean
      */
-    public boolean allCharts(OutputChart component) {        
+    public boolean allCharts(OutputChart component) {
+        
         if (chartChangedFlag) {
             chartChangedFlag = false;
             return true;
@@ -247,11 +253,12 @@ public class ChartMediator implements Serializable{
     /*
      * Determines whether the chart was changed
      * Sets the default_string if the area type charts are selected
-     * @param ValueChangeEvent event
+     *@param ValueChangeEvent event
      */
     public void chartChanged(ValueChangeEvent event) {
         chartChangedFlag = true;
-        wasChanged = (String) event.getNewValue();      
+        wasChanged = (String) event.getNewValue();
+        
         if (event.getNewValue().equals(OutputChart.AREA_CHART_TYPE) ||
                 event.getNewValue().equals(OutputChart.AREA_STACKED_CHART_TYPE)) {
             setClickedValue(
@@ -284,7 +291,8 @@ public class ChartMediator implements Serializable{
      * Returns the clickedValue
      *@return String clickedValue
      */
-    public String getClickedValue() {        
+    public String getClickedValue() {
+        
         return clickedValue;
     }
     
@@ -311,7 +319,8 @@ public class ChartMediator implements Serializable{
      * Sets the clicked value
      *@param String clickedValue
      */
-    public void setClickedValue(String clickedValue) {      
+    public void setClickedValue(String clickedValue) {
+        
         this.clickedValue = clickedValue;
     }
     
@@ -319,7 +328,8 @@ public class ChartMediator implements Serializable{
      * When the image map has been clicked this method returns the axis label plus the value
      *@param ActionEvent event
      */
-    public void imageClicked(ActionEvent event) {       
+    public void imageClicked(ActionEvent event) {
+        
         if (event.getSource() instanceof OutputChart) {
             OutputChart chart = (OutputChart) event.getSource();
             if (chart.getClickedImageMapArea().getXAxisLabel() != null) {
@@ -337,7 +347,8 @@ public class ChartMediator implements Serializable{
         
     }
     
-    public void pieAction(ActionEvent event) {        
+    public void pieAction(ActionEvent event) {
+        
         if (event.getSource() instanceof OutputChart) {
             OutputChart chart = (OutputChart) event.getSource();
             if (chart.getClickedImageMapArea().getLengendLabel() != null) {
@@ -347,8 +358,9 @@ public class ChartMediator implements Serializable{
                         chart.getClickedImageMapArea().getValue());
                 PieChartBean.setSalesForYear(
                         chart.getClickedImageMapArea().getLengendLabel());
-                effectOutputText.setFired(false);                
-               
+                effectOutputText.setFired(false);
+                
+                
             }
         }
         

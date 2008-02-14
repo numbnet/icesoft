@@ -41,6 +41,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * <p>The SourceCodeLoaderServlet class is responsible for displaying the JSF
@@ -49,6 +51,8 @@ import java.io.PrintWriter;
  * @since 0.3.0
  */
 public class SourceCodeLoaderServlet extends HttpServlet {
+    
+    private static Pattern pattern = Pattern.compile("<!--.*?-->",Pattern.DOTALL);
 
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) {
@@ -80,10 +84,18 @@ public class SourceCodeLoaderServlet extends HttpServlet {
                     // the code easier.
                     response.setContentType("text/plain");
                     responseStream = response.getWriter();
+                    StringBuffer stringBuffer = new StringBuffer();
                     int ch;
                     while ((ch = sourceStream.read()) != -1) {
-                        responseStream.print((char) ch);
+                        stringBuffer.append((char) ch);
                     }
+                    // Remove the license from the source code
+                    Matcher m = pattern.matcher(stringBuffer);
+                    String toReturn = "";
+                    if(m.find(0)){
+                        toReturn = m.replaceFirst("// License Removed");
+                    }
+                    responseStream.print(toReturn);
                     responseStream.close();
                     sourceStream.close();
                 } catch (IOException e) {

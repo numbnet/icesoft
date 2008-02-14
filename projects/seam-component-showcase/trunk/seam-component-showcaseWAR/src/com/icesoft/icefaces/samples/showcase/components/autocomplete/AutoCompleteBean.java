@@ -39,6 +39,7 @@ import com.icesoft.faces.component.selectinputtext.SelectInputText;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
@@ -68,20 +69,19 @@ public class AutoCompleteBean implements Serializable{
 
 //    // list of cities, used for auto complete list.
 //    private static List dictionary;
-    @In
-    private AutoCompleteDictionary autoCompleteDictionary;
+    @In("#{dictionary.dictionary}")
+    private List dictionary;
     
     // default city, no value.
     @In(required=false) 
     @Out(required=false)
-    private City currentCity;
+    private City currentCity = new City("", "", "", "", "", "", 0);
 
     // list of possible matches.
     private List matchesList = new ArrayList();
 
 
-    public AutoCompleteBean() {
-    }
+    
     /**
      * Called when a user has modifed the SelectInputText value.  This method
      * call causes the match list to be updated.
@@ -157,7 +157,6 @@ public class AutoCompleteBean implements Serializable{
         List matchList = new ArrayList(maxMatches);
 
         try {
-        	List dictionary = autoCompleteDictionary.getDictionary();
             int insert = Collections.binarySearch(dictionary, searchWord,
                                                   AutoCompleteDictionary.LABEL_COMPARATOR);
 

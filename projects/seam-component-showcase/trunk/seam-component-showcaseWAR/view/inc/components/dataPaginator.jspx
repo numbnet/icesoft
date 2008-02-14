@@ -33,7 +33,16 @@
 
 <!--
 In this demonstration, ice:datadataPaginator is used to page through a table
-with more data than can be displayed in a single page.
+with more data than can be displayed in a single page.  Note that there is a single
+query on the database (right now it only will fetch 25 rows of data which could be altered), 
+but there is no additional hit on the database while you paginate
+through the data.  To do pagination through seam & jsf, it would involve additional
+hits on the DB, page parameters and redirection.  
+Using both Seam and ICEfaces, you can retrieve a number of rows 
+from the database and allow the datapaginator to allow you to view those
+records in a page by page format.  **potential exists for managing large amounts 
+of data one subset at a time while putting logic in the paginator to retrieve the
+next subset
 -->
 <ice:form id="iceform"
           xmlns:h="http://java.sun.com/jsf/html"
@@ -68,14 +77,6 @@ with more data than can be displayed in a single page.
                 value="#{msgs['component.dataPaginator.data.description']}"/>
     </h3>
 
-    <ice:commandButton id="addContent"
-                       value="#{msgs['component.dataPaginator.addcontent']}"
-                       action="#{scrollerList.addContent}"
-                       immediate="true"/>
-    <ice:commandButton id="removeConent"
-                       value="#{msgs['component.dataPaginator.remcontent']}"
-                       action="#{scrollerList.removeContent}"
-                       immediate="true"/>
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="clearer"/>
@@ -111,7 +112,7 @@ with more data than can be displayed in a single page.
     <!-- Layout table columns with column headings and 5 table rows per page -->
     <ice:dataTable id="data" var="person"
                    style="margin-left:0;"
-                   value="#{scrollerList.persons}" rows="5"
+                   value="#{scrollerList.resultList}" rows="5"
                    columnClasses="firstCol,lastCol,phoneCol,emailCol">
         <ice:column>
             <f:facet name="header">

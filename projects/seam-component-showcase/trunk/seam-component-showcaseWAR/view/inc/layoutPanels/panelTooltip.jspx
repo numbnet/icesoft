@@ -51,7 +51,7 @@
                         value="This example is using a panelTooltip with hideOn = 'mouseout', To close this tooltip please move the mouse off. The panelTooltip is placed inside the panelSeries"/>
             </h4>
             <ice:panelSeries id="icepnlsrs" var="pnlPerson"
-                       value="#{scrollerList.persons}" rows="5"
+                       value="#{scrollerList.resultList}" rows="5"
                      >
                 <ice:panelGroup style="float: left; width: 60px;"> 
                 <ice:panelGroup panelTooltip="pnlSerPanelToolTip" >
@@ -132,7 +132,7 @@
             </h4>
             <ice:dataTable id="toolTipdata" var="person"
                        styleClass="dataPaginatorTable"
-                       value="#{scrollerList.persons}" rows="8"
+                       value="#{personsF.resultList}" rows="8"
                        columnClasses="firstCol,lastCol,phoneCol,emailCol">
             <ice:column>
                 <f:facet name="header">

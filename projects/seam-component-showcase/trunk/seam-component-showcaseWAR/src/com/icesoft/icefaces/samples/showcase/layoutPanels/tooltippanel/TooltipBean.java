@@ -7,10 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
 import javax.faces.component.UIOutput;
 import javax.faces.component.ValueHolder;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import com.icesoft.faces.component.DisplayEvent;
+import com.icesoft.faces.component.paneltabset.PanelTab;
+import com.icesoft.faces.component.paneltabset.PanelTabSet;
+import com.icesoft.icefaces.samples.showcase.common.Person;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.In;
@@ -25,14 +31,10 @@ public class TooltipBean implements Serializable{
     //source component for which the tooltip will be rendered/unrendered
 
 
-	UIComponent tooltipSrc;
-    
-    //current state of the tooltip
-    private String state = "hide";
-    
     Map provinces = new HashMap (); 
     
     List cityList = new ArrayList();
+    Person selectedPerson = null;
     
     public TooltipBean () {
         List alberta = new ArrayList();
@@ -69,20 +71,11 @@ public class TooltipBean implements Serializable{
 
     }
     
-    public UIComponent getTooltipSrc() {
-        return tooltipSrc;
-    }
-
-    public void setTooltipSrc(UIComponent tooltipSrc) {
-        this.tooltipSrc = tooltipSrc;
-    }
-    
-    public void stateListener(ValueChangeEvent event) {
-        if (tooltipSrc != null) {
-            UIComponent component = (UIComponent)tooltipSrc.getChildren().get(0);
-            if (component instanceof UIOutput) {
-                cityList = (List)provinces.get(((ValueHolder)component).getValue());
-            }
+   
+    public void provinceDspListener(DisplayEvent event) {
+        String contextValue = String.valueOf(event.getContextValue());
+        if (contextValue != null) {
+            cityList = (List)provinces.get(contextValue);
         }
     }
 
@@ -102,16 +95,26 @@ public class TooltipBean implements Serializable{
         this.cityList = cityList;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public void hideTooltip(ActionEvent event) {
-        this.state = "hide";
+        this.visible = false;
     }
+
+    public void displayListener(DisplayEvent event) {
+        Person person =  (Person) ((UIData)event.getTarget().getParent().getParent()).getRowData();
+        FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("tooltipPerson", person);
+    }
+    
+    private boolean visible = false;
+
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
 
 }

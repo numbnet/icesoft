@@ -37,76 +37,83 @@ import com.icesoft.icefaces.samples.showcase.common.Person;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+
+import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Destroy;
+import org.jboss.seam.annotations.Factory;
+import org.jboss.seam.annotations.In;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.core.Manager;
+import org.jboss.seam.framework.EntityQuery;
+
 import java.io.Serializable;
 
 /**
  * <p>The DataTablePaginatorBean Class is a backing bean for the
- * dataTablePaginator showcase demonstration and is used to store, add, or
- * remove data to the data table. </p>
+ * dataTablePaginator showcase demonstration as well as 
+ * commandSortHeader. </p>
  *
  * @since 0.3.0
  */
-@Scope(PAGE)
-@Name("dataSortList")
-public class DataTablePaginatorBean extends SortableList implements Serializable{
+@Scope(ScopeType.CONVERSATION)
+@Name("scrollerList")
+public class DataTablePaginatorBean extends EntityQuery{
 
     // table of person data
 
+	private static final String EJBQL = "select p from Person p";
+	
+    private boolean ascending;
+    private String sort;
+    private String orderString;
+    	
+    private String paginatorLayout = "hor";
+    
+    private Person person = new Person();
 
-    public static Person[] buildPersonList() {
-        Person[] personsList = new Person[]{
-                new Person("Mary", "Smith", "555-2629",
-                           "mary.smith@icesoft.com"),
-                new Person("James", "Johnson", "555-3318",
-                           "james.johnson@icesoft.com"),
-                new Person("Patricia", "Williams", "555-3702",
-                           "patricia.williams@icesoft.com"),
-                new Person("John", "Jones", "555-6589",
-                           "john.jones@icesoft.com"),
-                new Person("Linda", "Brown", "555-4736",
-                           "linda.brown@icesoft.com"),
-                new Person("Robert", "Davis", "555-9732",
-                           "robert.davis@icesoft.com"),
-                new Person("Barbara", "Miller", "555-4660",
-                           "barbara.miller@icesoft.com"),
-                new Person("Michael", "Wilson", "555-1236",
-                           "michael.wilson@icesoft.com"),
-                new Person("Elizabeth", "Moore", "555-6653",
-                           "elizabeth.moore@icesoft.com"),
-                new Person("William", "Taylor", "555-1481",
-                           "william.taylor@icesoft.com"),
-                new Person("David", "Garcia", "555-1717",
-                           "david.garcia@icesoft.com"),
-                new Person("Maria", "Jackson", "555-8414",
-                           "maria.jackson@icesoft.com"),
-                new Person("Richard", "White", "555-1887",
-                           "richard.white@icesoft.com"),
-                new Person("Susan", "Harris", "555-9209",
-                           "susan.harris@icesoft.com"),
-                new Person("Charles", "Thompson", "555-2040",
-                           "charles.thompson@icesoft.com"),
-                new Person("Margaret", "Martinez", "555-9976",
-                           "margaret.martinez@icesoft.com"),
-                new Person("Edward", "Phillips", "555-1325",
-                           "edward.phillips@icesoft.com"),
-        };
-        return personsList;
+	@Override
+	public Integer getMaxResults() {
+		return 25;
+	}
+	
+    @Override
+    public String getEjbql() {
+        return "select person from Person person";
     }
 
-    private Person[] persons = buildPersonList();
-
-    private String paginatorLayout = "hor";
-
+	
+	public Person getPerson() {
+		return person;
+	}
+	
+	public DataTablePaginatorBean(){
+		if (!Manager.instance().isLongRunningConversation())
+			Manager.instance().beginConversation();
+		System.out.println("building sorted list & lr="+Manager.instance().isLongRunningConversation());
+        setEjbql(EJBQL);
+    	ascending = true;
+    	sort = "firstName";
+    	orderString="firstName asc";
+    	buildSortedList();
+	}
+	
     /**
      *
      */
-    public DataTablePaginatorBean() {
-        super("lastName");
+ 
+	public void buildSortedList(){
+		System.out.println("building sorted list for orderString="+orderString);
+        setEjbql(EJBQL);
+        setOrder(orderString);    
     }
+    
 
+    
     /**
      * Gets the data paginator layout.
      *
@@ -134,98 +141,53 @@ public class DataTablePaginatorBean extends SortableList implements Serializable
         return (paginatorLayout.equalsIgnoreCase("ver"));
     }
 
+
+    
     /**
-     * Gets the person data.
-     *
-     * @return table of person data
+     * creates sorting criteria for query
      */
-    public Person[] getPersons() {
-        return persons;
+    public void sort(final String column, final boolean ascending) {
+   //     this.refresh();   	
+    	this.sort = column;
+    	this.ascending = ascending;
+    	if (ascending)this.orderString =sort+" "+"asc";
+    	else this.orderString=sort+" "+"desc";
+    	System.out.println("sort="+sort+" ascending="+ascending+" orderString="+orderString);
+    	//redo query   
+        this.buildSortedList();
+ 
     }
 
-    /**
-     * Gets the sorted person data.
-     *
-     * @return table of sorted person data
-     */
-    public Person[] getSortedPersons() {
-        sort(getSort(), isAscending());
-        return persons;
-    }
 
-    /**
-     * Determines the sort order.
-     *
-     * @param sortColumn to sort by.
-     * @return whether sort order is ascending or descending.
-     */
-    protected boolean isDefaultAscending(String sortColumn) {
-        return true;
-    }
+	public String getSort() {
+//		System.out.println("getSort sort="+sort);
+		return sort;
+	}
 
-    /**
-     * Sorts the list of person data.
-     */
-    protected void sort(final String column, final boolean ascending) {
-        Comparator comparator = new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Person c1 = (Person) o1;
-                Person c2 = (Person) o2;
-                if (column == null) {
-                    return 0;
-                }
-                if (column.equals("firstName")) {
-                    return ascending ?
-                           c1.getFirstName().compareTo(c2.getFirstName()) :
-                           c2.getFirstName().compareTo(c1.getFirstName());
-                } else if (column.equals("lastName")) {
-                    return ascending ?
-                           c1.getLastName().compareTo(c2.getLastName()) :
-                           c2.getLastName().compareTo(c1.getLastName());
-                } else if (column.equals("phoneNo")) {
-                    return ascending ?
-                           c1.getPhoneNo().compareTo(c2.getPhoneNo()) :
-                           c2.getPhoneNo().compareTo(c1.getPhoneNo());
-                } else if (column.equals("email")) {
-                    return ascending ? c1.getEmail().compareTo(c2.getEmail()) :
-                           c2.getEmail().compareTo(c1.getEmail());
-                } else return 0;
-            }
-        };
-        Arrays.sort(persons, comparator);
-    }
+	public void setSort(String sort) {
+		if (!sort.equals(this.sort)){
+			this.sort = sort;
+			System.out.println("setSort sort="+sort);
+			this.sort(this.sort,ascending);
+		}else System.out.println("sort unchanged");
+	}
 
-    /**
-     * Dynamically adds data to the table.
-     */
-    public void addContent() {
-        if (persons.length < 300) {
-            int dataLength = persons.length;
-            Person[] newData = new Person[persons.length + 5];
-            for (int i = 0, j = 0; i < newData.length; i++, j++) {
-                if (j >= dataLength) {
-                    j = 0;
-                }
-                newData[i] = persons[j];
-            }
-            persons = newData;
-        }
-    }
+	public boolean isAscending() {
+		System.out.println("getAcending ascending="+ascending);
+		return ascending;
+	}
 
-    /**
-     * Dynamically removes data from the table.
-     */
-    public void removeContent() {
+	public void setAscending(boolean ascending) {
+		if (ascending !=this.ascending){
+			this.ascending = ascending;
+			System.out.println("getAcending ascending="+ascending);
+			this.sort(this.sort, this.ascending);
+		}
+	}
 
-        if (persons.length > 5) {
-            int dataLength = persons.length;
-
-            Person[] newData = new Person[persons.length - 5];
-            // copy original data
-            System.arraycopy(persons, 0, newData, 0, dataLength - 5);
-            persons = newData;
-        }
-    }
-
+	@Destroy
+	public void destroy(){
+		System.out.println("destroying bean");
+	}
 
 }

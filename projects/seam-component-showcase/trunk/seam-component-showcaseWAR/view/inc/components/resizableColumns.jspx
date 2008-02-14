@@ -54,7 +54,7 @@ a control on the data to hide/show the table columns.
             -->
             <ice:dataTable id="iceDataTbl"
                            var="person"
-                           value="#{scrollerList.persons}"
+                           value="#{personsF.resultList}"
                            resizable="true"
                            style="width:600px;"
                     >

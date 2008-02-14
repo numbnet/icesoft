@@ -5,7 +5,7 @@
   no-conversation-view-id="/showcase.jspx">
 
     <page view-id="/showcase.jspx" >
-    
+
         <navigation from-action="#{fileAdminBean.deleteCurrentFileEntry}">
            <rule if="#{fileAdminBean.error}">
                 <redirect view-id="/showcase.jspx" />

@@ -55,7 +55,7 @@ is used to specify the columns that can be sorted by clicking the column header.
             <ice:panelGroup>
                 <ice:outputText value="groupOn dept"/><br/>
                 <ice:dataTable id="groupingData"
-                               value="#{groupBean.employees}"
+                               value="#{groupBean.resultList}"
                                var="employee"
                         >
                     <f:facet name="header">
@@ -83,7 +83,7 @@ is used to specify the columns that can be sorted by clicking the column header.
             <ice:panelGroup>
                 <ice:outputText value="groupOn depat, groupOn Subdept"/><br/>
                 <ice:dataTable
-                        value="#{groupBean.employees}"
+                        value="#{employees.resultList}"
                         var="employee"
                         >
                     <f:facet name="header">
@@ -112,7 +112,7 @@ is used to specify the columns that can be sorted by clicking the column header.
             <ice:panelGroup>
                 <ice:outputText value="apply grouping on the department column only, but groupOn dept + subdept"/><br/>
                 <ice:dataTable
-                        value="#{groupBean.employees}"
+                        value="#{employees.resultList}"
                         var="employee"
                         >
                     <f:facet name="header">

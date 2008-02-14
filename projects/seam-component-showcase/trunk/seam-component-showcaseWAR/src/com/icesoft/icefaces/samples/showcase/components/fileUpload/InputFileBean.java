@@ -79,7 +79,7 @@ public class InputFileBean implements Renderable, Serializable{
      * @param renderManager
      */
     public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
+       if (renderManager !=null) this.renderManager = renderManager;
        	log.info("setRenderManager version="+this.renderManager);
     }
 

@@ -56,11 +56,22 @@ public class PopupBean implements Serializable{
     // show or hide each popup panel
     private boolean showDraggablePanel = true;
     private boolean showModalPanel = false;
+    private boolean showAutoCentrePanel = false;
+    private boolean showAutoPositionPanel = false;
     private Effect statusFadeEffect;
     private Effect statusEffect;
+    private String autoPositionInput = "20,40";
 
 
-    public boolean isShowDraggablePanel() {
+    public String getAutoPositionInput() {
+		return autoPositionInput;
+	}
+
+	public void setAutoPositionInput(String autoPositionInput) {
+		this.autoPositionInput = autoPositionInput;
+	}
+
+	public boolean isShowDraggablePanel() {
         return showDraggablePanel;
     }
 
@@ -84,6 +95,14 @@ public class PopupBean implements Serializable{
     public void closeModalPopup(ActionEvent e) {
 
         showModalPanel = false;
+    }
+    
+    public void closeAutoCentrePopup(ActionEvent e){
+    	showAutoCentrePanel = false;
+    }
+    
+    public void closeAutoPositionPopup(ActionEvent e){
+    	showAutoPositionPanel = false;
     }
 
     public void setClosePopupImage(String closePopupImage) {
@@ -121,4 +140,20 @@ public class PopupBean implements Serializable{
     public void setStatusEffect(Effect statusEffect) {
         this.statusEffect = statusEffect;
     }
+
+	public boolean isShowAutoCentrePanel() {
+		return showAutoCentrePanel;
+	}
+
+	public void setShowAutoCentrePanel(boolean showAutoCentrePanel) {
+		this.showAutoCentrePanel = showAutoCentrePanel;
+	}
+
+	public boolean isShowAutoPositionPanel() {
+		return showAutoPositionPanel;
+	}
+
+	public void setShowAutoPositionPanel(boolean showAutoPositionPanel) {
+		this.showAutoPositionPanel = showAutoPositionPanel;
+	}
 }

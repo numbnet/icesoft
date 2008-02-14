@@ -70,37 +70,27 @@ import java.io.Serializable;
  */
 
 @Scope(ScopeType.PAGE)
-@Name("staticTabbedPane")
+@Name("staticTabbedPaneExample")
 public class StaticTabSetBean implements  Serializable{
-//	public class StaticTabSetBean implements TabChangeListener, Serializable{
     /**
      * The demo contains three tabs and thus we need three variables to store
      * their respective rendered states.
      */
-    private boolean tabbedPane1Visible=true;
-    private boolean tabbedPane2Visible=true;
-    private boolean tabbedPane3Visible=true;
-    private int selectedIndex=1;
-	private static Log log =
-           LogFactory.getLog(StaticTabSetBean.class);    
+    private boolean tabbedPane1Visible;
+    private boolean tabbedPane2Visible;
+    private boolean tabbedPane3Visible;
+    
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
      * "bottom".
      */
     private String tabPlacement = "bottom";
 
-
     /**
-     * Binding used by example to listen
+     * Determines the currently selected tab index. It's zero-based.
      */
+    private long selectedIndex = 1;
 
- // private PanelTabSet tabSet;
-    
-
- 	@Begin
-	public void startConv(){
-	  log.info("starting Conversation");
-	}   
     /**
      * Return the visibility of tab panel 1.
      *
@@ -159,31 +149,6 @@ public class StaticTabSetBean implements  Serializable{
     }
     
     /**
-     * Gets the tabbed pane object bound to this bean.
-     *
-     * @return bound tabbed pane.
-     */
-//     public PanelTabSet getTabSet() {
-   // 	if (tabSet!=null)log.info("getTabSet and tabSet="+tabSet.getId());
-    //	else log.info("getTabSet and tabSet is null");
- //       return tabSet;
- //   }
-    
-    /**
-     * Set a tabbed pane object which will be bound to this object
-     *
-     * @param tabSet new PanelTabSet object.
-     */
-    public void setTabSet(PanelTabSet tabSet) {
- //        this.tabSet = tabSet;
-//    	if (tabSet==null){
-  //  		log.info("settabSet is null");
- //   	}
-    //	else log.info("setTabSet & tabSet="+tabSet.getId());
-
-    } 
-    
-    /**
      * Gets the tab placement, either top or bottom.
      *
      * @return top if the tab is on the top of the component, bottom if the tab
@@ -203,88 +168,18 @@ public class StaticTabSetBean implements  Serializable{
     }
 
     /**
-     * Method is called when there has been a request to change the tab
-     * placement.
-     *
-     * @param event contains new tab placement data.
+     * Get the selected tab index, which is used both for the panelTabSet
+     *  and the selectOneRadio 
      */
-    public void selectTabPlacement(ValueChangeEvent event) {
-        tabPlacement = (String) event.getNewValue();
-    }
+    public long getSelectedIndex() {
+        return selectedIndex;
+	}
     
-     /**
-     * Called when the table binding's tab focus changes.
-     *
-     * @param tabChangeEvent used to set the tab focus.
-     * @throws AbortProcessingException An exception that may be thrown by event
-      * listeners to terminate the processing of the current event.
+    /**
+     * Sets the selected tab index, called from both the panelTabSet and the
+     *  selectOneRadio, depending on which the user clicked on
      */
-    public void processTabChange(TabChangeEvent tabChangeEvent)
-            throws AbortProcessingException {
-    	/*
-        setSelectedTabFocus(String.valueOf(tabChangeEvent.getNewTabIndex()));
-//        if (selectedTabObject != null) {
-//        	log.info("selectedTabObject!=null");
-//            selectedTabObject.setSubmittedValue(selectedTabFocus);
-//        }
-        */
-    }
-    
-//    /**
-//     * Gets the currently selected tab. --don't need this either
-//     *
-//     * @return selectedTabFocus of the currently selected tab.
-//     */
-//    public String getSelectedTabFocus() {
-//    	log.info("getSelectedTabFocus value="+selectedTabFocus);
-//        return Integer.toString(selectedIndex);
-//    }
-
-//    /**
-//     * Sets the currently selected tab. don't need this anymore!!!
-//     *
-//     * @param selectedTabFocus new selected tab.
-//     */
-//    public void setSelectedTabFocus(String selectedTabFocus) {
-//    	log.info("setSelectedTabFocus to "+selectedTabFocus);
-//    	try{
-//    	selectedIndex = Integer.parseInt(selectedTabFocus);
-//    	}catch (NumberFormatException e){
-//    		log.info("problem with parsing for selectedTabFocus="+selectedTabFocus);
-//    		log.info("exception :-"+e);
-//    	}
-//    }
-    
-
-
-    private String convId;
-    private String longRunning;
-    private String convParam;
-
-	public String getConvId() {
-		return Manager.instance().getCurrentConversationId();
+    public void setSelectedIndex(long selectedIndex) {
+        this.selectedIndex = selectedIndex;
 	}
-
-	public String getLongRunning() {
-		return String.valueOf(Manager.instance().isLongRunningConversation());
-	}
-
-	public String getConvParam() {
-		return Manager.instance().getConversationIdParameter();
-	}
-	   @Destroy
-	   public void destroy() {
-		   log.info("destroying StaticTabSetBean");
-	   }
-
-	public int getSelectedIndex() {
-//		log.info("getSelectedIndex and value is="+selectedIndex);
-		return selectedIndex;
-	}
-	public void setSelectedIndex(int selectedIndex) {
-//		log.info("setSelectedIndex to value="+selectedIndex);
-		this.selectedIndex = selectedIndex;
-	}
-
-
 }

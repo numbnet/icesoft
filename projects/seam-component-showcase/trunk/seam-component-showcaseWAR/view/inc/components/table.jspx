@@ -95,7 +95,7 @@ a control on the data to hide/show the table columns.
         <div style="width: 600px">
             <ice:dataTable id="iceDataTbl"
                            var="person"
-                           value="#{scrollerList.persons}"
+                           value="#{table.personsList}"
                            columnClasses="tableCol"
                            scrollable="#{table.scrollable}"
                            scrollHeight="#{table.scrollableHeight}"

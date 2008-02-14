@@ -57,7 +57,7 @@ is used to specify the columns that can be sorted by clicking the column header.
                 an arrow that shows the sort direction.
             -->
             <ice:dataTable id="dataSortData"
-                           value="#{scrollerList.sortedPersons}"
+                           value="#{scrollerList.resultList}"
                            var="person"
                            sortColumn="#{scrollerList.sort}"
                            sortAscending="#{scrollerList.ascending}"

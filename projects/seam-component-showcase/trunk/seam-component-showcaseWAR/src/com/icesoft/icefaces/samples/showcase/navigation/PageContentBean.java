@@ -119,8 +119,7 @@ public class PageContentBean extends IceUserObject implements Serializable{
         }
         messages = ResourceBundle.getBundle(
                 "com.icesoft.icefaces.samples.showcase.resources.messages",
-                locale, Thread.currentThread()
-                .getContextClassLoader());
+                locale);
     }
 
 
@@ -132,7 +131,6 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @return panel stack template name.
      */
     public String getTemplateName() {
-//    	log.info("getTemplateName = "+templateName);
         return templateName;
     }
 
@@ -164,7 +162,6 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @param menuDisplayText menu text to display
      */
     public void setMenuDisplayText(String menuDisplayText) {
-//    	log.info("setMenuDisplayText is:-"+menuDisplayText);
         if (menuDisplayText != null) {
             this.menuDisplayText = menuDisplayText;
             // set tree node text value
@@ -235,12 +232,11 @@ public class PageContentBean extends IceUserObject implements Serializable{
         this.pageContent = pageContent;
     }
 
- 
     /**
      * Sets the navigationSelectionBeans selected state
      */
     public void contentVisibleAction(ActionEvent event) {
-         if (isPageContent()) {
+        if (isPageContent()) {
             // only toggle the branch expansion if we have already selected the node
                 // toggle the branch node expansion
                 setExpanded(!isExpanded());

@@ -99,7 +99,7 @@ public class TreeNavigation implements Serializable{
         rootObject.setMenuDisplayText("menuDisplayText.componentSuiteMenuGroup");
         rootObject.setMenuContentTitle(
                 "submenuContentTitle.componentSuiteMenuGroup");
-        rootObject.setMenuContentInclusionFile("./content/splashComponents.xhtml");
+        rootObject.setMenuContentInclusionFile("./content/splashComponents.jspx");
         rootObject.setTemplateName("splashComponentsPanel");
         rootObject.setPageContent(true);
         rootTreeNode = new DefaultMutableTreeNode(rootObject);
@@ -181,7 +181,7 @@ public class TreeNavigation implements Serializable{
                         "submenuContentTitle.themesSubmenuItem");
                 branchObject.setTemplateName("splashThemesPanel");
 
-                branchObject.setMenuContentInclusionFile("./content/splashThemes.xhtml");
+                branchObject.setMenuContentInclusionFile("./content/splashThemes.jspx");
 
                 DefaultMutableTreeNode branchNode =
                         new DefaultMutableTreeNode(branchObject);
@@ -213,7 +213,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.textFieldsSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.textFieldsSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/textFields.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/textFields.jspx");
                 branchObject.setTemplateName("textFieldsContentPanel");
                 DefaultMutableTreeNode leafNode =
                         new DefaultMutableTreeNode(branchObject);
@@ -229,9 +229,8 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.inputRichText");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.inputRichText");
-                branchObject.setMenuContentInclusionFile("./components/inputRichText.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/inputRichText.jspx");
                 branchObject.setTemplateName("inputRichTextPanel");
-  //              branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
                 branchObject.setLeaf(true);
@@ -244,7 +243,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.selectionTagsSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.selectionTagsSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/selectionTags.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/selectionTags.jspx");
                 branchObject.setTemplateName("selectionTagsContentPanel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -258,7 +257,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.buttonsAndLinksSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.buttonsAndLinksSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/buttonsAndLinks.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/buttonsAndLinks.jspx");
                 branchObject.setTemplateName("buttonsAndLinksContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -273,7 +272,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.autoCompleteSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.autoCompleteSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/autoComplete.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/autoComplete.jspx");
                 branchObject.setTemplateName("autoCompleteContentPanel");
  
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -288,7 +287,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.dragDropSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.dragDropSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/dragDrop.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/dragDrop.jspx");
                 branchObject.setTemplateName("dragDropContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -303,7 +302,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.selectInputDateComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.selectInputDateComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/selectInputDate.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/selectInputDate.jspx");
                 branchObject.setTemplateName("selectInputDateContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -318,7 +317,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.treeComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.treeComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tree.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/tree.jspx");
                 branchObject.setTemplateName("treeContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -333,7 +332,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.menuBarSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.menuBarSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/menuBar.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/menuBar.jspx");
                 branchObject.setTemplateName("menuBarContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -348,7 +347,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.effectsSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.effectsSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/effects.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/effects.jspx");
                 branchObject.setTemplateName("effectsContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -363,7 +362,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.connectionStatusSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.connectionStatusSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/connectionStatus.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/connectionStatus.jspx");
                 branchObject.setTemplateName("connectionStatusContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -395,7 +394,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.tableComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.tableComponentSubmenuItem");
-                 branchObject.setMenuContentInclusionFile("./components/table.xhtml");
+                 branchObject.setMenuContentInclusionFile("./components/table.jspx");
                 branchObject.setTemplateName("tableContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -410,7 +409,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.columnsComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.columnsComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tableColumns.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/tableColumns.jspx");
                 branchObject.setTemplateName("columnsContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -425,7 +424,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.dataSortHeaderComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.dataSortHeaderComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/commandSortHeader.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/commandSortHeader.jspx");
                 branchObject.setTemplateName("commandSortHeaderContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -440,7 +439,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.dataScrollerComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.dataScrollerComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/dataPaginator.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/dataPaginator.jspx");
                 branchObject.setTemplateName("tablePaginatorContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -455,7 +454,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.tableExpandableComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.tableExpandableComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tableExpandable.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/tableExpandable.jspx");
                 branchObject.setTemplateName("tableExpandableContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -470,7 +469,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.tableRowSelectionComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.tableRowSelectionComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/tableRowSelection.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/tableRowSelection.jspx");
                 branchObject.setTemplateName("tableRowSelectionContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -479,13 +478,56 @@ public class TreeNavigation implements Serializable{
                 // finally add the new custom component branch
                 branchNode2.add(leafNode);
 
+                // component menu -> Table -> ColumnGroup
+                branchObject = new PageContentBean(this);
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.columnGroupComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.columnGroupComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/columnGroup.jspx");
+                branchObject.setTemplateName("columnGroupContentPanel");
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode2.add(leafNode);
+
+                
+                // component menu -> Table -> row grouping
+                branchObject = new PageContentBean(this);
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.tableGroupingComponentSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.tableGroupingComponentSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/tableGrouping.jspx");
+                branchObject.setTemplateName("tableGroupingContentPanel");
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode2.add(leafNode);                
+                
+                // component menu -> Table -> resizable columns
+                branchObject = new PageContentBean(this);
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.tableResizableColumnsSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.tableResizableColumnsSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/resizableColumns.jspx");
+                branchObject.setTemplateName("resizableColumnsContentPanel");
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode2.add(leafNode);               
+                
                 // component menu -> Progress Indicator
                 branchObject = new PageContentBean(this);
                 branchObject.setMenuDisplayText(
                         "submenuDisplayText.outputProgressComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.outputProgressComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/outputProgress.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/outputProgress.jspx");
                 branchObject.setTemplateName("outputProgressContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -500,7 +542,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.inputFileComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.inputFileComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/inputFile.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/inputFile.jspx");
                 branchObject.setTemplateName("inputFileContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -532,7 +574,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.chartComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.chartComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/outputChart/chart.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/outputChart/chart.jspx");
                 branchObject.setTemplateName("chartPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -547,7 +589,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.dynamicChartComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.dynamicChartComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/outputChart/dynamicChart.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/outputChart/dynamicChart.jspx");
                 branchObject.setTemplateName("dynamicChartPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -562,7 +604,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.combinedChartComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.combinedChartComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./components/outputChart/combinedChart.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/outputChart/combinedChart.jspx");
                 branchObject.setTemplateName("combinedChartPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -592,7 +634,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo1");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo1");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo1.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo1.jspx");
                 branchObject.setTemplateName("gmapDemo1Panel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -606,7 +648,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo2");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo2");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo2.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo2.jspx");
                 branchObject.setTemplateName("gmapDemo2Panel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -620,7 +662,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo3");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo3");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo3.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo3.jspx");
                 branchObject.setTemplateName("gmapDemo3Panel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -634,7 +676,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo4");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo4");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo4.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo4.jspx");
                 branchObject.setTemplateName("gmapDemo4Panel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -648,7 +690,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo5");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo5");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo5.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo5.jspx");
                 branchObject.setTemplateName("gmapDemo5Panel");
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
@@ -662,7 +704,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.demo6");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.demo6");
-                branchObject.setMenuContentInclusionFile("./components/gmap/demo6.xhtml");
+                branchObject.setMenuContentInclusionFile("./components/gmap/demo6.jspx");
                 branchObject.setTemplateName("gmapDemo6Panel");
                 branchObject.setNavigationSelection(navigationBean);
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -671,6 +713,18 @@ public class TreeNavigation implements Serializable{
                 // finally add the new custom component branch
                 googleMapNode.add(leafNode);
 */
+                
+                // component menu -> Media Players
+                branchObject = new PageContentBean(this);
+                branchObject.setMenuDisplayText("submenuDisplayText.mediaSubmenuItem");
+                branchObject.setMenuContentTitle("submenuContentTitle.mediaSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./components/media.jspx");
+                branchObject.setTemplateName("mediaContentPanel");
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                branchNode.add(leafNode);
+                
                 // Layout Panels menu item
                 branchObject = new PageContentBean(this);
                 branchObject.setMenuDisplayText(
@@ -691,7 +745,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.borderLayoutComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.borderLayoutComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelBorder.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelBorder.jspx");
                 branchObject.setTemplateName("panelBorderContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -706,7 +760,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.collapsiblePanelItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.collapsiblePanelItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelCollapsible.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelCollapsible.jspx");
                 branchObject.setTemplateName("collapsiblePanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -721,7 +775,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.panelPopupSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.panelPopupSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelPopup.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelPopup.jspx");
                 branchObject.setTemplateName("panelPopupContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -736,7 +790,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.positionedPanelItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.positionedPanelItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/positionedPanel.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/positionedPanel.jspx");
                 branchObject.setTemplateName("positionPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -752,7 +806,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.listSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.listSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelSeries.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelSeries.jspx");
                 branchObject.setTemplateName("listContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -767,7 +821,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.panelStackComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.panelStackComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelStack.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelStack.jspx");
                 branchObject.setTemplateName("panelStackContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -782,7 +836,7 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.tabbedComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.tabbedComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelTabSet.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelTabSet.jspx");
                 branchObject.setTemplateName("tabbedPaneContentPanel");
 
                 leafNode = new DefaultMutableTreeNode(branchObject);
@@ -797,15 +851,29 @@ public class TreeNavigation implements Serializable{
                         "submenuDisplayText.panelTooltipComponentSubmenuItem");
                 branchObject.setMenuContentTitle(
                         "submenuContentTitle.panelTooltipComponentSubmenuItem");
-                branchObject.setMenuContentInclusionFile("./layoutPanels/panelTooltip.xhtml");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelTooltip.jspx");
                 branchObject.setTemplateName("panelTooltipContentPanel");
  
                 leafNode = new DefaultMutableTreeNode(branchObject);
                 branchObject.setWrapper(leafNode);
                 branchObject.setLeaf(true);
                 // finally add the new custom component branch
-                branchNode.add(leafNode);                
-
+                branchNode.add(leafNode);  
+                
+                // component menu -> Panel Divider
+                branchObject = new PageContentBean(this);
+                branchObject.setMenuDisplayText(
+                        "submenuDisplayText.panelDividerSubmenuItem");
+                branchObject.setMenuContentTitle(
+                        "submenuContentTitle.panelDividerSubmenuItem");
+                branchObject.setMenuContentInclusionFile("./layoutPanels/panelDivider.jspx");
+                branchObject.setTemplateName("panelDividerContentPanel");
+                leafNode = new DefaultMutableTreeNode(branchObject);
+                branchObject.setWrapper(leafNode);
+                branchObject.setLeaf(true);
+                // finally add the new custom component branch
+                branchNode.add(leafNode);
+                
                 
  
             }

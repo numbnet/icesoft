@@ -52,7 +52,7 @@ is used to specify the columns that can be sorted by clicking the column header.
 
             <h3 style="margin-bottom:15px;"><ice:outputText value="#{msgs['component.columngroup.desc']}"/></h3>
             <ice:dataTable id="columnGroupData"
-                           value="#{dataSortList.sortedPersons}"
+                           value="#{personsF.resultList}"
                            var="person"
                            styleClass="dataScrollerTable"
                            columnClasses="firstCol,lastCol,phoneCol,emailCol"

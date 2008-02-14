@@ -8,7 +8,7 @@
                  http://jboss.com/products/seam/transaction http://jboss.com/products/seam/transaction-2.0.xsd
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd">
 
-<core:init transaction-management-enabled="false"/> 
+<!--<core:init transaction-management-enabled="false"/> --> 
 
    <core:manager conversation-timeout="120000" 
                   concurrent-request-timeout="500"
@@ -16,5 +16,5 @@
     
    <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
    <component scope="APPLICATION" auto-create="true" name="autoCompleteDictionary" class="com.icesoft.icefaces.samples.showcase.components.autocomplete.AutoCompleteDictionary" /> 
-   <transaction:no-transaction/> 
+<!--   <transaction:no-transaction/> --> 
 </components>

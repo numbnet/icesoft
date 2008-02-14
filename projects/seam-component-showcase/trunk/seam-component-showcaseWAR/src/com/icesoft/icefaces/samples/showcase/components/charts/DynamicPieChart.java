@@ -92,25 +92,23 @@ public class DynamicPieChart implements Serializable{
 
     //array of the available paints used in the chart
     public static final SelectItem[] availablePaints = new SelectItem[]{
-        
-        
-        new SelectItem("black", "Black"),
-        new SelectItem("blue", "Blue"),
-        new SelectItem("cyan", "Cyan"),
-        new SelectItem("darkGray", "Dark Gray"),
-        new SelectItem("gray", "Gray"),
-        new SelectItem("green", "Green"),
-        new SelectItem("red", "Red"),
-        new SelectItem("lightGray", "Light Gray"),
-        new SelectItem("magenta", "Magenta"),
-        new SelectItem("orange", "Orange"),
-        new SelectItem("pink", "Pink"),
-        new SelectItem("red", "Red"),
-        new SelectItem("white", "White"),
-        new SelectItem("yellow", "Yellow") };
-    
-    
-    
+
+            new SelectItem("E6EDF2", "Blue 1"),
+            new SelectItem("CAE1EF", "Blue 2"),
+            new SelectItem("C1D3DF", "Blue 3"),
+            new SelectItem("B4C7D4", "Blue 4"),
+            new SelectItem("94B3CB", "Blue 5"),
+            new SelectItem("4C7EA7", "Blue 6"),
+            new SelectItem("4FAADC", "Blue 7"),
+            new SelectItem("4397C5", "Blue 8"),
+            new SelectItem("1A568A", "Blue 9"),
+            new SelectItem("0D4274", "Blue 10"),
+            new SelectItem("CCCCCC", "Grey 1"),
+            new SelectItem("ACACAC", "Grey 2"),
+            new SelectItem("F78208", "Orange"),
+            new SelectItem("000000", "Black")};
+
+
     /**
      * Method to build the sales list and create the chart using the data from
      * the sales class
@@ -133,7 +131,8 @@ public class DynamicPieChart implements Serializable{
             labels.add(label);
             data.add(new Double(price));
             //adds paint from availablePaints list
-            paints.add(AbstractChart.getColor((String)availablePaints[r].getValue()));
+            paints.add(new Color(Integer.parseInt(
+                    (String) availablePaints[r].getValue(), 16)));
             r++;
         }
 
@@ -182,9 +181,15 @@ public class DynamicPieChart implements Serializable{
      * @param event JSF value changed event
      */
     public void paintChangeListener(ValueChangeEvent event) {
+
         if (event.getNewValue() != null) {
             selectedColor =
-                    AbstractChart.getColor(event.getNewValue().toString());
+                    new Color(
+                            Integer.parseInt(
+                                    event.getNewValue().toString(), 16));
+//            System.out.println("Hex Color: " +
+//                        Integer.parseInt(
+//                                    event.getNewValue().toString(), 16));
         }
     }
 

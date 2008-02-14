@@ -140,10 +140,15 @@
     
     <target name="war" depends="compileactions,copyclasses" 
             description="Build the distribution .war file">
-        
+        <copy todir="${war.dir}/WEB-INF/classes/META-INF">
+    	   <fileset dir="${basedir}/resources/META-INF">
+        	    <include name="persistence.xml"/>
+        	</fileset>
+    	</copy>
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources">
                 <include name="seam.properties" />
+            	<include name="import.sql"/>
             </fileset>
         </copy>
        <copy todir="${war.resources.dir}">

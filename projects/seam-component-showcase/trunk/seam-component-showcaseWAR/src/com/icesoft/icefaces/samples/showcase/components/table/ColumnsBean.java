@@ -33,12 +33,16 @@
 
 package com.icesoft.icefaces.samples.showcase.components.table;
 
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
+
+import com.icesoft.faces.component.ContextActionEvent;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -72,6 +76,9 @@ public class ColumnsBean implements Serializable{
     private String table[][];
     
     private static final int ROW_CONSTANT = 13;
+    
+    private int lastSelectedRow = -1;
+    private int lastSelectedColumn = -1;
     
     public ColumnsBean() {
 
@@ -148,7 +155,23 @@ public class ColumnsBean implements Serializable{
         return "-";
     }
     
-    
+    public String getCellStyleClass() {
+        if (rowDataModel.isRowAvailable() &&
+            columnDataModel.isRowAvailable()) {
+
+            // get the index of the row and column that this method is being
+            // called for
+            int row = rowDataModel.getRowIndex();
+            int col = columnDataModel.getRowIndex();
+            
+            if(lastSelectedRow >= 0 && lastSelectedColumn >= 0 &&
+               lastSelectedRow == row && lastSelectedColumn == col)
+            {
+                return "columnsSelectedCell";
+            }
+        }
+        return null;
+    }
 
     private void  calculateRows(){
         // calculate the number of columns.
@@ -197,12 +220,31 @@ public class ColumnsBean implements Serializable{
         
         rowDataModel = new ListDataModel(rowList);
         columnDataModel = new ListDataModel(columnList);
-        
+        lastSelectedRow = -1;
+        lastSelectedColumn = -1;
     }
 
    private String getChar(int i){
         i += 65;
         return String.valueOf((char)i);
+    }
+    
+    public void cellSelection(ActionEvent e) {
+        if(e instanceof ContextActionEvent) {
+            ContextActionEvent se = (ContextActionEvent) e;
+            int[] currCellIndexes = (int[]) se.getContextValue();
+            lastSelectedRow = currCellIndexes[0];
+            lastSelectedColumn = currCellIndexes[1];
+//System.out.println("ColumnsBean.cellSelection()  lastSelectedRow: " + lastSelectedRow);
+//System.out.println("ColumnsBean.cellSelection()  lastSelectedColumn: " + lastSelectedColumn);
+        }
+    }
+    
+    public int[] getCurrentCellIndexes() {
+        return new int[] {
+            rowDataModel.getRowIndex(),
+            columnDataModel.getRowIndex()
+        };
     }
 
     /**

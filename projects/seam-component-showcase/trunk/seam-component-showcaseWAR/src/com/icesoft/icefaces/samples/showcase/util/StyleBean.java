@@ -164,15 +164,5 @@ public class StyleBean implements Serializable{
         return styleList;
     }
 
-//    /**
-//     * Provides the StyleBean with a reference to the TreeNavigation, enabling
-//     * the StyleBean to use <code>refreshIcons()</code> to change the navigation
-//     * icons based on the theme.
-//     *
-//     * @param treeNav
-//     */
-//    public void registerTree(TreeNavigation treeNav) {
-//    	System.out.println("StyleBean: registerTree");
-////        this.treeNavigation = treeNav;
-//    }
+
 }

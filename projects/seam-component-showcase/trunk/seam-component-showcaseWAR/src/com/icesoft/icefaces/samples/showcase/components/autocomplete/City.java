@@ -33,12 +33,10 @@
 
 package com.icesoft.icefaces.samples.showcase.components.autocomplete;
 
-
 /**
  * <p>The City class is used for database information for the Autocomplete
  * (selectInputText) example.</p>
  */
-
 public class City {
 
     // attributes of each entry

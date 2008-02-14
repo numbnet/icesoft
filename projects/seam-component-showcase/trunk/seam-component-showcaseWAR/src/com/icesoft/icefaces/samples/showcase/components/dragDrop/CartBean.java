@@ -203,23 +203,12 @@ public class CartBean implements Serializable{
         }
         // only deal with DROPPED event types
         if (event.getEventType() == DndEvent.DROPPED) {
-            String targetId = event.getTargetClientId();
-            if ((targetId != null) &&
-                (targetId.indexOf("cartDropTarget") != -1)) {
-                String value = ((HtmlPanelGroup) event.getComponent())
-                        .getDragValue().toString();
-
-                // get the actual dropped item from the store table
-                CartItem dragged = storeTable
-                        .getItem(value.substring(0, value.length() - 1));
-
-                // ensure the dropped target was the cart
-                if (targetId.endsWith("cartDropTarget")) {
-                    // attempt to purchase the item (which checks quantity), and add it if valid
-                    if (storeTable.purchaseItem(dragged)) {
-                        addToPurchases(dragged);
-                    }
-
+            String dragValue = (String) event.getTargetDragValue();
+            String dropValue = (String) event.getTargetDropValue();
+            if (dropValue.equals("cartDropTarget"))  {
+                CartItem item = storeTable.getItem(dragValue);
+                if (storeTable.purchaseItem(item))  {
+                    addToPurchases(item);
                 }
             }
         }

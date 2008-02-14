@@ -33,6 +33,7 @@
 
 package com.icesoft.icefaces.samples.showcase.components.menuBar;
 
+import com.icesoft.faces.component.ContextActionEvent;
 import com.icesoft.faces.component.menupopup.MenuContextEvent;
 import com.icesoft.faces.context.effects.EffectBuilder;
 import com.icesoft.faces.context.effects.Effect;
@@ -64,9 +65,8 @@ public class MenuBarBean implements Serializable{
     // orientation of the menubar ("horizontal" or "vertical")
     private String orientation = "horizontal";
     
-    private Boolean lastContextWasText;
-    
-    private Effect effect;
+    private Effect textEffect;
+    private Effect imageEffect;
 
     /**
      * Get the param value for the menu item which fired the event.
@@ -100,7 +100,6 @@ public class MenuBarBean implements Serializable{
      * @param e the event that fired the listener
      */
     public void primaryListener(ActionEvent e) {
-
         actionFired = (String) ((UIComponent) e.getSource())
                 .getClientId(FacesContext.getCurrentInstance());
         // chop off the meaningless numbers, etc. from the id tag
@@ -118,12 +117,22 @@ public class MenuBarBean implements Serializable{
             setParam(myParam);
             
             // User context-clicked on certain menu items
-            if( lastContextWasText != null &&
-                (myParam.equals("Highlight") ||
-                 myParam.equals("Pulsate")) )
-            {
-                effect = EffectBuilder.build(myParam);
-                effect.setDuration(2.5f);
+            if(e instanceof ContextActionEvent) {
+                Object contextValue =
+                    ((ContextActionEvent) e).getContextValue();
+                if( contextValue != null &&
+                    (myParam.equals("Highlight") ||
+                     myParam.equals("Pulsate") ||
+                     myParam.equals("Appear") ||
+                     myParam.equals("Shake")) )
+                {
+                    Effect effect = EffectBuilder.build(myParam);
+                    effect.setDuration(2.5f);
+                    if(contextValue.equals("text"))
+                        textEffect = effect;
+                    else if(contextValue.equals("image"))
+                        imageEffect = effect;
+                }
             }
         } else {
             setParam("Not Defined");
@@ -149,36 +158,11 @@ public class MenuBarBean implements Serializable{
         this.orientation = orientation;
     }
     
-    public void setTextContext(MenuContextEvent e) {
-        if(e.isTerminal())
-            lastContextWasText = Boolean.TRUE;
-    }
-    
-    public void setImageContext(MenuContextEvent e) {
-        if(e.isTerminal())
-            lastContextWasText = Boolean.FALSE;
-    }
-    
-    // These dummy getters are necessary for JSP, but not Facelets
-    public MenuContextEvent getTextContext() { return null; }
-    public MenuContextEvent getImageContext() { return null; }
-    
     public Effect getTextEffect() {
-        if(lastContextWasText != null &&
-           lastContextWasText.booleanValue())
-        {
-            return effect;
-        }
-        return null;
+        return textEffect;
     }
     
     public Effect getImageEffect() {
-        if(lastContextWasText != null &&
-           !lastContextWasText.booleanValue())
-        {
-            return effect;
-        }
-        return null;
+        return imageEffect;
     }
-    
 }

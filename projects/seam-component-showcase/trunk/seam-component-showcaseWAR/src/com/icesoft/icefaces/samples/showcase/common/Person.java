@@ -33,16 +33,45 @@
 
 package com.icesoft.icefaces.samples.showcase.common;
 
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+
+import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.ScopeType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
 /**
  * Class of table element.
  */
-public class Person {
+//@Name("tooltipPerson")
+//@Scope(ScopeType.EVENT)
+@Entity
+@Name("persona")
+public class Person implements Serializable{
+	private Long id;
     private String lastName;
     private String firstName;
     private String phoneNo;
     private String email;
     private Boolean selected = Boolean.FALSE;
+    
+    @Id @GeneratedValue
+    public Long getId()
+    {
+       return id;
+    }
+    public void setId(Long id)
+    {
+       this.id = id;
+    }
 
+    public Person(){
+    	//empty constructor
+    }
     public Person(String firstName, String lastName, String phoneNo,
                   String email) {
         this.firstName = firstName;
@@ -67,6 +96,7 @@ public class Person {
         return email;
     }
 
+    @Transient
     public Boolean getSelected() {
         return selected;
     }

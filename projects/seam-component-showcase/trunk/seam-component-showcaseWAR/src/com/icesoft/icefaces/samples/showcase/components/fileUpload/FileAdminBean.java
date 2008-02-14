@@ -76,7 +76,6 @@ public class FileAdminBean implements Serializable{
 	}
 
 	public List<FileEntry> getFilesList() {
-		log.info("getFilesList and error="+error);
 		if (this.fileUpload!=null && fileUpload.isUpdateFlag())buildFilesList();	
 		return filesList;
 	}
@@ -88,7 +87,7 @@ public class FileAdminBean implements Serializable{
 	public void buildFilesList(){
 		/* get files from server directory */
 		List<FileEntry> tempList = refreshList();
-		log.info("buildFilesList tempList size="+tempList.size());
+//		log.info("buildFilesList tempList size="+tempList.size());
 		/*if they have exceeded max number of files or max size allowed, delete last file*/
     	if (tempList.size() > this.MAXFILESALLOWED){
 	    		log.info("MaxFilesExceeded");

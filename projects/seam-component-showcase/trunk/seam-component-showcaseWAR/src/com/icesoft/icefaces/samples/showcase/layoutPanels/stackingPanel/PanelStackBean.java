@@ -55,7 +55,7 @@ public class PanelStackBean implements Serializable{
     // currently selected fruit
     private String selectedFruit = "1";
     // currently selected color
-    private String selectedColor = "1";
+    private String selectedColour = "1";
     // urrently selected mineral
     private String selectedMineral = "1";
 
@@ -106,21 +106,21 @@ public class PanelStackBean implements Serializable{
     }
 
     /**
-     * Sets the selected color name to the specified color name.
+     * Sets the selected colour name to the specified colour name.
      *
-     * @param selectedColor color name to be set as selected.
+     * @param selectedColour colour name to be set as selected.
      */
-    public void setSelectedColor(String selectedColor) {
-        this.selectedColor = selectedColor;
+    public void setSelectedColour(String selectedColour) {
+        this.selectedColour = selectedColour;
     }
 
     /**
-     * Gets the selected color name.
+     * Gets the selected colour name.
      *
-     * @return currently selected color.
+     * @return currently selected colour.
      */
-    public String getSelectedColor() {
-        return selectedColor;
+    public String getSelectedColour() {
+        return selectedColour;
     }
 
     /**

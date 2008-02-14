@@ -57,7 +57,7 @@ public class HighlightBean {
     private Effect effectOutputText;
     private Effect effectSelectManyListBox;
 
-    private String effectColor = "#ffff99";
+    private String effectColour = "#ffff99";
 
     private Effects effectsBean;
 
@@ -153,33 +153,33 @@ public class HighlightBean {
         this.effectPanelGroup = effectPanelGroup;
     }
 
-    public String getEffectColor() {
-        return effectColor;
+    public String getEffectColour() {
+        return effectColour;
     }
 
-    public void setEffectColor(String effectColor) {
-        this.effectColor = effectColor;
+    public void setEffectColour(String effectColour) {
+        this.effectColour = effectColour;
     }
 
     public String invokeEffect() {
-        invokeEffect(effectColor);
+        invokeEffect(effectColour);
         return null;
     }
 
-    private void invokeEffect(String color) {
+    private void invokeEffect(String colour) {
         float seconds = effectsBean.getDurationPrimitive();
 
         //colour
-        effectCommandButton = new Highlight(color);
-        effectCommandLink = new Highlight(color);
-        effectInputText = new Highlight(color);
-        effectInputSecret = new Highlight(color);
-        effectInputTextArea = new Highlight(color);
-        effectSelectManyCheckBox = new Highlight(color);
-        effectSelectOneMenu = new Highlight(color);
-        effectPanelGroup = new Highlight(color);
-        effectSelectManyListBox = new Highlight(color);
-        effectOutputText = new Highlight(color);
+        effectCommandButton = new Highlight(colour);
+        effectCommandLink = new Highlight(colour);
+        effectInputText = new Highlight(colour);
+        effectInputSecret = new Highlight(colour);
+        effectInputTextArea = new Highlight(colour);
+        effectSelectManyCheckBox = new Highlight(colour);
+        effectSelectOneMenu = new Highlight(colour);
+        effectPanelGroup = new Highlight(colour);
+        effectSelectManyListBox = new Highlight(colour);
+        effectOutputText = new Highlight(colour);
 
         //duration
         effectCommandButton.setDuration(seconds);

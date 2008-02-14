@@ -121,7 +121,6 @@ public class CombinedChartBean implements Serializable{
             DataSeries dataSeries =
                     new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, title);
 
-
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
             String[] legendLabels = {"Bugs", "Security Holes", "Backdoors"};
             Paint[] paints = new Color[]{
@@ -162,7 +161,7 @@ public class CombinedChartBean implements Serializable{
 
             axisChart = new AxisChart(dataSeries, chartProperties,
                                       axisProperties,
-                                      legendProperties, 500, 500);
+                                      legendProperties, 350, 350);
 
         } catch (Exception e) {
             e.printStackTrace();
