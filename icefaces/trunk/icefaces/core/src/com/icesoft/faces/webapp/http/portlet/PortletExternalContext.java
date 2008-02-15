@@ -63,6 +63,9 @@ public class PortletExternalContext extends BridgeExternalContext {
     private Configuration configuration;
     private List locales;
 
+    public static final String INACTIVE_INCREMENT = "inactiveIncrement";
+    private boolean adjustPortletSessionInactiveInterval = true;
+
     public PortletExternalContext(String viewIdentifier, final Object request, Object response, CommandQueue commandQueue, Configuration configuration, final SessionDispatcher.Monitor monitor, Object portletConfig) {
         super(viewIdentifier, commandQueue, configuration);
         final RenderRequest renderRequest = (RenderRequest) request;
@@ -76,6 +79,8 @@ public class PortletExternalContext extends BridgeExternalContext {
         applicationMap = new PortletContextAttributeMap(context);
         sessionMap = new PortletSessionAttributeMap(session);
         requestMap = Collections.EMPTY_MAP;
+
+        adjustPortletSessionInactiveInterval = configuration.getAttributeAsBoolean("adjustPortletSessionInactiveInterval",true);
 
         updateOnPageLoad(renderRequest, renderResponse);
         insertNewViewrootToken();
@@ -99,6 +104,12 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void update(final HttpServletRequest request, HttpServletResponse response) {
+        
+        //ICE-2519
+        if(adjustPortletSessionInactiveInterval){
+            adjustPortletSessionInactiveInterval();
+        }
+
         //update parameters
         boolean persistSeamKey = isSeamLifecycleShortcut();
         recreateParameterAndCookieMaps();
@@ -139,6 +150,30 @@ public class PortletExternalContext extends BridgeExternalContext {
         authenticationVerifier = createAuthenticationVerifier(request);
         dispatcher = CannotDispatchOnXMLHTTPRequest;
     }
+
+    //ICE-2519: Because Ajax requests don't go through the portal container, the portal session's lastAccessed
+    //value is not properly updated. To compensate, we synthetically manipulate the maxInactiveInterval
+    //to ensure that the session doesn't timeout prematurely.  This is only done for client-initiated
+    //Ajax requests. Requests, like reloads, that go through the portal container, will set the lastAccessed
+    //time properly.
+    private void adjustPortletSessionInactiveInterval() {
+        Object inactiveIncObj = session.getAttribute(INACTIVE_INCREMENT);
+        long inactiveIncrement;
+
+        if (inactiveIncObj == null) {
+            inactiveIncrement = session.getMaxInactiveInterval() * 1000;
+            session.setAttribute(INACTIVE_INCREMENT, new Long(inactiveIncrement));
+        } else {
+            inactiveIncrement = ((Long) inactiveIncObj).longValue();
+        }
+
+        long lastAccessed = session.getLastAccessedTime();
+        session.setMaxInactiveInterval((int) (((System.currentTimeMillis() - lastAccessed) + inactiveIncrement)/1000) );
+        if (Log.isTraceEnabled()) {
+            Log.trace("max inactive interval adjust to " + session.getMaxInactiveInterval());
+        }
+    }
+
 
     public void update(final RenderRequest request, final RenderResponse response) {
         //update parameters
