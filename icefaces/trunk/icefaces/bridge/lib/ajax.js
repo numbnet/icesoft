@@ -239,7 +239,6 @@
                 //executed also when the connection is aborted.
                 //also, setting 'onreadystatechange' to null will cause a memory leak in IE6
                 this.request.onreadystatechange = Function.NOOP;
-                this.request.abort();
             } catch (e) {
                 //ignore, the request was discarded by the browser
             } finally {
