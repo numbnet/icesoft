@@ -81,9 +81,6 @@
         <param-value>false</param-value>
     </context-param>
     
-    <listener>
-        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
-    </listener>
     
     <!-- AHS config -->
     <context-param>
@@ -100,6 +97,10 @@
         <param-name>com.icesoft.net.messaging.properties</param-name>
         <param-value>activemq.properties</param-value>
     </context-param>    
+    
+    <listener>
+        <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
+    </listener>
 
     <!-- end of AHS config -->
     
