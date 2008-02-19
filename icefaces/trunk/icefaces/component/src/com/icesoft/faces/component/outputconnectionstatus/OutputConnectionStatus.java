@@ -64,6 +64,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
     private java.lang.String cautionLabel;
     private java.lang.String disconnectedLabel;
     private java.lang.String renderedOnUserRole;
+    private Boolean disconnectedPopup; // ICE-2621
 
     /**
      * <p>Return the value of the <code>COMPONENT_FAMILY</code> of this
@@ -275,6 +276,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         values[5] = cautionLabel;
         values[6] = disconnectedLabel;
         values[7] = renderedOnUserRole;
+        values[8] = disconnectedPopup;
         return ((Object) (values));
     }
 
@@ -292,5 +294,19 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         cautionLabel = (String) values[5];
         disconnectedLabel = (String) values[6];
         renderedOnUserRole = (String) values[7];
+        disconnectedPopup = (Boolean) values[8];
+    }
+
+    public boolean getDisconnectedPopup() {
+        if (disconnectedPopup != null) return disconnectedPopup.booleanValue();
+        ValueBinding vb = getValueBinding("disconnectedPopup");
+        if (vb == null) return false;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return false;
+        return ((Boolean) value).booleanValue();
+    }
+
+    public void setDisconnectedPopup(boolean disconnectedPopup) {
+        this.disconnectedPopup = Boolean.valueOf(disconnectedPopup);
     }
 }

@@ -92,7 +92,8 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
                             "idle: '" + idleID + "'," +
                             "working: '" + workingID + "'," +
                             "trouble: '" + troubleID + "'," +
-                            "lost: '" + lostID + "'" + "};"
+                            "lost: '" + lostID + "'," +
+                            "lostPopup: " + component.getDisconnectedPopup() + "};" // ICE-2621
             ));
             root.appendChild(script);
         }

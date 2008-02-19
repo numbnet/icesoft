@@ -99,6 +99,7 @@
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
+                statusManager.sessionExpiredPopup.on(); // ICE-2621
                 this.dispose();
             }.bind(this));
 
@@ -126,6 +127,7 @@
             this.connection.onServerError(function (response) {
                 logger.error('server side error');
                 statusManager.serverError.on();
+                statusManager.serverErrorPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
                 $element(document.documentElement).replaceHtml(response.content());
@@ -135,6 +137,7 @@
             this.connection.whenDown(function() {
                 logger.warn('connection to server was lost');
                 statusManager.connectionLost.on();
+                statusManager.connectionLostPopup.on(); // ICE-2621
                 this.dispose();
             }.bind(this));
 

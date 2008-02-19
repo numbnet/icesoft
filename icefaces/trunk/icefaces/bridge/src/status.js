@@ -172,6 +172,12 @@
         initialize: function(configuration, container) {
             this.container = container;
             var connectionLostRedirect = configuration.redirectURI ? new This.RedirectIndicator(configuration.redirectURI) : null;
+            var description = 'To reconnect click the Reload button on the browser or click the button below';
+            var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
+            var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
+            this.sessionExpiredPopup = { on: Function.NOOP, off: Function.NOOP };
+            this.serverErrorPopup = { on: Function.NOOP, off: Function.NOOP };
+            this.connectionLostPopup = { on: Function.NOOP, off: Function.NOOP };
             if (container.connectionStatus) {
                 this.indicators = [];
                 var connectionWorking = new This.ElementIndicator(container.connectionStatus.working, this.indicators);
@@ -181,11 +187,13 @@
                 this.connectionTrouble = new This.ElementIndicator(container.connectionStatus.trouble, this.indicators);
                 this.sessionExpired = this.connectionLost;
                 this.serverError = this.connectionLost;
+                if (container.connectionStatus.lostPopup) { // ICE-2621
+                    this.sessionExpiredPopup = new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
+                    this.serverErrorPopup = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
+                    this.connectionLostPopup = connectionLostRedirect ? connectionLostRedirect : new This.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, this);
+                }
             } else {
                 this.busy = new This.PointerIndicator(container);
-                var description = 'To reconnect click the Reload button on the browser or click the button below';
-                var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
-                var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
                 this.sessionExpired = new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
                 this.serverError = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
                 this.connectionLost = connectionLostRedirect ? connectionLostRedirect : new This.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, this);

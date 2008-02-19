@@ -127,3 +127,13 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+<description>Whether to popup a reload dialog when connection is lost: true or false (default).</description>
+<property-name>disconnectedPopup</property-name>
+<property-class>boolean</property-class>
+<property-extension>
+    <category>ICE_LAYOUT</category>
+    <editor-class>&valueBindingEditor;</editor-class>
+</property-extension>
+</property>
