@@ -368,18 +368,23 @@ public class TableRenderer
         Element th = domContext.createElement(element);
         tr.appendChild(th);
         
-        if (htmlDataTable.isResizable() && !lastChild) {
-            Element handlerTd = domContext.createElement(element);
-            handlerTd.setAttribute("valign", "top");
-            handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
-            Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
-            resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
-            resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
-            resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");            
-            resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
-            handlerTd.appendChild(resizeHandler);
-            tr.appendChild(handlerTd);
-        
+        Element cursorParent = th;
+        if (htmlDataTable.isResizable()) {
+            if (!lastChild) {
+                Element handlerTd = domContext.createElement(element);
+                handlerTd.setAttribute("valign", "top");
+                handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
+                Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
+                resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
+                resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
+                resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");            
+                resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
+                handlerTd.appendChild(resizeHandler);
+                tr.appendChild(handlerTd);
+            } 
+            Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
+            th.appendChild(columnHeaderDiv);
+            cursorParent = columnHeaderDiv;
         }
         if ("header".equalsIgnoreCase(facet) ){
             th.setAttribute("class",getHeaderStyles(uiComponent)[styleIndex]);
@@ -395,9 +400,9 @@ public class TableRenderer
 
         if (nextFacet != null) {
             resetFacetChildId(nextFacet);
-            domContext.setCursorParent(th);
+            domContext.setCursorParent(cursorParent);
             domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), th);
+                                   domContext.getRootNode(), cursorParent);
             encodeParentAndChildren(facesContext, nextFacet);
         }
     }

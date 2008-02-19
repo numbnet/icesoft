@@ -209,17 +209,17 @@ Ice.ResizableGrid.addMethods({
 
   getPreviousElement: function() {
     if (this.source.parentNode.previousSibling.tagName == "TH") {
-        return this.source.parentNode.previousSibling;
+        return this.source.parentNode.previousSibling.firstChild;
     } else {
-        return this.source.parentNode.previousSibling.previousSibling;
+        return this.source.parentNode.previousSibling.previousSibling.firstChild;
     }
   },
 
   getNextElement: function() {
     if (this.source.parentNode.nextSibling.tagName == "TH") {
-        return this.source.parentNode.nextSibling;
+        return this.source.parentNode.nextSibling.firstChild;
     } else {
-        return this.source.parentNode.nextSibling.nextSibling;
+        return this.source.parentNode.nextSibling.nextSibling.firstChild;
     }
   }
 });
