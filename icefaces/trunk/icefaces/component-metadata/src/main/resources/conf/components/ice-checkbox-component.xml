@@ -45,11 +45,7 @@ A multiple-choice control represented as a checkbox.
 	&ice-checkbox-props;
 
 	<component-extension>
-<!--
-		<base-component-type>
-            javax.faces.component.UIComponentBase
-		</base-component-type>
--->
+        <base-component-type>com.sun.faces.Component</base-component-type>
 		<component-family>com.icesoft.faces.HtmlCheckbox</component-family>
 		<renderer-type>com.icesoft.faces.Checkbox</renderer-type>
 	</component-extension>
