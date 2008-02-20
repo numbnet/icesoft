@@ -40,17 +40,15 @@
     
     <import file="../etc/build-common.xml"/>
     
-    <patternset id="additional.icefaces.lib.jars.to.include"
-                includes="
-                krysalis-jCharts-1.0.0-alpha-1.jar
-                "
-    />
+    <patternset id="additional.icefaces.lib.jars.to.include">
+        <include name="krysalis-jCharts-1.0.0-alpha-1.jar"/>
+        <include name="just-ice.jar" if="just-ice" />
+    </patternset>
     
     <patternset id="additional.compile.lib.jars"
-                includes="
-                servlet-api.jar
-                "
-    />
+        <include name="servlet-api.jar"/>
+        <include name="just-ice.jar" if="just-ice" />
+    </patternset>
     
     <!-- jars needed for form Facelets -->
     <patternset id="faclets.jars"
