@@ -45,7 +45,7 @@
         <include name="just-ice.jar" if="just-ice" />
     </patternset>
     
-    <patternset id="additional.compile.lib.jars"
+    <patternset id="additional.compile.lib.jars">
         <include name="servlet-api.jar"/>
         <include name="just-ice.jar" if="just-ice" />
     </patternset>
