@@ -1114,6 +1114,7 @@ input {
 }
 
 .icePnlBrdrSouth {
+    background-color: #FFFFFF;
     border-top: 1px solid #FFFFFF;
     color: #666666;
     padding: 4px;
