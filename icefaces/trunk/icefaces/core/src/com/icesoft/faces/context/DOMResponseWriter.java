@@ -266,7 +266,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "/xmlhttp/blank");
             }
         } else {
-            frameURI = "about:blank";
+            frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank"); // ICE-2553
         }
         iframe.setAttribute("title", "Icefaces Redirect");
         iframe.setAttribute("src", frameURI);
