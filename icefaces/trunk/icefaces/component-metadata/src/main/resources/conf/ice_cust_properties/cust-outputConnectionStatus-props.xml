@@ -130,7 +130,7 @@
 
 <property>
     <description>Whether to popup a reload dialog when connection is lost: true or false (default).</description>
-    <property-name>disconnectedPopup</property-name>
+    <property-name>showPopupOnDisconnect</property-name>
     <property-class>boolean</property-class>
 </property>
         
