@@ -48,6 +48,7 @@ WebLogic :  (note that the asynch stuff doesn't work for 9.2 and the dictionary 
   
 Plain Tomcat  (no embedded jboss container--just ootb)
   * Install Tomcat 5.5 or Tomcat 6  (Tomcat 6 everything works but with Tomcat 5.5, everything but the asynch stuff works)
+  * copy hsqldb.jar to <tomcat6 server dir>/lib or <tomcat5 server dir>/lib
   * ant tomcat55 or ant tomcat6
   * Deploy dist-tomcat55/seam-comp-showcase.war or dist-tomcat6/seam-comp-showcase.war to $TOMCAT_HOME/webapps/jboss-seam-hibernate.war
   * Start Tomcat
@@ -61,8 +62,9 @@ Tomcat with embeddable JBoss (the build is the same as JBoss 4.2.2 GA WAR):
   * Start Tomcat
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-Glassfish (tested with v1 & v2 but asynch stuff doesn't work yet properly with v1)
-  * Install Glassfish v1 UR1
+Glassfish (tested with v1 & v2 but asynch stuff doesn't work yet properly with v1, get hibernate/caching exceptions for asynch with v2
+   HOWEVER---works well with v2.1)
+  * Install Glassfish v2.1
   * ant glassfish
   * Start GlassFish
   * Load the admin console http://localhost:4848/
