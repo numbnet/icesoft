@@ -1,5 +1,6 @@
 package com.icesoft.icefaces.samples.showcase.common;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,7 +9,7 @@ import org.jboss.seam.annotations.Name;
 
 @Entity
 @Name("employee")
-public class Employee {
+public class Employee implements Serializable {
 	private Long id;
     private String deptName;
     private String subDeptName;

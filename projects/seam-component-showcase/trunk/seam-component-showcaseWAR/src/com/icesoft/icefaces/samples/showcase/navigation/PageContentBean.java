@@ -105,21 +105,29 @@ public class PageContentBean extends IceUserObject implements Serializable{
     private void init() {
     	//why set the images statically?  They should be set properly from 
     	//the StyleBean's current set of images???
+        log.info("in init and setting icons");
         setBranchContractedIcon(StyleBean.XP_BRANCH_CONTRACTED_ICON);
         setBranchExpandedIcon(StyleBean.XP_BRANCH_EXPANDED_ICON);
         setLeafIcon("./images/gear.gif");
         setExpanded(true);
 
         //will set the locale from the LanguageBean--soon to be LocaleBean??
-        Locale locale =
-                FacesContext.getCurrentInstance().getViewRoot().getLocale();
+         log.info("getting locale");
+        Locale locale=null;
+        try{
+             locale=FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        }catch (Exception e){
+            log.info("exception getting locale from FacesContext");
+        }
         // assign a default locale if the faces context has none, shouldn't happen
         if (locale == null) {
             locale = Locale.ENGLISH;
         }
+   //     log.info("loading messages");
         messages = ResourceBundle.getBundle(
                 "com.icesoft.icefaces.samples.showcase.resources.messages",
                 locale);
+   //     log.info("end of init");  
     }
 
 
@@ -141,6 +149,7 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @param templateName valid panel name in showcase.jspx
      */
     public void setTemplateName(String templateName) {
+    	log.info("setting template name to "+templateName);
         this.templateName = templateName;
     }
 

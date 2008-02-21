@@ -43,10 +43,11 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
 import com.icesoft.faces.component.gmap.GMapLatLng;
+import java.io.Serializable;
 
 @Scope(ScopeType.PAGE)
 @Name("gmap")
-public class Bean {
+public class Bean implements Serializable{
 	private String geoCoderAddress;
 	private String address = "";
 	private boolean locateAddress = false;

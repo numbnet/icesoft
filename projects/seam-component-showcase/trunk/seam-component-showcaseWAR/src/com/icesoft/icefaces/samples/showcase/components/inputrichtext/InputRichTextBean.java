@@ -31,19 +31,28 @@
  *
  */
 package com.icesoft.icefaces.samples.showcase.components.inputrichtext;
+import java.io.Serializable;
 import javax.faces.event.ValueChangeEvent;
 
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
 @Scope(ScopeType.PAGE)
 @Name("inputRichTextBean")
-public class InputRichTextBean {
+public class InputRichTextBean implements Serializable{
 	private String value = "";
 
+	@Create
+	public void init(){
+		System.out.println("creating inputRichTextBean version="+this);
+	}
+	
+	
 	public void valueChange(ValueChangeEvent event) {
-//		System.out.println("Value has been changed");
+ 		System.out.println("Value has been changed");
 	}
 
 	public String getValue() {
@@ -52,6 +61,11 @@ public class InputRichTextBean {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	@Destroy
+	public void destroy(){
+		System.out.println("destroying inputRichTextBean version="+this);
 	}
 
 }

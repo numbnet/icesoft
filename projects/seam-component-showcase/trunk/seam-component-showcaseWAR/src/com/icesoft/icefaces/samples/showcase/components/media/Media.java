@@ -33,6 +33,7 @@
 
 package com.icesoft.icefaces.samples.showcase.components.media;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -43,7 +44,7 @@ import org.jboss.seam.annotations.Scope;
 
 @Scope(ScopeType.PAGE)
 @Name("media")
-public class Media {
+public class Media implements Serializable{
     private static Map players = new HashMap();
 
     {

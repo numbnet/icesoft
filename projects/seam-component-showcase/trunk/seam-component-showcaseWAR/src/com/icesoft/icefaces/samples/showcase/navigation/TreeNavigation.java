@@ -44,6 +44,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jboss.seam.annotations.In;
 
 import org.jboss.seam.annotations.Begin;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
@@ -64,7 +65,7 @@ import java.io.Serializable;
  *
  * @since 0.3.0
  */
-@Scope(ScopeType.CONVERSATION)    
+@Scope(ScopeType.SESSION)
 @Name("treeNavigation")
 public class TreeNavigation implements Serializable{
 	   private static Log log =
@@ -96,7 +97,6 @@ public class TreeNavigation implements Serializable{
      */
     public TreeNavigation() {
         // build root node so that children can be attached
- //   	log.info("TreeNavigation constructor");
         PageContentBean rootObject = new PageContentBean(this);
         rootObject.setMenuDisplayText("menuDisplayText.componentSuiteMenuGroup");
         rootObject.setMenuContentTitle(
@@ -158,7 +158,6 @@ public class TreeNavigation implements Serializable{
     /**
      * Utility method to build the entire navigation tree.
      */
-    @Begin
     private void init() {
         // set init flag
  //   	log.info("init()");
@@ -877,7 +876,6 @@ public class TreeNavigation implements Serializable{
                 // finally add the new custom component branch
                 branchNode.add(leafNode);
             }
-
     }
 
     /**
@@ -908,5 +906,9 @@ public class TreeNavigation implements Serializable{
 		this.currentPageContent = currentPageContent;
 	}
 
+	@Destroy
+	public void destroy(){
+		log.info("destroying TreeNavigationBean");
+	}
 
 }

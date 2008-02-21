@@ -57,7 +57,7 @@ public class Person implements Serializable{
     private String firstName;
     private String phoneNo;
     private String email;
-    private Boolean selected = Boolean.FALSE;
+    private transient Boolean selected = Boolean.FALSE;
     
     @Id @GeneratedValue
     public Long getId()
