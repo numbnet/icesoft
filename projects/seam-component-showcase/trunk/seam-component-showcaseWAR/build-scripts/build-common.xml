@@ -140,19 +140,19 @@
     
     <target name="war" depends="compileactions,copyclasses" 
             description="Build the distribution .war file">
-        <copy todir="${war.dir}/WEB-INF/classes/META-INF">
-    	   <fileset dir="${basedir}/resources/META-INF">
+       <copy todir="${war.dir}/WEB-INF/classes/META-INF">
+    	   <fileset dir="${resources.dir}/META-INF">
         	    <include name="persistence.xml"/>
         	</fileset>
-    	</copy>
+    	</copy>  
         <copy todir="${war.dir}/WEB-INF/classes">
-            <fileset dir="${basedir}/resources">
+            <fileset dir="${basedir}/resources-jboss">
                 <include name="seam.properties" />
             	<include name="import.sql"/>
             </fileset>
         </copy>
        <copy todir="${war.resources.dir}">
-            <fileset dir="${basedir}/resources" >
+            <fileset dir="${basedir}/resources-jboss" >
                 <include name="city.xml.zip" />
             </fileset>
         </copy>        
@@ -162,7 +162,7 @@
         </copy>
         
         <copy todir="${war.dir}/WEB-INF">
-            <fileset dir="${basedir}/resources/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
                 <include name="*.*"/>
                 <include name="classes/**/*.*"/>
                 <exclude name="classes/**/*.class"/>
@@ -176,7 +176,7 @@
         </copy>
         
         <copy todir="${war.dir}/WEB-INF">
-            <fileset dir="${basedir}/resources/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
                 <include name="lib/*.*"/>
                 <include name="classes/**/*.class"/>
             </fileset>
@@ -188,39 +188,39 @@
                 <include name="jboss-seam-*.jar" />
                 <exclude name="jboss-seam-gen.jar" />
                 <include name="drools.jar"/>
-                <include name="janino.jar"/>
+              <!--  <include name="janino.jar"/> -->
                 <include name="antlr.jar"/>
-                <include name="mvel*.jar"/>
+              <!--  <include name="mvel*.jar"/> -->
             </fileset>
         </copy>
         
         <copy todir="${war.dir}/WEB-INF/classes/com/icesoft/icefaces/samples/showcase/resources">
-            <fileset dir="${basedir}/resources"> 
+            <fileset dir="${basedir}/resources-jboss"> 
                 <include name="messages*.properties"/>
             </fileset>
         </copy>
         
         <copy todir="${war.dir}/WEB-INF/classes">
-            <fileset dir="${basedir}/resources">
+            <fileset dir="${basedir}/resources-jboss">
                 <include name="*jpdl.xml" />
                 <include name="hibernate.cfg.xml" />
                 <include name="jbpm.cfg.xml" />
             </fileset>
         </copy>
-        	<copy todir="${war.dir}/docs" preservelastmodified="true">
-            		<fileset dir="${component.docs.dir}"/>
-        	</copy>	
+        <copy todir="${war.dir}/docs" preservelastmodified="true">
+      		<fileset dir="${component.docs.dir}"/>
+        </copy>	
         
         <copy todir="${war.dir}/WEB-INF">
             <fileset dir="${basedir}">
                 <include name="lib/jboss-seam.jar" />
-                <include name="lib/jbpm*.jar" />
+              <!--  <include name="lib/jbpm*.jar" /> -->
                 <include name="lib/jboss-el.jar" />
                 <include name="lib/commons-digester*.jar" />
                 <include name="lib/commons-beanutils-*.jar" />
-		        <include name="lib/icefaces*.jar" />
-		        <include name="lib/backport-util-concurrent.jar" />
-		        <include name="lib/commons-fileupload.jar"/> 	
+	        <include name="lib/icefaces*.jar" />
+		<include name="lib/backport-util-concurrent.jar" />
+		<include name="lib/commons-fileupload.jar"/> 	
                 <include name="lib/krysalis-jCharts-*.jar"/>
 	    </fileset>
         </copy>
@@ -361,48 +361,49 @@
 	      <copy todir="${lib.dir}">
 	           <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />
-				 <exclude name="icefaces-ahs.jar"/>
+		     <exclude name="icefaces-ahs.jar"/>
 	             <include name="backport-util-concurrent.jar" />	
-			     <include name="commons-fileupload.jar"/> 
+		     <include name="commons-fileupload.jar"/> 
 	             <include name="commons-logging*.jar"/>
-	           	<include name="commons-collections.jar"/>
 	             <include name="krysalis-*.jar"/>
 	             <include name="commons-digester*.jar"/>
-	           	 <include name="commons-el.jar"/>
-	           	 <include name="commons-discovery.jar"/>
-	           	 <include name="xercesImpl.jar"/>
-	           	 <include name="xml-apis.jar"/>
-	           	 <include name="el-ri.jar"/>
-		      </fileset>
+	             <include name="commons-el.jar"/>
+	             <include name="commons-discovery.jar"/>
+	             <include name="xercesImpl.jar"/>
+	             <include name="xml-apis.jar"/>
+	             <include name="el-ri.jar"/>
+                     <exclude name="commons-collections.jar"/>
+		 </fileset>
 	         <fileset dir="${jboss.seam.home}/lib">
 	             <include name="jboss-seam.jar"/>
-	         	 <include name="cglib.jar"/>
-	         	 <include name="dom4j.jar"/>
+	            <include name="cglib.jar"/>
+                    <include name="cglib-nodep.jar"/>
+	            <include name="dom4j.jar"/>
 	             <include name="jboss-seam-debug.jar"/>
 	             <include name="jboss-el.jar"/>
-	         	<include name="hibernate*.jar"/>
+	             <include name="hibernate*.jar"/>
+                      <include name="asm.jar"/>
 	              <include name="jsf*.jar"/>
 	              <include name="antlr.jar"/>
 	              <include name="jboss-seam-ui.jar"/>
-	         	  <include name="javassist.jar"/>
+	              <include name="javassist.jar"/>
 	              <include name="jbpm*.jar"/>
 	              <include name="jboss-el.jar" />
 	              <include name="antlr*.jar"/>
 	              <include name="servlet-api.jar"/>
-	         	  <include name="jsf-api.jar"/>
-	         	  <include name="jsf-impl.jar"/>
-	         	  <include name="jstl.jar"/>
-	         	  <include name="persistence-api.jar"/>
-	         	  <include name="jta.jar"/>
-	         	  <include name="jboss-archive-browsing.jar"/>
-	         	  <include name="log4j.jar"/>
-	             <include name="mvel*.jar"/>
-	             <include name="janino*.jar"/>
-	         	 <include name="commons-beanutils.jar"/>
-	         	 <include name="commons-lang.jar"/>
-	         	<include name="el-*.jar"/>
-	         </fileset>
-		</copy>	    
+	              <include name="jsf-api.jar"/>
+	           <include name="jsf-impl.jar"/>
+	           <include name="jstl.jar"/>
+	           <include name="persistence-api.jar"/>
+	           <include name="jta.jar"/>
+	           <include name="jboss-archive-browsing.jar"/>
+	           <include name="log4j.jar"/>
+                    <include name="commons-collections.jar"/>
+	          <include name="commons-beanutils.jar"/>
+	          <include name="commons-lang.jar"/>
+	         <include name="el-*.jar"/>
+	        </fileset>
+	   </copy>	    
 	</target>
 
 	<target name="purge" depends="undeploy" description="clean out jboss deployments of crashing applications"> 
