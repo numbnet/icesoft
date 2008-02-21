@@ -91,7 +91,9 @@ Ice.FCKeditorUtility = {
                 var valueHolder = $(ele + 'valueHolder');
                 var value = valueHolder.value;  
                 oEditor.SetHTML( value) ;
-                oEditor.Focus();
+                if (oEditor.hasFocus) {                
+                    oEditor.Focus();
+                }
             }
         } catch(err) {}
     }
@@ -104,9 +106,31 @@ FCKeditor.prototype.CreateIce = function(eleId)
 }
 
 function FCKeditor_OnComplete( editorInstance ){
+    FCKeditorAPI.GetInstance(editorInstance.Name).Events.AttachEvent( 'OnFocus', fckFocus ) ;
+    FCKeditorAPI.GetInstance(editorInstance.Name).Events.AttachEvent( 'OnBlur', fckBlur) ;
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
+}
+
+function fckFocus(editorInstance) {
+      //the onblur event doesn't fire everytime, 
+      //so we have manage focus here
+      var all = Ice.Repository.getAll();
+        for (i=0; i < all.length; i++) {   
+            var instanceName = all[i].thirdPartyObject.InstanceName;
+            var editIns = FCKeditorAPI.GetInstance(instanceName);
+            if (instanceName == editorInstance.Name) {
+                editorInstance.hasFocus = true;
+            } else {
+                if (editIns)
+                    editIns.hasFocus = false;           
+            } 
+       }      
+}
+
+function fckBlur(editorInstance) {
+      editorInstance.hasFocus = false;      
 }
 
 function FCKeditorSave(editorInstance) {
