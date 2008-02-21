@@ -49,11 +49,11 @@
             <ice:messages/>
 			<ice:panelGrid columns="2" styleClass="dvrPnlGrd">
 			   <ice:panelGroup style="border: 1px solid; padding:3px;">
-			           <ice:outputText value=" position : #{panelDividerBean.position1} " />
-			           <ice:commandButton value="decrease" actionListener="#{panelDividerBean.decPosition}"/>
-			           <ice:commandButton value="increase" actionListener="#{panelDividerBean.incPosition}"/>
+			           <ice:outputText id="dividerposition" value=" position : #{panelDividerBean.position1} " />
+			           <ice:commandButton id="positionincrease" value="decrease" actionListener="#{panelDividerBean.decPosition}"/>
+			           <ice:commandButton id="positiondecrease" value="increase" actionListener="#{panelDividerBean.incPosition}"/>
 			            <br/>
-				       <ice:panelDivider styleClass="myDvrPanel1" dividerPosition="#{panelDividerBean.position1}">
+				       <ice:panelDivider id="dvrpanel1" styleClass="myDvrPanel1" dividerPosition="#{panelDividerBean.position1}">
 				           <f:facet name="first">
 						    <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced
 						        standard and custom JavaServer Faces (JSF) components. These
@@ -71,8 +71,8 @@
 			       </ice:panelGroup>
 			       <ice:panelGroup style="border: 1px solid; padding:3px;">
 			           <ice:outputText value=" Enter position : " />
-	                   <ice:inputText value="#{panelDividerBean.position2}" partialSubmit="true"/><br/>
-				       <ice:panelDivider orientation="horizontal"  styleClass="myDvrPanel2" dividerPosition="#{panelDividerBean.position2}">
+	                   <ice:inputText id="inputposition" value="#{panelDividerBean.position2}" partialSubmit="true"/><br/>
+				       <ice:panelDivider id="dvrpanel2" orientation="horizontal"  styleClass="myDvrPanel2" dividerPosition="#{panelDividerBean.position2}">
 				            <f:facet name="first">
 	                        <p>The ICEfaces Component Suite provides a complete set of enhanced
 	                            standard and custom JavaServer Faces (JSF) components. These
@@ -90,7 +90,7 @@
 			        </ice:panelGroup> 
 			</ice:panelGrid>            
         <br/>
-            <ice:panelDivider styleClass="myDvrPanel3" dividerPosition="30">
+            <ice:panelDivider id="dvrpanel3" styleClass="myDvrPanel3" dividerPosition="30">
                 <f:facet name="first">
                             <ul>
                                 <li>Smooth, incremental page updates without full-page
@@ -112,7 +112,7 @@
                 </f:facet>
                 
                 <f:facet name="second"> 
-                       <ice:panelDivider orientation="horizontal"  styleClass="myDvrPanel3Child">
+                       <ice:panelDivider id="dvrpanel3child" orientation="horizontal"  styleClass="myDvrPanel3Child">
                         <f:facet name="first">
                         <ice:panelGroup style="padding:6px;">
                             The ICEfaces Component Suite provides a complete set of enhanced
