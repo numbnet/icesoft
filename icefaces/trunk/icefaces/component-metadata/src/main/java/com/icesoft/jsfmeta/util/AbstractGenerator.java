@@ -210,7 +210,15 @@ public abstract class AbstractGenerator {
     protected ComponentBean baseComponent(ComponentBean cb) {
         String baseComponentType = cb.getBaseComponentType();
         if (baseComponentType == null) {
-            return null;
+                                                
+            String compType = cb.getComponentType();
+            if(compType.indexOf("sun")  != -1 || compType.indexOf("javax") != -1 ){
+                return null;
+            }else{                                                
+                logger.log(Level.SEVERE, "component bean:"+cb.getComponentClass()
+                    +" base component type is invalid");
+                throw new IllegalArgumentException(" invalid base component"); 
+            }
         }
         ComponentBean bcb = getConfig().getComponent(baseComponentType);
         if (bcb == null) {
