@@ -41,7 +41,6 @@ and links that trigger submits.
 <ice:form id="iceform"
           xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
