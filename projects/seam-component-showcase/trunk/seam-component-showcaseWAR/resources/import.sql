@@ -15,7 +15,6 @@ insert into Person (firstName,LastName,phoneNo, email) values ('Susan','Harris',
 insert into Person (firstName,LastName,phoneNo, email) values ('Charles','Thompson', '555-2040','charles.thompson@icesoft.com')
 insert into Person (firstName,LastName,phoneNo, email) values ('Margaret','Martinez','555-9976','margaret.martinez@icesoft.com')
 insert into Person (firstName,LastName,phoneNo, email) values ('Edward','Phillips', '555-1325','edward.phillips@icesoft.com')
-
 insert into Employee (deptName,subDeptName,name) values('IT','Application','Martin')
 insert into Employee (deptName,subDeptName,name) values('IT','Application','Robert')
 insert into Employee (deptName,subDeptName,name) values('IT','Application','Xinsho')
