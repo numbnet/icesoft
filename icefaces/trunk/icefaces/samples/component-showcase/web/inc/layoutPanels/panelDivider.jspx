@@ -50,8 +50,8 @@
 			<ice:panelGrid columns="2" styleClass="dvrPnlGrd">
 			   <ice:panelGroup style="border: 1px solid; padding:3px;">
 			           <ice:outputText id="dividerposition" value=" position : #{panelDividerBean.position1} " />
-			           <ice:commandButton id="positionincrease" value="decrease" actionListener="#{panelDividerBean.decPosition}"/>
-			           <ice:commandButton id="positiondecrease" value="increase" actionListener="#{panelDividerBean.incPosition}"/>
+			           <ice:commandButton id="positiondecrease" value="decrease" actionListener="#{panelDividerBean.decPosition}"/>
+			           <ice:commandButton id="positionincrease" value="increase" actionListener="#{panelDividerBean.incPosition}"/>
 			            <br/>
 				       <ice:panelDivider id="dvrpanel1" styleClass="myDvrPanel1" dividerPosition="#{panelDividerBean.position1}">
 				           <f:facet name="first">
