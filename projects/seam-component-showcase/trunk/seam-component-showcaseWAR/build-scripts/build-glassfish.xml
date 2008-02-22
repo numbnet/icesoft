@@ -23,7 +23,6 @@
         <include name="lib/hibernate-annotations.jar"/>
     	<include name="lib/hibernate-entitymanager.jar"/>
     	<include name="lib/hibernate-validator.jar"/>
-    	<include name="examples/jpa/lib/jboss-archive-browsing.jar" />
     	<include name="lib/jboss-common-core.jar" />
     	<include name="lib/cglib-nodep.jar"/>
     	<include name="lib/antlr.jar" />
@@ -36,6 +35,10 @@
         <exclude name="lib/jbpm-jpdl.jar"/>
         <exclude name="lib/janino.jar"/>
     </fileset>
+	
+	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">
+	     <include name="lib/jboss-archive-browsing.jar"/>
+	</fileset>
 	
     <fileset id="noejb.war.extras" dir="${resources.dir}">
 	<include name="WEB-INF/classes/**/*" />

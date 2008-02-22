@@ -114,6 +114,7 @@
        <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
 	     <copy todir="${war.dir}/WEB-INF">
 			<fileset refid="noejb.war.lib.extras" />
+	     	<fileset refid="jboss.archive.jar" />
 	    </copy>
 	       	
 		<copy todir="${war.dir}">
