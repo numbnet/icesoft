@@ -34,6 +34,8 @@
 package com.icesoft.icefaces.samples.showcase.components.textEntry;
 
 import javax.faces.context.FacesContext;
+
+import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Scope;
 import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
@@ -55,6 +57,11 @@ public class TextFieldsBean implements Serializable{
 
     private float numberValue = 500000.0f;
 
+    @Create
+    public void init(){
+    	System.out.println("creating TextFieldsBean version="+this);
+    }
+    
     /**
      * Gets the name property.
      *

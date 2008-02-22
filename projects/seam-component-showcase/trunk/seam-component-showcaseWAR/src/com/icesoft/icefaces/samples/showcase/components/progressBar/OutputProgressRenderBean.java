@@ -108,7 +108,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
     @In
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
-        log.info("setRenderManager() and renderManager="+this.renderManager);
+ //       log.info("setRenderManager() and renderManager="+this.renderManager);
 //        if (renderManager !=null){
 //          renderer = renderManager.getDelayRenderer(RENDERER_NAME);
 //          renderer.add(this);
@@ -122,7 +122,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
      * @return RenderManager null
      */
     public RenderManager getRenderManager() {
-    	log.info("getRenderManager rm="+this.renderManager);
+ //   	log.info("getRenderManager rm="+this.renderManager);
         return this.renderManager;
     }
 
@@ -220,7 +220,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	    	log.info("start the action");
 	    	setPercent(0);
 	    	if (!doneSetup){
-	    		log.info("setup the IR");
+	//    		log.info("setup the IR");
 	    	    setupIntervalRenderer();
 	    	}else {
 	    		if (ir!=null)
@@ -242,7 +242,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 
 	        public LongOperationRunner(OutputProgressRenderBean outputBean) {
 	            this.outputBean = outputBean;
-	            log.info(" thread constructor & outputBean="+outputBean);
+//	            log.info(" thread constructor & outputBean="+outputBean);
 	            
 	        }
 
@@ -252,7 +252,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	            try {
 	                for (int i = 0; i <= 100; i += 10) {
 	                    // pause the thread
-	                	log.info(" \t in loop & i="+i+" for outputBean="+outputBean);
+	//                	log.info(" \t in loop & i="+i+" for outputBean="+outputBean);
 	                    // update the percent value
 	                    if (i>0)outputBean.setPercent(i);
 	                    Thread.sleep(300);
