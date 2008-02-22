@@ -31,18 +31,19 @@
 ~
 -->
 
-<ice:form xmlns:h="http://java.sun.com/jsf/html"
+<ice:form id="iceform" 
+          xmlns:h="http://java.sun.com/jsf/html"
           xmlns:f="http://java.sun.com/jsf/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <ice:panelTabSet styleClass="componentPanelTabSetLayout">
+    <ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
 
-        <ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+        <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
             <ice:panelGroup styleClass="formBorderHighlight">
                 <ice:panelGrid columns="2" columnClasses="attributeColumnLabel, attributeColumnValue">
                     <h3><ice:outputText value="#{msgs['media.instructions']}"/></h3>
-                    <ice:selectOneRadio value="#{media.selectedPlayer}" partialSubmit="true">
+                    <ice:selectOneRadio id="mediaSlctRadio" value="#{media.selectedPlayer}" partialSubmit="true">
                         <f:selectItem itemValue="flash" itemLabel="#{msgs['media.flash.title']}"/>
                         <f:selectItem itemValue="quicktime" itemLabel="#{msgs['media.quicktime.title']}"/>
                         <f:selectItem itemValue="windows" itemLabel="#{msgs['media.windows.title']}"/>
@@ -51,7 +52,7 @@
             </ice:panelGroup>
 
             <ice:panelGroup styleClass="formBorderHighlight">
-                <ice:outputMedia player="#{media.selectedPlayer}" source="#{media.source}" style="#{media.style}">
+                <ice:outputMedia id="mediaplayer" player="#{media.selectedPlayer}" source="#{media.source}" style="#{media.style}">
                     <f:param name="#{media.autoStartParamName}" value="#{media.autoStartParamValue}"/>
                     <f:param name="#{media.controlsParamName}" value="#{media.controlsParamValue}"/>
                 </ice:outputMedia>

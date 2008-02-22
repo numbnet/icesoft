@@ -82,7 +82,7 @@ is used to specify the columns that can be sorted by clicking the column header.
             </ice:panelGroup>
             <ice:panelGroup>
                 <ice:outputText value="groupOn depat, groupOn Subdept"/><br/>
-                <ice:dataTable
+                <ice:dataTable id="groupingData2"
                         value="#{employees.resultList}"
                         var="employee"
                         >
@@ -96,22 +96,22 @@ is used to specify the columns that can be sorted by clicking the column header.
                         </ice:columnGroup>
                     </f:facet>
                     <ice:column groupOn="#{employee.deptName}">
-                        <ice:outputText value="#{employee.deptName}"/>
+                        <ice:outputText id="deptname" value="#{employee.deptName}"/>
                     </ice:column>
 
                     <ice:column groupOn="#{employee.subDeptName}">
-                        <ice:outputText value="#{employee.subDeptName}"/>
+                        <ice:outputText id="subdeptname" value="#{employee.subDeptName}"/>
                     </ice:column>
 
                     <ice:column>
-                        <ice:outputText value="#{employee.name}"/>
+                        <ice:outputText id="employeeName" value="#{employee.name}"/>
                     </ice:column>
 
                 </ice:dataTable>
             </ice:panelGroup>
             <ice:panelGroup>
                 <ice:outputText value="apply grouping on the department column only, but groupOn dept + subdept"/><br/>
-                <ice:dataTable
+                <ice:dataTable id="groupingData3"
                         value="#{employees.resultList}"
                         var="employee"
                         >
@@ -125,15 +125,15 @@ is used to specify the columns that can be sorted by clicking the column header.
                         </ice:columnGroup>
                     </f:facet>
                     <ice:column groupOn="#{employee.deptName}#{employee.subDeptName}">
-                        <ice:outputText value="#{employee.deptName}"/>
+                        <ice:outputText id="deptname" value="#{employee.deptName}"/>
                     </ice:column>
 
                     <ice:column>
-                        <ice:outputText value="#{employee.subDeptName}"/>
+                        <ice:outputText id="subdeptname" value="#{employee.subDeptName}"/>
                     </ice:column>
 
                     <ice:column>
-                        <ice:outputText value="#{employee.name}"/>
+                        <ice:outputText id="employeeName" value="#{employee.name}"/>
                     </ice:column>
 
                 </ice:dataTable>
