@@ -227,12 +227,6 @@
         </renderer>
 
       <renderer>
-        <component-family>com.icesoft.faces.RowSelectorFamily</component-family>
-        <renderer-type>com.icesoft.faces.component.ext.renderkit.RowSelectorRenderer</renderer-type>
-        <renderer-class>com.icesoft.faces.component.ext.renderkit.RowSelectorRenderer</renderer-class>
-      </renderer>
-
-      <renderer>
             <component-family>com.icesoft.faces.PanelCollapsible</component-family>
             <renderer-type>com.icesoft.faces.PanelCollapsibleRenderer</renderer-type>
             <renderer-class>com.icesoft.faces.component.panelcollapsible.PanelCollapsibleRenderer</renderer-class>

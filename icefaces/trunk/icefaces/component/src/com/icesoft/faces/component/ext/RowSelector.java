@@ -66,8 +66,6 @@ public class RowSelector extends UIComponentBase {
     
 
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
-    public static final String RENDERER_TYPE =
-            "com.icesoft.faces.RowSelectorRenderer";
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.RowSelectorFamily";
 

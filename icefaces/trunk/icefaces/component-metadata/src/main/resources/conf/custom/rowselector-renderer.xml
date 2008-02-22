@@ -50,9 +50,7 @@ attributes
 	<component-family>
 		com.icesoft.faces.RowSelectorFamily
 	</component-family>
-	<renderer-type>
-		com.icesoft.faces.component.ext.renderkit.RowSelectorRenderer
-	</renderer-type>
+	<renderer-type>null	</renderer-type>
 
 	<renderer-extension>
 		<instance-name>rowSelector</instance-name>
