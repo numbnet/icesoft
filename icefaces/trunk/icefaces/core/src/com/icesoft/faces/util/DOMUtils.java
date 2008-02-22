@@ -47,12 +47,21 @@ import org.w3c.dom.Text;
 import javax.faces.component.UIComponent;
 import java.util.List;
 import java.util.Vector;
+import java.util.HashSet;
+import java.util.Arrays;
 
 public class DOMUtils {
     private static int DEFAULT_DOM_STRING_PRESIZE = 4096;
     private static int DEFAULT_NODE_STRING_PRESIZE = 256;
-    private static String TAGS_THAT_CAN_CLOSE_SHORT =
-            "img, input, br, hr, meta, base, link, frame, col, area";
+    private static HashSet TAGS_THAT_CAN_CLOSE_SHORT = new HashSet(
+            Arrays.asList(new String[] {
+                "img", "input", "br", "hr", "meta", 
+                "base", "link", "frame", "col", "area"
+            }));
+    private static HashSet TAGS_THAT_ALLOW_NEWLINE = new HashSet(
+            Arrays.asList(new String[] {
+                "img", "input", "td" 
+            }));
 
 
     public static String DocumentTypetoString(String publicID, String systemID,
@@ -186,10 +195,10 @@ public class DOMUtils {
     }
 
     private static boolean isNewlineAllowedTag(Node node) {
-        String tags = "img, input, td";
         short nodeType = node.getNodeType();
         String nodeName = node.getNodeName().toLowerCase();
-        return !(nodeType == Node.ELEMENT_NODE && tags.indexOf(nodeName) > -1);
+        return !(nodeType == Node.ELEMENT_NODE && 
+                TAGS_THAT_ALLOW_NEWLINE.contains(nodeName) );
     }
 
     private static boolean isTD(Node node) {
@@ -211,7 +220,7 @@ public class DOMUtils {
         short nodeType = node.getNodeType();
         String nodeName = node.getNodeName().toLowerCase();
         return (nodeType == Node.ELEMENT_NODE &&
-                TAGS_THAT_CAN_CLOSE_SHORT.indexOf(nodeName) > -1);
+                TAGS_THAT_CAN_CLOSE_SHORT.contains(nodeName));
     }
 
     /* Return the first child of the given nodeName under the given node.
