@@ -28,5 +28,5 @@
                     
 	<framework:entity-query name="personsF" ejbql="select p from Person p" />
 	<framework:entity-query name="employees" ejbql="select e from Employee e"/>
-      <!--  <transaction:ejb-transaction />  -->
+ 
 </components>
