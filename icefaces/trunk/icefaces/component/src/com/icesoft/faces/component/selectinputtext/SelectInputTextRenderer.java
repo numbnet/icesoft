@@ -145,16 +145,18 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
         input.setAttribute("onfocus", "setFocus(this.id);");
         input.setAttribute("onblur", "setFocus('');");
         // this would prevent, when first valueChangeListener fires with null value
-        Object value = component.getValue();
+//System.out.println("SelectInputTextRenderer.encodeChildren()  clientId: " + uiComponent.getClientId(facesContext));
+        String value = getValue(facesContext, uiComponent);
+//System.out.println("SelectInputTextRenderer.encodeChildren()  value: " + value);
         if (value != null) {
-            input.setAttribute(HTML.VALUE_ATTR, value.toString());
-            // populate list of values only if the component's value have been changed.    
-            if (component.hasChanged() && value.toString().length() > 0) {
+            input.setAttribute(HTML.VALUE_ATTR, value);
+//System.out.println("SelectInputTextRenderer.encodeChildren()  changed: " + component.hasChanged());
+            if (component.hasChanged()) {
                 if (log.isDebugEnabled()) {
                     log.debug(
                             "SelectInputText:encodeChildren(): component's value have been changed, start populating list : ");
                 }
-                populateList(facesContext, uiComponent);
+                populateList(facesContext, component);
                 component.setChangedComponentId(null);
             }
         }
@@ -167,13 +169,12 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
     }
 
 
-    public void populateList(FacesContext facesContext, UIComponent uiComponent)
+    public void populateList(FacesContext facesContext, SelectInputText component)
             throws IOException {
-        if (uiComponent instanceof UIInput) {
             if (log.isTraceEnabled()) {
                 log.trace("populateList");
             }
-            SelectInputText component = ((SelectInputText) uiComponent);
+            component.populateItemList();
             Iterator matchs = component.getItemList();
 
             if (component.getSelectFacet() != null) {
@@ -183,7 +184,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 }
                 UIComponent facet = component.getSelectFacet();
                 DOMContext domContext =
-                        DOMContext.getDOMContext(facesContext, uiComponent);
+                        DOMContext.getDOMContext(facesContext, component);
 
                 Element listDiv = domContext.createElement(HTML.DIV_ELEM);
                 Map requestMap =
@@ -207,7 +208,12 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                             domContext.createElement(HTML.SPAN_ELEM);
                     spanToSelect.setAttribute(HTML.STYLE_ATTR,
                                               "visibility:hidden;display:none;");
-                    Text label = domContext.createTextNode(DOMUtils.escapeAnsi(item.getLabel()));
+                    String itemLabel = item.getLabel();
+                    if(itemLabel == null) {
+                        itemLabel = converterGetAsString(
+                            facesContext, component, item.getValue());
+                    }
+                    Text label = domContext.createTextNode(DOMUtils.escapeAnsi(itemLabel));
                     spanToSelect.appendChild(label);
                     div.appendChild(spanToSelect);
                     component.resetId(facet);
@@ -231,7 +237,12 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                     SelectItem item = null;
                     while (matchs.hasNext()) {
                         item = (SelectItem) matchs.next();
-                        sb.append("<div>").append(DOMUtils.escapeAnsi(item.getLabel()))
+                        String itemLabel = item.getLabel();
+                        if(itemLabel == null) {
+                            itemLabel = converterGetAsString(
+                                facesContext, component, item.getValue());
+                        }
+                        sb.append("<div>").append(DOMUtils.escapeAnsi(itemLabel))
                                 .append("</div>");
                     }
                     sb.append("</div>");
@@ -240,7 +251,6 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                                   "').updateNOW('" + sb.toString() + "');";
                     JavascriptContext.addJavascriptCall(facesContext, call);
                 }
-            }//outer if
-        }
+            }
     }
 }

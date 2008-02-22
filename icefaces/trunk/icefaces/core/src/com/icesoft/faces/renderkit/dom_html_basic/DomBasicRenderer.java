@@ -143,7 +143,7 @@ public abstract class DomBasicRenderer extends Renderer {
      * @param uiComponent
      * @return String the submitted value
      */
-    String getValue(FacesContext facesContext, UIComponent uiComponent) {
+    public String getValue(FacesContext facesContext, UIComponent uiComponent) {
         // for input components, get the submitted value
         if (uiComponent instanceof UIInput) {
             Object submittedValue = ((UIInput) uiComponent).getSubmittedValue();
