@@ -46,7 +46,7 @@
 
               ]]>
          </description>
-	<component-family>javax.faces.Command</component-family>
+	<component-family>javax.faces.Panel</component-family>
 	<renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>	
 	<renderer-extension>
 		<instance-name>gMap</instance-name>

@@ -48,7 +48,7 @@
             <renderer-class>com.icesoft.faces.component.inputrichtext.InputRichTextRenderer</renderer-class>
       </renderer>            
       <renderer>
-            <component-family>javax.faces.Command</component-family>
+            <component-family>javax.faces.Panel</component-family>
             <renderer-type>com.icesoft.faces.GMapRenderer</renderer-type>
             <renderer-class>com.icesoft.faces.component.gmap.GMapRenderer</renderer-class>
       </renderer>

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UICommand;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -16,7 +17,7 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
-public class GMap extends UICommand{
+public class GMap extends UIPanel{
 	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
     private String DEFAULT_LONGITUDE = "-101.162109375";

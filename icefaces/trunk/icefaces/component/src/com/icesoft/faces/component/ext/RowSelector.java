@@ -40,6 +40,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
@@ -52,7 +53,7 @@ import java.util.StringTokenizer;
  * Created by IntelliJ IDEA. User: rmayhew Date: Aug 28, 2006 Time: 12:45:26 PM
  * To change this template use File | Settings | File Templates.
  */
-public class RowSelector extends UIComponentBase {
+public class RowSelector extends UIPanel {
     private Boolean value;
     private Boolean toggleOnClick;
     // private Listener

@@ -43,6 +43,7 @@
 &ice-cust-rowselector-props;
 
 	<component-extension>
+        <base-component-type>javax.faces.Panel</base-component-type>	
 		<component-family>
 			com.icesoft.faces.RowSelectorFamily
 		</component-family>
