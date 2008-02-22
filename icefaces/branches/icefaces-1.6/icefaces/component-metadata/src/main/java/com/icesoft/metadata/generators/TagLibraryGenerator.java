@@ -729,6 +729,28 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.outdent();
                     writer.emitExpression("}", true);
 
+                } 
+                else if ("textChangeListener".equalsIgnoreCase(name)) {
+                    writer.emitExpression("if (isValueReference(" + var
+                            + ")) {", true);
+                    writer.indent();
+                    writer
+                            .emitExpression(
+                                    "Class[] listenerArgs= new Class[]{TextChangeEvent.class};",
+                                    true);
+                    writer.emitExpression(
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
+                                    + var + ", listenerArgs );", true);
+                    writer.emitExpression("_component.getAttributes().put(\""
+                            + name + "\", _mb);", true);
+                    writer.outdent();
+                    writer.emitExpression("} else {", true);
+                    writer.indent();
+                    writer.emitExpression("throw new IllegalArgumentException("
+                            + var + ");", true);
+                    writer.outdent();
+                    writer.emitExpression("}", true);
+
                 }
                 else {
                     

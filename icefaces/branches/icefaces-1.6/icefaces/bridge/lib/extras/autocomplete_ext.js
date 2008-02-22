@@ -151,6 +151,10 @@ Autocompleter.Base.prototype = {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
                     this.getUpdatedChoices(true, event);
+                    return;
+                case Event.KEY_DOWN:
+                    this.getUpdatedChoices(false, event);
+                    return;
             }
         }
         Ice.Autocompleter.logger.debug("Key Press");
@@ -167,6 +171,7 @@ Autocompleter.Base.prototype = {
                     this.getUpdatedChoices(true, event);
                     this.hide();
                     Event.stop(event);
+                    return;
                 case Event.KEY_ESC:
                     this.hide();
                     this.active = false;
@@ -405,11 +410,11 @@ Autocompleter.Base.prototype = {
         this.changed = false;
         if (this.getToken().length >= this.options.minChars) {
             this.startIndicator();
-            this.getUpdatedChoices();
+            this.getUpdatedChoices(false, undefined);
         } else {
             this.active = false;
             this.hide();
-            this.getUpdatedChoices();
+            this.getUpdatedChoices(false, undefined);
         }
     },
 

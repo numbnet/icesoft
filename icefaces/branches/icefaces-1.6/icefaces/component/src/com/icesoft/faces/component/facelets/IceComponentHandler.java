@@ -10,6 +10,7 @@ import com.icesoft.faces.component.ext.RowSelectorEvent;
 import com.icesoft.faces.component.panelpositioned.PanelPositionedEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.outputchart.OutputChart;
+import com.icesoft.faces.component.selectinputtext.TextChangeEvent;
 
 import java.util.EventObject;
 
@@ -46,6 +47,9 @@ public class IceComponentHandler extends ComponentHandler {
             else if( tag.getLocalName().equals("rowSelector") ) {
                 m.addRule( new MethodRule("selectionListener", null, new Class[] {RowSelectorEvent.class}) );
                 m.addRule( new MethodRule("selectionAction", null, new Class[0]) );
+            }
+            else if( tag.getLocalName().equals("selectInputText") ) {
+                m.addRule( new MethodRule("textChangeListener", null, new Class[] {TextChangeEvent.class}) );
             }
         }
         return m;
