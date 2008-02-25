@@ -97,7 +97,7 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Method to get the slideshow timer
+     * Method to get the slide show timer
      *
      * @return stimer
      */
@@ -166,7 +166,7 @@ public class Presentation extends PresentationInfo {
 
     /**
      * Method to get a slide with the proper permissions This is mainly done so
-     * that if no slideshow is loaded, a different information slide will be
+     * that if no slide show is loaded, a different information slide will be
      * displayed for the moderator and viewer
      *
      * @param moderator true if the user is a moderator
@@ -309,7 +309,7 @@ public class Presentation extends PresentationInfo {
 
    /**
      * Method to set a specific slide number This doesn't actually set a
-     * variable, but is needed to fufill the JSF page requirements
+     * variable, but is needed to fulfill the JSF page requirements
      *
      * @param slide to set
      */
@@ -319,7 +319,7 @@ public class Presentation extends PresentationInfo {
     /**
      * Method to set the current slide number The passed value can be invalid
      * and will be fixed before setting If the slide number is less than 1, it
-     * becomes 1, if it is greater than the end of the current slideshow, it
+     * becomes 1, if it is greater than the end of the current slide show, it
      * loops around and also becomes 1. In addition this method will request a
      * render to show the new slide to all the participants
      *
@@ -348,7 +348,7 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Wrapper method to start the autoplay slideshow
+     * Wrapper method to start the auto-play slide show
      */
     public void startAutoPlay() {
         if (!stimer.isRunning()) {
@@ -360,15 +360,15 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Wrapper method to stop the autoplay, with status messages enabled
+     * Wrapper method to stop the auto-play, with status messages enabled
      */
     public void stopAutoPlay() {
         stopAutoPlay(false);
     }
 
     /**
-     * Method to stop the running autoplay slideshow, and recreate the timer in
-     * case autoplay is to be restarted
+     * Method to stop the running auto-play slide show, and recreate the timer in
+     * case auto-play is to be restarted
      *
      * @param silent true to hide status messages
      */
@@ -387,8 +387,8 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Method called from the front end pages when the autoplay checkbox is
-     * changed by the moderator. This will either start or stop the slideshow
+     * Method called from the front end pages when the auto-play checkbox is
+     * changed by the moderator. This will either start or stop the slide show
      * based on the new value
      *
      * @param vce event of the change
@@ -518,7 +518,7 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Method to stop this presentation This means cancelling autoplay, cleaning
+     * Method to stop this presentation This means canceling auto-play, cleaning
      * up the document and associated files, and letting the manager know the
      * presentation is done
      */
@@ -651,7 +651,7 @@ public class Presentation extends PresentationInfo {
             return;
         }
 
-        // Start autoplay as needed
+        // Start auto-play as needed
         if (getAutoPlay()) {
             startAutoPlay();
         }
@@ -718,7 +718,7 @@ public class Presentation extends PresentationInfo {
 
     /**
      * Method called to cleanup the existing document, as well as any related
-     * filesystem artifacts
+     * file system artifacts
      */
     public void closeDocument() {
         if (document == null) {
@@ -804,7 +804,7 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Convience method to get the last position in the chat log
+     * Convenience method to get the last position in the chat log
      *
      * @return bottom index of the chat log
      */
@@ -858,7 +858,7 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Convience method to safely call request render
+     * Convenience method to safely call request render
      */
     public void requestOnDemandRender() {
         if (renderer != null) {

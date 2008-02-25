@@ -35,24 +35,15 @@ package com.icesoft.faces.presenter.document;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
-import com.icesoft.faces.presenter.util.ImageScaler;
-import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * Class representing the source document used for the Presentation. The
@@ -65,8 +56,6 @@ public class PptPresentationDocument implements PresentationDocument {
     public static  String MS_PPT_PATH = "Microsoft PowerPoint";
     public static final String EXTRACTED_FOLDER = "extracted";
     public static final String URL_SLASH = "/";
-    private static final int MIN_ENTRY_SIZE =
-            1000; // minimum zip entry to include (in bytes)
 
     private boolean loaded = false;
     private int externalConverterFilePages;
@@ -140,7 +129,7 @@ public class PptPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Convience method to get the total number of slides
+     * Convenience method to get the total number of slides
      *
      * @return number of slides (or 0 on error)
      */
@@ -152,7 +141,7 @@ public class PptPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to clean up the conversion process This includes cancelling and
+     * Method to clean up the conversion process This includes canceling and
      * deleting any processed slides
      */
     public void dispose() {
@@ -161,7 +150,7 @@ public class PptPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Convience method to update the UI status message
+     * Convenience method to update the UI status message
      *
      * @param message to update with
      */
@@ -171,7 +160,7 @@ public class PptPresentationDocument implements PresentationDocument {
 
     /**
      * Method to load the passed File (which will be a zip) The conversion and
-     * loading will be done in a seperate thread
+     * loading will be done in a separate thread
      *
      * @param sourceFile to load
      */
@@ -187,18 +176,6 @@ public class PptPresentationDocument implements PresentationDocument {
      * presentation
      */
     private class PptLoader implements Runnable {
-        private void copyInputStream(InputStream in, OutputStream out)
-                throws IOException {
-            byte[] buffer = new byte[1024];
-            int len;
-
-            while ((len = in.read(buffer)) >= 0) {
-                out.write(buffer, 0, len);
-            }
-
-            in.close();
-            out.close();
-        }
 
         public void run() {
             try {
@@ -273,14 +250,6 @@ public class PptPresentationDocument implements PresentationDocument {
         }
 
     }
-    
-    private String replaceUserFilename(String name, int slideNumber) {
-        if (name.indexOf(".") != -1) {
-            return "Slide" + slideNumber + name.substring(name.indexOf("."));
-        }
-        
-        return "Slide" + slideNumber;
-    }
 
     /**
      * Internal class used to compare two slides and check for differences
@@ -331,7 +300,7 @@ public class PptPresentationDocument implements PresentationDocument {
         }
 
         /**
-         * Convience method to get numbers from a filename, in the hope of
+         * Convenience method to get numbers from a filename, in the hope of
          * ordering the files properly
          * For example, a file named Slide2.jpg would extract as 2, and therefore
          * could be sorted about 3, etc.

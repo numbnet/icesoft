@@ -138,7 +138,7 @@ public class PresentationInfo {
     }
 
     /**
-     * Method to get the autoplay status
+     * Method to get the auto-play status
      *
      * @return autoPlay
      */
@@ -201,7 +201,7 @@ public class PresentationInfo {
     }
 
     /**
-     * Method to set the autoplay status
+     * Method to set the auto-play status
      *
      * @param autoPlay new
      */
@@ -228,7 +228,7 @@ public class PresentationInfo {
     }
 
     /**
-     * Convience method to get the default information slide
+     * Convenience method to get the default information slide
      *
      * @return information slide
      */
@@ -263,7 +263,7 @@ public class PresentationInfo {
     }
 
     /**
-     * Convience method to determine if any spaces are left for new participants
+     * Convenience method to determine if any spaces are left for new participants
      * to be added to the presentation
      *
      * @return true if the participant can join
@@ -279,7 +279,7 @@ public class PresentationInfo {
     }
 
     /**
-     * Convience method to get the number of chat participants as a readable
+     * Convenience method to get the number of chat participants as a readable
      * string
      *
      * @return string label of the participants

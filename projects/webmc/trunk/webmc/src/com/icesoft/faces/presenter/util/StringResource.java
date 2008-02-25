@@ -36,7 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Convience class used to provide various common manipulation methods and
+ * Convenience class used to provide various common manipulation methods and
  * functionality
  */
 public class StringResource {

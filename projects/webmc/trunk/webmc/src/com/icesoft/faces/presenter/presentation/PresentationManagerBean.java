@@ -75,7 +75,7 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Method to get a named presentation from the backend manager
+     * Method to get a named presentation from the back end manager
      *
      * @param name of the presentation
      * @return the presentation, or null if it doesn't exist
@@ -128,9 +128,9 @@ public class PresentationManagerBean {
 
     /**
      * Method to get the list of presentations as a SelectItem list. This
-     * basically wraps the backend list
+     * basically wraps the back end list
      * In addition this will create default initial presentations as needed
-     * These initial presentations are loaded automatically and run in slideshow
+     * These initial presentations are loaded automatically and run in slide show
      * mode, and can be used to provide a generic set of presentations that any
      * user can join (so a deployment could include a "Howto" presentation, etc.)
      * To setup a default presentation, just drop the proper zip file (normally the
@@ -184,7 +184,7 @@ public class PresentationManagerBean {
         }
         
         // Determine which presentations should be removed
-        // This is done seperately (as compared to just calling endPresentation
+        // This is done separately (as compared to just calling endPresentation
         //  on 'current' in the above while loop) because otherwise a Concurrent
         // Modification exception will be thrown
         for (int i = 0; i < scheduledRemoval.size(); i++) {
@@ -197,7 +197,7 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Convience method to generate a maximum participant list of SelectItems,
+     * Convenience method to generate a maximum participant list of SelectItems,
      * which can be used by dropdowns on the login screen This list can be a
      * simple 1-10, or a 5, 10, 15, 20, etc. affair
      *
@@ -218,7 +218,7 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Convience method to create a presentation with only the participant and
+     * Convenience method to create a presentation with only the participant and
      * presentation name given
      * This will pass a null sessionId to the normal createPresentation method,
      * which causes the sessionId to be generated
@@ -233,7 +233,7 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Method to create a new presentation This relies on the backend manager to
+     * Method to create a new presentation This relies on the back end manager to
      * do the real work, besides handing off the local renderer
      *
      * @param participant who created the presentation

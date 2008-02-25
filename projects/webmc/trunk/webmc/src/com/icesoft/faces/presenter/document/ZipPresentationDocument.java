@@ -138,7 +138,7 @@ public class ZipPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Convience method to get the total number of slides
+     * Convenience method to get the total number of slides
      *
      * @return number of slides (or 0 on error)
      */
@@ -150,7 +150,7 @@ public class ZipPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to clean up the conversion process This includes cancelling and
+     * Method to clean up the conversion process This includes canceling and
      * deleting any processed slides
      */
     public void dispose() {
@@ -159,7 +159,7 @@ public class ZipPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Convience method to update the UI status message
+     * Convenience method to update the UI status message
      *
      * @param message to update with
      */
@@ -169,7 +169,7 @@ public class ZipPresentationDocument implements PresentationDocument {
 
     /**
      * Method to load the passed File (which will be a zip) The conversion and
-     * loading will be done in a seperate thread
+     * loading will be done in a separate thread
      *
      * @param sourceFile to load
      */
@@ -208,9 +208,6 @@ public class ZipPresentationDocument implements PresentationDocument {
                 ZipFile zf =
                         new ZipFile(externalConverterFile.getAbsolutePath());
 
-                // Make any necessary parent directories
-                int indexOfFileFormat =
-                        externalConverterFile.getName().lastIndexOf(".");
                 String baseDirectory;
                 long ourTimestamp = System.currentTimeMillis();
 
@@ -370,7 +367,7 @@ public class ZipPresentationDocument implements PresentationDocument {
         }
 
         /**
-         * Convience method to get numbers from a filename, in the hope of
+         * Convenience method to get numbers from a filename, in the hope of
          * ordering the files properly
          * For example, a file named Slide2.jpg would extract as 2, and therefore
          * could be sorted about 3, etc.

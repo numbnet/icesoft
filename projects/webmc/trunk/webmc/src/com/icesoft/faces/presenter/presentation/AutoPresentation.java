@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Class used to setup any initial default presentations
  * This basically reads the contents of PRESENTATION_FOLDER_NAME (which
- * is normally .../web/basepres/) and creates an automated slideshow
+ * is normally .../web/basepres/) and creates an automated slide show
  * presentation for any valid zip files found
  */
 public class AutoPresentation {
@@ -147,7 +147,7 @@ public class AutoPresentation {
     }
 
     /**
-     * Convience method to get the root servlet context path
+     * Convenience method to get the root servlet context path
      * This will be used to determine where the app is deployed, and where
      * PRESENTATION_FOLDER_NAME should be read from
      * This is to make sure that any presentations in the folder are handled
@@ -182,7 +182,7 @@ public class AutoPresentation {
     }
 
     /**
-     * Convience method to generate a default moderator that will run
+     * Convenience method to generate a default moderator that will run
      * each of the initial presentations
      *
      * @return default moderator
@@ -201,7 +201,7 @@ public class AutoPresentation {
     }
 
     /**
-     * Convience method to generate a new presentation based on the passed values
+     * Convenience method to generate a new presentation based on the passed values
      * This is basically a wrapper for PresentationManagerBean.createPresentation,
      * with the addition of setting up the created presentation
      *
@@ -232,7 +232,7 @@ public class AutoPresentation {
     }
 
     /**
-     * Convience method to remove the extension from a filename
+     * Convenience method to remove the extension from a filename
      * So test.zip becomes test
      *
      * @param name to strip

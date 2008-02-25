@@ -64,7 +64,7 @@ public class MailAccountControl {
     // JavaMail session object
     private Session mailSession;
 
-    // Stores and retreives messages
+    // Stores and retrieves messages
     private Store mailStore;
 
     // If the server is running Sun JDK 1.4 then we can use suns incomingSsl provider,
@@ -72,7 +72,7 @@ public class MailAccountControl {
     // the com.sun classes are not available so we must make sure that IBM's
     // security provider is set, com.ibm.jsse.IBMJSSEProvider.
     static {
-        // The first steop in this process is to try and load sun provider
+        // The first step in this process is to try and load sun provider
         // with the class loader
         boolean loadedSecurityProvider = false;
         try {
@@ -138,7 +138,7 @@ public class MailAccountControl {
      * MailAccount class.  This method will return true if the connection has
      * already made or if the connection process was successful.
      *
-     * @return true if the connection succeded; otherwise, false.
+     * @return true if the connection succeeded; otherwise, false.
      */
     private synchronized boolean connect() {
         try {

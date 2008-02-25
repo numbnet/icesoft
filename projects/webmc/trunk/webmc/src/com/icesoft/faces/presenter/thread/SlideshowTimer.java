@@ -36,7 +36,7 @@ import com.icesoft.faces.presenter.presentation.Presentation;
 
 /**
  * Class used to automatically transition a presentation
- * This is done with a thread, and gives the appearance of a slideshow
+ * This is done with a thread, and gives the appearance of a slide show
  */
 public class SlideshowTimer extends Thread {
     protected Presentation parent;
@@ -98,7 +98,7 @@ public class SlideshowTimer extends Thread {
     }
 
     /**
-     * Method to determine if the slideshow thread is currently running
+     * Method to determine if the slide show thread is currently running
      *
      * @return keepRunning
      */
@@ -107,7 +107,7 @@ public class SlideshowTimer extends Thread {
     }
 
     /**
-     * Wrapper method to start the slideshow
+     * Wrapper method to start the slide show
      * This sets the keepRunning variable and kicks off the thread
      */
     public void startSlideshow() {
@@ -116,8 +116,8 @@ public class SlideshowTimer extends Thread {
     }
 
     /**
-     * Method to stop the slideshow
-     * The check if the slideshow is even running should be done at a higher level
+     * Method to stop the slide show
+     * The check if the slide show is even running should be done at a higher level
      * This will reset the keepRunning variable, and interrupt the thread,
      * which will then stop itself when it sees that keepRunning is false
      */
@@ -127,7 +127,7 @@ public class SlideshowTimer extends Thread {
     }
 
     /**
-     * Method to provide the core thread functionality of the slideshow
+     * Method to provide the core thread functionality of the slide show
      * This basically sleeps for changeDelay (as milliseconds), then forwards
      * the presentation's slide
      */

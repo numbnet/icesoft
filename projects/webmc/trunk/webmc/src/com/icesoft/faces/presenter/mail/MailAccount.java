@@ -52,7 +52,7 @@ public class MailAccount {
     // Account needs incomingSsl connection
     private boolean incomingSsl;
 
-    // Verifcaction flag for outgoing server.
+    // Verification flag for outgoing server.
     private boolean outgoingVerification;
 
     // Incoming host name
@@ -109,7 +109,7 @@ public class MailAccount {
     }
 
     /**
-     * Gest the mail account connection protocol
+     * Gets the mail account connection protocol
      *
      * @return mail account connection protocol
      */
@@ -230,7 +230,7 @@ public class MailAccount {
 
     /**
      * Gets the outgoing mail server port number.  The default for smtp is port
-     * 25 and smpts is port 465
+     * 25 and smtps is port 465
      *
      * @return the outgoing mails server port number
      */
@@ -240,7 +240,7 @@ public class MailAccount {
 
     /**
      * Sets the outgoing mail server port number.  The default for smtp is port
-     * 25 and smpts is port 465
+     * 25 and smtps is port 465
      *
      * @param outgoingPort the outgoing mails server port number
      */
@@ -260,7 +260,7 @@ public class MailAccount {
     /**
      * Sets if the outgoing mail server connection should use SSL
      *
-     * @param outgoingSsl ture to enable SSL; otherwise, false
+     * @param outgoingSsl true to enable SSL; otherwise, false
      */
     public void setOutgoingSsl(boolean outgoingSsl) {
         this.outgoingSsl = outgoingSsl;

@@ -39,7 +39,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Convience class used to send automated generic messages from the presenter
+ * Convenience class used to send automated generic messages from the presenter
  * The mail settings are generated from the contents of PROPERTIES_FILE, which
  * should be setup by the user if they want mail functionality
  */
@@ -124,7 +124,7 @@ public class MailTool {
     }
 
     /**
-     * Convience method to convert a String value from a Properties file into
+     * Convenience method to convert a String value from a Properties file into
      * an integer
      *
      * @param base to convert
@@ -143,7 +143,7 @@ public class MailTool {
     }
 
     /**
-     * Convience method to convert a String value from a Properties file into
+     * Convenience method to convert a String value from a Properties file into
      * a boolean
      *
      * @param base to convert

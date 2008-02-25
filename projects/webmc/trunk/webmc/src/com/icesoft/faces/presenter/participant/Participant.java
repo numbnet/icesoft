@@ -269,7 +269,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     }
 
     /**
-     * Method to get the http session for this participant This is retreived
+     * Method to get the http session for this participant This is retrieved
      * from the external context
      *
      * @return session
@@ -408,8 +408,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     }
 
     /**
-     * Convience method to update the status message This will change the text,
-     * and refire the status effect In addition the status message is trimmed to
+     * Convenience method to update the status message This will change the text,
+     * and re-fire the status effect In addition the status message is trimmed to
      * a set length
      *
      * @param status new text

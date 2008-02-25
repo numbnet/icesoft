@@ -38,7 +38,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 /**
- * Class used to handle the page level setup of slideshow mode
+ * Class used to handle the page level setup of slide show mode
  * This mainly includes letting the user set the delay between
  * slide changes
  */

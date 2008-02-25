@@ -10,7 +10,7 @@ import java.io.File;
  */
 public interface PresentationDocument {
     /**
-     * Method to will load a File into a readable presentation (normally
+     * Method will load a File into a readable presentation (normally
      * involves steps of conversion)
      *
      * @param source file
@@ -24,7 +24,7 @@ public interface PresentationDocument {
     public void cancel();
 
     /**
-     * Convience method to get the loaded status of this document
+     * Convenience method to get the loaded status of this document
      *
      * @return true if the document is loaded
      */
@@ -46,7 +46,7 @@ public interface PresentationDocument {
     public Slide getSlide(int slideNumber);
 
     /**
-     * Convience method to get the total number of slides in this document
+     * Convenience method to get the total number of slides in this document
      *
      * @return number of slides
      */

@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Singleton class used to handle the various presentations for webmc This means
- * creating, removing, retreiving, etc. In addition some validation helper
+ * creating, removing, retrieving, etc. In addition some validation helper
  * methods are provided, such as checking for an existing presentation Very
  * little validation is done for the presentation management, as it is assumed
  * valid users will be joining the proper presentation
@@ -62,7 +62,7 @@ public class PresentationManager {
     private Vector sessionList = new Vector(0);
 
     /**
-     * Plain constructor, which is private to fufill the singleton role
+     * Plain constructor, which is private to fulfill the singleton role
      */
     private PresentationManager() {
     }
@@ -176,11 +176,11 @@ public class PresentationManager {
     }
 
     /**
-     * Method to retreive a named presentation from the Map If the presentation
+     * Method to retrieve a named presentation from the Map If the presentation
      * does not exist, a null is returned The proper way to check for existing
      * presentations is to use the presentationExists method instead
      *
-     * @param name of the presentation to retreive
+     * @param name of the presentation to retrieve
      * @return the presentation, or null if not found
      */
     public Presentation getPresentation(String name) {

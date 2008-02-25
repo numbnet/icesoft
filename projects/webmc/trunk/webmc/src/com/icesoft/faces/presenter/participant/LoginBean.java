@@ -42,7 +42,6 @@ import com.icesoft.faces.component.ext.HtmlForm;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UISelectOne;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
@@ -180,14 +179,14 @@ public class LoginBean {
     }
 
     /**
-     * Convience method to set that slots are not available
+     * Convenience method to set that slots are not available
      */
     public void setSlotsNone() {
         noSlotsLeft = true;
     }
 
     /**
-     * Convience method to set that slots are still available
+     * Convenience method to set that slots are still available
      */
     public void setSlotsAvailable() {
         noSlotsLeft = false;
@@ -231,7 +230,7 @@ public class LoginBean {
     }
 
     /**
-     * Convience method to add the parent participant to the login renderer
+     * Convenience method to add the parent participant to the login renderer
      */
     public void addRenderable() {
         if (loginPageRenderer != null) {
@@ -240,7 +239,7 @@ public class LoginBean {
     }
 
     /**
-     * Convience method to remove the parent participant from the login
+     * Convenience method to remove the parent participant from the login
      * renderer
      */
     public void removeRenderable() {
@@ -350,7 +349,7 @@ public class LoginBean {
     }
 
     /**
-     * Convience method to reset the value of a UIInput component
+     * Convenience method to reset the value of a UIInput component
      *
      * @param parent of the component to reset
      * @param id of the component to reset
@@ -365,7 +364,7 @@ public class LoginBean {
     }
     
     /**
-     * Convience method to start a safety net rendering cycle. This is done on
+     * Convenience method to start a safety net rendering cycle. This is done on
      * the transition from logging in to actually being in a presentation.
      * Sometimes the loginPageRenderer has queued render requests, which are
      * fired when the user is on the index page. But when the old request is

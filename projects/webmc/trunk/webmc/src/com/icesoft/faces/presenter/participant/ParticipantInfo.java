@@ -33,7 +33,7 @@
 package com.icesoft.faces.presenter.participant;
 
 /**
- * Class used to store the backend specific information about a participant.
+ * Class used to store the back end specific information about a participant.
  * This means no UI work is done or even considered, instead just core
  * information about a user is managed This is meant to be extended by a front
  * end Participant bean
