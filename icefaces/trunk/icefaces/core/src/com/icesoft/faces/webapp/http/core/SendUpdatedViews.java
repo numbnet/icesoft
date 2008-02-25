@@ -1,10 +1,13 @@
 package com.icesoft.faces.webapp.http.core;
 
+import com.icesoft.faces.webapp.command.NOOP;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
+import com.icesoft.util.MonitorRunner;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
@@ -15,8 +18,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SendUpdatedViews implements Server {
-    private static final Runnable Noop = new Runnable() {
-        public void run() {
+    private static final NOOP NOOPCommand = new NOOP();
+    private static final ResponseHandler NOOPResponseHandler = new FixedXMLContentHandler() {
+        public void writeTo(Writer writer) throws IOException {
+            NOOPCommand.serializeTo(writer);
         }
     };
     private static final ResponseHandler EmptyResponseHandler = new ResponseHandler() {
@@ -24,11 +29,22 @@ public class SendUpdatedViews implements Server {
             response.setHeader("Content-Length", 0);
         }
     };
-    private BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
-    private ViewQueue allUpdatedViews;
-    private String sessionID;
+    private static final Runnable Noop = new Runnable() {
+        public void run() {
+        }
+    };
 
-    public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews) {
+    private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
+    private final ViewQueue allUpdatedViews;
+    private final String sessionID;
+    private final long timeoutInterval;
+    private final Runnable inactivityMonitor;
+    private final MonitorRunner monitorRunner;
+    private long responseTimeoutTime;
+
+    public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, MonitorRunner monitorRunner, Configuration configuration) {
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 30000);
+        this.monitorRunner = monitorRunner;
         this.sessionID = sessionID;
         this.allUpdatedViews = allUpdatedViews;
         this.allUpdatedViews.onPut(new Runnable() {
@@ -48,9 +64,27 @@ public class SendUpdatedViews implements Server {
                 }
             }
         });
+
+        this.inactivityMonitor = new Runnable() {
+            public void run() {
+                try {
+                    if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
+                        Request request = (Request) pendingRequest.poll();
+                        if (request != null) {
+                            request.respondWith(NOOPResponseHandler);
+                        }
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        //add monitor
+        this.monitorRunner.registerMonitor(inactivityMonitor);
     }
 
     public void service(final Request request) throws Exception {
+        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
         respondToPreviousRequest();
         pendingRequest.put(request);
     }
@@ -67,6 +101,8 @@ public class SendUpdatedViews implements Server {
     }
 
     public void shutdown() {
+        //remove monitor
+        monitorRunner.unregisterMonitor(inactivityMonitor);
         allUpdatedViews.onPut(Noop);
         respondToPreviousRequest();
     }

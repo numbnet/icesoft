@@ -12,6 +12,7 @@ import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.util.IdGenerator;
+import com.icesoft.util.MonitorRunner;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,7 +55,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private PseudoServlet servlet;
     private HttpSession session;
 
-    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
+    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
         this.session = session;
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
@@ -81,7 +82,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
             receivePing = NOOPServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), configuration));
+            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
             sendUpdates = new IDVerifier(sessionID, new SendUpdates(views));
             receivePing = new IDVerifier(sessionID, new ReceivePing(views));
         }

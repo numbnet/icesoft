@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.util.MonitorRunner;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,7 +14,7 @@ public class AsyncServerDetector implements Server {
     private static final Log LOG = LogFactory.getLog(AsyncServerDetector.class);
     private Server server;
 
-    public AsyncServerDetector(String icefacesID, Collection synchronouslyUpdatedViews, ViewQueue allUpdatedViews, ServletContext servletContext, Configuration configuration) {
+    public AsyncServerDetector(String icefacesID, Collection synchronouslyUpdatedViews, ViewQueue allUpdatedViews, ServletContext servletContext, MonitorRunner monitorRunner, Configuration configuration) {
         boolean useAsyncHttpServerByDefault;
         try {
             getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
@@ -26,8 +27,8 @@ public class AsyncServerDetector implements Server {
         // old property name
         boolean asyncServer = configuration.getAttributeAsBoolean("async.server", false);
         if ((blockingRequestHandler != null && blockingRequestHandler.equalsIgnoreCase("icefaces-ahs")) ||
-            (blockingRequestHandler == null && asyncServer) ||
-            (useAsyncHttpServerByDefault)) {
+                (blockingRequestHandler == null && asyncServer) ||
+                (useAsyncHttpServerByDefault)) {
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Adapting to Asynchronous HTTP Server environment.");
@@ -63,7 +64,7 @@ public class AsyncServerDetector implements Server {
             }
         }
         if (server == null) {
-            server = new SendUpdatedViews(icefacesID, synchronouslyUpdatedViews, allUpdatedViews);
+            server = new SendUpdatedViews(icefacesID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration);
         }
     }
 

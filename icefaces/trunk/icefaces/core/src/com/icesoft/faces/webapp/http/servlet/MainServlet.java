@@ -6,6 +6,7 @@ import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.util.IdGenerator;
+import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
 
 import javax.servlet.ServletConfig;
@@ -30,6 +31,7 @@ public class MainServlet extends HttpServlet {
     private PathDispatcher dispatcher = new PathDispatcher();
     private String contextPath;
     private ServletContext context;
+    private MonitorRunner monitorRunner;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -51,11 +53,12 @@ public class MainServlet extends HttpServlet {
                     return new File(fileLocation);
                 }
             };
+            monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
 
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             PseudoServlet sessionServer = new SessionDispatcher() {
                 protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
-                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, configuration);
+                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration);
                 }
             };
 
@@ -82,6 +85,7 @@ public class MainServlet extends HttpServlet {
     }
 
     public void destroy() {
+        monitorRunner.stop();
         DisposeBeans.in(context);
         dispatcher.shutdown();
     }
