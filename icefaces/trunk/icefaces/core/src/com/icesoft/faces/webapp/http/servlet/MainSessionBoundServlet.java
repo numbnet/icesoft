@@ -65,7 +65,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new IDVerifier(sessionID, new DisposeViews(views));
+            disposeViews = new RequestVerifier(sessionID, new DisposeViews(views));
         } else {
             viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             disposeViews = NOOPServer;
@@ -82,13 +82,13 @@ public class MainSessionBoundServlet implements PseudoServlet {
             receivePing = NOOPServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
-            sendUpdates = new IDVerifier(sessionID, new SendUpdates(views));
-            receivePing = new IDVerifier(sessionID, new ReceivePing(views));
+            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
+            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(views));
+            receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
         }
 
         Server upload = new UploadServer(views, configuration);
-        Server receiveSendUpdates = new ViewBoundServer(new IDVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews)), sessionMonitor, views);
+        Server receiveSendUpdates = new RequestVerifier(sessionID, new ViewBoundServer(new ReceiveSendUpdates(views, synchronouslyUpdatedViews), sessionMonitor, views));
 
         PathDispatcherServer dispatcher = new PathDispatcherServer();
         dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
