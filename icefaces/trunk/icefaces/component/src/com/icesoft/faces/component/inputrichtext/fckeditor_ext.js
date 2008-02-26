@@ -36,6 +36,9 @@ Ice.FCKeditor = Class.create();
 Ice.FCKeditor.prototype = {
 	initialize:function(ele, lang, _for, basePath, width, height, toolbar) {
 	this._for = _for; 
+	if (lang =="" || lang == null) {
+	   lang ="en";
+	}
 	var valueHolder = $(ele + 'valueHolder');
 	var value = valueHolder.value;
 		if (Ice.Repository.getInstance(ele) == null ) {
