@@ -50,6 +50,7 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
@@ -443,6 +444,27 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return "loginSuccess" or "failed" for faces-config navigation
      */
     public String login() {
+    	// Validation of password from demologin page.  Validation is done in 
+    	// the application logic because with demologin "required" is removed 
+    	// from the component and this results in validators not being fired.
+    	
+        // Get the page and role from the context.
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Map params = facesContext.getExternalContext().getRequestParameterMap();
+        String loginSource = (String) params.get("loginSource");
+        
+        if(loginSource != null){
+            String inputPassword = loginBean.getPresentationPassword().trim();
+            if (loginSource.startsWith("viewDemo")) {
+                if(!loginBean.validateDemoPassword(inputPassword)){
+                	return "failed";
+                }
+            }
+            // demologin page does not require moderator password validation, so
+            // we just set the password to the trimmed input String.
+            loginBean.setPresentationPassword(inputPassword);
+        }
+
         if (isModerator()) {
             presentation = presentationManager
                     .createPresentation(this, loginBean.getPresentationName());

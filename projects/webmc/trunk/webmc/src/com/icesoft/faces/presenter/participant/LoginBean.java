@@ -33,9 +33,12 @@
 package com.icesoft.faces.presenter.participant;
 
 import com.icesoft.faces.presenter.presentation.AutoPresentation;
+import com.icesoft.faces.presenter.presentation.PresentationManager;
+import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.DelayRenderer;
 import com.icesoft.faces.async.render.RenderManager;
+import com.icesoft.faces.component.ext.HtmlInputSecret;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.HtmlForm;
 
@@ -62,6 +65,7 @@ public class LoginBean {
     private boolean noSlotsLeft = false;
     private HtmlInputText firstNameField = null;
     private OnDemandRenderer loginPageRenderer;
+    private boolean invalidDemoPassword = false;
 
     public LoginBean(Participant parent) {
         this.parent = parent;
@@ -329,6 +333,7 @@ public class LoginBean {
         clearSingleField(parentForm, "lastName");
         clearSingleField(parentForm, "email");
         clearSingleField(parentForm, "viewPassword");
+        invalidDemoPassword = false;
         clearSingleField(parentForm, "newPresentationName");
         clearSingleField(parentForm, "moderatorPassword");
         
@@ -391,5 +396,35 @@ public class LoginBean {
 
         delayer.setDelay(5000);
         delayer.requestRender();
+    }
+
+	public boolean isInvalidDemoPassword() {
+		return invalidDemoPassword;
+	}
+
+	public void setInvalidDemoPassword(boolean invalidDemoPassword) {
+		this.invalidDemoPassword = invalidDemoPassword;
+	}
+	
+    public void validateDemoPassword(ActionEvent ae){
+    	if (ae.getSource() instanceof HtmlInputSecret) {
+    	    HtmlInputSecret component = (HtmlInputSecret)ae.getSource();
+    	    validateDemoPassword((String)component.getValue());
+    	}
+    }
+    
+    public boolean validateDemoPassword(String inputPassword){
+    	setInvalidDemoPassword(false);
+        if ((presentationName != null) && (!presentationName.equals("")) &&
+                (!presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {
+        	// View password is invalid if it does not match the selected presentation.
+        	if (!PresentationManager
+                    .getInstance().isPasswordAndPresentationMatch(
+                    inputPassword, getPresentationName())) {
+                setInvalidDemoPassword(true);
+                return false;
+            }
+        }
+        return true;
     }
 }
