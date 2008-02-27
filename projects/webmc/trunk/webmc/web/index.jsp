@@ -33,8 +33,6 @@
 <html>
 <head>
     <title>WebMC - Welcome</title>
-    <meta name="viewport" content="width=320; initial-scale=0.7;" />
-
     <script>
         function showLarge( sUrl ) {
            window.open( sUrl,'', 'width=1024, height=850, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
