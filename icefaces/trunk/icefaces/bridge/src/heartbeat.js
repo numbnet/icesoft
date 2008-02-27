@@ -68,6 +68,7 @@
             try {
                 this.beatPID.cancel();
                 this.beatPID = null;
+                this.pingListeners.clear();
                 this.lostPongListeners.each(function(listener) {
                     listener.ignoreNotifications();
                 });

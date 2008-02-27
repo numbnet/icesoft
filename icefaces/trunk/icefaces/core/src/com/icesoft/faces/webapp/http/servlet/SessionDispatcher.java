@@ -67,8 +67,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private void sessionShutdown(HttpSession session) {
-        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.remove(session.getId());
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
         servlet.shutdown();
+    }
+
+    private void destroy(HttpSession session) {
+        sessionBoundServers.remove(session.getId());
     }
 
     private static void notifySessionInitialized(HttpSession session) {
@@ -87,7 +91,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     public synchronized static void notifySessionShutdown(final HttpSession session) {
-        SessionIDs.remove(session.getId());
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
@@ -98,11 +101,30 @@ public abstract class SessionDispatcher implements PseudoServlet {
             }
         }
 
-        //invalidate session right away!
-        //see ICE-2731 -- delaying session invalidation doesn't work since JBoss+Catalina resuses session objects and
-        //IDs which causes a lot of confusion in applications that have logout processes (invalidate session and
-        //immediately initiate new session)
-        session.invalidate();
+        new Thread() {
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    //ignore
+                }
+                try {
+                    Iterator i = SessionDispatchers.iterator();
+                    while (i.hasNext()) {
+                        try {
+                            SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
+                            sessionDispatcher.destroy(session);
+                        } catch (Exception e) {
+                            Log.error(e);
+                        }
+                    }
+                    SessionIDs.remove(session.getId());
+                    session.invalidate();
+                } catch (IllegalStateException e) {
+                    //ignore -- session was invalidated by the application
+                }
+            }
+        }.start();
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
