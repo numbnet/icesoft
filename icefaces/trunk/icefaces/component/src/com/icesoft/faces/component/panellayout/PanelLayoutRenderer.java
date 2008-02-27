@@ -22,20 +22,7 @@ public class PanelLayoutRenderer extends Renderer {
         
         if(uiComponent instanceof PanelLayout){
             PanelLayout panelLayout = (PanelLayout)uiComponent;
-            String style = panelLayout.getStyle();
-            
-            StringBuffer prefixStyle = new StringBuffer(" ");
-            if(panelLayout.getLayout().equals(PanelLayout.FLOWLAYOUT)){
-                prefixStyle.append("position:relative;");
-            }
-            
-            String modifiedStyle = null;
-            if(style != null && style.length() > 0){
-                modifiedStyle = prefixStyle.toString()+style;
-            }else{
-                modifiedStyle = prefixStyle.toString();
-            }
-            
+            String modifiedStyle = getLayoutStyle(panelLayout.getStyle(), getLayoutMode(panelLayout.getLayout()));            
             writer.writeAttribute("style", modifiedStyle, "style");
             String clientId = uiComponent.getClientId(facesContext);
             writer.writeAttribute("id", clientId, "id");
@@ -47,6 +34,34 @@ public class PanelLayoutRenderer extends Renderer {
         }                    
     }
 
+    private String getLayoutStyle(String style, int layoutMode){
+        
+        StringBuffer prefixStyle = new StringBuffer(" ");
+        switch(layoutMode){
+            case 1: 
+             prefixStyle.append("position:relative;");
+            case 2:
+             prefixStyle.append("position:absolute;");  
+        }
+        
+        if(style != null && style.length() > 0){
+            prefixStyle.append(style);
+        }
+        
+        return prefixStyle.toString();
+    } 
+    
+    private int getLayoutMode(String layout){
+        
+        if(layout.equals(PanelLayout.FLOWLAYOUT)){
+            return 1;
+        }else if(layout.equals(PanelLayout.ABSOLUATELAYOUT)){
+            return 2;
+        }
+        
+        return 2;
+    }
+    
     public void encodeChildren(FacesContext context, UIComponent component) throws IOException {
 
         if (context == null || component == null) {

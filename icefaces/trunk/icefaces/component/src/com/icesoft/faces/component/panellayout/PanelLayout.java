@@ -1,5 +1,6 @@
 package com.icesoft.faces.component.panellayout;
 
+import com.icesoft.faces.component.ext.taglib.Util;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
@@ -31,10 +32,20 @@ public class PanelLayout extends javax.faces.component.UIComponentBase {
 
         if (null != this._layout) {
             return this._layout;
-        }else{
+        } else {
             return PanelLayout.ABSOLUATELAYOUT;
         }
-       
+
+    }
+
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
     }
     private java.lang.String _renderedOnUserRole;
 
