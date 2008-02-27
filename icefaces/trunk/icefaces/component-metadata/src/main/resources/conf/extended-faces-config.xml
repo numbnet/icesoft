@@ -229,6 +229,7 @@
   <!ENTITY ice-cust-style-props SYSTEM "ice_cust_properties/cust-style-props.xml">
   <!ENTITY ice-cust-panelPositioned-props SYSTEM "ice_cust_properties/cust-panelPositioned-props.xml">
   <!ENTITY ice-cust-portlet-props SYSTEM "ice_cust_properties/cust-portlet-props.xml">
+  <!ENTITY ice-cust-panelLayout-props SYSTEM "ice_cust_properties/cust-panelLayout-props.xml">
   <!--
   <!ENTITY ice-cust-inputOutputText-props SYSTEM "ice_cust_properties/cust-inputOutputText-props.xml">
   -->
@@ -461,6 +462,9 @@
   <!ENTITY outputMedia-component   SYSTEM "custom/outputMedia-component.xml">
   <!ENTITY outputMedia-renderer    SYSTEM "custom/outputMedia-renderer.xml">
 
+  <!ENTITY panelLayout-component   SYSTEM "custom/panelLayout-component.xml">
+  <!ENTITY panelLayout-renderer    SYSTEM "custom/panelLayout-renderer.xml">
+
   <!ENTITY % property-editors SYSTEM "dtd/property-editors.dtd">
   %property-editors;
     
@@ -543,7 +547,7 @@
     &panelCollapsible-component;
     &effect-component;
     &outputMedia-component;
-    <!-- &googlemap-component; -->
+    &panelLayout-component;
     <!-- &inputOutputText-component; -->
     
     <render-kit>
@@ -623,7 +627,7 @@
         &panelCollapsible-renderer;
         &effect-renderer;
         &outputMedia-renderer;	
-        <!-- &googlemap-renderer; -->
+        &panelLayout-renderer;
         <!-- &inputOutputText-renderer; -->
     </render-kit>
 
