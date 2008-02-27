@@ -249,19 +249,19 @@
           <renderer-type>com.icesoft.faces.OutputMedia</renderer-type>
           <renderer-class>com.icesoft.faces.component.outputmedia.OutputMediaRenderer</renderer-class>
       </renderer>
+      
+      <renderer>
+          <component-family>com.icesoft.faces.Layout</component-family>
+          <renderer-type>com.icesoft.faces.PanelLayout</renderer-type>
+          <renderer-class>com.icesoft.faces.component.panellayout.PanelLayout</renderer-class>
+      </renderer>
+      
         <!--<renderer>
             <component-family>com.icesoft.faces.SliderFamily</component-family>
             <renderer-type>com.icesoft.faces.SliderRenderer</renderer-type>
             <renderer-class>com.icesoft.faces.component.slider.SliderRenderer</renderer-class>
         </renderer>-->
-        
-        <!--
-        <renderer>
-            <component-family>com.icesoft.faces.MapFamily</component-family>
-            <renderer-type>com.icesoft.faces.MapRenderer</renderer-type>
-            <renderer-class>com.icesoft.faces.component.map.MapRenderer</renderer-class>
-        </renderer>
-        -->
+
   </render-kit>
 
    <component>
@@ -467,7 +467,11 @@
         <component-type>com.icesoft.faces.OutputMedia</component-type>
         <component-class>com.icesoft.faces.component.outputmedia.OutputMedia</component-class>
     </component>
-
+  
+    <component>
+        <component-type>com.icesoft.faces.PanelLayout</component-type>
+        <component-class>com.icesoft.faces.component.panellayout.PanelLayout</component-class>
+    </component>
   <!-- extended components -->
    <render-kit>
 
