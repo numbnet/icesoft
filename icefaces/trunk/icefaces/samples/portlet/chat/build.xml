@@ -145,7 +145,7 @@
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>
     </target>
-    <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal without AHS" depends="portlet.compile">
+    <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal with AHS" depends="portlet.compile">
         <!--antcall target="jboss.ahs.war"-->
         <antcall target="build.portlet">
             <param name="chat.xml" value="./conf/${general.ahs.xml}"/>
@@ -161,7 +161,7 @@
         <antcall target="help"/>
     </target>
     -->
-    <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="portlet.compile" description="build a portlet application for Liferay JBoss4.2 without AHS">
+    <target name="build.portlet.liferay.jboss4.2.ahs.war" depends="portlet.compile" description="build a portlet application for Liferay JBoss4.2 with AHS">
         <!--antcall target="jboss.ahs.war"-->
         <antcall target="build.portlet">
             <param name="chat.xml" value="./conf/${general.ahs.xml}"/>
