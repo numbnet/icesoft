@@ -340,7 +340,7 @@
 		<tag-name>menuBar</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.Menu</component-type>
-			<renderer-type>com.icesoft.faces.Menu</renderer-type>
+			<renderer-type>com.icesoft.faces.View</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
@@ -433,6 +433,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>panelLayout</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.PanelLayout</component-type>
+			<renderer-type>com.icesoft.faces.PanelLayout</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>panelPopup</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.PanelPopup</component-type>
@@ -500,7 +508,6 @@
 		<tag-name>rowSelector</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.RowSelector</component-type>
-			<renderer-type>com.icesoft.faces.component.ext.renderkit.RowSelectorRenderer</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
