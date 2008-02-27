@@ -69,6 +69,15 @@
         activation.jar
         "
             />
+    
+    <!-- jars needed for Facelets -->
+    <patternset id="facelets.jars"
+                includes="
+        icefaces-facelets.jar
+        krysalis-jCharts-1.0.0-alpha-1.jar
+        el-ri.jar
+        "
+            />   
 
     <target name="clean" depends="common.clean">
         <delete quiet="true">
@@ -101,6 +110,7 @@
             <fileset dir="${proj.lib.dir}">
                 <patternset refid="validation.jars"/>
                 <patternset refid="javaMail.jars"/>
+                <patternset refid="facelets.jars"/>
             </fileset>
         </copy>
 

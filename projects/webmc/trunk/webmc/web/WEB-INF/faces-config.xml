@@ -37,6 +37,13 @@
 
 <faces-config>
 
+    <!-- Facelets -->
+    <application>
+        <view-handler>
+            com.icesoft.faces.facelets.D2DFaceletViewHandler
+        </view-handler>
+    </application>
+
     <!-- Language Settings -->
     <application>
         <locale-config>
@@ -112,7 +119,7 @@
     
     <!-- Navigation Rules -->
     <navigation-rule>
-        <from-view-id>/login.iface</from-view-id>
+        <from-view-id>/login.jspx</from-view-id>
         <navigation-case>
             <from-outcome>loginSuccess</from-outcome>
             <to-view-id>/index.iface</to-view-id>
@@ -121,12 +128,13 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/index.iface</from-view-id>
+        <from-view-id>/index.jspx</from-view-id>
         <navigation-case>
             <from-outcome>logout</from-outcome>
             <to-view-id>/login.iface</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
 
 </faces-config>
