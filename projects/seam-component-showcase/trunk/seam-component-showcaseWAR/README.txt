@@ -16,8 +16,8 @@ libraries exist on your machine.
 
  for example:-
  	jboss.home = C:/work/webserver/jboss-4.2.2.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.7.0.DR3/icesfaces/  
-	jboss.seam.home = C:/Seam/jboss-seam-2.0.0.GA     
+	icefacesSourceDirectory = C:/ICEfaces-1.7.0.Beta1/icesfaces/  
+	jboss.seam.home = C:/Seam/jboss-seam-2.0.1.GA     
 
 
 Specific Server instructions:-
@@ -36,13 +36,21 @@ JBoss AS 4.0.5.GA:  (note everything BUT asynch is working with this right now)
   * Start JBoss AS 
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-WebLogic :  (note that the asynch stuff doesn't work for 9.2 and the dictionary for autocomplete isn't being loaded 
-                       yet for either v10 or 9.2)
-  * Install WebLogic 10 or  9.2
+WebLogic 10 :  (note that the asynch stuff doesn't work for 9.2 )
+  * Install WebLogic 10
+  * copy hsql.jar to libs for weblogic domain (just regular domain with autodeploy enabled)
+  * create Datasource for componentDB (jndi name as well)
+      Database type & drive: "other"
+      DatabaseName: hsqldb
+      HOst Name:    127.0.0.1
+      Port:         9001
+      username:     sa
+      Driver Class Name:  org.hsqldb.jdbcDriver
+      URL: jdbc:hsqldb:.
+      select domain that you are using and all other settings the same     
   * ant weblogic
-  * Start the WebLogic "examples" server
-  * Load the admin console http://localhost:7001/console/
-  * Deploy dist-weblogic/seam-comp-showcase.war
+  * Start the WebLogic server domain you have created and are using with this datasource
+  * copy dist-weblogic/seam-comp-showcase.war to autodeploy folder of domain
   * Access the app at http://localhost:7001/seam-comp-showcase/
   
   
