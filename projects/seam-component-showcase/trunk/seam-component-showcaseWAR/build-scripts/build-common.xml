@@ -98,7 +98,7 @@
 		 </copy>
 		<copy todir="${war.dir}/WEB-INF" overwrite="true">
 					<fileset dir="${resources.dir}/WEB-INF">
-				        <include name="web.xml"/>
+				        <include name="web*.xml"/>
 				    </fileset>
 			</copy>
 		 <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
@@ -124,7 +124,7 @@
 		<!-- Copy in resources, with filtering -->
 		<copy todir="${war.dir}/WEB-INF" overwrite="true">
 				<fileset dir="${resources.dir}/WEB-INF">
-			        <include name="web.xml"/>
+			        <include name="web*.xml"/>
 			        <include name="components.xml"/>
 			    </fileset>
 		</copy>
