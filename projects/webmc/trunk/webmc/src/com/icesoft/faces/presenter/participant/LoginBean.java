@@ -427,4 +427,12 @@ public class LoginBean {
         }
         return true;
     }
+    
+    public String getSelectedPresentationPassword(){
+        if(PresentationManager.getInstance().getPresentation(presentationName)==null){
+        	return null;
+        }else{
+        	 return PresentationManager.getInstance().getPresentation(presentationName).getPassword();
+        }
+    }
 }

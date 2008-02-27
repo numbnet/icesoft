@@ -453,7 +453,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         Map params = facesContext.getExternalContext().getRequestParameterMap();
         String loginSource = (String) params.get("loginSource");
         
-        if(loginSource != null){
+        if(loginSource != null && loginBean.getPresentationPassword() != null){
             String inputPassword = loginBean.getPresentationPassword().trim();
             if (loginSource.startsWith("viewDemo")) {
                 if(!loginBean.validateDemoPassword(inputPassword)){

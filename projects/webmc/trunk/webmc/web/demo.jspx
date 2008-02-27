@@ -42,8 +42,6 @@
     <title>
         <ice:outputText value="WebMC - Login"/>
     </title>
-
-    <meta name="viewport" content="width=320; initial-scale=0.7;" />
 </head>
 
 <body>
@@ -184,6 +182,7 @@
                   </ice:panelGroup>
                 </td>
             </tr>
+            <ice:panelGroup rendered="#{not empty participant.loginBean.selectedPresentationPassword}" >
             <tr>
                 <td class="loginLabel">Password:</td>
                 <td>
@@ -203,6 +202,7 @@
                   </ice:panelGroup>
                 </td>
             </tr>
+            </ice:panelGroup>
             <tr>
                 <td>&amp;nbsp;</td>
                 <td align="right">

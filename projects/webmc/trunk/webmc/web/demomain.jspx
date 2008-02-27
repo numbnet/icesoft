@@ -45,7 +45,6 @@
         <ice:outputText value="WebMC - #{participant.presentation.name}"/>
     </title>
 
-    <meta name="viewport" content="width=320; initial-scale=0.7;" />
     <link rel="stylesheet" type="text/css" href="resources/css/styles.css"/>
 
     <script>
