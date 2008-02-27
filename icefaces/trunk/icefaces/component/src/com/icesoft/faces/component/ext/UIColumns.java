@@ -137,10 +137,6 @@ public class UIColumns extends UISeries {
         }
     }
 
-    public String getId() {
-        return String.valueOf(getRowIndex()) + getRowId();
-    }
-
     public void processKids(FacesContext context, PhaseId phaseId,
                             UIComponent kid) {
         if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
