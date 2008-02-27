@@ -69,15 +69,7 @@ next subset
     </ice:selectOneRadio>
 </ice:panelGroup>
 
-<!-- Add/remove data from table -->
-<ice:panelGroup styleClass="formBorderHighlight" style="float:left">
 
-    <h3>
-        <ice:outputText
-                value="#{msgs['component.dataPaginator.data.description']}"/>
-    </h3>
-
-</ice:panelGroup>
 
 <ice:panelGroup styleClass="clearer"/>
 

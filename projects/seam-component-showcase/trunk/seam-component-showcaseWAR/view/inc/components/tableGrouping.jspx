@@ -55,7 +55,7 @@ is used to specify the columns that can be sorted by clicking the column header.
             <ice:panelGroup>
                 <ice:outputText value="groupOn dept"/><br/>
                 <ice:dataTable id="groupingData"
-                               value="#{groupBean.resultList}"
+                               value="#{employees.resultList}"
                                var="employee"
                         >
                     <f:facet name="header">
