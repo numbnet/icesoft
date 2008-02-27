@@ -34,7 +34,7 @@
 <head/>
     <body>
         <% if (session.getAttribute("LoggedIn") == "true") { %>
-            <jsp:forward page="index.iface"/>
+            <jsp:forward page="main.iface"/>
         <% } else { %>
             <jsp:forward page="login.iface"/>
         <% } %>

@@ -1,0 +1,55 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ice="http://www.icesoft.com/icefaces/component" >
+	<ice:dataTable value="#{participant.presentation.preloadSlides}"
+	               var="loopSlide">
+	    <h:column>
+	        <ice:graphicImage value="#{loopSlide.location}"
+	                          style="visibility: hidden; height: 0; width: 0;"/>
+	    </h:column>
+	</ice:dataTable>
+	<table cellspacing="0" cellpadding="0" border="0" class="height100">
+	    <tr>
+	        <td valign="bottom"
+	            style="width: 35%; text-align: left; padding: 0;">
+	            <table cellspacing="0" cellpadding="0" border="0"
+	                   style="text-align: left; width: 248px; height: 29px;">
+	                <tr>
+	                    <td>
+	                        <ice:commandButton
+	                                action="#{participant.toggleSlideTypeOne}"
+	                                image="resources/images/main_tab_pres_#{participant.slideTypePres}.gif"
+	                                alt="Presentation"/>
+	                    </td>
+	                    <td>
+	                        <ice:commandButton
+	                                action="#{participant.toggleSlideTypeTwo}"
+	                                image="resources/images/main_tab_info_#{not participant.slideTypePres}.gif"
+	                                alt="Information"/>
+	                    </td>
+	                </tr>
+	            </table>
+	        </td>
+	        <td style="width: 65%;">
+	            <ice:panelGroup style="text-align: right;">
+	                <ice:outputText value="#{participant.statusMessage}"
+	                                effect="#{participant.statusEffect}"
+	                                escape="false"
+	                                style="background-color: #C7DFEF; color: #2D6387;"/>
+	            </ice:panelGroup>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td colspan="2" valign="top">
+	            <ice:panelGrid styleClass="presentationImageTable"
+	                           cellspacing="0" cellpadding="0"
+	                           valign="middle" align="center">
+	                <ice:graphicImage value="#{participant.currentSlide.location}"
+	                                  rendered="#{participant.slideTypePres}"/>
+	                <ice:graphicImage value="#{participant.presentation.infoSlide.location}"
+	                                  rendered="#{not participant.slideTypePres}"/>
+	            </ice:panelGrid>
+	        </td>
+	    </tr>
+	</table>
+</f:view>

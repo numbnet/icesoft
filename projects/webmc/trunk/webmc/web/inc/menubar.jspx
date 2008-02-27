@@ -1,0 +1,49 @@
+<ice:form xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+    <ice:menuBar orientation="horizontal">
+        <ice:menuItem value="File" rendered="#{participant.moderator}">
+            <ice:menuItem value="Open"
+                          actionListener="#{participant.presentation.newDocument}"/>
+            <ice:menuItem value="Save Chat"
+                          link="javascript: showMedium('chatlog.html')"/>
+            <ice:menuItem value="Mail Chat"
+                          action="#{participant.emailMessageLog}"/>
+            <ice:menuItem value="Logout"
+                          action="#{participant.confirmLogout}"/>
+        </ice:menuItem>
+        <ice:menuItem value="File"
+                      rendered="#{not participant.moderator}">
+            <ice:menuItem value="Save Chat"
+                          link="javascript: showMedium('chatlog.html')"/>
+            <ice:menuItem value="Mail Chat"
+                          action="#{participant.emailMessageLog}"/>
+            <ice:menuItem value="Logout"
+                          action="#{participant.confirmLogout}"/>
+        </ice:menuItem>
+        <ice:menuItem value="View" rendered="#{participant.moderator}">
+            <ice:menuItem value="Next Page"
+                          actionListener="#{participant.presentation.forwardOne}"
+                          disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+            <ice:menuItem value="Previous Page"
+                          actionListener="#{participant.presentation.backOne}"
+                          disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+            <ice:menuItem value="First Page"
+                          actionListener="#{participant.presentation.backAll}"
+                          disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+            <ice:menuItem value="Last Page"
+                          actionListener="#{participant.presentation.forwardAll}"
+                          disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+        </ice:menuItem>
+        <ice:menuItem value="Help">
+            <ice:menuItem value="About WebMC"
+                          action="#{participant.toggleSlideTypeTwo}"/>
+            <ice:menuItem value="About ICEfaces"
+                          link="http://www.icefaces.org"
+                          target="_blank"/>
+            <ice:menuItem value="About ICEsoft"
+                          link="http://www.icesoft.com"
+                          target="_blank"/>
+        </ice:menuItem>
+    </ice:menuBar>
+</ice:form>

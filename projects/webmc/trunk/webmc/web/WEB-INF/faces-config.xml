@@ -122,13 +122,13 @@
         <from-view-id>/login.jspx</from-view-id>
         <navigation-case>
             <from-outcome>loginSuccess</from-outcome>
-            <to-view-id>/index.iface</to-view-id>
+            <to-view-id>/main.iface</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/index.jspx</from-view-id>
+        <from-view-id>/main.jspx</from-view-id>
         <navigation-case>
             <from-outcome>logout</from-outcome>
             <to-view-id>/login.iface</to-view-id>
