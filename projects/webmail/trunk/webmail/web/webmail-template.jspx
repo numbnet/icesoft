@@ -1,6 +1,4 @@
-<f:view
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:h="http://java.sun.com/jsf/html"
+<f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets" >
