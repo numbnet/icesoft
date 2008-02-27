@@ -97,7 +97,7 @@ public class DataTablePaginatorBean extends EntityQuery{
 		System.out.println("building sorted list & lr="+Manager.instance().isLongRunningConversation());
         setEjbql(EJBQL);
     	ascending = true;
-    	sort = "firstName";
+    	sort = "lastName";
     	orderString="firstName asc";
     	buildSortedList();
 	}

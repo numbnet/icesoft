@@ -76,9 +76,9 @@ public class StaticTabSetBean implements  Serializable{
      * The demo contains three tabs and thus we need three variables to store
      * their respective rendered states.
      */
-    private boolean tabbedPane1Visible;
-    private boolean tabbedPane2Visible;
-    private boolean tabbedPane3Visible;
+    private boolean tabbedPane1Visible=true;
+    private boolean tabbedPane2Visible=true;
+    private boolean tabbedPane3Visible=true;
     
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
