@@ -24,7 +24,7 @@ public class PanelLayout extends javax.faces.component.UIComponentBase {
      * <p>Return the family for this component.</p>
      */
     public String getFamily() {
-        return "com.icesoft.faces.layout";
+        return "com.icesoft.faces.Layout";
     }
     private java.lang.String _layout;
 
