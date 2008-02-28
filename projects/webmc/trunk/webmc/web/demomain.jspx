@@ -74,9 +74,9 @@
 -->
 	<tr>
 		<td class="bgNAV">
-
-		    <ui:include src="./inc/navigationpanel.jspx"/>
-
+            <ice:panelGroup rendered="#{participant.moderator}">
+                <ui:include src="./inc/navigationpanel.jspx"/>
+            </ice:panelGroup>
 		</td>
 	</tr>
 	<tr>
