@@ -104,7 +104,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         new Thread() {
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     //ignore
                 }
