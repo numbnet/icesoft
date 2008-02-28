@@ -49,7 +49,7 @@
     }
 
     This.Receive = function(response) {
-        return response.isOkAndComplete() && response.content() != '';
+        return response.isOkAndComplete();
     }
 
     This.Ok = function(response) {
