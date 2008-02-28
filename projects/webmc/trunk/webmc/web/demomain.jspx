@@ -49,7 +49,7 @@
 
     <script>
         function showMedium(sUrl) {
-            window.open(sUrl, '', 'width=800, height=600, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
+            window.open(sUrl, '', 'width=480, height=320, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
         }
     </script>
 </head>
