@@ -280,7 +280,7 @@ public class LoginBean {
     /**
      * Method called when the "Viewer" tab is selected on the front end pages
      */
-    public void toggleRoleTypeViewer() {
+    public void toggleRoleTypeViewer(ActionEvent ae) {
         parent.setRole(ParticipantInfo.ROLE_VIEWER);
 
         presentationPassword = "";
@@ -294,7 +294,7 @@ public class LoginBean {
      * Method called when the "Moderator" tab is selected on the front end
      * pages
      */
-    public void toggleRoleTypeModerator() {
+    public void toggleRoleTypeModerator(ActionEvent ae) {
         parent.setRole(ParticipantInfo.ROLE_MODERATOR);
 
         presentationName = "";

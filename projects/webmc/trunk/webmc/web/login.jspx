@@ -70,14 +70,14 @@
         <tr>
             <td>
                 <ice:commandButton
-                        action="#{participant.loginBean.toggleRoleTypeViewer}"
+                        actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
                         alt="Viewer"
                         immediate="true"
                         image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
             </td>
             <td>
                 <ice:commandButton
-                        action="#{participant.loginBean.toggleRoleTypeModerator}"
+                        actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
                         alt="Moderator"
                         immediate="true"
                         image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
