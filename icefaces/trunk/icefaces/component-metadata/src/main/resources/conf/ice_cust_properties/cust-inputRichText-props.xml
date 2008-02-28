@@ -157,7 +157,8 @@
 <property>
     <description>
        <![CDATA[    
-
+            This attribute defines the path of the custom config file, the path 
+            is relative to the web app.
         ]]>
     </description>
     <property-name>customConfigPath</property-name>
