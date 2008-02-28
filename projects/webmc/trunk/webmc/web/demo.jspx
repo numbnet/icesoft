@@ -45,9 +45,9 @@
 </head>
 
 <body>
-
+<!--
 <ice:panelGroup styleClass="mainPRES">
-
+-->
 <ice:panelGroup styleClass="facesBox">
 
 <center>
@@ -55,29 +55,25 @@
 <ice:panelGroup styleClass="loginBox">
 
 <ice:form>
-
-<ice:graphicImage value="resources/images/login_logo.gif" alt="Welcome to WebMC"
+<!--
+<ice:graphicImage value="resources/images/login_logo.gif" 
+                  alt="Welcome to WebMC"
                   style="padding-bottom: 15px;"/>
-<ice:panelGroup styleClass="headerMessage">
-    <b>To join a presentation, please login as a Viewer<br/>
-    To start a new presentation, please login as the Moderator<br/>
-    View addition information in the <a href="faq.html" target="_blank"><u>WebMC FAQ</u></a></b>
-</ice:panelGroup>
-
+-->
 <div style="text-align: left;">
     <table cellspacing="0" cellpadding="0" border="0"
            style="text-align: left; padding: 0; width: 248px; height: 29px;">
         <tr>
             <td>
                 <ice:commandButton
-                        action="#{participant.loginBean.toggleRoleTypeViewer}"
+                        actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
                         alt="Viewer"
                         immediate="true"
                         image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
             </td>
             <td>
                 <ice:commandButton
-                        action="#{participant.loginBean.toggleRoleTypeModerator}"
+                        actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
                         alt="Moderator"
                         immediate="true"
                         image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
@@ -90,51 +86,12 @@
        style="border: 1px solid #94B3CB; padding: 4px; padding-bottom: 12px; text-align: left;">
 <tr>
     <td colspan="2">
-        <ice:panelGroup rendered="#{not participant.moderator}">
-            <ol>
-                <li>
-                    <ice:outputText value="Choose Presentation"
-                                    style="font-weight: bold;"/>
-                    <br/>
-                    <ice:outputText
-                            value="If you have been invited by a moderator to attend a WebMC presentation, login to that presentation now by filling in the registration form below.  Select the presentation name from the drop down menu and type in the the valid password to join the presentation."/>
-                </li>
-                <br/>
-                <li>
-                    <ice:outputText
-                            value="Complete the following form to join a presentation:"
-                            style="font-weight: bold;"/>
-                </li>
-            </ol>
-        </ice:panelGroup>
-        <ice:panelGroup rendered="#{participant.moderator}">
-            <ol>
-                <li>
-                    <ice:outputText value="Create and Save your Slides"
-                                    style="font-weight: bold;"/>
-                    <br/>
-                    <ice:outputText
-                            value="Save your PowerPoint presentation to an image format (.jpg, .gif, or .png).  PowerPoint will automatically create a folder including individual image files for all the slides, and automatically name them slide1.jpg (in the case of a JPEG file) to slide x.jpg."/>
-                    <br/><br/>
-                    <ice:outputText
-                            value="Once the presentation has been saved, ZIP the folder containing all the slides in image format.  Remember where the ZIP file is located so it can be uploaded to WebMC after login."/>
-                </li>
-                <br/>
-                <li>
-                    <ice:outputText value="Moderator Login"
-                                    style="font-weight: bold;"/>
-                    <br/>
-                    <ice:outputText
-                            value="As the moderator of the presentation, you must give the presentation a title and a password.  Use your email to invite attendees to attend your presentation by sending the web address to WebMC, the presentation name and the password."/>
-                </li>
-                <br/>
-                <li>
-                    <ice:outputText
-                            value="Complete the following form to start a new presentation:"
-                            style="font-weight: bold;"/>
-                </li>
-            </ol>
-        </ice:panelGroup>
+		<ice:panelGroup styleClass="headerMessage" 
+		                rendered="#{participant.loginBean.hasDefaultPresentations}">
+		    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
+		    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" 
+		                    style="font-weight: bold;"/>
+		</ice:panelGroup>
     </td>
 </tr>
 <tr>
@@ -145,13 +102,16 @@
             <td>
                 <ice:inputText id="firstName"
                                value="#{participant.firstName}"
-                               converter="fixCaps" required="true"
-                               partialSubmit="true" maxlength="20"
+                               converter="fixCaps" 
+                               required="true"
+                               partialSubmit="true" 
+                               maxlength="20"
                                tabindex="1"
                                styleClass="loginInput"
                                binding="#{participant.loginBean.firstNameField}"/>
                 <ice:panelGroup>
-                  <ice:message for="firstName" errorClass="inputError"/>
+                  <ice:message for="firstName" 
+                               errorClass="inputError"/>
                 </ice:panelGroup>
             </td>
         </tr>
@@ -189,11 +149,13 @@
                     <ice:inputSecret id="viewPassword"
                                      value="#{participant.loginBean.presentationPassword}"
                                      tabindex="5"
-                                     redisplay="true" partialSubmit="true"
+                                     redisplay="true" 
+                                     partialSubmit="true"
                                      maxlength="20"
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
-                        <f:param name="loginSource" value="viewDemologin"/>
+                        <f:param name="loginSource" 
+                                 value="viewDemologin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
@@ -254,9 +216,9 @@
                                      maxlength="20"
                                      tabindex="5"
                                      styleClass="loginInput"
-                                     redisplay="true" partialSubmit="true"
-                                     action="#{participant.login}">
-                        <f:param name="loginSource" value="moderatorDemologin"/>
+                                     redisplay="true" >
+                        <f:param name="loginSource" 
+                                 value="moderatorDemologin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:message for="moderatorPassword"
@@ -279,7 +241,8 @@
                                        alt="Start Presentation">
                         <ice:graphicImage value="resources/images/butt_start_present.gif"
                                           style="border: 0;"/>
-                        <f:param name="loginSource" value="moderatorDemologin"/>
+                        <f:param name="loginSource" 
+                                 value="moderatorDemologin"/>
                     </ice:commandLink>
                 </td>
             </tr>
@@ -288,16 +251,14 @@
 </td>
 </tr>
 </table>
-<ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
-    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
-    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" style="font-weight: bold;"/>
-</ice:panelGroup>
 
 </ice:form>
 </ice:panelGroup>
 </center>
 </ice:panelGroup>
+<!--
 </ice:panelGroup>
+-->
 </body>
 </html>
 </f:view>

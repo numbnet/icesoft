@@ -58,6 +58,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
        class="height100">
+<!--
 	<tr>
 	    <td class="bgTOPBLUE">
 	        <img src="resources/images/spacer.gif" width="1" height="12"/>
@@ -70,6 +71,7 @@
 
 	    </td>
 	</tr>
+-->
 	<tr>
 		<td class="bgNAV">
 
@@ -100,6 +102,7 @@
 			</ice:form>
 		</td>
 	</tr>
+<!--
 	<tr>
         <td class="bgFOOTER">
 
@@ -107,6 +110,7 @@
 
         </td>
 	</tr>
+-->
 </table>
 
 </body>
