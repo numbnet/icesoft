@@ -153,3 +153,19 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+       <![CDATA[    
+
+        ]]>
+    </description>
+    <property-name>customConfigPath</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

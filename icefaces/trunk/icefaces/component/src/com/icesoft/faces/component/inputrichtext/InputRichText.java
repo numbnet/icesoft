@@ -7,6 +7,7 @@ import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
 import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
@@ -51,6 +52,8 @@ public class InputRichText extends UIInput {
     private String height;
     private URI baseURI;
     private String toolbar;
+    private String customConfigPath;
+    
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -223,5 +226,23 @@ public class InputRichText extends UIInput {
         }
         ValueBinding vb = getValueBinding("toolbar");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "Default";
+    }    
+    
+    /**
+     * <p>Set the value of the <code>customConfigPath</code> property.</p>
+     */
+    public void setCustomConfigPath(String customConfigPath) {
+        this.customConfigPath = customConfigPath;
+    }
+
+    /**
+     * <p>Return the value of the <code>customConfigPath</code> property.</p>
+     */
+    public String getCustomConfigPath() {
+        if (customConfigPath != null) {
+            return CoreUtils.resolveResourceURL(getFacesContext(), customConfigPath);
+        }
+        ValueBinding vb = getValueBinding("customConfigPath");
+        return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), (String) vb.getValue(getFacesContext())) : null;
     }    
 }

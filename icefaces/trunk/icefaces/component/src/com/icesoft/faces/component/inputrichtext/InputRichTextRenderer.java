@@ -39,7 +39,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
-            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"'));");
+            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() +"'));");
             Element textFormat = (Element) domContext.createElement(HTML.INPUT_ELEM);
             textFormat.setAttribute(HTML.TYPE_ATTR, "hidden");
             textFormat.setAttribute(HTML.VALUE_ATTR, "text");
@@ -55,7 +55,6 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getValue() != null) {
                 hiddenValueHolder.setAttribute(HTML.VALUE_ATTR, inputRichText.getValue().toString());
             }
-
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));

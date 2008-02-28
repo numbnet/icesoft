@@ -34,7 +34,7 @@
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
-	initialize:function(ele, lang, _for, basePath, width, height, toolbar) {
+	initialize:function(ele, lang, _for, basePath, width, height, toolbar, custConPath) {
 	this._for = _for; 
 	if (lang =="" || lang == null) {
 	   lang ="en";
@@ -58,6 +58,9 @@ Ice.FCKeditor.prototype = {
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
 			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;				
 			this.thirdPartyObject.ToolbarSet  = toolbar;
+			if (custConPath !="null") {
+			     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
+			}
 			this.thirdPartyObject.CreateIce(ele);
 		} else {
 			var componentFound = $(ele+'___Frame');
@@ -77,6 +80,9 @@ Ice.FCKeditor.prototype = {
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
 			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;											
 			this.thirdPartyObject.ToolbarSet  = toolbar;
+            if (custConPath !="null") {
+                 this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
+            }			
 			this.thirdPartyObject.CreateIce(ele);	
 			}
 		}
