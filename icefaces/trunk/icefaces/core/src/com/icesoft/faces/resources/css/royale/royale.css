@@ -2469,8 +2469,8 @@ Disabeld classes for the calendar controls
 }
 
 .iceGmpMapTd div.gmap{
-    width:600px;
-    height:400px;
+    width:300px;
+    height:300px;
 }
 
 .iceInpRchTxt {
@@ -2479,8 +2479,8 @@ Disabeld classes for the calendar controls
 
 /* panel divider */
 .icePnlDvr, .icePnlDvrHor {
-    width:800px; 
-    height:400px;
+    width:300px; 
+    height:300px;
 }
 
 .icePnlDvrCnt, .icePnlDvrHorCnt {
