@@ -59,6 +59,9 @@
                                 value="#{inputRichTextBean.value}"/>
             </ice:panelGroup>
 
+            <ice:inputRichText disabled="true" height="100" value="This editor is disbaled 
+            as well as using the custom toolbar and the custom css." 
+            customConfigPath="js/customConfig.js" toolbar="MyToolbar"/>
         </ice:panelTab>
         <!--
           The bean is responsible for streaming html documentation to
