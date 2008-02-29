@@ -97,12 +97,13 @@ Ice.FCKeditorUtility = {
         try {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
             if (oEditor != null) {
+               if (oEditor.EditorWindow.parent.FCK.HasFocus) { 
+                    oEditor.EditorWindow.focus();
+                    oEditor.focus();                    
+                }            
                 var valueHolder = $(ele + 'valueHolder');
                 var value = valueHolder.value;  
                 oEditor.SetHTML( value) ;
-                if (oEditor.EditorWindow.parent.FCK.HasFocus) {                
-                    oEditor.EditorWindow.focus();
-                }
             }
         } catch(err) {}
     }
