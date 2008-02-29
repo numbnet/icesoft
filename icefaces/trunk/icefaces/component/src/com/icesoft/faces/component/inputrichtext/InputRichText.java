@@ -53,7 +53,8 @@ public class InputRichText extends UIInput {
     private URI baseURI;
     private String toolbar;
     private String customConfigPath;
-    private String editorValue;
+    private String editorValue = null;
+    private Boolean disabled = null;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -260,4 +261,23 @@ public class InputRichText extends UIInput {
     void setEditorValue(String editorValue) {
         this.editorValue = editorValue;
     }    
+
+    /**
+     * <p>Set the value of the <code>disabled</code> property.</p>
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = new Boolean(disabled);
+    }
+
+    /**
+     * <p>Return the value of the <code>disabled</code> property.</p>
+     */
+    public boolean isDisabled() {
+        if (disabled != null) {
+            return disabled.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("disabled");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
+                                    .booleanValue() : false;
+    } 
 }

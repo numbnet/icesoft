@@ -97,6 +97,7 @@ Ice.FCKeditorUtility = {
         try {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
             if (oEditor != null) {
+               if (toogleState(oEditor)) return;
                if (oEditor.EditorWindow.parent.FCK.HasFocus) { 
                     oEditor.EditorWindow.focus();
                     oEditor.focus();                    
@@ -116,12 +117,42 @@ FCKeditor.prototype.CreateIce = function(eleId)
 }
 
 function FCKeditor_OnComplete( editorInstance ){
+    toogleState(editorInstance);
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
 }
 
+function toogleState(editorInstance) {
 
+       var disabled = $(editorInstance.Name + 'Disabled');
+       if (!disabled) return false;
+       if (disabled.value == "true") {
+            if (document.all) {
+                editorInstance.EditorDocument.body.disabled = true;
+            } else {
+                editorInstance.EditorDocument.designMode = "off";
+            } 
+            editorInstance.EditorWindow.parent.FCK.ToolbarSet.Disable();
+            buttonRefreshStateClone = editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState;
+            specialComboRefreshStateClone = editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState;
+            editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState = function(){return false;};
+            editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState = function(){return false;};            
+            return true;     
+       } else {
+            if (document.all) {
+                editorInstance.EditorDocument.body.disabled = false;
+            } else {
+                editorInstance.EditorDocument.designMode = "on";
+            } 
+            editorInstance.EditorWindow.parent.FCK.ToolbarSet.Enable();
+            editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState = buttonRefreshStateClone;
+            editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState = specialComboRefreshStateClone;
+            editorInstance.EditorWindow.parent.FCK.ToolbarSet.RefreshModeState();                        
+            return false;      
+       }
+                   
+    }
 function FCKeditorSave(editorInstance) {
     var iceInstance = Ice.Repository.getInstance(editorInstance.Name);
     if (iceInstance._for != '') {

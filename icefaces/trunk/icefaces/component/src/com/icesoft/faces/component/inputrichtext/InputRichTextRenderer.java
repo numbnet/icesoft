@@ -39,22 +39,11 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
-            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() +"'));");
-            Element textFormat = (Element) domContext.createElement(HTML.INPUT_ELEM);
-            textFormat.setAttribute(HTML.TYPE_ATTR, "hidden");
-            textFormat.setAttribute(HTML.VALUE_ATTR, "text");
-            textFormat.setAttribute(HTML.ID_ATTR, clientId + "Format");
-            textFormat.setAttribute(HTML.NAME_ATTR, clientId + "Format");
-            root.appendChild(textFormat);
-            Element hiddenValueHolder = domContext.createElement(HTML.INPUT_ELEM);
-            hiddenValueHolder.setAttribute(HTML.TYPE_ATTR, "hidden");
-            hiddenValueHolder.setAttribute(HTML.ID_ATTR, clientId + "valueHolder");
-            hiddenValueHolder.setAttribute(HTML.NAME_ATTR, clientId + "valueHolder");            
-            root.appendChild(hiddenValueHolder);
-
-            if (inputRichText.getEditorValue() != null) {
-                hiddenValueHolder.setAttribute(HTML.VALUE_ATTR, inputRichText.getEditorValue().toString());
-            }
+            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + "'));");
+            addHiddenFiled (domContext, root,clientId + "valueHolder", 
+                                    inputRichText.getEditorValue());
+            addHiddenFiled (domContext, root,clientId + "Disabled",
+                                    String.valueOf(inputRichText.isDisabled()));            
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));
@@ -65,5 +54,16 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
         }
     }
 
+    private void addHiddenFiled (DOMContext domContext, Element root, 
+                                            String fieldName, String value) {
+            Element hiddenFld = (Element) domContext.createElement(HTML.INPUT_ELEM);
+            hiddenFld.setAttribute(HTML.TYPE_ATTR, "hidden");
+            hiddenFld.setAttribute(HTML.ID_ATTR, fieldName);
+            hiddenFld.setAttribute(HTML.NAME_ATTR,fieldName);
+            if (value != null) {
+                hiddenFld.setAttribute(HTML.VALUE_ATTR, value);
+            }
+            root.appendChild(hiddenFld);
+    }
 
 }
