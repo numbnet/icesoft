@@ -40,9 +40,13 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
             		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + "'));");
-            addHiddenFiled (domContext, root,clientId + "valueHolder", 
-                                    inputRichText.getEditorValue());
-            addHiddenFiled (domContext, root,clientId + "Disabled",
+            String value = inputRichText.getEditorValue();
+            if (value == null && inputRichText.getValue() != null) {
+                value =  inputRichText.getValue().toString();
+            }
+            addHiddenField (domContext, root,clientId + "valueHolder", 
+                                    value);
+            addHiddenField (domContext, root,clientId + "Disabled",
                                     String.valueOf(inputRichText.isDisabled()));            
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
@@ -54,7 +58,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
         }
     }
 
-    private void addHiddenFiled (DOMContext domContext, Element root, 
+    private void addHiddenField (DOMContext domContext, Element root, 
                                             String fieldName, String value) {
             Element hiddenFld = (Element) domContext.createElement(HTML.INPUT_ELEM);
             hiddenFld.setAttribute(HTML.TYPE_ATTR, "hidden");
