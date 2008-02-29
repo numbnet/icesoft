@@ -134,8 +134,6 @@ function toogleState(editorInstance) {
                 editorInstance.EditorDocument.designMode = "off";
             } 
             editorInstance.EditorWindow.parent.FCK.ToolbarSet.Disable();
-            buttonRefreshStateClone = editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState;
-            specialComboRefreshStateClone = editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState;
             editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState = function(){return false;};
             editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState = function(){return false;};            
             return true;     
@@ -146,8 +144,6 @@ function toogleState(editorInstance) {
                 editorInstance.EditorDocument.designMode = "on";
             } 
             editorInstance.EditorWindow.parent.FCK.ToolbarSet.Enable();
-            editorInstance.EditorWindow.parent.FCKToolbarButton.prototype.RefreshState = buttonRefreshStateClone;
-            editorInstance.EditorWindow.parent.FCKToolbarSpecialCombo.prototype.RefreshState = specialComboRefreshStateClone;
             editorInstance.EditorWindow.parent.FCK.ToolbarSet.RefreshModeState();                        
             return false;      
        }
