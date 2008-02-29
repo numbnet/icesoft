@@ -151,13 +151,13 @@ function FCKeditorSave(editorInstance) {
             }
             var element = $(editIns.Name);
             //Save the dirty editor only that had the focus
-            if(editIns.IsDirty()) {
-               element.value = editIns.GetXHTML(true);
-                    //set the value for editor
-				var valueHolder = $(editIns.Name + 'valueHolder');
-                valueHolder.value = editIns.GetXHTML(true);
+            if(editIns.IsDirty() && editIns.EditorWindow.parent.FCK.HasFocus) {
+                element.value = editIns.GetXHTML(true);
                 editIns.ResetIsDirty();
             }
+            //set the current contents of the editor
+            var valueHolder = $(editIns.Name + 'valueHolder');
+            valueHolder.value = editIns.GetXHTML(true);
         }
     } 
 

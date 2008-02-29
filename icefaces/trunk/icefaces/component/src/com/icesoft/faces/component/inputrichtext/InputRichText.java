@@ -53,6 +53,7 @@ public class InputRichText extends UIInput {
     private URI baseURI;
     private String toolbar;
     private String customConfigPath;
+    private String editorValue;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -68,6 +69,12 @@ public class InputRichText extends UIInput {
         if (map.containsKey(clientId)) {
             String newValue = map.get(clientId).toString().replace('\n', ' ');
             setSubmittedValue(newValue);
+        }
+        //this property is different from the "value" property.
+        //the value property represents the saved value, and this property 
+        //represents the current contents of the editor
+        if (map.containsKey(clientId+ "valueHolder")) {
+            setEditorValue(map.get(clientId+"valueHolder").toString().replace('\n', ' '));
         }
         super.decode(facesContext);
     }
@@ -244,5 +251,13 @@ public class InputRichText extends UIInput {
         }
         ValueBinding vb = getValueBinding("customConfigPath");
         return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), (String) vb.getValue(getFacesContext())) : null;
+    }
+
+    String getEditorValue() {
+        return editorValue;
+    }
+
+    void setEditorValue(String editorValue) {
+        this.editorValue = editorValue;
     }    
 }
