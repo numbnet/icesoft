@@ -56,6 +56,7 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSessionListener;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
@@ -93,11 +94,20 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     private boolean confirmDialog = false;
     private boolean uploadDialog = false;
     private boolean slideTypePres = true;
+    private boolean mobile = false;
     
 
     public Participant() {
         super();
         state = PersistentFacesState.getInstance();
+        /*HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+        String useragent = request.getHeader("user-agent");
+        String user = useragent.toLowerCase();
+        if ((user.indexOf("safari") != -1 && user.indexOf("mobile") != -1)  || user.indexOf("240x320") != -1) {
+            System.out.println("SNIFFED OUT A MOBILE DEVICE!!!");
+        	mobile = true;
+        }
+        */
     }
 
     /**
@@ -297,7 +307,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     public Slide getCurrentSlide() {
         if (presentation != null) {
             try {
-                return presentation.getPermissionSlide(isModerator());
+                return presentation.getPermissionSlide(isModerator(), mobile);
             }catch (Exception failedToGet) {
                 /* Any error would be mentioned through the get methods.
                    This exception is therefore caught and ignored so if
@@ -307,6 +317,25 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         }
 
         return null;
+    }
+    
+    /**
+     * Method to safely get the info slide.
+     *
+     * @return the slide, or null on error or if no presentation / slide exists
+     */
+    public Slide getInfoSlide() {
+        return presentation.getInfoSlide(mobile);
+
+    }
+    
+    /**
+     * Method to safely get the info slide.
+     *
+     * @return the slide, or null on error or if no presentation / slide exists
+     */
+    public Slide[] getPreloadSlides() {
+        return presentation.getPreloadSlides(mobile);
     }
 
     /**
@@ -802,4 +831,17 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     public String getSkype() {
         return skype;
     }
+
+	public boolean isMobile() {
+		return mobile;
+	}
+
+	public void setMobile(boolean mobile) {
+		this.mobile = mobile;
+	}
+	
+	public String getMobilesetting(){
+		mobile = true;
+		return null;
+	}
 }

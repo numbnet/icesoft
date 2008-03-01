@@ -1,6 +1,5 @@
 package com.icesoft.faces.presenter.util;
 
-import com.icesoft.faces.presenter.slide.Slide;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
@@ -23,14 +22,14 @@ public class ImageScaler
      *@param toScale image file (assumed to be valid)
      *@return true on successful scaling, false otherwise (or if not needed)
      */
-    public static boolean aspectScaleImage(File toScale) {
+    public static boolean aspectScaleImage(File toScale, int maxWidth, int maxHeight) {
         try{
             BufferedImage bsrc = ImageIO.read(toScale);
             
             // Determine if the image even needs to be scaled
-            if ((bsrc.getWidth() <= Slide.MAX_WIDTH) &&
-                (bsrc.getHeight() <= Slide.MAX_HEIGHT)) {
-                return false;
+            if ((bsrc.getWidth() <= maxWidth) &&
+                (bsrc.getHeight() <= maxHeight)) {
+            	return false;
             }
             
             // Set up the variables for calculating the aspect
@@ -41,16 +40,16 @@ public class ImageScaler
             
             // Determine a proper aspect ratio
             if (ourWidth > ourHeight) {
-                aspectWidth = (double)Slide.MAX_WIDTH/ourWidth;
+                aspectWidth = (double)maxWidth/ourWidth;
                 aspectHeight = aspectWidth;
             }
             else if (ourHeight > ourWidth) {
-                aspectHeight = (double)Slide.MAX_HEIGHT/ourHeight;
+                aspectHeight = (double)maxHeight/ourHeight;
                 aspectWidth = aspectHeight;
             }
             else {
-                aspectWidth = (double)Slide.MAX_WIDTH/ourWidth;
-                aspectHeight = (double)Slide.MAX_HEIGHT/ourHeight;
+                aspectWidth = (double)maxWidth/ourWidth;
+                aspectHeight = (double)maxHeight/ourHeight;
             }
             
             // Setup the destination image file to override the original
@@ -74,4 +73,5 @@ public class ImageScaler
         
         return false;
     }
+
 }

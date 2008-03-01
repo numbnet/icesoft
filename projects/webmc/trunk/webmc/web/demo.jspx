@@ -117,6 +117,7 @@
         </tr>
         <tr>
             <td colspan="2">&amp;nbsp;</td>
+            <td><ice:outputText value="#{participant.mobilesetting}" visible="false"/></td>
         </tr>
     </table>
 </td>

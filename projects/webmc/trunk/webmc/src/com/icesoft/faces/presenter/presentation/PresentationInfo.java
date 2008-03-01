@@ -232,8 +232,8 @@ public class PresentationInfo {
      *
      * @return information slide
      */
-    public Slide getInfoSlide() {
-        return Slide.getInfoSlide();
+    public Slide getInfoSlide(boolean mobile) {
+        return Slide.getInfoSlide(mobile);
     }
 
     /**

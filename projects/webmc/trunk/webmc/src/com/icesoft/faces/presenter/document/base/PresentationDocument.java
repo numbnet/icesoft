@@ -43,7 +43,7 @@ public interface PresentationDocument {
      * @param slideNumber to get
      * @return resulting slide
      */
-    public Slide getSlide(int slideNumber);
+    public Slide getSlide(int slideNumber, boolean mobile);
 
     /**
      * Convenience method to get the total number of slides in this document

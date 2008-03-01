@@ -76,7 +76,7 @@ public class UnknownPresentationDocument implements PresentationDocument {
      * @param slideNumber to get
      * @return Slide at slideNumber (or null if not found)
      */
-    public Slide getSlide(int slideNumber) {
+    public Slide getSlide(int slideNumber, boolean mobile) {
         return null;
     }
 

@@ -172,8 +172,8 @@ public class Presentation extends PresentationInfo {
      * @param moderator true if the user is a moderator
      * @return the slide, or null on error
      */
-    public Slide getPermissionSlide(boolean moderator) {
-        return getSlide(currentSlideNumber, moderator);
+    public Slide getPermissionSlide(boolean moderator, boolean mobile) {
+        return getSlide(currentSlideNumber, moderator, mobile);
     }
 
     /**
@@ -183,8 +183,8 @@ public class Presentation extends PresentationInfo {
      * @param slideNumber to get
      * @return the slide, or null if no document is loaded or an error occurred
      */
-    private Slide getSlide(int slideNumber) {
-        return getSlide(slideNumber, false);
+    private Slide getSlide(int slideNumber, boolean mobile) {
+        return getSlide(slideNumber, false, mobile);
     }
 
     /**
@@ -197,15 +197,15 @@ public class Presentation extends PresentationInfo {
      * @param isModerator true if the requester is a moderator
      * @return the slide, or null if no document is loaded or an error occurred
      */
-    private Slide getSlide(int slideNumber, boolean isModerator) {
+    private Slide getSlide(int slideNumber, boolean isModerator, boolean mobile) {
         if ((document == null) ||
             (currentSlideNumber == DEFAULT_SLIDE_NUMBER)) {
-            return Slide.getDefaultSlide(isModerator);
+            return Slide.getDefaultSlide(isModerator, mobile);
         }
 
-        Slide requestedSlide = document.getSlide(slideNumber);
+        Slide requestedSlide = document.getSlide(slideNumber, mobile);
         if (requestedSlide == null) {
-            return Slide.getDefaultSlide(isModerator);
+            return Slide.getDefaultSlide(isModerator, mobile);
         }
 
         return requestedSlide;
@@ -218,7 +218,7 @@ public class Presentation extends PresentationInfo {
      *
      * @return list of Slides to preload
      */
-    public Slide[] getPreloadSlides() {
+    public Slide[] getPreloadSlides(boolean mobile) {
         if (document == null) {
             return new Slide[0];
         }
@@ -234,7 +234,7 @@ public class Presentation extends PresentationInfo {
             int stoppingPoint = currentSlideNumber + PresentationManager
                     .SLIDE_PRELOAD_COUNT;
             for (int i = currentSlideNumber; i < stoppingPoint; i++) {
-                preloadSlides[i - currentSlideNumber] = getSlide(i);
+                preloadSlides[i - currentSlideNumber] = getSlide(i,mobile);
                 preloadedTable.put(new Integer(i), new Integer(i));
             }
             return preloadSlides;

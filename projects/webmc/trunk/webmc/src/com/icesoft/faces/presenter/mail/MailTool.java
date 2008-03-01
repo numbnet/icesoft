@@ -35,7 +35,6 @@ package com.icesoft.faces.presenter.mail;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.io.InputStream;
 import java.util.Properties;
 
 /**

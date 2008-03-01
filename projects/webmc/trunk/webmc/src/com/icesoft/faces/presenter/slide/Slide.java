@@ -39,26 +39,26 @@ package com.icesoft.faces.presenter.slide;
 public class Slide {
     public static final int MAX_WIDTH = 720;
     public static final int MAX_HEIGHT = 540;
+    public static final int MOBILE_MAX_WIDTH = 336;
+    public static final int MOBILE_MAX_HEIGHT = 224;
     private static final String INFO_LOCATION = "resources/images/infopage.png";
+    private static final String INFO_LOCATION_MOBILE = "resources/images/infopage.png";
     private static final Slide DEFAULT_SLIDE_VIEWER =
-            new Slide("resources/images/titlepage-view.png");
+            new Slide("resources/images/titlepage-view.png", false);
+    private static final Slide DEFAULT_SLIDE_VIEWER_MOBILE =
+        new Slide("resources/images/titlepage-view.png", true);
     private static final Slide DEFAULT_SLIDE_MODERATOR =
-            new Slide("resources/images/titlepage-mod.png");
-    private static final Slide INFO_SLIDE = new Slide(INFO_LOCATION);
+            new Slide("resources/images/titlepage-mod.png", false);
+    private static final Slide DEFAULT_SLIDE_MODERATOR_MOBILE =
+        new Slide("resources/images/titlepage-mod.png", true);
+    private static final Slide INFO_SLIDE = new Slide(INFO_LOCATION, false);
+    private static final Slide INFO_SLIDE_MOBILE = new Slide(INFO_LOCATION_MOBILE, true);
 
     private String location;
-
-    public Slide(String location) {
+    private boolean mobile;
+    
+    public Slide(String location, boolean mobile) {
         this.location = location;
-    }
-
-    /**
-     * Method to get the default viewer slide
-     *
-     * @return the default viewer slide
-     */
-    public static Slide getDefaultSlide() {
-        return DEFAULT_SLIDE_VIEWER;
     }
 
     /**
@@ -67,11 +67,16 @@ public class Slide {
      * @param isModerator to get a moderator slide
      * @return the default slide
      */
-    public static Slide getDefaultSlide(boolean isModerator) {
+    public static Slide getDefaultSlide(boolean isModerator, boolean mobile) {
         if (isModerator) {
+        	if(mobile){
+        		return DEFAULT_SLIDE_MODERATOR_MOBILE;
+        	}
             return DEFAULT_SLIDE_MODERATOR;
         }
-
+        if(mobile){
+        	return DEFAULT_SLIDE_VIEWER_MOBILE;
+        }
         return DEFAULT_SLIDE_VIEWER;
     }
 
@@ -80,7 +85,10 @@ public class Slide {
      *
      * @return the information slide
      */
-    public static Slide getInfoSlide() {
+    public static Slide getInfoSlide(boolean mobile) {
+        if(mobile){
+        	return INFO_SLIDE_MOBILE;
+        }
         return INFO_SLIDE;
     }
 
@@ -101,12 +109,9 @@ public class Slide {
     public void setLocation(String location) {
         this.location = location;
     }
-    
-    public int getMaxHeight() {
-        return MAX_HEIGHT;
-    }
-    
-    public int getMaxWidth() {
-        return MAX_WIDTH;
-    }
+
+	public boolean isMobile() {
+		return mobile;
+	}
+
 }

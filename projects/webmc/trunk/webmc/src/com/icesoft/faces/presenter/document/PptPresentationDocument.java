@@ -39,9 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -101,7 +98,7 @@ public class PptPresentationDocument implements PresentationDocument {
      * @param slideNumber to get
      * @return Slide at slideNumber (or null if not found)
      */
-    public Slide getSlide(int slideNumber) {
+    public Slide getSlide(int slideNumber, boolean mobile) {
         // Don't bother if the slide list is already null
         if (slides == null) {
             return null;
@@ -229,7 +226,7 @@ public class PptPresentationDocument implements PresentationDocument {
                 slides = new Slide[slideFiles.length];
                 for (int i = 0; i < slideFiles.length; i++) {
                     slides[i] = new Slide( hashString + 
-                            File.separator + slideFiles[i].getName() );
+                            File.separator + slideFiles[i].getName(),false );
                 }
 
                 externalConverterFilePages = slides.length;

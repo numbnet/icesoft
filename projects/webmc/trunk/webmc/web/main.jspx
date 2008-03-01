@@ -253,7 +253,7 @@
        class="height100">
 <tr>
 <td class="mainPRES" valign="top">
-    <ice:dataTable value="#{participant.presentation.preloadSlides}"
+    <ice:dataTable value="#{participant.preloadSlides}"
                    var="loopSlide">
         <h:column>
             <ice:graphicImage value="#{loopSlide.location}"
@@ -298,7 +298,7 @@
                                valign="middle" align="center">
                     <ice:graphicImage value="#{participant.currentSlide.location}"
                                       rendered="#{participant.slideTypePres}"/>
-                    <ice:graphicImage value="#{participant.presentation.infoSlide.location}"
+                    <ice:graphicImage value="#{participant.infoSlide.location}"
                                       rendered="#{not participant.slideTypePres}"/>
                 </ice:panelGrid>
             </td>

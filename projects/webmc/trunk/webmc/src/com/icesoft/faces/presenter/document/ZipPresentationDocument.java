@@ -72,6 +72,7 @@ public class ZipPresentationDocument implements PresentationDocument {
     private Presentation presentation;
     private File externalConverterFile;
     private Slide[] slides;
+    private Slide[] slidesMobile;
 
     public ZipPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
@@ -110,7 +111,7 @@ public class ZipPresentationDocument implements PresentationDocument {
      * @param slideNumber to get
      * @return Slide at slideNumber (or null if not found)
      */
-    public Slide getSlide(int slideNumber) {
+    public Slide getSlide(int slideNumber, boolean mobile) {
         // Don't bother if the slide list is already null
         if (slides == null) {
             return null;
@@ -133,7 +134,10 @@ public class ZipPresentationDocument implements PresentationDocument {
             log.trace("Returning slide number " + slideNumber + ": " +
                       slides[slideNumber - 1].getLocation());
         }
-
+        
+        if(mobile){
+        	return slidesMobile[slideNumber - 1];
+        }
         return slides[slideNumber - 1];
     }
 
@@ -209,6 +213,7 @@ public class ZipPresentationDocument implements PresentationDocument {
                         new ZipFile(externalConverterFile.getAbsolutePath());
 
                 String baseDirectory;
+                String mobileDirectory;
                 long ourTimestamp = System.currentTimeMillis();
 
                 // Setup the base directory, which can be based on two cases
@@ -226,46 +231,19 @@ public class ZipPresentationDocument implements PresentationDocument {
                     baseDirectory = externalConverterFile.getParentFile() +
                                     File.separator + EXTRACTED_FOLDER + File.separator +
                                     presentation.getPrefix() + ourTimestamp + File.separator;
+                    
                 }
+                mobileDirectory = baseDirectory + "mobile" + File.separator;
                 
                 // Ensure the extraction directories exist
-                File directoryStructure = new File(baseDirectory);
+                File directoryStructure = new File(mobileDirectory);
                 if (!directoryStructure.exists()) {
                     directoryStructure.mkdirs();
                 }
 
                 // Loop through all entries in the zip and extract as necessary
-                ArrayList generatedFiles = new ArrayList(0);
-                ZipEntry currentEntry;
-                int loopIndex = 0;
-                for (Enumeration entries = zf.entries();
-                     entries.hasMoreElements();) {
-                    currentEntry = (ZipEntry) entries.nextElement();
-                    if (!currentEntry.isDirectory()) {
-                        loopIndex++;
-                        File toAdd = new File(
-                                baseDirectory, replaceUserFilename(currentEntry.getName(), loopIndex));
-                        if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
-                            // Make sure to only deal with image files
-                            if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
-                                (toAdd.getName().toLowerCase().indexOf(".png") != -1) ||
-                                (toAdd.getName().toLowerCase().indexOf(".gif") != -1)) {
-                                copyInputStream(zf.getInputStream(currentEntry),
-                                                new BufferedOutputStream(
-                                                        new FileOutputStream(
-                                                                toAdd)));
-                                toAdd.deleteOnExit();
-                                
-                                // Scale the image as needed
-                                ImageScaler.aspectScaleImage(toAdd);
-                                
-                                generatedFiles.add(toAdd);
-                            }
-                        }
-                    }
-                }
-
-                Collections.sort(generatedFiles, new SlideComparator());
+                ArrayList generatedFiles = fileCreator(zf, baseDirectory, false);
+              	ArrayList generatedFilesMobile = fileCreator(zf, mobileDirectory, true);
 
                 // Update the user if no slides were generated (which is unlikely)
                 if (generatedFiles.size() < 1) {
@@ -282,16 +260,11 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // This list can then be used by the presentation
                 baseDirectory = EXTRACTED_FOLDER + URL_SLASH +
                                 presentation.getPrefix() + ourTimestamp + URL_SLASH;
+                mobileDirectory = baseDirectory + "mobile" + URL_SLASH;
                 externalConverterFilePages = generatedFiles.size();
-                ArrayList slideArray = new ArrayList(0);
-                File currentFile;
-                for (int i = 0; i < generatedFiles.size(); i++) {
-                    currentFile = (File) generatedFiles.get(i);
-                    slideArray.add(new Slide(
-                            baseDirectory + currentFile.getName()));
-                }
-                slides = (Slide[]) slideArray
-                        .toArray(new Slide[slideArray.size()]);
+
+                slides = slideCreator(generatedFiles,baseDirectory,false);
+                slidesMobile = slideCreator(generatedFilesMobile,mobileDirectory,true);
 
                 // We can show the navigation controls and set the first slide
                 loaded = true;
@@ -308,7 +281,62 @@ public class ZipPresentationDocument implements PresentationDocument {
                 }
             }
         }
+
+        private Slide[] slideCreator(ArrayList generatedFiles, String baseDirectory, boolean mobile){
+            ArrayList slideArray = new ArrayList(0);
+            File currentFile;
+            for (int i = 0; i < generatedFiles.size(); i++) {
+                currentFile = (File) generatedFiles.get(i);
+                slideArray.add(new Slide(
+                        baseDirectory + currentFile.getName(),mobile));
+            }
+            return (Slide[]) slideArray
+                    .toArray(new Slide[slideArray.size()]);    	
+        }
+        
+        public ArrayList fileCreator(ZipFile zf, String baseDirectory, boolean mobile)throws IOException{
+            ArrayList files = new ArrayList(0);
+            ZipEntry currentEntry;
+            int loopIndex = 0;
+            for (Enumeration entries = zf.entries();
+                 entries.hasMoreElements();) {
+                currentEntry = (ZipEntry) entries.nextElement();
+                if (!currentEntry.isDirectory()) {
+                    loopIndex++;
+                    File toAdd = new File(
+                            baseDirectory, replaceUserFilename(currentEntry.getName(), loopIndex));
+                    if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
+                        // Make sure to only deal with image files
+                        if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
+                            (toAdd.getName().toLowerCase().indexOf(".png") != -1) ||
+                            (toAdd.getName().toLowerCase().indexOf(".gif") != -1)) {
+	                        	copyInputStream(zf.getInputStream(currentEntry),
+	                                            new BufferedOutputStream(
+	                                                    new FileOutputStream(
+	                                                            toAdd)));
+	                        	
+	                        toAdd.deleteOnExit();
+                            
+                            // Scale the image as needed
+                            if(mobile){
+                            	ImageScaler.aspectScaleImage(toAdd, Slide.MOBILE_MAX_WIDTH, Slide.MOBILE_MAX_HEIGHT);	
+                            }else{
+                                ImageScaler.aspectScaleImage(toAdd, Slide.MAX_WIDTH, Slide.MAX_HEIGHT);
+                            }
+                            
+                            files.add(toAdd);
+                        }
+                    }
+                }
+            }
+
+            Collections.sort(files, new SlideComparator());
+            
+            return files;
+        }
+    
     }
+
     
     private String replaceUserFilename(String name, int slideNumber) {
         if (name.indexOf(".") != -1) {
