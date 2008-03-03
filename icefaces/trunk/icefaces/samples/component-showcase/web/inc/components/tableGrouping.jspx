@@ -48,7 +48,7 @@ is used to specify the columns that can be sorted by clicking the column header.
 -->
 <ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
 
-    <ice:panelGroup styleClass="formBorderHighlight">
+    <ice:panelGroup styleClass="formBorderHighlight" style="width:650px;overflow:auto;">
 
         <h3 style="margin-bottom:15px;"><ice:outputText value="#{msgs['component.tablegroup.desc']}"/></h3>
         <ice:panelGrid columns="3">
