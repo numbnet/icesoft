@@ -290,7 +290,7 @@ public class PptPresentationDocument implements PresentationDocument {
 	    	Slide[] slidesCreated = new Slide[files.length];
 	        for (int i = 0; i < files.length; i++) {
 	            slidesCreated[i] = new Slide( hashString + 
-	                    File.separator + files[i].getName(),false );
+	                    File.separator + files[i].getName(),mobile );
 	        }
 	        
 	        return slidesCreated;
