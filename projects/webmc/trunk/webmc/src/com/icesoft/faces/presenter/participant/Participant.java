@@ -834,7 +834,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 	}
 	
 	public String getMobilesetting(){
-        if(!mobileSniffed){
+/*        if(!mobileSniffed){
 			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
 	        String useragent = request.getHeader("user-agent");
 	        String user = useragent.toLowerCase();
@@ -843,6 +843,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 	        	mobileSniffed = true;
 	        }
         }
+*/
+		mobile=true;
 		return null;
 	}
 }

@@ -223,6 +223,7 @@ public class PptPresentationDocument implements PresentationDocument {
                 File[] generatedFilesMobile = new File[generatedFiles.length];
                 
                 File destMobile = new File(dest, "mobile");
+                destMobile.mkdir();
                 
                 for(int i=0; i<generatedFiles.length; i++){
                     File toAdd = new File(destMobile, 
