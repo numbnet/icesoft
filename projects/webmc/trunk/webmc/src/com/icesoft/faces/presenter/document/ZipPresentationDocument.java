@@ -239,6 +239,7 @@ public class ZipPresentationDocument implements PresentationDocument {
                 File directoryStructure = new File(mobileDirectory);
                 if (!directoryStructure.exists()) {
                     directoryStructure.mkdirs();
+                    directoryStructure.deleteOnExit();
                 }
 
                 // Loop through all entries in the zip and extract as necessary
@@ -313,10 +314,7 @@ public class ZipPresentationDocument implements PresentationDocument {
 	                        	copyInputStream(zf.getInputStream(currentEntry),
 	                                            new BufferedOutputStream(
 	                                                    new FileOutputStream(
-	                                                            toAdd)));
-	                        	
-	                        toAdd.deleteOnExit();
-                            
+	                                                            toAdd)));                            
                             // Scale the image as needed
                             if(mobile){
                             	ImageScaler.aspectScaleImage(toAdd, Slide.MOBILE_MAX_WIDTH, Slide.MOBILE_MAX_HEIGHT);	

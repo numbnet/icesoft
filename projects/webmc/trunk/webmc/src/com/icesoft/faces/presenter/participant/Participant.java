@@ -95,19 +95,12 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     private boolean uploadDialog = false;
     private boolean slideTypePres = true;
     private boolean mobile = false;
+    private boolean mobileSniffed = false;
     
 
     public Participant() {
         super();
         state = PersistentFacesState.getInstance();
-        /*HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
-        String useragent = request.getHeader("user-agent");
-        String user = useragent.toLowerCase();
-        if ((user.indexOf("safari") != -1 && user.indexOf("mobile") != -1)  || user.indexOf("240x320") != -1) {
-            System.out.println("SNIFFED OUT A MOBILE DEVICE!!!");
-        	mobile = true;
-        }
-        */
     }
 
     /**
@@ -841,7 +834,15 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 	}
 	
 	public String getMobilesetting(){
-		mobile = true;
+        if(!mobileSniffed){
+			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+	        String useragent = request.getHeader("user-agent");
+	        String user = useragent.toLowerCase();
+	        if ((user.indexOf("safari") != -1 && user.indexOf("mobile") != -1)  || user.indexOf("240x320") != -1) {
+	        	mobile = true;
+	        	mobileSniffed = true;
+	        }
+        }
 		return null;
 	}
 }

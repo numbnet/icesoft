@@ -35,10 +35,15 @@ package com.icesoft.faces.presenter.document;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
+import com.icesoft.faces.presenter.util.ImageScaler;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -60,6 +65,7 @@ public class PptPresentationDocument implements PresentationDocument {
     private Presentation presentation;
     private File externalConverterFile;
     private Slide[] slides;
+    private Slide[] slidesMobile;
 
     public PptPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
@@ -122,6 +128,9 @@ public class PptPresentationDocument implements PresentationDocument {
                       slides[slideNumber - 1].getLocation());
         }
 
+        if(mobile){
+        	return slidesMobile[slideNumber - 1];
+        }        
         return slides[slideNumber - 1];
     }
 
@@ -173,6 +182,18 @@ public class PptPresentationDocument implements PresentationDocument {
      * presentation
      */
     private class PptLoader implements Runnable {
+        private void copyFile(FileInputStream in, FileOutputStream out)
+                throws IOException {
+		    byte[] buffer = new byte[1024];
+            int len;
+		
+		    while ((len = in.read(buffer)) >= 0) {
+		        out.write(buffer, 0, len);
+		    }
+		
+		    in.close();
+		    out.close();
+		}
 
         public void run() {
             try {
@@ -188,47 +209,37 @@ public class PptPresentationDocument implements PresentationDocument {
                         (presentation.getPrefix() + ourTimestamp).hashCode() )
                         .substring(1,8);
 
-                String baseDirectory = File.separator + "tmp" + File.separator + hashString;
-
-                String baseDirectoryMac = baseDirectory.replaceFirst(File.separator,"");
-                baseDirectoryMac = baseDirectoryMac.replaceAll(File.separator,":");
-                
+                String baseDirectory = File.separator + "tmp" + File.separator + hashString;                
                 File directoryStructure = new File(baseDirectory);
 
-                String[] command = {
-                    "osascript",
-                    "-e",
-                    "tell application \"" + MS_PPT_PATH + "\"",
-                    "-e",
-                    "open \"" + fullPath + "\" ",
-                    "-e",
-                    "do Visual Basic \"ActivePresentation.Export  Path:=\\\"" + 
-                            baseDirectoryMac + 
-                            "\\\", FilterName:=\\\"jpg\\\"\"",
-                    "-e",
-                    "close presentation 1 saving no",
-                    "-e",
-                   "end tell"
-                };
-                
-                Runtime rt = Runtime.getRuntime();
-                Process p = null;
-
-                p = rt.exec (command);
-                p.waitFor();
+                fileCreator(fullPath,baseDirectory);
 
                 File dest = new File(externalConverterFile.getParentFile() + 
                         File.separator + hashString);
+                dest.deleteOnExit();
                 directoryStructure.renameTo(dest);
+                
+                File[] generatedFiles = dest.listFiles();
+                File[] generatedFilesMobile = new File[generatedFiles.length];
+                
+                File destMobile = new File(dest, "mobile");
+                
+                for(int i=0; i<generatedFiles.length; i++){
+                    File toAdd = new File(destMobile, 
+                    		replaceUserFilename(generatedFiles[i].getName(), i+1));
+                    copyFile(new FileInputStream(generatedFiles[i]),
+	                                new FileOutputStream(toAdd));
 
-                File[] slideFiles = dest.listFiles();
-                Arrays.sort(slideFiles, new SlideComparator());
-                slides = new Slide[slideFiles.length];
-                for (int i = 0; i < slideFiles.length; i++) {
-                    slides[i] = new Slide( hashString + 
-                            File.separator + slideFiles[i].getName(),false );
+                    ImageScaler.aspectScaleImage(toAdd, Slide.MOBILE_MAX_WIDTH, Slide.MOBILE_MAX_HEIGHT);
+                            
+                    generatedFilesMobile[i]=toAdd;
                 }
-
+                
+                Arrays.sort(generatedFiles, new SlideComparator());                
+                slides = slideCreator(generatedFiles, hashString, false);
+                Arrays.sort(generatedFilesMobile, new SlideComparator()); 
+                slidesMobile = slideCreator(generatedFilesMobile, hashString, true);                
+                
                 externalConverterFilePages = slides.length;
                 // We can show the navigation controls and set the first slide
                 loaded = true;
@@ -245,7 +256,53 @@ public class PptPresentationDocument implements PresentationDocument {
                 }
             }
         }
+        
+	    private void fileCreator(String fullPath, String baseDirectory) throws Exception{
+            String baseDirectoryMac = baseDirectory.replaceFirst(File.separator,"");
+            baseDirectoryMac = baseDirectoryMac.replaceAll(File.separator,":");
+	    	
+	        String[] command = {
+	                "osascript",
+	                "-e",
+	                "tell application \"" + MS_PPT_PATH + "\"",
+	                "-e",
+	                "open \"" + fullPath + "\" ",
+	                "-e",
+	                "do Visual Basic \"ActivePresentation.Export  Path:=\\\"" + 
+	                        baseDirectoryMac + 
+	                        "\\\", FilterName:=\\\"jpg\\\"\"",
+	                "-e",
+	                "close presentation 1 saving no",
+	                "-e",
+	               "end tell"
+	            };
+	            
+	            Runtime rt = Runtime.getRuntime();
+	            Process p = null;
+	
+	            p = rt.exec (command);
+	            p.waitFor();    	
+	    	
+	    }
+	
+	    private Slide[] slideCreator(File[] files, String hashString, boolean mobile){
+	    	Slide[] slidesCreated = new Slide[files.length];
+	        for (int i = 0; i < files.length; i++) {
+	            slidesCreated[i] = new Slide( hashString + 
+	                    File.separator + files[i].getName(),false );
+	        }
+	        
+	        return slidesCreated;
+	    }
 
+    }
+    
+    private String replaceUserFilename(String name, int slideNumber) {
+        if (name.indexOf(".") != -1) {
+            return "Slide" + slideNumber + name.substring(name.indexOf("."));
+        }
+        
+        return "Slide" + slideNumber;
     }
 
     /**
