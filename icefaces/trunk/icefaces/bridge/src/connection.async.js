@@ -133,6 +133,8 @@
             var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 3000;
             var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
             var initializeConnection = function() {
+                //avoid error messages for 'pong' messages that arrive after bridge is reloaded
+                commandDispatcher.register('pong', Function.NOOP);
                 //stop the previous heartbeat instance
                 this.heartbeat.stop();
                 this.heartbeat = new Heartbeat(heartbeatInterval, heartbeatTimeout, this.logger);
