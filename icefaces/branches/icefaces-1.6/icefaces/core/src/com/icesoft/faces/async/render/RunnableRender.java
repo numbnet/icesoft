@@ -107,7 +107,6 @@ class RunnableRender implements Runnable {
         // in no more updates
         state.setCurrentInstance();
 
-
         //JIRA case ICE-1365
         //Server-side render calls can potentially be called from threads
         //that are outside the context of the web app which means that the
@@ -139,8 +138,9 @@ class RunnableRender implements Runnable {
             if (SeamUtilities.isSeamEnvironment() ) {
                 testSession(state);
             }
-            state.executeAndRender();
-            
+            state.execute();
+            state.render();
+             
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
 
@@ -159,9 +159,7 @@ class RunnableRender implements Runnable {
                     log.error("unknown render exception", ex);
                 }
             }
-        } finally {
-            state.release();
-        } 
+        }
     }
 
     /**
