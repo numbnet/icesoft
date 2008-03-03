@@ -58,7 +58,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final String IE_EXTENTION = "_ie";
     private static final String IE_7_EXTENTION = "_ie7";
     private static final String SAFARI_EXTENTION = "_safari";
-    private static final String IPHONE_EXTENTION = "_iphone";
+    private static final String SAFARI_MOBILE_EXTENTION = "_safarimobile";
     private static final String CSS_EXTENTION = ".css";
     private static final String DT_EXTENTION = "_dt";
     private static final String OPERA_EXTENTION = "_opera";
@@ -69,7 +69,7 @@ public class OutputStyleRenderer extends DomBasicRenderer {
     private static final int SAFARI = 2;
     private static final int DT = 3;
     private static final int IE_7 = 4;
-    private static final int IPHONE = 5;
+    private static final int SAFARI_MOBILE = 5;
     private static final int OPERA = 6;
     private static final int OPERA_MOBILE = 7;
 
@@ -102,8 +102,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                             if(browserType == IE_7){
                                 extention = IE_7_EXTENTION;
                             }
-                            if(browserType == IPHONE){
-                                extention = IPHONE_EXTENTION;
+                            if(browserType == SAFARI_MOBILE){
+                                extention = SAFARI_MOBILE_EXTENTION;
                             }
                             if(browserType == OPERA){
                                 extention = OPERA_EXTENTION;
@@ -199,8 +199,8 @@ public class OutputStyleRenderer extends DomBasicRenderer {
                 }
             } else if (user.indexOf("safari") != -1) {
                 result = SAFARI;
-                if(user.indexOf("iphone") != -1) {
-                    result = IPHONE;
+                if(user.indexOf("mobile") != -1) {
+                    result = SAFARI_MOBILE;
                 }
             } else if (user.indexOf("opera") != -1) {
                 result = OPERA;
