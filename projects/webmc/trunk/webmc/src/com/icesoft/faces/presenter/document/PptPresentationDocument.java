@@ -287,9 +287,15 @@ public class PptPresentationDocument implements PresentationDocument {
 	    }
 	
 	    private Slide[] slideCreator(File[] files, String hashString, boolean mobile){
+	    	String base;
+	    	if(mobile){
+	    		base = hashString + File.separator + "mobile";
+	    	}else{
+	    		base = hashString;
+	    	}
 	    	Slide[] slidesCreated = new Slide[files.length];
 	        for (int i = 0; i < files.length; i++) {
-	            slidesCreated[i] = new Slide( hashString + 
+	            slidesCreated[i] = new Slide( base + 
 	                    File.separator + files[i].getName(),mobile );
 	        }
 	        
