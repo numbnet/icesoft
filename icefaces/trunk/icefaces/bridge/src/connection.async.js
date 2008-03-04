@@ -54,7 +54,7 @@
             this.receiveURI = configuration.context.async + 'block/receive-updated-views';
             this.disposeViewsURI = configuration.context.current + 'block/dispose-views';
 
-            var timeout = configuration.timeout ? configuration.timeout : 5000;
+            var timeout = configuration.timeout ? configuration.timeout : 30000;
             this.onSend(function() {
                 this.timeoutBomb.cancel();
                 this.timeoutBomb = this.connectionDownListeners.broadcaster().delayExecutionFor(timeout);
@@ -129,8 +129,8 @@
             }.bind(this);
 
             //heartbeat setup
-            var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 20000;
-            var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 3000;
+            var heartbeatInterval = configuration.heartbeat.interval ? configuration.heartbeat.interval : 50000;
+            var heartbeatTimeout = configuration.heartbeat.timeout ? configuration.heartbeat.timeout : 30000;
             var heartbeatRetries = configuration.heartbeat.retries ? configuration.heartbeat.retries : 3;
             var initializeConnection = function() {
                 //avoid error messages for 'pong' messages that arrive after bridge is reloaded

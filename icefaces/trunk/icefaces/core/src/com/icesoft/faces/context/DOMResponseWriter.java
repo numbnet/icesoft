@@ -310,8 +310,8 @@ public class DOMResponseWriter extends ResponseWriter {
                         "async: '" + asyncServerContextPath + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 30000) + "," +
                         "heartbeat: {" +
-                        "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 20000) + "," +
-                        "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 3000) + "," +
+                        "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
+                        "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
                         "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
                         "}" +
                         "}" +

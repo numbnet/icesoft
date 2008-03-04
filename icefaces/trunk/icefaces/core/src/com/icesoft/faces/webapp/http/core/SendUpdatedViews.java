@@ -43,7 +43,7 @@ public class SendUpdatedViews implements Server {
     private long responseTimeoutTime;
 
     public SendUpdatedViews(String sessionID, final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, MonitorRunner monitorRunner, Configuration configuration) {
-        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 30000);
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
         this.monitorRunner = monitorRunner;
         this.sessionID = sessionID;
         this.allUpdatedViews = allUpdatedViews;
