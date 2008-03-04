@@ -88,7 +88,7 @@ public class TreeNavigation {
                 "submenuContentTitle.componentSuiteMenuGroup");
         rootObject.setMenuContentInclusionFile("./content/splashComponents.jspx");
         rootObject.setTemplateName("splashComponentsPanel");
-        rootObject.setNavigationSelection(navigationBean);
+        rootObject.setNavigationSelection(null);
         rootObject.setPageContent(true);
         rootTreeNode = new DefaultMutableTreeNode(rootObject);
         rootObject.setWrapper(rootTreeNode);

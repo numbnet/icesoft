@@ -262,18 +262,16 @@ public class PanelCollapsible extends UICommand {
                 String messageStr = e.getMessage();
                 FacesMessage message = null;
                 if (null == messageStr) {
-                    messageStr = "Conversion error";
+                    messageStr = "Evaluation error";
                 }
-                else {
-                    message = new FacesMessage(messageStr);
-                }
+                message = new FacesMessage(messageStr);
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 context.addMessage(getClientId(context), message);
             } catch (Exception e) {
                 String messageStr = e.getMessage();
                 FacesMessage message = null;
                 if (null == messageStr) {
-                    messageStr = "Conversion error";
+                    messageStr = "Evaluation error";
                 }
                message = new FacesMessage(messageStr);
                message.setSeverity(FacesMessage.SEVERITY_ERROR);

@@ -888,20 +888,24 @@ public class SelectInputDate
     }
 
     void addHighlightWeekClass(String highlightWeekClass) {
-        if (this.highlightWeekClass.indexOf(highlightWeekClass) == -1) {
-            if (this.highlightWeekClass == null || this.highlightWeekClass.length() == 0)
-                this.highlightWeekClass = highlightWeekClass;
-            else
+        if (this.highlightWeekClass == null || this.highlightWeekClass.length() == 0) {
+            this.highlightWeekClass = highlightWeekClass;
+        }
+        else {
+            if (this.highlightWeekClass.indexOf(highlightWeekClass) == -1) {
                 this.highlightWeekClass = this.highlightWeekClass + " " + highlightWeekClass;
+            }
         }
     }
 
     void addHighlightDayClass(String highlightDayClass) {
-        if (this.highlightDayClass.indexOf(highlightDayClass) == -1) {
-            if (this.highlightDayClass == null || this.highlightDayClass.length() == 0)
-                this.highlightDayClass = highlightDayClass;
-            else
+        if (this.highlightDayClass == null || this.highlightDayClass.length() == 0) {
+            this.highlightDayClass = highlightDayClass;
+        }
+        else {
+            if (this.highlightDayClass.indexOf(highlightDayClass) == -1) {
                 this.highlightDayClass = this.highlightDayClass + " " + highlightDayClass;
+            }
         }
     }
 

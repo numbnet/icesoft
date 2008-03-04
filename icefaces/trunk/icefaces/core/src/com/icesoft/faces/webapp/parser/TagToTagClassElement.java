@@ -48,7 +48,7 @@ public class TagToTagClassElement {
     /**
      * Constructor.
      */
-    public void TagToTagClassElement() {
+    public TagToTagClassElement() {
         tagName = null;
         tagClass = null;
     }

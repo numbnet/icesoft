@@ -253,9 +253,7 @@ public class TLDGenerator extends AbstractGenerator {
         }
         RendererBean rb = renderer(cb);
         
-        if(cb == null){
-            logger.log(Level.SEVERE, "component bean is null");
-        }else{
+        if (logger.isLoggable(Level.FINEST)){
             logger.log(Level.FINEST, "component bean class ="+cb.getClass().getName()+
                     "RendererBean comp family="+cb.getComponentFamily()+
                     "componentBean rendertype"+cb.getRendererType());
@@ -303,9 +301,7 @@ public class TLDGenerator extends AbstractGenerator {
             logger.log(Level.FINEST,  "component = "+ cbs[i].getRendererType());
             if (generated(cbs[i].getComponentClass())) {
                 
-                if (cbs[i] == null) {
-                    logger.log(Level.SEVERE, "component is null");
-                } else {
+                if (logger.isLoggable(Level.FINEST)) {
                     logger.log(Level.FINEST, "component class="+cbs[i].getComponentClass());
                     component(cbs[i]);
                 }

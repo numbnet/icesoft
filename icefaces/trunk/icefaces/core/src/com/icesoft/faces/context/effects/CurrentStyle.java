@@ -299,9 +299,6 @@ public class CurrentStyle {
                 if (log.isErrorEnabled()) {
                     log.error("Exception setting visible. Value Binding [" +
                               vb.getExpressionString() + "]", e);
-                    if (facesContext == null) {
-                        log.error("Faces Context is null");
-                    }
                 }
             }
         }
