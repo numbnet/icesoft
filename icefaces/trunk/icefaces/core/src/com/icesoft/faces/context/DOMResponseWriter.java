@@ -352,6 +352,11 @@ public class DOMResponseWriter extends ResponseWriter {
         noscriptMeta.setAttribute("http-equiv", "refresh");
         String jsBlockedURL = context.getApplication().getViewHandler().getResourceURL(context, "/xmlhttp/javascript-blocked");
         noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
+        //avoid reloading the head when only document's title is changed
+        Element title = (Element) head.getElementsByTagName("title").item(0);
+        if (title != null && !title.hasAttribute("id")) {
+            title.setAttribute("id", "document:title");
+        }
 
         if (!context.isContentIncluded()) {
             appendContentReferences(head);
