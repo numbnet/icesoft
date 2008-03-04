@@ -260,17 +260,18 @@
                 <td>
                     <ice:inputSecret id="viewPassword"
                                      value="#{participant.loginBean.presentationPassword}"
-                                     required="true"
                                      tabindex="5"
                                      redisplay="true" partialSubmit="true"
                                      maxlength="20"
                                      styleClass="loginInput"
-                                     action="#{participant.login}">
-                        <f:validator validatorId="PasswordValidator"/>
-                        <f:param value="#{participant.loginBean.presentationName}"/>
+                                     actionListener="#{participant.loginBean.validateDemoPassword}">
+                        <f:param name="loginSource" 
+                                 value="viewDemologin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
-                    <ice:message for="viewPassword" errorClass="inputError"/>
+                    <ice:outputText value="Invalid password" 
+                                    rendered="#{participant.loginBean.invalidDemoPassword}"
+                                    styleClass="inputError"/>
                   </ice:panelGroup>
                 </td>
             </tr>
@@ -283,11 +284,15 @@
                                            tabindex="6"
                                            style="text-align: right;"
                                            alt="Reset"/>
-                        <ice:commandButton image="resources/images/butt_join_present.gif"
-                                           action="#{participant.login}"
+                        <ice:commandLink   action="#{participant.login}"
                                            tabindex="7"
                                            style="text-align: right;"
-                                           alt="Join Presentation"/>
+                                           alt="Join Presentation">
+                            <ice:graphicImage value="resources/images/butt_join_present.gif" 
+                                              style="border: 0;"/>
+                            <f:param name="loginSource" 
+                                     value="viewDemologin"/>
+                        </ice:commandLink>
                 </td>
             </tr>
         </table>
