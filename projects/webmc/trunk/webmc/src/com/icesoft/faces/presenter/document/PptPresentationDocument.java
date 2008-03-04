@@ -227,7 +227,7 @@ public class PptPresentationDocument implements PresentationDocument {
                 
                 for(int i=0; i<generatedFiles.length; i++){
                     File toAdd = new File(destMobile, 
-                    		replaceUserFilename(generatedFiles[i].getName(), i+1));
+                    		generatedFiles[i].getName());
                     copyFile(new FileInputStream(generatedFiles[i]),
 	                                new FileOutputStream(toAdd));
 
