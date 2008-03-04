@@ -2176,6 +2176,26 @@ Disabled classes for the calendar controls
     cursor: default;
 }
 
+.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc {
+    width: 6px;
+    height: 14px;
+    background-color: transparent;
+    background-repeat: no-repeat;   
+}
+
+.iceCmdSrtHdrAsc {
+    background-image: url( "./css-images/arrowAsc.jpg" );
+}
+
+.iceCmdSrtHdrDesc {
+    background-image: url( "./css-images/arrowDesc.jpg" );    
+}
+
+.iceCmdSrtHdr td {
+    white-space:nowrap;
+    overflow:hidden;    
+}
+
 /* IE specific CSS to enlarge clickable area of SortHeader links */
 * html .iceCmdSrtHdr {
     height: 1%;

@@ -191,6 +191,10 @@ public class CommandSortHeader
 
     /**
      * <p>Set the value of the <code>arrow</code> property.</p>
+     * 
+     * @deprecated It no longer has any effect in 1.7. To alter 
+     * the appearance of the arrow images, the following style classes need 
+     * to be customized: iceCmdSrtHdrAsc, iceCmdSrtHdrDesc
      */
     public void setArrow(boolean arrow) {
         _arrow = Boolean.valueOf(arrow);
@@ -198,6 +202,10 @@ public class CommandSortHeader
 
     /**
      * <p>Return the value of the <code>arrow</code> property.</p>
+     * 
+     * @deprecated It no longer has any effect in 1.7. To alter 
+     * the appearance of the arrow images, the following style classes need 
+     * to be customized: iceCmdSrtHdrAsc, iceCmdSrtHdrDesc
      */
     public boolean isArrow() {
         if (_arrow != null) {

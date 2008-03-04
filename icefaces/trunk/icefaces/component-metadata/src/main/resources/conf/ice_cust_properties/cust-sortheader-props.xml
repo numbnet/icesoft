@@ -39,8 +39,18 @@
 &ice-att-userrole-rendered-props;
   <property>
 	<description>
+        <![CDATA[  	
 		Indicates whether an arrow, that shows the sort direction should be 
-		rendered. Default: false
+		rendered. Default: false <br/>
+		Note: This is deprecated. It no longer has any effect in 1.7. To alter 
+		the appearance of the arrow images, the following style classes need to be
+		customized:
+		<ul>
+		  <li>iceCmdSrtHdrAsc</li>
+		  <li>iceCmdSrtHdrDesc</li>
+		</ul>
+		
+        ]]>		
 	</description>
     <property-name>arrow</property-name>
     <property-class>boolean</property-class>

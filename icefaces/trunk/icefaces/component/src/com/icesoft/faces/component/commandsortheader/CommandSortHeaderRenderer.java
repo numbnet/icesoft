@@ -67,20 +67,32 @@ public class CommandSortHeaderRenderer extends CommandLinkRenderer {
             if (headerClass != null) {
                 root.setAttribute(HTML.CLASS_ATTR, headerClass);
             }
-            if (sortHeader.isArrow() &&
-                sortHeader.getColumnName().equals(dataTable.getSortColumn())) {
+            if (sortHeader.getColumnName().equals(dataTable.getSortColumn())) {
                 child = root.getFirstChild();
-                String arrow;
                 if (dataTable.isSortAscending()) {
-                    arrow = "&#x2191;";
+                    headerClass += "Asc";
                 } else {
-                    arrow = "&#x2193;";
+                    headerClass += "Desc";
                 }
                 if (child != null) {
                     if (child.getNodeType() == 1) { //span
                         child = child.getFirstChild();
                     }
-                    child.setNodeValue(child.getNodeValue() + arrow);
+                    String value = child.getNodeValue();
+                    Element table = domContext.createElement(HTML.TABLE_ELEM);
+                    Element tr = domContext.createElement(HTML.TR_ELEM);
+                    table.appendChild(tr);
+                    Element textTd = domContext.createElement(HTML.TD_ELEM);
+                    textTd.appendChild(domContext.createTextNode(value));
+                    Element arrowTd = domContext.createElement(HTML.TD_ELEM);
+                    tr.appendChild(textTd);
+                    tr.appendChild(arrowTd);
+                    Element arrowDiv = domContext.createElement(HTML.DIV_ELEM);
+                    arrowDiv.setAttribute(HTML.CLASS_ATTR, headerClass);
+                    arrowDiv.setAttribute("valign", "middle");
+                    arrowTd.appendChild(arrowDiv);
+                    child.setNodeValue("");
+                    child.getParentNode().appendChild(table);                   
                 }
             }
         }
