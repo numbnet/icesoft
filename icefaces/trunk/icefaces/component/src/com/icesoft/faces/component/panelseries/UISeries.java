@@ -35,6 +35,7 @@ package com.icesoft.faces.component.panelseries;
 
 import com.icesoft.faces.application.D2DViewHandler;
 import com.icesoft.faces.component.tree.TreeDataModel;
+import com.icesoft.faces.model.SetDataModel;
 import com.icesoft.faces.utils.SeriesStateHolder;
 
 import javax.faces.application.FacesMessage;
@@ -67,6 +68,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -321,6 +323,8 @@ public class UISeries extends HtmlDataTable {
             this.dataModel = new ResultDataModel((Result) currentValue);
         } else if (currentValue instanceof TreeModel) {
             this.dataModel = new TreeDataModel((TreeModel) currentValue);
+        } else if (currentValue instanceof Set) {
+            this.dataModel = new SetDataModel((Set) currentValue);
         } else {
             this.dataModel = new ScalarDataModel(currentValue);
         }
