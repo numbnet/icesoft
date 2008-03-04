@@ -208,9 +208,8 @@ public class GroupAsyncRenderer implements AsyncRenderer {
      */
     public void dispose() {
         requestStop();
-        clear();
         renderManager.removeRenderer(this);
+        clear();
         name = null;
-        renderManager = null;
     }
 }
