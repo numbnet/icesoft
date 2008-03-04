@@ -328,7 +328,10 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return the slide, or null on error or if no presentation / slide exists
      */
     public Slide[] getPreloadSlides() {
-        return presentation.getPreloadSlides(mobile);
+        if(presentation != null){
+            return presentation.getPreloadSlides(mobile);
+        }
+        return new Slide[0];
     }
 
     /**
@@ -474,9 +477,8 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map params = facesContext.getExternalContext().getRequestParameterMap();
         String loginSource = (String) params.get("loginSource");
-        
         if(loginSource != null && loginBean.getPresentationPassword() != null){
-            String inputPassword = loginBean.getPresentationPassword().trim();
+        	String inputPassword = loginBean.getPresentationPassword().trim();
             if (loginSource.startsWith("viewDemo")) {
                 if(!loginBean.validateDemoPassword(inputPassword)){
                 	return "failed";

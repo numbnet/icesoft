@@ -421,7 +421,7 @@ public class LoginBean {
         	if (!PresentationManager
                     .getInstance().isPasswordAndPresentationMatch(
                     inputPassword, getPresentationName())) {
-                setInvalidDemoPassword(true);
+        		setInvalidDemoPassword(true);
                 return false;
             }
         }

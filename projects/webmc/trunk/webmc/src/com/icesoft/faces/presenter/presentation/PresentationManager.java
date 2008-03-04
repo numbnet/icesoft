@@ -257,7 +257,7 @@ public class PresentationManager {
      */
     public boolean isPasswordAndPresentationMatch(String password,
                                                   String name) {
-        return presentationExists(name) &&
+    	return presentationExists(name) &&
                getPresentation(name).getPassword().equals(password);
     }
 }
