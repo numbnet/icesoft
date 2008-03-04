@@ -33,7 +33,6 @@
 
 package com.icesoft.icefaces.samples.showcase.components.table;
 
-import com.icesoft.icefaces.samples.showcase.common.Person;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -50,6 +49,8 @@ import static org.jboss.seam.ScopeType.PAGE;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.core.Manager;
 import org.jboss.seam.framework.EntityQuery;
+
+import com.icesoft.icefaces.samples.showcase.common.Person;
 
 import java.io.Serializable;
 
@@ -98,7 +99,7 @@ public class DataTablePaginatorBean extends EntityQuery{
         setEjbql(EJBQL);
     	ascending = true;
     	sort = "lastName";
-    	orderString="firstName asc";
+    	orderString=sort+" asc";
     	buildSortedList();
 	}
 	
