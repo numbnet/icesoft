@@ -45,7 +45,7 @@ import org.jboss.seam.annotations.Scope;
 import com.icesoft.faces.component.gmap.GMapLatLng;
 import java.io.Serializable;
 
-@Scope(ScopeType.PAGE)
+@Scope(ScopeType.EVENT)
 @Name("gmap")
 public class Bean implements Serializable{
 	private String geoCoderAddress;
