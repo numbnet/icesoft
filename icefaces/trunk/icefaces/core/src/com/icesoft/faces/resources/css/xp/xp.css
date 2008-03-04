@@ -1697,6 +1697,10 @@ fieldset {
     height: 150px;
 }
 
+.icePnlPop .icePnlPopBody {
+    background-color: #DDDDDD;
+}
+
 .icePnlPopHdr, .icePnlTlTipHdr {
     background-color: #DEDEDE;
     background-image: url( "./css-images/window_top.gif" );

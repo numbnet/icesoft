@@ -1668,6 +1668,10 @@ input {
     height: 150px;
 }
 
+.icePnlPop .icePnlPopBody {
+    background-color: #D0D4EE;
+}
+
 .icePnlPopHdr, .icePnlTlTipHdr {
     background-color: #026AFF;
     background-image: url( "./css-images/window_top.gif" );
