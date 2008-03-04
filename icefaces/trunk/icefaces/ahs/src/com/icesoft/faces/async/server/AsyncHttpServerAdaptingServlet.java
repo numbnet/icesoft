@@ -31,7 +31,8 @@
  */
 package com.icesoft.faces.async.server;
 
-import com.icesoft.faces.async.common.messaging.UpdatedViewsQueueExceededMessageHandler;
+// todo: handle updated views queue exceeded messages!
+//import com.icesoft.faces.async.common.messaging.UpdatedViewsQueueExceededMessageHandler;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
@@ -44,13 +45,14 @@ import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.servlet.ServletContext;
 
 public class AsyncHttpServerAdaptingServlet
 implements Server {
@@ -61,32 +63,28 @@ implements Server {
     private static final Object messageServiceClientLock = new Object();
     private static MessageServiceClient messageServiceClient;
 
-    private final String iceFacesId;
-
-    private ViewQueue allUpdatedViews;
-    private Object lock = new Object();
     private long sequenceNumber;
     // todo: implement this!
 //    private boolean updatedViewsQueueExceeded = false;
 
-    private UpdatedViewsQueueExceededMessageHandler
-        updatedViewsQueueExceededMessageHandler =
-            new UpdatedViewsQueueExceededMessageHandler() {
-                protected void updatedViewsQueueExceeded(
-                    final String iceFacesId) {
-
-                    if (iceFacesId == null || iceFacesId.trim().length() == 0) {
-                        return;
-                    }
-                    // todo: implement this!
-                }
-            };
+    // todo: handle updated views queue exceeded messages!
+//    private UpdatedViewsQueueExceededMessageHandler
+//        updatedViewsQueueExceededMessageHandler =
+//            new UpdatedViewsQueueExceededMessageHandler() {
+//                protected void updatedViewsQueueExceeded(
+//                    final String iceFacesId) {
+//
+//                    if (iceFacesId == null || iceFacesId.trim().length() == 0) {
+//                        return;
+//                    }
+//                    // todo: implement this!
+//                }
+//            };
 
     public AsyncHttpServerAdaptingServlet(
         final String iceFacesId, final Collection synchronouslyUpdatedViews,
         final ViewQueue allUpdatedViews, final ServletContext servletContext)
     throws MessageServiceException {
-        this.iceFacesId = iceFacesId;
         synchronized (messageServiceClientLock) {
             if (messageServiceClient == null) {
                 setUpMessageClientService(servletContext);
@@ -144,39 +142,40 @@ implements Server {
                 _jmsProviderConfiguration,
                 new JMSAdapter(_jmsProviderConfiguration),
                 servletContext);
-        try {
-            messageServiceClient.subscribe(
-                MessageServiceClient.RESPONSE_TOPIC_NAME,
-                updatedViewsQueueExceededMessageHandler.getMessageSelector());
-        } catch (MessageServiceException exception) {
-            if (LOG.isFatalEnabled()) {
-                messageServiceClient = null;
-                LOG.fatal(
-                    "\r\n" +
-                    "\r\n" +
-                    "Failed to subscribe to topic: " +
-                        MessageServiceClient.RESPONSE_TOPIC_NAME + "\r\n" +
-                    "    Exception message: " +
-                        exception.getMessage() + "\r\n" +
-                    "    Exception cause: " +
-                        exception.getCause() + "\r\n\r\n" +
-                    "The icefaces-ahs.jar is included in the deployment, but " +
-                        "the JMS topics are not\r\n" +
-                    "configured correctly on the application server. If you " +
-                        "intended to use the\r\n" +
-                    "Asynchronous HTTP Server (AHS), please refer to the " +
-                        "ICEfaces Developer's Guide\r\n" +
-                    "for instructions on how to configure the JMS topics on " +
-                        "the application server.\r\n" +
-                    "If you did not intend to use AHS, please remove the " +
-                        "icefaces-ahs.jar from your\r\n" +
-                    "deployment and try again.\r\n");
-            }
-            throw exception;
-        }
-        messageServiceClient.addMessageHandler(
-            updatedViewsQueueExceededMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
+        // todo: handle updated views queue exceeded messages!
+//        try {
+//            messageServiceClient.subscribe(
+//                MessageServiceClient.RESPONSE_TOPIC_NAME,
+//                updatedViewsQueueExceededMessageHandler.getMessageSelector());
+//        } catch (MessageServiceException exception) {
+//            if (LOG.isFatalEnabled()) {
+//                messageServiceClient = null;
+//                LOG.fatal(
+//                    "\r\n" +
+//                    "\r\n" +
+//                    "Failed to subscribe to topic: " +
+//                        MessageServiceClient.RESPONSE_TOPIC_NAME + "\r\n" +
+//                    "    Exception message: " +
+//                        exception.getMessage() + "\r\n" +
+//                    "    Exception cause: " +
+//                        exception.getCause() + "\r\n\r\n" +
+//                    "The icefaces-ahs.jar is included in the deployment, but " +
+//                        "the JMS topics are not\r\n" +
+//                    "configured correctly on the application server. If you " +
+//                        "intended to use the\r\n" +
+//                    "Asynchronous HTTP Server (AHS), please refer to the " +
+//                        "ICEfaces Developer's Guide\r\n" +
+//                    "for instructions on how to configure the JMS topics on " +
+//                        "the application server.\r\n" +
+//                    "If you did not intend to use AHS, please remove the " +
+//                        "icefaces-ahs.jar from your\r\n" +
+//                    "deployment and try again.\r\n");
+//            }
+//            throw exception;
+//        }
+//        messageServiceClient.addMessageHandler(
+//            updatedViewsQueueExceededMessageHandler,
+//            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
@@ -196,9 +195,10 @@ implements Server {
                 LOG.error("Failed to stop message delivery!", exception);
             }
         }
-        messageServiceClient.removeMessageHandler(
-            updatedViewsQueueExceededMessageHandler,
-            MessageServiceClient.RESPONSE_TOPIC_NAME);
+        // todo: handle updated views queue exceeded messages!
+//        messageServiceClient.removeMessageHandler(
+//            updatedViewsQueueExceededMessageHandler,
+//            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
             messageServiceClient.closeConnection();
         } catch (MessageServiceException exception) {
