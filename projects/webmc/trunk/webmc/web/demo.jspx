@@ -36,33 +36,25 @@
 
 <html>
 <head>
-    <link href="resources/css/login.css" rel="stylesheet" type="text/css"/>
+<!--<ice:outputStyle href="resources/css/login.css" />-->
+    <link rel="stylesheet" type="text/css" href="resources/css/login_mobile.css"/>
     <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
                   var="msgs"/>
     <title>
         <ice:outputText value="WebMC - Login"/>
     </title>
+    <meta name="viewport" content="width=480" />
 </head>
 
 <body>
-<!--
-<ice:panelGroup styleClass="mainPRES">
--->
-<ice:panelGroup styleClass="facesBox">
-
-<center>
 
 <ice:panelGroup styleClass="loginBox">
 
 <ice:form>
-<!--
-<ice:graphicImage value="resources/images/login_logo.gif" 
-                  alt="Welcome to WebMC"
-                  style="padding-bottom: 15px;"/>
--->
+
 <div style="text-align: left;">
     <table cellspacing="0" cellpadding="0" border="0"
-           style="text-align: left; padding: 0; width: 248px; height: 29px;">
+           style="text-align: left; padding: 0;">
         <tr>
             <td>
                 <ice:commandButton
@@ -82,18 +74,8 @@
     </table>
 </div>
 
-<table cellspacing="2" cellpadding="5"
-       style="border: 1px solid #94B3CB; padding: 4px; padding-bottom: 12px; text-align: left;">
-<tr>
-    <td colspan="2">
-		<ice:panelGroup styleClass="headerMessage" 
-		                rendered="#{participant.loginBean.hasDefaultPresentations}">
-		    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
-		    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" 
-		                    style="font-weight: bold;"/>
-		</ice:panelGroup>
-    </td>
-</tr>
+<table 
+       style="border: 1px solid #94B3CB; text-align: left;">
 <tr>
 <td>
     <table class="loginTable">
@@ -251,15 +233,21 @@
     </ice:panelGroup>
 </td>
 </tr>
+<tr>
+    <td colspan="2">
+        <ice:panelGroup styleClass="headerMessage" 
+                        rendered="#{participant.loginBean.hasDefaultPresentations}">
+            <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
+            <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" 
+                            style="font-weight: bold;"/>
+        </ice:panelGroup>
+    </td>
+</tr>
 </table>
 
 </ice:form>
 </ice:panelGroup>
-</center>
-</ice:panelGroup>
-<!--
-</ice:panelGroup>
--->
+
 </body>
 </html>
 </f:view>
