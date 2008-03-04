@@ -303,8 +303,8 @@ public class TLDGenerator extends AbstractGenerator {
                 
                 if (logger.isLoggable(Level.FINEST)) {
                     logger.log(Level.FINEST, "component class="+cbs[i].getComponentClass());
-                    component(cbs[i]);
                 }
+                component(cbs[i]);
             }
         }
         
