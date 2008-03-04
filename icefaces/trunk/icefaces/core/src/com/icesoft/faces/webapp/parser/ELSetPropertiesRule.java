@@ -77,6 +77,10 @@ public class ELSetPropertiesRule extends Rule {
                     values.put(name,
                                getMethodExpression( facesContext, name, value,
                                                     null ));
+                } else if ("validator".equals(name)) {
+                    values.put(name, 
+                            getMethodExpression( facesContext, name, value,
+                                    null ));
                 } else if ("actionListener".equals(name)) {
                     values.put(name,
                                getMethodExpression(facesContext, name, value,
