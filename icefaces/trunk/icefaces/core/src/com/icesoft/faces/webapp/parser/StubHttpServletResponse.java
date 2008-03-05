@@ -88,7 +88,7 @@ public class StubHttpServletResponse implements HttpServletResponse {
     * @see javax.servlet.ServletResponse#getCharacterEncoding()
     */
     public String getCharacterEncoding() {
-        throw new UnsupportedOperationException();
+        return "UTF-8";
     }
 
     /* 

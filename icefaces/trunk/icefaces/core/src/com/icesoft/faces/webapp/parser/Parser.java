@@ -50,11 +50,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.List;
-import java.util.Arrays;
+import java.util.Set;
 
 /**
  * This is the JSFX parser.  It digests a JSFX file into a tag processing tree,
@@ -99,18 +99,14 @@ public class Parser {
      * The end result is a JSF component rooted with a UIViewRoot component.
      *
      * @param page    The Reader for the page.
-     * @param context 
+     * @param context
      * @throws java.io.IOException      If stream IO fails.
      * @throws org.xml.sax.SAXException If digester encounters invalid XML.
      */
     public void parse(Reader page, FacesContext context)
             throws java.io.IOException, org.xml.sax.SAXException {
         // Need a mock pageContext
-        StubPageContext pageContext = new StubPageContext();
-        //Get rid of old view root
-        StubHttpServletResponse response = new StubHttpServletResponse();
-        StubHttpServletRequest request = new StubHttpServletRequest(); 
-        pageContext.initialize(null, request, response, null, false, 1024, false);
+        StubPageContext pageContext = new StubPageContext(context);
         Set componentIds = new HashSet();
 
         //placeholder tag and wire
@@ -142,7 +138,7 @@ public class Parser {
 
             realViewWire = digester.getViewWire();
             Tag viewTag;
-            if (null != realViewWire)  {
+            if (null != realViewWire) {
                 viewTag = realViewWire.getTag();
                 transmogrifyHierarchy(realViewWire, rootWire);
                 viewTag.setParent(null);
@@ -165,19 +161,18 @@ public class Parser {
                     PageContext.REQUEST_SCOPE);
         } catch (Exception e) {
             log.error("Failed to execute JSP lifecycle.", e);
-            if (log.isDebugEnabled() ) {
-                
+            if (log.isDebugEnabled()) {
+
                 log.debug("Dumping Tag Hierarchy");
                 if (realViewWire != null) {
-                    displayHierarchy( realViewWire );
+                    displayHierarchy(realViewWire);
                 } else {
-                    displayHierarchy( rootWire );
-                } 
+                    displayHierarchy(rootWire);
+                }
             }
             throw new FacesException("Failed to execute JSP lifecycle.", e);
         }
     }
-
 
 
     /**
@@ -187,8 +182,8 @@ public class Parser {
      * @param wire         The tag's wire
      * @param pageContext  The page context
      * @param facesContext The faces context
-     * @param componentIds 
-     * @throws JspException 
+     * @param componentIds
+     * @throws JspException
      */
     public void executeJspLifecycle(TagWire wire, PageContext pageContext,
                                     FacesContext facesContext, Set componentIds)
@@ -223,7 +218,7 @@ public class Parser {
         while (children.hasNext()) {
             TagWire childWire = (TagWire) children.next();
             executeJspLifecycle(childWire, pageContext, facesContext,
-                                componentIds);
+                    componentIds);
         }
         //Do tag body processing. This is not full-fledged body processing. It only calls the doAfterBody() member
         if (!processingViewTag && tag instanceof UIComponentBodyTag) {
@@ -262,60 +257,61 @@ public class Parser {
 
         // It should be impossible for the fake root to have no rootChildren. ?
         if ((rootChildren.size() == 0) ||
-            ( ! ((TagWire) rootChildren.get(0)).getTag().equals( viewTag ) )) {
+                (!((TagWire) rootChildren.get(0)).getTag().equals(viewTag))) {
 
             // The tag that originally had the viewTag as a child.
-            TagWire viewTagParent = findViewTagInHierarchy( viewWire, rootWire);
-            if (log.isDebugEnabled() ) {
+            TagWire viewTagParent = findViewTagInHierarchy(viewWire, rootWire);
+            if (log.isDebugEnabled()) {
                 log.debug("Replacing ViewTag in midst of hierarchy");
             }
             if (viewTagParent != null) {
 
                 // Put all the viewTag children into where the viewTag was, respecting order
-                viewTagParent.replaceTagWireWithChildren( viewWire );
+                viewTagParent.replaceTagWireWithChildren(viewWire);
 
                 // reparent all viewTag children to new parent
                 List viewTagParentChildren = viewTagParent.getChildren();
-                for (int idx = 0; idx < viewTagParentChildren.size(); idx ++ ) {
+                for (int idx = 0; idx < viewTagParentChildren.size(); idx++) {
                     TagWire r = (TagWire) viewTagParentChildren.get(idx);
-                    r.getTag().setParent( viewTagParent.getTag() );
+                    r.getTag().setParent(viewTagParent.getTag());
                 }
 
                 // now replace all children of viewTag with those of the fake root
                 viewWire.getChildren().clear();
-                viewWire.getChildren().addAll( rootChildren );
+                viewWire.getChildren().addAll(rootChildren);
 
                 // reparent
-                for (int idx = 0; idx < rootChildren.size(); idx ++ ) {
+                for (int idx = 0; idx < rootChildren.size(); idx++) {
                     TagWire r = (TagWire) rootChildren.get(idx);
-                    r.getTag().setParent( viewTag );
+                    r.getTag().setParent(viewTag);
                 }
             }
         } else {
-            if (log.isDebugEnabled() ) {
+            if (log.isDebugEnabled()) {
                 log.debug("ViewTag is already at top of hierarchy");
-            } 
+            }
         }
     }
 
     /**
-     * Recursive method to locate the original parent of a given tag 
+     * Recursive method to locate the original parent of a given tag
+     *
      * @param toFind The tagWire to find
      * @param parent The TagWire to look in
      * @return The TagWire parent containing the TagWire
      */
-    private TagWire findViewTagInHierarchy( TagWire toFind, TagWire parent) {
+    private TagWire findViewTagInHierarchy(TagWire toFind, TagWire parent) {
 
-        List children = parent.getChildren();       
-        if (children.contains( toFind ) ) {
+        List children = parent.getChildren();
+        if (children.contains(toFind)) {
             return parent;
         }
         // recurse through children of 'parent'
         TagWire child;
-        for (int idx = 0; idx < children.size(); idx ++ ) {
-            child = findViewTagInHierarchy( toFind,
-                                            (TagWire) children.get( idx ));
-            if (child != null)  {
+        for (int idx = 0; idx < children.size(); idx++) {
+            child = findViewTagInHierarchy(toFind,
+                    (TagWire) children.get(idx));
+            if (child != null) {
                 return child;
             }
         }
@@ -326,19 +322,19 @@ public class Parser {
      * In event of parse exception, dump out the contents of the tagwire
      * tree. This is not very performant, but it doesn't need to be. Try to
      * give the author some idea as to why the exception. #ICE-2716
-     * 
-     * @param wire The TagWire at the Root 
+     *
+     * @param wire The TagWire at the Root
      */
     private void displayHierarchy(TagWire wire) {
 
-        char [] pad = new char[indentIndex];
-        Arrays.fill( pad, ' ');
-        log.debug( new String( pad )  + "Tag: " + wire.getTag() );
+        char[] pad = new char[indentIndex];
+        Arrays.fill(pad, ' ');
+        log.debug(new String(pad) + "Tag: " + wire.getTag());
 
         indentIndex += 2;
         List children = wire.getChildren();
-        for (int idx = 0; idx < children.size(); idx ++ ) {
-             displayHierarchy((TagWire) children.get( idx ));
+        for (int idx = 0; idx < children.size(); idx++) {
+            displayHierarchy((TagWire) children.get(idx));
         }
         indentIndex -= 2;
     }

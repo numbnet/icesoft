@@ -37,7 +37,13 @@ import com.icesoft.faces.util.IteratorEnumeration;
 
 import javax.el.ELContext;
 import javax.faces.context.ExternalContext;
-import javax.servlet.*;
+import javax.faces.context.FacesContext;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -56,29 +62,21 @@ import java.util.Map;
 public class StubPageContext extends PageContext {
 
     private Map attributes = new Hashtable();
-    private HttpSession httpSession;
     private ExternalContext externalContext;
     private ServletRequest servletRequest;
     private ServletResponse servletResponse;
 
-    /*
-    * @see javax.servlet.jsp.PageContext#initialize(javax.servlet.Servlet, javax.servlet.ServletRequest, javax.servlet.ServletResponse, java.lang.String, boolean, int, boolean)
-    */
-    public void initialize(Servlet servlet, ServletRequest servletRequest,
-                           ServletResponse servletResponse,
-                           String errorPageURL, boolean sessionSupport,
-                           int bufferSize, boolean autoFlush)
-            throws IOException, IllegalStateException,
-                   IllegalArgumentException {
-
-        this.servletResponse = servletResponse;
-        // ICE-2551 keep a reference to stubRequest as well.  
-        this.servletRequest = servletRequest;
-        externalContext = javax.faces.context.FacesContext.getCurrentInstance()
-                .getExternalContext();
+    public StubPageContext(FacesContext context) {
+        this.externalContext = context.getExternalContext();
+        this.servletRequest = new StubHttpServletRequest();
+        this.servletResponse = new StubHttpServletResponse();
     }
 
-    /* 
+    public void initialize(Servlet servlet, ServletRequest servletRequest, ServletResponse servletResponse, String s, boolean b, int i, boolean b1) throws IOException, IllegalStateException, IllegalArgumentException {
+        //do nothing
+    }
+
+    /*
     * @see javax.servlet.jsp.JspContext#setAttribute(java.lang.String, java.lang.Object)
     */
     public void setAttribute(String name, Object value) {
@@ -97,11 +95,7 @@ public class StubPageContext extends PageContext {
                 externalContext.getRequestMap().put(name, value);
                 break;
             case SESSION_SCOPE:
-                if (httpSession == null) {
-                    throw new IllegalArgumentException(
-                            "Session is not stablished for this request");
-                }
-                httpSession.setAttribute(name, value);
+                externalContext.getSessionMap().put(name, value);
                 break;
             case APPLICATION_SCOPE:
                 externalContext.getApplicationMap().put(name, value);
@@ -129,11 +123,7 @@ public class StubPageContext extends PageContext {
             case REQUEST_SCOPE:
                 return externalContext.getRequestMap().get(name);
             case SESSION_SCOPE:
-                if (httpSession == null) {
-                    throw new IllegalArgumentException(
-                            "Session is not stablished for this request");
-                }
-                return httpSession.getAttribute(name);
+                return externalContext.getSessionMap().get(name);
             case APPLICATION_SCOPE:
                 return (externalContext.getApplicationMap().get(name));
             default:
@@ -161,11 +151,7 @@ public class StubPageContext extends PageContext {
                 externalContext.getRequestMap().remove(name);
                 break;
             case SESSION_SCOPE:
-                if (httpSession == null) {
-                    throw new IllegalArgumentException(
-                            "Session is not stablished for this request");
-                }
-                httpSession.removeAttribute(name);
+                externalContext.getSessionMap().remove(name);
                 break;
             case APPLICATION_SCOPE:
                 externalContext.getApplicationMap().remove(name);
@@ -226,7 +212,7 @@ public class StubPageContext extends PageContext {
      * @see javax.servlet.jsp.PageContext#getSession()
      */
     public HttpSession getSession() {
-        return httpSession;
+        return (HttpSession) externalContext.getSession(false);
     }
 
     /* 
@@ -296,7 +282,7 @@ public class StubPageContext extends PageContext {
         switch (scope) {
             case PAGE_SCOPE:
                 return new IteratorEnumeration(
-                        ((Hashtable) attributes).keySet().iterator());
+                        attributes.keySet().iterator());
             case REQUEST_SCOPE:
                 return new IteratorEnumeration(
                         externalContext.getRequestMap().keySet().iterator());
@@ -347,14 +333,12 @@ public class StubPageContext extends PageContext {
         }
 
         //check session scope
-        if (httpSession != null) {
-            attribute = httpSession.getAttribute(name);
-        }
+        attribute = externalContext.getSessionMap().get(name);
         if (null != attribute) {
             return attribute;
         }
 
         //return null or application scope value
-        return (externalContext.getApplicationMap().get(name));
+        return externalContext.getApplicationMap().get(name);
     }
 }
