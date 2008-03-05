@@ -35,10 +35,8 @@
     
     <import file="../etc/build-common.xml"/>
     
-    <!--property name="ant.project.name" value="address"/-->
-    
     <target name="build.war" depends="compile">
         <build.war web.xml="conf/web.sunri.icefaces.xml"/>
     </target>
-    
+
 </project>

@@ -171,6 +171,7 @@
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>  
     </target>
+    <!--
     <target name="help">
         <echo level="info">
             *****************************
@@ -189,4 +190,5 @@ Use the following target to build the application
     build.portlet.liferay.tomcat6.war       - for Tomcat6.x version without AHS
 </echo>
     </target>
+    -->
 </project>

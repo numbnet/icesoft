@@ -75,8 +75,7 @@
         </copy>        
     </target>
     
-    <target name="build.war" depends="compile"
-            description="Creates a Sun RI version of component-showcase.">
+    <target name="build.war" depends="compile">
                 
         <antcall target="copy.doc"/>
         <build.war web.xml="conf/web.sunri.icefaces.ce.xml"/>
@@ -94,8 +93,7 @@
                            portlet.conf.liferay.dir="portlet/conf/liferay"/>
     </target>
     
-    <target name="build.facelet.war" depends="compile"
-            description="Creates a facelets version of component-showcase.">
+    <target name="build.facelet.war" depends="compile">
 
         <antcall target="copy.doc"/>
        
@@ -286,18 +284,5 @@
             <target name="build.portlet.pluto.tomcat5.war"/>
         </ant>
     </target>
-<!--
-    <property name="help.name" value="IceHelp"/>
-    <target name="use">
-        <echo message="${ant.project.name}"/>
 
-        <taskdef name="ice-help" classname="AddressHelp" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
-        <ice-help/>
-        <taskdef name="build-time" classname="BuildTime" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
-        <build-time/>
-
-	<taskdef name="ice-help" classname="BuildParser" classpath="${icefaces.lib.dir}/${help.name}.jar"/>
-	<ice-help/>
-    </target>
-    -->
 </project>

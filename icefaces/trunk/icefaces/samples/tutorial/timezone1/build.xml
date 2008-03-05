@@ -50,18 +50,19 @@
         <include name="commons-lang.jar" if="myfaces"/>
         
     </patternset>
-    
+    <!--
     <target name="help">
         <echo level="info">
             This application implements regular jsf application without icefaces involved.
             Please check common.help for available builds, "ant common.help"
         </echo>
     </target>
-    
+    -->
+    <!--
     <target name="clean" depends="common.clean">
         <delete quiet="true">
             <fileset dir="${app.lib.dir}" includes="icefaces.jar, icefaces-comps.jar, commons-lang-2.1.jar"/>
         </delete>
     </target>
-    
+    -->
 </project>
