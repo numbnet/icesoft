@@ -718,7 +718,9 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Return the value of the <code>fileInfo</code> property. </p>
      */
     public FileInfo getFileInfo() {
-        return fileInfo;
+        if(fileInfo == null)
+            return null;
+        return (FileInfo) fileInfo.clone();
     }
 
     void setFileInfo(FileInfo fileInfo) {

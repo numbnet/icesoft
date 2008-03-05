@@ -33,7 +33,7 @@
 
 package com.icesoft.faces.component.inputfile;
 
-public class FileInfo {
+public class FileInfo implements Cloneable {
 
 
     private long size = 0;
@@ -102,5 +102,16 @@ public class FileInfo {
         physicalPath = null;
         percent = 0;
         exception = null;
+    }
+    
+    public Object clone() {
+        FileInfo fi = new FileInfo();
+        fi.size         = this.size;
+        fi.fileName     = this.fileName;
+        fi.contentType  = this.contentType;
+        fi.physicalPath = this.physicalPath;
+        fi.percent      = this.percent;
+        fi.exception    = this.exception;
+        return fi;
     }
 }
