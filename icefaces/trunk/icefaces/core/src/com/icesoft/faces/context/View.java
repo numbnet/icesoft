@@ -65,7 +65,8 @@ public class View implements CommandQueue {
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
         this.resourceDispatcher = resourceDispatcher;
-
+        //fail fast if environment cannot be detected
+        this.externalContext = new UnknownExternalContext(this, configuration);
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 externalContext = new ServletExternalContext(viewIdentifier, request, response, View.this, configuration, sessionMonitor);
