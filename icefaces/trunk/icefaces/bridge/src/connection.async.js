@@ -45,6 +45,7 @@
             this.connectionTroubleListeners = [];
 
             this.listener = { close: Function.NOOP };
+            this.listening = { remove: Function.NOOP };
             this.timeoutBomb = { cancel: Function.NOOP };
             this.heartbeat = { stop: Function.NOOP };
 
