@@ -35,8 +35,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class Properties
-extends java.util.Properties
-implements Cloneable, Map, Serializable {
+        extends java.util.Properties
+        implements Cloneable, Map, Serializable {
     private Validator keyValidator;
     private Validator valueValidator;
 
@@ -46,12 +46,12 @@ implements Cloneable, Map, Serializable {
 
     public Properties(final Properties defaults) {
         this(
-            defaults, new PropertyKeyValidator(), new PropertyValueValidator());
+                defaults, new PropertyKeyValidator(), new PropertyValueValidator());
     }
 
     public Properties(
-        final Properties defaults, final Validator keyValidator,
-        final Validator valueValidator) {
+            final Properties defaults, final Validator keyValidator,
+            final Validator valueValidator) {
 
         super(defaults);
         setKeyValidator(keyValidator);
@@ -59,53 +59,49 @@ implements Cloneable, Map, Serializable {
     }
 
     public Properties(
-        final Validator keyValidator, final Validator valueValidator) {
+            final Validator keyValidator, final Validator valueValidator) {
 
         this(null, keyValidator, valueValidator);
     }
 
     /**
      * <p>
-     *   Gets the primitive boolean value of the boolean property with the
-     *   specified <code>name</code> from the specified <code>properties</code>
-     *   collection.
+     * Gets the primitive boolean value of the boolean property with the
+     * specified <code>name</code> from the specified <code>properties</code>
+     * collection.
      * </p>
      * <p>
-     *   This is a helper method for getting the value of a property contained
-     *   in the properties collection as a primitive boolean.
+     * This is a helper method for getting the value of a property contained
+     * in the properties collection as a primitive boolean.
      * </p>
      *
-     * @param      properties
-     *                 the properties collection.
-     * @param      name
-     *                 the name of the boolean property.
-     * @return     the property value as a primitive boolean.
-     * @throws     IllegalArgumentException
-     *                 if the specified <code>properties<code> is
-     *                 <code>null</code>.
-     * @throws     PropertyException
-     *                 if one of the following occurs:
-     *                 <ul>
-     *                   <li>
-     *                     the property could not be found, or
-     *                   </li>
-     *                   <li>
-     *                     the property value could not be returned as a
-     *                     primitive boolean.
-     *                   </li>
-     *                 </ul>
-     * @see        #getBooleanProperty(java.util.Properties, String, boolean)
+     * @param properties the properties collection.
+     * @param name       the name of the boolean property.
+     * @return the property value as a primitive boolean.
+     * @throws IllegalArgumentException if the specified <code>properties<code> is
+     *                                  <code>null</code>.
+     * @throws PropertyException        if one of the following occurs:
+     *                                  <ul>
+     *                                  <li>
+     *                                  the property could not be found, or
+     *                                  </li>
+     *                                  <li>
+     *                                  the property value could not be returned as a
+     *                                  primitive boolean.
+     *                                  </li>
+     *                                  </ul>
+     * @see #getBooleanProperty(java.util.Properties, String, boolean)
      */
     public static boolean getBooleanProperty(
-        final java.util.Properties properties, final String name)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String name)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(name)) {
                 return asBoolean(properties.get(name));
             } else {
                 throw
-                    new PropertyException(
-                        "property not found for name: " + name);
+                        new PropertyException(
+                                "property not found for name: " + name);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -114,34 +110,30 @@ implements Cloneable, Map, Serializable {
 
     /**
      * <p>
-     *   Gets the primitive boolean value of the boolean property with the
-     *   specified <code>name</code> from the specified <code>properties</code>
-     *   collection. If the properties collection does not contain the desired
-     *   property the specified <code>defaultValue</code> is returned.
+     * Gets the primitive boolean value of the boolean property with the
+     * specified <code>name</code> from the specified <code>properties</code>
+     * collection. If the properties collection does not contain the desired
+     * property the specified <code>defaultValue</code> is returned.
      * </p>
      * <p>
-     *   This is a helper method for getting the value of a property contained
-     *   in the properties collection as a primitive boolean.
+     * This is a helper method for getting the value of a property contained
+     * in the properties collection as a primitive boolean.
      * </p>
      *
-     * @param      properties
-     *                 the properties collection.
-     * @param      name
-     *                 the name of the boolean property.
-     * @param      defaultValue
-     *                 the default value that is returned if the property could
-     *                 not be found.
-     * @return     the property value as a primitive boolean or the
-     *             <code>defaultValue</code> if the property could not be found.
-     * @throws     PropertyException
-     *                 if the property value could not be returned as a
-     *                 primitive boolean.
-     * @see        #getBooleanProperty(java.util.Properties, String)
+     * @param properties   the properties collection.
+     * @param name         the name of the boolean property.
+     * @param defaultValue the default value that is returned if the property could
+     *                     not be found.
+     * @return the property value as a primitive boolean or the
+     *         <code>defaultValue</code> if the property could not be found.
+     * @throws PropertyException if the property value could not be returned as a
+     *                           primitive boolean.
+     * @see #getBooleanProperty(java.util.Properties, String)
      */
     public static boolean getBooleanProperty(
-        final java.util.Properties properties, final String name,
-        final boolean defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String name,
+            final boolean defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(name)) {
             return asBoolean(properties.get(name));
         } else {
@@ -150,7 +142,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public boolean getBooleanProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getBooleanProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -161,8 +153,8 @@ implements Cloneable, Map, Serializable {
     }
 
     public boolean getBooleanProperty(
-        final String key, final boolean defaultValue)
-    throws PropertyException {
+            final String key, final boolean defaultValue)
+            throws PropertyException {
         if (containsKey(key)) {
             return getBooleanProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -174,46 +166,42 @@ implements Cloneable, Map, Serializable {
 
     /**
      * <p>
-     *   Gets the primitive byte value of the byte property with the specified
-     *   <code>name</code> from the specified <code>properties</code>
-     *   collection.
+     * Gets the primitive byte value of the byte property with the specified
+     * <code>name</code> from the specified <code>properties</code>
+     * collection.
      * </p>
      * <p>
-     *   This is a helper method for getting the value of a property contained
-     *   in the properties collection as a primitive byte.
+     * This is a helper method for getting the value of a property contained
+     * in the properties collection as a primitive byte.
      * </p>
      *
-     * @param      properties
-     *                 the properties collection.
-     * @param      name
-     *                 the name of the byte property.
-     * @return     the property value as a primitive byte.
-     * @throws     IllegalArgumentException
-     *                 if the specified <code>properties<code> is
-     *                 <code>null</code>.
-     * @throws     PropertyException
-     *                 if one of the following occurs:
-     *                 <ul>
-     *                   <li>
-     *                     the property could not be found, or
-     *                   </li>
-     *                   <li>
-     *                     the property value could not be returned as a
-     *                     primitive byte.
-     *                   </li>
-     *                 </ul>
-     * @see        #getByteProperty(java.util.Properties, String, byte)
+     * @param properties the properties collection.
+     * @param name       the name of the byte property.
+     * @return the property value as a primitive byte.
+     * @throws IllegalArgumentException if the specified <code>properties<code> is
+     *                                  <code>null</code>.
+     * @throws PropertyException        if one of the following occurs:
+     *                                  <ul>
+     *                                  <li>
+     *                                  the property could not be found, or
+     *                                  </li>
+     *                                  <li>
+     *                                  the property value could not be returned as a
+     *                                  primitive byte.
+     *                                  </li>
+     *                                  </ul>
+     * @see #getByteProperty(java.util.Properties, String, byte)
      */
     public static byte getByteProperty(
-        final java.util.Properties properties, final String name)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String name)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(name)) {
                 return asByte(properties.get(name));
             } else {
                 throw
-                    new PropertyException(
-                        "property not found for name: " + name);
+                        new PropertyException(
+                                "property not found for name: " + name);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -222,34 +210,30 @@ implements Cloneable, Map, Serializable {
 
     /**
      * <p>
-     *   Gets the primitive byte value of the byte property with the specified
-     *   <code>name</code> from the specified <code>properties</code>
-     *   collection. If the properties collection does not contain the desired
-     *   property the specified <code>defaultValue</code> is returned.
+     * Gets the primitive byte value of the byte property with the specified
+     * <code>name</code> from the specified <code>properties</code>
+     * collection. If the properties collection does not contain the desired
+     * property the specified <code>defaultValue</code> is returned.
      * </p>
      * <p>
-     *   This is a helper method for getting the value of a property contained
-     *   in the properties collection as a primitive byte.
+     * This is a helper method for getting the value of a property contained
+     * in the properties collection as a primitive byte.
      * </p>
      *
-     * @param      properties
-     *                 the properties collection.
-     * @param      name
-     *                 the name of the byte property.
-     * @param      defaultValue
-     *                 the default value that is returned if the property could
-     *                 not be found.
-     * @return     the property value as a primitive byte or the
-     *             <code>defaultValue</code> if the property could not be found.
-     * @throws     PropertyException
-     *                 if the property value could not be returned as a
-     *                 primitive boolean.
-     * @see        #getByteProperty(java.util.Properties, String)
+     * @param properties   the properties collection.
+     * @param name         the name of the byte property.
+     * @param defaultValue the default value that is returned if the property could
+     *                     not be found.
+     * @return the property value as a primitive byte or the
+     *         <code>defaultValue</code> if the property could not be found.
+     * @throws PropertyException if the property value could not be returned as a
+     *                           primitive boolean.
+     * @see #getByteProperty(java.util.Properties, String)
      */
     public static byte getByteProperty(
-        final java.util.Properties properties, final String name,
-        final byte defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String name,
+            final byte defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(name)) {
             return asByte(properties.get(name));
         } else {
@@ -258,7 +242,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public byte getByteProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getByteProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -269,7 +253,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public byte getByteProperty(final String key, final byte defaultValue)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getByteProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -280,14 +264,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static double getDoubleProperty(
-        final java.util.Properties properties, final String key)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String key)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(key)) {
                 return asDouble(properties.get(key));
             } else {
                 throw
-                    new PropertyException("property not found for key: " + key);
+                        new PropertyException("property not found for key: " + key);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -295,9 +279,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static double getDoubleProperty(
-        final java.util.Properties properties, final String key,
-        final double defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final double defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(key)) {
             return asDouble(properties.get(key));
         } else {
@@ -306,7 +290,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public double getDoubleProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getDoubleProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -317,7 +301,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public double getDoubleProperty(final String key, final double defaultValue)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getDoubleProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -328,14 +312,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static float getFloatProperty(
-        final java.util.Properties properties, final String key)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String key)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(key)) {
                 return asFloat(properties.get(key));
             } else {
                 throw
-                    new PropertyException("property not found for key: " + key);
+                        new PropertyException("property not found for key: " + key);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -343,9 +327,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static float getFloatProperty(
-        final java.util.Properties properties, final String key,
-        final float defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final float defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(key)) {
             return asFloat(properties.get(key));
         } else {
@@ -354,7 +338,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public float getFloatProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getFloatProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -375,14 +359,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static int getIntProperty(
-        final java.util.Properties properties, final String key)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String key)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(key)) {
                 return asInt(properties.get(key));
             } else {
                 throw
-                    new PropertyException("property not found for key: " + key);
+                        new PropertyException("property not found for key: " + key);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -390,9 +374,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static int getIntProperty(
-        final java.util.Properties properties, final String key,
-        final int defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final int defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(key)) {
             return asInt(properties.get(key));
         } else {
@@ -401,7 +385,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public int getIntProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getIntProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -412,7 +396,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public int getIntProperty(final String key, final int defaultValue)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getIntProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -427,14 +411,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static long getLongProperty(
-        final java.util.Properties properties, final String key)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String key)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(key)) {
                 return asLong(properties.get(key));
             } else {
                 throw
-                    new PropertyException("property not found for key: " + key);
+                        new PropertyException("property not found for key: " + key);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -442,9 +426,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static long getLongProperty(
-        final java.util.Properties properties, final String key,
-        final long defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final long defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(key)) {
             return asLong(properties.get(key));
         } else {
@@ -453,7 +437,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public long getLongProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getLongProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -464,7 +448,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public long getLongProperty(final String key, final long defaultValue)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getLongProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -475,14 +459,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static Object getObjectProperty(
-        final java.util.Properties properties, final String key) {
+            final java.util.Properties properties, final String key) {
 
         return getObjectProperty(properties, key, null);
     }
 
     public static Object getObjectProperty(
-        final java.util.Properties properties, final String key,
-        final Object defaultValue) {
+            final java.util.Properties properties, final String key,
+            final Object defaultValue) {
 
         if (properties == null || !properties.containsKey(key)) {
             return defaultValue;
@@ -496,7 +480,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public Object getObjectProperty(
-        final String key, final Object defaultValue) {
+            final String key, final Object defaultValue) {
 
         if (containsKey(key)) {
             return getObjectProperty(this, key);
@@ -516,14 +500,14 @@ implements Cloneable, Map, Serializable {
     }
 
     public static short getShortProperty(
-        final java.util.Properties properties, final String key)
-    throws IllegalArgumentException, PropertyException {
+            final java.util.Properties properties, final String key)
+            throws IllegalArgumentException, PropertyException {
         if (properties != null) {
             if (properties.containsKey(key)) {
                 return asShort(properties.get(key));
             } else {
                 throw
-                    new PropertyException("property not found for key: " + key);
+                        new PropertyException("property not found for key: " + key);
             }
         } else {
             throw new IllegalArgumentException("properties is null");
@@ -531,9 +515,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static short getShortProperty(
-        final java.util.Properties properties, final String key,
-        final short defaultValue)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final short defaultValue)
+            throws PropertyException {
         if (properties != null && properties.containsKey(key)) {
             return asShort(properties.get(key));
         } else {
@@ -542,7 +526,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public short getShortProperty(final String key)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getShortProperty(this, key);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -553,7 +537,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public short getShortProperty(final String key, final short defaultValue)
-    throws PropertyException {
+            throws PropertyException {
         if (containsKey(key)) {
             return getShortProperty(this, key, defaultValue);
         } else if (defaults != null && defaults.containsKey(key)) {
@@ -564,24 +548,19 @@ implements Cloneable, Map, Serializable {
     }
 
     public static String getStringProperty(
-        final java.util.Properties properties, final String key) {
+            final java.util.Properties properties, final String key) {
 
         return getStringProperty(properties, key, null);
     }
 
     public static String getStringProperty(
-        final java.util.Properties properties, final String key,
-        final String defaultValue) {
+            final java.util.Properties properties, final String key,
+            final String defaultValue) {
 
         if (properties == null || !properties.containsKey(key)) {
             return defaultValue;
         } else {
-            Object _value = properties.get(key);
-            if (_value == null) {
-                return String.valueOf(null);
-            } else {
-                return _value.toString();
-            }
+            return String.valueOf(properties.get(key));
         }
     }
 
@@ -590,7 +569,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public String getStringProperty(
-        final String key, final String defaultValue) {
+            final String key, final String defaultValue) {
 
         if (containsKey(key)) {
             return getStringProperty(this, key);
@@ -606,16 +585,16 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object put(final Object key, final Object value)
-    throws PropertyException {
+            throws PropertyException {
         validateKey(key);
         validateValue(value);
         return super.put(key, value);
     }
 
     public static Object setBooleanProperty(
-        final java.util.Properties properties, final String key,
-        final boolean value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final boolean value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Boolean(value));
         } else {
@@ -624,15 +603,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setBooleanProperty(
-        final String key, final boolean value)
-    throws PropertyException {
+            final String key, final boolean value)
+            throws PropertyException {
         return setBooleanProperty(this, key, value);
     }
 
     public static Object setByteProperty(
-        final java.util.Properties properties, final String key,
-        final byte value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final byte value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Byte(value));
         } else {
@@ -641,15 +620,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setByteProperty(
-        final String key, final byte value)
-    throws PropertyException {
+            final String key, final byte value)
+            throws PropertyException {
         return setByteProperty(this, key, value);
     }
 
     public static Object setDoubleProperty(
-        final java.util.Properties properties, final String key,
-        final double value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final double value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Double(value));
         } else {
@@ -658,15 +637,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setDoubleProperty(
-        final String key, final double value)
-    throws PropertyException {
+            final String key, final double value)
+            throws PropertyException {
         return setDoubleProperty(this, key, value);
     }
 
     public static Object setFloatProperty(
-        final java.util.Properties properties, final String key,
-        final float value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final float value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Float(value));
         } else {
@@ -675,15 +654,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setFloatProperty(
-        final String key, final float value)
-    throws PropertyException {
+            final String key, final float value)
+            throws PropertyException {
         return setFloatProperty(this, key, value);
     }
 
     public static Object setIntProperty(
-        final java.util.Properties properties, final String key,
-        final int value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final int value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Integer(value));
         } else {
@@ -692,7 +671,7 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setIntProperty(final String key, final int value)
-    throws PropertyException {
+            throws PropertyException {
         return setIntProperty(this, key, value);
     }
 
@@ -701,9 +680,9 @@ implements Cloneable, Map, Serializable {
     }
 
     public static Object setLongProperty(
-        final java.util.Properties properties, final String key,
-        final long value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final long value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Long(value));
         } else {
@@ -712,15 +691,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setLongProperty(
-        final String key, final long value)
-    throws PropertyException {
+            final String key, final long value)
+            throws PropertyException {
         return setLongProperty(this, key, value);
     }
 
     public static Object setObjectProperty(
-        final java.util.Properties properties, final String key,
-        final Object value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final Object value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, value);
         } else {
@@ -729,20 +708,20 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setObjectProperty(
-        final String key, final Object value)
-    throws PropertyException {
+            final String key, final Object value)
+            throws PropertyException {
         return setObjectProperty(this, key, value);
     }
 
     public synchronized Object setProperty(final String key, final String value)
-    throws PropertyException {
+            throws PropertyException {
         return setStringProperty(key, value);
     }
 
     public static Object setShortProperty(
-        final java.util.Properties properties, final String key,
-        final short value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final short value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, new Short(value));
         } else {
@@ -751,15 +730,15 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setShortProperty(
-        final String key, final short value)
-    throws PropertyException {
+            final String key, final short value)
+            throws PropertyException {
         return setShortProperty(this, key, value);
     }
 
     public static Object setStringProperty(
-        final java.util.Properties properties, final String key,
-        final String value)
-    throws PropertyException {
+            final java.util.Properties properties, final String key,
+            final String value)
+            throws PropertyException {
         if (properties != null) {
             return properties.put(key, value);
         } else {
@@ -768,8 +747,8 @@ implements Cloneable, Map, Serializable {
     }
 
     public synchronized Object setStringProperty(
-        final String key, final String value)
-    throws PropertyException {
+            final String key, final String value)
+            throws PropertyException {
         return setStringProperty(this, key, value);
     }
 
@@ -777,138 +756,151 @@ implements Cloneable, Map, Serializable {
         this.valueValidator = valueValidator;
     }
 
+    private static void checkIfNull(Object value) {
+        if (value == null) {
+            throw new PropertyException("Cannot convert null values");
+        }
+    }
+
     private static boolean asBoolean(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            return Boolean.valueOf((String)value).booleanValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            return Boolean.valueOf((String) value).booleanValue();
         } else if (value instanceof Boolean) {
-            return ((Boolean)value).booleanValue();
+            return ((Boolean) value).booleanValue();
         } else {
             throw new PropertyException("value is not a boolean: " + value);
         }
     }
 
     private static byte asByte(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Byte.valueOf((String)value).byteValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Byte.valueOf((String) value).byteValue();
             } catch (NumberFormatException exception) {
                 throw new PropertyException("value is not a byte: " + value);
             }
         } else if (value instanceof Byte) {
-            return ((Byte)value).byteValue();
+            return ((Byte) value).byteValue();
         } else {
             throw new PropertyException("value is not a byte: " + value);
         }
     }
 
     private static double asDouble(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Double.valueOf((String)value).doubleValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Double.valueOf((String) value).doubleValue();
             } catch (NumberFormatException exception) {
                 throw new PropertyException("value is not a double: " + value);
             }
         } else if (value instanceof Double) {
-            return ((Double)value).doubleValue();
+            return ((Double) value).doubleValue();
         } else if (value instanceof Float) {
-            return ((Float)value).doubleValue();
+            return ((Float) value).doubleValue();
         } else {
             throw new PropertyException("value is not a double: " + value);
         }
     }
 
     private static float asFloat(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Float.valueOf((String)value).floatValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Float.valueOf((String) value).floatValue();
             } catch (NumberFormatException exception) {
                 throw new PropertyException("value is not a float: " + value);
             }
         } else if (value instanceof Float) {
-            return ((Float)value).floatValue();
+            return ((Float) value).floatValue();
         } else {
             throw new PropertyException("value is not a float: " + value);
         }
     }
 
     private static int asInt(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Integer.valueOf((String)value).intValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Integer.valueOf((String) value).intValue();
             } catch (NumberFormatException exception) {
                 throw new PropertyException("value is not an int: " + value);
             }
         } else if (value instanceof Integer) {
-            return ((Integer)value).intValue();
+            return ((Integer) value).intValue();
         } else if (value instanceof Short) {
-            return ((Short)value).intValue();
+            return ((Short) value).intValue();
         } else if (value instanceof Byte) {
-            return ((Byte)value).intValue();
+            return ((Byte) value).intValue();
         } else {
             throw new PropertyException("value is not an int: " + value);
         }
     }
 
     private static long asLong(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Long.valueOf((String)value).longValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Long.valueOf((String) value).longValue();
             } catch (NumberFormatException exception) {
                 throw new PropertyException("value is not a long: " + value);
             }
         } else if (value instanceof Long) {
-            return ((Long)value).longValue();
+            return ((Long) value).longValue();
         } else if (value instanceof Integer) {
-            return ((Integer)value).longValue();
+            return ((Integer) value).longValue();
         } else if (value instanceof Short) {
-            return ((Short)value).longValue();
+            return ((Short) value).longValue();
         } else if (value instanceof Byte) {
-            return ((Byte)value).longValue();
+            return ((Byte) value).longValue();
         } else {
             throw new PropertyException("value is not a long: " + value);
         }
     }
 
     private static short asShort(final Object value)
-    throws PropertyException {
-        if (value == null || value instanceof String) {
-            try{
-                return Short.valueOf((String)value).shortValue();
+            throws PropertyException {
+        checkIfNull(value);
+        if (value instanceof String) {
+            try {
+                return Short.valueOf((String) value).shortValue();
             } catch (NumberFormatException exception) {
                 throw
-                    new PropertyException("value is not a short: " + value);
+                        new PropertyException("value is not a short: " + value);
             }
         } else if (value instanceof Short) {
-            return ((Short)value).shortValue();
+            return ((Short) value).shortValue();
         } else if (value instanceof Byte) {
-            return ((Byte)value).shortValue();
+            return ((Byte) value).shortValue();
         } else {
             throw new PropertyException("value is not a short: " + value);
         }
     }
 
     private void validateKey(final Object key)
-    throws PropertyException {
+            throws PropertyException {
         if (keyValidator != null && !keyValidator.isValid(key)) {
             throw new PropertyException("invalid key: " + key);
         }
     }
 
     private void validateValue(final Object value)
-    throws PropertyException {
+            throws PropertyException {
         if (valueValidator != null && !valueValidator.isValid(value)) {
             throw new PropertyException("invalid value: " + value);
         }
     }
 
     public static class PropertyKeyValidator
-    implements Validator {
+            implements Validator {
         public boolean isValid(final Object object) {
             if (object instanceof String) {
                 return true;
@@ -919,20 +911,20 @@ implements Cloneable, Map, Serializable {
     }
 
     public static class PropertyValueValidator
-    implements Validator {
+            implements Validator {
         public boolean isValid(final Object object) {
             /*
              * Property values can be boolean, byte, short, int, long, float,
              * double, and String.
              */
             if (object instanceof Boolean ||
-                object instanceof Byte ||
-                object instanceof Short ||
-                object instanceof Integer ||
-                object instanceof Long ||
-                object instanceof Float ||
-                object instanceof Double ||
-                object instanceof String) {
+                    object instanceof Byte ||
+                    object instanceof Short ||
+                    object instanceof Integer ||
+                    object instanceof Long ||
+                    object instanceof Float ||
+                    object instanceof Double ||
+                    object instanceof String) {
 
                 return true;
             } else {
