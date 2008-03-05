@@ -95,13 +95,16 @@ public class MatchAddressDB extends MatchBean {
             if (log.isDebugEnabled())
                 log.debug("Database not found.");
         }
+        
+        if(xDecode == null)
+            return;
 
         //loop through every entry in the xml file
         MatchBean city;
         MatchState state;
         MatchZip zip;
 
-        while (xData != null && xDecode != null) {
+        while (xData != null) {
 
             //create zip, city and state objects
             zip = (MatchZip) zipMap.get((xData.getZip()));
