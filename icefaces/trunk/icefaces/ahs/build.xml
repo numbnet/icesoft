@@ -32,7 +32,7 @@
         <fileset dir="${icefaces.dir}/lib" includes="**/*.jar"/>
         <pathelement location="${icefaces.jar}" />
     </path>
-    
+     
     <target name="compile">
         <!--echo message="${icefaces.dir}"/-->
         <delete dir="${build.classes.dir}"/>
