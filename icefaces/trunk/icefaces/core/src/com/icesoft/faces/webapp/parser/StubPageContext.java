@@ -212,7 +212,8 @@ public class StubPageContext extends PageContext {
      * @see javax.servlet.jsp.PageContext#getSession()
      */
     public HttpSession getSession() {
-        return (HttpSession) externalContext.getSession(false);
+        //return null to preserve previous behavior
+        return null;
     }
 
     /* 
