@@ -187,7 +187,8 @@
             <param name="liferay" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>        
-    </target>     
+    </target> 
+    
     <!--
     <target name="help">
         <echo level="info">

@@ -291,7 +291,6 @@
                 <filter token="project_name" value="${ant.project.name}"/>
             </filterset>
         </copy>
-        
         <ear destfile="${dist.dir}/${ant.project.name}.ear" appxml="conf/application.xml">
             <fileset dir="${dist.dir}" includes="*.war"/>
         </ear>
