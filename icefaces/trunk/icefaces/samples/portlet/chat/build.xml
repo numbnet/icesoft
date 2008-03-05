@@ -171,6 +171,23 @@
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>  
     </target>
+    <target name="build.portlet.liferay.glassfishv2.war" description="portlet application for Liferay Glassfish V2 without AHS">
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/${general.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+            <param name="liferay" value=""/>
+        </antcall>        
+    </target>
+    <target name="build.portlet.liferay.glassfishv2.ahs.war" description="portlet application for Liferay Glassfish V2 with AHS">
+        <antcall target="build.portlet.war">
+            <param name="comp.xml" value="./conf/${general.ahs.xml}"/>
+            <param name="jsf12" value=""/>
+            <param name="serverjsf" value=""/>
+            <param name="liferay" value=""/>
+            <param name="icefaces.ahs.enabled" value=""/>
+        </antcall>        
+    </target>     
     <!--
     <target name="help">
         <echo level="info">
