@@ -77,6 +77,7 @@ public class MenuItem extends MenuItemBase {
     private String renderedOnUserRole = null;
     private String title;
     private String alt;
+    private String onclick;
 
     /**
      * String constant defining default menu icon img
@@ -446,5 +447,27 @@ public class MenuItem extends MenuItemBase {
         
         ValueBinding vb = getValueBinding("styleClass");
         return vb != null ? parentClass + disSuffix + " " + (String) vb.getValue(getFacesContext()) + subClass + disSuffix : parentClass + disSuffix;
+    }
+    
+    /**
+     * <p>Set the value of the <code>onclick</code> property.</p>
+     *
+     * @param onclick
+     */
+    public void setOnclick(String onclick) {
+        this.onclick = onclick;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onclick</code> property.</p>
+     *
+     * @return String onclick
+     */
+    public String getOnclick() {
+        if (onclick != null) {
+            return onclick;
+        }
+        ValueBinding vb = getValueBinding("onclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 }

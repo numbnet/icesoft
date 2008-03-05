@@ -180,3 +180,18 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        Javascript to be executed before the MenuItem's CommandLink submits to the server.
+    </description>
+    <property-name>onclick</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+      <category>JAVASCRIPT</category>
+      <is-hidden>true</is-hidden>
+      <editor-class>
+        &javascriptEditor;
+      </editor-class>
+    </property-extension>
+</property>

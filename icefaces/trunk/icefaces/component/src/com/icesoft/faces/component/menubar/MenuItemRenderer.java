@@ -284,6 +284,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             if (menuItem.getTarget() != null) {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
             }
+            if(menuItem.getOnclick() != null) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
+            }
         }
         // create div
         Element div = domContext.createElement(HTML.DIV_ELEM);
@@ -354,6 +357,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             anchor.setAttribute(HTML.HREF_ATTR, menuItem.getLink());
             if (menuItem.getTarget() != null) {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
+            }
+            if(menuItem.getOnclick() != null) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
             }
         }
         // create div
@@ -649,6 +655,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                         }
                     }
                 }
+                link.setOnclick(nextSubMenuItem.getOnclick());
                 link.setValue(nextSubMenuItem.getValue());
                 link.setParent(nextSubMenuItem);
                 link.setId(LINK_SUFFIX);
@@ -694,6 +701,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     }
                 }
             }
+            link.setOnclick(nextSubMenuItem.getOnclick());
             link.setValue(nextSubMenuItem.getValue());
             link.setParent(nextSubMenuItem);
             link.setId(LINK_SUFFIX);
