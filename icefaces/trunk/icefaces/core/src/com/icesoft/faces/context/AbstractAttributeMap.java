@@ -36,16 +36,7 @@
  */
 package com.icesoft.faces.context;
 
-import java.util.AbstractCollection;
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AbstractAttributeMap implements Map {
 
@@ -315,8 +306,7 @@ public abstract class AbstractAttributeMap implements Map {
             Entry entry = (Entry) object;
             Object key = entry.getKey();
             Object value = entry.getValue();
-            if (!value.equals(AbstractAttributeMap.this.get(key)) ||
-                key == null || value == null)
+            if (key == null || value == null || !value.equals(AbstractAttributeMap.this.get(key)))
                 return false;
 
             return AbstractAttributeMap.this.remove(key) != null;
