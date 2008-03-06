@@ -2,7 +2,7 @@
 
 <project name="seam-comp-showcase-common" default="jboss" basedir=".">
  	
-	   <target name="jboss"  description="Build seam-comp-showcase and deploy to JBoss 4.2.0.GA">
+	   <target name="jboss"  description="Build seam-comp-showcase and deploy to JBoss 4.2.x.GA">
 	     	<ant antfile="build-scripts/build-jboss.xml"/>
 	   </target>
 
@@ -18,17 +18,20 @@
 		     	<ant antfile="build-scripts/build-tomcat6.xml" />
 		   </target>
 	
-	 <!--  <target name="tomcat55" description="Build seam-comp-showcase for deployment to Tomcat 5.5">
+	<!-- <target name="tomcat55" description="Build seam-comp-showcase for deployment to Tomcat 5.5">
 	     	<ant antfile="build-scripts/build-tomcat55.xml"/>
 	   </target> -->
 	
-	<!--   <target name="jboss405" description="Build seam-comp-showcase for deployment to JBoss 4.0.5.GA">
+	<!-- <target name="jboss405" description="Build seam-comp-showcase for deployment to JBoss 4.0.5.GA">
 		     	<ant antfile="build-scripts/build-jboss405.xml"/>
 		   </target> -->
 	
 	<!--   <target name="websphere61" description="Build seam-comp-showcase for deployment to WebSphere 6.1.0.9">
 		     	<ant antfile="build-scripts/build-websphere61.xml"/>
 		   </target> -->
+	   <target name="jboss-portal"  description="Build seam-comp-showcase and deploy to jboss-portal-2.6.4">
+	     	<ant antfile="build-scripts/build-jboss-portal.xml"/>
+	   </target>
 	
 	   <target name="copy-libs" description="copy over libraries to project">
 	   	  <ant antfile="build-scripts/build-common.xml" target="freshen"/> 
@@ -38,6 +41,7 @@
 	     	<ant antfile="build-scripts/build-jboss.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-glassfish.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-weblogic.xml" target="clean" />
+	   	    <ant antfile="build-scripts/build-jbossportal.xml" target="clean" />
 	  <!--  	<ant antfile="build-scripts/build-websphere61.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-tomcat55.xml" target="clean" /> --> 
 	    	<ant antfile="build-scripts/build-tomcat6.xml" target="clean" />
