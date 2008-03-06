@@ -245,6 +245,15 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
         return after;
     }
 
+    public UIViewRoot createView(FacesContext context, String viewId) {
+        UIViewRoot root = super.createView(context, viewId);
+        if(root != null) {
+            String renderedViewId =
+                getRenderedViewId(context, root.getViewId());
+            root.setViewId(renderedViewId);
+        }
+        return root;
+    }
 
     protected void renderResponse(FacesContext facesContext) throws IOException {
         if (log.isTraceEnabled()) {
@@ -255,9 +264,6 @@ public class D2DFaceletViewHandler extends D2DViewHandler {
             ResponseWriter responseWriter = context.createAndSetResponseWriter();
 
             UIViewRoot viewToRender = context.getViewRoot();
-            String renderedViewId =
-                    getRenderedViewId(context, viewToRender.getViewId());
-            viewToRender.setViewId(renderedViewId);
             if (viewToRender.getId() == null) {
                 viewToRender.setId(viewToRender.createUniqueId());
             }
