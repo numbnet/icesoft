@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+             version="1.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+
+      <portlet>
+		<portlet-name>components_portlet</portlet-name>
+        <display-name>ICEfaces component portlet</display-name>
+	   <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.VIEW</name>
+          <value>/portlet/portletTemplate.seam</value>
+        </init-param>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<portlet-info>
+			<title>ICEfaces component</title>
+			<short-title>component short title</short-title>
+            <keywords>ICEfaces Seam Components</keywords>
+		</portlet-info>
+	</portlet>
+</portlet-app>
