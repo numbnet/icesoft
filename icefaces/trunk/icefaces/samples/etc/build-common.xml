@@ -419,6 +419,18 @@ Combinations:
 	<taskdef name="build-time" classname="BuildTime" classpath="${icefaces.build.facilities.dir}/${help.name}.jar"/>
 	<build-time/>
     </target>
+    <target name="create.xml">
+        <echo message="${property.config}"/>
+
+        <replaceregexp file="${web.xml}" match="param-value>jboss.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>activemq.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>jboss_ha.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>weblogic.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>weblogic.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>websphere.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>websphere_ha.properties" replace="param-value>${property.config}" byline="true"/>
+        <replaceregexp file="${web.xml}" match="param-value>glassfish.properties" replace="param-value>${property.config}" byline="true"/>
+    </target>
     
     <target name="change.flag" depends="check.all.flags">
         <replaceregexp file="build.properties" match="#${flag}=(.*)" replace="${flag}=" byline="true"/>

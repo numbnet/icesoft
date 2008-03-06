@@ -189,6 +189,10 @@
     </target>
     
     <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal with AHS">
+        <antcall target="create.xml">
+            <param name="property.config" value="jboss.properties"/>
+            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>            
+        </antcall>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
@@ -237,6 +241,10 @@
         </antcall>
     </target>    
     <target name="build.portlet.liferay.jboss4.0.ahs.war" description="build a portlet application for Liferay JBoss4.0.x with AHS">
+        <antcall target="create.xml">
+            <param name="property.config" value="jboss.properties"/>
+            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
+        </antcall>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf11" value=""/>
@@ -255,6 +263,10 @@
     </target>
 
     <target name="build.portlet.liferay.jboss4.2.ahs.war" description="build a portlet application for Liferay JBoss4.2 with AHS">
+        <antcall target="create.xml">
+            <param name="property.config" value="jboss.properties"/>
+            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
+        </antcall>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
@@ -272,6 +284,11 @@
         </antcall>        
     </target>
     <target name="build.portlet.liferay.glassfishv2.ahs.war" description="portlet application for Liferay Glassfish V2 with AHS">
+        <antcall target="create.xml">
+            <param name="property.config" value="glassfish.properties"/>
+            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
+        </antcall>
+            
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
