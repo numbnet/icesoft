@@ -47,7 +47,7 @@
 
 <!--<ice:outputStyle href="resources/css/styles.css" />-->
     <link rel="stylesheet" type="text/css" href="resources/css/styles_mobile.css"/>
-    <meta name="viewport" content="width=480" />
+    <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
 </head>
 
 <body>
