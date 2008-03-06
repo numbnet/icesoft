@@ -266,7 +266,7 @@
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
                         <f:param name="loginSource" 
-                                 value="viewDemologin"/>
+                                 value="viewLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
@@ -291,7 +291,7 @@
                             <ice:graphicImage value="resources/images/butt_join_present.gif" 
                                               style="border: 0;"/>
                             <f:param name="loginSource" 
-                                     value="viewDemologin"/>
+                                     value="viewLogin"/>
                         </ice:commandLink>
                 </td>
             </tr>
@@ -323,13 +323,12 @@
                 <td>
                     <ice:inputSecret id="moderatorPassword"
                                      value="#{participant.loginBean.presentationPassword}"
-                                     required="true"
                                      maxlength="20"
                                      tabindex="5"
                                      styleClass="loginInput"
                                      redisplay="true" partialSubmit="true"
                                      action="#{participant.login}">
-                        <f:validator validatorId="PasswordValidator"/>
+                        <f:param name="loginSource" value="moderatorLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:message for="moderatorPassword"
@@ -359,11 +358,15 @@
                                        tabindex="7"
                                        style="text-align: right;"
                                        alt="Reset"/>
-                    <ice:commandButton image="resources/images/butt_start_present.gif"
-                                       action="#{participant.login}"
+                    <ice:commandLink   action="#{participant.login}"
                                        tabindex="8"
                                        style="text-align: right;"
-                                       alt="Start Presentation"/>
+                                       alt="Start Presentation">
+                        <ice:graphicImage value="resources/images/butt_start_present.gif"
+                                          style="border: 0;"/>
+                        <f:param name="loginSource" 
+                                 value="moderatorLogin"/>
+                    </ice:commandLink>
                 </td>
             </tr>
         </table>

@@ -56,7 +56,6 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSessionListener;
 import javax.faces.event.ActionEvent;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
@@ -479,7 +478,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         String loginSource = (String) params.get("loginSource");
         if(loginSource != null && loginBean.getPresentationPassword() != null){
         	String inputPassword = loginBean.getPresentationPassword().trim();
-            if (loginSource.startsWith("viewDemo")) {
+            if (loginSource.startsWith("view")) {
                 if(!loginBean.validateDemoPassword(inputPassword)){
                 	return "failed";
                 }

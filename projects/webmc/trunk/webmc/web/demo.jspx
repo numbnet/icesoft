@@ -141,7 +141,7 @@
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
                         <f:param name="loginSource" 
-                                 value="viewDemologin"/>
+                                 value="viewDemoLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
@@ -167,7 +167,7 @@
                             <ice:graphicImage value="resources/images/butt_join_present.gif" 
                                               style="border: 0;"/>
                             <f:param name="loginSource" 
-                                     value="viewDemologin"/>
+                                     value="viewDemoLogin"/>
                         </ice:commandLink>
                 </td>
             </tr>
@@ -204,7 +204,7 @@
                                      styleClass="loginInput"
                                      redisplay="true" >
                         <f:param name="loginSource" 
-                                 value="moderatorDemologin"/>
+                                 value="moderatorDemoLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:message for="moderatorPassword"
@@ -228,7 +228,7 @@
                         <ice:graphicImage value="resources/images/butt_start_present.gif"
                                           style="border: 0;"/>
                         <f:param name="loginSource" 
-                                 value="moderatorDemologin"/>
+                                 value="moderatorDemoLogin"/>
                     </ice:commandLink>
                 </td>
             </tr>
