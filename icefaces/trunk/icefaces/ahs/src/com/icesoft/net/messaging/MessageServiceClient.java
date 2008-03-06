@@ -48,11 +48,11 @@ import org.apache.commons.logging.LogFactory;
 
 public class MessageServiceClient {
     public static final String CONTEXT_EVENT_TOPIC_NAME =
-        "icefaces.contextEventTopic";
+        "icefacesContextEventTopic";
     public static final String RENDER_TOPIC_NAME =
-        "icefaces.renderTopic";
+        "icefacesRenderTopic";
     public static final String RESPONSE_TOPIC_NAME =
-        "icefaces.responseTopic";
+        "icefacesResponseTopic";
 
     private static final Log LOG =
         LogFactory.getLog(MessageServiceClient.class);
