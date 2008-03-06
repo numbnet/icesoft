@@ -69,6 +69,7 @@ public class PanelDivider extends UIPanel{
                 && map.get(clientId + IN_PERCENT) != null && 
                         !"".equals(map.get(clientId + IN_PERCENT))) {
             submittedDividerPosition =  Integer.valueOf(String.valueOf(map.get(clientId + IN_PERCENT))).intValue();
+            if (submittedDividerPosition >=98)submittedDividerPosition= 98;
             DEFAULT_POSITION = submittedDividerPosition;
             decoded = true;
         } else {

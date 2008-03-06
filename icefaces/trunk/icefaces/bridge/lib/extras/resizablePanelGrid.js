@@ -232,7 +232,7 @@ Ice.PanelDivider = Class.create(Ice.Resizable, {
         var spliterHeight = Element.getHeight(this.source);
         var mouseTop = Event.pointerY(event);
         this.getGhost().style.top = (mouseTop - (spliterHeight )) + "px";
-        //this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
+        this.getGhost().style.width = (Element.getWidth(this.getContainerElement())) + "px";
     } else {
         var spliterWidth = Element.getWidth(this.source);
         var mouseLeft = Event.pointerX(event);
@@ -288,40 +288,47 @@ Ice.PanelDivider.addMethods({
         var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
         var rightElementHeight = (Element.getHeight(this.getNextElement()));
 
-        logger.info("leftHeight "+ leftElementHeight);
-        logger.info("rightElementHeight "+ rightElementHeight);
-
         var tableHeight = Element.getHeight(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
         var diff = this.getDifference(event);
-        logger.info("tableHeight "+ tableHeight);
-        logger.info("totalHeight "+ totalHeight);
-        logger.info("diff "+ diff);
         var inPercent;
         if (this.resizeAction == "inc") {
-            this.getPreviousElement().style.height = (leftElementHeight + diff)  + "px";
-            this.getNextElement().style.height = (rightElementHeight - diff) + "px"
             inPercent = (leftElementHeight + diff) /tableHeight  ;
+            topInPercent = Math.round(inPercent * 100);      
+            bottomInPercent = 99 - topInPercent;                    
+            this.getPreviousElement().style.height = (topInPercent)   + "%";
+            this.getNextElement().style.height = bottomInPercent + "%"
+
         } else {
-            this.getPreviousElement().style.height = (leftElementHeight - diff) + "px";
-            this.getNextElement().style.height = (rightElementHeight + diff) + "px"
             inPercent = (leftElementHeight - diff) / tableHeight ;
+            topInPercent = Math.round(inPercent * 100);      
+            bottomInPercent = 99 - topInPercent;                    
+            this.getPreviousElement().style.height = (topInPercent) + "%";
+            this.getNextElement().style.height = bottomInPercent + "%"
+
         }
    } else {
         var leftElementWidth = (Element.getWidth(this.getPreviousElement()));
         var rightElementWidth = (Element.getWidth(this.getNextElement()));
-
+        var splitterWidth = (Element.getWidth(this.source)); 
         var tableWidth = Element.getWidth(this.getContainerElement());
         var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
         var diff = this.getDifference(event);
         if (this.resizeAction == "inc") {
-            this.getPreviousElement().style.width = (leftElementWidth + diff)  + "px";
-            this.getNextElement().style.width = (rightElementWidth - diff) + "px"
-            inPercent = (leftElementWidth + diff) /totalWidth  ;
+            inPercent = ((leftElementWidth - splitterWidth) + diff) /totalWidth  ;
+            leftInPercent = Math.round(inPercent * 100);      
+            rightInPercent = 100 - leftInPercent;
+            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+            this.getNextElement().style.width = rightInPercent + "%"
+              
+
         } else {
-            this.getPreviousElement().style.width = (leftElementWidth - diff) + "px";
-            this.getNextElement().style.width = (rightElementWidth + diff) + "px"
-            inPercent = (leftElementWidth - diff) / totalWidth ;
+            inPercent = ((leftElementWidth - splitterWidth)  - diff) / totalWidth ; 
+            leftInPercent = Math.round(inPercent * 100); 
+            rightInPercent = 100 - leftInPercent;
+            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+            this.getNextElement().style.width = rightInPercent + "%"
+
         }
      }
         this.submitInfo(event, inPercent);
