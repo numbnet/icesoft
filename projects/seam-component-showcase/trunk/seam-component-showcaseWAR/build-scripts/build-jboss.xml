@@ -11,7 +11,7 @@
 	<property name="exploded-archives.dir" value="exploded-archives-jboss" />
        
     <import file="build-common.xml"/>
-    
-       
+
+  
 </project>
 

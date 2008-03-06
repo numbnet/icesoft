@@ -11,8 +11,8 @@
 
 	<!-- set global properties for this build -->
 	<property name="project.name" value="seam-comp-showcase"/>
-    <property name="dist.dir" value="dist" />
-	<property name="exploded-archives.dir" value="exploded-archives" />
+ <!--   <property name="dist.dir" value="dist" /> -->
+<!--	<property name="exploded-archives.dir" value="exploded-archives" /> -->
     <property name="src.action.dir" value="src" />
     <property name="src.test.dir" value="src/test" />
     <property name="lib.dir" value="lib" />
@@ -92,20 +92,34 @@
 	</target>
     
 	<target name="noejb.archive.405" depends="war" description="package war for dist of jboss4.0.5">
-		 <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
+		 <echo message="for 405 copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
 		 <copy todir="${war.dir}/WEB-INF/lib">
 			<fileset refid="noejb.war.lib.extras" />
 		 </copy>
-		<copy todir="${war.dir}/WEB-INF" overwrite="true">
-					<fileset dir="${resources.dir}/WEB-INF">
+		 <copy todir="${war.dir}/WEB-INF" overwrite="true">
+				<fileset dir="${resources.dir}/WEB-INF">
 				        <include name="web*.xml"/>
-				    </fileset>
-			</copy>
+				</fileset>
+		 </copy>
 		 <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
 	</target>
 	
+	<target name="portal.war" if="portal.build" description="Building portal application">
+	    <echo message="portal.war target so copying portal files"/>
+		<copy todir="${war.dir}">
+		   <fileset dir="${resources.dir}">
+			    <include name="portlet/*.jspx"/>
+			</fileset>
+		</copy>
+		<copy todir="$war.dir}/WEB-INF">
+		    <fileset dir="${resources.dir}/WEB-INF">
+		        <include name="*.xml" />
+		    </fileset>
+		</copy>
+	</target>
+	
     <target name="noejb.war" depends="war" description="Copy extra libs for Tomcat6 deploy">
-       <echo message="copying to dir ${war.dir}/WEB-INF/classes"/>
+       <echo message="noejb.war copying to dir ${war.dir}/WEB-INF/classes"/>
          <copy todir="${war.dir}/WEB-INF/classes">
 	        <fileset dir="${resources.dir}">
 	          <include name="log4j.xml"/>
@@ -116,11 +130,8 @@
 			<fileset refid="noejb.war.lib.extras" />
 	     	<fileset refid="jboss.archive.jar" />
 	    </copy>
-	       	
-		<copy todir="${war.dir}">
-			<fileset refid="noejb.war.extras" />
-		</copy>
-    	
+     	
+	 	
 		<!-- Copy in resources, with filtering -->
 		<copy todir="${war.dir}/WEB-INF" overwrite="true">
 				<fileset dir="${resources.dir}/WEB-INF">
@@ -128,7 +139,8 @@
 			        <include name="components.xml"/>
 			    </fileset>
 		</copy>
-		<delete file="${war.dir}/WEB-INF/jboss-web.xml" />
+
+    	<echo message="copying resources for jar part of war"/>
         <!-- resources for the jar part of the war -->
 		<copy todir="${war.dir}/WEB-INF/classes" overwrite="true">
 		     <fileset dir="${resources.dir}">
@@ -136,11 +148,15 @@
 			    <include name="log4j.xml"/>
 			 </fileset>
 		</copy>
-	       	
+    	<echo message="copying noejb.war.extras"/>
+    	<copy todir="${war.dir}">
+    			<fileset refid="noejb.war.extras" />
+    		</copy>       	
     </target>
     
-    <target name="war" depends="compileactions,copyclasses" 
+    <target name="war" depends="compileactions,copyclasses,portal.war" 
             description="Build the distribution .war file">
+   		<echo message=" war building ...."/>
        <copy todir="${war.dir}/WEB-INF/classes/META-INF">
     	   <fileset dir="${resources.dir}/META-INF">
         	    <include name="persistence.xml"/>
@@ -168,6 +184,7 @@
                 <include name="classes/**/*.*"/>
                 <exclude name="classes/**/*.class"/>
                 <exclude name="classes/**/*.groovy"/>
+            	<exclude name="jboss-web.xml"/>
             </fileset>
             <filterset>
                 <filter token="debug"       value="${debug}" />
@@ -189,9 +206,7 @@
                 <include name="jboss-seam-*.jar" />
                 <exclude name="jboss-seam-gen.jar" />
                 <include name="drools.jar"/>
-              <!--  <include name="janino.jar"/> -->
                 <include name="antlr.jar"/>
-              <!--  <include name="mvel*.jar"/> -->
             </fileset>
         </copy>
         
@@ -213,21 +228,20 @@
         </copy>	
         
         <copy todir="${war.dir}/WEB-INF">
-            <fileset dir="${basedir}">
-                <include name="lib/jboss-seam.jar" />
-              <!--  <include name="lib/jbpm*.jar" /> -->
-                <include name="lib/jboss-el.jar" />
-                <include name="lib/commons-digester*.jar" />
-                <include name="lib/commons-beanutils-*.jar" />
-	        <include name="lib/icefaces*.jar" />
-		<include name="lib/backport-util-concurrent.jar" />
-		<include name="lib/commons-fileupload.jar"/> 	
-                <include name="lib/krysalis-jCharts-*.jar"/>
-	    </fileset>
-        </copy>
-        
+           <fileset dir="${basedir}">
+             <include name="lib/jboss-seam.jar" />
+             <include name="lib/jboss-el.jar" />
+             <include name="lib/commons-digester*.jar" />
+             <include name="lib/commons-beanutils-*.jar" />
+	         <include name="lib/icefaces*.jar" />
+		     <include name="lib/backport-util-concurrent.jar" />
+		     <include name="lib/commons-fileupload.jar"/> 	
+             <include name="lib/krysalis-jCharts-*.jar"/>
+	      </fileset>
+        </copy>       
     </target>
-		
+	
+	
 	
     <target name="archive" depends="war" 
             description="Package the archives">
