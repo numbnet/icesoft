@@ -22,5 +22,6 @@
   	</licenses>
 	<liferay-versions>
 		<liferay-version>4.3.*</liferay-version>
+		<liferay-version>4.4.*</liferay-version>
 	</liferay-versions>
 </plugin-package>
