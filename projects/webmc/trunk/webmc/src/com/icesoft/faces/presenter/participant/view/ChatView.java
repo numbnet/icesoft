@@ -42,9 +42,9 @@ import javax.faces.event.ActionEvent;
  * messages are displayed, scrolling up and down, etc.
  */
 public class ChatView {
-    private static final int VIEW_SIZE = 7;
+    private int viewSize = 7;
 
-    private Message[] chatView = new Message[VIEW_SIZE];
+    private Message[] chatView = new Message[viewSize];
     private int position = 0;
     private Presentation presentation;
 
@@ -72,7 +72,7 @@ public class ChatView {
      * @return VIEW_SIZE
      */
     public int getViewSize() {
-        return VIEW_SIZE;
+        return viewSize;
     }
 
     /**
@@ -85,9 +85,9 @@ public class ChatView {
     public Message[] getView() {
         if (presentation != null) {
             // Fill the array used in the chat dataTable with messages relevant to current position
-            for (int i = 0; i < VIEW_SIZE; i++) {
+            for (int i = 0; i < viewSize; i++) {
                 chatView[i] = presentation.getMessageAt(
-                        position - (VIEW_SIZE - i - 1));
+                        position - (viewSize - i - 1));
             }
         }
 
@@ -102,7 +102,7 @@ public class ChatView {
      */
     public boolean getChatScrollDownDisabled() {
         if (presentation != null) {
-            if ((presentation.getMessageLogSize() < VIEW_SIZE) ||
+            if ((presentation.getMessageLogSize() < viewSize) ||
                 (position == (presentation.getMessageLogSize() - 1))) {
                 return true;
             }
@@ -119,8 +119,8 @@ public class ChatView {
      */
     public boolean getChatScrollUpDisabled() {
         if (presentation != null) {
-            if ((presentation.getMessageLogSize() < VIEW_SIZE) || (position == (
-                    VIEW_SIZE - 1))) {
+            if ((presentation.getMessageLogSize() < viewSize) || (position == (
+                    viewSize - 1))) {
                 return true;
             }
         }
@@ -154,16 +154,16 @@ public class ChatView {
      */
     public void moveChatViewUp(ActionEvent event) {
         // Skip processing if there aren't even enough messages to scroll through
-        if (presentation.getMessageLogSize() < VIEW_SIZE) {
+        if (presentation.getMessageLogSize() < viewSize) {
             return;
         }
 
         // Apply the page up amount
-        position -= VIEW_SIZE;
+        position -= viewSize;
 
         // Ensure the position is within bounds of the top
-        if (position < (VIEW_SIZE - 1)) {
-            position = VIEW_SIZE - 1;
+        if (position < (viewSize - 1)) {
+            position = viewSize - 1;
         }
     }
 
@@ -176,12 +176,12 @@ public class ChatView {
     public void moveChatViewDown(ActionEvent event) {
         // Skip processing if there aren't even enough messages to scroll through
         int messageLogSize = presentation.getMessageLogSize();
-        if (messageLogSize < VIEW_SIZE) {
+        if (messageLogSize < viewSize) {
             return;
         }
 
         // Apply the page down amount
-        position += VIEW_SIZE;
+        position += viewSize;
 
         // Ensure the position is within the bounds of the bottom
         if (position > messageLogSize - 1) {
@@ -195,4 +195,8 @@ public class ChatView {
     public void useBottomView() {
         position = presentation.bottom();
     }
+
+	public void setViewSize(int viewSize) {
+		this.viewSize = viewSize;
+	}
 }

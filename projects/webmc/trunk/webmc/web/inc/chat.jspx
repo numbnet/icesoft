@@ -1,34 +1,24 @@
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
-	<ice:panelGroup style="padding-top: 15px;">
-	    <img src="resources/images/chat_tab.gif" style="vertical-align: bottom;"/>
-	    <ice:commandButton alt="Save Chat"
-	                       image="resources/images/chat_save.gif"
-	                       title="View the unformatted chat log"
-	                       onclick="javascript: showMedium('chatlog.html');"/>
-	    <ice:commandButton alt="Mail Chat"
-	                       image="resources/images/butt_send.gif"
-	                       title="Mail the chat log to #{participant.email}"
-	                       action="#{participant.emailMessageLog}"/>
-	</ice:panelGroup>
 	
-	<table width="240" border="0" cellspacing="0" cellpadding="0"
+	<table border="0" cellspacing="0" cellpadding="0"
 	       style="border: 1px solid #90B1C9;">
 	    <tr>
-	        <td class="bgBARBLUE" style="padding-left: 13px;">
-	            <ice:outputText
-	                    value="#{participant.presentation.numberChatParticipants}"/>
+	        <td class="bgBARBLUE" style="padding-left: 6px;">
+	            <ice:outputText value="Chat Window"/>
 	        </td>
 	        <td class="bgBARBLUE" align="right">
-	            <ice:commandButton immediate="true" alt="Scroll Up"
+	            <ice:commandButton immediate="true" 
+	                               alt="Scroll Up"
 	                               image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
 	                               title="Scroll the chat log up one page"
 	                               actionListener="#{participant.chatView.moveChatViewUp}"
 	                               style="vertical-align: bottom;"
 	                               disabled="#{participant.chatView.chatScrollUpDisabled}"/>
 	
-	            <ice:commandButton immediate="true" alt="Scroll Down"
+	            <ice:commandButton immediate="true" 
+	                               alt="Scroll Down"
 	                               image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
 	                               title="Scroll the chat log down one page"
 	                               actionListener="#{participant.chatView.moveChatViewDown}"
@@ -38,17 +28,20 @@
 	    </tr>
 	    <tr>
 	        <td class="chat" colspan="2"
-	            style="border-top: 1px solid #90B1C9; border-bottom: 1px solid #90B1C9; vertical-align: middle; margin-bottom: 10px;">
+	            style="border-top: 1px solid #90B1C9; 
+	                   border-bottom: 1px solid #90B1C9; 
+	                   vertical-align: middle;">
 	            <ul>
 	                <ice:dataTable value="#{participant.chatViewList}"
 	                               rows="#{participant.chatView.viewSize}"
 	                               var="page"
-	                               style="text-align: left; width: 100%; padding: 13px 10px 5px 10px;">
+	                               style="text-align: left; width: 100%;">
 	                    <ice:column>
 	                        <li>
 	                            <ice:outputText value="#{page.senderFormatted}"
 	                                            style="font-weight: bold;"/>
-	                            <ice:outputText value="#{page.message}" escape="false"/>
+	                            <ice:outputText value="#{page.message}" 
+	                                            escape="false"/>
 	                            &amp;nbsp;
 	                        </li>
 	                    </ice:column>
@@ -57,10 +50,11 @@
 	        </td>
 	    </tr>
 	    <tr>
-	        <td class="bgBARBLUE" width="179" style="padding: 0 5px 0 5px;">
+	        <td class="bgBARBLUE" style="padding: 0 5px 0 5px;">
 	            <ice:inputText binding="#{participant.chatMessageField}"
 	                           value="#{participant.chatMessage}"
-	                           maxlength="150" styleClass="inputCHAT"
+	                           maxlength="150" 
+	                           styleClass="inputCHAT"
 	                           actionListener="#{participant.addChatMessage}"/>
 	        </td>
 	        <td class="bgBARBLUE" align="right">

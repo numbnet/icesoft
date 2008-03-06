@@ -112,21 +112,8 @@
 						                       
 						       
 						</td>
-					    <td>
-					        
-					        <ice:outputLink rendered="#{participant.moderator}"
-					                        onclick="#{participant.presentation.skypeScript}"
-					                        title="Start Skype conference call">
-					            <img src="resources/images/call_blue_transparent_34x34.png"/>
-					        </ice:outputLink>
-					        
-					        
-					    </td>
 					</tr>
 				</table>
-			</td>
-			<td align="right">
-			    <img src="resources/images/logo.jpg" style="width: 266px; height: 72px"/>
 			</td>
 		</tr>
 	</table>

@@ -847,6 +847,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         }
 */
 		mobile=true;
+		chatView.setViewSize(4);
 		return null;
 	}
 }

@@ -36,8 +36,8 @@
         xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/html4/loose.dtd"/>
+                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
 
 <html>
 <head>
@@ -45,74 +45,29 @@
         <ice:outputText value="WebMC - #{participant.presentation.name}"/>
     </title>
 
-    <link rel="stylesheet" type="text/css" href="resources/css/styles.css"/>
-
-    <script>
-        function showMedium(sUrl) {
-            window.open(sUrl, '', 'width=480, height=320, scrollbars=yes, resizable=yes, status=no, location=no, menubar=no');
-        }
-    </script>
+<!--<ice:outputStyle href="resources/css/styles.css" />-->
+    <link rel="stylesheet" type="text/css" href="resources/css/styles_mobile.css"/>
+    <meta name="viewport" content="width=480" />
 </head>
 
 <body>
+<div id="maincontainer">
+    <ice:panelGroup layout="block"
+                    styleClass="bgNAV" 
+                    rendered="#{participant.moderator}">    
+        <ui:include src="./inc/navigationpanel.jspx"/>
+	</ice:panelGroup>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-       class="height100">
-<!--
-	<tr>
-	    <td class="bgTOPBLUE">
-	        <img src="resources/images/spacer.gif" width="1" height="12"/>
-	    </td>
-	</tr>
-	<tr>
-	    <td class="bgTOPWHITE" height="28" style="padding-left: 30px;">
-
-	        <ui:include src="./inc/menubar.jspx"/>
-
-	    </td>
-	</tr>
--->
-	<tr>
-		<td class="bgNAV">
-            <ice:panelGroup rendered="#{participant.moderator}">
-                <ui:include src="./inc/navigationpanel.jspx"/>
-            </ice:panelGroup>
-		</td>
-	</tr>
-	<tr>
-		<td class="bgMAIN">
-			<ice:form>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0"
-				       class="height100">
-					<tr>
-						<td class="mainPRES" valign="top">
-
-	                        <ui:include src="./inc/presentation.jspx"/>
-
-						</td>
-						<td class="mainCHAT" valign="top" width="270" style="margin-bottom: 30px;">
-
-						    <ui:include src="./inc/participants.jspx"/>
-	
-                            <ui:include src="./inc/chat.jspx"/>
-
-						</td>
-					</tr>
-				</table>
-			</ice:form>
-		</td>
-	</tr>
-<!--
-	<tr>
-        <td class="bgFOOTER">
-
-            <ui:include src="./inc/footer.jspx"/>
-
-        </td>
-	</tr>
--->
-</table>
-
+	<ice:form styleClass="bgMAIN">
+		<div id="mainPRES">
+            <ui:include src="./inc/presentation.jspx"/>
+		</div>
+		<div id="mainCHAT">
+            <ui:include src="./inc/participants.jspx"/>
+            <ui:include src="./inc/chat.jspx"/>
+        </div>
+	</ice:form>
+</div>
 </body>
 </html>
 </f:view>

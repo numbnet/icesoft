@@ -285,6 +285,6 @@ public class PresentationInfo {
      * @return string label of the participants
      */
     public String getNumberChatParticipants() {
-        return "Number of Participants: " + participants.size();
+        return " " + participants.size();
     }
 }
