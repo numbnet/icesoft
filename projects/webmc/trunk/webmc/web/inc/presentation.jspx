@@ -2,10 +2,10 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 	<ice:dataTable value="#{participant.preloadSlides}"
-	               var="loopSlide" style="visibility: hidden; height: 0; width: 0;">
+	               var="loopSlide">
 	    <h:column>
 	        <ice:graphicImage value="#{loopSlide.location}"
-	                          />
+	                          style="visibility: hidden; height: 0; width: 0;"/>
 	    </h:column>
 	</ice:dataTable>
 	<table cellspacing="0" cellpadding="0" border="0" >
