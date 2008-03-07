@@ -124,7 +124,11 @@
                     request.on(Connection.ServerError, this.serverErrorCallback);
                     request.on(Connection.Receive, this.receiveCallback);
                     request.on(Connection.Receive, this.receiveXWindowCookie);
-                    request.on(Connection.Receive, this.connect);
+                    request.on(Connection.Receive, function(response) {
+                        if (!response.containsResponseHeader('X-Close')) {
+                            this.connect();
+                        }
+                    }.bind(this));
                     request.on(Connection.Receive, Connection.Close);
                 }.bind(this));
             }.bind(this);
