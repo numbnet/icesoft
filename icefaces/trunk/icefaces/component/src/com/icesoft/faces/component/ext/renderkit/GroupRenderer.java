@@ -272,9 +272,13 @@ public class GroupRenderer
 
                 if (targetID != null && targetID.length() > 0) {
                     DnDCache dndCache = DnDCache.getInstance(context, false);
-                    targetDragValue = dndCache.getDragValue(panel.getClientId(context));
-                    targetDropValue = dndCache.getDropValue(targetID);
-
+                    if ("drop".equals(dndType)) {
+                        targetDragValue = dndCache.getDragValue(targetID);
+                        targetDropValue = dndCache.getDropValue(panel.getClientId(context));                        
+                    } else {                    
+                        targetDragValue = dndCache.getDragValue(panel.getClientId(context));
+                        targetDropValue = dndCache.getDropValue(targetID);
+                    }
                 }
 
                 if (log.isTraceEnabled()) {
@@ -313,8 +317,8 @@ public class GroupRenderer
                 if (listener != null) {
 
                     DropEvent event = new DropEvent(component, type, targetID,
-                                                    targetDropValue,
-                                                    targetDragValue);
+                                                    targetDragValue,
+                                                    targetDropValue);
                     panel.queueEvent(event);
                 }
             }
