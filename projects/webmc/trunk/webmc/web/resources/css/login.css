@@ -76,7 +76,7 @@ a:hover {
 }
 
 .facesBox {
-    background: #FFFFFF url( '../images/bg_mainfaces.jpg' ) no-repeat center;
+/*    background: #FFFFFF url( '../images/bg_mainfaces.jpg' ) no-repeat center; */
     border: 1px solid #94B3CB;
     padding-top: 125px;
     height: 80%;
