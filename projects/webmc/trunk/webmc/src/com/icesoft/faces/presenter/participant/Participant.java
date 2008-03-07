@@ -248,7 +248,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return chat view list
      */
     public Message[] getChatViewList() {
-        return (chatView.getView());
+    	return (chatView.getView());
     }
 
     /**
@@ -505,7 +505,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
                 // Let the participant join the presentation, and update existing users through chat
                 presentationManager.joinPresentation(this, presentation);
                 presentation
-                        .addChatMessage(firstName, "Joined the Presentation.");
+                        .addChatMessage(firstName, "Joined Presentation.");
                 chatView.useBottomView();
 
                 // Handle leaving the login page
@@ -846,7 +846,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
         }
 */
 		mobile=true;
-		chatView.setViewSize(4);
+		chatView.setViewSize(3);
 		return null;
 	}
 }

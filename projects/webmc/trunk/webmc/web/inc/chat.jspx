@@ -35,13 +35,15 @@
 	                <ice:dataTable value="#{participant.chatViewList}"
 	                               rows="#{participant.chatView.viewSize}"
 	                               var="page"
-	                               style="text-align: left; width: 100%;">
+	                               style="text-align: left; 
+	                                      width: 100%; 
+	                                      height: 85px">
 	                    <ice:column>
 	                        <li>
-	                            <ice:outputText value="#{page.senderFormatted}"
-	                                            style="font-weight: bold;"/>
-	                            <ice:outputText value="#{page.message}" 
-	                                            escape="false"/>
+                                <ice:outputText value="#{page.senderFormatted}"
+                                                style="font-weight: bold;"/>
+                                <ice:outputText value="#{page.message}" 
+                                                escape="false"/>
 	                            &amp;nbsp;
 	                        </li>
 	                    </ice:column>
@@ -53,7 +55,7 @@
 	        <td class="bgBARBLUE" style="padding: 0 5px 0 5px;">
 	            <ice:inputText binding="#{participant.chatMessageField}"
 	                           value="#{participant.chatMessage}"
-	                           maxlength="150" 
+	                           maxlength="40" 
 	                           styleClass="inputCHAT"
 	                           actionListener="#{participant.addChatMessage}"/>
 	        </td>

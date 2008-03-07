@@ -5,7 +5,7 @@
 	<table border="0" cellspacing="0" cellpadding="0"
 	       style="border: 1px solid #90B1C9;">
 		<tr>
-		    <td class="bgBARBLUE" style="padding-left: 6px;">
+		    <td class="bgBARBLUE" style="padding-left: 6px; padding-right: 11px;">
 		        <ice:outputText
 		                value="Participants:#{participant.presentation.numberChatParticipants}"/>
 		    </td>
@@ -36,8 +36,7 @@
 			                   value="#{participant.participantViewList}" 
 			                   var="list" 
                                width="100%"
-			                   cellspacing="0" 
-			                   cellpadding="0">
+                               height="75px">
 
 			        <ice:column>
                     <li>
