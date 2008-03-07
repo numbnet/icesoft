@@ -326,6 +326,12 @@ public class DOMResponseWriter extends ResponseWriter {
         Element noscript = (Element) body.appendChild(document.createElement("noscript"));
         Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
         noscriptMeta.setAttribute("http-equiv", "refresh");
+        String jsBlockedURL = handler.getResourceURL(context, "/xmlhttp/javascript-blocked");
+        noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
+        
+        noscript = (Element) body.appendChild(document.createElement("noscript"));
+        noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
+        noscriptMeta.setAttribute("http-equiv", "refresh");
         noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 
         String markerID = prefix + "marker-script";
@@ -347,11 +353,6 @@ public class DOMResponseWriter extends ResponseWriter {
         meta.setAttribute("name", "icefaces");
         meta.setAttribute("content", "Rendered by ICEFaces D2D");
 
-        Element noscript = (Element) head.appendChild(document.createElement("noscript"));
-        Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
-        noscriptMeta.setAttribute("http-equiv", "refresh");
-        String jsBlockedURL = context.getApplication().getViewHandler().getResourceURL(context, "/xmlhttp/javascript-blocked");
-        noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
         //avoid reloading the head when only document's title is changed
         Element title = (Element) head.getElementsByTagName("title").item(0);
         if (title != null && !title.hasAttribute("id")) {
