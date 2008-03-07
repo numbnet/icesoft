@@ -515,8 +515,7 @@ public class TreeRenderer extends DomBasicRenderer {
                     iconImage.setAttribute(HTML.SRC_ATTR,
                                            treeComponent.getNavOpenTopNoSiblingsImage());
                 }
-            } else if (currentNode.getNextSibling() == null
-                       && currentNode.getChildCount() > 0) {
+            } else if (currentNode.getNextSibling() == null) {
                 if (isExpanded) {
                     iconImage.setAttribute(HTML.SRC_ATTR,
                                            treeComponent.getNavCloseBottomImage());
