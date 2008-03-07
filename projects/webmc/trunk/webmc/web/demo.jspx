@@ -55,30 +55,12 @@
 
 <ice:form>
 
-<div style="text-align: left;">
-    <table cellspacing="0" cellpadding="0" border="0"
-           style="text-align: left; padding: 0;">
-        <tr>
-            <td>
-                <ice:commandButton
-                        actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
-                        alt="Viewer"
-                        immediate="true"
-                        image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
-            </td>
-            <td>
-                <ice:commandButton
-                        actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
-                        alt="Moderator"
-                        immediate="true"
-                        image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
-            </td>
-        </tr>
-    </table>
-</div>
-
 <table 
-       style="border: 1px solid #94B3CB; text-align: left;">
+       style="text-align: left;">
+<tr>
+<ice:graphicImage value="resources/images/login_logo.gif" 
+                  alt="Welcome to WebMC" />
+</tr>
 <tr>
 <td>
     <table class="loginTable">
