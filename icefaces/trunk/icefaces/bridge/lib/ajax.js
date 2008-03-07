@@ -160,6 +160,14 @@
             return this.isComplete() && this.isOk();
         },
 
+        isEmpty: function() {
+            try {
+                return this.request.responseText == '';
+            } catch (e) {
+                return true;
+            }
+        },
+
         getAsynchronously: function(path, query, requestConfigurator) {
             //the 'rand' parameter is used to force IE into creating new request object, thus avoiding potential infinite loops.
             this.request.open('GET', path + '?' + query + '&rand=' + Math.random(), true);

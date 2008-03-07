@@ -98,7 +98,7 @@
 
 
             //remove the blocking connection marker so that everytime a new
-            //window (== bridge instance) is opened the blocking connection will
+            //bridge instance is created the blocking connection will
             //be re-established
             //this strategy is mainly employed to fix the window.onunload issue
             //in Opera -- see http://jira.icefaces.org/browse/ICE-1872
@@ -122,10 +122,12 @@
                     Connection.FormPost(request);
                     request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.ServerError, this.serverErrorCallback);
-                    request.on(Connection.Receive, this.receiveCallback);
                     request.on(Connection.Receive, this.receiveXWindowCookie);
                     request.on(Connection.Receive, function(response) {
-                        if (!response.containsResponseHeader('X-Close')) {
+                        if (!response.isEmpty()) {
+                            this.receiveCallback(response);
+                        }
+                        if (response.getResponseHeader('X-Connection') != 'close') {
                             this.connect();
                         }
                     }.bind(this));

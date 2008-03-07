@@ -27,7 +27,7 @@ public class SendUpdatedViews implements Server {
     private static final ResponseHandler EmptyResponseHandler = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             //let the bridge know that this blocking connection should not be re-initialized
-            response.setHeader("X-Close", "-");
+            response.setHeader("X-Connection", "close");
             response.setHeader("Content-Length", 0);
         }
     };
