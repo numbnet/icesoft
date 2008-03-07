@@ -1689,12 +1689,9 @@ fieldset {
     border-top: 1px solid #ABABAB;
     border-left: 1px solid #ABABAB;
     border-bottom: 2px solid #ABABAB;
-    width: auto;
     background-color: #DDDDDD;
     padding: 0px;
     z-index: 1000;
-    width: 300px;
-    height: 150px;
 }
 
 .icePnlPop .icePnlPopBody {

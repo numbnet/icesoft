@@ -33,7 +33,7 @@
  var visibleTooltipList = new Array();
  
 ToolTipPanelPopup = Class.create({
-  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue) {
+  initialize: function(srcComp, tooltipCompId, event, hideOn, delay, dynamic, formId, ctxValue, iFrameUrl) {
     this.src = srcComp;
     this.delay = delay || 500;
     this.dynamic = (dynamic == "true"); 
@@ -44,6 +44,7 @@ ToolTipPanelPopup = Class.create({
     this.y = Event.pointerY(event);
     this.formId = formId;
     this.ctxValue = ctxValue
+    this.iFrameUrl = iFrameUrl;
     //cancel bubbling
     event.cancelBubble = true;
     //attach events
@@ -91,6 +92,7 @@ ToolTipPanelPopup = Class.create({
         tooltip.style.left = this.x+"px";
         tooltip.style.position = "absolute" ;
         tooltip.style.display = "";
+        Ice.iFrameFix.start(this.tooltipCompId, this.iFrameUrl);
     }
     this.addToVisibleList();    
   },

@@ -283,3 +283,33 @@ Ice.autoPosition = {
     }
 };
 
+Ice.iFrameFix = Class.create();
+Ice.iFrameFix = {
+    start: function(elementId, url) {
+        var index = navigator.userAgent.indexOf("MSIE");
+        if (index == -1) return;
+
+        var version = parseFloat(navigator.userAgent.substring(index + 5));
+        if (version >= 7) return;
+
+        var popupDiv = document.getElementById(elementId);
+        if (!popupDiv) return;
+
+        var popupIFrame = document.getElementById(elementId + ":iframe");
+        if (!popupIFrame) {
+            popupIFrame = document.createElement("iframe");
+//          popupIFrame.src = "javascript:void 0;";
+            popupIFrame.src = url;
+            popupIFrame.setAttribute("id", elementId + ":iframe")
+//          popupDiv.insertBefore(popupIFrame, popupDiv.firstChild);
+            popupDiv.appendChild(popupIFrame);
+        }
+        popupIFrame.style.position = "absolute";
+        popupIFrame.style.zIndex = -1;
+        popupIFrame.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=0)";
+        popupIFrame.style.left = "0px";
+        popupIFrame.style.top = "0px";
+        popupIFrame.style.width = popupDiv.offsetWidth + 'px';
+        popupIFrame.style.height = popupDiv.offsetHeight + 'px';
+    }
+};

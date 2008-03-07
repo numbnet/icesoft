@@ -172,7 +172,8 @@ public class CoreUtils {
         Element rootElement = (Element) domContext.getRootNode();
         String onmouseover = String.valueOf(rootElement.getAttribute("onmouseover"));
         onmouseover+="; new ToolTipPanelPopup(this, '"+ panelTooltipId +"', event, '"+ 
-        hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"');";
+        hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"','"+
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
         rootElement.setAttribute("onmouseover", onmouseover);
     }
 }

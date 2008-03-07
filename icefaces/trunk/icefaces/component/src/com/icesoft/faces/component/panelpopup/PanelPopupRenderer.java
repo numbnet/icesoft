@@ -108,20 +108,17 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element rootDiv = domContext.createRootElement(HTML.DIV_ELEM);
 			setRootElementId(facesContext, rootDiv, uiComponent);
 			rootDiv.setAttribute(HTML.NAME_ATTR, clientId);
-            rootDiv.setAttribute(HTML.STYLE_ELEM, "display:none;position:absolute;overflow:hidden;"); // ICE-1490
 			Element table = domContext.createElement(HTML.TABLE_ELEM);
 			table.setAttribute(HTML.CELLPADDING_ATTR, "0");
 			table.setAttribute(HTML.CELLSPACING_ATTR, "0");
 			table.setAttribute(HTML.WIDTH_ATTR, "100%");
-            table.setAttribute(HTML.STYLE_ATTR, "position:absolute;"); // ICE-1490
 			rootDiv.appendChild(table);
-            
-            // ICE-1490
+/*
             Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
                     CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
                     "\" class=\"iceIEIFrameFix\" style=\"width:100%;height:100%;\"></iframe><![endif]-->");
             rootDiv.appendChild(iframe);
-
+*/
 			// extracted from GroupRenderer encodeBegin
 			if (dndType != null) {
 				// Drag an drop needs some hidden fields
@@ -258,7 +255,9 @@ public class PanelPopupRenderer extends GroupRenderer {
 		}
 		JavascriptContext.addJavascriptCall(facesContext, centreJS);
 
-	}
+        JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
+                CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
+    }
 
 	private String modalJavascript(Boolean modal, Boolean visible,
 			FacesContext facesContext, String clientId) {
