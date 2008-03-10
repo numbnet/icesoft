@@ -106,8 +106,10 @@ a control on the data to hide/show the table columns.
                         <ice:outputText id="FirstNameColm"
                                         value="#{msgs['component.table.column1']}"/>
                     </f:facet>
-                    <ice:outputText id="FirstName"
-                                    value="#{person.firstName}"/>
+                    <ice:panelGroup style="width:160px;overflow:hidden;">
+                        <ice:outputText id="FirstName"
+                                        value="#{person.firstName}"/>
+                    </ice:panelGroup>
                 </ice:column>
 
                 <ice:column rendered="#{table.renderLastName}">
@@ -115,8 +117,10 @@ a control on the data to hide/show the table columns.
                         <ice:outputText id="LastNameColm"
                                         value="#{msgs['component.table.column2']}"/>
                     </f:facet>
-                    <ice:outputText id="LastName"
-                                    value="#{person.lastName}"/>
+                    <ice:panelGroup style="width:160px;overflow:hidden;">
+                        <ice:outputText id="LastName"
+                                        value="#{person.lastName}"/>
+                    </ice:panelGroup>
                 </ice:column>
 
                 <ice:column rendered="#{table.renderEmail}">
