@@ -54,7 +54,7 @@ public class AutoPresentation {
     private static String[] defaultPresentationNames;
 
     public static final String PRESENTATION_FOLDER_NAME = "basepres";
-    public static final String DEFAULT_PASSWORD = "icefaces";
+    public static final String DEFAULT_PASSWORD = "";
     public static final String DEFAULT_SESSION_ID = "initialsession";
 
     /**
