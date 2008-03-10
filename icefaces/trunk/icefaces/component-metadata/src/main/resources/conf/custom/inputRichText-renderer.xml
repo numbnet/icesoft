@@ -34,7 +34,44 @@
 
 <renderer>
          <description>
-             <![CDATA[ inputRichText ]]>
+             <![CDATA[
+             <p>The ICEfaces inputRichText component uses the FCKEditor API to 
+             provide JSF based rich text component.<br/>
+             The "customConfigPath" attribute can be used to defined the custom 
+             config.js where you can customize the FCKeditor including 
+             the custom toolbar and the css.<p>
+             The following steps are involved in creating the custom toolbar:
+             <ol>
+             <li>
+             Create a config file under the webapp, defining the custom toolbar(e.g.)
+             <u>js/config.js</u><br/>
+             FCKConfig.ToolbarSets["MyToolbar"] = [['Bold','Italic', 'Underline'], ['Save']] ;
+             </li>
+             <li>
+             Set the "toolbar" attribute on the inputRichText component to 
+             define the custom toolbar name and set the "customConfigPath" attribute to
+             reference the custom config.js.(e.g.) <br/>
+             &lt;ice:inputRichText toolbar="MyToolbar"  customConfigPath="js/config.js"/&gt;
+             </li>
+             </ol>
+             
+<p >The following steps are involved in defining the custom CSS:</p>
+<ol>
+    <li>
+        Copy the fck_editorarea.css from the FCKeditor distribution to your app and customize it(e.g.)
+        <u>css/fck_editorarea.css</u><br/><br/>
+    </li>
+    <li>
+        Create a config file under the webapp, overriding the "FCKConfig.EditorAreaCSS" property(e.g.)
+        <u>js/config.js</u><br/>
+        FCKConfig.EditorAreaCSS = 'http://'+ window.location.host +'/'+window.location.pathname.split("/")[1]+'/css/fck_editorarea.css' ;<br/><br/>
+    </li>
+    <li>
+         Set the "customConfigPath" attribute to reference the custom config.js.(e.g.) <br/>
+         &lt;ice:inputRichText customConfigPath="js/config.js"/&gt;
+    </li>
+</ol>             
+             ]]>
          </description>
 	<component-family>javax.faces.Input</component-family>
 	<renderer-type>com.icesoft.faces.InputRichTextRenderer</renderer-type>	

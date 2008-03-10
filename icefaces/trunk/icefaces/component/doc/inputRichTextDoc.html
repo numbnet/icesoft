@@ -54,29 +54,44 @@ component</p>
 <pre class="Preformatted">&lt;ice:inputRichText
    <br>    value="#{bean.value}" <br>/&gt;</pre>
 
-<p >The following code shows how to create a multiple inputRichText
-component using one toolbar only</p>
-<pre class="Preformatted">
+<p >The following steps are involved in creating the custom toolbar:</p>
+<ol>
+	<li>
+		Create a config file under the webapp, defining the custom toolbar(e.g.)
+		<u>js/config.js</u><br/>
+		<pre class="Preformatted">
+		FCKConfig.ToolbarSets["MyToolbar"] = [['Bold','Italic', 'Underline'], ['Save']] ;</pre><br/><br/>
+	</li>
+	<li>
+		 Set the "toolbar" attribute on the inputRichText component to
+		 define the custom toolbar name and set the "customConfigPath" attribute to
+		 reference the custom config.js.(e.g.) <br/>
+		<pre class="Preformatted">
+		 &lt;ice:inputRichText toolbar="MyToolbar"  customConfigPath="js/config.js"/&gt;
+		</pre>
+	</li>
+</ol>
 
-&lt;ice:inputRichText
-   <br>    id="myEditor"
-   <br>	   toolbarOnly="true"
-   <br>/&gt;
 
-&lt;ice:inputRichText
-   <br>    for="myEditor"
-   <br>    value="#{bean.value1}" <br>/&gt;
-
-&lt;ice:inputRichText
-   <br>    for="myEditor"
-   <br>    value="#{bean.value2}" <br>/&gt;
-
-&lt;ice:inputRichText
-   <br>    for="myEditor"
-   <br>    value="#{bean.value3}" <br>/&gt;
-
-</pre>
-
+<p >The following steps are involved in defining the custom CSS:</p>
+<ol>
+	<li>
+		Copy the fck_editorarea.css from the FCKeditor distribution to your app and customize it(e.g.)
+		<u>css/fck_editorarea.css</u><br/><br/>
+	</li>
+	<li>
+		Create a config file under the webapp, overriding the "FCKConfig.EditorAreaCSS" property(e.g.)
+		<u>js/config.js</u><br/>
+		<pre class="Preformatted">
+		FCKConfig.EditorAreaCSS = 'http://'+ window.location.host +'/'+window.location.pathname.split("/")[1]+'/css/fck_editorarea.css' ;</pre><br/><br/>
+	</li>
+	<li>
+		 Set the "customConfigPath" attribute to reference the custom config.js.(e.g.) <br/>
+		<pre class="Preformatted">
+		 &lt;ice:inputRichText customConfigPath="js/config.js"/&gt;
+		</pre>
+	</li>
+</ol>
 
 
 </body>
