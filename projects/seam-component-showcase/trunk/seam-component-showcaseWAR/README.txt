@@ -29,6 +29,15 @@ JBoss AS 4.2.x  (this is the default target for the ant script):
   * Start JBoss AS 
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
+JBoss Portal 2.6.4  :
+  * Install JBoss-portal AS with the default profile
+  * ant jboss-portal
+  * set jboss.home in build.properties to this AS
+  * Start AS
+  * Access the app at http://localhost:8080/portal/
+  * each window from seam-comp-showcase will have it's own portlet window automatically (xml files specify instances already)
+
+
 JBoss AS 4.0.5.GA:  (note everything BUT asynch is working with this right now)
   * Install JBoss AS with the default profile (with or without EJB3)
   * ant jboss405
