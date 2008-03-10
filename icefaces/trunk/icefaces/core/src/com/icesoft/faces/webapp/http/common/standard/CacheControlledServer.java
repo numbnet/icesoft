@@ -65,7 +65,7 @@ public class CacheControlledServer implements Server {
                     String eTag = Integer.toHexString(request.getURI().hashCode());
                     cache.add(eTag);
                     response.setHeader("ETag", eTag);
-                    response.setHeader("Cache-Control", new String[]{"private", "max-age=86400"});
+                    response.setHeader("Cache-Control", new String[]{"private", "max-age=2629743"});
                     response.setHeader("Last-Modified", StartupTime);
                     handler.respond(response);
                 }
