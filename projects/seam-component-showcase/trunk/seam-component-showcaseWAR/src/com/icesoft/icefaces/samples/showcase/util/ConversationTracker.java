@@ -17,6 +17,10 @@ public class ConversationTracker {
     private String convParam;
     @Logger private Log log;
     
+    public void setConvId(String cid){
+    	this.convId=cid;
+    }
+    
 	public String getConvId() {
 		return Manager.instance().getCurrentConversationId();
 	}
