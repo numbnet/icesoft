@@ -111,7 +111,7 @@
 			    <include name="portlet/*.jspx"/>
 			</fileset>
 		</copy>
-		<copy todir="$war.dir}/WEB-INF">
+		<copy todir="${war.dir}/WEB-INF">
 		    <fileset dir="${resources.dir}/WEB-INF">
 		        <include name="*.xml" />
 		    </fileset>
