@@ -93,9 +93,11 @@ public class HtmlSelectOneRadio
     public void requestFocus() {
         ((BridgeFacesContext) FacesContext.getCurrentInstance())
                 .setFocusId("null");
-        JavascriptContext.focus(FacesContext.getCurrentInstance(),
-                                this.getClientId(
-                                        FacesContext.getCurrentInstance()));
+        if (this.getChildCount() > 0) {
+            JavascriptContext.focus(FacesContext.getCurrentInstance(),
+                                    this.getClientId(
+                                            FacesContext.getCurrentInstance())+ ":_1");
+        }
     }
 
     public void setValueBinding(String s, ValueBinding vb) {
