@@ -16,9 +16,6 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class PanelDividerRenderer extends DomBasicRenderer{
-    public boolean getRendersChildren() {
-        return true;
-    }
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {

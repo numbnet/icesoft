@@ -62,7 +62,7 @@
 	<renderer-extension>
 		<instance-name>panelDivider</instance-name>
 		<is-container>true</is-container>
-		<renders-children>true</renders-children>
+		<renders-children>false</renders-children>
 		<tag-name>panelDivider</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
