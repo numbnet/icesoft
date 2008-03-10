@@ -66,7 +66,8 @@ public class LoginBean {
     private HtmlInputText firstNameField = null;
     private OnDemandRenderer loginPageRenderer;
     private boolean invalidDemoPassword = false;
-
+    private boolean invalidPresentation = false;
+    
     public LoginBean(Participant parent) {
         this.parent = parent;
     }
@@ -334,6 +335,7 @@ public class LoginBean {
         clearSingleField(parentForm, "email");
         clearSingleField(parentForm, "viewPassword");
         invalidDemoPassword = false;
+        invalidPresentation = false;
         clearSingleField(parentForm, "newPresentationName");
         clearSingleField(parentForm, "moderatorPassword");
         
@@ -435,4 +437,22 @@ public class LoginBean {
         	 return PresentationManager.getInstance().getPresentation(presentationName).getPassword();
         }
     }
+    
+    public boolean validateDemoPresentation(){
+    	setInvalidPresentation(false);
+        if ((presentationName == null) || (presentationName.equals("")) ||
+                (presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {
+        		setInvalidPresentation(true);
+                return false;
+        }
+        return true;
+    }
+
+	public boolean isInvalidPresentation() {
+		return invalidPresentation;
+	}
+
+	public void setInvalidPresentation(boolean invalidPresentation) {
+		this.invalidPresentation = invalidPresentation;
+	}
 }

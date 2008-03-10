@@ -143,8 +143,6 @@
                                      maxlength="20"
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
-                        <f:param name="loginSource" 
-                                 value="viewDemoLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
@@ -206,8 +204,6 @@
                                      tabindex="5"
                                      styleClass="loginInput"
                                      redisplay="true" >
-                        <f:param name="loginSource" 
-                                 value="moderatorLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:message for="moderatorPassword"

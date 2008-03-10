@@ -48,13 +48,13 @@
                                        value="#{participant.loginBean.presentationName}"
                                        styleClass="loginInput"
                                        valueChangeListener="#{participant.loginBean.selectPresentation}">
-                        <f:validator validatorId="NameValidator"/>
                         <f:selectItems
                                 value="#{presentationMgr.presentationItems}"/>
                     </ice:selectOneMenu>
                   <ice:panelGroup>
-                    <ice:message for="existingPresentationName"
-                                 errorClass="inputError"/>
+                    <ice:outputText value="Select Presentation" 
+                                    rendered="#{participant.loginBean.invalidPresentation}"
+                                    styleClass="inputError"/>
                   </ice:panelGroup>
                 </td>
             </tr>
@@ -70,8 +70,6 @@
                                      maxlength="20"
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
-                        <f:param name="loginSource" 
-                                 value="viewDemoLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
@@ -133,8 +131,6 @@
                                      tabindex="5"
                                      styleClass="loginInput"
                                      redisplay="true" >
-                        <f:param name="loginSource" 
-                                 value="moderatorDemoLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:message for="moderatorPassword"

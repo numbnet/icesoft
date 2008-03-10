@@ -265,8 +265,6 @@
                                      maxlength="20"
                                      styleClass="loginInput"
                                      actionListener="#{participant.loginBean.validateDemoPassword}">
-                        <f:param name="loginSource" 
-                                 value="viewLogin"/>
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 

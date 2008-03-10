@@ -469,24 +469,29 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @return "loginSuccess" or "failed" for faces-config navigation
      */
     public String login() {
-    	// Validation of password from demologin page.  Validation is done in 
-    	// the application logic because with demologin "required" is removed 
-    	// from the component and this results in validators not being fired.
+    	// Validation of password without required attribute.  Validation is 
+    	// done in the application logic because when "required" is removed 
+    	// from the component this results in validators not being fired.
     	
         // Get the page and role from the context.
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map params = facesContext.getExternalContext().getRequestParameterMap();
         String loginSource = (String) params.get("loginSource");
-        if(loginSource != null && loginBean.getPresentationPassword() != null){
-        	String inputPassword = loginBean.getPresentationPassword().trim();
-            if (loginSource.startsWith("view")) {
-                if(!loginBean.validateDemoPassword(inputPassword)){
-                	return "failed";
-                }
-            }
-            // demologin page does not require moderator password validation, so
-            // we just set the password to the trimmed input String.
-            loginBean.setPresentationPassword(inputPassword);
+        if(loginSource != null){
+        	if(!loginBean.validateDemoPresentation()){
+        		return "failed";
+        	}
+        	if(loginBean.getPresentationPassword() != null){
+	        	String inputPassword = loginBean.getPresentationPassword().trim();
+	            if (loginSource.startsWith("view")) {
+	                if(!loginBean.validateDemoPassword(inputPassword)){
+	                	return "failed";
+	                }
+	            }
+	            // We no longer require moderator password validation, so
+	            // we just set the password to the trimmed input String.
+	            loginBean.setPresentationPassword(inputPassword);
+	        }
         }
 
         if (isModerator()) {
