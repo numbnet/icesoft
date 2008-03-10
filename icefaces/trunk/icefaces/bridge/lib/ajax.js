@@ -87,19 +87,22 @@
             this.identifier = + Math.random().toString().substr(2, 7);
             this.request = request;
             this.logger = logger;
-            this.callbacks = [];
+            this.callbacks = [];            
+            var self = this;
+            //avoid using libraries for this callback -- see: http://dev.rubyonrails.org/ticket/5393
             this.responseCallback = function() {
-                if (this.isComplete()) {
-                    this.logger.debug('[' + this.identifier + '] : receive [' + this.statusCode() + '] ' + this.statusText());
+                if (self.isComplete()) {
+                    self.logger.debug('[' + self.identifier + '] : receive [' + self.statusCode() + '] ' + self.statusText());
                 }
-                this.callbacks.each(function(callback) {
+                var size = self.callbacks.length;
+                for (var i = 0; i < size; i++) {
                     try {
-                        callback(this);
+                        self.callbacks[i](self);
                     } catch (e) {
-                        this.logger.error('failed to respond', e);
+                        logger.error('failed to respond', e);
                     }
-                }.bind(this));
-            }.bind(this);
+                };
+            };
         },
 
         statusCode: function() {
@@ -252,7 +255,6 @@
             } finally {
                 //avoid potential memory leaks since 'this.request' is a native object
                 this.request = null;
-                this.callbacks = null;
                 this.logger.debug('[' + this.identifier + '] : connection closed');
             }
         }
