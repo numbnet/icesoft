@@ -123,7 +123,6 @@
         <navigation-case>
             <from-outcome>loginSuccess</from-outcome>
             <to-view-id>/main.iface</to-view-id>
-            <redirect/>
         </navigation-case>
     </navigation-rule>
 
