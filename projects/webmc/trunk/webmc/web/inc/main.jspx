@@ -30,44 +30,25 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component"
-        xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<ice:outputDeclaration doctypeRoot="HTML"
-                       doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
-                       doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
-
-<html>
-<head>
-    <title>
-        <ice:outputText value="WebMC - #{participant.presentation.name}"/>
-    </title>
-
-<!--<ice:outputStyle href="resources/css/styles.css" />-->
-    <link rel="stylesheet" type="text/css" href="resources/css/styles_mobile.css"/>
-    <meta name="viewport" content="width=480; initial-scale=1.0; maximum-scale=1.0;" />
-</head>
-
-<body>
-<div id="maincontainer">
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     id="maincontainer">
     <ice:panelGroup layout="block"
                     styleClass="bgNAV" 
                     rendered="#{participant.moderator}">    
-        <ui:include src="./inc/navigationpanel.jspx"/>
-	</ice:panelGroup>
+        <ui:include src="navigationpanel.jspx"/>
+    </ice:panelGroup>
 
-	<ice:form styleClass="bgMAIN">
-		<div id="mainPRES">
-            <ui:include src="./inc/presentation.jspx"/>
-		</div>
-		<div id="mainCHAT">
-            <ui:include src="./inc/participants.jspx"/>
-            <ui:include src="./inc/chat.jspx"/>
+    <ice:form styleClass="bgMAIN">
+        <div id="mainPRES">
+            <ui:include src="presentation.jspx"/>
         </div>
-	</ice:form>
+        <div id="mainCHAT">
+            <ui:include src="participants.jspx"/>
+            <ui:include src="chat.jspx"/>
+        </div>
+    </ice:form>
 </div>
-</body>
-</html>
-</f:view>

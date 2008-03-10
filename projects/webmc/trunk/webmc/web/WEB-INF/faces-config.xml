@@ -135,24 +135,5 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    
-    <!-- Demo Version Navigation Rules -->
-    <navigation-rule>
-        <from-view-id>/demo.jspx</from-view-id>
-        <navigation-case>
-            <from-outcome>loginSuccess</from-outcome>
-            <to-view-id>/demomain.iface</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/demomain.jspx</from-view-id>
-        <navigation-case>
-            <from-outcome>logout</from-outcome>
-            <to-view-id>/demo.iface</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 
 </faces-config>

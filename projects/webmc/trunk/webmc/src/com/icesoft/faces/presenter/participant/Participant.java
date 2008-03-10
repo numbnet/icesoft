@@ -95,6 +95,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     private boolean slideTypePres = true;
     private boolean mobile = false;
     private boolean mobileSniffed = false;
+    private boolean loggedIn = false;
     
 
     public Participant() {
@@ -519,6 +520,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
                         presentationManager.getRenderManager(),
                         presentation.getName() + firstName + lastName);
 
+                loggedIn=true;
                 return "loginSuccess";
             } else {
                 loginBean.setSlotsNone();
@@ -557,6 +559,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 
             if (getSession() != null) {
                 getSession().setAttribute("LoggedIn", "false");
+                loggedIn = false;
             }
         } catch (Exception failedLogout1) { }
 
@@ -579,6 +582,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
             toggleSlideTypeOne();
         } catch (Exception failedLogout4) { }
         
+        loggedIn = false;
         return "logout";
     }
 
@@ -813,7 +817,7 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
      * @param httpSessionEvent of the destruction
      */
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        String destroyedId = httpSessionEvent.getSession().getId();
+    	String destroyedId = httpSessionEvent.getSession().getId();
 
         if (log.isInfoEnabled()) {
             log.info("Session destroyed for id: " + destroyedId);
@@ -848,5 +852,9 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 		mobile=true;
 		chatView.setViewSize(3);
 		return null;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
 	}
 }
