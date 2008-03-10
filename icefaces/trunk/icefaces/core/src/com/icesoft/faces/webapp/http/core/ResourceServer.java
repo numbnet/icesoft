@@ -17,7 +17,7 @@ public class ResourceServer implements Server {
         pathDispatcher.dispatchOn(".*xmlhttp\\/javascript-blocked$", new RedirectOnJSBlocked(configuration));
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/.*\\.js$", new CacheControlledServer(new ServeJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/css\\/.*", new CacheControlledServer(new ServeCSSResource(mimeTypeMatcher)));
-        pathDispatcher.dispatchOn(".*xmlhttp\\/blank$", new ServeBlankPage());
+        pathDispatcher.dispatchOn(".*xmlhttp\\/blank$", new CacheControlledServer(new ServeBlankPage()));
         pathDispatcher.dispatchOn(".*", new FileServer(fileLocator, mimeTypeMatcher));
         if (configuration.getAttributeAsBoolean("compressResources", true)) {
             dispatcher = new CompressingServer(pathDispatcher);
