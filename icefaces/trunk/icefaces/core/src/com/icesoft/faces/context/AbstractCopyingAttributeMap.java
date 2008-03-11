@@ -39,7 +39,7 @@ public abstract class AbstractCopyingAttributeMap extends HashMap {
 
     public void clear() {
         //copy the enumeration to avoid concurrency problems
-        Iterator i = new ArrayList(Collections.list(getAttributeNames()).iterator();
+        Iterator i = new ArrayList(Collections.list(getAttributeNames())).iterator();
         while (i.hasNext()) {
             removeAttribute(String.valueOf(i.next()));
         }
