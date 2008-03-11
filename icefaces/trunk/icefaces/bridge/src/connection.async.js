@@ -55,7 +55,7 @@
             this.receiveURI = configuration.context.async + 'block/receive-updated-views';
             this.disposeViewsURI = configuration.context.current + 'block/dispose-views';
 
-            var timeout = configuration.timeout ? configuration.timeout : 30000;
+            var timeout = configuration.timeout ? configuration.timeout : 60000;
             this.onSend(function() {
                 this.timeoutBomb.cancel();
                 this.timeoutBomb = this.connectionDownListeners.broadcaster().delayExecutionFor(timeout);

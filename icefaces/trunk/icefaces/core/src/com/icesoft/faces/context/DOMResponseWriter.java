@@ -308,7 +308,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "context: {" +
                         "current: '" + contextPath + "'," +
                         "async: '" + asyncServerContextPath + "'}," +
-                        "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 30000) + "," +
+                        "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
                         "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
