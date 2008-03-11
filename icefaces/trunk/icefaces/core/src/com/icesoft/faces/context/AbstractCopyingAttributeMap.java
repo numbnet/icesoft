@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ArrayList;
 
 public abstract class AbstractCopyingAttributeMap extends HashMap {
 
@@ -38,7 +39,7 @@ public abstract class AbstractCopyingAttributeMap extends HashMap {
 
     public void clear() {
         //copy the enumeration to avoid concurrency problems
-        Iterator i = Collections.list(getAttributeNames()).iterator();
+        Iterator i = new ArrayList(Collections.list(getAttributeNames()).iterator();
         while (i.hasNext()) {
             removeAttribute(String.valueOf(i.next()));
         }
