@@ -99,7 +99,8 @@
                     try {
                         self.callbacks[i](self);
                     } catch (e) {
-                        logger.error('failed to respond', e);
+                        logger.warn('connection closed prematurely');
+                        self.close();
                     }
                 };
             };
@@ -245,17 +246,19 @@
         },
 
         close: function() {
-            try {
-                //replace the callback to avoid infinit loop since the callback is
-                //executed also when the connection is aborted.
-                //also, setting 'onreadystatechange' to null will cause a memory leak in IE6
-                this.request.onreadystatechange = Function.NOOP;
-            } catch (e) {
-                //ignore, the request was discarded by the browser
-            } finally {
-                //avoid potential memory leaks since 'this.request' is a native object
-                this.request = null;
-                this.logger.debug('[' + this.identifier + '] : connection closed');
+            if (this.request) {
+                try {
+                    //replace the callback to avoid infinit loop since the callback is
+                    //executed also when the connection is aborted.
+                    //also, setting 'onreadystatechange' to null will cause a memory leak in IE6
+                    this.request.onreadystatechange = Function.NOOP;
+                } catch (e) {
+                    //ignore, the request was discarded by the browser
+                } finally {
+                    //avoid potential memory leaks since 'this.request' is a native object
+                    this.request = null;
+                    this.logger.debug('[' + this.identifier + '] : connection closed');
+                }
             }
         }
     });

@@ -47,8 +47,8 @@ Ice.StateMon = {
         // that have new HTML elements for rebuilding
         var i = 0;
         var monitor = null;
-        this.logger.debug('Checking [' + this.monitors.length + '] monitors');
-        for (i = 0; i < this.monitors.length; i++) {
+        var size = this.monitors.length;
+        for (i = 0; i < size; i++) {
             monitor = this.monitors[i];
             try {
                 if (monitor.changeDetected()) {
@@ -129,7 +129,6 @@ Ice.StateMon = {
     },
 
     rebuild:function() {
-        this.logger.debug("Rebuilding Monitors [" + this.monitors.length + "]");
         var size = this.monitors.length;
         try {
             for (i = 0; i < size; i++) {
