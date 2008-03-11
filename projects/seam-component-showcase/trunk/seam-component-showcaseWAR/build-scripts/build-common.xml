@@ -107,8 +107,8 @@
 	<target name="portal.war" if="portal.build" description="Building portal application">
 	    <echo message="portal.war target so copying portal files"/>
 		<copy todir="${war.dir}">
-		   <fileset dir="${resources.dir}">
-			    <include name="portlet/*.jspx"/>
+		   <fileset dir="${resources.dir}/portlet">
+			    <include name="*.jspx"/>
 			</fileset>
 		</copy>
 		<copy todir="${war.dir}/WEB-INF">
