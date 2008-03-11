@@ -6,8 +6,10 @@
 <table 
        style="text-align: left;">
 <tr>
-<ice:graphicImage value="resources/images/login_logo.gif" 
+<center>
+<ice:graphicImage value="resources/images/login_logo_mobile.jpg" 
                   alt="Welcome to WebMC" />
+</center>
 </tr>
 <tr>
 <td>
@@ -162,6 +164,7 @@
     </ice:panelGroup>
 </td>
 </tr>
+<!-- 
 <tr>
     <td colspan="2">
         <ice:panelGroup styleClass="headerMessage" 
@@ -172,6 +175,7 @@
         </ice:panelGroup>
     </td>
 </tr>
+-->
 </table>
 
 </ice:panelGroup>

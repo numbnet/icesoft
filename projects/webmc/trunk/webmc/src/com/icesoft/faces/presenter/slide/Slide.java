@@ -46,11 +46,11 @@ public class Slide {
     private static final Slide DEFAULT_SLIDE_VIEWER =
             new Slide("resources/images/titlepage-view.png", false);
     private static final Slide DEFAULT_SLIDE_VIEWER_MOBILE =
-        new Slide("resources/images/titlepage-view.png", true);
+        new Slide("resources/images/titlepage-view-mobile.png", true);
     private static final Slide DEFAULT_SLIDE_MODERATOR =
             new Slide("resources/images/titlepage-mod.png", false);
     private static final Slide DEFAULT_SLIDE_MODERATOR_MOBILE =
-        new Slide("resources/images/titlepage-mod.png", true);
+        new Slide("resources/images/titlepage-mod-mobile.png", true);
     private static final Slide INFO_SLIDE = new Slide(INFO_LOCATION, false);
     private static final Slide INFO_SLIDE_MOBILE = new Slide(INFO_LOCATION_MOBILE, true);
 

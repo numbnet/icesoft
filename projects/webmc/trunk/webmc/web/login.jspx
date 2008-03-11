@@ -236,11 +236,12 @@
 </td>
 </tr>
 </table>
+<!--  
 <ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
     <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
     <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" style="font-weight: bold;"/>
 </ice:panelGroup>
-
+-->
 </ice:form>
 </ice:panelGroup>
 </center>
