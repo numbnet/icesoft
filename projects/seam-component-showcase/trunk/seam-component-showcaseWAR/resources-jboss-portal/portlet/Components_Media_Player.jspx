@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="menuBarContentPanel">
                             <f:subview id="mbSub">
-                                <ui:include src="../inc/components/media.jspx"/>
+                                <ui:include src="inc/components/media.jspx"/>
                             </f:subview>
                         </ice:panelGroup>
                     </div>

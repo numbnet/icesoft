@@ -3,14 +3,6 @@
   <deployment>
     <parent-ref>default</parent-ref>
     <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_textEntryInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_textEntryInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>TextEntry</page-name>
       <window>
@@ -18,27 +10,12 @@
          <instance-ref>components_textEntryInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_selectionInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_selectionInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Selection</page-name>
        <window>
@@ -50,16 +27,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_buttonsAndLinksInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_buttonsAndLinksInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>ButtonsAndLinks</page-name>
       <window>
@@ -67,7 +36,6 @@
          <instance-ref>components_buttonsAndLinksInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
             <properties>
                <property>
                   <name>theme.renderSetId</name>
@@ -78,16 +46,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_autocompleteInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_autocompleteInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>AutoComplete</page-name>
        <window>
@@ -97,18 +57,10 @@
          <height>0</height>
       </window>
     </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_dragAndDropInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_dragAndDropInstance</component-ref>
-    </instance>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>DragAndDrop</page-name>
       <window>
@@ -127,16 +79,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_calendarInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_calendarInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Calendar</page-name>
        <window>
@@ -148,16 +92,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_treeInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_treeInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Tree</page-name>
       <window>
@@ -165,7 +101,6 @@
          <instance-ref>components_treeInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
             <properties>
                <property>
                   <name>theme.renderSetId</name>
@@ -176,16 +111,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_menubarInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_menubarInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>MenuBar</page-name>
        <window>
@@ -195,18 +122,10 @@
          <height>0</height>
       </window>
     </page>
-  </deployment> 
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_effectsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_effectsInstance</component-ref>
-    </instance>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Effects</page-name>
       <window>
@@ -214,27 +133,12 @@
          <instance-ref>components_effectsInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_connectionStatusInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_connectionStatusInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>ConnectionStatus</page-name>
        <window>
@@ -244,124 +148,43 @@
          <height>0</height>
       </window>
     </page>
-  </deployment>
+   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_tableInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_tableInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>Table</page-name>
+  	 <page-name>TableExamples</page-name>
       <window>
          <window-name>Table</window-name>
          <instance-ref>components_table_tableInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_columnsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_columnsInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>Columns</page-name>
-       <window>
-         <window-name>DynamicColumns</window-name>
-         <instance-ref>components_table_columnsInstance</instance-ref>
-         <region>center</region>
+         <region>left</region>
          <height>0</height>
       </window>
-    </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_sortableHeaderInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_sortableHeaderInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>SortableHeaders</page-name>
-      <window>
+     <window>
          <window-name>SortableHeaders</window-name>
          <instance-ref>components_table_sortableHeaderInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
+         <region>left</region>
+         <height>1</height>
       </window>
+      <window>
+         <window-name>DynamicColumns</window-name>
+         <instance-ref>components_table_columnsInstance</instance-ref>
+         <region>left</region>
+         <height>2</height>
+       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_dataPagingInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_dataPagingInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>DataTablePaginator</page-name>
+  	 <page-name>TablePaginator</page-name>
        <window>
          <window-name>DataTablePaginator</window-name>
          <instance-ref>components_table_dataPagingInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>ExpandableTable</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_expandableTableInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>ExpandableTable</page-name>
-      <window>
-         <window-name>ExpandableTable</window-name>
-         <instance-ref>components_table_expandableTableInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
+            <initial-window-state>maximized</initial-window-state>
             <properties>
                <property>
                   <name>theme.renderSetId</name>
@@ -372,37 +195,21 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_tableRowSelectionInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_tableRowSelectionInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>RowSelector</page-name>
+  	 <page-name>TableRowSelector</page-name>
        <window>
          <window-name>RowSelector</window-name>
          <instance-ref>components_table_tableRowSelectionInstance</instance-ref>
-         <region>center</region>
+         <region>left</region>
          <height>0</height>
       </window>
     </page>
-  </deployment> 
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_progressBarInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_progressBarInstance</component-ref>
-    </instance>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>ProgressBar</page-name>
       <window>
@@ -410,27 +217,12 @@
          <instance-ref>components_progressBarInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_fileUploadInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_fileUploadInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>FileUpload</page-name>
        <window>
@@ -442,16 +234,8 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_charts_chartsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_charts_chartsInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Charts</page-name>
       <window>
@@ -459,76 +243,24 @@
          <instance-ref>components_charts_chartsInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_charts_dynamicChartInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_charts_dynamicChartInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>DynamicCharts</page-name>
        <window>
          <window-name>DynamicCharts</window-name>
          <instance-ref>components_charts_dynamicChartInstance</instance-ref>
          <region>center</region>
-         <height>0</height>
+         <height>1</height>
       </window>
-    </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_charts_combiningChartsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_charts_combiningChartsInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>CombiningCharts</page-name>
       <window>
          <window-name>CombiningCharts</window-name>
          <instance-ref>components_charts_combiningChartsInstance</instance-ref>
          <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
+         <height>2</height>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_rich_text_editorInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_rich_text_editorInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>RichTextEditor</page-name>
        <window>
@@ -538,193 +270,79 @@
          <height>0</height>
       </window>
     </page>
-  </deployment>
+   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_gmap_address_attributeInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_gmap_address_attributeInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>Gmaps1</page-name>
+  	 <page-name>GoogleMaps</page-name>
       <window>
          <window-name>GoogleMaps</window-name>
          <instance-ref>components_gmap_address_attributeInstance</instance-ref>
-         <region>center</region>
+         <region>left</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_gmap_controlsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_gmap_controlsInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>GMaps2</page-name>
        <window>
          <window-name>GoogleMapsControls</window-name>
          <instance-ref>components_gmap_controlsInstance</instance-ref>
          <region>center</region>
          <height>0</height>
       </window>
+      <window>
+         <window-name>GoogleMapsGeocoder</window-name>
+         <instance-ref>components_gmap_geocoderInstance</instance-ref>
+         <region>left</region>
+         <height>1</height>
+      </window>
+      <window>
+         <window-name>GoogleMapsMarkers</window-name>
+         <instance-ref>components_gmap_markersInstance</instance-ref>
+         <region>center</region>
+         <height>1</height>
+      </window>
     </page>
-  </deployment> 
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_gmap_find_addressInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_gmap_find_addressInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+ </deployment>
+ <deployment>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>Gmaps3</page-name>
+  	 <page-name>GMapsFind</page-name>       
       <window>
          <window-name>GoogleMapsFindAddress</window-name>
          <instance-ref>components_gmap_find_addressInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
     </page>
-  </deployment>
+ </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_gmap_geocoderInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_gmap_geocoderInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>Gmaps4</page-name>
-       <window>
-         <window-name>GoogleMapsGeocoder</window-name>
-         <instance-ref>components_gmap_geocoderInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_gmap_markersInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_gmap_markersInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>Gmaps5</page-name>
-      <window>
-         <window-name>GoogleMapsMarkers</window-name>
-         <instance-ref>components_gmap_markersInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_column_groupingInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_column_groupingInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>ColumnGroupings</page-name>
+  	 <page-name>Tables-Advanced</page-name>
        <window>
          <window-name>ColumnGroupings</window-name>
          <instance-ref>components_table_column_groupingInstance</instance-ref>
          <region>center</region>
          <height>0</height>
       </window>
-    </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_row_groupingInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_row_groupingInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>RowGroupings</page-name>
       <window>
          <window-name>RowGroupings</window-name>
          <instance-ref>components_table_row_groupingInstance</instance-ref>
          <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
+         <height>1</height>
+      </window>
+     <window>
+         <window-name>ExpandableTable</window-name>
+         <instance-ref>components_table_expandableTableInstance</instance-ref>
+         <region>center</region>
+         <height>2</height>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_table_resizable_columnsInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_table_resizable_columnsInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>ResizableColumns</page-name>
        <window>
@@ -736,191 +354,71 @@
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_borderInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_borderInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>BorderPanelLayout</page-name>
+  	 <page-name>PanelLayouts</page-name>
       <window>
          <window-name>PanelBorder</window-name>
          <instance-ref>components_panel_borderInstance</instance-ref>
-         <region>center</region>
+         <region>left</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
       </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_collapsibleInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_collapsibleInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PanelCollapsible</page-name>
        <window>
          <window-name>panelCollapsible</window-name>
          <instance-ref>components_panel_collapsibleInstance</instance-ref>
          <region>center</region>
          <height>0</height>
       </window>
-    </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_popupInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_popupInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PanelPopup</page-name>
-      <window>
-         <window-name>panelPopup</window-name>
-         <instance-ref>components_panel_popupInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_positionedInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_positionedInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PositionPanel</page-name>
-       <window>
-         <window-name>positionPanel</window-name>
-         <instance-ref>components_panel_positionedInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-      </window>
-    </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_seriesInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_seriesInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PanelSeries</page-name>
-      <window>
-         <window-name>panelSeries</window-name>
-         <instance-ref>components_panel_seriesInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_stackInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_stackInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PanelStack</page-name>
-       <window>
-         <window-name>PanelStack</window-name>
-         <instance-ref>components_panel_stackInstance</instance-ref>
-         <region>center</region>
-         <height>0</height>
-      </window>
-    </page>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_tabsetInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_tabsetInstance</component-ref>
-    </instance>
-  </deployment>
-  <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <page>
-  	 <page-name>PanelTabSet</page-name>
       <window>
          <window-name>PanelTabSet</window-name>
          <instance-ref>components_panel_tabsetInstance</instance-ref>
          <region>center</region>
          <height>0</height>
-         <initial-window-state>maximized</initial-window-state>
-            <properties>
-               <property>
-                  <name>theme.renderSetId</name>
-                  <value>emptyRenderer</value>
-                </property>
-            </properties>
+      </window>
+      <window>
+         <window-name>panelSeries</window-name>
+         <instance-ref>components_panel_seriesInstance</instance-ref>
+         <region>center</region>
+         <height>3</height>
+        </window>
+       <window>
+         <window-name>PanelStack</window-name>
+         <instance-ref>components_panel_stackInstance</instance-ref>
+         <region>center</region>
+         <height>4</height>
       </window>
     </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_panel_tooltipInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_panel_tooltipInstance</component-ref>
-    </instance>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
+    <page>
+  	 <page-name>positionPanel</page-name>
+       <window>
+         <window-name>positionPanel</window-name>
+         <instance-ref>components_panel_positionedInstance</instance-ref>
+         <region>center</region>
+         <height>0</height>
+      </window>  	  	 
+    </page>
+  </deployment> 	 
+  <deployment>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
+    <page>
+  	 <page-name>PanelPopup</page-name>
+  	  <window>
+         <window-name>panelPopup</window-name>
+         <instance-ref>components_panel_popupInstance</instance-ref>
+         <region>center</region>
+         <height>1</height>
+       </window>
+    </page>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>Tooltip</page-name>
        <window>
@@ -930,18 +428,10 @@
          <height>0</height>
       </window>
     </page>
-  </deployment> 
- <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
-    <instance>
-      <instance-name>components_media_playerInstance</instance-name>
-      <component-ref>seam-comp-showcaseApp.components_media_playerInstance</component-ref>
-    </instance>
   </deployment>
   <deployment>
-    <parent-ref>default</parent-ref>
-    <if-exists>overwrite</if-exists>
+   <parent-ref>default</parent-ref>
+   <if-exists>overwrite</if-exists>
     <page>
   	 <page-name>MediaTool</page-name>
        <window>

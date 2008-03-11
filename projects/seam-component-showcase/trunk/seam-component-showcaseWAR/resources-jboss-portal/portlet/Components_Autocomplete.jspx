@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="autoCompleteContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="acSub">
-                                <ui:include src="../inc/components/autoComplete.jspx" />
+                                <ui:include src="inc/components/autoComplete.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

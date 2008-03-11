@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="buttonsAndLinksContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="blSub">
-                                <ui:include src="../inc/components/buttonsAndLinks.jspx" />
+                                <ui:include src="inc/components/buttonsAndLinks.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

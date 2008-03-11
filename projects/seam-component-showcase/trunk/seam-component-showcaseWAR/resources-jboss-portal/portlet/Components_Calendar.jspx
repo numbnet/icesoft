@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="selectInputDateContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="sdSub">
-                                <ui:include src="../inc/components/selectInputDate.jspx" />
+                                <ui:include src="inc/components/selectInputDate.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="effectsContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="ecSub">
-                                <ui:include src="../inc/components/effects.jspx" />
+                                <ui:include src="inc/components/effects.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

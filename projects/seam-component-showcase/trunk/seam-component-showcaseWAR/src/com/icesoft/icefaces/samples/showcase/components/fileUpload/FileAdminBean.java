@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -132,12 +133,18 @@ public class FileAdminBean implements Serializable{
 	    parentDir= null;
 	    ArrayList<FileEntry> tempList = new ArrayList<FileEntry>();
 		currentSize=0;
+		FacesContext context = FacesContext.getCurrentInstance();
 	    try {
-	    	/* get the session attribute value for the uploadDirectory */
-   		  FacesContext context = FacesContext.getCurrentInstance();
+	    	/* get the http session attribute value for the uploadDirectory */
 		  HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
 	      parentDir = (String)session.getAttribute("uploadDirectory");
-	    }catch (Exception e) {}
+	    }catch (ClassCastException ce) {
+	       /* get the portlet session attribute for uploadDirectory */
+	      PortletSession session = (PortletSession)(context.getExternalContext().getSession(false));
+	      parentDir= (String)session.getAttribute("uploadDirectory");	    	
+	    }catch (Exception e){
+	      log.info("problem getting uploadDirectory");	
+	    }
 	    if (parentDir != null){
 		  File[] files = null;
 	      File dir = new File(parentDir);
@@ -157,7 +164,7 @@ public class FileAdminBean implements Serializable{
 	    	    this.currentSize += f.getSize();
 	    	}
 	      }
-	    }
+	    }else log.info("parentDir is null");
 	    return tempList;
 	}
 	/* deletes currentFileEntry as it violates max Number of files or max allotted space 

@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="dragDropContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="ddSub">
-                                <ui:include src="../inc/components/dragDrop.jspx" />
+                                <ui:include src="inc/components/dragDrop.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

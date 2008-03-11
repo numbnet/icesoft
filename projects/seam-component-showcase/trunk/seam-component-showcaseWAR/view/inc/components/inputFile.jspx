@@ -130,26 +130,33 @@ Once the file is uploaded, information about the file is displayed.
 	    </ice:panelGroup> 
 
      </ice:panelTab>  
+        <!--
+          The bean is responsible for streaming html documentation to
+           this placeholder
+        -->
+        <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="docFrame"
+                            value="#{ctxtUtil['/docs/inputFileDoc.html']}"
+                            escape="false"/>
+        </ice:panelTab>
 
-            <!--
-              The bean is responsible for streaming html documentation to
-               this placeholder
-            -->
-         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-                <iframe src="./docs/inputFileDoc.html"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>  
-
-            <!--
-              Template for component source code.  This servlet loads
-              the component example jsp include as an xml stream
-            -->
+        <!--
+          Template for component source code.  This servlet loads
+          the component example jsp include as an xml stream
+        -->
         <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-                <iframe src="./sourcecodeStream.html?path=./inc/components/inputFile.jspx"
-                        class="includeIframe"
-                        width="100%"></iframe>
-            </ice:panelTab>
+            <!-- ICE-2714: generating iframe markup to include context path -->
+            <ice:outputText id="srcFrame"
+                            value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/inputFile.jspx']}"
+                            escape="false"/>
+        </ice:panelTab>
+        <ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+            <iframe src="http://facestutorials.icefaces.org/tutorial/inputFile-tutorial.html"
+                    class="includeIframe"
+                    width="100%"></iframe>
+        </ice:panelTab>
 
-        </ice:panelTabSet>  
+    </ice:panelTabSet>
 </ice:form>
+

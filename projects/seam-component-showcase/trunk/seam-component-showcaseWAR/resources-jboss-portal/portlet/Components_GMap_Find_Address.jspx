@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="outputProgressContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="opSub">
-                                <ui:include src="../inc/components/gmap/demo3.jspx" />
+                                <ui:include src="inc/components/gmap/demo3.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="tablePaginatorContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="tpSub">
-                                <ui:include src="../inc/components/dataPaginator.jspx" />
+                                <ui:include src="inc/components/dataPaginator.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

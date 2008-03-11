@@ -74,6 +74,7 @@
                     <ice:panelGroup style="display: inline">
                         <ice:commandLink id="contentVisibleAction"
                                 actionListener="#{item.userObject.contentVisibleAction}">
+                            <f:param name="cid" value="{conversation.id}"/>
                             <ice:outputText id="menuText"
                                     value="#{item.userObject.menuDisplayText}"/>
                         </ice:commandLink>

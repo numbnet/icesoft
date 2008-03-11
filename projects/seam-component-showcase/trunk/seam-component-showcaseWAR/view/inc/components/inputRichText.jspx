@@ -65,7 +65,6 @@
           this placeholder
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-            <!-- ICE-2714: generating iframe markup to include context path -->
             <ice:outputText id="docFrame"
                             value="#{ctxtUtil['/docs/inputRichTextDoc.html']}"
                             escape="false"/>

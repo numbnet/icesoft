@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="combinedChartPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="combinedChartSub">
-                                <ui:include src="../inc/components/outputChart/combinedChart.jspx" />
+                                <ui:include src="inc/components/outputChart/combinedChart.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

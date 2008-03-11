@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="connectionStatusContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="csSub">
-                                <ui:include src="../inc/components/connectionStatus.jspx" />
+                                <ui:include src="inc/components/connectionStatus.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

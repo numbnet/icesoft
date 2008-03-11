@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
-<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+<portlet-app xmlns="http:/java.sun.com/xml/ns/-app_1_0.xsd"
              version="1.0"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+             xmlns:xsi="http:/www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http:/java.sun.com/xml/ns/-app_1_0.xsd http:/java.sun.com/xml/ns/-app_1_0.xsd">
 
     <!-- =================================================================== -->
     <!-- ICEfaces: Text Entry Portlet                     -->
@@ -15,7 +15,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_TextEntry.seam</value>
+            <value>/Components_TextEntry.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -37,7 +37,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Selection.seam</value>
+            <value>/Components_Selection.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -59,7 +59,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_ButtonsAndLinks.seam</value>
+            <value>/Components_ButtonsAndLinks.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -81,7 +81,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Autocomplete.seam</value>
+            <value>/Components_Autocomplete.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -103,7 +103,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_DragAndDrop.seam</value>
+            <value>/Components_DragAndDrop.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -125,7 +125,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Calendar.seam</value>
+            <value>/Components_Calendar.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -147,7 +147,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Tree.seam</value>
+            <value>/Components_Tree.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -170,7 +170,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Menubar.seam</value>
+            <value>/Components_Menubar.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -192,7 +192,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Effects.seam</value>
+            <value>/Components_Effects.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -214,7 +214,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_ConnectionStatus.seam</value>
+            <value>/Components_ConnectionStatus.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -236,7 +236,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_Table.seam</value>
+            <value>/Components_Table_Table.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -258,7 +258,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_Columns.seam</value>
+            <value>/Components_Table_Columns.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -280,13 +280,13 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_SortableHeader.seam</value>
+            <value>/Components_Table_SortableHeader.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
         </supports>
         <portlet-info>
-            <title>ICEfaces: Table - Sortalbe Header</title>
+            <title>ICEfaces: Table - Sortable Header</title>
             <short-title>Table - Sortable Header</short-title>
             <keywords>ICEfaces Component Showcase Table Sortable Header</keywords>
         </portlet-info>
@@ -302,7 +302,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_DataPaging.seam</value>
+            <value>/Components_Table_DataPaging.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -324,7 +324,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_ExpandableTable.seam</value>
+            <value>/Components_Table_ExpandableTable.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -346,7 +346,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_TableRowSelection.seam</value>
+            <value>/Components_Table_TableRowSelection.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -368,7 +368,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_ProgressBar.seam</value>
+            <value>/Components_ProgressBar.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -390,7 +390,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_FileUpload.seam</value>
+            <value>/Components_FileUpload.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -412,7 +412,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Charts_Charts.seam</value>
+            <value>/Components_Charts_Charts.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -434,7 +434,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Charts_DynamicChart.seam</value>
+            <value>/Components_Charts_DynamicChart.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -456,7 +456,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Charts_CombiningCharts.seam</value>
+            <value>/Components_Charts_CombiningCharts.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -478,7 +478,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Rich_Text_Editor.seam</value>
+            <value>/Components_Rich_Text_Editor.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -500,7 +500,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_Address_Attribute.seam</value>
+            <value>/Components_GMap_Address_Attribute.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -522,7 +522,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_Controls.seam</value>
+            <value>/Components_GMap_Controls.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -544,7 +544,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_Find_Address.seam</value>
+            <value>/Components_GMap_Find_Address.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -566,7 +566,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_Geocoder.seam</value>
+            <value>/Components_GMap_Geocoder.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -588,7 +588,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_GMap_Markers.seam</value>
+            <value>/Components_GMap_Markers.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -610,7 +610,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_Column_Grouping.seam</value>
+            <value>/Components_Table_Column_Grouping.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -632,7 +632,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_Row_Grouping.seam</value>
+            <value>/Components_Table_Row_Grouping.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -654,7 +654,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Table_Resizable_Columns.seam</value>
+            <value>/Components_Table_Resizable_Columns.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -676,7 +676,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Border.seam</value>
+            <value>/Components_Panel_Border.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -698,7 +698,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Collapsible.seam</value>
+            <value>/Components_Panel_Collapsible.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -720,7 +720,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Divider.seam</value>
+            <value>/Components_Panel_Divider.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -742,7 +742,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Popup.seam</value>
+            <value>/Components_Panel_Popup.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -764,7 +764,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Positioned.seam</value>
+            <value>/Components_Panel_Positioned.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -786,7 +786,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Series.seam</value>
+            <value>/Components_Panel_Series.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -808,7 +808,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Stack.seam</value>
+            <value>/Components_Panel_Stack.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -830,7 +830,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Tabset.seam</value>
+            <value>/Components_Panel_Tabset.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -852,7 +852,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Panel_Tooltip.seam</value>
+            <value>/Components_Panel_Tooltip.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -874,7 +874,7 @@
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
             <name>com.icesoft.faces.VIEW</name>
-            <value>/portlet/Components_Media_Player.seam</value>
+            <value>/Components_Media_Player.seam</value>
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>

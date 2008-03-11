@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="textFieldsContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="tfSub">
-                                <ui:include src="../inc/layoutPanels/panelTooltip.jspx" />
+                                <ui:include src="inc/layoutPanels/positionedPanel.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

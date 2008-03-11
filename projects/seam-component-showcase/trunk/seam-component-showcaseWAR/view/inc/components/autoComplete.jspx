@@ -169,14 +169,23 @@ USA Address information.
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
-    <iframe src="./docs/selectInputTextDoc.html" class="includeIframe"
-            width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/selectInputTextDoc.html']}"
+                    escape="false"/>
 </ice:panelTab>
 
 <ice:panelTab label="#{msgs['tabbedHeadings.source']}">
-    <iframe
-            src="./sourcecodeStream.html?path=./inc/components/autoComplete.jspx"
-            class="includeIframe" width="100%"></iframe>
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/autoComplete.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/autocomplete-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
 </ice:panelTab>
 
 </ice:panelTabSet>

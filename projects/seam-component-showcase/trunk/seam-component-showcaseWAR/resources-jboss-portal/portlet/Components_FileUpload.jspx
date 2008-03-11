@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="inputFileContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="ifSub">
-                                <ui:include src="../inc/components/inputFile.jspx" />
+                                <ui:include src="inc/components/inputFile.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

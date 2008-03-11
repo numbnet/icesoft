@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="selectionTagsContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="selSub">
-                                <ui:include src="../inc/components/selectionTags.jspx" />
+                                <ui:include src="inc/components/selectionTags.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

@@ -50,7 +50,7 @@
                     <div class="demoWindow">
                         <ice:panelGroup id="commandSortHeaderContentPanel" styleClass="contentIncludePanelGroup">
                             <f:subview id="shSub">
-                                <ui:include src="../inc/components/commandSortHeader.jspx" />
+                                <ui:include src="inc/components/commandSortHeader.jspx" />
                             </f:subview>
                         </ice:panelGroup>
                     </div>

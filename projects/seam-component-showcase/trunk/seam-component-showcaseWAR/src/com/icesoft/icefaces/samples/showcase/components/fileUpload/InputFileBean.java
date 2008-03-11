@@ -21,6 +21,7 @@ import org.jboss.seam.core.Manager;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
 
 import java.io.File;
@@ -125,9 +126,9 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
-    	PersistentFacesState _state = PersistentFacesState.getInstance();
-    	if (_state!=null)state=_state;
-    	log.info("getPercent version="+this+" percent="+this.percent);
+//    	PersistentFacesState _state = PersistentFacesState.getInstance();
+//    	if (_state!=null)state=_state;
+//    	log.info("getPercent version="+this+" percent="+this.percent);
         return this.percent;
     }
 
@@ -142,10 +143,15 @@ public class InputFileBean implements Renderable, Serializable{
 	    	  */
 	    	 uploadDirectory=file.getParent();
 	    	 if (log.isDebugEnabled())log.debug("uploadDirectory is:"+uploadDirectory);
+    		 FacesContext context = FacesContext.getCurrentInstance();
 	    	 try{
-	    		 FacesContext context = FacesContext.getCurrentInstance();
 	    		 HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
 	    		 session.setAttribute("uploadDirectory", uploadDirectory);
+	    		 log.info("Servlet uploadDirectory set to:- "+uploadDirectory);
+	    	 }catch (ClassCastException ce){
+	    		 PortletSession session = (PortletSession)(context.getExternalContext().getSession(false));
+	    		 session.setAttribute("uploadDirectory", uploadDirectory);
+	    		 log.info("Portlet uploadDirectory set to:- "+uploadDirectory);
 	    	 }catch (Exception e){
 	    		 log.info("error setting upload directory in session attribute ");
 	    		 e.printStackTrace();
@@ -176,9 +182,7 @@ public class InputFileBean implements Renderable, Serializable{
     	this.updateFlag = false;
         InputFile ifile = (InputFile) event.getSource(); 
 		this.percent = ifile.getFileInfo().getPercent();
-		log.info("percent="+this.percent+" version="+this);
-
-  	   reRender();
+  	    reRender();
     }
 
 
@@ -190,9 +194,6 @@ public class InputFileBean implements Renderable, Serializable{
 			   * don't do it this way as it doesn't work!!! state is null in 
 			   * renderManager.
 			   */
-//		  if (renderManager!=null){
-//			  renderManager.requestRender(this);
-//		  }
 			  /**
 			   * have to do it this way since Seam manages the contexts and
 			   * you don't always have access to the state.  Better to use
