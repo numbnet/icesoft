@@ -308,7 +308,7 @@ public class TableRenderer
                                                 
                     if (htmlDataTable.isResizable()) {
                         if (colspan != null) {
-                            colspan = new Integer(colspan.intValue()+1);
+                            colspan = new Integer(colspan.intValue()+ colspan.intValue());
                         } else {
                             colspan = new Integer(2);
                         }
