@@ -266,7 +266,7 @@ public class TableRenderer
             sourceClass = CSS_DEFAULT.TABLE_FOOTER_CLASS;
         }
         String baseClass= Util.getQualifiedStyleClass(uiComponent, "ColGrp"+sourceClass);
-        
+        HtmlDataTable htmlDataTable = (HtmlDataTable)uiComponent;
         Iterator children = headerFacet.getChildren().iterator();
         while (children.hasNext()) {
             UIComponent child = (UIComponent) children.next();
@@ -300,11 +300,24 @@ public class TableRenderer
                         styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col ")+ styleClass;                        
                     }
                     th.setAttribute(HTML.CLASS_ATTR, styleClass);
-                    String colspan = ((com.icesoft.faces.component.ext.UIColumn)
-                                                column).getColspan();
-                    if (colspan != null) {
-                        th.setAttribute(HTML.COLSPAN_ATTR, colspan);
+                    Integer colspan = null;
+                    try {
+                        colspan = Integer.valueOf(((com.icesoft.faces.component.ext.UIColumn)
+                                column).getColspan());
+                    } catch (Exception e) {}
+                                                
+                    if (htmlDataTable.isResizable()) {
+                        if (colspan != null) {
+                            colspan = new Integer(colspan.intValue()+1);
+                        } else {
+                            colspan = new Integer(2);
+                        }
                     }
+                    
+                    if (colspan != null) {
+                        th.setAttribute(HTML.COLSPAN_ATTR, colspan.toString());               
+                    }
+                    
                     String rowspan = ((com.icesoft.faces.component.ext.UIColumn)
                                                 column).getRowspan();
                     if (rowspan != null) {
