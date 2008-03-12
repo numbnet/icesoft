@@ -374,6 +374,7 @@ public class TableRenderer
                 Element handlerTd = domContext.createElement(element);
                 handlerTd.setAttribute("valign", "top");
                 handlerTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblResBor");
+                handlerTd.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.firstChild.style.height=Element.getHeight(this) + 'px';");
                 Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
