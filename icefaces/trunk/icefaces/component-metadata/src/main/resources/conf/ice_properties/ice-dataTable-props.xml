@@ -183,7 +183,14 @@
 </property>
 <property>
     <description>
-        Resizable.
+        <![CDATA[
+        <p>    
+            To make columns resizable, this attribute needs to be true.
+        </p>        
+        <b>Note: </b> Only those columns of the table can be dragged which are 
+        defined as the "header" facet of a column. The headers which are defined by 
+        the "columnGroup" can not be dragged.
+        ]]>          
     </description>
     <property-name>resizable</property-name>
     <property-class>boolean</property-class>
