@@ -35,13 +35,13 @@ package com.icesoft.faces.presenter.participant;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.ext.HtmlInputText;
+import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 import com.icesoft.faces.presenter.chat.Message;
 import com.icesoft.faces.presenter.participant.view.ChatView;
 import com.icesoft.faces.presenter.participant.view.ParticipantView;
 import com.icesoft.faces.presenter.presentation.Presentation;
-import com.icesoft.faces.presenter.presentation.PresentationManager;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.StringResource;
@@ -54,7 +54,6 @@ import java.util.Map;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSessionListener;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
@@ -67,7 +66,7 @@ import org.apache.commons.logging.LogFactory;
  * viewer or moderator, and manage the UI level functionality such as status
  * messages, chatting, slide changing, etc.
  */
-public class Participant extends ParticipantInfo implements Renderable, HttpSessionListener {
+public class Participant extends ParticipantInfo implements Renderable, DisposableBean {
     private static final int HIGHLIGHT_TIME = 4000;
     private static final int MAXIMUM_TRANSIENT_EXCEPTIONS = 50;
 
@@ -814,23 +813,6 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
     }
 
-    /**
-     * Method called when the http session listener tells us a session was destroyed
-     * This will get the singleton PresentationManager and let it know the session
-     * was destroyed, which may result in a stale presentation being removed
-     *
-     * @param httpSessionEvent of the destruction
-     */
-    public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-    	String destroyedId = httpSessionEvent.getSession().getId();
-
-        if (log.isInfoEnabled()) {
-            log.info("Session destroyed for id: " + destroyedId);
-        }
-
-        PresentationManager.getInstance().destroySessionId(destroyedId);
-    }
-
     public String getSkype() {
         return skype;
     }
@@ -861,5 +843,9 @@ public class Participant extends ParticipantInfo implements Renderable, HttpSess
 
 	public boolean isLoggedIn() {
 		return loggedIn;
+	}
+
+	public void dispose() throws Exception {
+		logout();
 	}
 }

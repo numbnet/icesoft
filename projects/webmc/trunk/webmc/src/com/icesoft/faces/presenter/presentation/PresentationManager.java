@@ -142,40 +142,6 @@ public class PresentationManager {
     }
 
     /**
-     * Method called when a user session is destroyed
-     * This will remove the sessionId from sessionList if it is found
-     * So basically if a moderator is destroyed, their presentation will go
-     * down too
-     *
-     * @param sessionId to destroy
-     */
-    public void destroySessionId(String sessionId) {
-        if (sessionList.contains(sessionId)) {
-            try{
-                Iterator presIter = presentationMap.keySet().iterator();
-
-                Presentation current;
-                while (presIter.hasNext()) {
-                    current = (Presentation)presentationMap
-                            .get((String) presIter.next());
-
-                    if (current.getSessionId().equals(sessionId)) {
-                        current.endPresentation();
-                    }
-                }
-            }catch (Exception failedToClose) {
-                if (log.isErrorEnabled()) {
-                    log.error(
-                            "Failed to shutdown the presentation associated with id " +
-                            sessionId, failedToClose);
-                }
-            }
-
-            sessionList.remove(sessionId);
-        }
-    }
-
-    /**
      * Method to retrieve a named presentation from the Map If the presentation
      * does not exist, a null is returned The proper way to check for existing
      * presentations is to use the presentationExists method instead
