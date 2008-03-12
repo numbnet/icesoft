@@ -379,7 +379,7 @@
                 style="position: absolute; background-color: #FFFFFF; width: 550px; height: 235px; z-index:1001; top: 30%; left: 30%; border: 1px solid #104675;">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Upload a New Presentation (.zip file only)</strong>
+            <strong>Upload a New Presentation</strong>
         </ice:panelGroup>
     </f:facet>
     <f:facet name="body">
@@ -387,8 +387,9 @@
             <center>
                 <div style="text-align: left; padding: 7px;">
                     <ice:outputText
-                            value="Please upload the presentation ZIP file. Select the Browse button below to navigate your file system and select the ZIP file created for this presentation.  Once the file has been selected, choose the Upload button."/>
+                            value="Browse below to navigate your file system and upload the PPT or ZIP file created for this presentation.  ZIP files can contain images in .jpg, .gif, or .png format."/>
                 </div>
+                <br />
                 <ice:inputFile uniqueFolder="false"
                                width="500"
                                actionListener="#{participant.presentation.load}"
