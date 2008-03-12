@@ -36,20 +36,24 @@ package com.icesoft.faces.webapp.xmlhttp;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
+
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.faces.FactoryFinder;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The {@link PersistentFacesState} class allows an application to initiate
@@ -80,6 +84,7 @@ public class PersistentFacesState implements Serializable {
     private ClassLoader renderableClassLoader = null;
     private boolean synchronousMode;
     private Collection viewListeners;
+    private boolean disposed = false;
 
     public PersistentFacesState(BridgeFacesContext facesContext, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
@@ -93,6 +98,10 @@ public class PersistentFacesState implements Serializable {
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         this.setCurrentInstance();
+    }
+
+    public void dispose() {
+        disposed = true;
     }
 
     public void setCurrentInstance() {
@@ -143,6 +152,15 @@ public class PersistentFacesState implements Serializable {
      * The user's browser will be immediately updated with any changes.
      */
     public void render() throws RenderingException {
+        if (disposed) {
+            if (log.isDebugEnabled()) {
+                log.debug("fatal render failure for viewNumber "
+                        + facesContext.getViewNumber());
+            }
+            throw new FatalRenderingException(
+                    "fatal render failure for viewNumber "
+                            + facesContext.getViewNumber());
+        }
         warn();
         facesContext.setCurrentInstance();
         setCurrentInstance();
@@ -151,15 +169,23 @@ public class PersistentFacesState implements Serializable {
             try {
                 lifecycle.render(facesContext);
                 facesContext.release();
-            } catch (IllegalStateException e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("fatal render failure for viewNumber "
-                            + facesContext.getViewNumber(), e);
-                }
-                throw new FatalRenderingException(
-                        "fatal render failure for viewNumber "
-                                + facesContext.getViewNumber(), e);
             } catch (Exception e) {
+                Throwable throwable = e;
+                while (throwable != null) {
+                    if (throwable instanceof IllegalStateException ||
+                        throwable instanceof SessionExpiredException) {
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("fatal render failure for viewNumber "
+                                    + facesContext.getViewNumber(), e);
+                        }
+                        throw new FatalRenderingException(
+                                "fatal render failure for viewNumber "
+                                        + facesContext.getViewNumber(), e);
+                    } else {
+                        throwable = throwable.getCause();
+                    }
+                }
                 if (log.isDebugEnabled()) {
                     log.debug("transient render failure for viewNumber "
                             + facesContext.getViewNumber(), e);
@@ -246,6 +272,15 @@ public class PersistentFacesState implements Serializable {
      * to occur. Use {@link PersistentFacesState#executeAndRender} instead
      */
     public void execute() throws RenderingException {
+        if (disposed) {
+            if (log.isDebugEnabled()) {
+                log.debug("fatal render failure for viewNumber "
+                        + facesContext.getViewNumber());
+            }
+            throw new FatalRenderingException(
+                    "fatal render failure for viewNumber "
+                            + facesContext.getViewNumber());
+        }
         facesContext.setCurrentInstance();
         setCurrentInstance();
         synchronized (facesContext) {
@@ -260,15 +295,23 @@ public class PersistentFacesState implements Serializable {
                     facesContext.renderResponse();
                 }
                 lifecycle.execute(facesContext);
-            } catch (IllegalStateException e) {
-                if (log.isDebugEnabled()) {
-                    log.debug("fatal render failure for viewNumber "
-                            + facesContext.getViewNumber(), e);
-                }
-                throw new FatalRenderingException(
-                        "fatal render failure for viewNumber "
-                                + facesContext.getViewNumber(), e);
             } catch (Exception e) {
+                Throwable throwable = e;
+                while (throwable != null) {
+                    if (throwable instanceof IllegalStateException ||
+                        throwable instanceof SessionExpiredException) {
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("fatal render failure for viewNumber "
+                                    + facesContext.getViewNumber(), e);
+                        }
+                        throw new FatalRenderingException(
+                                "fatal render failure for viewNumber "
+                                        + facesContext.getViewNumber(), e);
+                    } else {
+                        throwable = throwable.getCause();
+                    }
+                }
                 if (log.isDebugEnabled()) {
                     log.debug("transient render failure for viewNumber "
                             + facesContext.getViewNumber(), e);
@@ -289,7 +332,6 @@ public class PersistentFacesState implements Serializable {
      * @exception RenderingException if there is an exception rendering the View
      */
     public void executeAndRender() throws RenderingException {
-
         synchronized (facesContext) {
             execute();
             render();
