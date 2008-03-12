@@ -55,7 +55,10 @@ public abstract class PortletEnvironmentRenderRequest extends CommonEnvironmentR
         secure = request.isSecure();
         contextPath = request.getContextPath();
 
-        Collection hiddenCustomAttributeNames = Arrays.asList(configuration.getAttribute("hiddenPortletAttributes", "").split(" "));
+        //ICE-2846: check for deprecated configuration parameter as well
+        String customPortletAttributes = configuration.getAttribute("portlet.hiddenAttributes",
+                configuration.getAttribute("hiddenPortletAttributes", ""));
+        Collection hiddenCustomAttributeNames = Arrays.asList(customPortletAttributes.split(" "));
 
         attributes = Collections.synchronizedMap(new HashMap());
         populateMap(Collections.list(request.getAttributeNames()), attributes, request);

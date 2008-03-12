@@ -149,9 +149,12 @@ public class Constants {
              PORTLET_USERINFO};
 
     public static final String PORTLET_KEY = "com.icesoft.faces.PORTLET";
-    public static final String VIEW_KEY = "com.icesoft.faces.VIEW";
-    public static final String EDIT_KEY = "com.icesoft.faces.EDIT";
-    public static final String HELP_KEY = "com.icesoft.faces.HELP";
+    public static final String VIEW_KEY = "com.icesoft.faces.portlet.viewPageURL";
+    public static final String EDIT_KEY = "com.icesoft.faces.portlet.editPageURL";
+    public static final String HELP_KEY = "com.icesoft.faces.portlet.helpPageURL";
+    public static final String OLD_VIEW_KEY = "com.icesoft.faces.VIEW";
+    public static final String OLD_EDIT_KEY = "com.icesoft.faces.EDIT";
+    public static final String OLD_HELP_KEY = "com.icesoft.faces.HELP";
     public static final String NAMESPACE_KEY = "com.icesoft.faces.NAMESPACE";
 
     public static final String TMP_DIR = "javax.servlet.context.tempdir";

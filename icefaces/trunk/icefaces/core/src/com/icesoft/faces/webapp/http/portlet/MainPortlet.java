@@ -39,32 +39,39 @@ public class MainPortlet extends GenericPortlet {
 
     protected void doEdit(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
-        String viewId = getViewID(Constants.EDIT_KEY);
+        String viewId = getViewID(Constants.EDIT_KEY, Constants.OLD_EDIT_KEY);
         doInclude(renderRequest, renderResponse, viewId);
     }
 
     protected void doHelp(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
-        String viewId = getViewID(Constants.HELP_KEY);
+        String viewId = getViewID(Constants.HELP_KEY, Constants.OLD_HELP_KEY);
         doInclude(renderRequest, renderResponse, viewId);
     }
 
     protected void doView(RenderRequest renderRequest, RenderResponse renderResponse)
             throws PortletException, IOException {
-        String viewId = getViewID(Constants.VIEW_KEY);
+        String viewId = getViewID(Constants.VIEW_KEY, Constants.OLD_VIEW_KEY);
         doInclude(renderRequest, renderResponse, viewId);
     }
 
-    protected String getViewID(String key) throws PortletException {
+    protected String getViewID(String key, String oldKey) throws PortletException {
         String viewId = portletConfig.getInitParameter(key);
         if (viewId != null) {
             return viewId;
         }
 
-        if (log.isErrorEnabled()) {
-            log.error("cannot find view id for " + key);
+        //ICE-2846:  deprecated the old constants but still need to support them for now
+        viewId = portletConfig.getInitParameter(oldKey);
+        if (viewId != null) {
+            return viewId;
         }
-        throw new PortletException("cannot find view id for " + key);
+
+        String errorMessage = "cannot find view id for " + key + " or " + oldKey;
+        if (log.isErrorEnabled()) {
+            log.error(errorMessage);
+        }
+        throw new PortletException(errorMessage);
     }
 
     /**

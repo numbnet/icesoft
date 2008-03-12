@@ -80,7 +80,9 @@ public class PortletExternalContext extends BridgeExternalContext {
         sessionMap = new PortletSessionAttributeMap(session);
         requestMap = Collections.EMPTY_MAP;
 
-        adjustPortletSessionInactiveInterval = configuration.getAttributeAsBoolean("adjustPortletSessionInactiveInterval",true);
+        //ICE-2846: check for deprecated configuration parameter as well
+        adjustPortletSessionInactiveInterval = configuration.getAttributeAsBoolean("portlet.adjustSessionInactiveInterval",
+                configuration.getAttributeAsBoolean("adjustPortletSessionInactiveInterval",true));
 
         updateOnPageLoad(renderRequest, renderResponse);
         insertNewViewrootToken();
