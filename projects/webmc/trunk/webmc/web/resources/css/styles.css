@@ -162,10 +162,6 @@ li {
     background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
 }
 
-.formInput, .inputField {
-    width: 140px;
-}
-
 .chat, .participant {
     background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
 }

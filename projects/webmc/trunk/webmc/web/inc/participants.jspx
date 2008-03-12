@@ -2,69 +2,62 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 
-	<table border="0" cellspacing="0" cellpadding="0"
-	       style="border: 1px solid #90B1C9;">
-		<tr>
-		    <td class="bgBARBLUE" style="padding-left: 6px; padding-right: 18px;">
-		        <ice:outputText value="Participants:" />
-		        <br />
-		        <ice:outputText value="#{participant.presentation.numberChatParticipants}"/>
-		    </td>
-		    <td class="bgBARBLUE" align="right">
-		        <ice:commandButton immediate="true" 
-		                           alt="Scroll Up"
-		                           image="resources/images/part_arrow_up_#{participant.participantView.participantScrollUpDisabled}.gif"
-		                           title="Scroll the participant list up one page"
-		                           actionListener="#{participant.participantView.moveParticipantViewUp}"
-		                           style="vertical-align: bottom;"
-		                           disabled="#{participant.participantView.participantScrollUpDisabled}"/>
-		
-		        <ice:commandButton immediate="true" 
-		                           alt="Scroll Down"
-		                           image="resources/images/part_arrow_down_#{participant.participantView.participantScrollDownDisabled}.gif"
-		                           title="Scroll the participant list down one page"
-		                           actionListener="#{participant.participantView.moveParticipantViewDown}"
-		                           style="vertical-align: bottom;"
-		                           disabled="#{participant.participantView.participantScrollDownDisabled}"/>
-		    </td>
-		</tr>
-		<tr>
-			<td class="participant" colspan="2"
-			    style="border-top: 1px solid #90B1C9; "
-			    valign="top">
-			    <ul>
-			    <ice:dataTable binding="#{participant.participantsTable}"
-			                   value="#{participant.participantViewList}" 
-			                   var="list" 
-                               width="100%"
-                               height="75px">
+<div style="border: 1px solid #90B1C9;">
+    <ice:panelGrid columns="2" 
+                   styleClass="bgBARBLUE" 
+                   width="100%"
+                   cellpadding="0" 
+                   cellspacing="0" >
+	    <ice:panelGroup style="padding-left: 6px;">
+	        <ice:outputText value="Viewers:" />
+	        <ice:outputText value="#{participant.presentation.numberChatParticipants}"/>
+	    </ice:panelGroup>
+	    <ice:panelGroup style="text-align: right">
+	        <ice:commandButton immediate="true" 
+	                           alt="Scroll Up"
+	                           image="resources/images/part_arrow_up_#{participant.participantView.participantScrollUpDisabled}.gif"
+	                           title="Scroll the participant list up one page"
+	                           actionListener="#{participant.participantView.moveParticipantViewUp}"
+	                           disabled="#{participant.participantView.participantScrollUpDisabled}"/>	
+	        <ice:commandButton immediate="true" 
+	                           alt="Scroll Down"
+	                           image="resources/images/part_arrow_down_#{participant.participantView.participantScrollDownDisabled}.gif"
+	                           title="Scroll the participant list down one page"
+	                           actionListener="#{participant.participantView.moveParticipantViewDown}"
+	                           disabled="#{participant.participantView.participantScrollDownDisabled}"/>
+	    </ice:panelGroup>
+    </ice:panelGrid>
+		<ice:panelGroup styleClass="participant" >
+		    <ul>
+		    <ice:dataTable binding="#{participant.participantsTable}"
+		                   value="#{participant.participantViewList}" 
+		                   var="list"
+		                   cellpadding="0" 
+                           cellspacing="0" 
+                           width="100%"
+                           height="80px" >
 
-			        <ice:column>
+		        <ice:column>
                     <li>
-                        &amp;nbsp;
-		                <strong>
-		                    <ice:commandLink value="#{list.firstName} #{list.lastName}"
-		                                     title="Click to make #{list.firstName} the moderator"
-		                                     rendered="#{participant.moderator}"
-		                                     actionListener="#{participant.passModerators}"
-		                                     style="vertical-align: top;"/>
-		                    <ice:outputText value="#{list.firstName} #{list.lastName}"
-		                                    title="Email Address: #{list.email}"
-		                                    rendered="#{not participant.moderator}"
-		                                    style="vertical-align: top;"/>
-		                </strong>
-		                <ice:outputText value="(Moderator)"
-		                                rendered="#{not empty list and list.moderator}"
-		                                style="vertical-align: top;"/>
-		                <ice:outputText value="(Skype)"
-		                                rendered="#{not empty list and list.hasSkype}"
-		                                style=" verical-align: top;"/>
+                       &amp;nbsp;
+	                <strong>
+	                    <ice:commandLink value="#{list.firstName} #{list.lastName}"
+	                                     title="Click to make #{list.firstName} the moderator"
+	                                     rendered="#{participant.moderator}"
+	                                     actionListener="#{participant.passModerators}"/>
+	                    <ice:outputText value="#{list.firstName} #{list.lastName}"
+	                                    title="Email Address: #{list.email}"
+	                                    rendered="#{not participant.moderator}"/>
+	                </strong>
+	                <ice:outputText value="(Moderator)"
+	                                rendered="#{not empty list and list.moderator}"
+	                                style="vertical-align: top;"/>
+	                <ice:outputText value="(Skype)"
+	                                rendered="#{not empty list and list.hasSkype}"/>
                     </li>
-			        </ice:column>
-
-			    </ice:dataTable>
-			    </ul>
-			</td>
-		</tr>
-	</table>
+		        </ice:column>
+		    </ice:dataTable>
+		    </ul>
+		</ice:panelGroup>
+	</div>
 </f:view>

@@ -103,7 +103,7 @@
             </tr>
         </table>
     </ice:panelGroup>
-
+<!-- 
     <ice:panelGroup rendered="#{participant.moderator}">
         <table class="loginTable">
             <tr>
@@ -162,6 +162,7 @@
             </tr>
         </table>
     </ice:panelGroup>
+ -->
 </td>
 </tr>
 <!-- 

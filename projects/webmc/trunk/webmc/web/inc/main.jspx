@@ -36,13 +36,22 @@
      xmlns:ice="http://www.icesoft.com/icefaces/component"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      id="maincontainer">
+<!-- 
     <ice:panelGroup layout="block"
                     styleClass="bgNAV" 
                     rendered="#{participant.moderator}">    
         <ui:include src="navigationpanel.jspx"/>
     </ice:panelGroup>
-
+ -->
     <ice:form styleClass="bgMAIN">
+
+                <ice:panelGroup style="text-align: center;">
+                    <ice:outputText value="#{participant.statusMessage}"
+                                    effect="#{participant.statusEffect}"
+                                    escape="false"
+                                    style="background-color: #C7DFEF; color: #2D6387;"/>
+                </ice:panelGroup>
+        
         <div id="mainPRES">
             <ui:include src="presentation.jspx"/>
         </div>

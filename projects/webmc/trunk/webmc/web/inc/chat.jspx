@@ -2,68 +2,63 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 	
-	<table border="0" cellspacing="0" cellpadding="0"
-	       style="border: 1px solid #90B1C9;">
-	    <tr>
-	        <td class="bgBARBLUE" style="padding-left: 6px;">
-	            <ice:outputText value="Chat Window"/>
-	        </td>
-	        <td class="bgBARBLUE" align="right">
-	            <ice:commandButton immediate="true" 
-	                               alt="Scroll Up"
-	                               image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
-	                               title="Scroll the chat log up one page"
-	                               actionListener="#{participant.chatView.moveChatViewUp}"
-	                               style="vertical-align: bottom;"
-	                               disabled="#{participant.chatView.chatScrollUpDisabled}"/>
-	
-	            <ice:commandButton immediate="true" 
-	                               alt="Scroll Down"
-	                               image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
-	                               title="Scroll the chat log down one page"
-	                               actionListener="#{participant.chatView.moveChatViewDown}"
-	                               style="vertical-align: bottom;"
-	                               disabled="#{participant.chatView.chatScrollDownDisabled}"/>
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="chat" colspan="2"
-	            style="border-top: 1px solid #90B1C9; 
-	                   border-bottom: 1px solid #90B1C9; 
-	                   vertical-align: middle;">
-	            <ul>
-	                <ice:dataTable value="#{participant.chatViewList}"
-	                               rows="#{participant.chatView.viewSize}"
-	                               var="page"
-	                               style="text-align: left; 
-	                                      width: 100%; 
-	                                      height: 85px">
-	                    <ice:column>
-	                        <li>
-                                <ice:outputText value="#{page.senderFormatted}"
-                                                style="font-weight: bold;"/>
-                                <ice:outputText value="#{page.message}" 
-                                                escape="false"/>
-	                            &amp;nbsp;
-	                        </li>
-	                    </ice:column>
-	                </ice:dataTable>
-	            </ul>
-	        </td>
-	    </tr>
-	    <tr>
-	        <td class="bgBARBLUE" style="padding: 0 5px 0 5px;">
-	            <ice:inputText binding="#{participant.chatMessageField}"
-	                           value="#{participant.chatMessage}"
-	                           maxlength="40" 
-	                           styleClass="inputCHAT"
-	                           actionListener="#{participant.addChatMessage}"/>
-	        </td>
-	        <td class="bgBARBLUE" align="right">
-	            <ice:commandButton image="resources/images/chat_send.gif"
-	                               actionListener="#{participant.addChatMessage}"
-	                               alt="Send"/>
-	        </td>
-	    </tr>
-	</table>
+<div style="border: 1px solid #90B1C9;" >
+
+    <ice:panelGrid columns="2" 
+                   styleClass="bgBARBLUE" 
+                   width="100%"
+                   cellpadding="0" 
+                   cellspacing="0">
+        <ice:outputText value="Chat"
+                        style="padding-left: 6px;"/>
+        <ice:panelGroup style="text-align: right" >
+            <ice:commandButton immediate="true" 
+                               alt="Scroll Up"
+                               image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
+                               title="Scroll the chat log up one page"
+                               actionListener="#{participant.chatView.moveChatViewUp}"
+                               disabled="#{participant.chatView.chatScrollUpDisabled}"/>
+            <ice:commandButton immediate="true" 
+                               alt="Scroll Down"
+                               image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
+                               title="Scroll the chat log down one page"
+                               actionListener="#{participant.chatView.moveChatViewDown}"                        
+                               disabled="#{participant.chatView.chatScrollDownDisabled}"/>
+        </ice:panelGroup>
+    </ice:panelGrid>
+    <ice:panelGroup styleClass="chat" >
+        <ul>
+            <ice:dataTable value="#{participant.chatViewList}"
+                           rows="#{participant.chatView.viewSize}"
+                           var="page"
+                           cellpadding="0" 
+                           cellspacing="0"
+                           width="100%"
+                           height="85px"
+                           style="text-align: left;" >
+                <ice:column>
+                    <li>
+                           <ice:outputText value="#{page.senderFormatted}"
+                                           style="font-weight: bold; "/>
+                           <ice:outputText value="#{page.message}" 
+                                           escape="false"/>
+                        &amp;nbsp;
+                    </li>
+                </ice:column>
+            </ice:dataTable>
+        </ul>
+    </ice:panelGroup>
+    <ice:panelGroup styleClass="bgBARBLUE" >    
+	        <ice:inputText binding="#{participant.chatMessageField}"
+	                       value="#{participant.chatMessage}"
+	                       maxlength="40" 
+	                       styleClass="inputCHAT"
+	                       actionListener="#{participant.addChatMessage}" />
+
+	        <ice:commandButton image="resources/images/chat_send_mobile.gif"
+	                           actionListener="#{participant.addChatMessage}"
+	                           alt="Send"/>
+
+    </ice:panelGroup>
+	</div>
 </f:view>

@@ -2,23 +2,15 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 	<ice:dataTable value="#{participant.preloadSlides}"
-	               var="loopSlide">
+	               var="loopSlide"
+                   cellpadding="0" 
+                   cellspacing="0">
 	    <h:column>
 	        <ice:graphicImage value="#{loopSlide.location}"
 	                          style="visibility: hidden; height: 0; width: 0;"/>
 	    </h:column>
 	</ice:dataTable>
 	<table cellspacing="0" cellpadding="0" border="0" >
-	    <tr>
-	        <td>
-	            <ice:panelGroup style="text-align: center;">
-	                <ice:outputText value="#{participant.statusMessage}"
-	                                effect="#{participant.statusEffect}"
-	                                escape="false"
-	                                style="background-color: #C7DFEF; color: #2D6387;"/>
-	            </ice:panelGroup>
-	        </td>
-	    </tr>
 	    <tr>
 	        <td colspan="2" valign="top">
 	            <ice:panelGrid styleClass="presentationImageTable"
