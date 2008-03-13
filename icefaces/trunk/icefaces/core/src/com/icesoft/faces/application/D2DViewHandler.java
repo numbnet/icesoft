@@ -220,7 +220,10 @@ public class D2DViewHandler extends ViewHandler {
         };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
         root.setViewId(null == viewId ? "default" : viewId);
-
+        
+        String renderedViewId = getRenderedViewId(context, root.getViewId());
+        root.setViewId(renderedViewId);
+        
         return root;
     }
 
