@@ -108,7 +108,7 @@ public class TomcatPushServlet
     protected void service(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
         // Not used by Tomcat6
-        throw new ServletException("service() not supported by TomcatPushServlet");
+        throw new ServletException("service() not supported by TomcatPushServlet. Configure the connector, replacing protocol=\"HTTP/1.1\" with protocol=\"org.apache.coyote.http11.Http11NioProtocol\"");
     }
     
 
