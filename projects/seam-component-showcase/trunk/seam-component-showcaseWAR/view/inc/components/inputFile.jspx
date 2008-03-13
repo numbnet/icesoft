@@ -38,6 +38,7 @@ Once the file is uploaded, information about the file is displayed.
  <ice:form
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:s="http://jboss.com/products/seam/taglib"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 
@@ -58,7 +59,8 @@ Once the file is uploaded, information about the file is displayed.
             <ice:commandButton image="./images/fileUpload/arrow_#{fileAdminBean.fileUpload.uploadDialog}.gif" 
                                          action="#{fileAdminBean.fileUpload.toggleDialog}"
                                            alt="Open"/>   
-                  			#{msgs['component.fileUpload.openPanel']}                   
+                  			#{msgs['component.fileUpload.openPanel']} 
+                           
         </ice:panelGroup>
               
         <ice:panelGroup id="openFileUploadPanel" 
@@ -67,7 +69,7 @@ Once the file is uploaded, information about the file is displayed.
             <strong>File Upload Component Dialog</strong>
              <f:facet name="afterInvalidField">
                 <div styleClass="errors">
-               	    <ice:message/>
+               	    <ice:messages/>
                	</div>
             </f:facet>
 
@@ -80,20 +82,18 @@ Once the file is uploaded, information about the file is displayed.
                    <ice:inputFile id="inputFileName"
                        progressListener="#{fileAdminBean.fileUpload.progress}"
                          actionListener="#{fileAdminBean.fileUpload.action}" />
+                        
                    <ice:outputProgress id="pro"
                                     value="#{fileAdminBean.fileUpload.percent}"/>
                    <ice:outputText id="fileName"
                                 value="Uploading to File Name: #{fileAdminBean.fileUpload.currentFileName}"/>
                       <br/>
-                   <ice:outputText id="spaceLabel" value="#{msgs['component.fileUpload.remainingSpace']}"/>
-                   <ice:outputText id="remainingSpace" value="#{fileAdminBean.remainingSpace}"/>  
+                  <ice:outputText id="spaceLabel" value="#{msgs['component.fileUpload.totalSpace']}"/>
+                  <ice:outputText id="remainingSpace" value="#{fileAdminBean.totalSpace}"/>   
                </ice:panelGroup>
                    
             </ice:panelGrid>
-            <ice:panelGroup id="errorPanel" >
-           		 <ice:outputText id="errorText"  rendered="#{fileAdminBean.error}"
-            			 value="#{msgs['component.fileUpload.errorMsg']}"/>
-            </ice:panelGroup>
+             
         </ice:panelGroup>
 
         <ice:panelGroup id="listOfFilesUploaded"  >  
@@ -128,7 +128,7 @@ Once the file is uploaded, information about the file is displayed.
               </ice:panelGroup>
    
 	    </ice:panelGroup> 
-
+	  
      </ice:panelTab>  
         <!--
           The bean is responsible for streaming html documentation to
