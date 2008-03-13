@@ -11,8 +11,6 @@
 
 	<!-- set global properties for this build -->
 	<property name="project.name" value="seam-comp-showcase"/>
- <!--   <property name="dist.dir" value="dist" /> -->
-<!--	<property name="exploded-archives.dir" value="exploded-archives" /> -->
     <property name="src.action.dir" value="src" />
     <property name="src.test.dir" value="src/test" />
     <property name="lib.dir" value="lib" />
@@ -154,7 +152,16 @@
     		</copy>       	
     </target>
     
-    <target name="war" depends="compileactions,copyclasses,portal.war" 
+	<target name="servlet.war"  unless="portal.war"
+		description="copies servlet specific files">
+        <copy todir="${war.dir}/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
+            	<include name="pages.xml"/>
+            </fileset>
+        </copy>
+	</target>
+	
+    <target name="war" depends="compileactions,copyclasses,portal.war,servlet.war" 
             description="Build the distribution .war file">
    		<echo message=" war building ...."/>
        <copy todir="${war.dir}/WEB-INF/classes/META-INF">
@@ -166,6 +173,7 @@
             <fileset dir="${basedir}/resources-jboss">
                 <include name="seam.properties" />
             	<include name="import.sql"/>
+            	<include name="META-INF/*.*"/>
             </fileset>
         </copy>
        <copy todir="${war.resources.dir}">
@@ -376,9 +384,9 @@
 	      <copy todir="${lib.dir}">
 	           <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />
-		     <exclude name="icefaces-ahs.jar"/>
+		         <exclude name="icefaces-ahs.jar"/>
 	             <include name="backport-util-concurrent.jar" />	
-		     <include name="commons-fileupload.jar"/> 
+		         <include name="commons-fileupload.jar"/> 
 	             <include name="commons-logging*.jar"/>
 	             <include name="krysalis-*.jar"/>
 	             <include name="commons-digester*.jar"/>
@@ -387,17 +395,18 @@
 	             <include name="xercesImpl.jar"/>
 	             <include name="xml-apis.jar"/>
 	             <include name="el-ri.jar"/>
-                     <exclude name="commons-collections.jar"/>
+	           	 <include name="portlet.jar"/>
+                 <exclude name="commons-collections.jar"/>
 		 </fileset>
 	         <fileset dir="${jboss.seam.home}/lib">
-	             <include name="jboss-seam.jar"/>
+	            <include name="jboss-seam.jar"/>
 	            <include name="cglib.jar"/>
-                    <include name="cglib-nodep.jar"/>
+                <include name="cglib-nodep.jar"/>
 	            <include name="dom4j.jar"/>
 	             <include name="jboss-seam-debug.jar"/>
 	             <include name="jboss-el.jar"/>
 	             <include name="hibernate*.jar"/>
-                      <include name="asm.jar"/>
+                 <include name="asm.jar"/>
 	              <include name="jsf*.jar"/>
 	              <include name="antlr.jar"/>
 	              <include name="jboss-seam-ui.jar"/>
