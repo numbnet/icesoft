@@ -584,6 +584,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             this.clearFields();
             role = ParticipantInfo.ROLE_VIEWER;
             toggleSlideTypeOne();
+            mobile = false;
         } catch (Exception failedLogout4) { }
         
         loggedIn = false;
