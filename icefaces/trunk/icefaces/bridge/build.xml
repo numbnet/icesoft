@@ -262,11 +262,11 @@
 
     </target>
 
-    <target name="build.open.ajax" description="Compress the open ajax lib">
+    <target name="build.open.ajax" depends="copy, compress" description="Compress the open ajax lib">
         <copy tofile="${open.ajax.script}">
-            <filelist dir="${build.dir}/lib/openajax">
-                <file name="OpenAjax.js"/>
-            </filelist>
+            <fileset dir="${build.dir}/lib/openajax">
+                <include name="**/OpenAjax.js"/>
+            </fileset>
         </copy>
     </target>
 
