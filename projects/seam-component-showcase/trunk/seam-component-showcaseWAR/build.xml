@@ -41,7 +41,7 @@
 	     	<ant antfile="build-scripts/build-jboss.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-glassfish.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-weblogic.xml" target="clean" />
-	   	    <ant antfile="build-scripts/build-jbossportal.xml" target="clean" />
+	   	    <ant antfile="build-scripts/build-jboss-portal.xml" target="clean" />
 	  <!--  	<ant antfile="build-scripts/build-websphere61.xml" target="clean" />
 	    	<ant antfile="build-scripts/build-tomcat55.xml" target="clean" /> --> 
 	    	<ant antfile="build-scripts/build-tomcat6.xml" target="clean" />
