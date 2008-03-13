@@ -205,8 +205,6 @@
     <target name="build.bridge">
         <ant antfile="${bridge.dir}/build.xml" inheritall="false">
             <target name="build"/>
-            <target name="build.extras"/>
-            <target name="build.open.ajax"/>
             <property name="script" location="${bridge.dir}/build/icefaces-d2d.js"/>
             <property name="extras.script" location="${bridge.dir}/build/ice-extras.js"/>
             <property name="open.ajax.script" location="${bridge.dir}/build/openajax.js"/>
