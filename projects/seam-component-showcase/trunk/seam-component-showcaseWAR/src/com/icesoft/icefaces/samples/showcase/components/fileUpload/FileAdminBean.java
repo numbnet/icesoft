@@ -30,8 +30,6 @@ import org.jboss.seam.ScopeType;
 import com.icesoft.faces.async.render.RenderManager;
 
 
-
-
 /**
  * This session scoped bean manages a list of <FileUploadComp>
  * Due to browser limitations, only 1 instance of an InputfileBean
@@ -46,24 +44,32 @@ public class FileAdminBean implements Serializable{
 	/* each user is allowed a max number of files =6 or 
 	 * max size allowance to upload of 10MB  --NOT implemented yet!
 	 */
-	private final int MAXFILESALLOWED=2;
-	private final int MAXSIZEALLOWED=1024000;
-    private boolean error=false;
+
 	private long currentSize = 0;
-	private String remainingSpace;
+ 	private String totalSpace;
 	
     private boolean updateList = false;
     private String currentFileName="";
     private String parentDir = "";
+    private String uploadDirectory;
+    
 	private InputFileBean fileUpload;
+	private String errorMsg="";
 
-	
+
 	/* the users list of files */
 	private List<FileEntry> filesList = new ArrayList<FileEntry>();
 	
     private static Log log =
            LogFactory.getLog(FileAdminBean.class);	
-  	
+    
+    @Create
+    public void init(){
+    	log.info("create FileAdminBean");
+
+    		
+    }
+
     public void setFileUpload(InputFileBean ifb){
     	fileUpload=ifb;
     }
@@ -72,6 +78,7 @@ public class FileAdminBean implements Serializable{
 		if (fileUpload==null){
 			if (log.isDebugEnabled())log.debug("getFileUpload() :inputFileBean is null->create new one");
     		fileUpload = new InputFileBean();
+
 		}
 		return this.fileUpload;
 	}
@@ -88,36 +95,25 @@ public class FileAdminBean implements Serializable{
 	public void buildFilesList(){
 		/* get files from server directory */
 		List<FileEntry> tempList = refreshList();
-//		log.info("buildFilesList tempList size="+tempList.size());
-		/*if they have exceeded max number of files or max size allowed, delete last file*/
-    	if (tempList.size() > this.MAXFILESALLOWED){
-	    		log.info("MaxFilesExceeded");
-	    		//get rid of the last uploaded file
-	    		deleteCurrentFileEntry();
-	    }
-	    else if (currentSize > this.MAXSIZEALLOWED){
-	    		log.info("max size Exceeded");
-	     		deleteCurrentFileEntry();
-	    }
-	    else {
-	    	this.error = false;
-	        /* calculate remaining allotted space */
-	     	remainingSpace=String.valueOf((MAXSIZEALLOWED-currentSize));
-	     	/* update the filesList from tempList */
-	     	if (tempList.isEmpty())filesList.clear();
-	     	else{
-		     	Iterator i = tempList.iterator();
-		     	while (i.hasNext()){
-		     		FileEntry fe = (FileEntry)i.next();
-		     		String fname = fe.getFileName();
-		     		if (!listContains(fname))
-		     			filesList.add(fe);
-		     	}
+	
+	  	/* update the filesList from tempList */
+	  	if (tempList.isEmpty())filesList.clear();
+	   	else{
+	     	Iterator i = tempList.iterator();
+	     	while (i.hasNext()){
+	     		FileEntry fe = (FileEntry)i.next();
+	     		String fname = fe.getFileName();
+	     		if (!listContains(fname))
+	     			filesList.add(fe);
 	     	}
-	    }
-    	if (fileUpload!=null)fileUpload.setUpdateFlag(false);
+	   	}
+	
+   // 	this.fileUpload.reRender();
+    	if (fileUpload!=null){
+    		fileUpload.setUpdateFlag(false);
+    	}
     	this.updateList= false;
-	}
+ 	}
 	
 	public boolean listContains(String fname){
 		Iterator i = filesList.iterator();
@@ -133,19 +129,23 @@ public class FileAdminBean implements Serializable{
 	    parentDir= null;
 	    ArrayList<FileEntry> tempList = new ArrayList<FileEntry>();
 		currentSize=0;
-		FacesContext context = FacesContext.getCurrentInstance();
+		 Object o = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 	    try {
 	    	/* get the http session attribute value for the uploadDirectory */
-		  HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
-	      parentDir = (String)session.getAttribute("uploadDirectory");
-	    }catch (ClassCastException ce) {
+	       if (o instanceof javax.servlet.http.HttpSession){
+		       HttpSession session = (HttpSession)o;
+	           parentDir = (String)session.getAttribute("uploadDirectory");
+	       }
+	       else if (o instanceof javax.portlet.PortletSession){
 	       /* get the portlet session attribute for uploadDirectory */
-	      PortletSession session = (PortletSession)(context.getExternalContext().getSession(false));
-	      parentDir= (String)session.getAttribute("uploadDirectory");	    	
+	             PortletSession session = (PortletSession)o;
+	             parentDir= (String)session.getAttribute("uploadDirectory");
+	       }
 	    }catch (Exception e){
 	      log.info("problem getting uploadDirectory");	
 	    }
 	    if (parentDir != null){
+	      log.info("parentDir = "+parentDir);
 		  File[] files = null;
 	      File dir = new File(parentDir);
 	    /* use a FileFilter to only get files & not directories */
@@ -167,33 +167,6 @@ public class FileAdminBean implements Serializable{
 	    }else log.info("parentDir is null");
 	    return tempList;
 	}
-	/* deletes currentFileEntry as it violates max Number of files or max allotted space 
-	 * --force refresh for error message & change in remaining space
-	 * */
-	public void deleteCurrentFileEntry(){
-		this.error = true;
-		File f;
-		//see if there is a current entry
-		if (this.fileUpload!=null){
-			f = fileUpload.getFile();
-		}
-		//else just get last entry
-		else f = getLastFile();
-		if (f!=null){
-			FileEntry fe = this.getFileEntry(f.getName());
-			if (f.exists()){
-				f.delete();
-				//add the size back into remaining space
-				this.remainingSpace = String.valueOf(this.MAXSIZEALLOWED - currentSize + f.length());
-			}		
-			filesList.remove(fe);
-		}
-	    Manager.instance().redirect("/showcase.xhtml");
-	    
-	}
-	/*
-	 * deletes the selected file(s) from the server
-	 */
 
 	public void deleteFiles(ActionEvent e) {
         ArrayList<FileEntry> deletedEntry = new ArrayList<FileEntry>();
@@ -214,31 +187,12 @@ public class FileAdminBean implements Serializable{
 	     }
 	}
 
-	public FileEntry getFileEntry(String fileNm){
-		Iterator i = filesList.iterator();
-		while (i.hasNext()){
-			FileEntry fe = (FileEntry)i.next();
-			if (fe.getSelected())return fe;
-		}
-		return null;		
-	}
-
-	public File getLastFile(){
-		if (filesList.size() > 0){
-			FileEntry fe = (FileEntry)filesList.get(filesList.size()-1);
-			return new File(fe.getAbsolutePath());
-		}
-		else {
-			log.info("no files to delete");
-			return null;
-		}
-	}
     /*
      * returns remaining space allocated to user for upload of files
      * as a String
      */
-    public String getRemainingSpace(){
-    	return remainingSpace;
+    public String getTotalSpace(){
+    	return totalSpace;
     }
 
     /*
@@ -289,11 +243,6 @@ public class FileAdminBean implements Serializable{
 		return currentFileName;
 	}
 
-
-  public void setError(boolean errIn){this.error = errIn;}
-	public boolean isError() {
-		return error;
-	}
 
 
 }

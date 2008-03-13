@@ -7,15 +7,18 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.seam.annotations.Begin;
+
+import javax.faces.application.FacesMessage;
+
 import org.jboss.seam.annotations.Destroy;
-import org.jboss.seam.annotations.End;
+
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.intercept.BypassInterceptors;
 import org.jboss.seam.contexts.Contexts;
 import org.jboss.seam.core.Manager;
+import org.jboss.seam.faces.FacesMessages;
 
 
 
@@ -47,14 +50,14 @@ public class InputFileBean implements Renderable, Serializable{
 	private boolean uploadDialog = false;
     private int percent = -1;
     private File file = null;
-    
-    private String errorMsg = "";
 
 	private String currentFileName = "none";
+	private String statusMsg = "";
 	private String uploadDirectory = "";
 	private boolean updateFlag = false;
 
-	
+
+	FacesMessage facesMessage;
     /**
      * Renderable Interface
      */
@@ -71,6 +74,7 @@ public class InputFileBean implements Renderable, Serializable{
     public InputFileBean() {
         state = PersistentFacesState.getInstance(); 
        	log.info("initializing InputFileBean "+this.toString()+" renderManager="+renderManager);
+ 
     }
 
  
@@ -143,15 +147,16 @@ public class InputFileBean implements Renderable, Serializable{
 	    	  */
 	    	 uploadDirectory=file.getParent();
 	    	 if (log.isDebugEnabled())log.debug("uploadDirectory is:"+uploadDirectory);
-    		 FacesContext context = FacesContext.getCurrentInstance();
 	    	 try{
-	    		 HttpSession session = (HttpSession)(context.getExternalContext().getSession(false));
-	    		 session.setAttribute("uploadDirectory", uploadDirectory);
-	    		 log.info("Servlet uploadDirectory set to:- "+uploadDirectory);
-	    	 }catch (ClassCastException ce){
-	    		 PortletSession session = (PortletSession)(context.getExternalContext().getSession(false));
-	    		 session.setAttribute("uploadDirectory", uploadDirectory);
-	    		 log.info("Portlet uploadDirectory set to:- "+uploadDirectory);
+	    		 Object o = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+	    		 if (o instanceof javax.servlet.http.HttpSession){
+    	    		((HttpSession)o).setAttribute("uploadDirectory", uploadDirectory);
+    	    		log.info("httpSession");
+	    		 }
+	    		 else if (o instanceof javax.portlet.PortletSession){
+	    			 log.info("portletSession");
+	    			 ((PortletSession)o).setAttribute("uploadDirectory", uploadDirectory);
+	    		 }
 	    	 }catch (Exception e){
 	    		 log.info("error setting upload directory in session attribute ");
 	    		 e.printStackTrace();
@@ -159,20 +164,33 @@ public class InputFileBean implements Renderable, Serializable{
 	     }
 	     if (inputFile.getStatus() == InputFile.SAVED) {
 	    	 this.currentFileName = inputFile.getFileNamePattern();
-	    	 this.updateFlag=true;
+	    	 this.updateFlag=true;		 
 	     }
-	     if (inputFile.getStatus() == InputFile.INVALID) {
-	         inputFile.getFileInfo().getException().printStackTrace();
+	     else if (inputFile.getStatus() == InputFile.INVALID) {
+	            FacesContext.getCurrentInstance().addMessage(null,
+	                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+	                            "TEST MESSAGE INVALID",
+	                            null));
 	     }
-	     if (inputFile.getStatus() == InputFile.SIZE_LIMIT_EXCEEDED) {
-	         inputFile.getFileInfo().getException().printStackTrace();
+	     else if (inputFile.getStatus() == InputFile.SIZE_LIMIT_EXCEEDED) {
+	            FacesContext.getCurrentInstance().addMessage(null,
+	                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+	                            "TEST MESSAGE SIZE LIMIT",
+	                            null));
 	     }
-	     if (inputFile.getStatus() == InputFile.UNKNOWN_SIZE) {
-	         inputFile.getFileInfo().getException().printStackTrace();
+	     else if (inputFile.getStatus() == InputFile.UNKNOWN_SIZE) {
+	            FacesContext.getCurrentInstance().addMessage(null,
+	                    new FacesMessage(FacesMessage.SEVERITY_INFO,
+	                            "TEST MESSAGE UNKNOW SIZE",
+	                            null));
 	    }
-	    // else setError("no error");  //just now for debug
+        else if (inputFile.getStatus() == InputFile.INVALID_NAME_PATTERN) {
+        	FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(FacesMessage.SEVERITY_INFO,
+                        "TEST MESSAGE INVALID NAME",
+                        null));
+        }
     }
-
 
 	/*
 	 * this method kicks off the fileUpload and triggers the action method
@@ -190,15 +208,6 @@ public class InputFileBean implements Renderable, Serializable{
 		PersistentFacesState _state = PersistentFacesState.getInstance();
 		   if(_state != null){
 			  state = _state;
-			  /**
-			   * don't do it this way as it doesn't work!!! state is null in 
-			   * renderManager.
-			   */
-			  /**
-			   * have to do it this way since Seam manages the contexts and
-			   * you don't always have access to the state.  Better to use
-			   * an old state rather than a null one!
-			   */
 				try{
 					state.execute();
 					state.render();
@@ -244,6 +253,19 @@ public class InputFileBean implements Renderable, Serializable{
 	public void setUpdateFlag(boolean updateFlag) {
 		this.updateFlag = updateFlag;
 	}
+
+
+	public String getStatusMsg() {
+		return statusMsg;
+	}
+
+
+	public void setStatusMsg(String statusMsg) {
+		this.statusMsg = statusMsg;
+	}
+
+
+
 }
 
 
