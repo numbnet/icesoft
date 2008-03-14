@@ -166,7 +166,7 @@
    		<echo message=" war building ...."/>
        <copy todir="${war.dir}/WEB-INF/classes/META-INF">
     	   <fileset dir="${resources.dir}/META-INF">
-        	    <include name="persistence.xml"/>
+        	    <include name="persistence*.xml"/>
         	</fileset>
     	</copy>  
         <copy todir="${war.dir}/WEB-INF/classes">
