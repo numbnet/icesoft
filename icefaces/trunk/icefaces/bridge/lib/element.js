@@ -121,26 +121,21 @@
             this.withTemporaryContainer(function(container) {
                 container.innerHTML = html;
                 var newElement = container.firstChild;
-                this.disconnectAllListenersAndPeers();
+                this.disconnectEventListeners();
                 this.replaceHostElementWith(newElement);
             });
         },
 
-        disconnectAllListenersAndPeers: function() {
+        disconnectEventListeners: function() {
             var elements = this.element.getElementsByTagName('*');
             var length = elements.length;
             for (var i = 0; i < length; i++) {
                 var element = elements[i];
-                var peer = element.peer;
-                if (peer) {
-                    //disconnect listeners
-                    peer.eachListenerName(function(listenerName) {
-                        element[listenerName.toLowerCase()] = null;
-                    });
-                    //disconnect peers
-                    element.peer = null;
-                    peer.element = null;
-                }
+                //todo: avoid wrapping the elements just before disposing them
+                //disconnect listeners
+                $element(element).eachListenerName(function(listenerName) {
+                    element[listenerName.toLowerCase()] = null;
+                });
             }
         },
 
@@ -169,7 +164,6 @@
             this.displayOff();
             this.element.parentNode.replaceChild(newElement, this.element);
             this.element = newElement;
-            this.element.peer = this;
         },
 
         replaceHostElementWith: function(newElement) {
@@ -205,28 +199,23 @@
     });
 
     This.Element.adaptToElement = function(e) {
-        if (e.peer) return e.peer;
         //no polymophism here...'switch' is the way then.
         switch (e.tagName.toLowerCase()) {
             case 'textarea':
-            case 'input': e.peer = new This.InputElement(e); break;
+            case 'input': return new This.InputElement(e);
             case 'th':
             case 'td':
-            case 'tr': e.peer = new This.TableCellElement(e); break;
-            case 'button': e.peer = new This.ButtonElement(e); break;
-            case 'select': e.peer = new This.SelectElement(e); break;
-            case 'form': e.peer = new This.FormElement(e); break;
-            case 'head': e.peer = new This.HeadElement(e); break;
-            case 'body': e.peer = new This.BodyElement(e); break;
-            case 'script': e.peer = new This.ScriptElement(e); break;
-            case 'title': e.peer = new This.TitleElement(e); break;
-            case 'a': e.peer = new This.AnchorElement(e); break;
-            case 'iframe': e.peer = new This.IFrameElement(e); break;
-            case 'html': e.peer = new This.HtmlElement(e); break;
-            default : e.peer = new This.Element(e); break;
+            case 'tr': return new This.TableCellElement(e);
+            case 'button': return new This.ButtonElement(e);
+            case 'select': return new This.SelectElement(e);
+            case 'form': return new This.FormElement(e);
+            case 'body': return new This.BodyElement(e);
+            case 'script': return new This.ScriptElement(e);
+            case 'title': return new This.TitleElement(e);
+            case 'a': return new This.AnchorElement(e);
+            case 'iframe': return new This.IFrameElement(e);
+            default : return new This.Element(e);
         }
-
-        return e.peer;
     };
 
     This.InputElement = This.Element.subclass({
@@ -409,7 +398,7 @@
         },
 
         updateDOM: function(update) {
-            this.disconnectAllListenersAndPeers();
+            this.disconnectEventListeners();
             this.element.innerHTML = update.content();
             var remove = function(name) {
                 this.element[name] = null;
@@ -443,7 +432,7 @@
 
     This.BodyElement = This.Element.subclass({
         updateDOM: function(update) {
-            this.disconnectAllListenersAndPeers();
+            this.disconnectEventListeners();
             this.element.innerHTML = update.content();
         }
     });
@@ -503,7 +492,7 @@
                 while ((null != newElement) && (this.element.id != newElement.id)) {
                     newElement = newElement.firstChild;
                 }
-                this.disconnectAllListenersAndPeers();
+                this.disconnectEventListeners();
                 this.replaceHostElementWith(newElement);
             });
         }
