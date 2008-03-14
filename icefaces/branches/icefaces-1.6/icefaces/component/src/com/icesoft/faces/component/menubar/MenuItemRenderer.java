@@ -263,19 +263,21 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             }
         }
 
-        anchor.setAttribute(HTML.ID_ATTR, menuItem.getClientId(facesContext)+"-lnk");
+        // create a span for text
+        Element span = domContext.createElement(HTML.SPAN_ELEM);
         if (!menuItem.isDisabled()) {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR, "iceLink");
         } else {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR, "iceLink-dis");
         }
-        Element span = domContext.createElement(HTML.SPAN_ELEM);
         span.setAttribute(HTML.CLASS_ATTR, menuItem.
                 getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
+        div.appendChild(span);
+        // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
-        div.appendChild(span);
+
         return anchor;
     }
 
@@ -321,20 +323,23 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             div.appendChild(iconImg);
         }
 
-        anchor.setAttribute(HTML.ID_ATTR, menuItem.getClientId(facesContext)+"-lnk");
+        // create a span for text
+        Element span = domContext.createElement(HTML.SPAN_ELEM);
         if (!menuItem.isDisabled()) {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR,"iceLink");
         } else {
             anchor.setAttribute(HTML.STYLE_CLASS_ATTR,"iceLink-dis");
         }
-        Element span = domContext.createElement(HTML.SPAN_ELEM);
         span.setAttribute(HTML.CLASS_ATTR,  menuItem.
                 getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
                         CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
+
+        div.appendChild(span);
+        // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
-        div.appendChild(span);
+
         return anchor;
     }
 
