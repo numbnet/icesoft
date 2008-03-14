@@ -148,7 +148,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             topLevelDiv.setAttribute(HTML.ID_ATTR, clientId);
         }
         Element topLevelDiv = (Element) domContext.getRootNode();
-        topLevelDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL");
+       // topLevelDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL");
 
         String rootItemSubClass = CSS_DEFAULT.MENU_BAR_ITEM_STYLE;
         if (vertical) {
@@ -402,7 +402,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // create the div that will hold all the sub menu items
         Element submenuDiv = domContext.createElement(HTML.DIV_ELEM);
-        submenuDiv.setAttribute(HTML.NAME_ATTR, "SUBMENU");
+  //      submenuDiv.setAttribute(HTML.NAME_ATTR, "SUBMENU");
         String subMenuDivId = uiComponent.getClientId(facesContext) + SUB;
         submenuDiv.setAttribute(HTML.ID_ATTR, subMenuDivId);
 
@@ -432,7 +432,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 }
                 subMenuItemDiv.setAttribute(HTML.CLASS_ATTR,
                         ((MenuItem) nextSubMenuItem).getStyleClass());
-                subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
+    //            subMenuItemDiv.setAttribute(HTML.NAME_ATTR, "ITEM");
                 String subMenuItemClientId =
                         nextSubMenuItem.getClientId(facesContext);
                 subMenuItemDiv.setAttribute(HTML.ID_ATTR, subMenuItemClientId);
