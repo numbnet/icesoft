@@ -41,53 +41,27 @@ Ice.FCKeditor.prototype = {
 	}
 	var valueHolder = $(ele + 'valueHolder');
 	var value = valueHolder.value;
-		if (Ice.Repository.getInstance(ele) == null ) {
-			this.thirdPartyObject = new FCKeditor(ele);
-			this.thirdPartyObject.BasePath = basePath;
-			if (value != null) {
-				this.thirdPartyObject.Value = value;
-			}
-			var editor = document.getElementById(ele) ;
-			this.thirdPartyObject.EnableSafari = true;
-			this.thirdPartyObject.EnableOpera = true;
-			if (_for != '') {
-				this.thirdPartyObject.Config[ 'ToolbarLocation' ] = 'Out:'+_for ;
-			}
-			this.thirdPartyObject.Width = width;
-			this.thirdPartyObject.Height = height;
-			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
-			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;		
-            this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
-			this.thirdPartyObject.ToolbarSet  = toolbar;
-			if (custConPath !="null") {
-			     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
-			}
-			this.thirdPartyObject.CreateIce(ele);
-		} else {
-			var componentFound = $(ele+'___Frame');
-			if (componentFound == null) {
-				this.thirdPartyObject = new FCKeditor(ele);
-				this.thirdPartyObject.BasePath = basePath;
-				if (value != '') {
-					this.thirdPartyObject.Value = value;
-				}
-			this.thirdPartyObject.EnableSafari = true;
-			this.thirdPartyObject.EnableOpera = true;
-			if (_for != '') {
-				this.thirdPartyObject.Config[ 'ToolbarLocation' ] = 'Out:'+_for ;
-			}			
-            this.thirdPartyObject.Width = width;
-            this.thirdPartyObject.Height = height;			
-			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
-			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;	
-            this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
-			this.thirdPartyObject.ToolbarSet  = toolbar;
-            if (custConPath !="null") {
-                 this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
-            }			
-			this.thirdPartyObject.CreateIce(ele);	
-			}
-		}
+	this.thirdPartyObject = new FCKeditor(ele);
+	this.thirdPartyObject.BasePath = basePath;
+	if (value != null) {
+		this.thirdPartyObject.Value = value;
+	}
+	var editor = document.getElementById(ele) ;
+	this.thirdPartyObject.EnableSafari = true;
+	this.thirdPartyObject.EnableOpera = true;
+	if (_for != '') {
+		this.thirdPartyObject.Config[ 'ToolbarLocation' ] = 'Out:'+_for ;
+	}
+	this.thirdPartyObject.Width = width;
+	this.thirdPartyObject.Height = height;
+	this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
+	this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;		
+          this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
+	this.thirdPartyObject.ToolbarSet  = toolbar;
+	if (custConPath !="null") {
+	     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
+	}
+	this.thirdPartyObject.CreateIce(ele);
 	}
 };
 
