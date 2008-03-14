@@ -114,7 +114,7 @@ Autocompleter.Base.prototype = {
             new Insertion.After(this.update,
                     '<iframe id="' + this.update.id + '_iefix" title="IE6_Fix" ' +
                     'style="display:none;position:absolute;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);" ' +
-                    'src="' + configuration.connection.context + '/xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
+                    'src="' + configuration.connection.context + 'xmlhttp/blank" frameborder="0" scrolling="no"></iframe>');
             this.iefix = $(this.update.id + '_iefix');
         }
         if (this.iefix) setTimeout(this.fixIEOverlapping.bind(this), 50);
