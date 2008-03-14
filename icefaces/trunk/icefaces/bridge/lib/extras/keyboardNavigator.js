@@ -34,8 +34,7 @@
 Ice.KeyNavigator = Class.create({
   initialize: function(componentId) {
     this.component = $(componentId);
-    this.keydownEvent = this.keydown.bindAsEventListener(this);
-    Event.observe(this.component, "keydown", this.keydownEvent);
+    this.component.onkeydown = this.keydown.bindAsEventListener(this);
   },
 
   keydown: function(event) {
@@ -82,10 +81,8 @@ Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
   initialize: function($super, componentId, displayOnClick) {
     $super(componentId);
     this.displayOnClick = displayOnClick;
-    Event.stopObserving(document, "click", this.hideAllEvent);  
-    this.hideAllEvent = this.hideAll.bindAsEventListener(this);
-    Event.observe(document, "click", this.hideAllEvent);
-    
+    document.onclick = this.hideAll.bindAsEventListener(this);
+
     if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
         this.vertical = true;
     } else {
@@ -250,21 +247,12 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   registerEvents:function (mnuBarItem) {
     if (mnuBarItem) {
-        //menu orientation can be changed dynamically, so remove old reference
-        Event.stopObserving(mnuBarItem, "mouseover", this.hoverEvent);
-        this.hoverEvent = this.hover.bindAsEventListener(this);
-        Event.observe(mnuBarItem, "mouseover", this.hoverEvent);
-        
+        mnuBarItem.onmouseover = this.hover.bindAsEventListener(this);
         //add focus support 
         var anch = mnuBarItem.down('a');
-        Event.stopObserving(anch, "focus", this.focusEvent);        
-        this.focusEvent = this.focus.bindAsEventListener(this);
-        Event.observe(anch, "focus", this.focusEvent);
-                
+        anch.onfocus = this.focus.bindAsEventListener(this);
         if (this.displayOnClick) { 
-            Event.stopObserving(mnuBarItem, "mousedown", this.mousedownEvent);
-            this.mousedownEvent = this.mousedown.bindAsEventListener(this);
-            Event.observe(mnuBarItem, "mousedown", this.mousedownEvent);
+            mnuBarItem.onmousedown = this.mousedown.bindAsEventListener(this);
             this.clicked = false;            
         }
         var sibling = mnuBarItem.next('.'+ this.getMenuBarItemClass());
