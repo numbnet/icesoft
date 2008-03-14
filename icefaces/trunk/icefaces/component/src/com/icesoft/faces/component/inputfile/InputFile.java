@@ -55,6 +55,7 @@ import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.application.FacesMessage;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -960,5 +961,25 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         }
         ValueBinding vb = getValueBinding("tabindex");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    public void reset() {
+        uploadException = null;
+        status = DEFAULT;
+        fileInfo = new FileInfo();
+        progress = 0;
+        file = null;
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if(facesContext != null) {
+            String clientId = getClientId(facesContext);
+            Iterator msgs = facesContext.getMessages(clientId);
+            if(msgs != null) {
+                while(msgs.hasNext()) {
+                    FacesMessage msg = (FacesMessage) msgs.next();
+                    msgs.remove();
+                }
+            }
+        }
     }
 }
