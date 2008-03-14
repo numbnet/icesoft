@@ -37,12 +37,33 @@
 		<![CDATA[<p >
 The outputChart component uses the JCharts open source charting utility
 (http://jcharts.sourceforge.net/) to create charts.
-The two main types of charts that can be created with this component are pie cha rts and axis charts.
-<br/>
+All chart types are derived from the two main types:
+        <ol>
+            <li>axis : 
+		        <ul>
+		            <li>area</li/>
+		            <li>areastacked</li/>
+		            <li>bar</li/>
+		            <li>barclustered</li/>
+		            <li>barstacked</li/>
+		            <li>line</li/>
+		            <li>point</li/>
+		            <li>stock</li/>                                                                                                         
+		        </ul>
+            </li>
+            <li>pie : 
+                <ul>
+                    <li>pie2D</li/>
+                    <li>pie3D</li/>
+                </ul>
+            </li>
+        </ol>
+        <b>Note:</b> The "type" attribute can be changed using the value binding 
+        for one basic type only. For example you can change "area" to "bar", "bar" to 
+        "line" but not to "pie2d"                     
 </p>
 
-<div
- style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weig ht: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transf orm: none; vertical-align: baseline;">Usability
+
 <br>]]>
 	</description>
 	<component-family>javax.faces.Command</component-family>
