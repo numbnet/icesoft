@@ -180,3 +180,25 @@
         <category>ADVANCED</category>
     </property-extension>
 </property>
+<property>
+    <description>
+       <![CDATA[
+        <p>
+        The following skins can be set to the component.
+        <ul>
+        <li> default </li>
+        <li> office2003 </li>
+        <li> silver </li>
+        </ul>
+        </p>
+        ]]>        
+    </description>
+    <property-name>skin</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>

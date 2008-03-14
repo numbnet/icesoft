@@ -39,7 +39,8 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
-            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + "'));");
+            		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + 
+            		"', '"+ inputRichText.getSkin() +"'));");
             String value = inputRichText.getEditorValue();
             if (value == null && inputRichText.getValue() != null) {
                 value =  inputRichText.getValue().toString();

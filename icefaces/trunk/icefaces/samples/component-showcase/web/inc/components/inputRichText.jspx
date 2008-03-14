@@ -46,7 +46,7 @@
                     value="#{msgs['component.inputRichTextFields.instructions']}"/>
 
             <ice:inputRichText id="iceInpRchTxt" height="200" value="#{inputRichTextBean.value}"
-                               language="en"
+                               language="en" skin="office2003"
                                valueChangeListener="#{inputRichTextBean.valueChange}"/>
             <!-- Text Field output text -->
             <ice:panelGroup id="icepnlgrp" styleClass="formBorderHighlight">

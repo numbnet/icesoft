@@ -45,7 +45,6 @@ public class InputRichText extends UIInput {
     };
     private String language;
     private String _for;
-    private Boolean html;
     private String style;
     private String styleClass;
     private String width;
@@ -55,6 +54,7 @@ public class InputRichText extends UIInput {
     private String customConfigPath;
     private String editorValue = null;
     private Boolean disabled = null;
+    private String skin = null;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -280,4 +280,22 @@ public class InputRichText extends UIInput {
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                                     .booleanValue() : false;
     } 
+
+    /**
+     * <p>Set the value of the <code>skin</code> property.</p>
+     */
+    public void setSkin(String skin) {
+        this.skin = skin;
+    }
+
+    /**
+     * <p>Return the value of the <code>skin</code> property.</p>
+     */
+    public String getSkin() {
+        if (skin != null) {
+            return skin;
+        }
+        ValueBinding vb = getValueBinding("skin");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : "default";
+    }
 }

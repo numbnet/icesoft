@@ -34,7 +34,7 @@
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
-	initialize:function(ele, lang, _for, basePath, width, height, toolbar, custConPath) {
+	initialize:function(ele, lang, _for, basePath, width, height, toolbar, custConPath, skin) {
 	this._for = _for; 
 	if (lang =="" || lang == null) {
 	   lang ="en";
@@ -56,7 +56,8 @@ Ice.FCKeditor.prototype = {
 			this.thirdPartyObject.Width = width;
 			this.thirdPartyObject.Height = height;
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
-			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;				
+			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;		
+            this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
 			this.thirdPartyObject.ToolbarSet  = toolbar;
 			if (custConPath !="null") {
 			     this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
@@ -78,7 +79,8 @@ Ice.FCKeditor.prototype = {
             this.thirdPartyObject.Width = width;
             this.thirdPartyObject.Height = height;			
 			this.thirdPartyObject.Config["AutoDetectLanguage"] = false ;
-			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;											
+			this.thirdPartyObject.Config["DefaultLanguage"]    = lang ;	
+            this.thirdPartyObject.Config['SkinPath'] = basePath+ 'editor/skins/'+ skin +'/' ;
 			this.thirdPartyObject.ToolbarSet  = toolbar;
             if (custConPath !="null") {
                  this.thirdPartyObject.Config["CustomConfigurationsPath"] = custConPath;
