@@ -93,9 +93,10 @@ public class DataTablePaginatorBean extends EntityQuery{
 	}
 	
 	public DataTablePaginatorBean(){
+		/* need this for portlet version --otherwise already have LR conversation */
 		if (!Manager.instance().isLongRunningConversation())
 			Manager.instance().beginConversation();
-		System.out.println("building sorted list & lr="+Manager.instance().isLongRunningConversation());
+	//	System.out.println("building sorted list & lr="+Manager.instance().isLongRunningConversation());
         setEjbql(EJBQL);
     	ascending = true;
     	sort = "lastName";
