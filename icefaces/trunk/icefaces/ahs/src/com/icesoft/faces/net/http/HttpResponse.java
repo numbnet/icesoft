@@ -33,6 +33,9 @@ package com.icesoft.faces.net.http;
 
 public class HttpResponse
 extends com.icesoft.net.http.HttpResponse {
+    /** HTTP response header (extension): X-Connection. */
+    public static final String X_CONNECTION = "X-Connection";
+
     /** HTTP response header (extension): X-Set-Window-Cookie. */
     public static final String X_SET_WINDOW_COOKIE = "X-Set-Window-Cookie";
 

@@ -66,6 +66,13 @@ implements
     }
 
     public void iceFacesIdDisposed(final String iceFacesId) {
+        // temporary go to sleep... when the AHS gets refactored we should be
+        // able to fix this more properly.
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException exception) {
+            // ignore interrupts.
+        }
         sessionDestroyed(iceFacesId);
     }
 
@@ -74,6 +81,20 @@ implements
             if (!sessionMap.containsKey(iceFacesId)) {
                 sessionMap.put(iceFacesId, new HashSet());
             }
+        }
+    }
+
+    public boolean isValid(final Set iceFacesIdSet) {
+        synchronized (sessionMap) {
+            String[] _iceFacesIds =
+                (String[])
+                    iceFacesIdSet.toArray(new String[iceFacesIdSet.size()]);
+            for (int i = 0; i < _iceFacesIds.length; i++) {
+                if (isValid(_iceFacesIds[i])) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

@@ -28,6 +28,19 @@ implements Handler, Runnable {
 
     private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
 
+    private static final ResponseHandler CLOSE_RESPONSE_HANDLER =
+        new ResponseHandler() {
+            public void respond(Response response) throws Exception {
+                /*
+                 * let the bridge know that this blocking connection should not
+                 * be re-initialized...
+                 */
+                // entity header fields
+                response.setHeader("Content-Length", 0);
+                // extension header fields
+                response.setHeader("X-Connection", "close");
+            }
+        };
     private static final ResponseHandler EMPTY_RESPONSE_HANDLER =
         new ResponseHandler() {
             public void respond(final Response response)
@@ -145,15 +158,29 @@ implements Handler, Runnable {
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Waiting for Response");
                 }
-                updatedViewsList =
-                    sessionManager.getUpdatedViewsManager().
-                        pull(iceFacesIdSet, sequenceNumbers);
-                if (updatedViewsList == null || updatedViewsList.isEmpty()) {
-                    sessionManager.getRequestManager().
-                        push(iceFacesIdSet, this);
+                if (sessionManager.isValid(iceFacesIdSet)) {
+                    updatedViewsList =
+                        sessionManager.getUpdatedViewsManager().
+                            pull(iceFacesIdSet, sequenceNumbers);
+                    if (updatedViewsList == null || updatedViewsList.isEmpty()) {
+                        sessionManager.getRequestManager().
+                            push(iceFacesIdSet, this);
+                        return;
+                    }
+                    state = STATE_RESPONSE_IS_READY;
+                } else {
+                    try {
+                        request.respondWith(CLOSE_RESPONSE_HANDLER);
+                    } catch (Exception exception) {
+                        if (LOG.isErrorEnabled()) {
+                            LOG.error(
+                                "An error occurred while " +
+                                    "trying to responde with: 200 OK (close)",
+                                exception);
+                        }
+                    }
                     return;
                 }
-                state = STATE_RESPONSE_IS_READY;
             case STATE_RESPONSE_IS_READY :
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Response is Ready");
