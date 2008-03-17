@@ -31,13 +31,14 @@
  */
 package com.icesoft.net.messaging.jms;
 
-import com.icesoft.util.ThreadFactory;
 import com.icesoft.net.messaging.AbstractMessageServiceAdapter;
 import com.icesoft.net.messaging.Message;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
 import com.icesoft.net.messaging.MessageServiceAdapter;
+import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.util.ThreadFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -409,12 +410,47 @@ implements MessageServiceAdapter {
     private Topic lookUpTopic(final String topicName)
     throws NamingException {
         String _topicNamePrefix = jmsProviderConfiguration.getTopicNamePrefix();
-        // throws NamingException.
-        return
-            (Topic)
-                initialContext.lookup(
-                    (_topicNamePrefix == null ? "" : _topicNamePrefix) +
-                        topicName);
+        try {
+            // throws NamingException.
+            return
+                (Topic)
+                    initialContext.lookup(
+                        (_topicNamePrefix == null ? "" : _topicNamePrefix) +
+                            topicName);
+        } catch (NamingException exception) {
+            // temporary trying the old topic names...
+            try {
+                if (MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME.
+                        equals(topicName)) {
+
+                    return
+                        (Topic)
+                            initialContext.lookup(
+                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
+                                    "icefaces.contextEventTopic");
+                } else if (MessageServiceClient.RENDER_TOPIC_NAME.
+                        equals(topicName)) {
+                    
+                    return
+                        (Topic)
+                            initialContext.lookup(
+                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
+                                    "icefaces.renderTopic");
+                } else if (MessageServiceClient.RESPONSE_TOPIC_NAME.
+                        equals(topicName)) {
+
+                    return
+                        (Topic)
+                            initialContext.lookup(
+                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
+                                    "icefaces.responseTopic");
+                } else {
+                    throw exception;
+                }
+            } catch (NamingException e) {
+                throw exception;
+            }
+        }
     }
 
     /*
