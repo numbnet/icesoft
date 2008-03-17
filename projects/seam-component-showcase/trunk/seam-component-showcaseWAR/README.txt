@@ -31,6 +31,7 @@ JBoss AS 4.2.x  (this is the default target for the ant script):
 
 JBoss Portal 2.6.4  :
   * Install JBoss-portal AS with the default profile
+  * put portal-hsqldb-ds.xml file in <jboss-portal-2.6.x>/server/default/deploy
   * ant jboss-portal
   * set jboss.home in build.properties to this AS
   * Start AS
