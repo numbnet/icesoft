@@ -9,7 +9,8 @@
     <property name="resources.dir" value="resources-glassfish-liferay" />
 	<property name="dist.dir" value="dist-glassfish-liferay" />
 	<property name="exploded-archives.dir" value="exploded-archives-glassfish-liferay" />
-
+	<property name="portal.build" value="true"/>
+	
     <import file="build-common.xml"/>
 
     <fileset id="noejb.war.lib.extras" dir="${jboss.seam.home}">
