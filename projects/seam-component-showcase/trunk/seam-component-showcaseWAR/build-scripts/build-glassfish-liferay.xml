@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
-<project name="Seam Component Showcase - for Glassfish 2.1" default="noejb.archive" basedir=".">
+<project name="Seam Component Showcase - for Glassfish-liferay bundle" default="noejb.archive" basedir=".">
 
     <!-- Naming -->
-    <property name="Name"  value="Seam Component Showcase for Glassfish2.1"/>
+    <property name="Name"  value="Seam Component Showcase for Glassfish2-liferay"/>
 
     <!-- resources -->
-    <property name="resources.dir" value="resources-glassfish" />
-	<property name="dist.dir" value="dist-glassfish" />
-	<property name="exploded-archives.dir" value="exploded-archives-glassfish" />
+    <property name="resources.dir" value="resources-glassfish-liferay" />
+	<property name="dist.dir" value="dist-glassfish-liferay" />
+	<property name="exploded-archives.dir" value="exploded-archives-glassfish-liferay" />
 
     <import file="build-common.xml"/>
 
