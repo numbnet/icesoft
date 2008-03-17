@@ -9,19 +9,9 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
-import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
-import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.webapp.http.core.DisposeViews;
-import com.icesoft.faces.webapp.http.core.IDVerifier;
-import com.icesoft.faces.webapp.http.core.MultiViewServer;
-import com.icesoft.faces.webapp.http.core.ReceivePing;
-import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
-import com.icesoft.faces.webapp.http.core.SendUpdates;
-import com.icesoft.faces.webapp.http.core.SingleViewServer;
-import com.icesoft.faces.webapp.http.core.UploadServer;
-import com.icesoft.faces.webapp.http.core.ViewBoundServer;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.util.IdGenerator;
+import com.icesoft.util.MonitorRunner;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -61,7 +51,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private PseudoServlet servlet;
     private HttpSession session;
 
-    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, Configuration configuration) {
+    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Listener.Monitor sessionMonitor, IdGenerator idGenerator, MonitorRunner monitorRunner, Configuration configuration) {
         this.session = session;
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
@@ -87,7 +77,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
             receivePing = NOOPServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), configuration));
+            sendUpdatedViews = new IDVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
             sendUpdates = new IDVerifier(sessionID, new SendUpdates(views));
             receivePing = new IDVerifier(sessionID, new ReceivePing(views));
         }

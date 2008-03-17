@@ -3,6 +3,7 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.util.MonitorRunner;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,7 +14,7 @@ public class AsyncServerDetector implements Server {
     private static final Log LOG = LogFactory.getLog(AsyncServerDetector.class);
     private Server server;
 
-    public AsyncServerDetector(String icefacesID, Collection synchronouslyUpdatedViews, ViewQueue allUpdatedViews, ServletContext servletContext, Configuration configuration) {
+    public AsyncServerDetector(String icefacesID, Collection synchronouslyUpdatedViews, ViewQueue allUpdatedViews, ServletContext servletContext, MonitorRunner monitorRunner, Configuration configuration) {
         boolean useAsyncHttpServerByDefault;
         try {
             getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
@@ -54,7 +55,7 @@ public class AsyncServerDetector implements Server {
                 }
             }
         } else {
-            server = new SendUpdatedViews(synchronouslyUpdatedViews, allUpdatedViews);
+            server = new SendUpdatedViews(synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration);
         }
     }
 

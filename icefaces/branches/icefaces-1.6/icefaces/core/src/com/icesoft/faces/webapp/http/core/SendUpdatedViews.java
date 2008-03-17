@@ -1,10 +1,12 @@
 package com.icesoft.faces.webapp.http.core;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
+import com.icesoft.util.MonitorRunner;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SendUpdatedViews implements Server {
+public class SendUpdatedViews implements Server, Runnable {
     private static final Runnable Noop = new Runnable() {
         public void run() {
         }
@@ -24,11 +26,15 @@ public class SendUpdatedViews implements Server {
             response.setHeader("Content-Length", 0);
         }
     };
-    private BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
-    private ViewQueue allUpdatedViews;
+    private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
+    private final ViewQueue allUpdatedViews;
+    private final long timeoutInterval;
+    private long responseTimeoutTime;
+    private MonitorRunner monitorRunner;
 
-    public SendUpdatedViews(final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews) {
+    public SendUpdatedViews(final Collection synchronouslyUpdatedViews, final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner, Configuration configuration) {
         this.allUpdatedViews = allUpdatedViews;
+        this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
         this.allUpdatedViews.onPut(new Runnable() {
             public void run() {
                 try {
@@ -46,11 +52,21 @@ public class SendUpdatedViews implements Server {
                 }
             }
         });
+        //add monitor
+        this.monitorRunner = monitorRunner;
+        this.monitorRunner.registerMonitor(this);
     }
 
     public void service(final Request request) throws Exception {
+        responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
         respondToPreviousRequest();
         pendingRequest.put(request);
+    }
+
+    public void run() {
+        if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
+            respondToPreviousRequest();
+        }
     }
 
     private void respondToPreviousRequest() {
@@ -65,6 +81,8 @@ public class SendUpdatedViews implements Server {
     }
 
     public void shutdown() {
+        //remove monitor
+        monitorRunner.unregisterMonitor(this);
         allUpdatedViews.onPut(Noop);
         respondToPreviousRequest();
     }
