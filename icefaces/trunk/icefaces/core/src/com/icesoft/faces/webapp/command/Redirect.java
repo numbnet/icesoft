@@ -38,7 +38,7 @@ public class Redirect implements Command {
     }
 
     public Command coalesceWith(SessionExpired sessionExpired) {
-        return sessionExpired;
+        return this;
     }
 
     public Command coalesceWith(SetCookie setCookie) {

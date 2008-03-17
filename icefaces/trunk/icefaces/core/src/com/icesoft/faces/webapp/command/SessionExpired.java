@@ -10,7 +10,7 @@ public class SessionExpired implements Command {
     }
 
     public Command coalesceWith(Redirect redirect) {
-        return this;
+        return redirect;
     }
 
     public Command coalesceWith(Reload reload) {
