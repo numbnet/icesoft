@@ -73,6 +73,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Application application;
     private BridgeExternalContext externalContext;
     private HashMap faceMessages = new HashMap();
+    private FacesMessage.Severity maxSeverity;
     private boolean renderResponse;
     private boolean responseComplete;
     private ResponseStream responseStream;
@@ -140,7 +141,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public FacesMessage.Severity getMaximumSeverity() {
-        throw new UnsupportedOperationException();
+        return maxSeverity;
     }
 
     /**
@@ -157,7 +158,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         while (i.hasNext()) {
             buffer.addAll((Vector) i.next());
         }
-
         return buffer.iterator();
     }
 
@@ -326,6 +326,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             Vector vector = new Vector();
             vector.add(message);
             faceMessages.put(clientId, vector);
+        }
+        if (maxSeverity == null ||
+            message.getSeverity().getOrdinal() > maxSeverity.getOrdinal() ) {
+            maxSeverity = message.getSeverity();
         }
     }
 
