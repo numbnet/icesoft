@@ -105,7 +105,7 @@
 	<target name="portal.war" if="portal.build" description="Building portal application">
 	    <echo message="portal.war target so copying portal files"/>
 		<copy todir="${war.dir}">
-		   <fileset dir="${resources.dir}/portlet">
+		   <fileset dir="resources-jboss-portal/portlet">
 			    <include name="*.jspx"/>
 			</fileset>
 		</copy>
@@ -163,17 +163,18 @@
 	
     <target name="war" depends="compileactions,copyclasses,portal.war,servlet.war" 
             description="Build the distribution .war file">
-   		<echo message=" war building ...."/>
-       <copy todir="${war.dir}/WEB-INF/classes/META-INF">
-    	   <fileset dir="${resources.dir}/META-INF">
-        	    <include name="persistence*.xml"/>
+   		<echo message=" war building ....get Persistence"/>
+       <copy todir="${war.dir}/WEB-INF/classes">
+    	   <fileset dir="${resources.dir}">
+        	    <include name="META-INF/*.*"/>
+    	   	    <exclude name="META-INF/context.xml"/>
         	</fileset>
-    	</copy>  
+    	</copy> 
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources-jboss">
                 <include name="seam.properties" />
             	<include name="import.sql"/>
-            	<include name="META-INF/*.*"/>
+           <!-- 	<include name="META-INF/*.*"/> -->
             </fileset>
         </copy>
        <copy todir="${war.resources.dir}">
