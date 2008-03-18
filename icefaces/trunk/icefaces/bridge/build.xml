@@ -129,7 +129,7 @@
 
     <target name="compress" depends="prepare" unless="no-compress">
         <echo message="Compressing ..."/>
-        <yui-compress todir="${build.dir}">
+        <yui-compress todir="${build.dir}" yui-switches="--preserve-semi">
             <fileset refid="munge.js.files"/>
         </yui-compress>
         <yui-compress todir="${build.dir}" yui-switches="--nomunge">
