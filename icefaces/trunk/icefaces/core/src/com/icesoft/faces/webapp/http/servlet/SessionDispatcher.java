@@ -75,6 +75,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
         sessionBoundServers.remove(session.getId());
     }
 
+    /**
+     * Create new session bound servers.
+     */
     private static void notifySessionInitialized(HttpSession session) {
         SessionIDs.add(session.getId());
         Monitor monitor = new Monitor(session);
@@ -90,7 +93,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    public synchronized static void notifySessionShutdown(final HttpSession session) {
+    /**
+     * Shutdown session bound servers.
+     */
+    private synchronized static void notifySessionShutdown(final HttpSession session) {
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
@@ -100,31 +106,23 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 Log.error(e);
             }
         }
+    }
 
-        new Thread() {
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    //ignore
-                }
-                try {
-                    Iterator i = SessionDispatchers.iterator();
-                    while (i.hasNext()) {
-                        try {
-                            SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
-                            sessionDispatcher.destroy(session);
-                        } catch (Exception e) {
-                            Log.error(e);
-                        }
-                    }
-                    SessionIDs.remove(session.getId());
-                    session.invalidate();
-                } catch (IllegalStateException e) {
-                    //ignore -- session was invalidated by the application
-                }
+    /**
+     * Stop dispatching to session bound servers and invalidate session.
+     */
+    private static void notifySessionDestroy(HttpSession session) {
+        try {
+            Iterator i = SessionDispatchers.iterator();
+            while (i.hasNext()) {
+                SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
+                sessionDispatcher.destroy(session);
             }
-        }.start();
+            SessionIDs.remove(session.getId());
+            session.invalidate();
+        } catch (IllegalStateException e) {
+            Log.info("Session already invalidated.");
+        }
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
@@ -189,17 +187,30 @@ public abstract class SessionDispatcher implements PseudoServlet {
             return elapsedInterval + 15000 > maxInterval;
         }
 
-        public void shutdown() {
-            try {
-                SessionMonitors.remove(this);
-                notifySessionShutdown(session);
-            } catch (IllegalStateException e) {
-                //session was already invalidated by the container
-                Log.debug("Session already invalidated.");
-            } catch (Throwable t) {
-                //just inform that something went wrong
-                Log.warn("Failed to monitor session expiry", t);
-            }
+        private void shutdown() {
+            SessionMonitors.remove(this);
+            notifySessionShutdown(session);
+            //remove session bound server after 3seconds delay to give a chance to the bridge and servers to communicate
+            //todo: ideally, the delay should be relaced with a mechanism that for any JSF lifecycle that runs at the
+            //todo: moment of shutdown will block session shutdown sequence until all JSF lifecycles complete
+            new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        //ignore
+                    } finally {
+                        notifySessionDestroy(session);
+                    }
+                }
+            }.start();
+        }
+
+        public void forceShutdown() {
+            SessionMonitors.remove(this);
+            notifySessionShutdown(session);
+            //when the application wants to invalidate the session (i.e. logout) pending messages can be discarded
+            notifySessionDestroy(session);
         }
 
         public void shutdownIfExpired() {

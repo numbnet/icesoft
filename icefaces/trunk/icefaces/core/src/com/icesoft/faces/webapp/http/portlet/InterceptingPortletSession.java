@@ -13,6 +13,6 @@ public class InterceptingPortletSession extends ProxyPortletSession {
     }
 
     public void invalidate() {
-        monitor.shutdown();
+        monitor.forceShutdown();
     }
 }
