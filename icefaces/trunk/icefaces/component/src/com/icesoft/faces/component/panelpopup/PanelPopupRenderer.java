@@ -235,10 +235,17 @@ public class PanelPopupRenderer extends GroupRenderer {
 		String autoPositionJS = null;
 		if (panelPopup.getAutoPosition() != null) {
 			String positions = panelPopup.getAutoPosition();
-			String x = positions.substring(0, positions.indexOf(','));
-			String y = positions.substring(positions.indexOf(',') + 1);
-			autoPositionJS = "Ice.autoPosition.start('" + clientId + "'," + x
-					+ "," + y + ");";
+			if( positions.indexOf(',') < 1 ){
+				log.warn("The autoPosition attribute should be used with an "
+						+" x and y value for the position, such as '20,40'");
+			}
+			else{
+				String x = positions.substring(0, positions.indexOf(','));
+				String y = positions.substring(positions.indexOf(',') + 1);
+				autoPositionJS = "Ice.autoPosition.start('" + clientId + "'," + x
+						+ "," + y + ");";
+			}
+			
 		} else {
 			autoPositionJS = "Ice.autoPosition.stop('" + clientId + "');";
 		}
