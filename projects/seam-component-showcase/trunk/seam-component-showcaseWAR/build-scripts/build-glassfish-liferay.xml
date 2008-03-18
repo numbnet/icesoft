@@ -43,6 +43,7 @@
 	
     <fileset id="noejb.war.extras" dir="${resources.dir}">
 	  <include name="WEB-INF/classes/**/*" />
+          <include name="WEB-INF/tld/liferay-portlet.tld"/>
     </fileset>
        
 </project>
