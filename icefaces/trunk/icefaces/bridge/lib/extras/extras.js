@@ -155,12 +155,11 @@ Ice.PanelCollapsible = {
     }
 }
 
-function ice_tableRowClicked(rowid, hdnFld) {
+Ice.tableRowClicked = function(rowid, formId, hdnFld) {
     try {
-        var fld = $(hdnFld);
+        var fld = document.forms[formId][hdnFld];
         fld.value = rowid;
         var nothingEvent = new Object();
-        var form = Ice.util.findForm(fld);
         iceSubmitPartial(null, fld, nothingEvent);
     } catch(e) {
         console.log("Error in rowSelector[" + e + "]");

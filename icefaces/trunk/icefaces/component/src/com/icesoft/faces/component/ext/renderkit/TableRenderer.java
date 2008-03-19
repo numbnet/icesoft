@@ -44,6 +44,7 @@ import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.util.CoreUtils;
 
 import org.w3c.dom.Element;
@@ -513,17 +514,19 @@ public class TableRenderer
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
         Element hiddenInputNode = null;
+        UIComponent form = DomBasicRenderer.findForm(uiComponent);
+        String formId = form == null ? "" : form.getClientId(facesContext);
         String paramId = getSelectedRowParameterName(uiComponent.getClientId(facesContext));
         if (rowSelectorFound) {
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
                     domContext.createElement(HTML.INPUT_ELEM);
 
-            rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
+            //rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
             hiddenInputNode = rowSelectedField;
-            rowSelectionFunctionName = "ice_tableRowClicked"; 
+            rowSelectionFunctionName = "Ice.tableRowClicked"; 
         }
 
         String columnStyles[] = getColumnStyleClasses(uiComponent);
@@ -540,7 +543,7 @@ public class TableRenderer
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound && toggleOnClick) {
             	 tr.setAttribute("onclick", rowSelectionFunctionName + "('" +
-                       uiData.getRowIndex() + "', '"+ paramId +"');");            	
+                       uiData.getRowIndex() + "', '"+ formId +"', '"+ paramId +"');");            	
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, id);
