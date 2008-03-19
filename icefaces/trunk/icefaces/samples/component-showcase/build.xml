@@ -70,7 +70,7 @@
     <target name="copy.portlet.pages">
         <copy todir="${build.web.dir}/portlet">
             <fileset dir="${portlet.web.dir}">
-                <include name="*.jspx"/>
+                <include name="**/*"/>
             </fileset>
         </copy>        
     </target>
