@@ -1,0 +1,88 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ *
+ */
+package org.icefaces.application.showcase.util;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.util.HashMap;
+
+/**
+ * A utility bean coded to solve ICE-2714.  It's used to generate the iframe markup
+ * for the Description and Source tab panels.  It adds the context path of the application
+ * dynamically in front of the src attribute to ensure that the resource can be found when
+ * running in both portlet and plain servlet environments.
+ */
+public class ContextUtilBean extends HashMap {
+
+    private static final String IFRAME_PREFIX = "<iframe src=\"";
+    private static final String IFRAME_SUFFIX = "\"class=\"includeIframe\" width=\"100%\"></iframe>";
+
+    private static final String SOURCE_CODE_ULR = "/sourcecodeStream.html?path=";
+
+    public static String getContextPath() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        return ec.getRequestContextPath();
+    }
+
+    public Object get(Object source) {
+        return generateMarkup(getContextPath() + source);
+    }
+
+    public static String generateMarkup(String source) {
+        StringBuffer markup = new StringBuffer();
+        markup.append(IFRAME_PREFIX);
+        markup.append(source);
+        markup.append(IFRAME_SUFFIX);
+        return markup.toString();
+    }
+
+    public static String generateDocumentUrl(String source) {
+        StringBuffer markup = new StringBuffer();
+        markup.append(IFRAME_PREFIX);
+        markup.append(getContextPath());
+        markup.append(source);
+        markup.append(IFRAME_SUFFIX);
+        return markup.toString();
+    }
+
+    public static String generateSourceCodeUrl(String source) {
+        StringBuffer markup = new StringBuffer();
+        markup.append(IFRAME_PREFIX);
+        markup.append(getContextPath());
+        markup.append(SOURCE_CODE_ULR);
+        markup.append(source);
+        markup.append(IFRAME_SUFFIX);
+        return markup.toString();
+    }
+}
