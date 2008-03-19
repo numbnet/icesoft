@@ -26,11 +26,14 @@
         <portlet id="components_charts_combiningCharts"/>
 
         <portlet id="components_rich_text_editor"/>
+        
+        <!--
         <portlet id="components_gmap_address_attribute"/>
         <portlet id="components_gmap_controls"/>
         <portlet id="components_gmap_find_address"/>
         <portlet id="components_gmap_geocoder"/>
         <portlet id="components_gmap_markers"/>
+        -->
 
         <portlet id="components_table_column_grouping"/>
         <portlet id="components_table_resizable_columns"/>

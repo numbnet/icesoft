@@ -249,56 +249,56 @@
     <!-- ICEfaces Component-Showcase: GMap Address Attribute                 -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_gmap_address_attribute</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: GMap Controls                          -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_gmap_controls</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: GMap Find Address                      -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_gmap_find_address</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: GMap GeoCoder                          -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_gmap_geocoder</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: GMap Markers                           -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_gmap_markers</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
     <!-- ICEfaces Component-Showcase: Datatable - Column Grouping            -->
