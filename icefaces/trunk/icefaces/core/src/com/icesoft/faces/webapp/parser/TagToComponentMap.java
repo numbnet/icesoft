@@ -40,15 +40,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.io.Writer;
+import java.io.*;
 import java.util.Hashtable;
 
 /**
@@ -80,8 +72,8 @@ public class TagToComponentMap implements Serializable {
      *
      * @param fis Input stream for the serialized data.
      * @return The map
-     * @throws IOException 
-     * @throws ClassNotFoundException 
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     static TagToComponentMap loadFrom(InputStream fis)
             throws IOException, ClassNotFoundException {
@@ -135,7 +127,7 @@ public class TagToComponentMap implements Serializable {
 
         // This rule creates an element we can use to populate the map;
         digester.addObjectCreate("*/tag",
-                                 "com.icesoft.faces.webapp.parser.TagToTagClassElement");
+                "com.icesoft.faces.webapp.parser.TagToTagClassElement");
         digester.addObjectCreate("*/uri", "java.lang.StringBuffer");
 
         // This rule pushes everything into the hash table;
@@ -153,8 +145,10 @@ public class TagToComponentMap implements Serializable {
             digester.parse(tldInput);
         } catch (Throwable e) {
             IOException ioe = new IOException("Can't parse tld " + tldInput.toString());
-            ioe.initCause( e );
+            ioe.initCause(e);
             throw ioe;
+        } finally {
+            tldInput.close();
         }
     }
 
@@ -218,10 +212,10 @@ public class TagToComponentMap implements Serializable {
                 FileWriter faceletsTaglibXmlWriter = new FileWriter(args[1]);
                 String preamble =
                         "<?xml version=\"1.0\"?>\n" +
-                        "<!DOCTYPE facelet-taglib PUBLIC\n" +
-                        "  \"-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN\"\n" +
-                        "  \"http://java.sun.com/dtd/web-facesconfig_1_0.dtd\">\n\n" +
-                        "<facelet-taglib>\n";
+                                "<!DOCTYPE facelet-taglib PUBLIC\n" +
+                                "  \"-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN\"\n" +
+                                "  \"http://java.sun.com/dtd/web-facesconfig_1_0.dtd\">\n\n" +
+                                "<facelet-taglib>\n";
                 String trailer =
                         "</facelet-taglib>\n";
                 faceletsTaglibXmlWriter.write(preamble);
@@ -258,8 +252,8 @@ final class NameRule extends Rule {
     /**
      * Constructor.
      *
-     * @param map The map being created.
-     * @param writer 
+     * @param map    The map being created.
+     * @param writer
      */
     public NameRule(Hashtable map, Writer writer) {
         super();
@@ -292,13 +286,13 @@ final class NameRule extends Rule {
                     String ns = digester.peek().toString();
                     boolean namespaceChanged =
                             (ns != null && ns.length() > 0) &&
-                            (currentNamespace == null ||
-                             !currentNamespace.equals(ns));
+                                    (currentNamespace == null ||
+                                            !currentNamespace.equals(ns));
                     if (namespaceChanged) {
                         currentNamespace = ns;
                         String nsOutput =
                                 "	<namespace>" + currentNamespace +
-                                "</namespace>\n";
+                                        "</namespace>\n";
                         faceletsTaglibXmlWriter.write(nsOutput);
                         System.out.print(nsOutput);
                     }
@@ -306,7 +300,7 @@ final class NameRule extends Rule {
                 catch (Exception e) {
                     System.out.println(
                             "Problem writing namespace to Facelets taglib.xml.  Exception: " +
-                            e);
+                                    e);
                 }
             }
             return;
@@ -318,7 +312,7 @@ final class NameRule extends Rule {
         if (componentMap.get(elem.getTagName()) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Duplicate Tag " + elem.getTagName() +
-                          " not processed");
+                        " not processed");
             }
             return;
         }
@@ -334,7 +328,7 @@ final class NameRule extends Rule {
                 String tagName = elem.getTagName();
                 String tagClassStr = elem.getTagClass();
                 if (tagName != null && tagClassStr != null &&
-                    tagClassStr.indexOf("com.icesoft") >= 0) {
+                        tagClassStr.indexOf("com.icesoft") >= 0) {
                     // We have to have special cases for any tags that
                     //  are not UIComponents, but are instead simply tags
                     // Map from JSP tag TabChangeListenerTag to
@@ -354,13 +348,13 @@ final class NameRule extends Rule {
                         Object tagObj = tagClass.newInstance();
                         java.lang.reflect.Method getComponentTypeMeth =
                                 tagClass.getMethod("getComponentType",
-                                                   new Class[]{});
+                                        new Class[]{});
                         String componentType =
                                 (String) getComponentTypeMeth.invoke(
                                         tagObj, new Object[]{});
                         java.lang.reflect.Method getRendererTypeMeth =
                                 tagClass.getMethod("getRendererType",
-                                                   new Class[]{});
+                                        new Class[]{});
                         String rendererType =
                                 (String) getRendererTypeMeth.invoke(
                                         tagObj, new Object[]{});
@@ -387,9 +381,9 @@ final class NameRule extends Rule {
             catch (Exception e) {
                 System.out.println(
                         "Problem writing tag to Facelets taglib.xml.  Tag name: " +
-                        elem.getTagName() +
-                        ", Tag class: " + elem.getTagClass() +
-                        ", Exception: " + e);
+                                elem.getTagName() +
+                                ", Tag class: " + elem.getTagClass() +
+                                ", Exception: " + e);
             }
         }
     }

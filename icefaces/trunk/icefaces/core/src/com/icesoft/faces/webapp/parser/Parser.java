@@ -90,6 +90,8 @@ public class Parser {
             digester.addRuleSet(new ComponentRuleSet(map, ""));
         } catch (ClassNotFoundException e) {
             throw new IOException(e.getMessage());
+        } finally {
+            fis.close();
         }
     }
 

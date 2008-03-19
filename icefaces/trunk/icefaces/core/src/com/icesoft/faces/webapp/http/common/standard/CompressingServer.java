@@ -62,7 +62,11 @@ public class CompressingServer implements Server {
         }
 
         public void writeBodyFrom(InputStream in) throws IOException {
-            copy(in, writeBody());
+            try {
+                copy(in, writeBody());
+            } finally {
+                in.close();
+            }
         }
 
         public void finishCompression() throws IOException {

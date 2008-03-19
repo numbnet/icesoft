@@ -74,27 +74,30 @@ public class IncludeRenderer extends TextRenderer {
         try {
             absoluteURI = new URI(
                     request.getScheme() + "://" +
-                    request.getServerName() + ":" +
-                    request.getServerPort() +
-                    request.getRequestURI());
+                            request.getServerName() + ":" +
+                            request.getServerPort() +
+                            request.getRequestURI());
             URL includedURL = absoluteURI.resolve(page).toURL();
             URLConnection includedConnection = includedURL.openConnection();
             includedConnection
-                    .setRequestProperty( "Cookie",
-                    "JSESSIONID=" + ((HttpSession) context.getExternalContext()
-                            .getSession( false)).getId() );
+                    .setRequestProperty("Cookie",
+                            "JSESSIONID=" + ((HttpSession) context.getExternalContext()
+                                    .getSession(false)).getId());
             Reader contentsReader = new InputStreamReader(
                     includedConnection.getInputStream());
 
-            StringWriter includedContents = new StringWriter();
-            char[] buf = new char[2000];
-            int len = 0;
-            while ((len = contentsReader.read(buf)) > -1) {
-                includedContents.write(buf, 0, len);
+            try {
+                StringWriter includedContents = new StringWriter();
+                char[] buf = new char[2000];
+                int len = 0;
+                while ((len = contentsReader.read(buf)) > -1) {
+                    includedContents.write(buf, 0, len);
+                }
+
+                ((UIOutput) component).setValue(includedContents.toString());
+            } finally {
+                contentsReader.close();
             }
-
-            ((UIOutput) component).setValue(includedContents.toString());
-
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug(e.getMessage());

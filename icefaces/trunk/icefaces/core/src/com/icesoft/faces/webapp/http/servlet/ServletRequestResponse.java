@@ -208,7 +208,11 @@ public class ServletRequestResponse implements Request, Response {
     }
 
     public void writeBodyFrom(InputStream in) throws IOException {
-        copy(in, writeBody());
+        try {
+            copy(in, writeBody());
+        } finally {
+            in.close();
+        }
     }
 
     public void detectEnvironment(Environment environment) throws Exception {
