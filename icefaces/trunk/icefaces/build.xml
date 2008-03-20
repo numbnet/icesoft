@@ -76,10 +76,13 @@
 
 <target name="build.all">
 
-   
+    <ice:subant>
+        <filelist dir="." files="core, component, component-metadata"/>
+        <propertyset refid="product.info"/>
+    </ice:subant>
 
     <ice:subant target="tomcat6.0">
-        <fileset dir="samples" includes="**/build.xml" excludes="**/component-showcase2/**/build.xml" />
+        <fileset dir="samples" includes="**/build.xml" excludes="**/component-showcase2/**/build.xml"/>
         <!--target name="build.war"/-->
         <propertyset refid="product.info"/>
     </ice:subant>
