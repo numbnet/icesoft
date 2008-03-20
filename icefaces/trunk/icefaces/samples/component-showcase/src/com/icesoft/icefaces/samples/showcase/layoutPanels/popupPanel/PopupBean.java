@@ -46,7 +46,7 @@ import javax.faces.event.ActionEvent;
 public class PopupBean {
 
     // icons used for draggable panel
-    private String closePopupImage = "./images/popupPanel/popupclose.gif";
+    private String closePopupImage = "/images/popupPanel/popupclose.gif";
 
     // show or hide each popup panel
     private boolean showDraggablePanel = true;
