@@ -403,21 +403,6 @@ fieldset {
     color: #000000;
     border: 1px solid #2A6CC2;
 }
-/*
------------ commandSortHeader classes
-*/
-.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc{
-    background-repeat: no-repeat;
-    background-position: center;
-    width:10px;
-    height:10px;
-}
-.iceCmdSrtHdrAsc{
-    background-image: url('./css-images/column_sort_asc.gif');
-}
-.iceCmdSrtHdrDesc{
-    background-image: url('./css-images/column_sort_desc.gif');
-}
 
 /*
 ----------- File Tree Component classes
@@ -2236,7 +2221,7 @@ Disabled classes for the calendar controls
 }
 
 /*
------------ commandSortHeader ----------
+----------- commandSortHeader classes
 */
 .iceCmdSrtHdr {
     text-decoration: none;
@@ -2259,19 +2244,17 @@ Disabled classes for the calendar controls
     cursor: default;
 }
 
-.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc {
-    width: 6px;
-    height: 14px;
-    background-color: transparent;
-    background-repeat: no-repeat;   
+.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc{
+    background-repeat: no-repeat;
+    background-position: center;
+    width:10px;
+    height:10px;
 }
-
-.iceCmdSrtHdrAsc {
-    background-image: url( "./css-images/arrowAsc.jpg" );
+.iceCmdSrtHdrAsc{
+    background-image: url('./css-images/column_sort_asc.gif');
 }
-
-.iceCmdSrtHdrDesc {
-    background-image: url( "./css-images/arrowDesc.jpg" );    
+.iceCmdSrtHdrDesc{
+    background-image: url('./css-images/column_sort_desc.gif');
 }
 
 .iceCmdSrtHdr td {
