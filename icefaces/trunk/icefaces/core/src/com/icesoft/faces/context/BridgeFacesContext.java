@@ -346,6 +346,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     /**
+     * Necessary for ICE-2478. This method should only be called from an
+     * environment where server push is active. For normal JSF lifecycle
+     * execution, once the flag is set it should remain set. 
+     */
+    public void resetResponseComplete() {
+        this.responseComplete = false;
+    } 
+
+    /**
      * The release() found in FacesContextImpl is more comprehensive: since they
      * blow away the context instance after a response, they null/false out much
      * more than we do. We chose to keep the context instance around across
