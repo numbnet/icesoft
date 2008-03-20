@@ -269,6 +269,10 @@ public class D2DViewHandler extends ViewHandler {
         }
 
         UIViewRoot currentRoot = context.getViewRoot();
+        // For spring webflow
+        if (SeamUtilities.isSpringEnvironment() ) {
+            return currentRoot;
+        } 
         if (null != currentRoot &&
                 getRenderedViewId(context, viewId)
                         .equals( getRenderedViewId(context,
