@@ -1,0 +1,163 @@
+<!--
+~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+~
+~ "The contents of this file are subject to the Mozilla Public License
+~ Version 1.1 (the "License"); you may not use this file except in
+~ compliance with the License. You may obtain a copy of the License at
+~ http://www.mozilla.org/MPL/
+~
+~ Software distributed under the License is distributed on an "AS IS"
+~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+~ License for the specific language governing rights and limitations under
+~ the License.
+~
+~ The Original Code is ICEfaces 1.5 open source software code, released
+~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+~
+~ Contributor(s): _____________________.
+~
+~ Alternatively, the contents of this file may be used under the terms of
+~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+~ License), in which case the provisions of the LGPL License are
+~ applicable instead of those above. If you wish to allow use of your
+~ version of this file only under the terms of the LGPL License and not to
+~ allow others to use your version of this file under the MPL, indicate
+~ your decision by deleting the provisions above and replace them with
+~ the notice and other provisions required by the LGPL License. If you do
+~ not delete the provisions above, a recipient may use your version of
+~ this file under either the MPL or the LGPL License."
+~
+-->
+
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Example include, also see source code include.
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+  <ice:panelGroup styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText
+                        value="Panel Divider"/>
+            </h3>
+            <ice:messages/>
+			<ice:panelGrid columns="2" styleClass="dvrPnlGrd">
+			   <ice:panelGroup style="border: 1px solid; padding:3px;">
+			           <ice:outputText id="dividerposition" value=" position : #{panelDividerBean.position1} " />
+			           <ice:commandButton id="positiondecrease" value="decrease" actionListener="#{panelDividerBean.decPosition}"/>
+			           <ice:commandButton id="positionincrease" value="increase" actionListener="#{panelDividerBean.incPosition}"/>
+			            <br/>
+				       <ice:panelDivider id="dvrpanel1" styleClass="myDvrPanel1" dividerPosition="#{panelDividerBean.position1}">
+				           <f:facet name="first">
+						    <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced
+						        standard and custom JavaServer Faces (JSF) components. These
+						        components provide the following additional benefits over other JSF
+						    components:</ice:panelGroup>
+				           </f:facet>
+				           
+				           <f:facet name="second"> 
+	                        <ice:panelGroup style="padding:6px;">The ICEfaces Component Suite provides a complete set of enhanced
+	                            standard and custom JavaServer Faces (JSF) components. These
+	                            components provide the following additional benefits over other JSF
+	                        components:</ice:panelGroup>
+				           </f:facet>  
+				       </ice:panelDivider> 
+			       </ice:panelGroup>
+			       <ice:panelGroup style="border: 1px solid; padding:3px;">
+			           <ice:outputText value=" Enter position : " />
+	                   <ice:inputText id="inputposition" value="#{panelDividerBean.position2}" partialSubmit="true"/><br/>
+				       <ice:panelDivider id="dvrpanel2" orientation="horizontal"  styleClass="myDvrPanel2" dividerPosition="#{panelDividerBean.position2}">
+				            <f:facet name="first">
+	                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+	                            standard and custom JavaServer Faces (JSF) components. These
+	                            components provide the following additional benefits over other JSF
+	                        components:</p>
+				            </f:facet>
+				            
+				            <f:facet name="second"> 
+	                        <p>The ICEfaces Component Suite provides a complete set of enhanced
+	                            standard and custom JavaServer Faces (JSF) components. These
+	                            components provide the following additional benefits over other JSF
+	                        components:</p>
+				            </f:facet>  
+				        </ice:panelDivider> 
+			        </ice:panelGroup> 
+			</ice:panelGrid>            
+        <br/>
+            <ice:panelDivider id="dvrpanel3" styleClass="myDvrPanel3" dividerPosition="30">
+                <f:facet name="first">
+                            <ul>
+                                <li>Smooth, incremental page updates without full-page
+                                    refreshes.<br/><br/>
+                                </li>
+                                <li>Asynchronous server-initiated user-interface updates without
+                                    polling.<br/><br/>
+                                </li>
+                                <li>Rich AJAX-enabled web applications with no JavaScript
+                                    development required.<br/><br/>
+                                </li>
+                                <li>User context preservation during page update, including
+                                    scrollbar positioning and user focus.<br/><br/>
+                                </li>
+                                <li>Fine-grained user interaction during form entry that augments
+                                    the standard submit/response loop.<br/><br/>
+                                </li>
+                            </ul>
+                </f:facet>
+                
+                <f:facet name="second"> 
+                       <ice:panelDivider id="dvrpanel3child" orientation="horizontal"  styleClass="myDvrPanel3Child">
+                        <f:facet name="first">
+                        <ice:panelGroup style="padding:6px;">
+                            The ICEfaces Component Suite provides a complete set of enhanced
+                            standard and custom JavaServer Faces (JSF) components. These
+                            components provide the following additional benefits over other JSF
+                        components:
+                        </ice:panelGroup>
+                        </f:facet>
+                        
+                        <f:facet name="second"> 
+                        <ice:panelGroup style="padding:6px;">
+                        The ICEfaces Component Suite provides a complete set of enhanced
+                            standard and custom JavaServer Faces (JSF) components. These
+                            components provide the following additional benefits over other JSF
+                        components:</ice:panelGroup>
+                        </f:facet>
+                        </ice:panelDivider>  
+                </f:facet>  
+            </ice:panelDivider> 
+    </ice:panelGroup>  
+  
+</ice:panelTab>
+
+<!--
+The bean is responsible for streaming html documentation to
+this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/panelDividerDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelDivider.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
+
+</ice:panelTabSet>
+
+</ice:form>

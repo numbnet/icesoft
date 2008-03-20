@@ -1,0 +1,874 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ *
+ */
+
+/* Styling of the CONTENT */
+
+html, body, div, table, img, fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    overflow: scroll;
+
+}
+
+body {
+    font-family: Tahoma, Sans-Serif;
+    font-size: 11px;
+    color: #484848;
+    background-color: #ffffff;
+    background-image: url( './images/banner_bg.gif' );
+    background-repeat: repeat-x;
+    background-position: right top;
+}
+
+/* for some reson IE things a form should have dimensions, */
+form {
+    padding: 0;
+    margin: 0;
+}
+
+table {
+    font-size: 11px;
+}
+
+ul {
+    margin-left: 15px;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    background: url( ./rime/css-images/bullet.gif ) no-repeat 0 3px;
+    padding-left: 22px;
+    padding-bottom: 3px;
+}
+
+div.clearer {
+    clear: both;
+    height: 0;
+    line-height: .01em;
+    padding: 0;
+    margin: 0;
+}
+
+/* header begin */
+
+div.header_container {
+    width: 100%;
+    height: 100px;
+    min-width: 730px;
+
+}
+
+div.header_container div.header_left {
+    display: inline;
+    height: 100px;
+    /*position: relative;*/
+
+}
+
+div.header_right {
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+
+}
+
+/* header end */
+
+/* header begin */
+div.footer_container {
+    float: left;
+    width: 100%;
+    height: 95px;
+    min-width: 730px;
+    background-image: url( './images/bgslice_footer.gif' );
+    background-repeat: repeat-x;
+    background-position: bottom left;
+}
+
+div.footer_container div.footer_left {
+    float: left;
+    display: inline;
+    width: 70%;
+    padding-left: 15px;
+    padding-top: 50px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font: 11px tahoma;
+    color: white;
+}
+
+div.footer_container div.footer_left a, div.footer_container div.footer_left a:hover,
+    div.footer_container div.footer_left a:visited {
+    color: orange;
+    text-decoration: none;
+}
+
+div.footer_container div.footer_left a:hover {
+    text-decoration: underline;
+}
+
+div.footer_container div.footer_right {
+    float: right;
+    display: inline;
+    width: 121px;
+}
+
+/* footer end */
+div.navigationContainer {
+    margin: 35px 7px 0 35px;
+    border: none;
+    border-bottom: 1px solid #d9d9d9;
+    float: left;
+    width: 250px;
+}
+
+/* margin-left should be updated along with the relative position of */
+div.contentContainer {
+    float:none;
+    background: none;
+    border: none;
+    margin: 35px 0 35px 275px;
+    padding: 0 25px 25px 25px;
+    margin-left: 265px;
+    /*width:700px;*/
+}
+
+table.componentTabSetContainer {
+    width: 99%;
+}
+
+/* STYLES CREATED BY MEDIADOG */
+
+h2 {
+    font: 18px tahoma;
+    color: #646464;
+}
+
+
+/* END STYLES CREATED BY MEDIADOG */
+
+/* doc view template decloration */
+.docViewContainer, .docViewLinksContainer, .docViewDocContainer{
+    float:left;
+}
+.docViewLinksContainer, .docViewDocContainer{
+    border: 1px solid #D9D9D9;
+}
+.docViewLinksContainer{
+    width: 150px;
+}
+.docViewContainer{
+    width: 100%
+}
+.docViewDocContainer{
+    float: none;
+    margin-left: 160px;
+    height: 450px;
+}
+
+.includeIframe{
+    width:100%;
+    height:100%;
+    border: none;
+    background-color: white;
+}
+
+/* controls the appearance of links throughout the application */
+a:link, a:hover, a:visited, a:active {
+    font-family: Tahoma, Helvetica, sans-serif;
+    font-weight: normal;
+    text-decoration: none;
+    color: #e28f34;
+}
+a:hover{
+    color: #e8af15;
+    text-decoration:underline
+}
+a:visited{
+    color: #104e5b;
+}
+a:active{
+    color: #318496;
+}
+
+
+.componentBox {
+    float: left;
+    padding: 0 0 0 0;
+}
+
+.synopsisBox {
+    border: none;
+    min-height: 36px;
+    padding: 0 0 0 50px;
+    background: url( './images/icon_info.gif' ) no-repeat top left;
+    display: block;
+}
+
+.exampleBox {
+    margin: 15px 15px 0 0;
+    padding: 15px;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+    display: block;
+    float:left;
+}
+
+.synopsisBox .iceOutTxt {
+    display: block;
+}
+
+/* 2 + 13 =15 or the exampleBox margin. */
+/* give outline effect for server chagned values boxes. */
+.backBeanChangeContainer{
+    padding: 0;
+}
+
+.backBeanChangeTitle{
+    margin: 0;
+    height: 20px;
+    width: 275px;
+    padding: 6px 0 0 8px;
+    background: #FFF url( './rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.backBeanChangeBody{
+    padding:2px;
+}
+
+.backBeanChangeBody > div.icePnlGrp:first-child {
+    padding: 15px;
+    background-color: white;
+}
+
+.iceOutTxt {
+    color: #484848;
+}
+
+.columnsContainer {
+    height: 225px;
+    width: 100%;
+    overflow: scroll;
+    border: 1px solid #dedede;
+}
+
+h3 {
+    font: 11px tahoma;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.columnsColumn {
+    border: none;
+}
+
+/*
+------------- Theme Controller
+*/
+
+.themeControlContainer {
+    border:1px solid #D9D9D9;
+    height:28px;
+    margin-bottom:7px;
+    padding: 7px 5px 5px 5px;
+    text-align:left;
+    vertical-align:middle;
+    white-space: nowrap;
+}
+
+.themeControlContainer .icePnlGrp {
+    border: 1px solid #d9d9d9;
+    display:inline;
+    padding: 4px 25px 4px 10px;
+    width: 100px;
+    background-image: url('./images/theme_refresh.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+.themeControlContainer .iceSelOneMnu {
+    height: 20px;
+    width: 110px;
+}
+.themeControlContainer a{
+   color: #444;  
+}
+
+/*
+------------- Navigation Tree 
+*/
+.navigationTree{
+    
+}
+.navigationTreeRow {
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0;
+}
+
+.navigationTreeRow a {
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+    padding: 0;
+    padding-left: 3px;
+    vertical-align: middle;
+}
+
+.navigationTreeRow a:hover {
+    text-decoration: underline;
+}
+
+.navigationTreeRow img {
+    border: 0;
+    vertical-align: middle;
+    background-repeat: repeat-y;
+    padding: 0;
+}
+.navigationTreeRow > img{
+    width: 16px;
+}
+
+
+.navigationTreeRow a img {
+/* vertical-align: top; - Bug in FF, when img has focus it is not highlighted with a box.*/
+    background-repeat: repeat-y;
+    border: 0;
+    padding: 0;
+}
+
+.navigationTreeRow * div {
+    padding: 0;
+    vertical-align: middle;
+}
+
+
+
+/* node selection and rollover state. */
+ a.navNodeSelecttrue:hover, a.navNodeSelectfalse:hover{
+    color: #318496;
+    text-decoration:none;
+}
+ a.navNodeSelecttrue:visited, a.navNodeSelectfalse:visited{
+    color: #104e5b;
+ }
+ a.navNodeSelecttrue{
+    font-weight:bold;
+ }
+
+/*
+---------- end tree
+*/
+
+/* drag and drop demo */
+.dndCartDesc span:first-child {
+    font-weight: bold;
+}
+.dndCartDesc{
+    margin-top:15px;
+    margin-bottom:15px;
+    min-height: 36px;
+    padding-left:50px;
+    float:left;
+    background:url('../images/dragDrop/cart_icon.png' ) no-repeat top left;
+}
+.inventoryItemContainer{
+    float: left;
+    margin: 8px;
+    border: 1px solid #d9d9d9;
+}
+.inventoryItemContainer div{
+    text-align: center;
+}
+
+.chartContainer{
+    float:left;
+    width: 425px;
+    border: 1px solid #d9d9d9;
+}
+.returnItemButton {
+    border: 1px solid #d9d9d9;
+    background-color: white;
+    display:inline;
+    padding: 4px 25px 4px 10px;
+    background-image: url('../images/dragDrop/return_arrow.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+/* effects demo */
+.effectWrapperContainer{
+    float:left;
+    margin: 15px;
+    width: 125px;
+    height: 80px;
+}
+.effectsDemoContainer{
+    float:left;        
+    width: 125px;
+    height: 80px;
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    overflow: hidden;
+}
+.effectsDemoContainer > div{
+    float:left;
+    width:100%;
+    font: 11px tahoma;
+    vertical-align: middle;
+    text-align: center;
+    color: #484848;
+    padding: 7px;
+    font-weight: bold;
+}
+.effectsDemoContainer > div:first-child{
+    background: #FFF url( './rime/css-images/PnlHdr_bgslice.gif' ) repeat-x center left;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+
+
+/* DATA PAGINATOR EXAMPLE */
+.dataPaginatorDataTable {
+    float: left;
+    margin-top: 20px;
+}
+
+.dataPaginatorVertical_true {
+
+}
+
+.dataPaginatorVertical_false {
+    clear: left;
+}
+
+/* END DATA PAGINATOR EXAMPLE */
+
+
+/* Styles for RESIZABLE COLUMNS */
+
+.iceDatTblResBor {
+    border: none;
+}
+
+/* END STYLES EDITED/CREATED BY MEDIADOG */
+
+/* main styles for individual component examples */
+
+.synopsisBox > span:first-child,
+    div.firstChildTitle > span:first-child,
+    div.firstChildTitle > div > span:first-child {
+    font-weight: bold;
+}
+
+.title {
+    color: yellow;
+}
+
+.exampleBox a, .synopsisBox a, .exampleBox a:visited, .synopsisBox a:visited,
+    .exampleBox a:hover, .synopsisBox a:hover {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.exampleBox a, .synopsisBox a, .exampleBox a:visited, .synopsisBox a:visited {
+    text-decoration: none;
+}
+
+.exampleBox a:hover, .synopsisBox a:hover {
+    /*text-decoration: underline;*/
+}
+
+.centerBox {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+table.verticalAlignTop td {
+    vertical-align: top;
+}
+
+/* SHOWCASE.JSPX - Edited by MediaDog */
+
+.navConnectionStatus {
+    position: relative;
+    float: right;
+    right: 60px;
+    top: 20px;
+    z-index: 1;
+}
+
+/* PANELCOLLAPSIBLE.JSPX - Edited by MediaDog */
+
+.pnlClpsbl a, .pnlClpsblHdr a, .pnlClpsblColpsdHdr a{
+    color: #444444;
+}
+.pnlClpsblWrapper {
+    margin-top: 20px;
+    display: block;
+    float: left;
+}
+
+
+.pnlClpsblLnks .iceOutTxt {
+    padding-left: 18px;
+}
+
+.pnlClpsblLnks span, .pnlClpsblLnks.nodec, .pnlClpsblLnks:link, .pnlClpsblLnks:hover, .pnlClpsblLnks:visited {
+    color: #004080;
+}
+
+.pnlClpsblLnks:link, .pnlClpsblLnks:visited {
+    text-decoration: none;
+}
+
+.pnlClpsblLnks:hover {
+    text-decoration: underline;
+}
+
+.pnlClpsblEnd {
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.pnlClpsblHdr .iceCmdLnk, .pnlClpsblColpsdHdr .iceCmdLnk {
+    padding-left: 18px;
+}
+
+.pnlClpsblHdr div, .pnlClpsblHdr-dis div  {
+    background: url( './images/navigation_tree/tree_folder_open.gif' ) no-repeat 0 3px;
+}
+.pnlClpsblColpsdHdr div, .pnlClpsblColpsdHdr-dis div {
+    background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat 0 3px;
+}
+
+/*.icePnlClpsblCnt .iceCmdLnk {*/
+    /*padding-left: 3px;*/
+    /*padding-bottom: 5px;*/
+/*}*/
+
+.expandableStateIndicator .iceOutTxt {
+    padding-left: 25px;
+}
+
+/* END PANELCOLLAPSIBLE.JSPX */
+
+
+/* AUTOCOMPLETE EXAMPLE */
+
+.cityCol {
+    width: 125px;
+}
+
+.stateCol {
+    width: 125px;
+}
+
+.zipCol {
+    width: 50px;
+}
+
+.serverFeedbackBorderHighlight {
+    vertical-align: top;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+    width: 300px;
+}
+
+.iceSelInpTxtRow, .iceSelInpTxtSelRow {
+    height: 15px;
+}
+
+.iceSelInpTxtSelRow {
+    color: #FFFFFF;
+}
+
+/* END AUTOCOMPLETE EXAMPLE */
+
+/* COLUMNS EXAMPLE */
+
+.columnsColumn, .columnsNestedColumn, .columnsNestedBoldColumn {
+    white-space: nowrap;
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+.columnsColumn {
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    width: 55px;
+}
+
+/* END COLUMNS EXAMPLE */
+
+/* MENUBAR EXAMPLE */
+
+.menuHeadingItem a {
+    width: 144px;
+}
+
+.orientationLabel {
+    display: inline;
+    float: left;
+}
+
+.orientationRadioBtn label {
+    vertical-align: top;
+}
+
+/* END MENUBAR EXAMPLE */
+
+/* PANELBORDER.JSPX */
+.pnlBrdrDemo {
+    margin: 15px 15px 0 0;
+    display: block;
+    float: left;
+    padding: 15px;
+}
+
+.pnlBrdrDemoNorth, .pnlBrdrDemoEast, .pnlBrdrDemoWest, .pnlBrdrDemoCenter, .pnlBrdrDemoSouth {
+    border: 1px solid #CCCCCC;
+    background-color: #EEEEEE;
+    padding: 5px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.pnlBrdrDemoNorth, .pnlBrdrDemoSouth {
+    height: 60px;
+}
+.pnlBrdrDemoEast, .pnlBrdrDemoWest{
+    width:100px;
+}
+.pnlBrdrDemoEast, .pnlBrdrDemoWest, .pnlBrdrDemoCenter {
+    height: 100px;
+}
+
+/* END PANELBORDER.JSPX */
+
+/* SELECTINPUTDATE.JSPX */
+.weekend a {
+    background-color: #999999;
+}
+
+.weekend a span {
+    color: white;
+}
+
+.august span {
+    font-weight: bold;
+}
+
+/* END SELECTINPUTDATE.JSPX */
+
+/* GMAP.JSPX */
+.iceGmpMapTd div.gmap {
+    width: 545px;
+    height: 350px;
+    border: 3px inset #555555;
+}
+
+/* END GMAP.JSPX */
+
+/* PANELPOPUP.JSPX */
+
+.corePopup {
+    position: absolute;
+    z-index: 1001;
+    width: 300px;
+    height: 150px;
+    top: 60%;
+    left: 40%;
+}
+
+.popupBody {
+    margin-top: 25px;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.popupHeaderWrapper {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.popupHeaderText {
+    float: left;
+}
+
+.popupHeaderImage {
+    float: right;
+    margin-top: 2px;
+    margin-right: 2px;
+}
+
+/* END PANELPOPUP.JSPX */
+
+/* START PANELPOSITIONABLE */
+
+.positionPanelContainer{
+    /*border: 1px solid #d9d9d9;    */
+}
+.rankPanelContainer  span, .rankPanelContainer  span{
+    font-weight: normal;    
+}
+
+.positionPanelContainer div.container{
+    background: #FFF url( './rime/css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    color: #484848;
+    padding-left: 5px;
+    font-weight: normal;
+    width: 125px;
+    border: 1px solid #d9d9d9;
+}
+
+.positionPanelContainer div.moveLabel{
+    background: url( '../images/move_arrows.gif' ) no-repeat center left;
+    padding: 6px 0 0 25px;
+    height: 20px;
+}
+.rankPanelContainer div{
+    padding: 6px 0 0 5px;
+    border: 1px solid white;
+    height: 20px;
+}
+
+
+/* END PANELPOSITIONABLE */
+
+/* START PANELDIVIDER */
+.panelDividerVertical{
+}
+.panelDividerVerticalFst div,
+    .panelDividerHorizontalFst div, .panelDividerHorizontalSnd div{
+    padding: 10px;
+}
+.panelDividerVerticalSnd{
+    /*overflow:hidden;*/
+}
+panelDividerHorizontal{
+
+}
+/* END PANELDIVIDER */
+
+
+/* START PANEL TABSET  */
+.tabsetControls div{
+    float: left;
+    margin-left: 3px;
+    vertical-align: middle;
+}
+.tabsetControls div div{
+    float: left;
+    margin: 3px;
+    vertical-align: middle;
+}
+/* END PANEL TABSET  */
+
+/* START PANEL STACK  */
+.panelStackContainer table.icePnlStk {
+    width:100%;
+}
+.stackExamplePanel table{
+    width:100%;
+    padding:0;
+    margin:0;
+    background-color: #F5F5F5;
+    border-left: 1px solid #DADADA;
+    border-top: 1px solid #DADADA;
+}
+.stackExamplePanel table td{
+    padding: 25px;
+    border-right: 1px solid #DADADA;
+    border-bottom: 1px solid #DADADA;
+}
+.stackExamplePanel span{
+    font-weight: bold;
+}
+.stackExamplePanel a span{
+    font-weight: normal; 
+}
+/* END PANEL STACK  */
+/* START PANEL SERIES  */
+.panelSeriesContainer .employeeBox{
+    width:175px;
+    border: 1px solid #DADADA;
+    padding: 10px;
+    margin: 2px;
+}
+/* END PANEL SERIES  */
+/* START PANEL TOOLTIP  */
+.panelToolTipInvnItem{
+    float:left;
+    margin: 8px;
+    border: 1px solid #DADADA;
+    text-align: center;
+}
+/* END PANEL TOOLTIP  */
+
+/* START CONNECTION STATUS   */
+.connectionStatusGraphics{
+    width:100%;
+}
+.connectionStatusGraphics span{
+    font-weight:bold;
+}
+.connectionStatusGraphics td{
+    text-align: center;
+    vertical-align: middle;
+
+}
+/* END CONNECTION STATUS   */
+
+/* START TREE */
+.selectedNodetrue span{
+    font-weight:bold;    
+}
+/* END TREE */
+
