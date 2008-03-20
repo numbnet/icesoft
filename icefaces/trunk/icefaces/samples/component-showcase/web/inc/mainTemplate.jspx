@@ -37,7 +37,8 @@
                 <h2><ice:outputText
                     value="#{navigation.selectedPanel.menuContentTitle}"/></h2></div>
 
-            <ice:outputConnectionStatus styleClass="navConnectionStatus" />
+            <ice:outputConnectionStatus styleClass="navConnectionStatus"
+                    showPopupOnDisconnect="true" />
 
             <ui:insert name="content">
                 <ice:panelGroup styleClass="contentIncludePanelGroup">

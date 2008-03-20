@@ -81,7 +81,8 @@
                 <h2><ice:outputText
                     value="#{navigation.selectedPanel.menuContentTitle}"/></h2></div>
 
-            <ice:outputConnectionStatus styleClass="navConnectionStatus" />
+            <ice:outputConnectionStatus styleClass="navConnectionStatus"
+                    showPopupOnDisconnect="true" />
 
             <ice:panelStack id="templatePanelStack"
                 styleClass="componentContentPanelStack"
