@@ -295,6 +295,15 @@ public class PersistentFacesState implements Serializable {
                     facesContext.renderResponse();
                 }
                 lifecycle.execute(facesContext);
+
+                // ICE-2478 JSF 1.2 will set this flag because our requestParameter
+                // map is empty. We don't actually want to execute a lifecycle, we
+                // just want the restoreView phase listeners to be executed for Seam.
+                // However, we need to reset the 'just set' responseComplete flag
+                // or our server push renders will not occur. 
+                if (ImplementationUtil.isJSF12()) {
+                    facesContext.resetResponseComplete();
+                }
             } catch (Exception e) {
                 Throwable throwable = e;
                 while (throwable != null) {
