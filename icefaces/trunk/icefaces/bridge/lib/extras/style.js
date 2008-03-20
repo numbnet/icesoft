@@ -173,7 +173,8 @@ Ice.modal = {
         }
     },
     keypress:function(event) {
-        if (!Ice.modal.running) {
+        if (!Ice.modal.running || $(Ice.modal.id) == null) {
+        	window.document.documentElement.onkeypress = Ice.modal.oldListener;
             return true;
         }
         var cancel = true;
