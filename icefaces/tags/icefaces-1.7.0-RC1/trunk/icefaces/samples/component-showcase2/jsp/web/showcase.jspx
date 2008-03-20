@@ -1,0 +1,464 @@
+<!--
+  ~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+  ~
+  ~ "The contents of this file are subject to the Mozilla Public License
+  ~ Version 1.1 (the "License"); you may not use this file except in
+  ~ compliance with the License. You may obtain a copy of the License at
+  ~ http://www.mozilla.org/MPL/
+  ~
+  ~ Software distributed under the License is distributed on an "AS IS"
+  ~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+  ~ License for the specific language governing rights and limitations under
+  ~ the License.
+  ~
+  ~ The Original Code is ICEfaces 1.5 open source software code, released
+  ~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+  ~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+  ~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+  ~
+  ~ Contributor(s): _____________________.
+  ~
+  ~ Alternatively, the contents of this file may be used under the terms of
+  ~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+  ~ License), in which case the provisions of the LGPL License are
+  ~ applicable instead of those above. If you wish to allow use of your
+  ~ version of this file only under the terms of the LGPL License and not to
+  ~ allow others to use your version of this file under the MPL, indicate
+  ~ your decision by deleting the provisions above and replace them with
+  ~ the notice and other provisions required by the LGPL License. If you do
+  ~ not delete the provisions above, a recipient may use your version of
+  ~ this file under either the MPL or the LGPL License."
+  ~
+  -->
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+    <f:loadBundle
+          basename="org.icefaces.application.showcase.view.resources.messages"
+          var="msgs"/>
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+          doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+          doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+
+    <html>
+    <head >
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+        <title id="dynamicTitle"><h:outputText value="#{msgs['node.splashPage.title']}" /></title>
+        <h:outputText style="padding-top:0; padding-bottom:0;"
+                      value="#{styleBean.style}" escape="false" />
+        <link rel='stylesheet' type='text/css' href='./css/showcase_style.css' />
+    </head>
+    <body>
+
+        <jsp:directive.include file="/WEB-INF/includes/content/header.jspx" />
+
+        <div class="navigationContainer">
+            <jsp:directive.include file="/WEB-INF/includes/content/themeControl.jspx" />
+            <jsp:directive.include file="/WEB-INF/includes/content/navigation.jspx" />
+        </div>
+
+        <div class="contentContainer">
+             <!--
+               Main Component content;
+               controls which content to display for the respective navigation
+            -->
+
+            <ice:outputConnectionStatus styleClass="navConnectionStatus"
+                    showPopupOnDisconnect="true" />
+
+
+            <ice:form>
+            <ice:panelStack id="templatePanelStack"
+                         styleClass="componentContentPanelStack"
+                         selectedPanel="#{navigation.selectedPanel}">
+
+             <!--              -->
+             <!-- misc content -->
+             <!--              -->
+             <ice:panelGroup id="splashPanel" >
+                 <f:subview id="scSub" >
+                     <!-- Components Splash include -->
+                     <jsp:directive.include file="/WEB-INF/includes/content/splash.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="themesPanel" >
+                 <f:subview id="stSub">
+                     <!-- Themes Splash include -->
+                     <jsp:directive.include file="/WEB-INF/includes/content/themes.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <!--                      -->
+             <!-- standard components  -->
+             <!--                      -->
+             <ice:panelGroup id="buttonsAndLinksContentPanel" >
+                 <f:subview id="blSub">
+                     <!-- Buttons & Links include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/buttonsAndLinks.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+             <ice:panelGroup id="selectionTagsContentPanel"  >
+                 <f:subview id="selSub">
+                     <!-- Selection Tags include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/selectionTags.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+             <ice:panelGroup id="textFieldsContentPanel">
+                 <f:subview id="tfSub">
+                     <!-- Text Fields include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/textFields.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+             <!--                                -->
+             <!-- custom component suite content -->
+             <!--                                -->
+             <ice:panelGroup id="treeContentPanel" >
+                 <f:subview id="tcSub">
+                     <!-- Tree Component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/tree.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="effectsContentPanel">
+                 <f:subview id="ecSub">
+                     <!-- Effects include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/effects.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+              <ice:panelGroup id="connectionStatusContentPanel" >
+                 <f:subview id="csSub">
+                     <!-- Connection Status include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/custom/outputConnectionStatus.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="outputProgressContentPanel">
+                 <f:subview id="opSub">
+                     <!-- Progress Bar Component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputProgress.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="menuBarContentPanel">
+                 <f:subview id="mbSub">
+                     <!-- Menu Bar Component include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/custom/menuBar.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+             
+             <ice:panelGroup id="menuPopupContentPanel">
+                 <f:subview id="mpSub">
+                     <!-- Menu Popup Component include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/custom/menuPopup.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="selectInputDateContentPanel" >
+                 <f:subview id="sdSub">
+                     <!-- Calendar Component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputDate.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="selectInputContentPanel" >
+                 <f:subview id="acSub">
+                     <!-- Autocomplete Component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputText.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="dragDropContentPanel" >
+                 <f:subview id="ddSub">
+                     <!-- autocomplete component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dragDrop.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+
+             <ice:panelGroup id="dataTableResizableColumnsContentPanel" >
+                 <f:subview id="dataTableResizableColumnsSub">
+                     <!-- Table include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-resizableColumns.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+             
+             <ice:panelGroup id="dataTableGroupingContentPanel" >
+                 <f:subview id="dataTableRowGroupingSub">
+                     <!-- Table include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-grouping.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="columnsContentPanel" >
+                 <f:subview id="colSub">
+                     <!-- Table include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-columns.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="dataTableRowSelectionContentPanel" >
+                 <f:subview id="dtaRowSelectionSub">
+                     <!-- Table include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-rowSelection.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="dataTablePaginatorContentPanel"  >
+                 <f:subview id="dtpSub">
+                     <!-- Data Scroller component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-dataScrolling.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="dataTableExpandableContentPanel" >
+                 <f:subview id="teSub">
+                     <!-- Expandable Table include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-expandable.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="commandSortHeaderContentPanel"  >
+                 <f:subview id="shSub">
+                     <!-- Data Sort Header component include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="inputFileContentPanel"  >
+                 <f:subview id="ifSub">
+                     <!-- File Upload component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputFile.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="chartContentPanel" >
+                 <f:subview id="chartSub">
+                     <!-- OutputChart include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputChart.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="gMapContentPanel" >
+                 <f:subview id="gMapSub">
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/gmap.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="inputRichTextPanel" >
+                 <f:subview id="inputRichTextSub">
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputRichText.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="outputMediaContentPanel">
+                 <f:subview id="outputMediaSub">
+                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <!--               -->
+             <!-- layout panels -->
+             <!--               -->
+             <ice:panelGroup id="panelDividerContentPanel" >
+                 <f:subview id="panelDividerSub">
+                     <!-- Popup Panel Component include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/panel/panelDivider.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelPopupContentPanel" >
+                 <f:subview id="ppSub">
+                     <!-- Popup Panel Component include -->
+                     <jsp:directive.include
+                         file="/WEB-INF/includes/examples/panel/panelPopup.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelSeriesContentPanel" >
+                 <f:subview id="lcSub">
+                     <!-- Panel Series Component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelSeries.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="tabbedPaneContentPanel-dynamic" >
+                 <f:subview id="tabSub-dynamic">
+                     <!-- Tabbed Panel include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-dynamic.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="tabbedPaneContentPanel-static" >
+                 <f:subview id="tabSub-static">
+                     <!-- Tabbed Panel include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-static.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelBorderContentPanel" >
+                 <f:subview id="pbSub">
+                     <!-- Panel Border include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelBorder.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelStackContentPanel" >
+                 <f:subview id="psSub">
+                     <!-- Panel Stack Header component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelStack.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelPositionedContentPanel" >
+                 <f:subview id="positionPanelSub">
+                     <!-- Panel Stack Header component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelPositioned.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelCollapsibleContentPanel" >
+                 <f:subview id="collapsiblePanelSub">
+                     <!-- Panel Stack Header component include -->
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelCollapsible.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+             <ice:panelGroup id="panelTooltipContentPanel">
+                 <f:subview id="panelTooltipContentPanelSub">
+                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTooltip.jspx" />
+                 </f:subview>
+             </ice:panelGroup>
+
+         </ice:panelStack>
+         </ice:form>
+
+    </div>
+
+
+         <jsp:directive.include file="/WEB-INF/includes/content/footer.jspx"/>
+          <!--
+          PRELOAD IMAGES need for roleovers and layout in general, javascript is only
+          loaded once per refresh which is good enough.  This improves overall user
+          experience as they shouldn't have to wait for images to show up after the
+          initial load.
+          -->
+            <script language="JavaScript" type="text/javascript">
+            <![CDATA[
+            <!--
+            var preloaded = new Array();
+            function preload_images() {
+                for (var i = 0; i < arguments.length; i++) {
+                    preloaded[i] = document.createElement('img');
+                    preloaded[i].setAttribute('src', arguments[i]);
+                }
+            }
+            preload_images(
+                    './css/remi/css-images/arrow-ff.gif',
+                    './css/remi/css-images/arrow-ff-dis.gif',
+                    './css/remi/css-images/arrow-first.gif',
+                    './css/remi/css-images/arrow-first-dis.gif',
+                    './css/remi/css-images/arrow-fr.gif',
+                    './css/remi/css-images/arrow-fr-dis.gif',
+                    './css/remi/css-images/arrow-last.gif',
+                    './css/remi/css-images/arrow-last-dis.gif',
+                    './css/remi/css-images/arrow-next.gif',
+                    './css/remi/css-images/arrow-next-dis.gif',
+                    './css/remi/css-images/arrow-previous.gif',
+                    './css/remi/css-images/arrow-previous-dis.gif',
+                    './css/remi/css-images/bottom_menu_bg.png',
+                    './css/remi/css-images/bottom_menu_btn_bg_on.png',
+                    './css/remi/css-images/bullet.gif',
+                    './css/remi/css-images/cal_arrow_left.gif',
+                    './css/remi/css-images/cal_arrow_left_dis.gif',
+                    './css/remi/css-images/cal_arrow_right.gif',
+                    './css/remi/css-images/cal_arrow_right_dis.gif',
+                    './css/remi/css-images/cal_button.gif',
+                    './css/remi/css-images/cal_off.gif',
+                    './css/remi/css-images/column_sort_asc.gif',
+                    './css/remi/css-images/column_sort_desc.gif',
+                    './css/remi/css-images/connect_active.gif',
+                    './css/remi/css-images/connect_caution.gif',
+                    './css/remi/css-images/connect_disconnected.gif',
+                    './css/remi/css-images/connect_idle.gif',
+                    './css/remi/css-images/contentContainer_bg.gif',
+                    './css/remi/css-images/contentContainer_bg_up.gif',
+                    './css/remi/css-images/off-left-bot.gif',
+                    './css/remi/css-images/off-left-top-dis.gif',
+                    './css/remi/css-images/off-mid-bot.gif',
+                    './css/remi/css-images/off-mid-top-dis.gif',
+                    './css/remi/css-images/off-right-bot.gif',
+                    './css/remi/css-images/off-right-top-dis.gif',
+                    './css/remi/css-images/PnlClpsblCnt_bullet.gif',
+                    './css/remi/css-images/PnlHdr_bgslice.gif',
+                    './css/remi/css-images/PnlHdr_collapsed.gif',
+                    './css/remi/css-images/PnlHdr_down.gif',
+                    './css/remi/css-images/ProgFill_bg.gif',
+                    './css/remi/css-images/ProgFill_Indet_Bg_active.gif',
+                    './css/remi/css-images/ProgFill_Indet_Bg_inactive.gif',
+                    './css/remi/css-images/Tab_Btm_LftBtm.gif',
+                    './css/remi/css-images/Tab_Btm_LftBtm_off.gif',
+                    './css/remi/css-images/Tab_Btm_LftMid.gif',
+                    './css/remi/css-images/Tab_Btm_LftMid_off.gif',
+                    './css/remi/css-images/Tab_Btm_MidBtm.gif',
+                    './css/remi/css-images/Tab_Btm_MidBtm_off.gif',
+                    './css/remi/css-images/Tab_Btm_MidMid.gif',
+                    './css/remi/css-images/Tab_Btm_MidMid_off.gif',
+                    './css/remi/css-images/Tab_Btm_RtBtm.gif',
+                    './css/remi/css-images/Tab_Btm_RtBtm_off.gif',
+                    './css/remi/css-images/Tab_Btm_RtMid.gif',
+                    './css/remi/css-images/Tab_Btm_RtMid_off.gif',
+                    './css/remi/css-images/Tab_LftMid.gif',
+                    './css/remi/css-images/Tab_LftMid_off.gif',
+                    './css/remi/css-images/Tab_LftTop.gif',
+                    './css/remi/css-images/Tab_LftTop_off.gif',
+                    './css/remi/css-images/Tab_MidMid.gif',
+                    './css/remi/css-images/Tab_MidMid_bullet.gif',
+                    './css/remi/css-images/Tab_MidMid_bullet_off.gif',
+                    './css/remi/css-images/Tab_MidMid_bullet_over.gif',
+                    './css/remi/css-images/Tab_MidMid_off.gif',
+                    './css/remi/css-images/Tab_MidTop.gif',
+                    './css/remi/css-images/Tab_MidTop_off.gif',
+                    './css/remi/css-images/Tab_RtMid.gif',
+                    './css/remi/css-images/Tab_RtMid_off.gif',
+                    './css/remi/css-images/Tab_RtTop.gif',
+                    './css/remi/css-images/Tab_RtTop_off.gif',
+                    './css/remi/css-images/table-border.gif',
+                    './css/remi/css-images/TblHdr_bgslice.gif',
+                    './css/remi/css-images/theme_bg.gif',
+                    './css/remi/css-images/theme_change_bg.gif',
+                    './css/remi/css-images/tree_close.gif',
+                    './css/remi/css-images/tree_document.gif',
+                    './css/remi/css-images/tree_folder_closed.gif',
+                    './css/remi/css-images/tree_folder_doc.gif',
+                    './css/remi/css-images/tree_folder_open.gif',
+                    './css/remi/css-images/tree_line_blank.gif',
+                    './css/remi/css-images/tree_line_last_node.gif',
+                    './css/remi/css-images/tree_line_middle_node.gif',
+                    './css/remi/css-images/tree_line_vertical.gif',
+                    './css/remi/css-images/tree_nav_bottom_close.gif',
+                    './css/remi/css-images/tree_nav_bottom_open.gif',
+                    './css/remi/css-images/tree_nav_middle_close.gif',
+                    './css/remi/css-images/tree_nav_middle_open.gif',
+                    './css/remi/css-images/tree_nav_top_close.gif',
+                    './css/remi/css-images/tree_nav_top_close_no_siblings.gif',
+                    './css/remi/css-images/tree_nav_top_open.gif',
+                    './css/remi/css-images/tree_nav_top_open_no_siblings.gif',
+                    './css/remi/css-images/tree_open.gif'
+                    );
+
+            // -->
+            ]]>
+              </script>
+          </body>
+      </html>
+  </f:view>
