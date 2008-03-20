@@ -35,8 +35,8 @@
 
     <property file="build.properties"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>
-    <property name="component.tld.dir" location="../../../docs/tld/" />
-    <property name="component.docs.dir" location="../../../docs/components/"/>
+    <property name="component.docs.dir" location="../../../component/doc"/>
+    <property name="component.tld.dir" location="../../../component/build/doc/tld" />
 
     <property name="compile.source" value="1.5"/>
     <property name="compile.target" value="1.5"/>

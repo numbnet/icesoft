@@ -34,6 +34,7 @@
 <project name="component-showcase" default="tomcat6.0">
 
     <property file="build.properties"/>
+    <property name="component.docs.dir" location="../../../component/doc"/>
     <property name="common.build.file" location="../../etc/build-common.xml"/>
 
     <property name="compile.source" value="1.5"/>
