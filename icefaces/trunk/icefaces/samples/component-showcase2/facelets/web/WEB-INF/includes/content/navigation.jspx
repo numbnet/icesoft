@@ -96,23 +96,11 @@
                       styleClass="navigationTree"
                       imageDir="./css/images/navigation_tree/">
                 <ice:treeNode>
-                    <f:facet name="icon">
-                        <ice:panelGroup style="display: inline">
-                            <ice:commandLink
-                                    actionListener="#{applicationController.navigationEvent}"
-                                    styleClass="navNodeSelect#{node.userObject.selected}" >
-                                <f:param name="nodeId"
-                                         value="#{node.userObject.nodeId}"/>
-                                <ice:graphicImage
-                                    value="#{node.userObject.icon}"/>
-                            </ice:commandLink>
-                        </ice:panelGroup>
-                    </f:facet>
                     <f:facet name="content">
                         <ice:panelGroup style="display: inline">
                             <ice:commandLink
                                     actionListener="#{applicationController.navigationEvent}"
-                                    styleClass="navNodeSelect#{node.userObject.selected}"
+                                    styleClass="navNodeSelect#{node.userObject.selected} navNodeFolder#{not node.userObject.leaf}Expanded#{node.userObject.expanded}"
                                     value="#{msgs[node.userObject.text]}">
                                 <f:param name="nodeId"
                                          value="#{node.userObject.nodeId}"/>

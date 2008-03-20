@@ -199,7 +199,13 @@
                     './css/remi/css-images/tree_nav_top_close_no_siblings.gif',
                     './css/remi/css-images/tree_nav_top_open.gif',
                     './css/remi/css-images/tree_nav_top_open_no_siblings.gif',
-                    './css/remi/css-images/tree_open.gif'
+                    './css/remi/css-images/tree_open.gif',
+                    
+                    './css/images/navigation-tree/tree_folder_closed.gif',
+                    './css/images/navigation-tree/tree_folder_open.gif',
+                    './css/images/navigation-tree/tree_node.gif',
+                    './css/images/navigation-tree/tree_node_rollover.gif',
+                    './css/images/navigation-tree/tree_node_selected.gif'
                     );
 
             // -->

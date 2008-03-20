@@ -41,7 +41,6 @@ html, body, div, table, img, fieldset {
 
 html {
     overflow: scroll;
-
 }
 
 body {
@@ -383,16 +382,37 @@ h3 {
 
 
 /* node selection and rollover state. */
- a.navNodeSelecttrue:hover, a.navNodeSelectfalse:hover{
+a.navNodeSelecttrue:hover, a.navNodeSelectfalse:hover {
     color: #318496;
-    text-decoration:none;
+    text-decoration: none;
+    padding-left: 16px;
+    background: url( './images/navigation_tree/tree_node_rollover.gif' ) no-repeat left center;
 }
- a.navNodeSelecttrue:visited, a.navNodeSelectfalse:visited{
+
+a.navNodeSelecttrue:visited, a.navNodeSelectfalse:visited {
     color: #104e5b;
- }
- a.navNodeSelecttrue{
-    font-weight:bold;
- }
+}
+
+a.navNodeSelecttrue {
+    font-weight: bold;
+    padding-left: 16px;
+    background: url( './images/navigation_tree/tree_node_selected.gif' ) no-repeat left center;
+}
+
+a.navNodeSelectfalse {
+    padding-left: 16px;
+    background: url( './images/navigation_tree/tree_node.gif' ) no-repeat left center;
+}
+
+a.navNodeFoldertrueExpandedfalse, a.navNodeFoldertrueExpandedfalse:hover{
+    padding-left: 20px;
+    background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat left center;
+}
+
+a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
+    padding-left: 20px;
+    background: url( './images/navigation_tree/tree_folder_closed.gif' ) no-repeat left center;
+}
 
 /*
 ---------- end tree
