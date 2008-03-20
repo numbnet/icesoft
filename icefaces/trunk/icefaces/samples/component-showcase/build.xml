@@ -59,12 +59,8 @@
                 "
     />
     <target name="clean">
-        <mkdir dir="build"/>
-        <mkdir dir="dist"/>
         <clean/>
         <delete dir="${web.content.dir}/docs"/>
-        <delete dir="C:/IdeaProjects/component-showcase/classes"/>
-        <delete dir="C:/IdeaProjects/component-showcase/exploded"/>
     </target>
     
     <target name="copy.doc">
@@ -80,12 +76,11 @@
         </copy>        
     </target>
     
-    <target name="build.war" depends="clean, compile"
-            description="Creates a Sun RI version of component-showcase.">
+    <target name="build.war" depends="compile">
                 
         <antcall target="copy.doc"/>
         <build.war web.xml="conf/web.sunri.icefaces.ce.xml"/>
-        <unwar src="${dist.dir}/${ant.project.name}.war" dest="C:/IdeaProjects/component-showcase/exploded"/>
+        
     </target>
     
     <target name="build.portlet.war" depends="portlet.compile">
@@ -197,7 +192,7 @@
     <target name="build.portlet.jboss4.2.portal.ahs.war" description="build portlet application for JBoss4.2 portal with AHS">
         <antcall target="create.xml">
             <param name="property.config" value="jboss.properties"/>
-            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
+            <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>            
         </antcall>
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
@@ -287,14 +282,14 @@
             <param name="jsf12" value=""/>
             <param name="serverjsf" value=""/>
             <param name="liferay" value=""/>
-        </antcall>
+        </antcall>        
     </target>
     <target name="build.portlet.liferay.glassfishv2.ahs.war" description="portlet application for Liferay Glassfish V2 with AHS">
         <antcall target="create.xml">
             <param name="property.config" value="glassfish.properties"/>
             <param name="web.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
         </antcall>
-
+            
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.ahs.xml"/>
             <param name="jsf12" value=""/>
@@ -302,8 +297,8 @@
             <param name="liferay" value=""/>
             <param name="icefaces.ahs.enabled" value=""/>
         </antcall>        
-    </target>
-
+    </target>        
+    
     <!--
     <target name="build.facelet.ear" description="facelets version for Seam" depends="build.facelet.war">
         <copy todir="conf" preservelastmodified="true">
