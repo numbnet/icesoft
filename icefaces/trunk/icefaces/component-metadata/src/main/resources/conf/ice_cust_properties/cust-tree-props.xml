@@ -34,6 +34,7 @@
 
 &core-props;
 &actionsource-props;
+&pass-thru-title-props;
 
 <property>
     <description>

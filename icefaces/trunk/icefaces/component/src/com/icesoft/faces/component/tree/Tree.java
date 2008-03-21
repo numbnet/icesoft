@@ -164,6 +164,7 @@ public class Tree extends UICommand implements NamingContainer {
 
     private DefaultMutableTreeNode currentNode;
     private String nodePath;
+    private String title;
 
     /**
      * default no args constructor
@@ -1087,6 +1088,17 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public void setHideRootNode(String b) {
         hideRootNode = new Boolean(b);
+    }
+
+    public String getTitle() {
+        if (title != null) return title;
+        ValueBinding vb = getValueBinding("title");
+        if (vb == null) return null;
+        return (String) vb.getValue(getFacesContext());
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     // This class wraps TreeNode events 
