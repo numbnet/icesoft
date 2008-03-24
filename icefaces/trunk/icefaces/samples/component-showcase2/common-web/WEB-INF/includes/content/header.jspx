@@ -30,19 +30,11 @@
 ~ this file under either the MPL or the LGPL License."
 ~
 -->
-<div>
-    <div class="header_right">
-        <img src="./css/images/banner_logo.jpg" alt="ICEfaces" width="267"
-             height="159"/>
-    </div>
-    <div class="header_container">
-        <div class="header_left">
-            <img src="./css/images/banner_hdr_compsuite.jpg"
-                 width="463" height="100"
-                 title="Component Suite Showcase"
-                 alt="Component Suite Showcase"/>
-        </div>
-
-        <div class="clearer" />
+<div class="header_container">
+    <div class="header_content">
+        <img src="./css/images/banner_hdr_compsuite.jpg"
+             width="463" height="100"
+             title="Component Suite Showcase"
+             alt="Component Suite Showcase"/>
     </div>
 </div>

@@ -55,294 +55,301 @@
 
         <jsp:directive.include file="/WEB-INF/includes/content/header.jspx" />
 
-        <div class="navigationContainer">
-            <jsp:directive.include file="/WEB-INF/includes/content/themeControl.jspx" />
-            <jsp:directive.include file="/WEB-INF/includes/content/navigation.jspx" />
+         <div class="body_container">
+
+            <div class="body_content">
+
+                <div class="navigationContainer">
+                    <jsp:directive.include file="/WEB-INF/includes/content/themeControl.jspx" />
+                    <jsp:directive.include file="/WEB-INF/includes/content/navigation.jspx" />
+                </div>
+
+                <div class="contentContainer">
+
+                    <!--
+                       Main Component content;
+                       controls which content to display for the respective navigation
+                    -->
+                   <ice:form>
+
+                   <div style="padding-right:10px;">
+                   <ice:outputConnectionStatus styleClass="navConnectionStatus"
+                                showPopupOnDisconnect="true"
+                                style="margin-right: 0px;margin-top: 0;padding-left:15px;"/>
+                   <ice:panelStack id="templatePanelStack"
+                                 styleClass="componentContentPanelStack"
+                                 selectedPanel="#{navigation.selectedPanel}">
+
+                         <!--              -->
+                         <!-- misc content -->
+                         <!--              -->
+                         <ice:panelGroup id="splashPanel" >
+                             <f:subview id="scSub" >
+                                 <!-- Components Splash include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/content/splash.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="themesPanel" >
+                             <f:subview id="stSub">
+                                 <!-- Themes Splash include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/content/themes.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <!--                      -->
+                         <!-- standard components  -->
+                         <!--                      -->
+                         <ice:panelGroup id="buttonsAndLinksContentPanel" >
+                             <f:subview id="blSub">
+                                 <!-- Buttons & Links include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/standard/buttonsAndLinks.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+                         <ice:panelGroup id="selectionTagsContentPanel"  >
+                             <f:subview id="selSub">
+                                 <!-- Selection Tags include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/standard/selectionTags.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+                         <ice:panelGroup id="textFieldsContentPanel">
+                             <f:subview id="tfSub">
+                                 <!-- Text Fields include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/standard/textFields.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+                         <!--                                -->
+                         <!-- custom component suite content -->
+                         <!--                                -->
+                         <ice:panelGroup id="treeContentPanel" >
+                             <f:subview id="tcSub">
+                                 <!-- Tree Component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/tree.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="effectsContentPanel">
+                             <f:subview id="ecSub">
+                                 <!-- Effects include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/effects.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                          <ice:panelGroup id="connectionStatusContentPanel" >
+                             <f:subview id="csSub">
+                                 <!-- Connection Status include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/custom/outputConnectionStatus.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="outputProgressContentPanel">
+                             <f:subview id="opSub">
+                                 <!-- Progress Bar Component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputProgress.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="menuBarContentPanel">
+                             <f:subview id="mbSub">
+                                 <!-- Menu Bar Component include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/custom/menuBar.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="menuPopupContentPanel">
+                             <f:subview id="mpSub">
+                                 <!-- Menu Popup Component include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/custom/menuPopup.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="selectInputDateContentPanel" >
+                             <f:subview id="sdSub">
+                                 <!-- Calendar Component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputDate.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="selectInputContentPanel" >
+                             <f:subview id="acSub">
+                                 <!-- Autocomplete Component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputText.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="dragDropContentPanel" >
+                             <f:subview id="ddSub">
+                                 <!-- autocomplete component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dragDrop.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+
+                         <ice:panelGroup id="dataTableResizableColumnsContentPanel" >
+                             <f:subview id="dataTableResizableColumnsSub">
+                                 <!-- Table include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-resizableColumns.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="dataTableGroupingContentPanel" >
+                             <f:subview id="dataTableRowGroupingSub">
+                                 <!-- Table include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-grouping.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="columnsContentPanel" >
+                             <f:subview id="colSub">
+                                 <!-- Table include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-columns.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="dataTableRowSelectionContentPanel" >
+                             <f:subview id="dtaRowSelectionSub">
+                                 <!-- Table include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-rowSelection.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="dataTablePaginatorContentPanel"  >
+                             <f:subview id="dtpSub">
+                                 <!-- Data Scroller component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-dataScrolling.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="dataTableExpandableContentPanel" >
+                             <f:subview id="teSub">
+                                 <!-- Expandable Table include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-expandable.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="commandSortHeaderContentPanel"  >
+                             <f:subview id="shSub">
+                                 <!-- Data Sort Header component include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="inputFileContentPanel"  >
+                             <f:subview id="ifSub">
+                                 <!-- File Upload component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputFile.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="chartContentPanel" >
+                             <f:subview id="chartSub">
+                                 <!-- OutputChart include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputChart.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="gMapContentPanel" >
+                             <f:subview id="gMapSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/gmap.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="inputRichTextPanel" >
+                             <f:subview id="inputRichTextSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputRichText.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="outputMediaContentPanel">
+                             <f:subview id="outputMediaSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <!--               -->
+                         <!-- layout panels -->
+                         <!--               -->
+                         <ice:panelGroup id="panelDividerContentPanel" >
+                             <f:subview id="panelDividerSub">
+                                 <!-- Popup Panel Component include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/panel/panelDivider.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelPopupContentPanel" >
+                             <f:subview id="ppSub">
+                                 <!-- Popup Panel Component include -->
+                                 <jsp:directive.include
+                                     file="/WEB-INF/includes/examples/panel/panelPopup.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelSeriesContentPanel" >
+                             <f:subview id="lcSub">
+                                 <!-- Panel Series Component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelSeries.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="tabbedPaneContentPanel-dynamic" >
+                             <f:subview id="tabSub-dynamic">
+                                 <!-- Tabbed Panel include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-dynamic.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="tabbedPaneContentPanel-static" >
+                             <f:subview id="tabSub-static">
+                                 <!-- Tabbed Panel include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-static.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelBorderContentPanel" >
+                             <f:subview id="pbSub">
+                                 <!-- Panel Border include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelBorder.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelStackContentPanel" >
+                             <f:subview id="psSub">
+                                 <!-- Panel Stack Header component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelStack.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelPositionedContentPanel" >
+                             <f:subview id="positionPanelSub">
+                                 <!-- Panel Stack Header component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelPositioned.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelCollapsibleContentPanel" >
+                             <f:subview id="collapsiblePanelSub">
+                                 <!-- Panel Stack Header component include -->
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelCollapsible.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                         <ice:panelGroup id="panelTooltipContentPanel">
+                             <f:subview id="panelTooltipContentPanelSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTooltip.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
+
+                        </ice:panelStack>
+                   </div>
+                   </ice:form>
+                </div>
+            </div>
         </div>
-
-        <div class="contentContainer">
-             <!--
-               Main Component content;
-               controls which content to display for the respective navigation
-            -->
-
-            <ice:outputConnectionStatus styleClass="navConnectionStatus"
-                    showPopupOnDisconnect="true" />
-
-
-            <ice:form>
-            <ice:panelStack id="templatePanelStack"
-                         styleClass="componentContentPanelStack"
-                         selectedPanel="#{navigation.selectedPanel}">
-
-             <!--              -->
-             <!-- misc content -->
-             <!--              -->
-             <ice:panelGroup id="splashPanel" >
-                 <f:subview id="scSub" >
-                     <!-- Components Splash include -->
-                     <jsp:directive.include file="/WEB-INF/includes/content/splash.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="themesPanel" >
-                 <f:subview id="stSub">
-                     <!-- Themes Splash include -->
-                     <jsp:directive.include file="/WEB-INF/includes/content/themes.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <!--                      -->
-             <!-- standard components  -->
-             <!--                      -->
-             <ice:panelGroup id="buttonsAndLinksContentPanel" >
-                 <f:subview id="blSub">
-                     <!-- Buttons & Links include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/buttonsAndLinks.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-             <ice:panelGroup id="selectionTagsContentPanel"  >
-                 <f:subview id="selSub">
-                     <!-- Selection Tags include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/selectionTags.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-             <ice:panelGroup id="textFieldsContentPanel">
-                 <f:subview id="tfSub">
-                     <!-- Text Fields include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/standard/textFields.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-             <!--                                -->
-             <!-- custom component suite content -->
-             <!--                                -->
-             <ice:panelGroup id="treeContentPanel" >
-                 <f:subview id="tcSub">
-                     <!-- Tree Component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/tree.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="effectsContentPanel">
-                 <f:subview id="ecSub">
-                     <!-- Effects include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/effects.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-              <ice:panelGroup id="connectionStatusContentPanel" >
-                 <f:subview id="csSub">
-                     <!-- Connection Status include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/custom/outputConnectionStatus.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="outputProgressContentPanel">
-                 <f:subview id="opSub">
-                     <!-- Progress Bar Component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputProgress.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="menuBarContentPanel">
-                 <f:subview id="mbSub">
-                     <!-- Menu Bar Component include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/custom/menuBar.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-             
-             <ice:panelGroup id="menuPopupContentPanel">
-                 <f:subview id="mpSub">
-                     <!-- Menu Popup Component include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/custom/menuPopup.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="selectInputDateContentPanel" >
-                 <f:subview id="sdSub">
-                     <!-- Calendar Component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputDate.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="selectInputContentPanel" >
-                 <f:subview id="acSub">
-                     <!-- Autocomplete Component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputText.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="dragDropContentPanel" >
-                 <f:subview id="ddSub">
-                     <!-- autocomplete component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dragDrop.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-
-             <ice:panelGroup id="dataTableResizableColumnsContentPanel" >
-                 <f:subview id="dataTableResizableColumnsSub">
-                     <!-- Table include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-resizableColumns.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-             
-             <ice:panelGroup id="dataTableGroupingContentPanel" >
-                 <f:subview id="dataTableRowGroupingSub">
-                     <!-- Table include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-grouping.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="columnsContentPanel" >
-                 <f:subview id="colSub">
-                     <!-- Table include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-columns.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="dataTableRowSelectionContentPanel" >
-                 <f:subview id="dtaRowSelectionSub">
-                     <!-- Table include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-rowSelection.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="dataTablePaginatorContentPanel"  >
-                 <f:subview id="dtpSub">
-                     <!-- Data Scroller component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-dataScrolling.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="dataTableExpandableContentPanel" >
-                 <f:subview id="teSub">
-                     <!-- Expandable Table include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/dataTable-expandable.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="commandSortHeaderContentPanel"  >
-                 <f:subview id="shSub">
-                     <!-- Data Sort Header component include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/custom/dataTable-commandSortHeader.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="inputFileContentPanel"  >
-                 <f:subview id="ifSub">
-                     <!-- File Upload component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputFile.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="chartContentPanel" >
-                 <f:subview id="chartSub">
-                     <!-- OutputChart include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputChart.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="gMapContentPanel" >
-                 <f:subview id="gMapSub">
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/gmap.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="inputRichTextPanel" >
-                 <f:subview id="inputRichTextSub">
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/inputRichText.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="outputMediaContentPanel">
-                 <f:subview id="outputMediaSub">
-                     <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputMedia.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <!--               -->
-             <!-- layout panels -->
-             <!--               -->
-             <ice:panelGroup id="panelDividerContentPanel" >
-                 <f:subview id="panelDividerSub">
-                     <!-- Popup Panel Component include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/panel/panelDivider.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelPopupContentPanel" >
-                 <f:subview id="ppSub">
-                     <!-- Popup Panel Component include -->
-                     <jsp:directive.include
-                         file="/WEB-INF/includes/examples/panel/panelPopup.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelSeriesContentPanel" >
-                 <f:subview id="lcSub">
-                     <!-- Panel Series Component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelSeries.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="tabbedPaneContentPanel-dynamic" >
-                 <f:subview id="tabSub-dynamic">
-                     <!-- Tabbed Panel include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-dynamic.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="tabbedPaneContentPanel-static" >
-                 <f:subview id="tabSub-static">
-                     <!-- Tabbed Panel include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTabSet-static.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelBorderContentPanel" >
-                 <f:subview id="pbSub">
-                     <!-- Panel Border include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelBorder.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelStackContentPanel" >
-                 <f:subview id="psSub">
-                     <!-- Panel Stack Header component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelStack.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelPositionedContentPanel" >
-                 <f:subview id="positionPanelSub">
-                     <!-- Panel Stack Header component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelPositioned.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelCollapsibleContentPanel" >
-                 <f:subview id="collapsiblePanelSub">
-                     <!-- Panel Stack Header component include -->
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelCollapsible.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-             <ice:panelGroup id="panelTooltipContentPanel">
-                 <f:subview id="panelTooltipContentPanelSub">
-                     <jsp:directive.include file="/WEB-INF/includes/examples/panel/panelTooltip.jspx" />
-                 </f:subview>
-             </ice:panelGroup>
-
-         </ice:panelStack>
-         </ice:form>
-
-    </div>
 
 
          <jsp:directive.include file="/WEB-INF/includes/content/footer.jspx"/>

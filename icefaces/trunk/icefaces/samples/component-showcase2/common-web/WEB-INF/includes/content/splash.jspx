@@ -31,7 +31,7 @@
 ~
 -->
 
-<div style="margin: 25px;margin-right:50px;padding-top:25px;">
+<div style="padding-right:50px;padding-left:15px;">
     
     <p>The ICEfaces Component Suite provides a complete set of enhanced
         standard and custom JavaServer Faces (JSF) components. These

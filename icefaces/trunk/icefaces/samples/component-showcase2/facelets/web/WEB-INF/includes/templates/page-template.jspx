@@ -62,32 +62,31 @@
             <ui:include src="/WEB-INF/includes/content/header.jspx" />
         </ui:insert>
 
-        <!--<div style="margin:0 auto;border: 1px solid black;float:left;width:100%">-->
-        <!--<div style="margin:0 auto;border: 1px solid red;width: 1000px;">-->
-        <!-- meta data node test-->
-        <div class="navigationContainer">
-            <ui:insert name="navigation">
-                <ui:include src="/WEB-INF/includes/content/themeControl.jspx" />
-                <ui:include src="/WEB-INF/includes/content/navigation.jspx" />
-            </ui:insert>
+
+        <div class="body_container">
+
+            <div class="body_content">
+
+                <div class="navigationContainer">
+                    <ui:insert name="navigation">
+                        <ui:include src="/WEB-INF/includes/content/themeControl.jspx" />
+                        <ui:include src="/WEB-INF/includes/content/navigation.jspx" />
+                    </ui:insert>
+                </div>
+
+                <div class="contentContainer">
+
+                    <!--
+                       Main Component content;
+                       controls which content to display for the respective navigation
+                    -->
+                    <ui:insert name="page-content" >
+
+                    </ui:insert>
+                </div>
+            </div>
+
         </div>
-
-
-        <ice:outputConnectionStatus styleClass="navConnectionStatus"
-                showPopupOnDisconnect="true"/>
-
-        <div class="contentContainer">
-             <!--
-               Main Component content;
-               controls which content to display for the respective navigation
-            -->
-            <ui:insert name="page-content" >
-
-            </ui:insert>
-
-         </div>
-        <!--</div>-->
-        <!--</div>-->
 
          <ui:insert name="footer">
             <ui:include src="/WEB-INF/includes/content/footer.jspx"/>

@@ -61,6 +61,8 @@
         
     </ice:panelGroup>
 
+    <ice:panelGroup styleClass="clearer" />
+
     <ice:panelGroup styleClass="exampleBox inputRichTextContainer" >
 
         <ice:inputRichText id="iceInpRchTxt"

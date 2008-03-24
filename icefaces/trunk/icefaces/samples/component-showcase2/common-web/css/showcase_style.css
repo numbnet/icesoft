@@ -41,6 +41,7 @@ html, body, div, table, img, fieldset {
 
 html {
     overflow: scroll;
+
 }
 
 body {
@@ -48,9 +49,6 @@ body {
     font-size: 11px;
     color: #484848;
     background-color: #ffffff;
-    background-image: url( './images/banner_bg.gif' );
-    background-repeat: repeat-x;
-    background-position: right top;
 }
 
 /* for some reson IE things a form should have dimensions, */
@@ -87,91 +85,96 @@ div.clearer {
 
 div.header_container {
     width: 100%;
-    height: 100px;
+    height: 159px;
     min-width: 730px;
-
+    background-image: url( './images/banner_bg.gif' );
+    background-repeat: repeat-x;
+    background-position: left top;
 }
-
-div.header_container div.header_left {
-    display: inline;
-    height: 100px;
-    /*position: relative;*/
-
-}
-
-div.header_right {
-    float: right;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-
+div.header_content{
+    height: 159px;
+    background-image: url( './images/banner_logo.jpg' );
+    background-repeat: no-repeat;
+    background-position: right top;
 }
 
 /* header end */
 
-/* header begin */
-div.footer_container {
-    float: left;
-    width: 100%;
-    height: 95px;
-    min-width: 730px;
-    background-image: url( './images/bgslice_footer.gif' );
-    background-repeat: repeat-x;
-    background-position: bottom left;
-}
+/* body start */
 
-div.footer_container div.footer_left {
-    float: left;
-    display: inline;
-    width: 70%;
-    padding-left: 15px;
-    padding-top: 50px;
-    margin-top: 10px;
-    margin-bottom: 0;
-    font: 11px tahoma;
-    color: white;
+/* provides a continer to center a child div in */
+div.body_container{
+   float:left;
+   margin-top:-30px;
+   width:100%;
 }
-
-div.footer_container div.footer_left a, div.footer_container div.footer_left a:hover,
-    div.footer_container div.footer_left a:visited {
-    color: orange;
-    text-decoration: none;
+/* centers in parent as long as parent is larger then child*/
+div.body_content {
+   margin:0 auto;
+   width:980px;
 }
-
-div.footer_container div.footer_left a:hover {
-    text-decoration: underline;
+div.body_content div{
+   /*height: 100px;*/
 }
-
-div.footer_container div.footer_right {
-    float: right;
-    display: inline;
-    width: 121px;
-}
-
-/* footer end */
 div.navigationContainer {
-    margin: 35px 7px 0 35px;
     border: none;
-    border-bottom: 1px solid #d9d9d9;
     float: left;
-    width: 250px;
+    width:230px;
+    border-bottom: 1px solid #d9d9d9;
 }
 
 /* margin-left should be updated along with the relative position of */
 div.contentContainer {
-    float:none;
     background: none;
     border: none;
-    margin: 35px 0 35px 275px;
-    padding: 0 25px 25px 25px;
-    margin-left: 265px;
-    /*width:700px;*/
+    float:left;
+    padding-left: 6px;
+    width:720px;
 }
 
 table.componentTabSetContainer {
     width: 99%;
 }
+
+
+
+/* footer begin */
+div.footer_container {
+    float: left;
+    width: 100%;
+    height: 95px;
+    min-width: 730px;
+    background-image: url( './images/bgslice_footer.jpg' );
+    background-repeat: repeat-x;
+    background-position: bottom left;
+}
+div.footer_content{
+    height: 95px;
+    background-image: url( './images/footer_faces.jpg' );
+    background-repeat: no-repeat;
+    background-position: bottom right;
+}
+
+div.footer_content div{
+   float:left;
+   padding-top:60px;
+   padding-left:10px;
+   color: white;
+}
+div.footer_content a, div.footer_content a:hover{
+   color: orange;
+   text-decoration: none;
+}
+div.footer_content a{
+
+}
+
+div.footer_content a:hover{
+   text-decoration: underline;
+}
+
+
+/* footer end */
 
 /* STYLES CREATED BY MEDIADOG */
 
@@ -325,7 +328,7 @@ h3 {
 
 .themeControlContainer .iceSelOneMnu {
     height: 20px;
-    width: 110px;
+    width: 100px;
 }
 .themeControlContainer a{
    color: #444;  
@@ -551,11 +554,10 @@ table.verticalAlignTop td {
 /* SHOWCASE.JSPX - Edited by MediaDog */
 
 .navConnectionStatus {
-    position: relative;
     float: right;
-    right: 60px;
-    top: 20px;
-    z-index: 1;
+    margin:0;
+    margin-right: -20px;
+    margin-top: -50px;
 }
 
 /* PANELCOLLAPSIBLE.JSPX - Edited by MediaDog */

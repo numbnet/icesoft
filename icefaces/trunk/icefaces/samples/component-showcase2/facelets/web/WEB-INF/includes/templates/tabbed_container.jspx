@@ -45,6 +45,10 @@ change the border layout dynamically.
 <ice:panelTabSet id="icepnltabset" styleClass="componentTabSetContainer"
         tabChangeListener="#{applicationController.processTabChange}"
         selectedIndex="#{applicationModel.selectedTabIndex}">
+
+    <ice:outputConnectionStatus
+                            styleClass="navConnectionStatus"
+                            showPopupOnDisconnect="true"/>
     <!--
       Controls to show/hide the table columns
     -->
