@@ -81,8 +81,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
             String decodedValue = null;
             if ((requestParameterValuesMap != null) && (requestParameterValuesMap.containsKey(clientId))) {
                 decodedValue =
-                        ((String[]) requestParameterValuesMap.get(clientId))[0]
-                                .trim();
+                        ((String[]) requestParameterValuesMap.get(clientId))[0];
             } else {
                 //none of the option has been selected
                 //set it to a blank string, not to null
@@ -656,7 +655,12 @@ public class MenuRenderer extends DomBasicInputRenderer {
     
     private boolean isConversionMatched(String sentinel, Object selectedValue){
     	boolean match = false;
-    	if (selectedValue instanceof Long){
+        if (sentinel.length() == 0){
+            if (selectedValue == null) {
+                match = true;
+            }
+        }
+        else if (selectedValue instanceof Long){
     		if (selectedValue.equals(Long.valueOf(sentinel))) {
     			match = true;
     		}
