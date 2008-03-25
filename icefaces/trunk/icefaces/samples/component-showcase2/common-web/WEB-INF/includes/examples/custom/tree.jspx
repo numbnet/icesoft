@@ -107,7 +107,7 @@
                             <ice:graphicImage
                                     width="11" height="8"
                                     style="margin-left:3px;margin-right:3px;"
-                                    value="./css/rime/css-images/bullet.gif" />
+                                    value="/xmlhttp/css/rime/css-images/bullet.gif" />
                             <ice:outputText value="#{treePath}" />
 
                         </ice:panelSeries>

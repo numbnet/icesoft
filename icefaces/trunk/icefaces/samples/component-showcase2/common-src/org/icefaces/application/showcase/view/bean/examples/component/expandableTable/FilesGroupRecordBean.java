@@ -51,7 +51,7 @@ import java.util.ArrayList;
 public class FilesGroupRecordBean extends FilesGroupRecord {
 
     protected static final String DEFAULT_IMAGE_DIR =
-            "./css/rime/css-images/";
+            "/xmlhttp/css/rime/css-images/";
     protected static final String SPACER_IMAGE =
             "tree_line_blank.gif";
 

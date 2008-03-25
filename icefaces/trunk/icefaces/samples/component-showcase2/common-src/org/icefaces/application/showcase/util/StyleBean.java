@@ -79,8 +79,8 @@ public class StyleBean {
 
         styleMap = new HashMap<String, StylePath>(3);
         styleMap.put(RIME, new StylePath(
-                "./css/rime/rime.css",
-                "./css/rime/css-images/"));
+                "xmlhttp/css/rime/rime.css",
+                "xmlhttp/css/rime/css-images/"));
         styleMap.put(XP, new StylePath(
                 "xmlhttp/css/xp/xp.css",
                 "xmlhttp/css/xp/css-images/"));

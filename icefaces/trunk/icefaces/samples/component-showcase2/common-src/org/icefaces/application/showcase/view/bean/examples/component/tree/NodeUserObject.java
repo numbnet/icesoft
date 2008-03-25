@@ -43,9 +43,9 @@ public class NodeUserObject extends IceUserObject {
     public NodeUserObject(DefaultMutableTreeNode defaultMutableTreeNode) {
         super(defaultMutableTreeNode);
 
-        setLeafIcon("./css/rime/css-images/tree_document.gif");
-        setBranchContractedIcon("./css/rime/css-images/tree_folder_closed.gif");
-        setBranchExpandedIcon("./css/rime/css-images/tree_folder_open.gif");
+        setLeafIcon("xmlhttp/css/rime/css-images/tree_document.gif");
+        setBranchContractedIcon("xmlhttp/css/rime/css-images/tree_folder_closed.gif");
+        setBranchExpandedIcon("xmlhttp/css/rime/css-images/tree_folder_open.gif");
         setExpanded(true);
     }
 
