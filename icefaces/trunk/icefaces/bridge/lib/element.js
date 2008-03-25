@@ -36,6 +36,7 @@
     This.TemporaryContainer = function() {
         var container = document.body.appendChild(document.createElement('div'));
         container.style.visibility = 'hidden';
+        container.style.display = 'none';
         This.TemporaryContainer = function() {
             return container;
         };
