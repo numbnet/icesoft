@@ -288,10 +288,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
             }
         }
-        // create div
-        Element div = domContext.createElement(HTML.DIV_ELEM);
-
-        anchor.appendChild(div);
         
         if (vertical) {
             if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
@@ -301,7 +297,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
                 subImg.setAttribute(HTML.CLASS_ATTR,
                     menuBar.getSubMenuIndicatorStyleClass());
-                div.appendChild(subImg);
+                anchor.appendChild(subImg);
             }
         }
         
@@ -322,7 +318,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 String alt = menuItem.getAlt();
                 if(alt != null && alt.length() > 0)
                     iconImg.setAttribute(HTML.ALT_ATTR, alt);
-                div.appendChild(iconImg);
+                anchor.appendChild(iconImg);
             }
         }
 
@@ -337,7 +333,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(), 
                         (vertical?CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE:"")+
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
-        div.appendChild(span);
+        anchor.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
@@ -362,10 +358,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
             }
         }
-        // create div
-        Element div = domContext.createElement(HTML.DIV_ELEM);
-
-        anchor.appendChild(div);
 
         if (menuItem.getChildCount() > 0 && menuItem.isChildrenMenuItem()) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
@@ -374,7 +366,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
                                 menuBar.getSubMenuIndicatorStyleClass());
-            div.appendChild(subImg);
+            anchor.appendChild(subImg);
         }
 
         // only render icons if noIcons is false
@@ -390,7 +382,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 String alt = menuItem.getAlt();
                 if(alt != null && alt.length() > 0)
                     iconImg.setAttribute(HTML.ALT_ATTR, alt);
-                div.appendChild(iconImg);
+                anchor.appendChild(iconImg);
             }
         }
 
@@ -403,7 +395,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
         span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
 
-        div.appendChild(span);
+        anchor.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
@@ -740,9 +732,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                                    MenuBar menuComponent,
                                    boolean topLevel,
                                    boolean horizontal) {
-        HtmlPanelGroup div = new HtmlPanelGroup();
-        div.setId(GROUP_SUFFIX);
-        
         if(!(topLevel && horizontal)) {
             if (nextSubMenuItem.getChildCount() > 0 &&
                 nextSubMenuItem.isChildrenMenuItem()) {
@@ -751,7 +740,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 image.setUrl(getSubMenuImage(menuComponent));
                 image.setStyle("border:none;");
                 image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
-                div.getChildren().add(image);
+                link.getChildren().add(image);
             }
         }
         
@@ -773,7 +762,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 String alt = nextSubMenuItem.getAlt();
                 if(alt != null && alt.length() > 0)
                     image.setAlt(alt);
-                div.getChildren().add(image);
+                link.getChildren().add(image);
             }
         }
 
@@ -787,9 +776,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 //        }
         outputText.setStyleClass(nextSubMenuItem.getLabelStyleClass());
         link.setValue("");
-        div.getChildren().add(outputText);
-
-        link.getChildren().add(div);
+        link.getChildren().add(outputText);
     }
     
     private void renderSeparatorDiv(DOMContext domContext, Element parent, 
