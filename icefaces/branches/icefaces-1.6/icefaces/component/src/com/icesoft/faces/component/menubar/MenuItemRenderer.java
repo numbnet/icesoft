@@ -241,10 +241,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
             }
         }
-        // create div
-        Element div = domContext.createElement(HTML.DIV_ELEM);
-
-        anchor.appendChild(div);
 
         // only render icons if noIcons is false
         if ((!menuBar.getNoIcons().equalsIgnoreCase("true")) &&
@@ -259,7 +255,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                         getUserDefinedStyleClass(menuBar.getItemImageStyleClass(),
                                 CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
                                 CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
-                div.appendChild(iconImg);
+                anchor.appendChild(iconImg);
             }
         }
 
@@ -273,7 +269,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         span.setAttribute(HTML.CLASS_ATTR, menuItem.
                 getUserDefinedStyleClass(menuBar.getItemLabelStyleClass(),
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
-        div.appendChild(span);
+        anchor.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
@@ -295,10 +291,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
             }
         }
-        // create div
-        Element div = domContext.createElement(HTML.DIV_ELEM);
-
-        anchor.appendChild(div);
 
         if (menuItem.getChildCount() > 0) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
@@ -306,7 +298,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
                                 menuBar.getSubMenuIndicatorStyleClass());
-            div.appendChild(subImg);
+            anchor.appendChild(subImg);
         }
 
         // only render icons if noIcons is false
@@ -320,7 +312,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                             CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
                             CSS_DEFAULT.MENU_BAR_ITEM_STYLE+
                             CSS_DEFAULT.MENU_ITEM_IMAGE_STYLE));
-            div.appendChild(iconImg);
+            anchor.appendChild(iconImg);
         }
 
         // create a span for text
@@ -335,7 +327,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                         CSS_DEFAULT.MENU_BAR_VERTICAL_SUFFIX_STYLE+
                         CSS_DEFAULT.MENU_BAR_ITEM_LABEL_STYLE));
 
-        div.appendChild(span);
+        anchor.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
@@ -353,10 +345,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
             }
         }
-        // create div
-        Element div = domContext.createElement(HTML.DIV_ELEM);
-
-        anchor.appendChild(div);
 
         if (menuItem.getChildCount() > 0) {
             Element subImg = domContext.createElement(HTML.IMG_ELEM);
@@ -364,7 +352,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             subImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             subImg.setAttribute(HTML.CLASS_ATTR,
                                 menuBar.getSubMenuIndicatorStyleClass());
-            div.appendChild(subImg);
+            anchor.appendChild(subImg);
         }
 
         // only render icons if noIcons is false
@@ -374,7 +362,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             iconImg.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(facesContext, getIcon(menuItem)));
             iconImg.setAttribute(HTML.STYLE_ATTR, "border:none;");
             iconImg.setAttribute(HTML.CLASS_ATTR, menuItem.getImageStyleClass());
-            div.appendChild(iconImg);
+            anchor.appendChild(iconImg);
         }
 
         // create a span for text
@@ -386,7 +374,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         }
         span.setAttribute(HTML.CLASS_ATTR, menuItem.getLabelStyleClass());
 
-        div.appendChild(span);
+        anchor.appendChild(span);
         // create text
         Node text = domContext.createTextNode(DOMUtils.escapeAnsi(menuItem.getValue().toString()));
         span.appendChild(text);
@@ -615,15 +603,13 @@ public class MenuItemRenderer extends MenuItemRendererBase {
     private void addTopLevelChildren(HtmlCommandLink link,
                                      MenuItem nextSubMenuItem,
                                      MenuBar menuComponent) {
-        HtmlPanelGroup div = new HtmlPanelGroup();
-
         if ((!menuComponent.getNoIcons().equalsIgnoreCase("true"))
             && (getIcon(nextSubMenuItem) != null)) {
             HtmlGraphicImage image = new HtmlGraphicImage();
             image.setUrl(getIcon(nextSubMenuItem));
             image.setStyle("border:none;");
             image.setStyleClass(nextSubMenuItem.getImageStyleClass());
-            div.getChildren().add(image);
+            link.getChildren().add(image);
         }
 
         HtmlOutputText outputText = new HtmlOutputText();
@@ -635,23 +621,20 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 //        }
         outputText.setStyleClass(nextSubMenuItem.getLabelStyleClass());
         link.setValue("");
-        div.getChildren().add(outputText);
-
-        link.getChildren().add(div);
+        link.getChildren().add(outputText);
     }
 
     // this method is used to add icon, label and indicator
     // to top level vertical menu items
     void addChildren(HtmlCommandLink link, MenuItem nextSubMenuItem,
                      MenuBar menuComponent) {
-        HtmlPanelGroup div = new HtmlPanelGroup();
         if (nextSubMenuItem.getChildCount() > 0 &&
             nextSubMenuItem.isChildrenMenuItem()) {
             HtmlGraphicImage image = new HtmlGraphicImage();
             image.setUrl(getSubMenuImage(menuComponent));
             image.setStyle("border:none;");
             image.setStyleClass(menuComponent.getSubMenuIndicatorStyleClass());
-            div.getChildren().add(image);
+            link.getChildren().add(image);
         }
 
         if ((!menuComponent.getNoIcons().equalsIgnoreCase("true"))
@@ -660,7 +643,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             image.setUrl(getIcon(nextSubMenuItem));
             image.setStyle("border:none;");
             image.setStyleClass(nextSubMenuItem.getImageStyleClass());
-            div.getChildren().add(image);
+            link.getChildren().add(image);
         }
 
         HtmlOutputText outputText = new HtmlOutputText();
@@ -672,9 +655,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 //        }
         outputText.setStyleClass(nextSubMenuItem.getLabelStyleClass());
         link.setValue("");
-        div.getChildren().add(outputText);
-
-        link.getChildren().add(div);
+        link.getChildren().add(outputText);
     }
 
     private void renderSeparatorDiv(DOMContext domContext, Element parent,
