@@ -381,9 +381,12 @@
         </testng>
     </target>
     
-	<target name="freshen" depends="init" description="grab fresh icefaces jars">
-	      <copy todir="${lib.dir}">
-	           <fileset dir="${icefaces.home}/lib">
+	<target name="freshen"  description="grab fresh icefaces jars">
+		 <delete file="${lib.dir}/*.jar"/>
+		 <delete dir="${lib.dir}" />
+		 <mkdir dir="${lib.dir}" /> 
+		<copy todir="${lib.dir}">
+	        <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />
 		         <exclude name="icefaces-ahs.jar"/>
 	             <include name="backport-util-concurrent.jar" />	
@@ -398,8 +401,8 @@
 	             <include name="el-ri.jar"/>
 	           	 <include name="portlet.jar"/>
                  <exclude name="commons-collections.jar"/>
-		 </fileset>
-	         <fileset dir="${jboss.seam.home}/lib">
+		   </fileset>
+	       <fileset dir="${jboss.seam.home}/lib">
 	            <include name="jboss-seam.jar"/>
 	            <include name="cglib.jar"/>
                 <include name="cglib-nodep.jar"/>
@@ -417,16 +420,16 @@
 	              <include name="antlr*.jar"/>
 	              <include name="servlet-api.jar"/>
 	              <include name="jsf-api.jar"/>
-	           <include name="jsf-impl.jar"/>
-	           <include name="jstl.jar"/>
-	           <include name="persistence-api.jar"/>
-	           <include name="jta.jar"/>
-	           <include name="jboss-archive-browsing.jar"/>
-	           <include name="log4j.jar"/>
-                    <include name="commons-collections.jar"/>
-	          <include name="commons-beanutils.jar"/>
-	          <include name="commons-lang.jar"/>
-	         <include name="el-*.jar"/>
+	              <include name="jsf-impl.jar"/>
+	              <include name="jstl.jar"/>
+	              <include name="persistence-api.jar"/>
+	              <include name="jta.jar"/>
+	              <include name="jboss-archive-browsing.jar"/>
+	              <include name="log4j.jar"/>
+                  <include name="commons-collections.jar"/>
+	              <include name="commons-beanutils.jar"/>
+	              <include name="commons-lang.jar"/>
+	              <include name="el-*.jar"/>
 	        </fileset>
 	   </copy>	    
 	</target>
