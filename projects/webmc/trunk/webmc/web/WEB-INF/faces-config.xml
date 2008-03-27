@@ -116,23 +116,5 @@
         <validator-class>com.icesoft.faces.presenter.validator.EmailValidator
         </validator-class>
     </validator>
-    
-    <!-- Navigation Rules -->
-    <navigation-rule>
-        <from-view-id>/login.jspx</from-view-id>
-        <navigation-case>
-            <from-outcome>loginSuccess</from-outcome>
-            <to-view-id>/main.iface</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/main.jspx</from-view-id>
-        <navigation-case>
-            <from-outcome>logout</from-outcome>
-            <to-view-id>/login.iface</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
 
 </faces-config>

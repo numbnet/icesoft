@@ -40,11 +40,27 @@
     </script>
 </head>
 <body>
+<!-- This page sniffs out whether or not someone is using a mobile browser so a 
+     new browser window without a menubar can be launched when someone is using 
+     webmc from a desktop browser -->
+<%
+System.out.println("USER AGENT: " + request.getHeader("USER-AGENT"));
+
+String agent = request.getHeader("USER-AGENT").toLowerCase();
+if((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1) || 
+   (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)){
+    String redirectURL = "./demo.iface";
+    response.sendRedirect(redirectURL);
+}else{
+%>
   <br/><br/><br/>
   <div style="text-align:center;">
-    <a href="javascript: showLarge('bouncePage.jsp')">
+    <a href="javascript: showLarge('demo.iface')">
       <img border="0" alt="Start WebMC" src="resources/images/webpresentation_temp.gif" />
     </a>
   </div>
+<%
+} 
+%>
 </body>
 </html>

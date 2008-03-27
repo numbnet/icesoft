@@ -55,6 +55,7 @@ import java.util.Map;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 
@@ -514,9 +515,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                 chatView.useBottomView();
 
                 // Handle leaving the login page
-                if (getSession() != null) {
-                    getSession().setAttribute("LoggedIn", "true");
-                }
+                loggedIn=true;
                 loginBean.setSlotsAvailable();
 
                 // Smooth the login -> index transition
@@ -524,7 +523,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                         presentationManager.getRenderManager(),
                         presentation.getName() + firstName + lastName);
 
-                loggedIn=true;
                 return "loginSuccess";
             } else {
                 loginBean.setSlotsNone();
@@ -561,10 +559,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                     break;
             }
 
-            if (getSession() != null) {
-                getSession().setAttribute("LoggedIn", "false");
-                loggedIn = false;
-            }
+            loggedIn = false;
+
         } catch (Exception failedLogout1) { }
 
         try {
@@ -584,10 +580,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             this.clearFields();
             role = ParticipantInfo.ROLE_VIEWER;
             toggleSlideTypeOne();
-            mobile = false;
         } catch (Exception failedLogout4) { }
-        
-        loggedIn = false;
+
         return "logout";
     }
 
@@ -819,27 +813,22 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     }
 
 	public boolean isMobile() {
+        if(!mobileSniffed){
+			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+	        String useragent = request.getHeader("user-agent");
+	        String agent = useragent.toLowerCase();
+	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
+	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
+	        	mobile = true;
+	    		chatView.setViewSize(3);
+	        }
+	        mobileSniffed = true;
+        }
 		return mobile;
 	}
 
 	public void setMobile(boolean mobile) {
 		this.mobile = mobile;
-	}
-	
-	public String getMobilesetting(){
-/*        if(!mobileSniffed){
-			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
-	        String useragent = request.getHeader("user-agent");
-	        String user = useragent.toLowerCase();
-	        if ((user.indexOf("safari") != -1 && user.indexOf("mobile") != -1)  || user.indexOf("240x320") != -1) {
-	        	mobile = true;
-	        	mobileSniffed = true;
-	        }
-        }
-*/
-		mobile=true;
-		chatView.setViewSize(3);
-		return null;
 	}
 
 	public boolean isLoggedIn() {
@@ -849,4 +838,14 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 	public void dispose() throws Exception {
 		logout();
 	}
+	
+    /**
+     * Method to refresh PersistentFacesState
+     *
+     * @return statusMessage
+     */
+    public String getRefreshPersistentFacesState() {
+        state = PersistentFacesState.getInstance();
+        return null;
+    }
 }

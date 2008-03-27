@@ -34,18 +34,6 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<html>
-<head>
-    <link href="resources/css/login.css" rel="stylesheet" type="text/css"/>
-    <f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
-                  var="msgs"/>
-    <title>
-        <ice:outputText value="WebMC - Login"/>
-    </title>
-</head>
-
-<body>
-
 <ice:panelGroup styleClass="mainPRES">
 
 <ice:panelGroup styleClass="facesBox">
@@ -106,6 +94,7 @@
         </tr>
         <tr>
             <td colspan="2">&amp;nbsp;</td>
+            <td><ice:outputText value="#{participant.refreshPersistentFacesState}" visible="false"/></td>
         </tr>
     </table>
 </td>
@@ -247,6 +236,4 @@
 </center>
 </ice:panelGroup>
 </ice:panelGroup>
-</body>
-</html>
 </f:view>

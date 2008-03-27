@@ -164,6 +164,11 @@ li {
 
 .chat, .participant {
     background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
+    border-top: 1px solid #90B1C9;
+}
+
+.chat {
+    border-bottom: 1px solid #90B1C9;
 }
 
 .chat a {

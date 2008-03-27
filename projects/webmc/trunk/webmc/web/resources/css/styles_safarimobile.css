@@ -35,74 +35,36 @@ html {
     overflow:hidden;
 }
 
-body, html {
-    padding: 0;
-    margin: 0;
-}
-
-img {
-    border: 0;
-}
-
-/* for some reson IE things a form should have dimensions, */
-form {
-    padding: 0;
-    margin: 0;
-}
-
 /* BGT STYLES */
 
 .bgNAV {
-    background: url( '../images/bgslice_navbar.jpg' ) repeat-x top left;
     height: 33px;
-}
-
-.bgMAIN {
-    background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
-}
-
-.bgBARBLUE {
-    background: url( '../images/bgslice_bluebar.jpg' ) repeat-x top left;
 }
 
 .presentationImageTable {
     width: 346px;
-
-    border: thick groove #96B2CF;
-    text-align: center;
-    vertical-align: middle;
+    height: 100%;
 }
 
 /* FORM STYLES */
-.inputPAGENUM {
-    color: #4878A1;
-}
 
 .inputCHAT {
-    border: 1px solid #B4CEE1;
-    padding: 2px;
     margin-left: 2px;
     margin-top: 6px;
     font: 10px tahoma, arial, sans-serif;
     width: 94px;
-    color: #4878A1;
-    text-align: left;
     float: left;
 }
 
 /* LIST STYLES */
 ul {
-    list-style-type: none;
-    padding-left: 0;
     margin: 0;
 }
 
 li {
-    list-style: none;
-    padding-left: 0;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
     font: 10px tahoma, arial, sans-serif;
-    border-bottom: 1px dashed #B4C7D4;
-    width: 100%;
 }
 
 #maincontainer{
@@ -113,25 +75,10 @@ li {
 #mainPRES { 
     float: left;
     width: 346px; /*Width of left column*/
+    padding: 0px;
 }
 
 #mainCHAT {
-    background-color: #FFFFFF;
-    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
-
     margin-left: 346px; /*Set left margin to LeftColumnWidth*/
     width: 134px;
-}
-
-.chat, .participant {
-    background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
-    border-top: 1px solid #90B1C9;
-}
-
-.chat {
-	border-bottom: 1px solid #90B1C9;
-}
-
-.chat a {
-    text-decoration: underline;
 }
