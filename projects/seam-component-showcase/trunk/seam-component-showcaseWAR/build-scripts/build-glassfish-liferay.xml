@@ -13,7 +13,7 @@
 	
     <import file="build-common.xml"/>
 
-    <fileset id="noejb.war.lib.extras" dir="${jboss.seam.home}">
+    <fileset id="noejb.war.lib.extras" dir="${basedir}">
     	<!-- Seam deps -->
     	<include name="lib/javassist.jar"/>
     	<include name="lib/dom4j.jar" />
@@ -29,7 +29,7 @@
     	<include name="lib/antlr.jar" />
         <include name="lib/asm.jar"/>
         <include name="lib/commons-beanutils.jar"/>
-    	<include name="lib/commons-logging.jar" />
+     	<include name="lib/commons-logging.jar" />  
     	<include name="lib/commons-collections.jar" />
         <include name="lib/log4j.jar"/>
         <exclude name="lib/mvel14.jar"/>
