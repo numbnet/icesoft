@@ -2,7 +2,7 @@
 <!DOCTYPE plugin-package PUBLIC "-//Liferay//DTD Plugin Package 4.3.0//EN"
         "http://www.liferay.com/dtd/liferay-plugin-package_4_3_0.dtd">
 <plugin-package>
-    <name>Components</name>
+    <name>Seam Components</name>
     <module-id>icefaces/seam-comp-showcase/4.3.0/war</module-id>
     <types>
         <type>portlet</type>
@@ -11,7 +11,7 @@
         <tag>sample</tag>
     </tags>
     <short-description>
-        ICEfaces Seam Components
+        ICEfaces Components With Seam
     </short-description>
     <change-log>
         ICEfaces Seam Components Showcase Portlets
