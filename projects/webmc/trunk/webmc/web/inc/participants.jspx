@@ -27,37 +27,37 @@
 	                           disabled="#{participant.participantView.participantScrollDownDisabled}"/>
 	    </ice:panelGroup>
     </ice:panelGrid>
-		<ice:panelGroup styleClass="participant" >
-		    <ul>
-		    <ice:dataTable binding="#{participant.participantsTable}"
-		                   value="#{participant.participantViewList}" 
-		                   var="list"
-		                   cellpadding="0" 
-                           cellspacing="0" 
-                           width="100%"
-                           height="80px" >
+	<ice:panelGroup styleClass="participant" >
+	    <ul>
+	    <ice:dataTable binding="#{participant.participantsTable}"
+	                   value="#{participant.participantViewList}" 
+	                   var="list"
+	                   cellpadding="0" 
+                          cellspacing="0" 
+                          width="100%"
+                          height="80px" >
 
-		        <ice:column>
-                    <li>
-                       &amp;nbsp;
-	                <strong>
-	                    <ice:commandLink value="#{list.firstName} #{list.lastName}"
-	                                     title="Click to make #{list.firstName} the moderator"
-	                                     rendered="#{participant.moderator}"
-	                                     actionListener="#{participant.passModerators}"/>
-	                    <ice:outputText value="#{list.firstName} #{list.lastName}"
-	                                    title="Email Address: #{list.email}"
-	                                    rendered="#{not participant.moderator}"/>
-	                </strong>
-	                <ice:outputText value="(Moderator)"
-	                                rendered="#{not empty list and list.moderator}"
-	                                style="vertical-align: top;"/>
-	                <ice:outputText value="(Skype)"
-	                                rendered="#{not empty list and list.hasSkype}"/>
-                    </li>
-		        </ice:column>
-		    </ice:dataTable>
-		    </ul>
-		</ice:panelGroup>
-	</div>
+	        <ice:column>
+                   <li>
+                      &amp;nbsp;
+                <strong>
+                    <ice:commandLink value="#{list.firstName} #{list.lastName}"
+                                     title="Click to make #{list.firstName} the moderator"
+                                     rendered="#{participant.moderator}"
+                                     actionListener="#{participant.passModerators}"/>
+                    <ice:outputText value="#{list.firstName} #{list.lastName}"
+                                    title="Email Address: #{list.email}"
+                                    rendered="#{not participant.moderator}"/>
+                </strong>
+                <ice:outputText value="(Moderator)"
+                                rendered="#{not empty list and list.moderator}"
+                                style="vertical-align: top;"/>
+                <ice:outputText value="(Skype)"
+                                rendered="#{not empty list and list.hasSkype}"/>
+                   </li>
+	        </ice:column>
+	    </ice:dataTable>
+	    </ul>
+	</ice:panelGroup>
+</div>
 </f:view>
