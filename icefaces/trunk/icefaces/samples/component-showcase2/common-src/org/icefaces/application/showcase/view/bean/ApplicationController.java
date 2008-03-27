@@ -32,28 +32,34 @@
  */
 package org.icefaces.application.showcase.view.bean;
 
+import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.util.ContextUtilBean;
+import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.builder.ApplicationBuilder;
-import org.icefaces.application.showcase.view.jaxb.*;
+import org.icefaces.application.showcase.view.jaxb.ContentDescriptor;
+import org.icefaces.application.showcase.view.jaxb.Node;
 
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import com.icesoft.faces.component.paneltabset.TabChangeEvent;
-
 /**
  * <p>Application controller is responsible for managing the presentation
  * layer action and actionListener functionality.  This bean is intended
  * to stay in Application scope and act on request and session beans as
- * needed</p>
+ * needed. This class mainly handles site navigation processing via the tree
+ * and common Tabset components.  Source and Document iFrame links are
+ * also processed by this class.</p>
+ * <p/>
+ * <p>Each individual component showcase example has its own set of Beans which
+ * are issolated from the main application and other examples.  Some examples
+ * use a common mock service layer for retrieving Employee Objects.</p>
  *
  * @since 1.7
  */
@@ -62,23 +68,40 @@ public class ApplicationController {
     private static final Log logger =
             LogFactory.getLog(ApplicationController.class);
 
+    /**
+     * <p>Tree navigation events are processed by this method when a tree
+     * leaf or folder is clicked on by the user.  This method assumes
+     * that the navigation node in question passed the request param
+     * "nodeId" in the request map.  The "nodeId" is a unique id assigned to
+     * the node from the application meta data.  This ide is then used
+     * to find the corresponding Node object from the ApplicationBuilder class</p>
+     * <p/>
+     * <p>A node is marked as selected and the previously selected node is
+     * marked as unselected.  The nodes corresponding include may have
+     * a tabSet state which will either be loaded or initialized.  This is
+     * important to note as it allows the use of only one tabSetComponent
+     * for the intire application.</p>
+     *
+     * @param event jsf action event
+     */
     public void navigationEvent(ActionEvent event) {
 
         // get id of node that was clicked on.
         String nodeId = FacesUtils.getRequestParameter("nodeId");
 
-        // do a lookup on the parent component to get the node object
+        // get a reference to the application scoped application builder.
         ApplicationBuilder applicationBuilder =
                 (ApplicationBuilder) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_BUILDER);
 
+        // do a bean lookup by node Id
         Node node = applicationBuilder.getNode(nodeId);
 
-        // make sure we want to follow through with the content switch/assignment
+        // not all notes are marked as links and some nodes may be null
+        // if the meta data was not correctly validated.
         if (node != null && node.isLink()) {
 
-            // set the current node in the model, the view will figure out which
-            // components to show
+            // get a reference to the sessionModel data
             ApplicationSessionModel applicationModel =
                     (ApplicationSessionModel) FacesUtils.getManagedBean(
                             BeanNames.APPLICATION_MODEL);
@@ -86,50 +109,57 @@ public class ApplicationController {
             setTreeNodeSelectedState(
                     applicationModel.getCurrentNode().getId(), false);
 
+            // set our new current node.
             applicationModel.setCurrentNode(node);
 
             // mark the new current node as selected
             setTreeNodeSelectedState(
                     applicationModel.getCurrentNode().getId(), true);
-                  
+
             // update the tabset state for this example
             HashMap<Node, TabState> tabStates = applicationModel.getTabContents();
             TabState tabState = tabStates.get(node);
 
-            if (tabState == null){
+            // otherwise, create a new state with the default tab index.
+            if (tabState == null) {
                 tabState = new TabState();
                 // set default selected tab index. 
                 tabState.setTabIndex(TabState.DEMONSTRATION_TAB_INDEX);
             }
-            // update selected tab and put back in session.
+            // update  tabstate and put it into session scope.
             tabStates.put(node, tabState);
         }
-        else if (node != null && !node.isLink()){
+        // otherwise we just toggle the expanded state of the node
+        // that was selected, should always be a folder
+        else if (node != null && !node.isLink()) {
             // toggle expanded state. 
             toggleTreeNodeExpandedState(node.getId());
         }
-
-
     }
 
     /**
-     * Called when the table binding's tab focus changes.
+     * <p>The method captures the selected tab state of the currently selected
+     * node content.  We only use one Tabset for this application so this
+     * method is responsible for making sure that each nodes content state
+     * is persisted.</p>
      *
      * @param tabChangeEvent used to set the tab focus.
-     * @throws javax.faces.event.AbortProcessingException An exception that may be thrown by event
-     *                                  listeners to terminate the processing of the current event.
+     * @throws javax.faces.event.AbortProcessingException
+     *          An exception that may
+     *          be thrown by event listeners to terminate the processing of the current event.
      */
     public void processTabChange(TabChangeEvent tabChangeEvent)
             throws AbortProcessingException {
 
-        // update model with data to persist currently selected tab
+        // get a reference to our sessionModel class
         ApplicationSessionModel applicationModel =
                 (ApplicationSessionModel) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_MODEL);
 
+        // get current node
         Node currentNode = applicationModel.getCurrentNode();
 
-        // get the tabset state for this example
+        // get the tabset state for this example from the current node
         HashMap<Node, TabState> tabStates = applicationModel.getTabContents();
         TabState tabState = tabStates.get(currentNode);
 
@@ -138,42 +168,72 @@ public class ApplicationController {
     }
 
     /**
-     * <p></p>
+     * <p>Each example has a source code tab which has links to JSPX
+     * and Java Beans associated with the example.  The selection of source
+     * code is handle by the method {@link #viewSourceEvent(javax.faces.event.ActionEvent)}
+     * .  This method takes the selected source code and generates a
+     * valid iFrame tag to which is used to load the source code.  The iFrame
+     * url points to a Servlet which does the work of sending back the source
+     * code in plain text. </p>
      *
-     * @return
+     * @return iFrame tag and src which points to currently selected source
+     *         code content.  If no source content is selected an iframe with an empty
+     *         source link is returned.
      */
-    public String getCurrentSource(){
-        // set the current node in the model
+    public String getCurrentSource() {
+
+        // get session model data
         ApplicationSessionModel applicationModel =
                 (ApplicationSessionModel) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_MODEL);
 
+        // get the currently selected node
         Node currentNode = applicationModel.getCurrentNode();
 
         // get the tabset state for this example
         HashMap<Node, TabState> tabStates = applicationModel.getTabContents();
         TabState tabState = tabStates.get(currentNode);
 
-        if (tabState.getSourceContent() != null){
+        // if there is associated source content then build and return
+        // the iFrame
+        if (tabState.getSourceContent() != null) {
             return ContextUtilBean.generateSourceCodeUrl(
                     tabState.getSourceContent());
         }
+        // otherwise just return an empty iFrame.
         return ContextUtilBean.generateMarkup("");
     }
 
-     public String getCurrentDocumentSource(){
-        // set the current node in the model
+    /**
+     * <p>Each example has a documentation tab which has links to documentation
+     * and tutorials associated with the example.  The selection of document
+     * code is handle by the method {@link #viewIncludeEvent(javax.faces.event.ActionEvent)}
+     * .  This method takes the selected document and generates a
+     * valid iFrame tag to which is used to load the documentation.  The iFrame
+     * url points to a Servlet which does the work of sending back the
+     * documentation in plain text. </p>
+     *
+     * @return iFrame tag and src which points to currently selected
+     *         documentation.  If no source content is selected an iframe with
+     *         an empty source link is returned.
+     */
+    public String getCurrentDocumentSource() {
+
+        // get the current model state for the session
         ApplicationSessionModel applicationModel =
                 (ApplicationSessionModel) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_MODEL);
 
+        // get the current node
         Node currentNode = applicationModel.getCurrentNode();
 
         // get the tabset state for this example
         HashMap<Node, TabState> tabStates = applicationModel.getTabContents();
         TabState tabState = tabStates.get(currentNode);
 
-        if (tabState.getDescriptionContent() != null){
+        // if there is a selected description content that return the
+        // iFrame tag needed to load it.
+        if (tabState.getDescriptionContent() != null) {
             return ContextUtilBean.generateDocumentUrl(
                     tabState.getDescriptionContent());
         }
@@ -181,12 +241,14 @@ public class ApplicationController {
     }
 
     /**
-     * <p>Loads the source code specified byt he request parameters includePath
-     * and resourceId.</p>
+     * <p>Loads the source code specified by the request parameters includePath.
+     * The parameters includePath is used to generate the full file path
+     * needed by the SourceCodeServlet. The path generated by this method
+     * is stored in the session TabState object. </p>
      *
-     * @param event jsf action event
+     * @param event jsf action event.
      */
-    public void viewSourceEvent(ActionEvent event){
+    public void viewSourceEvent(ActionEvent event) {
         // get path of include
         String includePath = FacesUtils.getRequestParameter("includePath");
 
@@ -209,7 +271,15 @@ public class ApplicationController {
 
     }
 
-    public void viewIncludeEvent(ActionEvent event){
+    /**
+     * <p>Loads the documentation specified by the request parameters includePath.
+     * The parameters includePath is used to generate the full file path
+     * needed by the SourceCodeServlet. The path generated by this method
+     * is stored in the session TabState object. </p>
+     *
+     * @param event jsf action event.
+     */
+    public void viewIncludeEvent(ActionEvent event) {
         // get id of node that was clicked on.
         String includePath = FacesUtils.getRequestParameter("includePath");
 
@@ -231,36 +301,64 @@ public class ApplicationController {
         tabStates.put(currentNode, tabState);
     }
 
+    /**
+     * <p>Gets the ContextDescriptor object associated with the currently
+     * selected node.  The ContextDescriptor class contains example,
+     * documentation and source code information derived from the schema
+     * data.</p>
+     *
+     * @return ContentDescriptor associated withthe selected node.
+     */
     public ContentDescriptor getCurrentContextDescriptor() {
+        // get reference to model data
         ApplicationSessionModel applicationModel =
                 (ApplicationSessionModel) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_MODEL);
+        // get reference to application builder
         ApplicationBuilder applicationBuilder =
                 (ApplicationBuilder) FacesUtils.getManagedBean(
                         BeanNames.APPLICATION_BUILDER);
 
         Node currentNode = applicationModel.getCurrentNode();
 
+        // return ContextDescriptor associated with this node.
         return applicationBuilder.getContextDescriptor(currentNode);
     }
 
-
+    /**
+     * Utility method to assign the selected state of a tree node.
+     *
+     * @param nodeId nodeId of the node to set the selected state on.
+     * @param value  desired selection state of node.
+     */
     private void setTreeNodeSelectedState(String nodeId, boolean value) {
         DefaultMutableTreeNode defaultNode = findTreeNode(nodeId);
-        if (defaultNode != null){
-            NavigationTreeNode node = (NavigationTreeNode) defaultNode.getUserObject();
+        if (defaultNode != null) {
+            NavigationTreeNode node =
+                    (NavigationTreeNode) defaultNode.getUserObject();
             node.setSelected(value);
         }
     }
 
+    /**
+     * Utility method to toggle the selected state of the specified node.
+     *
+     * @param nodeId nodeId of the the node to toggle the expanded state of.
+     */
     private void toggleTreeNodeExpandedState(String nodeId) {
         DefaultMutableTreeNode defaultNode = findTreeNode(nodeId);
-        if (defaultNode != null){
+        if (defaultNode != null) {
             NavigationTreeNode node = (NavigationTreeNode) defaultNode.getUserObject();
             node.setExpanded(!node.isExpanded());
         }
     }
 
+    /**
+     * Utility method to find a tree node by its ID.
+     *
+     * @param nodeId node Id of node to to find in tree.
+     * @return node specified by ID or null of no node of that ID is found.
+     */
     private DefaultMutableTreeNode findTreeNode(String nodeId) {
         ApplicationSessionModel applicationModel =
                 (ApplicationSessionModel) FacesUtils.getManagedBean(
@@ -269,9 +367,10 @@ public class ApplicationController {
                 applicationModel.getNavigationTrees().values();
 
         DefaultMutableTreeNode node;
+        DefaultMutableTreeNode rootNode;
+        // search all trees defined by meta data using a depthFirst search.
         for (DefaultTreeModel treeModel : trees) {
-            DefaultMutableTreeNode rootNode =
-                    (DefaultMutableTreeNode) treeModel.getRoot();
+            rootNode = (DefaultMutableTreeNode) treeModel.getRoot();
             Enumeration nodes = rootNode.depthFirstEnumeration();
             while (nodes.hasMoreElements()) {
                 node = (DefaultMutableTreeNode) nodes.nextElement();

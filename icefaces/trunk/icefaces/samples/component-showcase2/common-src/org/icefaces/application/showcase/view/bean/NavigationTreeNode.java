@@ -37,25 +37,29 @@ import com.icesoft.faces.component.tree.IceUserObject;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
+ * <p>The NavigationTree node extends IceUserObject by adding two
+ * new properties to store extra data; modeId and selected.  The nodeId
+ * is a unique identifier used to load content from meta data. The selected
+ * attribute is used for display purposes to mark the selected node. </p>
+ * <p/>
+ * <p>This class does not specify any icons that would normally be used
+ * by the Tree component.  Instead CSS Class names are used along with node
+ * and branch states to generate hover/rollerover effects which is not
+ * possible if the tree components icon facet is used. </p>
  *
+ * @since 1.7
  */
 public class NavigationTreeNode extends IceUserObject {
 
-    public static final String LEAF_SELECTED_ICON = "./css/images/navigation_tree/tree_node_selected.gif";
-    public static final String LEAF_ICON = "./css/images/navigation_tree/tree_node.gif";
-    public static final String FOLDER_CLOSE_ICON = "./css/images/navigation_tree/tree_folder_closed.gif";
-    public static final String FOLDER_OPEN_ICON = "/css/images/navigation_tree/tree_folder_open.gif";
-
+    // node id associated with this tree node.  Node Id's are bound to
+    // content defined in application meta data.
     private String nodeId;
 
+    // selected state, only one node is intended to be selected at one time.
     private boolean selected;
 
     public NavigationTreeNode(DefaultMutableTreeNode defaultMutableTreeNode) {
         super(defaultMutableTreeNode);
-
-        setLeafIcon(LEAF_ICON);
-        setBranchContractedIcon(FOLDER_CLOSE_ICON);
-        setBranchExpandedIcon(FOLDER_OPEN_ICON);
         this.setExpanded(false);
     }
 
@@ -64,12 +68,6 @@ public class NavigationTreeNode extends IceUserObject {
     }
 
     public void setSelected(boolean selected) {
-        if (selected) {
-            setLeafIcon(LEAF_SELECTED_ICON);
-        } else {
-            setLeafIcon(LEAF_ICON);
-        }
-
         this.selected = selected;
     }
 

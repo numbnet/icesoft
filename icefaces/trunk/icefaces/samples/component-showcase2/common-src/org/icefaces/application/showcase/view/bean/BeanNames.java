@@ -33,7 +33,9 @@
 package org.icefaces.application.showcase.view.bean;
 
 /**
- * Name pool of beans that are inject via the FacesContext.
+ * <p> Name pool of beans that are inject via the FacesContext.</p>
+ *
+ * @since 1.7
  */
 public class BeanNames {
 

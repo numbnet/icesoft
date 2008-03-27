@@ -33,10 +33,12 @@
 package org.icefaces.application.showcase.view.bean;
 
 /**
- * <p>Tab content include state as per user visit.  The meta data for the
- * application defines which content will be presented on each tab.  The
- * purpose of this class store the selected content and select tab that a
- * user may have specified while browsing though the showcase examples. </p>
+ * <p>The TabState class stores tabSet related state data.  The
+ * {@link org.icefaces.application.showcase.view.bean.ApplicationSessionModel}
+ * class contains a lazily loaded hashMap which contains the a one to
+ * one mapping of Node objects to TabSate objects.  When a user clicks on
+ * a navigation node the TabState object is either created or loaded and tabSet
+ * component reflects what ever state was defined in the TabState object. </p>
  *
  * @sinse 1.7
  */
@@ -49,8 +51,10 @@ public class TabState {
     // currently selected tab index
     private int tabIndex;
     
+    // relative path to currently selected documentation, if any. 
     private String descriptionContent;
 
+    // relative path to currently selected source code, if any.
     private String sourceContent;
 
     public int getTabIndex() {

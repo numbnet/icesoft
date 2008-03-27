@@ -42,6 +42,10 @@ import java.util.HashMap;
  * and content presentation layer of the application.  The intention is
  * to keep this class as lean as possible and thus only persist between
  * requests the absolute minimum amount of data. </p>
+ * <p/>
+ * <p>To help minimize the amount of data we keep in session scop lazy
+ * initilization is used for the navigationTreeFactory and tabContents
+ * data models.</p>
  *
  * @since 1.7
  */
@@ -50,41 +54,71 @@ public class ApplicationSessionModel {
     // current node, and thus content the user is viewing
     private Node currentNode;
 
-    // navigation model for each sub tree
+    // navigation model
     private NavigationTreeFactory navigationTreeFactory;
 
     // map of tab content visited by users, lazy loaded
     private HashMap<Node, TabState> tabContents;
 
+    /**
+     * Creates a new instance of this class, instantiating the
+     * navigationTreeFactory and tabContents data models.
+     */
     public ApplicationSessionModel() {
         navigationTreeFactory = new NavigationTreeFactory();
         tabContents = new HashMap<Node, TabState>();
     }
 
+    /**
+     * Gets the selected tabSet index for the currently selected node.
+     *
+     * @return selected tabset for the currently selected node.
+     */
     public int getSelectedTabIndex(){
-
         // get the tabset state for this example
         TabState tabState = tabContents.get(currentNode);
         return tabState.getTabIndex();
     }
 
+    /**
+     * Sets the selected tab index for the currently selected node tabState
+     * model.
+     *
+     * @param tabIndex tabIndex currently  selected in a tabSet component.
+     */
     public void setSelectedTabIndex(int tabIndex){
         TabState tabState = tabContents.get(currentNode);
         tabState.setTabIndex(tabIndex);
     }
 
+    /**
+     * Gets the currently select node.
+     * @return selected node
+     */
     public Node getCurrentNode() {
         return currentNode;
     }
 
+    /**
+     * Sets the currently selected node.
+     * @param currentNode node to be set as the currently selected node.
+     */
     public void setCurrentNode(Node currentNode) {
         this.currentNode = currentNode;
     }
 
+    /**
+     * Gets the navigation tree factory
+     * @return  navigation tree factory
+     */
     public NavigationTreeFactory getNavigationTrees() {
         return navigationTreeFactory;
     }
 
+    /**
+     * Gets the tabContents data model.
+     * @return tab contents data model.
+     */
     public HashMap<Node, TabState> getTabContents() {
         return tabContents;
     }

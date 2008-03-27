@@ -37,10 +37,12 @@ import javax.faces.context.FacesContext;
 import java.util.HashMap;
 
 /**
- * A utility bean coded to solve ICE-2714.  It's used to generate the iframe markup
+ * It's used to generate the iframe markup
  * for the Description and Source tab panels.  It adds the context path of the application
  * dynamically in front of the src attribute to ensure that the resource can be found when
  * running in both portlet and plain servlet environments.
+ *
+ * @since 1.6
  */
 public class ContextUtilBean extends HashMap {
 
@@ -51,14 +53,34 @@ public class ContextUtilBean extends HashMap {
 
     public static String getContextPath() {
         FacesContext fc = FacesContext.getCurrentInstance();
+
         ExternalContext ec = fc.getExternalContext();
         return ec.getRequestContextPath();
     }
 
+    /**
+     * <p>A utility method which will correctly resolve the context path
+     * of a local resouce (coded to solve ICE-2714).  This is need
+     * for specific servlet containers, mainly of the Portlet
+     * variety.</p>
+     * <p>The overriding of the Map method get(Object source) allows
+     * for inlining of the method call using JSF Map syntax.</p>
+     *
+     * @param source file path relative to application root path.
+     * @return html iframe include with proper full path to file.
+     */
     public Object get(Object source) {
         return generateMarkup(getContextPath() + source);
     }
 
+    /**
+     * Generates iFrame markup with the specified source as the
+     * url to the iFrame content. Does not modify the
+     * source path
+     *
+     * @param source path to some web resource
+     * @return iFrame markup to load specified resource.
+     */
     public static String generateMarkup(String source) {
         StringBuffer markup = new StringBuffer();
         markup.append(IFRAME_PREFIX);
@@ -67,6 +89,14 @@ public class ContextUtilBean extends HashMap {
         return markup.toString();
     }
 
+    /**
+     * Generates iFrame markup with the specified source as the
+     * url to the iFrame content. Modifies the source path by pre-appending
+     * the context path.
+     *
+     * @param source path to some web resource
+     * @return iFrame markup to load specified resource.
+     */
     public static String generateDocumentUrl(String source) {
         StringBuffer markup = new StringBuffer();
         markup.append(IFRAME_PREFIX);
@@ -76,6 +106,14 @@ public class ContextUtilBean extends HashMap {
         return markup.toString();
     }
 
+    /**
+     * Generates iFrame markup with the specified source as the
+     * url to the iFrame content. Modifies the source path by pre-appending
+     * the source code loading servlet path.
+     *
+     * @param source path to some web resource
+     * @return iFrame markup to load specified resource.
+     */
     public static String generateSourceCodeUrl(String source) {
         StringBuffer markup = new StringBuffer();
         markup.append(IFRAME_PREFIX);

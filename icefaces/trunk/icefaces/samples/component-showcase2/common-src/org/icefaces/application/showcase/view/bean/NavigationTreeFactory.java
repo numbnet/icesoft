@@ -39,17 +39,33 @@ import javax.swing.tree.DefaultTreeModel;
 import java.util.HashMap;
 
 /**
+ * <p>The navigation builds the DefaultTreeModels used by the tree component.
+ * The application ues serveral DefaultTreeModels in the main navigation
+ * menu.  With a little HashMap trickery we load the trees as they are
+ * needed (lazily).  There is very little effort in doing this and it will
+ * save a little bit of memory. </p>
+ * <p/>
+ * <p>The application meta data defines the navigation trees with
+ * node elements that have unique ids.  Any one of the node elements can be used
+ * to build a valid DefaultTreeModel.  The tree will be composed of the root
+ * node defined by the parentid and all child nodes will be added to the
+ * DefaultTreeModel. </p>
  *
+ * @since 1.7
  */
 public class NavigationTreeFactory extends HashMap<String, DefaultTreeModel> {
 
-
     /**
      * <p>Gets child tree model associated with this user session given the
-     * parentNodeId which must be a valid parent node id.
+     * parentNodeId which must be a valid parent node id.  The nodes
+     * are as defined in the application meta data. </p>
+     * <p>Once the tree is build it is added to the HashMap and the cached
+     * version is loaded on the next request.</p>
      *
-     * @param parentNodeId
-     * @return tree model for the given node id's child elements.
+     * @param parentNodeId nodeId of the meta data node in which we want to
+     *                     build a tree on.
+     * @return tree model for the given node id's child elements.  Can be passed
+     *         directing into a tree componetns value attribute.
      */
     public DefaultTreeModel get(Object parentNodeId) {
 
