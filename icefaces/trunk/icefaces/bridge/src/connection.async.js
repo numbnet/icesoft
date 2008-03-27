@@ -267,7 +267,7 @@
                 [ this.onSendListeners, this.onReceiveListeners, this.connectionDownListeners, this.onServerErrorListeners ].eachWithGuard(function(listeners) {
                     listeners.clear();
                 });
-                this.listener.close();
+                this.listener.abort();
 
                 [ this.updatesMonitor, this.blockingConnectionMonitor ].eachWithGuard(function(monitor) {
                     monitor.cancel();

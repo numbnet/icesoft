@@ -87,7 +87,7 @@
             this.identifier = + Math.random().toString().substr(2, 7);
             this.request = request;
             this.logger = logger;
-            this.callbacks = [];            
+            this.callbacks = [];
             var self = this;
             //avoid using libraries for this callback -- see: http://dev.rubyonrails.org/ticket/5393
             this.responseCallback = function() {
@@ -102,7 +102,8 @@
                         logger.warn('connection closed prematurely');
                         self.close();
                     }
-                };
+                }
+                ;
             };
         },
 
@@ -243,6 +244,24 @@
 
         contentAsDOM: function() {
             return this.request.responseXML;
+        },
+
+        abort: function() {
+            if (this.request) {
+                try {
+                    //replace the callback to avoid infinit loop since the callback is
+                    //executed also when the connection is aborted.
+                    //also, setting 'onreadystatechange' to null will cause a memory leak in IE6
+                    this.request.onreadystatechange = Function.NOOP;
+                    this.request.abort();
+                } catch (e) {
+                    //ignore, the request was discarded by the browser
+                } finally {
+                    //avoid potential memory leaks since 'this.request' is a native object
+                    this.request = null;
+                    this.logger.debug('[' + this.identifier + '] : connection aborted');
+                }
+            }
         },
 
         close: function() {
