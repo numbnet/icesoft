@@ -260,6 +260,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
      */
     protected void resetRequestMap() {
         if (standardScope) {
+            DisposeBeans.in(requestMap);
             requestMap.clear();
         }
     }
