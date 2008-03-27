@@ -64,6 +64,27 @@
         <param-value>true</param-value>
     </context-param>
 
+<!-- Specifies the amount of time in milliseconds that the bridge will wait for  
+     a response from the server for a user-initiated request before declaring 
+     the connection lost.  Un-comment and change the default value, if necessary.
+    
+    <context-param>
+        <param-name>com.icesoft.faces.connectionTimeout</param-name>
+        <param-value>60000</param-value>
+    </context-param>
+-->
+
+<!-- Specifies to the ICEfaces framework whether to support multiple views of a 
+     single application from the same browser.  When running in a Portlet 
+     environment, this parameter must be set to true.  Un-comment and change the 
+     default value, if necessary.
+
+    <context-param>
+        <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
+        <param-value>FALSE</param-value>
+    </context-param>
+-->
+
     <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
       <param-value>.jspx</param-value>
