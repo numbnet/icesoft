@@ -39,6 +39,7 @@ import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -284,16 +285,21 @@ public class TimeZoneBean implements Renderable, DisposableBean {
     }
 
     /**
-     * Callback to inform us that there was an Exception while rendering
+     * Callback to inform us that there was an Exception while rendering.
+     * Continue from a transientRenderingException but not
+     * from a FatalRenderingException
      *
      * @param renderingException render exception passed in frome framework.
      */
     public void renderingException(RenderingException renderingException) {
+
         if (log.isDebugEnabled()) {
-            log.debug("Rendering exception called because of " +
-                    renderingException);
+            log.debug("Rendering exception: ", renderingException);
         }
-        performCleanup();
+
+        if (renderingException instanceof FatalRenderingException)  {
+            performCleanup();
+        } 
     }
 
     /**
@@ -304,9 +310,13 @@ public class TimeZoneBean implements Renderable, DisposableBean {
     protected boolean performCleanup() {
         try {
             if (clock != null) {
-                clock.requestStop();
                 clock.remove(this);
-                clock.dispose();
+                // whether or not this is necessary depends on how 'shutdown'
+                // you want an empty renderer. If it's emptied often, the cost
+                // of shutdown+startup is too great 
+                if (clock.isEmpty() ) {
+                    clock.dispose();
+                }
                 clock = null;
             }
             return true;
@@ -320,13 +330,10 @@ public class TimeZoneBean implements Renderable, DisposableBean {
     }
 
     /**
-     * Disposes a view either due to a window closing
-     * or a timeout.
+     * Dispose callback called due to a view closing or session
+     * invalidation/timeout
      */
     public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("Dispose TimeZoneBean for a user - cleaning up");
-        }
         performCleanup();
     }
 
