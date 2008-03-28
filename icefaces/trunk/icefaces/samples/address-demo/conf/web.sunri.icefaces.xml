@@ -59,6 +59,10 @@
         <param-value>true</param-value>
     </context-param>
 
+<!-- Specifies to the ICEfaces framework that synchronous update mode is to be 
+     used.  By default, ICEfaces uses asynchronous update mode to support 
+     server-initiated updates (AJAX push).  Setting to true will enable 
+     synchronous update mode and disable AJAX push features. -->
     <context-param>
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
         <param-value>true</param-value>
@@ -66,8 +70,7 @@
 
 <!-- Specifies the amount of time in milliseconds that the bridge will wait for  
      a response from the server for a user-initiated request before declaring 
-     the connection lost.  Un-comment and change the default value, if necessary.
-    
+     the connection lost.  Un-comment and change the default value, if necessary.    
     <context-param>
         <param-name>com.icesoft.faces.connectionTimeout</param-name>
         <param-value>60000</param-value>
@@ -78,7 +81,6 @@
      single application from the same browser.  When running in a Portlet 
      environment, this parameter must be set to true.  Un-comment and change the 
      default value, if necessary.
-
     <context-param>
         <param-name>com.icesoft.faces.concurrentDOMViews</param-name>
         <param-value>FALSE</param-value>
