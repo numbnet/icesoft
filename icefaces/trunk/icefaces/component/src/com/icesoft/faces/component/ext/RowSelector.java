@@ -44,8 +44,12 @@ import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
+import javax.faces.el.MethodNotFoundException;
+import javax.faces.el.EvaluationException;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
+import javax.faces.FacesException;
+import javax.faces.application.NavigationHandler;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -250,10 +254,13 @@ public class RowSelector extends UIPanel {
                     RowSelectorEvent evt =
                             new RowSelectorEvent(rowSelector, rowIndex, b);
                     evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-
                     rowSelector.queueEvent(evt);
-                } if(rowSelector.getSelectionAction() != null){
-                    rowSelector.getSelectionAction().invoke(facesContext, null);
+                }
+                if(rowSelector.getSelectionAction() != null){
+                    RowSelectorActionEvent evt =
+                        new RowSelectorActionEvent(this);
+                    evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                    rowSelector.queueEvent(evt);
                 }
 
                 // ICE-2024: should clear the whole table, not just the displayed page.
@@ -317,16 +324,42 @@ public class RowSelector extends UIPanel {
                                      new Object[]{(RowSelectorEvent) event});
 
         }
+        if(event instanceof RowSelectorActionEvent && selectionAction != null){
+            try {
+                FacesContext facesContext = getFacesContext();
+                Object result =
+                    selectionAction.invoke(facesContext, null);
+                String outcome = (result != null) ? result.toString() : null;
+                NavigationHandler nh =
+                    facesContext.getApplication().getNavigationHandler();
+                nh.handleNavigation(
+                    facesContext,
+                    selectionAction.getExpressionString(),
+                    outcome);
+                facesContext.renderResponse();
+            }
+            catch(MethodNotFoundException e) {
+                throw new FacesException(
+                    selectionAction.getExpressionString()+": "+e.getMessage(),
+                    e);
+            }
+            catch(EvaluationException e) {
+                throw new FacesException(
+                    selectionAction.getExpressionString()+": "+e.getMessage(),
+                    e);
+            }
+        }
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[12];
+        Object[] state = new Object[7];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
         state[3] = mouseOverClass;
         state[4] = selectedClass;
-        state[5] = selectionListener;
+        state[5] = saveAttachedState(context, selectionListener);
+        state[6] = saveAttachedState(context, selectionAction);
         return state;
     }
 
@@ -337,7 +370,10 @@ public class RowSelector extends UIPanel {
         multiple = (Boolean) state[2];
         mouseOverClass = (String) state[3];
         selectedClass = (String) state[4];
-        selectionListener = (MethodBinding) state[5];
+        selectionListener = (MethodBinding)
+            restoreAttachedState(context, state[5]);
+        selectionAction = (MethodBinding)
+            restoreAttachedState(context, state[6]);
     }
     
     String styleClass;
