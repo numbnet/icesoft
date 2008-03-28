@@ -198,7 +198,7 @@
     panelGroup.
 -->
 <ice:panelGroup styleClass="chartContainer backBeanChangeContainer" 
-                style="padding:2px;"
+                style="padding:0px;"
                 dropTarget="true"
                 effect="#{dragDropController.cartEffect}"
                 rendered="#{empty dragDropController.shoppingCart.inventory}">
