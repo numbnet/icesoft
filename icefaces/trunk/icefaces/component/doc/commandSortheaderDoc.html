@@ -60,11 +60,9 @@ style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weigh
 <p >The following code shows how to create a basic
 commandSortHeader component:</p>
 <pre class="Preformatted">&lt;ice:dataTable<br>        var="car"<br>         value="#{list.cars}"<br>         sortColumn="#{list.sort}"<br>         sortAscending="#{list.ascending}"<br>         &gt;<br>  <br>        &lt;f:facet name="header"&gt;<br>                 &lt;ice:outputText value="(header table)"  /&gt;<br>         &lt;/f:facet&gt;<br> <br>        &lt;f:facet name="footer"&gt;<br>                 &lt;ice:outputText value="(footer table)"  /&gt;<br>         &lt;/f:facet&gt;<br>  <br>        &lt;ice:column&gt;<br> <br>                &lt;f:facet name="header"&gt;<br>                         &lt;ice:commandSortHeader columnName="type" arrow="true"&gt;<br>                                 sort Type<br>                         &lt;/ice:commandSortHeader&gt;<br>                 &lt;/f:facet&gt;<br> <br>                &lt;ice:outputText value="#{car.type}" /&gt;<br> <br>                &lt;f:facet name="footer"&gt;<br>                         &lt;h:outputText id="ftr1" value="(footer col1)"  /&gt;<br>                 &lt;/f:facet&gt;<br> <br>        &lt;/ice:column&gt;<br>  <br>        &lt;ice:column&gt;<br> <br>                &lt;f:facet name="header"&gt;<br>                        &lt;ice:commandSortHeader columnName="color" arrow="true"&gt;<br>                                sortColor<br>                        &lt;/ice:commandSortHeader&gt;<br>                &lt;/f:facet&gt;<br> <br>                &lt;h:outputText value="#{car.color}" /&gt;<br> <br>                &lt;f:facet name="footer"&gt;<br>                        &lt;ice:outputText id="ftr2" value="(footer col2)"  /&gt;<br>                &lt;/f:facet&gt;<br> <br>        &lt;/ice:column&gt;<br> <br>&lt;/ice:dataTable&gt;<br>  </pre>
-
 <div
-style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
-<p><spanstyle="color: rgb(0, 0, 0); font-style: normal; font-weight: normal;text-decoration: none; text-transform: none; vertical-align: baseline;">Tag Summary</span></p>
-
+ style="margin: 13pt 0pt 6pt; color: rgb(0, 0, 0); font-style: normal; font-weight: bold; text-align: left; text-decoration: none; text-indent: 0pt; text-transform: none; vertical-align: baseline;">
+Tag Summary</div>
 <table border="1" cellpadding="5" cellspacing="0">
   <caption><br>
   </caption>
