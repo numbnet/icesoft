@@ -60,6 +60,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.beans.Beans;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -293,7 +294,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         ElementController.from(session).addInto(prefix, body);
         String contextPath = handler.getResourceURL(context, "/");
-        String asyncServerContextPath = "/" + configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/";
+        String asyncServerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/").toString();
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
@@ -328,7 +329,7 @@ public class DOMResponseWriter extends ResponseWriter {
         noscriptMeta.setAttribute("http-equiv", "refresh");
         String jsBlockedURL = handler.getResourceURL(context, "/xmlhttp/javascript-blocked");
         noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
-        
+
         noscript = (Element) body.appendChild(document.createElement("noscript"));
         noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
         noscriptMeta.setAttribute("http-equiv", "refresh");
