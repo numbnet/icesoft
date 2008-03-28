@@ -33,8 +33,9 @@
 
 package com.icesoft.faces.util.event.servlet;
 
-import javax.servlet.http.HttpSession;
 import java.util.EventObject;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * The <code>AbstractSessionEvent</code> class provides a default implementation
@@ -42,47 +43,53 @@ import java.util.EventObject;
  * and ICEfaces ID properties are defined here.
  */
 public abstract class AbstractSessionEvent
-        extends EventObject
-        implements ContextEvent {
+extends EventObject
+implements ContextEvent {
     protected String iceFacesId;
 
     /**
-     * Constructs an <code>AbstractSessionEvent</code> with the specified
-     * <code>source</code> and <code>iceFacesId</code>. </p>
+     * <p>
+     *   Constructs an <code>AbstractSessionEvent</code> with the specified
+     *   <code>source</code>.
+     * </p>
+     *
+     * @param source     the source of this <code>AbstractSessionEvent</code>.
+     */
+    protected AbstractSessionEvent(final HttpSession source) {
+        this(source, null);
+    }
+
+    /**
+     * <p>
+     *   Constructs an <code>AbstractSessionEvent</code> with the specified
+     *   <code>source</code> and <code>iceFacesId</code>.
+     * </p>
      *
      * @param source     the source of this <code>AbstractSessionEvent</code>.
      * @param iceFacesId the ICEfaces ID.
-     * @throws IllegalArgumentException if the one of the following happens:
-     *                                  <ul> <li> the specified
-     *                                  <code>source</code> is
-     *                                  <code>null</code>. </li> <li> the
-     *                                  specified <code>iceFacesId</code> is
-     *                                  either <code>null</code> or empty. </li>
-     *                                  </ul>
      */
-    protected AbstractSessionEvent(HttpSession source, String iceFacesId)
-            throws IllegalArgumentException {
+    protected AbstractSessionEvent(
+        final HttpSession source, final String iceFacesId) {
+
         super(source);
-//        if (iceFacesId == null) {
-//            throw new IllegalArgumentException("iceFacesId is null");
-//        }
-//        if (iceFacesId.trim().length() == 0) {
-//            throw new IllegalArgumentException("iceFacesId is empty");
-//        }
         this.iceFacesId = iceFacesId;
     }
 
     /**
-     * Gets the HTTP session of this <code>AbstractSessionEvent</code>. </p>
+     * <p>
+     *   Gets the HTTP session of this <code>AbstractSessionEvent</code>.
+     * </p>
      *
      * @return the HTTP session.
      */
     public HttpSession getHttpSession() {
-        return (HttpSession) source;
+        return (HttpSession)source;
     }
 
     /**
-     * Gets the ICEfaces ID of this <code>AbstractSessionEvent</code>. </p>
+     * <p>
+     *   Gets the ICEfaces ID of this <code>AbstractSessionEvent</code>.
+     * </p>
      *
      * @return the ICEfaces ID.
      */

@@ -42,36 +42,28 @@ import javax.servlet.http.HttpSessionEvent;
  * time to do proper clean-up and/or other appropriate actions. </p>
  */
 public class SessionDestroyedEvent
-        extends AbstractSessionEvent
-        implements ContextEvent {
+extends AbstractSessionEvent
+implements ContextEvent {
     private HttpSessionEvent httpSessionEvent;
 
     /**
-     * Constructs a <code>SessionDestroyedEvent</code> with the specified
-     * <code>httpSessionEvent</code> as the nested event. </p>
+     * <p>
+     *   Constructs a <code>SessionDestroyedEvent</code> with the specified
+     *   <code>httpSessionEvent</code> as the nested event.
+     * </p>
      *
      * @param httpSessionEvent the nested HTTP session event.
-     * @throws IllegalArgumentException if the one of the following happens:
-     *                                  <ul> <li> the specified
-     *                                  <code>source</code> is
-     *                                  <code>null</code>. </li> <li> the
-     *                                  specified <code>iceFacesId</code> is
-     *                                  either <code>null</code> or empty. </li>
-     *                                  </ul>
-     * @throws NullPointerException     if the specified
-     *                                  <code>httpSessionEvent</code> is
-     *                                  <code>null</code>.
      */
-    public SessionDestroyedEvent(
-            HttpSessionEvent httpSessionEvent, String iceFacesId)
-            throws IllegalArgumentException, NullPointerException {
-        super((HttpSession) httpSessionEvent.getSource(), iceFacesId);
+    public SessionDestroyedEvent(final HttpSessionEvent httpSessionEvent) {
+        super((HttpSession) httpSessionEvent.getSource());
         this.httpSessionEvent = httpSessionEvent;
     }
 
     /**
-     * Gets the nested HTTP Session event of this
-     * <code>SessionDestroyedEvent</code>. </p>
+     * <p>
+     *   Gets the nested HTTP Session event of this
+     *   <code>SessionDestroyedEvent</code>.
+     * </p>
      *
      * @return the nested HTTP Session event.
      */

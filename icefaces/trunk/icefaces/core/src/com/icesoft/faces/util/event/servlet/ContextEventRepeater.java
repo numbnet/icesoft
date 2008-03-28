@@ -309,21 +309,8 @@ public class ContextEventRepeater
      * @param event the HTTP session event.
      */
     public synchronized void sessionDestroyed(final HttpSessionEvent event) {
-        //It's possible to have a valid session that does not contain an
-        //icefacesID.  We should not bail out completely.  Simply log a message
-        //and return quietly, but do not broadcast this to the listeners.  We
-        //may have to change this behaviour in the future if this becomes a more
-        //general purpose utility.
-        String icefacesID = (String) ((HttpSession) event.getSource())
-                .getAttribute("icefacesID");
-        if (icefacesID == null || icefacesID.trim().length() < 1) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("session does not contain and icefacesID");
-            }
-            return;
-        }
         SessionDestroyedEvent sessionDestroyedEvent =
-                new SessionDestroyedEvent(event, icefacesID);
+                new SessionDestroyedEvent(event);
         Iterator _listeners = listeners.keySet().iterator();
         while (_listeners.hasNext()) {
             ((ContextEventListener) _listeners.next()).
