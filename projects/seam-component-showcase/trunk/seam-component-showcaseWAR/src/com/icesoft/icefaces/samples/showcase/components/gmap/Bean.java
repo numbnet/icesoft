@@ -39,6 +39,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
@@ -48,18 +50,21 @@ import java.io.Serializable;
 @Scope(ScopeType.EVENT)
 @Name("gmap")
 public class Bean implements Serializable{
-	private String geoCoderAddress;
-	private String address = "";
+	private String geoCoderAddress="";
+	private String address="";
 	private boolean locateAddress = false;
 	private List points = new ArrayList();
 	
-	public Bean() {
+	
+	@Create
+	public void init(){
 		points.add(new GMapLatLng("37.379434", "-121.92293"));
 		points.add(new GMapLatLng("33.845449", "-84.368682"));
 		points.add(new GMapLatLng("34.05333", "-118.24499"));
 		points.add(new GMapLatLng("33.072694", "-97.06234"));
-        points.add(new GMapLatLng("37.391278", "-121.952451"));
+        points.add(new GMapLatLng("37.391278", "-121.952451"));		
 	}
+	
 	
 	public String getAddress() {
 		return address;
@@ -100,5 +105,10 @@ public class Bean implements Serializable{
 
 	public void setGeoCoderAddress(String geoCoderAddress) {
 		this.geoCoderAddress = geoCoderAddress;
+	}
+	
+	@Destroy
+	public void destroy(){
+		
 	}
 }

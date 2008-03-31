@@ -54,7 +54,7 @@ import java.io.Serializable;
 /**
  * Backs the indeterminate mode of the outputProgress component.
  */
-@Scope(ScopeType.EVENT)
+@Scope(ScopeType.PAGE)
 @Name("progressIndeterminate")
 public class OutputProgressIndeterminateBean implements Renderable, Serializable {
 
