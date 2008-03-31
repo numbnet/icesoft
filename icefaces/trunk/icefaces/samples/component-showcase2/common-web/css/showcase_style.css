@@ -683,6 +683,12 @@ table.verticalAlignTop td {
 
 /* END MENUBAR EXAMPLE */
 
+/* MENUPOPUP EXAMPLE */
+.menuPopupEffectsVrtSubMenuInd {
+    padding-top: 0px;
+}
+/* END MENUPOPUP EXAMPLE */
+
 /* PANELBORDER.JSPX */
 .pnlBrdrDemo {
     margin: 15px 15px 0 0;

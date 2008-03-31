@@ -49,17 +49,7 @@ invoke application logic to fire effects.
 
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer">
-
-        <!-- graphic image example popup area -->
-        <ice:panelGroup style="float:left;margin-right:5px;"
-                        id="menuBarImage"
-                        menuPopup="menuPopupEffects" >
-
-            <ice:graphicImage value="./images/icefaces.png"
-                alt="ICEfaces" title="ICEfaces" width="130" height="90"/>
-
-        </ice:panelGroup>
+    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer" style="width:352px;height:122px;">
 
         <!-- Text example popup area -->
         <ice:panelGroup style="margin:5px;"
@@ -70,31 +60,44 @@ invoke application logic to fire effects.
                     value="#{msgs['page.menuPopup.text.example.label']}"/>
 
         </ice:panelGroup>
+    </ice:panelGroup>
 
-        <!-- simple image menupup -->
-        <ice:menuPopup id="menuPopupEffects">
-            <!-- File menu -->
-            <ice:menuItem id="effects"
-                          value="#{msgs['page.menuPopup.menu.label']}">
-                <ice:menuItem id="shake"
-                              value="#{msgs['page.menuPopup.menu.shake.label']}"
-                              actionListener="#{menuPopupBean.executeMenuEffect}" >
-                    <f:param name="effectType" value="shake"/>
-                </ice:menuItem>
-                <ice:menuItem id="highlight"
-                              value="#{msgs['page.menuPopup.menu.highligh.label']}"
-                              actionListener="#{menuPopupBean.executeMenuEffect}" >
-                    <f:param name="effectType" value="hightlight"/>
-                </ice:menuItem>
-                <ice:menuItem id="pulsate"
-                              value="#{msgs['page.menuPopup.menu.pulsate.label']}"
-                              actionListener="#{menuPopupBean.executeMenuEffect}" >
-                    <f:param name="effectType" value="pulsate"/>
-                </ice:menuItem>
-            </ice:menuItem>
-        </ice:menuPopup>
+    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer" style="width:352px;height:122px;">
+        <!-- graphic image example popup area -->
+        <ice:panelGroup style="margin-right:5px;"
+                        id="menuBarImage"
+                        menuPopup="menuPopupEffects" >
+
+            <ice:graphicImage value="./images/icefaces-menupop.png"
+                alt="ICEfaces" title="ICEfaces"/>
+
+        </ice:panelGroup>
+
 
 
     </ice:panelGroup>
+
+    <!-- simple image menupup -->
+    <ice:menuPopup id="menuPopupEffects" styleClass="menuPopupEffects">
+        <!-- File menu -->
+        <ice:menuItem id="effects"
+                      value="#{msgs['page.menuPopup.menu.label']}">
+            <ice:menuItem id="shake"
+                          value="#{msgs['page.menuPopup.menu.shake.label']}"
+                          actionListener="#{menuPopupBean.executeMenuEffect}" >
+                <f:param name="effectType" value="shake"/>
+            </ice:menuItem>
+            <ice:menuItem id="highlight"
+                          value="#{msgs['page.menuPopup.menu.highligh.label']}"
+                          actionListener="#{menuPopupBean.executeMenuEffect}" >
+                <f:param name="effectType" value="hightlight"/>
+            </ice:menuItem>
+            <ice:menuItem id="pulsate"
+                          value="#{msgs['page.menuPopup.menu.pulsate.label']}"
+                          actionListener="#{menuPopupBean.executeMenuEffect}" >
+                <f:param name="effectType" value="pulsate"/>
+            </ice:menuItem>
+        </ice:menuItem>
+    </ice:menuPopup>
 
 </ice:panelGroup>
