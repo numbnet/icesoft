@@ -50,7 +50,7 @@
 
             <f:facet name="first">
                 <ice:panelGroup>
-                    <ice:outputText value="#{msgs['page.panelDivider.horizontal1']}"/>
+                    <ice:outputText value="#{msgs['page.panelDivider.horizontal1']}" style="line-height:2em"/>
                 </ice:panelGroup>
             </f:facet>
 
@@ -68,13 +68,13 @@
                                         alt="ICEfaces" title="ICEfaces"
                                         width="130" height="90"/>
                             </ice:panelGroup>
-                            <ice:outputText value="#{msgs['page.panelDivider.vertical1']}"/>
+                            <ice:outputText value="#{msgs['page.panelDivider.vertical1']}" style="line-height:2em"/>
                         </ice:panelGroup>
                     </f:facet>
 
                     <f:facet name="second">
                         <ice:panelGroup>
-                            <ice:outputText value="#{msgs['page.panelDivider.vertical2']}"/>
+                            <ice:outputText value="#{msgs['page.panelDivider.vertical2']}" style="line-height:2em"/>
                         </ice:panelGroup>
                     </f:facet>
                 </ice:panelDivider>
