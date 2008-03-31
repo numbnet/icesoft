@@ -44,7 +44,7 @@ import java.util.Hashtable;
 
 /**
  * Class used to handle an auction item that is added to the current auction
- * monitor list This class will also handle parsing an items file into a useable
+ * monitor list This class will also handle parsing an items file into a usable
  * item list
  */
 public class AddAuctionItem extends AuctionBean {

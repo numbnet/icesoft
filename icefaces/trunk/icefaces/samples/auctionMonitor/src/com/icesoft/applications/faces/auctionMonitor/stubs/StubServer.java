@@ -85,7 +85,7 @@ public class StubServer {
     private static final String EXPIRESINDAYS = "expiresindays";
 
     /**
-     * Private constructor to fufill singleton requirements
+     * Private constructor to fulfill singleton requirements
      */
     private StubServer() {
         if (AuctionState.getAuctionMap().isEmpty()) {
@@ -192,7 +192,7 @@ public class StubServer {
 
                 // Ensure a valid ID is present before using this property
                 if (bidId.indexOf(".id") > 0) {
-                    // Break down the bid ID into a useable value
+                    // Break down the bid ID into a usable value
                     bidId = bidId.substring(0, bidId.indexOf(".id"));
                     prefix = bidId + ".";
 
@@ -245,7 +245,7 @@ public class StubServer {
     }
 
     /**
-     * Convience method to get a formatted calendar based on the passed date
+     * Convenience method to get a formatted calendar based on the passed date
      * time string
      *
      * @param dateTimeValue date time to use as a base

@@ -41,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to populate auction items with information on urls, descriptions,
- * etc. All item detailing is done in a seperate thread so user interaction is
+ * etc. All item detailing is done in a separate thread so user interaction is
  * not blocked
  */
 public class AuctionMonitorItemDetailer implements Runnable {

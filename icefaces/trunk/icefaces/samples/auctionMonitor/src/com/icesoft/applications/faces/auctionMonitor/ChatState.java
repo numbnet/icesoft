@@ -64,7 +64,7 @@ public class ChatState {
     private boolean stamp = true; // timestamps enabled on chat message log, default = true
 
     /**
-     * Default constructor with no parameters, is private to fufill the
+     * Default constructor with no parameters, is private to fulfill the
      * singleton
      */
     private ChatState() {
@@ -147,7 +147,7 @@ public class ChatState {
     /**
      * Method to loop through all children UserBeans and force each one to
      * update Each UserBean is extracted, cast, and then has reRender() called
-     * This is done inside a seperate thread because otherwise there is a
+     * This is done inside a separate thread because otherwise there is a
      * possibility of deadlock with the routine clock render calls in auction
      * monitor Doing this may add more overhead, but much more stability
      *

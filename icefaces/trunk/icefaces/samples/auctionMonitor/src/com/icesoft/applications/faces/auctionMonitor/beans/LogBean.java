@@ -221,7 +221,7 @@ public class LogBean {
     }
 
     /**
-     * Convience method to clear all items from the log
+     * Convenience method to clear all items from the log
      *
      * @return String "clearMessageLog" to be used by JSF action if needed
      */
@@ -290,7 +290,7 @@ public class LogBean {
     }
 
     /**
-     * Convience method to pad the passed message with the time then append it
+     * Convenience method to pad the passed message with the time then append it
      * to the control log
      *
      * @param controlMessage message to append
@@ -307,7 +307,7 @@ public class LogBean {
     }
 
     /**
-     * Convience method to clear a passed ArrayList Basically clones the
+     * Convenience method to clear a passed ArrayList Basically clones the
      * functionality of a Vector.removeAll
      *
      * @param toClear to remove all elements from
