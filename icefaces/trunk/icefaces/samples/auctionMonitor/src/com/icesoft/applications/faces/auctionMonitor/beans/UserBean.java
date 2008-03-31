@@ -491,44 +491,51 @@ public class UserBean implements Renderable, DisposableBean {
     public void renderingException(RenderingException renderingException) {
         if (log.isDebugEnabled() &&
                 renderingException instanceof TransientRenderingException) {
-            log.debug("Transient Rendering excpetion:", renderingException);
+            log.debug("UserBean Transient Rendering exception:", renderingException);
         } else if (renderingException instanceof FatalRenderingException) {
             if (log.isDebugEnabled()) {
-                log.debug("Fatal rendering exception: ", renderingException);
+                log.debug("UserBean Fatal rendering exception: ", renderingException);
             }
-
-            renderer.remove(this);
-            chatState.removeUserChild(this);
+            performCleanup();
         }
-
-
     }
 
     /**
      * New view has been created
      */
     public void viewCreated() {
-        // remove ourselves from the render group.
+        // add ourselves to the render group.
         if (renderer != null){
             renderer.add(this);
         }
     }
 
+    protected boolean performCleanup() {
+        try {
+            // remove ourselves from the render group.
+            if (renderer != null && renderer.contains(this)){
+                renderer.remove(this);
+                // remove the user.
+                if (chatState != null){
+                    chatState.removeUserChild(this);
+                }
+            }
+            return true;
+        } catch (Exception failedCleanup) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to cleanup a clock bean", failedCleanup);
+            }
+        }
+        return false;
+    }
+    
     /**
      * View has been disposed either by window closing or a session timeout.
      */
     public void dispose() throws Exception {
         if (log.isInfoEnabled()) {
-            log.info("ViewListener of userBean fired for a user - cleaning up");
+            log.info("UserBean Dispose called - cleaning up");
         }
-        // remove ourselves from the render group.
-        if (renderer != null){
-            renderer.remove(this);
-        }
-
-        // remove the user.
-        if (chatState != null){
-            chatState.removeUserChild(this);
-        }
+        performCleanup();
     }
 }

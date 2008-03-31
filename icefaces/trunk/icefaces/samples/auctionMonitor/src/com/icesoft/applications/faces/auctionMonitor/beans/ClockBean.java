@@ -46,14 +46,13 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to control the background clock of the entire auction monitor By
- * queueing a render call every pollInterval (default 1000) milliseconds, this
+ * queuing a render call every pollInterval (default 1000) milliseconds, this
  * class allows the auction monitor UI to have ticking clocks In addition this
  * class will help AuctionBean maintain a list of the number of users online
  * through incrementUsers and decrementUsers
  */
 public class ClockBean implements Renderable, DisposableBean {
     private static Log log = LogFactory.getLog(ClockBean.class);
-    private boolean isRunning = false;
     private IntervalRenderer clock;
     private int pollInterval = 1000;
     private String autoLoad = " ";
@@ -82,10 +81,6 @@ public class ClockBean implements Renderable, DisposableBean {
         return pollInterval;
     }
 
-    public boolean isRunning() {
-        return isRunning;
-    }
-
     public void setRenderManager(RenderManager manager) {
         if (manager != null) {
             clock = manager.getIntervalRenderer(INTERVAL_RENDERER_GROUP);
@@ -94,7 +89,6 @@ public class ClockBean implements Renderable, DisposableBean {
             }
             clock.add(this);
             clock.requestRender();
-            isRunning = true;
         }
     }
 
@@ -111,47 +105,39 @@ public class ClockBean implements Renderable, DisposableBean {
 
     public void renderingException(RenderingException renderingException) {
         if (log.isDebugEnabled()) {
-            log.debug("Rendering exception called because of " +
+            log.debug("ClockBean Rendering exception called because of " +
                     renderingException);
         }
-
         if (log.isDebugEnabled() &&
                 renderingException instanceof TransientRenderingException) {
-            log.debug("Transient Rendering excpetion:", renderingException);
+            log.debug("ClockBean Transient Rendering exception:", renderingException);
         } else if (renderingException instanceof FatalRenderingException) {
             if (log.isDebugEnabled()) {
-                log.debug("Fatal rendering exception: ", renderingException);
+                log.debug("ClockBean Fatal rendering exception: ", renderingException);
             }
             performCleanup();
         }
-
-
     }
 
     protected boolean performCleanup() {
         try {
-            if (clock != null) {
+            if (clock != null && clock.contains(this)) {
                 clock.remove(this);
+                AuctionBean.decrementUsers();
             }
-            isRunning = false;
-            AuctionBean.decrementUsers();
-
             return true;
         } catch (Exception failedCleanup) {
             if (log.isErrorEnabled()) {
                 log.error("Failed to cleanup a clock bean", failedCleanup);
             }
         }
-
         return false;
     }
 
     public void dispose() throws Exception {
         if (log.isInfoEnabled()) {
-            log.info("Disposing ClockBean for a user - cleaning up");
+            log.info("ClockBean Dispose called - cleaning up");
         }
-
         performCleanup();
-        
     }
 }
