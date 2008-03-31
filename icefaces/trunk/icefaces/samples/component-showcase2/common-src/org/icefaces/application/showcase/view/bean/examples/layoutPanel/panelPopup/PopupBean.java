@@ -45,20 +45,20 @@ import javax.faces.event.ActionEvent;
  */
 public class PopupBean {
     // user entered messages for both dialogs
-    private String popupMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultMessage");
-    private String modalMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultMessage");
+    private String draggableMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultDraggableMessage");
+    private String modalMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultModalMessage");
     // render flags for both dialogs
     private boolean draggableRendered = false;
     private boolean modalRendered = false;
     // if we should use the auto centre attribute on the draggable dialog
     private boolean autoCentre = false;
 
-    public String getPopupMessage() {
-        return popupMessage;
+    public String getDraggableMessage() {
+        return draggableMessage;
     }
 
-    public void setPopupMessage(String popupMessage) {
-        this.popupMessage = popupMessage;
+    public void setDraggableMessage(String draggableMessage) {
+        this.draggableMessage = draggableMessage;
     }
 
     public String getModalMessage() {
