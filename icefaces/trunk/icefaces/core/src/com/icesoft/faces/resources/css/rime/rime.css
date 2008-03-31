@@ -1519,7 +1519,7 @@ fieldset {
     color: #000000;
     cursor: pointer;
     padding: 0;
-    padding-left: 3px;
+    /*padding-left: 3px;*/
     vertical-align: middle;
 }
 
@@ -1534,8 +1534,8 @@ fieldset {
     padding: 0;
 }
 .iceTreeRow > img{
-    width: 10px;
-    height:16px;
+    /*width: 10px;*/
+    /*height:16px;*/
 }
 
 

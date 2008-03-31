@@ -891,5 +891,8 @@ panelDividerHorizontal{
 .selectedNodetrue span{
     font-weight:bold;    
 }
+.iceTree a:hover .iceOutTxt {
+    color: #318496;
+}
 /* END TREE */
 
