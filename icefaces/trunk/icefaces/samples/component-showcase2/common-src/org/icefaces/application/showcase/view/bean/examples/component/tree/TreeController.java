@@ -101,7 +101,7 @@ public class TreeController extends BaseBean {
 
     public boolean isMoveUpDisabled() {
         DefaultMutableTreeNode selectedNode = selectedUserObject.getWrapper();
-        return isMoveDisabled(selectedNode.getPreviousNode(), selectedNode);
+        return isMoveDisabled(selectedNode, selectedNode.getPreviousNode());
     }
 
     public boolean isMoveDownDisabled() {
@@ -109,8 +109,8 @@ public class TreeController extends BaseBean {
         return isMoveDisabled(selectedNode, selectedNode.getNextNode());
     }
 
-    public boolean isMoveDisabled(DefaultMutableTreeNode node1, DefaultMutableTreeNode node2) {
-        return node1 == null || node2 == null || node1.isRoot();
+    public boolean isMoveDisabled(DefaultMutableTreeNode selected, DefaultMutableTreeNode swapper) {
+        return selected == null || swapper == null || selected.getAllowsChildren() || swapper.isRoot();
     }
 
     public void moveUp(ActionEvent event) {
@@ -128,9 +128,8 @@ public class TreeController extends BaseBean {
         DefaultMutableTreeNode node2Parent = (DefaultMutableTreeNode) node2.getParent();
         DefaultMutableTreeNode node1PrevNode = node1.getPreviousNode();
         DefaultMutableTreeNode node1PrevNodeParent = (DefaultMutableTreeNode) node1PrevNode.getParent();
-        boolean isSibling = node1.isNodeSibling(node2);
         int childCount = 0;
-
+        
         if (node1.isNodeDescendant(node2)) {
             while (node2.getChildCount() > 0) {
                 node1.insert((MutableTreeNode) node2.getFirstChild(), childCount++);
@@ -152,9 +151,6 @@ public class TreeController extends BaseBean {
         } else {
             node1.removeFromParent();
             node2Parent.insert(node1, node2Parent.getIndex(node2) + 1);
-        }
-        if (!isSibling) {
-            node1Parent.add(node2);
         }
     }
 

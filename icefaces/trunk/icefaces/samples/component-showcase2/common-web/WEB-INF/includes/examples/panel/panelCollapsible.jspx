@@ -115,7 +115,7 @@
                 </ice:panelGroup>
             </f:facet>
             <ice:panelGroup >
-                <ice:panelGrid columns="4">
+                <ice:panelGrid columns="2">
                     <!-- first Name-->
                     <ice:outputLabel for="formFirstName"
                                      value="#{msgs['page.panelCollapsible.form.firstName']}"/>
@@ -131,12 +131,6 @@
                     <ice:outputLabel for="formLastName"
                                      value="#{msgs['page.panelCollapsible.form.lastName']}"/>
                     <ice:inputText id="formLastName" value="#{panelCollapsibleBean.lastName}"/>
-
-                    <!-- Email Name-->
-                    <ice:outputLabel for="formEmail"
-                                     value="#{msgs['page.panelCollapsible.form.email']}"/>
-                    <ice:inputText id="formEmail" value="#{panelCollapsibleBean.phone}"/>
-
                 </ice:panelGrid>
             </ice:panelGroup>
         </ice:panelCollapsible>
