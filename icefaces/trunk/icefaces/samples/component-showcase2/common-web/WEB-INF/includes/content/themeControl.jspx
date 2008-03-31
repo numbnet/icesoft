@@ -40,12 +40,12 @@
         <ice:selectOneMenu id="currentStyle"
                        style="display: inline;margin-left:3px;margin-right:3px;border:1px solid #ABC0D4;padding:0;"
                        value="#{styleBean.currentStyle}">
-            <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
-                          itemValue="xp"/>
-            <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
-                          itemValue="royale"/>
             <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
                           itemValue="rime"/>
+            <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
+                          itemValue="royale"/>
+            <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
+                          itemValue="xp"/>
         </ice:selectOneMenu>
         <ice:panelGroup>
             <ice:commandLink

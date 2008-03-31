@@ -43,9 +43,9 @@
     <!-- Link based expandable panel demo -->
     <ice:panelGroup styleClass="pnlClpsblWrapper panelCollapsible">
 
-        <ice:panelCollapsible id="linkPanel" expanded="true" styleClass="pnlClpsblDemo">
+        <ice:panelCollapsible id="linkPanel" expanded="true" >
             <f:facet name="header">
-                <ice:panelGroup styleClass="expandableStateIndicator">
+                <ice:panelGroup>
                     <ice:outputText id="linkHeader"
                             value="#{msgs['page.panelCollapsible.links.header']}"/>
                 </ice:panelGroup>
@@ -108,9 +108,9 @@
             </ice:panelGrid>
         </ice:panelCollapsible>
         <!-- Form input based expandable panel demo -->
-        <ice:panelCollapsible id="formPanel" expanded="true" styleClass="pnlClpsblDemo">
+        <ice:panelCollapsible id="formPanel" expanded="true">
             <f:facet name="header">
-                <ice:panelGroup styleClass="expandableStateIndicator">
+                <ice:panelGroup>
                     <ice:outputText id="formHeader" value="#{msgs['page.panelCollapsible.form.header']}"/>
                 </ice:panelGroup>
             </f:facet>
@@ -134,9 +134,9 @@
                 </ice:panelGrid>
             </ice:panelGroup>
         </ice:panelCollapsible>
-        <ice:panelCollapsible id="imagePanel" expanded="false" styleClass="pnlClpsblDemo">
+        <ice:panelCollapsible id="imagePanel" expanded="false" >
             <f:facet name="header">
-                <ice:panelGroup styleClass="expandableStateIndicator">
+                <ice:panelGroup>
                     <ice:outputText id="imageHeader"
                             value="#{msgs['page.panelCollapsible.image.header']}"/>
                 </ice:panelGroup>
@@ -148,9 +148,9 @@
         </ice:panelCollapsible>
         <!-- Text output based expandable panel demo -->
         <ice:panelGroup styleClass="pnlClpsblEnd">
-            <ice:panelCollapsible id="textPanel" expanded="true" styleClass="pnlClpsblDemo">
+            <ice:panelCollapsible id="textPanel" expanded="true" >
                 <f:facet name="header">
-                    <ice:panelGroup styleClass="expandableStateIndicator">
+                    <ice:panelGroup>
                         <ice:outputText id="textHeader" value="#{msgs['page.panelCollapsible.text.header']}"/>
                     </ice:panelGroup>
                 </f:facet>
