@@ -67,6 +67,7 @@
 
         <ice:inputRichText id="iceInpRchTxt"
                            height="275"
+                           width="600"
                            toolbar="#{inputRichTextBean.toolbarMode}"
                            value="#{inputRichTextBean.value}"
                            language="en"
@@ -91,10 +92,9 @@
 
             <ice:panelGroup>
                 <ice:outputText
-                        value="#{msgs['page.global.serverFeedback']}"/>
-
-                <ice:outputText id="iceOutput"
-                                escape="false"
+                        value="#{msgs['page.inputRichText.valuelabel']}"/>
+                <br/>
+                <ice:outputText id="renderedExample"
                                 value="#{inputRichTextBean.value}"/>
             </ice:panelGroup>
         </ice:panelGroup>
