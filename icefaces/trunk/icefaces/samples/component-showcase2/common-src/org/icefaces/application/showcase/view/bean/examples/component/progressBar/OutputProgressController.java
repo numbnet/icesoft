@@ -34,6 +34,7 @@ package org.icefaces.application.showcase.view.bean.examples.component.progressB
 
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
+import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
@@ -56,7 +57,7 @@ import java.util.concurrent.TimeUnit;
  * for the OutputProgress demo.  This includes the the starting a long
  * running process to show how the progress bar can be used to monitor a
  * process on the server. </p>
- * <p>This class is especially interesting shows a usage senario for the
+ * <p>This class is especially interesting shows a usage scenario for the
  * Renderable and ServletContextListener interfaces.  The Renderable
  * interface is used for the server side pushes needed to update the
  * outputProgress state.  The ServletContextListener is used to showdown
@@ -66,20 +67,20 @@ import java.util.concurrent.TimeUnit;
  * @see javax.servlet.ServletContextListener
  * @since 1.7
  */
-public class OutputProgressController implements Renderable, ServletContextListener {
+public class OutputProgressController implements Renderable, ServletContextListener, DisposableBean{
 
     public static final Log log = LogFactory.getLog(OutputProgressController.class);
 
-    // long running thread will sleep 10 times for this duration.  
+    // long running thread will sleep 10 times for this duration.
     public static final long PROCCESS_SLEEP_LENGTH = 300;
 
-    // A thread pool is used to make this demo a little more scallable then
+    // A thread pool is used to make this demo a little more scalable then
     // just creating a new thread for each user.
     protected static ThreadPoolExecutor longRunningTaskThreadPool =
             new ThreadPoolExecutor(5, 15, 30, TimeUnit.SECONDS,
                     new LinkedBlockingQueue<Runnable>(20));
 
-    // render manager for the application, uses sesssion id for on demand
+    // render manager for the application, uses session id for on demand
     // render group.
     private RenderManager renderManager;
     private PersistentFacesState persistentFacesState;
@@ -89,10 +90,10 @@ public class OutputProgressController implements Renderable, ServletContextListe
     private OutputProgressModel outputProgressModel;
 
     /**
-     * Default contructor where a reference to the PersistentFacesState is made
+     * Default constructor where a reference to the PersistentFacesState is made
      * as well as the creation of the OutputProgressModel.  A reference to
      * PersistentFacesState is needed when implementing the Renderable
-     * inteface.
+     * interface.
      */
     public OutputProgressController() {
         persistentFacesState = PersistentFacesState.getInstance();
@@ -104,7 +105,7 @@ public class OutputProgressController implements Renderable, ServletContextListe
      * that long around 10 seconds.   This long process {@link LongOperationRunner}
      * is responsible for updating the percent complete in the model class.
      *
-     * @param event jsf action event
+     * @param event
      */
     public void startLongProcress(ActionEvent event) {
 
@@ -140,12 +141,13 @@ public class OutputProgressController implements Renderable, ServletContextListe
     public void renderingException(RenderingException renderingException) {
         if (log.isTraceEnabled() &&
                 renderingException instanceof TransientRenderingException) {
-            log.trace("Transient Rendering excpetion:", renderingException);
+            log.trace("Transient Rendering exception:", renderingException);
         } else if (renderingException instanceof FatalRenderingException) {
             if (log.isTraceEnabled()) {
                 log.trace("Fatal rendering exception: ", renderingException);
             }
             renderManager.getOnDemandRenderer(sessionId).remove(this);
+            renderManager.getOnDemandRenderer(sessionId).dispose();
         }
     }
 
@@ -191,16 +193,14 @@ public class OutputProgressController implements Renderable, ServletContextListe
 
     /**
      * Called when the Servlet Context is created.
-     *
      * @param event servlet context event.
      */
     public void contextInitialized(ServletContextEvent event) {
     }
 
     /**
-     * Called when the Servlet Context is about to be distroyed.  This method
+     * Called when the Servlet Context is about to be destroyed.  This method
      * calls shutdownNow on the thread pool.
-     *
      * @param event servlet context event.
      */
     public void contextDestroyed(ServletContextEvent event) {
@@ -253,6 +253,18 @@ public class OutputProgressController implements Renderable, ServletContextListe
             renderManager.getOnDemandRenderer(sessionId).requestRender();
         }
     }
+
+    /**
+     * Dispose callback called due to a view closing or session
+     * invalidation/timeout
+     */
+	public void dispose() throws Exception {
+        if (log.isTraceEnabled()) {
+            log.trace("OutputProgressController dispose OnDemandRenderer for session: " + sessionId);
+        }
+        renderManager.getOnDemandRenderer(sessionId).remove(this);
+		renderManager.getOnDemandRenderer(sessionId).dispose();
+	}
 
 
 }
