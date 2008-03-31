@@ -67,6 +67,8 @@ are shown but could easily be made to invoke application logic.
     </ice:panelGroup>
 </ice:panelGroup>
 
+<ice:panelGroup styleClass="clearer" />
+
 <!-- main menu declaration  -->
 <ice:panelGroup styleClass="exampleBox menuBarContainer">
 <ice:menuBar id="menuBar"
@@ -193,6 +195,8 @@ are shown but could easily be made to invoke application logic.
 
 </ice:menuBar>
 </ice:panelGroup>
+
+<ice:panelGroup styleClass="clearer" />
 
 <!-- Server Side Backing Bean Values -->
 <ice:panelGroup
