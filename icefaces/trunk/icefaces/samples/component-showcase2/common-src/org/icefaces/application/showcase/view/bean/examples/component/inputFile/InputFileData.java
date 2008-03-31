@@ -80,4 +80,30 @@ public class InputFileData {
     public void setFile(File file) {
         this.file = file;
     }
+    
+    /**
+     * Method to return the file size as a formatted string
+     * For example, 4000 bytes would be returned as 4kb
+     *
+     *@return formatted file size
+     */
+    public String getSizeFormatted() {
+        long ourLength = file.length();
+        
+        // Generate formatted label, such as 4kb, instead of just a plain number
+        if (ourLength >= InputFileController.MEGABYTE_LENGTH_BYTES) {
+            return ourLength / InputFileController.MEGABYTE_LENGTH_BYTES + "mb";
+        }
+        else if (ourLength >= InputFileController.KILOBYTE_LENGTH_BYTES) {
+            return ourLength / InputFileController.KILOBYTE_LENGTH_BYTES + "kb";
+        }
+        else if (ourLength == 0) {
+            return "0";
+        }
+        else if (ourLength < InputFileController.KILOBYTE_LENGTH_BYTES) {
+            return ourLength + "b";
+        }
+        
+        return new Long(ourLength).toString();
+    }    
 }

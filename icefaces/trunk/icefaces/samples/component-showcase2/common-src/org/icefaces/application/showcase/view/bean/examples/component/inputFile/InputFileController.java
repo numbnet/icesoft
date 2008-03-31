@@ -59,6 +59,10 @@ import java.util.*;
 public class InputFileController implements Renderable {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);
+    
+    // File sizes used to generate formatted label
+    public static final long MEGABYTE_LENGTH_BYTES = 1048000l;
+    public static final long KILOBYTE_LENGTH_BYTES = 1024l;
 
     // render manager for the application, uses sesssion id for on demand
     // render group. 
