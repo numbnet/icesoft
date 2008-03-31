@@ -35,6 +35,7 @@ package org.icefaces.application.showcase.view.bean.examples.component.inputFile
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;
 import com.icesoft.faces.component.inputfile.InputFile;
+import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
@@ -52,11 +53,11 @@ import java.util.*;
 /**
  * <p>The InputFileController is responsible for the file upload
  * logic as well as the file deletion object.  A users file uploads are only
- * visible to them and are delected when the session is destroyed.</p>
+ * visible to them and are deleted when the session is destroyed.</p>
  *
  * @since 1.7
  */
-public class InputFileController implements Renderable {
+public class InputFileController implements Renderable, DisposableBean {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);
     
@@ -64,7 +65,7 @@ public class InputFileController implements Renderable {
     public static final long MEGABYTE_LENGTH_BYTES = 1048000l;
     public static final long KILOBYTE_LENGTH_BYTES = 1024l;
 
-    // render manager for the application, uses sesssion id for on demand
+    // render manager for the application, uses session id for on demand
     // render group. 
     private RenderManager renderManager;
     private PersistentFacesState persistentFacesState;
@@ -95,7 +96,7 @@ public class InputFileController implements Renderable {
     /**
      * <p>Action event method which is triggered when a user clicks on the
      * upload file button.  Uploaded files are added to a list so that user have
-     * the option to delete them progromatically.  Any errors that occures
+     * the option to delete them programatically.  Any errors that occurs
      * during the file uploaded are added the messages output.</p>
      *
      * @param event jsf action event.
@@ -103,7 +104,7 @@ public class InputFileController implements Renderable {
     public void uploadFile(ActionEvent event) {
         InputFile inputFile = (InputFile) event.getSource();
         if (inputFile.getStatus() == InputFile.SAVED) {
-            // referenc our newly updated file for display purposes and
+            // reference our newly updated file for display purposes and
             // added it to our history file list. 
             currentFile = new InputFileData(inputFile.getFileInfo(), 
                     inputFile.getFile());
@@ -143,7 +144,7 @@ public class InputFileController implements Renderable {
      * This progress information can then be used with a progressBar component
      * for user feedback on the file upload progress. </p>
      *
-     * @param event holds a InputFile object in its source which can be probbed
+     * @param event holds a InputFile object in its source which can be probed
      *              for the file upload percentage complete.
      */
     public void fileUploadProgress(EventObject event) {
@@ -155,7 +156,7 @@ public class InputFileController implements Renderable {
     /**
      * <p>Allows a user to remove a file from a list of uploaded files.  This
      * methods assumes that a request param "fileName" has been set to a valid
-     * file name that the user wishses to remove or delete</p>
+     * file name that the user wishes to remove or delete</p>
      *
      * @param event jsf action event
      */
@@ -206,6 +207,7 @@ public class InputFileController implements Renderable {
                 log.trace("Fatal rendering exception: ", renderingException);
             }
             renderManager.getOnDemandRenderer(sessionId).remove(this);
+            renderManager.getOnDemandRenderer(sessionId).dispose();
         }
     }
 
@@ -240,4 +242,16 @@ public class InputFileController implements Renderable {
     public List<InputFileData> getFileList() {
         return fileList;
     }
+    
+    /**
+     * Dispose callback called due to a view closing or session
+     * invalidation/timeout
+     */
+	public void dispose() throws Exception {
+        if (log.isTraceEnabled()) {
+            log.trace("OutputProgressController dispose OnDemandRenderer for session: " + sessionId);
+        }
+        renderManager.getOnDemandRenderer(sessionId).remove(this);
+		renderManager.getOnDemandRenderer(sessionId).dispose();
+	}
 }
