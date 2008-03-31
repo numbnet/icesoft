@@ -350,7 +350,11 @@ Combinations:
     <target name="weblogic8.1" depends="build.war" description="Weblogic 8.1"/>
     <target name="weblogic9.2" depends="build.war" description="Weblogic 9.2"/>
     
-    <target name="websphere6.1" depends="build.war" description="IBM Websphere 6.1"/>
+    <target name="websphere6.1" description="IBM Websphere 6.1">
+	       <antcall target="build.war">
+            <param name="websphere6" value=""/>
+        </antcall>
+	</target>
     
     <!--
     <target name="build.portlet.jboss4.2.war" depends="compile">
