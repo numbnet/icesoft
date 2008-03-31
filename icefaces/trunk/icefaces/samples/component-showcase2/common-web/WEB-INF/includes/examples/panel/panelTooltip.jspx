@@ -85,14 +85,10 @@
 
     <ice:panelSeries id="icepnlsrs"
                      value="#{tooltipController.storeInventory.inventory}"
-                     var="inventoryItem">
-
-        <ice:panelGroup styleClass="panelToolTipInvnItem" style="float: left;">
-
-            <!-- Notice the panelTooltip attribute name as it is the
-                 same as the id used in the ice:panelTooltip below -->
+                     var="inventoryItem"
+                     style="width: 441px;">
+        <ice:panelGroup style="float: left; width: 110px;">
             <ice:panelGroup panelTooltip="pnlSerPanelToolTip">
-
                 <ice:graphicImage id="GrphImg"
                                   width="100px"
                                   height="75px"
@@ -101,16 +97,15 @@
                 <br/>
                 <ice:outputText value="#{inventoryItem.name}"/>
             </ice:panelGroup>
-
+    
             <ice:panelTooltip id="pnlSerPanelToolTip"
                               hideOn="#{tooltipController.panelToolTipModel.hideOn}"
                               hoverDelay="#{tooltipController.panelToolTipModel.hoverDelay}"
-                              style="width:100px;height:70px;text-align:left;">
+                              style="width:100px;height:75px;text-align:left;">
                 <f:facet name="header">
                     <ice:outputText
                             value="#{inventoryItem.name}"/>
                 </f:facet>
-
                 <f:facet name="body">
                     <ice:panelGroup>
                         <ice:outputText
@@ -121,7 +116,6 @@
                                              groupingUsed="true"
                                              maxFractionDigits="2"/>
                         </ice:outputText>
-                        <br/>
                         <ice:outputText id="DDQty"
                                         value="#{msgs['page.dragDrop.store.quantity.label']}#{inventoryItem.quantity}"/>
                     </ice:panelGroup>
