@@ -96,11 +96,12 @@ left of the window, where the popup should remain.
     </ice:panelGroup>
 
     <!-- panel popup code, draggable type  -->
+    <ice:panelGroup style="position:relative; width:100%; height:0px;">
     <ice:panelPopup id="draggablePP"
             draggable="true"
             rendered="#{popup.showDraggablePanel}"
             visible="#{popup.showDraggablePanel}"
-            style="z-index: 1000;top:269px;left:482px;position: absolute; width: 300px; height: 150px;">
+            style="z-index: 1000;top:-100px;left:10%;position: absolute; width: 300px; height: 150px;">
 
         <f:facet name="header">
             <ice:panelGrid id="draggablePanelGrid"
@@ -126,6 +127,7 @@ left of the window, where the popup should remain.
         </f:facet>
 
     </ice:panelPopup>
+    </ice:panelGroup>
 
     <!-- panel popup code, modal type -->
     <ice:panelPopup id="popupDiv"

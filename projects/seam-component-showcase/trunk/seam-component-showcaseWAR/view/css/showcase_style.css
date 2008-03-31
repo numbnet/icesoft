@@ -836,8 +836,13 @@ div.navThemeChange {
 
 
 .myDvrPanel1, .myDvrPanel2  {
-    width:400px;
-    height:200px; 
+    width:310px;
+    height:230px; 
+}
+
+.myDvrPanel3 {
+    width:650px;
+    height:300px;	
 }
 
 .myDvrPanel3Child {
@@ -847,4 +852,9 @@ div.navThemeChange {
 
 .dvrPnlGrdCol1, .dvrPnlGrdCol2 {
 	padding:3px;
+}
+
+.iceGmpMapTd div.gmap{
+    width:600px;  
+    height:400px;	
 }

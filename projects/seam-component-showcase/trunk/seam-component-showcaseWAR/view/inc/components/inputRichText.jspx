@@ -46,7 +46,7 @@
                     value="#{msgs['component.inputRichTextFields.instructions']}"/>
 
             <ice:inputRichText id="iceInpRchTxt" height="200" value="#{inputRichTextBean.value}"
-                               language="en"
+                               language="en" skin="office2003"
                                valueChangeListener="#{inputRichTextBean.valueChange}"/>
             <!-- Text Field output text -->
             <ice:panelGroup id="icepnlgrp" styleClass="formBorderHighlight">
@@ -59,12 +59,16 @@
                                 value="#{inputRichTextBean.value}"/>
             </ice:panelGroup>
 
+            <ice:inputRichText disabled="true" height="100" value="This editor is disbaled 
+            as well as using the custom toolbar and the custom css." 
+            customConfigPath="js/customConfig.js" toolbar="MyToolbar"/>
         </ice:panelTab>
         <!--
           The bean is responsible for streaming html documentation to
           this placeholder
         -->
         <ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+            <!-- ICE-2714: generating iframe markup to include context path -->
             <ice:outputText id="docFrame"
                             value="#{ctxtUtil['/docs/inputRichTextDoc.html']}"
                             escape="false"/>

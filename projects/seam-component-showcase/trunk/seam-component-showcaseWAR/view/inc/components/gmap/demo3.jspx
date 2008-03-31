@@ -42,9 +42,9 @@
             <ice:panelGroup id="gmapDemo3"
                             styleClass="formBorderHighlight">
                 <ice:outputText value="#{msgs['component.gmap.demo3.desc']}"/>
-                <ice:selectOneMenu id="select1menu" partialSubmit="true"
-                                   value="#{gmap.address}"
-                                   valueChangeListener="#{gmap.findAddress}">
+                <ice:selectOneMenu id="select1menu" partialSubmit="true"  
+                                   value="#{gmap2.address}"
+                                   valueChangeListener="#{gmap2.findAddress}">
                     <f:selectItem itemValue="" itemLabel="#{msgs['component.gmap.demo3.select']}"/>
                     <f:selectItem itemValue="#{msgs['component.gmap.demo3.city1']}"/>
                     <f:selectItem itemValue="#{msgs['component.gmap.demo3.city2']}"/>
@@ -53,8 +53,8 @@
                     <f:selectItem itemValue="#{msgs['component.gmap.demo3.city5']}"/>
                 </ice:selectOneMenu>
                 <ice:panelGroup id="pnlgrp" styleClass="formBorderHighlight">
-                    <ice:gMap id="address" address="#{gmap.address}"
-                              locateAddress="#{gmap.locateAddress}"/>
+                    <ice:gMap id="address" address="#{gmap2.address}"
+                              locateAddress="#{gmap2.locateAddress}"/>
                 </ice:panelGroup>
             </ice:panelGroup>
 
