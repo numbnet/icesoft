@@ -38,7 +38,7 @@ import com.icesoft.faces.component.panelseries.PanelSeries;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.context.effects.Effect;
+import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.tutorial.resources.ResourceUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.event.ActionEvent;
 
 /**
- * The Participant class stores information about an individual partipant
+ * The Participant class stores information about an individual participant
  * in the chat room. Since this is a fairly simple example, it also stores
  * information about the state of the current conversation for the the user
  * (e.g. what part of the chat history they are currently viewing).  In a
@@ -56,7 +56,7 @@ import javax.faces.event.ActionEvent;
  * It also implements the Renderable interface so that it can provide the
  * appropriate PersistentFacesState used for server-initiated render calls.
  */
-public class Participant implements Renderable {
+public class Participant implements Renderable, DisposableBean {
 
     private static Log log = LogFactory.getLog(Participant.class);
 
@@ -220,5 +220,13 @@ public class Participant implements Renderable {
         }
         list.setFirst(newFirst);
     }
+
+    /**
+     * Dispose callback called due to a view closing or session
+     * invalidation/timeout
+     */
+	public void dispose() throws Exception {
+		logout(null);		
+	}
 
 }
