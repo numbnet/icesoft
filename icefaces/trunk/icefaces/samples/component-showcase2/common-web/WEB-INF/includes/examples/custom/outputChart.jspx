@@ -54,7 +54,7 @@
                        styleClass="verticalAlignTop">
 
              <!-- Horizontal/ vertical layout of axial data -->
-            <ice:panelGroup>
+            <ice:panelGroup styleClass="firstChildTitle">
                 <ice:outputText
                         value="#{msgs['page.outputChart.orientation.label']}"/>
                 <br />
@@ -70,7 +70,7 @@
             </ice:panelGroup>
 
             <!-- legend Placement -->
-            <ice:panelGroup>
+            <ice:panelGroup styleClass="firstChildTitle">
                 <ice:outputText
                         value="#{msgs['page.outputChart.legend.position.label']}"/>
                 <br />
@@ -91,7 +91,7 @@
             </ice:panelGroup>
 
              <!-- Area Map display values -->
-            <ice:panelGroup>
+            <ice:panelGroup styleClass="firstChildTitle">
                 <ice:outputText value="#{msgs['page.outputChart.imageMap.label']}" />
                 <br />
                 <ice:inputText
@@ -101,7 +101,7 @@
             </ice:panelGroup>
 
             <!-- Modify Data values -->
-            <ice:panelGroup >
+            <ice:panelGroup styleClass="firstChildTitle">
                 <ice:outputText value="#{msgs['page.outputChart.data.label']}" />
                 <br />
                 <ice:commandButton
