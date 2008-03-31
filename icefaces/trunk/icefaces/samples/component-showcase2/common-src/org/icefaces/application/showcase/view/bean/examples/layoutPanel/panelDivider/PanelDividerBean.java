@@ -32,34 +32,42 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider;
 
-import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
-public class PanelDividerBean {
-
-    private int position1 = 50;
-    private int position2 = 50;
-
-    public int getPosition1() {
-        return position1;
+public class PanelDividerBean
+{
+    private static final String ORIENTATION_HOR = "horizontal";
+    private static final String ORIENTATION_VER = "vertical";
+    private static final String ORIENTATION_DEFAULT = ORIENTATION_VER;
+    private static final int POSITION_DEFAULT = 40;
+    
+    private String orientation = ORIENTATION_DEFAULT;
+    private int position = POSITION_DEFAULT;
+    
+    public String getOrientation() {
+        return orientation;
     }
-
-    public void setPosition1(int position1) {
-        this.position1 = position1;
+    
+    public int getPosition() {
+        return position;
     }
-
-    public int getPosition2() {
-        return position2;
+    
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
-
-    public void setPosition2(int position2) {
-        this.position2 = position2;
+    
+    public void setPosition(int position) {
+        this.position = position;
     }
-
-    public void incPosition(ActionEvent event) {
-        if ((position1 + 5) < 100) position1 += 5;
-    }
-
-    public void decPosition(ActionEvent event) {
-        if ((position1 - 5) > 0) position1 -= 5;
+    
+    /**
+     * Listener method called when the orientation is changed
+     * This is useful to allow us to reset the position of the divider to
+     *  the default value
+     *
+     *@param event of the change
+     */
+    public void orientationChanged(ValueChangeEvent event) {
+        this.position = POSITION_DEFAULT;
     }
 }

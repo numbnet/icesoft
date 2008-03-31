@@ -803,22 +803,6 @@ table.verticalAlignTop td {
 
 /* END PANELPOSITIONABLE */
 
-/* START PANELDIVIDER */
-.panelDividerVertical{
-}
-.panelDividerVerticalFst div,
-    .panelDividerHorizontalFst div, .panelDividerHorizontalSnd div{
-    padding: 10px;
-}
-.panelDividerVerticalSnd{
-    /*overflow:hidden;*/
-}
-panelDividerHorizontal{
-
-}
-/* END PANELDIVIDER */
-
-
 /* START PANEL TABSET  */
 .tabsetControls div{
     float: left;
