@@ -427,11 +427,8 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
 }
 .dndCartDesc{
     margin-top:15px;
-    margin-bottom:15px;
-    min-height: 36px;
-    padding-left:50px;
+    margin-bottom:5px;
     float:left;
-    background:url('../images/dragDrop/cart_icon.png' ) no-repeat top left;
 }
 .inventoryItemContainer{
     float: left;
