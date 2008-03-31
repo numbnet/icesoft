@@ -42,7 +42,7 @@ import org.krysalis.jcharts.chartData.DataSeries;
 import org.krysalis.jcharts.properties.*;
 import org.krysalis.jcharts.test.TestDataGenerator;
 import org.krysalis.jcharts.types.ChartType;
-
+import org.krysalis.jcharts.properties.util.ChartFont;
 import java.awt.*;
 
 /**
@@ -60,6 +60,10 @@ public class ChartModelCustom extends AbstractChartData<Object> {
     public static final Log log = LogFactory.getLog(ChartModelCustom.class);
 
     private static AxisChart axisChart;
+    
+    private ChartFont axisFont = new ChartFont(new Font( "Sans-Serif", Font.PLAIN, 12 ), Color.BLACK);
+    private ChartFont titleFont = new ChartFont(new Font( "Sans-Serif", Font.BOLD, 12 ), Color.BLACK);
+    private ChartFont legendFont = new ChartFont(new Font( "Sans-Serif", Font.ITALIC, 10 ), Color.BLACK);
 
     public ChartModelCustom(boolean areaMapEnabled,
                             boolean axisOrientationEnabled,
@@ -132,6 +136,12 @@ public class ChartModelCustom extends AbstractChartData<Object> {
             ChartProperties chartProperties = new ChartProperties();
             AxisProperties axisProperties = new AxisProperties();
             LegendProperties legendProperties = new LegendProperties();
+            
+            // Set the font to a custom sans serif
+            chartProperties.setTitleFont(titleFont);
+            axisProperties.getYAxisProperties().setAxisTitleChartFont(axisFont);
+            axisProperties.getXAxisProperties().setAxisTitleChartFont(axisFont);
+            legendProperties.setChartFont(legendFont);
 
             axisChart = new AxisChart(dataSeries, chartProperties,
                     axisProperties,
