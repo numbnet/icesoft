@@ -56,7 +56,7 @@
 
   <context-param>
       <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-      <param-value>.iface</param-value>
+      <param-value>.jspx</param-value>
       <description>
           By default, MyFaces automatically converts certain extensions to
           .jsp.  For ICEfaces, our own PersistentFacesServlet is triggered
