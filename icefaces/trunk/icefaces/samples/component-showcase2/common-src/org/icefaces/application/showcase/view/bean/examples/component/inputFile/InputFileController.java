@@ -60,13 +60,13 @@ import java.util.*;
 public class InputFileController implements Renderable, DisposableBean {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);
-    
+
     // File sizes used to generate formatted label
     public static final long MEGABYTE_LENGTH_BYTES = 1048000l;
     public static final long KILOBYTE_LENGTH_BYTES = 1024l;
 
     // render manager for the application, uses session id for on demand
-    // render group. 
+    // render group.
     private RenderManager renderManager;
     private PersistentFacesState persistentFacesState;
     private String sessionId;
@@ -81,7 +81,7 @@ public class InputFileController implements Renderable, DisposableBean {
 
     public InputFileController() {
         persistentFacesState = PersistentFacesState.getInstance();
-        
+
         // Get the session id in a container generic way
         //  so that we can work with both servlets and portlets
         Object ourSession = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -105,8 +105,8 @@ public class InputFileController implements Renderable, DisposableBean {
         InputFile inputFile = (InputFile) event.getSource();
         if (inputFile.getStatus() == InputFile.SAVED) {
             // reference our newly updated file for display purposes and
-            // added it to our history file list. 
-            currentFile = new InputFileData(inputFile.getFileInfo(), 
+            // added it to our history file list.
+            currentFile = new InputFileData(inputFile.getFileInfo(),
                     inputFile.getFile());
 
             synchronized (fileList) {
@@ -201,10 +201,10 @@ public class InputFileController implements Renderable, DisposableBean {
     public void renderingException(RenderingException renderingException) {
         if (log.isTraceEnabled() &&
                 renderingException instanceof TransientRenderingException) {
-            log.trace("Transient Rendering excpetion:", renderingException);
+            log.trace("InputFileController Transient Rendering excpetion:", renderingException);
         } else if (renderingException instanceof FatalRenderingException) {
             if (log.isTraceEnabled()) {
-                log.trace("Fatal rendering exception: ", renderingException);
+                log.trace("InputFileController Fatal rendering exception: ", renderingException);
             }
             renderManager.getOnDemandRenderer(sessionId).remove(this);
             renderManager.getOnDemandRenderer(sessionId).dispose();
@@ -242,7 +242,7 @@ public class InputFileController implements Renderable, DisposableBean {
     public List<InputFileData> getFileList() {
         return fileList;
     }
-    
+
     /**
      * Dispose callback called due to a view closing or session
      * invalidation/timeout

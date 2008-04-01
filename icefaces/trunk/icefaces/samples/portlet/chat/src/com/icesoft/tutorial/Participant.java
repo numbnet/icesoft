@@ -38,6 +38,7 @@ import com.icesoft.faces.component.panelseries.PanelSeries;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.tutorial.resources.ResourceUtil;
 import org.apache.commons.logging.Log;
@@ -128,12 +129,14 @@ public class Participant implements Renderable, DisposableBean {
     }
 
     public void renderingException(RenderingException renderingException) {
-        if (renderingException instanceof FatalRenderingException) {
-            logout(null);
-        } else {
-            if (log.isWarnEnabled()) {
-                log.warn("could not render " + handle, renderingException);
+        if (log.isDebugEnabled() &&
+                renderingException instanceof TransientRenderingException) {
+            log.debug("Transient Rendering exception for " + handle + ":", renderingException);
+        } else if (renderingException instanceof FatalRenderingException) {
+            if (log.isDebugEnabled()) {
+                log.debug("Fatal rendering exception for " + handle + ":", renderingException);
             }
+            performCleanup();
         }
     }
 
@@ -221,12 +224,29 @@ public class Participant implements Renderable, DisposableBean {
         list.setFirst(newFirst);
     }
 
+    protected boolean performCleanup() {
+        try {
+            if (chatRoom.hasParticipant(this)) {
+        		logout(null);
+            }
+            return true;
+        } catch (Exception failedCleanup) {
+            if (log.isErrorEnabled()) {
+                log.error("Failed to cleanup a Participant", failedCleanup);
+            }
+        }
+        return false;
+    }    
+    
     /**
      * Dispose callback called due to a view closing or session
      * invalidation/timeout
      */
 	public void dispose() throws Exception {
-		logout(null);		
+        if (log.isInfoEnabled()) {
+            log.info("Dispose Participant - cleaning up");
+        }
+        performCleanup();		
 	}
 
 }

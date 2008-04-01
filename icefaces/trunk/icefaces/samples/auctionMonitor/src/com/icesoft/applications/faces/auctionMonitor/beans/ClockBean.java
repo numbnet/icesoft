@@ -104,10 +104,6 @@ public class ClockBean implements Renderable, DisposableBean {
     }
 
     public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled()) {
-            log.debug("ClockBean Rendering exception called because of " +
-                    renderingException);
-        }
         if (log.isDebugEnabled() &&
                 renderingException instanceof TransientRenderingException) {
             log.debug("ClockBean Transient Rendering exception:", renderingException);

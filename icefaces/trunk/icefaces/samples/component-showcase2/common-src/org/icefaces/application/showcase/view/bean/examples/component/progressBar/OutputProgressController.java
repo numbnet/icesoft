@@ -141,10 +141,10 @@ public class OutputProgressController implements Renderable, ServletContextListe
     public void renderingException(RenderingException renderingException) {
         if (log.isTraceEnabled() &&
                 renderingException instanceof TransientRenderingException) {
-            log.trace("Transient Rendering exception:", renderingException);
+            log.trace("OutputProgressController Transient Rendering exception:", renderingException);
         } else if (renderingException instanceof FatalRenderingException) {
             if (log.isTraceEnabled()) {
-                log.trace("Fatal rendering exception: ", renderingException);
+                log.trace("OutputProgressController Fatal rendering exception: ", renderingException);
             }
             renderManager.getOnDemandRenderer(sessionId).remove(this);
             renderManager.getOnDemandRenderer(sessionId).dispose();
