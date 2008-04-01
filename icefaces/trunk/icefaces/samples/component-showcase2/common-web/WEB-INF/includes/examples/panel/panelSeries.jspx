@@ -75,16 +75,21 @@
             <!-- employee box is repeated for each employee record -->
             <ice:panelGroup styleClass="employeeBox">
                 <ice:graphicImage value="./images/employee.gif"
-                                  width="50" height="70" style="float:right" />
-                <ice:outputText value="#{msgs['page.dataTable.column2']}: #{employee.firstName}" />
-                <br/>
-                <ice:outputText value="#{msgs['page.dataTable.column3']}: #{employee.lastName}" />
-                <br/>
-                <ice:outputText value="#{msgs['page.dataTable.column5']}: #{employee.departmentName}" />
-                <br/>
-                <ice:outputText value="#{msgs['page.dataTable.column6']}: #{employee.subDepartmentName}" />
-                <br/>
-                <ice:outputText value="#{msgs['page.dataTable.column4']}: #{employee.phone}" />
+                                  width="69" height="96" style="float:right"/>
+
+                <ice:panelGroup style="padding:10px;background:url(#{styleBean.imageDirectory}table_col_header.gif);">
+                    <ice:outputText value="#{employee.firstName} #{employee.lastName}" style="font-weight:bold;"/>
+                </ice:panelGroup>
+                <ice:panelGroup style="padding:10px;">
+                    <ice:outputText value="#{msgs['page.dataTable.column5']}: " style="font-weight:bold;"/>
+                    <ice:outputText value="#{employee.departmentName}"/>
+                    <br/>
+                    <ice:outputText value="#{msgs['page.dataTable.column6']}: " style="font-weight:bold;"/>
+                    <ice:outputText value="#{employee.subDepartmentName}"/>
+                    <br/>
+                    <ice:outputText value="#{msgs['page.dataTable.column4']}: " style="font-weight:bold;"/>
+                    <ice:outputText value="#{employee.phone}"/>
+                </ice:panelGroup>
             </ice:panelGroup>
 
         </ice:panelSeries>

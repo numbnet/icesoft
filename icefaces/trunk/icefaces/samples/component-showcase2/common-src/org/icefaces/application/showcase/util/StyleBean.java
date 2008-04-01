@@ -86,7 +86,7 @@ public class StyleBean {
                 "xmlhttp/css/xp/css-images/"));
         styleMap.put(ROYALE, new StylePath(
                 "xmlhttp/css/royale/royale.css",
-                "xmlhttp/css/royale/rime/css-images/"));
+                "xmlhttp/css/royale/css-images/"));
     }
 
     /**

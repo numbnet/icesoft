@@ -390,7 +390,7 @@ fieldset {
     color: #484848;
     padding: 7px;
     font-weight: bold;
-    background: #FFF url( './css-images/TblHdr_bgslice.gif' ) repeat-x bottom left;
+    background: #FFF url( './css-images/table_col_header.gif' ) repeat-x bottom left;
     border: 1px solid #d9d9d9;
 }
 

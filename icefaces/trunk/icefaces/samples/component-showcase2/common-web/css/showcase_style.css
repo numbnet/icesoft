@@ -944,10 +944,14 @@ table.verticalAlignTop td {
 /* END PANEL STACK  */
 /* START PANEL SERIES  */
 .panelSeriesContainer .employeeBox{
-    width:175px;
+    width:200px;
     border: 1px solid #DADADA;
-    padding: 10px;
-    margin: 2px;
+    /*padding: 10px;*/
+    margin: 5px;
+    float: left;
+}
+.exampleBox.panelSeriesContainer {
+    width: 424px;
 }
 /* END PANEL SERIES  */
 /* START PANEL TOOLTIP  */
