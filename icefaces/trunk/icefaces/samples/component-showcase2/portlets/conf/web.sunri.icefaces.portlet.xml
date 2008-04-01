@@ -149,10 +149,11 @@
      Tomcat users have reported seeing the following error "SEVERE: ICEfaces 
      could not initialize JavaServer Faces. Please check that the JSF .jar files 
      are installed correctly.". Specifying the ConfigureListener resolves the 
-     issue. --> 
+     issue. 
     <listener> 
         <listener-class>com.sun.faces.config.ConfigureListener</listener-class> 
     </listener>
+--> 
     
     <listener>
         <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
