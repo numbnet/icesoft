@@ -492,15 +492,19 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     vertical-align: middle;
     text-align: center;
     color: #484848;
-    padding: 7px;
+    /*padding: 7px;*/
     font-weight: bold;
 }
 .effectsDemoContainer > div:first-child{
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x center left;
     border-bottom: 1px solid #d9d9d9;
 }
-
-
+.effectsDemoContainer:hover {
+    cursor: pointer;
+}
+.effectsDemoContainer:hover .iceOutTxt {
+    color: cyan;
+}
 
 /* DATA PAGINATOR EXAMPLE */
 .dataPaginatorDataTable {
