@@ -40,23 +40,22 @@ dynamically changed.
 <ice:panelGroup styleClass="componentBox"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ice="http://www.icesoft.com/icefaces/component"
-                style="width: 100%;">
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
 
 <ice:panelGroup styleClass="synopsisBox outputProgressContainer">
 
     <ice:outputText value="#{msgs['page.outputProgress.synopsis']}"/>
-    <!--<br />-->
     <ice:outputText value="#{msgs['page.outputProgress.description']}"/>
 
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="clearer"/>
 
-<ice:panelGroup styleClass="exampleBox" style="width: 100%;">
+<ice:panelGroup styleClass="exampleBox outputProgressContainer">
     <!-- change between a standard and intermediator progress bar types-->
-    <ice:panelGrid columns="1" cellspacing="2" cellpadding="1" style="float: left; margin-right: 10px;">
+    <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 25px;">
         <ice:outputLabel
+                for="outputMode"
                 value="#{msgs['page.outputProgress.mode.label']}"/>
         <ice:selectOneRadio id="outputMode"
                             value="#{outputProgressController.outputProgressModel.intermediatMode}"
@@ -69,12 +68,15 @@ dynamically changed.
                           itemValue="true"
                           itemLabel="#{msgs['page.outputProgress.mode.indeterminate.label']}"/>
         </ice:selectOneRadio>
-    </ice:panelGrid>
-    
-    <ice:panelGrid columns="1" cellspacing="2" cellpadding="1" style="float: left; margin-right: 10px;">
-        <!-- Label alignment for progress and completed messages -->
+    </ice:panelGroup>
+
+    <!-- Label alignment for progress and completed messages -->
+    <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 25px;">
+
         <ice:outputLabel
+                for="labelAlign"
                 value="#{msgs['page.outputProgress.alignment.label']}"/>
+        <br />
         <!-- Controls the progress bar label alignment -->
         <!-- |left | right | top | topcenter | topright | bottom | bottomcenter | bottomright | embed | -->
         <ice:selectOneMenu id="labelAlign"
@@ -99,39 +101,61 @@ dynamically changed.
             <f:selectItem itemValue="bottomright"
                           itemLabel="#{msgs['page.outputProgress.alignment.bottomRight.label']}"/>
         </ice:selectOneMenu>
-    </ice:panelGrid>
+    </ice:panelGroup>
 
     <!-- Custom outputProgress progress messages -->
-    <ice:panelGrid columns="3" cellspacing="2" cellpadding="1" style="float: left;">
-        <ice:outputLabel
-            value="#{msgs['component.progressBar.status.progress.label']}"/>
-        <ice:selectBooleanCheckbox
-                id="customProgress"
-                value="#{outputProgressController.outputProgressModel.progressMessageEnabled}"
-                partialSubmit="true"/>
-        <ice:inputText
-                id="progressLabel"
-                disabled="#{not outputProgressController.outputProgressModel.progressMessageEnabled}"
-                value="#{outputProgressController.outputProgressModel.progressMessage}"
-                partialSubmit="true" />
-                
-        <ice:outputLabel
-                value="#{msgs['component.progressBar.status.complete.label']}"/>
-        <ice:selectBooleanCheckbox
-                id="customComplete"
-                value="#{outputProgressController.outputProgressModel.completedMessageEnabled}"
-                partialSubmit="true"/>
+    <ice:panelGroup
+            style="float:left;width:320px;">
 
-        <ice:inputText id="progressCompleteLabel"
-                       disabled="#{not outputProgressController.outputProgressModel.completedMessageEnabled}"
-                       value="#{outputProgressController.outputProgressModel.completedMessage}"
-                       partialSubmit="true"/>
-    </ice:panelGrid>
+        <ice:panelGroup style="float:right;text-align:right">
+            <ice:outputLabel
+                    for="customProgress"
+                    value="#{msgs['component.progressBar.status.progress.label']}"/>
+            <!--
+                Controls the progress bar label, if no label is specified
+                a percent is shown, otherwise the custom label is shown.
+            -->
+            <ice:selectBooleanCheckbox
+                    id="customProgress"
+                    value="#{outputProgressController.outputProgressModel.progressMessageEnabled}"
+                    partialSubmit="true"/>
+            <ice:inputText
+                    id="progressLabel"
+                    disabled="#{not outputProgressController.outputProgressModel.progressMessageEnabled}"
+                    value="#{outputProgressController.outputProgressModel.progressMessage}"
+                    partialSubmit="true" />
+        </ice:panelGroup>
+
+        <ice:panelGroup styleClass="clearer" />
+
+        <ice:panelGroup style="float:right;text-align:right;">
+            <!-- Custom outputProgress complete messages -->
+
+            <!-- grouping border decoration -->
+            <ice:outputLabel
+                    for="customComplete"
+                    value="#{msgs['component.progressBar.status.complete.label']}"/>
+            <!--
+                Controls the progress bar completed label, if no label is specified
+                "Done" is shown.
+            -->
+            <ice:selectBooleanCheckbox
+                    id="customComplete"
+                    value="#{outputProgressController.outputProgressModel.completedMessageEnabled}"
+                    partialSubmit="true"/>
+
+            <ice:inputText id="progressCompleteLabel"
+                           disabled="#{not outputProgressController.outputProgressModel.completedMessageEnabled}"
+                           value="#{outputProgressController.outputProgressModel.completedMessage}"
+                           partialSubmit="true"/>
+        </ice:panelGroup>
+    </ice:panelGroup>
+
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="clearer"/>
 
-<ice:panelGroup styleClass="exampleBox" style="width: 100%;">
+<ice:panelGroup styleClass="exampleBox outputProgressContainer">
 
     <ice:panelGroup style="float: left;">
         <ice:commandButton id="startStandard"

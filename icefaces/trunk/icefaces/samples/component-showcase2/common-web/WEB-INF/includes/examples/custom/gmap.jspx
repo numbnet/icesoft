@@ -85,7 +85,7 @@
                 <td colspan="5">
                     <ice:inputText id="inadress" value="#{gmap.geoCoderAddress}"
                                    actionListener="#{gmap.enterKeyPressed}"
-                                   style="width: 100%;"/>
+                                   style="width: 99%;"/>
                 </td>
             </tr>
         </table>

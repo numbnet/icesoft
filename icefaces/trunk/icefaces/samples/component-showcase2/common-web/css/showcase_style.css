@@ -198,7 +198,6 @@ a:active{
     color: #318496;
 }
 
-
 /* doc view template decloration */
 .docViewContainer, .docViewNavigation, .docViewContent{
     float:left;
@@ -407,7 +406,7 @@ a.navNodeSelecttrue:hover, a.navNodeSelectfalse:hover {
 }
 
 a.navNodeSelecttrue:visited, a.navNodeSelectfalse:visited {
-    color: #104e5b;
+    /*color: #104e5b;*/
 }
 
 a.navNodeSelecttrue {
@@ -503,7 +502,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     cursor: pointer;
 }
 .effectsDemoContainer:hover .iceOutTxt {
-    color: cyan;
+    color: #318496;
 }
 
 /* DATA PAGINATOR EXAMPLE */
@@ -1011,6 +1010,15 @@ table.verticalAlignTop td {
     margin-bottom: 5px;
     display:block;
 }
-
 /* end chart example*/
+
+/* media example */
+.mediaSelection {
+    
+}
+.mediaSelection  table{
+  width: 250px;
+}
+
+/* end media exmaple*/
 

@@ -42,17 +42,21 @@
     
     <ice:panelGroup styleClass="clearer" />
     
-    <ice:panelGroup styleClass="exampleBox">
-        <ice:outputLabel
-                value="#{msgs['page.panelDivider.orientation.label']}"/>
-        <ice:selectOneRadio value="#{panelDividerBean.orientation}"
-                            valueChangeListener="#{panelDividerBean.orientationChanged}"
-                            partialSubmit="true">
-            <f:selectItem itemValue="vertical"
-                          itemLabel="#{msgs['page.panelDivider.vertical.label']}"/>
-            <f:selectItem itemValue="horizontal"
-                          itemLabel="#{msgs['page.panelDivider.horizontal.label']}"/>
-        </ice:selectOneRadio>
+    <ice:panelGroup styleClass="exampleBox panelDividerContainer">
+        <ice:panelGroup style="float:left" >
+            <ice:outputLabel
+                    value="#{msgs['page.panelDivider.orientation.label']}"/>
+        </ice:panelGroup>
+        <ice:panelGroup style="float:left" >
+            <ice:selectOneRadio value="#{panelDividerBean.orientation}"
+                                valueChangeListener="#{panelDividerBean.orientationChanged}"
+                                partialSubmit="true">
+                <f:selectItem itemValue="vertical"
+                              itemLabel="#{msgs['page.panelDivider.vertical.label']}"/>
+                <f:selectItem itemValue="horizontal"
+                              itemLabel="#{msgs['page.panelDivider.horizontal.label']}"/>
+            </ice:selectOneRadio>
+        </ice:panelGroup>
     </ice:panelGroup>
     
     <ice:panelGroup styleClass="clearer" />
@@ -65,7 +69,8 @@
 
             <f:facet name="first">
                 <ice:panelGroup style="padding: 10px;">
-                    <ice:outputText value="#{msgs['page.panelDivider.textblock1']}" style="line-height:2em"/>
+                    <ice:outputText value="#{msgs['page.panelDivider.textblock1']}"
+                        style="line-height:2em"/>
                 </ice:panelGroup>
             </f:facet>
 
@@ -75,7 +80,8 @@
                             alt="ICEfaces" title="ICEfaces"
                             width="130px" height="90px"
                             style="float: left; padding: 10px;"/>
-                    <ice:outputText value="#{msgs['page.panelDivider.textblock2']}" style="line-height:2em"/>
+                    <ice:outputText value="#{msgs['page.panelDivider.textblock2']}"
+                        style="line-height:2em"/>
                 </ice:panelGroup>
             </f:facet>
         </ice:panelDivider>

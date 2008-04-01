@@ -67,6 +67,9 @@
 .outputMediaContainer{
     width:500px;
 }
+.outputProgressContainer{
+    width:600px;
+}
 .menuBarContainer{
     width:500px;
 }
@@ -74,7 +77,7 @@
     width:500px;
 }
 .inputRichTextContainer{
-    width:550px;
+    width:600px;
 }
 .dataScrollingContainer{
     width:500px;
@@ -108,7 +111,10 @@
     width: 510px;
 }
 .panelPopupContainer{
-    width:500px;
+    width:600px;
+}
+.panelPopupExampleContainer{
+    width:250px;
 }
 .panelPositionedContainer{
     width:500px;

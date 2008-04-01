@@ -47,13 +47,15 @@
 
     <ice:panelGroup styleClass="clearer" />
 
-    <ice:panelGroup styleClass="exampleBox firstChildTitle outputMediaContainer"
-                    style="width: 80%;">
+    <ice:panelGroup styleClass="exampleBox firstChildTitle outputMediaContainer">
 
-        <ice:panelGrid columns="2" cellspacing="1" cellpadding="1" style="float: left;">
-            <ice:outputLabel value="#{msgs['page.outputMedia.label']}" />
+        <ice:panelGroup style="float:left;margin-right:5px;">
+            <ice:outputText value="#{msgs['page.outputMedia.label']}" />
+        </ice:panelGroup>
+        <ice:panelGroup style="float:left;">
             <ice:selectOneRadio value="#{media.selectedPlayer}"
-                                partialSubmit="true">
+                    styleClass="mediaSelection"
+                    partialSubmit="true">
                 <f:selectItem itemValue="flash"
                               itemLabel="#{msgs['page.outputMedia.flash.title']}"/>
                 <f:selectItem itemValue="quicktime"
@@ -61,13 +63,13 @@
                 <f:selectItem itemValue="windows"
                               itemLabel="#{msgs['page.outputMedia.windows.title']}"/>
             </ice:selectOneRadio>
-        </ice:panelGrid>
+        </ice:panelGroup>
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="clearer" />
 
     <ice:panelGroup styleClass="exampleBox outputMediaContainer"
-            style="text-align:center;vertical-align: middle; background-color: #777777; width: 80%;">
+            style="text-align:center;vertical-align: middle; background-color: #777777; ">
         <ice:outputMedia player="#{media.selectedPlayer}"
                          source="#{media.source}"
                          style="#{media.style}">

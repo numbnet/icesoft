@@ -61,7 +61,7 @@
                             <ice:graphicImage url="/xmlhttp/css/xp/css-images/spacer.gif" width="0" height="28" style="vertical-align:middle;"/>
                         </ice:panelGroup>
 
-                        <ice:panelGroup style="height:52px">
+                        <ice:panelGroup style="height:52px;background:url('./images/effect_gradient.gif') bottom left repeat-x;">
                             <ice:outputText
                                 value="#{effectsModel.effects[effectKey].title}"/>
                             <ice:graphicImage url="/xmlhttp/css/xp/css-images/spacer.gif" width="0" height="52" style="vertical-align:middle;"/>

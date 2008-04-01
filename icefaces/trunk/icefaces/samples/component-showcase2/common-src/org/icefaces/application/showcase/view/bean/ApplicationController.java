@@ -402,7 +402,8 @@ public class ApplicationController {
         if (node.getContentDescriptor().getDocumentation().getDocuments() != null){
             List<ReferenceType> references = node.getContentDescriptor()
                     .getDocumentation().getDocuments().getResourceReference();
-            if (references != null && references.get(0) != null) {
+            if (references != null && references.get(0) != null &&
+                    references.get(0).getResourceRef() != null) {
                 return references.get(0).getResourceRef().getPath();
             }
         }
@@ -410,7 +411,8 @@ public class ApplicationController {
             // check tld's encase there are documents for this component.
             List<ReferenceType> references = node.getContentDescriptor()
                     .getDocumentation().getTlds().getResourceReference();
-            if (references != null && references.get(0) != null) {
+            if (references != null && references.get(0) != null &&
+                    references.get(0).getResourceRef() != null) {
                 return references.get(0).getResourceRef().getPath();
             }
             // currently no check for default tutorial, as they are external links.
@@ -436,7 +438,8 @@ public class ApplicationController {
         if (node.getContentDescriptor().getSourceCode().getBeans() != null){
             List<ReferenceType> references = node.getContentDescriptor()
                     .getSourceCode().getBeans().getResourceReference();
-            if (references != null && references.get(0) != null) {
+            if (references != null && references.get(0) != null &&
+                    references.get(0).getResourceRef() != null) {
                 return references.get(0).getResourceRef().getPath();
             }
         }
@@ -444,7 +447,8 @@ public class ApplicationController {
             // check JSPX code encase there are no beans for this component example
             List<ReferenceType> references = node.getContentDescriptor()
                     .getSourceCode().getJspxPages().getResourceReference();
-            if (references != null && references.get(0) != null) {
+            if (references != null && references.get(0) != null &&
+                    references.get(0).getResourceRef() != null) {
                 return references.get(0).getResourceRef().getPath();
             }
         }
