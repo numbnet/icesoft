@@ -53,7 +53,8 @@
                            value="#{currentBeanResource}">
                     <ice:commandLink
                             actionListener="#{applicationController.viewSourceEvent}"
-                            value="#{beanSource.label}">
+                            value="#{beanSource.label}"
+                            styleClass="docViewNodeSelected#{beanSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
                         <f:param name="includePath"
                                  value="#{beanSource.resourceRef.path}"/>
                     </ice:commandLink><br />
@@ -65,7 +66,8 @@
                            value="#{currentJSPXResource}">
                     <ice:commandLink
                             actionListener="#{applicationController.viewSourceEvent}"
-                            value="#{jsxSource.label}">
+                            value="#{jsxSource.label}"
+                            styleClass="docViewNodeSelected#{jsxSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
                         <f:param name="includePath"
                                  value="#{jsxSource.resourceRef.path}"/>
                     </ice:commandLink><br />

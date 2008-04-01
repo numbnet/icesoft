@@ -123,4 +123,13 @@ public class ApplicationSessionModel {
         return tabContents;
     }
 
+    /**
+     * Gets the TabState model for the currently selected
+     * navigation node. .
+     * @return TabState model for the selected Node. 
+     */
+    public TabState getSelectedTabState(){
+        return tabContents.get(currentNode);
+    }
+
 }

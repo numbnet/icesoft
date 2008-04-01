@@ -51,36 +51,38 @@
         <ui:define name="links">
             <ice:panelCollapsible expanded="true">
                 <f:facet name="header">Resource</f:facet>
-                <c:forEach var="currentDocumentationResource"
+                <c:forEach var="documentationResource"
                            items="#{currentDocumentationResource}">
                     <ice:commandLink
                             actionListener="#{applicationController.viewIncludeEvent}"
-                            value="#{currentDocumentationResource.label}">
+                            value="#{documentationResource.label}"
+                            styleClass="docViewNodeSelected#{documentationResource.resourceRef.path eq applicationModel.selectedTabState.descriptionContent}">
                         <f:param name="includePath"
-                                 value="#{currentDocumentationResource.resourceRef.path}"/>
-                    </ice:commandLink>
+                                 value="#{documentationResource.resourceRef.path}"/>
+                    </ice:commandLink><br />
                 </c:forEach>
             </ice:panelCollapsible>
             <ice:panelCollapsible expanded="true">
                 <f:facet name="header">Tutorials</f:facet>
-                <c:forEach var="currentTutorialResource"
+                <c:forEach var="tutorialResource"
                            items="#{currentTutorialResource}">
-                    <a href="#{currentTutorialResource.resourceRef.path}"
+                    <a href="#{tutorialResource.resourceRef.path}"
                         class="iceCmdLnk" target="_blank">
-                        #{currentTutorialResource.label}
-                    </a>
+                        #{tutorialResource.label}
+                    </a><br />
                 </c:forEach>
             </ice:panelCollapsible>
             <ice:panelCollapsible expanded="true">
                 <f:facet name="header">TLD</f:facet>
-                <c:forEach var="currentTldResource"
+                <c:forEach var="tldResource"
                            items="#{currentTldResource}">
                     <ice:commandLink
                             actionListener="#{applicationController.viewIncludeEvent}"
-                            value="#{currentTldResource.label}">
+                            value="#{tldResource.label}"
+                            styleClass="docViewNodeSelected#{tldResource.resourceRef.path eq applicationModel.selectedTabState.descriptionContent}">
                         <f:param name="includePath"
-                                 value="#{currentTldResource.resourceRef.path}"/>
-                    </ice:commandLink>
+                                 value="#{tldResource.resourceRef.path}"/>
+                    </ice:commandLink><br />
                 </c:forEach>
             </ice:panelCollapsible>
         </ui:define>

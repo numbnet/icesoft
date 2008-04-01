@@ -38,8 +38,7 @@ import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.util.ContextUtilBean;
 import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.builder.ApplicationBuilder;
-import org.icefaces.application.showcase.view.jaxb.ContentDescriptor;
-import org.icefaces.application.showcase.view.jaxb.Node;
+import org.icefaces.application.showcase.view.jaxb.*;
 
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -48,6 +47,7 @@ import javax.swing.tree.DefaultTreeModel;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>Application controller is responsible for managing the presentation
@@ -125,6 +125,11 @@ public class ApplicationController {
                 tabState = new TabState();
                 // set default selected tab index. 
                 tabState.setTabIndex(TabState.DEMONSTRATION_TAB_INDEX);
+                // set default document and source paths, the first defined
+                // document is what we will set as the default.
+                tabState.setDescriptionContent(getDefaultDocumentPath(node));
+                // set default source paths
+                tabState.setSourceContent(getDefaultSourcePath(node));
             }
             // update  tabstate and put it into session scope.
             tabStates.put(node, tabState);
@@ -381,5 +386,71 @@ public class ApplicationController {
             }
         }
         return null;
+    }
+
+    /**
+     * Uitlity method to find the first available document reference that
+     * can be used at the default content.
+     *
+     * @param node node to search child documentation resources for a the
+     *             first available documentation link.
+     * @return first available documentation link or an empty String if none
+     *         are found.
+     */
+    private String getDefaultDocumentPath(Node node) {
+        // return first instance of a document link
+        if (node.getContentDescriptor().getDocumentation().getDocuments() != null){
+            List<ReferenceType> references = node.getContentDescriptor()
+                    .getDocumentation().getDocuments().getResourceReference();
+            if (references != null && references.get(0) != null) {
+                return references.get(0).getResourceRef().getPath();
+            }
+        }
+        if (node.getContentDescriptor().getDocumentation().getTlds() != null){
+            // check tld's encase there are documents for this component.
+            List<ReferenceType> references = node.getContentDescriptor()
+                    .getDocumentation().getTlds().getResourceReference();
+            if (references != null && references.get(0) != null) {
+                return references.get(0).getResourceRef().getPath();
+            }
+            // currently no check for default tutorial, as they are external links.
+        }
+        // if none found we just return an empty string and no content will
+        // be loaded by default.
+        return "";
+
+    }
+
+    /**
+     * Uitlity method to find the first available source reference that
+     * can be used at the default content.
+     *
+     * @param node node to search child documentation resources for a the
+     *             first available source link.
+     * @return first available source link or an empty String if none
+     *         are found.
+     */
+    private String getDefaultSourcePath(Node node) {
+
+        // return first instance of a bean link
+        if (node.getContentDescriptor().getSourceCode().getBeans() != null){
+            List<ReferenceType> references = node.getContentDescriptor()
+                    .getSourceCode().getBeans().getResourceReference();
+            if (references != null && references.get(0) != null) {
+                return references.get(0).getResourceRef().getPath();
+            }
+        }
+        if (node.getContentDescriptor().getSourceCode().getJspxPages() != null){
+            // check JSPX code encase there are no beans for this component example
+            List<ReferenceType> references = node.getContentDescriptor()
+                    .getSourceCode().getJspxPages().getResourceReference();
+            if (references != null && references.get(0) != null) {
+                return references.get(0).getResourceRef().getPath();
+            }
+        }
+        // if none found we just return an empty string and no content will
+        // be loaded by default.
+        return "";
+
     }
 }

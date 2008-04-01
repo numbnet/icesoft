@@ -42,27 +42,18 @@ change the border layout dynamically.
         xmlns:ui="http://java.sun.com/jsf/facelets"
         styleClass="docViewContainer" >
 
+         <!-- doc navigation -->
+    <ice:panelGroup styleClass="docViewNavigation" >
+        <ui:insert name="links">
+            content
+        </ui:insert>
+    </ice:panelGroup>
 
-    <ice:panelDivider orientation="vertical" dividerPosition="20" style="width: 100%">
-
-        <f:facet name="first" >
-             <!-- doc navigation styleClass="docViewLinksContainer" -->
-            <ice:panelGroup  >
-                <ui:insert name="links">
-                    content
-                </ui:insert>
-            </ice:panelGroup>
-        </f:facet>
-
-        <f:facet name="second" >
-            <!-- document iframe loading. styleClass="docViewDocContainer" -->
-            <ice:panelGroup style="height:100%;overflow:hidden;">
-                 <ui:insert name="docView">
-                    content
-                </ui:insert>
-            </ice:panelGroup>
-        </f:facet>
-
-    </ice:panelDivider>
+    <!-- document iframe loading.  -->
+    <ice:panelGroup styleClass="docViewContent" >
+         <ui:insert name="docView">
+            content
+        </ui:insert>
+    </ice:panelGroup>
 
 </ice:panelGroup>
