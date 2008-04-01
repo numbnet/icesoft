@@ -52,7 +52,8 @@
             <f:facet name="icon">
                 <ice:panelGroup
                         style="display: inline" >
-                    <ice:graphicImage value="#{node.userObject.icon}"/>
+                    <ice:graphicImage
+                         value="xmlhttp/css/#{styleBean.currentStyle}/css-images/#{node.userObject.icon}"/>
                 </ice:panelGroup>
             </f:facet>
             <f:facet name="content">
