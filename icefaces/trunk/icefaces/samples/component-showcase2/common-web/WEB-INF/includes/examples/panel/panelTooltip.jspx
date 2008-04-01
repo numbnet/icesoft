@@ -152,23 +152,20 @@
                       hideOn="#{tooltipController.panelToolTipModel.hideOn}"
                       hoverDelay="#{tooltipController.panelToolTipModel.hoverDelay}"
                       displayListener="#{tooltipController.displayListener}"
-                      style="width: 125px;height:110px;" >
+                      style="width: 125px; height: 135px;" >
 
         <f:facet name="header">
             <ice:outputText value="#{msgs['page.panelTooltip.city.label']}"/>
         </f:facet>
 
         <f:facet name="body">
-
             <ice:panelSeries id="cities"
                            value="#{tooltipController.cityList}"
-                           var="city" >
-                <ice:panelGroup style="">
+                           var="city">
+                <ice:panelGroup style="padding: 2px;">
                     <ice:outputText id="cityname" value="#{city}"/>
                 </ice:panelGroup>
-                
             </ice:panelSeries>
-
         </f:facet>
     </ice:panelTooltip>
 </ice:panelGroup>

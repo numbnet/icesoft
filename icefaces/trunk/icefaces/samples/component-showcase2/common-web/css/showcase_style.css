@@ -293,6 +293,12 @@ a.docViewNodeSelectedtrue{
     color: #484848;
 }
 
+.iceSelOneRb-dis {
+    border: 0;
+    background-color: #FFFFFF;
+    color: #444444;
+}
+
 .columnsContainer {
     height: 225px;
     width: 100%;
@@ -682,7 +688,6 @@ table.verticalAlignTop td {
 }
 
 .navPnlClpsblLnks .iceOutTxt {
-    padding-left: 18px;
 }
 
 .navPnlClpsblLnks span, .navPnlClpsblLnks.nodec, .navPnlClpsblLnks:link,
@@ -967,6 +972,12 @@ table.verticalAlignTop td {
     text-align: center;
 }
 /* END PANEL TOOLTIP  */
+
+/* START OUTPUT PROGRESS */
+.uploadProgressBar .iceOutProg, .uploadProgressBar .iceOutProgBg, .uploadProgressBar {
+    width: 350px;
+}
+/* END OUTPUT PROGRESS */
 
 /* START CONNECTION STATUS   */
 .connectionStatusGraphics{

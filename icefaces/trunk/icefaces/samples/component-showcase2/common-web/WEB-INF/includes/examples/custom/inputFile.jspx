@@ -54,7 +54,8 @@ Once the file is uploaded, information about the file is displayed.
                        actionListener="#{inputFileController.uploadFile}"/>
         <!-- progress bar, percent value is upated via progressListener-->
         
-        <ice:outputProgress value="#{inputFileController.fileProgress}"/>
+        <ice:outputProgress value="#{inputFileController.fileProgress}"
+                            styleClass="uploadProgressBar"/>
 
         <!-- Dipslay File Upload messages -->
         <!--<ice:outputText value="#{msgs['page.inputFile.messages.label']}"/>-->

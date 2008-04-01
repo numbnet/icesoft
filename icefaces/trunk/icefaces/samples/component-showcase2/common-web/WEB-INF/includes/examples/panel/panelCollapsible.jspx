@@ -52,56 +52,56 @@
             </f:facet>
             <ice:panelGrid columns="3" cellpadding="4" cellspacing="4" width="100%">
                 <!-- icfaces.org -->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://icefaces.org/main/home/index.jsp">
                     <ice:outputText id="icefacesOrgLink" value="ICEfaces.org"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org downloads-->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://icefaces.org/main/downloads/os-downloads.iface">
                     <ice:outputText id="downloadsLink" value="ICEfaces Downloads"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org JForumn-->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://www.icefaces.org/JForum/">
                     <ice:outputText id="jforumLink" value="ICEfaces JForum"/>
                 </ice:outputLink>
 
 
                 <!-- icfaces.org SVN-->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://icefaces.org/main/downloads/svninfo.iface">
                     <ice:outputText id="svnLink" value="ICEfaces SVN"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org Projects-->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://icefaces.org/main/downloads/project-downloads.iface">
                     <ice:outputText id="projectsLink" value="ICEfaces Projects"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org Tutorials -->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://icefaces.org/main/resources/tutorials.iface">
                     <ice:outputText id="tutorialsLink" value="ICEfaces Tutorials"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org Time Zone -->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://timezone.icefaces.org/timezone5/">
                     <ice:outputText id="timezoneLink" value="Time Zone"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org Component Showcase -->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://webmc.icefaces.org/">
                     <ice:outputText id="webmcLink" value="WebMC"/>
                 </ice:outputLink>
 
                 <!-- icfaces.org  Auction Monitor -->
-                <ice:outputLink target="_blank" styleClass="pnlClpsblLnks"
+                <ice:outputLink target="_blank" styleClass="navPnlClpsblLnks"
                                 value="http://auctionmonitor.icefaces.org/">
                     <ice:outputText id="auctionMonitorLink" value="Auction Monitor"/>
                 </ice:outputLink>

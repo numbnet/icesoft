@@ -131,7 +131,7 @@ public class PanelToolTipController {
         store.add(new InventoryItem(2, "Monitor", "monitor",
                 randomNumberGenerator.getRandomDouble(299, 799),
                 (int) randomNumberGenerator.getRandomDouble(5, 10)));
-        store.add(new InventoryItem(4, "Console", "console",
+        store.add(new InventoryItem(4, "Desktop", "desktop",
                 randomNumberGenerator.getRandomDouble(299, 499),
                 (int) randomNumberGenerator.getRandomDouble(25, 50)));
         store.add(new InventoryItem(3, "PDA", "pda",

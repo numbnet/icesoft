@@ -41,35 +41,55 @@
         <ice:outputText value="#{msgs['page.gMap.description']}"/>
     </ice:panelGroup>
     
-    <ice:panelGrid columns="4" cellspacing="0" cellpadding="0" styleClass="exampleBox gmapContainer">
-        <ice:outputLabel value="#{msgs['page.gMap.city.label']}"
-                         for="mapCityList"/>
-        <ice:selectOneMenu id="mapCityList" partialSubmit="true"
-                           value="#{gmap.standardAddress}"
-                           valueChangeListener="#{gmap.findAddress}">
-            <f:selectItem itemValue="" itemLabel="#{msgs['page.gMap.search.select']}"/>
-            <f:selectItem itemValue="#{msgs['page.gMap.search.city1']}"/>
-            <f:selectItem itemValue="#{msgs['page.gMap.search.city2']}"/>
-            <f:selectItem itemValue="#{msgs['page.gMap.search.city3']}"/>
-            <f:selectItem itemValue="#{msgs['page.gMap.search.city4']}"/>
-            <f:selectItem itemValue="#{msgs['page.gMap.search.city5']}"/>
-        </ice:selectOneMenu>
-    
-        <ice:outputLabel value="#{msgs['page.gMap.controls.label']}"
-                         for="showControlBox"/>
-        <ice:selectBooleanCheckbox id="showControlBox"
-                                   value="#{gmap.showControls}" partialSubmit="true" />
-        
-        <ice:outputLabel value="#{msgs['page.gMap.address.label']}"
-                         for="inadress"/>
-        <ice:inputText id="inadress" value="#{gmap.geoCoderAddress}"
-                       actionListener="#{gmap.enterKeyPressed}"/>
-    
-        <ice:outputLabel value="#{msgs['page.gMap.markers.label']}"
-                         for="showMarkerBox"/>
-        <ice:selectBooleanCheckbox id="showMarkerBox"
-                                   value="#{gmap.showMarkers}" partialSubmit="true" />
-    </ice:panelGrid>
+    <ice:panelGroup styleClass="exampleBox gmapContainer">
+        <table cellspacing="4" cellpadding="4">
+            <tr>
+                <td>
+                    <ice:outputLabel value="#{msgs['page.gMap.city.label']}"
+                                     for="mapCityList"/>
+                </td>
+                <td>
+                    <ice:selectOneMenu id="mapCityList" partialSubmit="true"
+                                       value="#{gmap.standardAddress}"
+                                       valueChangeListener="#{gmap.findAddress}">
+                        <f:selectItem itemValue="" itemLabel="#{msgs['page.gMap.search.select']}"/>
+                        <f:selectItem itemValue="#{msgs['page.gMap.search.city1']}"/>
+                        <f:selectItem itemValue="#{msgs['page.gMap.search.city2']}"/>
+                        <f:selectItem itemValue="#{msgs['page.gMap.search.city3']}"/>
+                        <f:selectItem itemValue="#{msgs['page.gMap.search.city4']}"/>
+                        <f:selectItem itemValue="#{msgs['page.gMap.search.city5']}"/>
+                    </ice:selectOneMenu>
+                </td>
+                <td>
+                    <ice:outputLabel value="#{msgs['page.gMap.controls.label']}"
+                                     for="showControlBox"/>
+                </td>
+                <td>
+                    <ice:selectBooleanCheckbox id="showControlBox"
+                                               value="#{gmap.showControls}" partialSubmit="true" />
+                </td>
+                <td>
+                    <ice:outputLabel value="#{msgs['page.gMap.markers.label']}"
+                                     for="showMarkerBox"/>
+                </td>
+                <td>
+                    <ice:selectBooleanCheckbox id="showMarkerBox"
+                                               value="#{gmap.showMarkers}" partialSubmit="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ice:outputLabel value="#{msgs['page.gMap.address.label']}"
+                                     for="inadress"/>
+                </td>
+                <td colspan="5">
+                    <ice:inputText id="inadress" value="#{gmap.geoCoderAddress}"
+                                   actionListener="#{gmap.enterKeyPressed}"
+                                   style="width: 100%;"/>
+                </td>
+            </tr>
+        </table>
+    </ice:panelGroup>
     
     <ice:panelGroup styleClass="clearer" />
         
