@@ -39,23 +39,24 @@ to show how the selected panel can be dynamically changed.
 <ice:panelGroup styleClass="componentBox"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ice="http://www.icesoft.com/icefaces/component">
+                xmlns:ice="http://www.icesoft.com/icefaces/component"
+                style="width: 100%;">
 
     <ice:panelGroup styleClass="synopsisBox panelStackContainer">
         <ice:outputText value="#{msgs['page.panelStack.synopsis']}"/>
         <ice:outputText value="#{msgs['page.panelStack.instructions']}"/>
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox panelStackContainer">
+    <ice:panelGroup styleClass="exampleBox panelStackContainer"
+                    style="width: 100%;">
 
-        <ice:panelGroup style="float:left;margin-right:5px;margin-top:3px;">
-            <ice:outputLabel
-                    value="#{msgs['page.panelStack.example.radio.label']}"
-                    for="mainRadio"/>
+        <ice:panelGroup style="float: left; margin-right: 5px; margin-top: 3px;">
+            <ice:outputLabel for="mainRadio"
+                             value="#{msgs['page.panelStack.example.radio.label']}"/>
         </ice:panelGroup>
         
         <!-- Main Controls to change panels -->
-        <ice:panelGroup style="float:left;">
+        <ice:panelGroup style="float: left;">
             <ice:selectOneRadio id="mainRadio"
                                 value="#{panelStack.selectedPanel}"
                                 partialSubmit="true"
@@ -159,7 +160,7 @@ to show how the selected panel can be dynamically changed.
             </ice:panelGroup>
 
             <!-- panel 4-->
-            <ice:panelGroup id="webmail"
+            <ice:panelGroup id="address"
                             styleClass="stackExamplePanel">
 
                 <ice:panelGrid columns="2" cellpadding="0" cellspacing="0" >
