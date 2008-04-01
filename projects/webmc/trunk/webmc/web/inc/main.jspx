@@ -35,15 +35,15 @@
      xmlns:f="http://java.sun.com/jsf/core"
      xmlns:ice="http://www.icesoft.com/icefaces/component"
      xmlns:ui="http://java.sun.com/jsf/facelets"
-     id="maincontainer">
+     id="container">
 <!-- 
     <ice:panelGroup layout="block"
-                    styleClass="bgNAV" 
+                    styleClass="navigationBar" 
                     rendered="#{participant.moderator}">    
         <ui:include src="navigationpanel.jspx"/>
     </ice:panelGroup>
  -->
-    <ice:form styleClass="bgMAIN">
+    <ice:form styleClass="mainForm">
 
                 <ice:panelGroup style="text-align: center;">
                     <ice:outputText value="#{participant.statusMessage}"

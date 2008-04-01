@@ -35,18 +35,15 @@ html {
     overflow: scroll;
 }
 
-body, html {
-    padding: 0;
-    margin: 0;
-
-}
-
-.height100 {
-    height: 100%;
-}
-
-img {
+html, body, div, table, img, fieldset {
     border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;	
 }
 
 /* for some reson IE things a form should have dimensions, */
@@ -55,24 +52,43 @@ form {
     margin: 0;
 }
 
-/* BGT STYLES */
-.bgTOPBLUE {
+img {
+    border: 0;
+}
+
+#container{
+       width: 1024px;
+       height: 100%;
+}
+
+.blueBar, .menuBar, .navigationBar, .mainForm, .footerBar{
+    float: left;
+    clear: both; 
+    width: 100%;	
+}
+
+.blueBar {
     background: url( '../images/bgslice_topbar_blue.jpg' ) repeat-x top left;
 }
 
-.bgTOPWHITE {
+.menuBar {
     background: url( '../images/bgslice_topbar_white.jpg' ) repeat-x top left;
+    height: 28px;
 }
 
-.bgNAV {
-    background: url( '../images/bgslice_navbar.jpg' ) repeat-x top left;
+.navigationBar {
+    background: url( '../images/bgslice_navbar.jpg' ) repeat-x top left;    
 }
 
-.bgMAIN {
+.navigationBarPadding {
+    padding-left: 23px;	
+}
+
+.mainForm {
     background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
 }
 
-.bgFOOTER {
+.footerBar {
     background: url( '../images/bgslice_footer.jpg' ) repeat-x top left;
 }
 

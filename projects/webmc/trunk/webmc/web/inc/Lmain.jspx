@@ -1,53 +1,43 @@
-<table xmlns:h="http://java.sun.com/jsf/html"
-       xmlns:f="http://java.sun.com/jsf/core"
-       xmlns:ice="http://www.icesoft.com/icefaces/component"
-       xmlns:ui="http://java.sun.com/jsf/facelets"
-       width="100%" 
-       border="0" 
-       cellspacing="0" 
-       cellpadding="0"
-       class="height100">
-<tr>
-    <td class="bgTOPBLUE">
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     id="container">
+
+    <div class="blueBar">
         <img src="resources/images/spacer.gif" width="1" height="12"/>
-    </td>
-</tr>
-<tr>
-    <td class="bgTOPWHITE" height="28" style="padding-left: 30px;">
+    </div>
+
+    <div class="menuBar">
         <ui:include src="menubar.jspx"/>
-    </td>
-</tr>
-<tr>
-	<td class="bgNAV">
-	    <ui:include src="Lnavigationpanel.jspx"/>
-	</td>
-</tr>
-<tr>
-	<td class="bgMAIN">
-		<ice:form>
-		<table width="100%" border="0" cellspacing="0" cellpadding="0"
-		       class="height100">
-			<tr>
-				<td class="mainPRES" valign="top">
-				    <ui:include src="Lpresentation.jspx"/>
-				</td>
-	    		<td class="mainCHAT" valign="top" width="270" style="margin-bottom: 30px;">
-					<img src="resources/images/logo_reflection.jpg" align="right"
-					     style="width: 266px; height: 30px; vertical-align: top; text-align: right;"/>
-					<img src="resources/images/part_tab.jpg" style="vertical-align: bottom;"/>
-			
-                    <ui:include src="Lparticipants.jspx"/>
-					<ui:include src="Lchat.jspx"/>
-					
-	    		</td>
-			</tr>
-		</table>
-		</ice:form>
-    </td>
-</tr>
-<tr>
-    <td class="bgFOOTER">
+    </div>
+
+	<div class="navigationBar">
+	    <ui:include src="navigationpanel.jspx"/>
+	</div>
+
+	<ice:form styleClass="mainForm">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0"
+	       class="height100">
+		<tr>
+			<td class="mainPRES" valign="top">
+			    <ui:include src="Lpresentation.jspx"/>
+			</td>
+    		<td class="mainCHAT" valign="top" width="270" style="margin-bottom: 30px;">
+				<img src="resources/images/logo_reflection.jpg" align="right"
+				     style="width: 266px; height: 30px; vertical-align: top; text-align: right;"/>
+				<img src="resources/images/part_tab.jpg" style="vertical-align: bottom;"/>
+		
+                   <ui:include src="Lparticipants.jspx"/>
+				<ui:include src="Lchat.jspx"/>
+				
+    		</td>
+		</tr>
+	</table>
+	</ice:form>
+
+    <div class="footerBar">
         <ui:include src="footer.jspx"/>
-    </td>
-</tr>
-</table>
+    </div>
+
+</div>
