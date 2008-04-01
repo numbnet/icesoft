@@ -526,11 +526,16 @@
                         resourceRef="panelDividerExplResc"/>
             </example>
             <source-code templateRef="documentationContainer">
-                 <jspx-pages>
+                <jspx-pages>
                     <resource-reference
                             label="panelDivider.jspx"
                             resourceRef="panelDividerExplResc"/>
                 </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="PanelDividerBean.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider.PanelDividerBean"/>
+                </beans>
             </source-code>
             <documentation templateRef="documentationContainer">
                 <documents>
@@ -1866,6 +1871,9 @@
             <!-- Panel Series -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSeries.PanelSeriesController"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelSeries/PanelSeriesController.java"/>
+            <!-- Panel Series -->
+            <resource id="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider.PanelDividerBean"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelDivider/PanelDividerBean.java"/>
             <!-- Panel Tabset -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTabset.DynamicTabSetBean"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/layoutPanel/panelTabset/DynamicTabSetBean.java"/>

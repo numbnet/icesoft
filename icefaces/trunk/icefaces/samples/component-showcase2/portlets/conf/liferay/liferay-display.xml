@@ -3,10 +3,10 @@
 
 <display>
     <category name="ICEfaces">
-        <portlet id="components_textEntry"/>
-        <portlet id="components_selection"/>
+        <!--<portlet id="components_textEntry"/>-->
+        <!--<portlet id="components_selection"/>-->
         <portlet id="components_buttonsAndLinks"/>
-        <portlet id="components_calendar"/>
+        <!--<portlet id="components_calendar"/>
         <portlet id="components_tree"/>
         <portlet id="components_autocomplete"/>
         <portlet id="components_dragAndDrop"/>
@@ -25,7 +25,7 @@
         <portlet id="components_charts_dynamicChart"/>
         <portlet id="components_charts_combiningCharts"/>
 
-        <portlet id="components_rich_text_editor"/>
+        <portlet id="components_rich_text_editor"/>-->
         
         <!--
         <portlet id="components_gmap_address_attribute"/>
@@ -35,7 +35,7 @@
         <portlet id="components_gmap_markers"/>
         -->
 
-        <portlet id="components_table_column_grouping"/>
+        <!--<portlet id="components_table_column_grouping"/>
         <portlet id="components_table_resizable_columns"/>
         <portlet id="components_table_row_grouping"/>
         <portlet id="components_panel_border"/>
@@ -47,7 +47,7 @@
         <portlet id="components_panel_stack"/>
         <portlet id="components_panel_tabset"/>
         <portlet id="components_panel_tooltip"/>
-        <portlet id="components_media_player"/>
+        <portlet id="components_media_player"/>-->
 
     </category>
 </display>
