@@ -50,13 +50,10 @@ to show how the selected panel can be dynamically changed.
     <ice:panelGroup styleClass="exampleBox panelStackContainer"
                     style="width: 100%;">
 
-        <ice:panelGroup style="float: left; margin-right: 5px; margin-top: 3px;">
+        <ice:panelGrid columns="2" cellspacing="2" cellpadding="2" width="100%">
             <ice:outputLabel for="mainRadio"
                              value="#{msgs['page.panelStack.example.radio.label']}"/>
-        </ice:panelGroup>
         
-        <!-- Main Controls to change panels -->
-        <ice:panelGroup style="float: left;">
             <ice:selectOneRadio id="mainRadio"
                                 value="#{panelStack.selectedPanel}"
                                 partialSubmit="true"
@@ -75,12 +72,13 @@ to show how the selected panel can be dynamically changed.
                         itemValue="#{msgs['page.panelStack.example.4.value']}"
                         itemLabel="#{msgs['page.panelStack.example.4.label']}"/>
             </ice:selectOneRadio>
-        </ice:panelGroup>
+        </ice:panelGrid>
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="clearer" />
 
-    <ice:panelGroup styleClass="exampleBox panelStackContainer">
+    <ice:panelGroup styleClass="exampleBox panelStackContainer"
+                    style="width: 100%;">
 
         <!-- selectedPanel is manipulated by the radio buttons above -->
         <ice:panelStack
