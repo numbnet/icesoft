@@ -53,10 +53,12 @@ public class ChartModelAxial extends AbstractChartData<ArrayList<double[]>> {
 
     public ChartModelAxial(boolean areaMapEnabled,
                            boolean axisOrientationEnabled,
-                           boolean enableDynamicValues) {
+                           boolean enableDynamicValues,
+                           boolean enabledLengendPosition) {
         this.areaMapEnabled = areaMapEnabled;
         this.axisOrientationEnabled = axisOrientationEnabled;
         this.enableDynamicValues = enableDynamicValues;
+        this.enabledLengendPosition = enabledLengendPosition;
         init();
     }
     

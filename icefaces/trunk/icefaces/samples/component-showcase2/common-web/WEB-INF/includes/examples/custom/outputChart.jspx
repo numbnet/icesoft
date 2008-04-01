@@ -34,60 +34,78 @@
 <ice:panelGroup styleClass="componentBox"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ice="http://www.icesoft.com/icefaces/component"
-                style="width: 100%;">
+                xmlns:ice="http://www.icesoft.com/icefaces/component">
 
     <ice:panelGroup styleClass="synopsisBox chartsContainer">
+
         <ice:outputText value="#{msgs['page.outputChart.synopsis']}"/>
         <ice:outputText value="#{msgs['page.outputChart.description']}"/>
+
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="clearer"/>
 
     <!-- dynamic controlls for charts -->
     <ice:panelGroup styleClass="exampleBox firstChildTitle chartsContainer"
-                    style="padding: 5px; width: 100%;">
-        <ice:panelGrid columns="4" cellpadding="4" cellspacing="2" width="100%">
+                    style="padding:5px;">
 
-            <ice:outputLabel value="#{msgs['page.outputChart.orientation.label']}"/>
-            
-            <ice:outputLabel value="#{msgs['page.outputChart.legend.position.label']}"/>
-            
-            <ice:outputLabel value="#{msgs['page.outputChart.imageMap.label']}" />
-            
-            <ice:outputLabel value="#{msgs['page.outputChart.data.label']}" />
-            
-            <ice:selectOneRadio
-                    disabled="#{not chartController.currentChartModel.axisOrientationEnabled}"
-                    value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
-                    partialSubmit="true">
-                <f:selectItem itemValue="true"
-                              itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
-                <f:selectItem itemValue="false"
-                              itemLabel="#{msgs['page.outputChart.orientation.vert.label']}"/>
-            </ice:selectOneRadio>
-            
-            <ice:selectOneMenu
-                    value="#{chartController.currentChartModel.legendPlacement}"
-                    partialSubmit="true">
-                <f:selectItem itemValue="bottom"
-                              itemLabel="#{msgs['page.outputChart.legend.position.bottom.label']}"/>
-                <f:selectItem itemValue="top"
-                              itemLabel="#{msgs['page.outputChart.legend.position.top.label']}"/>
-                <f:selectItem itemValue="left"
-                              itemLabel="#{msgs['page.outputChart.legend.position.left.label']}"/>
-                <f:selectItem itemValue="right"
-                              itemLabel="#{msgs['page.outputChart.legend.position.right.label']}"/>
-                <f:selectItem itemValue="none"
-                              itemLabel="#{msgs['page.outputChart.legend.position.none.label']}"/>
-            </ice:selectOneMenu>
-            
-            <ice:inputText
-                readonly="true"
-                disabled="#{not chartController.currentChartModel.areaMapEnabled}"
-                value="#{chartController.currentChartModel.areaMapClickValue}" />
+        <ice:panelGrid columns="4"
+                       cellpadding="10"
+                       styleClass="chartConfigurationContainer verticalAlignTop chartsContainer">
 
-            <ice:panelGroup>
+             <!-- Horizontal/ vertical layout of axial data -->
+            <ice:panelGroup styleClass="firstChildTitle">
+                <ice:outputLabel
+                        for="axialOrientation"
+                        value="#{msgs['page.outputChart.orientation.label']}"/>
+                <ice:selectOneRadio
+                        id="axialOrientation"
+                        disabled="#{not chartController.currentChartModel.axisOrientationEnabled}"
+                        value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
+                        partialSubmit="true" >
+                    <f:selectItem itemValue="true"
+                                  itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
+                    <f:selectItem itemValue="false"
+                                  itemLabel="#{msgs['page.outputChart.orientation.vert.label']}"/>
+                </ice:selectOneRadio>
+            </ice:panelGroup>
+
+            <!-- legend Placement -->
+            <ice:panelGroup styleClass="firstChildTitle">
+                <ice:outputLabel
+                        for="legedPosition"
+                        value="#{msgs['page.outputChart.legend.position.label']}"/>
+                <ice:selectOneMenu
+                        id="legedPosition"
+                        disabled="#{not chartController.currentChartModel.enabledLengendPosition}"
+                        value="#{chartController.currentChartModel.legendPlacement}"
+                        partialSubmit="true">
+                    <f:selectItem itemValue="bottom"
+                                  itemLabel="#{msgs['page.outputChart.legend.position.bottom.label']}"/>
+                    <f:selectItem itemValue="top"
+                                  itemLabel="#{msgs['page.outputChart.legend.position.top.label']}"/>
+                    <f:selectItem itemValue="left"
+                                  itemLabel="#{msgs['page.outputChart.legend.position.left.label']}"/>
+                    <f:selectItem itemValue="right"
+                                  itemLabel="#{msgs['page.outputChart.legend.position.right.label']}"/>
+                    <f:selectItem itemValue="none"
+                                  itemLabel="#{msgs['page.outputChart.legend.position.none.label']}"/>
+                </ice:selectOneMenu>
+            </ice:panelGroup>
+
+             <!-- Area Map display values -->
+            <ice:panelGroup styleClass="firstChildTitle">
+                <ice:outputLabel for="areaMap"
+                        value="#{msgs['page.outputChart.imageMap.label']}" />
+                <ice:inputText id="areaMap"
+                    readonly="true"
+                    disabled="#{not chartController.currentChartModel.areaMapEnabled}"
+                    value="#{chartController.currentChartModel.areaMapClickValue}" />
+            </ice:panelGroup>
+
+            <!-- Modify Data values -->
+            <ice:panelGroup styleClass="firstChildTitle">
+                <ice:outputLabel value="#{msgs['page.outputChart.data.label']}" />
                 <ice:commandButton
                         disabled="#{not chartController.currentChartModel.enableDynamicValues}"
                         value="#{msgs['page.outputChart.data.add.label']}"
@@ -101,22 +119,29 @@
                         value="#{msgs['page.outputChart.data.reset.label']}"
                         actionListener="#{chartController.resetChartData}" />
             </ice:panelGroup>
+
         </ice:panelGrid>
+
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox">
+    <ice:panelGroup styleClass="clearer" />
+
+    <ice:panelGroup styleClass="exampleBox firstChildTitle" >
+
         <!-- list of available chart to view -->
-        <ice:outputLabel value="#{msgs['page.outputChart.types.title']}"/>
-        <br/>
-        <ice:selectOneListbox value="#{chartController.currentChartType}"
-                              valueChangeListener="#{chartController.chartTypeChange}"
-                              partialSubmit="true">
+        <ice:outputText
+            value="#{msgs['page.outputChart.types.title']}"/>
+        <br /><br />
+        <ice:selectOneListbox
+                   value="#{chartController.currentChartType}"
+                   valueChangeListener="#{chartController.chartTypeChange}"
+                   partialSubmit="true" >
             <f:selectItems value="#{chartController.chartList}"/>
         </ice:selectOneListbox>
+
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox">
-        <center>
+    <ice:panelGroup styleClass="exampleBox"  >
         <!-- chart type axial -->
         <ice:outputChart id="axialOutputChart"
                  rendered="#{chartController.currentChartModel.chartType == 0}"
@@ -132,7 +157,7 @@
                  renderOnSubmit="#{chartController.currentChartModel.renderOnSubmit}"
                  actionListener="#{chartController.chartAreaClicked}"
                  horizontal="#{chartController.currentChartModel.barChartOrientationHorizontal}"
-                 width="400" height="300"/>
+                 width="450" height="300"/>
         <!-- chart type radial -->
         <ice:outputChart id="radialOuputChart"
                  rendered="#{chartController.currentChartModel.chartType == 1}"
@@ -142,17 +167,17 @@
                  data="#{chartController.currentChartModel.chartData}"
                  colors="#{chartController.currentChartModel.colors}"
                  renderOnSubmit="#{chartController.currentChartModel.renderOnSubmit}"
-                 width="400" height="300"/>
+                 width="450" height="300"/>
 
         <!-- chart type custom -->
         <ice:outputChart id="customOuputChart"
                  rendered="#{chartController.currentChartModel.chartType == 2}"
                  type="#{chartController.currentChartType}"
-                 legendPlacement="#{chartController.currentChartModel.legendPlacement}"
                  renderOnSubmit="#{chartController.currentChartModel.renderOnSubmit}"
                  actionListener="#{chartController.chartAreaClicked}"
-                 width="400" height="300"/>
-        </center>
+                 width="450" height="300"/>
+
     </ice:panelGroup>
+
 
 </ice:panelGroup>

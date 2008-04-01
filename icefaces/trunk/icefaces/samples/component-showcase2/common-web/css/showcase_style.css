@@ -1006,3 +1006,11 @@ table.verticalAlignTop td {
 }
 /* END TREE */
 
+/* Chart example */
+.chartConfigurationContainer div.firstChildTitle > label:first-child{
+    margin-bottom: 5px;
+    display:block;
+}
+
+/* end chart example*/
+

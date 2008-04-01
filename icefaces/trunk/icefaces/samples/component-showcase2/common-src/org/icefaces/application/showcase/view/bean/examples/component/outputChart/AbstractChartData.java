@@ -66,6 +66,8 @@ public abstract class AbstractChartData<T> {
     protected boolean areaMapEnabled;
     // chart type supports orientation 
     protected boolean axisOrientationEnabled;
+    // chart legend placement
+    protected boolean enabledLengendPosition;
 
     protected String areaMapClickValue;
 
@@ -246,5 +248,13 @@ public abstract class AbstractChartData<T> {
 
     public boolean isEnableDynamicValues() {
         return enableDynamicValues;
+    }
+
+    public boolean isEnabledLengendPosition() {
+        return enabledLengendPosition;
+    }
+
+    public void setEnabledLengendPosition(boolean enabledLengendPosition) {
+        this.enabledLengendPosition = enabledLengendPosition;
     }
 }

@@ -67,12 +67,14 @@ public class ChartModelCustom extends AbstractChartData<Object> {
 
     public ChartModelCustom(boolean areaMapEnabled,
                             boolean axisOrientationEnabled,
-                            boolean enableDynamicValues) {
+                            boolean enableDynamicValues,
+                            boolean enabledLengendPosition) {
         this.areaMapEnabled = areaMapEnabled;
         this.axisOrientationEnabled = axisOrientationEnabled;
         this.enableDynamicValues = enableDynamicValues;
+        this.enabledLengendPosition = enabledLengendPosition;
         init();
-        legendPlacement = "bottom";
+
     }
 
     public int getChartType(){
@@ -100,7 +102,7 @@ public class ChartModelCustom extends AbstractChartData<Object> {
                     new DataSeries(xAxisLabels, xAxisTitle, yAxisTitle, title);
 
             double[][] data = TestDataGenerator.getRandomNumbers(3, 7, 0, 5000);
-            legendLabels = new String[]{"Bugs", "Security Holes", "Backdoors"};
+            legendLabels = new String[]{"Bugs", "Enhancements", "Fixes"};
             Paint[] paints = new Color[]{
                     new Color(0xCAE1EF),
                     new Color(0xF78208),
@@ -128,7 +130,7 @@ public class ChartModelCustom extends AbstractChartData<Object> {
             LineChartProperties lineChartProperties =
                     new LineChartProperties(strokes, shapes);
 
-            axisChartDataSet = new AxisChartDataSet(data, legendLabels, paints,
+            axisChartDataSet = new AxisChartDataSet(data, null, paints,
                     ChartType.LINE,
                     lineChartProperties);
             dataSeries.addIAxisPlotDataSet(axisChartDataSet);
@@ -136,7 +138,7 @@ public class ChartModelCustom extends AbstractChartData<Object> {
             ChartProperties chartProperties = new ChartProperties();
             AxisProperties axisProperties = new AxisProperties();
             LegendProperties legendProperties = new LegendProperties();
-            
+
             // Set the font to a custom sans serif
             chartProperties.setTitleFont(titleFont);
             axisProperties.getYAxisProperties().setAxisTitleChartFont(axisFont);
@@ -145,7 +147,7 @@ public class ChartModelCustom extends AbstractChartData<Object> {
 
             axisChart = new AxisChart(dataSeries, chartProperties,
                     axisProperties,
-                    legendProperties, 400, 300);
+                    legendProperties, 450, 300);
         } catch (ChartDataException e) {
             log.error("Error building custom outputChart data:", e);
         }
@@ -197,4 +199,6 @@ public class ChartModelCustom extends AbstractChartData<Object> {
     public Object getChartData() {
         return null;
     }
+
+
 }

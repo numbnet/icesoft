@@ -85,31 +85,31 @@ public class ChartController {
 
         // add default axial type outputChart
         chartDataModels.put(OutputChart.AREA_CHART_TYPE,
-                new ChartModelAxial(false, false, true));
+                new ChartModelAxial(false, false, true, true));
         chartDataModels.put(OutputChart.AREA_STACKED_CHART_TYPE,
-                new ChartModelAxial(false, false, true));
+                new ChartModelAxial(false, false, true, true));
         chartDataModels.put(OutputChart.BAR_CHART_TYPE,
-                new ChartModelAxial(true, true, true));
+                new ChartModelAxial(true, true, true, true));
         chartDataModels.put(OutputChart.BAR_CLUSTERED_CHART_TYPE,
-                new ChartModelAxial(true, true, true));
+                new ChartModelAxial(true, true, true, true));
         chartDataModels.put(OutputChart.BAR_STACKED_CHART_TYPE,
-                new ChartModelAxial(true, false, true));
+                new ChartModelAxial(true, false, true, true));
         chartDataModels.put(OutputChart.LINE_CHART_TYPE,
-                new ChartModelAxial(true, false, true));
+                new ChartModelAxial(true, false, true, true));
         chartDataModels.put(OutputChart.POINT_CHART_TYPE,
-                new ChartModelAxial(true, false, true));
+                new ChartModelAxial(true, false, true, true));
         chartDataModels.put(OutputChart.STOCK_CHART_TYPE,
-                new ChartModelAxial(true, false, true));
+                new ChartModelAxial(true, false, true, true));
 
         // add default pie type outputChart
         chartDataModels.put(OutputChart.PIE2D_CHART_TYPE,
-                new ChartModelRadial(false, false, false));
+                new ChartModelRadial(false, false, false, true));
         chartDataModels.put(OutputChart.PIE3D_CHART_TYPE,
-                new ChartModelRadial(false, false, false));
+                new ChartModelRadial(false, false, false, true));
 
         // add the only custom chart model.
         chartDataModels.put(OutputChart.CUSTOM_CHART_TYPE,
-                new ChartModelCustom(false, false, false));
+                new ChartModelCustom(true, false, false, false));
 
         // set the default dataModel
         currentChartType = OutputChart.PIE2D_CHART_TYPE;
@@ -125,6 +125,7 @@ public class ChartController {
     public void chartTypeChange(ValueChangeEvent event) {
         String newChartType = (String) event.getNewValue();
         if (newChartType != null) {
+            currentChartType = newChartType;
             currentChartModel = chartDataModels.get(newChartType);
         }
     }

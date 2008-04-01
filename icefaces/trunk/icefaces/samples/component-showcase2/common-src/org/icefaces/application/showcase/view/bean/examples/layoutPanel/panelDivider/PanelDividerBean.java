@@ -34,38 +34,44 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDi
 
 import javax.faces.event.ValueChangeEvent;
 
-public class PanelDividerBean
-{
-    private static final String ORIENTATION_HOR = "horizontal";
-    private static final String ORIENTATION_VER = "vertical";
-    private static final String ORIENTATION_DEFAULT = ORIENTATION_VER;
+/**
+ * Simple model bean for the panelDivider example.  The bean maintains the
+ * position and orientation of the divider.
+ *
+ * @since 1.7
+ */
+public class PanelDividerBean {
+
+    public static final String ORIENTATION_HOR = "horizontal";
+    public static final String ORIENTATION_VER = "vertical";
+
     private static final int POSITION_DEFAULT = 40;
-    
-    private String orientation = ORIENTATION_DEFAULT;
+
+    private String orientation = ORIENTATION_VER;
     private int position = POSITION_DEFAULT;
-    
+
     public String getOrientation() {
         return orientation;
     }
-    
+
     public int getPosition() {
         return position;
     }
-    
+
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
-    
+
     public void setPosition(int position) {
         this.position = position;
     }
-    
+
     /**
      * Listener method called when the orientation is changed
      * This is useful to allow us to reset the position of the divider to
-     *  the default value
+     * the default value
      *
-     *@param event of the change
+     * @param event of the change jsf event
      */
     public void orientationChanged(ValueChangeEvent event) {
         this.position = POSITION_DEFAULT;
