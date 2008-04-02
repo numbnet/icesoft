@@ -131,8 +131,17 @@
                 statusManager.serverErrorPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
-                $element(document.documentElement).replaceHtml(response.content());
-                scriptLoader.searchAndEvaluateScripts(document.documentElement);
+                //todo: refactor this in something more elegant
+                var html = response.content();
+                var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
+                var end = new RegExp('\<\/body\>', 'g').exec(html);
+                var body = html.substring(start.index, end.index + end[0].length)
+                var content = body.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+                var tag = container.tagName;
+                var c = $element(container);
+                c.disconnectEventListeners();
+                c.replaceHtml(['<', tag, '>', content, '</', tag, '>'].join(''));
+                scriptLoader.searchAndEvaluateScripts(container);
             }.bind(this));
 
             this.connection.whenDown(function() {
