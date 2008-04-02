@@ -203,7 +203,6 @@
                 <file name="selector.js"/>
                 <file name="event.js"/>
                 <file name="form.js"/>
-                <file name="position.js"/>
                 <file name="deprecated.js"/>
             </filelist>
             <filelist dir="${build.dir}/lib/scriptaculous">
