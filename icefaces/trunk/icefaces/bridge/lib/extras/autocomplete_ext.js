@@ -98,6 +98,8 @@ Autocompleter.Base.prototype = {
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
         Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
+        if(Prototype.Browser.IE || Prototype.Browser.WebKit)
+            Event.observe(this.element, "keydown", this.onKeyDown.bindAsEventListener(this));
     },
 
     show: function() {
@@ -153,7 +155,7 @@ Autocompleter.Base.prototype = {
         }
 
         Ice.Autocompleter.logger.debug("Key Press");
-        if (this.active)
+        if (this.active) {
             switch (event.keyCode) {
                 case Event.KEY_TAB:
                 case Event.KEY_RETURN:
@@ -189,6 +191,7 @@ Autocompleter.Base.prototype = {
                     return;
 
             }
+        }
         else {
             if (event.keyCode == Event.KEY_TAB || event.keyCode == Event.KEY_RETURN) return;
         }
@@ -202,7 +205,48 @@ Autocompleter.Base.prototype = {
         if (this.observer) clearTimeout(this.observer);
         this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
     },
-
+    
+    onKeyDown: function(event) {
+        if (!this.active) {
+            switch (event.keyCode) {
+                case Event.KEY_DOWN:
+                    this.getUpdatedChoices(false, event);
+                    return;
+                case Event.KEY_BACKSPACE:
+                case Event.KEY_DELETE:
+                    if (this.observer) clearTimeout(this.observer);
+                    this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+                    return;
+            }
+        }
+        else if(this.active) {
+            switch (event.keyCode) {
+                case Event.KEY_UP:
+                    this.markPrevious();
+                    this.render();
+                    Event.stop(event);
+                    return;
+                case Event.KEY_DOWN:
+                    this.markNext();
+                    this.render();
+                    Event.stop(event);
+                    return;
+                case Event.KEY_ESC:
+                    if(Prototype.Browser.WebKit) {
+                        this.hide();
+                        this.active = false;
+                        Event.stop(event);
+                        return;
+                    }
+                case Event.KEY_BACKSPACE:
+                case Event.KEY_DELETE:
+                    if (this.observer) clearTimeout(this.observer);
+                    this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
+                    return;
+            }
+        }
+    },
+    
     activate: function() {
         this.changed = false;
         this.hasFocus = true;
@@ -388,6 +432,8 @@ Autocompleter.Base.prototype = {
         Event.stopObserving(this.element, "mousemove", this.onMove);
         Event.stopObserving(this.element, "blur", this.onBlur);
         Event.stopObserving(this.element, "keypress", this.onKeyPress);
+        if(Prototype.Browser.IE || Prototype.Browser.WebKit)
+            Event.stopObserving(this.element, "keydown", this.onKeyDown);
         Autocompleter.Finder.list[this.element.id] = null;
         Ice.Autocompleter.logger.debug("Destroyed autocomplete [" + this.element.id + "]");
     },

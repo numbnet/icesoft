@@ -197,7 +197,8 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         }
         if( partialSubmit.equalsIgnoreCase("true") &&
             (type.equalsIgnoreCase("onundefined") ||
-             type.equalsIgnoreCase("onkeypress")) )
+             type.equalsIgnoreCase("onkeypress") ||
+             type.equalsIgnoreCase("onkeydown")) )
         {
             return true;
         }
