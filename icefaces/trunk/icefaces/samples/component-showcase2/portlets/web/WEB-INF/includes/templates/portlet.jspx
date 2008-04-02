@@ -36,9 +36,10 @@
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
     <f:loadBundle basename="org.icefaces.application.showcase.view.resources.messages" var="msgs" />
+
     <ice:outputDeclaration doctypeRoot="HTML"
                            doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                           doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
+                           doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd" />
     <ice:portlet>
         <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
         <ice:outputStyle href="../css/showcase_style.css" />

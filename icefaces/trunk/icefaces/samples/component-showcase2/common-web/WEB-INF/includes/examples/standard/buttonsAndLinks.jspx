@@ -79,7 +79,7 @@ input by button and link components.
         <ice:outputLabel for="BLImg"
                          value="#{msgs['page.buttonsAndLinks.imageButtonLabel']}"/>
         <ice:commandButton id="BLImg"
-                           image="images/button-submit.gif"
+                           image="/images/button-submit.gif"
                            actionListener="#{buttonsAndLinks.imageButtonListener}"/>
 
         <ice:outputLabel for="BLCmdLnk"
