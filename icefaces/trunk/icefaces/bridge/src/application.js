@@ -131,7 +131,7 @@
                 statusManager.serverErrorPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
-                //todo: refactor this in something more elegant
+                //todo: refactor this into something more elegant
                 var html = response.content();
                 var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
                 var end = new RegExp('\<\/body\>', 'g').exec(html);
