@@ -46,7 +46,7 @@
 
 <body>
 
-<ice:panelGroup styleClass="mainPRES">
+<ice:panelGroup styleClass="mainLOGIN">
 
 <ice:panelGroup styleClass="facesBox">
 

@@ -34,7 +34,7 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelGroup styleClass="mainPRES">
+<ice:panelGroup styleClass="mainLOGIN">
 
 <ice:panelGroup styleClass="facesBox">
 
