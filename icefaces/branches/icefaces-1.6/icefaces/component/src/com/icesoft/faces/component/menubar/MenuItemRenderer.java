@@ -46,7 +46,6 @@ import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
@@ -451,11 +450,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 }
             }
         }
-        // ICE-2066
-        Text iframe = domContext.createTextNode("<!--[if lte IE 6.5]><iframe src=\"" +
-                CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank") +
-                "\" class=\"iceIEIFrameFix\" style=\"top:0;width:100%\"></iframe><![endif]-->");
-        submenuDiv.appendChild(iframe);
 
         // recurse
         // check if parent is disabled , if it is the child items should also be disabled.
