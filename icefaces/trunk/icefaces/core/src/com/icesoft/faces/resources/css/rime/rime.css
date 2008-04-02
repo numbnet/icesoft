@@ -1685,6 +1685,7 @@ fieldset {
 
 .iceMnuPopVrtItemLabel {
     vertical-align: middle;
+    color: #333333;
 }
 
 .iceMnuPopVrtItemImage {
@@ -1696,7 +1697,6 @@ fieldset {
 /* was iceMenu_vertical */
     float: left;
     white-space: nowrap;
-
     margin: 0px;
     padding: 0px;
     border: 0px;
@@ -1707,9 +1707,10 @@ fieldset {
 .iceMnuPopVrtTopSubMenu {
     padding: 1px;
     width: 160px;
-    background-color: #EFEFEF;
+    background-color: #FCFCFC;
     border: 1px solid #999999;
     position: absolute;
+    font-size: 10px;
     height: auto;
     display: block;
 }
@@ -1739,7 +1740,7 @@ fieldset {
 
 .iceMnuPopVrtItem a:hover {
 /* was iceMenu_verticalItem */
-    background-color: #2A6CC2;
+    background-color: #4591A1;
     color: #FFFFFF;
     text-decoration: none;
 }
