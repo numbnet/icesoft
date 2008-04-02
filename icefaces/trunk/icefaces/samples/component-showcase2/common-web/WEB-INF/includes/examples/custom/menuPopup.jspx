@@ -49,7 +49,8 @@ invoke application logic to fire effects.
 
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer" style="width:352px;height:122px;">
+    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer"
+                    style="width:362px;height:122px;">
 
         <!-- Text example popup area -->
         <ice:panelGroup style="margin:5px;text-align: justify;"
@@ -62,14 +63,15 @@ invoke application logic to fire effects.
         </ice:panelGroup>
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer" style="width:352px;height:122px;">
+    <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer"
+                    style="width:362px;height:122px;">
         <!-- graphic image example popup area -->
-        <ice:panelGroup style="margin-right:5px;"
+        <ice:panelGroup style="padding:5px;"
                         id="menuBarImage"
                         menuPopup="menuPopupEffects" >
 
             <ice:graphicImage value="./images/icefaces-menupop.png"
-                alt="ICEfaces" title="ICEfaces"/>
+                alt="ICEfaces" title="ICEfaces" width="352" height="122"/>
 
         </ice:panelGroup>
 

@@ -71,7 +71,7 @@ dynamically changed.
     </ice:panelGroup>
 
     <!-- Label alignment for progress and completed messages -->
-    <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 25px;">
+    <ice:panelGroup style="float:left;margin-right: 25px;">
 
         <ice:outputLabel
                 for="labelAlign"
@@ -165,7 +165,7 @@ dynamically changed.
     </ice:panelGroup>
            
     <!-- OutputProgress component displaying dynamic properties defined above -->
-    <center>
+    <ice:panelGroup style="float: left;margin-left:25px;">
         <ice:outputProgress
             id="percentStandard"
             labelPosition="#{outputProgressController.outputProgressModel.labelPosition}"
@@ -173,7 +173,7 @@ dynamically changed.
             labelComplete="#{outputProgressController.outputProgressModel.completedMessage}"
             indeterminate="#{outputProgressController.outputProgressModel.intermediatMode}"
             value="#{outputProgressController.outputProgressModel.percentComplete}"/>
-    </center>
+    </ice:panelGroup>
 
 </ice:panelGroup>
 

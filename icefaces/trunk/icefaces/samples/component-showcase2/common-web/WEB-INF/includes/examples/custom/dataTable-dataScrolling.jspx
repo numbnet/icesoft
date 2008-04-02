@@ -102,7 +102,7 @@ with more data than can be displayed in a single page.
                    rows="#{dataScrollingModel.selectedDataScrollModes[dataScrollingModel.selectedDataScrollMode].rows}"
                    scrollable="#{dataScrollingModel.selectedDataScrollModes[dataScrollingModel.selectedDataScrollMode].scrollingEnabled}"
                    scrollHeight="250px"
-                   columnWidths="90px,90px,90px,90px"
+                   columnWidths="100px,100px,100px,100px"
                    styleClass="dataPaginatorDataTable" >
                 <ice:column>
                     <f:facet name="header">
