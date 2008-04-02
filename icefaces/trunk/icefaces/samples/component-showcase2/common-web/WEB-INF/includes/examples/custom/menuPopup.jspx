@@ -79,8 +79,7 @@ invoke application logic to fire effects.
 
     <!-- simple image menupup -->
     <ice:menuPopup id="menuPopupEffects"
-                   imageDir="#{styleBean.imageDirectory}"
-                   styleClass="menuPopupEffects">
+                   imageDir="#{styleBean.imageDirectory}">
         <!-- File menu -->
         <ice:menuItem id="effects"
                       value="#{msgs['page.menuPopup.menu.label']}">
