@@ -204,11 +204,16 @@
                     './css/images/navigation-tree/tree_folder_open.gif',
                     './css/images/navigation-tree/tree_node.gif',
                     './css/images/navigation-tree/tree_node_rollover.gif',
-                    './css/images/navigation-tree/tree_node_selected.gif'
-                    );
+                    './css/images/navigation-tree/tree_node_selected.gif',
 
-            // -->
-            ]]>
+                    './images/panelStack/address-thumb.png',
+                    './images/panelStack/auction-thumb.png',
+                    './images/panelStack/mobility-thumb.png',
+                    './images/panelStack/timezone-thumb.png'
+
+                    );
+                   // -->
+                   ]]>
               </script>
           </body>
       </html>

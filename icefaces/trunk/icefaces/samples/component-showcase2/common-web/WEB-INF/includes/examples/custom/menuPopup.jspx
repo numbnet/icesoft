@@ -52,7 +52,7 @@ invoke application logic to fire effects.
     <ice:panelGroup styleClass="exampleBox menuPopupContainer menuPopupContainer" style="width:352px;height:122px;">
 
         <!-- Text example popup area -->
-        <ice:panelGroup style="margin:5px; text-align: justify;"
+        <ice:panelGroup style="margin:5px;text-align: justify;"
                         id="menuBarText"
                         menuPopup="menuPopupEffects" >
 

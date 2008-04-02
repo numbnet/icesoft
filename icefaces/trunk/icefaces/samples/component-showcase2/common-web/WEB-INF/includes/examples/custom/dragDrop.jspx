@@ -154,7 +154,7 @@
                 <ice:outputText
                         value="#{msgs['page.dragDrop.cart.quantity.label']}"/>
             </f:facet>
-            <ice:panelGroup effect="#{cartItem.changeQuantityEffect}" >
+            <ice:panelGroup effect="#{cartItem.changeQuantityEffect}" style="text-align:center;" >
                 <ice:outputText id="DDQtyout"
                                 value="#{cartItem.quantity}" />
             </ice:panelGroup>

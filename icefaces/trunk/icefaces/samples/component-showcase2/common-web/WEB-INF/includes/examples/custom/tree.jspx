@@ -91,7 +91,7 @@
     <!-- actual backing bean values. -->
     <ice:panelGroup styleClass="backBeanChangeBody"
                     effect="#{treeController.valueChangeEffect}">
-            <ice:panelGroup style="margin: 0; padding: 0;">
+            <ice:panelGroup style="margin: 0; padding: 0;width:350px;">
                 <ice:panelGrid cellpadding="0" cellspacing="3" columns="2"
                         rendered="#{treeController.selectedUserObject.employee != null}">
         
