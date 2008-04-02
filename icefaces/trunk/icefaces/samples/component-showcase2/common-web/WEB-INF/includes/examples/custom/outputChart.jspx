@@ -98,6 +98,7 @@
                 <ice:outputLabel for="areaMap"
                         value="#{msgs['page.outputChart.imageMap.label']}" />
                 <ice:inputText id="areaMap"
+                    style="border: none;"
                     readonly="true"
                     disabled="#{not chartController.currentChartModel.areaMapEnabled}"
                     value="#{chartController.currentChartModel.areaMapClickValue}" />

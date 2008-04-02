@@ -135,7 +135,7 @@ public class CityDictionary {
 
             int insert = Collections.binarySearch(
                     cityDictionary,
-                    new SelectItem(null, searchWord),
+                    new SelectItem("", searchWord),
                     LABEL_COMPARATOR);
 
             // less then zero if we have a partial match

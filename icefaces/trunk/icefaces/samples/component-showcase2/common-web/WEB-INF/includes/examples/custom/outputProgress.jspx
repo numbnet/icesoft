@@ -62,10 +62,10 @@ dynamically changed.
                             partialSubmit="true"
                             layout="pageDirection">
             <f:selectItem id="standardRb"
-                          itemValue="false"
+                          itemValue="#{false}"
                           itemLabel="#{msgs['page.outputProgress.mode.standard.label']}"/>
             <f:selectItem id="indeterminateRb"
-                          itemValue="true"
+                          itemValue="#{true}"
                           itemLabel="#{msgs['page.outputProgress.mode.indeterminate.label']}"/>
         </ice:selectOneRadio>
     </ice:panelGroup>
@@ -175,6 +175,11 @@ dynamically changed.
             value="#{outputProgressController.outputProgressModel.percentComplete}"/>
     </center>
 
+</ice:panelGroup>
+
+<ice:panelGroup styleClass="clearer"/>
+<ice:panelGroup>
+    <ice:messages layout="table"/>
 </ice:panelGroup>
 
 </ice:panelGroup>

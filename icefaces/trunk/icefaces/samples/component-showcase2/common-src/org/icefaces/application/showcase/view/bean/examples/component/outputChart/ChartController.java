@@ -123,7 +123,7 @@ public class ChartController {
                 new ChartModelCustom(true, false, false, false));
 
         // set the default dataModel
-        currentChartType = OutputChart.PIE2D_CHART_TYPE;
+        currentChartType = OutputChart.CUSTOM_CHART_TYPE;
         currentChartModel = chartDataModels.get(currentChartType);
     }
 
