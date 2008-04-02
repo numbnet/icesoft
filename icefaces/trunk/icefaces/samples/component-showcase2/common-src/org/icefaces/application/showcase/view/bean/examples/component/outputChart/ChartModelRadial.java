@@ -51,10 +51,12 @@ public class ChartModelRadial extends AbstractChartData<ArrayList<Double>> {
 
     public ArrayList<Double> chartData;
 
-    public ChartModelRadial(boolean areaMapEnabled,
+    public ChartModelRadial(String chartTitle,
+                            boolean areaMapEnabled,
                             boolean axisOrientationEnabled,
                             boolean enableDynamicValues,
                             boolean enabledLengendPosition) {
+        this.chartTitle = chartTitle;
         this.areaMapEnabled = areaMapEnabled;
         this.axisOrientationEnabled = axisOrientationEnabled;
         this.enableDynamicValues = enableDynamicValues;

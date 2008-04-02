@@ -80,10 +80,10 @@ the click of a button.
                                timeZone="#{dateSelect.timeZone}"/>
         </ice:selectInputDate>
 
-        <ul style="padding-left:15px;margin-left:0;">
-            <li>Weekends have dark gray backgrounds</li>
-            <li>August days are bold</li>
-        </ul>
+        <ice:panelGroup style="text-align:right;margin-top:10px;">
+            Weekends have dark gray backgrounds<br />
+            August days are bold <br />
+        </ice:panelGroup>
 
     </ice:panelGroup>
 

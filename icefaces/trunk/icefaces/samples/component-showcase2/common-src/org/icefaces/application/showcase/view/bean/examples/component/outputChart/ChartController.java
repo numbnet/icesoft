@@ -48,20 +48,31 @@ import java.util.Map;
  */
 public class ChartController {
 
+    private static final String AREA_CHART_NAME = "Area";
+    private static final String AREA_STACKED_CHART_NAME = "Area Stacked";
+    private static final String BAR_CHART_NAME = "Bar";
+    private static final String BAR_CLUSTERED_CHART_NAME = "Bar Clustered";
+    private static final String BAR_STACKED_CHART_NAME = "Bar Stacked";
+    private static final String LINE_CHART_NAME = "Line";
+    private static final String POINT_CHART_NAME = "Point";
+    private static final String PIE2D_CHART_NAME = "Pie 2D";
+    private static final String PIE3D_CHART_NAME = "Pie 3D";
+    private static final String CUSTOM_CHART_NAME = "Custom";
+
 
     // List of outputChart that the user can view in jspx page
     private static final SelectItem[] chartList = new SelectItem[]{
-            new SelectItem(OutputChart.AREA_CHART_TYPE, "Area"),
-            new SelectItem(OutputChart.AREA_STACKED_CHART_TYPE, "Area Stacked"),
-            new SelectItem(OutputChart.BAR_CHART_TYPE, "Bar"),
-            new SelectItem(OutputChart.BAR_CLUSTERED_CHART_TYPE, "Bar Clustered"),
-            new SelectItem(OutputChart.BAR_STACKED_CHART_TYPE, "Bar Stacked"),
-            new SelectItem(OutputChart.LINE_CHART_TYPE, "Line"),
+            new SelectItem(OutputChart.AREA_CHART_TYPE, AREA_CHART_NAME),
+            new SelectItem(OutputChart.AREA_STACKED_CHART_TYPE, AREA_STACKED_CHART_NAME),
+            new SelectItem(OutputChart.BAR_CHART_TYPE, BAR_CHART_NAME),
+            new SelectItem(OutputChart.BAR_CLUSTERED_CHART_TYPE, BAR_CLUSTERED_CHART_NAME),
+            new SelectItem(OutputChart.BAR_STACKED_CHART_TYPE, BAR_STACKED_CHART_NAME),
+            new SelectItem(OutputChart.LINE_CHART_TYPE, LINE_CHART_NAME),
 //            new SelectItem(OutputChart.STOCK_CHART_TYPE, "Stock"),
-            new SelectItem(OutputChart.POINT_CHART_TYPE, "Point"),
-            new SelectItem(OutputChart.PIE2D_CHART_TYPE, "Pie 2D"),
-            new SelectItem(OutputChart.PIE3D_CHART_TYPE, "Pie 3D"),
-            new SelectItem(OutputChart.CUSTOM_CHART_TYPE, "Custom")
+            new SelectItem(OutputChart.POINT_CHART_TYPE, POINT_CHART_NAME),
+            new SelectItem(OutputChart.PIE2D_CHART_TYPE, PIE2D_CHART_NAME),
+            new SelectItem(OutputChart.PIE3D_CHART_TYPE, PIE3D_CHART_NAME),
+            new SelectItem(OutputChart.CUSTOM_CHART_TYPE, CUSTOM_CHART_NAME)
     };
 
     // map of available chart types, keys should be defined in the chartList
@@ -85,27 +96,27 @@ public class ChartController {
 
         // add default axial type outputChart
         chartDataModels.put(OutputChart.AREA_CHART_TYPE,
-                new ChartModelAxial(false, false, true, true));
+                new ChartModelAxial(AREA_CHART_NAME, false, false, true, true));
         chartDataModels.put(OutputChart.AREA_STACKED_CHART_TYPE,
-                new ChartModelAxial(false, false, true, true));
+                new ChartModelAxial(AREA_STACKED_CHART_NAME, false, false, true, true));
         chartDataModels.put(OutputChart.BAR_CHART_TYPE,
-                new ChartModelAxial(true, true, true, true));
+                new ChartModelAxial(BAR_CHART_NAME, true, true, true, true));
         chartDataModels.put(OutputChart.BAR_CLUSTERED_CHART_TYPE,
-                new ChartModelAxial(true, true, true, true));
+                new ChartModelAxial(BAR_CLUSTERED_CHART_NAME, true, true, true, true));
         chartDataModels.put(OutputChart.BAR_STACKED_CHART_TYPE,
-                new ChartModelAxial(true, false, true, true));
+                new ChartModelAxial(BAR_STACKED_CHART_NAME, true, false, true, true));
         chartDataModels.put(OutputChart.LINE_CHART_TYPE,
-                new ChartModelAxial(true, false, true, true));
+                new ChartModelAxial(LINE_CHART_NAME, true, false, true, true));
         chartDataModels.put(OutputChart.POINT_CHART_TYPE,
-                new ChartModelAxial(true, false, true, true));
-        chartDataModels.put(OutputChart.STOCK_CHART_TYPE,
-                new ChartModelAxial(true, false, true, true));
+                new ChartModelAxial(POINT_CHART_NAME, true, false, true, true));
+//        chartDataModels.put(OutputChart.STOCK_CHART_TYPE,
+//                new ChartModelAxial(true, false, true, true));
 
         // add default pie type outputChart
         chartDataModels.put(OutputChart.PIE2D_CHART_TYPE,
-                new ChartModelRadial(false, false, false, true));
+                new ChartModelRadial(PIE2D_CHART_NAME, false, false, false, true));
         chartDataModels.put(OutputChart.PIE3D_CHART_TYPE,
-                new ChartModelRadial(false, false, false, true));
+                new ChartModelRadial(PIE3D_CHART_NAME, false, false, false, true));
 
         // add the only custom chart model.
         chartDataModels.put(OutputChart.CUSTOM_CHART_TYPE,
