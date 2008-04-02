@@ -53,7 +53,7 @@ public class Media {
 
         props = new Properties();
         props.setProperty("source", "./media/ICEfaces_Quicktime.mov");
-        props.setProperty("style", "width:300px;height:250px;");
+        props.setProperty("style", "width:300px;height:270px;");
         props.setProperty("autoStartParamName", "autoplay");
         props.setProperty("autoStartParamValue", "true");
         props.setProperty("controlsParamName", "controller");
