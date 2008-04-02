@@ -162,7 +162,11 @@ fieldset {
     z-index: -1;
     position: absolute;
     display: block;
-    /*filter: mask();*/
+    filter: mask();
+}
+
+.iceIEIFrameFix {
+    height: 0;
 }
 
 .iceSelInpDatePopup {
