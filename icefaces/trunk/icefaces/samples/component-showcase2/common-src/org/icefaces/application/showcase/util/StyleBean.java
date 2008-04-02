@@ -73,9 +73,9 @@ public class StyleBean {
     public StyleBean() {
         // initialize the style list
         styleList = new ArrayList<SelectItem>();
+        styleList.add(new SelectItem(RIME, RIME));
         styleList.add(new SelectItem(XP, XP));
         styleList.add(new SelectItem(ROYALE, ROYALE));
-        styleList.add(new SelectItem(RIME, RIME));
 
         styleMap = new HashMap<String, StylePath>(3);
         styleMap.put(RIME, new StylePath(

@@ -54,13 +54,13 @@
                        styleClass="chartConfigurationContainer verticalAlignTop chartsContainer">
 
              <!-- Horizontal/ vertical layout of axial data -->
-            <ice:panelGroup styleClass="firstChildTitle">
+            <ice:panelGroup styleClass="firstChildTitle"
+                            rendered="#{chartController.currentChartModel.axisOrientationEnabled}">
                 <ice:outputLabel
                         for="axialOrientation"
                         value="#{msgs['page.outputChart.orientation.label']}"/>
                 <ice:selectOneRadio
                         id="axialOrientation"
-                        disabled="#{not chartController.currentChartModel.axisOrientationEnabled}"
                         value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
                         partialSubmit="true" >
                     <f:selectItem itemValue="true"

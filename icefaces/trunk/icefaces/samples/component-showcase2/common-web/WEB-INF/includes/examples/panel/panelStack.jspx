@@ -93,7 +93,8 @@ to show how the selected panel can be dynamically changed.
                     <ice:graphicImage
                             value="#{msgs['page.panelStack.example.1.img']}"
                             alt="#{msgs['page.panelStack.example.1.label']}"
-                            title="#{msgs['page.panelStack.example.1.label']}"/>
+                            title="#{msgs['page.panelStack.example.1.label']}"
+                            width="124px" height="75px"/>
                     <!-- example link and text-->
                     <ice:panelGroup>
                         <ice:outputText
@@ -118,7 +119,8 @@ to show how the selected panel can be dynamically changed.
                     <ice:graphicImage
                             value="#{msgs['page.panelStack.example.2.img']}"
                             alt="#{msgs['page.panelStack.example.2.label']}"
-                            title="#{msgs['page.panelStack.example.2.label']}"/>
+                            title="#{msgs['page.panelStack.example.2.label']}"
+                            width="124px" height="75px"/>
                     <!-- example link and text-->
                     <ice:panelGroup>
                         <ice:outputText
@@ -142,7 +144,8 @@ to show how the selected panel can be dynamically changed.
                     <ice:graphicImage
                             value="#{msgs['page.panelStack.example.3.img']}"
                             alt="#{msgs['page.panelStack.example.3.label']}"
-                            title="#{msgs['page.panelStack.example.3.label']}"/>
+                            title="#{msgs['page.panelStack.example.3.label']}"
+                            width="124px" height="75px"/>
                     <!-- example link and text-->
                     <ice:panelGroup>
                         <ice:outputText
@@ -166,7 +169,8 @@ to show how the selected panel can be dynamically changed.
                     <ice:graphicImage
                             value="#{msgs['page.panelStack.example.4.img']}"
                             alt="#{msgs['page.panelStack.example.4.label']}"
-                            title="#{msgs['page.panelStack.example.4.label']}"/>
+                            title="#{msgs['page.panelStack.example.4.label']}"
+                            width="124px" height="75px"/>
                     <!-- example link and text-->
                     <ice:panelGroup>
                         <ice:outputText

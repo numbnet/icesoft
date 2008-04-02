@@ -69,7 +69,7 @@
     <ice:panelGroup styleClass="clearer" />
 
     <ice:panelGroup styleClass="exampleBox outputMediaContainer"
-            style="text-align:center;vertical-align: middle; background-color: #777777; ">
+            style="text-align:center;vertical-align: middle; background-color: #DDDDDD; ">
         <ice:outputMedia player="#{media.selectedPlayer}"
                          source="#{media.source}"
                          style="#{media.style}">
