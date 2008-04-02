@@ -65,43 +65,7 @@
   -->
 <faces-config xmlns="http://java.sun.com/JSF/Configuration">
 
-    <managed-bean>
-        <description>
-
-        </description>
-        <managed-bean-name>applicationBuilder</managed-bean-name>
-        <managed-bean-class>
-            org.icefaces.application.showcase.view.builder.ApplicationBuilder
-        </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
-        <description>
-
-        </description>
-        <managed-bean-name>applicationController</managed-bean-name>
-        <managed-bean-class>
-            org.icefaces.application.showcase.view.bean.ApplicationController
-        </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
-        <description>
-
-        </description>
-        <managed-bean-name>applicationModel</managed-bean-name>
-        <managed-bean-class>
-            org.icefaces.application.showcase.view.bean.ApplicationSessionModel
-        </managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-        <managed-property>
-            <property-name>currentNode</property-name>
-            <value>#{applicationBuilder.defaultNode}</value>
-        </managed-property>
-    </managed-bean>
-
+    
     <managed-bean>
         <managed-bean-name>employeeServiceImpl</managed-bean-name>
         <managed-bean-class>org.icefaces.application.showcase.model.service.impl.EmployeeServiceImpl</managed-bean-class>
