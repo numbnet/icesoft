@@ -72,13 +72,13 @@ li {
     font: 10px tahoma, arial, sans-serif;
 }
 
-#mainPRES { 
-    float: left;
+.mainPRES { 
     width: 346px; /*Width of left column*/
     padding: 0px;
 }
 
-#mainCHAT {
+.mainCHAT {
+	float: none;
     margin-left: 346px; /*Set left margin to LeftColumnWidth*/
     width: 134px;
 }

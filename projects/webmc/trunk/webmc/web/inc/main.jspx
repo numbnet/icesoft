@@ -52,10 +52,10 @@
                                     style="background-color: #C7DFEF; color: #2D6387;"/>
                 </ice:panelGroup>
         
-        <div id="mainPRES">
+        <div class="mainPRES">
             <ui:include src="presentation.jspx"/>
         </div>
-        <div id="mainCHAT">
+        <div class="mainCHAT">
             <ui:include src="participants.jspx"/>
             <ui:include src="chat.jspx"/>
         </div>

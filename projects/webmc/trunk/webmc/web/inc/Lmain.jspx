@@ -17,23 +17,17 @@
 	</div>
 
 	<ice:form styleClass="mainForm">
-	<table width="100%" border="0" cellspacing="0" cellpadding="0"
-	       class="height100">
-		<tr>
-			<td class="mainPRES" valign="top">
+        <div class="mainBackground" >
+			<div class="mainPRES">
 			    <ui:include src="Lpresentation.jspx"/>
-			</td>
-    		<td class="mainCHAT" valign="top" width="270" style="margin-bottom: 30px;">
-				<img src="resources/images/logo_reflection.jpg" align="right"
-				     style="width: 266px; height: 30px; vertical-align: top; text-align: right;"/>
-				<img src="resources/images/part_tab.jpg" style="vertical-align: bottom;"/>
-		
-                   <ui:include src="Lparticipants.jspx"/>
+			</div>
+    		<div class="mainCHAT">
+				<img src="resources/images/logo_reflection.jpg" />
+				<img src="resources/images/part_tab.jpg"/>
+                <ui:include src="Lparticipants.jspx"/>
 				<ui:include src="Lchat.jspx"/>
-				
-    		</td>
-		</tr>
-	</table>
+    		</div>
+        </div>
 	</ice:form>
 
     <div class="footerBar">

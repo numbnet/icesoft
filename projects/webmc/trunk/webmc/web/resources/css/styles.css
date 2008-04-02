@@ -57,8 +57,7 @@ img {
 }
 
 #container{
-       width: 1024px;
-       height: 100%;
+    width: 1024px;
 }
 
 .blueBar, .menuBar, .navigationBar, .mainForm, .footerBar{
@@ -96,6 +95,44 @@ img {
     background: url( '../images/bgslice_bluebar.jpg' ) repeat-x top left;
 }
 
+.mainBackground{
+	background-color: #FFFFFF;
+	background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+	height: 641px;
+}
+
+.mainPRES {
+    padding: 30px 10px 30px 10px;
+    width: 730px;
+    float: left;
+}
+
+.presentationImageTable {
+    width: 730px;
+    height: 550px;
+    border: thick groove #96B2CF;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.mainCHAT {    
+    float: right;
+    width: 270px;
+}
+
+.chat, .participant {
+    background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
+    border-top: 1px solid #90B1C9;
+}
+
+.chat {
+    border-bottom: 1px solid #90B1C9;
+}
+
+.chat a {
+    text-decoration: underline;
+}
+
 /* TEXT STYLES */
 td {
     font: 11px tahoma, arial, sans-serif;
@@ -128,14 +165,6 @@ a.linkORANGE:hover {
     text-decoration: underline;
 }
 
-.presentationImageTable {
-    width: 730px;
-    height: 550px;
-    border: thick groove #96B2CF;
-    text-align: center;
-    vertical-align: middle;
-}
-
 /* FORM STYLES */
 .inputPAGENUM {
     color: #4878A1;
@@ -165,30 +194,6 @@ li {
     margin-bottom: 7px;
     border-bottom: 1px dashed #B4C7D4;
     width: 100%;
-}
-
-.mainPRES {
-    background-color: #FFFFFF;
-    padding: 30px 10px 30px 10px;
-    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
-}
-
-.mainCHAT {
-    background-color: #FFFFFF;
-    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
-}
-
-.chat, .participant {
-    background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
-    border-top: 1px solid #90B1C9;
-}
-
-.chat {
-    border-bottom: 1px solid #90B1C9;
-}
-
-.chat a {
-    text-decoration: underline;
 }
 
 .cellBGglossyDARK {
