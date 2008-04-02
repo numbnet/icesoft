@@ -195,7 +195,8 @@ Ice.Resizable = Class.create({
 Ice.ResizableGrid = Class.create(Ice.Resizable, {
   initialize: function($super, event) {
     $super(event);
-    this.source.style.height = (Element.getHeight(this.getContainerElement())) + "px";
+    this.cntHght = (Element.getHeight(this.getContainerElement())) + "px";
+    this.source.style.height = this.cntHght;
     this.getGhost().style.left= Event.pointerX(event) + "px";
   }
 });
@@ -223,7 +224,17 @@ Ice.ResizableGrid.addMethods({
     } else {
         return this.source.parentNode.nextSibling.nextSibling.firstChild;
     }
-  }
+  },
+  
+  resize: function($super, event) {
+    this.source.style.height = this.cntHght;
+    this.getGhost().style.height = this.cntHght;    
+    $super(event);    
+    this.source.style.height = this.cntHght;
+    this.getGhost().style.height = this.cntHght;    
+  }  
+  
+
 });
 
 Ice.PanelDivider = Class.create(Ice.Resizable, {
