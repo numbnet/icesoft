@@ -151,11 +151,12 @@ fieldset {
 .iceSelInpDate {
 /* calendar outline & background color */
     background-color: #FFFFFF;
-    border-right: none;
-    border-bottom: none;
     border-top: 1px solid #d9d9d9;
     border-left: 1px solid #d9d9d9;
     margin-top: 10px;
+}
+table.iceSelInpDate tbody tr td table{
+    border-right: 1px solid #d9d9d9;
 }
 
 .iceSelInpDateIFrameFix, .iceIEIFrameFix {
@@ -256,7 +257,7 @@ fieldset {
     border-top: 1px solid #d9d9d9;
     border-right: 1px solid #d9d9d9;
     border-bottom: 1px solid #d9d9d9;
-    width: 22px;
+    /*width: 22px;*/
 }
 
 /* set the look for the days of the week backgrounds */
