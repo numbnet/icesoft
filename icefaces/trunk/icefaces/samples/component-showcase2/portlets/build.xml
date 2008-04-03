@@ -139,6 +139,8 @@
             <param name="liferay" value=""/>
         </antcall>
     </target>
+    <target name="tomcat6.0" depends="build.portlet.liferay.tomcat6.war"/>
+
     <target name="build.portlet.liferay.tomcat6.ahs.war" description="build a portlet application for Liferay Tomcat6.x with AHS">
         <antcall target="build.portlet.war">
             <param name="comp.xml" value="./conf/web.sunri.icefaces.portlet.tomcat.ahs.xml"/>
