@@ -61,9 +61,9 @@ public class SelectInputTextController extends BaseBean {
     private static int cityListLength = 15;
 
     // value associatd with first selectInput Component
-    private String selectedCityValue1;
+    private String selectedCityValue1 = "";
     // value associatd with first selectInput Component
-    private String selectedCityValue2;
+    private String selectedCityValue2 = "";
 
     // selected city information, assigned when user uses mouse or enter key
     // to select a city.
@@ -92,10 +92,10 @@ public class SelectInputTextController extends BaseBean {
                     (SelectInputText) event.getComponent();
             // get the new value typed by component user.
             String newWord = (String) event.getNewValue();
-
+            System.out.println("Selection event " + newWord);
             cityMatchPossibilities =
                     cityDictionary.generateCityMatches(newWord, cityListLength);
-
+            System.out.println("found " + cityMatchPossibilities.size());
             // if there is a selected item then find the city object of the
             // same name
             if (autoComplete.getSelectedItem() != null) {
