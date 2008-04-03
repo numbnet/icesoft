@@ -20,13 +20,15 @@
     	<include name="lib/hibernate*.jar"/>
      	<!-- icefaces dependencies for jboss-4.0.5 -->
     	<include name="lib/jstl*.jar"/>
+    	<include name="lib/jsp-api.jar"/>
+    	<include name="lib/lucene-core.jar"/>
     </fileset>
 	
 
 
     <!-- Needed since JBoss 4.0.5 does not support JSP 2.0 -->   
-	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">
-	    <include name="el-*.jar"/>
+	<fileset id="jboss.archive.jar" dir="${icefaces.home}">
+	    <include name="lib/el-*.jar"/>
 	</fileset>
 	<fileset id="noejb.war.extras" dir="${resources.dir}">
 		<include name="WEB-INF/jboss-web.xml"/>

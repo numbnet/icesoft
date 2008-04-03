@@ -53,7 +53,7 @@
 		<echo message="exploded archives dir: ${exploded-archives.dir}"/>
 		<echo message="dist dir: ${dist.dir}"/>
 		<echo message="war dir: ${war.dir}"/>
- 		<echo message="war.resources: ${war.resources}"/>
+ 		<echo message="war.resources.dir: ${war.resources.dir}"/>
 
 
 

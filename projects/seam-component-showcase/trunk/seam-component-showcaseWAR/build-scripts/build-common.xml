@@ -174,7 +174,6 @@
             <fileset dir="${basedir}/resources-jboss">
                 <include name="seam.properties" />
             	<include name="import.sql"/>
-           <!-- 	<include name="META-INF/*.*"/> -->
             </fileset>
         </copy>
        <copy todir="${war.resources.dir}">
@@ -247,7 +246,8 @@
 		     <include name="lib/commons-fileupload.jar"/> 	
              <include name="lib/krysalis-jCharts-*.jar"/>
 	      </fileset>
-        </copy>       
+        </copy>  
+    	
     </target>
 	
 	
