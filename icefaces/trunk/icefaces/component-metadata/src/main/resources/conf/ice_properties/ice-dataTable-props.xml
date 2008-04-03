@@ -148,6 +148,11 @@
                 <li>iceDatTblHdr</li>
                 <li>iceDatTblFtr</li>                
               </ul>   
+              The following style class is being rendered for the div of the 
+              "header" if the dataTable is scrollable. 
+              <ul>
+                <li>iceDatTblScrlSpr</li>                
+              </ul>               
         </p>		
      	]]>  		
 	</description>
