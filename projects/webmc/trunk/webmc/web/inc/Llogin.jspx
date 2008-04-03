@@ -37,7 +37,7 @@
 <div class="backgroundTop">
 <div class="backgroundBottom">
 <center>
-<ice:panelGroup styleClass="loginBox">
+<div class="loginBox">
 <ice:form>
     <ice:graphicImage value="resources/images/login_logo.gif" alt="Welcome to WebMC"
 	                  style="padding-bottom: 15px;"/>
@@ -132,7 +132,9 @@
                             visible="false"/>
         </ice:panelGroup>
         <!-- Space -->
-        <ice:panelGroup />
+        <ice:panelGroup>
+            &amp;nbsp;
+        </ice:panelGroup>
         <!-- Viewer inputs password -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
 	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" >
@@ -228,7 +230,7 @@
     </ice:panelGroup>
 	-->
 </ice:form>
-</ice:panelGroup>
+</div>
 </center>
 </div>
 </div>
