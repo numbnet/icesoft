@@ -7,7 +7,7 @@
 
 <html>
 <head>
-<title>Sell Item - Enter Shipping Information</title>
+<title>Sell Item - Shipping Summary</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -91,11 +91,17 @@
         </td>
 	</tr>
 	<tr>
-		<td colspan="2" class="buttonBar">
-            <a href="intro.iface"> Next Shipment</a>
+        <td colspan="2" class="buttonBar">
+            <ice:form id="startOverForm" >
+            <ice:commandButton id="startButton"
+                               value="another shipment"
+                               action="#{navBean.whereToStart}"
+                    rendered="true" />
+            </ice:form>
 		</td>
-	</tr>
-	</table>
+
+    </tr>
+    </table>
 </div>
 </f:view>
 

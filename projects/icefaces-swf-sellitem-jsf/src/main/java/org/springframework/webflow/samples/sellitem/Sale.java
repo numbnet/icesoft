@@ -17,6 +17,7 @@ package org.springframework.webflow.samples.sellitem;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.awt.event.ActionEvent;
 
 import org.springframework.core.style.ToStringCreator;
 
@@ -271,5 +272,7 @@ public class Sale implements Serializable {
         }
         return 0;         
     }
+
+ 
         
 }

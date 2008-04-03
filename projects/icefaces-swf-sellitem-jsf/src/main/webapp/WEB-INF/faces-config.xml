@@ -13,12 +13,21 @@
 		<phase-listener>org.springframework.webflow.executor.jsf.FlowPhaseListener</phase-listener>
 	</lifecycle>
 
-    <navigation-rule> 
-        <from-view-id>costOverview.jsp</from-view-id>
+      <managed-bean>
+           <managed-bean-name>navBean</managed-bean-name>
+           <managed-bean-class>org.springframework.webflow.samples.sellitem.NavBean</managed-bean-class>
+           <managed-bean-scope>session</managed-bean-scope>
+       </managed-bean>
+
+
+     <navigation-rule>
+        <from-view-id>/costOverview.jsp</from-view-id>
         <navigation-case>
-            <from-action>reset</from-action>
-            <from-outcome>navigateHome</from-outcome>
-            <to-view-id>intro.iface</to-view-id>
+            <from-outcome>startOver</from-outcome>
+            <to-view-id>/intro.iface</to-view-id>
+            <redirect/>
         </navigation-case>
-    </navigation-rule>
+     </navigation-rule>
+
+    
 </faces-config>
