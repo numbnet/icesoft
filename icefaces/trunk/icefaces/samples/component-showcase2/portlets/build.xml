@@ -98,7 +98,7 @@
 
     <target name="build.portlet.war" depends="portlet.compile">
 
-        <antcall target="copy.doc"/>
+        <!--<antcall target="copy.doc"/>-->
         <antcall target="copy.portlet.pages"/>
 
         <build.portlet.war web.xml="${comp.xml}" portlet.conf.liferay.dir="conf/liferay">
