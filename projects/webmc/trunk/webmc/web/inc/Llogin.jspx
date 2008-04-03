@@ -34,8 +34,8 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-<ice:panelGroup styleClass="backgroundTop">
-<ice:panelGroup styleClass="backgroundBottom">
+<div class="backgroundTop">
+<div class="backgroundBottom">
 <center>
 <ice:panelGroup styleClass="loginBox">
 <ice:form>
@@ -83,7 +83,6 @@
         </ice:panelGroup>
         <!-- Name error message -->
         <ice:panelGroup>
-            &amp;nbsp;
             <ice:message for="firstName" 
                          errorClass="inputError"/>
         </ice:panelGroup >
@@ -119,7 +118,6 @@
         </ice:panelGroup>
         <!-- Viewer Presentation Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}">
-            &amp;nbsp;
             <ice:message for="existingPresentationName"
                          errorClass="inputError"/>
         </ice:panelGroup>
@@ -130,18 +128,14 @@
         </ice:panelGroup>
         <!-- Refresh PersistentFacesState -->
         <ice:panelGroup>
-            &amp;nbsp;
             <ice:outputText value="#{participant.refreshPersistentFacesState}" 
                             visible="false"/>
         </ice:panelGroup>
         <!-- Space -->
-        <ice:panelGroup>
-            &amp;nbsp;
-        </ice:panelGroup>
+        <ice:panelGroup />
         <!-- Viewer inputs password -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
 	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" >
-	            &amp;nbsp;
 	        </ice:panelGroup>
             <ice:outputLabel rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
                              styleClass="loginLabel"
@@ -183,13 +177,9 @@
                        errorClass="inputError"/>
         </ice:panelGroup>
         <!-- Space -->
-        <ice:panelGroup>
-            &amp;nbsp;
-        </ice:panelGroup>
+        <ice:panelGroup />
         <!-- Space -->
-        <ice:panelGroup>
-            &amp;nbsp;
-        </ice:panelGroup>
+        <ice:panelGroup />
         <!-- Viewer Buttons -->
         <ice:panelGroup rendered="#{not participant.moderator}"
 	                    style="text-align: right; padding-bottom: 2px;">
@@ -229,9 +219,7 @@
             </ice:commandLink>
 	    </ice:panelGroup>
         <!-- Space -->
-        <ice:panelGroup>
-            &amp;nbsp;
-        </ice:panelGroup>
+        <ice:panelGroup />
     </ice:panelGrid>
 	<!--  
     <ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
@@ -242,6 +230,6 @@
 </ice:form>
 </ice:panelGroup>
 </center>
-</ice:panelGroup>
-</ice:panelGroup>
+</div>
+</div>
 </f:view>
