@@ -30,65 +30,33 @@
 * this file under either the MPL or the LGPL License."
 *
 */
-/* MAIN STYLES */
-html {
-    overflow: scroll;
-}
 
-body, html {
-    padding: 0;
-    margin: 0;
-}
-
-body {
-    height: 100%;
-    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
-}
-
-td {
-    font: 11px tahoma, arial, sans-serif;
-    color: #4878A1;
-}
-
-/* LINK STYLES */
-a {
-    color: #4878A1;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #5F9ED4;
-    text-decoration: underline;
-}
-
-/* FORM STYLES */
-.cellBGglossyDARK {
-    background: #FFFFFF url( '../images/bgslice_glossydarkblue.jpg' ) repeat-x top left;
-    padding: 10px 10px 10px 10px;
-    font: 10px tahoma, arial, sans-serif;
-    color: #FFFFFF;
-    text-align: center;
-}
-
-.mainLOGIN {
-    padding: 15px;
+.backgroundTop {
     background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
 }
 
-.facesBox {
-/*    background: #FFFFFF url( '../images/bg_mainfaces.jpg' ) no-repeat center; */
-    border: 1px solid #94B3CB;
-    padding-top: 125px;
-    height: 80%;
+.backgroundBottom {
+    padding: 125px 0px 335px 0px;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+
 }
 
 .loginBox {
     width: 70%;
 }
 
-.loginTable td {
-    padding: 6px;
-    width: 150px;
+.loginFirstColumn {
+    width: 30%;
+}
+
+.loginThirdColumn {
+    width: 40%;
+    text-align: right;
+}
+
+.loginErrorColumn {
+    width: 15%;
+    text-align: left;
 }
 
 .loginLabel {
