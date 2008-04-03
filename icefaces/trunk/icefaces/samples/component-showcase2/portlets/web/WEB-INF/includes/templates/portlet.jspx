@@ -30,31 +30,42 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
+
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <f:loadBundle basename="org.icefaces.application.showcase.view.resources.messages" var="msgs" />
+
+    <f:loadBundle basename="org.icefaces.application.showcase.view.resources.messages"
+                  var="msgs"/>
 
     <ice:outputDeclaration doctypeRoot="HTML"
                            doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
-                           doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd" />
-    <ice:portlet>
-        <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
-        <ice:outputStyle href="../css/showcase_style.css" />
+                           doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd"/>
 
-        <ice:outputConnectionStatus style="float:right" />
-        <ice:panelGroup id="buttonsAndLinksContentPanel" >
-            <ice:form>
-                <f:subview id="blSub">
-                    <ui:include src="/WEB-INF/includes/examples/standard/buttonsAndLinks.jspx" />
-                </f:subview>
-            </ice:form>
-        </ice:panelGroup>
+    <ice:portlet>
+
+        <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css"/>
+        <ice:outputStyle href="../css/showcase_style.css"/>
+
         <ice:panelGroup>
-            &#169; 2006 ICEsoft Technologies Inc. &#160; &#8226;
-            &#160; Toll Free: 1-877-263-3822 USA and Canada
+            <ice:outputConnectionStatus style="float:right;"/>
+            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+                <ice:form>
+                    <f:subview id="blSub">
+                        <jsp:directive.include
+                                file="/WEB-INF/includes/examples/standard/buttonsAndLinks.jspx"/>
+                    </f:subview>
+                </ice:form>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="clearer"/>
         </ice:panelGroup>
+
+
+        <ice:panelGroup style="margin-top:10px;">
+            <p>&#169; 2006 ICEsoft Technologies Inc. &#160; &#8226; &#160;
+            Toll Free: 1-877-263-3822 USA and Canada</p>
+        </ice:panelGroup>
+
     </ice:portlet>
 </f:view>

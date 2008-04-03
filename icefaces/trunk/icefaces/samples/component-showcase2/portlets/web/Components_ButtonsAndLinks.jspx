@@ -30,18 +30,19 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
+
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
-    <f:loadBundle
-            basename="org.icefaces.application.showcase.view.resources.messages"
-            var="msgs"/>
+    <f:loadBundle basename="org.icefaces.application.showcase.view.resources.messages"
+                  var="msgs"/>
     
     <ice:outputDeclaration doctypeRoot="HTML"
                            doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
                            doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd"/>
+
     <ice:portlet>
 
         <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css"/>

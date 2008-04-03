@@ -35,34 +35,37 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
-    <f:loadBundle basename="com.icesoft.icefaces.samples.showcase.resources.messages" var="msgs" />
-    <ice:outputDeclaration doctypeRoot="HTML" doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN" doctypeSystem="http://www.w3.org/TR/html4/loose.dtd" />
-    <ice:portlet style="width:450px;">
-        <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css" />
-        <ice:outputStyle href="../css/showcase_style.css" />
-                <ice:panelGroup>
-                    <ice:panelGrid styleClass="navConnectionStatus" columnClasses="statusLeft, statusRight" columns="2">
-                        <ice:outputConnectionStatus />
-                    </ice:panelGrid>
-                    <h2>
-                        <ice:outputText value="#{navigation.selectedPanel.menuContentTitle}"/>
-                    </h2>
-                    <div class="demoWindow">
-                        <ice:panelGroup id="outputProgressContentPanel" styleClass="contentIncludePanelGroup">
-                            <f:subview id="opSub">
-                                <jsp:directive.include file="../inc/components/outputProgress.jspx" />
-                            </f:subview>
-                        </ice:panelGroup>
-                    </div>
-                </ice:panelGroup>
-                <ice:panelGroup>
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="showcaseFooter">&#169; 2006 ICEsoft Technologies Inc. &#160; &#8226; &#160; Toll Free: 1-877-263-3822 USA and Canada
-                                <br />
-                            </td>
-                        </tr>
-                    </table>
-                </ice:panelGroup>
+
+    <f:loadBundle basename="org.icefaces.application.showcase.view.resources.messages"
+                  var="msgs"/>
+
+    <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd"/>
+
+    <ice:portlet>
+
+        <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css"/>
+        <ice:outputStyle href="../css/showcase_style.css"/>
+
+        <ice:panelGroup>
+            <ice:outputConnectionStatus style="float:right;"/>
+            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+                <ice:form>
+                    <f:subview id="blSub">
+                        <jsp:directive.include
+                                file="/WEB-INF/includes/examples/custom/outputProgress.jspx"/>
+                    </f:subview>
+                </ice:form>
+            </ice:panelGroup>
+            <ice:panelGroup styleClass="clearer"/>
+        </ice:panelGroup>
+
+
+        <ice:panelGroup style="margin-top:10px;">
+            <p>&#169; 2006 ICEsoft Technologies Inc. &#160; &#8226; &#160;
+            Toll Free: 1-877-263-3822 USA and Canada</p>
+        </ice:panelGroup>
+
     </ice:portlet>
 </f:view>
