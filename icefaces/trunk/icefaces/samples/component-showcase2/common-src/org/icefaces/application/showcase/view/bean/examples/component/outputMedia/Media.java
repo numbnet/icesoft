@@ -43,7 +43,7 @@ public class Media {
 
     static {
         Properties props = new Properties();
-        props.setProperty("source", "./media/ICEfaces_Flash.swf");
+        props.setProperty("source", "/media/ICEfaces_Flash.swf");
         props.setProperty("style", "width:300px;height:250px;");
         props.setProperty("autoStartParamName", "play");
         props.setProperty("autoStartParamValue", "true");
@@ -52,7 +52,7 @@ public class Media {
         players.put("flash", props);
 
         props = new Properties();
-        props.setProperty("source", "./media/ICEfaces_Quicktime.mov");
+        props.setProperty("source", "/media/ICEfaces_Quicktime.mov");
         props.setProperty("style", "width:300px;height:270px;");
         props.setProperty("autoStartParamName", "autoplay");
         props.setProperty("autoStartParamValue", "true");
@@ -61,7 +61,7 @@ public class Media {
         players.put("quicktime", props);
 
         props = new Properties();
-        props.setProperty("source", "./media/ICEfaces_Windows_Media.wmv");
+        props.setProperty("source", "/media/ICEfaces_Windows_Media.wmv");
         props.setProperty("style", "width:300px;height:250px;");
         props.setProperty("autoStartParamName", "autostart");
         props.setProperty("autoStartParamValue", "1"); // Firefox doesn't work with true/false
