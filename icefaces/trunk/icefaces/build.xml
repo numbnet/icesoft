@@ -82,7 +82,7 @@
     </ice:subant>
 
     <ice:subant target="tomcat6.0">
-        <fileset dir="samples" includes="**/build.xml" excludes="**/component-showcase2/**/build.xml"/>
+        <fileset dir="samples" includes="**/build.xml"/>
         <!--target name="build.war"/-->
         <propertyset refid="product.info"/>
     </ice:subant>
@@ -103,7 +103,8 @@
 
     <delete dir="${dist.dir}/samples"/>
     <copy todir="${dist.dir}/samples" flatten="true">
-        <fileset dir="samples" includes="**/*.war"/>
+        <fileset dir="samples" includes="**/*.war" excludes="*component-showcase*/"/>
+        <fileset file="samples/component-showcase2/facelets/dist/component-showcase.war"/>
     </copy>
 </target>
 
