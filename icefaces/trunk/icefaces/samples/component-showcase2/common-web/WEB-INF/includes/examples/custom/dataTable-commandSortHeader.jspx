@@ -55,7 +55,6 @@ clicking the column header.
         <ice:dataTable id="dataSortData"
                        value="#{sortHeaderModel.employees}"
                        var="employee"
-                       rows="10"
                        width="100%"
                        sortColumn="#{sortHeaderModel.columnName}"
                        sortAscending="#{sortHeaderModel.descending}" >
