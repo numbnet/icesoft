@@ -34,7 +34,11 @@ package org.icefaces.application.showcase.view.bean.examples.component.dataPagin
 
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.ListDataModel;
 import java.util.HashMap;
+
+import com.icesoft.faces.component.datapaginator.DataPaginator;
 
 /**
  * <p>The DataScrollingModel class is used to show how a dataTable data
@@ -64,6 +68,10 @@ public class DataScrollingModel extends DataTableBase {
     private String selectedDataScrollMode;
     private static HashMap<String, DataScrollMode> selectedDataScrollModes;
 
+    // Used in this example to reset the paginator when moving between
+    // scrolling views, not needed in normal application development. 
+    private DataPaginator dataPaginatorBinding;
+
     /**
      * Creates a new instance where the efault scrolling is none.
      */
@@ -86,6 +94,16 @@ public class DataScrollingModel extends DataTableBase {
                 new DataScrollMode(9, false, true));
     }
 
+    public void dataModelChangeListener(ValueChangeEvent event){
+        String oldPagingValue = (String)event.getOldValue();
+
+        if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
+                dataPaginatorBinding != null){
+            System.out.println("resetting paginator. ");
+            dataPaginatorBinding.gotoFirstPage();
+        }
+    }
+
     public String getSelectedDataScrollMode() {
         return selectedDataScrollMode;
     }
@@ -104,6 +122,14 @@ public class DataScrollingModel extends DataTableBase {
     protected void init() {
         // build employee list form employee service.
         employees = employeeService.getEmployees(50);
+    }
+
+    public DataPaginator getDataPaginatorBinding() {
+        return dataPaginatorBinding;
+    }
+
+    public void setDataPaginatorBinding(DataPaginator dataPaginatorBinding) {
+        this.dataPaginatorBinding = dataPaginatorBinding;
     }
 
     /**
