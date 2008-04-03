@@ -99,7 +99,6 @@ public class DataScrollingModel extends DataTableBase {
 
         if (oldPagingValue.equals(PAGINATOR_SCROLLING) &&
                 dataPaginatorBinding != null){
-            System.out.println("resetting paginator. ");
             dataPaginatorBinding.gotoFirstPage();
         }
     }

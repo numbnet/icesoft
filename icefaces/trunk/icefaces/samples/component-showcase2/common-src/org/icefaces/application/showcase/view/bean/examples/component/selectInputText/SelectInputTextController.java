@@ -92,10 +92,10 @@ public class SelectInputTextController extends BaseBean {
                     (SelectInputText) event.getComponent();
             // get the new value typed by component user.
             String newWord = (String) event.getNewValue();
-            System.out.println("Selection event " + newWord);
+
             cityMatchPossibilities =
                     cityDictionary.generateCityMatches(newWord, cityListLength);
-            System.out.println("found " + cityMatchPossibilities.size());
+            
             // if there is a selected item then find the city object of the
             // same name
             if (autoComplete.getSelectedItem() != null) {
