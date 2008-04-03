@@ -710,9 +710,10 @@ public class SelectInputDateRenderer
                 tr1 = domContext.createElement(HTML.TR_ELEM);
                 table.appendChild(tr1);
             }
-
-            writeCell(domContext, facesContext, writer, inputComponent, "",
-                      null, inputComponent.getDayCellClass(), tr1, null, i,
+            
+            writeCell(domContext, facesContext, writer, inputComponent, "&nbsp;",
+                      null, inputComponent.getDayCellClass(), tr1, null,
+                      (weekStartsAtDayIndex + i) % 7,
                       timeKeeper, months, weekdaysLong);
             columnIndexCounter++;
         }
@@ -817,8 +818,9 @@ public class SelectInputDateRenderer
         if ((columnIndexCounter != 0) && (tr2 != null)) {
             for (int i = columnIndexCounter; i < weekdays.length; i++) {
                 writeCell(domContext, facesContext, writer,
-                          inputComponent, "", null,
-                          inputComponent.getDayCellClass(), tr2, null, i,
+                          inputComponent, "&nbsp;", null,
+                          inputComponent.getDayCellClass(), tr2, null,
+                          (weekStartsAtDayIndex + i) % 7,
                           timeKeeper, months, weekdaysLong);
              }
         }
