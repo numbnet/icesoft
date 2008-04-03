@@ -66,9 +66,12 @@ implements CometProcessor, ContextEventListener {
     }
 
     public void iceFacesIdDisposed(final ICEfacesIDDisposedEvent event) {
-        /*
-         * The ICEfacesIDDisposedEvent happens on shutdown sequence.
-         */
+        // The ICEfacesIDDisposedEvent happens on shutdown sequence.
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException exception) {
+            // ignoring interrupts.
+        }
         HttpSession session = event.getHttpSession();
         synchronized (eventResponderMap) {
             if (eventResponderMap.containsKey(session)) {
@@ -200,19 +203,19 @@ implements CometProcessor, ContextEventListener {
          *                   that time.
          */
         HttpServletRequest request = event.getHttpServletRequest();
-        InputStream is = request.getInputStream();
-        byte[] buf = new byte[4096];
+        InputStream in = request.getInputStream();
+        byte[] buffer = new byte[4096];
         int n;
         try {
             do {
-                n = is.read(buf);
+                n = in.read(buffer);
                 if (n > 0) {
-                    LOG.info(new String(buf, 0, n));
+//                    LOG.info("POST: [" + new String(buffer, 0, n) + "]");
                 } else if (n == -1) {
                     error(event);
                     return;
                 }
-            } while (is.available() > 0);
+            } while (in.available() > 0);
         } catch (EOFException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
@@ -241,7 +244,15 @@ implements CometProcessor, ContextEventListener {
             }
         }
         if (eventResponder != null) {
-            eventResponder.sendResponse(event);
+            synchronized (eventResponder.allUpdatedViews) {
+                if (eventResponder.sendResponse(
+                        event.getHttpServletResponse())) {
+
+                    event.close();
+                } else {
+                    eventResponder.pendingRequest = event;
+                }
+            }
         } else {
             error(event);
         }
@@ -266,7 +277,6 @@ implements CometProcessor, ContextEventListener {
         private final Collection synchronouslyUpdatedViews;
 
         private CometEvent pendingRequest;
-        private boolean disposed = false;
 
         private EventResponder(
             final String sessionID, final ViewQueue allUpdatedViews,
@@ -282,8 +292,12 @@ implements CometProcessor, ContextEventListener {
             synchronized (allUpdatedViews) {
                 if (pendingRequest != null) {
                     try {
-                        sendResponse(pendingRequest);
-                        pendingRequest = null;
+                        if (sendResponse(
+                                pendingRequest.getHttpServletResponse())) {
+
+                            pendingRequest.close();
+                            pendingRequest = null;
+                        }
                     } catch (IOException exception) {
                         if (LOG.isErrorEnabled()) {
                             LOG.error(
@@ -297,46 +311,117 @@ implements CometProcessor, ContextEventListener {
         }
 
         private void dispose() {
-            disposed = true;
+            responseSender = LastUpdatedViewsSender;
         }
 
-        private void sendResponse(final CometEvent event)
+        private Set<String> getUpdatedViews() {
+            Set<String> viewIdentifierSet;
+            synchronized (allUpdatedViews) {
+                allUpdatedViews.removeAll(synchronouslyUpdatedViews);
+                synchronouslyUpdatedViews.clear();
+                viewIdentifierSet = new HashSet<String>(allUpdatedViews);
+                allUpdatedViews.clear();
+            }
+            return viewIdentifierSet;
+        }
+
+        private boolean sendResponse(final HttpServletResponse response)
         throws IOException {
-            if (!disposed) {
-                synchronized (allUpdatedViews) {
-                    allUpdatedViews.removeAll(synchronouslyUpdatedViews);
-                    synchronouslyUpdatedViews.clear();
-                    Set viewIdentifierSet = new HashSet(allUpdatedViews);
-                    allUpdatedViews.clear();
-                    if (!viewIdentifierSet.isEmpty()) {
-                        HttpServletResponse response =
-                            event.getHttpServletResponse();
-                        response.setContentType("text/xml; charset=UTF-8");
-                        String[] viewIdentifiers =
-                            (String[])
-                                viewIdentifierSet.toArray(
-                                    new String[viewIdentifierSet.size()]);
-                        PrintWriter writer = response.getWriter();
-                        writer.write("<updated-views>");
-                        for (int i = 0; i < viewIdentifiers.length; i++) {
-                            if (i != 0) {
-                                writer.write(' ');
+            return responseSender.send(response);
+        }
+
+        private final ResponseSender UpdatedViewsSender =
+            new ResponseSender() {
+                public boolean send(final HttpServletResponse response)
+                throws IOException {
+                    synchronized (allUpdatedViews) {
+                        Set updatedViewSet = getUpdatedViews();
+                        if (!updatedViewSet.isEmpty()) {
+                            response.setContentType("text/xml; charset=UTF-8");
+                            response.addHeader(
+                                    "X-Powered-By", "Tomcat Push Servlet");
+                            String[] viewIdentifiers =
+                                (String[])
+                                    updatedViewSet.toArray(
+                                        new String[updatedViewSet.size()]);
+                            PrintWriter writer = response.getWriter();
+                            writer.write("<updated-views>");
+                            for (int i = 0; i < viewIdentifiers.length; i++) {
+                                if (i != 0) {
+                                    writer.write(' ');
+                                }
+                                writer.write(
+                                    sessionID + ":" + viewIdentifiers[i]);
                             }
-                            writer.write(sessionID + ":" + viewIdentifiers[i]);
+                            writer.write("</updated-views>");
+                            writer.flush();
+                            return true;
+                        } else {
+                            return false;
                         }
-                        writer.write("</updated-views>");
-                        writer.flush();
-                        event.close();
-                    } else {
-                        pendingRequest = event;
                     }
                 }
-            } else {
-                HttpServletResponse response = event.getHttpServletResponse();
-                response.setHeader("Content-Length", "0");
-                response.setHeader("X-Connection", "close");
-                event.close();
-            }
+            };
+        private final ResponseSender LastUpdatedViewsSender =
+            new ResponseSender() {
+                public boolean send(final HttpServletResponse response)
+                throws IOException {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException exception) {
+                        // ignoring interrupts.
+                    }
+                    synchronized (allUpdatedViews) {
+                        Set updatedViewSet = getUpdatedViews();
+                        if (!updatedViewSet.isEmpty()) {
+                            response.setContentType("text/xml; charset=UTF-8");
+                            response.addHeader(
+                                    "X-Powered-By", "Tomcat Push Servlet");
+                            String[] viewIdentifiers =
+                                (String[])
+                                    updatedViewSet.toArray(
+                                        new String[updatedViewSet.size()]);
+                            PrintWriter writer = response.getWriter();
+                            writer.write("<updated-views>");
+                            for (int i = 0; i < viewIdentifiers.length; i++) {
+                                if (i != 0) {
+                                    writer.write(' ');
+                                }
+                                writer.write(
+                                    sessionID + ":" + viewIdentifiers[i]);
+                            }
+                            writer.write("</updated-views>");
+                            writer.flush();
+                            responseSender = ConnectionCloseSender;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            };
+        private final ResponseSender ConnectionCloseSender =
+            new ResponseSender() {
+                public boolean send(final HttpServletResponse response)
+                throws IOException {
+                    /*
+                     * let the bridge know that this blocking connection should
+                     * not be re-initialized...
+                     */
+                    // entity header fields
+                    response.setHeader("Content-Length", "0");
+                    // extension header fields
+                    response.setHeader("X-Connection", "close");
+                    response.addHeader(
+                        "X-Powered-By", "Tomcat Push Servlet");
+                    return true;
+                }
+            };
+        private ResponseSender responseSender = UpdatedViewsSender;
+
+        private static interface ResponseSender {
+            public boolean send(final HttpServletResponse response)
+            throws IOException;
         }
     }
 }
