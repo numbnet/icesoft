@@ -45,7 +45,7 @@
 <ice:panelGroup styleClass="exampleBox tabsetControls panelTabSetContainer">
 
     <!-- Tab Visibility Controls -->
-    <ice:panelGroup style="float:left" >
+    <ice:panelGroup style="float:left;width:200px;" >
 
         <ice:panelGroup style="float:left;" styleClass="firstChildTitle">
             <ice:outputLabel value="#{msgs['page.panelTabSet.tabVisibility']}"/>
@@ -84,8 +84,9 @@
                              for="tab3Visibility"/>
         </ice:panelGroup>
     </ice:panelGroup>
+
     <!-- Tab Focus Controls -->
-    <ice:panelGroup style="float:left">
+    <ice:panelGroup style="float:left;width:200px;">
 
         <ice:panelGroup style="float:left;" styleClass="firstChildTitle">
             <ice:outputLabel value="#{msgs['page.panelTabSet.tabFocus']}"/>
@@ -95,10 +96,8 @@
 
         <ice:panelGroup style="float:left;">
             <ice:selectOneRadio id="tabFocusRadioBtns"
-                                binding="#{staticTabbedPaneExample.bindSelectedTabObject}"
-                                valueChangeListener="#{staticTabbedPaneExample.selectTab}"
                                 partialSubmit="true"
-                                value="#{staticTabbedPaneExample.selectedTabFocus}"
+                                value="#{staticTabbedPaneExample.selectedIndex}"
                                 tabindex="4"
                                 accesskey="S"
                                 title="#{msgs['page.panelTabSet.static.accessibility.focusRadio']}">
@@ -113,7 +112,7 @@
     </ice:panelGroup>
 
     <!-- Tab Placement Controls -->
-    <ice:panelGroup style="float:left">
+    <ice:panelGroup style="float:left;width:200px;">
 
         <ice:panelGroup style="float:left;" styleClass="firstChildTitle">
             <ice:outputLabel value="#{msgs['page.panelTabSet.tabPlacement']}"/>
@@ -123,8 +122,7 @@
 
         <ice:panelGroup style="float:left;">
             <ice:selectOneRadio id="tabPlacementRadioBtns"
-                                value="top"
-                                valueChangeListener="#{staticTabbedPaneExample.selectTabPlacement}"
+                                value="#{staticTabbedPaneExample.tabPlacement}"
                                 partialSubmit="true"
                                 tabindex="5"
                                 accesskey="L"
@@ -143,12 +141,13 @@
 <!-- Static Tab Set -->
 <ice:panelGroup id="tabSetTabs"
                 styleClass="exampleBox panelTabSetContainer">
-    <ice:panelTabSet binding="#{staticTabbedPaneExample.tabSet}"
-                     selectedIndex="1"
-                     tabPlacement="#{staticTabbedPaneExample.tabPlacement}"
-                     tabChangeListener="#{staticTabbedPaneExample.processTabChange}"
-                     title="#{msgs['page.panelTabSet.static.accessibility.tabSetTitle']}"
-                     summary="#{msgs['page.panelTabSet.static.accessibility.tabSetSummary']}">
+    <ice:panelTabSet
+            selectedIndex="#{staticTabbedPaneExample.selectedIndex}"
+            tabPlacement="#{staticTabbedPaneExample.tabPlacement}"
+            tabChangeListener="#{staticTabbedPaneExample.processTabChange}"
+            title="#{msgs['page.panelTabSet.static.accessibility.tabSetTitle']}"
+            summary="#{msgs['page.panelTabSet.static.accessibility.tabSetSummary']}">
+
         <!-- Panel Tab 1 defined with some basic content -->
         <ice:panelTab rendered="#{staticTabbedPaneExample.tabbedPane1Visible}"
                       label="#{msgs['page.panelTabSet.tab1']}"
@@ -163,6 +162,7 @@
                 <br/>
             </div>
         </ice:panelTab>
+
         <!-- Panel Tab 2 defined with some basic content -->
         <ice:panelTab rendered="#{staticTabbedPaneExample.tabbedPane2Visible}"
                       label="#{msgs['page.panelTabSet.tab2']}"
@@ -176,6 +176,7 @@
                 <br/>
             </div>
         </ice:panelTab>
+
         <!-- Panel Tab 3 defined with some basic content -->
         <ice:panelTab rendered="#{staticTabbedPaneExample.tabbedPane3Visible}"
                       label="#{msgs['page.panelTabSet.tab3']}"
@@ -190,8 +191,10 @@
                         value="#{msgs['page.panelTabSet.example.icePdf.description']}"/>
             </div>
         </ice:panelTab>
+
         <!-- This text is not part of a panelTab and therefore will be displayed on every tab -->
         <ice:outputText value="#{msgs['page.panelTabSet.persistantText']}"/>
+
     </ice:panelTabSet>
 </ice:panelGroup>
 

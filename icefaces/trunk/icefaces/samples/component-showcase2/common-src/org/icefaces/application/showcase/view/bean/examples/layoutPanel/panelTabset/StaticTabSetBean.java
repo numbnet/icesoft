@@ -59,23 +59,15 @@ public class StaticTabSetBean implements TabChangeListener {
     private boolean tabbedPane1Visible;
     private boolean tabbedPane2Visible;
     private boolean tabbedPane3Visible;
-    private HtmlSelectOneRadio selectedTabObject;
+
+    // selected tab index
+    private int selectedIndex = 0;
 
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
      * "bottom".
      */
-    private String tabPlacement =
-            MessageBundleLoader.getMessage("page.panelTabSet.top");
-
-    // default tab focus.
-    private String selectedTabFocus = "1";
-
-    /**
-     * Binding used by example to listen
-     */
-    private PanelTabSet tabSet;
-
+    private String tabPlacement = "top";
 
     public boolean isTabbedPane1Visible() {
         return tabbedPane1Visible;
@@ -101,42 +93,6 @@ public class StaticTabSetBean implements TabChangeListener {
         this.tabbedPane3Visible = tabbedPane3Visible;
     }
 
-    public PanelTabSet getTabSet() {
-        return tabSet;
-    }
-
-    public void setTabSet(PanelTabSet tabSet) {
-        this.tabSet = tabSet;
-    }
-
-    /**
-     * Called when the tab pane focus is to be changed.
-     *
-     * @param event new value is the new selected tab index.
-     */
-    public void selectTabFocus(ValueChangeEvent event) {
-        int index = Integer.parseInt((String) event.getNewValue());
-        tabSet.setSelectedIndex(index);
-    }
-
-    /**
-     * Called when a tab is selected.
-     *
-     * @param event value is the selected tab.
-     */
-    public void selectTab(ValueChangeEvent event) {
-        UIInput component = (UIInput) event.getComponent();
-        int index = 1;
-        try {
-            index = Integer.parseInt(component.getValue().toString());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        tabSet.setSelectedIndex(index);
-    }
-
     public String getTabPlacement() {
         return tabPlacement;
     }
@@ -145,14 +101,12 @@ public class StaticTabSetBean implements TabChangeListener {
         this.tabPlacement = tabPlacement;
     }
 
-    /**
-     * Method is called when there has been a request to change the tab
-     * placement.
-     *
-     * @param event contains new tab placement data.
-     */
-    public void selectTabPlacement(ValueChangeEvent event) {
-        tabPlacement = (String) event.getNewValue();
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
     }
 
     /**
@@ -164,26 +118,6 @@ public class StaticTabSetBean implements TabChangeListener {
      */
     public void processTabChange(TabChangeEvent tabChangeEvent)
             throws AbortProcessingException {
-        setSelectedTabFocus(String.valueOf(tabChangeEvent.getNewTabIndex()));
-        if (selectedTabObject != null) {
-            selectedTabObject.setSubmittedValue(selectedTabFocus);
-        }
+        // only used to show TabChangeListener usage.
     }
-
-    public String getSelectedTabFocus() {
-        return selectedTabFocus;
-    }
-
-    public void setSelectedTabFocus(String selectedTabFocus) {
-        this.selectedTabFocus = selectedTabFocus;
-    }
-
-    public HtmlSelectOneRadio getBindSelectedTabObject() {
-        return selectedTabObject;
-    }
-
-    public void setBindSelectedTabObject(HtmlSelectOneRadio selectedTabObject) {
-        this.selectedTabObject = selectedTabObject;
-    }
-
 }
