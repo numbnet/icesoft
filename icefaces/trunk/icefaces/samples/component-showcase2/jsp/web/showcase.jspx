@@ -49,6 +49,7 @@
         <title id="dynamicTitle"><h:outputText value="#{msgs['node.splashPage.title']}" /></title>
         <h:outputText style="padding-top:0; padding-bottom:0;"
                       value="#{styleBean.style}" escape="false" />
+        <link rel='stylesheet' type='text/css' href='./css/showcase_overrides.css' />
         <link rel='stylesheet' type='text/css' href='./css/showcase_style.css' />
     </head>
     <body>

@@ -63,9 +63,9 @@
                         id="axialOrientation"
                         value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
                         partialSubmit="true" >
-                    <f:selectItem itemValue="true"
+                    <f:selectItem itemValue="#{true}"
                                   itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
-                    <f:selectItem itemValue="false"
+                    <f:selectItem itemValue="#{false}"
                                   itemLabel="#{msgs['page.outputChart.orientation.vert.label']}"/>
                 </ice:selectOneRadio>
             </ice:panelGroup>

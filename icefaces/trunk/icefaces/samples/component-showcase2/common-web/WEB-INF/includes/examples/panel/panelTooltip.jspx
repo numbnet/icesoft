@@ -66,6 +66,7 @@
                          for="duration"/>
         <ice:selectOneMenu id="duration"
                            partialSubmit="true"
+                           converter="javax.faces."
                            value="#{tooltipController.panelToolTipModel.hoverDelay}">
             <f:selectItem
                     itemValue="1000"

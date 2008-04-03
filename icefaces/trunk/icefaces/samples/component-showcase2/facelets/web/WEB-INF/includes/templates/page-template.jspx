@@ -52,6 +52,7 @@
         <h:outputText style="padding-top:0; padding-bottom:0;"
                       value="#{styleBean.style}" escape="false" />
         <link rel='stylesheet' type='text/css' href='./css/showcase_style.css' />
+        <link rel='stylesheet' type='text/css' href='./css/showcase_overrides.css' />
         <link rel='stylesheet' type='text/css' href='./css/showcase_layout.css' />
         <link href="./css/images/favicon.ico" rel="shortcut icon" type="image/x-icon"></link>
         <link href="./css/images/favicon.ico" rel="icon" type="image/x-icon"></link>

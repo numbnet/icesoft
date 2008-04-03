@@ -45,7 +45,7 @@
 
     <ice:portlet>
 
-        <ice:outputStyle href="/xmlhttp/css/xp/xp-portlet.css"/>
+        <ice:outputStyle href="/xmlhttp/css/rime/rime-portlet.css"/>
         <ice:outputStyle href="../css/showcase_style.css"/>
 
         <ice:panelGroup>

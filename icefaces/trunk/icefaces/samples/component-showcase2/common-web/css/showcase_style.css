@@ -31,48 +31,6 @@
  *
  */
 
-/* Styling of the CONTENT */
-
-html, body, div, table, img, fieldset {
-    border: 0;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    overflow: scroll;
-
-}
-
-body {
-    font-family: Tahoma, Sans-Serif;
-    font-size: 11px;
-    color: #484848;
-    background-color: #ffffff;
-}
-
-/* for some reson IE things a form should have dimensions, */
-form {
-    padding: 0;
-    margin: 0;
-}
-
-table {
-    font-size: 11px;
-}
-
-ul {
-    margin-left: 15px;
-    padding: 0;
-}
-
-li {
-    list-style: none;
-    background: url( '../xmlhttp/css/rime/css-images/bullet.gif' ) no-repeat 0 3px;
-    padding-left: 22px;
-    padding-bottom: 3px;
-}
-
 div.clearer {
     clear: both;
     height: 0;
@@ -137,8 +95,6 @@ table.componentTabSetContainer {
     width: 99%;
 }
 
-
-
 /* footer begin */
 div.footer_container {
     float: left;
@@ -174,11 +130,6 @@ div.footer_content a:hover{
    text-decoration: underline;
 }
 /* footer end */
-
-h2 {
-    font: 18px tahoma;
-    color: #646464;
-}
 
 /* controls the appearance of links throughout the application */
 a:link, a:hover, a:visited, a:active {
@@ -500,9 +451,14 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
 }
 .effectsDemoContainer:hover {
     cursor: pointer;
+    text-decoration: none;
 }
 .effectsDemoContainer:hover .iceOutTxt {
     color: #318496;
+    text-decoration: none;
+}
+.effectsDemoContainer a:hover{
+    text-decoration: none;
 }
 
 /* DATA PAGINATOR EXAMPLE */
