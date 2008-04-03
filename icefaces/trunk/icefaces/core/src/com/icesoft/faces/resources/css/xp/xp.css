@@ -339,6 +339,11 @@ fieldset {
 .iceDatTblHdr{} /*was iceTblHeader */
 .iceDatTblFtr{} /*was iceTblFooter */
 
+.iceDatTblScrlSpr{ 
+    background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
+    border-top: 1px solid #CCCCCC; 
+    border-right: 1px solid #CCCCCC; 
+}
 /*
 ----- for datatable when cell content length exceeds-----
 */

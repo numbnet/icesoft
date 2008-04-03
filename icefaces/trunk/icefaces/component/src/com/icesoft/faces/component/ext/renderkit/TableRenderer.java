@@ -143,7 +143,9 @@ public class TableRenderer
             if (header) {
                 // First table in first div path : table/tr/td/div/div0/table
                 root = getScrollableHeaderTableElement(root);
-
+                ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR, 
+                        Util.getQualifiedStyleClass(uiComponent, 
+                        CSS_DEFAULT.TABLE_SCRL_SPR));
             } else {
                 // First table in second div path table/tr/td/div/div1/table
                 root = getScrollableBodyTableElement(root);

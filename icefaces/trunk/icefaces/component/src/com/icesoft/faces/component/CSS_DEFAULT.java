@@ -106,6 +106,9 @@ public class CSS_DEFAULT {
         "ColHdr1";  // Originally was "columnClasses" 
     public static final String TABLE_COLUMN_HEADER_CLASS2 =
         "ColHdr2";  // Originally was "columnClasses"     
+    public static final String TABLE_SCRL_SPR =
+        "ScrlSpr";         
+    
     public static final String PANEL_GROUP_DEFAULT_STYLE_CLASS = "icePnlGrp";
     public static final String PANEL_GRID_DEFAULT_STYLE_CLASS = "icePnlGrd";
     public static final String ROW = "Row";

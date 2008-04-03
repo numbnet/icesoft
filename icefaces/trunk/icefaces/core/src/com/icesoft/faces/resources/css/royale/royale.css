@@ -339,6 +339,11 @@ input {
 .iceDatTblHdr{} /*was iceTblHeader */
 .iceDatTblFtr{} /*was iceTblFooter */
 
+.iceDatTblScrlSpr{ 
+    background: url( './css-images/table_col_header.gif' ) repeat-x top left; 
+    border-top: 1px solid #026AFF; 
+    border-right: 1px solid #026AFF; 
+}
 /*
 ----- for datatable when cell content length exceeds-----
 */
