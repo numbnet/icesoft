@@ -38,10 +38,14 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.renderkit.TableRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 
+import javax.faces.FacesException;
+import javax.faces.application.NavigationHandler;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodBinding;
+import javax.faces.el.MethodNotFoundException;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.PhaseId;
@@ -53,308 +57,333 @@ import java.util.StringTokenizer;
  * To change this template use File | Settings | File Templates.
  */
 public class RowSelector extends UIComponentBase {
-    private Boolean value;
-    private Boolean toggleOnClick;
-    // private Listener
-    private Boolean multiple;
-    private String mouseOverClass;
-    private String selectedClass;
-    private String selectedMouseOverClass;    
-    private MethodBinding selectionListener;
-    private MethodBinding selectionAction;
-    private Integer clickedRow;
-    
+	private Boolean value;
+	private Boolean toggleOnClick;
+	// private Listener
+	private Boolean multiple;
+	private String mouseOverClass;
+	private String selectedClass;
+	private String selectedMouseOverClass;
+	private MethodBinding selectionListener;
+	private MethodBinding selectionAction;
+	private Integer clickedRow;
 
-    public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
-    public static final String RENDERER_TYPE =
-            "com.icesoft.faces.RowSelectorRenderer";
-    public static final String COMPONENT_FAMILY =
-            "com.icesoft.faces.RowSelectorFamily";
+	public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
+	public static final String RENDERER_TYPE = "com.icesoft.faces.RowSelectorRenderer";
+	public static final String COMPONENT_FAMILY = "com.icesoft.faces.RowSelectorFamily";
 
-    public RowSelector(){
-       JavascriptContext
-               .includeLib(JavascriptContext.ICE_EXTRAS, getFacesContext());
-    }
+	public RowSelector() {
+		JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
+				getFacesContext());
+	}
 
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
+	public String getFamily() {
+		return COMPONENT_FAMILY;
+	}
 
-    public Boolean getValue() {
-        ValueBinding vb = getValueBinding("value");
-        if (vb != null) {
-            return (Boolean) vb.getValue(getFacesContext());
-        }
-        if (value != null) {
-            return value;
-        }
-        return Boolean.FALSE;
-    }
+	public Boolean getValue() {
+		ValueBinding vb = getValueBinding("value");
+		if (vb != null) {
+			return (Boolean) vb.getValue(getFacesContext());
+		}
+		if (value != null) {
+			return value;
+		}
+		return Boolean.FALSE;
+	}
 
-    public void setValue(Boolean value) {
-        ValueBinding vb = getValueBinding("value");
-        if (vb != null) {
-            vb.setValue(getFacesContext(), value);
-        } else {
-            this.value = value;
-        }
-    }
+	public void setValue(Boolean value) {
+		ValueBinding vb = getValueBinding("value");
+		if (vb != null) {
+			vb.setValue(getFacesContext(), value);
+		} else {
+			this.value = value;
+		}
+	}
 
-    public Integer  getClickedRow() {
-        ValueBinding vb = getValueBinding("clickedRow");
-        if (vb != null) {
-            return (Integer) vb.getValue(getFacesContext());
-        }
-        if (clickedRow != null) {
-            return clickedRow;
-        }
-        return new Integer(-1);
-    }
+	public Integer getClickedRow() {
+		ValueBinding vb = getValueBinding("clickedRow");
+		if (vb != null) {
+			return (Integer) vb.getValue(getFacesContext());
+		}
+		if (clickedRow != null) {
+			return clickedRow;
+		}
+		return new Integer(-1);
+	}
 
-    public void setClickedRow(Integer clickedRow) {
-        ValueBinding vb = getValueBinding("clickedRow");
-        if (vb != null) {
-            vb.setValue(getFacesContext(), clickedRow);
-        } else {
-            this.clickedRow = clickedRow;
-        }
-    }
+	public void setClickedRow(Integer clickedRow) {
+		ValueBinding vb = getValueBinding("clickedRow");
+		if (vb != null) {
+			vb.setValue(getFacesContext(), clickedRow);
+		} else {
+			this.clickedRow = clickedRow;
+		}
+	}
 
-    public Boolean getMultiple() {
-        ValueBinding vb = getValueBinding("multiple");
-        if (vb != null) {
-            return (Boolean) vb.getValue(getFacesContext());
-        }
-        if (multiple != null) {
-            return multiple;
-        }
-        return Boolean.FALSE;
-    }
+	public Boolean getMultiple() {
+		ValueBinding vb = getValueBinding("multiple");
+		if (vb != null) {
+			return (Boolean) vb.getValue(getFacesContext());
+		}
+		if (multiple != null) {
+			return multiple;
+		}
+		return Boolean.FALSE;
+	}
 
-    public void setMultiple(Boolean multiple) {
-        this.multiple = multiple;
-    }
-    
-    public Boolean getToggleOnClick() {
-        ValueBinding vb = getValueBinding("toggleOnClick");
-        if (vb != null) {
-            return (Boolean) vb.getValue(getFacesContext());
-        }
-        if (toggleOnClick != null) {
-            return toggleOnClick;
-        }
-        return Boolean.TRUE;
-    }
+	public void setMultiple(Boolean multiple) {
+		this.multiple = multiple;
+	}
 
-    public void setToggleOnClick(Boolean toggleOnClick) {
-        this.toggleOnClick = toggleOnClick;
-    }
-    
+	public Boolean getToggleOnClick() {
+		ValueBinding vb = getValueBinding("toggleOnClick");
+		if (vb != null) {
+			return (Boolean) vb.getValue(getFacesContext());
+		}
+		if (toggleOnClick != null) {
+			return toggleOnClick;
+		}
+		return Boolean.TRUE;
+	}
 
-    public String getMouseOverClass() {
-        return Util.getQualifiedStyleClass(this, 
-                mouseOverClass,
-                CSS_DEFAULT.ROW_SELECTION_MOUSE_OVER,
-                "mouseOverClass");
-    }
+	public void setToggleOnClick(Boolean toggleOnClick) {
+		this.toggleOnClick = toggleOnClick;
+	}
 
-    public void setMouseOverClass(String mouseOverClass) {
-        this.mouseOverClass = mouseOverClass;
-    }
+	public String getMouseOverClass() {
+		return Util.getQualifiedStyleClass(this, mouseOverClass,
+				CSS_DEFAULT.ROW_SELECTION_MOUSE_OVER, "mouseOverClass");
+	}
 
-    public String getSelectedClass() {
-        return Util.getQualifiedStyleClass(this, 
-                selectedClass,
-                CSS_DEFAULT.ROW_SELECTION_SELECTED,
-                "selectedClass");
-    }
+	public void setMouseOverClass(String mouseOverClass) {
+		this.mouseOverClass = mouseOverClass;
+	}
 
-    public void setSelectedClass(String selectedClass) {
-        this.selectedClass = selectedClass;
-    }
+	public String getSelectedClass() {
+		return Util.getQualifiedStyleClass(this, selectedClass,
+				CSS_DEFAULT.ROW_SELECTION_SELECTED, "selectedClass");
+	}
 
-    public String getSelectedMouseOverClass() {
-        return Util.getQualifiedStyleClass(this, 
-                selectedMouseOverClass,
-                CSS_DEFAULT.ROW_SELECTION_SELECTED_MOUSE_OVER,
-                "selectedMouseOverClass");
-    }
+	public void setSelectedClass(String selectedClass) {
+		this.selectedClass = selectedClass;
+	}
 
-    public void setSelectedMouseOverClass(String selectedMouseOverClass) {
-        this.selectedMouseOverClass = selectedMouseOverClass;
-    }
-    
-    public MethodBinding getSelectionListener() {
-        return selectionListener;
-    }
+	public String getSelectedMouseOverClass() {
+		return Util.getQualifiedStyleClass(this, selectedMouseOverClass,
+				CSS_DEFAULT.ROW_SELECTION_SELECTED_MOUSE_OVER,
+				"selectedMouseOverClass");
+	}
 
-    public void setSelectionListener(MethodBinding selectionListener) {
-        this.selectionListener = selectionListener;
-    }
+	public void setSelectedMouseOverClass(String selectedMouseOverClass) {
+		this.selectedMouseOverClass = selectedMouseOverClass;
+	}
 
-    public MethodBinding getSelectionAction() {
-         return selectionAction;
-     }
+	public MethodBinding getSelectionListener() {
+		return selectionListener;
+	}
 
-     public void setSelectionAction(MethodBinding selectionListener) {
-         this.selectionAction = selectionListener;
-     }
+	public void setSelectionListener(MethodBinding selectionListener) {
+		this.selectionListener = selectionListener;
+	}
 
+	public MethodBinding getSelectionAction() {
+		return selectionAction;
+	}
 
+	public void setSelectionAction(MethodBinding selectionListener) {
+		this.selectionAction = selectionListener;
+	}
 
-    public void processDecodes(FacesContext facesContext){
-        // Check for row selection in its parent table hidden field
-        HtmlDataTable dataTable = getParentDataTable(this);
+	public void processDecodes(FacesContext facesContext) {
+		// Check for row selection in its parent table hidden field
+		HtmlDataTable dataTable = getParentDataTable(this);
 
-        String dataTableId = dataTable.getClientId(facesContext);
-        String selectedRowsParameter =
-                TableRenderer.getSelectedRowParameterName(dataTableId);
-        String selectedRows = (String) facesContext.getExternalContext()
-                .getRequestParameterMap().get(selectedRowsParameter);
+		String dataTableId = dataTable.getClientId(facesContext);
+		String selectedRowsParameter = TableRenderer
+				.getSelectedRowParameterName(dataTableId);
+		String selectedRows = (String) facesContext.getExternalContext()
+				.getRequestParameterMap().get(selectedRowsParameter);
 
-        if (selectedRows == null || selectedRows.trim().length() == 0) {
-            return;
-        }
+		if (selectedRows == null || selectedRows.trim().length() == 0) {
+			return;
+		}
 
-        // What row number am I, was I clicked?
-        int rowIndex = dataTable.getRowIndex();
-        StringTokenizer st = new StringTokenizer(selectedRows, ",");
-        boolean rowClicked = false;
-        while (st.hasMoreTokens()) {
-            int row = Integer.parseInt(st.nextToken());
-            if (row == rowIndex) {
-            	if (this.getParent() instanceof UIColumns) {
-            		Object servedRow = this.getParent().getAttributes().get("rowServed");
-            		if (servedRow != null) {
-            			if (String.valueOf(servedRow).equals(String.valueOf(rowIndex))) {
-            				return;
-            			}
-            		} else {
-            			this.getParent().getAttributes().put("rowServed", String.valueOf(rowIndex));
-            		}
-            	}            	
-                rowClicked = true;
-                break;
+		// What row number am I, was I clicked?
+		int rowIndex = dataTable.getRowIndex();
+		StringTokenizer st = new StringTokenizer(selectedRows, ",");
+		boolean rowClicked = false;
+		while (st.hasMoreTokens()) {
+			int row = Integer.parseInt(st.nextToken());
+			if (row == rowIndex) {
+				if (this.getParent() instanceof UIColumns) {
+					Object servedRow = this.getParent().getAttributes().get(
+							"rowServed");
+					if (servedRow != null) {
+						if (String.valueOf(servedRow).equals(
+								String.valueOf(rowIndex))) {
+							return;
+						}
+					} else {
+						this.getParent().getAttributes().put("rowServed",
+								String.valueOf(rowIndex));
+					}
+				}
+				rowClicked = true;
+				break;
+			}
+		}
+		RowSelector rowSelector = (RowSelector) this;
+
+		try {
+			if (rowClicked) {
+				// Toggle the row selection if multiple
+				boolean b = rowSelector.getValue().booleanValue();
+				b = !b;
+				rowSelector.setValue(new Boolean(b));
+				setClickedRow(new Integer(rowIndex));
+				if (rowSelector.getSelectionListener() != null) {
+					RowSelectorEvent evt = new RowSelectorEvent(rowSelector,
+							rowIndex, b);
+					evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+
+					rowSelector.queueEvent(evt);
+				}
+				if (rowSelector.getSelectionAction() != null) {
+					RowSelectorActionEvent evt = new RowSelectorActionEvent(
+							this);
+					evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+					rowSelector.queueEvent(evt);
+				}
+
+				// ICE-2024: should clear the whole table, not just the
+				// displayed page.
+				if (!getMultiple().booleanValue()) {
+					for (int i = 0; i < dataTable.getRowCount(); i++) {
+						if (i != rowIndex) {
+							dataTable.setRowIndex(i);
+							setValue(Boolean.FALSE);
+						}
+					}
+				}
+			} else {
+				/*
+				 * ICE-2024: see above. if
+				 * (Boolean.FALSE.equals(rowSelector.getMultiple())) { // Clear
+				 * all other selections rowSelector.setValue(Boolean.FALSE); }
+				 */
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
+		UIComponent parentComp = uiComponenent.getParent();
+		if (parentComp == null) {
+			throw new RuntimeException(
+					"RowSelectorRenderer: decode. Could not find an Ice:dataTable as a parent componenent");
+		}
+		if (parentComp instanceof com.icesoft.faces.component.ext.HtmlDataTable) {
+			return (HtmlDataTable) parentComp;
+		}
+		return getParentDataTable(parentComp);
+	}
+
+	public void encodeEnd(FacesContext facesContext) throws IOException {
+
+		// super.encodeEnd(facesContext, uiComponent);
+
+		// Nothing is rendered
+	}
+
+	public void encodeBegin(FacesContext facesContext) throws IOException {
+
+		// super.encodeBegin(facesContext, uiComponent);
+		// uiComponent.setRendered(true);
+		// Mothing is rendered
+	}
+
+	public void broadcast(FacesEvent event) {
+
+		super.broadcast(event);
+		if (event instanceof RowSelectorEvent && selectionListener != null) {
+
+			selectionListener.invoke(getFacesContext(),
+					new Object[] { (RowSelectorEvent) event });
+
+		}
+		if(event instanceof RowSelectorActionEvent && selectionAction != null){
+            try {
+                FacesContext facesContext = getFacesContext();
+                Object result =
+                    selectionAction.invoke(facesContext, null);
+                String outcome = (result != null) ? result.toString() : null;
+                NavigationHandler nh =
+                    facesContext.getApplication().getNavigationHandler();
+                nh.handleNavigation(
+                    facesContext,
+                    selectionAction.getExpressionString(),
+                    outcome);
+                facesContext.renderResponse();
+            }
+            catch(MethodNotFoundException e) {
+                throw new FacesException(
+                    selectionAction.getExpressionString()+": "+e.getMessage(),
+                    e);
+            }
+            catch(EvaluationException e) {
+                throw new FacesException(
+                    selectionAction.getExpressionString()+": "+e.getMessage(),
+                    e);
             }
         }
-        RowSelector rowSelector = (RowSelector) this;
+	}
 
-        try {
-            if (rowClicked) {
-                // Toggle the row selection if multiple
-                boolean b = rowSelector.getValue().booleanValue();
-                b = !b;
-                rowSelector.setValue(new Boolean(b));
-                setClickedRow(new Integer(rowIndex));
-                if (rowSelector.getSelectionListener() != null) {
-                    RowSelectorEvent evt =
-                            new RowSelectorEvent(rowSelector, rowIndex, b);
-                    evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+	public Object saveState(FacesContext context) {
+		Object[] state = new Object[7];
+		state[0] = super.saveState(context);
+		state[1] = value;
+		state[2] = multiple;
+		state[3] = mouseOverClass;
+		state[4] = selectedClass;
+		state[5] = saveAttachedState(context, selectionListener);
+		state[6] = saveAttachedState(context, selectionAction);
+		return state;
+	}
 
-                    rowSelector.queueEvent(evt);
-                } if(rowSelector.getSelectionAction() != null){
-                    rowSelector.getSelectionAction().invoke(facesContext, null);
-                }
+	public void restoreState(FacesContext context, Object stateIn) {
+		Object[] state = (Object[]) stateIn;
+		super.restoreState(context, state[0]);
+		value = (Boolean) state[1];
+		multiple = (Boolean) state[2];
+		mouseOverClass = (String) state[3];
+		selectedClass = (String) state[4];
+		selectionListener = (MethodBinding)
+		            restoreAttachedState(context, state[5]);
+		selectionAction = (MethodBinding)
+		            restoreAttachedState(context, state[6]);
+	}
 
-                // ICE-2024: should clear the whole table, not just the displayed page.
-                if (!getMultiple().booleanValue()) {
-                    for (int i = 0; i < dataTable.getRowCount(); i++) {
-                        if (i != rowIndex) {
-                            dataTable.setRowIndex(i);
-                            setValue(Boolean.FALSE);
-                        }
-                    }
-                }
-            } else {
-/* ICE-2024: see above.
-                if (Boolean.FALSE.equals(rowSelector.getMultiple())) {
-                    // Clear all other selections
-                    rowSelector.setValue(Boolean.FALSE);
-                }
-*/
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	String styleClass;
 
+	/**
+	 * <p>
+	 * Set the value of the <code>styleClass</code> property.
+	 * </p>
+	 */
+	public void setStyleClass(String styleClass) {
+		this.styleClass = styleClass;
+	}
 
-
-    }
-     private static HtmlDataTable getParentDataTable(UIComponent uiComponenent) {
-        UIComponent parentComp = uiComponenent.getParent();
-        if (parentComp == null) {
-            throw new RuntimeException(
-                    "RowSelectorRenderer: decode. Could not find an Ice:dataTable as a parent componenent");
-        }
-        if (parentComp instanceof com.icesoft.faces.component.ext.HtmlDataTable) {
-            return (HtmlDataTable) parentComp;
-        }
-        return getParentDataTable(parentComp);
-    }
-
-    public void encodeEnd(FacesContext facesContext)
-            throws IOException {
-               
-        //super.encodeEnd(facesContext, uiComponent);
-
-        // Nothing is rendered
-    }
-
-    public void encodeBegin(FacesContext facesContext)
-            throws IOException {
-    
-        //super.encodeBegin(facesContext, uiComponent);
-         //uiComponent.setRendered(true);
-        // Mothing is rendered
-    }
-
-    public void broadcast(FacesEvent event) {
-
-        super.broadcast(event);
-        if (event instanceof RowSelectorEvent && selectionListener != null) {
-
-            selectionListener.invoke(getFacesContext(),
-                                     new Object[]{(RowSelectorEvent) event});
-
-        }
-    }
-
-    public Object saveState(FacesContext context) {
-        Object[] state = new Object[12];
-        state[0] = super.saveState(context);
-        state[1] = value;
-        state[2] = multiple;
-        state[3] = mouseOverClass;
-        state[4] = selectedClass;
-        state[5] = selectionListener;
-        return state;
-    }
-
-    public void restoreState(FacesContext context, Object stateIn) {
-        Object[] state = (Object[]) stateIn;
-        super.restoreState(context, state[0]);
-        value = (Boolean) state[1];
-        multiple = (Boolean) state[2];
-        mouseOverClass = (String) state[3];
-        selectedClass = (String) state[4];
-        selectionListener = (MethodBinding) state[5];
-    }
-    
-    String styleClass;
-    /**
-     * <p>Set the value of the <code>styleClass</code> property.</p>
-     */
-    public void setStyleClass(String styleClass) {
-        this.styleClass = styleClass;
-    }
-
-    /**
-     * <p>Return the value of the <code>styleClass</code> property.</p>
-     */
-    public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                styleClass,
-                CSS_DEFAULT.ROW_SELECTION_BASE,
-                "styleClass");
-    }
+	/**
+	 * <p>
+	 * Return the value of the <code>styleClass</code> property.
+	 * </p>
+	 */
+	public String getStyleClass() {
+		return Util.getQualifiedStyleClass(this, styleClass,
+				CSS_DEFAULT.ROW_SELECTION_BASE, "styleClass");
+	}
 }

@@ -52,8 +52,6 @@ public class RowSelectorEvent extends FacesEvent {
         super(uiComponent);
         this.row = row;
         this.selected = selected;
-        //setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-        setPhaseId(PhaseId.PROCESS_VALIDATIONS);
     }
 
     public boolean isAppropriateListener(FacesListener facesListener) {
