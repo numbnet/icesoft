@@ -46,19 +46,7 @@ public class View implements CommandQueue {
     private Configuration configuration;
     private SessionDispatcher.Monitor sessionMonitor;
     private ResourceDispatcher resourceDispatcher;
-    private Runnable dispose = new Runnable() {
-        public void run() {
-            persistentFacesState.setCurrentInstance();
-            facesContext.setCurrentInstance();
-            notifyViewDisposal();
-            release();
-            persistentFacesState.dispose();
-            facesContext.dispose();
-            externalContext.dispose();
-            //dispose view only once
-            dispose = DoNothing;
-        }
-    };
+    private Runnable dispose;
 
     public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
         this.sessionID = sessionID;
@@ -88,6 +76,20 @@ public class View implements CommandQueue {
                 }
             }
         });
+        this.dispose = new Runnable() {
+            public void run() {
+                persistentFacesState.setCurrentInstance();
+                facesContext.setCurrentInstance();
+                notifyViewDisposal();
+                release();
+                persistentFacesState.dispose();
+                facesContext.dispose();
+                externalContext.dispose();
+                allServedViews.remove(viewIdentifier);
+                //dispose view only once
+                dispose = DoNothing;
+            }
+        };
     }
 
     public void updateOnXMLHttpRequest(Request request) throws Exception {

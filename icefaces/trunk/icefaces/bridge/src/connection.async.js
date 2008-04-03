@@ -93,7 +93,8 @@
 
             //register command that handles the updated-views message
             commandDispatcher.register('updated-views', function(message) {
-                this.updatedViews.saveValue(message.firstChild.data);
+                var views = this.updatedViews.loadValue().split(' ');
+                this.updatedViews.saveValue(views.concat(message.firstChild.data.split(' ')).asSet().join(' '));
             }.bind(this));
 
 

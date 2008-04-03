@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Iterator;
 
 public class SendUpdatedViews implements Server, Runnable {
     private static final NOOP NOOPCommand = new NOOP();
@@ -47,6 +47,7 @@ public class SendUpdatedViews implements Server, Runnable {
 
     private final BlockingQueue pendingRequest = new LinkedBlockingQueue(1);
     private final ViewQueue allUpdatedViews;
+    private final Collection synchronouslyUpdatedViews;
     private final String sessionID;
     private final long timeoutInterval;
     private long responseTimeoutTime;
@@ -56,21 +57,10 @@ public class SendUpdatedViews implements Server, Runnable {
         this.timeoutInterval = configuration.getAttributeAsLong("blockingConnectionTimeout", 90000);
         this.sessionID = sessionID;
         this.allUpdatedViews = allUpdatedViews;
+        this.synchronouslyUpdatedViews = synchronouslyUpdatedViews;
         this.allUpdatedViews.onPut(new Runnable() {
             public void run() {
-                try {
-                    allUpdatedViews.removeAll(synchronouslyUpdatedViews);
-                    synchronouslyUpdatedViews.clear();
-                    Set viewIdentifiers = new HashSet(allUpdatedViews);
-                    if (!viewIdentifiers.isEmpty()) {
-                        Request request = (Request) pendingRequest.poll();
-                        if (request != null) {
-                            request.respondWith(new UpdatedViewsHandler((String[]) viewIdentifiers.toArray(new String[viewIdentifiers.size()])));
-                        }
-                    }
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                }
+                respondIfViewsAvailable();
             }
         });
 
@@ -78,10 +68,11 @@ public class SendUpdatedViews implements Server, Runnable {
         monitorRunner.registerMonitor(SendUpdatedViews.this);
         //initialize blocking server
         this.server = new Server() {
-            public void service(Request request) throws Exception {
+            public void service(final Request request) throws Exception {
                 responseTimeoutTime = System.currentTimeMillis() + timeoutInterval;
-                respondIfPreviousRequest(CloseResponse);
+                respondIfPendingRequest(CloseResponse);
                 pendingRequest.put(request);
+                respondIfViewsAvailable();
             }
 
             public void shutdown() {
@@ -90,7 +81,7 @@ public class SendUpdatedViews implements Server, Runnable {
                 allUpdatedViews.onPut(NOOP);
                 //avoid creating new blocking connections after shutdown
                 server = AfterShutdown;
-                respondIfPreviousRequest(CloseResponse);
+                respondIfPendingRequest(CloseResponse);
             }
         };
     }
@@ -105,11 +96,39 @@ public class SendUpdatedViews implements Server, Runnable {
 
     public void run() {
         if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
-            respondIfPreviousRequest(NOOPResponse);
+            respondIfPendingRequest(NOOPResponse);
         }
     }
 
-    private void respondIfPreviousRequest(ResponseHandler handler) {
+    private void respondIfViewsAvailable() {
+        try {
+            allUpdatedViews.removeAll(synchronouslyUpdatedViews);
+            synchronouslyUpdatedViews.clear();
+            if (!allUpdatedViews.isEmpty()) {
+                Request request = (Request) pendingRequest.poll();
+                if (request != null) {
+                    request.respondWith(new FixedXMLContentHandler() {
+                        public void writeTo(Writer writer) throws IOException {
+                            writer.write("<updated-views>");
+                            Iterator i = new HashSet(allUpdatedViews).iterator();
+                            while (i.hasNext()) {
+                                writer.write(sessionID);
+                                writer.write(":");
+                                writer.write((String) i.next());
+                                writer.write(' ');
+                            }
+                            writer.write("</updated-views>");
+                        }
+                    });
+                    allUpdatedViews.clear();
+                }
+            }
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void respondIfPendingRequest(ResponseHandler handler) {
         Request previousRequest = (Request) pendingRequest.poll();
         if (previousRequest != null) {
             try {
@@ -117,23 +136,6 @@ public class SendUpdatedViews implements Server, Runnable {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    private class UpdatedViewsHandler extends FixedXMLContentHandler {
-        private String[] viewIdentifiers;
-
-        public UpdatedViewsHandler(String[] viewIdentifiers) {
-            this.viewIdentifiers = viewIdentifiers;
-        }
-
-        public void writeTo(Writer writer) throws IOException {
-            writer.write("<updated-views>");
-            for (int i = 0; i < viewIdentifiers.length; i++) {
-                writer.write(sessionID + ":" + viewIdentifiers[i]);
-                writer.write(' ');
-            }
-            writer.write("</updated-views>");
         }
     }
 }
