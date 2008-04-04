@@ -36,8 +36,7 @@
 &base-props;
 <property>
 	<description>
-		<![CDATA[<p>
-                 multiple
+		<![CDATA[<p> When true, more then one row can be selected. Default is false.
                 </p>
              ]]>
 	</description>
@@ -51,7 +50,7 @@
 <property>
 	<description>
 		<![CDATA[<p>
-           The row of the table that was last clicked. Setting this to some value will have no effect.
+           The table row that was last clicked. Setting this to some value will not effect row selection.
                 </p>
              ]]>
 	</description>
@@ -65,7 +64,7 @@
 <property>
 	<description>
 		<![CDATA[<p>
-				 This method has been depricated in 1.6. Please use the styleClass
+				 This method has been deprecated in 1.6. Please use the styleClass
 				 instead.
                 </p>
              ]]>
@@ -83,7 +82,7 @@
 <property>
 	<description>
 		<![CDATA[<p>
-				 This method has been depricated in 1.6. Please use the styleClass
+				 This method has been deprecated in 1.6. Please use the styleClass
 				 instead.
                 </p>
              ]]>
@@ -98,12 +97,28 @@
 	</property-extension>
 </property>
 
-
+<property>
+	<description>
+		<![CDATA[<p>
+				 This method has been deprecated in 1.6. Please use the styleClass
+				 instead.
+                </p>
+             ]]>
+	</description>
+	<property-name>selectedMouseOverClass</property-name>
+	<property-class>java.lang.String</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<editor-class>
+			&stringEditor;
+		</editor-class>
+	</property-extension>
+</property>
 
 <property>
 	<description>
 		<![CDATA[<p>
-             Listener method to call with a RowSelectorEvent when a row is selected 
+             Listener method to call with a RowSelectorEvent when a row is (de)selected 
                 </p>
              ]]>
 	</description>
@@ -162,8 +177,12 @@
 
 <property>
 	<description>
-		Disable row selection on mouse click. Default value is set to true.
-	</description>
+		<![CDATA[<p>
+		Do row selection on mouse click. When false, row (de)selection will not 
+        happen when the user clicks on a table row. Default value is true.
+                </p>
+             ]]>
+    </description>
 	<property-name>toggleOnClick</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
@@ -171,6 +190,21 @@
 	</property-extension>
 </property>
 
+<property>
+	<description>
+		<![CDATA[<p>
+		Do row selection, even when the user clicks on an input field or link 
+		in a table cell. Default value is true. When false, row (de)selection
+		will not happen when the user clicks inside an input field, list,
+		menu, button, or link.</p> ]]>
+    </description>
+	<property-name>toggleOnInput</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_COMPONENT</category>
+	</property-extension>
+</property>
+    
 <property>
 	<description>
 		<![CDATA[<p>A ValueBinding to a per dataTable row java.lang.Boolean 

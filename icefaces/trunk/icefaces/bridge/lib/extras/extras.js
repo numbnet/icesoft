@@ -155,8 +155,40 @@ Ice.PanelCollapsible = {
     }
 }
 
-Ice.tableRowClicked = function(rowid, formId, hdnFld) {
+Ice.tableRowClicked = function(event, useEvent, rowid, formId, hdnFld) {
     try {
+        if( useEvent ) {
+            var targ;
+            if (!event)
+                var event = window.event;
+            if (event.target)
+                targ = event.target;
+            else if (event.srcElement)
+                targ = event.srcElement;
+            // Some versions of Safari return the text node,
+            //  while other browsers return the parent tag
+            if (targ.nodeType == 3)
+                targ = targ.parentNode;
+            while( true ) {
+                var tname = targ.tagName.toLowerCase();
+                if( tname == 'tr' ) {
+                    break;
+                }
+                if( tname == 'input' ||
+                    tname == 'select' ||
+                    tname == 'option' ||
+                    tname == 'a' )
+                {
+                    return;
+                }
+                // Search up to see if we're deep within an anchor
+                if(targ.parentNode)
+                    targ = targ.parentNode;
+                else {
+                    break;
+                }
+            }
+        }
         var fld = document.forms[formId][hdnFld];
         fld.value = rowid;
         var nothingEvent = new Object();

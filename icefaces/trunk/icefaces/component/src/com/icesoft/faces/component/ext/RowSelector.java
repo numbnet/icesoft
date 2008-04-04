@@ -60,6 +60,7 @@ import java.util.StringTokenizer;
 public class RowSelector extends UIPanel {
     private Boolean value;
     private Boolean toggleOnClick;
+    private Boolean toggleOnInput;
     // private Listener
     private Boolean multiple;
     private String mouseOverClass;
@@ -153,6 +154,21 @@ public class RowSelector extends UIPanel {
         this.toggleOnClick = toggleOnClick;
     }
     
+    
+    public Boolean getToggleOnInput() {
+        ValueBinding vb = getValueBinding("toggleOnInput");
+        if (vb != null) {
+            return (Boolean) vb.getValue(getFacesContext());
+        }
+        if (toggleOnInput != null) {
+            return toggleOnInput;
+        }
+        return Boolean.TRUE;
+    }
+
+    public void setToggleOnInput(Boolean toggleOnInput) {
+        this.toggleOnInput = toggleOnInput;
+    }
 
     public String getMouseOverClass() {
         return Util.getQualifiedStyleClass(this, 
@@ -352,14 +368,18 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[7];
+        Object[] state = new Object[11];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
-        state[3] = mouseOverClass;
-        state[4] = selectedClass;
-        state[5] = saveAttachedState(context, selectionListener);
-        state[6] = saveAttachedState(context, selectionAction);
+        state[3] = toggleOnClick;
+        state[4] = toggleOnInput;
+        state[5] = clickedRow;
+        state[6] = mouseOverClass;
+        state[7] = selectedClass;
+        state[8] = selectedMouseOverClass;
+        state[9] = saveAttachedState(context, selectionListener);
+        state[10] = saveAttachedState(context, selectionAction);
         return state;
     }
 
@@ -368,12 +388,16 @@ public class RowSelector extends UIPanel {
         super.restoreState(context, state[0]);
         value = (Boolean) state[1];
         multiple = (Boolean) state[2];
-        mouseOverClass = (String) state[3];
-        selectedClass = (String) state[4];
+        toggleOnClick = (Boolean) state[3];
+        toggleOnInput = (Boolean) state[4];
+        clickedRow = (Integer) state[5];
+        mouseOverClass = (String) state[6];
+        selectedClass = (String) state[7];
+        selectedMouseOverClass = (String) state[8];
         selectionListener = (MethodBinding)
-            restoreAttachedState(context, state[5]);
+            restoreAttachedState(context, state[9]);
         selectionAction = (MethodBinding)
-            restoreAttachedState(context, state[6]);
+            restoreAttachedState(context, state[10]);
     }
     
     String styleClass;

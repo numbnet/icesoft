@@ -513,6 +513,7 @@ public class TableRenderer
         boolean rowSelectorFound = rowSelector != null;
         boolean toggleOnClick = false;
         String rowSelectionFunctionName = null;
+        String rowSelectionUseEvent = "false";
         boolean rowSelectorCodeAdded = false; // Row selector code needs to be added to the first TD, adding it to the table body breaks safari
         Element scriptNode = null;
         Element hiddenInputNode = null;
@@ -523,6 +524,12 @@ public class TableRenderer
             toggleOnClick = rowSelector.getToggleOnClick().booleanValue();
             Element rowSelectedField =
                     domContext.createElement(HTML.INPUT_ELEM);
+            // toggleOnInput = true/default ==> rowSelectionUseEvent = false
+            // toggleOnInput = false        ==> rowSelectionUseEvent = true
+            //  since we use the event to thwart toggling from an input
+            boolean toggleOnInput =
+                rowSelector.getToggleOnInput().booleanValue();
+            rowSelectionUseEvent = toggleOnInput ? "false" : "true";
 
             //rowSelectedField.setAttribute(HTML.ID_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
@@ -544,8 +551,9 @@ public class TableRenderer
             Iterator childs = uiData.getChildren().iterator();
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             if (rowSelectorFound && toggleOnClick) {
-            	 tr.setAttribute("onclick", rowSelectionFunctionName + "('" +
-                       uiData.getRowIndex() + "', '"+ formId +"', '"+ paramId +"');");            	
+                 tr.setAttribute("onclick", rowSelectionFunctionName +
+                     "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
+                     "', '"+ formId +"', '"+ paramId +"');");            	
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, id);
