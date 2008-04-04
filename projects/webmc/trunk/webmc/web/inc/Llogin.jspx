@@ -30,22 +30,20 @@
   ~ this file under either the MPL or the LGPL License."
   ~
 -->
-<f:view xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component">
-
-<div class="backgroundTop">
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="backgroundTop">
 <div class="backgroundBottom">
 <center>
 <div class="loginBox">
 <ice:form>
-    <ice:graphicImage value="resources/images/login_logo.gif" alt="Welcome to WebMC"
-	                  style="padding-bottom: 15px;"/>
-    <div style="text-align: left;">
-	    <ice:panelGroup style="text-align: left; 
-	                           padding: 0; 
-	                           width: 248px; 
-	                           height: 29px;">
+    <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.jpg':'./resources/images/login_logo.gif'}" 
+                      alt="Welcome to WebMC"
+                      styleClass="loginLogo" />
+    <ice:panelGroup rendered="#{!participant.mobile}"
+                    style="text-align: left;">
+	    <ice:panelGroup styleClass="moderatorViewerButtons">
 	        <ice:commandButton
 	                actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
 	                alt="Viewer"
@@ -57,18 +55,19 @@
 	                immediate="true"
 	                image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
 	    </ice:panelGroup>
-	</div>	
+	</ice:panelGroup>
+	<!-- Desktop and Mobile have a different layout that is triggered with the 
+	     rendered attribute on each "cell" of the panelGrid -->	
 	<ice:panelGrid columns="4"
-	               cellspacing="2" 
-	               cellpadding="5"
-	               style="border: 1px solid #94B3CB; 
-	                      padding: 4px; 
-	                      padding-bottom: 8px; 
-	                      width: 100%;" 
-	                      columnClasses="loginFirstColumn,loginErrorColumn,loginThirdColumn,loginErrorColumn">
+	               cellspacing="0"
+	               cellpadding="0"
+                   styleClass="loginPanelGrid" 
+	               columnClasses="loginFirstColumn,loginSecondColumn,loginThirdColumn,loginFourthColumn">
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
         <!-- Name common to both Viewer and Moderator -->
         <ice:panelGroup>       
-            <ice:outputLabel styleClass="loginLabel"
+            <ice:outputLabel styleClass="loginLabel firstNameLabel"
                              value="Name: " 
                              for="firstName" />
                 <ice:inputText id="firstName"
@@ -86,6 +85,10 @@
             <ice:message for="firstName" 
                          errorClass="inputError"/>
         </ice:panelGroup >
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
         <!-- Viewer selects from presentations -->
         <ice:panelGroup rendered="#{not participant.moderator}">
             <ice:outputLabel styleClass="loginLabel"
@@ -95,14 +98,13 @@
                                partialSubmit="true"
                                tabindex="4"
                                value="#{participant.loginBean.presentationName}"
-                               styleClass="loginInput"
+                               styleClass="presentationMenu"
                                valueChangeListener="#{participant.loginBean.selectPresentation}">
-                <f:validator validatorId="NameValidator"/>
                 <f:selectItems value="#{presentationMgr.presentationItems}"/>
             </ice:selectOneMenu>
         </ice:panelGroup>
         <!-- Moderator creates a new presentation -->
-        <ice:panelGroup rendered="#{participant.moderator}">
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
             <ice:outputLabel styleClass="loginLabel"
                              value="Presentation: " 
                              for="newPresentationName"/>
@@ -118,29 +120,31 @@
         </ice:panelGroup>
         <!-- Viewer Presentation Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}">
-            <ice:message for="existingPresentationName"
-                         errorClass="inputError"/>
+            <ice:outputText value="Please select" 
+                            rendered="#{participant.loginBean.invalidPresentation}"
+                            styleClass="inputError"/>
         </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{participant.mobile}" />
         <!-- Moderator Presentation Error Message -->
-        <ice:panelGroup rendered="#{participant.moderator}">
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
             <ice:message for="newPresentationName"
                          errorClass="inputError"/>
         </ice:panelGroup>
-        <!-- Refresh PersistentFacesState -->
+        <!-- Refresh PersistentFacesState (Empty Cell with Spacer) -->
         <ice:panelGroup>
+            &amp;nbsp;
             <ice:outputText value="#{participant.refreshPersistentFacesState}" 
                             visible="false"/>
         </ice:panelGroup>
-        <!-- Space -->
-        <ice:panelGroup>
-            &amp;nbsp;
-        </ice:panelGroup>
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{!participant.mobile}" /> 
         <!-- Viewer inputs password -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
 	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" >
 	        </ice:panelGroup>
             <ice:outputLabel rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
-                             styleClass="loginLabel"
+                             styleClass="loginLabel passwordLabel"
                              value="Password: "
                              for="viewPassword" />
             <ice:inputSecret id="viewPassword"
@@ -155,7 +159,7 @@
             </ice:inputSecret>
         </ice:panelGroup>
         <!-- Moderator inputs password -->
-        <ice:panelGroup rendered="#{participant.moderator}">
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
          <ice:outputLabel styleClass="loginLabel"
                           value="Password: "
                           for="moderatorPassword" />
@@ -174,26 +178,24 @@
                           styleClass="inputError"/>
         </ice:panelGroup>
         <!-- Moderator Password Error Message -->
-        <ice:panelGroup rendered="#{participant.moderator}">
+        <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
           <ice:message for="moderatorPassword"
                        errorClass="inputError"/>
         </ice:panelGroup>
-        <!-- Space -->
+        <!-- Empty Cell -->
         <ice:panelGroup />
-        <!-- Space -->
+        <!-- Empty Cell -->
         <ice:panelGroup />
         <!-- Viewer Buttons -->
         <ice:panelGroup rendered="#{not participant.moderator}"
-	                    style="text-align: right; padding-bottom: 2px;">
+	                    styleClass="loginButtons">
             <ice:commandButton image="resources/images/butt_reset.gif"
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="6"
-                               style="text-align: right;"
                                alt="Reset"/>
             <ice:commandLink   action="#{participant.login}"
                                tabindex="7"
-                               style="text-align: right;"
                                alt="Join Presentation">
                 <ice:graphicImage value="resources/images/butt_join_present.gif" 
                                   style="border: 0; "/>
@@ -202,17 +204,15 @@
             </ice:commandLink>
 	    </ice:panelGroup>
 	    <!-- Moderator Buttons -->
-	    <ice:panelGroup rendered="#{participant.moderator}"
-	                    style="text-align: right;">
+	    <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}"
+	                    styleClass="loginButtons">
             <ice:commandButton image="resources/images/butt_reset.gif"
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="7"
-                               
                                alt="Reset"/>
             <ice:commandLink   action="#{participant.login}"
                                tabindex="8"
-                               
                                alt="Start Presentation">
                 <ice:graphicImage value="resources/images/butt_start_present.gif"
                                   style="border: 0;"/>
@@ -220,8 +220,8 @@
                          value="moderatorLogin"/>
             </ice:commandLink>
 	    </ice:panelGroup>
-        <!-- Space -->
-        <ice:panelGroup />
+        <!-- Empty Cell -->
+        <ice:panelGroup rendered="#{!participant.mobile}" />
     </ice:panelGrid>
 	<!--  
     <ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
@@ -234,4 +234,3 @@
 </center>
 </div>
 </div>
-</f:view>

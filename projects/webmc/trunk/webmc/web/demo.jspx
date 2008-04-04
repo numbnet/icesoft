@@ -63,7 +63,7 @@
             <ui:include src="#{participant.loggedIn?'./inc/Lmain.jspx':'./inc/Llogin.jspx'}"/>
         </c:if>
         <c:if test="#{participant.mobile}">
-            <ui:include src="#{participant.loggedIn?'./inc/main.jspx':'./inc/login.jspx'}"/>
+            <ui:include src="#{participant.loggedIn?'./inc/main.jspx':'./inc/Llogin.jspx'}"/>
         </c:if>
     </div>
 </body>

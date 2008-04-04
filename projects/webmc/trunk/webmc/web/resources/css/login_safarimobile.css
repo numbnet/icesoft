@@ -35,10 +35,65 @@ html {
     overflow:hidden;
 }
 
+.backgroundTop {
+    background: none;
+}
+
+.backgroundBottom {
+    padding: 20px 0px 40px 0px;
+}
+
 .loginBox {
     width: 480px;
 }
 
-.loginTable td {
+.loginLogo{
+    padding-bottom: 10px;
+}
+
+.loginPanelGrid{
+    height: 100%;
+    border: none; 
+    padding: 0px; 
+    padding-bottom: 0px; 
+    width: 100%;
+}
+
+.loginFirstColumn {
+    width: 25%;
+}
+
+.loginSecondColumn {
+    width: 45%;
+}
+
+.loginThirdColumn {
+    text-align: left;
+    width: 30%;
+}
+
+.loginFourthColumn {
+    width: 0%;
+}
+
+.firstNameLabel{
+    padding-right: 38px;    
+}
+
+.passwordLabel{
+    padding-right: 16px;    
+}
+
+.loginButtons {
+	text-align: left;
+    margin-top: 20px;  
+}
+
+.presentationMenu{
+	width: 138px;
+}
+
+.loginInput {
+    width: 100px;
     padding: 0px;
 }

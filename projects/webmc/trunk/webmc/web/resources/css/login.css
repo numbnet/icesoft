@@ -36,17 +36,41 @@
 }
 
 .backgroundBottom {
-    padding: 125px 0px 335px 0px;
+    padding: 160px 0px 300px 0px;
     background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
 
 }
 
 .loginBox {
-    width: 70%;
+    width: 62%;
+}
+
+.loginLogo{
+	padding-bottom: 15px;
+}
+
+.moderatorViewerButtons{
+    text-align: left; 
+    padding: 0; 
+    width: 248px; 
+    height: 29px;	
+}
+
+.loginPanelGrid {
+	height: 130px;
+    border: 1px solid #94B3CB; 
+    padding: 4px; 
+    padding-bottom: 8px; 
+    width: 100%;	
 }
 
 .loginFirstColumn {
-    width: 30%;
+    width: 32%;
+}
+
+.loginSecondColumn {
+    width: 14%;
+    text-align: left;
 }
 
 .loginThirdColumn {
@@ -54,8 +78,8 @@
     text-align: right;
 }
 
-.loginErrorColumn {
-    width: 15%;
+.loginFourthColumn {
+    width: 14%;
     text-align: left;
 }
 
@@ -70,6 +94,18 @@
     font: 11px tahoma, arial, sans-serif;
     color: #4878A1;
     width: 145px;
+}
+
+.presentationMenu {
+    border: 1px solid #B4CEE1;
+    padding: 1px;
+    font: 11px tahoma, arial, sans-serif;
+    color: #4878A1;
+    width: 145px;
+}
+
+.loginButtons {
+    text-align: right;	
 }
 
 .inputError {
