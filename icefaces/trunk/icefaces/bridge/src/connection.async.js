@@ -251,6 +251,8 @@
                 });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);
+            } finally {
+                this.cancelDisposeViews();
             }
         },
 

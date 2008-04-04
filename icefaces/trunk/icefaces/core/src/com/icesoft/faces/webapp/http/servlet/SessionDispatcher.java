@@ -67,12 +67,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private void sessionShutdown(HttpSession session) {
-        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.remove(session.getId());
         servlet.shutdown();
-    }
-
-    private void destroy(HttpSession session) {
-        sessionBoundServers.remove(session.getId());
     }
 
     /**
@@ -93,10 +89,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    /**
-     * Shutdown session bound servers.
-     */
     private synchronized static void notifySessionShutdown(final HttpSession session) {
+        //shutdown session bound servers
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
             try {
@@ -106,22 +100,14 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 Log.error(e);
             }
         }
-    }
 
-    /**
-     * Stop dispatching to session bound servers and invalidate session.
-     */
-    private static void notifySessionDestroy(HttpSession session) {
+        //invalidate session and discard session ID
         try {
-            Iterator i = SessionDispatchers.iterator();
-            while (i.hasNext()) {
-                SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
-                sessionDispatcher.destroy(session);
-            }
-            SessionIDs.remove(session.getId());
             session.invalidate();
         } catch (IllegalStateException e) {
             Log.info("Session already invalidated.");
+        } finally {
+            SessionIDs.remove(session.getId());
         }
     }
 
@@ -187,30 +173,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
             return elapsedInterval + 15000 > maxInterval;
         }
 
-        private void shutdown() {
+        public void shutdown() {
             SessionMonitors.remove(this);
             notifySessionShutdown(session);
-            //remove session bound server after 3seconds delay to give a chance to the bridge and servers to communicate
-            //todo: ideally, the delay should be relaced with a mechanism that for any JSF lifecycle that runs at the
-            //todo: moment of shutdown will block session shutdown sequence until all JSF lifecycles complete
-            new Thread() {
-                public void run() {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        //ignore
-                    } finally {
-                        notifySessionDestroy(session);
-                    }
-                }
-            }.start();
-        }
-
-        public void forceShutdown() {
-            SessionMonitors.remove(this);
-            notifySessionShutdown(session);
-            //when the application wants to invalidate the session (i.e. logout) pending messages can be discarded
-            notifySessionDestroy(session);
         }
 
         public void shutdownIfExpired() {

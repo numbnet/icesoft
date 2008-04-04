@@ -15,6 +15,6 @@ public class InterceptingServletSession extends ProxyHttpSession {
         //see ICE-2731 -- delaying session invalidation doesn't work since JBoss+Catalina resuses session objects and
         //IDs which causes a lot of confusion in applications that have logout processes (invalidate session and
         //immediately initiate new session)
-        sessionMonitor.forceShutdown();
+        sessionMonitor.shutdown();
     }
 }

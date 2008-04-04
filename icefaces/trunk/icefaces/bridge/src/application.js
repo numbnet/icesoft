@@ -100,7 +100,7 @@
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
                 statusManager.sessionExpiredPopup.on(); // ICE-2621
-                this.connection.cancelDisposeViews();
+                this.connection.sendDisposeViews();
                 this.dispose();
             }.bind(this));
 

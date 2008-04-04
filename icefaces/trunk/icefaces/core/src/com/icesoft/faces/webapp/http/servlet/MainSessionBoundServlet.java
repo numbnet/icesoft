@@ -8,11 +8,14 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.ServerProxy;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
+import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,21 +57,23 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private String sessionID;
     private PseudoServlet servlet;
     private HttpSession session;
+    private SessionDispatcher.Monitor sessionMonitor;
+    private ShutdownHook disposeViews;
 
     public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
         this.session = session;
+        this.sessionMonitor = sessionMonitor;
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
         final Server viewServlet;
-        final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new RequestVerifier(sessionID, new DisposeViews(views));
+            disposeViews = new ShutdownHook(new RequestVerifier(sessionID, new DisposeViews(views)));
         } else {
             viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = NOOPServer;
+            disposeViews = new ShutdownHook(NOOPServer);
         }
 
         final Server sendUpdatedViews;
@@ -107,12 +112,18 @@ public class MainSessionBoundServlet implements PseudoServlet {
     }
 
     public void shutdown() {
-        DisposeBeans.in(session);
         Iterator i = views.values().iterator();
         while (i.hasNext()) {
             CommandQueue commandQueue = (CommandQueue) i.next();
             commandQueue.put(SessionExpired);
         }
+
+        //block until all views notify their disposal only when session expires
+        if (sessionMonitor.isExpired()) {
+            disposeViews.initiateShutdownSequence();
+        }
+
+        DisposeBeans.in(session);
         ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
         servlet.shutdown();
         Iterator viewIterator = views.values().iterator();
@@ -133,5 +144,36 @@ public class MainSessionBoundServlet implements PseudoServlet {
 
     public String getSessionID() {
         return sessionID;
+    }
+
+    private class ShutdownHook extends ServerProxy {
+        public ShutdownHook(Server server) {
+            super(server);
+        }
+
+        public void initiateShutdownSequence() {
+            int size = views.size();
+            final Semaphore lock = new Semaphore(size, true);
+
+            server = new ServerProxy(server) {
+                public void service(Request request) throws Exception {
+                    lock.release();
+                    super.service(request);
+                }
+            };
+
+            try {
+                lock.acquire(size);
+            } catch (InterruptedException e) {
+                //do nothing
+            }
+
+            //block until all views send their "dispose-views" message 
+            try {
+                lock.tryAcquire(size, 15, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Log.warn("Some views failed to confirm their shutdown.");
+            }
+        }
     }
 }
