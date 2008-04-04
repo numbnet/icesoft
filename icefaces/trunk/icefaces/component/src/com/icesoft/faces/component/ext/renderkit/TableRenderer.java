@@ -598,9 +598,9 @@ public class TableRenderer
                             }
                         }                        
                         
-                        if (uiData.isResizable()) {
-                            td.setAttribute(HTML.COLSPAN_ATTR, "2");
-                        }
+//                        if (uiData.isResizable()) {
+//                            td.setAttribute(HTML.COLSPAN_ATTR, "2");
+//                        }
                         if(!rowSelectorCodeAdded && scriptNode != null){
                             td.appendChild(scriptNode);
                         }
@@ -637,10 +637,21 @@ public class TableRenderer
                                 td.setAttribute(HTML.CLASS_ATTR, iceColumnStyleClass);
                             }
                         }                        
+   
                         
                         tr.appendChild(td);
                         // if column styles exist, then apply the appropriate one
 
+                        
+                        if (uiData.isResizable()) {
+                            Element eTd = domContext.createElement(HTML.TD_ELEM);
+                            eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
+                            Element img = domContext.createElement(HTML.IMG_ELEM);
+                            img.setAttribute(HTML.SRC_ATTR, "./xmlhttp/css/xp/css-images/spacer.gif");
+                            eTd.appendChild(img);
+                            tr.appendChild(eTd);
+                        }
+                        
                         if (++columnStyleIndex > columnStylesMaxIndex) {
                             columnStyleIndex = 0;
                         }

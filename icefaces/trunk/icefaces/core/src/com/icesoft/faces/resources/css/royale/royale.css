@@ -345,6 +345,29 @@ input {
     border-top: 1px solid #026AFF;
     border-right: 1px solid #026AFF; 
 }
+
+.iceDatTblResHdlr {
+    margin:0px;; 
+    padding:0px;
+    border-width: 0px;
+    width:1px;
+    background-color:transparent;
+ 
+}
+
+.iceDatTblResBor {
+    margin:0px;; 
+    padding:0px;
+    width:1px;
+    background-color: #026AFF;
+    background-image: url( "./css-images/table_col_header.gif" );
+    background-position: bottom;
+    background-repeat: repeat-x;
+}
+
+.iceDatTblBlkTd {
+   border-bottom: 1px solid #0056EA;    
+}
 /*
 ----- for datatable when cell content length exceeds-----
 */

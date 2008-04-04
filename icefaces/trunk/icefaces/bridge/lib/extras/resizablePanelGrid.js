@@ -198,6 +198,7 @@ Ice.ResizableGrid = Class.create(Ice.Resizable, {
     this.cntHght = (Element.getHeight(this.getContainerElement())) + "px";
     this.source.style.height = this.cntHght;
     this.getGhost().style.left= Event.pointerX(event) + "px";
+    this.source.style.backgroundColor="#CCCCCC";
   }
 });
 
@@ -232,6 +233,13 @@ Ice.ResizableGrid.addMethods({
     $super(event);    
     this.source.style.height = this.cntHght;
     this.getGhost().style.height = this.cntHght;    
+  },
+  
+  finalize: function ($super, event) {
+     $super(event);
+     this.source.style.height = "1px";
+     this.source.style.backgroundColor="transparent";
+     this.getGhost().style.height = "1px";
   }  
   
 
