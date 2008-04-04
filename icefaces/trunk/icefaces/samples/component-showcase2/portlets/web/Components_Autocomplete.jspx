@@ -50,14 +50,17 @@
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
-            <ice:panelGroup id="autoCompleteContentPanel" styleClass="contentIncludePanelGroup">
+            <ice:panelGroup id="autoCompletteContentPanel" style="float:left;">
                 <ice:form>
                     <f:subview id="acSub">
-                        <jsp:directive.include file="/WEB-INF/includes/examples/custom/selectInputText.jspx" />
+                        <jsp:directive.include
+                                file="/WEB-INF/includes/examples/custom/selectInputText.jspx"/>
                     </f:subview>
                 </ice:form>
             </ice:panelGroup>
+            <ice:panelGroup styleClass="clearer"/>
         </ice:panelGroup>
+
 
         <ice:panelGroup style="margin-top:10px;">
             <p>&#169; 2006 ICEsoft Technologies Inc. &#160; &#8226; &#160;

@@ -92,7 +92,7 @@
                 <ice:graphicImage id="GrphImg"
                                   width="100px"
                                   height="75px"
-                                  url="./images/dragDrop/#{inventoryItem.pictureName}.png"
+                                  url="/images/dragDrop/#{inventoryItem.pictureName}.png"
                                   alt="#{inventoryItem.name}"/>
                 <br/>
                 <ice:outputText value="#{inventoryItem.name}"/>

@@ -50,9 +50,9 @@
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
-            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+            <ice:panelGroup id="tableGroupingContentPanel" style="float:left;">
                 <ice:form>
-                    <f:subview id="blSub">
+                    <f:subview id="tGroupSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/custom/dataTable-grouping.jspx"/>
                     </f:subview>

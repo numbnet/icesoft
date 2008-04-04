@@ -50,9 +50,9 @@
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
-            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+            <ice:panelGroup id="panelCollapsibleContentPanel" style="float:left;">
                 <ice:form>
-                    <f:subview id="blSub">
+                    <f:subview id="pCollSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/panel/panelCollapsible.jspx"/>
                     </f:subview>

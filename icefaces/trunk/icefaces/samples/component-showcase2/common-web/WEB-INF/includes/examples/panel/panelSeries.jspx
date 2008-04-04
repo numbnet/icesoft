@@ -74,7 +74,7 @@
                          var="employee" style="float:left">
             <!-- employee box is repeated for each employee record -->
             <ice:panelGroup styleClass="employeeBox">
-                <ice:graphicImage value="./images/employee.gif"
+                <ice:graphicImage value="/images/employee.gif"
                                   width="69" height="97" style="float:right"/>
 
                 <ice:panelGroup style="padding:10px;background:url(#{styleBean.imageDirectory}table_col_header.gif);">

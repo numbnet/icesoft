@@ -202,11 +202,11 @@ public class ApplicationController {
         // if there is associated source content then build and return
         // the iFrame
         if (tabState.getSourceContent() != null) {
-            return ContextUtilBean.generateSourceCodeUrl(
+            return ContextUtilBean.generateSourceCodeIFrame(
                     tabState.getSourceContent());
         }
         // otherwise just return an empty iFrame.
-        return ContextUtilBean.generateMarkup("");
+        return ContextUtilBean.generateIFrame("");
     }
 
     /**
@@ -239,10 +239,10 @@ public class ApplicationController {
         // if there is a selected description content that return the
         // iFrame tag needed to load it.
         if (tabState.getDescriptionContent() != null) {
-            return ContextUtilBean.generateDocumentUrl(
+            return ContextUtilBean.generateIFrameWithContextPath(
                     tabState.getDescriptionContent());
         }
-        return ContextUtilBean.generateMarkup("");
+        return ContextUtilBean.generateIFrame("");
     }
 
     /**

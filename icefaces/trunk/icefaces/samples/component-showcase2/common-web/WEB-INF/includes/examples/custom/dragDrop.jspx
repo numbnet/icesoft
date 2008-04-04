@@ -70,7 +70,7 @@
             <ice:graphicImage id="GrphImg"
                               width="100px"
                               height="75px"
-                              url="./images/dragDrop/#{inventoryItem.pictureName}.png"
+                              url="/images/dragDrop/#{inventoryItem.pictureName}.png"
                               alt="#{inventoryItem.name}"/>
         </ice:panelGroup>
         <ice:panelGroup style="text-align:center">
@@ -122,7 +122,7 @@
             </f:facet>
             <ice:panelGroup>
                 <ice:graphicImage id="cartItemImage"
-                                  url="./images/dragDrop/#{cartItem.pictureName}_small.png"
+                                  url="/images/dragDrop/#{cartItem.pictureName}_small.png"
                                   alt="#{cartItem.name}"/>
             </ice:panelGroup>
         </ice:column>
@@ -205,7 +205,7 @@
     <ice:panelGroup id="cartDropTarget"
                     style="text-align: center;background-color:white;padding:20px;" >
 
-        <ice:graphicImage value="./images/dragDrop/shopping-cart.png"
+        <ice:graphicImage value="/images/dragDrop/shopping-cart.png"
                           alt="#{msgs['page.dragDrop.cartZone.image.label']}"
                           width="55" height="45"/>
     </ice:panelGroup>

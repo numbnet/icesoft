@@ -50,9 +50,9 @@
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
-            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+            <ice:panelGroup id="treeContentPanel" style="float:left;">
                 <ice:form>
-                    <f:subview id="blSub">
+                    <f:subview id="treeSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/custom/tree.jspx"/>
                     </f:subview>

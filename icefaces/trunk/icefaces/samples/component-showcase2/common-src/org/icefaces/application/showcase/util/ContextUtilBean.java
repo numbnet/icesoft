@@ -34,43 +34,32 @@ package org.icefaces.application.showcase.util;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import java.util.HashMap;
 
 /**
- * It's used to generate the iframe markup
- * for the Description and Source tab panels.  It adds the context path of the application
- * dynamically in front of the src attribute to ensure that the resource can be found when
- * running in both portlet and plain servlet environments.
+ * It's used to generate the iframe markup for the Description and Source tab panels.
+ * It adds the context path of the application dynamically in front of the src attribute
+ * to ensure that the resource can be found when running in both portlet and plain servlet
+ * environments.
  *
  * @since 1.6
  */
-public class ContextUtilBean extends HashMap {
+public class ContextUtilBean {
 
     private static final String IFRAME_PREFIX = "<iframe src=\"";
     private static final String IFRAME_SUFFIX = "\"class=\"includeIframe\" width=\"100%\"></iframe>";
 
     private static final String SOURCE_CODE_ULR = "/sourcecodeStream.html?path=";
 
-    public static String getContextPath() {
+    public String getContextPath() {
         FacesContext fc = FacesContext.getCurrentInstance();
-
         ExternalContext ec = fc.getExternalContext();
         return ec.getRequestContextPath();
     }
 
-    /**
-     * <p>A utility method which will correctly resolve the context path
-     * of a local resouce (coded to solve ICE-2714).  This is need
-     * for specific servlet containers, mainly of the Portlet
-     * variety.</p>
-     * <p>The overriding of the Map method get(Object source) allows
-     * for inlining of the method call using JSF Map syntax.</p>
-     *
-     * @param source file path relative to application root path.
-     * @return html iframe include with proper full path to file.
-     */
-    public Object get(Object source) {
-        return generateMarkup(getContextPath() + source);
+    private static String getContextPathStatic() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        return ec.getRequestContextPath();
     }
 
     /**
@@ -81,7 +70,7 @@ public class ContextUtilBean extends HashMap {
      * @param source path to some web resource
      * @return iFrame markup to load specified resource.
      */
-    public static String generateMarkup(String source) {
+    public static String generateIFrame(String source) {
         StringBuffer markup = new StringBuffer();
         markup.append(IFRAME_PREFIX);
         markup.append(source);
@@ -90,37 +79,24 @@ public class ContextUtilBean extends HashMap {
     }
 
     /**
-     * Generates iFrame markup with the specified source as the
-     * url to the iFrame content. Modifies the source path by pre-appending
-     * the context path.
+     * Generates iFrame markup with the specified source as the url to the iFrame content.
+     * Modifies the source path by prepending the context path.
      *
      * @param source path to some web resource
      * @return iFrame markup to load specified resource.
      */
-    public static String generateDocumentUrl(String source) {
-        StringBuffer markup = new StringBuffer();
-        markup.append(IFRAME_PREFIX);
-        markup.append(getContextPath());
-        markup.append(source);
-        markup.append(IFRAME_SUFFIX);
-        return markup.toString();
+    public static String generateIFrameWithContextPath(String source) {
+        return generateIFrame(getContextPathStatic() + source);
     }
 
     /**
-     * Generates iFrame markup with the specified source as the
-     * url to the iFrame content. Modifies the source path by pre-appending
-     * the source code loading servlet path.
+     * Generates iFrame markup with the specified source as the url to the iFrame content.
+     * Modifies the source path by prepending the source code loading servlet path.
      *
      * @param source path to some web resource
      * @return iFrame markup to load specified resource.
      */
-    public static String generateSourceCodeUrl(String source) {
-        StringBuffer markup = new StringBuffer();
-        markup.append(IFRAME_PREFIX);
-        markup.append(getContextPath());
-        markup.append(SOURCE_CODE_ULR);
-        markup.append(source);
-        markup.append(IFRAME_SUFFIX);
-        return markup.toString();
+    public static String generateSourceCodeIFrame(String source) {
+        return generateIFrameWithContextPath(SOURCE_CODE_ULR + source);
     }
 }

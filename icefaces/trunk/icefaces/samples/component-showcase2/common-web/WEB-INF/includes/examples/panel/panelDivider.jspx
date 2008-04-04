@@ -76,7 +76,7 @@
 
             <f:facet name="second">
                 <ice:panelGroup style="padding: 10px;">
-                    <ice:graphicImage value="./images/icefaces.png"
+                    <ice:graphicImage value="/images/icefaces.png"
                             alt="ICEfaces" title="ICEfaces"
                             width="130px" height="90px"
                             style="float: left; padding: 10px;"/>

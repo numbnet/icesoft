@@ -50,9 +50,9 @@
 
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
-            <ice:panelGroup id="buttonsAndLinksContentPanel" style="float:left;">
+            <ice:panelGroup id="panelBorderContentPanel" style="float:left;">
                 <ice:form>
-                    <f:subview id="blSub">
+                    <f:subview id="pBorSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/panel/panelBorder.jspx"/>
                     </f:subview>
