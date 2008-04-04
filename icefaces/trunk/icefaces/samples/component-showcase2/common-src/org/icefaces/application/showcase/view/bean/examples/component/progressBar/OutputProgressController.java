@@ -171,8 +171,13 @@ public class OutputProgressController implements Renderable, ServletContextListe
      */
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
-        sessionId = ((HttpSession) FacesContext.getCurrentInstance().
-                getExternalContext().getSession(true)).getId();
+
+        //Casting to HttpSession ruins it for portlets so we need to either check for both types of
+        //sessions using reflection.  Instead, since we don't need the real id (just something that's
+        //specific to the session), get the hash using toString().
+        sessionId = FacesContext.getCurrentInstance().getExternalContext().getSession(false).toString();
+//        sessionId = ((HttpSession) FacesContext.getCurrentInstance().
+//                getExternalContext().getSession(true)).getId();
         renderManager.getOnDemandRenderer(sessionId).add(this);
     }
 
