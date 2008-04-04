@@ -898,7 +898,6 @@ public class TreeNavigation implements Serializable{
     }
 
 	public PageContentBean getCurrentPageContent() {
-//		log.info("getCurrentPage = "+currentPageContent.getMenuDisplayText());
 		return currentPageContent;
 	}
 
@@ -908,7 +907,7 @@ public class TreeNavigation implements Serializable{
 
 	@Destroy
 	public void destroy(){
-		log.info("destroying TreeNavigationBean");
+
 	}
 
 }

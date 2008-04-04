@@ -216,7 +216,7 @@ public class OutputProgressPropertyBean implements Serializable {
 
 	@Destroy 
 	public void destroy(){
-		System.out.println("OutputProgressProperty destroy");
+
 	}
 
 }

@@ -105,29 +105,28 @@ public class PageContentBean extends IceUserObject implements Serializable{
     private void init() {
     	//why set the images statically?  They should be set properly from 
     	//the StyleBean's current set of images???
- //       log.info("in init and setting icons");
         setBranchContractedIcon(StyleBean.XP_BRANCH_CONTRACTED_ICON);
         setBranchExpandedIcon(StyleBean.XP_BRANCH_EXPANDED_ICON);
         setLeafIcon("./images/gear.gif");
         setExpanded(true);
 
         //will set the locale from the LanguageBean--soon to be LocaleBean??
- //        log.info("getting locale");
+
         Locale locale=null;
         try{
              locale=FacesContext.getCurrentInstance().getViewRoot().getLocale();
         }catch (Exception e){
-  //          log.info("exception getting locale from FacesContext");
+            log.info("exception getting locale from FacesContext");
         }
         // assign a default locale if the faces context has none, shouldn't happen
         if (locale == null) {
             locale = Locale.ENGLISH;
         }
-   //     log.info("loading messages");
+
         messages = ResourceBundle.getBundle(
                 "com.icesoft.icefaces.samples.showcase.resources.messages",
                 locale);
-   //     log.info("end of init");  
+  
     }
 
 
@@ -149,7 +148,6 @@ public class PageContentBean extends IceUserObject implements Serializable{
      * @param templateName valid panel name in showcase.jspx
      */
     public void setTemplateName(String templateName) {
- //   	log.info("setting template name to "+templateName);
         this.templateName = templateName;
     }
 
@@ -248,18 +246,8 @@ public class PageContentBean extends IceUserObject implements Serializable{
         if (isPageContent()) {
             // only toggle the branch expansion if we have already selected the node
                 // toggle the branch node expansion
-                setExpanded(!isExpanded());
- //               if (this.templateName.equals("tabbedPaneContentPanel")){
- //               	log.info("this is a panelTabSet so start LR Conversation");
-  //              	setStartLongRunningConversation(true);
-//                }else{
-//                	log.info("not panelTabSet & LR Conversation="+Manager.instance().isLongRunningConversation());
-//                	setStartLongRunningConversation(false);
-//                }
-                	
+                setExpanded(!isExpanded());               	
                 treeNav.setCurrentPageContent(this);
-    //        }
-    //        navigationBean.setSelectedPanel(this);
          }
         // Otherwise toggle the node visibility, only changes the state
         // of the nodes with children.
@@ -267,50 +255,5 @@ public class PageContentBean extends IceUserObject implements Serializable{
             setExpanded(!isExpanded());
         }
     }
-/*DON'T NEED THIS ANYMORE!!! made panelTabSet page scoped !!
- * all components but panelTabSet currently don't require a LR conversation
- * Thus check to see if a LR conversation exists and end it.  Seam will 
- * automatically demote to temporary conversation
- */
-	public boolean isStartLongRunningConversation() {
-		return startLongRunningConversation;
-	}
 
-	/*DON'T NEED THIS ANYMORE!!! made panelTabSet page scoped !!
-	 * so far the only PageContentBean requiring a LR conversation is panelTabSet
-	 * If startLongRunningConversation == true, then make sure there isn't one already 
-	 * present to join.  If not, then start one, otherwise join ?? or maybe end the
-	 * old one and start a new one???
-	 */
-	public void setStartLongRunningConversation(boolean startLongRunningConversation) {
-		log.info("setStartLongRunningConversation = "+startLongRunningConversation);
-		this.startLongRunningConversation = startLongRunningConversation;
-		if (startLongRunningConversation){
-			if (Manager.instance().isLongRunningConversation() ){
-				log.info("already have a long running Conversation!!");
-				//join it!
-				joinConversation();
-			}
-			else {
-				log.info("starting LR Conversation");
-				startConversation();
-			}
-		}else if (Manager.instance().isLongRunningConversation()){
-			log.info("ending LR Conversation");
-			endConversation();
-		}
-
-	}
-	@End
-	public void endConversation(){
-		log.info("LR Conversation ended");
-	}
-	@Begin
-	public void startConversation(){
-		log.info("LR Conversation started");
-	}
-	@Begin(join=true)
-	public void joinConversation(){
-		log.info("Joined Conversation");
-	}
 }

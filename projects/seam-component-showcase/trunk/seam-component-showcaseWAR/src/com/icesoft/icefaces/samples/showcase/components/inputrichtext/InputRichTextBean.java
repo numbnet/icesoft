@@ -47,12 +47,12 @@ public class InputRichTextBean implements Serializable{
 
 	@Create
 	public void init(){
-		System.out.println("creating inputRichTextBean version="+this);
+	//	System.out.println("creating inputRichTextBean version="+this);
 	}
 	
 	
 	public void valueChange(ValueChangeEvent event) {
- 		System.out.println("Value has been changed");
+ //		System.out.println("Value has been changed");
 	}
 
 	public String getValue() {
@@ -65,7 +65,7 @@ public class InputRichTextBean implements Serializable{
 	
 	@Destroy
 	public void destroy(){
-		System.out.println("destroying inputRichTextBean version="+this);
+	//	System.out.println("destroying inputRichTextBean version="+this);
 	}
 
 }

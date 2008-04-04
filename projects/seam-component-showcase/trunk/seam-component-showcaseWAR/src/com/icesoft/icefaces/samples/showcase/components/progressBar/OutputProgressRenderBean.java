@@ -70,13 +70,11 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
     /**
      * Renderable Interface
      */
-//	public static final String RENDERER_NAME = "demand";
     private PersistentFacesState state;
     private boolean doneSetup;
     private int myId; 
     private static int id;
     private IntervalRenderer ir;
-//    private OnDemandRenderer renderer;
 
    
     private RenderManager renderManager;
@@ -108,12 +106,6 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
     @In
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
- //       log.info("setRenderManager() and renderManager="+this.renderManager);
-//        if (renderManager !=null){
-//          renderer = renderManager.getDelayRenderer(RENDERER_NAME);
-//          renderer.add(this);
-//        }else 
-//        	log.info("\t\t renderManager is null");
     }
 
     /**
@@ -122,18 +114,17 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
      * @return RenderManager null
      */
     public RenderManager getRenderManager() {
- //   	log.info("getRenderManager rm="+this.renderManager);
         return this.renderManager;
     }
 
     // progress active status
     private boolean runningTask=true;
 
-	    // value bound to component as an indicator of progress
+	// value bound to component as an indicator of progress
 	private int percent = 0;
 
     
-    	    // flag to disable start button when progress bar is started
+    // flag to disable start button when progress bar is started
 	private boolean disableStartButton = false;
 	
 	/**
@@ -217,10 +208,8 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	     * Start a new thread to do some work which is monitored for progress.
 	     */
 	    public void start(ActionEvent event) {
-	    	log.info("start the action");
 	    	setPercent(0);
 	    	if (!doneSetup){
-	//    		log.info("setup the IR");
 	    	    setupIntervalRenderer();
 	    	}else {
 	    		if (ir!=null)
@@ -241,9 +230,7 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	        OutputProgressRenderBean outputBean;
 
 	        public LongOperationRunner(OutputProgressRenderBean outputBean) {
-	            this.outputBean = outputBean;
-//	            log.info(" thread constructor & outputBean="+outputBean);
-	            
+	            this.outputBean = outputBean;            
 	        }
 
 	        public void run() {
@@ -252,7 +239,6 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	            try {
 	                for (int i = 0; i <= 100; i += 10) {
 	                    // pause the thread
-	//                	log.info(" \t in loop & i="+i+" for outputBean="+outputBean);
 	                    // update the percent value
 	                    if (i>0)outputBean.setPercent(i);
 	                    Thread.sleep(300);
@@ -276,7 +262,6 @@ public class OutputProgressRenderBean implements Renderable,  Serializable {
 	    	log.info("cleanup()");
 	        if (renderManager != null) {
 	            ir.remove(this);
-//	            renderer.remove(this);
 	            if (ir.isEmpty() ) {
 	                if(log.isDebugEnabled() ) { 
 	                   log.debug("*** IntervalRenderer Stopped " );

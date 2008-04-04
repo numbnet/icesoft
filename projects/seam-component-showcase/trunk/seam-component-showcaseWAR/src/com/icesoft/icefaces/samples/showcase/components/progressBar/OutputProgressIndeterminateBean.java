@@ -157,7 +157,7 @@ public class OutputProgressIndeterminateBean implements Renderable, Serializable
 
 	@Destroy 
 	public void destroy(){
-		System.out.println("OutputProgressIndeterminate destroy");
+
 	}
     
     /**

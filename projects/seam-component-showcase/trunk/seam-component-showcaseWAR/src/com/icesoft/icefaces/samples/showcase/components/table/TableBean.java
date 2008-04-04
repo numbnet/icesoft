@@ -86,21 +86,19 @@ public class TableBean implements Serializable{
 
     @Create
     public void init(){
-    	System.out.println("creating table bean");
         if (personListDB!=null){
         		 if (!personListDB.isEmpty()){
         			 personsList= new Person[personListDB.size()];
         			 for (int i=0; i<personListDB.size(); i++){
-        				 System.out.println(" entry="+i+" Person="+((Person)personListDB.get(i)).getLastName());
         				 personsList[i]=(Person)personListDB.get(i);
         			 }
         			 
         		 }
         		 else{
-            		 System.out.println("personListDb is empty");
+            	     //it's empty
             		 personsList = new Person[1];
             	 }
-        }else System.out.println("personListDb is null!!!");
+        }
     }
     
     /**

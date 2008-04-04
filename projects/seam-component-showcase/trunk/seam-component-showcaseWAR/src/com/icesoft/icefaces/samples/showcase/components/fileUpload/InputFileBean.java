@@ -73,8 +73,7 @@ public class InputFileBean implements Renderable, Serializable{
      */
     public InputFileBean() {
         state = PersistentFacesState.getInstance(); 
-       	log.info("initializing InputFileBean "+this.toString()+" renderManager="+renderManager);
- 
+ //      	log.info("initializing InputFileBean "+this.toString()+" renderManager="+renderManager);
     }
 
  
@@ -85,7 +84,6 @@ public class InputFileBean implements Renderable, Serializable{
      */
     public void setRenderManager(RenderManager renderManager) {
        if (renderManager !=null) this.renderManager = renderManager;
-       	log.info("setRenderManager version="+this.renderManager);
     }
 
     /**
@@ -103,7 +101,6 @@ public class InputFileBean implements Renderable, Serializable{
      * @return state the PersistantFacesState
      */
     public PersistentFacesState getState() {
-    	log.info("getting State="+state);
         return state;
     }
 
@@ -130,12 +127,17 @@ public class InputFileBean implements Renderable, Serializable{
     }
 
     public int getPercent() {
-//    	PersistentFacesState _state = PersistentFacesState.getInstance();
-//    	if (_state!=null)state=_state;
-//    	log.info("getPercent version="+this+" percent="+this.percent);
         return this.percent;
     }
 
+    /**
+     * progress method actually kicks off the process and then
+     * action is invoked.  This method writes the upload directory string
+     * to a session attribute for file management and then 
+     * checks to see if the file is saved or any exceptions have
+     * occured during the fileupload.
+     * @param event
+     */
     public void action(ActionEvent event) {
 	     InputFile inputFile = (InputFile) event.getSource();
 	     this.percent = inputFile.getFileInfo().getPercent();
@@ -151,10 +153,10 @@ public class InputFileBean implements Renderable, Serializable{
 	    		 Object o = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 	    		 if (o instanceof javax.servlet.http.HttpSession){
     	    		((HttpSession)o).setAttribute("uploadDirectory", uploadDirectory);
-    	    		log.info("httpSession");
+    	    		if (log.isDebugEnabled())log.debug("httpSession");
 	    		 }
 	    		 else if (o instanceof javax.portlet.PortletSession){
-	    			 log.info("portletSession");
+	    			 if (log.isDebugEnabled())log.debug("portletSession");
 	    			 ((PortletSession)o).setAttribute("uploadDirectory", uploadDirectory);
 	    		 }
 	    	 }catch (Exception e){
@@ -203,7 +205,10 @@ public class InputFileBean implements Renderable, Serializable{
   	    reRender();
     }
 
-
+/**
+ * using state.execute and render seems to work better in standard request
+ * scope (rather than using the RenderManager class and it's methods.
+ */
 	protected void reRender() {
 		PersistentFacesState _state = PersistentFacesState.getInstance();
 		   if(_state != null){
@@ -248,23 +253,15 @@ public class InputFileBean implements Renderable, Serializable{
 	public boolean isUpdateFlag() {
 		return updateFlag;
 	}
-
-
 	public void setUpdateFlag(boolean updateFlag) {
 		this.updateFlag = updateFlag;
 	}
-
-
 	public String getStatusMsg() {
 		return statusMsg;
 	}
-
-
 	public void setStatusMsg(String statusMsg) {
 		this.statusMsg = statusMsg;
 	}
-
-
 
 }
 

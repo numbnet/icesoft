@@ -96,7 +96,6 @@ public class DataTablePaginatorBean extends EntityQuery{
 		/* need this for portlet version --otherwise already have LR conversation */
 		if (!Manager.instance().isLongRunningConversation())
 			Manager.instance().beginConversation();
-	//	System.out.println("building sorted list & lr="+Manager.instance().isLongRunningConversation());
         setEjbql(EJBQL);
     	ascending = true;
     	sort = "lastName";
@@ -109,13 +108,10 @@ public class DataTablePaginatorBean extends EntityQuery{
      */
  
 	public void buildSortedList(){
-		System.out.println("building sorted list for orderString="+orderString);
         setEjbql(EJBQL);
         setOrder(orderString);    
     }
-    
-
-    
+ 
     /**
      * Gets the data paginator layout.
      *
@@ -154,7 +150,6 @@ public class DataTablePaginatorBean extends EntityQuery{
     	this.ascending = ascending;
     	if (ascending)this.orderString =sort+" "+"asc";
     	else this.orderString=sort+" "+"desc";
-    	System.out.println("sort="+sort+" ascending="+ascending+" orderString="+orderString);
     	//redo query   
         this.buildSortedList();
  
@@ -162,34 +157,30 @@ public class DataTablePaginatorBean extends EntityQuery{
 
 
 	public String getSort() {
-//		System.out.println("getSort sort="+sort);
 		return sort;
 	}
 
 	public void setSort(String sort) {
 		if (!sort.equals(this.sort)){
 			this.sort = sort;
-			System.out.println("setSort sort="+sort);
 			this.sort(this.sort,ascending);
-		}else System.out.println("sort unchanged");
+		}
 	}
 
 	public boolean isAscending() {
-		System.out.println("getAcending ascending="+ascending);
 		return ascending;
 	}
 
 	public void setAscending(boolean ascending) {
 		if (ascending !=this.ascending){
 			this.ascending = ascending;
-			System.out.println("getAcending ascending="+ascending);
 			this.sort(this.sort, this.ascending);
 		}
 	}
 
 	@Destroy
 	public void destroy(){
-		System.out.println("destroying bean");
+
 	}
 
 }

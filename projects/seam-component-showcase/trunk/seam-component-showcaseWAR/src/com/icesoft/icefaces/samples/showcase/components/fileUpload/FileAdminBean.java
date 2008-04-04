@@ -65,9 +65,7 @@ public class FileAdminBean implements Serializable{
     
     @Create
     public void init(){
-    	log.info("create FileAdminBean");
-
-    		
+    	//log.info("create FileAdminBean");	
     }
 
     public void setFileUpload(InputFileBean ifb){
@@ -108,7 +106,6 @@ public class FileAdminBean implements Serializable{
 	     	}
 	   	}
 	
-   // 	this.fileUpload.reRender();
     	if (fileUpload!=null){
     		fileUpload.setUpdateFlag(false);
     	}
@@ -145,7 +142,7 @@ public class FileAdminBean implements Serializable{
 	      log.info("problem getting uploadDirectory");	
 	    }
 	    if (parentDir != null){
-	      log.info("parentDir = "+parentDir);
+	      if (log.isDebugEnabled())log.debug("parentDir = "+parentDir);
 		  File[] files = null;
 	      File dir = new File(parentDir);
 	    /* use a FileFilter to only get files & not directories */
@@ -178,7 +175,7 @@ public class FileAdminBean implements Serializable{
 	          File f = new File(fr.getAbsolutePath());
 	          if (f.exists()) { 
 	        		f.delete();
-	        	    log.info("File "+f.getName()+" is deleted");
+	        	    if (log.isDebugEnabled())log.debug("File "+f.getName()+" is deleted");
 	          }
 	        }
 	    }
@@ -201,7 +198,7 @@ public class FileAdminBean implements Serializable{
 	@Destroy
 	public void destroy() {
 		///can get rid of the uploaded files here unless have ejb3 container
-	 	log.info("FileInfoBean: seam destroying...");
+	 	log.info("FileInfoBean: seam destroying...set to delete uploaded files");
 	 	//delete uploaded files since the session is now over/destroyed
 	 	
 	 	try{
@@ -239,7 +236,7 @@ public class FileAdminBean implements Serializable{
 
 	public String getCurrentFileName() {
 		if (fileUpload!=null)currentFileName=fileUpload.getCurrentFileName();
-		log.info("   fileName uploaded = "+currentFileName);
+		//log.info("   fileName uploaded = "+currentFileName);
 		return currentFileName;
 	}
 
