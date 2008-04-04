@@ -45,6 +45,7 @@ import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.StringResource;
+import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
@@ -69,14 +70,11 @@ import org.apache.commons.logging.LogFactory;
  */
 public class Participant extends ParticipantInfo implements Renderable, DisposableBean {
     private static final int HIGHLIGHT_TIME = 4000;
-    private static final int MAXIMUM_TRANSIENT_EXCEPTIONS = 50;
 
     private static Log log = LogFactory.getLog(Participant.class);
 
     private int role = ParticipantInfo.ROLE_VIEWER;
     private int moderatorSelection;
-    private int transientExceptionCount = 0;
-    private long lastTransientException = -1;
     private LoginBean loginBean = new LoginBean(this);
     private PresentationManagerBean presentationManager;
     private Presentation presentation;
@@ -690,42 +688,12 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * @param renderingException that occurred
      */
     public void renderingException(RenderingException renderingException) {
-        if (log.isErrorEnabled()) {
-            log.error("Rendering exception for " + firstName, renderingException);
-        }
-        
-        // This is a failsafe created after it was noticed (on the live server) that
-        // there is a possibility of continuous transient exceptions being thrown, without
-        // a fatal exception eventually be thrown (as should happen)
-        // This meant some users would close their browser, and their session would
-        // fail to be properly destroyed on timeout, so instead they would be left in a
-        // sort of 'limbo' of continuous transient exceptions
-        // So now we keep track of transient exceptions, if MAXIMUM_TRANSIENT_EXCEPTIONS
-        // occur within 10 seconds (or less) of each other, it is assumed that something has
-        // gone wrong and the user will be logged out
-        if (renderingException instanceof TransientRenderingException) {
-            if ((System.currentTimeMillis() - lastTransientException) >= 10000) {
-                transientExceptionCount++;
-                lastTransientException = System.currentTimeMillis();
-            }
-            else {
-                transientExceptionCount = 0;
-            }
-        }
-        else {
-            if (log.isErrorEnabled()) {
-                if ((firstName != null) && (!firstName.equals(""))) {
-                    log.error("Rendering exception was fatal, going to log " + firstName + " out");
-                }
-            }
-            logout();
-        }
-        
-        if (transientExceptionCount > MAXIMUM_TRANSIENT_EXCEPTIONS) {
-            if (log.isErrorEnabled()) {
-                if ((firstName != null) && (!firstName.equals(""))) {
-                    log.error("The maximum transient exceptions (" + MAXIMUM_TRANSIENT_EXCEPTIONS + " has been reached for " + firstName + ", going to log them out");
-                }
+        if (log.isDebugEnabled() &&
+                renderingException instanceof TransientRenderingException) {
+            log.debug("Transient Rendering exception for Participant " + firstName + ":", renderingException);
+        } else if (renderingException instanceof FatalRenderingException) {
+            if (log.isDebugEnabled()) {
+                log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
             }
             logout();
         }
@@ -836,6 +804,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 	}
 
 	public void dispose() throws Exception {
+        if (log.isDebugEnabled()) {
+            log.debug("Participant " + firstName + " Disposed - logging out");
+        }
 		logout();
 	}
 	
