@@ -425,7 +425,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     margin: 15px;
     width: 125px;
     height: 80px;
-    background:url('../images/effect_gradient.gif') bottom left repeat-x;
+    padding: 2px;
 }
 .effectsDemoContainer{
     float:left;        
@@ -435,6 +435,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     text-align: center;
     border: 1px solid #d9d9d9;
     overflow: hidden;
+     background:url('../images/effect_gradient.gif') bottom left repeat-x;
 }
 .effectsDemoContainer > div{
     float:left;
