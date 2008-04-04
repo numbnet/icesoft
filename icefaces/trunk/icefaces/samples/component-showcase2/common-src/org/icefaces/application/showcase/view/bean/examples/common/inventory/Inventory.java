@@ -40,10 +40,10 @@ import java.util.ArrayList;
  *
  * @since 1.7
  */
-public class Inventory implements InventoryInterface<InventoryItem> {
+public class Inventory implements InventoryInterface {
 
     // collection of inventory items.
-    private ArrayList<InventoryItem> inventory;
+    private ArrayList inventory;
     // total value of inventory
     private double inventoryPriceTotal = 0.0;
     private int inventoryUnitTotal = 0;
@@ -52,15 +52,15 @@ public class Inventory implements InventoryInterface<InventoryItem> {
      * Crates a new instance of Inventory.
      */
     public Inventory() {
-        inventory = new ArrayList<InventoryItem>();
+        inventory = new ArrayList();
     }
 
     /**
      * Gets the collection of Inventory items.
      *
-     * @return
+     * @return current inventory
      */
-    public ArrayList<InventoryItem> getInventory() {
+    public ArrayList getInventory() {
         return inventory;
     }
 
@@ -69,7 +69,7 @@ public class Inventory implements InventoryInterface<InventoryItem> {
      *
      * @return total price of all InventoryItems.
      */
-    public Double getInventoryPriceTotal() {
+    public double getInventoryPriceTotal() {
         return inventoryPriceTotal;
     }
 
@@ -94,7 +94,9 @@ public class Inventory implements InventoryInterface<InventoryItem> {
 
         boolean found = false;
         // if iventory item exist increment quantity count. 
-        for (InventoryItem item : inventory) {
+        InventoryItem item;
+        for(int i= 0, max= inventory.size(); i < max; i++){
+            item = (InventoryItem)inventory.get(i);
             if (item.getId() == newItem.getId()) {
                 item.incrementQuantity();
                 found = true;
@@ -123,7 +125,9 @@ public class Inventory implements InventoryInterface<InventoryItem> {
 
         // if iventory item exist increment quantity count.
         InventoryItem foundItem = null;
-        for (InventoryItem item : inventory) {
+        InventoryItem item;
+        for(int i= 0, max= inventory.size(); i < max; i++){
+            item = (InventoryItem)inventory.get(i);
             if (item.getId() == newItem.getId()) {
                 item.decrementQuantity();
                 foundItem = item;
@@ -148,7 +152,9 @@ public class Inventory implements InventoryInterface<InventoryItem> {
     private void recalculateIventoryTotal() {
         inventoryPriceTotal = 0;
         inventoryUnitTotal = 0;
-        for (InventoryItem item : inventory) {
+        InventoryItem item;
+        for(int i= 0, max= inventory.size(); i < max; i++){
+            item = (InventoryItem)inventory.get(i);
             inventoryPriceTotal += item.getPrice() * item.getQuantity();
             inventoryUnitTotal += item.getQuantity();
         }

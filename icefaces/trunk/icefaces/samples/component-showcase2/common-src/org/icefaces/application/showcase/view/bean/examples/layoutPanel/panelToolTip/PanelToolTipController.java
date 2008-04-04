@@ -60,13 +60,13 @@ public class PanelToolTipController {
 
     private PanelToolTipModel panelToolTipModel;
 
-    private static HashMap<String, ArrayList> provinces =
-            new HashMap<String, ArrayList>();
+    private static HashMap provinces =
+            new HashMap();
 
     private ArrayList cityList = new ArrayList();
 
     static {
-        ArrayList<String> cities = new ArrayList<String>();
+        ArrayList cities = new ArrayList();
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city1.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city2.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province1.city3.label"));
@@ -75,7 +75,7 @@ public class PanelToolTipController {
         provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province1.label"),
                 cities);
 
-        cities = new ArrayList<String>();
+        cities = new ArrayList();
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city1.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city2.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province2.city3.label"));
@@ -84,7 +84,7 @@ public class PanelToolTipController {
         provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province2.label"),
                 cities);
 
-        cities = new ArrayList<String>();
+        cities = new ArrayList();
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city1.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city2.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province3.city3.label"));
@@ -93,7 +93,7 @@ public class PanelToolTipController {
         provinces.put(MessageBundleLoader.getMessage("page.panelTooltip.province3.label"),
                 cities);
 
-        cities = new ArrayList<String>();
+        cities = new ArrayList();
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city1.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city2.label"));
         cities.add(MessageBundleLoader.getMessage("page.panelTooltip.province4.city3.label"));
@@ -124,7 +124,7 @@ public class PanelToolTipController {
         // we need to create four inventory items which has random values
         // for price and inventory count.
         storeInventory = new Inventory();
-        ArrayList<InventoryItem> store = storeInventory.getInventory();
+        ArrayList store = storeInventory.getInventory();
         store.add(new InventoryItem(1, "Laptop", "laptop",
                 randomNumberGenerator.getRandomDouble(699, 3200),
                 (int) randomNumberGenerator.getRandomDouble(15, 20)));
@@ -145,11 +145,11 @@ public class PanelToolTipController {
     public void displayListener(DisplayEvent event) {
         // updated the city list for the city that activated the tooltip
         if (event.isVisible()) {
-            List<UIComponent> children = event.getTarget().getChildren();
-            UIComponent component = children.get(0);
+            List children = event.getTarget().getChildren();
+            UIComponent component = (UIComponent)children.get(0);
             if (component instanceof UIOutput) {
                 // get the value of the child component. 
-                cityList = provinces.get(((ValueHolder) component).getValue());
+                cityList = (ArrayList)provinces.get(((ValueHolder) component).getValue());
             }
         }
     }

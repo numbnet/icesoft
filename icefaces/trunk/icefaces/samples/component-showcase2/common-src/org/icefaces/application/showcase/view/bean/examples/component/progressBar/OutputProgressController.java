@@ -47,10 +47,10 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSession;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
+import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 /**
  * <p>The OutputProgressController is responsible for handling all user actions
@@ -78,7 +78,7 @@ public class OutputProgressController implements Renderable, ServletContextListe
     // just creating a new thread for each user.
     protected static ThreadPoolExecutor longRunningTaskThreadPool =
             new ThreadPoolExecutor(5, 15, 30, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>(20));
+                    new LinkedBlockingQueue(20));
 
     // render manager for the application, uses session id for on demand
     // render group.
@@ -109,14 +109,9 @@ public class OutputProgressController implements Renderable, ServletContextListe
      */
     public void startLongProcress(ActionEvent event) {
 
-        try {
-            longRunningTaskThreadPool.execute(
+        longRunningTaskThreadPool.execute(
                     new LongOperationRunner(outputProgressModel,
                             persistentFacesState));
-
-        } catch (RejectedExecutionException e) {
-            log.error("Task cannot be accepted for execution");
-        }
     }
 
     /**

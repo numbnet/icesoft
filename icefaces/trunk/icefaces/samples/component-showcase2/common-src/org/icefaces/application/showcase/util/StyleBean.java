@@ -63,21 +63,21 @@ public class StyleBean {
     private String tempStyle = RIME;
 
     // available style list
-    private ArrayList<SelectItem> styleList;
+    private ArrayList styleList;
 
-    private HashMap<String, StylePath> styleMap;
+    private HashMap styleMap;
 
     /**
      * Creates a new instance of the StyleBean.
      */
     public StyleBean() {
         // initialize the style list
-        styleList = new ArrayList<SelectItem>();
+        styleList = new ArrayList();
         styleList.add(new SelectItem(RIME, RIME));
         styleList.add(new SelectItem(XP, XP));
         styleList.add(new SelectItem(ROYALE, ROYALE));
 
-        styleMap = new HashMap<String, StylePath>(3);
+        styleMap = new HashMap(3);
         styleMap.put(RIME, new StylePath(
                 "xmlhttp/css/rime/rime.css",
                 "xmlhttp/css/rime/css-images/"));
@@ -115,7 +115,7 @@ public class StyleBean {
      */
     public String getStyle() {
         return "<link rel=\"stylesheet\" type=\"text/css\" href=\"" +
-                styleMap.get(currentStyle).getCssPath() + "\"></link>";
+                ((StylePath)styleMap.get(currentStyle)).getCssPath() + "\"></link>";
     }
 
     /**
@@ -125,7 +125,7 @@ public class StyleBean {
      * @return image directory used for theming
      */
     public String getImageDirectory() {
-        return styleMap.get(currentStyle).imageDirPath;
+        return ((StylePath)styleMap.get(currentStyle)).imageDirPath;
     }
 
     /**

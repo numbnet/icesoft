@@ -99,7 +99,7 @@ public class DragDropController{
         // we need to create four inventory items which has random values
         // for price and inventory count.
         storeInventory = new Inventory();
-        ArrayList<InventoryItem> store = storeInventory.getInventory();
+        ArrayList store = storeInventory.getInventory();
         store.add(new InventoryItem(1, "Laptop", "laptop",
                 randomNumberGenerator.getRandomDouble(699, 3200),
                 (int) randomNumberGenerator.getRandomDouble(15, 20)));
@@ -133,8 +133,10 @@ public class DragDropController{
         int inventoryId = Integer.parseInt((String) map.get("inventoryId"));
 
         // find the corresponding inventory and return it to the store
-        for (InventoryItem item : shoppingCart.getInventory()) {
-            if (item.getId() == inventoryId) {
+         InventoryItem item;
+         for(int i = 0, max= shoppingCart.getInventory().size(); i < max; i++){
+             item = (InventoryItem) shoppingCart.getInventory().get(i);
+             if (item.getId() == inventoryId) {
                 // return item to store
                 storeInventory.addInventoryItem(item);
                 // remove from shopping cart, and force removal of item when

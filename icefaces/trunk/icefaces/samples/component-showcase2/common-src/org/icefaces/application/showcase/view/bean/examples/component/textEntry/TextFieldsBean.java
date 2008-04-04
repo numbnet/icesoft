@@ -35,8 +35,6 @@ package org.icefaces.application.showcase.view.bean.examples.component.textEntry
 
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
-import javax.faces.event.ValueChangeEvent;
-
 /**
  * <p>The TextFieldsBean class is the backing bean for the Text Entry
  * demonstration. It is used to store the values of the input fields.</p>

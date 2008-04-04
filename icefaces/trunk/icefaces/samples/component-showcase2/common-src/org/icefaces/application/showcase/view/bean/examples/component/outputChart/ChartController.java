@@ -76,7 +76,7 @@ public class ChartController {
     };
 
     // map of available chart types, keys should be defined in the chartList
-    private Map<String, AbstractChartData> chartDataModels;
+    private Map chartDataModels;
 
     // currently selected data model pointer
     private AbstractChartData currentChartModel;
@@ -92,7 +92,7 @@ public class ChartController {
      */
     private void init() {
 
-        chartDataModels = new HashMap<String, AbstractChartData>();
+        chartDataModels = new HashMap();
 
         // add default axial type outputChart
         chartDataModels.put(OutputChart.AREA_CHART_TYPE,
@@ -124,7 +124,7 @@ public class ChartController {
 
         // set the default dataModel
         currentChartType = OutputChart.CUSTOM_CHART_TYPE;
-        currentChartModel = chartDataModels.get(currentChartType);
+        currentChartModel = (AbstractChartData)chartDataModels.get(currentChartType);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ChartController {
         String newChartType = (String) event.getNewValue();
         if (newChartType != null) {
             currentChartType = newChartType;
-            currentChartModel = chartDataModels.get(newChartType);
+            currentChartModel = (AbstractChartData)chartDataModels.get(newChartType);
         }
     }
 
@@ -210,7 +210,7 @@ public class ChartController {
         return chartList;
     }
 
-    public Map<String, AbstractChartData> getChartDataModels() {
+    public Map getChartDataModels() {
         return chartDataModels;
     }
 }

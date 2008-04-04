@@ -51,7 +51,7 @@ public class DataTableBase extends BaseBean {
     protected EmployeeService employeeService;
 
     // internal list of retreived records.
-    protected ArrayList<Employee> employees;
+    protected ArrayList employees;
 
     protected void init() {
         // build employee list form employee service.
@@ -64,7 +64,7 @@ public class DataTableBase extends BaseBean {
      *
      * @return list of employees from service layer
      */
-    public ArrayList<Employee> getEmployees() {
+    public ArrayList getEmployees() {
         return employees;
     }
 

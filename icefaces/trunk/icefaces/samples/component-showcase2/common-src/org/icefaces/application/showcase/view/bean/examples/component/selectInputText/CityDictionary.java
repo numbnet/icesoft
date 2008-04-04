@@ -67,7 +67,7 @@ public class CityDictionary {
     private static boolean initialized;
 
     // list of cities.
-    private static ArrayList<SelectItem> cityDictionary;
+    private static ArrayList cityDictionary;
 
     /**
      * Creates a new instnace of CityDictionary.  The city dictionary is unpacked
@@ -96,12 +96,14 @@ public class CityDictionary {
     /**
      * Comparator utility for sorting city names.
      */
-    private static final Comparator<SelectItem> LABEL_COMPARATOR = new Comparator<SelectItem>() {
+    private static final Comparator LABEL_COMPARATOR = new Comparator() {
 
         // compare method for city entries.
-        public int compare(SelectItem o1, SelectItem o2) {
+        public int compare(Object o1, Object o2) {
+            SelectItem selectItem1 = (SelectItem)o1;
+            SelectItem selectItem2 = (SelectItem)o2;
             // compare ignoring case, give the user a more automated feel when typing
-            return o1.getLabel().compareToIgnoreCase(o2.getLabel());
+            return selectItem1.getLabel().compareToIgnoreCase(selectItem2.getLabel());
         }
     };
 
@@ -110,7 +112,7 @@ public class CityDictionary {
      *
      * @return cityDictionary list in sorted by city name, ascending.
      */
-    public List<SelectItem> getDictionary() {
+    public List getDictionary() {
         return cityDictionary;
     }
 
@@ -122,9 +124,9 @@ public class CityDictionary {
      * @param maxMatches max number of possibilities to return
      * @return list of SelectItem objects which contain potential city names.
      */
-    public ArrayList<SelectItem> generateCityMatches(String searchWord, int maxMatches) {
+    public ArrayList generateCityMatches(String searchWord, int maxMatches) {
 
-        ArrayList<SelectItem> matchList = new ArrayList<SelectItem>(maxMatches);
+        ArrayList matchList = new ArrayList(maxMatches);
         
         // ensure the autocomplete search word is present
         if ((searchWord == null) || (searchWord.trim().length() == 0)) {
@@ -170,7 +172,7 @@ public class CityDictionary {
             initialized = true;
 
             // Raw list of xml cities.
-            List<City> cityList = null;
+            List cityList = null;
 
             // load the city cityDictionary from the compressed xml file.
 
@@ -220,9 +222,10 @@ public class CityDictionary {
 
             // Finally load the object from the xml file.
             if (cityList != null) {
-                cityDictionary = new ArrayList<SelectItem>(cityList.size());
-
-                for (City city : cityList) {
+                cityDictionary = new ArrayList(cityList.size());
+                City city;
+                for(int i = 0, max = cityList.size(); i < max; i++){
+                    city = (City)cityList.get(i);
                     if (city != null && city.getCity() != null) {
                         cityDictionary.add(new SelectItem(city, city.getCity()));
                     }

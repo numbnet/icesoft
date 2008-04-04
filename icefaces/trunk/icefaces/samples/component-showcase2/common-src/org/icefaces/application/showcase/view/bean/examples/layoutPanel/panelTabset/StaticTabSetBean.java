@@ -32,15 +32,10 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelTabset;
 
-import com.icesoft.faces.component.paneltabset.PanelTabSet;
 import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeListener;
-import org.icefaces.application.showcase.util.MessageBundleLoader;
 
-import javax.faces.component.UIInput;
-import javax.faces.component.html.HtmlSelectOneRadio;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  * The StaticTabSetBean class is a backing bean for the TabbedPane showcase
@@ -112,7 +107,6 @@ public class StaticTabSetBean implements TabChangeListener {
     public int getFocusIndex() {
         return Integer.parseInt(selectedIndex);
     }
-
 
 
     /**

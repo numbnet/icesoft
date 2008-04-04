@@ -53,7 +53,7 @@ public class EffectsModel extends BaseBean {
     private EffectWrapper currentEffectWrapper;
 
     // map of possible effects.
-    private HashMap<String, EffectWrapper> effects;
+    private HashMap effects;
 
     /**
      * Creates a new instance of the effects model.
@@ -68,7 +68,7 @@ public class EffectsModel extends BaseBean {
      */
     protected void init() {
         // build a list of our know effects
-        effects = new HashMap<String, EffectWrapper>(11);
+        effects = new HashMap(11);
 
         // fade appear effect combo
         EffectQueue fadeAppear = new EffectQueue("effectFadeAppear");
@@ -169,15 +169,15 @@ public class EffectsModel extends BaseBean {
         this.currentEffectWrapper = currentEffectWrapper;
     }
 
-    public HashMap<String, EffectWrapper> getEffects() {
+    public HashMap getEffects() {
         return effects;
     }
 
     /**
-     * Gets a list of 
-     * @return
+     * Gets a list of EffectWrapper objects.
+     * @return collection of EffectWrapper
      */
-    public Collection<String> getEffectKeys() {
+    public Collection getEffectKeys() {
         return effects.keySet();
     }
 

@@ -35,7 +35,6 @@ package org.icefaces.application.showcase.view.bean.examples.component.dataPagin
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.ListDataModel;
 import java.util.HashMap;
 
 import com.icesoft.faces.component.datapaginator.DataPaginator;
@@ -66,7 +65,7 @@ public class DataScrollingModel extends DataTableBase {
 
     // currently select scrolling state select by user.
     private String selectedDataScrollMode;
-    private static HashMap<String, DataScrollMode> selectedDataScrollModes;
+    private static HashMap selectedDataScrollModes;
 
     // Used in this example to reset the paginator when moving between
     // scrolling views, not needed in normal application development. 
@@ -79,7 +78,7 @@ public class DataScrollingModel extends DataTableBase {
 
         selectedDataScrollMode = PAGINATOR_SCROLLING;
 
-        selectedDataScrollModes = new HashMap<String, DataScrollMode>();
+        selectedDataScrollModes = new HashMap();
 
         // default data table setting
         selectedDataScrollModes.put(NO_SCROLLING,
@@ -111,7 +110,7 @@ public class DataScrollingModel extends DataTableBase {
         this.selectedDataScrollMode = selectedDataScrollMode;
     }
 
-    public HashMap<String, DataScrollMode> getSelectedDataScrollModes() {
+    public HashMap getSelectedDataScrollModes() {
         return selectedDataScrollModes;
     }
 

@@ -44,6 +44,7 @@ import org.krysalis.jcharts.test.TestDataGenerator;
 import org.krysalis.jcharts.types.ChartType;
 import org.krysalis.jcharts.properties.util.ChartFont;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * <p>The ChartModelCustom class purpose is to show how the outputChart component
@@ -55,7 +56,7 @@ import java.awt.*;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelCustom extends AbstractChartData<Object> {
+public class ChartModelCustom extends AbstractChartData {
 
     public static final Log log = LogFactory.getLog(ChartModelCustom.class);
 
@@ -119,7 +120,6 @@ public class ChartModelCustom extends AbstractChartData<Object> {
 
 
             data = TestDataGenerator.getRandomNumbers(2, 7, 1000, 5000);
-            legendLabels = new String[]{"Patches", "New Patch Bugs"};
             paints = new Paint[]{new Color(0x0D4274),
                     new Color(0xF78208)};
 
@@ -196,7 +196,7 @@ public class ChartModelCustom extends AbstractChartData<Object> {
      *
      * @return return the chart data associated with this data model.
      */
-    public Object getChartData() {
+    public ArrayList getChartData() {
         return null;
     }
 

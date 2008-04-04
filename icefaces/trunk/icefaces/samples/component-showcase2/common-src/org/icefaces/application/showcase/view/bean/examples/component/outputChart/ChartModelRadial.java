@@ -38,6 +38,9 @@ import org.icefaces.application.showcase.util.RandomNumberGenerator;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * <p>The ChartModelAxial class purpose is to show how the outputChart component
@@ -47,9 +50,9 @@ import java.util.Arrays;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelRadial extends AbstractChartData<ArrayList<Double>> {
+public class ChartModelRadial extends AbstractChartData {
 
-    public ArrayList<Double> chartData;
+    public ArrayList chartData;
 
     public ChartModelRadial(String chartTitle,
                             boolean areaMapEnabled,
@@ -74,16 +77,20 @@ public class ChartModelRadial extends AbstractChartData<ArrayList<Double>> {
      */
     private void init() {
         // build default data
-        chartData = new ArrayList<Double>(Arrays.asList(50.0, 60.0, 80.0));
+
+        chartData = new ArrayList(Arrays.asList(
+                new Double[]{new Double(50.0),
+                             new Double(60.0),
+                             new Double(80.0)}));
         // build x axis labels
-        xAxisLabels = new ArrayList<String>(
-                Arrays.asList("2008", "2009", "2010"));
+        xAxisLabels = new ArrayList(
+                Arrays.asList(new String[]{"2008", "2009", "2010"}));
 
         // build colors
-        colors = new ArrayList<Color>(Arrays.asList(
-                new Color(26, 86, 138),
+        colors = new ArrayList(Arrays.asList(
+                new Color[]{new Color(26, 86, 138),
                 new Color(76, 126, 167),
-                new Color(148, 179, 203)));
+                new Color(148, 179, 203)}));
 
         // build legend lables
         xAxisTitle = "Years";
@@ -101,7 +108,7 @@ public class ChartModelRadial extends AbstractChartData<ArrayList<Double>> {
                 RandomNumberGenerator.getInstance();
 
         // add some new data randomly.
-        chartData.add(randomNumberGenerator.getRandomDouble(25.0, 100));
+        chartData.add(new Double(randomNumberGenerator.getRandomDouble(25.0, 100)));
         xAxisLabels.add(String.valueOf(
                 randomNumberGenerator.getRandomInteger(2000, 2050)));
     }
@@ -130,7 +137,7 @@ public class ChartModelRadial extends AbstractChartData<ArrayList<Double>> {
      *
      * @return return the chart data associated with this data model.
      */
-    public ArrayList<Double> getChartData() {
+    public ArrayList getChartData() {
         return chartData;
     }
 

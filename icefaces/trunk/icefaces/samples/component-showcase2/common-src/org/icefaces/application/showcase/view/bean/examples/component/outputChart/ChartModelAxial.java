@@ -47,9 +47,9 @@ import java.util.Arrays;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.AbstractChartData
  * @since 1.7
  */
-public class ChartModelAxial extends AbstractChartData<ArrayList<double[]>> {
+public class ChartModelAxial extends AbstractChartData {
 
-    private ArrayList<double[]> chartData;
+    private ArrayList chartData;
 
     public ChartModelAxial(String chartTitle,
                            boolean areaMapEnabled,
@@ -81,25 +81,25 @@ public class ChartModelAxial extends AbstractChartData<ArrayList<double[]>> {
                 new double[]{145, 105, 55},
                 new double[]{80, 110, 4},
                 new double[]{10, 90, 70}};
-        chartData = new ArrayList<double[]>(
+        chartData = new ArrayList(
                 Arrays.asList(doubleArray));
         // build x axis labels
-        xAxisLabels = new ArrayList<String>(Arrays.asList(
-                "2005", "2005", "2006", "2007", "2008", "2009", "2010"));
+        xAxisLabels = new ArrayList(Arrays.asList(
+                new String[]{"2005", "2005", "2006", "2007", "2008", "2009", "2010"}));
 
         // build colors
-        colors = new ArrayList<Color>(Arrays.asList(
-                new Color(26, 86, 138),
-                new Color(76, 126, 167),
-                new Color(148, 179, 203)));
+        colors = new ArrayList(Arrays.asList(
+                new Color[]{new Color(26, 86, 138),
+                            new Color(76, 126, 167),
+                            new Color(148, 179, 203)}));
 
         // build legend lables
-        legendLabels = new ArrayList<String>(Arrays.asList(
-                "Bugs", "Enhancements", "Fixed"));
+        legendLabels = new ArrayList(Arrays.asList(
+                new String[]{"Bugs", "Enhancements", "Fixed"}));
 
         // x axis lables
-        xAxisLabels = new ArrayList<String>(Arrays.asList(
-                "2005", "2005", "2006", "2007", "2008", "2009", "2010"));
+        xAxisLabels = new ArrayList(Arrays.asList(
+                new String[]{"2005", "2005", "2006", "2007", "2008", "2009", "2010"}));
 
         xAxisTitle = "Years";
 
@@ -148,7 +148,7 @@ public class ChartModelAxial extends AbstractChartData<ArrayList<double[]>> {
      *
      * @return return the chart data associated with this data model.
      */
-    public ArrayList<double[]> getChartData() {
+    public ArrayList getChartData() {
         return chartData;
     }
 

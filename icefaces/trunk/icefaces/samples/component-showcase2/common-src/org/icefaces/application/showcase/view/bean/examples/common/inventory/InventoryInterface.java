@@ -32,7 +32,7 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.common.inventory;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * Simple interface to describe an inventory model. Not really need for this
@@ -40,14 +40,14 @@ import java.util.Collection;
  *
  * @since 1.7
  */
-public interface InventoryInterface<T> {
+public interface InventoryInterface {
 
     /**
      * Gets a collection of items that makes up the inventory.
      *
      * @return collection of items contained in the inventory
      */
-    public Collection<T> getInventory();
+    public ArrayList getInventory();
 
     /**
      * Gets the total price of all the items that are contained in this
@@ -55,14 +55,14 @@ public interface InventoryInterface<T> {
      *
      * @return total price of all inventory items.
      */
-    public Number getInventoryPriceTotal();
+    public double getInventoryPriceTotal();
 
     /**
      * Add the specified item to the inventory.
      *
      * @param inventory iventory to add to this instance
      */
-    public void addInventoryItem(T inventory);
+    public void addInventoryItem(InventoryItem inventory);
 
     /**
      * Remove an item from this instance of inventory.
@@ -72,5 +72,5 @@ public interface InventoryInterface<T> {
      *                         when quantity reach zero otherwise the item is left in the invenotry with
      *                         a quantity of zero.
      */
-    public void removeInventoryItem(T inventory, boolean removeItemOnZero);
+    public void removeInventoryItem(InventoryItem inventory, boolean removeItemOnZero);
 }

@@ -33,17 +33,12 @@
 
 package org.icefaces.application.showcase.view.bean.examples.component.menuBar;
 
-import com.icesoft.faces.component.menupopup.MenuContextEvent;
-import com.icesoft.faces.context.effects.Effect;
-import com.icesoft.faces.context.effects.EffectBuilder;
-import org.icefaces.application.showcase.util.MessageBundleLoader;
 import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import java.util.Map;
 
 /**
  * <p>The MenuBarBean class determines which menu item fired the ActionEvent and
@@ -96,7 +91,7 @@ public class MenuBarBean extends BaseBean {
 
         actionFired = ((UIComponent) e.getSource())
                 .getClientId(FacesContext.getCurrentInstance());
-        param =  FacesUtils.getRequestParameter("myParam");
+        param = FacesUtils.getRequestParameter("myParam");
 
         // highlight server side backing bean values. 
         valueChangeEffect.setFired(false);
@@ -120,7 +115,6 @@ public class MenuBarBean extends BaseBean {
     public void setOrientation(String orientation) {
         this.orientation = orientation;
     }
-
 
 
 }

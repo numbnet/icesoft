@@ -104,6 +104,6 @@ public class InputFileData {
             return ourLength + "b";
         }
         
-        return new Long(ourLength).toString();
+        return Long.toString(ourLength);
     }    
 }

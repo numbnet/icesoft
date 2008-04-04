@@ -55,7 +55,7 @@ public class SelectInputTextController extends BaseBean {
     private CityDictionary cityDictionary;
 
     // list of possible city matches for a given city dictionary lookupo
-    private ArrayList<SelectItem> cityMatchPossibilities;
+    private ArrayList cityMatchPossibilities;
 
     // number of city possibilities to show
     private static int cityListLength = 15;
@@ -117,7 +117,9 @@ public class SelectInputTextController extends BaseBean {
      */
     private City getFindCityMatch(String cityName) {
         if (cityMatchPossibilities != null) {
-            for (SelectItem city : cityMatchPossibilities) {
+            SelectItem city;
+            for(int i = 0, max = cityMatchPossibilities.size(); i < max; i++){
+                city = (SelectItem)cityMatchPossibilities.get(i);
                 if (city.getLabel().compareToIgnoreCase(cityName) == 0) {
                     return (City) city.getValue();
                 }
@@ -130,7 +132,7 @@ public class SelectInputTextController extends BaseBean {
         this.cityDictionary = cityDictionary;
     }
 
-    public ArrayList<SelectItem> getCityMatchPossibilities() {
+    public ArrayList getCityMatchPossibilities() {
         return cityMatchPossibilities;
     }
 

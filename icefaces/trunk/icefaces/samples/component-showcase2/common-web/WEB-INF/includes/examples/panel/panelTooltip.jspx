@@ -100,7 +100,7 @@
     
             <ice:panelTooltip id="pnlSerPanelToolTip"
                               hideOn="#{tooltipController.panelToolTipModel.hideOn}"
-                              hoverDelay="#{tooltipController.panelToolTipModel.hoverDelay}"
+                              hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                               style="width:100px;height:75px;text-align:left;">
                 <f:facet name="header">
                     <ice:outputText

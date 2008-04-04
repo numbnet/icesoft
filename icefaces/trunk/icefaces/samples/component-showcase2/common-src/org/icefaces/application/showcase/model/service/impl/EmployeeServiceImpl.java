@@ -63,9 +63,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param sortColumn   column name set will be sorted on.
      * @return list of Employee objects.
      */
-    public ArrayList<Employee> getEmployees(int listSize, boolean isDescending, String sortColumn) {
+    public ArrayList getEmployees(int listSize, boolean isDescending, String sortColumn) {
 
-        ArrayList<Employee> employees = getEmployees(listSize);
+        ArrayList employees = getEmployees(listSize);
         // sour our list
         Collections.sort(employees, new EmployeeComparator(isDescending, sortColumn));
 
@@ -79,15 +79,17 @@ public class EmployeeServiceImpl implements EmployeeService {
      *                 number of records is 50.
      * @return list of Employee objects.
      */
-    public ArrayList<Employee> getEmployees(int listSize) {
-        ArrayList<Employee> employees = new ArrayList<Employee>(listSize);
+    public ArrayList getEmployees(int listSize) {
+        ArrayList employees = new ArrayList(listSize);
         Employee destEmployee;
         try{
             int count = 0;
-            for (Employee employee : EMPLOYEE_POOL){
+            Employee employee;
+            for (int i = 0, max = EMPLOYEE_POOL.size(); i < max; i++){
                 if (count >= listSize){
                     break;
                 }
+                employee = (Employee)EMPLOYEE_POOL.get(i);
                 destEmployee = new Employee();
                 BeanUtils.copyProperties(destEmployee, employee);
                 employees.add(destEmployee);
@@ -106,7 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Utility class to ease the sorting of our awsome employee data. 
      */
-    private class EmployeeComparator implements Comparator<Employee>{
+    private class EmployeeComparator implements Comparator{
 
         private boolean isDescending;
         private String sortColumn;
@@ -129,36 +131,38 @@ public class EmployeeServiceImpl implements EmployeeService {
          * @throws ClassCastException if the arguments' types prevent them from
          *                            being compared by this Comparator.
          */
-        public int compare(Employee o1, Employee o2) {
+        public int compare(Object o1, Object o2) {
+            Employee employee1 = (Employee)o1;
+            Employee employee2 = (Employee)o2;
             if (Employee.DEPARTMENT_NAME_COLUMN.equals(sortColumn)) {
                 return isDescending ?
-                        o1.getDepartmentName().compareTo(o2.getDepartmentName()):
-                        o2.getDepartmentName().compareTo(o1.getDepartmentName());
+                        employee1.getDepartmentName().compareTo(employee2.getDepartmentName()):
+                        employee2.getDepartmentName().compareTo(employee1.getDepartmentName());
 
             }else if (Employee.SUB_DEPARTMENT_NAME_COLUMN.equals(sortColumn)) {
                 return isDescending ?
-                        o1.getSubDepartmentName().compareTo(o2.getSubDepartmentName()):
-                        o2.getSubDepartmentName().compareTo(o1.getSubDepartmentName());
+                        employee1.getSubDepartmentName().compareTo(employee2.getSubDepartmentName()):
+                        employee2.getSubDepartmentName().compareTo(employee1.getSubDepartmentName());
 
             }else if (Employee.FIRST_NAME_COLUMN.equals(sortColumn)) {
                 return isDescending ?
-                        o1.getFirstName().compareTo(o2.getFirstName()):
-                        o2.getFirstName().compareTo(o1.getFirstName());
+                        employee1.getFirstName().compareTo(employee2.getFirstName()):
+                        employee2.getFirstName().compareTo(employee1.getFirstName());
 
             }else if (Employee.LAST_NAME_COLUMN.equals(sortColumn)) {
                 return isDescending ?
-                        o1.getLastName().compareTo(o2.getLastName()):
-                        o2.getLastName().compareTo(o1.getLastName());
+                        employee1.getLastName().compareTo(employee2.getLastName()):
+                        employee2.getLastName().compareTo(employee1.getLastName());
 
             }else if (Employee.PHONE_COLUMN.equals(sortColumn)) {
                 return isDescending ?
-                        o1.getPhone().compareTo(o2.getPhone()):
-                        o2.getPhone().compareTo(o1.getPhone());
+                        employee1.getPhone().compareTo(employee2.getPhone()):
+                        employee2.getPhone().compareTo(employee1.getPhone());
 
             }else if (Employee.ID_COLUMN.equals(sortColumn)){
                 return isDescending ?
-                        Integer.valueOf(o1.getId()).compareTo(Integer.valueOf(o2.getId())) :
-                        Integer.valueOf(o2.getId()).compareTo(Integer.valueOf(o1.getId()));
+                        Integer.valueOf(employee1.getId()).compareTo(Integer.valueOf(employee2.getId())) :
+                        Integer.valueOf(employee2.getId()).compareTo(Integer.valueOf(employee1.getId()));
             }else {
                 return 0;
             }
@@ -166,7 +170,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-    protected static ArrayList<Employee> EMPLOYEE_POOL = new ArrayList<Employee>(50);
+    protected static ArrayList EMPLOYEE_POOL = new ArrayList(50);
 
     // 50 people record based on popular names.
     static {

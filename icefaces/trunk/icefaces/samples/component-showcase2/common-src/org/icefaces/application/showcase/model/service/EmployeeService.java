@@ -32,8 +32,6 @@
  */
 package org.icefaces.application.showcase.model.service;
 
-import org.icefaces.application.showcase.model.entity.Employee;
-
 import java.util.ArrayList;
 
 /**
@@ -53,7 +51,7 @@ public interface EmployeeService {
      * @param sortColumn column name set will be sorted on.
      * @return list of Employee objects. 
      */
-    public ArrayList<Employee> getEmployees(int listSize, boolean isDescending,
+    public ArrayList getEmployees(int listSize, boolean isDescending,
                                             final String sortColumn);
 
     /**
@@ -62,5 +60,5 @@ public interface EmployeeService {
      * @param listSize number of records that will be retreived from service layer
      * @return list of Employee objects.
      */
-    public ArrayList<Employee> getEmployees(int listSize);
+    public ArrayList getEmployees(int listSize);
 }

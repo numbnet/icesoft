@@ -59,7 +59,7 @@ public class PanelBorderBean {
      * @param event the value change event.
      */
     public void north(ValueChangeEvent event) {
-        setRenderNorth((Boolean) event.getNewValue());
+        setRenderNorth(((Boolean) event.getNewValue()).booleanValue());
     }
 
 
@@ -69,7 +69,7 @@ public class PanelBorderBean {
      * @param event the value change event.
      */
     public void south(ValueChangeEvent event) {
-        setRenderSouth((Boolean) event.getNewValue());
+        setRenderSouth(((Boolean) event.getNewValue()).booleanValue());
     }
 
     /**
@@ -78,7 +78,7 @@ public class PanelBorderBean {
      * @param event the value change event.
      */
     public void center(ValueChangeEvent event) {
-        setRenderCenter((Boolean) event.getNewValue());
+        setRenderCenter(((Boolean) event.getNewValue()).booleanValue());
     }
 
     /**
@@ -87,7 +87,7 @@ public class PanelBorderBean {
      * @param event the value change event.
      */
     public void east(ValueChangeEvent event) {
-        setRenderEast((Boolean) event.getNewValue());
+        setRenderEast(((Boolean) event.getNewValue()).booleanValue());
     }
 
     /**
@@ -96,7 +96,7 @@ public class PanelBorderBean {
      * @param event the value change event.
      */
     public void west(ValueChangeEvent event) {
-        setRenderWest((Boolean) event.getNewValue());
+        setRenderWest(((Boolean) event.getNewValue()).booleanValue());
     }
 
     public boolean isRenderCenter() {

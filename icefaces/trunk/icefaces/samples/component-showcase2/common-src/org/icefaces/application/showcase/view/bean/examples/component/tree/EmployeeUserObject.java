@@ -32,7 +32,6 @@
  */
 package org.icefaces.application.showcase.view.bean.examples.component.tree;
 
-import org.icefaces.application.showcase.model.entity.Person;
 import org.icefaces.application.showcase.model.entity.Employee;
 
 import javax.swing.tree.DefaultMutableTreeNode;

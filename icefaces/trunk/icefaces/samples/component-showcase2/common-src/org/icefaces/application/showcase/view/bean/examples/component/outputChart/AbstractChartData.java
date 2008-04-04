@@ -34,7 +34,6 @@ package org.icefaces.application.showcase.view.bean.examples.component.outputCha
 
 import com.icesoft.faces.component.outputchart.OutputChart;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -51,7 +50,7 @@ import java.util.ArrayList;
  * @see org.icefaces.application.showcase.view.bean.examples.component.outputChart.ChartModelCustom
  * @since 1.7
  */
-public abstract class AbstractChartData<T> {
+public abstract class AbstractChartData {
 
     // axial chart data can be displayed horizontally or vertically
     public static final boolean DATA_ORIENTATION_HORIZONTAL = true;
@@ -81,7 +80,7 @@ public abstract class AbstractChartData<T> {
     protected boolean enableDynamicValues;
 
     // legend lables
-    protected ArrayList<String> legendLabels;
+    protected ArrayList legendLabels;
 
     // title displayed at top of chart
     protected String chartTitle;
@@ -92,9 +91,9 @@ public abstract class AbstractChartData<T> {
     protected String yAxisTitle;
 
     // labels assosiated with x axis
-    protected ArrayList<String> xAxisLabels;
+    protected ArrayList xAxisLabels;
 
-    protected ArrayList<Color> colors;
+    protected ArrayList colors;
 
     // placement of legend
     protected String legendPlacement;
@@ -122,7 +121,7 @@ public abstract class AbstractChartData<T> {
      *
      * @return chart data.
      */
-    public abstract T getChartData();
+    public abstract ArrayList getChartData();
 
     /**
      * Gets chart type.
@@ -194,11 +193,11 @@ public abstract class AbstractChartData<T> {
         this.yAxisTitle = yAxisTitle;
     }
 
-    public ArrayList<String> getXAxisLabels() {
+    public ArrayList getXAxisLabels() {
         return xAxisLabels;
     }
 
-    public void setXAxisLabels(ArrayList<String> xAxisLabels) {
+    public void setXAxisLabels(ArrayList xAxisLabels) {
         this.xAxisLabels = xAxisLabels;
     }
 
@@ -218,11 +217,11 @@ public abstract class AbstractChartData<T> {
         this.plotPointShape = plotPointShape;
     }
 
-    public ArrayList<Color> getColors() {
+    public ArrayList getColors() {
         return colors;
     }
 
-    public void setColors(ArrayList<Color> colors) {
+    public void setColors(ArrayList colors) {
         this.colors = colors;
     }
 
@@ -234,7 +233,7 @@ public abstract class AbstractChartData<T> {
         this.barChartOrientationHorizontal = barChartOrientationHorizontal;
     }
 
-    public ArrayList<String> getLegendLabels() {
+    public ArrayList getLegendLabels() {
         return legendLabels;
     }
 

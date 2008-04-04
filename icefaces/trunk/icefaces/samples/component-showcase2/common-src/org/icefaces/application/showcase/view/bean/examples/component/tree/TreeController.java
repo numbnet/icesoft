@@ -89,10 +89,12 @@ public class TreeController extends BaseBean {
         valueChangeEffect.setFired(false);
     }
 
-    public ArrayList<String> getSelectedTreePath() {
+    public ArrayList getSelectedTreePath() {
         Object[] objectPath = selectedUserObject.getWrapper().getUserObjectPath();
-        ArrayList<String> treePath = new ArrayList<String>();
-        for (Object anObjectPath : objectPath) {
+        ArrayList treePath = new ArrayList();
+        Object anObjectPath;
+        for(int i= 0, max = objectPath.length; i < max; i++){
+            anObjectPath = objectPath[i];
             IceUserObject userObject = (IceUserObject) anObjectPath;
             treePath.add(userObject.getText());
         }

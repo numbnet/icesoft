@@ -260,7 +260,7 @@ public class SelectionTagsBean extends BaseBean {
      * actual work is done for this method call but it does show what a
      * ValuesChange method signature should look like.
      *
-     * @param event
+     * @param event jsf value change event
      */
     public void carChanged(ValueChangeEvent event) {
         valueChangeEffect.setFired(false);

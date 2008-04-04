@@ -52,13 +52,13 @@ import javax.faces.event.ValueChangeEvent;
 public class RowSelectController extends DataTableBase {
 
     // list of selected employees
-    private ArrayList<Employee> selectedEmployees;
+    private ArrayList selectedEmployees;
 
     // flat to indicate multiselect row enabled.
     private boolean multiRowSelect;
 
     public RowSelectController() {
-        selectedEmployees = new ArrayList<Employee>();
+        selectedEmployees = new ArrayList();
     }
 
     /**
@@ -72,7 +72,9 @@ public class RowSelectController extends DataTableBase {
         selectedEmployees.clear();
 
         // build the new selected list
-        for (Employee employee : employees) {
+        Employee employee;
+        for(int i = 0, max = employees.size(); i < max; i++){
+        employee = (Employee)employees.get(i);
             if (employee.isSelected()) {
                 selectedEmployees.add(employee);
             }
@@ -86,21 +88,23 @@ public class RowSelectController extends DataTableBase {
      */
     public void rowSelectionListener(ValueChangeEvent event) {
         // if multi select then want to make sure we clear the selected states
-        if (!(Boolean) event.getNewValue()) {
+        if (!((Boolean) event.getNewValue()).booleanValue()) {
             selectedEmployees.clear();
 
             // build the new selected list
-            for (Employee employee : employees) {
+            Employee employee;
+            for(int i = 0, max = employees.size(); i < max; i++){
+                employee = (Employee)employees.get(i);
                 employee.setSelected(false);
             }
         }
     }
 
-    public ArrayList<Employee> getSelectedEmployees() {
+    public ArrayList getSelectedEmployees() {
         return selectedEmployees;
     }
 
-    public void setSelectedEmployees(ArrayList<Employee> selectedEmployees) {
+    public void setSelectedEmployees(ArrayList selectedEmployees) {
         this.selectedEmployees = selectedEmployees;
     }
 

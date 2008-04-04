@@ -72,8 +72,8 @@ public class InputFileController implements Renderable, DisposableBean {
     private String sessionId;
 
     // files associated with the current user
-    private final List<InputFileData> fileList =
-            Collections.synchronizedList(new ArrayList<InputFileData>());
+    private final List fileList =
+            Collections.synchronizedList(new ArrayList());
     // latest file uploaded by client
     private InputFileData currentFile;
     // file upload completed percent (Progress)
@@ -169,7 +169,7 @@ public class InputFileController implements Renderable, DisposableBean {
         synchronized (fileList) {
             InputFileData inputFileData;
             for (int i = 0; i < fileList.size(); i++) {
-                inputFileData = fileList.get(i);
+                inputFileData = (InputFileData)fileList.get(i);
                 // remove our file
                 if (inputFileData.getFileInfo().getFileName().equals(fileName)) {
                     fileList.remove(i);
@@ -239,7 +239,7 @@ public class InputFileController implements Renderable, DisposableBean {
         return fileProgress;
     }
 
-    public List<InputFileData> getFileList() {
+    public List getFileList() {
         return fileList;
     }
 

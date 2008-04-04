@@ -67,7 +67,7 @@ public class EffectsController {
                         BeanNames.EFFECTS_MODEL);
 
         // do a look up for the effect
-        EffectsModel.EffectWrapper effectWrapper =
+        EffectsModel.EffectWrapper effectWrapper = (EffectsModel.EffectWrapper)
                 effectsModel.getEffects().get(effectKey);
 
         // if found we reset the effect to fire on the soon to occure

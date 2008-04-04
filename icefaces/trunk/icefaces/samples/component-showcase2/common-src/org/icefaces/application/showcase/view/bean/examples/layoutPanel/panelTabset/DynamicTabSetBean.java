@@ -50,7 +50,7 @@ public class DynamicTabSetBean {
     private int tabIndex;
     private String newTabLabel;
     private String newTabContent;
-    private List<Tab> tabs = new ArrayList<Tab>();
+    private List tabs = new ArrayList();
 
     public DynamicTabSetBean() {
 

@@ -34,8 +34,6 @@ package org.icefaces.application.showcase.view.bean.examples.component.tree;
 
 import com.icesoft.faces.component.tree.IceUserObject;
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class NodeUserObject extends IceUserObject {
