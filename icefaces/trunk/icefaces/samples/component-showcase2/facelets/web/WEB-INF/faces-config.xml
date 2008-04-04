@@ -52,38 +52,11 @@
         <description>
 
         </description>
-        <managed-bean-name>applicationBuilder</managed-bean-name>
+        <managed-bean-name>navigation</managed-bean-name>
         <managed-bean-class>
-            org.icefaces.application.showcase.view.builder.ApplicationBuilder
+            org.icefaces.application.showcase.facelets.navigation.NavigationBean
         </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
-    <managed-bean>
-        <description>
-
-        </description>
-        <managed-bean-name>applicationController</managed-bean-name>
-        <managed-bean-class>
-            org.icefaces.application.showcase.view.bean.ApplicationController
-        </managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
-        <description>
-
-        </description>
-        <managed-bean-name>applicationModel</managed-bean-name>
-        <managed-bean-class>
-            org.icefaces.application.showcase.view.bean.ApplicationSessionModel
-        </managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-        <managed-property>
-            <property-name>currentNode</property-name>
-            <value>#{applicationBuilder.defaultNode}</value>
-        </managed-property>
-    </managed-bean>
-
 
 </faces-config>

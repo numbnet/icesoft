@@ -96,12 +96,14 @@
     <target name="build.war" depends="compile"
             description="Creates a Facelet version of component-showcase.">
         
+<!--
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">
             <fileset dir="${component.docs.dir}"/>
         </copy>
         <copy todir="${web.content.dir}/docs/tld" preservelastmodified="true">
             <fileset dir="${component.tld.dir}"/>
         </copy>
+-->
 
         <copy todir="${app.lib.dir}" preservelastmodified="true">
 

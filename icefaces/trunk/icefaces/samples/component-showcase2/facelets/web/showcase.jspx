@@ -40,35 +40,7 @@
 
     <ui:define name="page-content">
 
-        <!-- current content reference, avoids multiple lookups-->
-        <ui:param name="currentContentDescriptor"
-                  value="#{applicationController.currentContextDescriptor}" />
-
-        <ui:decorate template="#{currentContentDescriptor.templateRef.path}">
-
-            <!-- example emplate-->
-            <ui:define name="example">
-
-                <ui:include src="WEB-INF/includes/content/demonstration.jspx" />
-
-            </ui:define>
-
-            <!-- documentation template-->
-            <ui:define name="description">
-
-                <ui:include src="WEB-INF/includes/content/description.jspx" />
-
-            </ui:define>
-
-            <!-- source template-->
-            <ui:define name="source">
-
-                <ui:include src="WEB-INF/includes/content/source.jspx" />
-
-            </ui:define>
-
-        </ui:decorate>
-
+        <ui:include src="#{navigation.selectedIncludePath}" />
 
     </ui:define>
 
