@@ -60,10 +60,10 @@
     <!-- The rootDiv is required for Safari -->
     <div id="rootDiv">
         <c:if test="#{!participant.mobile}">
-            <ui:include src="#{participant.loggedIn?'./inc/Lmain.jspx':'./inc/Llogin.jspx'}"/>
+            <ui:include src="#{participant.loggedIn?'./inc/Lmain.jspx':'./inc/login.jspx'}"/>
         </c:if>
         <c:if test="#{participant.mobile}">
-            <ui:include src="#{participant.loggedIn?'./inc/main.jspx':'./inc/Llogin.jspx'}"/>
+            <ui:include src="#{participant.loggedIn?'./inc/main.jspx':'./inc/login.jspx'}"/>
         </c:if>
     </div>
 </body>
