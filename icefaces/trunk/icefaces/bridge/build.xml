@@ -148,6 +148,7 @@
     </target>
 
     <target name="build.bridge" depends="copy, compress" description="Collate bridge code">
+        <delete file="${script}"/>
         <concat destfile="${script}" append="yes" fixlastline="yes" force="no">
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="prototype.js"/>
@@ -196,6 +197,7 @@
 
     <target name="build.extras" depends="copy, compress"
             description="Collate extra libraries used by specialized components.">
+        <delete file="${extras.script}"/>
         <concat destfile="${extras.script}" append="yes" fixlastline="yes">
             <filelist dir="${build.dir}/lib/prototype">
                 <file name="ajax.js"/>
