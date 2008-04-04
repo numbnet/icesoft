@@ -134,7 +134,7 @@
             </ice:selectOneRadio>
         </ice:panelGroup>
     </ice:panelGroup>
-
+    <ice:messages />
 </ice:panelGroup>
 
 
@@ -142,7 +142,7 @@
 <ice:panelGroup id="tabSetTabs"
                 styleClass="exampleBox panelTabSetContainer">
     <ice:panelTabSet
-            selectedIndex="#{staticTabbedPaneExample.selectedIndex}"
+            selectedIndex="#{staticTabbedPaneExample.focusIndex}"
             tabPlacement="#{staticTabbedPaneExample.tabPlacement}"
             tabChangeListener="#{staticTabbedPaneExample.processTabChange}"
             title="#{msgs['page.panelTabSet.static.accessibility.tabSetTitle']}"

@@ -39,7 +39,7 @@ public class PanelToolTipModel {
 
     private String hideOn = "mouseout";
 
-    private int hoverDelay;
+    private String hoverDelay ="1000";
 
     private boolean draggable;
 
@@ -51,11 +51,15 @@ public class PanelToolTipModel {
         this.hideOn = hideOn;
     }
 
-    public int getHoverDelay() {
+    public String getHoverDelay() {
         return hoverDelay;
     }
 
-    public void setHoverDelay(int hoverDelay) {
+    public int getHoverDelayTime(){
+        return Integer.parseInt(hoverDelay);
+    }
+
+    public void setHoverDelay(String hoverDelay) {
         this.hoverDelay = hoverDelay;
     }
 

@@ -66,7 +66,6 @@
                          for="duration"/>
         <ice:selectOneMenu id="duration"
                            partialSubmit="true"
-                           converter="javax.faces."
                            value="#{tooltipController.panelToolTipModel.hoverDelay}">
             <f:selectItem
                     itemValue="1000"
@@ -79,7 +78,7 @@
                     itemLabel="#{msgs['page.panelTooltip.duration.label3']}"/>
         </ice:selectOneMenu>
     </ice:panelGroup>
-
+    <ice:messages />
 </ice:panelGroup>
 
 <ice:panelGroup styleClass="exampleBox panelToolTipContainer">
@@ -151,7 +150,7 @@
     <!-- toolTip decloration that is ued for more then one panelGroup -->
     <ice:panelTooltip id="provinceInfo"
                       hideOn="#{tooltipController.panelToolTipModel.hideOn}"
-                      hoverDelay="#{tooltipController.panelToolTipModel.hoverDelay}"
+                      hoverDelay="#{tooltipController.panelToolTipModel.hoverDelayTime}"
                       displayListener="#{tooltipController.displayListener}"
                       style="width: 125px; height: 135px;" >
 

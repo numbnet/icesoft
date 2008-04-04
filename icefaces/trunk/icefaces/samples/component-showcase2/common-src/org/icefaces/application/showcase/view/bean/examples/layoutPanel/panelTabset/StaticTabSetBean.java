@@ -61,7 +61,7 @@ public class StaticTabSetBean implements TabChangeListener {
     private boolean tabbedPane3Visible;
 
     // selected tab index
-    private int selectedIndex = 0;
+    private String selectedIndex = "0";
 
     /**
      * Tabbed placement, possible values are "top" and "bottom", the default is
@@ -101,13 +101,19 @@ public class StaticTabSetBean implements TabChangeListener {
         this.tabPlacement = tabPlacement;
     }
 
-    public int getSelectedIndex() {
+    public String getSelectedIndex() {
         return selectedIndex;
     }
 
-    public void setSelectedIndex(int selectedIndex) {
+    public void setSelectedIndex(String selectedIndex) {
         this.selectedIndex = selectedIndex;
     }
+
+    public int getFocusIndex() {
+        return Integer.parseInt(selectedIndex);
+    }
+
+
 
     /**
      * Called when the table binding's tab focus changes.
