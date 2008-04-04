@@ -246,10 +246,5 @@
         </ear>
     </target>
     -->
-    <target name="build.portlet.pluto.tomcat5.war" description="N/A">
-        <ant antfile="./build-pluto.xml" inheritAll="true">
-            <target name="build.portlet.pluto.tomcat5.war"/>
-        </ant>
-    </target>
 
 </project>
