@@ -104,7 +104,7 @@
     <delete dir="${dist.dir}/samples"/>
     <copy todir="${dist.dir}/samples" flatten="true">
         <fileset dir="samples" includes="**/*.war" excludes="*component-showcase*/"/>
-        <fileset file="samples/component-showcase2/facelets/dist/component-showcase.war"/>
+        <fileset file="samples/component-showcase2/facelets-enh/dist/component-showcase.war"/>
     </copy>
 </target>
 
