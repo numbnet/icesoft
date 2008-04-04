@@ -50,8 +50,7 @@
                     actionListener="#{effectsController.changeEffectAction}">
                 <f:param name="effectKey" value="#{effectKey}"/>
 
-                <ice:panelGroup styleClass="effectWrapperContainer"
-                        style="background:url('./images/effect_gradient.gif') bottom left repeat-x;">
+                <ice:panelGroup styleClass="effectWrapperContainer">
                     <ice:panelGroup
                             effect="#{effectsModel.effects[effectKey].effect}"
                             styleClass="effectsDemoContainer">
