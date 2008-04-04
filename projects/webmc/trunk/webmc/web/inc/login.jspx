@@ -70,15 +70,15 @@
             <ice:outputLabel styleClass="loginLabel firstNameLabel"
                              value="Name: " 
                              for="firstName" />
-                <ice:inputText id="firstName"
-                               value="#{participant.firstName}"
-                               converter="fixCaps" 
-                               required="true"
-                               partialSubmit="true" 
-                               maxlength="20"
-                               tabindex="1"
-                               styleClass="loginInput"
-                               binding="#{participant.loginBean.firstNameField}"/>
+            <ice:inputText id="firstName"
+                           value="#{participant.firstName}"
+                           converter="fixCaps" 
+                           required="true"
+                           partialSubmit="true" 
+                           maxlength="20"
+                           tabindex="1"
+                           styleClass="loginInput"
+                           binding="#{participant.loginBean.firstNameField}"/>
         </ice:panelGroup>
         <!-- Name error message -->
         <ice:panelGroup>
@@ -141,8 +141,8 @@
         <ice:panelGroup rendered="#{!participant.mobile}" /> 
         <!-- Viewer inputs password -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
-	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" >
-	        </ice:panelGroup>
+            <!-- Empty Cell when password not required -->
+	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" />
             <ice:outputLabel rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
                              styleClass="loginLabel passwordLabel"
                              value="Password: "
@@ -160,27 +160,27 @@
         </ice:panelGroup>
         <!-- Moderator inputs password -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
-         <ice:outputLabel styleClass="loginLabel"
-                          value="Password: "
-                          for="moderatorPassword" />
-         <ice:inputSecret id="moderatorPassword"
-                          value="#{participant.loginBean.presentationPassword}"
-                          maxlength="20"
-                          tabindex="5"
-                          styleClass="loginInput"
-                          redisplay="true" >
-         </ice:inputSecret>
+	        <ice:outputLabel styleClass="loginLabel"
+	                         value="Password: "
+	                         for="moderatorPassword" />
+	        <ice:inputSecret id="moderatorPassword"
+	                         value="#{participant.loginBean.presentationPassword}"
+	                         maxlength="20"
+	                         tabindex="5"
+	                         styleClass="loginInput"
+	                         redisplay="true" >
+	        </ice:inputSecret>
         </ice:panelGroup>
         <!-- Viewer Password Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
-          <ice:outputText value="Invalid password" 
-                          rendered="#{participant.loginBean.invalidDemoPassword}"
-                          styleClass="inputError"/>
+	        <ice:outputText value="Invalid password" 
+	                        rendered="#{participant.loginBean.invalidDemoPassword}"
+	                        styleClass="inputError"/>
         </ice:panelGroup>
         <!-- Moderator Password Error Message -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
-          <ice:message for="moderatorPassword"
-                       errorClass="inputError"/>
+	        <ice:message for="moderatorPassword"
+	                     errorClass="inputError"/>
         </ice:panelGroup>
         <!-- Empty Cell -->
         <ice:panelGroup />
