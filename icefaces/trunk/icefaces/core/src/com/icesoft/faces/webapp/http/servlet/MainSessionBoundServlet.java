@@ -120,7 +120,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
 
         //block until all views notify their disposal only when session expires
         if (sessionMonitor.isExpired()) {
-            disposeViews.initiateShutdownSequence();
+            disposeViews.waitForViewsShutdown();
         }
 
         DisposeBeans.in(session);
@@ -151,7 +151,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
             super(server);
         }
 
-        public void initiateShutdownSequence() {
+        public void waitForViewsShutdown() {
             int size = views.size();
             final Semaphore lock = new Semaphore(size, true);
 
