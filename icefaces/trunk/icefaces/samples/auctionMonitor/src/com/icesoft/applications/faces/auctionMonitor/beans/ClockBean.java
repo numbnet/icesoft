@@ -131,8 +131,8 @@ public class ClockBean implements Renderable, DisposableBean {
     }
 
     public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("ClockBean Dispose called - cleaning up");
+        if (log.isDebugEnabled()) {
+            log.debug("ClockBean Dispose called - cleaning up");
         }
         performCleanup();
     }

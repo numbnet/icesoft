@@ -403,8 +403,8 @@ public class AuctionBean implements AuctionListener, Renderable, DisposableBean 
      * View has been disposed either by window closing or a session timeout.
      */
     public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("AuctionBean Dispose called - cleaning up");
+        if (log.isDebugEnabled()) {
+            log.debug("AuctionBean Dispose called - cleaning up");
         }
         performCleanup();
     }

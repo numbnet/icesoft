@@ -356,8 +356,8 @@ public class TimeZoneBean implements Renderable, DisposableBean {
      * or a timeout.
      */
     public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("Dispose TimeZoneBean for a user - cleaning up");
+        if (log.isDebugEnabled()) {
+            log.debug("Dispose TimeZoneBean for a user - cleaning up");
         }
         performCleanup();
     }
@@ -382,7 +382,7 @@ public class TimeZoneBean implements Renderable, DisposableBean {
         x -= icefacesXOffset;
         y -= icefacesYOffset;
         TimeZoneWrapper tzw;
-        // compare mouse coordinate to know timzone polygons. 
+        // compare mouse coordinate to know timzone polygons.
         for (int i = 0; i < allTimeZoneList.size(); i++) {
             if (((TimeZoneWrapper) allTimeZoneList.get(i)).getMapPolygon()
                     .contains(x, y)) {
@@ -422,7 +422,7 @@ public class TimeZoneBean implements Renderable, DisposableBean {
         }
     }
 
-    // ICEfaces image map integration needs offset values to calculate the 
+    // ICEfaces image map integration needs offset values to calculate the
     // correct coordinate values.
     private static int icefacesXOffset = 193;
     private static int icefacesYOffset = 236;
@@ -509,4 +509,4 @@ public class TimeZoneBean implements Renderable, DisposableBean {
             {0, 0, 242, 242, 226, 217, 209, 95, 85, 83, 80, 82, 75, 56, 54, 51,
                     50, 52, 56, 54, 55, 50, 45, 40, 42, 42, 37, 29, 23, 20, 17, 14,
                     14};
-} 
+}

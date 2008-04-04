@@ -243,8 +243,8 @@ public class Participant implements Renderable, DisposableBean {
      * invalidation/timeout
      */
 	public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("Dispose Participant - cleaning up");
+        if (log.isDebugEnabled()) {
+            log.debug("Dispose Participant - cleaning up");
         }
         performCleanup();		
 	}

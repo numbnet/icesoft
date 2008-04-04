@@ -533,8 +533,8 @@ public class UserBean implements Renderable, DisposableBean {
      * View has been disposed either by window closing or a session timeout.
      */
     public void dispose() throws Exception {
-        if (log.isInfoEnabled()) {
-            log.info("UserBean Dispose called - cleaning up");
+        if (log.isDebugEnabled()) {
+            log.debug("UserBean Dispose called - cleaning up");
         }
         performCleanup();
     }
