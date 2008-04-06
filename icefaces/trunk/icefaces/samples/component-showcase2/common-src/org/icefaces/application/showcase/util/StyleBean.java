@@ -39,6 +39,7 @@ import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
+import java.io.Serializable;
 
 /**
  * <p>The StyleBean class is the backing bean which manages the demonstrations'
@@ -51,7 +52,7 @@ import java.util.HashMap;
  *
  * @since 0.3.0
  */
-public class StyleBean {
+public class StyleBean implements Serializable {
 
     // possible theme choices
     private final String RIME = "rime";
@@ -79,14 +80,14 @@ public class StyleBean {
 
         styleMap = new HashMap(3);
         styleMap.put(RIME, new StylePath(
-                "/xmlhttp/css/rime/rime.css",
-                "/xmlhttp/css/rime/css-images/"));
+                "./xmlhttp/css/rime/rime.css",
+                "./xmlhttp/css/rime/css-images/"));
         styleMap.put(XP, new StylePath(
-                "/xmlhttp/css/xp/xp.css",
-                "/xmlhttp/css/xp/css-images/"));
+                "./xmlhttp/css/xp/xp.css",
+                "./xmlhttp/css/xp/css-images/"));
         styleMap.put(ROYALE, new StylePath(
-                "/xmlhttp/css/royale/royale.css",
-                "/xmlhttp/css/royale/css-images/"));
+                "./xmlhttp/css/royale/royale.css",
+                "./xmlhttp/css/royale/css-images/"));
     }
 
     /**

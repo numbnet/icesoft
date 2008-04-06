@@ -36,6 +36,7 @@ import org.icefaces.application.showcase.view.jaxb.Node;
 import org.icefaces.application.showcase.util.FacesUtils;
 
 import java.util.HashMap;
+import java.io.Serializable;
 
 /**
  * <p>The purpose of the bean is to store user session data for the navigation
@@ -49,7 +50,7 @@ import java.util.HashMap;
  *
  * @since 1.7
  */
-public class ApplicationSessionModel {
+public class ApplicationSessionModel implements Serializable {
 
     // current node, and thus content the user is viewing
     private Node currentNode;

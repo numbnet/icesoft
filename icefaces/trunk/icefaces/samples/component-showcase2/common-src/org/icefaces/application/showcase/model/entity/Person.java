@@ -33,13 +33,15 @@
 
 package org.icefaces.application.showcase.model.entity;
 
+import java.io.Serializable;
+
 /**
  * <p>The Person class is used in many of the examples to show simple data
  * interactions in a business context.</p>
  *
  * @since 1.0
  */
-public class Person {
+public class Person  implements Serializable {
 
     public static final String LAST_NAME_COLUMN = "lastName";
     public static final String FIRST_NAME_COLUMN = "firstName";

@@ -120,8 +120,11 @@ public class ChartModelAxial extends AbstractChartData {
                 new double[]{randomNumberGenerator.getRandomDouble(100.0, 450.0),
                         randomNumberGenerator.getRandomDouble(50.0, 100.0),
                         randomNumberGenerator.getRandomDouble(250.0, 650.0)});
-        xAxisLabels.add(String.valueOf(
-                randomNumberGenerator.getRandomInteger(2000, 2050)));
+
+        // get previous year and increment
+        int year = Integer.parseInt(
+                (String)xAxisLabels.get(xAxisLabels.size() - 1)) + 1;
+        xAxisLabels.add(String.valueOf(year));
     }
 
     /**

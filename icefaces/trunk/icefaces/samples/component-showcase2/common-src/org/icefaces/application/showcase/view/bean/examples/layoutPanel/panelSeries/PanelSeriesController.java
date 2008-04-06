@@ -35,6 +35,7 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSe
 import org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 /**
  * <p>The PanelSeriesController is a simple class that maintains an list of
@@ -45,7 +46,7 @@ import javax.faces.event.ActionEvent;
  * @see org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase
  * @since 1.7
  */
-public class PanelSeriesController extends DataTableBase {
+public class PanelSeriesController extends DataTableBase implements Serializable {
 
     // start off with 3 employees.
     private int employeeCount = 3;

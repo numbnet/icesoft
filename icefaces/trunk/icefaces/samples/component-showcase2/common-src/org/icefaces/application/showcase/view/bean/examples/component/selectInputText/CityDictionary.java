@@ -36,20 +36,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
-import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpSession;
 import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -62,7 +60,7 @@ import java.util.zip.ZipInputStream;
  *
  * @since 1.7
  */
-public class CityDictionary {
+public class CityDictionary implements Serializable {
 
     private static Log log = LogFactory.getLog(CityDictionary.class);
 
@@ -106,8 +104,8 @@ public class CityDictionary {
 
         // compare method for city entries.
         public int compare(Object o1, Object o2) {
-            SelectItem selectItem1 = (SelectItem)o1;
-            SelectItem selectItem2 = (SelectItem)o2;
+            SelectItem selectItem1 = (SelectItem) o1;
+            SelectItem selectItem2 = (SelectItem) o2;
             // compare ignoring case, give the user a more automated feel when typing
             return selectItem1.getLabel().compareToIgnoreCase(selectItem2.getLabel());
         }
@@ -133,7 +131,7 @@ public class CityDictionary {
     public ArrayList generateCityMatches(String searchWord, int maxMatches) {
 
         ArrayList matchList = new ArrayList(maxMatches);
-        
+
         // ensure the autocomplete search word is present
         if ((searchWord == null) || (searchWord.trim().length() == 0)) {
             return matchList;
@@ -183,7 +181,6 @@ public class CityDictionary {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
             InputStream is = ec.getResourceAsStream(DATA_RESOURCE_PATH);
-
 
             //Wrap the InputStream as a ZipInputStream since it
             //is a zip file.

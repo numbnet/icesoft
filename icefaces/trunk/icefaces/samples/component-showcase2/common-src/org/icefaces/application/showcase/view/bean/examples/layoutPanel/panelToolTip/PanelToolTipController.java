@@ -44,11 +44,12 @@ import javax.faces.component.ValueHolder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * @since 1.7
  */
-public class PanelToolTipController {
+public class PanelToolTipController implements Serializable {
 
 
     /**

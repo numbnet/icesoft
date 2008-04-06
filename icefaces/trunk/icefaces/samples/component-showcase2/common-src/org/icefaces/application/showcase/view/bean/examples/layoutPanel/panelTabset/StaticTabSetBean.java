@@ -36,6 +36,7 @@ import com.icesoft.faces.component.paneltabset.TabChangeEvent;
 import com.icesoft.faces.component.paneltabset.TabChangeListener;
 
 import javax.faces.event.AbortProcessingException;
+import java.io.Serializable;
 
 /**
  * The StaticTabSetBean class is a backing bean for the TabbedPane showcase
@@ -45,7 +46,7 @@ import javax.faces.event.AbortProcessingException;
  *
  * @since 0.3.0
  */
-public class StaticTabSetBean implements TabChangeListener {
+public class StaticTabSetBean implements TabChangeListener, Serializable {
 
     /**
      * The demo contains three tabs and thus we need three variables to store

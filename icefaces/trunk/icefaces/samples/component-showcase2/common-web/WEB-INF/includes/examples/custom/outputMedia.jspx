@@ -39,7 +39,7 @@
     <!-- Description -->
     <ice:panelGroup styleClass="synopsisBox outputMediaContainer">
         <ice:outputText
-                    value="#{msgs['page.outputMedia.instructions']}"/>
+                    value="#{msgs['page.outputMedia.synopsis']}"/>
         <ice:outputText
                     value="#{msgs['page.outputMedia.instructions']}"/>
 

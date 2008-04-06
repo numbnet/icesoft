@@ -41,6 +41,7 @@ import com.icesoft.faces.context.effects.Shake;
 import org.icefaces.application.showcase.util.FacesUtils;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 /**
  * <p>The MenuPopup class purpose is to execute an action event fired from
@@ -54,7 +55,7 @@ import javax.faces.event.ActionEvent;
  *
  * @since 1.7
  */
-public class MenuPopupBean {
+public class MenuPopupBean implements Serializable {
     /**
      * Shake event type
      */

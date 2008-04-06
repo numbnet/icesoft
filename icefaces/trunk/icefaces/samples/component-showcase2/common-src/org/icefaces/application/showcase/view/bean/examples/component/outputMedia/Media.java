@@ -37,8 +37,9 @@ package org.icefaces.application.showcase.view.bean.examples.component.outputMed
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.io.Serializable;
 
-public class Media {
+public class Media  implements Serializable {
     private static Map players = new HashMap();
 
     static {

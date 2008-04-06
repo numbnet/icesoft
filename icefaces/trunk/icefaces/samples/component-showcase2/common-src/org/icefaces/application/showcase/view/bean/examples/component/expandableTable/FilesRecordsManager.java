@@ -39,6 +39,7 @@ import org.icefaces.application.showcase.util.StyleBean;
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * <p>The <code>FilesRecordsManager</code> class is responsible for constructing
@@ -55,7 +56,7 @@ import java.util.ArrayList;
  * application /lib/sytle.css file can be edited to change the style properties
  * of the table.</p>
  */
-public class FilesRecordsManager {
+public class FilesRecordsManager implements Serializable {
 
     private ArrayList inventoryGroupItemBeans;
 

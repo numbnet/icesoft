@@ -45,6 +45,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.io.Serializable;
 
 /**
  * <p>The TreeBean class is the backing bean for the Tree Component showcase
@@ -53,7 +54,7 @@ import java.util.Enumeration;
  * @see NodeUserObject
  * @since 0.3.0
  */
-public class TreeController extends BaseBean {
+public class TreeController extends BaseBean implements Serializable {
 
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;

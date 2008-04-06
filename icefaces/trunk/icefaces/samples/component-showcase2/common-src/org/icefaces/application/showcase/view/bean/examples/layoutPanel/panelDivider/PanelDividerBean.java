@@ -33,6 +33,7 @@
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider;
 
 import javax.faces.event.ValueChangeEvent;
+import java.io.Serializable;
 
 /**
  * Simple model bean for the panelDivider example.  The bean maintains the
@@ -40,7 +41,7 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @since 1.7
  */
-public class PanelDividerBean {
+public class PanelDividerBean  implements Serializable {
 
     public static final String ORIENTATION_HOR = "horizontal";
     public static final String ORIENTATION_VER = "vertical";

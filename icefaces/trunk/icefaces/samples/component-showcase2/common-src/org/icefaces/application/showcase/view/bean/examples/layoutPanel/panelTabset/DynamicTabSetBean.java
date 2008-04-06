@@ -37,6 +37,7 @@ import org.icefaces.application.showcase.util.MessageBundleLoader;
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * The DynamicTabSetBean is the backing bean for the TabbedPane showcase
@@ -45,7 +46,7 @@ import java.util.List;
  *
  * @since 0.3.0
  */
-public class DynamicTabSetBean {
+public class DynamicTabSetBean implements Serializable {
 
     private int tabIndex;
     private String newTabLabel;

@@ -48,6 +48,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -60,7 +61,7 @@ import java.util.List;
  *
  * @since 1.7
  */
-public class ApplicationBuilder {
+public class ApplicationBuilder implements Serializable {
 
     private static final Log logger =
             LogFactory.getLog(ApplicationBuilder.class);

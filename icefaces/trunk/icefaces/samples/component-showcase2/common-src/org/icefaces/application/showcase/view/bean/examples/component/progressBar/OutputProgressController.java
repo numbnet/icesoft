@@ -46,11 +46,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSession;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
+import java.io.Serializable;
 
 /**
  * <p>The OutputProgressController is responsible for handling all user actions
@@ -67,7 +68,8 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
  * @see javax.servlet.ServletContextListener
  * @since 1.7
  */
-public class OutputProgressController implements Renderable, ServletContextListener, DisposableBean{
+public class OutputProgressController
+        implements Renderable, ServletContextListener, DisposableBean, Serializable {
 
     public static final Log log = LogFactory.getLog(OutputProgressController.class);
 
@@ -172,12 +174,10 @@ public class OutputProgressController implements Renderable, ServletContextListe
     public void setRenderManager(RenderManager renderManager) {
         this.renderManager = renderManager;
 
-        //Casting to HttpSession ruins it for portlets so we need to either check for both types of
-        //sessions using reflection.  Instead, since we don't need the real id (just something that's
-        //specific to the session), get the hash using toString().
-        sessionId = FacesContext.getCurrentInstance().getExternalContext().getSession(false).toString();
-//        sessionId = ((HttpSession) FacesContext.getCurrentInstance().
-//                getExternalContext().getSession(true)).getId();
+        // Casting to HttpSession ruins it for portlets, in this case we only
+        // need a unique reference so we use the object hash
+        sessionId = FacesContext.getCurrentInstance().getExternalContext()
+                .getSession(false).toString();
         renderManager.getOnDemandRenderer(sessionId).add(this);
     }
 

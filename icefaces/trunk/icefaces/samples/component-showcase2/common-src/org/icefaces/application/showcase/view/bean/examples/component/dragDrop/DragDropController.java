@@ -45,6 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * <p>The DragDropController is responsible for handling all actions
@@ -57,7 +58,7 @@ import java.util.Map;
  *
  * @since 1.7
  */
-public class DragDropController{
+public class DragDropController implements Serializable {
 
     /**
      * Main data models for this example.

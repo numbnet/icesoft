@@ -37,12 +37,13 @@ import com.icesoft.faces.component.panelpositioned.PanelPositionedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Simple bean which holds a list of objects which is manipulated by the
  * position panel
  */
-public class PositionedPanelBean {
+public class PositionedPanelBean implements Serializable {
 
     private List people = new ArrayList();
 

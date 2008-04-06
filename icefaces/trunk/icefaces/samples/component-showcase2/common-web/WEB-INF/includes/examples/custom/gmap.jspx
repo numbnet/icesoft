@@ -74,7 +74,8 @@
                 </td>
                 <td>
                     <ice:selectBooleanCheckbox id="showMarkerBox"
-                                               value="#{gmap.showMarkers}" partialSubmit="true" />
+                            disabled="#{not empty gmap.standardAddress}"
+                            value="#{gmap.showMarkers}" partialSubmit="true" />
                 </td>
             </tr>
             <tr>

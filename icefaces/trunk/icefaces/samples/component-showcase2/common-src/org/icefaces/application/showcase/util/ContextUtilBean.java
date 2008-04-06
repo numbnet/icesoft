@@ -34,6 +34,7 @@ package org.icefaces.application.showcase.util;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
 /**
  * It's used to generate the iframe markup for the Description and Source tab panels.

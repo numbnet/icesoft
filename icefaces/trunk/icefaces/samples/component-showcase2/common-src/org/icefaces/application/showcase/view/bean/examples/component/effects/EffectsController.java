@@ -36,6 +36,7 @@ import org.icefaces.application.showcase.util.FacesUtils;
 import org.icefaces.application.showcase.view.bean.BeanNames;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 /**
  * <p>The effects controller is responsible for firing finding and firing
@@ -45,7 +46,7 @@ import javax.faces.event.ActionEvent;
  *
  * @sinse 1.7
  */
-public class EffectsController {
+public class EffectsController implements Serializable {
 
     /**
      * <p>Gets an instance of the BeanNames.EFFECTS_MODEL that lives in request

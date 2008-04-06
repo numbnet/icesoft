@@ -41,13 +41,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * The ColumnsBean object generates data for the ice:columns example.
  *
  * @since 1.5
  */
-public class ColumnsBean {
+public class ColumnsBean implements Serializable {
 
     private DataModel columnDataModel;
     private DataModel rowDataModel;

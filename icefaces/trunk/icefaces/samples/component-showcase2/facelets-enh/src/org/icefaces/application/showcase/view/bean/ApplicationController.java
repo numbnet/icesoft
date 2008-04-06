@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * <p>Application controller is responsible for managing the presentation
@@ -63,7 +64,7 @@ import java.util.List;
  *
  * @since 1.7
  */
-public class ApplicationController {
+public class ApplicationController  implements Serializable {
 
     private static final Log logger =
             LogFactory.getLog(ApplicationController.class);

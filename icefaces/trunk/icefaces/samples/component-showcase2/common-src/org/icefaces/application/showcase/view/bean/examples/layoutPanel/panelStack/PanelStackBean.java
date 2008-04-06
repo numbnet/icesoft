@@ -36,13 +36,14 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSt
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
 import javax.faces.event.ValueChangeEvent;
+import java.io.Serializable;
 
 /**
  * <p>The PanelStackBean class is a backing bean for the PanelStack showcase
  * demonstration and is used to store the selected panel state of the
  * ice:panelStack component. </p>
  */
-public class PanelStackBean {
+public class PanelStackBean implements Serializable {
 
     //currently selected panel
     private String selectedPanel =

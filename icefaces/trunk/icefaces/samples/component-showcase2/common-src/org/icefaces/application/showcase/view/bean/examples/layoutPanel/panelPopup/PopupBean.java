@@ -36,6 +36,7 @@ package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelPo
 import org.icefaces.application.showcase.util.MessageBundleLoader;
 
 import javax.faces.event.ActionEvent;
+import java.io.Serializable;
 
 /**
  * <p>The PopupBean class is the backing bean that manages the Popup Panel
@@ -43,7 +44,7 @@ import javax.faces.event.ActionEvent;
  * <p>This includes the modal and draggable user configurable message, as well
  * as the rendered and visibility state.</p>
  */
-public class PopupBean {
+public class PopupBean implements Serializable {
     // user entered messages for both dialogs
     private String draggableMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultDraggableMessage");
     private String modalMessage = MessageBundleLoader.getMessage("page.panelPopup.defaultModalMessage");
@@ -71,6 +72,10 @@ public class PopupBean {
 
     public boolean getDraggableRendered() {
         return draggableRendered;
+    }
+
+    public void setDraggableRendered(boolean draggableRendered) {
+        this.draggableRendered = draggableRendered;
     }
 
     public boolean getModalRendered() {

@@ -34,6 +34,7 @@
 package org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelBorder;
 
 import javax.faces.event.ValueChangeEvent;
+import java.io.Serializable;
 
 /**
  * <p>The PanelBorderBean class store boolean visibility values for the five
@@ -44,7 +45,7 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @since 0.3.0
  */
-public class PanelBorderBean {
+public class PanelBorderBean implements Serializable {
 
     // five configurable areas that make up a BorderLayout
     private boolean renderNorth = true;

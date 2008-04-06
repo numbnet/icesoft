@@ -46,9 +46,8 @@ import org.apache.commons.logging.LogFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.servlet.http.HttpSession;
-import javax.portlet.PortletSession;
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * <p>The InputFileController is responsible for the file upload
@@ -57,7 +56,8 @@ import java.util.*;
  *
  * @since 1.7
  */
-public class InputFileController implements Renderable, DisposableBean {
+public class InputFileController
+        implements Renderable, DisposableBean, Serializable {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);
 
@@ -83,14 +83,8 @@ public class InputFileController implements Renderable, DisposableBean {
         persistentFacesState = PersistentFacesState.getInstance();
 
         // Get the session id in a container generic way
-        //  so that we can work with both servlets and portlets
-        Object ourSession = FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        if (ourSession instanceof HttpSession) {
-            sessionId = ((HttpSession)ourSession).getId();
-        }
-        else if (ourSession instanceof PortletSession) {
-            sessionId = ((PortletSession)ourSession).getId();
-        }
+        sessionId = FacesContext.getCurrentInstance().getExternalContext()
+                .getSession(false).toString();
     }
 
     /**

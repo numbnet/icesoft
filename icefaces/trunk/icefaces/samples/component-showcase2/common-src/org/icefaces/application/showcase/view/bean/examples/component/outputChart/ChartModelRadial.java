@@ -109,8 +109,10 @@ public class ChartModelRadial extends AbstractChartData {
 
         // add some new data randomly.
         chartData.add(new Double(randomNumberGenerator.getRandomDouble(25.0, 100)));
-        xAxisLabels.add(String.valueOf(
-                randomNumberGenerator.getRandomInteger(2000, 2050)));
+        // get previous year and increment
+        int year = Integer.parseInt(
+                (String)xAxisLabels.get(xAxisLabels.size() - 1)) + 1;
+        xAxisLabels.add(String.valueOf(year));
     }
 
     /**

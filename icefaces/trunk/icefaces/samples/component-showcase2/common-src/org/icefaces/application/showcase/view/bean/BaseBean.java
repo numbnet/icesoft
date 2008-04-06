@@ -40,6 +40,8 @@ import javax.faces.event.ValueChangeEvent;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
 
+import java.io.Serializable;
+
 /**
  * <p>The BaseBean is a nice little helper class for common functionality
  * accross the component examples.  The BaseBean or the notion of a base
@@ -52,7 +54,7 @@ import com.icesoft.faces.context.effects.Highlight;
  *
  * @since 1.7
  */
-public class BaseBean {
+public class BaseBean implements Serializable {
     //the logger for this class
 	protected final Log logger = LogFactory.getLog(this.getClass());
 

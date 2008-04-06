@@ -46,11 +46,10 @@
     <ice:panelGroup styleClass="clearer"/>
 
     <!-- dynamic controlls for charts -->
-    <ice:panelGroup styleClass="exampleBox firstChildTitle chartsContainer"
-                    style="padding:5px;">
+    <ice:panelGroup styleClass="exampleBox firstChildTitle chartsContainer">
 
         <ice:panelGrid columns="4"
-                       cellpadding="10"
+                       cellpadding="5"
                        styleClass="chartConfigurationContainer verticalAlignTop chartsContainer">
 
              <!-- Horizontal/ vertical layout of axial data -->

@@ -39,6 +39,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 /**
  * The ChartController class is responsible for handling all user interations
@@ -46,7 +47,7 @@ import java.util.Map;
  *
  * @since 1.7
  */
-public class ChartController {
+public class ChartController implements Serializable {
 
     private static final String AREA_CHART_NAME = "Area";
     private static final String AREA_STACKED_CHART_NAME = "Area Stacked";
@@ -114,9 +115,9 @@ public class ChartController {
 
         // add default pie type outputChart
         chartDataModels.put(OutputChart.PIE2D_CHART_TYPE,
-                new ChartModelRadial(PIE2D_CHART_NAME, false, false, false, true));
+                new ChartModelRadial(PIE2D_CHART_NAME, false, false, false, false));
         chartDataModels.put(OutputChart.PIE3D_CHART_TYPE,
-                new ChartModelRadial(PIE3D_CHART_NAME, false, false, false, true));
+                new ChartModelRadial(PIE3D_CHART_NAME, false, false, false, false));
 
         // add the only custom chart model.
         chartDataModels.put(OutputChart.CUSTOM_CHART_TYPE,
