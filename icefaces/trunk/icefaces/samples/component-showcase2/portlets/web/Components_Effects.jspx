@@ -62,8 +62,9 @@
         </ice:panelGroup>
 
 
-        <ice:panelGroup style="margin-top:10px;">
-            <p>&#169; 2006 ICEsoft Technologies Inc. &#160; &#8226; &#160;
+        <ice:panelGroup style="margin-top:10px;text-align:center;">
+            <p>&#169; 2008 ICEsoft Technologies Inc. &#160; &#8226; &#160;
+            <a href="http://www.icefaces.org" target="_blank" >www.icefaces.org</a>     &#160; &#8226; &#160;
             Toll Free: 1-877-263-3822 USA and Canada</p>
         </ice:panelGroup>
 
