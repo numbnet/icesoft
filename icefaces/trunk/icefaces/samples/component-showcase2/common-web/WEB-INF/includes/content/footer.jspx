@@ -32,10 +32,10 @@
   -->
 <div class="footer_container">
     <div class="footer_content">
-        <div style="width:400px">&#160; Copyright 2007
+        <div style="width:400px">Copyright 2008&#160;
             <a href="http://www.icesoft.com/"
                target="_blank">ICEsoft Technologies Inc.</a></div>
-        <div style="float:right;width:250px;"><i>Powered By
+        <div style="float:right;width:250px;"><i>Powered By&#160;
             <a href="http://www.icefaces.org/" target="_blank">ICEfaces</a></i>
         </div>
     </div>
