@@ -66,12 +66,13 @@
     </target>
     
     <target name="copy.doc">
-        <copy todir="${web.content.dir}/docs" preservelastmodified="true">
-            <fileset dir="${component.docs.dir}"/>
-        </copy>        
+        <!--<copy todir="${web.content.dir}/docs" preservelastmodified="true">-->
+            <!--<fileset dir="${component.docs.dir}"/>-->
+        <!--</copy>        -->
     </target>
+
     <target name="copy.portlet.pages">
-        <copy todir="${web.content.dir}/portlet">
+        <copy todir="${web.content.dir}">
             <fileset dir="web">
                 <include name="**/*"/>
             </fileset>
