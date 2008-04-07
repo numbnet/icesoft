@@ -107,26 +107,6 @@ public class InputFileController
                 fileList.add(currentFile);
             }
 
-        } else if (inputFile.getStatus() == InputFile.INVALID) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "TEST MESSAGE INVALID",
-                            null));
-        } else if (inputFile.getStatus() == InputFile.SIZE_LIMIT_EXCEEDED) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "TEST MESSAGE SIZE LIMIT",
-                            null));
-        } else if (inputFile.getStatus() == InputFile.UNKNOWN_SIZE) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "TEST MESSAGE UNKNOW SIZE",
-                            null));
-        } else if (inputFile.getStatus() == InputFile.INVALID_NAME_PATTERN) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO,
-                            "TEST MESSAGE INVALID NAME",
-                            null));
         }
 
     }
