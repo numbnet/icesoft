@@ -1591,6 +1591,10 @@ table.iceSelInpDate tbody tr td table{
     background-color: #FCFCFC;
 }
 
+.iceMnuBarVrtItem {
+    float: none;
+}
+
 .iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover, .iceMnuBarVrtItem a, .iceMnuBarVrtItem span, .iceMnuBarVrtItem a:hover {
     text-decoration: none;
     font-weight: bold;
@@ -1671,7 +1675,7 @@ table.iceSelInpDate tbody tr td table{
 
 .iceMnuItmLabel, .iceMnuBarItemLabel {
     font-size: 1.0em;
-    width: 100%;
+    /*width: 100%;*/
     vertical-align: top;
 }
 
