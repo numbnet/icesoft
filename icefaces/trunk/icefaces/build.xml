@@ -114,6 +114,8 @@
 
     <ice:zip destfile="${bin.bundle.file}">
         <zipfileset dir="." includes="README.txt, samples/" excludes="**/bin.bundle.properties" prefix="${bin.bundle.prefix}"/>
+        <zipfileset file="samples/component-showcase/bin.bundle.properties"
+                    fullpath="${bin.bundle.prefix}/samples/component-showcase/build.properties"/>
         <zipfileset file="samples/component-showcase2/facelets-enh/bin.bundle.properties"
                     fullpath="${bin.bundle.prefix}/samples/component-showcase2/facelets-enh/build.properties"/>
         <zipfileset file="samples/tutorial/bin.bundle.properties"
