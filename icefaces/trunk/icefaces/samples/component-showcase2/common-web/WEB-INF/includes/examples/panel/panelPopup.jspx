@@ -56,7 +56,7 @@
                            disabled="#{popup.modalRendered}"
                            size="30" maxlength="90"/>
             <ice:commandButton value="#{popup.determineModalButtonText}"
-                               disabled="#{popup.draggableRendered}"
+                               disabled="#{popup.modalRendered}"
                                style="margin-right: 2px;"
                                actionListener="#{popup.toggleModal}"/>
         </ice:panelGroup>
@@ -76,7 +76,7 @@
                            disabled="#{popup.draggableRendered}"
                            size="30" maxlength="90"/>
             <ice:commandButton value="#{popup.determineDraggableButtonText}"
-                               disabled="#{popup.modalRendered}"
+                               disabled="#{popup.draggableRendered}"
                                actionListener="#{popup.toggleDraggable}"/>
         </ice:panelGroup>
         <ice:panelGroup styleClass="clearer"/>
@@ -119,7 +119,9 @@
 </ice:panelPopup>
 
 <!-- Draggable Panel Popup -->
-<ice:panelPopup draggable="true" modal="false"
+<ice:panelPopup draggable="true"
+                modal="false"
+                rendered="#{popup.draggableRendered}"
                 visible="#{popup.draggableRendered}"
                 autoCentre="#{popup.autoCentre}"
                 styleClass="corePopup">
