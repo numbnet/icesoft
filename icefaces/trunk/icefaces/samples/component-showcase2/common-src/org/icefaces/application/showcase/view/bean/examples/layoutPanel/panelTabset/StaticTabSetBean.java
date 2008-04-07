@@ -105,9 +105,14 @@ public class StaticTabSetBean implements TabChangeListener, Serializable {
         this.selectedIndex = selectedIndex;
     }
 
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = String.valueOf(selectedIndex);
+    }
+
     public int getFocusIndex() {
         return Integer.parseInt(selectedIndex);
     }
+
 
 
     /**
