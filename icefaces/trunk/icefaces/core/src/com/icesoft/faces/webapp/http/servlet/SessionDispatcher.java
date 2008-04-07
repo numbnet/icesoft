@@ -36,9 +36,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     //synchronize access in case there are multiple SessionDispatcher instances created
-    private synchronized static void notifyIfNew(HttpSession session) {
-        if (!SessionIDs.contains(session.getId())) {
-            notifySessionInitialized(session);
+    private static void notifyIfNew(HttpSession session) {
+        synchronized (SessionIDs) {
+            if (!SessionIDs.contains(session.getId())) {
+                notifySessionInitialized(session);
+            }
         }
     }
 
@@ -67,8 +69,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private void sessionShutdown(HttpSession session) {
-        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.remove(session.getId());
+        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
         servlet.shutdown();
+    }
+
+    private void sessionDestroy(HttpSession session) {
+        sessionBoundServers.remove(session.getId());
     }
 
     /**
@@ -89,7 +95,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    private synchronized static void notifySessionShutdown(final HttpSession session) {
+    private static void notifySessionShutdown(final HttpSession session) {
         //shutdown session bound servers
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
@@ -102,12 +108,24 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         //invalidate session and discard session ID
-        try {
-            session.invalidate();
-        } catch (IllegalStateException e) {
-            Log.info("Session already invalidated.");
-        } finally {
-            SessionIDs.remove(session.getId());
+        synchronized (SessionIDs) {
+            i = SessionDispatchers.iterator();
+            while (i.hasNext()) {
+                try {
+                    SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
+                    sessionDispatcher.sessionDestroy(session);
+                } catch (Exception e) {
+                    Log.error(e);
+                }
+            }
+
+            try {
+                session.invalidate();
+            } catch (IllegalStateException e) {
+                Log.info("Session already invalidated.");
+            } finally {
+                SessionIDs.remove(session.getId());
+            }
         }
     }
 
