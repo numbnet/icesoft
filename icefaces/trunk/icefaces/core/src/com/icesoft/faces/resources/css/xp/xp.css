@@ -309,7 +309,7 @@ fieldset {
     margin:0px;; 
     padding:0px;
     border-width: 0px;
-    width:1px;
+    width:2px;
     background-color:transparent;
  
 }
@@ -319,13 +319,14 @@ fieldset {
     padding:0px;
     width:1px;
     background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
+    width:2px;    
 }
 
 .iceDatTblBlkTd {
-   border-bottom: 1px solid #CCCCCC;	
+    border-bottom: 1px solid #CCCCCC;	
+    background-color: #EFEFEF;   
 }
 	/* data tables are rendered with alternating row colors */
 .iceDatTblRow1 { /* was iceTblRow1 */
