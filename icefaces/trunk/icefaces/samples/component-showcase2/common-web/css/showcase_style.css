@@ -515,6 +515,10 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     text-decoration: underline;
 }
 
+.exampleBox .iceMnuItm a:hover {
+    text-decoration: none;
+}
+
 .centerBox {
     margin-right: auto;
     margin-left: auto;

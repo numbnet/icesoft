@@ -1625,7 +1625,7 @@ table.iceSelInpDate tbody tr td table{
 
 .iceMnuItmSep hr {
     width: 100%;
-    border: 1px inset #000000;
+    /*border: 1px inset #000000;*/
 }
 
 .iceMnuBarSubMenu, .iceMnuBarVrtSubMenu {
@@ -1665,6 +1665,10 @@ table.iceSelInpDate tbody tr td table{
 
 .iceMnuItm a:hover, .iceMnuItmVrt a:hover {
     background-color: #4591A1;
+    color: #FFFFFF;
+}
+
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt {
     color: #FFFFFF;
 }
 
