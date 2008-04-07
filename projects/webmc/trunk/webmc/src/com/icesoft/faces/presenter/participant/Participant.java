@@ -58,7 +58,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
