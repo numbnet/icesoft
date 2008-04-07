@@ -47,7 +47,6 @@ import java.util.Map;
  * new users to presentations, etc.
  */
 public class PresentationManagerBean {
-    public static final long PRESENTATION_TIMEOUT_MINS = 60*8;
     public static final String DEFAULT_PRESENTATION = "Select Presentation...";
     private static final String NO_PRESENTATION = "None Available";
     private static final int MAX_PARTICIPANT_COUNT = 20;
@@ -155,40 +154,13 @@ public class PresentationManagerBean {
         }
 
         Iterator presIter = presentations.keySet().iterator();
-        ArrayList scheduledRemoval = new ArrayList(0);
         ArrayList presentationNames = new ArrayList(presentations.size());
         presentationNames.add(new SelectItem(DEFAULT_PRESENTATION));
         
         Presentation current;
         while (presIter.hasNext()) {
             current = (Presentation)presentations.get((String)presIter.next());
-            
-            // Add the presentation only if the name is still valid
-            if (backendManager.getSessionList().contains(current.getSessionId())) {
-                if (current.getSessionId().equals(AutoPresentation.DEFAULT_SESSION_ID)) {
-                    // Add near the top if the presentation is default
-                    presentationNames.add(1, new SelectItem(current.getName()));
-                }
-                else {
-                    // Ensure the creation date is still valid
-                    // If it is, add the presentation name to the list, otherwise
-                    //  schedule it for destruction
-                    if (current.isCreationDateValid()) {
-                        presentationNames.add(new SelectItem(current.getName()));
-                    }
-                    else {
-                        scheduledRemoval.add(current);
-                    }
-                }
-            }
-        }
-        
-        // Determine which presentations should be removed
-        // This is done separately (as compared to just calling endPresentation
-        //  on 'current' in the above while loop) because otherwise a Concurrent
-        // Modification exception will be thrown
-        for (int i = 0; i < scheduledRemoval.size(); i++) {
-            ((Presentation)scheduledRemoval.get(i)).endPresentation();
+            presentationNames.add(1,new SelectItem(current.getName()));
         }
 
         currentPresentationsSelection = DEFAULT_PRESENTATION;
@@ -218,40 +190,25 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Convenience method to create a presentation with only the participant and
-     * presentation name given
-     * This will pass a null sessionId to the normal createPresentation method,
-     * which causes the sessionId to be generated
-     *
-     * @param participant who created the presentation
-     * @param name        of the presentation to create
-     * @return the created presentation, or null if something went wrong
-     */
-    public Presentation createPresentation(Participant participant,
-                                           String name) {
-        return createPresentation(participant, null, name);
-    }
-
-    /**
      * Method to create a new presentation This relies on the back end manager to
      * do the real work, besides handing off the local renderer
      *
      * @param participant who created the presentation
-     * @param sessionId of the moderator of the presentation
      * @param name        of the presentation to create
      * @return the created presentation, or null if something went wrong
      */
     public Presentation createPresentation(Participant participant,
-                                           String sessionId,
                                            String name) {
         Presentation toReturn =
-                backendManager.createPresentation(participant, sessionId, name,
+                backendManager.createPresentation(participant, name,
                                                   renderManager.getOnDemandRenderer(
                                                           name));
 
         if (toReturn != null) {
             toReturn.setManager(this);
         }
+        // The presentation list should be updated.
+        loginPageRenderer.requestRender();
 
         return toReturn;
     }
@@ -277,6 +234,7 @@ public class PresentationManagerBean {
      */
     public void endPresentation(Presentation presentation) {
         backendManager.removePresentation(presentation);
+        // The presentation list should be updated.
         loginPageRenderer.requestRender();
     }
 }

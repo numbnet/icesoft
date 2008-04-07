@@ -270,17 +270,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     }
 
     /**
-     * Method to get the http session for this participant This is retrieved
-     * from the external context
-     *
-     * @return session
-     */
-    public HttpSession getSession() {
-        return (HttpSession) FacesContext.getCurrentInstance()
-                .getExternalContext().getSession(false);
-    }
-
-    /**
      * Method to get the status effect used on the status message
      *
      * @return statusEffect
@@ -565,8 +554,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         try {
             presentation.removeParticipant(this);
             presentation = null;
-
-            loginBean.addRenderable();
         } catch (Exception failedLogout3) { }
 
         try {
@@ -805,6 +792,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             log.debug("Participant " + firstName + " Disposed - logging out");
         }
 		logout();
+		loginBean.removeRenderable();
 	}
 	
     /**

@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,7 +58,6 @@ public class PresentationManager {
 
     private static PresentationManager singleton = null;
     private Map presentationMap = Collections.synchronizedMap(new HashMap());
-    private Vector sessionList = new Vector(0);
 
     /**
      * Plain constructor, which is private to fulfill the singleton role
@@ -86,20 +84,13 @@ public class PresentationManager {
      * and the creator participant to get things rolling
      *
      * @param participant moderator who created and owns the presentation
-     * @param sessionId of the new presentation (if null will be automatically assigned)
      * @param name        of the presentation
      * @param renderer    to use with the presentation
      * @return the created presentation
      */
-    public Presentation createPresentation(Participant participant,
-                                           String sessionId, String name,
+    public Presentation createPresentation(Participant participant, String name,
                                            OnDemandRenderer renderer) {
         Presentation toReturn = null;
-
-        if (sessionId == null) {
-            sessionId = participant.getSession().getId();
-        }
-        sessionList.add(sessionId);
 
         if (!presentationExists(name)) {
             toReturn = new Presentation(name,
@@ -107,9 +98,7 @@ public class PresentationManager {
                                         participant, Integer.parseInt(
                                          participant.getLoginBean().getPresentationMaxString()),
                                         renderer);
-            
 
-            toReturn.setSessionId(sessionId);
             toReturn.addChatMessage("Notice", "New Presentation.");
 
             presentationMap.put(name, toReturn);
@@ -166,15 +155,6 @@ public class PresentationManager {
      */
     public Map getPresentationMap() {
         return presentationMap;
-    }
-
-    /**
-     * Method to return the session list
-     *
-     * @return the list
-     */
-    public Vector getSessionList() {
-        return sessionList;
     }
 
     /**

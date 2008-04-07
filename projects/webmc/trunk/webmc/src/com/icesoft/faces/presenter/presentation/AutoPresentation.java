@@ -55,7 +55,6 @@ public class AutoPresentation {
 
     public static final String PRESENTATION_FOLDER_NAME = "basepres";
     public static final String DEFAULT_PASSWORD = "";
-    public static final String DEFAULT_SESSION_ID = "initialsession";
 
     /**
      * Method to get the default presentation names as a String list
@@ -218,7 +217,7 @@ public class AutoPresentation {
         // initial presentations will never be removed, even if the moderator
         // crashes out
         Presentation toReturn =
-                parent.createPresentation(owner, DEFAULT_SESSION_ID, name);
+                parent.createPresentation(owner, name);
 
         if (toReturn != null) {
             owner.getChatView().setPresentation(toReturn);

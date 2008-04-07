@@ -66,7 +66,6 @@ public class Presentation extends PresentationInfo {
 
     private int currentSlideNumber = DEFAULT_SLIDE_NUMBER;
     private int progress = -1;
-    private String sessionId;
     private OnDemandRenderer renderer;
     private PresentationDocument document;
     private File parentFile;
@@ -74,7 +73,6 @@ public class Presentation extends PresentationInfo {
     private PresentationManagerBean manager;
     private Hashtable preloadedTable;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
-    private long creationDate = System.currentTimeMillis();
     
     private ArrayList skypeList = new ArrayList();
 
@@ -107,24 +105,8 @@ public class Presentation extends PresentationInfo {
         this.progress = progress;
     }
 
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
     public int getCurrentSlideNumber() {
         return currentSlideNumber;
-    }
-
-    public long getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(long creationDate) {
-        this.creationDate = creationDate;
     }
 
     /**
@@ -443,6 +425,11 @@ public class Presentation extends PresentationInfo {
     public void removeParticipant(Participant participant) {
         try {
             renderer.remove(participant);
+            // We dispose of the renderer here because it can be used to chat 
+            // after the presentation has concluded, once it's empty we dispose.
+            if(renderer.isEmpty()){
+            	renderer.dispose();
+            }
             participants.remove(participant);
         }catch (Exception removeError) {
             if (log.isErrorEnabled()) {
@@ -482,18 +469,6 @@ public class Presentation extends PresentationInfo {
         if (log.isInfoEnabled()) {
             log.info("Presentation " + name + " has concluded");
         }
-    }
-
-    /**
-     * Method to determine if the creation date of this presentation is still
-     * valid in comparison to PRESENTATION_TIMEOUT_MINS.
-     *
-     * @return false if presentation age is more than the timeout
-     */
-    public boolean isCreationDateValid() {
-        long diffMinutes = Math.abs((System.currentTimeMillis() - creationDate)/(60*1000));
-        
-        return (diffMinutes < PresentationManagerBean.PRESENTATION_TIMEOUT_MINS);
     }
 
     /**
