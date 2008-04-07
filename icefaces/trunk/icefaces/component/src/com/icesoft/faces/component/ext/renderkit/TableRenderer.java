@@ -651,7 +651,7 @@ public class TableRenderer
                         // if column styles exist, then apply the appropriate one
 
                         
-                        if (uiData.isResizable()) {
+                        if (uiData.isResizable() && childs.hasNext()) {
                             Element eTd = domContext.createElement(HTML.TD_ELEM);
                             eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
                             Element img = domContext.createElement(HTML.IMG_ELEM);
