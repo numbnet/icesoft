@@ -41,6 +41,7 @@ html {
 
 .backgroundBottom {
     padding: 20px 0px 40px 0px;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
 }
 
 .loginBox {
@@ -60,6 +61,7 @@ html {
 }
 
 .loginFirstColumn {
+	padding-left: 0px;
     width: 25%;
 }
 
@@ -73,6 +75,7 @@ html {
 }
 
 .loginFourthColumn {
+	padding-left: 0px;
     width: 0%;
 }
 

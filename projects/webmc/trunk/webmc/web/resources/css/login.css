@@ -36,9 +36,7 @@
 }
 
 .backgroundBottom {
-    padding: 160px 0px 300px 0px;
-    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
-
+    padding: 160px 0px 0px 0px;
 }
 
 .loginBox {
@@ -65,11 +63,12 @@
 }
 
 .loginFirstColumn {
-    width: 32%;
+    padding-left: 28px;
+    width: 36%;
 }
 
 .loginSecondColumn {
-    width: 14%;
+    width: 12%;
     text-align: left;
 }
 
@@ -79,7 +78,8 @@
 }
 
 .loginFourthColumn {
-    width: 14%;
+	padding-left: 8px;
+    width: 12%;
     text-align: left;
 }
 

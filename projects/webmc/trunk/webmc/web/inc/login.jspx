@@ -173,7 +173,7 @@
         </ice:panelGroup>
         <!-- Viewer Password Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
-	        <ice:outputText value="Invalid password" 
+	        <ice:outputText value="Invalid" 
 	                        rendered="#{participant.loginBean.invalidDemoPassword}"
 	                        styleClass="inputError"/>
         </ice:panelGroup>
