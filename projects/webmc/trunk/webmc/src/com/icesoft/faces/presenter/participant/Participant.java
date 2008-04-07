@@ -454,22 +454,21 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * @return "loginSuccess" or "failed"
      */
     public String login() {
-    	// Validation of password without required attribute.  Validation is 
-    	// done in the application logic because when "required" is removed 
-    	// from the component this results in validators not being fired.
+    	// Validation is done in the application logic because validators are 
+    	// not fired when "required" is removed from a component (JSF behavior).
     	
         // Get the page and role from the context.
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map params = facesContext.getExternalContext().getRequestParameterMap();
         String loginSource = (String) params.get("loginSource");
         if(loginSource != null){
-        	if(!loginBean.validateDemoPresentation()){
+        	if(!loginBean.validatePresentation()){
         		return "failed";
         	}
         	if(loginBean.getPresentationPassword() != null){
 	        	String inputPassword = loginBean.getPresentationPassword().trim();
 	            if (loginSource.startsWith("view")) {
-	                if(!loginBean.validateDemoPassword(inputPassword)){
+	                if(!loginBean.validatePassword(inputPassword)){
 	                	return "failed";
 	                }
 	            }

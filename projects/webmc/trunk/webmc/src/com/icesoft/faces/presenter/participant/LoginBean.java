@@ -349,11 +349,11 @@ public class LoginBean {
     public void validateDemoPassword(ActionEvent ae){
     	if (ae.getSource() instanceof HtmlInputSecret) {
     	    HtmlInputSecret component = (HtmlInputSecret)ae.getSource();
-    	    validateDemoPassword((String)component.getValue());
+    	    validatePassword((String)component.getValue());
     	}
     }
     
-    public boolean validateDemoPassword(String inputPassword){
+    public boolean validatePassword(String inputPassword){
     	setInvalidDemoPassword(false);
         if ((presentationName != null) && (!presentationName.equals("")) &&
                 (!presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {
@@ -376,7 +376,7 @@ public class LoginBean {
         }
     }
     
-    public boolean validateDemoPresentation(){
+    public boolean validatePresentation(){
     	setInvalidPresentation(false);
         if ((presentationName == null) || (presentationName.equals("")) ||
                 (presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {
