@@ -53,10 +53,10 @@ dynamically changed.
 
 <ice:panelGroup styleClass="exampleBox outputProgressContainer">
     <!-- change between a standard and intermediator progress bar types-->
-    <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 25px;">
+    <ice:panelGroup style="float:left;margin-right: 25px;margin-bottom: 25px;width:125px;">
         <ice:outputLabel
                 for="outputMode"
-                value="#{msgs['page.outputProgress.mode.label']}"/>
+                value="#{msgs['page.outputProgress.mode.label']}"/><br />
         <ice:selectOneRadio id="outputMode"
                             value="#{outputProgressController.outputProgressModel.intermediatMode}"
                             partialSubmit="true"

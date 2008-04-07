@@ -136,10 +136,10 @@ a:link, a:hover, a:visited, a:active {
     font-family: Tahoma, Helvetica, sans-serif;
     font-weight: normal;
     text-decoration: none;
-    color: #e28f34;
+    color: #000;
 }
 a:hover{
-    color: #e8af15;
+    color: #000033;
     text-decoration:underline
 }
 a:visited{
@@ -418,6 +418,9 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     background-position: right center;
     background-repeat: no-repeat;
 }
+.cartDropTarget{
+    background-color: #fda505;
+}
 
 /* effects demo */
 .effectWrapperContainer{
@@ -435,7 +438,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     text-align: center;
     border: 1px solid #d9d9d9;
     overflow: hidden;
-     background:url('../images/effect_gradient.gif') bottom left repeat-x;
+    background:url('../images/effect_gradient.gif') bottom left repeat-x;
 }
 .effectsDemoContainer > div{
     float:left;
@@ -447,7 +450,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     /*padding: 7px;*/
     font-weight: bold;
 }
-.effectsDemoContainer > div:first-child{
+.effectsDemoTitle{
     background: #FFF url( '../xmlhttp/css/rime/css-images/PnlHdr_bgslice.gif' ) repeat-x center left;
     border-bottom: 1px solid #d9d9d9;
 }

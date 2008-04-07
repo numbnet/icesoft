@@ -55,7 +55,8 @@
                             effect="#{effectsModel.effects[effectKey].effect}"
                             styleClass="effectsDemoContainer">
 
-                        <ice:panelGroup style="height:28px">
+                        <ice:panelGroup style="height:28px"
+                                styleClass="effectsDemoTitle">
                             <ice:outputText
                                     value="#{msgs['page.effects.example.label']}"/>
                             <ice:graphicImage url="/xmlhttp/css/xp/css-images/spacer.gif" width="0" height="28" style="vertical-align:middle;"/>

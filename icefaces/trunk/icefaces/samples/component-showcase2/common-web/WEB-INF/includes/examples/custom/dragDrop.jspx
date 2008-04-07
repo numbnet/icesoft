@@ -65,7 +65,7 @@
                 dragListener="#{dragDropController.addShoppingCartItem}"
                 dragValue="#{inventoryItem}"
                 dragOptions="dragGhost"
-                dragMask="dragging,drag_cancel,hover_end"
+                dragMask="dragging,drag_cancel,hover_start,hover_end"
                 dropMask="dragging,drag_cancel,hover_start,hover_end" >
             <ice:graphicImage id="GrphImg"
                               width="100px"
@@ -105,7 +105,7 @@
 <!-- Conainer for shopping cart summary, also a drop target. -->
 <ice:panelGroup styleClass="chartContainer backBeanChangeContainer"
                 style="border: none;padding:2px;"
-                effect="#{dragDropController.cartTableEffect}"
+                hoverclass="cartDropTarget"
                 dropTarget="true" >
     <ice:panelGroup>
     <!-- Cart items -->
@@ -200,7 +200,7 @@
 <ice:panelGroup styleClass="chartContainer backBeanChangeContainer" 
                 style="padding:2px;"
                 dropTarget="true"
-                effect="#{dragDropController.cartEffect}"
+                hoverclass="cartDropTarget"
                 rendered="#{empty dragDropController.shoppingCart.inventory}">
     <ice:panelGroup id="cartDropTarget"
                     style="text-align: center;background-color:white;padding:20px;" >
@@ -216,6 +216,8 @@
 <!-- cart total, also a drag target. -->
 <ice:panelGroup styleClass="chartContainer backBeanChangeContainer"
         style="text-align: right;"
+        dropTarget="true"
+        hoverclass="cartDropTarget"
         rendered="#{!empty dragDropController.shoppingCart.inventory}">
     <ice:panelGroup>
         <ice:outputText

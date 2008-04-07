@@ -47,7 +47,7 @@
     <!-- Tab Visibility Controls -->
     <ice:panelGroup style="float:left;width:200px;" >
 
-        <ice:panelGroup style="float:left;" styleClass="firstChildTitle">
+        <ice:panelGroup style="float:left;width:190px;" styleClass="firstChildTitle">
             <ice:outputLabel value="#{msgs['page.panelTabSet.tabVisibility']}"/>
         </ice:panelGroup>
 
@@ -62,8 +62,7 @@
                                        title="#{msgs['page.panelTabSet.static.accessibility.chkBox1']}"/>
             <ice:outputLabel value="#{msgs['page.panelTabSet.tab1']}"
                              for="tab1Visibility"/>
-        </ice:panelGroup>
-        <ice:panelGroup style="float:left;">
+
             <ice:selectBooleanCheckbox id="tab2Visibility"
                                        partialSubmit="true"
                                        value="#{staticTabbedPaneExample.tabbedPane2Visible}"
@@ -72,8 +71,7 @@
                                        title="#{msgs['page.panelTabSet.static.accessibility.chkBox2']}"/>
             <ice:outputLabel value="#{msgs['page.panelTabSet.tab2']}"
                              for="tab2Visibility"/>
-        </ice:panelGroup>
-        <ice:panelGroup style="float:left;" >
+
             <ice:selectBooleanCheckbox id="tab3Visibility"
                                        partialSubmit="true"
                                        value="#{staticTabbedPaneExample.tabbedPane3Visible}"
