@@ -52,22 +52,20 @@ public class SlideshowTimer extends Thread {
         this.parent = parent;
     }
 
-    /**
-     * Method to get the parent presentation
-     *
-     * @return parent
-     */
     public Presentation getParent() {
         return parent;
     }
 
-    /**
-     * Method to get the change delay (as seconds)
-     *
-     * @return changeDelay
-     */
+    public void setParent(Presentation parent) {
+        this.parent = parent;
+    }
+
     public Integer getChangeDelay() {
         return changeDelay;
+    }
+
+    public void setChangeDelay(Integer changeDelay) {
+        this.changeDelay = changeDelay;
     }
 
     /**
@@ -77,24 +75,6 @@ public class SlideshowTimer extends Thread {
      */
     public int getChangeDelayAsMilliseconds() {
         return changeDelay.intValue()*1000;
-    }
-
-    /**
-     * Method to set the parent presentation
-     *
-     * @param parent new
-     */
-    public void setParent(Presentation parent) {
-        this.parent = parent;
-    }
-
-    /**
-     * Method to set the change delay
-     *
-     * @param changeDelay new
-     */
-    public void setChangeDelay(Integer changeDelay) {
-        this.changeDelay = changeDelay;
     }
 
     /**
@@ -117,8 +97,8 @@ public class SlideshowTimer extends Thread {
 
     /**
      * Method to stop the slide show
-     * The check if the slide show is even running should be done at a higher level
-     * This will reset the keepRunning variable, and interrupt the thread,
+     * The check if the slide show is even running should be done at a higher 
+     * level  This will reset the keepRunning variable, and interrupt the thread,
      * which will then stop itself when it sees that keepRunning is false
      */
     public void stopSlideshow() {

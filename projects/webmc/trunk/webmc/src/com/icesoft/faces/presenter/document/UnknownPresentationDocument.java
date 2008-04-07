@@ -51,20 +51,10 @@ public class UnknownPresentationDocument implements PresentationDocument {
         this.presentation = presentation;
     }
 
-    /**
-     * Method to get the loaded status
-     *
-     * @return boolean loaded
-     */
     public boolean isLoaded() {
         return loaded;
     }
 
-    /**
-     * Method to set the loaded status
-     *
-     * @param loaded new status
-     */
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
@@ -90,8 +80,7 @@ public class UnknownPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to closeDocument the loading / conversion of the current zip
-     * document
+     * Method to closeDocument the loading / conversion of the current document
      */
     public void cancel() {
     }
@@ -104,8 +93,8 @@ public class UnknownPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to load the passed File (which will be a zip) The conversion and
-     * loading will be done in a separate thread
+     * Method to load the passed File.  The conversion and loading will be done 
+     * in a separate thread
      *
      * @param sourceFile to load
      */

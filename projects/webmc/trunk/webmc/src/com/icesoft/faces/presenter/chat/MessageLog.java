@@ -39,6 +39,7 @@ import java.util.ArrayList;
  * examples are timestamps, colored nicknames, etc.
  */
 public class MessageLog extends ArrayList {
+
     public MessageLog() {
     }
 
@@ -49,8 +50,8 @@ public class MessageLog extends ArrayList {
     /**
      * Override method to add a chat message
      *
-     * @param nick    is nickname of sender
-     * @param message to use
+     * @param nick    nickname of sender
+     * @param message sender's message
      * @return true (as per the general contract of Collection.add)
      */
     public boolean addMessage(String nick, String message) {

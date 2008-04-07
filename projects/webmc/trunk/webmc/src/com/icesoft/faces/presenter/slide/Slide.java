@@ -33,16 +33,19 @@
 package com.icesoft.faces.presenter.slide;
 
 /**
- * Slide displayed in presentation. Basically a wrapper class for a String and
- * page location
+ * Slide displayed in presentation.
  */
 public class Slide {
     public static final int MAX_WIDTH = 720;
     public static final int MAX_HEIGHT = 540;
     public static final int MOBILE_MAX_WIDTH = 336;
     public static final int MOBILE_MAX_HEIGHT = 224;
+
     private static final String INFO_LOCATION = "resources/images/infopage.png";
     private static final String INFO_LOCATION_MOBILE = "resources/images/infopage.png";
+    private static final Slide INFO_SLIDE = new Slide(INFO_LOCATION, false);
+    private static final Slide INFO_SLIDE_MOBILE = new Slide(INFO_LOCATION_MOBILE, true);
+
     private static final Slide DEFAULT_SLIDE_VIEWER =
             new Slide("resources/images/titlepage-view.png", false);
     private static final Slide DEFAULT_SLIDE_VIEWER_MOBILE =
@@ -51,8 +54,6 @@ public class Slide {
             new Slide("resources/images/titlepage-mod.png", false);
     private static final Slide DEFAULT_SLIDE_MODERATOR_MOBILE =
         new Slide("resources/images/titlepage-mod-mobile.png", true);
-    private static final Slide INFO_SLIDE = new Slide(INFO_LOCATION, false);
-    private static final Slide INFO_SLIDE_MOBILE = new Slide(INFO_LOCATION_MOBILE, true);
 
     private String location;
     private boolean mobile;
@@ -65,6 +66,7 @@ public class Slide {
      * Method to get the default slide for either a moderator or viewer
      *
      * @param isModerator to get a moderator slide
+     * @param mobile to get a moderator slide sized for a mobile device
      * @return the default slide
      */
     public static Slide getDefaultSlide(boolean isModerator, boolean mobile) {
@@ -82,7 +84,8 @@ public class Slide {
 
     /**
      * Method to get the standard information slide
-     *
+     * 
+     * @param mobile to get an information slide sized for a mobile device
      * @return the information slide
      */
     public static Slide getInfoSlide(boolean mobile) {
@@ -92,20 +95,10 @@ public class Slide {
         return INFO_SLIDE;
     }
 
-    /**
-     * Method to get the location of this slide
-     *
-     * @return location path
-     */
     public String getLocation() {
         return location;
     }
 
-    /**
-     * Method to set the location of this slide
-     *
-     * @param location path to use
-     */
     public void setLocation(String location) {
         this.location = location;
     }

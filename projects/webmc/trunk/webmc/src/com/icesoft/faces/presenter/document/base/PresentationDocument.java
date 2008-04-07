@@ -41,6 +41,7 @@ public interface PresentationDocument {
      * Method to get a slide at the passed slide number
      *
      * @param slideNumber to get
+     * @param mobile to get mobile browser sized slide
      * @return resulting slide
      */
     public Slide getSlide(int slideNumber, boolean mobile);

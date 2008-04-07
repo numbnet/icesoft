@@ -51,36 +51,20 @@ public class Message {
         timestamp = (new Time(System.currentTimeMillis()).toString() + " ");
     }
 
-    /**
-     * Method to get the message
-     *
-     * @return the message
-     */
     public String getMessage() {
         return (message);
     }
 
-    /**
-     * Method to get the timestamp
-     *
-     * @return the timestamp
-     */
     public String getTimestamp() {
         return (timestamp);
     }
 
-    /**
-     * Method to get the sender
-     *
-     * @return the sender
-     */
     public String getSender() {
         return (sender);
     }
 
     /**
-     * Method to get the sender in a formatted manner This basically means
-     * adding the Message.SEPERATOR
+     * Method to get the sender in a format with the Message.SEPERATOR
      *
      * @return formatted sender
      */

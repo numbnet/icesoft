@@ -43,9 +43,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class for managing the basic information about a presentation This doesn't
- * deal with manipulating or displaying the presentation, which another class
- * should do
+ * Class used to store back end specific information about a Presentation.
+ * This means no UI work is done, just core information about a Presentation is 
+ * managed and it is meant to be extended by a front end Presentation bean.
  */
 public class PresentationInfo {
     protected String name;
@@ -83,128 +83,58 @@ public class PresentationInfo {
         return prefix;
     }
 
-    /**
-     * Method to get the name of the presentation
-     *
-     * @return name
-     */
     public String getName() {
         return name;
     }
-
-    /**
-     * Method to get the password of the presentation
-     *
-     * @return password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Method to get the moderator of the presentation
-     *
-     * @return moderator
-     */
-    public Participant getModerator() {
-        return moderator;
-    }
-
-    /**
-     * Method to get the participants of the presentation
-     *
-     * @return participants list
-     */
-    public List getParticipants() {
-        return participants;
-    }
-
-    /**
-     * Method to get the maximum number of participants allowed
-     *
-     * @return maxParticipants
-     */
-    public int getMaxParticipants() {
-        return maxParticipants;
-    }
-
-    /**
-     * Method to get the chat message log
-     *
-     * @return messageLog
-     */
-    public MessageLog getMessageLog() {
-        return messageLog;
-    }
-
-    /**
-     * Method to get the auto-play status
-     *
-     * @return autoPlay
-     */
-    public boolean getAutoPlay() {
-        return autoPlay;
-    }
-
-    /**
-     * Method to set the name of the presentation
-     *
-     * @param name new
-     */
+    
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Method to set the password of the presentation
-     *
-     * @param password new
-     */
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * Method to set the moderator of the presentation
-     *
-     * @param moderator new
-     */
+    public Participant getModerator() {
+        return moderator;
+    }
+
     public void setModerator(Participant moderator) {
         this.moderator = moderator;
     }
 
-    /**
-     * Method to set the participants of the presentation
-     *
-     * @param participants list new
-     */
+    public List getParticipants() {
+        return participants;
+    }
+    
     public void setParticipants(List participants) {
         this.participants = participants;
     }
 
-    /**
-     * Method to set the maximum number of participants allowed
-     *
-     * @param maxParticipants new
-     */
+    public int getMaxParticipants() {
+        return maxParticipants;
+    }
+    
     public void setMaxParticipants(int maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
 
-    /**
-     * Method to set the chat message log
-     *
-     * @param messageLog new
-     */
+    public MessageLog getMessageLog() {
+        return messageLog;
+    }
+    
     public void setMessageLog(MessageLog messageLog) {
         this.messageLog = messageLog;
     }
 
-    /**
-     * Method to set the auto-play status
-     *
-     * @param autoPlay new
-     */
+    public boolean getAutoPlay() {
+        return autoPlay;
+    }
+    
     public void setAutoPlay(boolean autoPlay) {
         this.autoPlay = autoPlay;
     }
@@ -263,8 +193,8 @@ public class PresentationInfo {
     }
 
     /**
-     * Convenience method to determine if any spaces are left for new participants
-     * to be added to the presentation
+     * Convenience method to determine if any spaces are left for new 
+     * participants to be added to the presentation
      *
      * @return true if the participant can join
      */

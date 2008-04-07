@@ -464,7 +464,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * one (if the participant is a viewer) Then a slew of local variables are
      * updated to get the user ready for the main functionality of webmc
      *
-     * @return "loginSuccess" or "failed" for faces-config navigation
+     * @return "loginSuccess" or "failed"
      */
     public String login() {
     	// Validation of password without required attribute.  Validation is 
@@ -535,14 +535,12 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     /**
      * Method to logout from the current presentation If the participant is a
      * moderator, the presentation will be ended, otherwise other viewers will
-     * just be notified of the leave This will reset the login page renderer and
-     * cleanup the local presentation variables
+     * be notified of the participant leaving.  This will reset the login page 
+     * renderer and cleanup the local presentation variables.
      * All the exceptions here are caught and ignored, as an error in one phase
-     * of the logout should not stop the other phases from completing. Plus, there
-     * isn't much we could do on a user logout error (they're already leaving after
-     * all).
+     * of the logout should not stop the other phases from completing.
      *
-     * @return "logout" for faces-config navigation
+     * @return "logout"
      */
     public String logout() {
         try {
@@ -586,7 +584,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     /**
      * Method to popup the confirm logout dialog
      *
-     * @return "confirmLogout" for faces-config navigation
+     * @return "confirmLogout"
      */
     public String confirmLogout() {
         confirmDialog = true;
@@ -597,7 +595,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * Method called when the "Yes" button is clicked on the confirm logout
      * dialog
      *
-     * @return "logout" for faces-config navigation
+     * @return "logout"
      */
     public String confirmLogoutYes() {
         confirmDialog = false;
@@ -608,7 +606,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * Method called when the "No" button is clicked on the confirm logout
      * dialog
      *
-     * @return "confirmLogoutNo" for faces-config navigation
+     * @return "confirmLogoutNo"
      */
     public String confirmLogoutNo() {
         confirmDialog = false;
@@ -649,7 +647,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * Method called when the moderator confirms they want to give away their
      * powers
      *
-     * @return "switchModeratorsYes" for faces-config navigation
+     * @return "switchModeratorsYes"
      */
     public String switchModeratorsYes() {
         role = ROLE_VIEWER;
@@ -663,7 +661,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * Method called when the moderator reconsiders giving away their powers,
      * and instead cancels the popup confirmation dialog
      *
-     * @return "switchModeratorsNo" for faces-config navigation
+     * @return "switchModeratorsNo"
      */
     public String switchModeratorsNo() {
         moderatorDialog = false;
@@ -681,9 +679,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     }
     
     /**
-     * Method called when any level of rendering exception happens In the case
+     * Method called when any level of rendering exception happens.  In the case
      * of a non-transient (ie: fatal) rendering exception, the user will be
-     * logged out
+     * logged out.
      *
      * @param renderingException that occurred
      */
@@ -702,7 +700,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     /**
      * Method called when the first tab above the slide image is clicked
      *
-     * @return "slideTypeOne" for faces-config navigation
+     * @return "slideTypeOne"
      */
     public String toggleSlideTypeOne() {
         slideTypePres = true;
@@ -713,7 +711,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     /**
      * Method called when the second tab above the slide image is clicked
      *
-     * @return "slideTypeTwo" for faces-config navigation
+     * @return "slideTypeTwo"
      */
     public String toggleSlideTypeTwo() {
         slideTypePres = false;
@@ -726,7 +724,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      * body and header will be created, and sent using the JavaMail API which is
      * handled through MailTool
      *
-     * @return "emailMessageLog" for faces-config navigation
+     * @return "emailMessageLog"
      */
     public String emailMessageLog() {
         Boolean success = Boolean.FALSE;
@@ -768,18 +766,17 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         return "emailMessageLog";
     }
 
-    /**
-     * Method called when the http session listener tells us a session was created
-     *
-     * @param httpSessionEvent of the creation
-     */
-    public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-    }
-
     public String getSkype() {
         return skype;
     }
 
+    /**
+     * This method performs browser sniffing the first time it is called to 
+     * determine whether or not the Participant is on a mobile browser.  
+     * Afterwards, it simply returns the result of the initial browser sniffing.
+     *
+     * @return boolean is the Participant using a mobile browser
+     */
 	public boolean isMobile() {
         if(!mobileSniffed){
 			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
@@ -788,7 +785,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
 	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
 	        	mobile = true;
-	    		chatView.setViewSize(3);
+	    		// Mobile browsers have limited space - set chatView to 3 lines.
+	        	chatView.setViewSize(3);
 	        }
 	        mobileSniffed = true;
         }
@@ -811,7 +809,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 	}
 	
     /**
-     * Method to refresh PersistentFacesState
+     * Method to refresh PersistentFacesState.
      *
      * @return statusMessage
      */

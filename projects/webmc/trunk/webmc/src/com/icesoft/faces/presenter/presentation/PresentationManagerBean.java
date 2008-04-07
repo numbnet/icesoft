@@ -75,6 +75,18 @@ public class PresentationManagerBean {
     }
 
     /**
+     * Method to set the render manager This should be called automatically from
+     * faces-config In addition this method will setup the loginPageRenderer
+     *
+     * @param renderManager to set
+     */
+    public void setRenderManager(RenderManager renderManager) {
+        this.renderManager = renderManager;
+        loginPageRenderer =
+                renderManager.getOnDemandRenderer("loginPageRenderer");
+    }
+
+    /**
      * Method to get a named presentation from the back end manager
      *
      * @param name of the presentation
@@ -115,30 +127,18 @@ public class PresentationManagerBean {
     }
 
     /**
-     * Method to set the render manager This should be called automatically from
-     * faces-config In addition this method will setup the loginPageRenderer
-     *
-     * @param renderManager to set
-     */
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-        loginPageRenderer =
-                renderManager.getOnDemandRenderer("loginPageRenderer");
-    }
-
-    /**
      * Method to get the list of presentations as a SelectItem list. This
-     * basically wraps the back end list
+     * basically wraps the back end list.
      * In addition this will create default initial presentations as needed
-     * These initial presentations are loaded automatically and run in slide show
-     * mode, and can be used to provide a generic set of presentations that any
-     * user can join (so a deployment could include a "Howto" presentation, etc.)
-     * To setup a default presentation, just drop the proper zip file (normally the
-     * type that would be uploaded to webmc by a moderator) into the
-     * AutoPresentation.PRESENTATION_FOLDER_NAME folder, which is located normally
-     * in .../web/basepres/
-     * Any files found in this folder will be loaded by AutoPresentation.createDefaultPresentation
-     * as a new presentation (name based on the file), with a password of 'password' 
+     * These initial presentations are loaded automatically and run in slide 
+     * show mode, and can be used to provide a generic set of presentations that 
+     * any user can join (so a deployment could include a "Howto" presentation, 
+     * etc.)  To setup a default presentation, just drop the proper zip file 
+     * (normally the type that would be uploaded to webmc by a moderator) into 
+     * the AutoPresentation.PRESENTATION_FOLDER_NAME folder, which is located 
+     * normally in .../web/basepres/  Any files found in this folder will be 
+     * loaded by AutoPresentation.createDefaultPresentation as a new 
+     * presentation (name based on the file), with a password of 'password' 
      *
      * @return the presentations as SelectItems
      */

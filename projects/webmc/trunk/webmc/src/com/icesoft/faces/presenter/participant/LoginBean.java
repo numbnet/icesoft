@@ -72,51 +72,30 @@ public class LoginBean {
         this.parent = parent;
     }
 
-    /**
-     * Method to get the parent owner of this bean
-     *
-     * @return parent participant
-     */
     public Participant getParent() {
         return parent;
     }
 
-    /**
-     * Method to set the parent owner of this bean
-     *
-     * @param parent new owner
-     */
     public void setParent(Participant parent) {
         this.parent = parent;
     }
 
-    /**
-     * Method to get the desired presentation name
-     *
-     * @return presentationName
-     */
     public String getPresentationName() {
         return presentationName;
     }
 
-    /**
-     * Method to set the presentation name
-     *
-     * @param presentationName new
-     */
     public void setPresentationName(String presentationName) {
         this.presentationName = presentationName;
     }
 
-    /**
-     * Method to get the desired presentation password
-     *
-     * @return presentationPassword
-     */
     public String getPresentationPassword() {
         return presentationPassword;
     }
 
+    public void setPresentationPassword(String presentationPassword) {
+        this.presentationPassword = presentationPassword;
+    }
+    
     /**
      * Method to get the default presentation names as a formatted String
      *
@@ -144,15 +123,6 @@ public class LoginBean {
      */
     public String getDefaultPassword() {
         return AutoPresentation.DEFAULT_PASSWORD;
-    }
-
-    /**
-     * Method to set the presentation password
-     *
-     * @param presentationPassword new
-     */
-    public void setPresentationPassword(String presentationPassword) {
-        this.presentationPassword = presentationPassword;
     }
 
     /**
@@ -217,7 +187,7 @@ public class LoginBean {
     }
 
     /**
-     * Method to get the ondemand login page renderer
+     * Method to get the onDemand login page renderer
      *
      * @return loginPageRenderer
      */
@@ -226,7 +196,7 @@ public class LoginBean {
     }
 
     /**
-     * Method to set the ondemand login page renderer
+     * Method to set the onDemand login page renderer
      *
      * @param loginPageRenderer new
      */

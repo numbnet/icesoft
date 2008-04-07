@@ -47,7 +47,7 @@ import org.apache.commons.logging.LogFactory;
  * Class used to setup any initial default presentations
  * This basically reads the contents of PRESENTATION_FOLDER_NAME (which
  * is normally .../web/basepres/) and creates an automated slide show
- * presentation for any valid zip files found
+ * presentation for any valid files found
  */
 public class AutoPresentation {
     private static Log log = LogFactory.getLog(AutoPresentation.class);
@@ -201,9 +201,10 @@ public class AutoPresentation {
     }
 
     /**
-     * Convenience method to generate a new presentation based on the passed values
-     * This is basically a wrapper for PresentationManagerBean.createPresentation,
-     * with the addition of setting up the created presentation
+     * Convenience method to generate a new presentation based on the passed 
+     * values.  This is basically a wrapper for 
+     * PresentationManagerBean.createPresentation, with the addition of setting 
+     * up the created presentation.
      *
      * @param parent who will create the presentation
      * @param owner of the presentation

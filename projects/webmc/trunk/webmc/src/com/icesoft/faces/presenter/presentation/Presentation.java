@@ -56,8 +56,8 @@ import java.util.EventObject;
 
 /**
  * Class used to handle the UI interaction and control of a presentation The
- * actual information of the presentation is held in PresentationInfo, this just
- * uses that information in the context of JSF pages
+ * actual information of the presentation is held in PresentationInfo, this 
+ * class uses that information in the context of JSF pages.
  */
 public class Presentation extends PresentationInfo {
     private static final int DEFAULT_SLIDE_NUMBER = 0;
@@ -87,58 +87,44 @@ public class Presentation extends PresentationInfo {
         this.renderer = renderer;
     }
 
-    /**
-     * Method to return the manager of this presentation
-     *
-     * @return the manager
-     */
     public PresentationManagerBean getManager() {
         return manager;
     }
+    
+    public void setManager(PresentationManagerBean manager) {
+        this.manager = manager;
+    }
 
-    /**
-     * Method to get the slide show timer
-     *
-     * @return stimer
-     */
     public SlideshowTimerBean getTimer() {
         return stimer;
     }
 
-    /**
-     * Method to get the progress number
-     *
-     * @return progress
-     */
     public int getProgress() {
         return progress;
     }
 
-    /**
-     * Method to get the session id
-     *
-     * @return sessionId
-     */
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
     public String getSessionId() {
         return sessionId;
     }
 
-    /**
-     * Method to get the current slide number
-     *
-     * @return currentSlideNumber
-     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public int getCurrentSlideNumber() {
         return currentSlideNumber;
     }
-    
-    /**
-     * Method to get the creation date
-     *
-     * @return creationDate
-     */
+
     public long getCreationDate() {
         return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
     }
 
     /**
@@ -254,11 +240,9 @@ public class Presentation extends PresentationInfo {
         if (!isLoaded()) {
             return false;
         }
-
         if (getAutoPlay()) {
             return false;
         }
-
         return true;
     }
 
@@ -269,42 +253,6 @@ public class Presentation extends PresentationInfo {
      */
     public boolean isLoaded() {
         return document != null && document.isLoaded();
-    }
-
-    /**
-     * Method to set the manager owner of this presentation
-     *
-     * @param manager owner
-     */
-    public void setManager(PresentationManagerBean manager) {
-        this.manager = manager;
-    }
-
-    /**
-     * Method to set the progress number
-     *
-     * @param progress new
-     */
-    public void setProgress(int progress) {
-        this.progress = progress;
-    }
-
-    /**
-     * Method to set the session id
-     *
-     * @param sessionId new
-     */
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-    
-    /**
-     * Method to set the creation date
-     *
-     * @param creationDate new
-     */
-    public void setCreationDate(long creationDate) {
-        this.creationDate = creationDate;
     }
 
    /**
@@ -329,12 +277,10 @@ public class Presentation extends PresentationInfo {
         if (slideNumber < 1) {
             slideNumber = 1;
         }
-
         if ((getLastSlideNumber() > 0) &&
             (slideNumber > getLastSlideNumber())) {
             slideNumber = 1;
         }
-
         if (slideNumber == currentSlideNumber) {
             return;
         }
@@ -367,8 +313,8 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Method to stop the running auto-play slide show, and recreate the timer in
-     * case auto-play is to be restarted
+     * Method to stop the running auto-play slide show, and recreate the timer 
+     * in case auto-play is to be restarted
      *
      * @param silent true to hide status messages
      */
@@ -442,7 +388,6 @@ public class Presentation extends PresentationInfo {
         if (log.isInfoEnabled()) {
             log.info("Added participant " + participant.getFirstName() + " to " + name + " (renderer: " + renderer + ")");
         }
-        
         if (!participants.contains(participant)) {
             participants.add(participant);
         }
@@ -460,10 +405,8 @@ public class Presentation extends PresentationInfo {
         {
             if(skypeList.get(i).equals(""))
             {
-                
+
             }
-            
-            
             else if(i == (skypeList.size()-1))
             {
                 names = names+skypeList.get(i);
@@ -472,7 +415,6 @@ public class Presentation extends PresentationInfo {
             {
             names = names+skypeList.get(i)+";";
             }
-            
         }
         return names;
     }
@@ -511,7 +453,6 @@ public class Presentation extends PresentationInfo {
                           " as well as the renderer " + renderer);
             }
         }
-
         if (participant.isModerator()) {
             endPresentation();
         }
@@ -533,13 +474,11 @@ public class Presentation extends PresentationInfo {
                         failedMinor.getMessage());
             }
         }
-
         if (manager != null) {
             manager.endPresentation(this);
         } else {
             PresentationManager.getInstance().removePresentation(this);
         }
-
         if (log.isInfoEnabled()) {
             log.info("Presentation " + name + " has concluded");
         }
@@ -568,7 +507,6 @@ public class Presentation extends PresentationInfo {
     public void load(ActionEvent event) {
         getModerator()
                 .updateStatus("Uploading your presentation, please wait...");
-
         // Get a valid input file component that triggered the event
         InputFile inputFileComponent;
         if (event != null) {
@@ -580,7 +518,6 @@ public class Presentation extends PresentationInfo {
             closeUploadDialog();
             return;
         }
-
         // Determine what to do based on the input file component status
         // Ideally the status is InputFile.SAVED, in which case the file will
         //  be set, and the list of uploadedFiles increased
@@ -612,7 +549,6 @@ public class Presentation extends PresentationInfo {
      */
     public void load(File toLoad, boolean isDefault) {
         parentFile = toLoad;
-
         // Stop and reset any previous presentation
         stopAutoPlay(true);
         currentSlideNumber = DEFAULT_SLIDE_NUMBER;
@@ -823,18 +759,12 @@ public class Presentation extends PresentationInfo {
      */
     public void switchModerators(int index) {
         Participant newModerator = getParticipantAt(index);
-
         newModerator.setRole(ParticipantInfo.ROLE_MODERATOR);
-
         addChatMessage(moderator.getFirstName(), "Moderation passed off to " +
                                                  newModerator.getFirstName());
-
         skypeList.add(moderator.getSkype());
-        
         moderator = newModerator;
-        
         skypeList.remove(moderator.getSkype());
-        
     }
 
     /**

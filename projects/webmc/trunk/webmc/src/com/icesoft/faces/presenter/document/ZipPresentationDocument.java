@@ -56,7 +56,7 @@ import java.util.zip.ZipFile;
 /**
  * Class representing the source document used for the Presentation. The
  * Participant initiates the loading of a file which causes the
- * MultiPresentationDocument to create .png slides for the presentation.
+ * ZipPresentationDocument to create slides for the presentation.
  */
 public class ZipPresentationDocument implements PresentationDocument {
     private static Log log = LogFactory.getLog(ZipPresentationDocument.class);
@@ -78,20 +78,10 @@ public class ZipPresentationDocument implements PresentationDocument {
         this.presentation = presentation;
     }
 
-    /**
-     * Method to get the loaded status
-     *
-     * @return boolean loaded
-     */
     public boolean isLoaded() {
         return loaded;
     }
 
-    /**
-     * Method to set the loaded status
-     *
-     * @param loaded new status
-     */
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
@@ -116,12 +106,10 @@ public class ZipPresentationDocument implements PresentationDocument {
         if (slides == null) {
             return null;
         }
-
         // Notification of page loading
         if (!loaded && slideNumber > lastLoadedSlide) {
             return null;
         }
-
         // Ensure a valid range is requested
         if (slideNumber < 1) {
             slideNumber = 1;
@@ -134,10 +122,11 @@ public class ZipPresentationDocument implements PresentationDocument {
             log.trace("Returning slide number " + slideNumber + ": " +
                       slides[slideNumber - 1].getLocation());
         }
-        
+        // Mobile sized Slide for a mobile browser
         if(mobile){
         	return slidesMobile[slideNumber - 1];
         }
+        // Desktop sized Slide for a desktop browser
         return slides[slideNumber - 1];
     }
 
@@ -335,7 +324,6 @@ public class ZipPresentationDocument implements PresentationDocument {
     
     }
 
-    
     private String replaceUserFilename(String name, int slideNumber) {
         if (name.indexOf(".") != -1) {
             return "Slide" + slideNumber + name.substring(name.indexOf("."));

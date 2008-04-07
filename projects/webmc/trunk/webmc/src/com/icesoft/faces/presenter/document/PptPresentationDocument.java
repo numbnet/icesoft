@@ -50,7 +50,7 @@ import java.util.Comparator;
 /**
  * Class representing the source document used for the Presentation. The
  * Participant initiates the loading of a file which causes the
- * MultiPresentationDocument to create .png slides for the presentation.
+ * PptPresentationDocument to create .png slides for the presentation.
  */
 public class PptPresentationDocument implements PresentationDocument {
     private static Log log = LogFactory.getLog(PptPresentationDocument.class);
@@ -71,27 +71,16 @@ public class PptPresentationDocument implements PresentationDocument {
         this.presentation = presentation;
     }
 
-    /**
-     * Method to get the loaded status
-     *
-     * @return boolean loaded
-     */
     public boolean isLoaded() {
         return loaded;
     }
 
-    /**
-     * Method to set the loaded status
-     *
-     * @param loaded new status
-     */
     public void setLoaded(boolean loaded) {
         this.loaded = loaded;
     }
 
     /**
-     * Method to closeDocument the loading / conversion of the current zip
-     * document
+     * Method to closeDocument the loading / conversion of the current document
      */
     public void cancel() {
         loaded = false;
@@ -109,12 +98,10 @@ public class PptPresentationDocument implements PresentationDocument {
         if (slides == null) {
             return null;
         }
-
         // Notification of page loading
         if (!loaded && slideNumber > lastLoadedSlide) {
             return null;
         }
-
         // Ensure a valid range is requested
         if (slideNumber < 1) {
             slideNumber = 1;
@@ -127,10 +114,11 @@ public class PptPresentationDocument implements PresentationDocument {
             log.trace("Returning slide number " + slideNumber + ": " +
                       slides[slideNumber - 1].getLocation());
         }
-
+        // Mobile sized Slide for a mobile browser
         if(mobile){
         	return slidesMobile[slideNumber - 1];
-        }        
+        }
+        // Desktop sized Slide for a desktop browser
         return slides[slideNumber - 1];
     }
 
@@ -165,8 +153,8 @@ public class PptPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to load the passed File (which will be a zip) The conversion and
-     * loading will be done in a separate thread
+     * Method to load the passed File.  The conversion and loading will be done
+     * in a separate thread
      *
      * @param sourceFile to load
      */
@@ -178,8 +166,7 @@ public class PptPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Internal class used to perform the background loading of a zip slide
-     * presentation
+     * Internal class used to perform the background loading of a presentation
      */
     private class PptLoader implements Runnable {
         private void copyFile(FileInputStream in, FileOutputStream out)

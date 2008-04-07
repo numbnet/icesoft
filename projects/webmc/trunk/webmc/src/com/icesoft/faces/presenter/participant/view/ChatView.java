@@ -48,32 +48,29 @@ public class ChatView {
     private int position = 0;
     private Presentation presentation;
 
-    /**
-     * Method to return the position of this view
-     *
-     * @return position
-     */
     public int getPosition() {
         return position;
     }
+    
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
-    /**
-     * Method to return the presentation this view is used for
-     *
-     * @return presentation
-     */
     public Presentation getPresentation() {
         return presentation;
     }
+    
+    public void setPresentation(Presentation presentation) {
+        this.presentation = presentation;
+    }
 
-    /**
-     * Method to return the size of this view
-     *
-     * @return VIEW_SIZE
-     */
     public int getViewSize() {
         return viewSize;
     }
+
+	public void setViewSize(int viewSize) {
+		this.viewSize = viewSize;
+	}
 
     /**
      * Method to generate the chat log as an array of Message objects If no
@@ -84,7 +81,8 @@ public class ChatView {
      */
     public Message[] getView() {
         if (presentation != null) {
-            // Fill the array used in the chat dataTable with messages relevant to current position
+            // Fill the array used in the chat dataTable with messages relevant 
+        	// to the current position
             for (int i = 0; i < viewSize; i++) {
                 chatView[i] = presentation.getMessageAt(
                         position - (viewSize - i - 1));
@@ -96,7 +94,7 @@ public class ChatView {
 
     /**
      * Method to determine if the scroll down button for this view is enabled or
-     * disabled, based on how big the list is
+     * disabled, based on the size of the list.
      *
      * @return true to enable the scroll down button
      */
@@ -113,7 +111,7 @@ public class ChatView {
 
     /**
      * Method to determine if the scroll up button for this view is enabled or
-     * disabled, based on how big the list is
+     * disabled, based on the size of the list.
      *
      * @return true to enable the scroll up button
      */
@@ -126,24 +124,6 @@ public class ChatView {
         }
 
         return false;
-    }
-
-    /**
-     * Method to set the position of this view
-     *
-     * @param position new
-     */
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    /**
-     * Method to set the presentation this view is associated with
-     *
-     * @param presentation new
-     */
-    public void setPresentation(Presentation presentation) {
-        this.presentation = presentation;
     }
 
     /**
@@ -196,7 +176,4 @@ public class ChatView {
         position = presentation.bottom();
     }
 
-	public void setViewSize(int viewSize) {
-		this.viewSize = viewSize;
-	}
 }

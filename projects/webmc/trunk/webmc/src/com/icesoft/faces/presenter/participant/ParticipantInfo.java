@@ -33,10 +33,9 @@
 package com.icesoft.faces.presenter.participant;
 
 /**
- * Class used to store the back end specific information about a participant.
- * This means no UI work is done or even considered, instead just core
- * information about a user is managed This is meant to be extended by a front
- * end Participant bean
+ * Class used to store back end specific information about a participant.
+ * This means no UI work is done, just core information about a user is managed 
+ * and it is meant to be extended by a front end Participant bean.
  */
 public class ParticipantInfo {
     public static final int ROLE_VIEWER = 0;
@@ -48,56 +47,26 @@ public class ParticipantInfo {
     protected String skype = "";
     protected boolean hasSkype = false;
 
-    /**
-     * Method to get the first name
-     *
-     * @return firstName
-     */
     public String getFirstName() {
         return firstName;
     }
 
-    /**
-     * Method to set the first name
-     *
-     * @param firstName new
-     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    /**
-     * Method to get the last name
-     *
-     * @return lastName
-     */
     public String getLastName() {
         return lastName;
     }
 
-    /**
-     * Method to set the last name
-     *
-     * @param lastName new
-     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    /**
-     * Method to get the email
-     *
-     * @return email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * Method to set the email
-     *
-     * @param email new
-     */
     public void setEmail(String email) {
         this.email = email;
     }
@@ -110,7 +79,12 @@ public class ParticipantInfo {
         lastName = "";
         email = "";
     }
-    
+
+    public String getSkype()
+    {
+        return skype;
+    }
+
     public void setSkype(String skype)
     {
         this.skype = skype;
@@ -119,11 +93,5 @@ public class ParticipantInfo {
             hasSkype = true;
         }
     }
-    
-    public String getSkype()
-    {
-        return skype;
-    }
-    
 
 }

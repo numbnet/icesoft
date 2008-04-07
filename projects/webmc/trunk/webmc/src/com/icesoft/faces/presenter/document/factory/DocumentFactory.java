@@ -16,7 +16,7 @@ public class DocumentFactory {
      * passed input file component
      *
      * @param file to create a document for
-     * @param parent             presentation
+     * @param parent presentation
      * @return the created presentation document
      */
     public static PresentationDocument createDocument(File file,
