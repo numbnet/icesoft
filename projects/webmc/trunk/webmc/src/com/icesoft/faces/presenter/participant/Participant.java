@@ -57,7 +57,6 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -503,11 +502,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                 // Handle leaving the login page
                 loggedIn=true;
                 loginBean.setSlotsAvailable();
-
-                // Smooth the login -> index transition
-                loginBean.startTransitionRender(
-                        presentationManager.getRenderManager(),
-                        presentation.getName() + firstName + lastName);
 
                 return "loginSuccess";
             } else {

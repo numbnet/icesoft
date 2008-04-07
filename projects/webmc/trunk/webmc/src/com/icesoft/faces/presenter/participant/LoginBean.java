@@ -36,8 +36,6 @@ import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import com.icesoft.faces.presenter.presentation.PresentationManager;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.DelayRenderer;
-import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.component.ext.HtmlInputSecret;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.HtmlForm;
@@ -240,7 +238,7 @@ public class LoginBean {
     /**
      * Method called when the "no room left" notification popup is closed
      *
-     * @return "closeNoSlotsDialog" string for faces-config navigation
+     * @return "closeNoSlotsDialog"
      */
     public String closeNoSlotsDialog() {
         noSlotsLeft = false;
@@ -338,36 +336,6 @@ public class LoginBean {
         }catch (Exception ignored) {
             /* Intentionally ignored - if this fails the one value won't be cleared */
         }
-    }
-    
-    /**
-     * Convenience method to start a safety net rendering cycle. This is done on
-     * the transition from logging in to actually being in a presentation.
-     * Sometimes the loginPageRenderer has queued render requests, which are
-     * fired when the user is on the index page. But when the old request is
-     * fired, the login page will briefly be shown. Without this method, there is
-     * a high chance the user will be stuck in a partial logged in state, and
-     * basically have to rejoin the presentation.
-     * The workaround is to create a 1, 3, and 5 second DelayRenderer, so that
-     * the user is safely transitioned to the index page
-     *
-     * @param manager to get the DelayRenderer from
-     * @param name of the renderer
-     */
-    public void startTransitionRender(RenderManager manager, String name) {
-        // Get the renderer and add the Renderable participant object
-        DelayRenderer delayer = manager.getDelayRenderer(name);
-        delayer.add(parent);
-
-        // Create and start the 1, 3, and 5 second renderers
-        delayer.setDelay(1000);
-        delayer.requestRender();
-
-        delayer.setDelay(3000);
-        delayer.requestRender();
-
-        delayer.setDelay(5000);
-        delayer.requestRender();
     }
 
 	public boolean isInvalidDemoPassword() {
