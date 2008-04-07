@@ -350,7 +350,7 @@ input {
     margin:0px;; 
     padding:0px;
     border-width: 0px;
-    width:1px;
+    width:2px;
     background-color:transparent;
  
 }
@@ -360,13 +360,13 @@ input {
     padding:0px;
     width:1px;
     background-color: #026AFF;
-    background-image: url( "./css-images/table_col_header.gif" );
     background-position: bottom;
     background-repeat: repeat-x;
 }
 
 .iceDatTblBlkTd {
-   border-bottom: 1px solid #0056EA;    
+   border-bottom: 1px solid #0056EA; 
+   background-color: #026AFF;   
 }
 /*
 ----- for datatable when cell content length exceeds-----
