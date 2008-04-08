@@ -41,6 +41,7 @@
     <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.jpg':'./resources/images/login_logo.gif'}" 
                       alt="Welcome to WebMC"
                       styleClass="loginLogo" />
+    <!-- Viewer and Moderator Tabs for Desktop Browsers -->
     <ice:panelGroup rendered="#{!participant.mobile}"
                     style="text-align: left;">
 	    <ice:panelGroup styleClass="moderatorViewerButtons">
@@ -56,8 +57,8 @@
 	                image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
 	    </ice:panelGroup>
 	</ice:panelGroup>
-	<!-- Desktop and Mobile have a different layout that is triggered with the 
-	     rendered attribute on each "cell" of the panelGrid -->	
+	<!-- Desktop and Mobile browsers have a different layout that is triggered 
+	     with the rendered attribute on each "cell" of the panelGrid -->	
 	<ice:panelGrid columns="4"
 	               cellspacing="0"
 	               cellpadding="0"
@@ -223,7 +224,7 @@
         <!-- Empty Cell -->
         <ice:panelGroup rendered="#{!participant.mobile}" />
     </ice:panelGrid>
-	<!--  
+	<!-- Instructions 
     <ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
 	    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
 	    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" style="font-weight: bold;"/>
