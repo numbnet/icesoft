@@ -440,6 +440,9 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     height: 80px;
     padding: 2px;
 }
+.effectWrapperContainer:hover {
+    text-decoration: none;
+}
 .effectsDemoContainer{
     float:left;
     width: 125px;
