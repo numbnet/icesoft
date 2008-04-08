@@ -49,75 +49,91 @@
     <ice:panelGroup styleClass="exampleBox firstChildTitle chartsContainer">
 
         <ice:panelGrid columns="4"
-                       cellpadding="5"
+                       cellpadding="4"
                        styleClass="chartConfigurationContainer verticalAlignTop chartsContainer">
 
              <!-- Horizontal/ vertical layout of axial data -->
             <ice:panelGroup styleClass="firstChildTitle"
                             rendered="#{chartController.currentChartModel.axisOrientationEnabled}">
-                <ice:outputLabel
-                        for="axialOrientation"
-                        value="#{msgs['page.outputChart.orientation.label']}"/>
-                <ice:selectOneRadio
-                        id="axialOrientation"
-                        value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
-                        partialSubmit="true" >
-                    <f:selectItem itemValue="#{true}"
-                                  itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
-                    <f:selectItem itemValue="#{false}"
-                                  itemLabel="#{msgs['page.outputChart.orientation.vert.label']}"/>
-                </ice:selectOneRadio>
+                <ice:panelGroup>
+                    <ice:outputLabel
+                            for="axialOrientation"
+                            value="#{msgs['page.outputChart.orientation.label']}"/>
+                </ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:selectOneRadio
+                            id="axialOrientation"
+                            value="#{chartController.currentChartModel.barChartOrientationHorizontal}"
+                            partialSubmit="true" >
+                        <f:selectItem itemValue="#{true}"
+                                      itemLabel="#{msgs['page.outputChart.orientation.horiz.label']}"/>
+                        <f:selectItem itemValue="#{false}"
+                                      itemLabel="#{msgs['page.outputChart.orientation.vert.label']}"/>
+                    </ice:selectOneRadio>
+                </ice:panelGroup>
             </ice:panelGroup>
 
             <!-- legend Placement -->
             <ice:panelGroup styleClass="firstChildTitle">
-                <ice:outputLabel
-                        for="legedPosition"
-                        value="#{msgs['page.outputChart.legend.position.label']}"/>
-                <ice:selectOneMenu
-                        id="legedPosition"
-                        disabled="#{not chartController.currentChartModel.enabledLengendPosition}"
-                        value="#{chartController.currentChartModel.legendPlacement}"
-                        partialSubmit="true">
-                    <f:selectItem itemValue="bottom"
-                                  itemLabel="#{msgs['page.outputChart.legend.position.bottom.label']}"/>
-                    <f:selectItem itemValue="top"
-                                  itemLabel="#{msgs['page.outputChart.legend.position.top.label']}"/>
-                    <f:selectItem itemValue="left"
-                                  itemLabel="#{msgs['page.outputChart.legend.position.left.label']}"/>
-                    <f:selectItem itemValue="right"
-                                  itemLabel="#{msgs['page.outputChart.legend.position.right.label']}"/>
-                    <f:selectItem itemValue="none"
-                                  itemLabel="#{msgs['page.outputChart.legend.position.none.label']}"/>
-                </ice:selectOneMenu>
+                <ice:panelGroup>
+                    <ice:outputLabel
+                            for="legedPosition"
+                            value="#{msgs['page.outputChart.legend.position.label']}"/>
+                </ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:selectOneMenu
+                            id="legedPosition"
+                            disabled="#{not chartController.currentChartModel.enabledLengendPosition}"
+                            value="#{chartController.currentChartModel.legendPlacement}"
+                            partialSubmit="true">
+                        <f:selectItem itemValue="bottom"
+                                      itemLabel="#{msgs['page.outputChart.legend.position.bottom.label']}"/>
+                        <f:selectItem itemValue="top"
+                                      itemLabel="#{msgs['page.outputChart.legend.position.top.label']}"/>
+                        <f:selectItem itemValue="left"
+                                      itemLabel="#{msgs['page.outputChart.legend.position.left.label']}"/>
+                        <f:selectItem itemValue="right"
+                                      itemLabel="#{msgs['page.outputChart.legend.position.right.label']}"/>
+                        <f:selectItem itemValue="none"
+                                      itemLabel="#{msgs['page.outputChart.legend.position.none.label']}"/>
+                    </ice:selectOneMenu>
+                </ice:panelGroup>
             </ice:panelGroup>
 
              <!-- Area Map display values -->
             <ice:panelGroup styleClass="firstChildTitle">
-                <ice:outputLabel for="areaMap"
-                        value="#{msgs['page.outputChart.imageMap.label']}" />
-                <ice:inputText id="areaMap"
-                    style="border: none;"
-                    readonly="true"
-                    disabled="#{not chartController.currentChartModel.areaMapEnabled}"
-                    value="#{chartController.currentChartModel.areaMapClickValue}" />
+                <ice:panelGroup>
+                    <ice:outputLabel for="areaMap"
+                            value="#{msgs['page.outputChart.imageMap.label']}" />
+                </ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:inputText id="areaMap"
+                        style="border: none;"
+                        readonly="true"
+                        disabled="#{not chartController.currentChartModel.areaMapEnabled}"
+                        value="#{chartController.currentChartModel.areaMapClickValue}" />
+                </ice:panelGroup>
             </ice:panelGroup>
 
             <!-- Modify Data values -->
             <ice:panelGroup styleClass="firstChildTitle">
-                <ice:outputLabel value="#{msgs['page.outputChart.data.label']}" />
-                <ice:commandButton
-                        disabled="#{not chartController.currentChartModel.enableDynamicValues}"
-                        value="#{msgs['page.outputChart.data.add.label']}"
-                        actionListener="#{chartController.addChartData}" />
-                <ice:commandButton
-                        disabled="#{not chartController.currentChartModel.enableDynamicValues}"
-                        value="#{msgs['page.outputChart.data.remove.label']}"
-                        actionListener="#{chartController.removeChartData}" />
-                <ice:commandButton
-                        disabled="#{not chartController.currentChartModel.enableDynamicValues}"
-                        value="#{msgs['page.outputChart.data.reset.label']}"
-                        actionListener="#{chartController.resetChartData}" />
+                <ice:panelGroup>
+                    <ice:outputLabel value="#{msgs['page.outputChart.data.label']}" />
+                </ice:panelGroup>
+                <ice:panelGroup>
+                    <ice:commandButton
+                            disabled="#{not chartController.currentChartModel.enableDynamicValues}"
+                            value="#{msgs['page.outputChart.data.add.label']}"
+                            actionListener="#{chartController.addChartData}" />
+                    <ice:commandButton
+                            disabled="#{not chartController.currentChartModel.enableDynamicValues}"
+                            value="#{msgs['page.outputChart.data.remove.label']}"
+                            actionListener="#{chartController.removeChartData}" />
+                    <ice:commandButton
+                            disabled="#{not chartController.currentChartModel.enableDynamicValues}"
+                            value="#{msgs['page.outputChart.data.reset.label']}"
+                            actionListener="#{chartController.resetChartData}" />
+                </ice:panelGroup>
             </ice:panelGroup>
 
         </ice:panelGrid>
