@@ -54,16 +54,16 @@ public class ColumnsBean implements Serializable {
     private DataModel rowDataModel;
     private Map cellMap = new HashMap();
 
-    public static final int NUMBER_OF_ITEMS = 26;
+    public static final int NUMBER_OF_ITEMS = 24;
     // Starting point to generate the alphabet
     public static final int ASCII_STARTING_POINT = 64;
     // default column and row values
-    private int columns = 5;
+    private int columns = 4;
     // possible columns values selected from ice:selectOneMenu.
     private SelectItem[] columnsItems = new SelectItem[]{new SelectItem(new Integer(1)),
-            new SelectItem(new Integer(5)),
-            new SelectItem(new Integer(10)),
-            new SelectItem(new Integer(20))};
+            new SelectItem(new Integer(4)),
+            new SelectItem(new Integer(12)),
+            new SelectItem(new Integer(24))};
     private int rows = 6;
     private int intValue = 0;
 
