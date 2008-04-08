@@ -127,6 +127,7 @@
 	     <copy todir="${war.dir}/WEB-INF">
 			<fileset refid="noejb.war.lib.extras" />
 	     	<fileset refid="jboss.archive.jar" />
+	     	<fileset refid="icefaces.extra" />
 	    </copy>
      	
 	 	

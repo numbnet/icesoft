@@ -49,7 +49,7 @@
 	       <include name="lib/el-*.jar" />
 	</fileset>
 	
-	<fileset id="icefaces.weblogic.extra" dir="${icefaces.home}">
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
 	       <include name="lib/commons-discovery.jar"/>
 		   <include name="lib/commons-el.jar"/>
 	</fileset>
