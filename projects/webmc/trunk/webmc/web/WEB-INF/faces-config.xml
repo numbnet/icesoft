@@ -106,12 +106,6 @@
     </validator>
 
     <validator>
-        <validator-id>PasswordValidator</validator-id>
-        <validator-class>com.icesoft.faces.presenter.validator.PasswordValidator
-        </validator-class>
-    </validator>
-
-    <validator>
         <validator-id>EmailValidator</validator-id>
         <validator-class>com.icesoft.faces.presenter.validator.EmailValidator
         </validator-class>

@@ -48,20 +48,9 @@ public class NameValidator implements Validator {
         String presentationName = value.toString().trim();
         String componentID = component.getId();
 
-        // A presentation name is invalid if a viewer tries to pick an existing name
-        // and it hasn't been created yet
-        if (componentID.startsWith("existing")) {
-            if (presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION)) {
-                FacesMessage message = ValidationMessages.getMessage(
-                        ValidationMessages.MESSAGE_RESOURCES,
-                        "presentationNameDefault", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(message);
-            }
-        }
         // A presentation name is invalid if a moderator tries to pick a new name
         // and it already exists or is a reserved name.
-        else if (componentID.startsWith("new")) {
+        if (componentID.startsWith("new")) {
             if ((PresentationManager.getInstance()
                     .presentationExists(presentationName)) ||
                 (presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {

@@ -455,7 +455,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      */
     public String login() {
     	// Validation is done in the application logic because validators are 
-    	// not fired when "required" is removed from a component (JSF behavior).
+    	// not fired when "required" is removed from a component and the 
+    	// component is left blank (JSF behavior).
     	
         // Get the page and role from the context.
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -472,8 +473,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 	                	return "failed";
 	                }
 	            }
-	            // We no longer require moderator password validation, so
-	            // we just set the password to the trimmed input String.
+	            // Moderator password validation not required, so
+	            // we set the password to the trimmed input String.
 	            loginBean.setPresentationPassword(inputPassword);
 	        }
         }
