@@ -274,6 +274,8 @@ public class TableRenderer
         while (children.hasNext()) {
             UIComponent child = (UIComponent) children.next();
             if (child instanceof HeaderRow) {
+                if(!child.isRendered())
+                    continue;
                 Element tr = domContext.createElement("tr");
                 String rowStyleClass = ((HeaderRow)child).getStyleClass();
                 if (rowStyleClass == null) {
