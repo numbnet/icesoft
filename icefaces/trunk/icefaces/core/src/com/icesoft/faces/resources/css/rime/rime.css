@@ -186,10 +186,9 @@ table.iceSelInpDate tbody tr td table{
     background-repeat: no-repeat;
     text-align: center;
     border: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-left: 5px;
-    vertical-align: middle;
 }
 
 .iceSelInpDateClosePopup {
@@ -200,10 +199,9 @@ table.iceSelInpDate tbody tr td table{
     background-repeat: no-repeat;
     text-align: center;
     border: none;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-left: 5px;
-    vertical-align: middle;
 }
 
 .iceSelInpDateMonthYear {
