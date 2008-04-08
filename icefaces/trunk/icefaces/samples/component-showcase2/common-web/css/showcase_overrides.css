@@ -10,7 +10,7 @@ html {
 
 }
 
-body {
+body, pre, PRE {
     font-family: Tahoma, Sans-Serif;
     font-size: 11px;
     color: #484848;

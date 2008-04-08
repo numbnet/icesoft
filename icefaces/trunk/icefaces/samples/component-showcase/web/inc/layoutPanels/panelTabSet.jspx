@@ -83,7 +83,6 @@ to show how visibility, focus and tab placement can be dynamically changed.
         </h3>
         <ice:selectOneRadio id="selectedTabFocus"
                 partialSubmit="true"
-                converter="javax.faces.Long"
                 value="#{staticTabbedPaneExample.selectedIndex}">
             <f:selectItem id="tab1Focus"
                           itemValue="#{0}"

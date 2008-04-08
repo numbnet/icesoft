@@ -154,7 +154,7 @@ a:active{
     float:left;
 }
 .docViewNavigation, .docViewContent{
-    height: 500px;  
+    height: 500px;
 }
 .docViewNavigation{
     width: 150px;
@@ -186,6 +186,7 @@ a.docViewNodeSelectedtrue{
     height:100%;
     border: none;
     background-color: white;
+    font-size: 11pt;
 }
 
 
@@ -271,6 +272,7 @@ h3 {
 */
 
 .themeControlContainer {
+    /*float:left;*/
     border:1px solid #D9D9D9;
     height:28px;
     margin-bottom:7px;
@@ -280,29 +282,37 @@ h3 {
     white-space: nowrap;
 }
 
-.themeControlContainer .icePnlGrp {
+.themeControlContainer .changeThemeButton {
     border: 1px solid #d9d9d9;
     display:inline;
+    margin-top:3px;
     padding: 4px 25px 4px 10px;
-    width: 100px;
+    width: 70px;
     background-image: url('./images/theme_refresh.png');
     background-position: right center;
     background-repeat: no-repeat;
 }
 
-.themeControlContainer .iceSelOneMnu {
-    height: 20px;
-    width: 100px;
+.themeSelectOneMenu {
+    margin:0;
+    padding:0;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top:5px;
+    border: 1px solid #d9d9d9;
+    /*padding-top: 2px;*/
+    width: 90px;
 }
-.themeControlContainer a{
-   color: #444;  
+
+.themeControlContainer a {
+    color: #444;
 }
 
 /*
 ------------- Navigation Tree 
 */
 .navigationTree{
-    
+
 }
 .navigationTreeRow {
     white-space: nowrap;
@@ -431,7 +441,7 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     padding: 2px;
 }
 .effectsDemoContainer{
-    float:left;        
+    float:left;
     width: 125px;
     height: 80px;
     vertical-align: middle;
@@ -527,6 +537,9 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
 
 table.verticalAlignTop td {
     vertical-align: top;
+}
+div.verticalAlignMdl{
+    vertical-align: middle;
 }
 
 /* connection status style for tabbed template */
@@ -857,7 +870,7 @@ table.verticalAlignTop td {
     /*border: 1px solid #d9d9d9;    */
 }
 .rankPanelContainer  span, .rankPanelContainer  span{
-    font-weight: normal;    
+    font-weight: normal;
 }
 
 .positionPanelContainer div.container{
@@ -917,7 +930,7 @@ table.verticalAlignTop td {
     font-weight: bold;
 }
 .stackExamplePanel a span{
-    font-weight: normal; 
+    font-weight: normal;
 }
 /* END PANEL STACK  */
 /* START PANEL SERIES  */
@@ -963,7 +976,7 @@ table.verticalAlignTop td {
 
 /* START TREE */
 .selectedNodetrue span{
-    font-weight:bold;    
+    font-weight:bold;
 }
 .iceTree a:hover .iceOutTxt {
     color: #318496;
@@ -979,7 +992,7 @@ table.verticalAlignTop td {
 
 /* media example */
 .mediaSelection {
-    
+
 }
 .mediaSelection  table{
   width: 250px;

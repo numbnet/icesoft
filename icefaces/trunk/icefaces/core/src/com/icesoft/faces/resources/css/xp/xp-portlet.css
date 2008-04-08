@@ -334,7 +334,8 @@ input.iceSelInpDateClosePopup {
 .iceDatTblScrlSpr{ 
     background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
     border-top: 1px solid #CCCCCC; 
-    border-right: 1px solid #CCCCCC; 
+    border-right: 1px solid #CCCCCC;
+    margin-top:-1px;
 }
 
 /* set the common attributes for the pagination numbers */

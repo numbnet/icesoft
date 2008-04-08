@@ -80,6 +80,7 @@
                 <ice:panelGroup>
                     <ice:commandLink
                             actionListener="#{applicationController.navigationEvent}"
+                            styleClass="navNodeLink"
                             value="#{msgs[nodeLevel1.label]}">
                         <f:param name="nodeId"
                                  value="#{nodeLevel1.id}"/>
@@ -100,7 +101,7 @@
                         <ice:panelGroup style="display: inline">
                             <ice:commandLink
                                     actionListener="#{applicationController.navigationEvent}"
-                                    styleClass="navNodeSelect#{node.userObject.selected} navNodeFolder#{not node.userObject.leaf}Expanded#{node.userObject.expanded}"
+                                    styleClass="navNodeLink navNodeSelect#{node.userObject.selected} navNodeFolder#{not node.userObject.leaf}Expanded#{node.userObject.expanded}"
                                     value="#{msgs[node.userObject.text]}">
                                 <f:param name="nodeId"
                                          value="#{node.userObject.nodeId}"/>

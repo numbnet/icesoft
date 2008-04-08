@@ -220,7 +220,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         EMPLOYEE_POOL.add(new Employee(400, "Eastern", "Ottawa", "Jayden", "Rodriguez", "555-4596"));
         EMPLOYEE_POOL.add(new Employee(410, "Eastern", "Ottawa", "Anthony", "Rodriguez", "555-4597"));
         EMPLOYEE_POOL.add(new Employee(420, "Eastern", "Halifax", "Joshua", "Rodriguez", "555-4598"));
-        EMPLOYEE_POOL.add(new Employee(430, "Eastern", "Halifax", "Kevin", "lastName", "555-4599"));
+        EMPLOYEE_POOL.add(new Employee(430, "Eastern", "Halifax", "Kevin", "Watson", "555-4599"));
         EMPLOYEE_POOL.add(new Employee(440, "Eastern", "Halifax", "David", "Wilson", "555-4600"));
         EMPLOYEE_POOL.add(new Employee(450, "Eastern", "Halifax", "Daniel", "Wilson", "555-4601"));
         EMPLOYEE_POOL.add(new Employee(460, "Eastern", "Montreal", "Brandon", "Wilson", "555-4602"));

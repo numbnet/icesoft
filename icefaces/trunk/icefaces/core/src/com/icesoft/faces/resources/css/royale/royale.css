@@ -343,7 +343,8 @@ input {
     background: url( './css-images/table_col_header.gif' ) repeat-x top left; 
     background-color: #026AFF;
     border-top: 1px solid #026AFF;
-    border-right: 1px solid #026AFF; 
+    border-right: 1px solid #026AFF;
+    margin-top:-1px;
 }
 
 .iceDatTblResHdlr {

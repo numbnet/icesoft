@@ -357,7 +357,8 @@ fieldset {
     background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
     background-color: #EFEFEF;
     border-top: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC; 
+    border-right: 1px solid #CCCCCC;
+    margin-top:-1px;
 }
 /*
 ----- for datatable when cell content length exceeds-----

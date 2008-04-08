@@ -37,17 +37,21 @@
             styleClass="themeControlContainer"
             style="vertical-align: middle;">
 
-        <ice:selectOneMenu id="currentStyle"
-                       style="display: inline;margin-left:3px;margin-right:3px;border:1px solid #ABC0D4;padding:0;"
+        <ice:panelGroup style="float:left;">
+            <ice:selectOneMenu id="currentStyle"
+                       styleClass="themeSelectOneMenu"
                        value="#{styleBean.currentStyle}">
-            <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
-                          itemValue="rime"/>
-            <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
-                          itemValue="royale"/>
-            <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
-                          itemValue="xp"/>
-        </ice:selectOneMenu>
-        <ice:panelGroup>
+                <f:selectItem id="rime" itemLabel="#{msgs['theme.rime.title']}"
+                              itemValue="rime"/>
+                <f:selectItem id="xpTheme" itemLabel="#{msgs['theme.xp.title']}"
+                              itemValue="xp"/>
+                <f:selectItem id="royaleTheme" itemLabel="#{msgs['theme.royale.title']}"
+                              itemValue="royale"/>
+            </ice:selectOneMenu>
+        </ice:panelGroup>
+
+        <ice:panelGroup style="float:left;"
+                styleClass="changeThemeButton">
             <ice:commandLink
                     id="changeStyle"
                     value="#{msgs['theme.title']}"

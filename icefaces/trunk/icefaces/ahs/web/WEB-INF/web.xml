@@ -11,7 +11,7 @@
 
     <context-param>
         <param-name>com.icesoft.faces.async.service</param-name>
-        <param-value>server</param-value>
+        <param-value>servlet</param-value>
     </context-param>
 
     <context-param>

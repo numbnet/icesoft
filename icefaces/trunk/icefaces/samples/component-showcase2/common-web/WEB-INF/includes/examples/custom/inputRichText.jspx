@@ -41,15 +41,17 @@
         <ice:outputText value="#{msgs['page.inputRichText.instructions']}"/>
     </ice:panelGroup>
 
-    <ice:panelGroup styleClass="exampleBox firstChildTitle inputRichTextContainer">
+    <ice:panelGroup styleClass="exampleBox firstChildTitle verticalAlignMdl inputRichTextContainer">
 
-        <ice:panelGroup style="float:left">
-            <ice:outputText value="#{msgs['page.inputRichText.toolbar.title']}"/>
+        <ice:panelGroup style="float:left;vertical-align:middle;">
+            <ice:outputText
+                    style="display:block;margin-top:2px;"
+                    value="#{msgs['page.inputRichText.toolbar.title']}"/>
         </ice:panelGroup>
 
-        <ice:panelGroup style="float:left">
+        <ice:panelGroup style="float:left;vertical-align:middle;">
             <ice:selectOneRadio value="#{inputRichTextBean.toolbarMode}"
-                                partialSubmit="true">
+                                partialSubmit="true" style="padding:0;margin:0;">
                 <f:selectItem
                         itemLabel="#{msgs['page.inputRichText.toolbar.default']}"
                         itemValue="#{applicationScope.InputRichTextBean.TOOLBAR_MODE_1}"/>
