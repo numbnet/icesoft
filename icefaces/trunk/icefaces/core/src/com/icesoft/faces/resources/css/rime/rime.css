@@ -1772,6 +1772,10 @@ table.iceSelInpDate tbody tr td table{
     text-decoration: none;
 }
 
+.iceMnuPopVrtItem a:hover .iceMnuPopVrtItemLabel {
+    color: #FFFFFF;
+}
+
 .iceMnuPopVrtSubMenu {
 /* was iceSubMenu_vertical*/
     padding: 1px;
@@ -1790,7 +1794,7 @@ table.iceSelInpDate tbody tr td table{
 /* was iceSubMenuDividerVert */
     display: inline;
     float: right;
-    padding-top: 3px;
+    padding-top: 0px;
     padding-right: 1px;
 }
 

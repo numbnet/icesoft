@@ -1696,7 +1696,7 @@ fieldset {
 .iceMnuPopVrtSubMenuInd { /* was iceSubMenuDividerVert */
     display:inline;
     float:right;
-    padding-top: 3px;
+    padding-top: 0px;
     padding-right: 1px;    
 }
 
