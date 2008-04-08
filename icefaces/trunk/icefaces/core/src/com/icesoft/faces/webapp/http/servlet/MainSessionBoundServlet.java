@@ -42,6 +42,10 @@ public class MainSessionBoundServlet implements PseudoServlet {
         public void shutdown() {
         }
     };
+    private static final Runnable NOOP = new Runnable() {
+        public void run() {
+        }
+    };
     private Runnable drainUpdatedViews = new Runnable() {
         public void run() {
             allUpdatedViews.removeAll(synchronouslyUpdatedViews);
@@ -56,13 +60,10 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private Collection synchronouslyUpdatedViews = new HashSet();
     private String sessionID;
     private PseudoServlet servlet;
-    private HttpSession session;
-    private SessionDispatcher.Monitor sessionMonitor;
     private ShutdownHook disposeViews;
+    private Runnable shutdown;
 
-    public MainSessionBoundServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
-        this.session = session;
-        this.sessionMonitor = sessionMonitor;
+    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
@@ -105,6 +106,33 @@ public class MainSessionBoundServlet implements PseudoServlet {
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
         servlet = new EnvironmentAdaptingServlet(dispatcher, configuration);
+        shutdown = new Runnable() {
+            public void run() {
+                //avoid running shutdown more than once
+                shutdown = NOOP;
+                //send 'session-expired' to all views
+                Iterator i = views.values().iterator();
+                while (i.hasNext()) {
+                    CommandQueue commandQueue = (CommandQueue) i.next();
+                    commandQueue.put(SessionExpired);
+                }
+                //block until all views notify their disposal only when session expires
+                if (sessionMonitor.isExpired()) {
+                    disposeViews.waitForViewsShutdown();
+                }
+                //dispose session scoped beans
+                DisposeBeans.in(session);
+                ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
+                //shutdown all contained servers
+                servlet.shutdown();
+                //dispose all views
+                Iterator viewIterator = views.values().iterator();
+                while (viewIterator.hasNext()) {
+                    View view = (View) viewIterator.next();
+                    view.dispose();
+                }
+            }
+        };
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -112,25 +140,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     }
 
     public void shutdown() {
-        Iterator i = views.values().iterator();
-        while (i.hasNext()) {
-            CommandQueue commandQueue = (CommandQueue) i.next();
-            commandQueue.put(SessionExpired);
-        }
-
-        //block until all views notify their disposal only when session expires
-        if (sessionMonitor.isExpired()) {
-            disposeViews.waitForViewsShutdown();
-        }
-
-        DisposeBeans.in(session);
-        ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
-        servlet.shutdown();
-        Iterator viewIterator = views.values().iterator();
-        while (viewIterator.hasNext()) {
-            View view = (View) viewIterator.next();
-            view.dispose();
-        }
+        shutdown.run();
     }
 
     //Exposing queues for Tomcat 6 Ajax Push
