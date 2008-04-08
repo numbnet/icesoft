@@ -98,7 +98,7 @@ Autocompleter.Base.prototype = {
         Element.hide(this.update);
         Event.observe(this.element, "blur", this.onBlur.bindAsEventListener(this));
         Event.observe(this.element, "keypress", this.onKeyPress.bindAsEventListener(this));
-        if(Prototype.Browser.IE || Prototype.Browser.WebKit)
+        if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.observe(this.element, "keydown", this.onKeyDown.bindAsEventListener(this));
     },
 
@@ -205,7 +205,7 @@ Autocompleter.Base.prototype = {
         if (this.observer) clearTimeout(this.observer);
         this.observer = setTimeout(this.onObserverEvent.bind(this), this.options.frequency * 1000);
     },
-    
+
     onKeyDown: function(event) {
         if (!this.active) {
             switch (event.keyCode) {
@@ -219,7 +219,7 @@ Autocompleter.Base.prototype = {
                     return;
             }
         }
-        else if(this.active) {
+        else if (this.active) {
             switch (event.keyCode) {
                 case Event.KEY_UP:
                     this.markPrevious();
@@ -232,7 +232,7 @@ Autocompleter.Base.prototype = {
                     Event.stop(event);
                     return;
                 case Event.KEY_ESC:
-                    if(Prototype.Browser.WebKit) {
+                    if (Prototype.Browser.WebKit) {
                         this.hide();
                         this.active = false;
                         Event.stop(event);
@@ -246,7 +246,7 @@ Autocompleter.Base.prototype = {
             }
         }
     },
-    
+
     activate: function() {
         this.changed = false;
         this.hasFocus = true;
@@ -432,7 +432,7 @@ Autocompleter.Base.prototype = {
         Event.stopObserving(this.element, "mousemove", this.onMove);
         Event.stopObserving(this.element, "blur", this.onBlur);
         Event.stopObserving(this.element, "keypress", this.onKeyPress);
-        if(Prototype.Browser.IE || Prototype.Browser.WebKit)
+        if (Prototype.Browser.IE || Prototype.Browser.WebKit)
             Event.stopObserving(this.element, "keydown", this.onKeyDown);
         Autocompleter.Finder.list[this.element.id] = null;
         Ice.Autocompleter.logger.debug("Destroyed autocomplete [" + this.element.id + "]");
@@ -551,14 +551,7 @@ Object.extend(Object.extend(Ice.Autocompleter.prototype, Autocompleter.Base.prot
     initialize: function(id, updateId, options, rowClass, selectedRowClass) {
         Ice.Autocompleter.logger.debug("Building Ice Autocompleter ID [" + id + "]");
         var existing = Autocompleter.Finder.list[id];
-        if (existing) {
-            if (existing.monitor.changeDetected()) {
-                Ice.Autocompleter.logger.debug("Change has been detected. Rebuilding");
-                Ice.StateMon.checkAll();
-                Ice.StateMon.rebuild();
-
-            }
-            Ice.Autocompleter.logger.debug("Ice Autocompleter ID [" + id + "] Already exists");
+        if (existing && !existing.monitor.changeDetected()) {
             return;
         }
 
