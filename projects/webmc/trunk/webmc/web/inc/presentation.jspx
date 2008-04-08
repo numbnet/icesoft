@@ -1,27 +1,23 @@
 <f:view xmlns:h="http://java.sun.com/jsf/html"
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
+
 	<ice:dataTable value="#{participant.preloadSlides}"
 	               var="loopSlide"
                    cellpadding="0" 
-                   cellspacing="0">
+                   cellspacing="0"
+                   border="0">
 	    <h:column>
 	        <ice:graphicImage value="#{loopSlide.location}"
 	                          style="visibility: hidden; height: 0; width: 0;"/>
 	    </h:column>
 	</ice:dataTable>
-	<table cellspacing="0" cellpadding="0" border="0" >
-	    <tr>
-	        <td colspan="2" valign="top">
-	            <ice:panelGrid styleClass="presentationImageTable"
-	                           cellspacing="0" cellpadding="0"
-	                           valign="middle" align="center">
-	                <ice:graphicImage value="#{participant.currentSlide.location}"
-	                                  rendered="#{participant.slideTypePres}"/>
-	                <ice:graphicImage value="#{participant.infoSlide.location}"
-	                                  rendered="#{not participant.slideTypePres}"/>
-	            </ice:panelGrid>
-	        </td>
-	    </tr>
-	</table>
+
+    <div class="presentationImage" >
+        <ice:graphicImage value="#{participant.currentSlide.location}"
+                          rendered="#{participant.slideTypePres}"/>
+        <ice:graphicImage value="#{participant.infoSlide.location}"
+                          rendered="#{not participant.slideTypePres}"/>
+    </div>
+
 </f:view>

@@ -4,10 +4,6 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      id="container">
 
-    <div class="blueBar">
-        <img src="resources/images/spacer.gif" width="1" height="12"/>
-    </div>
-
     <div class="menuBar">
         <ui:include src="menubar.jspx"/>
     </div>

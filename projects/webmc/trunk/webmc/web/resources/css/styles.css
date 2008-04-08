@@ -60,14 +60,10 @@ img {
     width: 1024px;
 }
 
-.blueBar, .menuBar, .navigationBar, .mainForm, .footerBar{
+.menuBar, .navigationBar, .mainForm, .footerBar{
     float: left;
     clear: both; 
     width: 100%;	
-}
-
-.blueBar {
-    background: url( '../images/bgslice_topbar_blue.jpg' ) repeat-x top left;
 }
 
 .menuBar {
@@ -102,17 +98,30 @@ img {
 }
 
 .mainPRES {
-    padding: 30px 10px 30px 10px;
-    width: 730px;
+    padding: 30px 10px 0px 10px;
+    width: 725px;
     float: left;
 }
 
-.presentationImageTable {
-    width: 730px;
-    height: 550px;
+.presentationImageTabs {
+    width: 248px;
+    height: 29px;
+    text-align: left;
+    padding: 0;
+    float: left;
+}
+
+.statusMessage {
+    float: right;
+    text-align: right;
+}
+
+.presentationImage {
+    width: 720px;
+    height: 540px;
     border: thick groove #96B2CF;
     text-align: center;
-    vertical-align: middle;
+    float: left;
 }
 
 .mainCHAT {    

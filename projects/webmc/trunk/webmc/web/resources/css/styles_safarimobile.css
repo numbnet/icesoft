@@ -37,16 +37,35 @@ html {
 
 /* BGT STYLES */
 
+#container{
+    width: 480px;
+    font: 10px tahoma, arial, sans-serif;
+}
+
 .bgNAV {
     height: 33px;
 }
 
-.presentationImageTable {
-    width: 346px;
+.mainPRES { 
+    width: 336px; /*Width of left column*/
+    padding: 0px;
+}
+
+.statusMessage {
+    float: none;
+    text-align: center;
+}
+
+.presentationImage {
+    width: 336px;
     height: 100%;
 }
 
-/* FORM STYLES */
+.mainCHAT {
+    float: none;
+    margin-left: 346px; /*Set left margin to LeftColumnWidth*/
+    width: 134px;
+}
 
 .inputCHAT {
     margin-left: 2px;
@@ -65,20 +84,4 @@ li {
     padding-bottom: 0px;
     margin-bottom: 0px;
     font: 10px tahoma, arial, sans-serif;
-}
-
-#container{
-    width: 480px;
-    font: 10px tahoma, arial, sans-serif;
-}
-
-.mainPRES { 
-    width: 346px; /*Width of left column*/
-    padding: 0px;
-}
-
-.mainCHAT {
-	float: none;
-    margin-left: 346px; /*Set left margin to LeftColumnWidth*/
-    width: 134px;
 }
