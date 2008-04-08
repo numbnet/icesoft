@@ -104,6 +104,16 @@ public class SelectInputTextController extends BaseBean {
                 // fire effect to draw attention
                 valueChangeEffect.setFired(false);
             }
+            // if there was no selection we still want to see if a proper
+            // city was typed and update our selectedCity instance.
+            else{
+                City tmp = getFindCityMatch(autoComplete.getValue().toString());
+                if (tmp != null){
+                    selectedCity = tmp;
+                     // fire effect to draw attention
+                    valueChangeEffect.setFired(false);
+                }
+            }
 
         }
     }
