@@ -53,7 +53,7 @@
                 </ice:panelGroup>
         
         <div class="mainPRES">
-            <ui:include src="Lpresentation.jspx"/>
+            <ui:include src="presentation.jspx"/>
         </div>
         <div class="mainCHAT">
             <ui:include src="participants.jspx"/>

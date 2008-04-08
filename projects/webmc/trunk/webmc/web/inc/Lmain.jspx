@@ -15,7 +15,7 @@
 	<ice:form styleClass="mainForm">
         <div class="mainBackground" >
 			<div class="mainPRES">
-			    <ui:include src="Lpresentation.jspx"/>
+			    <ui:include src="presentation.jspx"/>
 			</div>
     		<div class="mainCHAT">
 				<img src="resources/images/logo_reflection.jpg" />
