@@ -45,21 +45,6 @@
 -->
 <ice:panelGroup styleClass="exampleBox panelToolTipContainer">
 
-    <!-- tool tip hide type-->
-    <ice:panelGroup style="float:left;margin-right:3px;">
-        <ice:outputLabel value="#{msgs['page.panelTooltip.hideType.label']}"
-                         for="autoHide"/>
-        <ice:selectOneMenu id="autoHide"
-                           partialSubmit="true"
-                           value="#{tooltipController.panelToolTipModel.hideOn}">
-            <f:selectItem
-                    itemValue="mouseout"
-                    itemLabel="#{msgs['page.panelTooltip.onhide.mouseOut']}"/>
-            <f:selectItem
-                    itemValue="mousedown"
-                    itemLabel="#{msgs['page.panelTooltip.onhide.mouseDown']}"/>
-        </ice:selectOneMenu>
-    </ice:panelGroup>
     <!-- tool tip duration config -->
     <ice:panelGroup style="float:left;margin-right:3px;">
         <ice:outputLabel value="#{msgs['page.panelTooltip.duration.label']}"
