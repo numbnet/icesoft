@@ -547,6 +547,11 @@ div.verticalAlignMdl{
     margin-right: -20px;
     margin-top: -50px;
 }
+.navConnectionStatus2 {
+    float: right;
+    margin:0;
+    margin-top: -15px;
+}
 
 /* left navigation panel collapsible, is not effected by theme changes.  */
 .navPnlClpsbl {
@@ -641,6 +646,7 @@ div.verticalAlignMdl{
 .navPnlClpsblColpsdHdr .iceOutTxt,
     .navPnlClpsblHdr .iceOutTxt {
     padding-left: 22px;
+    color: #484848;
 }
 
 .navPnlClpsblColpsdCnt {
