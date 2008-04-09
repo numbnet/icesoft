@@ -42,11 +42,7 @@ html {
     font: 10px tahoma, arial, sans-serif;
 }
 
-.bgNAV {
-    height: 33px;
-}
-
-.mainPRES { 
+.presentationDIV { 
     width: 336px; /*Width of left column*/
     padding: 0px;
 }
@@ -61,11 +57,27 @@ html {
     height: 100%;
 }
 
-.mainCHAT {
+.participantsChatDIV {
     float: none;
     margin-left: 346px; /*Set left margin to LeftColumnWidth*/
     width: 134px;
 }
+
+.participants, .chat {
+	width: 132px;;
+}
+
+.numberParticipantsPadding {
+    padding-left: 6px;
+}
+
+.participantList {
+    padding: 0px;	
+}
+
+.participantTable{
+    height: 80px;
+}	
 
 .inputCHAT {
     margin-left: 2px;

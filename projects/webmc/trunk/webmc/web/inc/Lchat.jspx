@@ -37,7 +37,7 @@
         </td>
     </tr>
     <tr>
-        <td class="chat" colspan="2"
+        <td class="chatList" colspan="2"
             style="vertical-align: middle; margin-bottom: 10px;">
             <ul>
                 <ice:dataTable value="#{participant.chatViewList}"

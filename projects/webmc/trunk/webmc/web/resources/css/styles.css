@@ -97,7 +97,7 @@ img {
 	height: 641px;
 }
 
-.mainPRES {
+.presentationDIV {
     padding: 30px 10px 0px 10px;
     width: 725px;
     float: left;
@@ -124,21 +124,34 @@ img {
     float: left;
 }
 
-.mainCHAT {    
+.participantsChatDIV {    
     float: right;
     width: 270px;
 }
 
-.chat, .participant {
+.participants, .chat {
+	border: 1px solid #90B1C9;
+	width: 240px; 
+}
+
+.numberParticipantsPadding {
+	padding-left: 13px;
+}
+
+.chatList, .participantList {
     background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
     border-top: 1px solid #90B1C9;
 }
 
-.chat {
+.participantList {
+    padding: 13px 13px 5px 13px;	
+}
+
+.chatList {
     border-bottom: 1px solid #90B1C9;
 }
 
-.chat a {
+.chatList a {
     text-decoration: underline;
 }
 

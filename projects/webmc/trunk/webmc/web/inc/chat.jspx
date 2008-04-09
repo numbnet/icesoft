@@ -2,7 +2,7 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 	
-<div style="border: 1px solid #90B1C9;" >
+<div class="chat" >
 
     <ice:panelGrid columns="2" 
                    styleClass="bgBARBLUE" 
@@ -26,7 +26,7 @@
                                disabled="#{participant.chatView.chatScrollDownDisabled}"/>
         </ice:panelGroup>
     </ice:panelGrid>
-    <ice:panelGroup styleClass="chat" >
+    <ice:panelGroup styleClass="chatList" >
         <ul>
             <ice:dataTable value="#{participant.chatViewList}"
                            rows="#{participant.chatView.viewSize}"

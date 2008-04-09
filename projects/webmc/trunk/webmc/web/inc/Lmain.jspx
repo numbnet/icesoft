@@ -14,10 +14,10 @@
 
 	<ice:form styleClass="mainForm">
         <div class="mainBackground" >
-			<div class="mainPRES">
+			<div class="presentationDIV">
 			    <ui:include src="presentation.jspx"/>
 			</div>
-    		<div class="mainCHAT">
+    		<div class="participantsChatDIV">
 				<img src="resources/images/logo_reflection.jpg" />
 				<img src="resources/images/part_tab.jpg"/>
                 <ui:include src="Lparticipants.jspx"/>
