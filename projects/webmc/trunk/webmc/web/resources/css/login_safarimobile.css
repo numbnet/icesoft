@@ -30,10 +30,6 @@
 * this file under either the MPL or the LGPL License."
 *
 */
-/* MAIN STYLES */
-html {
-    overflow:hidden;
-}
 
 .backgroundTop {
     background: none;
@@ -57,7 +53,6 @@ html {
     border: none; 
     padding: 0px; 
     padding-bottom: 0px; 
-    width: 100%;
 }
 
 .loginFirstColumn {
