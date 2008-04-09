@@ -85,7 +85,7 @@ public class SelectInputTextController extends BaseBean {
      * @param event jsf value change event.
      */
     public void selectInputValueChanged(ValueChangeEvent event) {
-        System.out.println("Value change select Input");
+
         if (event.getComponent() instanceof SelectInputText) {
 
             // get the number of displayable records from the component
