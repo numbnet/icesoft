@@ -39,7 +39,7 @@
 	                   border="0"
 	                   styleClass="participantTable">
 	        <ice:column>
-	            <li>
+	        <li>
                 <ice:graphicImage rendered="#{!participant.mobile}"
                                   visible="#{not empty list and list.moderator}"
                                   value="resources/images/bullet_orange.gif"
@@ -62,95 +62,10 @@
                                 style="vertical-align: top;"/>
                 <ice:outputText value="(Skype)"
                                 rendered="#{not empty list and list.hasSkype}"/>
-	            </li>
+	        </li>
 	        </ice:column>
 	    </ice:dataTable>
 	    </ul>
 	</ice:panelGroup>
-
-<ice:panelPopup visible="#{participant.uploadDialog}" 
-                modal="false"
-                style="position: absolute; background-color: #FFFFFF; width: 550px; height: 235px; z-index:1001; top: 30%; left: 30%; border: 1px solid #104675;">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Upload a New Presentation</strong>
-        </ice:panelGroup>
-    </f:facet>
-    <f:facet name="body">
-        <ice:panelGrid columns="1">
-            <center>
-                <div style="text-align: left; padding: 7px;">
-                    <ice:outputText
-                            value="Browse below to navigate your file system and upload the PPT or ZIP file created for this presentation.  ZIP files can contain images in .jpg, .gif, or .png format."/>
-                </div>
-                <br />
-                <ice:inputFile uniqueFolder="false"
-                               width="500"
-                               actionListener="#{participant.presentation.load}"
-                               progressListener="#{participant.presentation.progressChange}"
-                               buttonClass="none"
-                               action="#{participant.presentation.closeUploadDialog}"/>
-                <ice:panelGroup>
-                    <ice:outputText value="Upload Progress:"
-                                    style="font-size: smaller;"/>
-                    <ice:outputProgress
-                            value="#{participant.presentation.progress}"/>
-                </ice:panelGroup>
-                <ice:commandButton image="resources/images/butt_cancel.gif"
-                                   action="#{participant.presentation.closeUploadDialog}"
-                                   alt="Cancel"/>
-            </center>
-        </ice:panelGrid>
-    </f:facet>
-</ice:panelPopup>
-
-<ice:panelPopup visible="#{participant.moderatorDialog}" 
-                modal="false"
-                style="position: absolute; background-color: #FFFFFF; width: 300px; height: 125px; z-index:1001; top: 35%; left: 35%; border: 1px solid #104675;">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Confirm Moderator Change</strong>
-        </ice:panelGroup>
-    </f:facet>
-    <f:facet name="body">
-        <ice:panelGroup
-                style="padding: 10px; text-align: center; vertical-align: middle;">
-            <ice:outputText
-                    value="Are you sure you want to pass your moderator status?"/>
-            <ice:panelGroup style="padding-top: 10px;">
-                <ice:commandButton image="resources/images/butt_yes.gif"
-                                   action="#{participant.switchModeratorsYes}"
-                                   alt="Yes"/>
-                <ice:commandButton image="resources/images/butt_no.gif"
-                                   action="#{participant.switchModeratorsNo}"
-                                   alt="No"/>
-            </ice:panelGroup>
-        </ice:panelGroup>
-    </f:facet>
-</ice:panelPopup>
-
-<ice:panelPopup visible="#{participant.confirmDialog}" 
-                modal="false"
-                style="position: absolute; background-color: #FFFFFF; width: 300px; height: 110px; z-index:1001; top: 35%; left: 35%; border: 1px solid #104675;">
-    <f:facet name="header">
-        <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Confirm Logout</strong>
-        </ice:panelGroup>
-    </f:facet>
-    <f:facet name="body">
-        <ice:panelGroup
-                style="padding: 10px; text-align: center; vertical-align: middle;">
-            <ice:outputText value="Are you sure you want to logout?"/>
-            <ice:panelGroup style="padding-top: 10px;">
-                <ice:commandButton image="resources/images/butt_yes.gif"
-                                   action="#{participant.confirmLogoutYes}"
-                                   alt="Yes"/>
-                <ice:commandButton image="resources/images/butt_no.gif"
-                                   action="#{participant.confirmLogoutNo}"
-                                   alt="No"/>
-            </ice:panelGroup>
-        </ice:panelGroup>
-    </f:facet>
-</ice:panelPopup>
 
 </div>
