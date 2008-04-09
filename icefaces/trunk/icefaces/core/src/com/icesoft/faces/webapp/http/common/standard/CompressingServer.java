@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.SocketException;
 import java.util.zip.GZIPOutputStream;
 
 //todo: handle fixed size responses
@@ -49,10 +48,10 @@ public class CompressingServer implements Server {
                         CompressingResponse compressingResponse = new CompressingResponse(response);
                         handler.respond(compressingResponse);
                         compressingResponse.finishCompression();
-                    } catch (SocketException e) {
-                        //a SocketException might be thrown if the browser closed
+                    } catch (IOException e) {
+                        //a ClientAbortException (cause: SocketException) might be thrown if the browser closed
                         //the connection before consuming the entire stream
-                        log.debug("Connection reset by peer.");
+                        log.warn("Connection aborted", e);
                     }
                 }
             });
