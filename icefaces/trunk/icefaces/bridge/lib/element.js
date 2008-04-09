@@ -201,6 +201,8 @@
 
     This.Element.adaptToElement = function(e) {
         //no polymophism here...'switch' is the way then.
+        if(!e)
+            return new This.Element(e);
         switch (e.tagName.toLowerCase()) {
             case 'textarea':
             case 'input': return new This.InputElement(e);
@@ -380,7 +382,7 @@
             this.element.onsubmit = function(event) {
                 if (previousOnSubmit) previousOnSubmit();
                 $event(event).cancelDefaultAction();
-                iceSubmit(this.element, null, event);
+                iceSubmit(this, null, event); // Inner 'this' is outer 'this.element'
             };
         },
 
@@ -389,7 +391,7 @@
             var previousSubmit = this.element.submit;
             this.element.submit = function() {
                 if (previousSubmit) previousSubmit();
-                iceSubmit(this.element, null, null);
+                iceSubmit(this, null, null); // Inner 'this' is outer 'this.element'
             };
         },
 

@@ -104,7 +104,7 @@ public class FormRenderer extends DomBasicRenderer {
                 root.setAttribute("accept-charset", acceptcharset);
             }
             //redirect form submits
-            String redirectScript = "'" + formClientId + "'.asExtendedElement().captureAndRedirectSubmit();";
+            String redirectScript = "$element(document.getElementById('" + formClientId + "')).captureAndRedirectSubmit();";
             Element scriptElement = (Element) root.appendChild(domContext.createElement("script"));
             scriptElement.setAttribute("type", "text/javascript");
             scriptElement.appendChild(domContext.createTextNode(redirectScript));
