@@ -162,30 +162,32 @@ implements JMSConnection {
 
     public void stop()
     throws JMSException {
-        if (started) {
-            synchronized (connectionLock) {
-                if (started) {
-                    try {
-                        /*
-                         * Use of the stop() method on javax.jms.Connection
-                         * objects by applications in web and EJB containers may
-                         * interfere with the connection management functions of
-                         * the container and must not be used.
-                         *
-                         * IBM Websphere throws an IllegalArgumentException when
-                         * this stop() method is invoked.
-                         */
-                        // throws JMSException.
-                        topicConnection.stop();
-                    } catch (IllegalStateException exception) {
-                        // IBM Websphere: eat the exception.
-//                        throw exception;
-                    } finally {
-                        started = false;
-                    }
-                }
-            }
-        }
+        /*
+         * Use of the stop() method on javax.jms.Connection
+         * objects by applications in web and EJB containers may
+         * interfere with the connection management functions of
+         * the container and must not be used.
+         */
+        // do nothing.
+//        if (started) {
+//            synchronized (connectionLock) {
+//                if (started) {
+//                    try {
+//                        /*
+//                         * IBM Websphere throws an IllegalArgumentException when
+//                         * this stop() method is invoked.
+//                         */
+//                        // throws JMSException.
+//                        topicConnection.stop();
+//                    } catch (IllegalStateException exception) {
+//                        // IBM Websphere: eat the exception.
+////                        throw exception;
+//                    } finally {
+//                        started = false;
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void subscribe(
@@ -369,7 +371,7 @@ implements JMSConnection {
             }
             try {
                 while (!stopRequested) {
-                    javax.jms.Message _message = topicSubscriber.receive();
+                    javax.jms.Message _message = topicSubscriber.receive(1000);
                     if (_message != null) {
                         messageListener.onMessage(_message);
                     }
