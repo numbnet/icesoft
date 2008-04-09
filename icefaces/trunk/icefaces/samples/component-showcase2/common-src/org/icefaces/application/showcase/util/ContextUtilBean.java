@@ -57,15 +57,17 @@ public class ContextUtilBean {
     static{
         StringBuffer buff = new StringBuffer();
         buff.append("<script type='text/javascript'>\n");
-        buff.append("if (Liferay.Columns && !Liferay.Columns._ICE_positionSet) {\n");
-        buff.append("    Liferay.Util.actsAsAspect(Liferay.Columns);\n");
-        buff.append("    Liferay.Columns.after(\n");
+        buff.append("if ( (typeof(Liferay) != 'undefined') ) {\n");
+        buff.append("    if (Liferay.Columns && !Liferay.Columns._ICE_positionSet) {\n");
+        buff.append("        Liferay.Util.actsAsAspect(Liferay.Columns);\n");
+        buff.append("        Liferay.Columns.after(\n");
         buff.append("            'add',\n");
         buff.append("            function(portlet) {\n");
         buff.append("                jQuery(portlet).css('position', 'static');\n");
         buff.append("            }\n");
         buff.append("            );\n");
-        buff.append("    Liferay.Columns._ICE_positionSet = true;\n");
+        buff.append("        Liferay.Columns._ICE_positionSet = true;\n");
+        buff.append("    }");
         buff.append("}");
         buff.append("</script>\n");
         LIFERAY_SCRIPT = buff.toString();
