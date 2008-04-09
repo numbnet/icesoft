@@ -243,12 +243,14 @@ public class TableRenderer
             if (header && isScrollable(uiComponent)) {
                 tr.appendChild(scrollBarSpacer(domContext, facesContext));
                 //being compatible with the XHTML DTD
+/*              commented out for ICE-2974
                 Element tbody = (Element) domContext.createElement(HTML.TBODY_ELEM);
                 tbody.setAttribute(HTML.STYLE_ATTR, "display:none");
                 thead.getParentNode().appendChild(tbody);
                 Element tbodyTr = (Element) domContext.createElement(HTML.TR_ELEM);
                 tbody.appendChild(tbodyTr);
                 tbodyTr.appendChild(domContext.createElement(HTML.TD_ELEM));
+*/
             }
     }
  
