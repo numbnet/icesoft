@@ -47,6 +47,7 @@
                          var="effectKey">
 
             <ice:commandLink
+                    style="text-decoration:none;"
                     actionListener="#{effectsController.changeEffectAction}">
                 <f:param name="effectKey" value="#{effectKey}"/>
 
