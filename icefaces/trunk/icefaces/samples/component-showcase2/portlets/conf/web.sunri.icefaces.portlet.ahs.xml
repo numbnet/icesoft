@@ -56,6 +56,15 @@
     </context-param>
 
     <context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>
+            /WEB-INF/faces-config-application-beans.xml,
+            /WEB-INF/faces-config-example-beans.xml,
+            /WEB-INF/faces-config-navigation.xml
+        </param-value>
+    </context-param>
+
+    <context-param>
         <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
         <param-value>.jspx</param-value>
     </context-param>
@@ -182,7 +191,7 @@
     <!-- Source Code reader servlet-->
     <servlet>
         <servlet-name>SourceCode Reader</servlet-name>
-        <servlet-class>com.icesoft.icefaces.samples.showcase.util.SourceCodeLoaderServlet</servlet-class>
+        <servlet-class>org.icefaces.application.showcase.util.SourceCodeLoaderServlet</servlet-class>
     </servlet>
 
     <!-- file upload Servlet -->
