@@ -38,7 +38,7 @@
             var sessionID = configuration.session;
             var viewID = configuration.view;
             var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
-            var statusManager = new Ice.Status.StatusManager(configuration, container);
+            this.statusManager = new Ice.Status.StatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
             var parameters = Ice.Parameter.Query.create(function(query) {
@@ -98,8 +98,7 @@
             });
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
-                statusManager.sessionExpired.on();
-                statusManager.sessionExpiredPopup.on(); // ICE-2621
+                this.statusManager.sessionExpired.on();
                 this.connection.sendDisposeViews();
                 this.dispose();
             }.bind(this));
@@ -127,8 +126,8 @@
 
             this.connection.onServerError(function (response) {
                 logger.error('server side error');
-                statusManager.serverError.on();
-                statusManager.serverErrorPopup.on(); // ICE-2621
+                this.statusManager.serverError.on();
+                this.statusManager.serverErrorPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
                 //todo: refactor this into something more elegant
@@ -146,23 +145,22 @@
 
             this.connection.whenDown(function() {
                 logger.warn('connection to server was lost');
-                statusManager.connectionLost.on();
-                statusManager.connectionLostPopup.on(); // ICE-2621
+                this.statusManager.connectionLost.on();
                 this.dispose();
             }.bind(this));
 
             this.connection.whenTrouble(function() {
                 logger.warn('connection in trouble');
-                statusManager.connectionTrouble.on();
-            });
+                this.statusManager.connectionTrouble.on();
+            }.bind(this));
 
             this.connection.onSend(function() {
-                statusManager.busy.on();
-            });
+                this.statusManager.busy.on();
+            }.bind(this));
 
             this.connection.onReceive(function() {
-                statusManager.busy.off();
-            });
+                this.statusManager.busy.off();
+            }.bind(this));
 
             logger.info('bridge loaded!');
         },
