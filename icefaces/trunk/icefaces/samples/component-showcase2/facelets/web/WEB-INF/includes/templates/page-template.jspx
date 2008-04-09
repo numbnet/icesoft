@@ -83,6 +83,10 @@
                     -->
                     <ice:form>
 
+                        <!--<ice:outputConnectionStatus styleClass="navConnectionStatus"-->
+                                <!--showPopupOnDisconnect="true"-->
+                                <!--style="margin-right: 0px;margin-top: 0;padding-left:15px;"/>-->
+
                         <ui:insert name="page-content"/>
 
                         <ice:panelGroup styleClass="clearer" />

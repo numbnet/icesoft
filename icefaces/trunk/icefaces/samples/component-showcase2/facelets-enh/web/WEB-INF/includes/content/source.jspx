@@ -47,32 +47,34 @@
     <ui:decorate template="#{currentSourceCode.templateRef.path}">
         <!-- navigation -->
         <ui:define name="links">
-            <ice:panelCollapsible expanded="true">
-                <f:facet name="header">Beans</f:facet>
-                <ice:panelSeries var="beanSource"
-                           value="#{currentBeanResource}">
-                    <ice:commandLink
-                            actionListener="#{applicationController.viewSourceEvent}"
-                            value="#{beanSource.label}"
-                            styleClass="docViewNodeSelected#{beanSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
-                        <f:param name="includePath"
-                                 value="#{beanSource.resourceRef.path}"/>
-                    </ice:commandLink><br />
-                </ice:panelSeries>
-            </ice:panelCollapsible>
-             <ice:panelCollapsible expanded="true">
-                <f:facet name="header">JSPX:</f:facet>
-                <ice:panelSeries  var="jsxSource"
-                           value="#{currentJSPXResource}">
-                    <ice:commandLink
-                            actionListener="#{applicationController.viewSourceEvent}"
-                            value="#{jsxSource.label}"
-                            styleClass="docViewNodeSelected#{jsxSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
-                        <f:param name="includePath"
-                                 value="#{jsxSource.resourceRef.path}"/>
-                    </ice:commandLink><br />
-                </ice:panelSeries >
-            </ice:panelCollapsible>
+            <ice:panelGroup styleClass="navigationContainer">
+                <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                    <f:facet name="header">Beans</f:facet>
+                    <ice:panelSeries var="beanSource"
+                               value="#{currentBeanResource}">
+                        <ice:commandLink
+                                actionListener="#{applicationController.viewSourceEvent}"
+                                value="#{beanSource.label}"
+                                styleClass="docViewNodeSelected#{beanSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
+                            <f:param name="includePath"
+                                     value="#{beanSource.resourceRef.path}"/>
+                        </ice:commandLink><br />
+                    </ice:panelSeries>
+                </ice:panelCollapsible>
+                 <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                    <f:facet name="header">JSPX:</f:facet>
+                    <ice:panelSeries  var="jsxSource"
+                               value="#{currentJSPXResource}">
+                        <ice:commandLink
+                                actionListener="#{applicationController.viewSourceEvent}"
+                                value="#{jsxSource.label}"
+                                styleClass="docViewNodeSelected#{jsxSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
+                            <f:param name="includePath"
+                                     value="#{jsxSource.resourceRef.path}"/>
+                        </ice:commandLink><br />
+                    </ice:panelSeries >
+                </ice:panelCollapsible>
+            </ice:panelGroup>
         </ui:define>
         <ui:define name="docView">
             <!-- writes out source code servlet reader-->

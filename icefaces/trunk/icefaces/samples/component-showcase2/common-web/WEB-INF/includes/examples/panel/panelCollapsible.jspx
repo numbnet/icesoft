@@ -147,7 +147,7 @@
             </ice:panelGroup>
         </ice:panelCollapsible>
         <!-- Text output based expandable panel demo -->
-        <ice:panelGroup styleClass="pnlClpsblEnd">
+        <ice:panelGroup styleClass="pnlClpsblEnd" >
             <ice:panelCollapsible id="textPanel" expanded="true" >
                 <f:facet name="header">
                     <ice:panelGroup>

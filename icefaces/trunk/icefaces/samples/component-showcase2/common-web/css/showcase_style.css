@@ -553,15 +553,8 @@ div.verticalAlignMdl{
 }
 
 /* left navigation panel collapsible, is not effected by theme changes.  */
-.navPnlClpsbl {
-    /*border-top: 1px solid #d9d9d9;*/
-    /*border-left: 1px solid #d9d9d9;*/
-    /*border-right: 1px solid #d9d9d9;*/
-}
-.navPnlClpsblColpsd {
-    /*border-top: 1px solid #d9d9d9;*/
-    /*border-left: 1px solid #d9d9d9;*/
-    /*border-right: 1px solid #d9d9d9;*/
+.navPnlClpsbl, .navPnlClpsblColpsd {
+    border-bottom: none;
 }
 
 .navPnlClpsblCnt .navPnlClpsbl {
