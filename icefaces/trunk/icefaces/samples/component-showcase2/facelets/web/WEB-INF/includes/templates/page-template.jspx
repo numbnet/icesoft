@@ -82,7 +82,11 @@
                        controls which content to display for the respective navigation
                     -->
                     <ice:form>
+
                         <ui:insert name="page-content"/>
+
+                        <ice:panelGroup styleClass="clearer" />
+
                     </ice:form>
 
                 </div>
