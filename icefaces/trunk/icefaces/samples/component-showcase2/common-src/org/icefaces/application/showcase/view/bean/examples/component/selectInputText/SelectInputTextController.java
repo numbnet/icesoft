@@ -39,6 +39,7 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -54,8 +55,8 @@ public class SelectInputTextController extends BaseBean {
     // city dictionary
     private CityDictionary cityDictionary;
 
-    // list of possible city matches for a given city dictionary lookupo
-    private ArrayList cityMatchPossibilities;
+    // list of possible city matches for a given city dictionary lookup
+    private List cityMatchPossibilities;
 
     // number of city possibilities to show
     private static int cityListLength = 15;
@@ -84,7 +85,7 @@ public class SelectInputTextController extends BaseBean {
      * @param event jsf value change event.
      */
     public void selectInputValueChanged(ValueChangeEvent event) {
-
+        System.out.println("Value change select Input");
         if (event.getComponent() instanceof SelectInputText) {
 
             // get the number of displayable records from the component
@@ -95,7 +96,7 @@ public class SelectInputTextController extends BaseBean {
 
             cityMatchPossibilities =
                     cityDictionary.generateCityMatches(newWord, cityListLength);
-            
+
             // if there is a selected item then find the city object of the
             // same name
             if (autoComplete.getSelectedItem() != null) {
@@ -135,14 +136,14 @@ public class SelectInputTextController extends BaseBean {
                 }
             }
         }
-        return selectedCity;
+        return null;
     }
 
     public void setCityDictionary(CityDictionary cityDictionary) {
         this.cityDictionary = cityDictionary;
     }
 
-    public ArrayList getCityMatchPossibilities() {
+    public List getCityMatchPossibilities() {
         return cityMatchPossibilities;
     }
 
