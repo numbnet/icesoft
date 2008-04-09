@@ -401,7 +401,7 @@ input.iceSelInpDateClosePopup {
     margin:0px;; 
     padding:0px;
     border-width: 0px;
-    width:1px;
+    width:2px;
     background-color:transparent;
  
 }
@@ -409,15 +409,25 @@ input.iceSelInpDateClosePopup {
 .iceDatTblResBor {
     margin:0px;; 
     padding:0px;
-    width:1px;
-    background-color: #EFEFEF;
-    background-image: url( "./css-images/table_col_header.gif" );
+    background-color: #d9d9d9;
     background-position: bottom;
     background-repeat: repeat-x;
+    width:2px;
+    border-top: 1px solid #CCCCCC;         
 }
 
 .iceDatTblBlkTd {
-   border-bottom: 1px solid #CCCCCC;    
+    border-bottom: 1px solid #CCCCCC;   
+    background-color: #d9d9d9;   
+}
+
+
+.portlet-section-header .iceDatTblResBor {
+   padding:0px;
+}
+
+.portlet-section-body .iceDatTblBlkTd {
+   padding:0px; 
 }
 /*was iceTblFooter */
 
