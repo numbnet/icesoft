@@ -51,6 +51,26 @@ public class ContextUtilBean {
 
     private static final String SOURCE_CODE_ULR = "/sourcecodeStream.html?path=";
 
+    //ICE-2967
+    private static final String LIFERAY_SCRIPT;
+
+    static{
+        StringBuffer buff = new StringBuffer();
+        buff.append("<script type='text/javascript'>\n");
+        buff.append("if (Liferay.Columns && !Liferay.Columns._ICE_positionSet) {\n");
+        buff.append("    Liferay.Util.actsAsAspect(Liferay.Columns);\n");
+        buff.append("    Liferay.Columns.after(\n");
+        buff.append("            'add',\n");
+        buff.append("            function(portlet) {\n");
+        buff.append("                jQuery(portlet).css('position', 'static');\n");
+        buff.append("            }\n");
+        buff.append("            );\n");
+        buff.append("    Liferay.Columns._ICE_positionSet = true;\n");
+        buff.append("}");
+        buff.append("</script>\n");
+        LIFERAY_SCRIPT = buff.toString();
+    }
+
     public String getContextPath() {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
@@ -99,5 +119,9 @@ public class ContextUtilBean {
      */
     public static String generateSourceCodeIFrame(String source) {
         return generateIFrameWithContextPath(SOURCE_CODE_ULR + source);
+    }
+
+    public String getLiferayScript(){
+        return LIFERAY_SCRIPT;
     }
 }
