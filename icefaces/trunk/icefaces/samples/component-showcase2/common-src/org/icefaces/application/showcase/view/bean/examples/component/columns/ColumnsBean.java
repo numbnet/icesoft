@@ -60,10 +60,10 @@ public class ColumnsBean implements Serializable {
     // default column and row values
     private int columns = 4;
     // possible columns values selected from ice:selectOneMenu.
-    private SelectItem[] columnsItems = new SelectItem[]{new SelectItem(new Integer(1)),
+    private SelectItem[] columnsItems = new SelectItem[]{new SelectItem(new Integer(3)),
             new SelectItem(new Integer(4)),
-            new SelectItem(new Integer(12)),
-            new SelectItem(new Integer(24))};
+            new SelectItem(new Integer(6)),
+            new SelectItem(new Integer(8))};
     private int rows = 6;
     private int intValue = 0;
 
