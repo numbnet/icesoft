@@ -343,7 +343,10 @@ input.iceSelInpDateClosePopup {
     background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
     border-top: 1px solid #CCCCCC; 
     border-right: 1px solid #CCCCCC;
-    margin-top:-1px;
+}
+.iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
+    border-left-style: none;
+    border-top-style: none;
 }
 
 /* set the common attributes for the pagination numbers */

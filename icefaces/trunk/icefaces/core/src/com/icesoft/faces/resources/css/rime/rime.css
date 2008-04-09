@@ -458,7 +458,10 @@ table.iceSelInpDate tbody tr td table{
     background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
     border-top: 1px solid #d9d9d9; 
     border-right: 1px solid #d9d9d9;
-    margin-top:-1px;
+}
+.iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
+    border-left-style: none;
+    border-top-style: none;
 }
 /*was iceTblFooter */
 

@@ -357,7 +357,10 @@ fieldset {
     background-color: #EFEFEF;
     border-top: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
-    margin-top:-1px;
+}
+.iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
+    border-left-style: none;
+    border-top-style: none;
 }
 /*
 ----- for datatable when cell content length exceeds-----

@@ -483,13 +483,6 @@ a.navNodeFoldertrueExpandedtrue, a.navNodeFoldertrueExpandedtrue:hover{
     float: left;
     margin-top: 20px;
 }
-.dataPaginatorDataTableScrlSpr {
-    margin-top: 0;
-}
-.dataPaginatorDataTableScrlSpr .dataPaginatorDataTableHdr {
-    border-left-style: none;
-    border-top-style: none;
-}
 
 .dataPaginatorVertical_true {
 
