@@ -195,6 +195,10 @@
         <b>Note: </b> Only those columns of the table can be dragged which are 
         defined as the "header" facet of a column. The headers which are defined by 
         the "columnGroup" can not be dragged.
+         <p>
+        This feature does not yet support dataTables with the 'scrollable' attribute 
+        set. This combination of features is slated for a future release.
+        </p>
         ]]>          
     </description>
     <property-name>resizable</property-name>
