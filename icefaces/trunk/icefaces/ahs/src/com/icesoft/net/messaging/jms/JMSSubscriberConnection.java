@@ -169,9 +169,9 @@ implements JMSConnection {
          * the container and must not be used.
          */
         // do nothing.
-//        if (started) {
-//            synchronized (connectionLock) {
-//                if (started) {
+        if (started) {
+            synchronized (connectionLock) {
+                if (started) {
 //                    try {
 //                        /*
 //                         * IBM Websphere throws an IllegalArgumentException when
@@ -183,11 +183,11 @@ implements JMSConnection {
 //                        // IBM Websphere: eat the exception.
 ////                        throw exception;
 //                    } finally {
-//                        started = false;
+                        started = false;
 //                    }
-//                }
-//            }
-//        }
+                }
+            }
+        }
     }
 
     public void subscribe(
