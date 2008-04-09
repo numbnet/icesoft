@@ -256,8 +256,17 @@ Ice.PanelDivider = Class.create(Ice.Resizable, {
         this.getGhost().style.width = (Element.getWidth(this.getContainerElement())) + "px";
     } else {
         var spliterWidth = Element.getWidth(this.source);
+        var borderLeft = parseInt(Element.getStyle(this.source, 'border-left-width'));
+        var borderRight = parseInt(Element.getStyle(this.source, 'border-right-width'));
+        if (borderLeft && borderLeft >= 1) {
+            spliterWidth -= borderLeft;
+        }
+        if (borderRight && borderRight >= 1) {
+            spliterWidth -= borderRight;
+        }     
         var mouseLeft = Event.pointerX(event);
         this.getGhost().style.left = (mouseLeft - (spliterWidth )) + "px";
+        this.getGhost().style.width =  spliterWidth + "px";
         this.getGhost().style.height = (Element.getHeight(this.getContainerElement())) + "px";
     }
   }
