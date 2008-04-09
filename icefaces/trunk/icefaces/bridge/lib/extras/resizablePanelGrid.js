@@ -368,3 +368,18 @@ Ice.PanelDivider.addMethods({
   }
 
 });
+
+ResizableUtil = {
+    adjustHeight:function(src) {
+        var height = Element.getHeight(src);
+        var paddingTop = parseInt(Element.getStyle(src, 'padding-top'));
+        var paddingBottom = parseInt(Element.getStyle(src, 'padding-top'));
+        if (paddingTop && paddingTop > 1) {
+            height -= paddingTop; 
+        }
+        if (paddingBottom && paddingBottom > 1) {
+            height -= paddingBottom;
+        }        
+        src.firstChild.style.height= (height-1) + 'px'; 
+    }
+}

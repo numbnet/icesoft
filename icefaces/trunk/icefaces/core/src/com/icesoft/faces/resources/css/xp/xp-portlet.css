@@ -309,6 +309,14 @@ input.iceSelInpDateClosePopup {
 .iceDatTblBlkTd {
    border-bottom: 1px solid #CCCCCC;    
 }
+
+.portlet-section-header .iceDatTblResBor {
+   padding:0px;
+}
+
+.portlet-section-body .iceDatTblBlkTd {
+   padding:0px;	
+}
 /*
 ----- for datatable when cell content length exceeds-----
 */
