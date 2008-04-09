@@ -67,7 +67,7 @@ a control on the data to hide/show the table columns.
             <ice:column>
                 <f:facet name="header">
                     <ice:outputText id="lngText1Lbl"
-                                    value="#{msgs['page.dataTable.misc']}"/>
+                                    value="#{msgs['page.dataTable.name']}"/>
                 </f:facet>
                 <ice:outputText id="lngText1"
                                 value="#{employee.lastName}, #{employee.firstName}"/>
@@ -76,7 +76,7 @@ a control on the data to hide/show the table columns.
             <ice:column>
                 <f:facet name="header">
                     <ice:outputText id="lngText2Lbl"
-                                    value="#{msgs['page.dataTable.name']}"/>
+                                    value="#{msgs['page.dataTable.misc']}"/>
                 </f:facet>
                 <ice:outputText id="lngText2"
                                 value="#{employee.departmentName}, #{employee.subDepartmentName}, #{employee.phone}"/>
