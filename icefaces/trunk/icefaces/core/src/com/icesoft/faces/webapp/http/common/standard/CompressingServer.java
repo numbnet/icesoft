@@ -6,14 +6,18 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.ResponseProxy;
 import com.icesoft.faces.webapp.http.common.Server;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketException;
 import java.util.zip.GZIPOutputStream;
 
 //todo: handle fixed size responses
 public class CompressingServer implements Server {
+    private static final Log log = LogFactory.getLog(CompressingServer.class);
     private Server server;
 
     public CompressingServer(Server server) {
@@ -41,9 +45,15 @@ public class CompressingServer implements Server {
         public void respondWith(final ResponseHandler handler) throws Exception {
             request.respondWith(new ResponseHandler() {
                 public void respond(Response response) throws Exception {
-                    CompressingResponse compressingResponse = new CompressingResponse(response);
-                    handler.respond(compressingResponse);
-                    compressingResponse.finishCompression();
+                    try {
+                        CompressingResponse compressingResponse = new CompressingResponse(response);
+                        handler.respond(compressingResponse);
+                        compressingResponse.finishCompression();
+                    } catch (SocketException e) {
+                        //a SocketException might be thrown if the browser closed
+                        //the connection before consuming the entire stream
+                        log.debug("Connection reset by peer.");
+                    }
                 }
             });
         }
@@ -71,13 +81,7 @@ public class CompressingServer implements Server {
 
         public void finishCompression() throws IOException {
             if (output != null) {
-                try {
-                    output.finish();
-                } catch (IOException e) {
-                    //a SocketException might be thrown if the browser closed
-                    //the connection before consuming the entire stream
-                    //do nothing!
-                }
+                output.finish();
             }
         }
     }
