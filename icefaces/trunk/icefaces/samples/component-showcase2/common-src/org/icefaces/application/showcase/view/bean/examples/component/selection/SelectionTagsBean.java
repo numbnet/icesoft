@@ -221,15 +221,15 @@ public class SelectionTagsBean extends BaseBean {
         // get new city value and assign it. 
         String newCountry = (String) event.getNewValue();
 
-        if (newCountry.equals(COUNTRY_CANADA)) {
+        if (COUNTRY_CANADA.equals(newCountry)) {
             cityItems = CITIES_CANADA;
-        } else if (newCountry.equals(COUNTRY_USA)) {
+        } else if (COUNTRY_USA.equals(newCountry)) {
             cityItems = CITIES_USA;
-        } else if (newCountry.equals(COUNTRY_CHINA)) {
+        } else if (COUNTRY_CHINA.equals(newCountry)) {
             cityItems = CITIES_CHINA;
-        } else if (newCountry.equals(COUNTRY_UK)) {
+        } else if (COUNTRY_UK.equals(newCountry)) {
             cityItems = CITIES_UK;
-        } else if (newCountry.equals(COUNTRY_RUSSIA)) {
+        } else if (COUNTRY_RUSSIA.equals(newCountry)) {
             cityItems = CITIES_RUSSIA;
         } else {
             cityItems = null;
