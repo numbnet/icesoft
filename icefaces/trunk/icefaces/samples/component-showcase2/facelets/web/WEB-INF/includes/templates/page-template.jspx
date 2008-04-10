@@ -68,6 +68,10 @@
 
             <div class="body_content">
 
+                <ice:outputConnectionStatus
+                            styleClass="navConnectionStatus"
+                            showPopupOnDisconnect="true"/>
+
                 <div class="navigationContainer">
                     <ui:insert name="navigation">
                         <ui:include src="/WEB-INF/includes/content/themeControl.jspx" />
@@ -82,10 +86,6 @@
                        controls which content to display for the respective navigation
                     -->
                     <ice:form>
-
-                        <!--<ice:outputConnectionStatus styleClass="navConnectionStatus"-->
-                                <!--showPopupOnDisconnect="true"-->
-                                <!--style="margin-right: 0px;margin-top: 0;padding-left:15px;"/>-->
 
                         <ui:insert name="page-content"/>
 

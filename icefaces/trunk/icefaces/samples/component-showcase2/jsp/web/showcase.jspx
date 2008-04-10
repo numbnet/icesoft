@@ -61,6 +61,10 @@
 
             <div class="body_content">
 
+                <ice:outputConnectionStatus
+                            styleClass="navConnectionStatus"
+                            showPopupOnDisconnect="true"/>
+
                 <div class="navigationContainer">
                     <jsp:directive.include file="/WEB-INF/includes/content/themeControl.jspx" />
                     <jsp:directive.include file="/WEB-INF/includes/content/navigation.jspx" />
@@ -75,9 +79,7 @@
                    <ice:form>
 
                    <div style="padding-right:10px;">
-                   <ice:outputConnectionStatus styleClass="navConnectionStatus"
-                                showPopupOnDisconnect="true"
-                                style="margin-right: 0px;margin-top: 0;padding-left:15px;"/>
+
                    <ice:panelStack id="templatePanelStack"
                                  styleClass="componentContentPanelStack"
                                  selectedPanel="#{navigation.selectedPanel}">
