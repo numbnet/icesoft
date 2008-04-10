@@ -49,6 +49,7 @@
             <f:selectItem id = "xpTheme" itemLabel="#{msgs['theme.xp']}" itemValue="xp"/>
             <f:selectItem id ="royaleTheme" itemLabel="#{msgs['theme.royale']}"
                           itemValue="royale"/>
+           <f:selectItem id = "rimeTheme" itemLabel="#{msgs['theme.rime']}" itemValue="rime"/>
        </ice:selectOneMenu>
        <ice:commandButton id ="changeStyle"
                            action="#{styleBean.changeStyle}"
@@ -84,9 +85,9 @@
             </ice:treeNode>
         </ice:tree>
     </div>
-<ice:panelGroup>
+<!--  <ice:panelGroup>
    <ice:outputText value="#{convTracker.convId}"/>
    <ice:outputText value="#{convTracker.longRunning}"/>
    <ice:outputText value="#{convTracker.convParam}"/>
-</ice:panelGroup>
+</ice:panelGroup>-->
 </ice:form>
