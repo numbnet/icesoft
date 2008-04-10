@@ -46,9 +46,6 @@ change the border layout dynamically.
         tabChangeListener="#{applicationController.processTabChange}"
         selectedIndex="#{applicationModel.selectedTabIndex}">
 
-    <ice:outputConnectionStatus
-                            styleClass="navConnectionStatus"
-                            showPopupOnDisconnect="true"/>
     <!--
       Controls to show/hide the table columns
     -->

@@ -68,6 +68,10 @@
 
             <div class="body_content">
 
+                <ice:outputConnectionStatus
+                            styleClass="navConnectionStatus"
+                            showPopupOnDisconnect="true"/>
+
                 <div class="navigationContainer">
                     <ui:insert name="navigation">
                         <ui:include src="/WEB-INF/includes/content/themeControl.jspx" />
