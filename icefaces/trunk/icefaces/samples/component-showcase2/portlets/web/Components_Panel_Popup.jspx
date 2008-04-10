@@ -43,7 +43,7 @@
                            doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
                            doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd"/>
 
-    <ice:portlet>
+    <ice:portlet styleClass="componentBoxPortlet">
 
         <!--  ICE-2967  -->
         <ice:outputText value="#{ctxtUtil.liferayScript}" escape="false"/>

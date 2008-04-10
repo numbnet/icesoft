@@ -189,10 +189,14 @@ a.docViewNodeSelectedtrue{
     font-size: 11pt;
 }
 
-
+/* Main wrapper class for all component examples */
 .componentBox {
     float: left;
     padding: 0 0 0 0;
+}
+/* Parent of componentBox when component examples are used in portlets */
+.componentBoxPortlet{
+    background-color:white;   
 }
 
 .synopsisBox {
