@@ -103,8 +103,8 @@
 
     <delete dir="${dist.dir}/samples"/>
     <copy todir="${dist.dir}/samples" flatten="true">
-        <fileset dir="samples" includes="**/*.war" excludes="*component-showcase*/"/>
-        <fileset file="samples/component-showcase2/facelets-enh/dist/component-showcase.war"/>
+        <fileset dir="samples" includes="**/*.war" excludes="component-showcase/"/>
+        <fileset file="samples/component-showcase/facelets-enh/dist/component-showcase.war"/>
     </copy>
 </target>
 
@@ -114,10 +114,8 @@
 
     <ice:zip destfile="${bin.bundle.file}">
         <zipfileset dir="." includes="README.txt, samples/" excludes="**/bin.bundle.properties" prefix="${bin.bundle.prefix}"/>
-        <zipfileset file="samples/component-showcase/bin.bundle.properties"
-                    fullpath="${bin.bundle.prefix}/samples/component-showcase/build.properties"/>
-        <zipfileset file="samples/component-showcase2/facelets-enh/bin.bundle.properties"
-                    fullpath="${bin.bundle.prefix}/samples/component-showcase2/facelets-enh/build.properties"/>
+        <zipfileset file="samples/component-showcase/facelets-enh/bin.bundle.properties"
+                    fullpath="${bin.bundle.prefix}/samples/component-showcase/facelets-enh/build.properties"/>
         <zipfileset file="samples/tutorial/bin.bundle.properties"
                     fullpath="${bin.bundle.prefix}/samples/tutorial/build.properties"/>
     </ice:zip>
