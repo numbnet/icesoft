@@ -40,21 +40,22 @@ import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 public class OutputConnectionStatusRenderer extends DomBasicRenderer {
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeBegin(FacesContext context, UIComponent uiComponent)
             throws IOException {
-        validateParameters(facesContext, uiComponent, null);
+        validateParameters(context, uiComponent, null);
         OutputConnectionStatus component =
                 ((OutputConnectionStatus) uiComponent);
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.attachDOMContext(context, uiComponent);
         if (!domContext.isInitialized()) {
-            String id = uiComponent.getClientId(facesContext);
+            String id = uiComponent.getClientId(context);
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
             domContext.setRootNode(root);
 
@@ -85,21 +86,47 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
                     component.getDisconnectedClass(),
                     component.getDisconnectedLabel(),
                     lostID, false));
-            Element script = (Element) domContext.createElement(HTML.SCRIPT_ELEM);
+            Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
-            script.appendChild(domContext.createTextNode(
-                    "'" + id + "'.asExtendedElement().findContainerFor('bridge').connectionStatus = {" +
-                            "idle: '" + idleID + "'," +
-                            "working: '" + workingID + "'," +
-                            "trouble: '" + troubleID + "'," +
-                            "lost: '" + lostID + "'," +
-                            "lostPopup: " + component.isShowPopupOnDisconnect() + "};" // ICE-2621
-            ));
+            //todo: simplify interaction between bridge and component
+            if (component.isShowPopupOnDisconnect()) {
+                ViewHandler viewHandler = context.getApplication().getViewHandler();
+                script.appendChild(domContext.createTextNode(
+                        "var sm = '" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.statusManager;" +
+                                //try to reset previous indicators
+                                "[sm.busy, sm.connectionLost, sm.connectionTrouble, sm.sessionExpired, sm.serverError].eachWithGuard(function(i) { i.off(); });" +
+                                "var indicators = [];" +
+                                "var description = 'To reconnect click the Reload button on the browser or click the button below';" +
+                                "var sessionExpiredIcon = '" + viewHandler.getResourceURL(context, "/xmlhttp/css/xp/css-images/connect_disconnected.gif") + "';" +
+                                "var connectionLostIcon = '" + viewHandler.getResourceURL(context, "/xmlhttp/css/xp/css-images/connect_caution.gif") + "';" +
+                                "var connectionWorking = new Ice.Status.ElementIndicator('" + workingID + "', indicators);" +
+                                "var connectionIdle = new Ice.Status.ElementIndicator('" + idleID + "', indicators);" +
+                                "sm.busy = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);" +
+                                "sm.connectionLost = sm.connectionLostRedirect ? sm.connectionLostRedirect : new Ice.Status.MuxIndicator(new Ice.Status.ElementIndicator('" + lostID + "', indicators), new Ice.Status.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, sm));" +
+                                "sm.connectionTrouble = new Ice.Status.ElementIndicator('" + troubleID + "', indicators);" +
+                                "sm.sessionExpired = new Ice.Status.MuxIndicator(sm.connectionLost, new Ice.Status.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, sm));" +
+                                "sm.serverError = new Ice.Status.MuxIndicator(sm.connectionLost, new Ice.Status.OverlayIndicator('Server Internal Error', description, connectionLostIcon, sm));"
+                ));
+            } else {
+                script.appendChild(domContext.createTextNode(
+                        "var sm = '" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.statusManager;" +
+                                //try to reset previous indicators
+                                "[sm.busy, sm.connectionLost, sm.connectionTrouble, sm.sessionExpired, sm.serverError].eachWithGuard(function(i) { i.off(); });" +
+                                "var indicators = [];" +
+                                "var connectionWorking = new Ice.Status.ElementIndicator('" + workingID + "', indicators);" +
+                                "var connectionIdle = new Ice.Status.ElementIndicator('" + idleID + "', indicators);" +
+                                "sm.busy = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);" +
+                                "sm.connectionLost = sm.connectionLostRedirect ? sm.connectionLostRedirect : new Ice.Status.ElementIndicator('" + lostID + "', indicators);" +
+                                "sm.connectionTrouble = new Ice.Status.ElementIndicator('" + troubleID + "', indicators);" +
+                                "sm.sessionExpired = sm.connectionLost;" +
+                                "sm.serverError = sm.connectionLost;"
+                ));
+            }
             root.appendChild(script);
         }
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
+        domContext.streamWrite(context, uiComponent);
     }
 
     public Element getNextNode(DOMContext domContext, String classString,
