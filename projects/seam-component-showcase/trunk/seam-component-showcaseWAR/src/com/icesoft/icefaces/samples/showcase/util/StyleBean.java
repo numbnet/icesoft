@@ -64,6 +64,7 @@ import java.io.Serializable;
 public class StyleBean implements Serializable{
 
     // possible theme choices
+	private final String RIME = "rime";
     private final String XP = "xp";
     private final String ROYALE = "royale";
 
@@ -97,6 +98,7 @@ public class StyleBean implements Serializable{
     public StyleBean() {
         // initialize the style list
         styleList = new ArrayList();
+        styleList.add(new SelectItem(RIME, RIME));
         styleList.add(new SelectItem(XP, XP));
         styleList.add(new SelectItem(ROYALE, ROYALE));
     }
@@ -152,7 +154,7 @@ public class StyleBean implements Serializable{
     public void changeStyle() {
         currentStyle = tempStyle;
         imageDirectory = "./xmlhttp/css/" + currentStyle + "/css-images/";
-        Manager.instance().redirect("/showcase.seam"); //only need this for the calendar for some reason
+        Manager.instance().redirect("/showcase.seam"); //only need this for the calendar & for portals
     }
 
     /**
