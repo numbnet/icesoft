@@ -118,9 +118,9 @@ public class SendUpdatedViews implements Server, Runnable {
                                 writer.write(' ');
                             }
                             writer.write("</updated-views>");
+                            allUpdatedViews.clear();
                         }
                     });
-                    allUpdatedViews.clear();
                 }
             }
         } catch (Throwable e) {
