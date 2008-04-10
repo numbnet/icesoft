@@ -49,13 +49,13 @@ System.out.println("USER AGENT: " + request.getHeader("USER-AGENT"));
 String agent = request.getHeader("USER-AGENT").toLowerCase();
 if((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1) || 
    (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)){
-    String redirectURL = "./demo.iface";
+    String redirectURL = "./webmc.iface";
     response.sendRedirect(redirectURL);
 }else{
 %>
   <br/><br/><br/>
   <div style="text-align:center;">
-    <a href="javascript: showLarge('demo.iface')">
+    <a href="javascript: showLarge('webmc.iface')">
       <img border="0" alt="Start WebMC" src="resources/images/webpresentation_temp.gif" />
     </a>
   </div>
