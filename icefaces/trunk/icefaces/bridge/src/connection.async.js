@@ -94,7 +94,11 @@
             //register command that handles the updated-views message
             commandDispatcher.register('updated-views', function(message) {
                 var views = this.updatedViews.loadValue().split(' ');
-                this.updatedViews.saveValue(views.concat(message.firstChild.data.split(' ')).asSet().join(' '));
+                var additionalViews = message.firstChild.data.split(' ');
+                if (additionalViews.isEmpty()) {
+                    this.logger.warn("No updated views were returned.");
+                }
+                this.updatedViews.saveValue(views.concat(additionalViews).asSet().join(' '));
             }.bind(this));
 
 
