@@ -3,7 +3,8 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component">
 
 <!-- File Upload Dialog -->
-<ice:panelPopup visible="#{participant.uploadDialog}" 
+<ice:panelPopup rendered="#{!participant.mobile}"
+                visible="#{participant.uploadDialog}" 
                 modal="false"
                 style="position: absolute; 
                        background-color: #FFFFFF; 

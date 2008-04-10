@@ -9,13 +9,7 @@
         <ui:include src="menubar.jspx"/>
     </ice:panelGroup>
 
-	<ice:panelGroup rendered="#{!participant.mobile}"
-	                styleClass="navigationBar">
-	    <ui:include src="navigationpanel.jspx"/>
-	</ice:panelGroup>
-
-	<ice:form styleClass="mainForm">
-        <div class="mainBackground" >
+	<ice:panelGroup styleClass="navigationBar">
             <ice:panelGroup rendered="#{participant.mobile}"
                             styleClass="statusMessage">
                 <ice:outputText value="#{participant.statusMessage}"
@@ -23,6 +17,12 @@
                                 escape="false"
                                 style="background-color: #C7DFEF; color: #2D6387;"/>
             </ice:panelGroup>
+	    <ui:include src="navigationpanel.jspx"/>
+	</ice:panelGroup>
+
+	<ice:form styleClass="mainForm">
+        <div class="mainBackground" >
+
 			<div class="presentationDIV">
 			    <ui:include src="presentation.jspx"/>
 			</div>

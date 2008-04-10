@@ -79,6 +79,10 @@ img {
     padding-left: 23px;	
 }
 
+.navigationElementPadding {
+    padding: 0 10px 0 10px;
+}
+
 .mainForm {
     background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
 }
