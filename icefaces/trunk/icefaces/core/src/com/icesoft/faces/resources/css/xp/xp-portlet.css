@@ -2196,7 +2196,7 @@ Disabled classes for the calendar controls
     text-decoration: none;
     /*border: 1px solid #ABABAB;*/
     color: #333333;
-    width: 100%;
+    /*width: 100%;*/
     height: 100%;
     padding: 0px;
     display: block;
@@ -2206,7 +2206,7 @@ Disabled classes for the calendar controls
     text-decoration: none;
     /*border: 1px solid #ABABAB;*/
     color: #999999;
-    width: 100%;
+    /*width: 100%;*/
     height: 100%;
     padding: 0px;
     display: block;
