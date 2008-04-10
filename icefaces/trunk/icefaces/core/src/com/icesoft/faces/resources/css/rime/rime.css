@@ -1668,6 +1668,10 @@ table.iceSelInpDate tbody tr td table{
 
 .iceMnuItm a:hover, .iceMnuItmVrt a:hover {
     background-color: #4591A1;
+    color: #4591A1;
+}
+
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt {
     color: #FFFFFF;
 }
 
@@ -1770,7 +1774,7 @@ table.iceSelInpDate tbody tr td table{
 .iceMnuPopVrtItem a:hover {
 /* was iceMenu_verticalItem */
     background-color: #4591A1;
-    color: #FFFFFF;
+    color: #4591A1;
     text-decoration: none;
 }
 
