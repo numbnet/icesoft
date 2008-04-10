@@ -45,11 +45,12 @@ import java.io.Serializable;
  */
 public class PositionedPanelBean implements Serializable {
 
-    private List people = new ArrayList();
+    private List people;
 
     public PositionedPanelBean() {
 
         // add some objects to the list
+        people = new ArrayList(7);
         people.add(new PostionedPanelPerson("Mary Smith"));
         people.add(new PostionedPanelPerson("James Johnson"));
         people.add(new PostionedPanelPerson("Patricia Williams"));

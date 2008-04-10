@@ -38,7 +38,7 @@ ICEfaces component can be configured to run in the respective environment.
    Facelets Enhanced
     Facelets based example which uses meta-data to build the UI content.  This
     example Uses JAXB 2.1 and requires JDK 1.5 to compile and run.  Requires 
-    JDK 1.4 or higher to run.
+    JDK 1.5 or higher to run.
 
 
 --------------------------------------------------------------------------------
@@ -65,4 +65,10 @@ ICEfaces component can be configured to run in the respective environment.
    Portlet and Facelets Enhance.  Each implementation has a build file with
    multiple targets for different Servlet Containers and environements.  Use
    the command "ant -p" to see the available options.
+
+   Facelets Enhanced requires that the JAXB libraries 2.0 or higher.  The lib
+   folder in the dir component-showcase contains JAXB 2.1 jars and they are
+   included in the build by default.  If you are using JDK 1.6 it is suggested
+   that you used the ant property -DisJDK16 to exclude the JAXB libraries from
+   the component-showcase.war
 

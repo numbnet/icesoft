@@ -69,15 +69,13 @@
             />
 
     <!-- jars needed for jaxb-->
-    <patternset id="jaxb.jars"
-                includes="
-        activation.jar
-        jaxb-api.jar
-        jaxb-impl.jar
-        jaxb-xjc.jar
-        jaxb1-impl.jar
-        "
-            />
+    <patternset id="jaxb.jars"  >
+        <exclude  name="activation.jar" if="isJDK16"/>
+        <exclude name="jaxb-api.jar" if="isJDK16"/>
+        <exclude name="jaxb-impl.jar" if="isJDK16"/>
+        <exclude name="jaxb-xjc.jar" if="isJDK16"/>
+        <exclude name="jaxb1-impl.jar" if="isJDK16"/>
+    </patternset>
 
     <target name="clean" depends="common.clean">
         <delete dir="${web.content.dir}/docs"/>
@@ -111,7 +109,9 @@
             <fileset dir="${icefaces.lib.dir}">
                 <patternset refid="faclets.jars"/>
             </fileset>
-            <fileset dir="${proj.war.lib.dir}" includes="*.jar"/>
+            <fileset dir="${proj.war.lib.dir}" includes="*.jar" >
+                <patternset refid="jaxb.jars" />
+            </fileset>
         </copy>
         <build.war web.xml="./web/WEB-INF/web.xml">
             <add.filesets>
