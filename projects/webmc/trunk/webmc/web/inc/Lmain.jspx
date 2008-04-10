@@ -18,10 +18,15 @@
 			    <ui:include src="presentation.jspx"/>
 			</div>
     		<div class="participantsChatDIV">
-				<img src="resources/images/logo_reflection.jpg" />
-				<img src="resources/images/part_tab.jpg"/>
+    		    <ice:panelGroup>
+					<img src="resources/images/logo_reflection.jpg" />
+					<img src="resources/images/part_tab.jpg"/>
+                </ice:panelGroup>
                 <ui:include src="participants.jspx"/>
                 <ui:include src="popups.jspx" />
+				<ice:panelGroup style="padding-top: 15px;">
+				    <img src="resources/images/chat_tab.gif"/>
+				</ice:panelGroup>
 				<ui:include src="Lchat.jspx"/>
     		</div>
         </div>

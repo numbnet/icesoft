@@ -149,10 +149,35 @@ img {
 
 .chatList {
     border-bottom: 1px solid #90B1C9;
+    padding: 0px 10px 0px 10px;
 }
 
 .chatList a {
     text-decoration: underline;
+}
+
+.chatTable{
+	height: 210px;
+}
+
+.inputChatCell{
+    width: 169px;
+    padding: 0 5px 0 5px;
+    float: left;
+}
+
+.inputCHAT {
+    border: 1px solid #B4CEE1;
+    padding: 2px;
+    font: 11px tahoma, arial, sans-serif;
+    width: 150px;
+    color: #4878A1;
+    text-align: left;
+}
+
+.sendChatCell{
+    text-align: right;
+    float: right;
 }
 
 /* TEXT STYLES */
@@ -192,21 +217,13 @@ a.linkORANGE:hover {
     color: #4878A1;
 }
 
-.inputCHAT {
-    border: 1px solid #B4CEE1;
-    padding: 2px;
-    font: 11px tahoma, arial, sans-serif;
-    width: 95%;
-    color: #4878A1;
-    text-align: left;
-}
-
 /* LIST STYLES */
 ul {
     list-style-type: none;
     padding-left: 0;
     margin-left: 0;
     margin-top: 0;
+    margin-bottom: 8px;
 }
 
 li {
@@ -215,7 +232,7 @@ li {
     padding-bottom: 7px;
     margin-bottom: 7px;
     border-bottom: 1px dashed #B4C7D4;
-    width: 100%;
+
 }
 
 .cellBGglossyDARK {

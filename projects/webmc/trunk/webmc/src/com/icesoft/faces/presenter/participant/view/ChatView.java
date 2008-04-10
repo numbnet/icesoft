@@ -42,7 +42,7 @@ import javax.faces.event.ActionEvent;
  * messages are displayed, scrolling up and down, etc.
  */
 public class ChatView {
-    private int viewSize = 7;
+    private int viewSize = 5;
 
     private Message[] chatView = new Message[viewSize];
     private int position = 0;

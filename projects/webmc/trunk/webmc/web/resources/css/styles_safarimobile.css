@@ -79,6 +79,25 @@ html {
     height: 80px;
 }	
 
+.chatList {
+    padding: 0px;	
+}
+
+.chatTable{
+    height: 85px;
+}
+
+.inputChatCell {
+    width: 100%;
+    padding: 0px;
+    float: none;	
+}
+
+.sendChatCell {
+    text-align: right;
+    float: none;
+}
+
 .inputCHAT {
     margin-left: 2px;
     margin-top: 6px;

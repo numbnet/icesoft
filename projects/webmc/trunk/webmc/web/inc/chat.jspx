@@ -1,8 +1,7 @@
-<f:view xmlns:h="http://java.sun.com/jsf/html"
-        xmlns:f="http://java.sun.com/jsf/core"
-        xmlns:ice="http://www.icesoft.com/icefaces/component" >
-	
-<div class="chat" >
+<div xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ice="http://www.icesoft.com/icefaces/component"
+     class="chat" >
 
     <ice:panelGrid columns="2" 
                    styleClass="bgBARBLUE" 
@@ -26,26 +25,23 @@
                                disabled="#{participant.chatView.chatScrollDownDisabled}"/>
         </ice:panelGroup>
     </ice:panelGrid>
-    <ice:panelGroup styleClass="chatList" >
+    <ice:panelGroup styleClass="chatList">
         <ul>
-            <ice:dataTable value="#{participant.chatViewList}"
-                           rows="#{participant.chatView.viewSize}"
-                           var="page"
-                           cellpadding="0" 
-                           cellspacing="0"
-                           width="100%"
-                           height="85px"
-                           style="text-align: left;" >
-                <ice:column>
-                    <li>
-                           <ice:outputText value="#{page.senderFormatted}"
-                                           style="font-weight: bold; "/>
-                           <ice:outputText value="#{page.message}" 
-                                           escape="false"/>
-                        &amp;nbsp;
-                    </li>
-                </ice:column>
-            </ice:dataTable>
+        <ice:dataTable value="#{participant.chatViewList}"
+                       rows="#{participant.chatView.viewSize}"
+                       var="page"
+                       width="100%"
+                       styleClass="chatTable">
+            <ice:column>
+            <li>
+                <ice:outputText value="#{page.senderFormatted}"
+                                style="font-weight: bold;"/>
+                <ice:outputText value="#{page.message}" 
+                                escape="false"/>
+                &amp;nbsp;
+            </li>
+            </ice:column>
+        </ice:dataTable>
         </ul>
     </ice:panelGroup>
     <ice:panelGroup styleClass="bgBARBLUE" >    
@@ -54,11 +50,8 @@
 	                       maxlength="40" 
 	                       styleClass="inputCHAT"
 	                       actionListener="#{participant.addChatMessage}" />
-
 	        <ice:commandButton image="resources/images/chat_send_mobile.gif"
 	                           actionListener="#{participant.addChatMessage}"
 	                           alt="Send"/>
-
     </ice:panelGroup>
 </div>
-</f:view>
