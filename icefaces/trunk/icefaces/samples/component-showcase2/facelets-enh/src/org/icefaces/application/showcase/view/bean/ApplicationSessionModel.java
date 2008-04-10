@@ -55,8 +55,11 @@ public class ApplicationSessionModel implements Serializable {
     // current node, and thus content the user is viewing
     private Node currentNode;
 
-    // navigation model
+    // navigation tree model states
     private NavigationTreeFactory navigationTreeFactory;
+
+    // navigation panel collapsible expanded state
+    private NavigationPanelCollapsibleFactory navigationPanelCollapsible;
 
     // map of tab content visited by users, lazy loaded
     private HashMap<Node, TabState> tabContents;
@@ -67,6 +70,7 @@ public class ApplicationSessionModel implements Serializable {
      */
     public ApplicationSessionModel() {
         navigationTreeFactory = new NavigationTreeFactory();
+        navigationPanelCollapsible = new NavigationPanelCollapsibleFactory();
         tabContents = new HashMap<Node, TabState>();
     }
 
@@ -114,6 +118,14 @@ public class ApplicationSessionModel implements Serializable {
      */
     public NavigationTreeFactory getNavigationTrees() {
         return navigationTreeFactory;
+    }
+
+    /**
+     * Gets the navigation panelCollapsible factory
+     * @return navigation panelCollapsible factory
+     */
+    public NavigationPanelCollapsibleFactory getNavigationPanelCollapsible() {
+        return navigationPanelCollapsible;
     }
 
     /**

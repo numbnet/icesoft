@@ -73,7 +73,7 @@
             var="nodeLevel1">
 
         <ice:panelCollapsible toggleOnClick="true"
-                              expanded="#{nodeLevel1.expanded}"
+                              expanded="#{applicationModel.navigationPanelCollapsible[nodeLevel1.id]}"
                               styleClass="navPnlClpsbl">
 
             <f:facet name="header">
