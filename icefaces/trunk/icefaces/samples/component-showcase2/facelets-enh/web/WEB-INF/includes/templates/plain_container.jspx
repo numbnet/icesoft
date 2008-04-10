@@ -42,6 +42,9 @@ change the border layout dynamically.
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets" >
 
+    <ice:outputConnectionStatus
+            styleClass="navConnectionStatus2"
+            showPopupOnDisconnect="true"/>
     <ui:insert name="example">
         content
     </ui:insert>
