@@ -4,27 +4,37 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      id="container">
 
-    <div class="menuBar">
+    <ice:panelGroup rendered="#{!participant.mobile}"
+                    styleClass="menuBar">
         <ui:include src="menubar.jspx"/>
-    </div>
+    </ice:panelGroup>
 
-	<div class="navigationBar">
+	<ice:panelGroup rendered="#{!participant.mobile}"
+	                styleClass="navigationBar">
 	    <ui:include src="navigationpanel.jspx"/>
-	</div>
+	</ice:panelGroup>
 
 	<ice:form styleClass="mainForm">
         <div class="mainBackground" >
+            <ice:panelGroup rendered="#{participant.mobile}"
+                            styleClass="statusMessage">
+                <ice:outputText value="#{participant.statusMessage}"
+                                effect="#{participant.statusEffect}"
+                                escape="false"
+                                style="background-color: #C7DFEF; color: #2D6387;"/>
+            </ice:panelGroup>
 			<div class="presentationDIV">
 			    <ui:include src="presentation.jspx"/>
 			</div>
     		<div class="participantsChatDIV">
-    		    <ice:panelGroup>
+    		    <ice:panelGroup rendered="#{!participant.mobile}">
 					<img src="resources/images/logo_reflection.jpg" />
 					<img src="resources/images/part_tab.jpg"/>
                 </ice:panelGroup>
                 <ui:include src="participants.jspx"/>
                 <ui:include src="popups.jspx" />
-				<ice:panelGroup style="padding-top: 15px;">
+				<ice:panelGroup rendered="#{!participant.mobile}"
+				                style="padding-top: 15px;">
 				    <img src="resources/images/chat_tab.gif"/>
 				</ice:panelGroup>
 				<ui:include src="chat.jspx"/>
@@ -32,8 +42,9 @@
         </div>
 	</ice:form>
 
-    <div class="footerBar">
+    <ice:panelGroup rendered="#{!participant.mobile}"
+                    styleClass="footerBar">
         <ui:include src="footer.jspx"/>
-    </div>
+    </ice:panelGroup>
 
 </div>

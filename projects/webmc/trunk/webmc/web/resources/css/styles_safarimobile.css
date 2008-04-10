@@ -42,6 +42,12 @@ html {
     font: 10px tahoma, arial, sans-serif;
 }
 
+.mainBackground{
+    background-color: #FFFFFF;
+    background: url( '../images/bgslice_bot.jpg' ) repeat-x bottom left;
+    height: 100%;
+}
+
 .presentationDIV { 
     width: 336px; /*Width of left column*/
     padding: 0px;
