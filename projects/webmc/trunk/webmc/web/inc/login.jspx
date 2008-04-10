@@ -156,7 +156,7 @@
                              partialSubmit="true"
                              maxlength="20"
                              styleClass="loginInput"
-                             actionListener="#{participant.loginBean.validateDemoPassword}">
+                             actionListener="#{participant.loginBean.validatePassword}">
             </ice:inputSecret>
         </ice:panelGroup>
         <!-- Moderator inputs password -->
@@ -175,7 +175,7 @@
         <!-- Viewer Password Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
 	        <ice:outputText value="Invalid" 
-	                        rendered="#{participant.loginBean.invalidDemoPassword}"
+	                        rendered="#{participant.loginBean.invalidPassword}"
 	                        styleClass="inputError"/>
         </ice:panelGroup>
         <!-- Moderator Password Error Message -->

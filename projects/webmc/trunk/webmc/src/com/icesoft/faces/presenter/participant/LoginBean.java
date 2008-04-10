@@ -63,7 +63,7 @@ public class LoginBean {
     private boolean noSlotsLeft = false;
     private HtmlInputText firstNameField = null;
     private OnDemandRenderer loginPageRenderer;
-    private boolean invalidDemoPassword = false;
+    private boolean invalidPassword = false;
     private boolean invalidPresentation = false;
     
     public LoginBean(Participant parent) {
@@ -302,7 +302,7 @@ public class LoginBean {
         clearSingleField(parentForm, "lastName");
         clearSingleField(parentForm, "email");
         clearSingleField(parentForm, "viewPassword");
-        invalidDemoPassword = false;
+        invalidPassword = false;
         invalidPresentation = false;
         clearSingleField(parentForm, "newPresentationName");
         clearSingleField(parentForm, "moderatorPassword");
@@ -338,15 +338,15 @@ public class LoginBean {
         }
     }
 
-	public boolean isInvalidDemoPassword() {
-		return invalidDemoPassword;
+	public boolean isInvalidPassword() {
+		return invalidPassword;
 	}
 
-	public void setInvalidDemoPassword(boolean invalidDemoPassword) {
-		this.invalidDemoPassword = invalidDemoPassword;
+	public void setInvalidPassword(boolean invalidPassword) {
+		this.invalidPassword = invalidPassword;
 	}
 	
-    public void validateDemoPassword(ActionEvent ae){
+    public void validatePassword(ActionEvent ae){
     	if (ae.getSource() instanceof HtmlInputSecret) {
     	    HtmlInputSecret component = (HtmlInputSecret)ae.getSource();
     	    validatePassword((String)component.getValue());
@@ -354,14 +354,14 @@ public class LoginBean {
     }
     
     public boolean validatePassword(String inputPassword){
-    	setInvalidDemoPassword(false);
+    	setInvalidPassword(false);
         if ((presentationName != null) && (!presentationName.equals("")) &&
                 (!presentationName.equals(PresentationManagerBean.DEFAULT_PRESENTATION))) {
         	// View password is invalid if it does not match the selected presentation.
         	if (!PresentationManager
                     .getInstance().isPasswordAndPresentationMatch(
                     inputPassword, getPresentationName())) {
-        		setInvalidDemoPassword(true);
+        		setInvalidPassword(true);
                 return false;
             }
         }

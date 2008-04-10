@@ -264,11 +264,11 @@
                                      redisplay="true" partialSubmit="true"
                                      maxlength="20"
                                      styleClass="loginInput"
-                                     actionListener="#{participant.loginBean.validateDemoPassword}">
+                                     actionListener="#{participant.loginBean.validatePassword}">
                     </ice:inputSecret>
                   <ice:panelGroup>
                     <ice:outputText value="Invalid password" 
-                                    rendered="#{participant.loginBean.invalidDemoPassword}"
+                                    rendered="#{participant.loginBean.invalidPassword}"
                                     styleClass="inputError"/>
                   </ice:panelGroup>
                 </td>
