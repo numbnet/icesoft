@@ -27,7 +27,7 @@
 				<ice:panelGroup style="padding-top: 15px;">
 				    <img src="resources/images/chat_tab.gif"/>
 				</ice:panelGroup>
-				<ui:include src="Lchat.jspx"/>
+				<ui:include src="chat.jspx"/>
     		</div>
         </div>
 	</ice:form>

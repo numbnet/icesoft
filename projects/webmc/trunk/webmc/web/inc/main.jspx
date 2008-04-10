@@ -57,7 +57,7 @@
         </div>
         <div class="participantsChatDIV">
             <ui:include src="participants.jspx"/>
-            <ui:include src="Lchat.jspx"/>
+            <ui:include src="chat.jspx"/>
         </div>
     </ice:form>
 </div>
