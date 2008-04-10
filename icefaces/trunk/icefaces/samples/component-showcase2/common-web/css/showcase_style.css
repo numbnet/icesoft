@@ -250,12 +250,6 @@ a.docViewNodeSelectedtrue{
     color: #444444;
 }
 
-.columnsContainer {
-    height: 250px;
-    width: 100%;
-    border: 1px solid #dedede;
-}
-
 h3 {
     font: 11px tahoma;
     font-weight: bold;
