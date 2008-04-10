@@ -1,2 +1,0 @@
-FCKConfig.ToolbarSets["MyToolbar"] = [['Bold','Italic', 'Underline'], ['Save']] ;
-FCKConfig.EditorAreaCSS = 'http://'+ window.location.host +'/'+window.location.pathname.split("/")[1]+'/css/fck_editorarea.css' ;
