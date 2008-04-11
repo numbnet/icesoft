@@ -2498,6 +2498,13 @@ Disabled classes for the calendar controls
     color: white;
 }
 
+.portlet-section-body-hover .iceRowSelSelectedMouseOver {
+    background-color: #FFA326;
+}
+
+.portlet-section-alternate-hover td, .portlet-section-body-hover td {
+    background-color: #4591A1;  
+ }
 /*
 ----------- outputChart --------
 */

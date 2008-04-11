@@ -38,7 +38,6 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.renderkit.TableRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 
-import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;

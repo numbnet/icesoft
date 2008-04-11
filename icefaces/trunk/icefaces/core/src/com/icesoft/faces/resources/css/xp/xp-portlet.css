@@ -2406,6 +2406,9 @@ Disabled classes for the calendar controls
     background-color: #0D4092;
 }
 
+.portlet-section-body-hover .iceRowSelSelectedMouseOver {
+    background-color: #0D4092;
+}
 .iceRowSelSelectedMouseOver span {
     color: #FFFFFF;
 }
@@ -2414,6 +2417,10 @@ Disabled classes for the calendar controls
 .iceRowSelMouseOver {
     background-color: #B2CDF9;
 }
+
+.portlet-section-alternate-hover td, .portlet-section-body-hover td {
+    background-color: #B2CDF9;   
+ }
 
 .iceRowSelMouseOver span{
     color: #000000;

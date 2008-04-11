@@ -564,10 +564,10 @@ public class TableRenderer
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getSelectedMouseOverClass() +"'");                     
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'");                     
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ rowSelector.getMouseOverClass() +"'");                    
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");                    
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='" +
