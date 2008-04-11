@@ -290,14 +290,6 @@ public class PptPresentationDocument implements PresentationDocument {
 	    }
 
     }
-    
-    private String replaceUserFilename(String name, int slideNumber) {
-        if (name.indexOf(".") != -1) {
-            return "Slide" + slideNumber + name.substring(name.indexOf("."));
-        }
-        
-        return "Slide" + slideNumber;
-    }
 
     /**
      * Internal class used to compare two slides and check for differences
