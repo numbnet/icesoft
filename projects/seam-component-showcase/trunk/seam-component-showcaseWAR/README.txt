@@ -49,7 +49,7 @@ JBoss AS 4.0.5.GA:  (note everything BUT the 2 async components working with thi
   * Start JBoss AS 
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-WebLogic 10 :  (note that the asynch stuff doesn't work for 9.2 )
+WebLogic 10 :  
   * Install WebLogic 10
   * copy hsql.jar to libs for weblogic domain (just regular domain with autodeploy enabled. I created a domain called
      seam-examples and copied this jar into \bea\user-projects\domains\seam-examples\lib)
@@ -65,7 +65,7 @@ WebLogic 10 :  (note that the asynch stuff doesn't work for 9.2 )
   * ant weblogic
   * Start the WebLogic server domain you have created and are using with this datasource
   * copy dist-weblogic/seam-comp-showcase.war to autodeploy folder of domain  
-        (in my example, copy to  \bea\user-projects\domains\seam-examples\autodeploy)
+        (for example, copy to  \bea\user-projects\domains\seam-examples\autodeploy)
   * Access the app at http://localhost:7001/seam-comp-showcase/
   
   
@@ -85,7 +85,7 @@ Tomcat with embeddable JBoss (the build is the same as JBoss 4.2.2 GA WAR):
   * Start Tomcat
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-Glassfish (tested with v1 & v2 but asynch stuff doesn't work yet properly with v1, get hibernate/caching exceptions for asynch with v2
+Glassfish (tested with v2 & v2.1  get hibernate/caching exceptions for asynch with v2
    HOWEVER---works well with v2.1)
   * Install Glassfish v2.1
   * ant glassfish
