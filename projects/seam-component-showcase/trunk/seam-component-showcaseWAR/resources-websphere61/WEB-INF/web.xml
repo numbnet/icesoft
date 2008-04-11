@@ -18,9 +18,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <listener>
       <listener-class>com.icesoft.faces.util.event.servlet.ContextEventRepeater</listener-class>
    </listener>
-   <listener>
-        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-   </listener>    
+
     <filter>
       <filter-name>Seam Filter</filter-name>
       <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
@@ -136,6 +134,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
      <servlet-name>SourceCode Reader</servlet-name>
      <url-pattern>/sourcecodeStream.html</url-pattern>
   </servlet-mapping>
+
+ <!--  <listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+   </listener> -->    
           
     <session-config>
         <session-timeout>10</session-timeout> 
