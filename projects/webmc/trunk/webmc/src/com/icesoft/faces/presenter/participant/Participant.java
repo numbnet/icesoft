@@ -436,7 +436,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         }
 
         if (presentation != null) {
-            if (presentation.hasSlotsLeft()) {
                 // Update the chat and participant view with the presentation they are in
                 chatView.setPresentation(presentation);
                 participantView.setPresentation(presentation);
@@ -449,12 +448,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
                 // Handle leaving the login page
                 loggedIn=true;
-                loginBean.setSlotsAvailable();
 
                 return "loginSuccess";
-            } else {
-                loginBean.setSlotsNone();
-            }
         }
 
         return "failed";

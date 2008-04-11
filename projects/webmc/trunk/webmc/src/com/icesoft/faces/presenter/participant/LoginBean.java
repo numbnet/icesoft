@@ -60,7 +60,6 @@ public class LoginBean {
     private String presentationName = "";
     private String presentationPassword;
     private String presentationMaxString = "-1";
-    private boolean noSlotsLeft = false;
     private HtmlInputText firstNameField = null;
     private OnDemandRenderer loginPageRenderer;
     private boolean invalidPassword = false;
@@ -100,10 +99,6 @@ public class LoginBean {
 
     public void setPresentationMaxString(String presentationMaxString) {
         this.presentationMaxString = presentationMaxString;
-    }
-
-    public boolean isNoSlotsLeft() {
-        return noSlotsLeft;
     }
 
     public HtmlInputText getFirstNameField() {
@@ -168,31 +163,6 @@ public class LoginBean {
     }
 
     /**
-     * Convenience method to set that slots are not available
-     */
-    public void setSlotsNone() {
-        noSlotsLeft = true;
-    }
-
-    /**
-     * Convenience method to set that slots are still available
-     */
-    public void setSlotsAvailable() {
-        noSlotsLeft = false;
-    }
-    
-    /**
-     * Method called when the "no room left" notification popup is closed
-     *
-     * @return "closeNoSlotsDialog"
-     */
-    public String closeNoSlotsDialog() {
-        noSlotsLeft = false;
-
-        return "closeNoSlotsDialog";
-    }
-
-    /**
      * Convenience method to add the parent participant to the login renderer
      */
     public void addRenderable() {
@@ -250,7 +220,6 @@ public class LoginBean {
             presentationName = "";
             return;
         }
-        noSlotsLeft = false;
     }
 
     /**

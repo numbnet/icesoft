@@ -193,22 +193,6 @@ public class PresentationInfo {
     }
 
     /**
-     * Convenience method to determine if any spaces are left for new 
-     * participants to be added to the presentation
-     *
-     * @return true if the participant can join
-     */
-    public boolean hasSlotsLeft() {
-        if (maxParticipants != -1) {
-            if (participants.size() >= maxParticipants) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Convenience method to get the number of chat participants as a readable
      * string
      *

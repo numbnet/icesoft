@@ -190,7 +190,6 @@ public class AutoPresentation {
         Participant toReturn = new Participant();
         toReturn.getLoginBean().setPresentationPassword(DEFAULT_PASSWORD);
         toReturn.getLoginBean().setPresentationMaxString("100");
-        toReturn.getLoginBean().setSlotsAvailable();
         toReturn.setFirstName("Automated");
         toReturn.setLastName("Control");
         toReturn.setEmail("admin@icefaces.org");
