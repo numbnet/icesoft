@@ -52,6 +52,7 @@
 	<fileset id="icefaces.extra" dir="${icefaces.home}">
 	       <include name="lib/commons-discovery.jar"/>
 		   <include name="lib/commons-el.jar"/>
+		   <include name="lib/el-api.jar"/>
 	</fileset>
 	
 	<fileset id="noejb.war.extras" dir="${resources.dir}">

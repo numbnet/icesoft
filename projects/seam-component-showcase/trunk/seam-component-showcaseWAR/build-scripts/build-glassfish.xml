@@ -43,6 +43,8 @@
     <fileset id="noejb.war.extras" dir="${resources.dir}">
 	  <include name="WEB-INF/classes/**/*" />
     </fileset>
-       
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
+	    <include name="lib/commons-collections.jar"/>
+	</fileset>   
 </project>
 

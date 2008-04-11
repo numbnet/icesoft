@@ -383,9 +383,9 @@
     </target>
     
 	<target name="freshen"  description="grab fresh icefaces jars">
-		 <delete file="${lib.dir}/*.jar"/>
-		 <delete dir="${lib.dir}" />
-		 <mkdir dir="${lib.dir}" /> 
+		  <delete file="${lib.dir}/*.jar"/> 
+	 	 <delete dir="${lib.dir}" />
+
 		<copy todir="${lib.dir}">
 	        <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />

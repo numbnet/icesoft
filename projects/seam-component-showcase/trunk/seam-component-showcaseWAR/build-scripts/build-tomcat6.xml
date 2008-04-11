@@ -44,6 +44,9 @@
 		<include name="META-INF/context.xml" />
 	</fileset>
 
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
+	    <include name="lib/commons-collections.jar"/>
+	</fileset>
 	    <echo message="ICEfaces home: ${icefaces.home}"/>
 		<echo message="Seam home: ${jboss.seam.home}"/>
 		<echo message="Jboss server: ${jboss.home}"/>
