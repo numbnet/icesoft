@@ -30,7 +30,11 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
+.splashContainer{
+    height:432px;
+    margin-top:30px;
+    width:680px;
+}
 .buttonsAndLinksContainer{
     width:500px;
 }

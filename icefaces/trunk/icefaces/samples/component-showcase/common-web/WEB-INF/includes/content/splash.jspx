@@ -31,7 +31,7 @@
 ~
 -->
 
-<div style="padding-right:50px;padding-left:15px;">
+<div class="exampleBox  splashContainer">
     
     <p>The ICEfaces Component Suite provides a complete set of enhanced
         standard and custom JavaServer Faces (JSF) components. These

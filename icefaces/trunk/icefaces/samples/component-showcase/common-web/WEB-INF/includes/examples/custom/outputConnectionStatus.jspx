@@ -65,32 +65,44 @@ In this demonstration ice:connectionStatus different icons are displayed.
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme1.value']}"/>
             <ice:graphicImage
+                    width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_idle.gif"/>
             <ice:graphicImage
+                    width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_active.gif"/>
             <ice:graphicImage
+                    width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_caution.gif"/>
             <ice:graphicImage
+                    width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_disconnected.gif"/>
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme2.value']}"/>
             <ice:graphicImage
+                    width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_idle.gif"/>
             <ice:graphicImage
+                    width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_active.gif"/>
             <ice:graphicImage
+                    width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_caution.gif"/>
             <ice:graphicImage
+                    width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_disconnected.gif"/>
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme3.value']}"/>
             <ice:graphicImage
+                    width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_idle.gif"/>
             <ice:graphicImage
+                    width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_active.gif"/>
             <ice:graphicImage
+                    width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_caution.gif"/>
             <ice:graphicImage
+                    width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_disconnected.gif"/>
 
         </ice:panelGrid>
