@@ -45,6 +45,9 @@
 	  <include name="WEB-INF/classes/**/*" />
           <include name="WEB-INF/tld/liferay-portlet.tld"/>
     </fileset>
-       
+     
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
+		<include name="lib/commons-collections.jar"/>
+	</fileset>
 </project>
 
