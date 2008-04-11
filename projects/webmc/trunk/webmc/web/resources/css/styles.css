@@ -238,6 +238,34 @@ li {
 
 }
 
+.fileUploadPopup, .switchModeratorPopup, .logoutPopup {
+    position: absolute; 
+    background-color: #FFFFFF;
+    z-index:1001;
+    border: 1px solid #104675;
+}
+
+.fileUploadPopup {
+    width: 550px; 
+    height: 235px;  
+    top: 30%; 
+    left: 30%;	
+}
+
+.switchModeratorPopup {
+    width: 300px; 
+    height: 125px;  
+    top: 35%; 
+    left: 35%;
+}
+
+.logoutPopup{
+    width: 300px; 
+    height: 110px;
+    top: 35%; 
+    left: 35%;
+}
+
 .cellBGglossyDARK {
     background: #FFFFFF url( '../images/bgslice_glossydarkblue.jpg' ) repeat-x top left;
     padding: 10px 10px 10px 10px;

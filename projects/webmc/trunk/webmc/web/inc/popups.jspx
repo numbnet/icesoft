@@ -6,14 +6,7 @@
 <ice:panelPopup rendered="#{!participant.mobile}"
                 visible="#{participant.uploadDialog}" 
                 modal="false"
-                style="position: absolute; 
-                       background-color: #FFFFFF; 
-                       width: 550px; 
-                       height: 235px; 
-                       z-index:1001; 
-                       top: 30%; 
-                       left: 30%; 
-                       border: 1px solid #104675;">
+                styleClass="fileUploadPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
             <strong>Upload a New Presentation</strong>
@@ -54,14 +47,7 @@
 <!-- Switch Moderator Dialog -->
 <ice:panelPopup visible="#{participant.moderatorDialog}" 
                 modal="false"
-                style="position: absolute; 
-                       background-color: #FFFFFF; 
-                       width: 300px; 
-                       height: 125px; 
-                       z-index:1001; 
-                       top: 35%; 
-                       left: 35%; 
-                       border: 1px solid #104675;">
+                styleClass="switchModeratorPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
             <strong>Confirm Moderator Change</strong>
@@ -88,14 +74,7 @@
 <!-- Logout Dialog -->
 <ice:panelPopup visible="#{participant.confirmDialog}" 
                 modal="false"
-                style="position: absolute; 
-                       background-color: #FFFFFF; 
-                       width: 300px; 
-                       height: 110px; 
-                       z-index:1001; 
-                       top: 35%; 
-                       left: 35%; 
-                       border: 1px solid #104675;">
+                styleClass="logoutPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
             <strong>Confirm Logout</strong>

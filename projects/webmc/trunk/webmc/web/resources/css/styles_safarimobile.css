@@ -134,3 +134,14 @@ li {
     margin-bottom: 0px;
     font: 10px tahoma, arial, sans-serif;
 }
+
+.switchModeratorPopup {  
+    top: 20%; 
+    left: 20%;
+}
+
+.logoutPopup{
+    width: 250px; 
+    top: 25%; 
+    left: 25%;
+}
