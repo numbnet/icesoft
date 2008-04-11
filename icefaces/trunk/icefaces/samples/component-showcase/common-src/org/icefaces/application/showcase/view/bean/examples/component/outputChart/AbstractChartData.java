@@ -61,6 +61,9 @@ public abstract class AbstractChartData {
     public static final int RADIAL_CHART_TYPE = 1;
     public static final int CUSTOM_CHART_TYPE = 2;
 
+    // render on submit flag
+    protected boolean renderOnSubmit;
+
     // chart type support area mapping
     protected boolean areaMapEnabled;
     // chart type supports orientation 
@@ -137,7 +140,16 @@ public abstract class AbstractChartData {
      * @return boolean true if OutputChart should be re-rendered; otherwise,
      *         false.
      */
-    public abstract boolean renderOnSubmit(OutputChart component);
+    public boolean renderOnSubmit(OutputChart component){
+        boolean renderOnSubmit = this.renderOnSubmit;
+
+        // reset render on submit for next request/response
+        if (renderOnSubmit){
+            this.renderOnSubmit = false;
+        }
+        
+        return renderOnSubmit;
+    }
 
     /**
      * Indicates that current chart instance supports image map interaction
@@ -207,6 +219,7 @@ public abstract class AbstractChartData {
 
     public void setLegendPlacement(String legendPlacement) {
         this.legendPlacement = legendPlacement;
+        renderOnSubmit = true;
     }
 
     public String getPlotPointShape() {
@@ -231,6 +244,7 @@ public abstract class AbstractChartData {
 
     public void setBarChartOrientationHorizontal(boolean barChartOrientationHorizontal) {
         this.barChartOrientationHorizontal = barChartOrientationHorizontal;
+        renderOnSubmit = true;
     }
 
     public ArrayList getLegendLabels() {

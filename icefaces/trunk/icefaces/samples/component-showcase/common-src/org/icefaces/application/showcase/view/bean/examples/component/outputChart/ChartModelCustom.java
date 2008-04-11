@@ -166,7 +166,7 @@ public class ChartModelCustom extends AbstractChartData {
         if (axisChart != null) {
             component.setChart(axisChart);
         }
-        return true;
+        return renderOnSubmit;
     }
 
     /**

@@ -98,6 +98,8 @@ public class ChartModelRadial extends AbstractChartData {
         yAxisTitle = "Occurences";
 
         legendPlacement = "bottom";
+
+        renderOnSubmit = true;
     }
 
     /**
@@ -113,6 +115,8 @@ public class ChartModelRadial extends AbstractChartData {
         int year = Integer.parseInt(
                 (String)xAxisLabels.get(xAxisLabels.size() - 1)) + 1;
         xAxisLabels.add(String.valueOf(year));
+
+        renderOnSubmit = true;
     }
 
     /**
@@ -123,6 +127,8 @@ public class ChartModelRadial extends AbstractChartData {
         if (chartData.size() > 0 && xAxisLabels.size() > 0) {
             chartData.remove(chartData.size() - 1);
             xAxisLabels.remove(xAxisLabels.size() - 1);
+
+            renderOnSubmit = true;
         }
     }
 
@@ -143,14 +149,4 @@ public class ChartModelRadial extends AbstractChartData {
         return chartData;
     }
 
-    /**
-     * Method to tell the page to render or not based on the initialized flag
-     *
-     * @param component chart component which will be rendered.
-     * @return boolean true if OutputChart should be re-rendered; otherwise,
-     *         false.
-     */
-    public boolean renderOnSubmit(OutputChart component) {
-        return true;
-    }
 }
