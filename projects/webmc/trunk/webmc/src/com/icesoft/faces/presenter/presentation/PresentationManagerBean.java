@@ -49,10 +49,6 @@ import java.util.Map;
 public class PresentationManagerBean {
     public static final String DEFAULT_PRESENTATION = "Select Presentation...";
     private static final String NO_PRESENTATION = "None Available";
-    private static final int MAX_PARTICIPANT_COUNT = 20;
-    private static final int MAX_PARTICIPANT_INTERVAL = 5;
-    private static final SelectItem[] MAX_PARTICIPANT_LIST =
-            generateMaxParticipantList();
 
     private PresentationManager backendManager =
             PresentationManager.getInstance();
@@ -61,10 +57,6 @@ public class PresentationManagerBean {
     private OnDemandRenderer loginPageRenderer;
 
     public PresentationManagerBean() {
-    }
-
-    public SelectItem[] getMaxParticipantList() {
-        return MAX_PARTICIPANT_LIST;
     }
 
     public String getCurrentPresentationsSelection() {
@@ -148,27 +140,6 @@ public class PresentationManagerBean {
         currentPresentationsSelection = DEFAULT_PRESENTATION;
         return (SelectItem[]) presentationNames
                 .toArray(new SelectItem[presentationNames.size()]);
-    }
-
-    /**
-     * Convenience method to generate a maximum participant list of SelectItems,
-     * which can be used by dropdowns on the login screen This list can be a
-     * simple 1-10, or a 5, 10, 15, 20, etc. affair
-     *
-     * @return list of SelectItem numbers
-     */
-    private static SelectItem[] generateMaxParticipantList() {
-        int size = MAX_PARTICIPANT_COUNT / MAX_PARTICIPANT_INTERVAL;
-        SelectItem[] toReturn = new SelectItem[size];
-
-        for (int i = 1; i <= size; i++) {
-            toReturn[i - 1] =
-                    new SelectItem(String.valueOf(i * MAX_PARTICIPANT_INTERVAL),
-                                   String.valueOf(
-                                           i * MAX_PARTICIPANT_INTERVAL));
-        }
-
-        return toReturn;
     }
 
     /**

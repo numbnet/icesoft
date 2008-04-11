@@ -99,9 +99,7 @@ public class PresentationManager {
         if (!presentationExists(name)) {
             toReturn = new Presentation(name,
                                         participant.getLoginBean().getPresentationPassword(),
-                                        participant, Integer.parseInt(
-                                         participant.getLoginBean().getPresentationMaxString()),
-                                        renderer);
+                                        participant, renderer);
 
             toReturn.addChatMessage("Notice", "New Presentation.");
 

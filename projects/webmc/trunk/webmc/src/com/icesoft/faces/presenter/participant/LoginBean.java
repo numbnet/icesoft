@@ -59,7 +59,6 @@ public class LoginBean {
     private Participant parent;
     private String presentationName = "";
     private String presentationPassword;
-    private String presentationMaxString = "-1";
     private HtmlInputText firstNameField = null;
     private OnDemandRenderer loginPageRenderer;
     private boolean invalidPassword = false;
@@ -91,14 +90,6 @@ public class LoginBean {
 
     public void setPresentationPassword(String presentationPassword) {
         this.presentationPassword = presentationPassword;
-    }
-
-    public String getPresentationMaxString() {
-        return presentationMaxString;
-    }
-
-    public void setPresentationMaxString(String presentationMaxString) {
-        this.presentationMaxString = presentationMaxString;
     }
 
     public HtmlInputText getFirstNameField() {
@@ -247,7 +238,6 @@ public class LoginBean {
         clearSingleField(parentForm, "moderatorPassword");
         
         // Clear the select boxes
-        clearSingleField(parentForm, "maxParticipantSelect");
         clearSingleField(parentForm, "existingPresentationName");
 
         // Reset available variables
@@ -283,7 +273,6 @@ public class LoginBean {
     public void clearFields() {
         presentationName = "";
         presentationPassword = null;
-        presentationMaxString = "-1";
     }
 	
     public void validatePassword(ActionEvent ae){

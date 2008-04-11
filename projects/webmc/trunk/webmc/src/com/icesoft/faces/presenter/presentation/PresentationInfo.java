@@ -53,20 +53,16 @@ public class PresentationInfo {
     protected String password;
     protected Participant moderator;
     protected List participants = Collections.synchronizedList(new ArrayList());
-    protected int maxParticipants =
-            -1; // number of participants allowed, -1 = no limit
     protected MessageLog messageLog = new MessageLog();
     protected boolean autoPlay = false;
 
     public PresentationInfo() {
     }
 
-    public PresentationInfo(String name, String password, Participant moderator,
-                            int maxParticipants) {
+    public PresentationInfo(String name, String password, Participant moderator) {
         this.name = name;
         this.password = password;
         this.moderator = moderator;
-        this.maxParticipants = maxParticipants;
     }
 
     public String getName() {
@@ -113,14 +109,6 @@ public class PresentationInfo {
     
     public void setParticipants(List participants) {
         this.participants = participants;
-    }
-
-    public int getMaxParticipants() {
-        return maxParticipants;
-    }
-    
-    public void setMaxParticipants(int maxParticipants) {
-        this.maxParticipants = maxParticipants;
     }
 
     public MessageLog getMessageLog() {

@@ -80,8 +80,8 @@ public class Presentation extends PresentationInfo {
     }
 
     public Presentation(String name, String password, Participant moderator,
-                        int maxParticipants, OnDemandRenderer renderer) {
-        super(name, password, moderator, maxParticipants);
+    		OnDemandRenderer renderer) {
+        super(name, password, moderator);
         this.renderer = renderer;
     }
 
