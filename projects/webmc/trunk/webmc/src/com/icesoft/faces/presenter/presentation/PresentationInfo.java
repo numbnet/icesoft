@@ -69,6 +69,14 @@ public class PresentationInfo {
         this.maxParticipants = maxParticipants;
     }
 
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     /**
      * Method to get the prefix
      * If the prefix has not been generated yet, it will be before being returned
@@ -81,14 +89,6 @@ public class PresentationInfo {
         }
 
         return prefix;
-    }
-
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {

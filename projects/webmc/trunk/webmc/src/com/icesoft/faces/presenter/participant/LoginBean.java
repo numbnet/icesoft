@@ -93,8 +93,52 @@ public class LoginBean {
     public void setPresentationPassword(String presentationPassword) {
         this.presentationPassword = presentationPassword;
     }
-    
-    /**
+
+    public String getPresentationMaxString() {
+        return presentationMaxString;
+    }
+
+    public void setPresentationMaxString(String presentationMaxString) {
+        this.presentationMaxString = presentationMaxString;
+    }
+
+    public boolean isNoSlotsLeft() {
+        return noSlotsLeft;
+    }
+
+    public HtmlInputText getFirstNameField() {
+        return firstNameField;
+    }
+
+    public void setFirstNameField(HtmlInputText firstNameField) {
+        this.firstNameField = firstNameField;
+    }
+
+    public OnDemandRenderer getLoginPageRenderer() {
+        return loginPageRenderer;
+    }
+
+    public void setLoginPageRenderer(OnDemandRenderer loginPageRenderer) {
+        this.loginPageRenderer = loginPageRenderer;
+    }
+
+	public boolean isInvalidPassword() {
+		return invalidPassword;
+	}
+
+	public void setInvalidPassword(boolean invalidPassword) {
+		this.invalidPassword = invalidPassword;
+	}
+
+	public boolean isInvalidPresentation() {
+		return invalidPresentation;
+	}
+
+	public void setInvalidPresentation(boolean invalidPresentation) {
+		this.invalidPresentation = invalidPresentation;
+	}
+
+	/**
      * Method to get the default presentation names as a formatted String
      *
      * @return formatted defaultPresentationNames
@@ -124,34 +168,6 @@ public class LoginBean {
     }
 
     /**
-     * Method to get the maximum participants value from the front end page
-     * dropdown list
-     *
-     * @return presentationMaxString
-     */
-    public String getPresentationMaxString() {
-        return presentationMaxString;
-    }
-
-    /**
-     * Method to set the maximum participants value
-     *
-     * @param presentationMaxString new
-     */
-    public void setPresentationMaxString(String presentationMaxString) {
-        this.presentationMaxString = presentationMaxString;
-    }
-
-    /**
-     * Method to determine if any room is left in an existing presentation
-     *
-     * @return noSlotsLeft
-     */
-    public boolean isNoSlotsLeft() {
-        return noSlotsLeft;
-    }
-
-    /**
      * Convenience method to set that slots are not available
      */
     public void setSlotsNone() {
@@ -164,42 +180,16 @@ public class LoginBean {
     public void setSlotsAvailable() {
         noSlotsLeft = false;
     }
-
+    
     /**
-     * Method to get the first name field which is bound to a front end page
-     * component, and is used for requesting focus
+     * Method called when the "no room left" notification popup is closed
      *
-     * @return firstNameField
+     * @return "closeNoSlotsDialog"
      */
-    public HtmlInputText getFirstNameField() {
-        return firstNameField;
-    }
+    public String closeNoSlotsDialog() {
+        noSlotsLeft = false;
 
-    /**
-     * Method to set the first name field
-     *
-     * @param firstNameField new
-     */
-    public void setFirstNameField(HtmlInputText firstNameField) {
-        this.firstNameField = firstNameField;
-    }
-
-    /**
-     * Method to get the onDemand login page renderer
-     *
-     * @return loginPageRenderer
-     */
-    public OnDemandRenderer getLoginPageRenderer() {
-        return loginPageRenderer;
-    }
-
-    /**
-     * Method to set the onDemand login page renderer
-     *
-     * @param loginPageRenderer new
-     */
-    public void setLoginPageRenderer(OnDemandRenderer loginPageRenderer) {
-        this.loginPageRenderer = loginPageRenderer;
+        return "closeNoSlotsDialog";
     }
 
     /**
@@ -219,31 +209,6 @@ public class LoginBean {
         if (loginPageRenderer != null) {
             loginPageRenderer.remove(parent);
         }
-    }
-
-    /**
-     * Method called when a presentation is selected in the front end page level
-     * dropdown list
-     *
-     * @param event of the selection
-     */
-    public void selectPresentation(ValueChangeEvent event) {
-        if (parent.isModerator()) {
-            presentationName = "";
-            return;
-        }
-        noSlotsLeft = false;
-    }
-
-    /**
-     * Method called when the "no room left" notification popup is closed
-     *
-     * @return "closeNoSlotsDialog"
-     */
-    public String closeNoSlotsDialog() {
-        noSlotsLeft = false;
-
-        return "closeNoSlotsDialog";
     }
 
     /**
@@ -275,12 +240,17 @@ public class LoginBean {
     }
 
     /**
-     * Method to reset the login fields
+     * Method called when a presentation is selected in the front end page level
+     * dropdown list
+     *
+     * @param event of the selection
      */
-    public void clearFields() {
-        presentationName = "";
-        presentationPassword = null;
-        presentationMaxString = "-1";
+    public void selectPresentation(ValueChangeEvent event) {
+        if (parent.isModerator()) {
+            presentationName = "";
+            return;
+        }
+        noSlotsLeft = false;
     }
 
     /**
@@ -338,13 +308,14 @@ public class LoginBean {
         }
     }
 
-	public boolean isInvalidPassword() {
-		return invalidPassword;
-	}
-
-	public void setInvalidPassword(boolean invalidPassword) {
-		this.invalidPassword = invalidPassword;
-	}
+    /**
+     * Method to reset the login fields
+     */
+    public void clearFields() {
+        presentationName = "";
+        presentationPassword = null;
+        presentationMaxString = "-1";
+    }
 	
     public void validatePassword(ActionEvent ae){
     	if (ae.getSource() instanceof HtmlInputSecret) {
@@ -386,11 +357,4 @@ public class LoginBean {
         return true;
     }
 
-	public boolean isInvalidPresentation() {
-		return invalidPresentation;
-	}
-
-	public void setInvalidPresentation(boolean invalidPresentation) {
-		this.invalidPresentation = invalidPresentation;
-	}
 }

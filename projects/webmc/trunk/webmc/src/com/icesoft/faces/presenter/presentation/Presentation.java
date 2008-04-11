@@ -85,16 +85,8 @@ public class Presentation extends PresentationInfo {
         this.renderer = renderer;
     }
 
-    public PresentationManagerBean getManager() {
-        return manager;
-    }
-    
-    public void setManager(PresentationManagerBean manager) {
-        this.manager = manager;
-    }
-
-    public SlideshowTimerBean getTimer() {
-        return stimer;
+    public int getCurrentSlideNumber() {
+        return currentSlideNumber;
     }
 
     public int getProgress() {
@@ -105,8 +97,16 @@ public class Presentation extends PresentationInfo {
         this.progress = progress;
     }
 
-    public int getCurrentSlideNumber() {
-        return currentSlideNumber;
+    public PresentationManagerBean getManager() {
+        return manager;
+    }
+    
+    public void setManager(PresentationManagerBean manager) {
+        this.manager = manager;
+    }
+
+    public SlideshowTimerBean getTimer() {
+        return stimer;
     }
 
     /**
@@ -211,32 +211,6 @@ public class Presentation extends PresentationInfo {
         return new Slide[0];
     }
 
-    /**
-     * Method to determine which image to load for the various moderator control
-     * buttons. Returning a false would mean the faded / disabled button is
-     * shown. Return true just shows the normal enabled buttons
-     *
-     * @return true to show the normal control button images
-     */
-    public boolean getImageLoaded() {
-        if (!isLoaded()) {
-            return false;
-        }
-        if (getAutoPlay()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Method to determine if a document is loaded or not
-     *
-     * @return true if the current document is not null and is loaded
-     */
-    public boolean isLoaded() {
-        return document != null && document.isLoaded();
-    }
-
    /**
      * Method to set a specific slide number This doesn't actually set a
      * variable, but is needed to fulfill the JSF page requirements
@@ -273,6 +247,32 @@ public class Presentation extends PresentationInfo {
         }
 
         requestOnDemandRender();
+    }
+
+    /**
+     * Method to determine which image to load for the various moderator control
+     * buttons. Returning a false would mean the faded / disabled button is
+     * shown. Return true just shows the normal enabled buttons
+     *
+     * @return true to show the normal control button images
+     */
+    public boolean getImageLoaded() {
+        if (!isLoaded()) {
+            return false;
+        }
+        if (getAutoPlay()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method to determine if a document is loaded or not
+     *
+     * @return true if the current document is not null and is loaded
+     */
+    public boolean isLoaded() {
+        return document != null && document.isLoaded();
     }
 
     /**

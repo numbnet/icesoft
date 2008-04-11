@@ -62,6 +62,18 @@ public class Slide {
         this.location = location;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+	public boolean isMobile() {
+		return mobile;
+	}
+
     /**
      * Method to get the default slide for either a moderator or viewer
      *
@@ -94,17 +106,5 @@ public class Slide {
         }
         return INFO_SLIDE;
     }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-	public boolean isMobile() {
-		return mobile;
-	}
 
 }

@@ -63,12 +63,14 @@ public class PresentationManagerBean {
     public PresentationManagerBean() {
     }
 
-    /**
-     * Method to return the render manager, which is set through
-     * faces-config.xml
-     *
-     * @return the render manager
-     */
+    public SelectItem[] getMaxParticipantList() {
+        return MAX_PARTICIPANT_LIST;
+    }
+
+    public String getCurrentPresentationsSelection() {
+        return currentPresentationsSelection;
+    }
+
     public RenderManager getRenderManager() {
         return renderManager;
     }
@@ -103,26 +105,6 @@ public class PresentationManagerBean {
      */
     public String getDefaultPresentationSelection() {
         return DEFAULT_PRESENTATION;
-    }
-
-    /**
-     * Method to get the currently selected presentation name This is used for
-     * the value in dropdowns on the login screen
-     *
-     * @return the string
-     */
-    public String getCurrentPresentationsSelection() {
-        return currentPresentationsSelection;
-    }
-
-    /**
-     * Method to get the maximum participant list, for use in dropdowns on the
-     * login screen
-     *
-     * @return MAX_PARTICIPANT_LIST as SelectItems
-     */
-    public SelectItem[] getMaxParticipantList() {
-        return MAX_PARTICIPANT_LIST;
     }
 
     /**

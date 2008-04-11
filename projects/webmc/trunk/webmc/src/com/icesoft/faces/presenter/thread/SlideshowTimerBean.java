@@ -56,11 +56,6 @@ public class SlideshowTimerBean extends SlideshowTimer {
         super(parent);
     }
 
-    /**
-     * Method to get the change delay SelectItem list
-     *
-     * @return CHANGE_DELAY_ITEMS
-     */
     public SelectItem[] getChangeDelayItems() {
         return CHANGE_DELAY_ITEMS;
     }

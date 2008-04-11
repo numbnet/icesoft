@@ -71,15 +71,6 @@ public class ParticipantInfo {
         this.email = email;
     }
 
-    /**
-     * Method to reset the participant info fields
-     */
-    public void clearFields() {
-        firstName = "";
-        lastName = "";
-        email = "";
-    }
-
     public String getSkype()
     {
         return skype;
@@ -92,6 +83,15 @@ public class ParticipantInfo {
         {
             hasSkype = true;
         }
+    }
+    
+    /**
+     * Method to reset the participant info fields
+     */
+    public void clearFields() {
+        firstName = "";
+        lastName = "";
+        email = "";
     }
 
 }

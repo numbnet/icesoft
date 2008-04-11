@@ -51,6 +51,10 @@ public class ParticipantView {
     public ParticipantView() {
     }
 
+    public int getViewSize() {
+        return VIEW_SIZE;
+    }
+
     public int getPosition() {
         return position;
     }
@@ -65,10 +69,6 @@ public class ParticipantView {
     
     public void setPresentation(Presentation presentation) {
         this.presentation = presentation;
-    }
-
-    public int getViewSize() {
-        return VIEW_SIZE;
     }
 
     /**

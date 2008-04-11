@@ -78,6 +78,10 @@ public class PresentationManager {
         return (singleton);
     }
 
+    public Map getPresentationMap() {
+        return presentationMap;
+    }
+
     /**
      * Method to create a new presentation based on the passed variables In
      * addition to generating the new presentation, this will add a chat message
@@ -146,15 +150,6 @@ public class PresentationManager {
         }
 
         return null;
-    }
-
-    /**
-     * Method to return the presentation list map
-     *
-     * @return the map
-     */
-    public Map getPresentationMap() {
-        return presentationMap;
     }
 
     /**

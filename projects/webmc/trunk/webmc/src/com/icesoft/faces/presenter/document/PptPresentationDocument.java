@@ -50,7 +50,7 @@ import java.util.Comparator;
 /**
  * Class representing the source document used for the Presentation. The
  * Participant initiates the loading of a file which causes the
- * PptPresentationDocument to create .png slides for the presentation.
+ * PptPresentationDocument to create slides for the presentation.
  */
 public class PptPresentationDocument implements PresentationDocument {
     private static Log log = LogFactory.getLog(PptPresentationDocument.class);

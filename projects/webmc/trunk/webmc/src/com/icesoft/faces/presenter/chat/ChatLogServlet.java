@@ -49,8 +49,7 @@ import java.util.Date;
 
 /**
  * Class used to translate the participant chat log into a returnable text
- * stream Basically it writes a text file of the chat log (with formatting
- * removed) to the return stream
+ * stream.
  */
 public class ChatLogServlet extends HttpServlet {
     /**

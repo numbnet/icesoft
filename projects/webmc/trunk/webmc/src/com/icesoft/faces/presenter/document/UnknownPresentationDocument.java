@@ -44,7 +44,8 @@ import java.io.File;
  * would be taken
  */
 public class UnknownPresentationDocument implements PresentationDocument {
-    private Presentation presentation;
+
+	private Presentation presentation;
     private boolean loaded = false;
 
     public UnknownPresentationDocument(Presentation presentation) {

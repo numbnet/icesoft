@@ -48,6 +48,14 @@ public class ChatView {
     private int position = 0;
     private Presentation presentation;
 
+    public int getViewSize() {
+        return viewSize;
+    }
+
+	public void setViewSize(int viewSize) {
+		this.viewSize = viewSize;
+	}
+
     public int getPosition() {
         return position;
     }
@@ -63,14 +71,6 @@ public class ChatView {
     public void setPresentation(Presentation presentation) {
         this.presentation = presentation;
     }
-
-    public int getViewSize() {
-        return viewSize;
-    }
-
-	public void setViewSize(int viewSize) {
-		this.viewSize = viewSize;
-	}
 
     /**
      * Method to generate the chat log as an array of Message objects If no

@@ -67,9 +67,8 @@ import org.apache.commons.logging.LogFactory;
  * messages, chatting, slide changing, etc.
  */
 public class Participant extends ParticipantInfo implements Renderable, DisposableBean {
-    private static final int HIGHLIGHT_TIME = 4000;
-
     private static Log log = LogFactory.getLog(Participant.class);
+    private static final int HIGHLIGHT_TIME = 4000;
 
     private int role = ParticipantInfo.ROLE_VIEWER;
     private int moderatorSelection;
@@ -92,138 +91,62 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private boolean mobile = false;
     private boolean mobileSniffed = false;
     private boolean loggedIn = false;
-    
 
     public Participant() {
         super();
         state = PersistentFacesState.getInstance();
     }
 
-    /**
-     * Method to check if the role of this participant is ROLE_MODERATOR
-     *
-     * @return true if role is ROLE_MODERATOR, false otherwise
-     */
-    public boolean isModerator() {
-        return role == ROLE_MODERATOR;
-    }
-
-    /**
-     * Method to determine if the moderator dialog is open or not
-     *
-     * @return moderatorDialog
-     */
-    public boolean getModeratorDialog() {
-        return moderatorDialog;
-    }
-
-    /**
-     * Method to determine if the confirm logout dialog is open or not
-     *
-     * @return confirmDialog
-     */
-    public boolean getConfirmDialog() {
-        return confirmDialog;
-    }
-
-    /**
-     * Method to determine if the upload dialog is open or not
-     *
-     * @return uploadDialog
-     */
-    public boolean getUploadDialog() {
-        return uploadDialog;
-    }
-
-    /**
-     * Method to get which type of slide is being displayed This is for the tabs
-     * above the slide image
-     *
-     * @return slideTypePres
-     */
-    public boolean getSlideTypePres() {
-        return slideTypePres;
-    }
-
-    /**
-     * Method to get the role
-     *
-     * @return role
-     */
     public int getRole() {
         return role;
     }
 
-    /**
-     * Method to get the state If the state is initially null, a new state will
-     * be assigned through PersistentFacesState.getInstance
-     *
-     * @return state
-     */
-    public PersistentFacesState getState() {
-        return state;
+    public void setRole(int role) {
+        this.role = role;
+        
     }
 
-    /**
-     * Method to get the presentation this participant belongs to
-     *
-     * @return presentation
-     */
-    public Presentation getPresentation() {
-        return presentation;
-    }
-
-    /**
-     * Method to get the render manager
-     *
-     * @return renderManager
-     */
-    public RenderManager getRenderManager() {
-        return renderManager;
-    }
-
-    /**
-     * Method to get the login bean
-     *
-     * @return loginBean
-     */
     public LoginBean getLoginBean() {
         return loginBean;
     }
 
     /**
-     * Method to get the current chat message
+     * Method to set the presentation manager This should be called from 
+     * faces-config on initialization.
      *
-     * @return chatMessage
+     * @param presentationManager to set
      */
-    public String getChatMessage() {
-        return chatMessage;
+    public void setPresentationManager(
+            PresentationManagerBean presentationManager) {
+        this.presentationManager = presentationManager;
     }
 
-    /**
-     * Method to get the status message
-     *
-     * @return statusMessage
-     */
-    public String getStatusMessage() {
-        state = PersistentFacesState.getInstance();
-        return statusMessage;
+    public Presentation getPresentation() {
+        return presentation;
     }
 
-    /**
-     * Method to get the chat view object
-     *
-     * @return chatView
-     */
+    public void setPresentation(Presentation presentation) {
+        this.presentation = presentation;
+    }
+
+    public PersistentFacesState getState() {
+        return state;
+    }
+
     public ChatView getChatView() {
         return chatView;
     }
 
     /**
-     * Method to get the participant view object
+     * Method to get the chat view as a list of participants This is done so it
+     * can be used in a dataTable on the page
      *
-     * @return participantView
+     * @return chat view list
      */
+    public Message[] getChatViewList() {
+    	return (chatView.getView());
+    }
+
     public ParticipantView getParticipantView() {
         return participantView;
     }
@@ -238,14 +161,44 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         return (participantView.getView());
     }
 
+    public String getChatMessage() {
+        return chatMessage;
+    }
+
+    public void setChatMessage(String chatMessage) {
+        this.chatMessage = chatMessage;
+    }
+
     /**
-     * Method to get the chat view as a list of participants This is done so it
-     * can be used in a dataTable on the page
+     * Method to get the status message and refresh the PersistentFacesState
      *
-     * @return chat view list
+     * @return statusMessage
      */
-    public Message[] getChatViewList() {
-    	return (chatView.getView());
+    public String getStatusMessage() {
+        state = PersistentFacesState.getInstance();
+        return statusMessage;
+    }
+
+    public Effect getStatusEffect() {
+        return statusEffect;
+    }
+
+    public RenderManager getRenderManager() {
+        return renderManager;
+    }
+    
+    /**
+     * Method to set the render manager This should be called from faces-config
+     * on initialization In addition this method will set the loginBean's
+     * renderer
+     *
+     * @param renderManager to set
+     */
+    public void setRenderManager(RenderManager renderManager) {
+        this.renderManager = renderManager;
+        loginBean.setLoginPageRenderer(
+                renderManager.getOnDemandRenderer("loginPageRenderer"));
+        loginBean.addRenderable();
     }
 
     /**
@@ -259,23 +212,119 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         return participantsTable;
     }
 
-    /**
-     * Method to get the component bound to the chat message field
-     *
-     * @return chatMessageField
-     */
+    public void setParticipantsTable(UIData participantsTable) {
+        this.participantsTable = participantsTable;
+    }
+
     public HtmlInputText getChatMessageField() {
         return chatMessageField;
     }
 
-    /**
-     * Method to get the status effect used on the status message
-     *
-     * @return statusEffect
-     */
-    public Effect getStatusEffect() {
-        return statusEffect;
+    public void setChatMessageField(HtmlInputText chatMessageField) {
+        this.chatMessageField = chatMessageField;
     }
+
+    /**
+     * Method to determine if the moderator dialog is open or not
+     *
+     * @return moderatorDialog
+     */
+    public boolean getModeratorDialog() {
+        return moderatorDialog;
+    }
+
+    public void setModeratorDialog(boolean moderatorDialog) {
+        this.moderatorDialog = moderatorDialog;
+    }
+
+    /**
+     * Method to determine if the confirm logout dialog is open or not
+     *
+     * @return confirmDialog
+     */
+    public boolean getConfirmDialog() {
+        return confirmDialog;
+    }
+
+    public void setConfirmDialog(boolean confirmDialog) {
+        this.confirmDialog = confirmDialog;
+    }
+
+    /**
+     * Method to determine if the upload dialog is open or not
+     *
+     * @return uploadDialog
+     */
+    public boolean getUploadDialog() {
+        return uploadDialog;
+    }
+
+    public void setUploadDialog(boolean uploadDialog) {
+        if (isModerator()) {
+            this.uploadDialog = uploadDialog;
+        }
+    }
+
+    public boolean getSlideTypePres() {
+        return slideTypePres;
+    }
+
+    public void setSlideTypePres(boolean slideTypePres) {
+        this.slideTypePres = slideTypePres;
+    }
+
+    /**
+     * Method called when the first tab above the slide image is clicked
+     *
+     * @return "slideTypeOne"
+     */
+    public String toggleSlideTypeOne() {
+        slideTypePres = true;
+
+        return "slideTypeOne";
+    }
+
+    /**
+     * Method called when the second tab above the slide image is clicked
+     *
+     * @return "slideTypeTwo"
+     */
+    public String toggleSlideTypeTwo() {
+        slideTypePres = false;
+
+        return "slideTypeTwo";
+    }
+
+    /**
+     * This method performs browser sniffing the first time it is called to 
+     * determine whether or not the Participant is on a mobile browser.  
+     * Afterwards, it simply returns the result of the initial browser sniffing.
+     *
+     * @return boolean is the Participant using a mobile browser
+     */
+	public boolean isMobile() {
+        if(!mobileSniffed){
+			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+	        String useragent = request.getHeader("user-agent");
+	        String agent = useragent.toLowerCase();
+	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
+	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
+	        	mobile = true;
+	    		// Mobile browsers have limited space - set chatView to 3 lines.
+	        	chatView.setViewSize(3);
+	        }
+	        mobileSniffed = true;
+        }
+		return mobile;
+	}
+
+	public void setMobile(boolean mobile) {
+		this.mobile = mobile;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
 
     /**
      * Method to safely get the current slide object
@@ -293,7 +342,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                 */
             }
         }
-
         return null;
     }
     
@@ -320,105 +368,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     }
 
     /**
-     * Method to set the popup status of the moderator dialog
-     *
-     * @param moderatorDialog new
-     */
-    public void setModeratorDialog(boolean moderatorDialog) {
-        this.moderatorDialog = moderatorDialog;
-    }
-
-    /**
-     * Method to set the popup status of the confirm logout dialog
-     *
-     * @param confirmDialog new
-     */
-    public void setConfirmDialog(boolean confirmDialog) {
-        this.confirmDialog = confirmDialog;
-    }
-
-    /**
-     * Method to set the popup status of the file upload dialog This will only
-     * be set for a moderator
-     *
-     * @param uploadDialog new
-     */
-    public void setUploadDialog(boolean uploadDialog) {
-        if (isModerator()) {
-            this.uploadDialog = uploadDialog;
-        }
-    }
-
-    /**
-     * Method to set the presentation manager
-     *
-     * @param presentationManager new
-     */
-    public void setPresentationManager(
-            PresentationManagerBean presentationManager) {
-        this.presentationManager = presentationManager;
-    }
-
-    /**
-     * Method to set the presentation
-     *
-     * @param presentation new
-     */
-    public void setPresentation(Presentation presentation) {
-        this.presentation = presentation;
-    }
-
-    /**
-     * Method to set the slide type
-     *
-     * @param slideTypePres new
-     */
-    public void setSlideTypePres(boolean slideTypePres) {
-        this.slideTypePres = slideTypePres;
-    }
-
-    /**
-     * Method to set the render manager This should be called from faces-config
-     * on initialization In addition this method will set the loginBean's
-     * renderer
-     *
-     * @param renderManager to set
-     */
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-        loginBean.setLoginPageRenderer(
-                renderManager.getOnDemandRenderer("loginPageRenderer"));
-        loginBean.addRenderable();
-    }
-
-    /**
-     * Method to set the current chat message
-     *
-     * @param chatMessage new
-     */
-    public void setChatMessage(String chatMessage) {
-        this.chatMessage = chatMessage;
-    }
-
-    /**
-     * Method to set the bound participants table
-     *
-     * @param participantsTable bound
-     */
-    public void setParticipantsTable(UIData participantsTable) {
-        this.participantsTable = participantsTable;
-    }
-
-    /**
-     * Method to set the bound chat message field
-     *
-     * @param chatMessageField bound
-     */
-    public void setChatMessageField(HtmlInputText chatMessageField) {
-        this.chatMessageField = chatMessageField;
-    }
-
-    /**
      * Convenience method to update the status message This will change the text,
      * and re-fire the status effect In addition the status message is trimmed to
      * a set length
@@ -435,16 +384,15 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         statusMessage = StringResource.trimLength(status, 70);
     }
 
-    /**
-     * Method to set the role of this participant
+	/**
+     * Method to check if the role of this participant is ROLE_MODERATOR
      *
-     * @param role new
+     * @return true if role is ROLE_MODERATOR, false otherwise
      */
-    public void setRole(int role) {
-        this.role = role;
-        
+    public boolean isModerator() {
+        return role == ROLE_MODERATOR;
     }
-    
+
     /**
      * Method to perform the login action for this participant This will create
      * (if participant is a moderator) a new presentation, or join an existing
@@ -511,8 +459,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
         return "failed";
     }
-    
-   
 
     /**
      * Method to logout from the current presentation If the participant is a
@@ -657,47 +603,6 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     {
         return !getSkype().equals("");
     }
-    
-    /**
-     * Method called when any level of rendering exception happens.  In the case
-     * of a non-transient (ie: fatal) rendering exception, the user will be
-     * logged out.
-     *
-     * @param renderingException that occurred
-     */
-    public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled() &&
-                renderingException instanceof TransientRenderingException) {
-            log.debug("Transient Rendering exception for Participant " + firstName + ":", renderingException);
-        } else if (renderingException instanceof FatalRenderingException) {
-            if (log.isDebugEnabled()) {
-                log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
-            }
-            logout();
-        }
-    }
-
-    /**
-     * Method called when the first tab above the slide image is clicked
-     *
-     * @return "slideTypeOne"
-     */
-    public String toggleSlideTypeOne() {
-        slideTypePres = true;
-
-        return "slideTypeOne";
-    }
-
-    /**
-     * Method called when the second tab above the slide image is clicked
-     *
-     * @return "slideTypeTwo"
-     */
-    public String toggleSlideTypeTwo() {
-        slideTypePres = false;
-
-        return "slideTypeTwo";
-    }
 
     /**
      * Method to email the presentation's chat log to this participant A generic
@@ -749,37 +654,35 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     public String getSkype() {
         return skype;
     }
-
+	
     /**
-     * This method performs browser sniffing the first time it is called to 
-     * determine whether or not the Participant is on a mobile browser.  
-     * Afterwards, it simply returns the result of the initial browser sniffing.
+     * Method to refresh PersistentFacesState in login.jspx.
      *
-     * @return boolean is the Participant using a mobile browser
+     * @return null
      */
-	public boolean isMobile() {
-        if(!mobileSniffed){
-			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
-	        String useragent = request.getHeader("user-agent");
-	        String agent = useragent.toLowerCase();
-	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
-	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
-	        	mobile = true;
-	    		// Mobile browsers have limited space - set chatView to 3 lines.
-	        	chatView.setViewSize(3);
-	        }
-	        mobileSniffed = true;
+    public String getRefreshPersistentFacesState() {
+        state = PersistentFacesState.getInstance();
+        return null;
+    }
+    
+    /**
+     * Method called when any level of rendering exception happens.  In the case
+     * of a non-transient (ie: fatal) rendering exception, the user will be
+     * logged out.
+     *
+     * @param renderingException that occurred
+     */
+    public void renderingException(RenderingException renderingException) {
+        if (log.isDebugEnabled() &&
+                renderingException instanceof TransientRenderingException) {
+            log.debug("Transient Rendering exception for Participant " + firstName + ":", renderingException);
+        } else if (renderingException instanceof FatalRenderingException) {
+            if (log.isDebugEnabled()) {
+                log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
+            }
+            logout();
         }
-		return mobile;
-	}
-
-	public void setMobile(boolean mobile) {
-		this.mobile = mobile;
-	}
-
-	public boolean isLoggedIn() {
-		return loggedIn;
-	}
+    }
 
 	public void dispose() throws Exception {
         if (log.isDebugEnabled()) {
@@ -788,14 +691,5 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 		logout();
 		loginBean.removeRenderable();
 	}
-	
-    /**
-     * Method to refresh PersistentFacesState.
-     *
-     * @return statusMessage
-     */
-    public String getRefreshPersistentFacesState() {
-        state = PersistentFacesState.getInstance();
-        return null;
-    }
+
 }
