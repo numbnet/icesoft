@@ -75,6 +75,10 @@ img {
     background: url( '../images/bgslice_navbar.jpg' ) repeat-x top left;    
 }
 
+.inputPAGENUM {
+    color: #4878A1;
+}
+
 .navigationBarPadding {
     padding-left: 23px;	
 }
@@ -214,11 +218,6 @@ a.linkORANGE {
 a.linkORANGE:hover {
     color: #F2830C;
     text-decoration: underline;
-}
-
-/* FORM STYLES */
-.inputPAGENUM {
-    color: #4878A1;
 }
 
 /* LIST STYLES */

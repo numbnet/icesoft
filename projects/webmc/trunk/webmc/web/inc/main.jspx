@@ -17,6 +17,7 @@
                                 escape="false"
                                 style="background-color: #C7DFEF; color: #2D6387;"/>
             </ice:panelGroup>
+
 	    <ui:include src="navigationpanel.jspx"/>
 	</ice:panelGroup>
 
@@ -26,6 +27,7 @@
 			<div class="presentationDIV">
 			    <ui:include src="presentation.jspx"/>
 			</div>
+
     		<div class="participantsChatDIV">
     		    <ice:panelGroup rendered="#{!participant.mobile}">
 					<img src="resources/images/logo_reflection.jpg" />
@@ -39,6 +41,7 @@
 				</ice:panelGroup>
 				<ui:include src="chat.jspx"/>
     		</div>
+
         </div>
 	</ice:form>
 

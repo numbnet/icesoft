@@ -182,12 +182,6 @@
     </listener>
 -->
 
-    <listener>
-        <listener-class>
-            com.icesoft.faces.presenter.participant.Participant
-        </listener-class>
-    </listener>
-
     <!-- Framework Servlet Declarations -->
 
     <servlet>

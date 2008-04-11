@@ -89,6 +89,7 @@
 	                           actionListener="#{participant.presentation.newDocument}"
 	                           title="Load a new presentation"/>
 		</ice:panelGrid>
+
 	    <ice:commandButton rendered="#{!participant.mobile}"
 	                       image="resources/images/nav_logout.gif"
 	                       action="#{participant.confirmLogout}"
