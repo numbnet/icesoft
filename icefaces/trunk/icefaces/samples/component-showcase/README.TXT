@@ -1,5 +1,5 @@
                      COMPONENT SHOWCASE GETTING STARTED GUIDE
-                            Rev. 1.7
+                           
                          (www.icefaces.org)
 --------------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ ICEfaces component can be configured to run in the respective environment.
    The component showcase currently has four implementations; JSP, Facelets,
    Portlet and Facelets Enhance.  Each implementation has a build file with
    multiple targets for different Servlet Containers and environements.  Use
-   the command "ant -p" to see the available options.
+   the command "ant help" to see the available options.
 
    Facelets Enhanced requires that the JAXB libraries 2.0 or higher.  The lib
    folder in the dir component-showcase contains JAXB 2.1 jars and they are
