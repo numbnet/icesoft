@@ -8,8 +8,7 @@ works better for these older servers.  The j5ee AS work much better with jsf1.2 
 
 1.  download jboss-seam-2.0.x and unzip all files (as the libraries will be copied from these folders)--may have to build the jars
     NOTE THAT FOR PORTLET EXAMPLES*** you must have jboss-seam-2.1.0.A1 as a minimum.
-2.  download and unzip Icefaces (post 1.6.2 final release) (or if you're eager and get this before the final release, just build the icefaces jars from the repository trunk)
-
+2.  download and unzip Icefaces (1.7.0final release) 
 
 3. update the following properties in build.properties file to point to 
 the appropriate directories where the jboss-4.2.* server, icefaces libraries and jboss-seam
@@ -18,9 +17,10 @@ libraries exist on your machine.
 
  for example:-
  	jboss.home = C:/work/webserver/jboss-4.2.2.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.7.0.Beta1/icesfaces/  
+	icefacesSourceDirectory = C:/ICEfaces-1.7.0/icefaces  
 	jboss.seam.home = C:/Seam/jboss-seam-2.0.1.GA     
 
+4. run target = copy-libs  (will copy all the required libraries from the above locations)
 
 Specific Server instructions:-
 
