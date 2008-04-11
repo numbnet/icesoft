@@ -172,11 +172,12 @@
         </junit>
     </target>
     
-    <target name="test-junit-present">
+    <target name="test-junit-present" unless="skip.test">
         <available classname="junit.framework.Test" property="junit.present" />
     </target>
     <target name="junit-present" depends="test-junit-present" unless="junit.present">
         <echo>================================= WARNING ================================</echo>
+        <echo> Property 'skip.test' set OR </echo>
         <echo> Junit isn&apos;t present in your $ANT_HOME/lib directory. Tests not executed. </echo>
         <echo>==========================================================================</echo>
     </target>
