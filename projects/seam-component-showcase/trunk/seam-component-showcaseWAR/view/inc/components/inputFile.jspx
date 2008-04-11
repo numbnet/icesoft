@@ -88,8 +88,12 @@ Once the file is uploaded, information about the file is displayed.
                    <ice:outputText id="fileName"
                                 value="Uploading to File Name: #{fileAdminBean.fileUpload.currentFileName}"/>
                       <br/>
-                  <ice:outputText id="spaceLabel" value="#{msgs['component.fileUpload.totalSpace']}"/>
-                  <ice:outputText id="remainingSpace" value="#{fileAdminBean.totalSpace}"/>   
+          		   <!-- Display File Upload messages -->
+  					<h:messages layout="table"
+                    globalOnly="false"
+                    showDetail="true"
+                    showSummary="true"/>
+
                </ice:panelGroup>
                    
             </ice:panelGrid>
