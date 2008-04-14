@@ -95,13 +95,13 @@
 	                       action="#{participant.confirmLogout}"
 	                       alt="Logout"
 	                       title="Leave #{participant.presentation.name} presentation"/>
-
+<!-- Skype not implemented
         <ice:outputLink rendered="#{participant.moderator and not participant.mobile}"
                         onclick="#{participant.presentation.skypeScript}"
                         title="Start Skype conference call">
             <img src="resources/images/call_blue_transparent_34x34.png"/>
         </ice:outputLink>
-
+ -->
 	</ice:panelGrid>
 
 	<ice:panelGroup rendered="#{!participant.mobile}"
