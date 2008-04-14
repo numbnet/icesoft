@@ -107,7 +107,7 @@
 	<ice:panelGroup rendered="#{!participant.mobile}"
 	                style="float: right;">
 	    <img src="resources/images/logo.jpg" 
-	         style="width: 266px; height: 72px"/>
+	         style="width: 266px; height: 50px"/>
 	</ice:panelGroup>
 	<!-- Put logout button in logo's spot if rendering to a mobile browser -->
     <ice:panelGroup rendered="#{participant.mobile}"
