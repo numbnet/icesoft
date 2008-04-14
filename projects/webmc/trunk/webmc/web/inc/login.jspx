@@ -224,12 +224,19 @@
         <!-- Empty Cell -->
         <ice:panelGroup rendered="#{!participant.mobile}" />
     </ice:panelGrid>
-	<!-- Instructions 
-    <ice:panelGroup styleClass="headerMessage" rendered="#{participant.loginBean.hasDefaultPresentations}">
-	    <ice:outputText value="The following presentations can be accessed with a password of '#{participant.loginBean.defaultPassword}':"/>
-	    <ice:outputText value="#{participant.loginBean.defaultPresentationNames}" style="font-weight: bold;"/>
+	<!-- Moderator Instructions -->
+    <ice:panelGroup styleClass="headerMessage" rendered="#{participant.moderator and not participant.mobile}">
+	    <ice:outputText value="Moderate a new presentation from this tab.  Enter your name and a name for the presentation." />
+	    <br />
+	    <ice:outputText value="Password is optional.  If you enter a password, all viewers must use it to access your presentation."/>
     </ice:panelGroup>
-	-->
+    <!-- Viewer Instructions -->
+    <ice:panelGroup styleClass="headerMessage" rendered="#{not participant.moderator and not participant.mobile}">
+        <ice:outputText value="View a presentation from this tab.  Enter your name and choose from the active presentations in the list." />
+        <br />
+        <ice:outputText value="If a password field is visible, the presentation requires a password that must be obtained from the presentation's moderator."/>
+    </ice:panelGroup>
+	
 </ice:form>
 </div>
 </center>

@@ -32,7 +32,6 @@
  */
 package com.icesoft.faces.presenter.participant;
 
-import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import com.icesoft.faces.presenter.presentation.PresentationManager;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.async.render.OnDemandRenderer;
@@ -123,35 +122,6 @@ public class LoginBean {
 	public void setInvalidPresentation(boolean invalidPresentation) {
 		this.invalidPresentation = invalidPresentation;
 	}
-
-	/**
-     * Method to get the default presentation names as a formatted String
-     *
-     * @return formatted defaultPresentationNames
-     */
-    public String getDefaultPresentationNames() {
-        return AutoPresentation.getDefaultPresentationNamesList();
-    }
-
-    /**
-     * Method to determine if default presentations are present
-     * This is used for rendering a message on the login page
-     *
-     * @return true if default presentations are found
-     */
-    public boolean getHasDefaultPresentations() {
-        return AutoPresentation.getDefaultPresentationNames() != null &&
-               AutoPresentation.getDefaultPresentationNames().length > 0;
-    }
-
-    /**
-     * Method to get the default password from AutoPresentation
-     *
-     * @return AutoPresentation.DEFAULT_PASSWORD
-     */
-    public String getDefaultPassword() {
-        return AutoPresentation.DEFAULT_PASSWORD;
-    }
 
     /**
      * Convenience method to add the parent participant to the login renderer
