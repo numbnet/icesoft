@@ -111,7 +111,7 @@
 	</ice:panelGroup>
 	<!-- Put logout button in logo's spot if rendering to a mobile browser -->
     <ice:panelGroup rendered="#{participant.mobile}"
-                    style="float: right;">
+                    style="float: right; margin-top: 1px;">
         <ice:commandButton image="resources/images/nav_logout.gif"
                            action="#{participant.confirmLogout}"
                            alt="Logout"
