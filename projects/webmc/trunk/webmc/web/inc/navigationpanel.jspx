@@ -16,12 +16,14 @@
 	                           actionListener="#{participant.presentation.backAll}"
 	                           alt="Start"
 	                           title="Move to the start of the presentation"
-	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
 	        <ice:commandButton image="resources/images/nav_arrow_back_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.backOne}"
 	                           alt="Back"
 	                           title="Move backward one slide"
-	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
 		</ice:panelGroup>
 
 		<ice:panelGroup styleClass="navigationElementPadding">
@@ -56,12 +58,14 @@
 	                           actionListener="#{participant.presentation.forwardOne}"
 	                           title="Move forward one slide" 
 	                           alt="Forward"
-	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
 	        <ice:commandButton image="resources/images/nav_arrow_end_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.forwardAll}"
 	                           title="Move to the end of the presentation" 
 	                           alt="End"
-	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"/>
+	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
+	                           style="margin-top: 1px;"/>
             <ice:outputText value="Slideshow"
                             style="font-weight: bold; padding-left: 10px;"/>
             <ice:selectBooleanCheckbox
