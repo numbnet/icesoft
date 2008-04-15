@@ -37,28 +37,33 @@
 	                   styleClass="participantTable">
 	        <ice:column>
 	        <li>
+
                 <ice:graphicImage rendered="#{!participant.mobile}"
                                   visible="#{not empty list and list.moderator}"
                                   value="resources/images/bullet_orange.gif"
-                                  title="#{list.firstName} #{list.lastName} is currently moderator"/>
+                                  title="#{list.firstName} #{list.lastName} is currently moderator"
+                                  style="vertical-align: bottom; float: left;"/>
                 <ice:graphicImage rendered="#{!participant.mobile}"
                                   visible="#{not empty list and not list.moderator}"
-                                  value="resources/images/bullet_grey.gif"/>
+                                  value="resources/images/bullet_grey.gif"
+                                  style="vertical-align: bottom; float: left;"/>
+
                 &amp;nbsp;
-                <strong>
+
                     <ice:commandLink value="#{list.firstName} #{list.lastName}"
                                      title="Click to make #{list.firstName} the moderator"
                                      rendered="#{participant.moderator}"
-                                     actionListener="#{participant.passModerators}"/>
+                                     actionListener="#{participant.passModerators}"
+                                     style="font-weight: bold;"/>
                     <ice:outputText value="#{list.firstName} #{list.lastName}"
-                                    title="Email Address: #{list.email}"
-                                    rendered="#{not participant.moderator}"/>
-                </strong>
+                                    rendered="#{not participant.moderator}"
+                                    style="font-weight: bold;"/>
+
                 <ice:outputText value="(Moderator)"
-                                rendered="#{not empty list and list.moderator}"
-                                style="vertical-align: top;"/>
+                                rendered="#{not empty list and list.moderator}"/>
                 <ice:outputText value="(Skype)"
                                 rendered="#{not empty list and list.hasSkype}"/>
+
 	        </li>
 	        </ice:column>
 	    </ice:dataTable>
