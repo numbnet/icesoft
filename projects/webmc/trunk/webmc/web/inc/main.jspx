@@ -10,14 +10,6 @@
     </ice:panelGroup>
 -->
 	<ice:panelGroup styleClass="navigationBar">
-            <ice:panelGroup rendered="#{participant.mobile}"
-                            styleClass="statusMessage">
-                <ice:outputText value="#{participant.statusMessage}"
-                                effect="#{participant.statusEffect}"
-                                escape="false"
-                                style="background-color: #C7DFEF; color: #2D6387;"/>
-            </ice:panelGroup>
-
 	    <ui:include src="navigationpanel.jspx"/>
 	</ice:panelGroup>
 
