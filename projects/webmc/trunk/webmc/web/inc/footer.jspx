@@ -4,18 +4,18 @@
        cellspacing="0" 
        cellpadding="0">
     <tr>
-        <td align="left" class="textWHITE" style="padding: 0 0 0 30px;">
-            <strong>&amp;copy; COPYRIGHT 2006</strong> ICESOFT
-            TECHNOLOGIES INC.
+        <td align="left" class="footerText" style="padding: 36px 0 0 30px;">
+            <strong>&amp;copy; COPYRIGHT 2008</strong> 
+            <a href="http://www.icesoft.com/" class="linkOrange">ICESOFT TECHNOLOGIES INC.</a>
         </td>
-        <td align="right" class="textWHITE"
-            style="padding: 0 20px 0 0;">POWERED BY 
-            <a href="http://www.icefaces.org" target="_blank" class="linkORANGE">
+        <td align="right" class="footerText" style="padding: 36px 20px 0 0;">
+            POWERED BY &amp;nbsp;
+            <a href="http://www.icefaces.org" class="linkOrange">
                 <strong>ICEfaces</strong>
             </a>
         </td>
         <td align="right" width="121">
-            <img src="resources/images/footer_faces.jpg"/>
+            <img src="resources/images/footer_faces.jpg" alt="Powered by ICEfaces" width="121" height="95" />
         </td>
     </tr>
 </table>

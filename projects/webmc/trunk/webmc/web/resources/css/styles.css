@@ -95,8 +95,8 @@ img {
     background: url( '../images/bgslice_footer.jpg' ) repeat-x top left;
 }
 
-.textWHITE {
-    font: 10px tahoma, arial, sans-serif;
+.footerText {
+    font: 10px tahoma;
     color: #C1D3DF;
 }
 
@@ -210,13 +210,8 @@ a:hover {
     text-decoration: underline;
 }
 
-a.linkORANGE {
-    color: #F2830C;
-    text-decoration: none;
-}
-
-a.linkORANGE:hover {
-    color: #F2830C;
+a.linkOrange, a.linkOrange:hover {
+    color: #F78208;
     text-decoration: underline;
 }
 
