@@ -95,6 +95,11 @@ img {
     background: url( '../images/bgslice_footer.jpg' ) repeat-x top left;
 }
 
+.textWHITE {
+    font: 10px tahoma, arial, sans-serif;
+    color: #C1D3DF;
+}
+
 .bgBARBLUE {
     background: url( '../images/bgslice_bluebar.jpg' ) repeat-x top left;
 }
@@ -192,11 +197,6 @@ img {
 td {
     font: 11px tahoma, arial, sans-serif;
     color: #4878A1;
-}
-
-.textWHITE {
-    font: 10px tahoma, arial, sans-serif;
-    color: #C1D3DF;
 }
 
 /* LINK STYLES */

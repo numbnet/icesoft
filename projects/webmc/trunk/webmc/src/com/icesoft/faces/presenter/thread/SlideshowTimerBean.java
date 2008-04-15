@@ -40,7 +40,7 @@ import javax.faces.model.SelectItem;
 /**
  * Class used to handle the page level setup of slide show mode
  * This mainly includes letting the user set the delay between
- * slide changes
+ * slide changes.
  */
 public class SlideshowTimerBean extends SlideshowTimer {
     private static final SelectItem[] CHANGE_DELAY_ITEMS =

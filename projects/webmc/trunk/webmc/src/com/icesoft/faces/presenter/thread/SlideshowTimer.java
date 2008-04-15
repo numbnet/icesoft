@@ -36,7 +36,7 @@ import com.icesoft.faces.presenter.presentation.Presentation;
 
 /**
  * Class used to automatically transition a presentation
- * This is done with a thread, and gives the appearance of a slide show
+ * This is done with a thread, and gives the appearance of a slide show.
  */
 public class SlideshowTimer extends Thread {
     protected Presentation parent;

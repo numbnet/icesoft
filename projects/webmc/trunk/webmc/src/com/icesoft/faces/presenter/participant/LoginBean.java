@@ -48,9 +48,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Class used to handle the login portion of a user's session This is done to
- * separate the main webmc functionality from the entire login process (which
- * uses a lot of temp variables and UI components to get the job done)
+ * Class used to handle the login portion of a user's session.  This is done to
+ * separate the main webmc functionality from the entire login process.
  */
 public class LoginBean {
     private static Log log = LogFactory.getLog(LoginBean.class);
