@@ -143,6 +143,10 @@ public class MainSessionBoundServlet implements PseudoServlet {
         shutdown.run();
     }
 
+    public Map getViews() {
+        return views;
+    }
+
     //Exposing queues for Tomcat 6 Ajax Push
     public ViewQueue getAllUpdatedViews() {
         return allUpdatedViews;

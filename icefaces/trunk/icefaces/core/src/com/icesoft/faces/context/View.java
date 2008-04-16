@@ -203,6 +203,10 @@ public class View implements CommandQueue {
         return facesContext;
     }
 
+    public PersistentFacesState getPersistentFacesState() {
+        return persistentFacesState;
+    }
+
     public void dispose() {
         dispose.run();
     }
