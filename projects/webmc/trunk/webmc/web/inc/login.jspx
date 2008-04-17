@@ -38,7 +38,7 @@
 <center>
 <div class="loginBox">
 <ice:form>
-    <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.jpg':'./resources/images/login_logo.gif'}" 
+    <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.gif':'./resources/images/login_logo.gif'}" 
                       alt="Welcome to WebMC"
                       styleClass="loginLogo" />
     <!-- Viewer and Moderator Tabs for Desktop Browsers -->
