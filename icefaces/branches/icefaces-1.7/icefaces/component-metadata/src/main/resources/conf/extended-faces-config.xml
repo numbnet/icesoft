@@ -236,6 +236,15 @@
   <!ENTITY ice-cust-outputMedia-props SYSTEM "ice_cust_properties/cust-outputMedia-props.xml">
 
   <!-- ICE Extended components -->
+  <!ENTITY ice-html-component   SYSTEM "components/ice-html-component.xml">
+  <!ENTITY ice-html-renderer    SYSTEM "components/ice-html-renderer.xml">
+    
+  <!ENTITY ice-head-component   SYSTEM "components/ice-head-component.xml">
+  <!ENTITY ice-head-renderer    SYSTEM "components/ice-head-renderer.xml">
+  
+  <!ENTITY ice-body-component   SYSTEM "components/ice-body-component.xml">
+  <!ENTITY ice-body-renderer    SYSTEM "components/ice-body-renderer.xml">
+    
   <!ENTITY ice-button-component   SYSTEM "components/ice-button-component.xml">
   <!ENTITY ice-button-renderer    SYSTEM "components/ice-button-renderer.xml">
   
@@ -503,7 +512,10 @@
     &ice-columngroup-component;	
 	&ice-uicolumn-component;
 	&ice-uicolumns-component;
-	
+	&ice-html-component;
+        &ice-head-component;
+	&ice-body-component;
+
 	<!--  custom component -->
 	&selectinputdate-component;
 	&inputFile-component;
@@ -583,6 +595,9 @@
         &ice-columngroup-renderer;       
 		&ice-uicolumn-renderer;
 		&ice-uicolumns-renderer;
+                &ice-html-renderer;
+                &ice-head-renderer;
+                &ice-body-renderer;
 		
 		<!-- custom component -->
 		&selectinputdate-renderer;
