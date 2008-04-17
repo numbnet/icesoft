@@ -64,6 +64,7 @@ Ice.Menu = {
     },
     hideAll: function(){
         for (var i = 0; i < Ice.Menu.openMenus.length; i++ ) {
+            if (Ice.Menu.openMenus[i].iframe) Ice.Menu.openMenus[i].iframe.hide(); // ICE-2066, ICE-2912
             Ice.Menu.openMenus[i].style.display='none';
         }
         Ice.Menu.openMenus = new Array();
@@ -98,6 +99,7 @@ Ice.Menu = {
     		    var styleTop = (Ice.Menu.getPosition(supermenu,"Top") + supermenu.offsetHeight) + "px";
                 submenu.style.top = styleTop;
             }
+            Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
         Ice.Menu.currentMenu = submenu;
     },
@@ -110,8 +112,23 @@ Ice.Menu = {
             submenu.style.left = styleLeft;
             var styleTop = showY  + "px";
             submenu.style.top = styleTop;
+            Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
         }
         Ice.Menu.currentMenu = submenu;
+    },
+    showIframe: function(menuDiv) { // ICE-2066, ICE-2912
+        if (!Prototype.Browser.IE) return;
+        if (parseFloat(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE") + 5)) >= 7) return;
+        var iframe = menuDiv.iframe;
+        if (!iframe) {
+            var sendURI = Ice.ElementModel.Element.adaptToElement(menuDiv).findConnection().sendURI;
+            var webappContext = sendURI.substring(0, sendURI.indexOf("block/send-receive-updates"));
+            var iframeSrc = webappContext + "xmlhttp/blank";
+            menuDiv.iframe = iframe = new Element("iframe", {src: iframeSrc, frameborder: "0", scrolling: "no"});
+            iframe.setStyle({position: "absolute", opacity: 0}).hide();
+            menuDiv.insert({before: iframe});
+        }
+        iframe.clonePosition(menuDiv).show();
     },
     contextMenuPopup: function(event, popupMenu) {
         if(!event) {
@@ -197,6 +214,7 @@ Ice.Menu = {
     hideMenuWithId: function(menu) {
     	if (menu) {
 	    	menu = $(menu);
+            if (menu.iframe) menu.iframe.hide(); // ICE-2066, ICE-2912
 	    	menu.style.display='none';
 	    	Ice.Menu.removeFromOpenMenus(menu);
     	}
