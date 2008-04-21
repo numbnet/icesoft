@@ -51,7 +51,7 @@
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
             <ice:panelGroup id="chartsContentPanel" style="float:left;">
-                <ice:form>
+                <ice:form id="iceform">
                     <f:subview id="chSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/custom/outputChart.jspx"/>

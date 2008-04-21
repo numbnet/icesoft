@@ -126,10 +126,10 @@
         <ice:outputText id="ontario" value="#{msgs['page.panelTooltip.province2.label']}"/>
     </ice:panelGroup>
     <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="novascotia" value="#{msgs['page.panelTooltip.province3.label']}"/>
+        <ice:outputText id="saskatchewan" value="#{msgs['page.panelTooltip.province3.label']}"/>
     </ice:panelGroup>
     <ice:panelGroup panelTooltip="provinceInfo" style="float:left;margin-left:20px;">
-        <ice:outputText id="saskatchewan" value="#{msgs['page.panelTooltip.province4.label']}"/>
+        <ice:outputText id="novascotia" value="#{msgs['page.panelTooltip.province4.label']}"/>
     </ice:panelGroup>
 
     <!-- toolTip decloration that is ued for more then one panelGroup -->

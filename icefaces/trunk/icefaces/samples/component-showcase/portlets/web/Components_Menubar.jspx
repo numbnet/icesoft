@@ -54,7 +54,7 @@
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
             <ice:panelGroup id="menuBarContentPanel" style="float:left;">
-                <ice:form>
+                <ice:form id="iceform">
                     <f:subview id="mbSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/custom/menuBar.jspx"/>

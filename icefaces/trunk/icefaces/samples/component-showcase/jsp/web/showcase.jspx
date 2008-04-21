@@ -76,7 +76,7 @@
                        Main Component content;
                        controls which content to display for the respective navigation
                     -->
-                   <ice:form>
+                   <ice:form id="iceform">
 
                    <div style="padding-right:10px;">
 
