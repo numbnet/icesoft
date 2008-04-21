@@ -51,7 +51,16 @@ html {
 }
 
 .navigationElementPadding {
-    padding: 0 4px 0 4px;
+    padding: 0 0px 0 0px;
+}
+
+.navigationSlideshowText {
+    padding-left: 0px;
+}
+
+.navigationDelayText {
+    font-weight: bold;
+    margin-left: 0px;
 }
 
 .mainBackground{

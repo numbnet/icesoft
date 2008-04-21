@@ -26,7 +26,8 @@
 	                           style="margin-top: 1px;"/>
 		</ice:panelGroup>
 
-		<ice:panelGroup styleClass="navigationElementPadding">
+		<ice:panelGroup  rendered="#{not participant.mobile}"
+		                 styleClass="navigationElementPadding">
 		    <strong>Page</strong>
 		</ice:panelGroup>
 
@@ -67,7 +68,7 @@
 	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
 	                           style="margin-top: 1px;"/>
             <ice:outputText value="Slideshow"
-                            style="font-weight: bold; padding-left: 10px;"/>
+                            styleClass="navigationSlideshowText"/>
             <ice:selectBooleanCheckbox
                     value="#{participant.presentation.autoPlay}"
                     partialSubmit="true"
@@ -75,7 +76,7 @@
                     title="Automatically present the slideshow"
                     disabled="#{not participant.presentation.loaded}"/>
             <ice:outputText value="Delay"
-                            style="font-weight: bold; margin-left: 5px;"/>
+                            styleClass="navigationDelayText"/>
             <ice:selectOneMenu partialSubmit="true"
                                value="#{participant.presentation.timer.changeDelay}"
                                valueChangeListener="#{participant.presentation.timer.changeDelayListener}"
@@ -94,11 +95,6 @@
 	                           title="Load a new presentation"/>
 		</ice:panelGrid>
 
-	    <ice:commandButton rendered="#{!participant.mobile}"
-	                       image="resources/images/nav_logout.gif"
-	                       action="#{participant.confirmLogout}"
-	                       alt="Logout"
-	                       title="Leave #{participant.presentation.name} presentation"/>
 <!-- Skype not implemented
         <ice:outputLink rendered="#{participant.moderator and not participant.mobile}"
                         onclick="#{participant.presentation.skypeScript}"
@@ -106,12 +102,28 @@
             <img src="resources/images/call_blue_transparent_34x34.png"/>
         </ice:outputLink>
  -->
+
+		<ice:outputText rendered="#{participant.moderator}" 
+		                value="Pointer"
+                        styleClass="navigationPointerText"/>
+		<ice:selectBooleanCheckbox rendered="#{participant.moderator}" 
+		                           value="#{participant.presentation.usingPointer}"
+		                           valueChangeListener="#{participant.presentation.pointerChange}"
+		                           partialSubmit="true"
+		                           title="Use pointer on presentation slides"/>
+
+        <ice:commandButton rendered="#{!participant.mobile}"
+                           image="resources/images/nav_logout.gif"
+                           action="#{participant.confirmLogout}"
+                           alt="Logout"
+                           title="Leave #{participant.presentation.name} presentation"/>
+
 	</ice:panelGrid>
 
 	<ice:panelGroup rendered="#{!participant.mobile}"
 	                style="float: right;">
 	    <img src="resources/images/logo.jpg" 
-	         style="width: 266px; height: 72px"/>
+	         style="width: 266px; height: 50px; margin-top: 1px;"/>
 	</ice:panelGroup>
 	<!-- Put logout button in logo's spot if rendering to a mobile browser -->
     <ice:panelGroup rendered="#{participant.mobile}"

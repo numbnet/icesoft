@@ -44,6 +44,7 @@ import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.thread.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.FileNameFilter;
 import com.icesoft.faces.presenter.util.StringResource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -73,6 +74,9 @@ public class Presentation extends PresentationInfo {
     private PresentationManagerBean manager;
     private Hashtable preloadedTable;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
+    boolean usingPointer = false;
+    private int pointerX = 0;
+    private int pointerY = 0;
     
     private ArrayList skypeList = new ArrayList();
 
@@ -108,6 +112,30 @@ public class Presentation extends PresentationInfo {
     public SlideshowTimerBean getTimer() {
         return stimer;
     }
+
+	public boolean isUsingPointer() {
+		return usingPointer;
+	}
+
+	public void setUsingPointer(boolean usingPointer) {
+		this.usingPointer = usingPointer;
+	}
+
+	public int getPointerX() {
+		return pointerX;
+	}
+
+	public void setPointerX(int pointerX) {
+		this.pointerX = pointerX;
+	}
+
+	public int getPointerY() {
+		return pointerY;
+	}
+
+	public void setPointerY(int pointerY) {
+		this.pointerY = pointerY;
+	}
 
     /**
      * Method to get the total number of slides in the current document
@@ -335,6 +363,16 @@ public class Presentation extends PresentationInfo {
         }
     }
 
+    /**
+     * Method called from the front end pages when pointer checkbox is
+     * changed by the moderator.
+     *
+     * @param vce event of the change
+     */
+    public void pointerChange(ValueChangeEvent vce) {
+        requestOnDemandRender();
+    }
+    
     /**
      * Method called from the front end pages when the specific slide number the
      * moderator can enter has changed
@@ -708,7 +746,7 @@ public class Presentation extends PresentationInfo {
             if (current.getChatView().getPosition() == (bottom() - 1)) {
                 current.getChatView().setPosition(bottom());
             }
-
+            current.buildMessageEffect();
             current.updateStatus(firstName + ": \"" + chatMessage + "\"");
         }
         requestOnDemandRender();
@@ -775,4 +813,5 @@ public class Presentation extends PresentationInfo {
             }
         }
     }
+
 }

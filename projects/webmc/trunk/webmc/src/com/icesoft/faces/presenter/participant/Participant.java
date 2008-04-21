@@ -81,6 +81,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private String chatMessage = "";
     private String statusMessage;
     private Effect statusEffect;
+    private Effect messageEffect;
     private RenderManager renderManager;
     private UIData participantsTable;
     private HtmlInputText chatMessageField = null;
@@ -91,6 +92,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private boolean mobile = false;
     private boolean mobileSniffed = false;
     private boolean loggedIn = false;
+    double scale = (double)Slide.MOBILE_MAX_WIDTH/(double)Slide.MAX_WIDTH;
 
     public Participant() {
         super();
@@ -181,6 +183,10 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
     public Effect getStatusEffect() {
         return statusEffect;
+    }
+    
+    public Effect getMessageEffect() {
+        return messageEffect;
     }
 
     public RenderManager getRenderManager() {
@@ -383,6 +389,17 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
         statusMessage = StringResource.trimLength(status, 70);
     }
+    
+    /**
+     * Convenience method to fire the message effect.
+     */
+    public void buildMessageEffect() {
+        if (messageEffect == null) {
+            messageEffect = new Highlight("#F2830C");
+            messageEffect.setDuration(HIGHLIGHT_TIME / 2000);
+        }
+        messageEffect.setFired(false);
+    }
 
 	/**
      * Method to check if the role of this participant is ROLE_MODERATOR
@@ -406,7 +423,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     	// not fired when "required" is removed from a component and the 
     	// component is left blank (JSF behavior).
     	
-        // Get the page and role from the context.
+        // Get the role from the context.
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Map params = facesContext.getExternalContext().getRequestParameterMap();
         String loginSource = (String) params.get("loginSource");
@@ -649,7 +666,47 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     public String getSkype() {
         return skype;
     }
-	
+
+    /**
+     * Listens to client input from commandButtons in the UI map and sets the
+     * selected time zone.
+     *
+     * @param event ActionEvent.
+     */
+    public void pointer(ActionEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestParams =
+                context.getExternalContext().getRequestParameterMap();
+        // get mouse coordinate of user click
+        if(!mobile){
+        	// Subtract the width of the pointer image so it points to the spot 
+        	// you clicked.
+            presentation.setPointerX(Integer.parseInt((String) requestParams.get("ice.event.x"))-14);
+            presentation.setPointerY(Integer.parseInt((String) requestParams.get("ice.event.y")));
+        }else{
+        	// The desktop<->mobile algorithm does not position the pointer 
+        	// where expected, so the integers have to be modified and tested to
+        	// position the pointer properly.
+            presentation.setPointerX((int)Math.rint((double)Integer.parseInt((String) requestParams.get("ice.event.x"))/scale-10));
+            presentation.setPointerY((int)Math.rint((double)Integer.parseInt((String) requestParams.get("ice.event.y"))/scale+23));        	
+        }
+        
+        presentation.requestOnDemandRender();
+    }
+    
+    public String getPointerClass(){
+        if(mobile){
+        	// The desktop<->mobile algorithm does not position the pointer 
+        	// where expected, so the integers have to be modified and tested to
+        	// position the pointer properly.
+        	double mobileY = Math.rint(((double)(presentation.getPointerY()-23))*scale);
+        	double mobileX = Math.rint(((double)(presentation.getPointerX()-18))*scale);
+        	return "top: " + (int)mobileY + "px; left: " + (int)mobileX + "px;";
+        }else{
+            return "top: " + presentation.getPointerY() + "px; left: " + presentation.getPointerX() + "px;"; 	
+        }
+    }
+
     /**
      * Method to refresh PersistentFacesState in login.jspx.
      *

@@ -34,7 +34,8 @@
         </ice:panelGroup>
     </ice:panelGrid>
 
-    <ice:panelGroup styleClass="chatList">
+    <ice:panelGroup styleClass="chatList"
+                    effect="#{participant.messageEffect}">
         <ul>
         <ice:dataTable value="#{participant.chatViewList}"
                        rows="#{participant.chatView.viewSize}"
@@ -62,7 +63,7 @@
         <ice:panelGroup styleClass="inputChatCell">
             <ice:inputText binding="#{participant.chatMessageField}"
                            value="#{participant.chatMessage}"
-                           maxlength="#{participant.mobile?'40':'70'}" 
+                           maxlength="#{participant.mobile?'40':'75'}" 
                            styleClass="inputCHAT"
                            actionListener="#{participant.addChatMessage}"/>
         </ice:panelGroup>

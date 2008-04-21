@@ -87,6 +87,18 @@ img {
     padding: 0 10px 0 10px;
 }
 
+.navigationSlideShowText, .navigationDelayText, .navigationPointerText {
+    font-weight: bold;
+}
+
+.navigationSlideshowText {
+	padding-left: 10px;
+}
+
+.navigationDelayText {
+    margin-left: 5px;
+}
+
 .mainForm {
     background: url( '../images/bgslice_main.jpg' ) repeat-x top left;
 }
@@ -407,5 +419,12 @@ li {
 .iceOutProgText {
     vertical-align: middle;
     color: black;
+}
+
+.pointerImage {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background-image: url( '../images/arrowpointer-animated.gif' );
 }
 
