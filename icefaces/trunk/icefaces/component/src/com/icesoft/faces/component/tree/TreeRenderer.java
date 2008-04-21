@@ -153,20 +153,6 @@ public class TreeRenderer extends DomBasicRenderer {
         }
 
         // set up form fields
-        FormRenderer.addHiddenField(facesContext,
-                                    CustomComponentUtils.getHiddenTreeExpandFieldName(
-                                            uiComponent.getClientId(
-                                                    facesContext),
-                                            CustomComponentUtils.getFormName(
-                                                    uiComponent,
-                                                    facesContext)));
-        FormRenderer.addHiddenField(facesContext,
-                                    CustomComponentUtils.getHiddenTreeActionFieldName(
-                                            uiComponent.getClientId(
-                                                    facesContext),
-                                            CustomComponentUtils.getFormName(
-                                                    uiComponent,
-                                                    facesContext)));
 
         // encode the root DIV
         if (!domContext.isInitialized()) {
@@ -176,7 +162,6 @@ public class TreeRenderer extends DomBasicRenderer {
         }
         // get the root node
         Element rootDomNode = (Element) domContext.getRootNode();
-
         // Apply  default styleClass and style to the root node.
         rootDomNode
                 .setAttribute(HTML.CLASS_ATTR, treeComponent.getStyleClass());
@@ -688,6 +673,24 @@ public class TreeRenderer extends DomBasicRenderer {
         // close the root node
         domContext.endNode(facesContext, uiComponent, rootNode);
 
+        Element hiddenTreeExpand = domContext.createElement(HTML.INPUT_ELEM);
+        hiddenTreeExpand.setAttribute(HTML.TYPE_ATTR, "hidden");
+        hiddenTreeExpand.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeExpandFieldName(
+                uiComponent.getClientId(
+                        facesContext),
+                CustomComponentUtils.getFormName(
+                        uiComponent,
+                        facesContext)));
+        Element hiddenTreeAction = domContext.createElement(HTML.INPUT_ELEM);
+        hiddenTreeAction.setAttribute(HTML.TYPE_ATTR, "hidden");        
+        hiddenTreeAction.setAttribute(HTML.NAME_ATTR, CustomComponentUtils.getHiddenTreeActionFieldName(
+                uiComponent.getClientId(
+                        facesContext),
+                CustomComponentUtils.getFormName(
+                        uiComponent,
+                        facesContext)));
+        rootNode.appendChild(hiddenTreeAction);
+        rootNode.appendChild(hiddenTreeExpand);
         domContext.stepOver();
     }
 
