@@ -136,11 +136,11 @@
                 var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
                 var end = new RegExp('\<\/body\>', 'g').exec(html);
                 var body = html.substring(start.index, end.index + end[0].length)
-                var content = body.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
+                var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
                 var tag = container.tagName;
                 var c = $element(container);
                 c.disconnectEventListeners();
-                c.replaceHtml(['<', tag, '>', content, '</', tag, '>'].join(''));
+                c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
                 scriptLoader.searchAndEvaluateScripts(container);
             }.bind(this));
 

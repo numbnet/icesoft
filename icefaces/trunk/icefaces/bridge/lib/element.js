@@ -201,7 +201,7 @@
 
     This.Element.adaptToElement = function(e) {
         //no polymophism here...'switch' is the way then.
-        if(!e)
+        if (!e)
             return new This.Element(e);
         switch (e.tagName.toLowerCase()) {
             case 'textarea':
@@ -434,9 +434,9 @@
 
 
     This.BodyElement = This.Element.subclass({
-        updateDOM: function(update) {
+        replaceHtml: function(html) {
             this.disconnectEventListeners();
-            this.element.innerHTML = update.content();
+            this.element.innerHTML = html;
         }
     });
 
