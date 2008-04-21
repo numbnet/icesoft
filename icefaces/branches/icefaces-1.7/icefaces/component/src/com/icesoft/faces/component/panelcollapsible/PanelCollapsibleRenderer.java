@@ -55,7 +55,10 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //add click handler if not disabled and toggleOnClick is set to true
         if (panelCollapsible.isToggleOnClick() && 
         		!panelCollapsible.isDisabled()) {
-            FormRenderer.addHiddenField(facesContext, uiComponent.getClientId(facesContext)+ "Expanded");
+            Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+            hiddenField.setAttribute(HTML.NAME_ATTR, uiComponent.getClientId(facesContext)+ "Expanded");
+            hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+            root.appendChild(hiddenField);
             UIComponent form = findForm(uiComponent);
             if(form == null) {
                 throw new FacesException("PanelCollapsible must be contained within a form");                

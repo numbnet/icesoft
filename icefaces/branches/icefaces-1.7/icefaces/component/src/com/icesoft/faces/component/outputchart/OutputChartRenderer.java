@@ -67,7 +67,12 @@ public class OutputChartRenderer extends DomBasicRenderer {
             table.appendChild(tr);
             tr.appendChild(td);
         }
-        FormRenderer.addHiddenField(facesContext, "iceChartComponent");
+        Element table = (Element)domContext.getRootNode();
+        Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
+        hiddenField.setAttribute(HTML.NAME_ATTR, "iceChartComponent");
+        hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
+        table.appendChild(hiddenField);
+        
         Element td = (Element) domContext.getRootNode(). //table
                 getFirstChild().//tr
                 getFirstChild();//td

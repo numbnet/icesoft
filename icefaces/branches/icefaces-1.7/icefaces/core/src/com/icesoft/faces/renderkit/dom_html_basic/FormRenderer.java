@@ -279,6 +279,10 @@ public class FormRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
+        Element hiddenFieldsDiv = domContext.createElement(HTML.DIV_ELEM);
+        hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
+        root.appendChild(hiddenFieldsDiv);
+        
         Iterator commandLinkFields = map.entrySet().iterator();
         while (commandLinkFields.hasNext()) {
             Map.Entry nextField = (Map.Entry) commandLinkFields.next();
@@ -286,7 +290,7 @@ public class FormRenderer extends DomBasicRenderer {
                 Element next = domContext.createElement("input");
                 next.setAttribute("type", "hidden");
                 next.setAttribute("name", nextField.getKey().toString());
-                root.appendChild(next);
+                hiddenFieldsDiv.appendChild(next);
             }
         }
     }
