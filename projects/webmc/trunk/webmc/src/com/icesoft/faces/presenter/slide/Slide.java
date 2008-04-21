@@ -39,7 +39,7 @@ public class Slide {
     public static final int MAX_WIDTH = 720;
     public static final int MAX_HEIGHT = 540;
     public static final int MOBILE_MAX_WIDTH = 336;
-    public static final int MOBILE_MAX_HEIGHT = 224;
+    public static final int MOBILE_MAX_HEIGHT = 252;
 
     private static final String INFO_LOCATION = "resources/images/infopage.png";
     private static final String INFO_LOCATION_MOBILE = "resources/images/infopage.png";
