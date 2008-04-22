@@ -1491,6 +1491,7 @@ fieldset {
     padding: 1px;
     height: auto;
     display: block;
+    z-index: 1000;
 }
 
 .iceMnuItm { /* was iceSubMenuRow*/
@@ -1593,6 +1594,7 @@ fieldset {
     position: absolute;
     height: auto;
     display: block;
+    z-index: 1000;
 }
 
 .iceMnuItmVrt a { /* was iceMenu_vertical_subItem */

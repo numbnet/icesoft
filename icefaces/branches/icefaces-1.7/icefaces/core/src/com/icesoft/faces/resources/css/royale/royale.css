@@ -1484,6 +1484,7 @@ input {
     padding: 1px;
     height: auto;
     display: block;
+    z-index: 1000;
 }
 
 .iceMnuItm { /* was iceSubMenuRow*/
@@ -1587,6 +1588,7 @@ input {
     position: absolute;
     height: auto;
     display: block;
+    z-index: 1000;
 }
 
 .iceMnuItmVrt a { /* was iceMenu_vertical_subItem */
