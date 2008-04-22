@@ -299,7 +299,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
-                        "var container = '" + configurationID + "'.asExtendedElement().findContainerFor('bridge');\n" +
+                        "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
@@ -322,7 +322,7 @@ public class DOMResponseWriter extends ResponseWriter {
         configurationElement.setAttribute("id", configurationID);
         configurationElement.setAttribute("type", "text/javascript");
         configurationElement.appendChild(document.createTextNode(startupScript));
-        body.appendChild(configurationElement);
+        body.insertBefore(configurationElement, body.getFirstChild());
 
         Element noscript = (Element) body.appendChild(document.createElement("noscript"));
         Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
@@ -335,15 +335,15 @@ public class DOMResponseWriter extends ResponseWriter {
         noscriptMeta.setAttribute("http-equiv", "refresh");
         noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 
-        String markerID = prefix + "marker-script";
-        Element markerElement = (Element) body.appendChild(document.createElement("script"));
-        markerElement.setAttribute("id", markerID);
-        markerElement.setAttribute("type", "text/javascript");
-        markerElement.appendChild(document.createTextNode("'" + markerID + "'.asElement().parentNode.bridge = 'placeholder';"));
-        body.insertBefore(markerElement, body.getFirstChild());
+//        String markerID = prefix + "marker-script";
+//        Element markerElement = (Element) body.appendChild(document.createElement("script"));
+//        markerElement.setAttribute("id", markerID);
+//        markerElement.setAttribute("type", "text/javascript");
+//        markerElement.appendChild(document.createTextNode("'" + markerID + "'.asElement().parentNode.bridge = 'placeholder';"));
+//        body.insertBefore(markerElement, body.getFirstChild());
 
         if (context.isContentIncluded()) {
-            Element element = (Element) body.insertBefore(document.createElement("div"), markerElement);
+            Element element = (Element) body.insertBefore(document.createElement("div"), configurationElement);
             element.setAttribute("style", "display: none;");
             appendContentReferences(element);
         }

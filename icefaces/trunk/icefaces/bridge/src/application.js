@@ -38,7 +38,7 @@
             var sessionID = configuration.session;
             var viewID = configuration.view;
             var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
-            var statusManager = new Ice.Status.StatusManager(configuration, container);
+            var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
             var parameters = Ice.Parameter.Query.create(function(query) {
@@ -99,7 +99,6 @@
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
-                statusManager.sessionExpiredPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
             }.bind(this));
@@ -147,7 +146,6 @@
             this.connection.whenDown(function() {
                 logger.warn('connection to server was lost');
                 statusManager.connectionLost.on();
-                statusManager.connectionLostPopup.on(); // ICE-2621
                 this.dispose();
             }.bind(this));
 
@@ -163,6 +161,12 @@
             this.connection.onReceive(function() {
                 statusManager.busy.off();
             });
+
+            this.attachStatusManager = function(setup, withDefault) {
+                statusManager.off();
+                statusManager = setup(withDefault ? new Ice.Status.DefaultStatusManager(configuration, container) : null);
+                logger.info("status indicators were updated");
+            };
 
             logger.info('bridge loaded!');
         },
