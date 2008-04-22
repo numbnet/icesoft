@@ -323,6 +323,13 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         }
 		return mobile;
 	}
+	
+	public boolean getTestMobile(){
+		mobile = true;
+		chatView.setViewSize(3);
+		mobileSniffed = true;
+		return mobile;
+	}
 
 	public void setMobile(boolean mobile) {
 		this.mobile = mobile;
