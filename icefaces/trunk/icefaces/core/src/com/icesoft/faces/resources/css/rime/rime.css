@@ -1639,6 +1639,7 @@ table.iceSelInpDate tbody tr td table{
     border-right: 1px solid #DBDBDB;
     border-left: 1px solid #DBDBDB;
     border-top: 1px solid #DBDBDB;
+    z-index: 1000;
 }
 
 .iceMnuItm {
