@@ -43,7 +43,7 @@ html {
 }
 
 .navigationBar {
-    height: 40px;4
+    height: 40px;
 }
 
 .navigationBarPadding {
@@ -51,7 +51,16 @@ html {
 }
 
 .navigationElementPadding {
-    padding: 0 4px 0 4px;
+    padding: 0 0px 0 0px;
+}
+
+.navigationSlideshowText {
+    padding-left: 0px;
+}
+
+.navigationDelayText {
+    font-weight: bold;
+    margin-left: 0px;
 }
 
 .mainBackground{
@@ -63,11 +72,6 @@ html {
 .presentationDIV { 
     width: 336px; /*Width of left column*/
     padding: 0px;
-}
-
-.statusMessage {
-    float: none;
-    text-align: center;
 }
 
 .presentationImage {
@@ -94,7 +98,7 @@ html {
 }
 
 .participantTable{
-    height: 80px;
+    height: 82px;
 }	
 
 .chatList {
@@ -102,7 +106,7 @@ html {
 }
 
 .chatTable{
-    height: 85px;
+    height: 82px;
 }
 
 .inputChatCell {
@@ -118,7 +122,7 @@ html {
 
 .inputCHAT {
     margin-left: 2px;
-    margin-top: 6px;
+    margin-top: 2px;
     font: 10px tahoma, arial, sans-serif;
     width: 94px;
     float: left;

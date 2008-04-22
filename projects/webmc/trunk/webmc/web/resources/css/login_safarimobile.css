@@ -61,12 +61,12 @@
 }
 
 .loginSecondColumn {
-    width: 45%;
+    width: 46%;
 }
 
 .loginThirdColumn {
     text-align: left;
-    width: 30%;
+    width: 29%;
 }
 
 .loginFourthColumn {
@@ -75,7 +75,7 @@
 }
 
 .firstNameLabel{
-    padding-right: 38px;    
+    padding-right: 41px;    
 }
 
 .passwordLabel{
