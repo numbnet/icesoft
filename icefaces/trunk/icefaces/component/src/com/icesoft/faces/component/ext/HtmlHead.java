@@ -2,7 +2,6 @@ package com.icesoft.faces.component.ext;
 
 
 import javax.faces.context.FacesContext;
-import javax.el.ValueExpression;
 
 public class HtmlHead extends javax.faces.component.UIComponentBase{
 
