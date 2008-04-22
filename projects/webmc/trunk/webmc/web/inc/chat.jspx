@@ -33,9 +33,11 @@
 	                           disabled="#{participant.chatView.chatScrollDownDisabled}"/>
         </ice:panelGroup>
     </ice:panelGrid>
-
-    <ice:panelGroup styleClass="chatList"
-                    effect="#{participant.messageEffect}">
+        <!-- chatList panelGroup is nested in chatListEffect panelGroup so the
+             effect is applied as a border rather than around the whole list. -->
+        <ice:panelGroup styleClass="chatListEffect"
+                        effect="#{participant.messageEffect}" >
+        <ice:panelGroup styleClass="chatList">
         <ul>
         <ice:dataTable value="#{participant.chatViewList}"
                        rows="#{participant.chatView.viewSize}"
@@ -54,6 +56,7 @@
         </ice:dataTable>
         </ul>
     </ice:panelGroup>
+    </ice:panelGroup>
     <ice:panelGrid columns="2" 
                    styleClass="bgBARBLUE" 
                    width="100%"
@@ -63,7 +66,7 @@
         <ice:panelGroup styleClass="inputChatCell">
             <ice:inputText binding="#{participant.chatMessageField}"
                            value="#{participant.chatMessage}"
-                           maxlength="#{participant.mobile?'40':'75'}" 
+                           maxlength="#{participant.mobile?'40':'70'}" 
                            styleClass="inputCHAT"
                            actionListener="#{participant.addChatMessage}"/>
         </ice:panelGroup>
