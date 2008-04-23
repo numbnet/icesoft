@@ -3,12 +3,7 @@
      xmlns:ice="http://www.icesoft.com/icefaces/component"
      xmlns:ui="http://java.sun.com/jsf/facelets"
      id="container">
-<!-- MenuBar necessary?
-    <ice:panelGroup rendered="#{!participant.mobile}"
-                    styleClass="menuBar">
-        <ui:include src="menubar.jspx"/>
-    </ice:panelGroup>
--->
+
 	<ice:panelGroup styleClass="navigationBar">
 	    <ui:include src="navigationpanel.jspx"/>
 	</ice:panelGroup>
