@@ -364,6 +364,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         faceMessages.clear();
         renderResponse = false;
         responseComplete = false;
+        // ICE-2807 clear threadLocal references
+        setCurrentInstance(null);
     }
 
     public void dispose() {
