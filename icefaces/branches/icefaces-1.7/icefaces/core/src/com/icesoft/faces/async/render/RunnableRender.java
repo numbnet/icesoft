@@ -159,7 +159,11 @@ class RunnableRender implements Runnable {
                     log.error("unknown render exception", ex);
                 }
             }
-        }
+        } finally {
+
+            // 2807 release ThreadLocals
+            state.release();
+        } 
     }
 
     /**
