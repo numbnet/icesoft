@@ -476,6 +476,7 @@ input.iceSelInpDateClosePopup {
 .iceDatPgrScrCol a {
     color: #FFFFFF;
     border: 1px solid #DBDBDB;
+    background-color: #FFA600;
 }
 
 /** html .iceDatPgrScrCol a {*/
