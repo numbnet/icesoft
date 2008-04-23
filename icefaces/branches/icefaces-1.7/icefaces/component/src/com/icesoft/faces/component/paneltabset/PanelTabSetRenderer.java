@@ -118,6 +118,11 @@ public class PanelTabSetRenderer
             table.setAttribute(HTML.ID_ATTR, tabSet.getClientIdForRootElement(facesContext));
         }
 
+        FormRenderer.addHiddenField(facesContext,
+                                    deriveCommonHiddenFieldName(
+                                            facesContext, uiComponent));
+
+
         String baseClass = tabSet.getStyleClass();
 
         int selectedIndex = tabSet.getSelectedIndex();
@@ -152,12 +157,6 @@ public class PanelTabSetRenderer
 
         // get table
         Element table = (Element) domContext.getRootNode();
-        Element hiddenField = domContext.createElement(HTML.INPUT_ELEM);
-        hiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-        hiddenField.setAttribute(HTML.NAME_ATTR, deriveCommonHiddenFieldName(
-                facesContext, uiComponent));
-        table.appendChild(hiddenField);
-        
         // render table pass thru attributes
         for (int i = 0; i < HTML.TABLE_PASSTHROUGH_ATTRIBUTES.length; i++) {
             if (HTML.TABLE_PASSTHROUGH_ATTRIBUTES[i]
