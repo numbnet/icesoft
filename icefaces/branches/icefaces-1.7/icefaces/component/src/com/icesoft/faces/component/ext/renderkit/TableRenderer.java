@@ -199,7 +199,7 @@ public class TableRenderer
             DOMContext.getDOMContext(facesContext, uiComponent);
             Element tr = domContext.createElement("tr");
             thead.appendChild(tr);
-            List childList = getRenderedChildColumnsList(uiComponent);
+            List childList = uiComponent.getChildren();
             Iterator childColumns = childList.iterator();
             String width = null;
             int columnIndex = 1;
@@ -208,6 +208,7 @@ public class TableRenderer
             while (childColumns.hasNext()) {
 
                 UIComponent nextColumn = (UIComponent) childColumns.next();
+                
                 if (columnWitdths != null && columnWitdths.hasMoreTokens()) {
                     width = columnWitdths.nextToken();
                 } else {
@@ -218,6 +219,7 @@ public class TableRenderer
                     }
                     
                 }
+                if (!nextColumn.isRendered()) continue;
                 if (nextColumn instanceof UIColumn) {
                     processUIColumnHeader(facesContext, uiComponent,
                                           (UIColumn) nextColumn, tr, domContext,
@@ -587,6 +589,13 @@ public class TableRenderer
             StringTokenizer columnWitdths =
                     getColumnWidths(uiData);
             while (childs.hasNext()) {
+                String width = "150px;";
+                if (isScrollable(uiComponent) &&
+                        columnWitdths != null &&
+                        columnWitdths.hasMoreTokens()) {
+                        width = columnWitdths.nextToken();
+
+                }                
                 UIComponent nextChild = (UIComponent) childs.next();
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
@@ -623,12 +632,7 @@ public class TableRenderer
                                        columnStyleIndex, td, colNumber++,
                                        uiComponent);
                         
-                        if (isScrollable(uiComponent))  {
-                            String width = "150px";
-                            if( columnWitdths != null &&
-                            columnWitdths.hasMoreTokens()) {
-                                width = columnWitdths.nextToken();
-                            }
+                        if (isScrollable(uiComponent) && width != null)  {
                             td.setAttribute("style", "width:" + width +
                             ";overflow:hidden;");                            
                         }
@@ -679,13 +683,6 @@ public class TableRenderer
                         domContext.setCursorParent(oldCursorParent);
 
                     } else if (nextChild instanceof UIColumns) {
-                        String width = null;
-                        if (isScrollable(uiComponent) &&
-                            columnWitdths != null &&
-                            columnWitdths.hasMoreTokens()) {
-                            width = columnWitdths.nextToken();
-
-                        }
                         nextChild.encodeBegin(facesContext);
                         encodeColumns(facesContext, nextChild, domContext, tr,
                                       columnStyles, columnStylesMaxIndex,
