@@ -35,6 +35,7 @@ package com.icesoft.faces.presenter.presentation;
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 import javax.faces.model.SelectItem;
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ import java.util.Map;
  * new users to presentations, etc.
  */
 public class PresentationManagerBean {
-    public static final String DEFAULT_PRESENTATION = "Select Presentation...";
-    private static final String NO_PRESENTATION = "None Available";
+    public static final String DEFAULT_PRESENTATION = MessageBundleLoader.getMessage("bean.presentationManagerBean.defaultPresentation");
+    private static final String NO_PRESENTATION = MessageBundleLoader.getMessage("bean.presentationManagerBean.noPresentation");
 
     private PresentationManager backendManager =
             PresentationManager.getInstance();

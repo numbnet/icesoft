@@ -43,6 +43,7 @@ import com.icesoft.faces.presenter.participant.ParticipantInfo;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.thread.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.FileNameFilter;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 
 import org.apache.commons.logging.Log;
@@ -309,9 +310,9 @@ public class Presentation extends PresentationInfo {
     public void startAutoPlay() {
         if (!stimer.isRunning()) {
             stimer.startSlideshow();
-            addChatMessage(moderator.getFirstName(), "Slideshow mode started.");
+            addChatMessage(moderator.getFirstName(), MessageBundleLoader.getMessage("bean.presentation.startAutoPlay.chatMessage"));
         } else {
-            moderator.updateStatus("Slideshow mode is already running");
+            moderator.updateStatus(MessageBundleLoader.getMessage("bean.presentation.startAutoPlay.moderator.statusMessage"));
         }
     }
 
@@ -333,11 +334,11 @@ public class Presentation extends PresentationInfo {
             stimer.stopSlideshow();
             stimer = new SlideshowTimerBean(this);
             if (!silent) {
-                addChatMessage(moderator.getFirstName(), "Slideshow mode stopped.");
+                addChatMessage(moderator.getFirstName(), MessageBundleLoader.getMessage("bean.presentation.stopAutoPlay.chatMessage"));
             }
         } else {
             if (!silent) {
-                moderator.updateStatus("Slideshow mode was not running");
+                moderator.updateStatus(MessageBundleLoader.getMessage("bean.presentation.stopAutoPlay.moderator.statusMessage"));
             }
         }
     }
@@ -389,10 +390,10 @@ public class Presentation extends PresentationInfo {
                         Integer.parseInt(fetchedValue.toString()));
             } catch (NumberFormatException nfe) {
                 moderator.updateStatus(
-                        "Invalid page number \'" + fetchedValue + "\' entered");
+                		MessageBundleLoader.getMessage("bean.presentation.specificSlideNumberChanged.invalid") + " \'" + fetchedValue + "\' entered");
             }
         } else {
-            moderator.updateStatus("Invalid blank page number entered");
+            moderator.updateStatus(MessageBundleLoader.getMessage("bean.presentation.specificSlideNumberChanged.invalidBlank"));
         }
     }
 
@@ -519,7 +520,7 @@ public class Presentation extends PresentationInfo {
      */
     public void load(ActionEvent event) {
         getModerator()
-                .updateStatus("Uploading your presentation, please wait...");
+                .updateStatus(MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus"));
         // Get a valid input file component that triggered the event
         InputFile inputFileComponent;
         if (event != null) {
@@ -541,12 +542,12 @@ public class Presentation extends PresentationInfo {
             case InputFile.SIZE_LIMIT_EXCEEDED:
                 closeUploadDialog();
                 getModerator().updateStatus(
-                        "Presentation cannot be loaded (maximum filesize was exceeded)");
+                		MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.sizeLimitExceeded"));
                 break;
             default:
                 closeUploadDialog();
                 getModerator().updateStatus(
-                        "Presentation cannot be loaded (specify a valid file to use)");
+                		MessageBundleLoader.getMessage("bean.presentation.load.moderatorStatus.invalidFile"));
                 break;
         }
     }
@@ -773,7 +774,7 @@ public class Presentation extends PresentationInfo {
     public void switchModerators(int index) {
         Participant newModerator = getParticipantAt(index);
         newModerator.setRole(ParticipantInfo.ROLE_MODERATOR);
-        addChatMessage(moderator.getFirstName(), "Moderation passed off to " +
+        addChatMessage(moderator.getFirstName(), MessageBundleLoader.getMessage("bean.presentation.switchModerators.chatMessage") + " " +
                                                  newModerator.getFirstName());
         skypeList.add(moderator.getSkype());
         moderator = newModerator;

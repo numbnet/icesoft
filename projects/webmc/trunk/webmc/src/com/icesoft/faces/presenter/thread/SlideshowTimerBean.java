@@ -33,6 +33,8 @@
 package com.icesoft.faces.presenter.thread;
 
 import com.icesoft.faces.presenter.presentation.Presentation;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
+
 import javax.faces.event.ValueChangeEvent;
 
 import javax.faces.model.SelectItem;
@@ -89,6 +91,9 @@ public class SlideshowTimerBean extends SlideshowTimer {
      * @param vce of the event
      */
     public void changeDelayListener(ValueChangeEvent vce) {
-        parent.getModerator().updateStatus("Updated slideshow delay to " + vce.getNewValue() + " seconds");
+        parent.getModerator().updateStatus(
+        		MessageBundleLoader.getMessage("bean.slideshowTimerBean.changeDelayListener.statusMessage1")
+        		+ " " + vce.getNewValue() + " " + 
+        		MessageBundleLoader.getMessage("bean.slideshowTimerBean.changeDelayListener.statusMessage2"));
     }
 }

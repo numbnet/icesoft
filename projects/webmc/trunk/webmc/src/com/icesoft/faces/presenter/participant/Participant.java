@@ -44,6 +44,7 @@ import com.icesoft.faces.presenter.participant.view.ParticipantView;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.presenter.slide.Slide;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
@@ -467,7 +468,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                 // Let the participant join the presentation, and update existing users through chat
                 presentationManager.joinPresentation(this, presentation);
                 presentation
-                        .addChatMessage(firstName, "Joined Presentation.");
+                        .addChatMessage(firstName, MessageBundleLoader.getMessage("bean.participant.joinedPresentation"));
                 chatView.useBottomView();
 
                 // Handle leaving the login page
@@ -494,11 +495,11 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             switch (role) {
                 case ROLE_MODERATOR:
                     presentation.addChatMessage(firstName,
-                                                "Moderator has logged out. End of presentation.");
+                    		MessageBundleLoader.getMessage("bean.participant.moderatorLogout"));
                     break;
                 case ROLE_VIEWER:
                     presentation.addChatMessage(firstName,
-                                                "Left the presentation.");
+                    		MessageBundleLoader.getMessage("bean.participant.viewerLogout"));
                     break;
             }
 

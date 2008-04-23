@@ -9,7 +9,7 @@
                 styleClass="fileUploadPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Upload a New Presentation</strong>
+            <strong>#{msgs['page.popup.fileUpload.text']}</strong>
         </ice:panelGroup>
     </f:facet>
     <f:facet name="body">
@@ -18,10 +18,7 @@
                 <div style="text-align: left; 
                             padding: 7px;">
                     <ice:outputText
-                            value="Browse below to navigate your file system and 
-                            upload the PPT or ZIP file created for this 
-                            presentation.  ZIP files can contain images in .jpg, 
-                            .gif, or .png format."/>
+                            value="#{msgs['page.popup.fileUpload.body.text']}"/>
                 </div>
                 <br />
                 <ice:inputFile uniqueFolder="false"
@@ -31,14 +28,14 @@
                                buttonClass="none"
                                action="#{participant.presentation.closeUploadDialog}"/>
                 <ice:panelGroup>
-                    <ice:outputText value="Upload Progress:"
+                    <ice:outputText value="#{msgs['page.popup.fileUpload.body.progress.text']}"
                                     style="font-size: smaller;"/>
                     <ice:outputProgress
                             value="#{participant.presentation.progress}"/>
                 </ice:panelGroup>
                 <ice:commandButton image="resources/images/butt_cancel.gif"
                                    action="#{participant.presentation.closeUploadDialog}"
-                                   alt="Cancel"/>
+                                   alt="#{msgs['page.popup.fileUpload.body.cancelButton.alt']}"/>
             </center>
         </ice:panelGrid>
     </f:facet>
@@ -50,7 +47,7 @@
                 styleClass="switchModeratorPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Confirm Moderator Change</strong>
+            <strong>#{msgs['page.popup.switchModerators.text']}</strong>
         </ice:panelGroup>
     </f:facet>
     <f:facet name="body">
@@ -58,14 +55,14 @@
                                text-align: center; 
                                vertical-align: middle;">
             <ice:outputText
-                    value="Are you sure you want to pass your moderator status?"/>
+                    value="#{msgs['page.popup.switchModerators.body.text']}"/>
             <ice:panelGroup style="padding-top: 10px;">
                 <ice:commandButton image="resources/images/butt_yes.gif"
                                    action="#{participant.switchModeratorsYes}"
-                                   alt="Yes"/>
+                                   alt="#{msgs['page.popup.yesButton.alt']}"/>
                 <ice:commandButton image="resources/images/butt_no.gif"
                                    action="#{participant.switchModeratorsNo}"
-                                   alt="No"/>
+                                   alt="#{msgs['page.popup.noButton.alt']}"/>
             </ice:panelGroup>
         </ice:panelGroup>
     </f:facet>
@@ -77,21 +74,21 @@
                 styleClass="logoutPopup">
     <f:facet name="header">
         <ice:panelGroup styleClass="cellBGglossyDARK">
-            <strong>Confirm Logout</strong>
+            <strong>#{msgs['page.popup.logout.text']}</strong>
         </ice:panelGroup>
     </f:facet>
     <f:facet name="body">
         <ice:panelGroup style="padding: 10px; 
                                text-align: center; 
                                vertical-align: middle;">
-            <ice:outputText value="Are you sure you want to logout?"/>
+            <ice:outputText value="#{msgs['page.popup.logout.body.text']}"/>
             <ice:panelGroup style="padding-top: 10px;">
                 <ice:commandButton image="resources/images/butt_yes.gif"
                                    action="#{participant.confirmLogoutYes}"
-                                   alt="Yes"/>
+                                   alt="#{msgs['page.popup.yesButton.alt']}"/>
                 <ice:commandButton image="resources/images/butt_no.gif"
                                    action="#{participant.confirmLogoutNo}"
-                                   alt="No"/>
+                                   alt="#{msgs['page.popup.noButton.alt']}"/>
             </ice:panelGroup>
         </ice:panelGroup>
     </f:facet>

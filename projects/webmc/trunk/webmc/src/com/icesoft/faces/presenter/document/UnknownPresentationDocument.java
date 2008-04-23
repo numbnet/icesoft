@@ -35,6 +35,7 @@ package com.icesoft.faces.presenter.document;
 import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 import java.io.File;
 
@@ -101,7 +102,7 @@ public class UnknownPresentationDocument implements PresentationDocument {
      */
     public void load(File sourceFile) {
         updateStatus(
-                "Presentation cannot be loaded (cannot recognize the file format)");
+        		MessageBundleLoader.getMessage("bean.unknownPresentationDocument.loading"));
     }
 
     /**

@@ -35,6 +35,9 @@
         xmlns:ice="http://www.icesoft.com/icefaces/component"
         xmlns:ui="http://java.sun.com/jsf/facelets">
 
+<f:loadBundle basename="com.icesoft.faces.presenter.resource.messages"
+              var="msgs"/>
+
 <ice:outputDeclaration doctypeRoot="HTML"
                        doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
                        doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>

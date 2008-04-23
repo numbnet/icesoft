@@ -36,6 +36,7 @@ import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.ImageScaler;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -185,7 +186,7 @@ public class PptPresentationDocument implements PresentationDocument {
         public void run() {
             try {
                 // Notify the moderator and log the path
-                updateStatus("Unpacking and checking presentation " +
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loading") + " " +
                              presentation.getName());
 
                 // Get the absolute path to pass to PowerPoint
@@ -232,12 +233,12 @@ public class PptPresentationDocument implements PresentationDocument {
                 // We can show the navigation controls and set the first slide
                 loaded = true;
 
-                updateStatus("Completed loading presentation " +
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +
                              externalConverterFilePages + " pages)");
                 presentation.setCurrentSlideNumber(1);
             } catch (Exception e) {
-                updateStatus("Could not load a document because of " + e.getMessage());
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loadingError") + " " + e.getMessage());
                 if (log.isErrorEnabled()) {
                     log.error("Could not load PowerPoint document for " +
                               presentation.getName(), e);

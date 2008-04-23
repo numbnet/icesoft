@@ -44,8 +44,6 @@
      new browser window without a menubar can be launched when someone is using 
      webmc from a desktop browser -->
 <%
-System.out.println("USER AGENT: " + request.getHeader("USER-AGENT"));
-
 String agent = request.getHeader("USER-AGENT").toLowerCase();
 if((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1) || 
    (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)){

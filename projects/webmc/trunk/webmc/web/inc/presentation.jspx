@@ -21,11 +21,11 @@
         <ice:commandButton
                 action="#{participant.toggleSlideTypeOne}"
                 image="resources/images/main_tab_pres_#{participant.slideTypePres}.gif"
-                alt="Presentation"/>
+                alt="#{msgs['page.presentation.presentationTabButton.alt']}"/>
         <ice:commandButton
                 action="#{participant.toggleSlideTypeTwo}"
                 image="resources/images/main_tab_info_#{not participant.slideTypePres}.gif"
-                alt="Information"/>
+                alt="#{msgs['page.presentation.informationTabButton.alt']}"/>
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="statusMessage"

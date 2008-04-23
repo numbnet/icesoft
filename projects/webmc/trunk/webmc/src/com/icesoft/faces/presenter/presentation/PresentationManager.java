@@ -34,6 +34,7 @@ package com.icesoft.faces.presenter.presentation;
 
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.presenter.participant.Participant;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,7 +102,8 @@ public class PresentationManager {
                                         participant.getLoginBean().getPresentationPassword(),
                                         participant, renderer);
 
-            toReturn.addChatMessage("Notice", "New Presentation.");
+            toReturn.addChatMessage(MessageBundleLoader.getMessage("bean.presentationManager.createPresentation.chatMessage.user"),
+            		MessageBundleLoader.getMessage("bean.presentationManager.createPresentation.chatMessage.text"));
 
             presentationMap.put(name, toReturn);
         }

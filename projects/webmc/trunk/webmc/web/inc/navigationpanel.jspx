@@ -14,28 +14,28 @@
 	    <ice:panelGroup rendered="#{participant.moderator}">
 	        <ice:commandButton image="resources/images/nav_arrow_beg_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.backAll}"
-	                           alt="Start"
-	                           title="Move to the start of the presentation"
+	                           alt="#{msgs['page.navigation.arrow.backToStart.alt']}"
+	                           title="#{msgs['page.navigation.arrow.backToStart.title']}"
 	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
 	                           style="margin-top: 1px;"/>
 	        <ice:commandButton image="resources/images/nav_arrow_back_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.backOne}"
-	                           alt="Back"
-	                           title="Move backward one slide"
+	                           alt="#{msgs['page.navigation.arrow.back.alt']}"
+	                           title="#{msgs['page.navigation.arrow.back.title']}"
 	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
 	                           style="margin-top: 1px;"/>
 		</ice:panelGroup>
 
 		<ice:panelGroup  rendered="#{not participant.mobile}"
 		                 styleClass="navigationElementPadding">
-		    <strong>Page</strong>
+		    <strong>#{msgs['page.navigation.page.text']}</strong>
 		</ice:panelGroup>
 
         <ice:inputText rendered="#{participant.moderator}"
                        partialSubmit="true"
                        valueChangeListener="#{participant.presentation.specificSlideNumberChanged}"
                        value="#{participant.presentation.specificSlideNumber}"
-                       title="Move to a specific slide"
+                       title="#{msgs['page.navigation.page.input.title']}"
                        styleClass="inputPAGENUM"
                        maxlength="4"
                        size="2"
@@ -45,9 +45,9 @@
                         value="#{participant.presentation.specificSlideNumber}" />
 
 		<ice:panelGroup styleClass="navigationElementPadding">
-		    <ice:outputText value="of #{participant.presentation.lastSlideNumber}"
+		    <ice:outputText value="#{msgs['page.navigation.page.ofLoadedPresentation']} #{participant.presentation.lastSlideNumber}"
 		                    rendered="#{participant.presentation.loaded}"/>
-		    <ice:outputText value="of ?"
+		    <ice:outputText value="#{msgs['page.navigation.page.ofNoPresentation']}"
 		                    rendered="#{not participant.presentation.loaded}"/>
 		</ice:panelGroup>
 
@@ -57,25 +57,25 @@
                        cellpadding="0">
 	        <ice:commandButton image="resources/images/nav_arrow_forward_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.forwardOne}"
-	                           title="Move forward one slide" 
-	                           alt="Forward"
+	                           title="#{msgs['page.navigation.arrow.forward.title']}" 
+	                           alt="#{msgs['page.navigation.arrow.forward.alt']}"
 	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
 	                           style="margin-top: 1px;"/>
 	        <ice:commandButton image="resources/images/nav_arrow_end_#{participant.presentation.imageLoaded}.gif"
 	                           actionListener="#{participant.presentation.forwardAll}"
-	                           title="Move to the end of the presentation" 
-	                           alt="End"
+	                           title="#{msgs['page.navigation.arrow.forwardToEnd.title']}" 
+	                           alt="#{msgs['page.navigation.arrow.forwardToEnd.alt']}"
 	                           disabled="#{not participant.presentation.loaded or participant.presentation.autoPlay}"
 	                           style="margin-top: 1px;"/>
-            <ice:outputText value="Slideshow"
+            <ice:outputText value="#{msgs['page.navigation.slideshow.text']}"
                             styleClass="navigationSlideshowText"/>
             <ice:selectBooleanCheckbox
                     value="#{participant.presentation.autoPlay}"
                     partialSubmit="true"
                     valueChangeListener="#{participant.presentation.autoPlayChange}"
-                    title="Automatically present the slideshow"
+                    title="#{msgs['page.navigation.slideshow.checkbox.title']}"
                     disabled="#{not participant.presentation.loaded}"/>
-            <ice:outputText value="Delay"
+            <ice:outputText value="#{msgs['page.navigation.slideshow.interval.text']}"
                             styleClass="navigationDelayText"/>
             <ice:selectOneMenu partialSubmit="true"
                                value="#{participant.presentation.timer.changeDelay}"
@@ -90,9 +90,9 @@
 	                          height="33"/>
 	        <ice:commandButton rendered="#{!participant.mobile}"
 	                           image="resources/images/nav_open.gif" 
-	                           alt="Open"
+	                           alt="#{msgs['page.navigation.loadPresentationButton.alt']}"
 	                           actionListener="#{participant.presentation.newDocument}"
-	                           title="Load a new presentation"/>
+	                           title="#{msgs['page.navigation.loadPresentationButton.title']}"/>
 		</ice:panelGrid>
 
 <!-- Skype not implemented
@@ -104,19 +104,19 @@
  -->
 
 		<ice:outputText rendered="#{participant.moderator}" 
-		                value="Pointer"
+		                value="#{msgs['page.navigation.pointer.text']}"
                         styleClass="navigationPointerText"/>
 		<ice:selectBooleanCheckbox rendered="#{participant.moderator}" 
 		                           value="#{participant.presentation.usingPointer}"
 		                           valueChangeListener="#{participant.presentation.pointerChange}"
 		                           partialSubmit="true"
-		                           title="Use pointer on presentation slides"/>
+		                           title="#{msgs['page.navigation.pointer.checkbox.title']}"/>
 
         <ice:commandButton rendered="#{!participant.mobile}"
                            image="resources/images/nav_logout.gif"
                            action="#{participant.confirmLogout}"
-                           alt="Logout"
-                           title="Leave #{participant.presentation.name} presentation"/>
+                           alt="#{msgs['page.navigation.logoutButton.alt']}"
+                           title="#{msgs['page.navigation.logoutButton.title.leave']} #{participant.presentation.name} #{msgs['page.navigation.logoutButton.title.presentation']}"/>
 
 	</ice:panelGrid>
 
@@ -130,8 +130,8 @@
                     style="float: right; margin-top: 1px;">
         <ice:commandButton image="resources/images/nav_logout.gif"
                            action="#{participant.confirmLogout}"
-                           alt="Logout"
-                           title="Leave #{participant.presentation.name} presentation"/>
+                           alt="#{msgs['page.navigation.logoutButton.alt']}"
+                           title="#{msgs['page.navigation.logoutButton.title.leave']} #{participant.presentation.name} #{msgs['page.navigation.logoutButton.title.presentation']}"/>
     </ice:panelGroup>
 
 </ice:panelGrid>

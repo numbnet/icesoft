@@ -36,6 +36,7 @@ import com.icesoft.faces.presenter.document.base.PresentationDocument;
 import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.ImageScaler;
+import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -194,7 +195,7 @@ public class ZipPresentationDocument implements PresentationDocument {
         public void run() {
             try {
                 // Notify the moderator and log the path
-                updateStatus("Unpacking and checking presentation " +
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loading") + " " +
                              presentation.getName());
 
                 // Setup the zipfile used to read entries
@@ -240,9 +241,9 @@ public class ZipPresentationDocument implements PresentationDocument {
                     if (log.isErrorEnabled()) {
                         log.error("No slides generated for " + presentation.getName());
                     }
-                    updateStatus("No slides were generated for " +
+                    updateStatus(MessageBundleLoader.getMessage("bean.zipPresentationDocument.noSlides1") + " " +
                                  presentation.getName() +
-                                 ", is the zip file valid?");
+                                 MessageBundleLoader.getMessage("bean.zipPresentationDocument.noSlides2"));
                     return;
                 }
 
@@ -259,12 +260,12 @@ public class ZipPresentationDocument implements PresentationDocument {
                 // We can show the navigation controls and set the first slide
                 loaded = true;
 
-                updateStatus("Completed loading presentation " +
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +
                              externalConverterFilePages + " pages)");
                 presentation.setCurrentSlideNumber(1);
             } catch (Exception e) {
-                updateStatus("Could not load a document because of " + e.getMessage());
+                updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loadingError") + " " + e.getMessage());
                 if (log.isErrorEnabled()) {
                     log.error("Could not load zip document for " +
                               presentation.getName(), e);

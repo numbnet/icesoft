@@ -39,7 +39,7 @@
 <div class="loginBox">
 <ice:form>
     <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.gif':'./resources/images/login_logo.gif'}" 
-                      alt="Welcome to WebMC"
+                      alt="#{msgs['page.login.loginLogo.alt']}"
                       styleClass="loginLogo" />
     <!-- Viewer and Moderator Tabs for Desktop Browsers -->
     <ice:panelGroup rendered="#{!participant.mobile}"
@@ -47,12 +47,12 @@
 	    <ice:panelGroup styleClass="moderatorViewerButtons">
 	        <ice:commandButton
 	                actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
-	                alt="Viewer"
+	                alt="#{msgs['page.login.viewerButton.alt']}"
 	                immediate="true"
 	                image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
 	        <ice:commandButton
 	                actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
-	                alt="Moderator"
+	                alt="#{msgs['page.login.moderatorButton.alt']}"
 	                immediate="true"
 	                image="resources/images/login_tab_mod_#{participant.moderator}.gif"/>
 	    </ice:panelGroup>
@@ -69,7 +69,7 @@
         <!-- Name common to both Viewer and Moderator -->
         <ice:panelGroup>       
             <ice:outputLabel styleClass="loginLabel firstNameLabel"
-                             value="Name: " 
+                             value="#{msgs['page.login.nameLabel']} " 
                              for="firstName" />
             <ice:inputText id="firstName"
                            value="#{participant.firstName}"
@@ -93,7 +93,7 @@
         <!-- Viewer selects from presentations -->
         <ice:panelGroup rendered="#{not participant.moderator}">
             <ice:outputLabel styleClass="loginLabel"
-                             value="Presentation: " 
+                             value="#{msgs['page.login.presentationLabel']} "
                              for="existingPresentationName"/>
             <ice:selectOneMenu id="existingPresentationName"
                                partialSubmit="true"
@@ -107,7 +107,7 @@
         <!-- Moderator creates a new presentation -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
             <ice:outputLabel styleClass="loginLabel"
-                             value="Presentation: " 
+                             value="#{msgs['page.login.presentationLabel']} "
                              for="newPresentationName"/>
             <ice:inputText id="newPresentationName"
                            required="true"
@@ -121,7 +121,7 @@
         </ice:panelGroup>
         <!-- Viewer Presentation Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}">
-            <ice:outputText value="Please select" 
+            <ice:outputText value="#{msgs['page.login.presentationError.required']}"
                             rendered="#{participant.loginBean.invalidPresentation}"
                             styleClass="inputError"/>
         </ice:panelGroup>
@@ -146,7 +146,7 @@
 	        <ice:panelGroup rendered="#{empty participant.loginBean.selectedPresentationPassword}" />
             <ice:outputLabel rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
                              styleClass="loginLabel passwordLabel"
-                             value="Password: "
+                             value="#{msgs['page.login.passwordLabel']} "
                              for="viewPassword" />
             <ice:inputSecret id="viewPassword"
                              rendered="#{not empty participant.loginBean.selectedPresentationPassword}"
@@ -162,7 +162,7 @@
         <!-- Moderator inputs password -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
 	        <ice:outputLabel styleClass="loginLabel"
-	                         value="Password: "
+	                         value="#{msgs['page.login.passwordLabel']} "
 	                         for="moderatorPassword" />
 	        <ice:inputSecret id="moderatorPassword"
 	                         value="#{participant.loginBean.presentationPassword}"
@@ -174,7 +174,7 @@
         </ice:panelGroup>
         <!-- Viewer Password Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
-	        <ice:outputText value="Invalid" 
+	        <ice:outputText value="#{msgs['page.login.passwordError.invalid']} "
 	                        rendered="#{participant.loginBean.invalidPassword}"
 	                        styleClass="inputError"/>
         </ice:panelGroup>
@@ -194,10 +194,10 @@
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="6"
-                               alt="Reset"/>
+                               alt="#{msgs['page.login.resetButton.alt']}" />
             <ice:commandLink   action="#{participant.login}"
                                tabindex="7"
-                               alt="Join Presentation">
+                               alt="#{msgs['page.login.joinLink.alt']}">
                 <ice:graphicImage value="resources/images/butt_join_present.gif" 
                                   style="border: 0; "/>
                 <f:param name="loginSource" 
@@ -211,10 +211,10 @@
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="7"
-                               alt="Reset"/>
+                               alt="#{msgs['page.login.resetButton.alt']}"/>
             <ice:commandLink   action="#{participant.login}"
                                tabindex="8"
-                               alt="Start Presentation">
+                               alt="#{msgs['page.login.startLink.alt']}">
                 <ice:graphicImage value="resources/images/butt_start_present.gif"
                                   style="border: 0;"/>
                 <f:param name="loginSource" 
@@ -225,16 +225,18 @@
         <ice:panelGroup rendered="#{!participant.mobile}" />
     </ice:panelGrid>
 	<!-- Moderator Instructions -->
-    <ice:panelGroup styleClass="headerMessage" rendered="#{participant.moderator and not participant.mobile}">
-	    <ice:outputText value="Moderate a new presentation from this tab.  Enter your name and a name for the presentation." />
+    <ice:panelGroup styleClass="headerMessage" 
+                    rendered="#{participant.moderator and not participant.mobile}">
+	    <ice:outputText value="#{msgs['page.login.moderator.instruction']}" />
 	    <br />
-	    <ice:outputText value="Password is optional.  If you enter a password, all viewers must use it to access your presentation."/>
+	    <ice:outputText value="#{msgs['page.login.moderator.instruction.password']}"/>
     </ice:panelGroup>
     <!-- Viewer Instructions -->
-    <ice:panelGroup styleClass="headerMessage" rendered="#{not participant.moderator and not participant.mobile}">
-        <ice:outputText value="View a presentation from this tab.  Enter your name and choose from the active presentations in the list." />
+    <ice:panelGroup styleClass="headerMessage" 
+                    rendered="#{not participant.moderator and not participant.mobile}">
+        <ice:outputText value="#{msgs['page.login.viewer.instruction']}"/>
         <br />
-        <ice:outputText value="If a password field is visible, the presentation requires a password that must be obtained from the presentation's moderator."/>
+        <ice:outputText value="#{msgs['page.login.viewer.instruction.password']}"/>
     </ice:panelGroup>
 	
 </ice:form>
