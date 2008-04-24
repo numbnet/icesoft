@@ -60,15 +60,10 @@ img {
     width: 1024px;
 }
 
-.menuBar, .navigationBar, .mainForm, .footerBar{
+.navigationBar, .mainForm, .footerBar{
     float: left;
     clear: both; 
     width: 100%;	
-}
-
-.menuBar {
-    background: url( '../images/bgslice_topbar_white.jpg' ) repeat-x top left;
-    height: 28px;
 }
 
 .navigationBar {
@@ -285,122 +280,6 @@ li {
     font: 10px tahoma, arial, sans-serif;
     color: #FFFFFF;
     text-align: center;
-}
-
-/* MENU BAR STYLES */
-.iceMnuBar {
-    padding: 0;
-    white-space: nowrap;
-}
-
-.iceMnuBarItem {
-/* was iceMenu */
-    float: left;
-    padding: 0;
-    white-space: nowrap;
-}
-
-.iceMnuBarItem a {
-/* was iceMenu */
-    background-color: transparent;
-    height: auto;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border: 1px solid transparent;
-    margin: 0;
-    width: auto;
-    float: left;
-    display: block;
-    margin-right: 1px;
-    text-decoration: none;
-}
-
-.iceMnuBarItem a:hover {
-    height: auto;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    margin: 0;
-    border: 1px solid #dedede;
-    width: auto;
-    float: left;
-    display: block;
-    margin-right: 1px;
-    text-decoration: none;
-    background-color: #FFFFFF;
-    color: #F78208;
-}
-
-.iceMnuBarItem hr, .subiceMenu hr {
-/* was iceMenu */
-    border: none 0;
-    border-top: 1px solid #FFFFFF;
-    width: 100%;
-    height: 1px;
-    margin-top: 3px;
-    padding: 0;
-    text-align: left;
-}
-
-.iceMnuBarItemLabel {
-}
-
-/*newly added class*/
-
-.iceMnuBarSubMenu {
-/* was iceSubMenu */
-    position: absolute;
-    background-color: #efefef;
-    width: 160px;
-    border-top: 1px solid #aaa;
-    border-left: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-    border-right: 1px solid #aaa;
-    padding: 0;
-    height: auto;
-    display: block;
-}
-
-.iceMnuItm {
-/* was iceSubMenuRow*/
-/*border: 1px solid #666666;*/
-    padding: 2px;
-    vertical-align: middle;
-    display: block;
-}
-
-.iceMnuItm a {
-/* was iceSubMenuRow*/
-/*display: block;*/
-    text-decoration: none;
-}
-
-.iceMnuItm a:hover {
-/* was iceSubMenuRow*/
-    background-color: #cdcdcd;
-}
-
-.iceMnuItmLabel {
-/* was iceSubMenuRowLabel */
-    font-family: Arial, Helvetica, sans-serif; /*padding-top: 4px;*/
-    font-size: 1.0em; /*display: block;*/
-}
-
-.iceMnuItmImage {
-/* was iceSubMenuRowImage */
-    display: inline;
-    vertical-align: top;
-}
-
-.iceMnuBarSubMenuInd {
-/* was iceSubMenuRowSubMenuIndicator */
-    display: inline;
-    float: right;
-    padding-top: 3px;
-    width: 20px;
 }
 
 /* PROGRESS BAR STYLES */
