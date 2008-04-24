@@ -93,8 +93,7 @@
 
 
 
-    <target name="build.war" depends="compile"
-            description="Creates a Facelet version of component-showcase.">
+    <target name="build.war" depends="compile">
         
 <!--
         <copy todir="${web.content.dir}/docs" preservelastmodified="true">

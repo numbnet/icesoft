@@ -92,8 +92,7 @@
 
 
 
-    <target name="build.war" depends="compile"
-            description="Creates a JSP version of component-showcase.">
+    <target name="build.war" depends="compile">
 
 <!--
         <copy todir="${app.lib.dir}" preservelastmodified="true">
