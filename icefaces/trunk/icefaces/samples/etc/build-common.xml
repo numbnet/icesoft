@@ -238,7 +238,7 @@
         <compile/>
     </target>
     
-    <target name="build.war" description="build war file for jsf1.1 version" depends="compile">
+    <target name="build.war" depends="compile">
         <build.war/>
     </target>
     
@@ -328,13 +328,13 @@ Combinations:
         for application deployment on server, Glassfishv2, pe9, and JBoss4.2
         </echo>
     </target>
-    <target name="build.myfaces.war" description="build the war file for myfaces version">
+    <target name="build.myfaces.war" >
         <antcall target="build.war">
             <param name="myfaces" value=""/>
         </antcall>
     </target>
     
-    <target name="build.jsf1.2.war" description="build the war file for jsf1.2 version">
+    <target name="build.jsf1.2.war">
         <antcall target="build.war">
             <param name="jsf12" value=""/>
         </antcall>
@@ -414,14 +414,12 @@ Combinations:
                 krysalis-jCharts-1.0.0-alpha-1.jar
                 "
     />
-    <target name="build.facelet.war" depends="compile"
-            description="a facelets version of application">
+    <target name="build.facelet.war" depends="compile">
         <build.war web.xml="conf/web.sunri.icefaces.facelet.xml"/>
     </target>
 
     <property name="help.name" value="icebuildext"/>
     <target name="help">
-        <echo message="${ant.project.name}"/>
 	<taskdef name="ice-help" classname="BuildParser" classpath="${icefaces.build.facilities.dir}/${help.name}.jar"/>
 	<ice-help/>
 
