@@ -159,8 +159,11 @@ class RunnableRender implements Runnable {
                     log.error("unknown render exception", ex);
                 }
             }
-        }
-    }
+        } finally {
+            // 2807 release ThreadLocal on state 
+            state.release();
+        } 
+   }
 
     /**
      * See note above in run method. Just fiddle with the session to try to cause
