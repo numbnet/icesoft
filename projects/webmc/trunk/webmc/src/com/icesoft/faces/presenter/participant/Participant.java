@@ -156,11 +156,13 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
     /**
      * Method to get the participant view as a list of participants This is done
-     * so it can be used in a dataTable on the page
+     * so it can be used in a dataTable on the page.
+     * This method also refreshes the PersistentFacesState.
      *
      * @return participant view list
      */
     public Participant[] getParticipantViewList() {
+        state = PersistentFacesState.getInstance();
         return (participantView.getView());
     }
 
@@ -172,13 +174,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         this.chatMessage = chatMessage;
     }
 
-    /**
-     * Method to get the status message and refresh the PersistentFacesState
-     *
-     * @return statusMessage
-     */
     public String getStatusMessage() {
-        state = PersistentFacesState.getInstance();
         return statusMessage;
     }
 
