@@ -30,7 +30,7 @@
   ~ this file under either the MPL or the LGPL License."
   ~
   -->
-<project name="webmc" default="build.war" >
+<project name="webmc" default="tomcat6.0" >
 
     <!-- The basic build.properties file for customization -->
     <property file="build.properties"/>
@@ -87,7 +87,7 @@
     </target>
 
     <target name="compile" depends="clean">
-        <compile failonerror="false" >
+        <compile failonerror="true" >
             <add.javac.elements >
                 <classpath>
                     <fileset dir="${proj.lib.dir}" includes="*.jar"/>
@@ -105,16 +105,16 @@
     </target>
 
     <target name="build.war" depends="compile">
-
         <copy todir="${app.lib.dir}" preservelastmodified="true">
+            <fileset dir="${icefaces.lib.dir}">
+                <patternset refid="faclets.jars"/>
+            </fileset>
             <fileset dir="${proj.lib.dir}">
                 <patternset refid="validation.jars"/>
                 <patternset refid="javaMail.jars"/>
-                <patternset refid="facelets.jars"/>
             </fileset>
         </copy>
-
-        <build.war web.xml="web/WEB-INF/web.xml"/>
+        <build.war/>
     </target>
 
 </project>
