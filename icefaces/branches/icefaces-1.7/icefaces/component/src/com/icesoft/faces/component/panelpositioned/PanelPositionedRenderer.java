@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.component.panelpositioned;
 
-import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.EffectsArguments;
 import com.icesoft.faces.context.effects.JavascriptContext;
@@ -49,6 +48,7 @@ import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
+
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -186,8 +186,8 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                     DOMContext.attachDOMContext(facesContext, uiComponent);
 
             Element root = (Element) domContext.getRootNode();
-            UISeries series = (UISeries) uiComponent;
-            List seriesList = (List) series.getValue();
+            PanelPositioned series = (PanelPositioned) uiComponent;
+            List seriesList = (List) series.getValueAsList();
             if (seriesList != null) {
                 if (log.isTraceEnabled()) {
                     for (int i = 0; i < seriesList.size(); i++) {
@@ -258,7 +258,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                         String value = (String) requestParameters.get(name);
 
                         StringTokenizer st = new StringTokenizer(value, ";");
-                        Object o = uiSeries.getValue();
+                        Object o = uiSeries.getValueAsList();
                         List newList = new ArrayList();
                         List oldList = null;
 

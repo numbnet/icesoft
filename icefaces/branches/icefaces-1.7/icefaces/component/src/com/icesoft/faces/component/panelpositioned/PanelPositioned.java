@@ -33,6 +33,9 @@
 
 package com.icesoft.faces.component.panelpositioned;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.dragdrop.DndEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
@@ -236,5 +239,25 @@ public class PanelPositioned extends UISeries {
         listener = (MethodBinding) state[3];
     }
 
+    //Array type support added to the component
+    public Object getValueAsList() {
+        Object value = getValue();
+        if (value instanceof Object[]) {
+            return (Object)Arrays.asList((Object[]) value);
+        } else if (value instanceof List) {
+            return value;
+        } 
+        return null;
+    }
+    
 
+    //if the array type is being used, then update the backing bean if exist    
+    public void setArrayValue(Object[] obj) {
+        try {
+            ValueBinding vb = getValueBinding("value");
+            if (vb != null) {
+                vb.setValue(getFacesContext(), obj);
+            }
+        } catch (Exception e) {}
+    }
 }
