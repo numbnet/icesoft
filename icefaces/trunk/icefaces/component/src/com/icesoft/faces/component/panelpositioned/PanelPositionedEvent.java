@@ -38,6 +38,10 @@ import javax.faces.el.MethodBinding;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
+
+import com.icesoft.faces.component.panelseries.UISeries;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,9 +95,19 @@ public class PanelPositionedEvent extends FacesEvent{
     }
 
     public void process(){
+        try {
+            if (((UISeries)this.source).getValue() instanceof List) {
+               oldList.clear();
+               oldList.addAll(newList);               
+           } else if (((UISeries)this.source).getValue() instanceof Object[]) {
+               Object[] newVal = (Object[])((UISeries)this.source).getValue();
+               for (int i = 0; i < newVal.length; i++) {
+                   newVal[i] = newList.get(i);
+               }
+               ((PanelPositioned)this.source).setArrayValue(newVal);
+           }
 
-        oldList.clear();
-        oldList.addAll(newList);
+        } catch (Exception e) {}
     }
 
     public MethodBinding getListener() {
