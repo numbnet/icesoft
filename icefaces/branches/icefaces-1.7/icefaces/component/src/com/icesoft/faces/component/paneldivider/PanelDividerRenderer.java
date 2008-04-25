@@ -12,6 +12,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
@@ -45,16 +46,18 @@ public class PanelDividerRenderer extends DomBasicRenderer{
             dividerContainer.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.PanelDivider(event);");      
         }
         
+        String clientId = uiComponent.getClientId(facesContext);
         dividerContainer.appendChild(domContext.createTextNode("&nbsp;"));
         renderPane(facesContext, uiComponent, true);
         container.appendChild(dividerContainer);
-        dividerContainer.setAttribute(HTML.ID_ATTR, "divider");
+        dividerContainer.setAttribute(HTML.ID_ATTR, clientId + "Divider");
         renderPane(facesContext, uiComponent, false);
-        String clientId = uiComponent.getClientId(facesContext);
         addHiddenField(domContext, root, clientId, PanelDivider.FIRST_PANL_STYLE, panelDivider.getPanePosition(true));
         addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
         addHiddenField(domContext, root, clientId, PanelDivider.IN_PERCENT, "");
         domContext.stepOver();
+        JavascriptContext.addJavascriptCall(facesContext, "Ice.PanelDivider.adjustInitialPosition('" +
+                clientId + "Divider', " + panelDivider.isHorizontal() + ");");
     }
     
     
