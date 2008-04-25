@@ -202,6 +202,7 @@ public class PanelPositioned extends UISeries {
                 PanelPositionedEvent de = (PanelPositionedEvent) event;
                 de.process(); // Copy over the list values now
                 MethodBinding mb = de.getListener();
+                if (mb == null) return;
                 Object[] oa = {de};
                 mb.invoke(FacesContext.getCurrentInstance(), oa);
             } catch (Exception e) {
