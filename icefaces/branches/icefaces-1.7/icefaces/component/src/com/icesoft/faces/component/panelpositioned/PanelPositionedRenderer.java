@@ -350,11 +350,10 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                             setChanged(context);
 
 
-                            if (uiSeries.getListener() != null) {
-                                uiSeries.queueEvent(new PanelPositionedEvent(
-                                        component, uiSeries.getListener(),
-                                        event_type, newIndex, oldIndex, oldList, newList));
-                            }
+
+                            uiSeries.queueEvent(new PanelPositionedEvent(
+                                    component, uiSeries.getListener(),
+                                    event_type, newIndex, oldIndex, oldList, newList));
 
                         }
 
