@@ -317,24 +317,20 @@ Ice.PanelDivider.addMethods({
    if (this.horizontal) {
         var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
         var rightElementHeight = (Element.getHeight(this.getNextElement()));
-
+        var splitterHeight = (Element.getHeight(this.source)); 
         var tableHeight = Element.getHeight(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
         var diff = this.getDifference(event);
         var inPercent;
         if (this.resizeAction == "inc") {
             inPercent = (leftElementHeight + diff) /tableHeight  ;
-            topInPercent = Math.round(inPercent * 100);      
-            bottomInPercent = 99 - topInPercent;                    
-            this.getPreviousElement().style.height = (topInPercent)   + "%";
-            this.getNextElement().style.height = bottomInPercent + "%"
+            this.getPreviousElement().style.height = leftElementHeight + diff + "px";
+            this.getNextElement().style.height = tableHeight - leftElementHeight - diff - splitterHeight + "px";
 
         } else {
             inPercent = (leftElementHeight - diff) / tableHeight ;
-            topInPercent = Math.round(inPercent * 100);      
-            bottomInPercent = 99 - topInPercent;                    
-            this.getPreviousElement().style.height = (topInPercent) + "%";
-            this.getNextElement().style.height = bottomInPercent + "%"
+            this.getPreviousElement().style.height = leftElementHeight - diff + "px";
+            this.getNextElement().style.height = tableHeight - leftElementHeight + diff - splitterHeight + "px";
 
         }
    } else {
@@ -346,18 +342,13 @@ Ice.PanelDivider.addMethods({
         var diff = this.getDifference(event);
         if (this.resizeAction == "inc") {
             inPercent = ((leftElementWidth - splitterWidth) + diff) /totalWidth  ;
-            leftInPercent = Math.round(inPercent * 100);      
-            rightInPercent = 100 - leftInPercent;
-            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
-            this.getNextElement().style.width = rightInPercent + "%"
-              
+            this.getPreviousElement().style.width = leftElementWidth + diff + "px";
+            this.getNextElement().style.width = tableWidth - leftElementWidth - diff - splitterWidth + "px";
 
         } else {
             inPercent = ((leftElementWidth - splitterWidth)  - diff) / totalWidth ; 
-            leftInPercent = Math.round(inPercent * 100); 
-            rightInPercent = 100 - leftInPercent;
-            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
-            this.getNextElement().style.width = rightInPercent + "%"
+            this.getPreviousElement().style.width = leftElementWidth - diff + "px";
+            this.getNextElement().style.width = tableWidth - leftElementWidth + diff - splitterWidth + "px";
 
         }
      }
@@ -377,6 +368,18 @@ Ice.PanelDivider.addMethods({
   }
 
 });
+
+Ice.PanelDivider.adjustInitialPosition = function(divider, isHorizontal) {
+    divider = $(divider);
+    var container = $(Ice.PanelDivider.prototype.getContainerElement.call({source:divider}));
+    var firstPane = $(Ice.PanelDivider.prototype.getPreviousElement.call({source:divider}));
+    var secondPane = $(Ice.PanelDivider.prototype.getNextElement.call({source:divider}));
+    if (isHorizontal) {
+        secondPane.style.height = container.getHeight() - firstPane.getHeight() - divider.getHeight() + "px";
+    } else {
+        secondPane.style.width = container.getWidth() - firstPane.getWidth() - divider.getWidth() + "px";
+    }
+}
 
 ResizableUtil = {
     adjustHeight:function(src) {
