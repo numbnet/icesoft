@@ -106,6 +106,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         setCurrentInstance(this);
     }
 
+    public void resetCurrentInstance() {
+        FacesContext.setCurrentInstance(null);
+    } 
+
+    public static boolean isThreadLocalNull() {
+        return getCurrentInstance() == null;
+    }
+
     public Application getApplication() {
         return application;
     }
@@ -364,6 +372,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         faceMessages.clear();
         renderResponse = false;
         responseComplete = false;
+        // #2807 release thread locals
+        setCurrentInstance(null);
     }
 
     public void dispose() {
