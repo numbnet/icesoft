@@ -335,13 +335,6 @@ public class DOMResponseWriter extends ResponseWriter {
         noscriptMeta.setAttribute("http-equiv", "refresh");
         noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 
-//        String markerID = prefix + "marker-script";
-//        Element markerElement = (Element) body.appendChild(document.createElement("script"));
-//        markerElement.setAttribute("id", markerID);
-//        markerElement.setAttribute("type", "text/javascript");
-//        markerElement.appendChild(document.createTextNode("'" + markerID + "'.asElement().parentNode.bridge = 'placeholder';"));
-//        body.insertBefore(markerElement, body.getFirstChild());
-
         if (context.isContentIncluded()) {
             Element element = (Element) body.insertBefore(document.createElement("div"), configurationElement);
             element.setAttribute("style", "display: none;");
