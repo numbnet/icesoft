@@ -30,7 +30,7 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-package com.icesoft.faces.presenter.thread;
+package com.icesoft.faces.presenter.timer;
 
 import com.icesoft.faces.presenter.presentation.Presentation;
 

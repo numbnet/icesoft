@@ -41,7 +41,7 @@ import com.icesoft.faces.presenter.document.factory.DocumentFactory;
 import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.participant.ParticipantInfo;
 import com.icesoft.faces.presenter.slide.Slide;
-import com.icesoft.faces.presenter.thread.SlideshowTimerBean;
+import com.icesoft.faces.presenter.timer.SlideshowTimerBean;
 import com.icesoft.faces.presenter.util.FileNameFilter;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
