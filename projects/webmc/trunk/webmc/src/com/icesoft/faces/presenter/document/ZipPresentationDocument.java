@@ -49,7 +49,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -59,21 +58,13 @@ import java.util.zip.ZipFile;
  * Participant initiates the loading of a file which causes the
  * ZipPresentationDocument to create slides for the presentation.
  */
-public class ZipPresentationDocument implements PresentationDocument {
+public class ZipPresentationDocument extends CommonPresentationDocument implements PresentationDocument {
     private static Log log = LogFactory.getLog(ZipPresentationDocument.class);
 
     public static final String EXTRACTED_FOLDER = "extracted";
     public static final String URL_SLASH = "/";
     private static final int MIN_ENTRY_SIZE =
             1000; // minimum zip entry to include (in bytes)
-
-    private boolean loaded = false;
-    private int externalConverterFilePages;
-    private int lastLoadedSlide = 0;
-    private Presentation presentation;
-    private File externalConverterFile;
-    private Slide[] slides;
-    private Slide[] slidesMobile;
 
     public ZipPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
@@ -96,69 +87,12 @@ public class ZipPresentationDocument implements PresentationDocument {
     }
 
     /**
-     * Method to retrieve the Slide object corresponding to the passed slide
-     * number
-     *
-     * @param slideNumber to get
-     * @return Slide at slideNumber (or null if not found)
-     */
-    public Slide getSlide(int slideNumber, boolean mobile) {
-        // Don't bother if the slide list is already null
-        if (slides == null) {
-            return null;
-        }
-        // Notification of page loading
-        if (!loaded && slideNumber > lastLoadedSlide) {
-            return null;
-        }
-        // Ensure a valid range is requested
-        if (slideNumber < 1) {
-            slideNumber = 1;
-        }
-        if (slideNumber > externalConverterFilePages) {
-            slideNumber = externalConverterFilePages;
-        }
-
-        if (log.isTraceEnabled()) {
-            log.trace("Returning slide number " + slideNumber + ": " +
-                      slides[slideNumber - 1].getLocation());
-        }
-        // Mobile sized Slide for a mobile browser
-        if(mobile){
-        	return slidesMobile[slideNumber - 1];
-        }
-        // Desktop sized Slide for a desktop browser
-        return slides[slideNumber - 1];
-    }
-
-    /**
-     * Convenience method to get the total number of slides
-     *
-     * @return number of slides (or 0 on error)
-     */
-    public int getNumberOfSlides() {
-        if (externalConverterFile == null) {
-            return 0;
-        }
-        return externalConverterFilePages;
-    }
-
-    /**
      * Method to clean up the conversion process This includes canceling and
      * deleting any processed slides
      */
     public void dispose() {
         cancel();
         externalConverterFile = null;
-    }
-
-    /**
-     * Convenience method to update the UI status message
-     *
-     * @param message to update with
-     */
-    private void updateStatus(String message) {
-        presentation.getModerator().updateStatus(message);
     }
 
     /**
@@ -331,82 +265,5 @@ public class ZipPresentationDocument implements PresentationDocument {
         }
         
         return "Slide" + slideNumber;
-    }
-
-    /**
-     * Internal class used to compare two slides and check for differences
-     */
-    private class SlideComparator implements Comparator {
-        /**
-         * Method to perform the actual comparison and sorting of files
-         * This would be called automatically when this comparator is used
-         * by a Collections.sort call
-         *
-         * @param a1 first file to compare
-         * @param a2 second file to compare
-         * @return 0 if the files are equal, 1 if a1 is above a2, -1 if a2 is above a1
-         */
-        public int compare(Object a1, Object a2) {
-            File file1 = null;
-            File file2 = null;
-            if (a1 instanceof File) {
-                file1 = (File) a1;
-            }
-            if (a2 instanceof File) {
-                file2 = (File) a2;
-            }
-
-            int number1 = 0;
-            int number2 = 0;
-            if (file1 != null) {
-                number1 = getNumberFromFile(file1.getName());
-            }
-            if (file2 != null) {
-                number2 = getNumberFromFile(file2.getName());
-            }
-
-            if (number1 > number2) return 1;
-            else if (number1 < number2) return -1;
-
-            return 0;
-        }
-
-        /**
-         * Wrapper method to safely determine if the passed object equals this
-         *
-         * @param obj to check
-         * @return true if the objects are equal
-         */
-        public boolean equals(Object obj) {
-            return obj != null && this.equals(obj);
-        }
-
-        /**
-         * Convenience method to get numbers from a filename, in the hope of
-         * ordering the files properly
-         * For example, a file named Slide2.jpg would extract as 2, and therefore
-         * could be sorted about 3, etc.
-         *
-         * @param name of the file
-         * @return numbers in the file, or -1 on error / no numbers present
-         */
-        private int getNumberFromFile(String name) {
-            try {
-                String toReturn = "";
-                char current;
-                for (int i = 0; i < name.length(); i++) {
-                    current = name.charAt(i);
-                    if (Character.isDigit(current)) {
-                        toReturn += current;
-                    }
-                    if (current == '.') {
-                        break;
-                    }
-                }
-                return Integer.parseInt(toReturn);
-            } catch (Exception failed) {
-                return -1;
-            }
-        }
     }
 }

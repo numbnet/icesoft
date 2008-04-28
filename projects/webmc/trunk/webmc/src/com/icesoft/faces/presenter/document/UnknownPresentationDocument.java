@@ -44,10 +44,7 @@ import java.io.File;
  * the moderator would be notified of the invalid file, and no further action
  * would be taken
  */
-public class UnknownPresentationDocument implements PresentationDocument {
-
-	private Presentation presentation;
-    private boolean loaded = false;
+public class UnknownPresentationDocument extends CommonPresentationDocument implements PresentationDocument {
 
     public UnknownPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
@@ -105,12 +102,4 @@ public class UnknownPresentationDocument implements PresentationDocument {
         		MessageBundleLoader.getMessage("bean.unknownPresentationDocument.loading"));
     }
 
-    /**
-     * Convenience method to update the UI status message
-     *
-     * @param message to update with
-     */
-    private void updateStatus(String message) {
-        presentation.getModerator().updateStatus(message);
-    }
 }
