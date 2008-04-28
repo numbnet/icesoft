@@ -68,7 +68,10 @@ public class PanelPositioned extends UISeries {
     private String constraint;
     private String handle;
     private String hoverclass;
-    
+    private boolean disabled = false;
+    private boolean disabledSet = false;
+    private String enabledOnUserRole = null;
+    private String renderedOnUserRole = null;    
 
 
     public PanelPositioned() {
@@ -91,7 +94,8 @@ public class PanelPositioned extends UISeries {
         return Util.getQualifiedStyleClass(this, 
                                 styleClass,
                                 CSS_DEFAULT.POSITIONED_PANEL_DEFAULT_CLASS,
-                                "styleClass");
+                                "styleClass", 
+                                isDisabled());
     }
 
     public void setStyleClass(String styleClass) {
@@ -261,4 +265,75 @@ public class PanelPositioned extends UISeries {
             }
         } catch (Exception e) {}
     }
+    
+    
+    /**
+     * @param disabled
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        this.disabledSet = true;
+    }
+
+    /**
+     * @return the value of disabled
+     */
+    public boolean isDisabled() {
+        if (!Util.isEnabledOnUserRole(this)) {
+            return true;
+        }
+        if (disabledSet) {
+            return disabled;
+        }
+        ValueBinding vb = getValueBinding("disabled");
+        Boolean v =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+    
+    /**
+     * <p>Set the value of the <code>enabledOnUserRole</code> property.</p>
+     */
+    public void setEnabledOnUserRole(String enabledOnUserRole) {
+        this.enabledOnUserRole = enabledOnUserRole;
+    }
+
+    /**
+     * <p>Return the value of the <code>enabledOnUserRole</code> property.</p>
+     */
+    public String getEnabledOnUserRole() {
+        if (enabledOnUserRole != null) {
+            return enabledOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("enabledOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public void setRenderedOnUserRole(String renderedOnUserRole) {
+        this.renderedOnUserRole = renderedOnUserRole;
+    }
+
+    /**
+     * <p>Return the value of the <code>renderedOnUserRole</code> property.</p>
+     */
+    public String getRenderedOnUserRole() {
+        if (renderedOnUserRole != null) {
+            return renderedOnUserRole;
+        }
+        ValueBinding vb = getValueBinding("renderedOnUserRole");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Return the value of the <code>rendered</code> property.</p>
+     */
+    public boolean isRendered() {
+        if (!Util.isRenderedOnUserRole(this)) {
+            return false;
+        }
+        return super.isRendered();
+    }    
 }

@@ -167,10 +167,10 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                 "}";
         ea.addFunction("onUpdate", updateCode);
 
-        String call = "Sortable.create('" + id + "'" + ea.toString();
-
-
-        JavascriptContext.addJavascriptCall(facesContext, call);
+        if (!panelPositioned.isDisabled()) {
+            String call = "Sortable.create('" + id + "'" + ea.toString();
+            JavascriptContext.addJavascriptCall(facesContext, call);
+        }
         DOMContext.getDOMContext(facesContext, uiComponent).stepOver();
         domContext.streamWrite(facesContext, uiComponent);
 
