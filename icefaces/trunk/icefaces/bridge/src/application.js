@@ -127,7 +127,6 @@
             this.connection.onServerError(function (response) {
                 logger.error('server side error');
                 statusManager.serverError.on();
-                statusManager.serverErrorPopup.on(); // ICE-2621
                 this.connection.sendDisposeViews();
                 this.dispose();
                 //todo: refactor this into something more elegant
