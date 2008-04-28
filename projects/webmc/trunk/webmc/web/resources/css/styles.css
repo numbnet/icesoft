@@ -160,7 +160,6 @@ img {
 
 .chatList, .participantList {
     background: #FFFFFF url( '../images/part_bg.jpg' ) no-repeat bottom right;
-
 }
 
 .participantList {
@@ -243,7 +242,6 @@ li {
     padding-bottom: 7px;
     margin-bottom: 7px;
     border-bottom: 1px dashed #B4C7D4;
-
 }
 
 .fileUploadPopup, .switchModeratorPopup, .logoutPopup {
