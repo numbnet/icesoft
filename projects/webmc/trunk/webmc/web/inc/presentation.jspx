@@ -69,15 +69,19 @@
     </ice:panelGroup>
 
     <div class="presentationImage">
+        <!-- Pointer image rendered to viewers and moderator-->
         <ice:panelGroup rendered="#{participant.presentation.usingPointer}"
                         styleClass="pointerImage"
                         style="#{participant.pointerClass}" />
+        <!-- Pointer functionality for moderator-->
         <ice:commandLink disabled="#{not participant.moderator or not participant.presentation.usingPointer}"
                          style="#{participant.presentation.usingPointer and participant.moderator?'cursor: crosshair;':''}"
                          actionListener="#{participant.pointer}">
+	        <!-- Slide -->
 	        <ice:graphicImage value="#{participant.currentSlide.location}"
 	                          rendered="#{participant.slideTypePres}"/>
 	    </ice:commandLink>
+	    <!-- Information Slide -->
         <ice:graphicImage value="#{participant.infoSlide.location}"
                           rendered="#{not participant.slideTypePres}"/>
     </div>
