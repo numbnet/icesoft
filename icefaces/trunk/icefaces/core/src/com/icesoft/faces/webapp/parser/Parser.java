@@ -99,13 +99,14 @@ public class Parser {
      * The main parsing logic.  Creates a Digester to parse page into a tag
      * processing tree, and then executes the JSP lifecycle across that tree.
      * The end result is a JSF component rooted with a UIViewRoot component.
+     * #2936, for the short term, synchronize this method. 
      *
      * @param page    The Reader for the page.
      * @param context
      * @throws java.io.IOException      If stream IO fails.
      * @throws org.xml.sax.SAXException If digester encounters invalid XML.
      */
-    public void parse(Reader page, FacesContext context)
+    public synchronized void parse(Reader page, FacesContext context)
             throws java.io.IOException, org.xml.sax.SAXException {
         // Need a mock pageContext
         StubPageContext pageContext = new StubPageContext(context);
@@ -119,12 +120,10 @@ public class Parser {
         TagWire rootWire = new TagWire();
         rootWire.setTag(rootTag);
 
-        synchronized (this) {
-            digester.clear();
-            digester.push(rootTag);
-            digester.push(rootWire);
-            digester.parse(page);
-        }
+        digester.clear();
+        digester.push(rootTag);
+        digester.push(rootWire);
+        digester.parse(page);
 
         TagWire realViewWire = null;
         try {
