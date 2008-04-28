@@ -1,8 +1,9 @@
 function $H(object) {
-  return new Hash(object);
+  return new Hashtable(object);
 };
 
-var Hash = Class.create(Enumerable, (function() {
+//ICE-3015 -- rename class to avoid conflict with the function having the same name in Tomahawk component JS code
+var Hashtable = Class.create(Enumerable, (function() {
 
   function toQueryPair(key, value) {
     if (Object.isUndefined(value)) return key;
@@ -61,7 +62,7 @@ var Hash = Class.create(Enumerable, (function() {
     },
 
     update: function(object) {
-      return new Hash(object).inject(this, function(result, pair) {
+      return new Hashtable(object).inject(this, function(result, pair) {
         result.set(pair.key, pair.value);
         return result;
       });
@@ -90,10 +91,10 @@ var Hash = Class.create(Enumerable, (function() {
     },
 
     clone: function() {
-      return new Hash(this);
+      return new Hashtable(this);
     }
   }
 })());
 
-Hash.prototype.toTemplateReplacements = Hash.prototype.toObject;
-Hash.from = $H;
+Hashtable.prototype.toTemplateReplacements = Hashtable.prototype.toObject;
+Hashtable.from = $H;

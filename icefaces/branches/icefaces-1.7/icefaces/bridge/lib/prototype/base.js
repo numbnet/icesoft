@@ -143,7 +143,7 @@ Object.extend(Object, {
     },
 
     isHash: function(object) {
-        return object instanceof Hash;
+        return object instanceof Hashtable;
     },
 
     isFunction: function(object) {

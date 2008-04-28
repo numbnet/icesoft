@@ -1,6 +1,6 @@
 /*------------------------------- DEPRECATED -------------------------------*/
 
-Hash.toQueryString = Object.toQueryString;
+Hashtable.toQueryString = Object.toQueryString;
 
 var Toggle = { display: Element.toggle };
 
