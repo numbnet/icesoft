@@ -11,8 +11,8 @@
 
         deserializeAndExecute: function(message) {
             var messageName = message.tagName;
-            for (name in this.commands) {
-                if (name == messageName) {
+            for (var commandName in this.commands) {
+                if (commandName == messageName) {
                     this.commands[messageName](message);
                     return;
                 }
