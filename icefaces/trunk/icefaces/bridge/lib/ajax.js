@@ -91,19 +91,18 @@
             var self = this;
             //avoid using libraries for this callback -- see: http://dev.rubyonrails.org/ticket/5393
             this.responseCallback = function() {
-                if (self.isComplete()) {
+                if (request.readyState == 4) {
                     self.logger.debug('[' + self.identifier + '] : receive [' + self.statusCode() + '] ' + self.statusText());
-                }
-                var size = self.callbacks.length;
-                for (var i = 0; i < size; i++) {
-                    try {
-                        self.callbacks[i](self);
-                    } catch (e) {
-                        logger.warn('connection closed prematurely');
-                        self.close();
+                    var size = self.callbacks.length;
+                    for (var i = 0; i < size; i++) {
+                        try {
+                            self.callbacks[i](self);
+                        } catch (e) {
+                            logger.warn('connection closed prematurely');
+                            self.close();
+                        }
                     }
                 }
-                ;
             };
         },
 
@@ -129,40 +128,12 @@
             });
         },
 
-        isComplete: function() {
-            try {
-                return this.request.readyState == 4;
-            } catch (e) {
-                return false;
-            }
-        },
-
-        isResponseValid: function() {
-            try {
-                return this.request.status >= 0;
-            } catch (e) {
-                return false;
-            }
-        },
-
-        isOk: function() {
-            try {
-                return this.request.status == 200;
-            } catch (e) {
-                return false;
-            }
-        },
-
         isServerError: function() {
             try {
                 return this.request.status == 500;
             } catch (e) {
                 return false;
             }
-        },
-
-        isOkAndComplete: function() {
-            return this.isComplete() && this.isOk();
         },
 
         isEmpty: function() {

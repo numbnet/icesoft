@@ -128,8 +128,8 @@
                     Connection.FormPost(request);
                     request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.ServerError, this.serverErrorCallback);
-                    request.on(Connection.Receive, this.receiveXWindowCookie);
-                    request.on(Connection.Receive, function(response) {
+                    request.on(Connection.OK, this.receiveXWindowCookie);
+                    request.on(Connection.OK, function(response) {
                         if (!response.isEmpty()) {
                             this.receiveCallback(response);
                         }
@@ -137,7 +137,7 @@
                             this.connect();
                         }
                     }.bind(this));
-                    request.on(Connection.Receive, Connection.Close);
+                    request.on(Connection.OK, Connection.Close);
                 }.bind(this));
             }.bind(this);
 
@@ -195,8 +195,8 @@
                     if (views.include(fullViewID)) {
                         this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
                             Connection.FormPost(request);
-                            request.on(Connection.Receive, this.receiveCallback);
-                            request.on(Connection.Receive, Connection.Close);
+                            request.on(Connection.OK, this.receiveCallback);
+                            request.on(Connection.OK, Connection.Close);
                         }.bind(this));
                         this.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
                     }
@@ -217,9 +217,9 @@
             this.logger.debug('send > ' + compoundQuery.asString());
             this.sendChannel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 Connection.FormPost(request);
-                request.on(Connection.Receive, this.receiveCallback);
+                request.on(Connection.OK, this.receiveCallback);
                 request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.Receive, Connection.Close);
+                request.on(Connection.OK, Connection.Close);
                 this.onSendListeners.broadcast(request);
             }.bind(this));
         },
@@ -252,7 +252,7 @@
             try {
                 this.sendChannel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
-                    request.on(Connection.Receive, Connection.Close);
+                    request.on(Connection.OK, Connection.Close);
                 });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);
