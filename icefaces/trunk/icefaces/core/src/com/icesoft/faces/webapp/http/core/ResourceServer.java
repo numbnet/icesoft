@@ -18,7 +18,8 @@ public class ResourceServer implements Server {
         pathDispatcher.dispatchOn(".*xmlhttp\\/.*\\/.*\\.js$", new CacheControlledServer(new ServeJSCode()));
         pathDispatcher.dispatchOn(".*xmlhttp\\/css\\/.*", new CacheControlledServer(new ServeCSSResource(mimeTypeMatcher)));
         pathDispatcher.dispatchOn(".*xmlhttp\\/blank$", new CacheControlledServer(new ServeBlankPage()));
-        pathDispatcher.dispatchOn(".*", new FileServer(fileLocator, mimeTypeMatcher));
+        //match any path that does not point to WEB-INF directory
+        pathDispatcher.dispatchOn("^(?!.*WEB\\-INF.*).*$", new FileServer(fileLocator, mimeTypeMatcher));
         if (configuration.getAttributeAsBoolean("compressResources", true)) {
             dispatcher = new CompressingServer(pathDispatcher);
         } else {
