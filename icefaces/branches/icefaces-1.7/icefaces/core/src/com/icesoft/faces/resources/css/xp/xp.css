@@ -288,7 +288,7 @@ fieldset {
 	border-collapse:collapse;
 }
 
-.iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol{ 
+.iceDatTblColHdr , .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr{ 
 /* was iceTblHeader */
     background-color: #EFEFEF;
     background-image: url( "./css-images/table_col_header.gif" );
@@ -350,7 +350,10 @@ fieldset {
 }
 
 .iceDatTblHdr{} /*was iceTblHeader */
-.iceDatTblFtr{} /*was iceTblFooter */
+.iceDatTblFtr {
+    background: none;
+    border-top: 1px solid #CCCCCC;  
+}
 
 .iceDatTblScrlSpr{ 
     background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
@@ -358,6 +361,16 @@ fieldset {
     border-top: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
 }
+
+.iceDatTblScrlSprFtr{ 
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;        
+}
+
+.iceDatTblScrlSprFtr .iceDatTblFtr{ 
+    border-bottom: none;     
+}
+
 .iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
     border-left-style: none;
     border-top-style: none;

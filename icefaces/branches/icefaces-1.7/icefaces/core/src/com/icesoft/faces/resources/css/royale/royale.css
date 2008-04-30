@@ -290,7 +290,7 @@ input {
 	border-collapse:collapse;
 }
 
-.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol { /* was iceTblHeader */
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr { /* was iceTblHeader */
 /*the header of a data tables */
     background-color: #026AFF;
     background-image: url( "./css-images/table_col_header.gif" );
@@ -337,7 +337,10 @@ input {
 }
 
 .iceDatTblHdr{} /*was iceTblHeader */
-.iceDatTblFtr{} /*was iceTblFooter */
+.iceDatTblFtr {
+    background: none;
+    border-top: 1px solid #026AFF;  
+}
 
 .iceDatTblScrlSpr{ 
     background: url( './css-images/table_col_header.gif' ) repeat-x top left; 
@@ -345,6 +348,17 @@ input {
     border-top: 1px solid #026AFF;
     border-right: 1px solid #026AFF;
 }
+
+.iceDatTblScrlSprFtr{ 
+    border-bottom: 1px solid #026AFF;
+    border-right: 1px solid #026AFF;        
+}
+
+.iceDatTblScrlSprFtr .iceDatTblFtr{ 
+    border-bottom: none;     
+}
+
+
 .iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
     border-left-style: none;
     border-top-style: none;
