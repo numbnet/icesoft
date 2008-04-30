@@ -42,6 +42,7 @@ import com.icesoft.faces.presenter.chat.Message;
 import com.icesoft.faces.presenter.participant.view.ChatView;
 import com.icesoft.faces.presenter.participant.view.ParticipantView;
 import com.icesoft.faces.presenter.presentation.Presentation;
+import com.icesoft.faces.presenter.presentation.PresentationManager;
 import com.icesoft.faces.presenter.presentation.PresentationManagerBean;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
@@ -94,6 +95,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private boolean mobileSniffed = false;
     private boolean loggedIn = false;
     double scale = (double)Slide.MOBILE_MAX_WIDTH/(double)Slide.MAX_WIDTH;
+    private int preloadMaxIterations = 0;
+    private int preloadIterations = 0;
+    private int preloadCurrentPage = 0;
 
     public Participant() {
         super();
@@ -364,17 +368,52 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         return presentation.getInfoSlide(mobile);
 
     }
-    
+
     /**
-     * Method to safely get the info slide.
+     * Method to get a series of slides not yet displayed on the page.  This is 
+     * used by a hidden dataTable on the page.
      *
-     * @return the slide, or null on error or if no presentation / slide exists
+     * @return list of Slides to preload
      */
     public Slide[] getPreloadSlides() {
         if(presentation != null){
-            return presentation.getPreloadSlides(mobile);
+            if (preloadIterations < preloadMaxIterations) {
+                Slide[] preloadSlides =
+                        new Slide[PresentationManager.SLIDE_PRELOAD_COUNT];
+                for (int i = 0; i < PresentationManager.SLIDE_PRELOAD_COUNT; i++) {
+                    if(preloadCurrentPage > presentation.getLastSlideNumber()){
+                    	preloadCurrentPage = 1;
+                    }
+                	preloadSlides[i] = presentation.getSlide(preloadCurrentPage,mobile);
+        		    preloadCurrentPage++;
+                }
+                preloadIterations++;
+                return preloadSlides;
+            }
         }
         return new Slide[0];
+    }
+
+    /**
+     * Method to trigger preloading of slides.  This is called when a 
+     * Participant logs in to a new presentation or when an existing 
+     * presentation uploads new slides.
+     * 
+     */
+    public void preload(){
+        if(presentation.getLastSlideNumber() > 0){
+        	preloadMaxIterations = presentation.getLastSlideNumber()/PresentationManager.SLIDE_PRELOAD_COUNT;
+        	if(presentation.getLastSlideNumber()%PresentationManager.SLIDE_PRELOAD_COUNT >0){
+        		preloadMaxIterations += 1;
+        	}
+        	preloadCurrentPage = presentation.getCurrentSlideNumber();
+        	preloadIterations = 0;
+        // There is no file uploaded for the presentation, reset variables.
+        }else{
+            preloadMaxIterations = 0;
+            preloadIterations = 0;
+            preloadCurrentPage = 0;        	
+        }
     }
 
     /**
@@ -466,7 +505,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
                 presentation
                         .addChatMessage(firstName, MessageBundleLoader.getMessage("bean.participant.joinedPresentation"));
                 chatView.useBottomView();
-
+                // Upon entering a presentation, preload the slides.
+                preload();
                 // Handle leaving the login page
                 loggedIn=true;
 
@@ -672,8 +712,8 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     }
 
     /**
-     * Listens to client input from commandButtons in the UI map and sets the
-     * selected time zone.
+     * Listens to input from a commandLink surrounding the presentation slide in
+     * the UI and sets the coordinates of the pointer image.
      *
      * @param event ActionEvent.
      */

@@ -53,7 +53,6 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.EventObject;
 
 /**
@@ -73,7 +72,6 @@ public class Presentation extends PresentationInfo {
     private File parentFile;
     private ArrayList uploadedFiles = new ArrayList();
     private PresentationManagerBean manager;
-    private Hashtable preloadedTable;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
     boolean usingPointer = false;
     private int pointerX = 0;
@@ -180,7 +178,7 @@ public class Presentation extends PresentationInfo {
      * @param slideNumber to get
      * @return the slide, or null if no document is loaded or an error occurred
      */
-    private Slide getSlide(int slideNumber, boolean mobile) {
+    public Slide getSlide(int slideNumber, boolean mobile) {
         return getSlide(slideNumber, false, mobile);
     }
 
@@ -206,38 +204,6 @@ public class Presentation extends PresentationInfo {
         }
 
         return requestedSlide;
-    }
-
-    /**
-     * Method to get a series of slides that have not yet been displayed on the
-     * page This is used by a hidden dataTable on the page, to attempt to
-     * preload the next few slides
-     *
-     * @return list of Slides to preload
-     */
-    public Slide[] getPreloadSlides(boolean mobile) {
-        if (document == null) {
-            return new Slide[0];
-        }
-
-        if (preloadedTable == null) {
-            preloadedTable = new Hashtable(getLastSlideNumber());
-        }
-
-        if (preloadedTable.size() < getLastSlideNumber()) {
-            Slide[] preloadSlides =
-                    new Slide[PresentationManager.SLIDE_PRELOAD_COUNT];
-
-            int stoppingPoint = currentSlideNumber + PresentationManager
-                    .SLIDE_PRELOAD_COUNT;
-            for (int i = currentSlideNumber; i < stoppingPoint; i++) {
-                preloadSlides[i - currentSlideNumber] = getSlide(i,mobile);
-                preloadedTable.put(new Integer(i), new Integer(i));
-            }
-            return preloadSlides;
-        }
-
-        return new Slide[0];
     }
 
    /**
@@ -485,12 +451,13 @@ public class Presentation extends PresentationInfo {
     }
 
     /**
-     * Method to stop this presentation This means canceling auto-play, cleaning
-     * up the document and associated files, and letting the manager know the
-     * presentation is done
+     * Method to stop this presentation This means canceling auto-play, removing
+     * the pointer, cleaning up the document and associated files, and letting 
+     * the manager know the presentation is done.
      */
     public void endPresentation() {
         try {
+        	usingPointer = false;
             stopAutoPlay(true);
             closeDocument();
         }catch (Exception failedMinor) {
@@ -583,9 +550,6 @@ public class Presentation extends PresentationInfo {
             document = null;
         }
 
-        // Force a new preload of the images
-        preloadedTable = null;
-
         // Close the upload dialog on the page
         closeUploadDialog();
         requestOnDemandRender();
@@ -607,6 +571,18 @@ public class Presentation extends PresentationInfo {
         }
     }
 
+    /**
+     * Method to trigger preloading of slides.  This is called when the 
+     * moderator of an existing presentation uploads new slides.
+     * 
+     */
+    public void preload(){
+        for(int i=0; i<participants.size(); i++){
+        	((Participant)participants.get(i)).preload();
+        }
+    }
+    
+    
     /**
      * Navigation method to move the slides back one slide
      *

@@ -34,18 +34,6 @@
         xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component" >
 
-    <!-- Preload Images -->
-    <ice:dataTable value="#{participant.preloadSlides}"
-                   var="loopSlide"
-                   cellpadding="0"
-                   cellspacing="0" 
-                   border="0">
-        <h:column>
-            <ice:graphicImage value="#{loopSlide.location}"
-                              style="visibility: hidden; height: 0; width: 0;"/>
-        </h:column>
-    </ice:dataTable>
-
     <!-- Presentation/Information tabs and Status Message on top of slide are 
          only visible on desktop browsers -->
     <ice:panelGroup styleClass="presentationImageTabs"
@@ -88,5 +76,17 @@
                           value="#{participant.infoSlide.location}"
                           rendered="#{not participant.slideTypePres}"/>
     </div>
+
+    <!-- Preload Images -->
+    <ice:dataTable value="#{participant.preloadSlides}"
+                   var="loopSlide"
+                   cellpadding="0"
+                   cellspacing="0" 
+                   border="0">
+        <h:column>
+            <ice:graphicImage value="#{loopSlide.location}"
+                              style="visibility: hidden; height: 0; width: 0;"/>
+        </h:column>
+    </ice:dataTable>
 
 </f:view>

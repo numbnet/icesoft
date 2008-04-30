@@ -164,6 +164,8 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
                 externalConverterFilePages = slides.length;
                 // We can show the navigation controls and set the first slide
                 loaded = true;
+                // After loading new slides, trigger preload of slides in the clients.
+                presentation.preload();
 
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +
