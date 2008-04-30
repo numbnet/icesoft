@@ -50,11 +50,11 @@
          only visible on desktop browsers -->
     <ice:panelGroup styleClass="presentationImageTabs"
                     rendered="#{!participant.mobile}" >
-        <ice:commandButton
+        <ice:commandButton id="slideTypeOne"
                 action="#{participant.toggleSlideTypeOne}"
                 image="resources/images/main_tab_pres_#{participant.slideTypePres}.gif"
                 alt="#{msgs['page.presentation.presentationTabButton.alt']}"/>
-        <ice:commandButton
+        <ice:commandButton id="slideTypeTwo"
                 action="#{participant.toggleSlideTypeTwo}"
                 image="resources/images/main_tab_info_#{not participant.slideTypePres}.gif"
                 alt="#{msgs['page.presentation.informationTabButton.alt']}"/>
@@ -62,7 +62,8 @@
 
     <ice:panelGroup styleClass="statusMessage"
                     rendered="#{!participant.mobile}">
-        <ice:outputText value="#{participant.statusMessage}"
+        <ice:outputText id="statusMsg"
+                        value="#{participant.statusMessage}"
                         effect="#{participant.statusEffect}"
                         escape="false"
                         style="background-color: #C7DFEF; color: #2D6387;"/>
@@ -74,15 +75,17 @@
                         styleClass="pointerImage"
                         style="#{participant.pointerClass}" />
         <!-- Pointer functionality for moderator-->
-        <ice:commandLink disabled="#{not participant.moderator or not participant.presentation.usingPointer}"
+        <ice:commandLink id="presentationImgLnk"
+                         disabled="#{not participant.moderator or not participant.presentation.usingPointer}"
                          style="#{participant.presentation.usingPointer and participant.moderator?'cursor: crosshair;':''}"
                          actionListener="#{participant.pointer}">
 	        <!-- Slide -->
-	        <ice:graphicImage value="#{participant.currentSlide.location}"
+	        <ice:graphicImage id="presentationImage" value="#{participant.currentSlide.location}"
 	                          rendered="#{participant.slideTypePres}"/>
 	    </ice:commandLink>
 	    <!-- Information Slide -->
-        <ice:graphicImage value="#{participant.infoSlide.location}"
+        <ice:graphicImage id="infoSlide"
+                          value="#{participant.infoSlide.location}"
                           rendered="#{not participant.slideTypePres}"/>
     </div>
 

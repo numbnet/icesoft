@@ -101,7 +101,8 @@
 </ice:panelPopup>
 
 <!-- Logout Dialog -->
-<ice:panelPopup visible="#{participant.confirmDialog}" 
+<ice:panelPopup id="logoutPopup"
+                visible="#{participant.confirmDialog}" 
                 modal="false"
                 styleClass="logoutPopup">
     <f:facet name="header">
@@ -115,10 +116,12 @@
                                vertical-align: middle;">
             <ice:outputText value="#{msgs['page.popup.logout.body.text']}"/>
             <ice:panelGroup style="padding-top: 10px;">
-                <ice:commandButton image="resources/images/butt_yes.gif"
+                <ice:commandButton id="logoutYesBtn"
+                                   image="resources/images/butt_yes.gif"
                                    action="#{participant.confirmLogoutYes}"
                                    alt="#{msgs['page.popup.yesButton.alt']}"/>
-                <ice:commandButton image="resources/images/butt_no.gif"
+                <ice:commandButton id="logoutNoBtn"
+                                   image="resources/images/butt_no.gif"
                                    action="#{participant.confirmLogoutNo}"
                                    alt="#{msgs['page.popup.noButton.alt']}"/>
             </ice:panelGroup>

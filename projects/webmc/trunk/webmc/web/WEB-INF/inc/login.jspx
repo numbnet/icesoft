@@ -37,7 +37,7 @@
 <div class="backgroundBottom">
 <center>
 <div class="loginBox">
-<ice:form>
+<ice:form id="loginForm">
     <ice:graphicImage value="#{participant.mobile?'./resources/images/login_logo_mobile.gif':'./resources/images/login_logo.gif'}" 
                       alt="#{msgs['page.login.loginLogo.alt']}"
                       styleClass="loginLogo" />
@@ -45,12 +45,12 @@
     <ice:panelGroup rendered="#{!participant.mobile}"
                     style="text-align: left;">
 	    <ice:panelGroup styleClass="moderatorViewerButtons">
-	        <ice:commandButton
+	        <ice:commandButton id="viewerBtn"
 	                actionListener="#{participant.loginBean.toggleRoleTypeViewer}"
 	                alt="#{msgs['page.login.viewerButton.alt']}"
 	                immediate="true"
 	                image="resources/images/login_tab_view_#{not participant.moderator}.gif"/>
-	        <ice:commandButton
+	        <ice:commandButton id="moderatorBtn"
 	                actionListener="#{participant.loginBean.toggleRoleTypeModerator}"
 	                alt="#{msgs['page.login.moderatorButton.alt']}"
 	                immediate="true"
@@ -83,7 +83,7 @@
         </ice:panelGroup>
         <!-- Name error message -->
         <ice:panelGroup>
-            <ice:message for="firstName" 
+            <ice:message for="firstName" id="firstNameErr"
                          errorClass="inputError"/>
         </ice:panelGroup >
         <!-- Empty Cell -->
@@ -121,7 +121,8 @@
         </ice:panelGroup>
         <!-- Viewer Presentation Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}">
-            <ice:outputText value="#{msgs['page.login.presentationError.required']}"
+            <ice:outputText id="presentationErr"
+                            value="#{msgs['page.login.presentationError.required']}"
                             rendered="#{participant.loginBean.invalidPresentation}"
                             styleClass="inputError"/>
         </ice:panelGroup>
@@ -129,7 +130,7 @@
         <ice:panelGroup rendered="#{participant.mobile}" />
         <!-- Moderator Presentation Error Message -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
-            <ice:message for="newPresentationName"
+            <ice:message for="newPresentationName" id="newPresentationNameErr"
                          errorClass="inputError"/>
         </ice:panelGroup>
         <!-- Refresh PersistentFacesState (Empty Cell with Spacer) -->
@@ -174,13 +175,14 @@
         </ice:panelGroup>
         <!-- Viewer Password Error Message -->
         <ice:panelGroup rendered="#{not participant.moderator}" >
-	        <ice:outputText value="#{msgs['page.login.passwordError.invalid']} "
+	        <ice:outputText id="viewerPasswordErr"
+                              value="#{msgs['page.login.passwordError.invalid']} "
 	                        rendered="#{participant.loginBean.invalidPassword}"
 	                        styleClass="inputError"/>
         </ice:panelGroup>
         <!-- Moderator Password Error Message -->
         <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}">
-	        <ice:message for="moderatorPassword"
+	        <ice:message for="moderatorPassword" id="moderatorPasswordErr"
 	                     errorClass="inputError"/>
         </ice:panelGroup>
         <!-- Empty Cell -->
@@ -190,12 +192,14 @@
         <!-- Viewer Buttons -->
         <ice:panelGroup rendered="#{not participant.moderator}"
 	                    styleClass="loginButtons">
-            <ice:commandButton image="resources/images/butt_reset.gif"
+            <ice:commandButton id="vResetBtn"
+                               image="resources/images/butt_reset.gif"
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="6"
                                alt="#{msgs['page.login.resetButton.alt']}" />
-            <ice:commandLink   action="#{participant.login}"
+            <ice:commandLink   id="vLoginBtn"
+                               action="#{participant.login}"
                                tabindex="7"
                                alt="#{msgs['page.login.joinLink.alt']}">
                 <ice:graphicImage value="resources/images/butt_join_present.gif" 
@@ -207,12 +211,14 @@
 	    <!-- Moderator Buttons -->
 	    <ice:panelGroup rendered="#{participant.moderator and not participant.mobile}"
 	                    styleClass="loginButtons">
-            <ice:commandButton image="resources/images/butt_reset.gif"
+            <ice:commandButton id="mResetBtn"
+                               image="resources/images/butt_reset.gif"
                                actionListener="#{participant.loginBean.resetButton}"
                                immediate="true"
                                tabindex="7"
                                alt="#{msgs['page.login.resetButton.alt']}"/>
-            <ice:commandLink   action="#{participant.login}"
+            <ice:commandLink   id="mLoginBtn"
+                               action="#{participant.login}"
                                tabindex="8"
                                alt="#{msgs['page.login.startLink.alt']}">
                 <ice:graphicImage value="resources/images/butt_start_present.gif"

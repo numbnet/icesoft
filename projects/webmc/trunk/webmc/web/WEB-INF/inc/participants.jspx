@@ -35,7 +35,8 @@
      xmlns:ice="http://www.icesoft.com/icefaces/component"
      class="participants">
 
-    <ice:panelGrid columns="2" 
+    <ice:panelGrid id="participantGrd"
+                   columns="2" 
                    styleClass="bgBARBLUE" 
                    width="100%"
                    cellpadding="0" 
@@ -45,13 +46,15 @@
 	        <ice:outputText value="#{participant.mobile?'Viewers:':'Number of Participants:'}#{participant.presentation.numberChatParticipants}"/>
 	    </ice:panelGroup>
 	    <ice:panelGroup style="text-align: right">
-	        <ice:commandButton immediate="true" 
+	        <ice:commandButton id="pScrollUpBtn"
+                                 immediate="true" 
 	                           alt="#{msgs['page.scrollUpButton.alt']}"
 	                           image="resources/images/part_arrow_up_#{participant.participantView.participantScrollUpDisabled}.gif"
 	                           title="#{msgs['page.participants.scrollUpButton.title']}"
 	                           actionListener="#{participant.participantView.moveParticipantViewUp}"
 	                           disabled="#{participant.participantView.participantScrollUpDisabled}"/>
-	        <ice:commandButton immediate="true"
+	        <ice:commandButton id="pScrollDnBtn"
+                                 immediate="true"
 	                           alt="#{msgs['page.scrollDownButton.alt']}"
 	                           image="resources/images/part_arrow_down_#{participant.participantView.participantScrollDownDisabled}.gif"
 	                           title="#{msgs['page.participants.scrollDownButton.title']}"
@@ -62,7 +65,8 @@
 
 	<ice:panelGroup styleClass="participantList">
 	    <ul>
-	    <ice:dataTable binding="#{participant.participantsTable}"
+	    <ice:dataTable id="participantTbl"
+                         binding="#{participant.participantsTable}"
 	                   value="#{participant.participantViewList}" 
 	                   var="list"
 	                   width="100%"
@@ -79,17 +83,21 @@
                                   value="resources/images/bullet_grey.gif"
                                   style="vertical-align: bottom; float: left;"/>
                 &amp;nbsp;
-                <ice:commandLink value="#{list.firstName} #{list.lastName}"
+                <ice:commandLink id="passModeratorLnk"
+                                 value="#{list.firstName} #{list.lastName}"
                                  title="#{msgs['page.participants.passModeratorCommandLink.title.partOne']} #{list.firstName} #{msgs['page.participants.passModeratorCommandLink.title.partTwo']}"
                                  rendered="#{participant.moderator}"
                                  actionListener="#{participant.passModerators}"
                                  style="font-weight: bold;"/>
-                <ice:outputText value="#{list.firstName} #{list.lastName}"
+                <ice:outputText id="participantName"
+                                value="#{list.firstName} #{list.lastName}"
                                 rendered="#{not participant.moderator}"
                                 style="font-weight: bold;"/>
-                <ice:outputText value="#{msgs['page.participants.moderator.text']}"
+                <ice:outputText id="isModerator"
+                                value="#{msgs['page.participants.moderator.text']}"
                                 rendered="#{not empty list and list.moderator}"/>
-                <ice:outputText value="#{msgs['page.participants.skype.text']}"
+                <ice:outputText id="hasSkype"
+                                value="#{msgs['page.participants.skype.text']}"
                                 rendered="#{not empty list and list.hasSkype}"/>
 	        </li>
 	        </ice:column>

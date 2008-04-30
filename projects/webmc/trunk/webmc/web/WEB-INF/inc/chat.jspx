@@ -41,23 +41,27 @@
                    cellpadding="0" 
                    cellspacing="0"
                    border="0" >
-        <ice:outputText rendered="#{participant.mobile}"
+        <ice:outputText id="mobileChatTxt"
+                        rendered="#{participant.mobile}"
                         value="#{msgs['page.chat.text']}"
                         style="padding-left: 6px;"/>
-        <ice:commandButton rendered="#{!participant.mobile}"
+        <ice:commandButton id="saveChat"
+                           rendered="#{!participant.mobile}"
                            alt="#{msgs['page.chat.chatLogButton.alt']}"
                            image="resources/images/chat_save.gif"
                            title="#{msgs['page.chat.chatLogButton.title']}"
                            onclick="javascript: showMedium('chatlog.html');"
                            style="padding-left: 13px;"/>
         <ice:panelGroup style="text-align: right;" >
-	        <ice:commandButton immediate="true"
+	        <ice:commandButton id="cScrollUpBtn"
+                                 immediate="true"
 	                           alt="#{msgs['page.scrollUpButton.alt']}"
 	                           image="resources/images/part_arrow_up_#{participant.chatView.chatScrollUpDisabled}.gif"
 	                           title="#{msgs['page.chat.scrollUpButton.title']}"
 	                           actionListener="#{participant.chatView.moveChatViewUp}"
 	                           disabled="#{participant.chatView.chatScrollUpDisabled}"/>
-	        <ice:commandButton immediate="true" 
+	        <ice:commandButton id="cScrollDnBtn"
+                                 immediate="true" 
 	                           alt="#{msgs['page.scrollDownButton.alt']}"
 	                           image="resources/images/part_arrow_down_#{participant.chatView.chatScrollDownDisabled}.gif"
 	                           title="#{msgs['page.chat.scrollDownButton.title']}"
@@ -71,17 +75,20 @@
                         effect="#{participant.messageEffect}" >
         <ice:panelGroup styleClass="chatList">
         <ul>
-        <ice:dataTable value="#{participant.chatViewList}"
+        <ice:dataTable id="chatTbl"
+                       value="#{participant.chatViewList}"
                        rows="#{participant.chatView.viewSize}"
                        var="page"
                        width="100%"
                        styleClass="chatTable">
             <ice:column>
             <li>
-                <ice:outputText value="#{page.senderFormatted}"
+                <ice:outputText id="msgSender"
+                                value="#{page.senderFormatted}"
                                 style="font-weight: bold; float: left;"/>
                 &amp;nbsp;
-                <ice:outputText value="#{page.message}" 
+                <ice:outputText id="message"
+                                value="#{page.message}" 
                                 escape="false"/>
             </li>
             </ice:column>
@@ -96,14 +103,16 @@
                    cellspacing="0"
                    border="0" >
         <ice:panelGroup styleClass="inputChatCell">
-            <ice:inputText binding="#{participant.chatMessageField}"
+            <ice:inputText id="inputMsg"
+                           binding="#{participant.chatMessageField}"
                            value="#{participant.chatMessage}"
                            maxlength="#{participant.mobile?'40':'70'}" 
                            styleClass="inputCHAT"
                            actionListener="#{participant.addChatMessage}"/>
         </ice:panelGroup>
         <ice:panelGroup styleClass="sendChatCell">
-            <ice:commandButton image="#{participant.mobile?'resources/images/chat_send_mobile.gif':'resources/images/chat_send.gif'}"
+            <ice:commandButton id="sendMsgBtn"
+                               image="#{participant.mobile?'resources/images/chat_send_mobile.gif':'resources/images/chat_send.gif'}"
                                actionListener="#{participant.addChatMessage}"
                                alt="#{msgs['page.chat.sendButton.alt']}"/>
         </ice:panelGroup>
