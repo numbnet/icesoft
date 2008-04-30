@@ -46,20 +46,17 @@
                 query.add('ice.view', viewID);
             });
             var replaceContainerHTML = function(html) {
-                var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
-                var end = new RegExp('\<\/body\>', 'g').exec(html);
-                var body = html.substring(start.index, end.index + end[0].length)
-                var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
-                var tag = container.tagName;
-                var c = $element(container);
-                c.disconnectEventListeners();
-                c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
+                Ice.Document.replaceContainerHTML(container, html);
                 scriptLoader.searchAndEvaluateScripts(container);
             };
 
-            this.connection = configuration.synchronous ?
-                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
-                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
+            var connection = configuration.synchronous ?
+                             new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
+                             new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
+            var dispose = function() {
+                connection.shutdown();
+                dispose = Function.NOOP;
+            }
 
             commandDispatcher.register('noop', Function.NOOP);
             commandDispatcher.register('set-cookie', Ice.Command.SetCookie);
@@ -70,14 +67,14 @@
                 logger.info('Redirecting to ' + url);
                 //avoid view disposal on navigation rules
                 if (url.contains('rvn=')) {
-                    this.connection.cancelDisposeViews();
+                    connection.cancelDisposeViews();
                 }
                 window.location.href = url;
-            }.bind(this));
+            });
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
                 var url = window.location.href;
-                this.connection.cancelDisposeViews();
+                connection.cancelDisposeViews();
                 if (url.contains('rvn=')) {
                     window.location.reload();
                 } else {
@@ -85,7 +82,7 @@
                     var queryPrefix = url.contains('?') ? '&' : '?';
                     window.location.href = url + queryPrefix + 'rvn=' + view;
                 }
-            }.bind(this));
+            });
             commandDispatcher.register('macro', function(message) {
                 $enumerate(message.childNodes).each(function(subMessage) {
                     commandDispatcher.deserializeAndExecute(subMessage);
@@ -111,24 +108,24 @@
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
-                this.connection.sendDisposeViews();
-                this.dispose();
-            }.bind(this));
+                connection.sendDisposeViews();
+                dispose();
+            });
 
             window.onBeforeUnload(function() {
-                this.connection.sendDisposeViews();
-                this.connection.shutdown();
-            }.bind(this));
+                connection.sendDisposeViews();
+                connection.shutdown();
+            });
 
             window.onUnload(function() {
-                this.dispose();
-            }.bind(this));
+                dispose();
+            });
 
-            this.connection.onSend(function() {
+            connection.onSend(function() {
                 Ice.Focus.userInterupt = false;
             });
 
-            this.connection.onReceive(function(response) {
+            connection.onReceive(function(response) {
                 var mimeType = response.getResponseHeader('Content-Type');
                 if (mimeType.startsWith('text/html')) {
                     replaceContainerHTML(response.content());
@@ -139,49 +136,50 @@
                 }
             });
 
-            this.connection.onReceive(function() {
+            connection.onReceive(function() {
                 window.documentSynchronizer.synchronize();
             });
 
-            this.connection.onServerError(function (response) {
-                logger.error('server side error');
-                statusManager.serverError.on();
-                this.connection.sendDisposeViews();
-                this.dispose();
-                replaceContainerHTML(response.content());
-            }.bind(this));
+            connection.onServerError(function (response) {
+                logger.warn('server side error');
+                connection.sendDisposeViews();
+                if (response.isEmpty()) {
+                    statusManager.serverError.on();
+                } else {
+                    replaceContainerHTML(response.content());
+                }
+                dispose();
+            });
 
-            this.connection.whenDown(function() {
+            connection.whenDown(function() {
                 logger.warn('connection to server was lost');
                 statusManager.connectionLost.on();
-                this.dispose();
-            }.bind(this));
+                dispose();
+            });
 
-            this.connection.whenTrouble(function() {
+            connection.whenTrouble(function() {
                 logger.warn('connection in trouble');
                 statusManager.connectionTrouble.on();
             });
 
-            this.connection.onSend(function() {
+            connection.onSend(function() {
                 statusManager.busy.on();
             });
 
-            this.connection.onReceive(function() {
+            connection.onReceive(function() {
                 statusManager.busy.off();
             });
 
+            //public method used to modify bridge's status manager
             this.attachStatusManager = function(setup, withDefault) {
                 statusManager.off();
                 statusManager = setup(withDefault ? new Ice.Status.DefaultStatusManager(configuration, container) : null);
                 logger.info("status indicators were updated");
             };
+            //public field used in iceSubmit/iceSubmitPartial
+            this.connection = connection;
 
             logger.info('bridge loaded!');
-        },
-
-        dispose: function() {
-            this.connection.shutdown();
-            this.dispose = Function.NOOP;
         }
     });
 });

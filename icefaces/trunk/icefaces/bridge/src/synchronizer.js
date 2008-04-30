@@ -32,6 +32,17 @@
  */
 
 [ Ice.Document = new Object, Ice.ElementModel.Element, Ice.Connection, Ice.Ajax ].as(function(This, Element, Connection, Ajax) {
+    This.replaceContainerHTML = function(container, html) {
+        var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
+        var end = new RegExp('\<\/body\>', 'g').exec(html);
+        var body = html.substring(start.index, end.index + end[0].length)
+        var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
+        var tag = container.tagName;
+        var c = $element(container);
+        c.disconnectEventListeners();
+        c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
+    };
+
     This.Synchronizer = Object.subclass({
         initialize: function(logger) {
             this.logger = logger.child('synchronizer');
@@ -54,11 +65,8 @@
                 this.logger.info('synchronize body');
                 this.ajax.getAsynchronously(document.URL, '', function(request) {
                     request.setRequestHeader('Connection', 'close');
-                    request.on(Connection.OK, function() {
-                        var text = request.content();
-                        var start = '<BODY';
-                        var end = '</BODY>';
-                        Element.adaptToElement(document.body).replaceHtml(text.substring(text.indexOf(start), text.lastIndexOf(end) + end.length));
+                    request.on(Connection.OK, function(response) {
+                        This.replaceContainerHTML(document.body, response.content());
                     });
                 });
             } catch (e) {
