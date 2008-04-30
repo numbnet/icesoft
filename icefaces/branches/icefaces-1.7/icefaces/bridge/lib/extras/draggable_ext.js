@@ -159,8 +159,15 @@ Draggable.removeMe = function(element) {
 	                return;
 	            }
 	            try {
-	                monitor.destroyMe = true;
-	                monitor.destroy();
+                    //this could be true for the panelPopup only.
+                    //if the clientOnly is true on the panelPopup, it won't cause 
+                    //any kind of submit on drag.
+                    //so we don't want to destroy the draggable if clientOnly is true.
+                    var clientOnly = $(element+"clientOnly");
+                    if (!clientOnly) {
+                       monitor.destroyMe = true;
+                       monitor.destroy();
+                    }
 	            } catch(destroyException) {
 	                logger.warn("Monitor [" + monitor.id + "] destroyed with exception [" + destroyException + "]");
 	            }

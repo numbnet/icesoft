@@ -120,7 +120,9 @@ Ice.DndEvent.prototype = {
                 Ice.DnD.logger.debug("Drop CSS");
                 this.populateDrop(this.drop.element, ignoreCss);
             }
-            if (!ignoreDrag || !ignoreDrop) {
+            //don't submit if the "clientOnly" attribute is true on the panelPopup
+            var clientOnly = $(ele.id+"clientOnly");
+            if ((!ignoreDrag || !ignoreDrop) && !clientOnly) {
                 Ice.DnD.logger.debug("DnD Event [" + this.eventType + "] Sent");
                 var form = Ice.util.findForm(ele);
                 var formId = form.id;

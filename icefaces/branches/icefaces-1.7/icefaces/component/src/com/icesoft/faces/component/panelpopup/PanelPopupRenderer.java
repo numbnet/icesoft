@@ -229,6 +229,14 @@ public class PanelPopupRenderer extends GroupRenderer {
 			String call = addJavascriptCalls(uiComponent, "DRAG", handleId,
 					facesContext);
 			JavascriptContext.addJavascriptCall(facesContext, call);
+	        if (panelPopup.isClientOnly()) {
+	            //the "submit" method in the dragdrop_custom.js would check for this
+	            //element inside the panelPopup and will not fire submit if found
+	            Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
+	            clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
+	            clientOnly.setAttribute(HTML.ID_ATTR, clientId+ "clientOnly");
+	            root.appendChild(clientOnly);
+	        }			
 		}
 
 		// autoPosition handling
