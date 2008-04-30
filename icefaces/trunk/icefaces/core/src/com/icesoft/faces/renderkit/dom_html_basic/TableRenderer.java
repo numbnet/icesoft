@@ -104,6 +104,11 @@ public class TableRenderer extends DomBasicRenderer {
             Element bodytable = domContext.createElement("table");
             bodyDiv.appendChild(bodytable);
             mainDiv.appendChild(bodyDiv);
+            
+            Element footerDiv = domContext.createElement("div");
+            Element footerTable = domContext.createElement("table");
+            footerDiv.appendChild(footerTable);   
+            mainDiv.appendChild(footerDiv);            
         }
         renderFacet(facesContext, uiComponent, domContext, true); //header facet
         renderFacet(facesContext, uiComponent, domContext,
@@ -446,4 +451,9 @@ public class TableRenderer extends DomBasicRenderer {
         // First table in second div path table/tr/td/div/div1/table
         return (Element) root.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild();
     }
+    
+    protected Element getScrollableFooterTableElement(Element root) {
+        // First table in second div path table/tr/td/div/div1/table
+        return (Element) root.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getNextSibling().getNextSibling().getFirstChild();
+    }    
 }

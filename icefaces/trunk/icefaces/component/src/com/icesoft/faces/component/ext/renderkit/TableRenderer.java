@@ -147,8 +147,11 @@ public class TableRenderer
                         Util.getQualifiedStyleClass(uiComponent, 
                         CSS_DEFAULT.TABLE_SCRL_SPR));
             } else {
-                // First table in second div path table/tr/td/div/div1/table
-                root = getScrollableBodyTableElement(root);
+                // First table in second div path table/tr/td/div/div2/table
+                root = getScrollableFooterTableElement(root);
+                ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR, 
+                        Util.getQualifiedStyleClass(uiComponent, 
+                        CSS_DEFAULT.TABLE_SCRL_SPR+CSS_DEFAULT.TABLE_FOOTER_CLASS));                
             }
         }
         UIComponent headerFacet = getFacetByName(uiData, facet);

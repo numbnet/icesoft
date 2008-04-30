@@ -386,7 +386,7 @@ table.iceSelInpDate tbody tr td table{
     border-collapse: collapse;
 }
 
-.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol {
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr {
 /* was iceTblHeader */
     text-align: center;
     font: 11px tahoma;
@@ -452,6 +452,8 @@ table.iceSelInpDate tbody tr td table{
 
 /*was iceTblHeader */
 .iceDatTblFtr {
+	background: none;
+    border-top: 1px solid #d9d9d9; 	
 }
 
 .iceDatTblScrlSpr{ 
@@ -459,6 +461,16 @@ table.iceSelInpDate tbody tr td table{
     border-top: 1px solid #d9d9d9; 
     border-right: 1px solid #d9d9d9;
 }
+
+.iceDatTblScrlSprFtr{ 
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;        
+}
+
+.iceDatTblScrlSprFtr .iceDatTblFtr{ 
+    border-bottom: none;     
+}
+
 .iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
     border-left-style: none;
     border-top-style: none;
