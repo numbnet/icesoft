@@ -139,3 +139,14 @@
 		<category>ICE_LAYOUT</category>
 	</property-extension>
 </property>
+<property>
+    <description>
+        Sends update to the server on drop event if false.
+        Default value is false.
+    </description>
+    <property-name>clientOnly</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+    </property-extension>
+</property>

@@ -103,6 +103,12 @@ public class PanelPopup extends HtmlPanelGroup {
 	 * The current autoCentre state.
 	 */
 	private Boolean autoCentre = null;
+    /**
+     * The current clientOnly state.
+     */
+    private Boolean clientOnly = null;
+	
+	
 
 	public boolean isAutoCentre() {
 		if (autoCentre != null) {
@@ -117,6 +123,20 @@ public class PanelPopup extends HtmlPanelGroup {
 	public void setAutoCentre(boolean autoCentre) {
 		this.autoCentre = Boolean.valueOf(autoCentre);
 	}
+	
+    public boolean isClientOnly() {
+        if (clientOnly != null) {
+            return clientOnly.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("clientOnly");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setClientOnly(boolean clientOnly) {
+        this.clientOnly = Boolean.valueOf(clientOnly);
+    }	
 
 	private String autoPosition = null;
 
