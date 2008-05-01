@@ -16,41 +16,35 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
     private static final Object LOCK = new Object();
 
     private static EnvironmentAdaptingServletFactory factory;
+    private static EnvironmentAdaptingServletFactory fallbackFactory;
 
     private PseudoServlet servlet;
+    private PseudoServlet fallbackServlet;
 
     public EnvironmentAdaptingServlet(final Server server, final Configuration configuration, final ServletContext servletContext) {
         if (factory == null) {
             synchronized (LOCK) {
                 if (factory == null) {
                     // checking if GlassFish ARP is available...
-                    boolean isGlassFishARPAvailable;
-                    try {
-                        this.getClass().getClassLoader().loadClass("com.sun.enterprise.web.connector.grizzly.comet.CometEngine");
-                        isGlassFishARPAvailable = true;
-                    } catch (ClassNotFoundException exception) {
-                        isGlassFishARPAvailable = false;
-                    }
+                    boolean isGlassFishARPAvailable = isGlassFishARPAvailable();
                     if (LOG.isInfoEnabled()) {
                         LOG.info("GlassFish ARP available: " + isGlassFishARPAvailable);
                     }
                     // checking if Jetty ARP is available...
-                    boolean isJettyARPAvailable;
-                    try {
-                        this.getClass().getClassLoader().loadClass("org.mortbay.util.ajax.Continuation");
-                        isJettyARPAvailable = true;
-                    } catch (ClassNotFoundException exception) {
-                        isJettyARPAvailable = false;
-                    }
+                    boolean isJettyARPAvailable = isJettyARPAvailable();
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Jetty ARP available: " + isJettyARPAvailable);
                     }
                     if (isGlassFishARPAvailable && configuration.getAttributeAsBoolean("useARP", isGlassFishARPAvailable)) {
                         LOG.info("Adapting to GlassFish ARP environment");
                         factory = new GlassFishAdaptingServletFactory();
+                        // instantiate a fallback factory for creating fallback servlets.
+                        fallbackFactory = new ThreadBlockingAdaptingServletFactory();
                     } else if (isJettyARPAvailable && configuration.getAttributeAsBoolean("useARP", configuration.getAttributeAsBoolean("useJettyContinuations", isJettyARPAvailable))) {
                         LOG.info("Adapting to Jetty ARP environment");
                         factory = new JettyAdaptingServletFactory();
+                        // instantiate a fallback factory for creating fallback servlets.
+                        fallbackFactory = new ThreadBlockingAdaptingServletFactory();
                     } else {
                         LOG.info("Adapting to Thread Blocking environment");
                         factory = new ThreadBlockingAdaptingServletFactory();
@@ -59,14 +53,52 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
             }
         }
         servlet = factory.newServlet(server, servletContext);
+        if (fallbackFactory != null) {
+            fallbackServlet = fallbackFactory.newServlet(server, servletContext);
+        }
     }
 
     public void service(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        servlet.service(request, response);
+        try {
+            servlet.service(request, response);
+        } catch (EnvironmentAdaptingException exception) {
+            if (fallbackFactory != null) {
+                LOG.warn("Falling back to Thread Blocking environment.");
+                synchronized (LOCK) {
+                    factory = fallbackFactory;
+                    fallbackFactory = null;
+                }
+            }
+            if (fallbackServlet != null) {
+                servlet = fallbackServlet;
+                fallbackServlet = null;
+                servlet.service(request, response);
+            } else {
+                throw exception;
+            }
+        }
     }
 
     public void shutdown() {
         servlet.shutdown();
+    }
+
+    private boolean isGlassFishARPAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass("com.sun.enterprise.web.connector.grizzly.comet.CometEngine");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
+    private boolean isJettyARPAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass("org.mortbay.util.ajax.Continuation");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
     }
 
     private static interface EnvironmentAdaptingServletFactory {
@@ -79,7 +111,10 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
                 return new GlassFishAdaptingServlet(server, servletContext);
             } catch (ServletException exception) {
                 LOG.warn("Failed to adapt to GlassFish ARP environment. Falling back to Thread Blocking environment.", exception);
-                factory = new ThreadBlockingAdaptingServletFactory();
+                synchronized (LOCK) {
+                    factory = fallbackFactory;
+                    fallbackFactory = null;
+                }
                 return factory.newServlet(server, servletContext);
             }
         }

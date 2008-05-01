@@ -37,15 +37,15 @@ implements PseudoServlet {
                         invoke(servletContext, (Object[])null) + "/";
         } catch (NoSuchMethodException exception) {
             throw
-                new ServletException(
+                new EnvironmentAdaptingException(
                     "No such method: ServletContext.getContextPath", exception);
         } catch (IllegalAccessException exception) {
             throw
-                new ServletException(
+                new EnvironmentAdaptingException(
                     "Illegal access: ServletContext.getContextPath", exception);
         } catch (InvocationTargetException exception) {
             throw
-                new ServletException(
+                new EnvironmentAdaptingException(
                     "Invocation target: ServletContext.getContextPath",
                     exception);
         }
@@ -69,8 +69,32 @@ implements PseudoServlet {
                  * after the onInitialize(CometEvent) method of the CometHandler
                  * has been invoked.
                  */
-                CometEngine.getEngine().register(contextPath).
-                    addCometHandler(requestResponse);
+                try {
+                    /*
+                     * CometContext.addCometHandler(CometHandler) throws an
+                     * IllegalStateException when the cometSupport property is
+                     * not set to true in the config/domain.xml file.
+                     */
+                    CometEngine.getEngine().register(contextPath).
+                        addCometHandler(requestResponse);
+                } catch (IllegalStateException exception) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(
+                            "\r\n" +
+                            "\r\n" +
+                            "Failed to add Comet handler: \r\n" +
+                            "    Exception message: " +
+                                exception.getMessage() + "\r\n" +
+                            "    Exception cause: " +
+                                exception.getCause() + "\r\n\r\n" +
+                            "To enable GlassFish ARP, please set the " +
+                                "cometSupport property to true in the \r\n" +
+                            "domain's config/domain.xml for the " +
+                                "http-listener listening to port " +
+                                    request.getServerPort() + ".\r\n");
+                    }
+                    throw new EnvironmentAdaptingException(exception);
+                }
             }
         }
     }
