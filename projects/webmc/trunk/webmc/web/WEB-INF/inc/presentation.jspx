@@ -59,7 +59,8 @@
 
     <div class="presentationImage">
         <!-- Pointer image rendered to viewers and moderator-->
-        <ice:panelGroup rendered="#{participant.presentation.usingPointer}"
+        <ice:panelGroup id="pointerImg"
+                        rendered="#{participant.presentation.usingPointer}"
                         styleClass="pointerImage"
                         style="#{participant.pointerClass}" />
         <!-- Pointer functionality for moderator-->
