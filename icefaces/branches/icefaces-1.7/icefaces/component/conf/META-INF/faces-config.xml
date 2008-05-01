@@ -630,8 +630,7 @@
             <renderer-type>com.icesoft.faces.Format</renderer-type>
             <renderer-class>com.icesoft.faces.renderkit.dom_html_basic.OutputMessageRenderer</renderer-class>
         </renderer>
-<!--
-       <renderer>
+       <renderer>
             <component-family>com.icesoft.faces.Html</component-family>
             <renderer-type>com.icesoft.faces.Html</renderer-type>
             <renderer-class>com.icesoft.faces.component.ext.renderkit.HtmlRenderer</renderer-class>
@@ -648,12 +647,10 @@
             <renderer-type>com.icesoft.faces.Body</renderer-type>
             <renderer-class>com.icesoft.faces.component.ext.renderkit.BodyRenderer</renderer-class>
         </renderer>
--->
    </render-kit>
-<!-- 
     <component>
         <component-type>com.icesoft.faces.HtmlDocument</component-type>
-        <component-class>com.icesoft.faces.component.ext.Html</component-class>
+        <component-class>com.icesoft.faces.component.ext.HtmlHtml</component-class>
     </component>
     
     <component>
@@ -665,8 +662,7 @@
         <component-type>com.icesoft.faces.HtmlBody</component-type>
         <component-class>com.icesoft.faces.component.ext.HtmlBody</component-class>
     </component>
--->
-    <component>
+    <component>
         <component-type>com.icesoft.faces.HtmlOutputFormat</component-type>
         <component-class>com.icesoft.faces.component.ext.HtmlOutputFormat</component-class>
     </component>
