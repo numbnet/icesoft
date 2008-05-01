@@ -52,13 +52,17 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
 import javax.faces.component.UIData;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -751,6 +755,27 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         }
     }
 
+	public String getDirectlyEnterPresentation(){
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		String tempParameter = externalContext.getRequestParameterMap().get("s");
+		if(tempParameter != null){
+			if(loggedIn){
+			    logout();
+			}
+            loginBean.setPresentationName(tempParameter);
+            firstName = ((HttpServletRequest)externalContext.getRequest()).getRemoteHost();
+            login();
+	   		try{
+	            ((HttpServletResponse)externalContext.getResponse()).sendRedirect("index.jsp");
+			}catch(IOException e){
+			    e.printStackTrace();
+			}
+	        return "index.jsp";
+		}else{
+		    return null;
+		}
+	}
+
     /**
      * Method to refresh PersistentFacesState in login.jspx.
      *
@@ -776,7 +801,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
             if (log.isDebugEnabled()) {
                 log.debug("Fatal rendering exception for Participant " + firstName + ", logging out:", renderingException);
             }
-            logout();
+            if(loggedIn){
+                logout();
+            }
         }
     }
 
@@ -784,7 +811,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         if (log.isDebugEnabled()) {
             log.debug("Participant " + firstName + " Disposed - logging out");
         }
-		logout();
+        if(loggedIn){
+            logout();
+	    }
 		loginBean.removeRenderable();
 	}
 
