@@ -31,27 +31,40 @@
  *
  */
 
-package com.icesoft.faces.component.ext.renderkit;
+package com.icesoft.faces.component.ext;
 
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.DOMResponseWriter;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import org.w3c.dom.Element;
 
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
 
-public class HeadRenderer extends DomBasicRenderer {
+public class HtmlHtml extends javax.faces.component.UIComponentBase{
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        Element head = ((DOMResponseWriter) facesContext.getResponseWriter()).getHeadElement();
-//        head.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
-        DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
-        domContext.setCursorParent(head);
+    public HtmlHtml() {
+        super();
+        setRendererType("com.icesoft.faces.Html");
+    }
+    
+    /**
+     * <p>Return the family for this component.</p>
+     */
+    public String getFamily() {
+        return "com.icesoft.faces.Html";
     }
 
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-    }
+
+    private Object[] _values;
+
+    public Object saveState(FacesContext _context) {
+        if (_values == null) {
+            _values = new Object[1];
+        }
+            _values[0] = super.saveState(_context);
+        return _values;
+    }    
+
+
+    public void restoreState(FacesContext _context, Object _state) {
+        _values = (Object[]) _state;
+        super.restoreState(_context, _values[0]);        
+    }    
+
 }

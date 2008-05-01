@@ -512,9 +512,9 @@
     &ice-columngroup-component;	
 	&ice-uicolumn-component;
 	&ice-uicolumns-component;
-<!--	 &ice-html-component; -->
-<!--	 &ice-head-component;--> 
-<!--  &ice-body-component; -->
+    &ice-html-component;
+    &ice-head-component;
+    &ice-body-component;
 
 	<!--  custom component -->
 	&selectinputdate-component;
@@ -595,9 +595,9 @@
         &ice-columngroup-renderer;       
 		&ice-uicolumn-renderer;
 		&ice-uicolumns-renderer;
-                 <!-- &ice-html-renderer;  -->
-                 <!-- &ice-head-renderer; -->
-                <!-- &ice-body-renderer; -->
+        &ice-html-renderer;
+        &ice-head-renderer;
+        &ice-body-renderer;
 		
 		<!-- custom component -->
 		&selectinputdate-renderer;

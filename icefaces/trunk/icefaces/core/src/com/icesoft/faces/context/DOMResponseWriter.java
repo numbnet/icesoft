@@ -229,6 +229,28 @@ public class DOMResponseWriter extends ResponseWriter {
         appendToCursor(document.createTextNode(str.substring(off, len)));
     }
 
+    public Element getHtmlElement() {
+        Element html = document.getDocumentElement();
+        if (html == null) {
+            html = document.createElement("html");
+            document.appendChild(html);
+        }
+        if (html.getTagName().equals("html")) return html;
+        return fixHtml();
+    }
+
+    public Element getHeadElement() {
+        Element head = (Element) document.getElementsByTagName("head").item(0);
+        if (head == null) head = fixHead();
+        return head;
+    }
+
+    public Element getBodyElement() {
+        Element body = (Element) document.getElementsByTagName("body").item(0);
+        if (body == null) body = fixBody();
+        return body;
+    }
+
     private void enhanceAndFixDocument() {
         Element html = (Element) document.getDocumentElement();
         enhanceHtml(html = "html".equals(html.getTagName()) ? html : fixHtml());
