@@ -93,6 +93,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             rootNode.setAttribute("class", styleClass);
+            rootTable.setAttribute("class", styleClass);
         }
 
         rootTable.setAttribute("border", new Integer(border).toString());
