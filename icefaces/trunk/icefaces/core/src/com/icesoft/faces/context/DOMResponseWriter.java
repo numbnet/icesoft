@@ -316,7 +316,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         ElementController.from(session).addInto(prefix, body);
         String contextPath = handler.getResourceURL(context, "/");
-        String asyncServerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/").toString();
+        String blockingRequestHandlerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
@@ -330,7 +330,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
-                        "async: '" + asyncServerContextPath + "'}," +
+                        "async: '" + blockingRequestHandlerContextPath + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
@@ -503,6 +503,17 @@ public class DOMResponseWriter extends ResponseWriter {
             String message = "The cursor is not an element: " + DOMUtils.toDebugString(cursor);
             log.error(message);
             throw new RuntimeException(message, e);
+        }
+    }
+
+    private boolean isAsyncHttpServiceAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass(
+                "com.icesoft.faces.async.server." +
+                    "AsyncHttpServerAdaptingServlet");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
         }
     }
 }
