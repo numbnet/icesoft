@@ -63,6 +63,8 @@ public interface MessageServiceAdapter {
     public void closeConnection()
     throws MessageServiceException;
 
+    public MessageServiceConfiguration getMessageServiceConfiguration();
+
     /**
      * <p>
      *   Gets the topic names of the topics on which this MessageServiceAdapter

@@ -37,11 +37,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.jms.JMSAdapter;
-import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -135,12 +134,12 @@ implements Server {
 
     private void setUpMessageClientService(final ServletContext servletContext)
     throws MessageServiceException {
-        JMSProviderConfiguration _jmsProviderConfiguration =
-            new JMSProviderConfigurationProperties(servletContext);
+        MessageServiceAdapter _messageServiceAdapter =
+            new JMSAdapter(servletContext);
         messageServiceClient =
             new MessageServiceClient(
-                _jmsProviderConfiguration,
-                new JMSAdapter(_jmsProviderConfiguration),
+                _messageServiceAdapter.getMessageServiceConfiguration(),
+                _messageServiceAdapter,
                 servletContext);
         // todo: handle updated views queue exceeded messages!
 //        try {
