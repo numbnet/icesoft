@@ -62,7 +62,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -315,11 +314,9 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      */
 	public boolean isMobile() {
         if(!mobileSniffed){
-			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
-	        String useragent = request.getHeader("user-agent");
-	        String agent = useragent.toLowerCase();
-	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
-	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
+    		String indexJSPSniffedMobile = 
+    			(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mobile");
+	        if (indexJSPSniffedMobile.equals("true")) {
 	        	mobile = true;
 	    		// Mobile browsers have limited space - set chatView to 3 lines.
 	        	chatView.setViewSize(3);
