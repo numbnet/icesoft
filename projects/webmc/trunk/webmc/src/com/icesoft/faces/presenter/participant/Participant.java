@@ -757,7 +757,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
 
 	public String getDirectlyEnterPresentation(){
 		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-		String tempParameter = externalContext.getRequestParameterMap().get("s");
+		String tempParameter = (String)externalContext.getRequestParameterMap().get("s");
 		if(tempParameter != null){
 			if(loggedIn){
 			    logout();
