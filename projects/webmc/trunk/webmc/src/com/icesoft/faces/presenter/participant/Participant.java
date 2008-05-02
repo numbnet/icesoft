@@ -314,9 +314,11 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
      */
 	public boolean isMobile() {
         if(!mobileSniffed){
-    		String indexJSPSniffedMobile = 
-    			(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mobile");
-	        if (indexJSPSniffedMobile.equals("true")) {
+			HttpServletRequest request = (HttpServletRequest)state.getFacesContext().getExternalContext().getRequest();
+	        String useragent = request.getHeader("user-agent");
+	        String agent = useragent.toLowerCase();
+	        if ((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1)  
+	         || (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)) {
 	        	mobile = true;
 	    		// Mobile browsers have limited space - set chatView to 3 lines.
 	        	chatView.setViewSize(3);

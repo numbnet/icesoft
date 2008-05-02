@@ -47,11 +47,9 @@
 String agent = request.getHeader("USER-AGENT").toLowerCase();
 if((agent.indexOf("safari") != -1 && agent.indexOf("mobile") != -1) || 
    (agent.indexOf("opera") != -1 && agent.indexOf("240x320") != -1)){
-    session.setAttribute("mobile", "true");
     String redirectURL = "./webmc.iface";
     response.sendRedirect(redirectURL);
 }else{
-session.setAttribute("mobile", "false");
 %>
   <br/><br/><br/>
   <div style="text-align:center;">
