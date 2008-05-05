@@ -71,7 +71,8 @@
             					 highlightValue="1: 1, 7" /&gt;	 <br/>
             </p>            
             
-			NOTE: all 3 highlight attributes should have a corresponding values.
+			NOTE: all 3 highlight attributes should have a corresponding values.<br/>
+		          The action and actionListener will only be fired, when "enter" being pressed on a input text in a popup mode.	
             </p>
             ]]>
 	</description>
