@@ -22,7 +22,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <f:view>
             <ice:form>
                 <p>
-                    Welcome, <b><ice:outputText value="#{user.firstName}"/></b>,
+                    Welcome <b><ice:outputText value="#{user.firstName}"/></b>
                     you have successfully registered with the following
                     information:                
                 </p>
@@ -30,7 +30,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
                 <p>Address: <b><ice:outputText value="#{user.address}"/></b></p>
                 <p>City: <b><ice:outputText value="#{user.city}"/></b></p>
                 <p>Phone: <b><ice:outputText value="#{user.phone}">
-                                <f:converter converterId="PhoneConverter"/>
+                                <f:converter converterId="icefaces.PhoneConverter"/>
                              </ice:outputText></b>
                 </p>
                 <p>Age: <b><ice:outputText value="#{user.age}"/></b></p>

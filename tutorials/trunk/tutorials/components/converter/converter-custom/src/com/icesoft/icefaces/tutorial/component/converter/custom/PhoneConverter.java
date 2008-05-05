@@ -11,23 +11,23 @@ import org.apache.commons.lang.StringUtils;
  * to a String.
  */
 public class PhoneConverter implements Converter{
-    
-    
-    
+
+
+
     public Object getAsObject(FacesContext context, UIComponent component,
             String value){
         if(StringUtils.isEmpty(value)){
             return null;
         }
-        
+
         PhoneNumber phone = new PhoneNumber();
-        
+
         String [] phoneComps = StringUtils.split(value," ,()-");
-        
+
         String countryCode = phoneComps[0];
-        
+
         phone.setCountryCode(countryCode);
-        
+
         if(countryCode.equals("1")){
             String areaCode = phoneComps[1];
             String prefix = phoneComps[2];
@@ -39,17 +39,20 @@ public class PhoneConverter implements Converter{
         else{
             phone.setNumber(value);
         }
-        
+
         return phone;
-            
+
     }
-    
+
     public String getAsString(FacesContext context, UIComponent component,
             Object value){
+        if(value == null){
+		    return "";
+		}
         return value.toString();
     }
 
-   
-   
-    
+
+
+
 }

@@ -33,10 +33,10 @@
     </managed-bean>
     
     <navigation-rule>
-        <from-view-id>/register.iface</from-view-id>
+        <from-view-id>/register.jsp</from-view-id>
         <navigation-case>
             <from-outcome>success</from-outcome>
-            <to-view-id>/registered.iface</to-view-id>
+            <to-view-id>/registered.jsp</to-view-id>
         </navigation-case>
     </navigation-rule>
 
