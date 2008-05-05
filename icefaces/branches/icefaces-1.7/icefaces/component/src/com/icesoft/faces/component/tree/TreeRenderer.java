@@ -453,7 +453,7 @@ public class TreeRenderer extends DomBasicRenderer {
             Element navAnchor = domContext.createElement(HTML.ANCHOR_ELEM);
             navAnchor.setAttribute(HTML.HREF_ATTR, "#");
             navAnchor.setAttribute(HTML.ID_ATTR,
-                                   formId + ":" + pathToCurrentRoot);
+                                   treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot);
             navAnchor.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             navAnchor.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
             String hiddenFieldName =
