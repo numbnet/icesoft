@@ -388,9 +388,7 @@
 
         //redirect normal form submits through a XMLHttpRequest
         redirectSubmit: function() {
-            var previousSubmit = this.element.submit;
             this.element.submit = function() {
-                if (previousSubmit) previousSubmit();
                 iceSubmit(this, null, null); // Inner 'this' is outer 'this.element'
             };
         },
