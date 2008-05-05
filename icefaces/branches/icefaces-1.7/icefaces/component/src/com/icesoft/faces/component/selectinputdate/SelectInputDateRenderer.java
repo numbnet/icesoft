@@ -75,6 +75,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
+import javax.faces.event.ActionEvent;
+
 import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.text.MessageFormat;
@@ -1142,7 +1144,6 @@ public class SelectInputDateRenderer
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
         String clientId = component.getClientId(facesContext);
-
         if (clickedLink != null) {
             if (log.isDebugEnabled()) {
                 log.debug("linkId::" + linkId + "  clickedLink::" +
@@ -1184,7 +1185,17 @@ public class SelectInputDateRenderer
                 if (log.isDebugEnabled()) {
                     log.debug("-------------InputText enterkey Event ??----");
                 }
-                decodeInputText(facesContext, component);
+                boolean enterKeyPressed = false;
+                if (requestParameterMap.get("ice.event.target") != null &&
+                        requestParameterMap.get("ice.event.keycode") != null) {
+                    enterKeyPressed =  requestParameterMap.get("ice.event.target")
+                    .equals(clientId + SelectInputDate.CALENDAR_INPUTTEXT) && 
+                            requestParameterMap.get("ice.event.keycode").equals("13");
+                }
+                if (enterKeyPressed) {
+                    decodeInputText(facesContext, component);
+                    component.queueEvent(new ActionEvent(component));
+                }
             }
 
         }
