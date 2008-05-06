@@ -69,7 +69,7 @@ layout of the <span class="object-name">panelPopup</span> code is therefore simi
     &lt;f:facet name="header"&gt;
         &lt;!-- header content would go here --&gt;
     &lt;/f:facet&gt;
-    
+
     &lt;f:facet name="body"&gt;
         &lt;!-- body content would go here --&gt;
     &lt;/f:facet&gt;
@@ -97,7 +97,7 @@ the following code:
 The example page has added content inside the facets, as well as some minor styling to each component. Once completed, the draggable example looks similar
 to:
 </p>
-    
+
 <div class="screenshot">
     <img src="images/draggable-tutorial_screenshot.png"
        title="Draggable Panel Popup Example"
@@ -180,7 +180,7 @@ override.css</span>.
 
 <p>
 After this is done, you can begin customizing the styles. This demonstration changes the colors and borders of the header and body facet, as well
-as the <span class="object-name">panelPopup</span> itself. The result is similar to the following: 
+as the <span class="object-name">panelPopup</span> itself. The result is similar to the following:
 </p>
 
 <div class="screenshot">
@@ -190,11 +190,11 @@ as the <span class="object-name">panelPopup</span> itself. The result is similar
 </div>
 
 <p>
-To achieve the color change of the <span class="object-name">panelPopup</span> header, the following CSS changes were used: 
+To achieve the color change of the <span class="object-name">panelPopup</span> header, the following CSS changes were used:
 </p>
 
 <pre>
-.icePanelPopupHeader {
+.icePnlPopHdr {
     background-color: #FF0000;
     color: #FFFFFF;
     text-align: center;
@@ -297,7 +297,7 @@ toggle the visibility to true, and the close method would set it to false. For c
     public void closePopup() {
         visible = false;
     }
-    
+
     public void openPopup() {
         visible = true;
     }

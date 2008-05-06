@@ -1,4 +1,4 @@
-.icePanelPopup {
+.icePnlPop {
     color: #666666;
     background-color: #000000;
     padding: 0px;
@@ -10,13 +10,13 @@
     height: 200px;
 }
 
-.icePanelPopupHeader {
+.icePnlPopHdr {
     background-color: #FF0000;
     color: #FFFFFF;
     text-align: center;
 }
 
-.icePanelPopupBody {
+.icePnlPopBody {
     background-color: #DDDDDD;
     padding: 10px;
 }
