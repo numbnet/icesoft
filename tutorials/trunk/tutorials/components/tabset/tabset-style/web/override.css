@@ -1,8 +1,8 @@
 /* tabOn style classes */
-.iceTabSetTabOn {
+.icePnlTbOn {
 }
 
-.iceTabSetTabOn .LeftTop{
+.icePnlTbOn .LftTop{
     background-color:transparent;
     background-image: url("./css-images/on-left-top.gif");
     background-repeat:no-repeat;
@@ -11,7 +11,7 @@
     border:none;
 }
 
-.iceTabSetTabOn .MiddleTop{
+.icePnlTbOn .MidTop{
     background-color:#0000FF;
     /*background-image: url("./css-images/on-mid-top.gif");*/
     background-repeat:repeat-x;
@@ -20,7 +20,7 @@
     border:none;
 }
 
-.iceTabSetTabOn .RightTop{
+.icePnlTbOn .RtTop{
     background-color:transparent;
     background-image: url("./css-images/on-right-top.gif");
     background-repeat:no-repeat;
@@ -29,7 +29,7 @@
     border:none;
 }
 
-.iceTabSetTabOn .LeftMiddle{
+.icePnlTbOn .LftMid{
     background-color:transparent;
     background-image: url("./css-images/on-left-mid.gif");
     background-repeat:repeat-y;
@@ -38,7 +38,7 @@
     border:none;
 }
 
-.iceTabSetTabOn .MiddleMiddle{
+.icePnlTbOn .MidMid{
     background-color:transparent;
     background-image: url("./css-images/on-mid-mid.gif");
     background-repeat:repeat;
@@ -50,13 +50,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOn .MiddleMiddle a{
+.icePnlTbOn .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOn .RightMiddle{
+.icePnlTbOn .RtMid{
     background-color:transparent;
     background-image: url("./css-images/on-right-mid.gif");
     background-repeat:repeat-y;
@@ -65,21 +65,21 @@
     border:none;
 }
 
-.iceTabSetTabOn .LeftBottom{
+.icePnlTbOn .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/on-left-bot.gif");
     background-repeat:no-repeat;
     border:none;
 }
 
-.iceTabSetTabOn .MiddleBottom{
+.icePnlTbOn .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/on-mid-bot.gif");
     background-repeat:repeat-x;
     border:none;
 }
 
-.iceTabSetTabOn .RightBottom{
+.icePnlTbOn .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/on-right-bot.gif");
     background-repeat:no-repeat;
@@ -87,10 +87,10 @@
 }
 
 /* tabOff style classes */
-.iceTabSetTabOff {
+.icePnlTbOff {
 }
 
-.iceTabSetTabOff .LeftTop{
+.icePnlTbOff .LftTop{
     background-color:transparent;
     background-image: url("./css-images/off-left-top.gif");
     background-repeat:no-repeat;
@@ -99,7 +99,7 @@
     border:none;
 }
 
-.iceTabSetTabOff .MiddleTop{
+.icePnlTbOff .MidTop{
     background-color:#00FF00;
     background-repeat:repeat-x;
     /*background-image: url("./css-images/off-mid-top.gif");*/
@@ -108,7 +108,7 @@
     border:none;
 }
 
-.iceTabSetTabOff .RightTop{
+.icePnlTbOff .RtTop{
     background-color:transparent;
     background-image: url("./css-images/off-right-top.gif");
     background-repeat:no-repeat;
@@ -117,7 +117,7 @@
     border:none;
 }
 
-.iceTabSetTabOff .LeftMiddle{
+.icePnlTbOff .LftMid{
     background-color:transparent;
     background-image: url("./css-images/off-left-mid.gif");
     background-repeat:no-repeat;
@@ -126,7 +126,7 @@
     border:none;
 }
 
-.iceTabSetTabOff .MiddleMiddle{
+.icePnlTbOff .MidMid{
     background-color:transparent;
     background-image: url("./css-images/off-mid-mid.gif");
     background-repeat:repeat-x;
@@ -138,13 +138,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOff .MiddleMiddle a{
+.icePnlTbOff .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOff .RightMiddle{
+.icePnlTbOff .RtMid{
     background-color:transparent;
     background-image: url("./css-images/off-right-mid.gif");
     background-repeat:no-repeat;
@@ -153,21 +153,21 @@
     border:none;
 }
 
-.iceTabSetTabOff .LeftBottom{
+.icePnlTbOff .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/off-left-bot.gif");
     background-repeat:no-repeat;
     border:none;
 }
 
-.iceTabSetTabOff .MiddleBottom{
+.icePnlTbOff .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/off-mid-bot.gif");
     background-repeat:repeat-x;
     border:none;
 }
 
-.iceTabSetTabOff .RightBottom{
+.icePnlTbOff .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/off-right-bot.gif");
     background-repeat:no-repeat;
@@ -175,10 +175,10 @@
 }
 
 /* tabOver style classes */
-.iceTabSetTabOver {
+.icePnlTbOver {
 }
 
-.iceTabSetTabOver .LeftTop{
+.icePnlTbOver .LftTop{
     background-color:transparent;
     background-image: url("./css-images/over-left-top.gif");
     background-repeat:no-repeat;
@@ -187,7 +187,7 @@
     border:none;
 }
 
-.iceTabSetTabOver .MiddleTop{
+.icePnlTbOver .MidTop{
     background-color:#FF0000;
     /*background-image: url("./css-images/over-mid-top.gif");*/
     background-repeat:repeat-x;
@@ -196,7 +196,7 @@
     border:none;
 }
 
-.iceTabSetTabOver .RightTop{
+.icePnlTbOver .RtTop{
     background-color:transparent;
     background-image: url("./css-images/over-right-top.gif");
     background-repeat:no-repeat;
@@ -205,7 +205,7 @@
     border:none;
 }
 
-.iceTabSetTabOver .LeftMiddle{
+.icePnlTbOver .LftMid{
     background-color:transparent;
     background-image: url("./css-images/over-left-mid.gif");
     background-repeat:repeat-y;
@@ -214,7 +214,7 @@
     border:none;
 }
 
-.iceTabSetTabOver .MiddleMiddle{
+.icePnlTbOver .MidMid{
     background-color:transparent;
     background-image: url("./css-images/over-mid-mid.gif");
     background-repeat:repeat;
@@ -226,13 +226,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOver .MiddleMiddle a{
+.icePnlTbOver .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOver .RightMiddle{
+.icePnlTbOver .RtMid{
     background-color:transparent;
     background-image: url("./css-images/over-right-mid.gif");
     background-repeat:repeat-y;
@@ -241,21 +241,21 @@
     border:none;
 }
 
-.iceTabSetTabOver .LeftBottom{
+.icePnlTbOver .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/over-left-bot.gif");
     background-repeat:no-repeat;
     border:none;
 }
 
-.iceTabSetTabOver .MiddleBottom{
+.icePnlTbOver .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/over-mid-bot.gif");
     background-repeat:repeat-x;
     border:none;
 }
 
-.iceTabSetTabOver .RightBottom{
+.icePnlTbOver .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/over-right-bot.gif");
     background-repeat:no-repeat;
@@ -263,13 +263,13 @@
 }
 
 /* tabSpacer */
-.iceTabSetTabSpacer{
+.icePnlTbSetSpcr{
     width: 100%;
     border-bottom:1px solid #ABABAB;
 }
 
 /* tabPanel */
-.iceTabSet{
+.icePnlTbSet{
     padding-top:10px;
     padding-left:10px;
     padding-right:10px;
@@ -282,10 +282,10 @@
 
 /* TABS ON BOTTOM STYLE CLASSES */
 /* tabOn style classes */
-.iceTabSetTabOnBottom {
+.icePnlTbOnBtm {
 }
 
-.iceTabSetTabOnBottom .LeftTop{
+.icePnlTbOnBtm .LftTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-on-left-top.gif");
     background-repeat:no-repeat;
@@ -293,7 +293,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .MiddleTop{
+.icePnlTbOnBtm .MidTop{
     background-color:transparent;
     /*background-image: url("./css-images/tbot-on-mid-top.gif");*/
     background-repeat:repeat-x;
@@ -301,7 +301,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .RightTop{
+.icePnlTbOnBtm .RtTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-on-right-top.gif");
     background-repeat:no-repeat;
@@ -309,7 +309,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .LeftMiddle{
+.icePnlTbOnBtm .LftMid{
     background-color:transparent;
     background-image: url("./css-images/on-left-mid.gif");
     background-repeat:repeat-y;
@@ -318,7 +318,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .MiddleMiddle{
+.icePnlTbOnBtm .MidMid{
     background-color:transparent;
     background-image: url("./css-images/on-mid-mid.gif");
     background-repeat:repeat;
@@ -330,13 +330,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOnBottom .MiddleMiddle a{
+.icePnlTbOnBtm .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOnBottom .RightMiddle{
+.icePnlTbOnBtm .RtMid{
     background-color:transparent;
     background-image: url("./css-images/on-right-mid.gif");
     background-repeat:repeat-y;
@@ -345,7 +345,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .LeftBottom{
+.icePnlTbOnBtm .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-on-left-bot.gif");
     background-repeat:no-repeat;
@@ -353,7 +353,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .MiddleBottom{
+.icePnlTbOnBtm .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-on-mid-bot.gif");
     background-repeat:repeat-x;
@@ -361,7 +361,7 @@
     border:none;
 }
 
-.iceTabSetTabOnBottom .RightBottom{
+.icePnlTbOnBtm .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-on-right-bot.gif");
     background-repeat:no-repeat;
@@ -370,10 +370,10 @@
 }
 
 /* tabOff style classes */
-.iceTabSetTabOffBottom {
+.icePnlTbOffBtm {
 }
 
-.iceTabSetTabOffBottom .LeftTop{
+.icePnlTbOffBtm .LftTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-left-top.gif");
     background-repeat:no-repeat;
@@ -381,7 +381,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .MiddleTop{
+.icePnlTbOffBtm .MidTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-mid-top.gif");
     background-repeat:repeat-x;
@@ -389,7 +389,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .RightTop{
+.icePnlTbOffBtm .RtTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-right-top.gif");
     background-repeat:no-repeat;
@@ -397,7 +397,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .LeftMiddle{
+.icePnlTbOffBtm .LftMid{
     background-color:transparent;
     background-image: url("./css-images/off-left-mid.gif");
     background-repeat:no-repeat;
@@ -406,7 +406,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .MiddleMiddle{
+.icePnlTbOffBtm .MidMid{
     background-color:transparent;
     background-image: url("./css-images/off-mid-mid.gif");
     background-repeat:repeat-x;
@@ -418,13 +418,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOffBottom .MiddleMiddle a{
+.icePnlTbOffBtm .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOffBottom .RightMiddle{
+.icePnlTbOffBtm .RtMid{
     background-color:transparent;
     background-image: url("./css-images/off-right-mid.gif");
     background-repeat:no-repeat;
@@ -433,7 +433,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .LeftBottom{
+.icePnlTbOffBtm .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-left-bot.gif");
     background-repeat:no-repeat;
@@ -441,7 +441,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .MiddleBottom{
+.icePnlTbOffBtm .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-mid-bot.gif");
     background-repeat:repeat-x;
@@ -449,7 +449,7 @@
     border:none;
 }
 
-.iceTabSetTabOffBottom .RightBottom{
+.icePnlTbOffBtm .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-off-right-bot.gif");
     background-repeat:no-repeat;
@@ -458,10 +458,10 @@
 }
 
 /* tabOver style classes */
-.iceTabSetTabOverBottom {
+.icePnlTbOverBtm {
 }
 
-.iceTabSetTabOverBottom .LeftTop{
+.icePnlTbOverBtm .LftTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-left-top.gif");
     background-repeat:no-repeat;
@@ -469,7 +469,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .MiddleTop{
+.icePnlTbOverBtm .MidTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-mid-top.gif");
     background-repeat:repeat-x;
@@ -477,7 +477,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .RightTop{
+.icePnlTbOverBtm .RtTop{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-right-top.gif");
     background-repeat:no-repeat;
@@ -485,7 +485,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .LeftMiddle{
+.icePnlTbOverBtm .LftMid{
     background-color:transparent;
     background-image: url("./css-images/over-left-mid.gif");
     background-repeat:repeat-y;
@@ -494,7 +494,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .MiddleMiddle{
+.icePnlTbOverBtm .MidMid{
     background-color:transparent;
     background-image: url("./css-images/over-mid-mid.gif");
     background-repeat:repeat;
@@ -506,13 +506,13 @@
     white-space: nowrap;
 }
 
-.iceTabSetTabOverBottom .MiddleMiddle a{
+.icePnlTbOverBtm .MidMid a{
     text-decoration:none;
     color:#000000;
     cursor: pointer;
 }
 
-.iceTabSetTabOverBottom .RightMiddle{
+.icePnlTbOverBtm .RtMid{
     background-color:transparent;
     background-image: url("./css-images/over-right-mid.gif");
     background-repeat:repeat-y;
@@ -521,7 +521,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .LeftBottom{
+.icePnlTbOverBtm .LftBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-left-bot.gif");
     background-repeat:no-repeat;
@@ -529,7 +529,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .MiddleBottom{
+.icePnlTbOverBtm .MidBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-mid-bot.gif");
     background-repeat:repeat-x;
@@ -537,7 +537,7 @@
     border:none;
 }
 
-.iceTabSetTabOverBottom .RightBottom{
+.icePnlTbOverBtm .RtBtm{
     background-color:transparent;
     background-image: url("./css-images/tbot-over-right-bot.gif");
     background-repeat:no-repeat;
@@ -546,13 +546,13 @@
 }
 
 /* tabSpacer */
-.iceTabSetTabSpacerBottom{
+.icePnlTbSetSpcrBtm{
     width: 100%;
     border-top:1px solid #ABABAB;
 }
 
 /* tabPanel */
-.iceTabSetBottom{
+.icePnlTbSetBtm{
     padding-top:10px;
     padding-left:10px;
     padding-right:10px;

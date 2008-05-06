@@ -62,7 +62,7 @@ components inside each tab. Although the text content and labels of each tab cou
 The first is a basic session bean that generates the default tabs and allows for future extensibility. The second bean is Tab.java, which stores the labels
 and content for a single tab. The following screenshot shows what the page looks like once the beans are properly setup.
 </p>
-    
+
 <div class="screenshot">
     <img src="images/tabset-basic_screenshot.png"
        title="Basic Panel Tabset Example"
@@ -152,7 +152,7 @@ override.css</span>.
 <p>
 The current implementation of Panel Tabset uses a series of images to create the illusion of a tab. Because of this, the image files in the <span class="code-jsf">
 css-images</span> folder must be copied over. Of course this could be changed to use colors,
-gradients, or anything the designer wants. 
+gradients, or anything the designer wants.
 </p>
 
 <p>
@@ -167,12 +167,12 @@ red (mouse over), and green (deselected tab), as shown below:
 </div>
 
 <p>
-For the above example, changing the <span class="object-name">iceTabSetTabOn</span> class to the following resulted in a blue highlight for the
+For the above example, changing the <span class="object-name">icePnlTbOn</span> class to the following resulted in a blue highlight for the
 selected tab.
 </p>
 
 <pre>
-.iceTabSetTabOn .MiddleTop{
+.icePnlTbOn .MidTop{
     background-color:#0000FF;
     background-repeat:repeat-x;
     text-align:center;
@@ -299,7 +299,7 @@ tag, the selected option will update the backing bean immediately. This in turn 
 the tabs displaying at the correct location. The backing bean needs to be changed to have a <span class="object-name">
 String</span> placement variable, as well as related getters and setters. These changes can be seen in TabsetBean.java.
 The following screenshot displays how the tabset-placement demo looks by default.
-</p> 
+</p>
 
 <div class="screenshot">
     <img src="images/tabset-placement_screenshot.png"
