@@ -65,7 +65,7 @@
     <li><a href="#addingadatapaginator">Adding a Data Paginator</a></li>
     <li><a href="#addingasortableheader">Adding a Sortable Header</a></li>
     <li><a href="#addingascroll">Adding a Scroll</a></li>
-    <li><a href="#addingcolumns">Adding a Column Controll Component</a></li>
+    <li><a href="#addingcolumns">Adding a Column Control Component</a></li>
     <li><a href="#addingrowselections">Adding Row Selections</a></li>
     <li><a href="#customisingthedatatablecsssytle">Customising the Data Table
         CSS style</a></li>
@@ -156,12 +156,12 @@
 <pre>
     ...
     &lt;!-- Stock number -->
-    &lt;h:column>
+    &lt;ice:column>
         &lt;f:facet name="header">
             &lt;ice:outputText value="Stock #"/>
         &lt;/f:facet>
         &lt;ice:outputText value="#{item.stock}"/>
-    &lt;/h:column>
+    &lt;/ice:column>
     ...
 </pre>
 
@@ -301,7 +301,6 @@
             pageCountVar="pageCount"
             pageIndexVar="pageIndex">
         &lt;ice:outputFormat
-                styleClass="standard"
                 value="{0} cars found, displaying {1} car(s), from {2} to {3}. Page {4} / {5}.">
             &lt;f:param value="#{rowsCount}"/>
             &lt;f:param value="#{displayedRowsCount}"/>
@@ -606,7 +605,7 @@
 <!-- Adding/Reducing columns -->
 <a name="addingcolumns">&nbsp;</a>
 
-<h2>Adding a Column Controll Component</h2>
+<h2>Adding a Column Control Component</h2>
 
 <p>In addition to the display features above, another easy-to-use feature, changing columns of the displayed table, is available to pick up. The benefit of this feature is to give users the opportunity to focus on particular information of the <span class="object-name">dataTable</span>. In this tutorial, the <span class="object-name">dataColumn</span> component also comprises two component, the pure <span class="object-name">dataTable</span> and the control panel.
 </p>
@@ -849,7 +848,7 @@ valueChangeListener="#{inventoryList.selectionChanged}"/&gt;
     }
 
     .stockColumn{
-    width: 60px;
+    width: 80px;
     }
 
     .modelColumn{
@@ -861,7 +860,7 @@ valueChangeListener="#{inventoryList.selectionChanged}"/&gt;
     }
 
     .odometerColumn{
-    width: 75px;
+    width: 90px;
     }
 
     .priceColumn{
@@ -904,11 +903,11 @@ valueChangeListener="#{inventoryList.selectionChanged}"/&gt;
     </thead>
     <tbody>
         <tr>
-            <td class="bodyExample">iceTblHeader</td>
+            <td class="bodyExample">iceDatTblHdr</td>
             <td class="bodyExample">Default CSS class name applied to all table header cells.</td>
         </tr>
         <tr>
-            <td class="bodyExample">iceTblHeader a</td>
+            <td class="bodyExample">iceDatTblHdr a</td>
             <td class="bodyExample">Default CSS style applied anchor tags in a table header cell.</td>
         </tr>
     </tbody>
