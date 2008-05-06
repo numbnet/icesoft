@@ -88,7 +88,7 @@ Droppables.add = function(ele, options) {
         }
     }
     Droppables.ORIGINAL_add(ele, options);
-    if (!options.sort) {
+    if (options && !options.sort) {
         var monitor = new Ice.DroppableMonitor($(ele), options);
         Ice.StateMon.add(monitor);
     }
