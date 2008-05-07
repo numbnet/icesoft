@@ -40,7 +40,7 @@
 	<display-name>Body</display-name>
 	<component-type>com.icesoft.faces.HtmlBody</component-type>
 
-	<!-- &TODO body-props; -->
+	&ice-att-style-props;
 	<component-extension>
 		<base-component-type>com.sun.faces.Component</base-component-type>
 		<component-family>com.icesoft.faces.Body</component-family>
