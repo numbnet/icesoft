@@ -650,7 +650,7 @@
    </render-kit>
     <component>
         <component-type>com.icesoft.faces.HtmlDocument</component-type>
-        <component-class>com.icesoft.faces.component.ext.HtmlHtml</component-class>
+        <component-class>com.icesoft.faces.component.ext.Html</component-class>
     </component>
     
     <component>

@@ -36,9 +36,9 @@ package com.icesoft.faces.component.ext;
 
 import javax.faces.context.FacesContext;
 
-public class HtmlHtml extends javax.faces.component.UIComponentBase{
+public class Html extends javax.faces.component.UIComponentBase{
 
-    public HtmlHtml() {
+    public Html() {
         super();
         setRendererType("com.icesoft.faces.Html");
     }
