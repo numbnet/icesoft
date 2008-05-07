@@ -175,7 +175,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
     private String stripHtmlName(String s, String word) {
         
         String tmp = "";
-        if (!s.startsWith(word)) {
+        if (!s.startsWith(word) || s.equalsIgnoreCase(word)) {
             tmp = s;
         } else {
             tmp = s.substring(word.length());
