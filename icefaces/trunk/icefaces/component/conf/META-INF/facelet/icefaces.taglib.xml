@@ -121,6 +121,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>body</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HtmlBody</component-type>
+			<renderer-type>com.icesoft.faces.Body</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>checkbox</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlCheckbox</component-type>
@@ -153,6 +161,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>html</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HtmlDocument</component-type>
+			<renderer-type>com.icesoft.faces.Html</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>form</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.HtmlForm</component-type>
@@ -165,6 +181,14 @@
 		<component>
 			<component-type>com.icesoft.faces.HtmlGraphicImage</component-type>
 			<renderer-type>com.icesoft.faces.Image</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
+		<tag-name>head</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.HtmlHead</component-type>
+			<renderer-type>com.icesoft.faces.Head</renderer-type>
 			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
 		</component>
 	</tag>
