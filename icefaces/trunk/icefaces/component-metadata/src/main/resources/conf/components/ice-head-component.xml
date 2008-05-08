@@ -41,6 +41,7 @@
 	<component-type>com.icesoft.faces.HtmlHead</component-type>
 
 	<!-- &TODO head-props; -->	
+    &ice-head-props;
 	<component-extension>
 		<base-component-type>com.sun.faces.Component</base-component-type>
 		<component-family>com.icesoft.faces.Head</component-family>

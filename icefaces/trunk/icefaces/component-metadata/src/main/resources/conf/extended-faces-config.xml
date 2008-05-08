@@ -156,6 +156,8 @@
 
   <!-- extended components properties-->
   
+  <!ENTITY ice-body-props SYSTEM "ice_properties/ice-body-props.xml">
+  <!ENTITY ice-head-props SYSTEM "ice_properties/ice-head-props.xml">
   <!ENTITY ice-commandButton-props SYSTEM "ice_properties/ice-commandButton-props.xml">
   <!ENTITY ice-commandLink-props SYSTEM "ice_properties/ice-commandLink-props.xml">
   <!ENTITY ice-dataTable-props SYSTEM "ice_properties/ice-dataTable-props.xml">

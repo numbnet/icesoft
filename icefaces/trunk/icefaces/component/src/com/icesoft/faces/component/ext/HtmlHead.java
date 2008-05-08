@@ -2,9 +2,12 @@ package com.icesoft.faces.component.ext;
 
 
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 public class HtmlHead extends javax.faces.component.UIComponentBase{
-
+    private String dir;
+    private String lang;
+    private String profile;
 
     public HtmlHead() {
         super();
@@ -17,18 +20,58 @@ public class HtmlHead extends javax.faces.component.UIComponentBase{
         return "com.icesoft.faces.Head";
     }
 
-    private Object[] _values;
-    public Object saveState(FacesContext _context) {
-        if (_values == null) {
-            _values = new Object[1];
+    public String getDir() {
+        return (String) getAttribute("dir", dir, null);
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
+
+    public String getLang() {
+        return (String) getAttribute("lang", lang, null);
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public String getProfile() {
+        return (String) getAttribute("profile", profile, null);
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    private Object getAttribute(String name, Object localValue, Object defaultValue) {
+        if (localValue != null) return localValue;
+        ValueBinding vb = getValueBinding(name);
+        if (vb == null) return defaultValue;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return defaultValue;
+        return value;
+    }
+    
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                super.saveState(context),
+                dir,
+                lang,
+                profile,
+        };
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        String[] attrNames = {
+                "dir",
+                "lang",
+                "profile",
+        };
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        for (int i = 0; i < attrNames.length; i++) {
+            getAttributes().put(attrNames[i], values[i + 1]);
         }
-            _values[0] = super.saveState(_context);
-        return _values;
-    }    
-
-    public void restoreState(FacesContext _context, Object _state) {
-        _values = (Object[]) _state;
-        super.restoreState(_context, _values[0]);        
-    }    
-
+    }
 }

@@ -47,8 +47,22 @@ public class BodyRenderer extends DomBasicRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         Element body = ((DOMResponseWriter) facesContext.getResponseWriter()).getBodyElement();
         body.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
+        setElementAttr(body, "alink", uiComponent, "alink");
+        setElementAttr(body, "background", uiComponent, "background");
+        setElementAttr(body, HTML.BGCOLOR_ATTR, uiComponent, HTML.BGCOLOR_ATTR);
+        setElementAttr(body, "link", uiComponent, "link");
+        setElementAttr(body, HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
+        setElementAttr(body, "text", uiComponent, "text");
+        setElementAttr(body, "vlink", uiComponent, "vlink");
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    }
+
+    private void setElementAttr(Element element, String elementAttrName, UIComponent component, String componentAttrName) {
+        Object attrValue = component.getAttributes().get(componentAttrName);
+        if (attrValue != null) {
+            element.setAttribute(elementAttrName, attrValue.toString());
+        }
     }
 }
