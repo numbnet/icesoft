@@ -13,7 +13,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -98,7 +97,7 @@ public class User {
 
         setDisplayName(name);
         FacesContext context = FacesContext.getCurrentInstance();
-        if(StringUtils.isEmpty(getName())){
+        if(name == null || name.trim().equals("")){
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Name Field is Blank");

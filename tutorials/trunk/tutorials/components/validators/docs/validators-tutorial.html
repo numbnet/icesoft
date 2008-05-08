@@ -109,7 +109,7 @@
         <pre>
     public String register(){
         FacesContext context = FacesContext.getCurrentInstance();
-        if(StringUtils.isEmpty(user.getName())){
+        if(name == null || name.trim().equals("")){
             FacesMessage message = new FacesMessage();
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             message.setSummary("Name Field is Blank");
