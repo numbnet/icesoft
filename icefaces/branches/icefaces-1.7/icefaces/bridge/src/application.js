@@ -45,6 +45,18 @@
                 query.add('ice.session', sessionID);
                 query.add('ice.view', viewID);
             });
+            var replaceContainerHTML = function(html) {
+                var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
+                var end = new RegExp('\<\/body\>', 'g').exec(html);
+                var body = html.substring(start.index, end.index + end[0].length)
+                var bodyContent = body.substring(body.indexOf('>') + 1, body.lastIndexOf('<'));
+                var tag = container.tagName;
+                var c = $element(container);
+                c.disconnectEventListeners();
+                c.replaceHtml(['<', tag, '>', bodyContent, '</', tag, '>'].join(''));
+                scriptLoader.searchAndEvaluateScripts(container);
+            };
+
             this.connection = configuration.synchronous ?
                               new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
                               new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
@@ -116,8 +128,15 @@
                 Ice.Focus.userInterupt = false;
             });
 
-            this.connection.onReceive(function(request) {
-                commandDispatcher.deserializeAndExecute(request.contentAsDOM().documentElement);
+            this.connection.onReceive(function(response) {
+                var mimeType = response.getResponseHeader('Content-Type');
+                if (mimeType.startsWith('text/html')) {
+                    replaceContainerHTML(response.content());
+                } else if (mimeType.startsWith('text/xml')) {
+                    commandDispatcher.deserializeAndExecute(response.contentAsDOM().documentElement);
+                } else {
+                    logger.warn('unknown content in response');
+                }
             });
 
             this.connection.onReceive(function() {
@@ -129,17 +148,7 @@
                 statusManager.serverError.on();
                 this.connection.sendDisposeViews();
                 this.dispose();
-                //todo: refactor this into something more elegant
-                var html = response.content();
-                var start = new RegExp('\<body[^\<]*\>', 'g').exec(html);
-                var end = new RegExp('\<\/body\>', 'g').exec(html);
-                var body = html.substring(start.index, end.index + end[0].length)
-                var content = body.substring(html.indexOf('>') + 1, html.lastIndexOf('<'));
-                var tag = container.tagName;
-                var c = $element(container);
-                c.disconnectEventListeners();
-                c.replaceHtml(['<', tag, '>', content, '</', tag, '>'].join(''));
-                scriptLoader.searchAndEvaluateScripts(container);
+                replaceContainerHTML(response.content());
             }.bind(this));
 
             this.connection.whenDown(function() {
