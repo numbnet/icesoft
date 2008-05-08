@@ -45,7 +45,8 @@
     }
 
     This.ServerError = function(response) {
-        return response.statusCode() == 500;
+        var code = response.statusCode();
+        return code >= 500 && code < 600;
     }
 
     This.OK = function(response) {
