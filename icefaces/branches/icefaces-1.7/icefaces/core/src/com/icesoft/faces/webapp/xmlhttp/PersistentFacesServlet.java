@@ -35,6 +35,13 @@ package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.webapp.http.servlet.MainServlet;
 
+import javax.servlet.Servlet;
+
 //todo: deprecate this class
 public class PersistentFacesServlet extends MainServlet {
+    protected static Servlet Instance;
+
+    public PersistentFacesServlet() {
+        Instance = this;
+    }
 }
