@@ -2,9 +2,16 @@ package com.icesoft.faces.component.ext;
 
 
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 public class HtmlBody extends javax.faces.component.UIComponentBase{
-
+    private String alink;
+    private String background;
+    private String bgcolor;
+    private String link;
+    private String style;
+    private String text;
+    private String vlink;
 
     public HtmlBody() {
         super();
@@ -17,22 +24,100 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
         return "com.icesoft.faces.Body";
     }
 
+    public String getAlink() {
+        return (String) getAttribute("alink", alink, null);
+    }
 
+    public void setAlink(String alink) {
+        this.alink = alink;
+    }
 
+    public String getBackground() {
+        return (String) getAttribute("background", background, null);
+    }
 
-    private Object[] _values;
+    public void setBackground(String background) {
+        this.background = background;
+    }
 
-    public Object saveState(FacesContext _context) {
-        if (_values == null) {
-            _values = new Object[1];
+    public String getBgcolor() {
+        return (String) getAttribute("bgcolor", bgcolor, null);
+    }
+
+    public void setBgcolor(String bgcolor) {
+        this.bgcolor = bgcolor;
+    }
+
+    public String getLink() {
+        return (String) getAttribute("link", link, null);
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getStyle() {
+        return (String) getAttribute("style", style, null);
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getText() {
+        return (String) getAttribute("text", text, null);
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getVlink() {
+        return (String) getAttribute("vlink", vlink, null);
+    }
+
+    public void setVlink(String vlink) {
+        this.vlink = vlink;
+    }
+
+    private Object getAttribute(String name, Object localValue, Object defaultValue) {
+        if (localValue != null) return localValue;
+        ValueBinding vb = getValueBinding(name);
+        if (vb == null) return defaultValue;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return defaultValue;
+        return value;
+    }
+    
+    public Object saveState(FacesContext context) {
+        return new Object[]{
+                super.saveState(context),
+                alink,
+                background,
+                bgcolor,
+                link,
+                style,
+                text,
+                vlink,
+        };
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        String[] attrNames = {
+                "alink",
+                "background",
+                "bgcolor",
+                "link",
+                "style",
+                "text",
+                "vlink",
+        };
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        for (int i = 0; i < attrNames.length; i++) {
+            getAttributes().put(attrNames[i], values[i + 1]);
         }
-            _values[0] = super.saveState(_context);
-        return _values;
-    }    
-
-    public void restoreState(FacesContext _context, Object _state) {
-        _values = (Object[]) _state;
-        super.restoreState(_context, _values[0]);        
-    }    
+    }
 }
+
 

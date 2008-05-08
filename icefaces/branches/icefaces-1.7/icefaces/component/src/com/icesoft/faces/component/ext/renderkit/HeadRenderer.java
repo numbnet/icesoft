@@ -48,10 +48,20 @@ public class HeadRenderer extends DomBasicRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         Element head = ((DOMResponseWriter) facesContext.getResponseWriter()).getHeadElement();
 //        head.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
+        setElementAttr(head, HTML.DIR_ATTR, uiComponent, HTML.DIR_ATTR);
+        setElementAttr(head, HTML.LANG_ATTR, uiComponent, HTML.LANG_ATTR);
+        setElementAttr(head, "profile", uiComponent, "profile");
         DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
         domContext.setCursorParent(head);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+    }
+
+    private void setElementAttr(Element element, String elementAttrName, UIComponent component, String componentAttrName) {
+        Object attrValue = component.getAttributes().get(componentAttrName);
+        if (attrValue != null) {
+            element.setAttribute(elementAttrName, attrValue.toString());
+        }
     }
 }
