@@ -41,19 +41,15 @@
     };
 
     This.BadResponse = function(response) {
-        return response.isComplete() && !response.isResponseValid();
+        return response.statusCode() == 0;
     }
 
     This.ServerError = function(response) {
-        return response.isComplete() && response.isServerError();
+        return response.statusCode() == 500;
     }
 
-    This.Receive = function(response) {
-        return response.isOkAndComplete();
-    }
-
-    This.Ok = function(response) {
-        return response.isOkAndComplete();
+    This.OK = function(response) {
+        return response.statusCode() == 200;
     }
 
     This.SyncConnection = Object.subclass({
@@ -105,10 +101,10 @@
             this.logger.debug('send > ' + compoundQuery.asString());
             this.channel.postAsynchronously(this.sendURI, compoundQuery.asURIEncodedString(), function(request) {
                 This.FormPost(request);
-                request.on(Connection.Receive, this.receiveCallback);
+                request.on(Connection.OK, this.receiveCallback);
                 request.on(Connection.BadResponse, this.badResponseCallback);
                 request.on(Connection.ServerError, this.serverErrorCallback);
-                request.on(Connection.Receive, Connection.Close);
+                request.on(Connection.OK, Connection.Close);
                 this.onSendListeners.broadcast(request);
             }.bind(this));
         },
@@ -141,7 +137,7 @@
             try {
                 this.channel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
                     Connection.FormPost(request);
-                    request.on(Connection.Receive, Connection.Close);
+                    request.on(Connection.OK, Connection.Close);
                 });
             } catch (e) {
                 this.logger.warn('Failed to notify view disposal', e);

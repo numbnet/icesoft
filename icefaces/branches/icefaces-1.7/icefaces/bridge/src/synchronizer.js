@@ -40,11 +40,11 @@
         },
 
         synchronize: function() {
-           try{
+            try {
                 window.frames[0].location.hash = '#reload';
                 this.logger.debug('mark document as modified');
                 this.synchronize = Function.NOOP;
-            } catch(e){
+            } catch(e) {
                 this.logger.warn('could not mark document as modified', e);
             }
         },
@@ -54,7 +54,7 @@
                 this.logger.info('synchronize body');
                 this.ajax.getAsynchronously(document.URL, '', function(request) {
                     request.setRequestHeader('Connection', 'close');
-                    request.on(Connection.Ok, function() {
+                    request.on(Connection.OK, function() {
                         var text = request.content();
                         var start = '<BODY';
                         var end = '</BODY>';
