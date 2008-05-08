@@ -41,22 +41,26 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.File;
 
 public class InputFileRenderer extends Renderer {
 
     public void encodeBegin(FacesContext context, UIComponent component) throws IOException {
+        String id = component.getClientId(context);
         InputFile c = (InputFile) component;
         BridgeFacesContext facesContext = (BridgeFacesContext) context;
         ResponseWriter writer = context.getResponseWriter();
         StringWriter iframeContentWriter = new StringWriter();
         c.renderIFrame(iframeContentWriter, facesContext);
+        String frameName = id + ":uploadFrame";
         String pseudoURL = "javascript: document.write('" + iframeContentWriter.toString().replaceAll("\"", "%22") + "'); document.close();";
 
         writer.startElement("iframe", c);
         writer.writeAttribute("src", pseudoURL, null);
+        writer.writeAttribute("id", frameName, null);
+        writer.writeAttribute("name", frameName, null);
         writer.writeAttribute("class", c.getStyleClass(), null);
         writer.writeAttribute("style", c.getStyle(), null);
         writer.writeAttribute("width", c.getWidth() + "px", null);
@@ -69,8 +73,21 @@ public class InputFileRenderer extends Renderer {
         // Need to set allowtransparency="true" on the IFRAME element tag so that,
         // along with InputFile.renderIFrame()'s <body style="background-color: transparent;">, the IFRAME
         // will be transparent, allowing background colors to show through.
-        writer.writeAttribute("allowtransparency", "true", null);        
+        writer.writeAttribute("allowtransparency", "true", null);
         writer.endElement("iframe");
+
+        writer.startElement("script", c);
+        writer.writeAttribute("type", "text/javascript", null);
+        writer.writeAttribute("id", id, null);
+        writer.writeText(
+                "var frame = document.getElementById('" + frameName + "').contentWindow;" +
+                        "var register = function() {" +
+                        //define callback that registers itself every time after its invocation
+                        "var call = function() { '" + id + "'.asExtendedElement().form().submit(); setTimeout(register, 250); };" +
+                        "if (frame.attachEvent) { frame.attachEvent('onunload', call); } else { frame.onunload = call; } };" +
+                        //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
+                        "setTimeout(register, 200);", null);
+        writer.endElement("script");
 
         Throwable uploadException = c.getUploadException();
         if (uploadException != null) {
@@ -82,14 +99,14 @@ public class InputFileRenderer extends Renderer {
                 context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.UNKNOWN_SIZE_MESSAGE_ID));
             } catch (FileUploadBase.InvalidContentTypeException e) {
                 String fileName = c.getFileInfo().getFileName();
-                if(fileName == null) {
+                if (fileName == null) {
                     File file = c.getFile();
-                    if(file != null)
+                    if (file != null)
                         fileName = file.getName();
                 }
-                if(fileName == null)
+                if (fileName == null)
                     fileName = "";
-                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[] { fileName }));
+                context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
             } catch (Throwable t) {
                 //ignore
             }
