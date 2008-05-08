@@ -35,7 +35,6 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.DOMUtils;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -46,7 +45,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
 import java.beans.Beans;
 import java.io.IOException;
 import java.util.Iterator;
@@ -69,8 +67,8 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         String hiddenFieldNameInRequestMap = (String) requestParameterMap
                 .get(commonCommandLinkHiddenFieldName);
         if (hiddenFieldNameInRequestMap == null
-            || hiddenFieldNameInRequestMap.equals("")
-            || !commandLinkClientId.equals(hiddenFieldNameInRequestMap)) {
+                || hiddenFieldNameInRequestMap.equals("")
+                || !commandLinkClientId.equals(hiddenFieldNameInRequestMap)) {
             // this command link did not invoke the submit
             return;
         }
@@ -82,17 +80,17 @@ public class CommandLinkRenderer extends DomBasicRenderer {
     protected static String deriveCommonHiddenFieldName(
             FacesContext facesContext,
             UIComponent uiComponent) {
-        
-        if (Beans.isDesignTime()){
+
+        if (Beans.isDesignTime()) {
             return "";
         }
 
         UIComponent parentNamingContainer = findForm(uiComponent);
         String parentClientId = parentNamingContainer.getClientId(facesContext);
         String hiddenFieldName = parentClientId
-                                 + NamingContainer.SEPARATOR_CHAR
-                                 + UIViewRoot.UNIQUE_ID_PREFIX
-                                 + HIDDEN_FIELD_NAME;
+                + NamingContainer.SEPARATOR_CHAR
+                + UIViewRoot.UNIQUE_ID_PREFIX
+                + HIDDEN_FIELD_NAME;
         return hiddenFieldName;
     }
 
@@ -107,15 +105,16 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         try {
             disabled = Boolean.valueOf(String.valueOf(
                     uiComponent.getAttributes().get("disabled"))).booleanValue();
-        } catch (Exception e) {}
-        
+        } catch (Exception e) {
+        }
+
         if (!domContext.isInitialized()) {
             Element root;
             if (disabled) {
                 root = domContext.createElement("span");
             } else {
                 root = domContext.createElement("a");
-                root.setAttribute("href", "# ");     
+                root.setAttribute("href", "javascript:;");
             }
             domContext.setRootNode(root);
             setRootElementId(facesContext, root, uiComponent);
@@ -135,14 +134,14 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         }
 
         PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
-                                                   new String[]{"onclick"});
+                new String[]{"onclick"});
         if (disabled) {
             root.removeAttribute("disabled");
         }
         FormRenderer.addHiddenField(facesContext,
-                                    deriveCommonHiddenFieldName(
-                                            facesContext,
-                                            (UICommand) uiComponent));
+                deriveCommonHiddenFieldName(
+                        facesContext,
+                        (UICommand) uiComponent));
         Iterator parameterKeys = parameterMap.keySet().iterator();
         while (parameterKeys.hasNext()) {
             String nextKey = (String) parameterKeys.next();
@@ -195,16 +194,16 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         //if onClick attribute set by the user, pre append it.
         if (onClick != null) {
             onClick = onClick.toString() + ";" +
-                      getJavaScriptOnClickString(facesContext,
-                                                 uiComponent, uiFormClientId,
-                                                 parameters);
+                    getJavaScriptOnClickString(facesContext,
+                            uiComponent, uiFormClientId,
+                            parameters);
         } else {
             onClick = getJavaScriptOnClickString(facesContext,
-                                                 uiComponent, uiFormClientId,
-                                                 parameters);
+                    uiComponent, uiFormClientId,
+                    parameters);
         }
         root.setAttribute("onclick",
-                          onClick.toString()); // replaced command w/component
+                onClick.toString()); // replaced command w/component
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -222,12 +221,12 @@ public class CommandLinkRenderer extends DomBasicRenderer {
                                               String formClientId,
                                               Map parameters) {
         return getJavascriptHiddenFieldSetters(facesContext,
-                                               (UICommand) uiComponent,
-                                               formClientId, parameters)
-               + "iceSubmit("
-               + " document.forms['" + formClientId + "'],"
-               + " this,event); "
-               + "return false;";
+                (UICommand) uiComponent,
+                formClientId, parameters)
+                + "iceSubmit("
+                + " document.forms['" + formClientId + "'],"
+                + " this,event); "
+                + "return false;";
     }
 
     /**
