@@ -11,12 +11,19 @@
 
     <import file="${build-common.xml}"/>
 
+    <patternset id="additional.compile.lib.jars"
+                includes="
+                servlet-api.jar
+                "
+            />
+
     <patternset id="common.icefaces.lib.jars.to.include"
                 includes="
             icefaces.jar
             icefaces-comps.jar
         "
             />
+
     <patternset id="deployment.icefaces.lib.jars.to.include"
                 includes="
             backport-util-concurrent.jar

@@ -20,8 +20,10 @@ import com.icesoft.icefaces.resource.tutorial.component.jaxb.ShipType;
 import java.util.ArrayList;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -39,7 +41,7 @@ import java.io.File;
  * of attributes set at the component level.
  * </p>
  */
-public class treeBean{ 
+public class treeBean{
 
     // tree default model, used as a value for the tree component
     private DefaultTreeModel model;
@@ -51,26 +53,26 @@ public class treeBean{
     private ShipType ship2;
     static{
         try {
-      
+
             jc = JAXBContext.newInstance("com.icesoft.icefaces.resource.tutorial.component.jaxb");
-           
+
             unmarshaller = (Unmarshaller)jc.createUnmarshaller();
-            
-            fleet = (Fleet)unmarshaller.unmarshal(new File("treeDocument.xml"));
-           
+            String metaDataPath = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("treeDocument.xml");
+            fleet = (Fleet)unmarshaller.unmarshal(new File(metaDataPath));
+
         } catch (JAXBException ex) {
             ex.printStackTrace();
         }
-       
+
     }
 
     public treeBean() {
-        
+
         Fleet.Ships shipType = fleet.getShips();
         ArrayList shipList = (ArrayList)shipType.getShip();
         ship1 = (ShipType)shipList.get(0);
         ship2 = (ShipType)shipList.get(1);
-        
+
         // create root node with its children expanded
         rootTreeNode = new DefaultMutableTreeNode();
         UrlNodeUserObject rootObject = new UrlNodeUserObject(rootTreeNode);
@@ -86,7 +88,7 @@ public class treeBean{
         DefaultMutableTreeNode branchNode = new DefaultMutableTreeNode();
         UrlNodeUserObject branchObject = new UrlNodeUserObject(branchNode);
         branchObject.setText(ship1.getName());
-        
+
         branchNode.setUserObject(branchObject);
         rootTreeNode.add(branchNode);
 
@@ -94,18 +96,18 @@ public class treeBean{
         branchNode = new DefaultMutableTreeNode();
         branchObject = new UrlNodeUserObject(branchNode);
         branchObject.setText(ship2.getName());
-        
+
         branchNode.setUserObject(branchObject);
         rootTreeNode.add(branchNode);
 
-       
+
     }
-    
+
     public void addNode(Object adder){
         DefaultMutableTreeNode branchNode = new DefaultMutableTreeNode();
         UrlNodeUserObject branchObject = new UrlNodeUserObject(branchNode);
         //branchObject.setText(adder.getName());
-        
+
         branchNode.setUserObject(branchObject);
         rootTreeNode.add(branchNode);
     }
@@ -124,5 +126,5 @@ public class treeBean{
     public ShipType getShip2(){
         return ship2;
     }
-    
+
 }
