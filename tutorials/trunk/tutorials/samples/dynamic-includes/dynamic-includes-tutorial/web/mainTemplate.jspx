@@ -19,11 +19,8 @@
                         <h1>
                             <ice:outputText value="ICEfaces Facelets Dynamic Include Tutorial"/>
                         </h1>
-                        <ice:outputText>
-                            The following application uses a tree navigation menu 
-                            that is created using a dynamic ui:include tag.
-                        </ice:outputText>
-                        
+                        <ice:outputText value="The following application uses a tree navigation 
+                                               menu that is created using a dynamic ui:include tag." />
                         <hr/>
                     </ui:insert>
                 </td>

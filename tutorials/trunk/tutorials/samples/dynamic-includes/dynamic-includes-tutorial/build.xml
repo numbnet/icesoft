@@ -3,6 +3,12 @@
     <!-- location of common build file -->
     <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
 
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+
+    <!-- path to applicaiton libraries -->
+    <property name="proj.lib.dir" location="./lib/" />
+
     <import file="${build-common.xml}"/>
 
     <patternset id="common.icefaces.lib.jars.to.include"
@@ -31,6 +37,8 @@
     <patternset id="additional.icefaces.lib.jars.to.include"
 		    includes="
 	  icefaces-facelets.jar
+	  krysalis-jCharts-1.0.0-alpha-1.jar
+          el-ri.jar
     "
 		/>
     <target name="clean" depends="common.clean">
@@ -41,6 +49,16 @@
         </delete>
     </target>
 
+    <target name="compile" >
+        <compile>
+            <add.javac.elements >
+                <classpath>
+                    <fileset dir="${proj.lib.dir}" includes="*.jar"/>
+                </classpath>
+            </add.javac.elements>
+        </compile>
+    </target>
+
     <target name="build.war" depends="compile">
 
         <copy todir="${app.lib.dir}" preservelastmodified="true">
@@ -48,6 +66,7 @@
                 <patternset refid="common.icefaces.lib.jars.to.include"/>
                 <patternset refid="deployment.icefaces.lib.jars.to.include"/>
             </fileset>
+            <fileset dir="${proj.lib.dir}" includes="*.jar"/>
         </copy>
 
         <build.war />
