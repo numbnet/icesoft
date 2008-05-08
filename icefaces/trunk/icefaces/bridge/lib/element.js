@@ -114,6 +114,16 @@
             return false;
         },
 
+        form: function() {
+            var parent = this.element.parentNode;
+            while (parent) {
+                if (parent.tagName && parent.tagName.toLowerCase() == 'form') return This.Element.adaptToElement(parent);
+                parent = parent.parentNode;
+            }
+
+            throw 'Cannot find enclosing form.';
+        },
+
         updateDOM: function(update) {
             this.replaceHtml(update.asHTML());
         },
@@ -427,6 +437,10 @@
             this.MouseListenerNames.each(iterator);
             this.KeyListenerNames.each(iterator);
             this.FormListenerNames.each(iterator);
+        },
+
+        submit: function() {
+            iceSubmit(this.element, null, null);
         }
     });
 
@@ -472,16 +486,6 @@
 
         serializeOn: function(query) {
             if (this.element.name) query.add(this.element.name, this.element.name);
-        },
-
-        form: function() {
-            var parent = this.element.parentNode;
-            while (parent) {
-                if (parent.tagName && parent.tagName.toLowerCase() == 'form') return This.Element.adaptToElement(parent);
-                parent = parent.parentNode;
-            }
-
-            throw 'Cannot find enclosing form.';
         }
     });
 
