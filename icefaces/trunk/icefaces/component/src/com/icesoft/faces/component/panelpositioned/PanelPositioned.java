@@ -122,6 +122,9 @@ public class PanelPositioned extends UISeries {
         this.listener = listener;
     }
 
+    /**
+     *  @deprecated
+     */
     public String getOverlap() {
         if (overlap != null) {
             return overlap;
@@ -133,7 +136,7 @@ public class PanelPositioned extends UISeries {
     /**
      * Either 'vertical' or 'horizontal'. For floating sortables or horizontal
      * lists, choose 'horizontal'. Vertical lists should use 'vertical'.
-     *
+     * @deprecated
      * @param overlap
      */
     public void setOverlap(String overlap) {
@@ -177,6 +180,9 @@ public class PanelPositioned extends UISeries {
         this.handle = handle;
     }
 
+    /**
+     *  @deprecated
+     */
     public String getHoverclass() {
         if (hoverclass != null) {
             return hoverclass;
@@ -188,7 +194,7 @@ public class PanelPositioned extends UISeries {
     /**
      * If set, the Droppable will have this additional CSS class when an
      * accepted Draggable is hovered over it.
-     *
+     *  @deprecated
      * @param hoverclass
      */
     public void setHoverclass(String hoverclass) {
@@ -336,4 +342,33 @@ public class PanelPositioned extends UISeries {
         }
         return super.isRendered();
     }    
+    
+    
+    /**
+     *  @deprecated
+     */
+    public int getFirst() {
+        return super.getFirst();
+    }
+    
+    /**
+     *  @deprecated
+     */    
+    public void setFirst(int first) {
+        super.setFirst(first);
+    }
+    
+    /**
+     *  @deprecated
+     */    
+    public int getRows() {
+        return super.getRows();
+    }
+
+    /**
+     *  @deprecated
+     */
+    public void setRows(int rows) {
+        super.setRows(rows);
+    }
 }
