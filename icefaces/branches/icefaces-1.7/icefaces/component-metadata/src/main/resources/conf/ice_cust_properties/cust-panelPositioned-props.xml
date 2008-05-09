@@ -37,7 +37,12 @@
 &ice-att-userrole-enabled-props;
 <property>
 	<description>
-		Listener, called when list is changed
+         <![CDATA[	
+		Listener, called when list is changed. Which takes a PanelPositionedEvent.
+		(e.g.) <br/>
+		    public void methodName(PanelPositionedEvent event);
+		    
+        ]]>    		    
 	</description>
 	
 	<property-name>listener</property-name>
