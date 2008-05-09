@@ -317,20 +317,24 @@ Ice.PanelDivider.addMethods({
    if (this.horizontal) {
         var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
         var rightElementHeight = (Element.getHeight(this.getNextElement()));
-        var splitterHeight = (Element.getHeight(this.source)); 
+
         var tableHeight = Element.getHeight(this.getContainerElement());
         var totalHeight = (parseInt(leftElementHeight) + parseInt(rightElementHeight));
         var diff = this.getDifference(event);
         var inPercent;
         if (this.resizeAction == "inc") {
             inPercent = (leftElementHeight + diff) /tableHeight  ;
-            this.getPreviousElement().style.height = leftElementHeight + diff + "px";
-            this.getNextElement().style.height = tableHeight - leftElementHeight - diff - splitterHeight + "px";
+            topInPercent = Math.round(inPercent * 100);      
+            bottomInPercent = 99 - topInPercent;                    
+            this.getPreviousElement().style.height = (topInPercent)   + "%";
+//            this.getNextElement().style.height = bottomInPercent + "%"
 
         } else {
             inPercent = (leftElementHeight - diff) / tableHeight ;
-            this.getPreviousElement().style.height = leftElementHeight - diff + "px";
-            this.getNextElement().style.height = tableHeight - leftElementHeight + diff - splitterHeight + "px";
+            topInPercent = Math.round(inPercent * 100);      
+            bottomInPercent = 99 - topInPercent;                    
+            this.getPreviousElement().style.height = (topInPercent) + "%";
+//            this.getNextElement().style.height = bottomInPercent + "%"
 
         }
    } else {
@@ -342,16 +346,22 @@ Ice.PanelDivider.addMethods({
         var diff = this.getDifference(event);
         if (this.resizeAction == "inc") {
             inPercent = ((leftElementWidth - splitterWidth) + diff) /totalWidth  ;
-            this.getPreviousElement().style.width = leftElementWidth + diff + "px";
-            this.getNextElement().style.width = tableWidth - leftElementWidth - diff - splitterWidth + "px";
+            leftInPercent = Math.round(inPercent * 100);      
+            rightInPercent = 100 - leftInPercent;
+            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+//            this.getNextElement().style.width = rightInPercent + "%"
+
 
         } else {
             inPercent = ((leftElementWidth - splitterWidth)  - diff) / totalWidth ; 
-            this.getPreviousElement().style.width = leftElementWidth - diff + "px";
-            this.getNextElement().style.width = tableWidth - leftElementWidth + diff - splitterWidth + "px";
+            leftInPercent = Math.round(inPercent * 100); 
+            rightInPercent = 100 - leftInPercent;
+            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+//            this.getNextElement().style.width = rightInPercent + "%"
 
         }
      }
+      Ice.PanelDivider.adjustSecondPaneSize(this.source, this.horizontal);
         this.submitInfo(event, inPercent);
   },
   
@@ -369,16 +379,40 @@ Ice.PanelDivider.addMethods({
 
 });
 
-Ice.PanelDivider.adjustInitialPosition = function(divider, isHorizontal) {
+Ice.PanelDivider.adjustSecondPaneSize = function(divider, isHorizontal) {
     divider = $(divider);
-    var container = $(Ice.PanelDivider.prototype.getContainerElement.call({source:divider}));
+//    var container = $(Ice.PanelDivider.prototype.getContainerElement.call({source:divider})); // <ice:panelDivider>
+    var container = $(divider.parentNode); // dimensions could be different from <ice:panelDivider>
     var firstPane = $(Ice.PanelDivider.prototype.getPreviousElement.call({source:divider}));
     var secondPane = $(Ice.PanelDivider.prototype.getNextElement.call({source:divider}));
+    // Assuming no padding in container, no margin in divider and panes, and no padding or border in 2nd pane.
+    // No way to determine their pixel values. Also, there may be margin collapsing, and
+    // (offsetWidth - clientWidth) may include the scrollbar width, not just the border width.
     if (isHorizontal) {
-        secondPane.style.height = container.getHeight() - firstPane.getHeight() - divider.getHeight() + "px";
+        secondPane.style.height = container.clientHeight - firstPane.offsetHeight - divider.offsetHeight + "px";
     } else {
-        secondPane.style.width = container.getWidth() - firstPane.getWidth() - divider.getWidth() + "px";
+        // Firefox often wraps right pane around even though it should fit exactly, therefore subtract 1 more pixel.
+        secondPane.style.width = container.clientWidth - firstPane.offsetWidth - divider.offsetWidth - 1 + "px";
     }
+}
+
+Ice.PanelDivider.dividerHash = $H();
+
+Ice.PanelDivider.onWindowResize = function() {
+    Ice.PanelDivider.dividerHash.each(function(pair) {
+        if (!$(pair.key)) {
+            Ice.PanelDivider.dividerHash.unset(pair.key);
+            return;
+        }
+        Ice.PanelDivider.adjustSecondPaneSize(pair.key, pair.value);
+    });
+}
+
+Ice.PanelDivider.onLoad = function(divider, isHorizontal) {
+    Event.stopObserving(window, "resize", Ice.PanelDivider.onWindowResize); // Will register multiple times if don't do this?
+    Ice.PanelDivider.dividerHash.set(divider, isHorizontal); // Will replace existing, if any.
+    Event.observe(window, "resize", Ice.PanelDivider.onWindowResize);
+    Ice.PanelDivider.adjustSecondPaneSize(divider, isHorizontal);
 }
 
 ResizableUtil = {

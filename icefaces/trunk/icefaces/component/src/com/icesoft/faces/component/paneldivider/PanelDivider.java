@@ -248,8 +248,8 @@ public class PanelDivider extends UIPanel{
     }
     
     String getPanePosition(boolean first) {
-        if ((!decoded && getDividerPosition() != previousDividerPosition)
-                || !getOrientation().equals(previousOrientation)) {
+//        if ((!decoded && getDividerPosition() != previousDividerPosition)
+//                || !getOrientation().equals(previousOrientation)) {
             int pos = getDividerPosition();
             if (!validatePosition(pos)) pos = 50;
             int panPos = 0;
@@ -263,13 +263,13 @@ public class PanelDivider extends UIPanel{
                 unit = "width:100%;height:";
             }
             return unit + panPos + "%;";
-        } else {
-            if (first) {
-                return firstPaneStyle;
-            } else {
-                return secondPaneStyle;
-            }
-        }
+//        } else {
+//            if (first) {
+//                return firstPaneStyle;
+//            } else {
+//                return secondPaneStyle;
+//            }
+//        }
     }
     
     private boolean validatePosition(int position ) {

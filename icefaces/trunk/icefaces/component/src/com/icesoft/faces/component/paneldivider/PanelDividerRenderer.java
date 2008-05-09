@@ -56,7 +56,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
         addHiddenField(domContext, root, clientId, PanelDivider.IN_PERCENT, "");
         domContext.stepOver();
-        JavascriptContext.addJavascriptCall(facesContext, "Ice.PanelDivider.adjustInitialPosition('" +
+        JavascriptContext.addJavascriptCall(facesContext, "Ice.PanelDivider.onLoad('" +
                 clientId + "Divider', " + panelDivider.isHorizontal() + ");");
     }
     
