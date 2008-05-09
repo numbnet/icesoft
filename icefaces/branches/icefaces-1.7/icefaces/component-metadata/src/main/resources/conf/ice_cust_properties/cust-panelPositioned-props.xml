@@ -32,7 +32,6 @@
   ~
   -->
 &core-props;
-&series-value-props;
 &base-props;
 &ice-att-userrole-rendered-props;
 &ice-att-userrole-enabled-props;
@@ -77,7 +76,9 @@
 
 <property>
     <description>
-        The class of the list item being hovered over
+    <![CDATA[    
+        Note: This is deprecated. <br/>     
+     ]]>         
     </description>
     <property-name>overlap</property-name>
     <property-class>java.lang.String</property-class>
@@ -91,8 +92,27 @@
 
 <property>
     <description>
-        If set to horizontal or vertical the drag will be constrained to 
-        take place only horizontally or vertically. default is vertical
+         <![CDATA[
+         <p>    
+	        The following are the valid values for this attribute. This attribute
+	        has an impact on the presentation of the positioned element while dragging.
+         </p>
+         <ul>
+            <li> horizontal: <br/> While dragging an item horizontally outside 
+            from the positioned panel. The draggable element can be seen moving 
+            outside, whereas with the "vertical" you can drag an element outside 
+            but the draggable elemement doesn't go out of its container.</li>
+            <li> vertical: <br/> While dragging an item vertically, the item 
+            underneath it moves up or down smoothly with slide effect and makes 
+            an empty space for the draggaed item, whereas in horizontal mode you
+            don't see the slide effect</li>
+            <li> false: <br/> You can drag the positioned element vertically or horizontally
+            but you don't see any slide effect as well as the draggable element 
+            doesn't go outside of its panel.
+            
+            </li>
+         </ul>
+        ]]>        
     </description>
     <property-name>constraint</property-name>
     <property-class>java.lang.String</property-class>
@@ -120,7 +140,9 @@
 
 <property>
     <description>
-        The class of the list item being hovered over
+    <![CDATA[    
+        Note: This is deprecated.<br/>
+     ]]>  
     </description>
     <property-name>hoverclass</property-name>
     <property-class>java.lang.String</property-class>
@@ -134,7 +156,8 @@
        
 <property>
     <description>
-        TODO
+        Name of a request-scope attribute under which the model data presented for
+        the current row.
     </description>
     <property-name>var</property-name>
     <property-class>java.lang.String</property-class>
@@ -146,5 +169,60 @@
     </property-extension>
 </property>
 
+<property>
+    <description>
+    <![CDATA[    
+        Note: This is deprecated.<br/>
+     ]]>  
+    </description>
+    <property-name>rows</property-name>
+    <property-class>int</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+    </property-extension>
+</property>
 
+<property>
+    <description>
+    <![CDATA[    
+        Note: This is deprecated.<br/>
+     ]]>  
+    </description>
+    <property-name>first</property-name>
+    <property-class>int</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+    </property-extension>
+</property>
 
+<property>
+    <description>
+    <![CDATA[    
+        Note: This is deprecated.<br/>
+     ]]>  
+    </description>
+    <property-name>hoverclass</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+
+<property>
+    <description>The data model for this component. Could be a java.util.List or an Array</description>
+    <property-name>value</property-name>
+    <property-class>java.lang.Object</property-class>
+    <property-extension>
+        <category>DATA</category>
+        <editor-class>
+            &valueBindingEditor;
+        </editor-class>
+        <named-value>
+            <name>ignoreIsBound</name>
+            <value>true</value>
+        </named-value>
+    </property-extension>
+</property>
