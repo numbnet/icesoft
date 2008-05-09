@@ -226,6 +226,9 @@ public class SelectInputDateRenderer
                 dateText.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 dateText.setAttribute("onkeypress", this.ICESUBMIT);
                 dateText.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');"+ this.ICESUBMITPARTIAL);
+                if( selectInputDate.getTabindex() != null ){
+                	dateText.setAttribute(HTML.TABINDEX_ATTR, selectInputDate.getTabindex());
+                }
                 if (selectInputDate.getAutocomplete() != null) {
                     dateText.setAttribute("autocomplete",
                                           selectInputDate.getAutocomplete());
