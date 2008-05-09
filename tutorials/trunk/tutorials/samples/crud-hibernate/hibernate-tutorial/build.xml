@@ -2,6 +2,10 @@
 
     <!-- location of common build file -->
     <property name="build-common.xml" value="../../../../../../icefaces/trunk/icefaces/samples/etc/build-common.xml"/>
+
+    <property name="compile.source" value="1.5"/>
+    <property name="compile.target" value="1.5"/>
+    
     <!-- path to applicaiton libraries -->
     <property name="proj.lib.dir" location="./lib/" />
 
@@ -59,7 +63,7 @@
             <fileset dir="${proj.lib.dir}" includes="*.jar"/>
         </copy>
 
-        <build.war web.xml="conf/web.sunri.icefaces.xml"/>
+        <build.war />
     </target>
 
     <target name="build.minimal.war" depends="compile">
@@ -68,8 +72,7 @@
             <patternset refid="common.icefaces.lib.jars.to.include"/>
         </fileset>
 
-        <build.war web.xml="conf/web.sunri.icefaces.xml"
-                   war.file.name="${ant.project.name}.war"/>
+        <build.war war.file.name="${ant.project.name}.war"/>
     </target>
 
     <!--
