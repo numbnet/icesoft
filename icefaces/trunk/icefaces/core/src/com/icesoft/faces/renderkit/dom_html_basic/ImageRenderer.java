@@ -104,10 +104,11 @@ public class ImageRenderer extends DomBasicRenderer {
         Object o = uiGraphic.getValue();
         if (o instanceof byte[]) {
         
+          // support for dynamic images
           ByteArrayResource bar = new ByteArrayResource((byte[]) o);
           
           String mimeType = String.valueOf(uiGraphic.getAttributes().get("mimeType"));
-          if(mimeType == "null") {
+          if(mimeType.equals("null")) {
             mimeType = "";
           }
           
