@@ -598,7 +598,7 @@ public class PanelTabSetRenderer
                                               "." + tabIndex);
             link.setAttribute(HTML.ID_ATTR, tabSet.getClientId(facesContext) +
                                             "." + tabIndex);
-            link.setAttribute(HTML.HREF_ATTR, "#");
+            link.setAttribute(HTML.HREF_ATTR, "javascript:;");
             // set focus handler
             link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             link.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
