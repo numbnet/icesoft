@@ -446,9 +446,9 @@
 
 
     This.BodyElement = This.Element.subclass({
-        updateDOM: function(update) {
+        replaceHtml: function(html) {
             this.disconnectEventListeners();
-            this.element.innerHTML = update.content();
+            this.element.innerHTML = html;
         }
     });
 
