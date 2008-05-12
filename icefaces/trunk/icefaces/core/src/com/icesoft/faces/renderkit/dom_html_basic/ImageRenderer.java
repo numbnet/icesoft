@@ -43,7 +43,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-import com.icesoft.faces.util.ImageResource;
+import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.ResourceRegistry;
 import java.io.*;
 
@@ -104,16 +104,14 @@ public class ImageRenderer extends DomBasicRenderer {
         Object o = uiGraphic.getValue();
         if (o instanceof byte[]) {
         
-          ByteArrayOutputStream bos = new ByteArrayOutputStream();
-          bos.write((byte[]) o, 0, ((byte[]) o).length);
-          ImageResource ir = new ImageResource(bos);
+          ByteArrayResource bar = new ByteArrayResource((byte[]) o);
           
           String mimeType = String.valueOf(uiGraphic.getAttributes().get("mimeType"));
           if(mimeType == "null") {
             mimeType = "";
           }
           
-          return (((ResourceRegistry) facesContext).registerResource(mimeType, ir)).getPath();
+          return (((ResourceRegistry) facesContext).registerResource(mimeType, bar)).getPath();
           
         } else {
           String value = (String) uiGraphic.getValue();
