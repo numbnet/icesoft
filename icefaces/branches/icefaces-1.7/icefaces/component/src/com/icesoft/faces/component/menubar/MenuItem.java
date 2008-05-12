@@ -85,7 +85,7 @@ public class MenuItem extends MenuItemBase {
     public static final String DEFAULT_ICON =
             "/xmlhttp/css/xp/css-images/menu_blank_icon.gif";
     private static final String DEFAULT_VALUE = "menu item default";
-    private static final String DEFAULT_LINK = "#";
+    private static final String DEFAULT_LINK = "javascript:;";
 
     public MenuItem() {
     }

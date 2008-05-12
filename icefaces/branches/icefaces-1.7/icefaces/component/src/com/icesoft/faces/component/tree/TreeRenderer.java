@@ -451,7 +451,7 @@ public class TreeRenderer extends DomBasicRenderer {
 
         if (isBranchNode && !hideNavigation) {
             Element navAnchor = domContext.createElement(HTML.ANCHOR_ELEM);
-            navAnchor.setAttribute(HTML.HREF_ATTR, "#");
+            navAnchor.setAttribute(HTML.HREF_ATTR, "javascript:;");
             navAnchor.setAttribute(HTML.ID_ATTR,
                                    treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot);
             navAnchor.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");

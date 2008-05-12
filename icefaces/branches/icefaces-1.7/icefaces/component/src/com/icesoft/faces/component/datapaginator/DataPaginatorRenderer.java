@@ -497,7 +497,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         } else {
             link.setAttribute(HTML.ONCLICK_ATTR, onClick);
         }
-        link.setAttribute(HTML.HREF_ATTR, "#");
+        link.setAttribute(HTML.HREF_ATTR, "javascript:;");
         PassThruAttributeRenderer.renderOnFocus(scroller, link);
         PassThruAttributeRenderer.renderOnBlur(link);
         return link;
