@@ -211,7 +211,8 @@
 <property>
     <description>
         If false, saves the width of the columns to the server, its only applicable 
-        when resizeable = true. "true" is the default value.
+        when resizeable = true. "true" is the default value. It helps when the 
+        width of the column needs to be preserved after the resize operation.
     </description>
     <property-name>clientOnly</property-name>
     <property-class>boolean</property-class>
