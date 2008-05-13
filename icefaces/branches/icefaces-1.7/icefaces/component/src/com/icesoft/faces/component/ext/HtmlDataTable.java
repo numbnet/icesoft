@@ -44,6 +44,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This is an extension of javax.faces.component.html.HtmlDataTable, which
@@ -67,7 +68,8 @@ public class HtmlDataTable
     private String columnWidths = null;
     private String scrollHeight = null;
     private String headerClasses = null;
-
+    private Boolean clientOnly = null;
+    
     public HtmlDataTable() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -437,7 +439,54 @@ public class HtmlDataTable
     public void setResizable(boolean resizable) {
         this.resizable = new Boolean(resizable);
     }
+    
+    public boolean isClientOnly() {
+        if (clientOnly != null) {
+            return clientOnly.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("clientOnly");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
 
+    public void setClientOnly(boolean clientOnly) {
+        this.clientOnly = Boolean.valueOf(clientOnly);
+    }  
+    
+    /* (non-Javadoc)
+     * @see javax.faces.component.UIComponent#decode(javax.faces.context.FacesContext)
+     */
+    public void decode(FacesContext context) {
+        super.decode(context);
+        //this code is handling the columns width of resizable table
+        Map requestParameterMap =
+            context.getExternalContext().getRequestParameterMap();
+        if (requestParameterMap.containsKey("ice.event.captured")) {
+            String clientOnlyId = getClientId(context) + "clientOnly";
+            String clientOnlyIdInParam = String.valueOf(requestParameterMap.get("ice.event.captured"));
+            if (clientOnlyId.equals(clientOnlyIdInParam)) {
+                resizableTblColumnsWidth = String.valueOf(requestParameterMap.get(clientOnlyId)).split(",");
+            }
+        }
+        //--
+    }    
+
+    private String resizableTblColumnsWidth[] = new String[0];
+    private int resizableTblColumnsWidthIndex = 0;
+    
+    public String getNextResizableTblColumnWidth() {
+        if (resizableTblColumnsWidthIndex < resizableTblColumnsWidth.length) {
+            return resizableTblColumnsWidth[resizableTblColumnsWidthIndex++];
+        }
+        return null;
+    }
+    
+    public void resetResizableTblColumnsWidthIndex() {
+        resizableTblColumnsWidthIndex = 0;
+    }
+    
+    
 }
    
 

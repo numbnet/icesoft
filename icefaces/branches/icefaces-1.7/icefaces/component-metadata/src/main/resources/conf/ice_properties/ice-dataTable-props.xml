@@ -207,3 +207,15 @@
         <category>ICE_ADVANCED</category>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        If false, saves the width of the columns to the server, its only applicable 
+        when resizeable = true. "true" is the default value.
+    </description>
+    <property-name>clientOnly</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+    </property-extension>
+</property>
