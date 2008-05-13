@@ -60,6 +60,7 @@ import java.util.*;
 public class TableRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TableRenderer {
 
+    
     private static final String SELECTED_ROWS = "sel_rows";
 
     public String getComponentStyleClass(UIComponent uiComponent) {
@@ -135,7 +136,7 @@ public class TableRenderer
             element = HTML.TD_ELEM;
             facetClass = getFooterClass(uiComponent);
         }
-        UISeries uiData = (UISeries) uiComponent;
+        HtmlDataTable uiData = (HtmlDataTable) uiComponent;
         uiData.setRowIndex(-1);
         Element root = (Element) domContext.getRootNode();
         if (isScrollable(uiComponent)) {
@@ -173,6 +174,14 @@ public class TableRenderer
                 renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);               
                 if (childHeaderFacetExists) {
                     renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
+                    if (!uiData.isClientOnly()) {
+                        Element clientOnly = domContext.createElement(HTML.INPUT_ELEM);
+                        clientOnly.setAttribute(HTML.TYPE_ATTR, "hidden");
+                        clientOnly.setAttribute(HTML.ID_ATTR, uiData.getClientId(facesContext) + "clientOnly");
+                        clientOnly.setAttribute(HTML.NAME_ATTR, uiData.getClientId(facesContext) + "clientOnly");
+                        root.appendChild(clientOnly);
+                        uiData.resetResizableTblColumnsWidthIndex();
+                    }    
                 }
             } else {
             	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
@@ -409,7 +418,14 @@ public class TableRenderer
                 tr.appendChild(handlerTd);
             } 
             Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
+            columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
             th.appendChild(columnHeaderDiv);
+            if (htmlDataTable.isResizable()) {
+                String nextWidth = htmlDataTable.getNextResizableTblColumnWidth();
+                if (nextWidth != null) {
+                    columnHeaderDiv.setAttribute(HTML.STYLE_ATTR, "width:"+ nextWidth +";");
+                }
+            }
             cursorParent = columnHeaderDiv;
         }
         if ("header".equalsIgnoreCase(facet) ){

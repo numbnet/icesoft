@@ -36,6 +36,7 @@ Ice.Resizable = Class.create({
     //resize handler
     this.source = Event.element(event);
     this.horizontal = horizontal;
+
     //initial pointer location
     if (this.horizontal) {
         this.pointerLocation = parseInt(Event.pointerY(event));
@@ -240,7 +241,29 @@ Ice.ResizableGrid.addMethods({
      this.source.style.height = "1px";
      this.source.style.backgroundColor="transparent";
      this.getGhost().style.height = "1px";
-  }  
+     var clientOnly = $(this.getContainerElement().id + "clientOnly");
+     if (clientOnly) {
+        clientOnly.value = this.getAllColumnsWidth();
+        var form = Ice.util.findForm(clientOnly);
+        iceSubmitPartial(form,clientOnly,event);
+     }     
+  },
+  
+  getAllColumnsWidth:function() {
+    var container = this.getContainerElement();
+    var children = container.firstChild.firstChild.childNodes;
+    var gap = 2;
+    if (Prototype.Browser.Gecko) {
+        gap+=2;
+    }
+    var widths ="";
+    for (i=0; i < children.length; i++) {
+        if (i%gap==0) {
+           widths += Element.getStyle(children[i].firstChild, "width") + ",";
+        }
+    } 
+    return widths;
+  }    
   
 
 });
