@@ -70,6 +70,7 @@ public class HtmlGraphicImage
     private Effect onkeydowneffect;
     private Effect onkeyupeffect;
     private CurrentStyle currentStyle;
+    private String mimeType = null;
 
     public HtmlGraphicImage() {
         super();
@@ -394,6 +395,14 @@ public class HtmlGraphicImage
                 "styleClass");
     }
 
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+    
+    public String getMimeType() {
+        return mimeType;
+    }
+    
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
