@@ -36,8 +36,8 @@ package com.icesoft.faces.component.panelstack;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
-import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.PhaseId;
@@ -133,10 +133,10 @@ public class PanelStack extends HtmlPanelGroup {
      * <p>Return the value of the <code>styleClass</code> property.</p>
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                        styleClass, 
-                        CSS_DEFAULT.PANEL_STACK_BASE, 
-                        "styleClass");
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.PANEL_STACK_BASE,
+                "styleClass");
     }
 
     /**
@@ -197,11 +197,12 @@ public class PanelStack extends HtmlPanelGroup {
     }
 
 
-    public static final String LAST_SELECTED_PANEL =   "PanelStack-lastPanel";
+    public static final String LAST_SELECTED_PANEL = "PanelStack-lastPanel";
+
     /**
-        * @param context
-        * @param phaseId
-        */
+     * @param context
+     * @param phaseId
+     */
     public void applyPhase(FacesContext context, PhaseId phaseId) {
         if (context == null) {
             throw new NullPointerException("Null context in PanelTabSet");
@@ -213,9 +214,8 @@ public class PanelStack extends HtmlPanelGroup {
                     (UIComponent) it.next();
             String selectedPanel = getSelectedPanel();
             String lastSelectedPanel = (String) context.getExternalContext().getRequestMap().get(LAST_SELECTED_PANEL + getClientId(context));
-            boolean changed = !selectedPanel.equals(lastSelectedPanel);
-            if (lastSelectedPanel == null) changed = false;
-            if (selectedPanel.equals(childOrFacet.getId())) {
+            boolean changed = lastSelectedPanel != null && !lastSelectedPanel.equals(selectedPanel);
+            if (childOrFacet.getId().equals(selectedPanel)) {
                 if (!(changed && phaseId == PhaseId.APPLY_REQUEST_VALUES)) {
                     applyPhase(context, childOrFacet, phaseId);
                 }
@@ -225,67 +225,67 @@ public class PanelStack extends HtmlPanelGroup {
     }
 
     /**
-        * @param context
-        * @param component
-        * @param phaseId
-        */
-       public void applyPhase(FacesContext context, UIComponent component,
-                              PhaseId phaseId) {
-           if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
-               component.processDecodes(context);
-           } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
-               component.processValidators(context);
-           } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
-               component.processUpdates(context);
-           } else {
-               throw new IllegalArgumentException();
-           }
-       }
+     * @param context
+     * @param component
+     * @param phaseId
+     */
+    public void applyPhase(FacesContext context, UIComponent component,
+                           PhaseId phaseId) {
+        if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
+            component.processDecodes(context);
+        } else if (phaseId == PhaseId.PROCESS_VALIDATIONS) {
+            component.processValidators(context);
+        } else if (phaseId == PhaseId.UPDATE_MODEL_VALUES) {
+            component.processUpdates(context);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
 
-       /* (non-Javadoc)
-       * @see javax.faces.component.UIComponent#processDecodes(javax.faces.context.FacesContext)
-       */
-       public void processDecodes(javax.faces.context.FacesContext context) {
-         
-           if (context == null) {
-               throw new NullPointerException("context");
-           }
+    /* (non-Javadoc)
+    * @see javax.faces.component.UIComponent#processDecodes(javax.faces.context.FacesContext)
+    */
+    public void processDecodes(javax.faces.context.FacesContext context) {
 
-           if (!isRendered()) {
-               return;
-           }
+        if (context == null) {
+            throw new NullPointerException("context");
+        }
 
-           decode(context);
-           applyPhase(context, PhaseId.APPLY_REQUEST_VALUES);
-       }
+        if (!isRendered()) {
+            return;
+        }
 
-       /* (non-Javadoc)
-       * @see javax.faces.component.UIComponent#processValidators(javax.faces.context.FacesContext)
-       */
-       public void processValidators(FacesContext context) {
+        decode(context);
+        applyPhase(context, PhaseId.APPLY_REQUEST_VALUES);
+    }
 
-           if (context == null) {
-               throw new NullPointerException();
-           }
-           if (!isRendered()) {
-               return;
-           }
-           applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
-       }
+    /* (non-Javadoc)
+    * @see javax.faces.component.UIComponent#processValidators(javax.faces.context.FacesContext)
+    */
+    public void processValidators(FacesContext context) {
+
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
+        applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
+    }
 
 
-       /* (non-Javadoc)
-        * @see javax.faces.component.UIComponent#processUpdates(javax.faces.context.FacesContext)
-        */
-       public void processUpdates(FacesContext context) {
+    /* (non-Javadoc)
+    * @see javax.faces.component.UIComponent#processUpdates(javax.faces.context.FacesContext)
+    */
+    public void processUpdates(FacesContext context) {
 
-           if (context == null) {
-               throw new NullPointerException();
-           }
-           if (!isRendered()) {
-               return;
-           }
-           applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
-       }
-    
+        if (context == null) {
+            throw new NullPointerException();
+        }
+        if (!isRendered()) {
+            return;
+        }
+        applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
+    }
+
 }
