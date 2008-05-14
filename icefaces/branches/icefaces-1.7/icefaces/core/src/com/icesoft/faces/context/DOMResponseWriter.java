@@ -39,14 +39,10 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -61,12 +57,7 @@ import java.beans.Beans;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -316,7 +307,13 @@ public class DOMResponseWriter extends ResponseWriter {
 
         ElementController.from(session).addInto(prefix, body);
         String contextPath = handler.getResourceURL(context, "/");
-        String asyncServerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/").toString();
+        String blockingRequestHandlerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", contextPath.replaceAll("/", ""))) + "/").toString();
+        String connectionLostRedirectURI;
+        try {
+            connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
+        } catch (ConfigurationException e) {
+            connectionLostRedirectURI = "null";
+        }
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
@@ -326,11 +323,11 @@ public class DOMResponseWriter extends ResponseWriter {
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
-                        "redirectURI: " + configuration.getAttribute("connectionLostRedirectURI", "null") + "," +
+                        "redirectURI: " + connectionLostRedirectURI + "," +
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
-                        "async: '" + asyncServerContextPath + "'}," +
+                        "async: '" + blockingRequestHandlerContextPath + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
