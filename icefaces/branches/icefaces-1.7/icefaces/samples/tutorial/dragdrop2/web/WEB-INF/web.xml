@@ -97,11 +97,6 @@
         <url-pattern>*.faces</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jspx</url-pattern>
-    </servlet-mapping>
-
     <!-- Persistent Faces Servlet Mapping -->
     <servlet-mapping>
         <servlet-name>Persistent Faces Servlet</servlet-name>
