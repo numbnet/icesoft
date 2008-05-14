@@ -80,13 +80,16 @@ public class InputFileRenderer extends Renderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.writeAttribute("id", id, null);
         writer.writeText(
-                "var frame = document.getElementById('" + frameName + "').contentWindow;" +
-                        "var register = function() {" +
-                        //define callback that registers itself every time after its invocation
-                        "var call = function() { '" + id + "'.asExtendedElement().form().submit(); setTimeout(register, 250); };" +
-                        "if (frame.attachEvent) { frame.attachEvent('onunload', call); } else { frame.onunload = call; } };" +
+                "var register = function() {" +
+                        "var frame = document.getElementById('" + frameName + "').contentWindow;" +
+                        "var submit = function() { try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } };" +
+                        //trigger form submit when the upload starts
+                        "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
+                        //trigger form submit when the upload ends and re-register handlers
+                        "var uploadEnd = function() { submit(); setTimeout(register, 200); };" +
+                        "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
                         //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
-                        "setTimeout(register, 200);", null);
+                        "setTimeout(register, 0);", null);
         writer.endElement("script");
 
         Throwable uploadException = c.getUploadException();
