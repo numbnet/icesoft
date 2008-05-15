@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PushModeSerializer implements DOMSerializer {
     private Document oldDocument;
@@ -56,7 +57,14 @@ public class PushModeSerializer implements DOMSerializer {
             }
         }
         if (!elementList.isEmpty()) {
-            if (elementList.size() == 1 && "html".equalsIgnoreCase(((Element) elementList.get(0)).getTagName())) {
+            Iterator i = elementList.iterator();
+            boolean reload = false;
+            while (i.hasNext()) {
+                String tag = ((Element) i.next()).getTagName();
+                //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
+                reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag) || "body".equalsIgnoreCase(tag);
+            }
+            if (reload) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)
                 commandQueue.put(new Reload(viewNumber));
             } else {

@@ -262,8 +262,6 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void enhanceBody(Element body) {
-        //id required for forwarded (server-side) redirects
-        body.setAttribute("id", "document:body");
         Element iframe = document.createElement("iframe");
         body.insertBefore(iframe, body.getFirstChild());
         iframe.setAttribute("id", "history-frame");
