@@ -216,6 +216,12 @@ table.iceSelInpDate tbody tr td table{
 
 }
 
+.iceSelInpDateMoYrDropdown {
+    background: #F5F5F5;
+    font-weight: bold;
+    color: #666;
+}
+
 .iceSelInpDateMonthYear img {
     border: none;
     margin-left: 3px;
@@ -2302,6 +2308,11 @@ Disabled classes for the calendar controls
     padding-right: 1px;
     padding-top: 4px;
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
+}
+
+.iceSelInpDateMoYrDropdown-dis {
+    background-color: #EFEFEF;
+    color: #999999;
 }
 
 .iceSelInpDateMonthYear-dis img {

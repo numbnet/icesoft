@@ -127,6 +127,37 @@
 		<is-hidden>false</is-hidden>
 	</property-extension>
 </property>
+        
+<property>
+	<description>
+		If true, the list of months is rendered in a dropdown list.
+        If false (the default), only the specified month is rendered,
+        with left and right arrow buttons to navigate to other months.
+    </description>
+	<property-name>renderMonthAsDropdown</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<is-bindable>true</is-bindable>
+		<is-hidden>false</is-hidden>
+	</property-extension>
+</property>
+        
+<property>
+	<description>
+		If true, a list of 10 years is rendered in a dropdown list,
+        plus a "previous" item and a "next" item to navigate to other years.
+        If false (the default), only the specified year is rendered, with left
+        and right arrow buttons to navigate to other years.
+    </description>
+	<property-name>renderYearAsDropdown</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+		<is-bindable>true</is-bindable>
+		<is-hidden>false</is-hidden>
+	</property-extension>
+</property>
 
 <property>
 	<description>
@@ -235,6 +266,7 @@
                 <li>iceSelInpDate</li>
                 <li>iceSelInpDateInput</li>
                 <li>iceSelInpDateMonthYear</li>
+                <li>iceSelInpDateMoYrDropdown</li>
                 <li>iceSelInpDateWeek</li>
                 <li>iceSelInpDateDay</li>
                 <li>iceSelInpDateCur</li>

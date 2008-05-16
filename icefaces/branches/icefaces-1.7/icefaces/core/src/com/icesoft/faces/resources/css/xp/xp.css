@@ -195,6 +195,12 @@ fieldset {
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
 }
 
+.iceSelInpDateMoYrDropdown {
+    background-color: #EFEFEF;
+    font-weight: bold;
+    color: #000000;
+}
+
 .iceSelInpDateMonthYear img {
     border: none;
 }
@@ -2208,6 +2214,11 @@ Disabled classes for the calendar controls
     padding-right: 1px;
     padding-top: 4px;
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
+}
+
+.iceSelInpDateMoYrDropdown-dis {
+    background-color: #EFEFEF;
+    color: #999999;
 }
 
 .iceSelInpDateMonthYear-dis img {
