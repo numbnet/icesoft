@@ -64,44 +64,44 @@ In this demonstration ice:connectionStatus different icons are displayed.
                     value="#{msgs['page.connectionStatus.status4.value']}"/>
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme1.value']}"/>
-            <ice:graphicImage
+            <ice:graphicImage id="xpIdle"
                     width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_idle.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="xpActive"
                     width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_active.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="xpCaution"
                     width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_caution.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="xpDisconnected"
                     width="25" height="25"
                     url="/xmlhttp/css/xp/css-images/connect_disconnected.gif"/>
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme2.value']}"/>
-            <ice:graphicImage
+            <ice:graphicImage id="royaleIdle"
                     width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_idle.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="royaleActive"
                     width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_active.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="royalCaution"
                     width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_caution.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="royaleDisconnected"
                     width="60" height="25"
                     url="/xmlhttp/css/royale/css-images/connect_disconnected.gif"/>
 
             <ice:outputText value="#{msgs['page.connectionStatus.theme3.value']}"/>
-            <ice:graphicImage
+            <ice:graphicImage id="rimeIdle"
                     width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_idle.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="rimeActive"
                     width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_active.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="rimeCaution"
                     width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_caution.gif"/>
-            <ice:graphicImage
+            <ice:graphicImage id="rimeDisconnected"
                     width="26" height="26"
                     url="/xmlhttp/css/rime/css-images/connect_disconnected.gif"/>
 

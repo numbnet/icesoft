@@ -37,7 +37,7 @@
           id="navigationMenuForm">
 <ice:panelGroup>
 <!-- standard components-->
-<ice:panelCollapsible expanded="false" styleClass="navPnlClpsbl" >
+<ice:panelCollapsible id="extendedCompClpsbl" expanded="false" styleClass="navPnlClpsbl" >
     <f:facet name="header">
         <ice:panelGroup>
             <ice:outputText value="#{msgs['node.extendedComponents.label']}"/>
@@ -65,7 +65,7 @@
     </ice:commandLink>
 </ice:panelCollapsible>
 <!-- Components Collapsible Panel -->
-<ice:panelCollapsible expanded="true" styleClass="navPnlClpsbl">
+<ice:panelCollapsible id="customCompClpsbl" expanded="true" styleClass="navPnlClpsbl">
     <f:facet name="header">
         <ice:panelGroup>
             <ice:outputText value="#{msgs['node.customComponents.label']}"/>
@@ -171,7 +171,7 @@
     </ice:commandLink>
     <br />
     <!-- Tables Collapsible Panel -->
-    <ice:panelCollapsible expanded="false" styleClass="navPnlClpsbl" >
+    <ice:panelCollapsible id="tableCompClpsbl" expanded="false" styleClass="navPnlClpsbl" >
         <f:facet name="header">
             <ice:panelGroup>
                 <ice:outputText value="#{msgs['node.dataTableParent.label']}"/>
@@ -229,7 +229,7 @@
 </ice:panelCollapsible>
 
 <!-- Layout Panels Collapsible Panel -->
-<ice:panelCollapsible expanded="false" styleClass="navPnlClpsbl" >
+<ice:panelCollapsible id="layoutPnlClpsbl" expanded="false" styleClass="navPnlClpsbl" >
     <f:facet name="header">
         <ice:panelGroup>
             <ice:outputText value="#{msgs['node.layoutPanels.label']}"/>

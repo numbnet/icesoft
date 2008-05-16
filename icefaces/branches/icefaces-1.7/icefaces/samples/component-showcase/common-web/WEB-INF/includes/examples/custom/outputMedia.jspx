@@ -53,7 +53,7 @@
             <ice:outputText value="#{msgs['page.outputMedia.label']}" />
         </ice:panelGroup>
         <ice:panelGroup style="float:left;">
-            <ice:selectOneRadio value="#{media.selectedPlayer}"
+            <ice:selectOneRadio id="mediaSlctRadio" value="#{media.selectedPlayer}"
                     styleClass="mediaSelection"
                     partialSubmit="true">
                 <f:selectItem itemValue="flash"
@@ -70,7 +70,8 @@
 
     <ice:panelGroup styleClass="exampleBox outputMediaContainer"
             style="text-align:center;vertical-align: middle; background-color: #F5F5F5; ">
-        <ice:outputMedia player="#{media.selectedPlayer}"
+        <ice:outputMedia id="outputMedia"
+                         player="#{media.selectedPlayer}"
                          source="#{media.source}"
                          style="#{media.style}">
             <f:param name="#{media.autoStartParamName}"

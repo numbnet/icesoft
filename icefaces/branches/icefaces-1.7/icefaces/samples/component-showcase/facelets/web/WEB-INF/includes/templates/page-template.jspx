@@ -85,7 +85,7 @@
                        Main Component content;
                        controls which content to display for the respective navigation
                     -->
-                    <ice:form>
+                    <ice:form id="iceform">
 
                         <ui:insert name="page-content"/>
 
