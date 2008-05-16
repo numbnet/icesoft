@@ -255,7 +255,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private void enhanceHtml(Element html) {
         //add lang attribute
-        Locale locale = context.getApplication().getViewHandler().calculateLocale(context);
+        Locale locale = context.getViewRoot().getLocale();
         //id required for forwarded (server-side) redirects
         html.setAttribute("id", "document:html");
         html.setAttribute("lang", locale.getLanguage());
