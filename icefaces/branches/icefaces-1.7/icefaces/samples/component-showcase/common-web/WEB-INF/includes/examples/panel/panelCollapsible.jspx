@@ -142,7 +142,7 @@
                 </ice:panelGroup>
             </f:facet>
             <ice:panelGroup style="text-align: center;">
-                <ice:graphicImage value="/images/panelCollapsible/pnlClpsbl_logo.png"
+                <ice:graphicImage id="iceGphImg" value="/images/panelCollapsible/pnlClpsbl_logo.png"
                     alt="ICEfaces" title="ICEfaces" width="369" height="230"/>
             </ice:panelGroup>
         </ice:panelCollapsible>

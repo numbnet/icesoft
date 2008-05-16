@@ -55,7 +55,8 @@
                            value="#{popup.modalMessage}"
                            disabled="#{popup.modalRendered}"
                            size="30" maxlength="90"/>
-            <ice:commandButton value="#{popup.determineModalButtonText}"
+            <ice:commandButton id="toggleModal"
+                               value="#{popup.determineModalButtonText}"
                                disabled="#{popup.modalRendered}"
                                style="margin-right: 2px;"
                                actionListener="#{popup.toggleModal}"/>
@@ -75,7 +76,8 @@
                            value="#{popup.draggableMessage}"
                            disabled="#{popup.draggableRendered}"
                            size="30" maxlength="90"/>
-            <ice:commandButton value="#{popup.determineDraggableButtonText}"
+            <ice:commandButton id="toggleDraggable"
+                               value="#{popup.determineDraggableButtonText}"
                                disabled="#{popup.draggableRendered}"
                                actionListener="#{popup.toggleDraggable}"/>
         </ice:panelGroup>
@@ -92,7 +94,8 @@
 </ice:panelGroup>
 
 <!-- Modal Panel Popup -->
-<ice:panelPopup draggable="false" modal="true"
+<ice:panelPopup id="modalPnlPop"
+                draggable="false" modal="true"
                 visible="#{popup.modalRendered}"
                 autoCentre="#{popup.autoCentre}"
                 styleClass="corePopup">
@@ -101,7 +104,7 @@
             <ice:outputText
                     value="#{msgs['page.panelPopup.modalName']} #{msgs['page.panelPopup.title']}"
                     styleClass="popupHeaderText"/>
-            <ice:commandButton type="button"
+            <ice:commandButton id="modalPnlCloseBtn" type="button"
                                image="#{msgs['page.panelPopup.closeImage']}"
                                actionListener="#{popup.toggleModal}"
                                styleClass="popupHeaderImage"
@@ -111,7 +114,7 @@
     <f:facet name="body">
         <ice:panelGroup styleClass="popupBody">
             <ice:outputText value="#{popup.modalMessage}"/><br/>
-            <ice:commandButton type="submit"
+            <ice:commandButton id="modalPnlCloseButton" type="submit"
                                value="#{msgs['page.panelPopup.closeText']}"
                                actionListener="#{popup.toggleModal}"/>
         </ice:panelGroup>
@@ -119,7 +122,8 @@
 </ice:panelPopup>
 
 <!-- Draggable Panel Popup -->
-<ice:panelPopup draggable="true"
+<ice:panelPopup id="draggablePnlPop"
+                draggable="true"
                 modal="false"
                 rendered="#{popup.draggableRendered}"
                 visible="#{popup.draggableRendered}"
@@ -130,7 +134,7 @@
             <ice:outputText
                     value="#{msgs['page.panelPopup.draggableName']} #{msgs['page.panelPopup.title']}"
                     styleClass="popupHeaderText"/>
-            <ice:commandButton type="button"
+            <ice:commandButton id="draggablePnlCloseBtn" type="button"
                                image="#{msgs['page.panelPopup.closeImage']}"
                                actionListener="#{popup.toggleDraggable}"
                                styleClass="popupHeaderImage"
@@ -140,7 +144,7 @@
     <f:facet name="body">
         <ice:panelGroup styleClass="popupBody">
             <ice:outputText value="#{popup.draggableMessage}"/><br/>
-            <ice:commandButton type="submit"
+            <ice:commandButton id="draggablePnlCloseButton" type="submit"
                                value="#{msgs['page.panelPopup.closeText']}"
                                actionListener="#{popup.toggleDraggable}"/>
         </ice:panelGroup>

@@ -139,7 +139,7 @@
 <!-- Static Tab Set -->
 <ice:panelGroup id="tabSetTabs"
                 styleClass="exampleBox panelTabSetContainer">
-    <ice:panelTabSet
+    <ice:panelTabSet id="icePnlTbSet"
             selectedIndex="#{staticTabbedPaneExample.focusIndex}"
             tabPlacement="#{staticTabbedPaneExample.tabPlacement}"
             tabChangeListener="#{staticTabbedPaneExample.processTabChange}"

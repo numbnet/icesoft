@@ -51,7 +51,7 @@
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
             <ice:panelGroup id="panelTabsetStaticContentPanel" style="float:left;">
-                <ice:form>
+                <ice:form id="iceform">
                     <f:subview id="pTabSSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/panel/panelTabSet-static.jspx"/>

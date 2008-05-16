@@ -43,7 +43,8 @@
     <ice:panelGroup styleClass="exampleBox expandableTableContainer">
 
 	    <!-- Basic table -->
-	    <ice:dataTable value="#{filesRecordsManager.filesGroupRecordBeans}"
+	    <ice:dataTable id="dataTable"
+                         value="#{filesRecordsManager.filesGroupRecordBeans}"
 	                   var="filesRecord"
 	                   cellpadding="0">
 	        <!-- contract/expand column -->
@@ -51,7 +52,8 @@
 	            <ice:panelGroup styleClass="#{filesRecord.indentStyleClass}">
 	                <!-- Render the expand/contract if there is an image -->
 	                <ice:commandLink actionListener="#{filesRecord.toggleSubGroupAction}">
-	                    <ice:graphicImage value="#{filesRecord.expandContractImage}"
+	                    <ice:graphicImage id="expandContractImage"
+                                            value="#{filesRecord.expandContractImage}"
 	                                      style="border: 0px solid;"/>
 	                </ice:commandLink>
 	            </ice:panelGroup>

@@ -50,11 +50,11 @@
         <!-- navigation -->
         <ui:define name="links">
             <ice:panelGroup styleClass="navigationContainer">
-                <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                <ice:panelCollapsible id="docResource" styleClass="navPnlClpsbl" expanded="true">
                     <f:facet name="header">Resource</f:facet>
                     <c:forEach var="documentationResource"
                                items="#{currentDocumentationResource}">
-                        <ice:commandLink
+                        <ice:commandLink id="docCmdLnk"
                                 actionListener="#{applicationController.viewIncludeEvent}"
                                 value="#{documentationResource.label}"
                                 styleClass="docViewNodeSelected#{documentationResource.resourceRef.path eq applicationModel.selectedTabState.descriptionContent}">
@@ -63,7 +63,7 @@
                         </ice:commandLink><br />
                     </c:forEach>
                 </ice:panelCollapsible>
-                <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                <ice:panelCollapsible id="tutorialResource" styleClass="navPnlClpsbl" expanded="true">
                     <f:facet name="header">Tutorials</f:facet>
                     <c:forEach var="tutorialResource"
                                items="#{currentTutorialResource}">
@@ -73,11 +73,11 @@
                         </a><br />
                     </c:forEach>
                 </ice:panelCollapsible>
-                <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                <ice:panelCollapsible id="tldResource" styleClass="navPnlClpsbl" expanded="true">
                     <f:facet name="header">TLD</f:facet>
                     <c:forEach var="tldResource"
                                items="#{currentTldResource}">
-                        <ice:commandLink
+                        <ice:commandLink id="tldCmdLnk"
                                 actionListener="#{applicationController.viewIncludeEvent}"
                                 value="#{tldResource.label}"
                                 styleClass="docViewNodeSelected#{tldResource.resourceRef.path eq applicationModel.selectedTabState.descriptionContent}">

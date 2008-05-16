@@ -51,13 +51,15 @@
 
         <!-- Controlls to manipulate the employee collection -->
         <ice:panelGroup style="float:left;">
-            <ice:commandButton actionListener="#{panelSeriesController.addEmployee}"
+            <ice:commandButton id="addEmployee"
+                       actionListener="#{panelSeriesController.addEmployee}"
                        disabled="#{panelSeriesController.employeeCount >= 15}"
                        value="#{msgs['page.panelSeries.add.label']}"
                        alt="#{msgs['page.panelSeries.add.title']}"
                        title="#{msgs['page.panelSeries.add.title']}"
                        style="margin-right:5px;"/>
-            <ice:commandButton actionListener="#{panelSeriesController.removeEmployee}"
+            <ice:commandButton id="removeEmployee"
+                       actionListener="#{panelSeriesController.removeEmployee}"
                        disabled="#{panelSeriesController.employeeCount == 1}"
                        value="#{msgs['page.panelSeries.remove.label']}"
                        alt="#{msgs['page.panelSeries.remove.title']}"
@@ -70,25 +72,26 @@
     <ice:panelGroup styleClass="exampleBox panelSeriesContainer">
 
         <!-- uses panelSerices to iterate over the employee collection -->
-        <ice:panelSeries value="#{panelSeriesController.employees}"
+        <ice:panelSeries id="icePnlSrs"
+                         value="#{panelSeriesController.employees}"
                          var="employee" style="float:left">
             <!-- employee box is repeated for each employee record -->
-            <ice:panelGroup styleClass="employeeBox">
+            <ice:panelGroup id="employeeBox" styleClass="employeeBox">
                 <ice:graphicImage value="/images/employee.gif"
                                   width="69" height="97" style="float:right"/>
 
                 <ice:panelGroup style="padding:10px;background:url(#{styleBean.imageDirectory}table_col_header.gif);">
-                    <ice:outputText value="#{employee.firstName} #{employee.lastName}" style="font-weight:bold;"/>
+                    <ice:outputText id="name" value="#{employee.firstName} #{employee.lastName}" style="font-weight:bold;"/>
                 </ice:panelGroup>
                 <ice:panelGroup style="padding:10px;">
                     <ice:outputText value="#{msgs['page.dataTable.column5']}: " style="font-weight:bold;"/>
-                    <ice:outputText value="#{employee.departmentName}"/>
+                    <ice:outputText id="region" value="#{employee.departmentName}"/>
                     <br/>
                     <ice:outputText value="#{msgs['page.dataTable.column6']}: " style="font-weight:bold;"/>
-                    <ice:outputText value="#{employee.subDepartmentName}"/>
+                    <ice:outputText id="office" value="#{employee.subDepartmentName}"/>
                     <br/>
                     <ice:outputText value="#{msgs['page.dataTable.column4']}: " style="font-weight:bold;"/>
-                    <ice:outputText value="#{employee.phone}"/>
+                    <ice:outputText id="phone" value="#{employee.phone}"/>
                 </ice:panelGroup>
             </ice:panelGroup>
 

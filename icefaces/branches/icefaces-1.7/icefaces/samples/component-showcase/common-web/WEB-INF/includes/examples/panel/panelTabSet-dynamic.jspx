@@ -95,7 +95,8 @@
     <!-- Displayed Tabs -->
     <ice:panelGroup
                 styleClass="exampleBox panelTabSetContainer">
-        <ice:panelTabSet var="tab"
+        <ice:panelTabSet id="icePnlTbSet"
+                         var="tab"
                          value="#{dynamicTabbedPaneExample.tabs}"
                          tabPlacement="bottom"
                          selectedIndex="#{dynamicTabbedPaneExample.tabIndex}"

@@ -48,11 +48,12 @@
         <!-- navigation -->
         <ui:define name="links">
             <ice:panelGroup styleClass="navigationContainer">
-                <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                <ice:panelCollapsible id="beanSource" styleClass="navPnlClpsbl" expanded="true">
                     <f:facet name="header">Beans</f:facet>
-                    <ice:panelSeries var="beanSource"
+                    <ice:panelSeries id="beanPnlSrs"
+                               var="beanSource"
                                value="#{currentBeanResource}">
-                        <ice:commandLink
+                        <ice:commandLink id="beanSrcCmdLnk"
                                 actionListener="#{applicationController.viewSourceEvent}"
                                 value="#{beanSource.label}"
                                 styleClass="docViewNodeSelected#{beanSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">
@@ -61,11 +62,12 @@
                         </ice:commandLink><br />
                     </ice:panelSeries>
                 </ice:panelCollapsible>
-                 <ice:panelCollapsible styleClass="navPnlClpsbl" expanded="true">
+                 <ice:panelCollapsible id="jsxSource" styleClass="navPnlClpsbl" expanded="true">
                     <f:facet name="header">JSPX:</f:facet>
-                    <ice:panelSeries  var="jsxSource"
+                    <ice:panelSeries id="jsxPnlSrs"
+                               var="jsxSource"
                                value="#{currentJSPXResource}">
-                        <ice:commandLink
+                        <ice:commandLink id="jsxSrcCmdLnk"
                                 actionListener="#{applicationController.viewSourceEvent}"
                                 value="#{jsxSource.label}"
                                 styleClass="docViewNodeSelected#{jsxSource.resourceRef.path eq applicationModel.selectedTabState.sourceContent}">

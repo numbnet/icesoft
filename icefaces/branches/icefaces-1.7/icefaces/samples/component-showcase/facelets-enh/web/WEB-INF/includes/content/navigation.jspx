@@ -68,11 +68,12 @@
           xmlns:c="http://java.sun.com/jstl/core"
           xmlns:ice="http://www.icesoft.com/icefaces/component"
           id="navigationMenuForm">
-    <ice:panelSeries
+    <ice:panelSeries id="navPnlSrs"
             value="#{applicationBuilder.applicationStructure.navigation.node}"
             var="nodeLevel1">
 
-        <ice:panelCollapsible toggleOnClick="true"
+        <ice:panelCollapsible id="navPnlClpsbl"
+                              toggleOnClick="true"
                               expanded="#{applicationModel.navigationPanelCollapsible[nodeLevel1.id]}"
                               styleClass="navPnlClpsbl">
 
@@ -99,7 +100,7 @@
                 <ice:treeNode>
                     <f:facet name="content">
                         <ice:panelGroup style="display: inline">
-                            <ice:commandLink
+                            <ice:commandLink id="navNodeLink"
                                     actionListener="#{applicationController.navigationEvent}"
                                     styleClass="navNodeLink navNodeSelect#{node.userObject.selected} navNodeFolder#{not node.userObject.leaf}Expanded#{node.userObject.expanded}"
                                     value="#{msgs[node.userObject.text]}">

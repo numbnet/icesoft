@@ -103,7 +103,8 @@
 <ice:panelGroup styleClass="clearer" />
 
 <!-- Conainer for shopping cart summary, also a drop target. -->
-<ice:panelGroup styleClass="chartContainer backBeanChangeContainer"
+<ice:panelGroup id="shoppingCart"
+		    styleClass="chartContainer backBeanChangeContainer"
                 style="border: none;padding:2px;"
                 hoverclass="cartDropTarget"
                 dropTarget="true" >

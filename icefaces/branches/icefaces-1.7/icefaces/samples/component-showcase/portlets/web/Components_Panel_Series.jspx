@@ -51,7 +51,7 @@
         <ice:panelGroup>
             <ice:outputConnectionStatus style="float:right;"/>
             <ice:panelGroup id="panelSeriesContentPanel" style="float:left;">
-                <ice:form>
+                <ice:form id="iceform">
                     <f:subview id="pSerSub">
                         <jsp:directive.include
                                 file="/WEB-INF/includes/examples/panel/panelSeries.jspx"/>
