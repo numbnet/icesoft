@@ -154,6 +154,9 @@ public class SelectInputDate
     private final String DEFAULT_CLOSEPOPUP = "cal_off.gif";
 
     public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
+    private Boolean _renderMonthAsDropdown;
+    private Boolean _renderYearAsDropdown;
+    private int yearListStartYear = Integer.MAX_VALUE;
 
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
@@ -368,6 +371,9 @@ public class SelectInputDate
                 isDisabled());
     }
 
+    public String getMonthYearDropdownClass() {
+        return Util.getQualifiedStyleClass(this, CSS_DEFAULT.DEFAULT_MO_YR_DROPDOWN_CLASS, isDisabled());
+    }
 
     /**
      * Returns the style class name of the weekRowClass The style class is
@@ -489,6 +495,32 @@ public class SelectInputDate
      */
     public void setRenderAsPopup(boolean b) {
         _renderAsPopup = new Boolean(b);
+    }
+
+    public boolean isRenderMonthAsDropdown() {
+        if (_renderMonthAsDropdown != null) {
+            return _renderMonthAsDropdown.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("renderMonthAsDropdown");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+
+    public void setRenderMonthAsDropdown(boolean b) {
+        _renderMonthAsDropdown = new Boolean(b);
+    }
+
+    public boolean isRenderYearAsDropdown() {
+        if (_renderYearAsDropdown != null) {
+            return _renderYearAsDropdown.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("renderYearAsDropdown");
+        Boolean v = vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return v != null ? v.booleanValue() : false;
+    }
+
+    public void setRenderYearAsDropdown(boolean b) {
+        _renderYearAsDropdown = new Boolean(b);
     }
 
     /**
@@ -613,6 +645,9 @@ public class SelectInputDate
         values[7] = _closePopupImage;
         values[8] = new Boolean(navEvent);
         values[9] = navDate;
+        values[10] = _renderMonthAsDropdown;
+        values[11] = _renderYearAsDropdown;
+        values[12] = Integer.valueOf(yearListStartYear);
         return ((Object) (values));
     }
 
@@ -631,6 +666,9 @@ public class SelectInputDate
         _closePopupImage = (String) values[7];
         navEvent = ((Boolean) values[8]).booleanValue();
         navDate = (Date) values[9];
+        _renderMonthAsDropdown = (Boolean) values[10];
+        _renderYearAsDropdown = (Boolean) values[11];
+        yearListStartYear = ((Integer) values[12]).intValue();
     }
 
     private Map linkMap = new HashMap();
@@ -919,6 +957,14 @@ public class SelectInputDate
         this.highlightWeekClass = "";
     }
 
+    public int getYearListStartYear() {
+        return yearListStartYear;
+    }
+
+    public void setYearListStartYear(int yearListStartYear) {
+        this.yearListStartYear = yearListStartYear;
+    }
+
     static class UnitMap extends HashMap {
         public UnitMap() {
             this.put("YEAR", new Integer(Calendar.YEAR));
@@ -939,4 +985,5 @@ public class SelectInputDate
         }
     }
 }
+
 
