@@ -171,6 +171,12 @@ input {
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
 }
 
+.iceSelInpDateMoYrDropdown {
+    background-color: #026AFF;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
 .iceSelInpDateWeek {
 /* the days of the week row */
     font-weight: normal;
@@ -2196,6 +2202,11 @@ Disabeld classes for the calendar controls
     padding-right: 1px;
     padding-top: 4px;
     padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
+}
+
+.iceSelInpDateMoYrDropdown-dis {
+    background-color: #D0D4EE;
+    color: #999999;
 }
 
 .iceSelInpDateMonthYear-dis img {

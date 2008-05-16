@@ -52,6 +52,7 @@ import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.ext.HtmlGraphicImage;
 import com.icesoft.faces.component.ext.HtmlOutputText;
+import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
@@ -67,10 +68,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import javax.faces.component.NamingContainer;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
-import javax.faces.component.UIViewRoot;
+import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.convert.Converter;
@@ -106,6 +104,8 @@ public class SelectInputDateRenderer
     private static final String DATE_SELECTED = "dateSelected";
 
     // constants for navigation link ids
+    private static final String SELECT_MONTH = "_selMo";
+    private static final String SELECT_YEAR = "_selYr";
     private static final String PREV_MONTH = "_prevmo";
     private static final String NEXT_MONTH = "_nextmo";
     private static final String PREV_YEAR = "_prevyr";
@@ -150,6 +150,11 @@ public class SelectInputDateRenderer
         "com.icesoft.faces.component.selectinputdate.NEXT_MONTH_ALT";
     private static final String NEXT_MONTH_TITLE =
         "com.icesoft.faces.component.selectinputdate.NEXT_MONTH_TITLE";
+    private static final String PREV_YEAR_LABEL =
+        "com.icesoft.faces.component.selectinputdate.PREV_YEAR_LABEL";
+    private static final String NEXT_YEAR_LABEL =
+        "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_LABEL";
+    private static final int yearListSize = 10;
 
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
@@ -553,43 +558,62 @@ public class SelectInputDateRenderer
 
         headertd.setAttribute(HTML.COLSPAN_ATTR, "7"); // weekdays.length = 7
 
-        // first render month with navigation back and forward
-        Calendar cal = shiftMonth(facesContext, timeKeeper, currentDay, -1);
-        writeCell(domContext, facesContext, writer, inputComponent,
-                  "<", cal.getTime(), styleClass, tr,
-                  inputComponent.getImageDir() +
-                  inputComponent.getMovePreviousImage(), -1,
-                  timeKeeper, months, weekdaysLong);
-
-        Element td = domContext.createElement(HTML.TD_ELEM);
-        td.setAttribute(HTML.CLASS_ATTR, styleClass);
-        td.setAttribute(HTML.WIDTH_ATTR, "40%");
-        Text text = domContext
-                .createTextNode(months[timeKeeper.get(Calendar.MONTH)] + "");
-        td.appendChild(text);
-
-        tr.appendChild(td);
-
-        cal = shiftMonth(facesContext, timeKeeper, currentDay, 1);
-        int calYear = cal.get(Calendar.YEAR);
-
-        if (inputComponent.getHightlightRules().containsKey(Calendar.YEAR+"$"+calYear)) {
-            inputComponent.setHighlightYearClass(inputComponent.getHightlightRules().get(Calendar.YEAR+"$"+calYear) + " ");
+        int calYear = timeKeeper.get(Calendar.YEAR);
+        if (inputComponent.getHightlightRules().containsKey(Calendar.YEAR + "$" + calYear)) {
+            inputComponent.setHighlightYearClass(inputComponent.getHightlightRules().get(Calendar.YEAR + "$" + calYear) + " ");
         } else {
             inputComponent.setHighlightYearClass("");
         }
-              
-        int calMonth = cal.get(Calendar.MONTH);
-        if (inputComponent.getHightlightRules().containsKey(Calendar.MONTH+"$"+calMonth)) {
-            inputComponent.setHighlightMonthClass(inputComponent.getHightlightRules().get(Calendar.MONTH+"$"+calMonth) + " ");
+
+        int calMonth = timeKeeper.get(Calendar.MONTH) + 1;
+        if (inputComponent.getHightlightRules().containsKey(Calendar.MONTH + "$" + calMonth)) {
+            inputComponent.setHighlightMonthClass(inputComponent.getHightlightRules().get(Calendar.MONTH + "$" + calMonth) + " ");
         } else {
             inputComponent.setHighlightMonthClass("");
-        }  
-        writeCell(domContext, facesContext, writer, inputComponent,
-                  ">", cal.getTime(), styleClass, tr,
-                  inputComponent.getImageDir() +
-                  inputComponent.getMoveNextImage(), -1,
-                  timeKeeper, months, weekdaysLong);
+        }
+        // first render month with navigation back and forward
+        if (inputComponent.isRenderMonthAsDropdown()) {
+            writeMonthDropdown(facesContext, domContext, inputComponent, tr, months, timeKeeper, currentDay, styleClass);
+        } else {
+            Calendar cal = shiftMonth(facesContext, timeKeeper, currentDay, -1);
+            writeCell(domContext, facesContext, writer, inputComponent,
+                      "<", cal.getTime(), styleClass, tr,
+                      inputComponent.getImageDir() +
+                      inputComponent.getMovePreviousImage(), -1,
+                      timeKeeper, months, weekdaysLong);
+
+            Element td = domContext.createElement(HTML.TD_ELEM);
+            td.setAttribute(HTML.CLASS_ATTR, styleClass);
+            td.setAttribute(HTML.WIDTH_ATTR, "40%");
+            Text text = domContext
+                    .createTextNode(months[timeKeeper.get(Calendar.MONTH)] + "");
+            td.appendChild(text);
+
+            tr.appendChild(td);
+
+            cal = shiftMonth(facesContext, timeKeeper, currentDay, 1);
+/*
+            int calYear = cal.get(Calendar.YEAR);
+
+            if (inputComponent.getHightlightRules().containsKey(Calendar.YEAR+"$"+calYear)) {
+                inputComponent.setHighlightYearClass(inputComponent.getHightlightRules().get(Calendar.YEAR+"$"+calYear) + " ");
+            } else {
+                inputComponent.setHighlightYearClass("");
+            }
+
+            int calMonth = cal.get(Calendar.MONTH);
+            if (inputComponent.getHightlightRules().containsKey(Calendar.MONTH+"$"+calMonth)) {
+                inputComponent.setHighlightMonthClass(inputComponent.getHightlightRules().get(Calendar.MONTH+"$"+calMonth) + " ");
+            } else {
+                inputComponent.setHighlightMonthClass("");
+            }
+*/
+            writeCell(domContext, facesContext, writer, inputComponent,
+                      ">", cal.getTime(), styleClass, tr,
+                      inputComponent.getImageDir() +
+                      inputComponent.getMoveNextImage(), -1,
+                      timeKeeper, months, weekdaysLong);
+        }
 
         // second add an empty td
         Element emptytd = domContext.createElement(HTML.TD_ELEM);
@@ -600,30 +624,152 @@ public class SelectInputDateRenderer
         tr.appendChild(emptytd);
 
         // third render year with navigation back and forward
-        cal = shiftYear(facesContext, timeKeeper, currentDay, -1);
+        if (inputComponent.isRenderYearAsDropdown()) {
+            writeYearDropdown(facesContext, domContext, inputComponent, tr, timeKeeper, currentDay, styleClass);
+        } else {
+            Calendar cal = shiftYear(facesContext, timeKeeper, currentDay, -1);
 
-        writeCell(domContext, facesContext, writer, inputComponent,
-                  "<<", cal.getTime(), styleClass, tr,
-                  inputComponent.getImageDir() +
-                  inputComponent.getMovePreviousImage(), -1,
-                  timeKeeper, months, weekdaysLong);
+            writeCell(domContext, facesContext, writer, inputComponent,
+                      "<<", cal.getTime(), styleClass, tr,
+                      inputComponent.getImageDir() +
+                      inputComponent.getMovePreviousImage(), -1,
+                      timeKeeper, months, weekdaysLong);
 
-        Element yeartd = domContext.createElement(HTML.TD_ELEM);
-        yeartd.setAttribute(HTML.CLASS_ATTR, styleClass);
-        Text yeartext =
-                domContext.createTextNode("" + timeKeeper.get(Calendar.YEAR));
-        yeartd.appendChild(yeartext);
+            Element yeartd = domContext.createElement(HTML.TD_ELEM);
+            yeartd.setAttribute(HTML.CLASS_ATTR, styleClass);
+            Text yeartext =
+                    domContext.createTextNode("" + timeKeeper.get(Calendar.YEAR));
+            yeartd.appendChild(yeartext);
 
-        tr.appendChild(yeartd);
+            tr.appendChild(yeartd);
 
-        cal = shiftYear(facesContext, timeKeeper, currentDay, 1);
+            cal = shiftYear(facesContext, timeKeeper, currentDay, 1);
 
-        writeCell(domContext, facesContext, writer, inputComponent,
-                  ">>", cal.getTime(), styleClass, tr,
-                  inputComponent.getImageDir() +
-                  inputComponent.getMoveNextImage(), -1,
-                  timeKeeper, months, weekdaysLong);
+            writeCell(domContext, facesContext, writer, inputComponent,
+                      ">>", cal.getTime(), styleClass, tr,
+                      inputComponent.getImageDir() +
+                      inputComponent.getMoveNextImage(), -1,
+                      timeKeeper, months, weekdaysLong);
+        }
 
+    }
+
+    private void writeMonthDropdown(FacesContext facesContext,
+                                    DOMContext domContext,
+                                    SelectInputDate component,
+                                    Element tr,
+                                    String[] months,
+                                    Calendar timeKeeper,
+                                    int currentDay,
+                                    String styleClass) throws IOException {
+        Element td = domContext.createElement(HTML.TD_ELEM);
+        if (styleClass != null) {
+            td.setAttribute(HTML.CLASS_ATTR, styleClass);
+        }
+        tr.appendChild(td);
+
+        domContext.setCursorParent(td);
+        domContext.streamWrite(facesContext, component, domContext.getRootNode(), td);
+
+        HtmlSelectOneMenu dropDown = new HtmlSelectOneMenu();
+        dropDown.setId(component.getId() + SELECT_MONTH);
+        dropDown.setPartialSubmit(true);
+        dropDown.setTransient(true);
+        dropDown.setImmediate(component.isImmediate());
+        dropDown.setDisabled(component.isDisabled());
+        dropDown.setStyleClass(component.getMonthYearDropdownClass());
+
+        UISelectItem selectItem;
+        Calendar calendar;
+        int currentMonth = timeKeeper.get(Calendar.MONTH);
+        Converter converter = component.resolveDateTimeConverter(facesContext);
+        for (int i = 0; i < months.length; i++) {
+            selectItem = new UISelectItem();
+            calendar = shiftMonth(facesContext, timeKeeper, currentDay, i - currentMonth);
+            selectItem.setItemValue(converter.getAsString(facesContext, component, calendar.getTime()));
+            selectItem.setItemLabel(months[i]);
+            dropDown.getChildren().add(selectItem);
+            if (i == currentMonth) {
+                dropDown.setValue(selectItem.getItemValue());
+            }
+        }
+
+        component.getChildren().add(dropDown);
+        dropDown.encodeBegin(facesContext);
+        dropDown.encodeChildren(facesContext);
+        dropDown.encodeEnd(facesContext);
+        component.getChildren().remove(dropDown);
+
+        domContext.stepOver();
+    }
+
+    private void writeYearDropdown(FacesContext facesContext,
+                                   DOMContext domContext,
+                                   SelectInputDate component,
+                                   Element tr,
+                                   Calendar timeKeeper,
+                                   int currentDay,
+                                   String styleClass) throws IOException {
+        Element td = domContext.createElement(HTML.TD_ELEM);
+        if (styleClass != null) {
+            td.setAttribute(HTML.CLASS_ATTR, styleClass);
+        }
+        tr.appendChild(td);
+
+        domContext.setCursorParent(td);
+        domContext.streamWrite(facesContext, component, domContext.getRootNode(), td);
+
+        HtmlSelectOneMenu dropDown = new HtmlSelectOneMenu();
+        dropDown.setId(component.getId() + SELECT_YEAR);
+        dropDown.setPartialSubmit(true);
+        dropDown.setTransient(true);
+        dropDown.setImmediate(component.isImmediate());
+        dropDown.setDisabled(component.isDisabled());
+        dropDown.setStyleClass(component.getMonthYearDropdownClass());
+
+        int startYear = component.getYearListStartYear();
+        int timeKeeperYear = timeKeeper.get(Calendar.YEAR);
+        if (timeKeeperYear < startYear) {
+            startYear = timeKeeperYear;
+            component.setYearListStartYear(startYear);
+        } else if (timeKeeperYear > startYear + yearListSize - 1) {
+            startYear = timeKeeperYear - yearListSize + 1;
+            component.setYearListStartYear(startYear);
+        }
+        UISelectItem selectItem;
+        Calendar calendar;
+        Converter converter = component.resolveDateTimeConverter(facesContext);
+        String itemValue, itemLabel;
+
+        for (int i = startYear - 1, j = i, k = startYear + yearListSize; i <= k; i++) {
+            selectItem = new UISelectItem();
+            calendar = shiftYear(facesContext, timeKeeper, currentDay, i - timeKeeperYear);
+            itemValue = converter.getAsString(facesContext, component, calendar.getTime());
+            if (i == j) {
+                itemValue = (startYear - yearListSize) + ":" + itemValue;
+                itemLabel = MessageUtils.getResource(facesContext, PREV_YEAR_LABEL);
+            } else if (i == k) {
+                itemValue = (startYear + yearListSize) + ":" + itemValue;
+                itemLabel = MessageUtils.getResource(facesContext, NEXT_YEAR_LABEL);
+            } else {
+                itemValue = startYear + ":" + itemValue;
+                itemLabel = String.valueOf(calendar.get(Calendar.YEAR));
+            }
+            selectItem.setItemValue(itemValue);
+            selectItem.setItemLabel(itemLabel);
+            dropDown.getChildren().add(selectItem);
+            if (i == timeKeeperYear) {
+                dropDown.setValue(itemValue);
+            }
+        }
+
+        component.getChildren().add(dropDown);
+        dropDown.encodeBegin(facesContext);
+        dropDown.encodeChildren(facesContext);
+        dropDown.encodeEnd(facesContext);
+        component.getChildren().remove(dropDown);
+
+        domContext.stepOver();
     }
 
     private Calendar shiftMonth(FacesContext facesContext,
@@ -1201,6 +1347,21 @@ public class SelectInputDateRenderer
                 }
             }
 
+        }
+        SelectInputDate dateSelect = (SelectInputDate) component;
+        clientId = component.getClientId(facesContext) + SELECT_MONTH;
+        Object eventCapturedId = requestParameterMap.get("ice.event.captured");
+        if (clientId.equals(eventCapturedId)) {
+            dateSelect.setNavEvent(true);
+            dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(clientId)));
+        } else {
+            clientId = component.getClientId(facesContext) + SELECT_YEAR;
+            if (clientId.equals(eventCapturedId)) {
+                String[] paramValues = ((String) requestParameterMap.get(clientId)).split(":", 2);
+                dateSelect.setNavEvent(true);
+                dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, paramValues[1]));
+                dateSelect.setYearListStartYear(Integer.parseInt(paramValues[0]));
+            }
         }
     }
 
