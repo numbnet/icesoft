@@ -71,6 +71,7 @@ the click of a button.
 
         <!-- Calendar Component -->
         <ice:selectInputDate id="date1"
+                             renderMonthAsDropdown="true" renderYearAsDropdown="true"
                              value="#{dateSelect.date1}"
                              valueChangeListener="#{dateSelect.effectChangeListener}"
                              highlightClass="weekend: august:"

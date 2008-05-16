@@ -36,7 +36,7 @@
 <renderer>
 	<description>
 		<![CDATA[<p>The selectInputDate component renders a localized dateSelect. Users may select a date by clicking
-            on a date in the displayed month. The displayed month and year can be changed using arrow buttons.
+            on a date in the displayed month. The displayed month and year can be changed using arrow buttons or dropdown lists.
             Optionally, the selectInputDate component may be used in popup mode. In this mode an inputText
             component is rendered that displays the selected date. Users may enter a date directly into the
             inputText component, or optionally click a button beside the inputText component to display a popup
