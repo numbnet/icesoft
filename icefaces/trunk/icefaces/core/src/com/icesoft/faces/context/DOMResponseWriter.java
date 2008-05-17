@@ -262,6 +262,8 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     private void enhanceBody(Element body) {
+        //id required for forwarded (server-side) redirects
+        body.setAttribute("id", "document:body");
         Element iframe = document.createElement("iframe");
         body.insertBefore(iframe, body.getFirstChild());
         iframe.setAttribute("id", "history-frame");
@@ -343,12 +345,6 @@ public class DOMResponseWriter extends ResponseWriter {
 
         Element noscript = (Element) body.appendChild(document.createElement("noscript"));
         Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
-        noscriptMeta.setAttribute("http-equiv", "refresh");
-        String jsBlockedURL = handler.getResourceURL(context, "/xmlhttp/javascript-blocked");
-        noscriptMeta.setAttribute("content", "0;jsBlockedURL=" + jsBlockedURL);
-
-        noscript = (Element) body.appendChild(document.createElement("noscript"));
-        noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
         noscriptMeta.setAttribute("http-equiv", "refresh");
         noscriptMeta.setAttribute("content", "0;url=" + handler.getResourceURL(context, "/xmlhttp/javascript-blocked"));
 

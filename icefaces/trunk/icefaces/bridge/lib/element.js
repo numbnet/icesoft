@@ -138,6 +138,11 @@
         },
 
         disconnectEventListeners: function() {
+            //shutdown bridge if this is the container it is attached to!
+            if (this.element.bridge) {
+                this.element.bridge.dispose();
+            }
+
             var elements = this.element.getElementsByTagName('*');
             var length = elements.length;
             for (var i = 0; i < length; i++) {
@@ -448,7 +453,10 @@
     This.BodyElement = This.Element.subclass({
         replaceHtml: function(html) {
             this.disconnectEventListeners();
-            this.element.innerHTML = html;
+            //strip <noscript> tag to fix Safari bug
+            var start = new RegExp('\<noscript\>', 'g').exec(html);
+            var end = new RegExp('\<\/noscript\>', 'g').exec(html);
+            this.element.innerHTML = html.substring(0, start.index) + html.substring(end.index + 11, html.length);
         }
     });
 

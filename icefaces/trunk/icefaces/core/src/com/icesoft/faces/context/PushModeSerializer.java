@@ -62,7 +62,7 @@ public class PushModeSerializer implements DOMSerializer {
             while (i.hasNext()) {
                 String tag = ((Element) i.next()).getTagName();
                 //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
-                reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag) || "body".equalsIgnoreCase(tag);
+                reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
             }
             if (reload) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)

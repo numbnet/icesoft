@@ -178,7 +178,7 @@
             };
             //public field used in iceSubmit/iceSubmitPartial
             this.connection = connection;
-
+            this.dispose = dispose;
             logger.info('bridge loaded!');
         }
     });
