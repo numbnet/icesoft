@@ -2,11 +2,7 @@ package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
-import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
-import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.*;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -17,6 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ResourceDispatcher implements Server {
+    private static final ResourceLinker.Handler NOOPHandler = new ResourceLinker.Handler() {
+        public void linkWith(ResourceLinker linker) {
+            //do nothing!
+        }
+    };
     private PathDispatcherServer dispatcher = new PathDispatcherServer();
     private Server compressResource = new CompressingServer(dispatcher);
     private MimeTypeMatcher mimeTypeMatcher;
@@ -35,13 +36,7 @@ public class ResourceDispatcher implements Server {
     }
 
     public URI registerResource(String mimeType, Resource resource) {
-        String name = prefix + encode(resource);
-        if (!registered.contains(name)) {
-            registered.add(name);
-            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(mimeType, resource));
-        }
-
-        return URI.create(name);
+        return registerResource(mimeType, resource, NOOPHandler);
     }
 
     public URI registerResource(final String mimeType, Resource resource, ResourceLinker.Handler handler) {
@@ -49,14 +44,28 @@ public class ResourceDispatcher implements Server {
         if (!registered.contains(name)) {
             registered.add(name);
             dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(mimeType, resource));
-            //register relative resources
-            handler.linkWith(new ResourceLinker() {
-                public void registerRelativeResource(String path, Resource relativeResource) {
-                    String pathExpression = name + path.replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
-                    String type = mimeTypeMatcher.mimeTypeFor(path);
-                    dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(type, relativeResource));
-                }
-            });
+            if (handler != NOOPHandler) {
+                handler.linkWith(new RelativeResourceLinker(name));
+            }
+        }
+
+        return URI.create(name);
+    }
+
+    public URI registerNamedResource(String name, Resource resource) {
+        return registerNamedResource(name, resource, NOOPHandler);
+    }
+
+    public URI registerNamedResource(String fileName, Resource resource, ResourceLinker.Handler handler) {
+        final String name = prefix + encode(resource) + "-" + fileName;
+        if (!registered.contains(name)) {
+            registered.add(name);
+            String pathExpression = name.replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
+            String type = mimeTypeMatcher.mimeTypeFor(fileName);
+            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(type, resource));
+            if (handler != NOOPHandler) {
+                handler.linkWith(new RelativeResourceLinker(name));
+            }
         }
 
         return URI.create(name);
@@ -113,5 +122,19 @@ public class ResourceDispatcher implements Server {
 
     private static String encode(Resource resource) {
         return Base64.encode(String.valueOf(resource.calculateDigest().hashCode()));
+    }
+
+    private class RelativeResourceLinker implements ResourceLinker {
+        private final String name;
+
+        public RelativeResourceLinker(String name) {
+            this.name = name;
+        }
+
+        public void registerRelativeResource(String path, Resource relativeResource) {
+            String pathExpression = (name + path).replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
+            String type = mimeTypeMatcher.mimeTypeFor(path);
+            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(type, relativeResource));
+        }
     }
 }
