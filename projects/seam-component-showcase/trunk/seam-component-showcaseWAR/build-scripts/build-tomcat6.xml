@@ -34,6 +34,7 @@
 		<include name="lib/cglib-nodep.jar" />
 		<include name="lib/jta.jar" />
 		<include name="lib/antlr.jar" />
+		<include name="lib/jboss-common-core.jar"/>
 	</fileset>
 
 	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">
