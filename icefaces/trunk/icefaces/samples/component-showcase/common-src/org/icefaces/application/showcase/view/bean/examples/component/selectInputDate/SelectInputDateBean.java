@@ -37,6 +37,7 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.GregorianCalendar;
 
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
@@ -63,6 +64,7 @@ public class SelectInputDateBean extends BaseBean {
         super();
         valueChangeEffect2 = new Highlight("#fda505");
         valueChangeEffect2.setFired(true);
+        date2 = new GregorianCalendar(1867, 6, 1).getTime();
     }
 
     /**
