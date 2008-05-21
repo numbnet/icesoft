@@ -54,8 +54,9 @@
                              new Ice.Connection.SyncConnection(logger, configuration.connection, parameters) :
                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
             var dispose = function() {
-                connection.shutdown();
                 dispose = Function.NOOP;
+                connection.shutdown();
+                statusManager.off();
             }
 
             commandDispatcher.register('noop', Function.NOOP);
