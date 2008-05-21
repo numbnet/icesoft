@@ -316,7 +316,10 @@ public class D2DViewHandler extends ViewHandler {
 
     public String getActionURL(FacesContext context, String viewId) {
         //Maybe should always use delegate
-        if (delegateView(context)) {
+        // Temporary solution for ICE-3035, to use our 1.6.x check for .iface
+        boolean ifaceSuffix =
+            ( (viewId != null) && viewId.endsWith(".iface") );
+        if (delegateView(context) && !ifaceSuffix) {
             return delegate.getActionURL(context, viewId);
         }
 
@@ -441,6 +444,7 @@ public class D2DViewHandler extends ViewHandler {
                     }
                     viewURL = context.getExternalContext().getResource(viewId);
                 }
+                root.setViewId(viewId);
 
 
                 long currentTime = System.currentTimeMillis();
