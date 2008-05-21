@@ -23,6 +23,7 @@ import org.springframework.webflow.executor.FlowExecutor;
 
 public class SpringWebFlowInstantiationServlet extends HttpServlet {
     protected static Log log = LogFactory.getLog(SpringWebFlowInstantiationServlet.class);
+    private static String CONFIG_PARAM_NAME = "contextConfigLocation";
     private static FlowExecutor flowExecutor = null;
     private ConfigurableWebApplicationContext container;
 
@@ -62,12 +63,12 @@ public class SpringWebFlowInstantiationServlet extends HttpServlet {
     }
 
     private String[] getConfigLocations(ServletConfig config) {
-        String configLocations = config.getInitParameter("configLocations");
+        String configLocations = config.getInitParameter(CONFIG_PARAM_NAME);
         if (configLocations != null) {
-            return StringUtils.tokenizeToStringArray(config.getInitParameter("configLocations"),
+            return StringUtils.tokenizeToStringArray(config.getInitParameter(CONFIG_PARAM_NAME),
                     ConfigurableWebApplicationContext.CONFIG_LOCATION_DELIMITERS);
         } else {
-            return new String[] { "/WEB-INF/webapp-config.xml" };
+            return new String[] { "/WEB-INF/config/web-application-config.xml" };
         }
     }
 
