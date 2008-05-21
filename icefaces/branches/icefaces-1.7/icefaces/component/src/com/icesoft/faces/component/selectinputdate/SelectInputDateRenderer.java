@@ -154,7 +154,7 @@ public class SelectInputDateRenderer
         "com.icesoft.faces.component.selectinputdate.PREV_YEAR_LABEL";
     private static final String NEXT_YEAR_LABEL =
         "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_LABEL";
-    private static final int yearListSize = 10;
+    private static final int yearListSize = 11;
 
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
@@ -727,34 +727,26 @@ public class SelectInputDateRenderer
         dropDown.setDisabled(component.isDisabled());
         dropDown.setStyleClass(component.getMonthYearDropdownClass());
 
-        int startYear = component.getYearListStartYear();
         int timeKeeperYear = timeKeeper.get(Calendar.YEAR);
-        if (timeKeeperYear < startYear) {
-            startYear = timeKeeperYear;
-            component.setYearListStartYear(startYear);
-        } else if (timeKeeperYear > startYear + yearListSize - 1) {
-            startYear = timeKeeperYear - yearListSize + 1;
-            component.setYearListStartYear(startYear);
-        }
+        int startYear = timeKeeperYear - yearListSize / 2; // not perfectly centered if size is even
+        Converter converter = component.resolveDateTimeConverter(facesContext);
         UISelectItem selectItem;
         Calendar calendar;
-        Converter converter = component.resolveDateTimeConverter(facesContext);
         String itemValue, itemLabel;
 
         for (int i = startYear - 1, j = i, k = startYear + yearListSize; i <= k; i++) {
-            selectItem = new UISelectItem();
-            calendar = shiftYear(facesContext, timeKeeper, currentDay, i - timeKeeperYear);
-            itemValue = converter.getAsString(facesContext, component, calendar.getTime());
             if (i == j) {
-                itemValue = (startYear - yearListSize) + ":" + itemValue;
+                calendar = shiftYear(facesContext, timeKeeper, currentDay, -yearListSize);
                 itemLabel = MessageUtils.getResource(facesContext, PREV_YEAR_LABEL);
             } else if (i == k) {
-                itemValue = (startYear + yearListSize) + ":" + itemValue;
+                calendar = shiftYear(facesContext, timeKeeper, currentDay, yearListSize);
                 itemLabel = MessageUtils.getResource(facesContext, NEXT_YEAR_LABEL);
             } else {
-                itemValue = startYear + ":" + itemValue;
+                calendar = shiftYear(facesContext, timeKeeper, currentDay, i - timeKeeperYear);
                 itemLabel = String.valueOf(calendar.get(Calendar.YEAR));
             }
+            itemValue = converter.getAsString(facesContext, component, calendar.getTime());
+            selectItem = new UISelectItem();
             selectItem.setItemValue(itemValue);
             selectItem.setItemLabel(itemLabel);
             dropDown.getChildren().add(selectItem);
@@ -1357,10 +1349,8 @@ public class SelectInputDateRenderer
         } else {
             clientId = component.getClientId(facesContext) + SELECT_YEAR;
             if (clientId.equals(eventCapturedId)) {
-                String[] paramValues = ((String) requestParameterMap.get(clientId)).split(":", 2);
                 dateSelect.setNavEvent(true);
-                dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, paramValues[1]));
-                dateSelect.setYearListStartYear(Integer.parseInt(paramValues[0]));
+                dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(clientId)));
             }
         }
     }

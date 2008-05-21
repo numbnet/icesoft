@@ -145,7 +145,7 @@
         
 <property>
 	<description>
-		If true, a list of 10 years is rendered in a dropdown list,
+		If true, a list of 11 years is rendered in a dropdown list, with the specified year in the middle,
         plus a "previous" item and a "next" item to navigate to other years.
         If false (the default), only the specified year is rendered, with left
         and right arrow buttons to navigate to other years.
