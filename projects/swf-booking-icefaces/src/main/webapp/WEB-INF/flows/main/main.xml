@@ -14,7 +14,6 @@
         </transition>
 		<transition on="cancelBooking">
 			<evaluate expression="bookingService.cancelBooking(bookings.selectedRow)" />
-			<render fragments="bookingsFragment"/>
 		</transition>
 	</view-state>
 	 
@@ -24,11 +23,9 @@
 		</on-render>
 		<transition on="previous">
 			<evaluate expression="searchCriteria.previousPage()" />
-			<render fragments="hotels:searchResultsFragment" />
 		</transition>
 		<transition on="next">
 			<evaluate expression="searchCriteria.nextPage()" />
-			<render fragments="hotels:searchResultsFragment" />
 		</transition>
 		<transition on="select" to="reviewHotel">
 			<set name="flowScope.hotel" value="hotels.selectedRow" />
@@ -48,9 +45,6 @@
 	</subflow-state>
 
 	<view-state id="changeSearchCriteria" view="enterSearchCriteria.xhtml" popup="true">
-		<on-entry>
-			<render fragments="hotelSearchFragment" />
-		</on-entry>
 		<transition on="search" to="reviewHotels">
 			<evaluate expression="searchCriteria.resetPage()"/>
 		</transition>
