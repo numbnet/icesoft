@@ -1,0 +1,31 @@
+<project default="assemble">
+
+    <property file="build.properties"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="info.dir" value="${build.dir}/info"/>
+    <property name="module.dir" value="${build.dir}/module"/>
+
+    <target name="clean">
+        <delete  dir="${build.dir}"/>
+    </target>
+
+    <target name="copy.info">
+        <mkdir dir="${info.dir}"/>
+        <copy file="info.xml" tofile="${info.dir}/info.xml"/>
+    </target>
+
+    <target name="copy.module">
+        <mkdir dir="${module.dir}"/>
+        <copy file="${module.app}" tofile="${module.dir}/${module.war}"/>
+    </target>
+
+    <target name="assemble" depends="clean, copy.info, copy.module">
+
+        <jar destfile="${build.dir}/${module.name}">
+            <fileset dir="${build.dir}"/>
+        </jar>
+
+    </target>
+
+</project>
