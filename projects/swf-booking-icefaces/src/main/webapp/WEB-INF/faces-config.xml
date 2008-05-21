@@ -6,6 +6,6 @@
 <faces-config>
 	<application>
 		<!-- Enables Facelets -->
-		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>  
+		<view-handler>com.icesoft.faces.facelets.D2DFaceletViewHandler</view-handler>  
 	</application>
 </faces-config>

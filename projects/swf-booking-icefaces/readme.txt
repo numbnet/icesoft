@@ -37,5 +37,9 @@ ivy build)
 
 cp -r target/war-expanded to your Tomcat 6 webapps directory.
 
+Launch the application via
+
+http://localhost:8080/swf-booking-icefaces/spring/main
+
 http://blog.icefaces.org/blojsom/blog/default/2007/12/10/Ajax-with-Spring-Web-Flow-and-ICEfaces-at-TheSpringExperience
 
