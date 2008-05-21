@@ -12,10 +12,6 @@
         moduleauthor="ICEsoft Technologies, Inc."
         releasedate="2008/05/21">
 
-    <description>
-        Auction Monitor is demo web application built with ICEfaces.
-    </description>
-
     <manifest OpenIDE-Module="org.icefaces.module.componentShowcase/1"
               OpenIDE-Module-Display-Category="ICEfaces"
               OpenIDE-Module-Implementation-Version="20080521"
