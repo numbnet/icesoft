@@ -372,6 +372,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         faceMessages.clear();
         renderResponse = false;
         responseComplete = false;
+        //Spring Web Flow 2 releases the FacesContext in between lifecycle
+        //phases
+        if (com.icesoft.util.SeamUtilities.isSpring2Environment())  {
+            this.viewRoot = null;
+        }
         // #2807 release thread locals
         setCurrentInstance(null);
     }

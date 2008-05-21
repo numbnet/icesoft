@@ -531,6 +531,15 @@ public class SeamUtilities {
     }
 
     /**
+     * Utility method to determine if Spring WebFlow 2.x is active.
+     *
+     * @return true if Spring WebFlow 1.x is enabled
+     */
+    public static boolean isSpring2Environment() {
+        return (springLoaded == 2);
+    }
+
+    /**
      * Retrieve the current Spring flowId (if any).
      *
      * @return The current Spring flowId.
