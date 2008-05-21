@@ -156,7 +156,6 @@ public class SelectInputDate
     public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
-    private int yearListStartYear = Integer.MAX_VALUE;
 
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
@@ -647,7 +646,6 @@ public class SelectInputDate
         values[9] = navDate;
         values[10] = _renderMonthAsDropdown;
         values[11] = _renderYearAsDropdown;
-        values[12] = Integer.valueOf(yearListStartYear);
         return ((Object) (values));
     }
 
@@ -668,7 +666,6 @@ public class SelectInputDate
         navDate = (Date) values[9];
         _renderMonthAsDropdown = (Boolean) values[10];
         _renderYearAsDropdown = (Boolean) values[11];
-        yearListStartYear = ((Integer) values[12]).intValue();
     }
 
     private Map linkMap = new HashMap();
@@ -955,14 +952,6 @@ public class SelectInputDate
         }
         this.highlightDayClass = "";
         this.highlightWeekClass = "";
-    }
-
-    public int getYearListStartYear() {
-        return yearListStartYear;
-    }
-
-    public void setYearListStartYear(int yearListStartYear) {
-        this.yearListStartYear = yearListStartYear;
     }
 
     static class UnitMap extends HashMap {
