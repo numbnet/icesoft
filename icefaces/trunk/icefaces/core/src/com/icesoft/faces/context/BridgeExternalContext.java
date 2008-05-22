@@ -313,7 +313,14 @@ public abstract class BridgeExternalContext extends ExternalContext {
     }
 
     public void redirect(String requestURI) throws IOException {
-
+    	// Seam ONLY ...first have to decide if we are requesting the same URI as previous
+    	// since Seam can redirect to same page/view.  With seam workspace management
+    	// a new page/view can be selected from the current one which 
+    	// means that Seam's ConversationEntry stack must be updated before
+    	// redirection.  ICE-2737
+    	if (SeamUtilities.isSeamEnvironment());{
+    	   SeamUtilities.switchToCurrentSeamConversation(requestURI);
+    	}
         final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
         final String redirectURI;
         if (uri.isAbsolute()) {
