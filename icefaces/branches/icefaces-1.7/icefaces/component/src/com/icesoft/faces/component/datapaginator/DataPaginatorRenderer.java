@@ -134,6 +134,8 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             int firstRowIndex = scroller.getFirstRow();
             if (scroller.getRowCount() > 0) {
                 firstRowIndex += 1;
+            } else { // ICE-2782
+                firstRowIndex = 0;
             }
             requestMap.put(firstRowIndexVar, new Integer(firstRowIndex));
         }
