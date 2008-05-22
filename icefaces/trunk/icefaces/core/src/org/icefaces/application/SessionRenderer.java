@@ -169,7 +169,7 @@ public class SessionRenderer  {
                 
            } else {
                 //remove any null or expired sessions
-                group.remove(sessionHolder);
+                sessionHolders.remove();
                 removeGroupIfEmpty(groupName);
             }
         }
