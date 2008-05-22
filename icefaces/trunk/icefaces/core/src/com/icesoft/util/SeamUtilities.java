@@ -12,6 +12,10 @@ import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.context.FacesContext;
 
+import org.jboss.seam.core.ConversationEntry;
+import org.jboss.seam.core.ConversationPropagation;
+import org.jboss.seam.core.Manager;
+
 import org.springframework.webflow.execution.RequestContextHolder;
 
 /**
@@ -21,8 +25,6 @@ import org.springframework.webflow.execution.RequestContextHolder;
  * in one place, and get rid of the variables cluttering up a few
  * of the ICEfaces classes 
  *
- *  Jun 2007 - removed reference to ConversationIsLongRunningParameter
- *      since seam1.3.0.ALPHA has removed all reference to it in Manager Class
  *
  */
 public class SeamUtilities {
@@ -37,7 +39,10 @@ public class SeamUtilities {
     private static Class[] seamClassArgs = new Class[0];
     private static Object[] seamInstanceArgs = new Object[0];
     private static Class[] seamGetEncodeMethodArgs = {String.class, String.class};
-    private static Object[] seamEncodeMethodArgs = new Object[2];
+    private static Object[] seamEncodeMethodArgs = new Object[2];   
+    private static Class[] seamGetSwitchConversationStackMethodArgs= {String.class};
+    private static Object[] seamSwitchConversationStackMethodArgs = new Object[1];
+    
 
     private static Object[] seamMethodNoArgs = new Object[0];
 
@@ -45,29 +50,17 @@ public class SeamUtilities {
     private static Method seamLongRunningMethodInstance;
     private static Method seamAppendConversationMethodInstance;
     private static Method seamInstanceMethod;
-    private static Method seamPageContextGetPrefixInstance;
-
+    private static Method seamSwitchCurrentConversationIdInstanceMethod;
+    
     // The method for getting the conversationId parameter name
     private static Method seamConversationIdParameterMethod;
-
-    // The method for getting the parent conversationId parameter name
-//    private static Method seamParentConversationIdParameterMethod;
-
-    // the method for getting the longRunningConversation parameter name
-//    private static Method seamLongRunningConversationParameterMethod;
-
-//    private static Method seamBeforeRedirectMethodInstance;
-
-    private static Object pageContextInstance;
 
     // This is just convenience, to avoid rebuilding the String
     private static String conversationIdParameter;
     private static String conversationParentParameter = "parentConversationId";
-//    private static String conversationLongRunningParameter;
     
     // since seam1.3.0Alpha has api changes, detect which version we are using
     private static String seamVersion = "2.0.0.GA";
-    private static Method seamVersionMethod;
     
     private static String flowIdParameterName = null;
     private static String SPRING_CLASS_NAME = 
@@ -102,6 +95,43 @@ public class SeamUtilities {
     }
     
     /**
+     * In order to perform Seam's workspace management, we have to be able
+     * to display various LR conversations within the same viewId
+     * @param uri
+     * @return
+     */
+    public static void switchToCurrentSeamConversation(String uri){
+       if (conversationIdParameter == null) {
+            getConversationIdParameterName();
+       }
+       String reqCid = stripCidFromRequest(uri);
+       String ceId = getSeamConversationId();
+       Boolean updated=Boolean.FALSE;
+
+       if (!reqCid.equals(ceId)){
+		   try{			   
+			  int convId = Integer.parseInt(reqCid);
+		      Object seamManagerInstance =
+	                    seamInstanceMethod.invoke(null, seamInstanceArgs);
+	          if (seamSwitchCurrentConversationIdInstanceMethod != null) {
+	            	    seamSwitchConversationStackMethodArgs[0] = reqCid;
+	          }
+              updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
+                   .invoke(seamManagerInstance, seamSwitchConversationStackMethodArgs);
+	          if (log.isDebugEnabled()) {
+                  log.debug("updated conversation from cid: " +
+                       ceId + ", to: " + reqCid+"  successful="+updated);
+              }		     		    		
+		   }
+		   catch (Exception e) {
+		                seamInstanceMethod = null;
+		                seamManagerClass = null;
+		                log.error("Exception updating Seam's conversation Stack: ", e);
+		   }
+       }
+    }
+    
+    /**
      * Called on a redirect to invoke any Seam redirection code. Seam uses
      * the sendRedirect method to preserve temporary conversations for the
      * duration of redirects. ICEfaces does not call this method, so this
@@ -113,27 +143,19 @@ public class SeamUtilities {
      * @return the URI, with the conversationId if Seam is detected
      */
     public static String encodeSeamConversationId(String uri, String viewId) {
-
+    	//uri is request string to redirect to
         // If Seam's not loaded, no changes necessary
         if (! isSeamEnvironment() ) {
             return uri;
         }
-
         String cleanedUrl = uri;
-
         if (conversationIdParameter == null) {
             getConversationIdParameterName();
-        } 
-
-        // IF the URI already contains a conversationId, the isLongRunning parameter, or the
-        // parentConversationId parameter, strip it out, and start again.
-
-        // Maybe all of this has changed. This used to be necessary because the
-        // 
-
-        if (log.isTraceEnabled()) {
-            log.trace("SeamConversationURLParam: " + conversationIdParameter);
         }
+       if (log.isTraceEnabled()) {
+            log.trace("SeamConversationURLParam: " + conversationIdParameter);
+       }
+            
         StringTokenizer st = new StringTokenizer( uri, "?&");
         StringBuffer builder = new StringBuffer();
 
@@ -151,7 +173,6 @@ public class SeamUtilities {
         }
 
         for (int pdx = 0; pdx < tokenList.size(); pdx ++ ) {
-
             token = (String) tokenList.get(pdx);             
             builder.append(token);
 
@@ -164,9 +185,10 @@ public class SeamUtilities {
 
         if (builder.length() > 0) {
             cleanedUrl = builder.toString();
-            if (log.isTraceEnabled()) {
+           if (log.isTraceEnabled()) {
                 log.trace("Cleaned URI: " + builder);
-            }
+               
+           }
         } 
         // The manager instance is a singleton, but it's continuously destroyed
         // after each request and thus must be re-obtained during each redirect.
@@ -175,23 +197,16 @@ public class SeamUtilities {
             // Get the singleton instance of the Seam Manager each time through
             Object seamManagerInstance =
                     seamInstanceMethod.invoke(null, seamInstanceArgs);
-
             if (seamAppendConversationMethodInstance != null) {
                 seamEncodeMethodArgs[0] = cleanedUrl;
                 if (seamEncodeMethodArgs.length == 2) {
                     seamEncodeMethodArgs[1] = viewId;
                 }
-
-//                seamBeforeRedirectMethodInstance.invoke(
-//                        seamManagerInstance, seamMethodNoArgs);
-
                 
                // This has to do what the Manager.redirect method does.
                 cleanedUrl = (String) seamAppendConversationMethodInstance
                         .invoke(seamManagerInstance, seamEncodeMethodArgs);
-
-
-
+                
                 if (log.isDebugEnabled()) {
                     log.debug("Enabled redirect from: " +
                             uri + ", to: " + cleanedUrl);
@@ -201,30 +216,46 @@ public class SeamUtilities {
             seamInstanceMethod = null;
             seamManagerClass = null;
             log.error("Exception encoding seam conversationId: ", e);
-
         }
         return cleanedUrl;
     }
 
+    /** 
+     * helper class that strips the conversation id from the request to see
+     * if we are doing conversation workspace switching.
+     * @param uri
+     * @return
+     */
+    private static String stripCidFromRequest(String uri){
+    	String returnVal="";
+        if (conversationIdParameter == null){ 
+            getConversationIdParameterName();
+        }
+        int index = uri.indexOf(conversationIdParameter);
+
+        if (index>0 ){
+            String substring = uri.substring(index);
+        	returnVal = uri.substring(index+4);
+        }
+    	return returnVal;
+    }
+    
     /**
      * Retrieve the current Seam conversationId (if any) by introspection from
      * the SeamManager. The seam Conversation must be a long running
      * conversation, otherwise it isn't useful to encode it in the form. Long
      * running conversations are started by Seam components at various parts of
      * the application lifecycle, and their Id is necessary during a partial
-     * submit to continue the thread of the conversation.
+     * submit to continue the thread of the conversation. 
      *
      * @return The current conversation id, or null if not a seam environment,
      *         or there is no current long running conversation.
      */
     public static String getSeamConversationId() {
-
         if ( !isSeamEnvironment()) {
             return null;
-        }
-        
+        }       
         String returnVal = null;
-
         try {
             // The manager instance is a singleton, but it's continuously
             // destroyed after each request and thus must be re-obtained.
@@ -236,57 +267,22 @@ public class SeamUtilities {
                 String conversationId =
                         (String) seamConversationIdMethodInstance.invoke(
                                 seamManagerInstance, seamMethodNoArgs);
-
+                
                 Boolean is = (Boolean) seamLongRunningMethodInstance
                         .invoke(seamManagerInstance,
-                                seamMethodNoArgs);               
-
+                                seamMethodNoArgs);
+                
                 if (is.booleanValue()) {
                     returnVal = conversationId;
                 }
-            }
-
+           }           
         } catch (Exception e) {
             seamInstanceMethod = null;
             seamManagerClass = null;
             log.error("Exception determining Seam ConversationId: ", e);
-
         }
         return returnVal;
     }
-
-    /**
-     * Retrieve the PageContext key. Equivalent to
-     * <code>ScopeType.PAGE.getPrefix()</code>. Can be used to
-     * manipulate the PageContext, without loading the class. 
-     *
-     * This String is used as the key to store the PageContext in the
-     * ViewRoot attribute map, and does not equal the string
-     *  "org.jboss.seam.PAGE" 
-     *
-     * @return The String Key that can be used to find the Seam PageContext
-     */
-    public static String getPageContextKey() {
-
-        String returnVal = "";
-        if (!isSeamEnvironment()) {
-            return returnVal;
-        }
-
-        try {
-
-            if (seamConversationIdMethodInstance != null) {
-                returnVal = (String) seamPageContextGetPrefixInstance.invoke(
-                        pageContextInstance, seamMethodNoArgs);
-            }
-
-        } catch (Exception e) {
-            log.error("Exception fetching Page from ScopeType: ", e);
-
-        }
-        return returnVal;
-    }
-
 
 
     /**
@@ -298,22 +294,12 @@ public class SeamUtilities {
      */
     private static void loadSeamEnvironment() {
         try {
-        	
             // load classes
             seamManagerClass = Class.forName("org.jboss.seam.core.Manager");
-            Class seamScopeTypeClass = Class.forName("org.jboss.seam.ScopeType");
- 
             // load method instances
             seamInstanceMethod = seamManagerClass.getMethod("instance",
                                                             seamClassArgs);
 
-            Field fieldInstance = seamScopeTypeClass.getField("PAGE");
-            
-            pageContextInstance = fieldInstance.get(seamScopeTypeClass);
-
-            seamPageContextGetPrefixInstance = seamScopeTypeClass.getMethod(
-                    "getPrefix", seamClassArgs);
-            
             // for D2DSeamFaceletViewHandler need to know version 
             // to load compiler for facelet creation. See ICE-2405
            Class seamELResolver = null;
@@ -329,9 +315,13 @@ public class SeamUtilities {
                 seamAppendConversationMethodInstance =
                         seamManagerClass.getMethod("encodeConversationId",
                                                    seamGetEncodeMethodArgs);
+                seamSwitchCurrentConversationIdInstanceMethod = 
+                        seamManagerClass.getMethod("switchConversation",
+                        		seamGetSwitchConversationStackMethodArgs);
+                	    
             } catch (NoSuchMethodException e)  {
                 /* revert our reflectively discovered Seam method
-                   to the Seam 1.2.0 API
+                   to the Seam 1.2.0 API  
                 */
                 seamGetEncodeMethodArgs = new Class[] {String.class};
                 seamEncodeMethodArgs = new Object[1];
@@ -339,37 +329,17 @@ public class SeamUtilities {
                         seamManagerClass.getMethod("encodeConversationId",
                                                    seamGetEncodeMethodArgs);
             }
-
             seamConversationIdMethodInstance =
                     seamManagerClass.getMethod("getCurrentConversationId",
                                                seamClassArgs);
+            
             seamLongRunningMethodInstance =
                     seamManagerClass.getMethod("isLongRunningConversation",
                                                seamClassArgs);
 
-
             seamConversationIdParameterMethod =
                     seamManagerClass.getMethod("getConversationIdParameter",
                                                seamClassArgs);
-
-            // This method is protected
-//             seamParentConversationIdParameterMethod =
-//                    seamManagerClass.getMethod("getParentConversationIdParameter",
-//                                               seamClassArgs);
-
-
-//             seamLongRunningConversationParameterMethod =
-//                    seamManagerClass.getMethod("getConversationIsLongRunningParameter",
-//                                               seamClassArgs);
-
-//            seamBeforeRedirectMethodInstance =
-//                    seamManagerClass.getMethod("beforeRedirect",
-//                                               seamClassArgs);
-                    
-
-
-            Class.forName("org.jboss.seam.util.Parameters");
-
 
         } catch (ClassNotFoundException cnf) {
 //            log.info ("Seam environment not detected ");
@@ -403,13 +373,15 @@ public class SeamUtilities {
      * @return the appropriate parameter name for the application
      */
     public static String getConversationIdParameterName() {
+    	log.info("getConversationIdParameterName");
         if (!isSeamEnvironment()) {
             return null;
         }
         if (conversationIdParameter != null ) {
+        	log.info("not null so returning conversationIdParameter = "+conversationIdParameter);
             return conversationIdParameter;
         } 
-
+        else log.info("conversationIdParameter is null");
         String returnVal = null;
         try {
 
@@ -424,23 +396,12 @@ public class SeamUtilities {
                 conversationIdParameter = returnVal;
             }
 
-//            if (seamParentConversationIdParameterMethod != null) {
-//                conversationParentParameter = (String)
-//                        seamParentConversationIdParameterMethod.
-//                                invoke(seamManagerInstance, seamMethodNoArgs);
-//            }
-
-//            if (seamLongRunningConversationParameterMethod != null) {
-//                conversationLongRunningParameter = (String)
-//                        seamLongRunningConversationParameterMethod.invoke(
-//                        seamManagerInstance, seamMethodNoArgs);
-//            }
-
 
         } catch (Exception e) {
             log.error("Exception fetching conversationId Parameter name: ", e);
 
         }
+        log.info("\t\t returning convId param name="+returnVal);
         return returnVal;
     }
 
@@ -453,7 +414,7 @@ public class SeamUtilities {
      */
     public static void removeSeamDebugPhaseListener(Lifecycle lifecycle) {
         PhaseListener[] phaseListeners = lifecycle.getPhaseListeners();
-// System.out.println("*** SeamUtilities.removeSeamDebugPhaseListener()");
+//  System.out.println("*** SeamUtilities.removeSeamDebugPhaseListener()");
 // System.out.println("***   phaseListeners: " + phaseListeners.length);
         for(int i = 0; i < phaseListeners.length; i++) {
 // System.out.println("***     phaseListeners["+i+"]: " + phaseListeners[i]);
