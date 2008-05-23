@@ -369,15 +369,13 @@ public class SeamUtilities {
      * @return the appropriate parameter name for the application
      */
     public static String getConversationIdParameterName() {
-    	log.info("getConversationIdParameterName");
         if (!isSeamEnvironment()) {
             return null;
         }
         if (conversationIdParameter != null ) {
-        	log.info("not null so returning conversationIdParameter = "+conversationIdParameter);
             return conversationIdParameter;
         } 
-        else log.info("conversationIdParameter is null");
+
         String returnVal = null;
         try {
 
@@ -397,7 +395,6 @@ public class SeamUtilities {
             log.error("Exception fetching conversationId Parameter name: ", e);
 
         }
-        log.info("\t\t returning convId param name="+returnVal);
         return returnVal;
     }
 
