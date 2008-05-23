@@ -39,17 +39,22 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 import javax.servlet.http.HttpSession;
 
 import javax.faces.context.FacesContext;
 import javax.faces.context.ExternalContext;
 
+import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.async.render.ContextDestroyedListener;
+import com.icesoft.faces.async.render.Disposable;
 
 /**
  * The {@link SessionRenderer} class allows an application to initiate
@@ -63,9 +68,19 @@ import com.icesoft.faces.webapp.xmlhttp.RenderingException;
  */
 public class SessionRenderer  {
     private static Hashtable renderGroups = new Hashtable();
+    private static PortableExecutor executor = new PortableExecutor(1);
 
     //Not yet implemented
     public static String ALL_SESSIONS = "SessionRenderer.ALL_SESSIONS";
+
+    //listeners are held weakly, so need a reference here
+    private static ContextDestroyedListener shutdownListener;
+
+    static {
+        shutdownListener = new ContextDestroyedListener(
+            new SessionRendererDisposer() );
+        ContextEventRepeater.addListener(shutdownListener);
+    }
 
     /**
      * Add the current session to the specified group. Groups of sessions
@@ -129,6 +144,10 @@ public class SessionRenderer  {
         }
 
         PersistentFacesState suppressedView = PersistentFacesState.getInstance();
+        if (null == FacesContext.getCurrentInstance())  {
+            //invocation from non-JSF thread should not suppress current view
+            suppressedView = null;
+        }
 
         Iterator sessionHolders = group.iterator();
         while (sessionHolders.hasNext())  {
@@ -138,23 +157,19 @@ public class SessionRenderer  {
                 MainSessionBoundServlet mainServlet = (MainSessionBoundServlet)
                         SessionDispatcher.getSingletonSessionServlet(session);
                 Iterator views = mainServlet.getViews().values().iterator();
+                
                 while (views.hasNext())  {
                     View view = (View) views.next();
-                    PersistentFacesState viewState = 
+                    final PersistentFacesState viewState = 
                             view.getPersistentFacesState();
                     if (viewState != suppressedView)  {
-                        //will need a small thread pool here
-                        try  {
-                            viewState.executeAndRender();
-                        } catch (RenderingException e)  {
-                            //it's up to our View infrastructure
-                            //to remove dead views
-                        }
+                        executor.execute(new RenderRunner(viewState));
                     }
                 }
+                
            } else {
                 //remove any null or expired sessions
-                group.remove(sessionHolder);
+                sessionHolders.remove();
                 removeGroupIfEmpty(groupName);
             }
         }
@@ -164,7 +179,7 @@ public class SessionRenderer  {
         try {
             Object test = session.getAttribute("isTheSessionValid?");
             return true;
-        } catch (IllegalStateException e)  {
+        } catch (Exception e)  {
         }
         return false;
     }
@@ -200,25 +215,90 @@ public class SessionRenderer  {
 //introduce a method that gives the naming scheme for which
 //groups are clustered enableClusterGroup("cluster/*")
 
-//to use with a ThreadPool for better responsiveness
-/*
-    private class RenderRunner implements Runnable {
-        PersistentFacesState persistentState = null;
+    static void shutdown()  {
+        executor.shutdown();
+    }
+}
 
-        public RenderRunner(PersistentFacesState persistentState)  {
-            this.persistentState = persistentState;
-        }
-        public void run()  {
-            try  {
-                persistentState.executeAndRender();
-            } catch (RenderingException e)  {
-                    //it's up to our View infrastructure
-                    //to remove dead views
-            }
+class RenderRunner implements Runnable {
+    PersistentFacesState persistentState = null;
+
+    public RenderRunner(PersistentFacesState persistentState)  {
+        this.persistentState = persistentState;
+    }
+
+    public void run()  {
+        try  {
+            persistentState.executeAndRender();
+        } catch (RenderingException e)  {
+            //it's up to our View infrastructure to remove dead views
         }
     }
-*/
+}
 
+/* An extension of this class should be moved to a common set of wrappers
+   that allow us to run without backport-concurrent on JDK 1.5
+*/
+class PortableExecutor  {
+    private int poolSize;
+    
+    private static Class executorClass;
+    private static Constructor executorConstructor;
+    private static Method executorExecute;
+    private static Method executorShutdown;
+    private Object executor = null;
+    private static String backportClassName = 
+        "edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor";
+    private static String utilClassName = 
+        "java.util.concurrent.ScheduledThreadPoolExecutor";
+
+    static {
+        try {
+            executorClass = Class.forName(utilClassName);
+        } catch (Throwable t)  { }
+        if (null == executorClass)  {
+            try {
+                executorClass = Class.forName(backportClassName);
+            } catch (Throwable t)  { }
+        }
+        try {
+            executorConstructor = executorClass
+                    .getConstructor(new Class[] {int.class});
+            executorExecute = executorClass
+                    .getMethod("execute", new Class[] {Runnable.class});
+            executorShutdown = executorClass
+                    .getMethod("shutdown", new Class[] {});
+        } catch (Throwable t)  {
+            t.printStackTrace();
+        }
+        
+    }
+
+    public PortableExecutor(int poolSize)  {
+        this.poolSize = poolSize;
+        try {
+            executor = executorConstructor.newInstance(
+                    new Object[] {new Integer(poolSize)} );
+        } catch (Throwable t)  {
+            t.printStackTrace();
+        }
+    }
+    
+    public void execute(Runnable job)  {
+        try {
+            executorExecute.invoke(executor, new Object[] {job});
+        } catch (Throwable t)  {
+            t.printStackTrace();
+        }
+    }
+    
+    public void shutdown()  {
+        try {
+            executorShutdown.invoke(executor, null);
+        } catch (Throwable t)  {
+            t.printStackTrace();
+        }
+    }
 }
 
 class SessionHolder   {
@@ -250,3 +330,8 @@ class SessionHolder   {
     }
 }
 
+class SessionRendererDisposer implements Disposable  {
+    public void dispose()  {
+        SessionRenderer.shutdown();
+    }
+}
