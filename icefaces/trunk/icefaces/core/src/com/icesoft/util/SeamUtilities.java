@@ -12,10 +12,6 @@ import javax.faces.event.PhaseListener;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.context.FacesContext;
 
-import org.jboss.seam.core.ConversationEntry;
-import org.jboss.seam.core.ConversationPropagation;
-import org.jboss.seam.core.Manager;
-
 import org.springframework.webflow.execution.RequestContextHolder;
 
 /**
