@@ -66,6 +66,7 @@ import javax.faces.event.FacesEvent;
 import javax.faces.event.FacesListener;
 import javax.faces.event.PhaseId;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -185,9 +186,17 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-
         decode(context);
         applyPhase(context, PhaseId.APPLY_REQUEST_VALUES);
+        if (isImmediate() && eventQueued) {
+            //the panelTabSet is not a UIInput component, so the
+            //_selectedIndex.validate doesn't apply on it but this
+            //methods sets the "value" as the submitted value, so we 
+            //need to call it here.
+            _selectedIndex.validate(context, this); 
+            context.renderResponse();
+        }
+
     }
 
     /* (non-Javadoc)
@@ -201,7 +210,7 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-        _selectedIndex.validate(context, this);
+       
         applyPhase(context, PhaseId.PROCESS_VALIDATIONS);
     }
 
@@ -219,6 +228,9 @@ public class PanelTabSet
         }
         _selectedIndex.updateModel(context, this);
         applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
+        if (!isImmediate()) {
+            _selectedIndex.validate(context, this);            
+        }        
     }
 
     private UIComponent getUIComponent(UIComponent uiComponent) {
@@ -1118,4 +1130,57 @@ public class PanelTabSet
     public String getClientIdForRootElement(FacesContext context){
         return super.getClientId(context); 
     }
+    
+    private Boolean partialSubmit;
+
+    public boolean isPartialSubmit() {
+        if (partialSubmit != null) {
+            return partialSubmit.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmit");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setPartialSubmit(boolean partialSubmit) {
+        this.partialSubmit = new Boolean(partialSubmit);
+    }
+    
+    
+    private Boolean immediate;
+
+    public boolean isImmediate() {
+        if (immediate != null) {
+            return immediate.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("immediate");
+        Boolean boolVal = vb != null ?
+                (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.immediate = new Boolean(immediate);
+    }
+    
+    public void encodeBegin(FacesContext context) throws IOException {
+        super.encodeBegin(context);
+        eventQueued = false;
+    }
+
+        
+    private boolean eventQueued = false;
+    public void queueEvent(FacesEvent event) {
+        if (event instanceof TabChangeEvent) {
+            eventQueued = true;
+            if (isImmediate()) {
+                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+            }
+            else {
+                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+            }
+        }
+        super.queueEvent(event);
+    }        
 }
