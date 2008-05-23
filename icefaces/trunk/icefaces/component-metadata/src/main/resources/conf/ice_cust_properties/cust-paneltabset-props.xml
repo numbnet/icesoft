@@ -228,7 +228,7 @@
 </property>
 <property>
     <description>
-        
+        Enable component to perform partial submit. Default value is "true"
     </description>
     <property-name>partialSubmit</property-name>
     <property-class>boolean</property-class>
@@ -239,7 +239,7 @@
 
 <property>
     <description>
-        
+        Flag indicating that this component's value must be converted and validated immediately (that is, during Apply Request Values phase), rather than waiting until Process Validations phase.        
     </description>
     <property-name>immediate</property-name>
     <property-class>boolean</property-class>
