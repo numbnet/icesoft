@@ -51,7 +51,7 @@ public class ReceiveSendUpdates implements Server {
     private void renderCycle(FacesContext context) {
         synchronized (context) {
             com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            LifecycleExecutor.getLifecycleExecutor().apply(context);
+            LifecycleExecutor.getLifecycleExecutor(context).apply(context);
         }
     }
 
@@ -61,7 +61,7 @@ public class ReceiveSendUpdates implements Server {
             Map alteredRequiredComponents =
                     setRequiredFalseInFormContaining(component, clientId);
             com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            LifecycleExecutor.getLifecycleExecutor().apply(context);
+            LifecycleExecutor.getLifecycleExecutor(context).apply(context);
             setRequiredTrue(alteredRequiredComponents);
         }
     }
