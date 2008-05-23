@@ -1,6 +1,6 @@
 <project default="assemble">
 
-    <import file="../build.xml"/>
+    <import file="../common.xml"/>
     <property file="build.properties"/>
 
 </project>
