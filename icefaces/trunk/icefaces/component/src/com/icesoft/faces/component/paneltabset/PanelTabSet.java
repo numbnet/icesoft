@@ -226,11 +226,12 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-        _selectedIndex.updateModel(context, this);
-        applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
         if (!isImmediate()) {
             _selectedIndex.validate(context, this);            
-        }        
+        }            
+        _selectedIndex.updateModel(context, this);
+        applyPhase(context, PhaseId.UPDATE_MODEL_VALUES);
+    
     }
 
     private UIComponent getUIComponent(UIComponent uiComponent) {
