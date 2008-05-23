@@ -1,0 +1,82 @@
+<project default="assemble-module">
+
+    <property file="build.properties"/>
+
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+
+    <target name="compile">
+
+        <mkdir dir="${classes.dir}"/>
+
+        <javac destdir="${classes.dir}"
+               sourcepath=""
+               source="1.5"
+               target="1.5"
+               debug="true">
+
+            <src location="src"/>
+            <include name="**/*.java"/>
+
+            <classpath>
+                <fileset dir="./lib" includes="*.jar"/>
+            </classpath>
+
+        </javac>
+
+    </target>
+
+    <target name="assemble-configurator" depends="compile">
+
+        <mkdir dir="${build.dir}"/>
+
+        <jar destfile="${build.dir}/${configurator.archive.name}">
+            <fileset dir="${classes.dir}"/>
+            <fileset file="${app.archive}"/>
+            <metainf dir="meta">
+                <include name="**/*Configurator"/>
+            </metainf>
+
+        </jar>
+
+    </target>
+
+
+    <target name="assemble-installer" depends="assemble-configurator">
+
+        <jar destfile="${build.dir}/${installer.archive.name}">
+            <fileset dir="${classes.dir}"/>
+            <fileset file="${build.dir}/${configurator.archive.name}"/>
+            <metainf dir="meta">
+                <include name="**/*Installer"/>
+            </metainf>
+        </jar>
+
+    </target>
+
+
+    <target name="assemble-module" depends="assemble-installer">
+
+        <mkdir dir="${build.dir}/info"/>
+
+        <copy todir="${build.dir}/info">
+            <fileset file="info/**"/>
+        </copy>
+
+        <mkdir dir="${build.dir}/module"/>
+
+        <copy todir="${build.dir}/module">
+            <fileset file="${build.dir}/${installer.archive.name}"/>
+        </copy>
+
+        <jar destfile="${build.dir}/${module.name}">
+            <fileset dir="${build.dir}" includes="info/** module/**"/>
+        </jar>
+
+    </target>
+
+
+</project>
