@@ -793,10 +793,14 @@ public class PanelTabSetRenderer
                                               UIComponent uiComponent,
                                               String formClientId,
                                               Map parameters) {
+        String submit =  "iceSubmitPartial(";
+        if (!((PanelTabSet)uiComponent).isPartialSubmit()) {
+            submit =  "iceSubmit(";
+        }
         return getJavascriptHiddenFieldSetters(facesContext,
                                                uiComponent, formClientId,
                                                parameters)
-               + "iceSubmitPartial("
+               + submit              
                + " document.forms['" + formClientId + "'],"
                + " this,event); "
                + "return false;";
