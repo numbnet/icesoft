@@ -351,6 +351,9 @@ public class DOMResponseWriter extends ResponseWriter {
         if (context.isContentIncluded()) {
             Element element = (Element) body.insertBefore(document.createElement("div"), configurationElement);
             element.setAttribute("style", "display: none;");
+            //id added so the conditional rendering of the components under the portlet, 
+            //won't send the body level update
+            element.setAttribute("id", "cntIncDiv");            
             appendContentReferences(element);
         }
     }

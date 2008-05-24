@@ -43,13 +43,28 @@ public class InputRichText extends UIInput {
             }
         }
     };
+    
+    public static void loadFCKJSIfRequired() {
+        if (baseURI == null && exist.booleanValue()) {
+            ResourceRegistry registry =
+                (ResourceRegistry) FacesContext.getCurrentInstance();
+            if (registry != null) {
+                baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
+                registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
+            } else {
+                //LOG fckeditor's library has not loaded, component will not work as desired
+            }
+        }        
+    }
+    
     private String language;
     private String _for;
     private String style;
     private String styleClass;
     private String width;
     private String height;
-    private URI baseURI;
+    private static URI baseURI = null;
+    private static Boolean exist = Boolean.FALSE;
     private String toolbar;
     private String customConfigPath;
     private String editorValue = null;
@@ -64,6 +79,13 @@ public class InputRichText extends UIInput {
         return COMPONENET_TYPE;
     }
 
+    public InputRichText() {
+        //the following static variables are used, so the library can be load 
+        //for each separate views 
+        baseURI = null;
+        exist = Boolean.TRUE;
+    }
+    
     public void decode(FacesContext facesContext) {
         Map map = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
@@ -81,16 +103,6 @@ public class InputRichText extends UIInput {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
-        if (baseURI == null) {
-            ResourceRegistry registry =
-                (ResourceRegistry) FacesContext.getCurrentInstance();
-            if (registry != null) {
-                baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
-                registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
-            } else {
-                //LOG fckeditor's library has not loaded, component will not work as desired
-            }
-        }
         super.encodeBegin(context);
     }
     /**
