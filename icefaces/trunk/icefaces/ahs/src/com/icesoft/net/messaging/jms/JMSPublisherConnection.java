@@ -68,27 +68,25 @@ implements JMSConnection {
             synchronized (connectionLock) {
                 if (connected) {
                     JMSException _jmsException = null;
-                    try {
-                        if (topicPublisher != null) {
-                            // throws JMSException.
-                            topicPublisher.close();
-                        }
-                    } catch (JMSException exception) {
-                        _jmsException = exception;
-                    } finally {
+                    if (topicPublisher != null) {
                         try {
                             // throws JMSException.
-                            super.close();
+                            topicPublisher.close();
                         } catch (JMSException exception) {
-                            if (_jmsException == null) {
-                                _jmsException = exception;
-                            }
-                        } finally {
-                            topicPublisher = null;
-                            if (_jmsException != null) {
-                                throw _jmsException;
-                            }
+                            _jmsException = exception;
                         }
+                    }
+                    try {
+                        // throws JMSException.
+                        super.close();
+                    } catch (JMSException exception) {
+                        if (_jmsException == null) {
+                            _jmsException = exception;
+                        }
+                    }
+                    topicPublisher = null;
+                    if (_jmsException != null) {
+                        throw _jmsException;
                     }
                 }
             }

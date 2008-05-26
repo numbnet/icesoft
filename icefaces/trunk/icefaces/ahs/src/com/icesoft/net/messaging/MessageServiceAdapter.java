@@ -60,7 +60,7 @@ public interface MessageServiceAdapter {
      *                 to some internal error.
      * @see        #stop()
      */
-    public void closeConnection()
+    public void close()
     throws MessageServiceException;
 
     public MessageServiceConfiguration getMessageServiceConfiguration();
@@ -179,7 +179,7 @@ public interface MessageServiceAdapter {
      *                 if the message service fails to stop message delivery due
      *                 to some internal error.
      * @see        #start()
-     * @see        #closeConnection()
+     * @see        #close()
      */
     public void stop()
     throws MessageServiceException;

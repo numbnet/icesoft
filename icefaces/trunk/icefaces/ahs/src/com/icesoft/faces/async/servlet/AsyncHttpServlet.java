@@ -40,6 +40,8 @@ extends HttpServlet {
         if (asyncHttpServer != null) {
             asyncHttpServer.stop();
         }
+        messageService.stop();
+        messageService.close();
         pathDispatcher.shutdown();
     }
 
@@ -95,7 +97,7 @@ extends HttpServlet {
                 asyncHttpServer.start();
             } else {
                 if (_asyncService != null &&
-                        !_asyncService.equalsIgnoreCase("servlet")) {
+                    !_asyncService.equalsIgnoreCase("servlet")) {
 
                     if (LOG.isWarnEnabled()) {
                         LOG.warn(
@@ -127,7 +129,9 @@ extends HttpServlet {
                 messageService.start();
             }
         } catch (Exception exception) {
-            throw new ServletException(exception);
+            LOG.error(
+                "An error occurred while initializing the AsyncHttpServlet!",
+                exception);
         }
     }
 
