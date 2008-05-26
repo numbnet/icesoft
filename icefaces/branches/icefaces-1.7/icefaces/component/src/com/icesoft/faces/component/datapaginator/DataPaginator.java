@@ -243,19 +243,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
             // worth of data
             if (pageIndex > pageCount) {
                 pageIndex = pageCount;
-                int rowCount = uiData.getRowCount();
-                int countOfRecordsOnFinalPage = rowCount % rows;
-                if (countOfRecordsOnFinalPage == 0) {
-                    // full page of data
-                    if (rowCount - rows >= 0) {
-                        uiData.setFirst(rowCount - rows);
-                    } else {
-                        uiData.setFirst(0);
-                    }
-                } else {
-                    // partial page of data
-                    uiData.setFirst(rowCount - countOfRecordsOnFinalPage);
-                }
+                // Code redone in HtmlDataTable.ensureFirstRowInRange() for ICE-2783
             }
         } else {
             log.warn("DataTable " +

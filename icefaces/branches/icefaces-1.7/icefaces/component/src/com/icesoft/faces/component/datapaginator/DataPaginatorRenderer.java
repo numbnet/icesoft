@@ -49,6 +49,7 @@
 package com.icesoft.faces.component.datapaginator;
 
 import com.icesoft.faces.component.ext.HtmlCommandLink;
+import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -200,6 +201,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             //Reset the dataTable model before setting variables
             scroller.getUIData().setValue(null);
             scroller.getUIData().setRowIndex(-1);
+            ((HtmlDataTable) scroller.getUIData()).ensureFirstRowInRange(); // ICE-2783
             setVariables(facesContext, scroller);
         }
     }
