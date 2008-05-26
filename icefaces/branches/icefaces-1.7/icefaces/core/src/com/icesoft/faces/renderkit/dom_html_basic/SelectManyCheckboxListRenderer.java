@@ -199,17 +199,25 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         }
         Element td = domContext.createElement("td");
         rootTR.appendChild(td);
-
-        Element label = domContext.createElement("label");
-        td.appendChild(label);
+        
+        String clientId = uiComponent.getClientId(facesContext);
+        String itemId = clientId + ":_" + counter;
         
         Element inputElement = domContext.createElement("input");
         inputElement
-                .setAttribute("name", uiComponent.getClientId(facesContext));
-        inputElement.setAttribute("id",
-                                  uiComponent.getClientId(facesContext) + ":_" +
-                                  counter);
-        label.appendChild(inputElement);
+                .setAttribute("name", clientId);
+        inputElement.setAttribute("id", itemId);
+        td.appendChild(inputElement);
+        
+        if( selectItem.getLabel() != null ){
+        	Element label = domContext.createElement("label");
+            label.setAttribute(HTML.FOR_ATTR, itemId);
+            Text textNode =
+                domContext.getDocument().createTextNode(selectItem.getLabel());
+            label.appendChild(textNode);            
+            td.appendChild(label);
+        }
+        
         HashSet excludes = new HashSet();
         String accesskey =
                 (String) uiComponent.getAttributes().get("accesskey");
@@ -232,13 +240,6 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
             inputElement.setAttribute("disabled", "disabled");
         }
 
-
-        String selectItemLabel = selectItem.getLabel();
-        if (selectItemLabel != null) {
-            Text textNode =
-                    domContext.getDocument().createTextNode(selectItemLabel);
-            inputElement.appendChild(textNode);
-        }
         excludes.add("style");
         excludes.add("border");
         excludes.add("readonly");
