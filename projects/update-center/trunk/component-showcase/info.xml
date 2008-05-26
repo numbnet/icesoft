@@ -5,7 +5,7 @@
 
 <module codenamebase="org.icefaces.module.componentShowcase"
         homepage="http://www.icefaces.org/"
-        distribution="http://localhost:8080/icefaces_componentShowcase_1_7_0.jar"
+        distribution="http://localhost:8080/icefaces_componentShowcase_1_7_1.jar"
         license="MPLorLGPL"
         downloadsize="11932910"
         needsrestart="false"
@@ -20,7 +20,7 @@
               OpenIDE-Module-Name="ICEfaces Component Showcase"
               OpenIDE-Module-Requires=""
               OpenIDE-Module-Short-Description="ICEfaces Component Showcase"
-              OpenIDE-Module-Specification-Version="1.7.0"
+              OpenIDE-Module-Specification-Version="1.7.1"
               Module-Type="APPLICATION"
               Target-Container="sjsas91beta"/>
 

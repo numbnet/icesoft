@@ -29,7 +29,7 @@
 
         <module codenamebase="org.icefaces.module.componentShowcase"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_componentShowcase_1_7_0.jar"
+                distribution="http://localhost:8080/icefaces_componentShowcase_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="11932910"
                 needsrestart="false"
@@ -44,7 +44,7 @@
                       OpenIDE-Module-Name="ICEfaces Component Showcase"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="ICEfaces Component Showcase"
-                      OpenIDE-Module-Specification-Version="1.7.0"
+                      OpenIDE-Module-Specification-Version="1.7.1"
                       Module-Type="APPLICATION"
                       Target-Container="sjsas91beta"/>
 
@@ -52,16 +52,12 @@
 
         <module codenamebase="org.icefaces.module.webmc"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_webmc_1_7_0.jar"
+                distribution="http://localhost:8080/icefaces_webmc_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="11932910"
                 needsrestart="false"
                 moduleauthor="ICEsoft Technologies, Inc."
                 releasedate="2008/05/21">
-
-            <description>
-                Auction Monitor is demo web application built with ICEfaces.
-            </description>
 
             <manifest OpenIDE-Module="org.icefaces.module.webmc/1"
                       OpenIDE-Module-Display-Category="ICEfaces"
@@ -71,13 +67,12 @@
                       OpenIDE-Module-Name="ICEfaces WebMC"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="ICEfaces WebMC"
-                      OpenIDE-Module-Specification-Version="1.7.0"
+                      OpenIDE-Module-Specification-Version="1.7.1"
                       Module-Type="APPLICATION"
                       Target-Container="sjsas91beta"/>
 
-
         </module>
-        
+
     </module_group>
 
     <license name="MPLorLGPL">

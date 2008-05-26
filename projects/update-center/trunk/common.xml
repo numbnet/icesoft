@@ -7,7 +7,7 @@
     <property name="module.dir" value="${build.dir}/module"/>
 
     <target name="clean">
-        <delete  dir="${build.dir}"/>
+        <delete dir="${build.dir}"/>
     </target>
 
     <target name="copy.info">
