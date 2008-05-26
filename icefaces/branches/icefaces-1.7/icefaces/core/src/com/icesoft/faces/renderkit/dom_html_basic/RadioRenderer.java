@@ -111,9 +111,8 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
 
         input.setAttribute("name", uiSelectOne.getClientId(facesContext));
-        input.setAttribute("id",
-                           uiComponent.getClientId(facesContext) + ":_" +
-                           counter);
+        String inputID = uiComponent.getClientId(facesContext) + ":_" + counter;
+        input.setAttribute("id", inputID);
         input.setAttribute("value", (formatComponentValue(facesContext,
                                                           uiSelectOne,
                                                           selectItem.getValue())));
@@ -129,6 +128,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
 
         Element label = domContext.createElement("label");
         td.appendChild(label);
+        label.setAttribute("for", inputID);
 
         if (labelClass != null) {
             label.setAttribute("class", labelClass);
