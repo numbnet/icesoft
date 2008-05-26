@@ -88,7 +88,7 @@ Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
     } else {
         this.vertical = false;
     }
-    this.clicked = true;
+    this.setClickState(this.component, false); 
     this.configureRootItems();
   }
 });
@@ -213,7 +213,7 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
   
   hover: function(event) {
-    if (this.clicked) {
+    if (this.isClicked(Event.element(event))) {
 	    element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
 	    if (!element) return;
         var submenu = $(element.id + '_sub');
@@ -229,10 +229,10 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   mousedown: function(event) {
     element = Event.element(event);  
-    if (this.clicked) {
-        this.clicked = false;
+    if (this.isClicked(element)) {
+        this.setClickState(element, false);
     } else {
-        this.clicked = true;    
+        this.setClickState(element, true); 
         this.hover(event);
     }
   },
@@ -254,7 +254,7 @@ Ice.MenuBarKeyNavigator.addMethods({
         anch.onfocus = this.focus.bindAsEventListener(this);
         if (this.displayOnClick) { 
             mnuBarItem.onmousedown = this.mousedown.bindAsEventListener(this);
-            this.clicked = false;            
+            this.setClickState(mnuBarItem, false);           
         }
         var sibling = mnuBarItem.next('.'+ this.getMenuBarItemClass());
         if (sibling) {
@@ -266,12 +266,13 @@ Ice.MenuBarKeyNavigator.addMethods({
   hideAll:function(event) {
       element = Event.element(event); 
       var baritem = element.up('.'+ this.getMenuBarItemClass());
-      if (!(baritem && this.clicked)) {
+      if (!(baritem && this.isClicked(element))) {
         Ice.Menu.hideAll();
         if (this.displayOnClick) {       
-            this.clicked = false;
+            this.setClickState(element, false);
         }         
       }
+      this.hideAllDisplayOnClickMenus();
    },
    
    showMenu:function(event) {
@@ -280,6 +281,40 @@ Ice.MenuBarKeyNavigator.addMethods({
      if (baritem && this.displayOnClick) {
         this.mousedown(event);
      }
+   },
+   
+   isClicked:function(element) {
+	    if (!this.displayOnClick) {
+	          return true;
+	    }
+        var root = element.up('.'+ this.getRootClass());
+        if (!root) return true;
+        var clickState = $(root.id + 'clickState');
+        if (!clickState) return true;  
+        return (clickState.value == "true");  
+   },
+   
+   setClickState:function(element, state) {
+        if (!this.displayOnClick){
+            this.click = state;
+            return;
+        }
+        var root = element.up('.'+ this.getRootClass());
+        if (!root) return true;
+        var clickState = $(root.id + 'clickState');
+        if (!clickState) return true;
+        if (state) {
+            clickState.value="true";
+        } else {
+            this.hideAllDisplayOnClickMenus();
+        }        
+   },
+   
+   hideAllDisplayOnClickMenus: function() {
+        var allDisplayOnClickMns = $$("input.mnuClickState");
+        for(i=0; i <allDisplayOnClickMns.length; i++) {
+	       allDisplayOnClickMns[i].value="false";
+        }
    }
 
 });
