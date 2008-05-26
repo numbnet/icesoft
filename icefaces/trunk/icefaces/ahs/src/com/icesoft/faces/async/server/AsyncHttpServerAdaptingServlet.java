@@ -199,7 +199,7 @@ implements Server {
 //            updatedViewsQueueExceededMessageHandler,
 //            MessageServiceClient.RESPONSE_TOPIC_NAME);
         try {
-            messageServiceClient.closeConnection();
+            messageServiceClient.close();
         } catch (MessageServiceException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
