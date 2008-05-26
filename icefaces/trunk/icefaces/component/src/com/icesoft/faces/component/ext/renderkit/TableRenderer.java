@@ -514,6 +514,7 @@ public class TableRenderer
         root.appendChild(tBody);
 
         HtmlDataTable uiData = (HtmlDataTable) uiComponent;
+        uiData.ensureFirstRowInRange(); // ICE-2783
         int rowIndex = uiData.getFirst();
         if (uiData.getRowCount() == 0) {
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
