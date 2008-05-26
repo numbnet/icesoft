@@ -8,7 +8,7 @@
 
   <tlib-version>1.0.1</tlib-version>
   <jsp-version>1.2</jsp-version>
-  <short-name>JSF Support for JSP Include</short-name>
+  <short-name>JSF_Support_for_JSP_Include</short-name>
   <uri>http://www.icesoft.com/icefaces</uri>
   <description>
     This tag library contains tags for supporting jsp:include directly
