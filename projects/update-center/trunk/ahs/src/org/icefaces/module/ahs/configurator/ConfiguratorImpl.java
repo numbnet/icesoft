@@ -4,11 +4,10 @@ import com.sun.appserv.addons.AddonException;
 import com.sun.appserv.addons.AddonVersion;
 import com.sun.appserv.addons.ConfigurationContext;
 import com.sun.appserv.addons.Configurator;
+import org.icefaces.module.ahs.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-
-import org.icefaces.module.ahs.util.FileUtils;
 
 public class ConfiguratorImpl implements Configurator {
 
@@ -45,7 +44,7 @@ public class ConfiguratorImpl implements Configurator {
         //According to Sun (both the sparse documentation along with emails from Sun employees involved
         //with the Update Center), there are two ways to get "unconfigure" called.
         (new File(locs.getDeployDir() + File.separator + ConfigurationLocations.APP_NAME)).deleteOnExit();
-        System.out.println("ConfiguratorImpl.unconfigure: called " + locs.getDeployDir() + File.separator + ConfigurationLocations.APP_NAME );
+        System.out.println("ConfiguratorImpl.unconfigure: called " + locs.getDeployDir() + File.separator + ConfigurationLocations.APP_NAME);
     }
 
     public void disable(ConfigurationContext configurationContext) throws AddonException {

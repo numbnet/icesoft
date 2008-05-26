@@ -3,8 +3,8 @@ package org.icefaces.module.ahs.configurator;
 import com.sun.appserv.addons.AddonException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -84,7 +84,7 @@ public class DomainConfig {
             if (port != null && port.equalsIgnoreCase(listenerPort)) {
                 listenerElement = listener;
                 break;
-            } 
+            }
         }
         return listenerElement;
     }
