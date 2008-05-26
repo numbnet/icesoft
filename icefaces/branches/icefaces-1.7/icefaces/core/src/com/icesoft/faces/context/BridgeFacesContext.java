@@ -328,7 +328,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             faceMessages.put(clientId, vector);
         }
         if (maxSeverity == null ||
-            message.getSeverity().getOrdinal() > maxSeverity.getOrdinal() ) {
+                message.getSeverity().getOrdinal() > maxSeverity.getOrdinal()) {
             maxSeverity = message.getSeverity();
         }
     }
@@ -348,11 +348,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     /**
      * Necessary for ICE-2478. This method should only be called from an
      * environment where server push is active. For normal JSF lifecycle
-     * execution, once the flag is set it should remain set. 
+     * execution, once the flag is set it should remain set.
      */
     public void resetResponseComplete() {
         this.responseComplete = false;
-    } 
+    }
 
     /**
      * The release() found in FacesContextImpl is more comprehensive: since they
@@ -366,7 +366,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
-        if (com.icesoft.util.SeamUtilities.isSpring2Environment())  {
+        if (com.icesoft.util.SeamUtilities.isSpring2Environment()) {
             this.viewRoot = null;
         }
         // ICE-2807 clear threadLocal references
@@ -466,6 +466,18 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     public URI registerResource(String mimeType, Resource resource) {
         return resolve(resourceDispatcher.registerResource(mimeType, resource).toString());
+    }
+
+    public URI registerResource(String mimeType, Resource resource, ResourceLinker.Handler linkerHandler) {
+        return resolve(resourceDispatcher.registerResource(mimeType, resource, linkerHandler).toString());
+    }
+
+    public URI registerNamedResource(String name, Resource resource) {
+        return resolve(resourceDispatcher.registerNamedResource(name, resource).toString());
+    }
+
+    public URI registerNamedResource(String name, Resource resource, ResourceLinker.Handler linkerHandler) {
+        return resolve(resourceDispatcher.registerNamedResource(name, resource, linkerHandler).toString());
     }
 
     private URI resolve(String uri) {
