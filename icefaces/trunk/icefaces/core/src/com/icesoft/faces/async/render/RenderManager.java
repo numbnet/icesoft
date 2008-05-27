@@ -34,15 +34,21 @@
 package com.icesoft.faces.async.render;
 
 import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
+
 import edu.emory.mathcs.backport.java.util.concurrent.ScheduledThreadPoolExecutor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.servlet.ServletConfig;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The RenderManager is the central class for developers wanting to do
@@ -61,187 +67,19 @@ import java.util.Map;
  * and scalability.
  */
 public class RenderManager implements Disposable {
-
-    private static Log log = LogFactory.getLog(RenderManager.class);
-
     static final int MIN = 1;
     public static final int ON_DEMAND = 2;
     public static final int INTERVAL = 3;
     public static final int DELAY = 4;
     static final int MAX = 4;
 
-    private RenderHub renderHub;
-    private Map groupMap;
-
-    //The ContextEventRepeater stores listeners in a weakly referenced fashion
-    //so we need to hang on to a reference or it will quietly disappear.
-    private ContextDestroyedListener shutdownListener;
+    private static RenderManager internalRenderManager;
 
     /**
      * No argument constructor suitable for using as a managed bean.
      */
     public RenderManager() {
-        shutdownListener = new ContextDestroyedListener(this);
-        ContextEventRepeater.addListener(shutdownListener);
-        groupMap = Collections.synchronizedMap(new HashMap());
-        renderHub = new RenderHub();
-    }
-
-    /**
-     * Internal utility method that returns the proper type of {@link
-     * GroupAsyncRenderer} and ensures that is added to the managed collection,
-     * indexed by name.
-     *
-     * @param name the unique name of the GroupAsyncRenderer
-     * @param type the type of GroupAsyncRenderer
-     * @return the requested type of GroupAsyncRenderer
-     */
-    private synchronized AsyncRenderer getRenderer(String name, int type) {
-        if (name == null || name.trim().length() == 0) {
-            throw new IllegalArgumentException(
-                    "illegal renderer name: " + name);
-        }
-
-        if (type < MIN || type > MAX) {
-            throw new IllegalArgumentException(
-                    "illegal renderer type: " + type);
-        }
-
-        Object obj = groupMap.get(name);
-        if (obj != null) {
-            if (log.isTraceEnabled()) {
-                log.trace("existing renderer retrieved: " + name);
-            }
-            return (AsyncRenderer) obj;
-        }
-
-        AsyncRenderer renderer = null;
-        switch (type) {
-            case ON_DEMAND:
-                renderer = new OnDemandRenderer();
-                break;
-            case INTERVAL:
-                renderer = new IntervalRenderer();
-                break;
-            case DELAY:
-                renderer = new DelayRenderer();
-                break;
-        }
-
-        renderer.setName(name);
-        renderer.setRenderManager(this);
-        groupMap.put(name, renderer);
-
-        if (log.isTraceEnabled()) {
-            log.trace("new renderer retrieved: " + name);
-        }
-
-        return renderer;
-    }
-
-    /**
-     * When an AsyncRenderer disposes itself, it also needs to remove itself
-     * from the RenderManager's collection.
-     *
-     * @param renderer  The Renderer to remove
-     */
-    protected void removeRenderer(AsyncRenderer renderer) {
-        if (renderer == null) {
-            if (log.isInfoEnabled()) {
-                log.info("renderer is null");
-            }
-            return;
-        }
-
-        Object removedRenderer = groupMap.remove(renderer.getName());
-        if (removedRenderer == null) {
-            if (log.isTraceEnabled()) {
-                log.trace("renderer " + renderer.getName() + " not found");
-            }
-        } else {
-            if (log.isTraceEnabled()) {
-                log.trace("renderer " + renderer.getName() + " removed");
-            }
-        }
-    }
-
-    /**
-     * Submits the supplied Renderable instance to the RenderHub for
-     * server-initiated render.
-     *
-     * @param renderable The {@link Renderable} instance to render.
-     */
-    public void requestRender(Renderable renderable) {
-        renderHub.requestRender(renderable);
-    }
-
-    void relayRender(String rendererName) {
-        //no relay with the standard RenderManaager
-    }
-
-    /**
-     * The OnDemandRenderer is a {@link GroupAsyncRenderer} that requests a
-     * server-initiated render of all the Renderables in its collection.  The
-     * request is made immediately upon request.
-     * <p/>
-     * Thsi method returns the appropriate GroupAsyncRenderer based on the name.
-     * If the name is new, a new instance is created and stored in the
-     * RenderManager's collection.  If the named GroupAsyncRenderer already
-     * exists, and it's of the proper type, then the existing instance is
-     * returned.
-     *
-     * @param name the name of the GroupAsyncRenderer
-     * @return a new or existing GroupAsyncRenderer, based on the name
-     */
-    public OnDemandRenderer getOnDemandRenderer(String name) {
-        return (OnDemandRenderer) getRenderer(name, ON_DEMAND);
-    }
-
-    /**
-     * The IntervalRenderer is a {@link GroupAsyncRenderer} that requests a
-     * server-initiated render of all the Renderables in its collection.  The
-     * request to render is made repeatedly at the set interval.
-     * <p/>
-     * Thsi method returns the appropriate GroupAsyncRenderer based on the name.
-     * If the name is new, a new instance is created and stored in the
-     * RenderManager's collection.  If the named GroupAsyncRenderer already
-     * exists, and it's of the proper type, then the existing instance is
-     * returned.
-     *
-     * @param name the name of the GroupAsyncRenderer
-     * @return a new or existing GroupAsyncRenderer, based on the name
-     */
-    public IntervalRenderer getIntervalRenderer(String name) {
-        return (IntervalRenderer) getRenderer(name, INTERVAL);
-    }
-
-    /**
-     * The DelayRenderer is a {@link GroupAsyncRenderer} that requests a
-     * server-initiated render of all the Renderables in its collection.  The
-     * request to render is made once at a set point in the future.
-     * <p/>
-     * Thsi method returns the appropriate GroupAsyncRenderer based on the name.
-     * If the name is new, a new instance is created and stored in the
-     * RenderManager's collection.  If the named GroupAsyncRenderer already
-     * exists, and it's of the proper type, then the existing instance is
-     * returned.
-     *
-     * @param name the name of the GroupAsyncRenderer
-     * @return a new or existing GroupAsyncRenderer, based on the name
-     */
-    public DelayRenderer getDelayRenderer(String name) {
-        return (DelayRenderer) getRenderer(name, DELAY);
-    }
-
-    /**
-     * This method is used by {@link GroupAsyncRenderer}s that need to request
-     * render calls based on some sort of schedule.  It uses a separate,
-     * configurable thread pool and queue than the core rendering service.
-     *
-     * @return the scheduled executor for this RenderManager
-     */
-    ScheduledThreadPoolExecutor getScheduledService() {
-        return renderHub.getScheduledService();
+        // do nothing.
     }
 
     /**
@@ -250,32 +88,75 @@ public class RenderManager implements Disposable {
      * through all of the named {@link GroupAsyncRenderer}s, calling dispose on
      * each of them in turn.  It then calls dispose on the {@link RenderHub}.
      * Once the RenderManager has been disposed, it can no longer be used.
+     *
+     * @deprecated
      */
     public void dispose() {
-        synchronized (groupMap) {
+        // do nothing.
+    }
 
-            //Bug 944
-            //We make a copy of the list of renderers to remove simply to
-            //iterate through them.  This avoids a concurrent modification
-            //issue when each individual renderers dispose method attempts
-            //to remove itself from the official groupMap.
-            ArrayList renderList = new ArrayList(groupMap.size());
-            renderList.addAll( groupMap.values() );
-            Iterator renderers = renderList.iterator();
-            while (renderers.hasNext()) {
-                AsyncRenderer renderer = (AsyncRenderer) renderers.next();
-                renderer.dispose();
-                if (log.isTraceEnabled()) {
-                    log.trace("renderer disposed: " + renderer);
-                }
-            }
-            groupMap.clear();
-        }
-        renderHub.dispose();
-        if (log.isDebugEnabled()) {
-            log.debug("all renderers and hub have been disposed");
-        }
+    /**
+     * The DelayRenderer is a {@link GroupAsyncRenderer} that requests a
+     * server-initiated render of all the Renderables in its collection.  The
+     * request to render is made once at a set point in the future.
+     * <p/>
+     * This method returns the appropriate GroupAsyncRenderer based on the
+     * renderer name. If the name is new, a new instance is created and stored
+     * in the RenderManager's collection.  If the named GroupAsyncRenderer
+     * already exists, and it's of the proper type, then the existing instance
+     * is returned.
+     *
+     * @param rendererName the name of the GroupAsyncRenderer
+     * @return a new or existing GroupAsyncRenderer, based on the renderer name
+     */
+    public DelayRenderer getDelayRenderer(final String rendererName) {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getDelayRenderer(rendererName) : null;
+    }
 
+    public static RenderManager getInstance() {
+        return internalRenderManager;
+    }
+
+    /**
+     * The IntervalRenderer is a {@link GroupAsyncRenderer} that requests a
+     * server-initiated render of all the Renderables in its collection.  The
+     * request to render is made repeatedly at the set interval.
+     * <p/>
+     * This method returns the appropriate GroupAsyncRenderer based on the
+     * renderer name. If the name is new, a new instance is created and stored
+     * in the RenderManager's collection.  If the named GroupAsyncRenderer
+     * already exists, and it's of the proper type, then the existing instance
+     * is returned.
+     *
+     * @param rendererName the name of the GroupAsyncRenderer
+     * @return a new or existing GroupAsyncRenderer, based on the renderer name
+     */
+    public IntervalRenderer getIntervalRenderer(final String rendererName) {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getIntervalRenderer(rendererName) : null;
+    }
+
+    /**
+     * The OnDemandRenderer is a {@link GroupAsyncRenderer} that requests a
+     * server-initiated render of all the Renderables in its collection.  The
+     * request is made immediately upon request.
+     * <p/>
+     * This method returns the appropriate GroupAsyncRenderer based on the
+     * renderer name. If the name is new, a new instance is created and stored
+     * in the RenderManager's collection.  If the named GroupAsyncRenderer
+     * already exists, and it's of the proper type, then the existing instance
+     * is returned.
+     *
+     * @param rendererName the name of the GroupAsyncRenderer
+     * @return a new or existing GroupAsyncRenderer, based on the renderer name
+     */
+    public OnDemandRenderer getOnDemandRenderer(final String rendererName) {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getOnDemandRenderer(rendererName) : null;
     }
 
     /**
@@ -286,10 +167,247 @@ public class RenderManager implements Disposable {
      * @return An instance of an AsyncRenderer that is associated with the
      *         provided name.
      */
-    public AsyncRenderer getRenderer(String rendererName) {
-        if (rendererName == null) {
-            return null;
+    public AsyncRenderer getRenderer(final String rendererName) {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getRenderer(rendererName) : null;
+    }
+
+    public boolean isBroadcasted() {
+        return
+            internalRenderManager != null &&
+            internalRenderManager.isBroadcasted();
+    }
+
+    /**
+     * Submits the supplied Renderable instance to the RenderHub for
+     * server-initiated render.
+     *
+     * @param renderable The {@link Renderable} instance to render.
+     */
+    public void requestRender(final Renderable renderable) {
+        if (internalRenderManager != null) {
+            internalRenderManager.requestRender(renderable);
         }
-        return (AsyncRenderer) groupMap.get(rendererName);
+    }
+
+    public void setBroadcasted(final boolean broadcasted) {
+        if (internalRenderManager != null) {
+            internalRenderManager.setBroadcasted(broadcasted);
+        }
+    }
+
+    public static synchronized void setServletConfig(
+        final ServletConfig servletConfig) {
+
+        if (internalRenderManager == null) {
+            internalRenderManager =
+                new InternalRenderManager(
+                    new ServletContextConfiguration(
+                        "com.icesoft.faces.async.render",
+                        servletConfig.getServletContext()));
+        }
+    }
+
+    /**
+     * When an AsyncRenderer disposes itself, it also needs to remove itself
+     * from the RenderManager's collection.
+     *
+     * @param renderer  The Renderer to remove
+     */
+    protected void removeRenderer(final AsyncRenderer renderer) {
+        if (internalRenderManager != null) {
+            internalRenderManager.removeRenderer(renderer);
+        }
+    }
+
+    /**
+     * This method is used by {@link GroupAsyncRenderer}s that need to request
+     * render calls based on some sort of schedule.  It uses a separate,
+     * configurable thread pool and queue than the core rendering service.
+     *
+     * @return the scheduled executor for this RenderManager
+     */
+    ScheduledThreadPoolExecutor getScheduledService() {
+        return
+            internalRenderManager != null ?
+                internalRenderManager.getScheduledService() : null;
+    }
+
+    void requestRender(final AsyncRenderer renderer) {
+        if (internalRenderManager != null) {
+            internalRenderManager.requestRender(renderer);
+        }
+    }
+
+    private static class InternalRenderManager
+    extends RenderManager
+    implements Disposable {
+        private static final Log LOG =
+            LogFactory.getLog(InternalRenderManager.class);
+
+        private final RenderHub renderHub = new RenderHub();
+        private final BroadcastHub broadcastHub = new BroadcastHub();
+        private final Map rendererGroupMap =
+            Collections.synchronizedMap(new HashMap());
+        private final ContextDestroyedListener shutdownListener =
+            new ContextDestroyedListener(this);
+
+//        private RenderDispatcher applicationRenderDispatcher =
+//            new ApplicationRenderDispatcher();
+//        private RenderDispatcher broadcastRenderDispatcher =
+//            new BroadcastRenderDispatcher(this);
+
+        private boolean broadcasted;
+
+        private InternalRenderManager(final Configuration configuration) {
+            setBroadcasted(
+                    configuration.getAttributeAsBoolean("broadcasted", false));
+            ContextEventRepeater.addListener(shutdownListener);
+            broadcastHub.setRenderManager(this);
+        }
+
+        public void dispose() {
+            synchronized (rendererGroupMap) {
+                /*
+                 * Bug 944
+                 * We make a copy of the list of renderers to remove simply to
+                 * iterate through them.  This avoids a concurrent modification
+                 * issue when each individual renderers dispose method attempts
+                 * to remove itself from the official groupMap.
+                 */
+                Iterator renderers =
+                    new ArrayList(rendererGroupMap.values()).iterator();
+                while (renderers.hasNext()) {
+                    AsyncRenderer renderer = (AsyncRenderer)renderers.next();
+                    renderer.dispose();
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace("Renderer disposed: " + renderer);
+                    }
+                }
+                rendererGroupMap.clear();
+            }
+            renderHub.dispose();
+            LOG.debug("All renderers and render hub have been disposed.");
+//            applicationRenderDispatcher.dispose();
+//            broadcastRenderDispatcher.dispose();
+            ContextEventRepeater.removeListener(shutdownListener);
+        }
+
+        public DelayRenderer getDelayRenderer(final String rendererName) {
+            return (DelayRenderer)getRenderer(rendererName, DELAY);
+        }
+
+        public IntervalRenderer getIntervalRenderer(final String rendererName) {
+            return (IntervalRenderer)getRenderer(rendererName, INTERVAL);
+        }
+
+        public OnDemandRenderer getOnDemandRenderer(final String rendererName) {
+            return (OnDemandRenderer)getRenderer(rendererName, ON_DEMAND);
+        }
+
+        public AsyncRenderer getRenderer(final String rendererName) {
+            if (rendererName == null) {
+                return null;
+            }
+            return (AsyncRenderer)rendererGroupMap.get(rendererName);
+        }
+
+        public boolean isBroadcasted() {
+            return broadcasted;
+        }
+
+        public void requestRender(final Renderable renderable) {
+            renderHub.requestRender(renderable);
+        }
+
+        public void setBroadcasted(final boolean broadcasted) {
+            this.broadcasted = broadcasted;
+        }
+
+        protected void removeRenderer(final AsyncRenderer renderer) {
+            if (renderer == null) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Renderer is null");
+                }
+            } else if (rendererGroupMap.remove(renderer.getName()) == null) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Renderer " + renderer.getName() + " not found");
+                }
+            } else {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Renderer " + renderer.getName() + " removed");
+                }
+            }
+        }
+
+        ScheduledThreadPoolExecutor getScheduledService() {
+            return renderHub.getScheduledService();
+        }
+
+        void requestRender(final AsyncRenderer renderer) {
+            if (renderer == null) {
+                return;
+            }
+            if (isBroadcasted() && renderer.isBroadcasted()) {
+                broadcastHub.relayRenderRequest(renderer);
+//                applicationRenderDispatcher.requestRender(renderer);
+//            } else {
+//                broadcastRenderDispatcher.requestRender(renderer);
+            }
+        }
+
+        /**
+         * Internal utility method that returns the proper type of {@link
+         * GroupAsyncRenderer} and ensures that is added to the managed
+         * collection, indexed by name.
+         *
+         * @param      name the unique name of the GroupAsyncRenderer
+         * @param      type the type of GroupAsyncRenderer
+         * @return     the requested type of GroupAsyncRenderer
+         * @throws     IllegalArgumentException
+         *                 if the <code>name</code> is <code>null</code> or
+         *                 empty, or if the <code>type</code> is illegal.
+         */
+        private synchronized AsyncRenderer getRenderer(
+            final String name, final int type)
+        throws IllegalArgumentException {
+            if (name == null || name.trim().length() == 0) {
+                throw
+                    new IllegalArgumentException(
+                        "Illegal renderer name: " + name);
+            }
+            if (type < MIN || type > MAX) {
+                throw
+                    new IllegalArgumentException(
+                        "Illegal renderer type: " + type);
+            }
+            if (rendererGroupMap.containsKey(name)) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Existing renderer retrieved: " + name);
+                }
+                return (AsyncRenderer)rendererGroupMap.get(name);
+            }
+            AsyncRenderer renderer = null;
+            switch (type) {
+                case ON_DEMAND:
+                    renderer = new OnDemandRenderer();
+                    break;
+                case INTERVAL:
+                    renderer = new IntervalRenderer();
+                    break;
+                case DELAY:
+                    renderer = new DelayRenderer();
+                    break;
+            }
+            renderer.setBroadcasted(broadcasted);
+            renderer.setName(name);
+            renderer.setRenderManager(this);
+            rendererGroupMap.put(name, renderer);
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("New renderer retrieved: " + name);
+            }
+            return renderer;
+        }
     }
 }
