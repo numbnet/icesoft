@@ -34,7 +34,8 @@ package com.icesoft.net.messaging.jms;
 import com.icesoft.net.messaging.MessageServiceConfiguration;
 import com.icesoft.net.messaging.MessageServiceConfigurationProperties;
 
-import javax.servlet.ServletContext;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class JMSProviderConfigurationProperties
 extends MessageServiceConfigurationProperties
@@ -43,10 +44,9 @@ implements JMSProviderConfiguration, MessageServiceConfiguration {
         super();
     }
 
-    public JMSProviderConfigurationProperties(
-        final ServletContext servletContext)
-    throws IllegalArgumentException {
-        super(servletContext);
+    public JMSProviderConfigurationProperties(final InputStream inputStream)
+    throws IOException {
+        super(inputStream);
     }
 
     public String getInitialContextFactory() {
