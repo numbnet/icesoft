@@ -58,18 +58,8 @@ public class ImageRenderer
           return (((ResourceRegistry) facesContext).registerResource(mimeType, bar)).getPath();
           
         } else {
-          String value = (String) uiGraphic.getValue();
-          // support url as an alias for value
-          if (value == null) {
-              value = uiGraphic.getUrl();
-          }
-          if (value != null) {
-              value = facesContext.getApplication().getViewHandler()
-                      .getResourceURL(facesContext, value);
-              return value;
-          } else {
-              return "";
-          }
+          // delegate to the parent class  
+          return super.processSrcAttribute(facesContext, uiGraphic);
         }
     }
 }
