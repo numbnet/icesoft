@@ -100,6 +100,7 @@
                 <fileset dir="${src.dir}">
                     <include name="com/icesoft/faces/resources/"/>
                     <include name="com/icesoft/faces/context/*.xslt"/>
+                    <include name="**/*.properties"/>
                 </fileset>
                 <zipfileset dir="${bridge.dir}/build"
                             includes="icefaces-d2d.js, ice-extras.js, openajax.js"
