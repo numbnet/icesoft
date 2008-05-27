@@ -29,6 +29,17 @@ public class MessageService {
         setUpMessageServiceClient(servletContext);
     }
 
+    public void close() {
+        try {
+            messageServiceClient.close();
+        } catch (MessageServiceException exception) {
+            if (LOG.isFatalEnabled()) {
+                LOG.fatal(
+                    "Failed to close the message service client!", exception);
+            }
+        }
+    }
+
     public void publish(
         final Serializable object, final Properties messageProperties,
         final String topicName) {

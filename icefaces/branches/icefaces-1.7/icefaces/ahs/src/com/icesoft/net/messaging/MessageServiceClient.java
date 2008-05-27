@@ -197,13 +197,13 @@ public class MessageServiceClient {
      * @throws     MessageServiceException
      *                 if the message service fails to close the connection due
      *                 to some internal error.
-     * @see        MessageServiceAdapter#closeConnection()
+     * @see        MessageServiceAdapter#close()
      * @see        #stop()
      */
-    public void closeConnection()
+    public void close()
     throws MessageServiceException {
         try {
-            messageServiceAdapter.closeConnection();
+            messageServiceAdapter.close();
         } finally {
             messageHandlerMap.clear();
         }
@@ -673,7 +673,7 @@ public class MessageServiceClient {
      *                 to some internal error.
      * @see        MessageServiceAdapter#stop()
      * @see        #start()
-     * @see        #closeConnection()
+     * @see        #close()
      */
     public void stop()
     throws MessageServiceException {

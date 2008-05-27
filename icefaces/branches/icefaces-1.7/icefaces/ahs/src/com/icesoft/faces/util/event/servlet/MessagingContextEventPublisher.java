@@ -197,7 +197,7 @@ implements ContextEventPublisher {
             announcementMessageHandler,
             MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
         try {
-            messageServiceClient.closeConnection();
+            messageServiceClient.close();
         } catch (MessageServiceException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(

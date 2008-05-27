@@ -87,24 +87,22 @@ implements JMSConnection {
                         }
                     } catch (JMSException exception) {
                         _jmsException = exception;
-                    } finally {
-                        try {
-                            if (topicConnection != null) {
-                                // throws JMSException.
-                                topicConnection.close();
-                            }
-                        } catch (JMSException exception) {
-                            if (_jmsException == null) {
-                                _jmsException = exception;
-                            }
-                        } finally {
-                            topicSession = null;
-                            topicConnection = null;
-                            connected = false;
-                            if (_jmsException != null) {
-                                throw _jmsException;
-                            }
+                    }
+                    try {
+                        if (topicConnection != null) {
+                            // throws JMSException.
+                            topicConnection.close();
                         }
+                    } catch (JMSException exception) {
+                        if (_jmsException == null) {
+                            _jmsException = exception;
+                        }
+                    }
+                    topicSession = null;
+                    topicConnection = null;
+                    connected = false;
+                    if (_jmsException != null) {
+                        throw _jmsException;
                     }
                 }
             }

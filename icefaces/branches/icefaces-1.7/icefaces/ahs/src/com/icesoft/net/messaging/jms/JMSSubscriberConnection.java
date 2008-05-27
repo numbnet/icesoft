@@ -91,44 +91,41 @@ implements JMSConnection {
             synchronized (connectionLock) {
                 if (connected) {
                     JMSException _jmsException = null;
-                    try {
-                        if (started) {
+                    if (started) {
+                        try {
                             // throws JMSException.
                             stop();
+                        } catch (JMSException exception) {
+                            _jmsException = exception;
                         }
-                    } catch (JMSException exception) {
-                        _jmsException = exception;
-                    } finally {
-                        if (messageReceiver != null) {
-                            messageReceiver.requestStop();
-                            messageReceiver.getMessageListener().
-                                clearMessageHandlers();
-                        }
+                    }
+                    if (messageReceiver != null) {
+                        messageReceiver.requestStop();
+                        messageReceiver.getMessageListener().
+                            clearMessageHandlers();
+                    }
+                    if (topicSubscriber != null) {
                         try {
-                            if (topicSubscriber != null) {
-                                // throws JMSException.
-                                topicSubscriber.close();
-                            }
+                            // throws JMSException.
+                            topicSubscriber.close();
                         } catch (JMSException exception) {
                             if (_jmsException == null) {
                                 _jmsException = exception;
                             }
-                        } finally {
-                            try {
-                                // throws JMSException.
-                                super.close();
-                            } catch (JMSException exception) {
-                                if (_jmsException == null) {
-                                    _jmsException = exception;
-                                }
-                            } finally {
-                                messageReceiver = null;
-                                topicSubscriber = null;
-                                if (_jmsException != null) {
-                                    throw _jmsException;
-                                }
-                            }
                         }
+                    }
+                    try {
+                        // throws JMSException.
+                        super.close();
+                    } catch (JMSException exception) {
+                        if (_jmsException == null) {
+                            _jmsException = exception;
+                        }
+                    }
+                    messageReceiver = null;
+                    topicSubscriber = null;
+                    if (_jmsException != null) {
+                        throw _jmsException;
                     }
                 }
             }
