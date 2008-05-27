@@ -56,7 +56,6 @@
             var dispose = function() {
                 dispose = Function.NOOP;
                 connection.shutdown();
-                statusManager.off();
             }
 
             commandDispatcher.register('noop', Function.NOOP);
@@ -124,9 +123,12 @@
 
             connection.onSend(function() {
                 Ice.Focus.userInterupt = false;
+                statusManager.busy.on();
             });
 
             connection.onReceive(function(response) {
+                statusManager.busy.off();
+
                 var mimeType = response.getResponseHeader('Content-Type');
                 if (mimeType.startsWith('text/html')) {
                     replaceContainerHTML(response.content());
@@ -135,9 +137,7 @@
                 } else {
                     logger.warn('unknown content in response');
                 }
-            });
 
-            connection.onReceive(function() {
                 window.documentSynchronizer.synchronize();
             });
 
@@ -161,14 +161,6 @@
             connection.whenTrouble(function() {
                 logger.warn('connection in trouble');
                 statusManager.connectionTrouble.on();
-            });
-
-            connection.onSend(function() {
-                statusManager.busy.on();
-            });
-
-            connection.onReceive(function() {
-                statusManager.busy.off();
             });
 
             //public method used to modify bridge's status manager
