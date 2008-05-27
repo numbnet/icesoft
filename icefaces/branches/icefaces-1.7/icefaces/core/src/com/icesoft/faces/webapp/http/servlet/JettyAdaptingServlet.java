@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.mortbay.util.ajax.Continuation;
 import org.mortbay.util.ajax.ContinuationSupport;
 
-public class ContinuationAdaptingServlet implements PseudoServlet {
+public class JettyAdaptingServlet implements PseudoServlet {
     private Map requests = new HashMap();
     private Server server;
 
-    public ContinuationAdaptingServlet(final Server server) {
+    public JettyAdaptingServlet(final Server server) {
         this.server = server;
     }
 
