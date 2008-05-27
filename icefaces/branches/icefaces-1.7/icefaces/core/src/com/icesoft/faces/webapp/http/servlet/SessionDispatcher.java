@@ -138,12 +138,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }
             }
 
+            String sessionID = session.getId();
             try {
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
             } finally {
-                SessionIDs.remove(session.getId());
+                SessionIDs.remove(sessionID);
             }
         }
     }
