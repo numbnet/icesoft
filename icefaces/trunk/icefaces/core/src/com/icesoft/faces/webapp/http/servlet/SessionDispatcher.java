@@ -1,5 +1,6 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -22,17 +23,35 @@ public abstract class SessionDispatcher implements PseudoServlet {
     private final static List SessionMonitors = new ArrayList();
     private final static List SessionIDs = new ArrayList();
     private Map sessionBoundServers = new HashMap();
+    private PseudoServlet invalidRequestServlet;
 
     protected SessionDispatcher() {
+        this(new PseudoServlet() {
+            public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
+                throw new SessionExpiredException();
+            }
+
+            public void shutdown() {
+            }
+        });
+    }
+
+    protected SessionDispatcher(PseudoServlet invalidRequestServlet) {
+        this.invalidRequestServlet = invalidRequestServlet;
         SessionDispatchers.add(this);
     }
 
     protected abstract PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) throws Exception;
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession(true);
-        notifyIfNew(session);
-        lookupServlet(session).service(request, response);
+        //only HTTP GET requests can create new sessions 
+        if (request.isRequestedSessionIdValid() || "GET".equalsIgnoreCase(request.getMethod())) {
+            HttpSession session = request.getSession(true);
+            notifyIfNew(session);
+            lookupServlet(session).service(request, response);
+        } else {
+            invalidRequestServlet.service(request, response);
+        }
     }
 
     //synchronize access in case there are multiple SessionDispatcher instances created

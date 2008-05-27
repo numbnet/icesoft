@@ -238,11 +238,7 @@
             window.onResize(resize);
         },
 
-        off: function() {
-            [this.busy, this.sessionExpired, this.serverError, this.connectionLost, this.connectionTrouble].eachWithGuard(function(indicator) {
-                indicator.off();
-            });
-        }
+        off: Function.NOOP
     });
 
     This.ComponentStatusManager = Object.subclass({
