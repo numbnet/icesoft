@@ -105,7 +105,7 @@ public class Parser {
      * @throws java.io.IOException      If stream IO fails.
      * @throws org.xml.sax.SAXException If digester encounters invalid XML.
      */
-    public void parse(Reader page, FacesContext context)
+    public synchronized void parse(Reader page, FacesContext context)
             throws java.io.IOException, org.xml.sax.SAXException {
         // Need a mock pageContext
         StubPageContext pageContext = new StubPageContext(context);
