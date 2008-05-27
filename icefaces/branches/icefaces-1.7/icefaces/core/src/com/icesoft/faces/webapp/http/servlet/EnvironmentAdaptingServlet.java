@@ -87,7 +87,7 @@ public class EnvironmentAdaptingServlet implements PseudoServlet {
 
     private static class JettyAdaptingServletFactory implements EnvironmentAdaptingServletFactory {
         public PseudoServlet newServlet(final Server server, final ServletContext servletContext) {
-            return new ContinuationAdaptingServlet(server);
+            return new JettyAdaptingServlet(server);
         }
     }
 
