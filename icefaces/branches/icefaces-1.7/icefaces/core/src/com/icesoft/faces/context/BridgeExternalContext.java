@@ -318,7 +318,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     	// a new page/view can be selected from the current one which 
     	// means that Seam's ConversationEntry stack must be updated before
     	// redirection.  ICE-2737
-    	if (SeamUtilities.isSeamEnvironment());{
+    	if (SeamUtilities.isSeamEnvironment()){
     	   SeamUtilities.switchToCurrentSeamConversation(requestURI);
     	}
         final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
