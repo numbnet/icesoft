@@ -46,15 +46,15 @@ import java.io.IOException;
 
 public class OutputConnectionStatusRenderer extends DomBasicRenderer {
 
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
+    public void encodeBegin(FacesContext context, UIComponent uiComponent)
             throws IOException {
-        validateParameters(facesContext, uiComponent, null);
+        validateParameters(context, uiComponent, null);
         OutputConnectionStatus component =
                 ((OutputConnectionStatus) uiComponent);
         DOMContext domContext =
-                DOMContext.attachDOMContext(facesContext, uiComponent);
+                DOMContext.attachDOMContext(context, uiComponent);
         if (!domContext.isInitialized()) {
-            String id = uiComponent.getClientId(facesContext);
+            String id = uiComponent.getClientId(context);
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
             domContext.setRootNode(root);
 
@@ -85,21 +85,19 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
                     component.getDisconnectedClass(),
                     component.getDisconnectedLabel(),
                     lostID, false));
-            Element script = (Element) domContext.createElement(HTML.SCRIPT_ELEM);
+            Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(
-                    "'" + id + "'.asExtendedElement().findContainerFor('bridge').connectionStatus = {" +
-                            "idle: '" + idleID + "'," +
-                            "working: '" + workingID + "'," +
-                            "trouble: '" + troubleID + "'," +
-                            "lost: '" + lostID + "'," +
-                            "lostPopup: " + component.isShowPopupOnDisconnect() + "};" // ICE-2621
+                    "'" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.attachStatusManager(" +
+                            "function(defaultStatusManager) {" +
+                            "return new Ice.Status.ComponentStatusManager('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', defaultStatusManager);" +
+                            "}, " + component.isShowPopupOnDisconnect() + ");"
             ));
             root.appendChild(script);
         }
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
+        domContext.streamWrite(context, uiComponent);
     }
 
     public Element getNextNode(DOMContext domContext, String classString,
