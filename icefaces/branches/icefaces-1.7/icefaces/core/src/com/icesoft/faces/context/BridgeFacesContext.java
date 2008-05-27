@@ -106,6 +106,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         setCurrentInstance(this);
     }
 
+    public void resetCurrentInstance() {
+        FacesContext.setCurrentInstance(null);
+    }
+
+
     public Application getApplication() {
         return application;
     }
@@ -353,6 +358,10 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     public void resetResponseComplete() {
         this.responseComplete = false;
     }
+
+    public static boolean isThreadLocalNull() {
+        return getCurrentInstance() == null;
+    } 
 
     /**
      * The release() found in FacesContextImpl is more comprehensive: since they
