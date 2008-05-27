@@ -598,7 +598,7 @@
         <renderer>
             <component-family>javax.faces.Graphic</component-family>
             <renderer-type>com.icesoft.faces.Image</renderer-type>
-            <renderer-class>com.icesoft.faces.renderkit.dom_html_basic.ImageRenderer</renderer-class>
+            <renderer-class>com.icesoft.faces.component.ext.renderkit.ImageRenderer</renderer-class>
         </renderer>
 
         <renderer>
