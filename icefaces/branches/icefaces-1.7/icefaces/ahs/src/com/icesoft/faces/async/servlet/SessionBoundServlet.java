@@ -8,6 +8,7 @@ import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,7 +24,8 @@ implements PseudoServlet {
     public SessionBoundServlet(
         final Configuration configuration, final SessionManager sessionManager,
         final ExecuteQueue executeQueue,
-        final SessionDispatcher.Monitor monitor)
+        final SessionDispatcher.Monitor monitor,
+        final ServletContext servletContext)
     throws IllegalArgumentException {
         if (configuration == null) {
             throw new IllegalArgumentException("configuration is null");
@@ -40,7 +42,7 @@ implements PseudoServlet {
             new SendUpdatedViewsServer(sessionManager, executeQueue, monitor));
         servlet =
             new EnvironmentAdaptingServlet(
-                _pathDispatcherServer, configuration);
+                _pathDispatcherServer, configuration, servletContext);
     }
 
     public void service(
