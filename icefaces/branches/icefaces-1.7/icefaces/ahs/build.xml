@@ -28,7 +28,6 @@
     <path id="compile.run.classpath">
         <pathelement location="${build.classes.dir}"/>
         
-        <fileset dir="${lib.dir}" includes="**/*.jar"/>
         <fileset dir="${icefaces.dir}/lib" includes="**/*.jar"/>
         <pathelement location="${icefaces.jar}" />
     </path>
