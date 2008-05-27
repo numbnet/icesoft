@@ -108,6 +108,10 @@ public class PersistentFacesState implements Serializable {
         localInstance.set(this);
     }
 
+     public static boolean isThreadLocalNull() {
+        return localInstance.get() == null;
+    } 
+
     /**
      * Obtain the <code>PersistentFacesState</code> instance appropriate for the
      * current context.  This is managed through InheritableThreadLocal
@@ -193,7 +197,10 @@ public class PersistentFacesState implements Serializable {
                 throw new TransientRenderingException(
                         "transient render failure for viewNumber "
                                 + facesContext.getViewNumber(), e);
-            }
+            } finally {
+                localInstance.set(null);
+                facesContext.resetCurrentInstance();
+            } 
         }
     }
 
@@ -328,6 +335,9 @@ public class PersistentFacesState implements Serializable {
                 throw new TransientRenderingException(
                         "transient render failure for viewNumber "
                                 + facesContext.getViewNumber(), e);
+            }  finally {
+                localInstance.set(null);
+                facesContext.resetCurrentInstance();
             }
         }
     }
