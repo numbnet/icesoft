@@ -105,7 +105,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         dispatcher.dispatchOn(ResourceRegex, resourceDispatcher);
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
-        servlet = new EnvironmentAdaptingServlet(dispatcher, configuration);
+        servlet = new EnvironmentAdaptingServlet(dispatcher, configuration, session.getServletContext());
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
