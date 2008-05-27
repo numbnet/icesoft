@@ -119,7 +119,8 @@ extends HttpServlet {
                                 _servletContextConfiguration,
                                 _sessionManager,
                                 _executeQueue,
-                                monitor);
+                                monitor,
+                                servletConfig.getServletContext());
                     }
                 };
                 pathDispatcher.dispatchOn(".*", _sessionDispatcher);
