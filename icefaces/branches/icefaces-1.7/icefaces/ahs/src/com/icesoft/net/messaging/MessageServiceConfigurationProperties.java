@@ -55,37 +55,9 @@ implements MessageServiceConfiguration {
         // do nothing.
     }
 
-    public MessageServiceConfigurationProperties(
-        final ServletContext servletContext) {
-
-        if (servletContext != null) {
-            String _properties = servletContext.getInitParameter(PROPERTIES);
-            if (_properties != null) {
-                InputStream _inputStream =
-                    getClass().getResourceAsStream(_properties);
-                if (_inputStream != null) {
-                    try {
-                        messageServiceConfigurationProperties.load(
-                            _inputStream);
-                    } catch (IOException exception) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(
-                                "An error occurred " +
-                                    "while reading properties: " + _properties,
-                                exception);
-                        }
-                    }
-                } else {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error("Could not find: " + _properties);
-                    }
-                }
-            } else {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error("Parameter not defined: " + PROPERTIES);
-                }
-            }
-        }
+    public MessageServiceConfigurationProperties(final InputStream inputStream)
+    throws IOException {
+        messageServiceConfigurationProperties.load(inputStream);
     }
 
     public String get(final String name) {

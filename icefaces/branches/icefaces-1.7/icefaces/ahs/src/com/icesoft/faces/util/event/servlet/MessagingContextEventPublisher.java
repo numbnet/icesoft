@@ -33,6 +33,7 @@ package com.icesoft.faces.util.event.servlet;
 
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
+import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
 import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
 import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
@@ -135,12 +136,12 @@ implements ContextEventPublisher {
 
     private void setUpMessageServiceClient(final ServletContext servletContext)
     throws MessageServiceException {
-        JMSProviderConfiguration _jmsProviderConfiguration =
-            new JMSProviderConfigurationProperties(servletContext);
+        MessageServiceAdapter _messMessageServiceAdapter =
+            new JMSAdapter(servletContext);
         messageServiceClient =
             new MessageServiceClient(
-                _jmsProviderConfiguration,
-                new JMSAdapter(_jmsProviderConfiguration),
+                _messMessageServiceAdapter.getMessageServiceConfiguration(),
+                _messMessageServiceAdapter,
                 servletContext);
         try {
             messageServiceClient.subscribe(

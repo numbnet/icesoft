@@ -43,6 +43,7 @@ import com.icesoft.util.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -56,6 +57,7 @@ import javax.jms.Topic;
 import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,18 +74,53 @@ implements MessageServiceAdapter {
 
     private ExecutorService executorService;
 
-    public JMSAdapter() {
-        this(null);
+    public JMSAdapter(final JMSProviderConfiguration jmsProviderConfiguration)
+    throws IllegalArgumentException {
+        super(jmsProviderConfiguration);
+        this.jmsProviderConfiguration = jmsProviderConfiguration;
+        ThreadFactory _threadFactory = new ThreadFactory();
+        _threadFactory.setPrefix("MessageReceiver Thread");
+        executorService = Executors.newCachedThreadPool(_threadFactory);
     }
 
-    public JMSAdapter(final JMSProviderConfiguration jmsProviderConfiguration) {
-        if (jmsProviderConfiguration != null) {
-            this.jmsProviderConfiguration = jmsProviderConfiguration;
-        } else {
-            this.jmsProviderConfiguration =
-                new JMSProviderConfigurationProperties();
-            this.jmsProviderConfiguration.setTopicConnectionFactoryName(
-                "ConnectionFactory");
+    public JMSAdapter(final ServletContext servletContext)
+    throws IllegalArgumentException {
+        super(servletContext);
+        String _messagingProperties =
+            servletContext.getInitParameter(MESSAGING_PROPERTIES);
+        LOG.info("Messaging Properties (web.xml): " + _messagingProperties);
+        if (_messagingProperties != null) {
+            try {
+                this.jmsProviderConfiguration =
+                    new JMSProviderConfigurationProperties(
+                        getClass().getResourceAsStream(_messagingProperties));
+            } catch (IOException exception) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "An error occurred " +
+                            "while reading properties: " + _messagingProperties,
+                        exception);
+                }
+            }
+        }
+        if (this.jmsProviderConfiguration == null) {
+            String _serverInfo = servletContext.getServerInfo();
+            if (_serverInfo.startsWith("Sun Java System Application Server")) {
+                _messagingProperties = "glassfish.properties";
+            }
+            LOG.info("Messaging Properties: " + _messagingProperties);
+            try {
+                this.jmsProviderConfiguration =
+                    new JMSProviderConfigurationProperties(
+                        getClass().getResourceAsStream(_messagingProperties));
+            } catch (IOException exception) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "An error occurred " +
+                            "while reading properties: " + _messagingProperties,
+                        exception);
+                }
+            }
         }
         ThreadFactory _threadFactory = new ThreadFactory();
         _threadFactory.setPrefix("MessageReceiver Thread");

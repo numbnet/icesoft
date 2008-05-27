@@ -34,10 +34,44 @@ package com.icesoft.net.messaging;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public abstract class AbstractMessageServiceAdapter
 implements MessageServiceAdapter {
+    private static final Log LOG =
+        LogFactory.getLog(AbstractMessageServiceAdapter.class);
+
+    protected static final String MESSAGING_PROPERTIES =
+        "com.icesoft.net.messaging.properties";
+
+    protected MessageServiceConfiguration messageServiceConfiguration;
     protected Map topicPublisherMap = new HashMap();
     protected Map topicSubscriberMap = new HashMap();
+
+    protected AbstractMessageServiceAdapter(
+        final MessageServiceConfiguration messageServiceConfiguration)
+    throws IllegalArgumentException {
+        if (messageServiceConfiguration == null) {
+            throw
+                new IllegalArgumentException(
+                    "messageServiceConfiguration is null");
+        }
+        this.messageServiceConfiguration = messageServiceConfiguration;
+    }
+
+    protected AbstractMessageServiceAdapter(final ServletContext servletContext)
+    throws IllegalArgumentException {
+        if (servletContext == null) {
+            throw new IllegalArgumentException("servletContext is null");
+        }
+    }
+
+    public MessageServiceConfiguration getMessageServiceConfiguration() {
+        return messageServiceConfiguration;
+    }
 
     public String[] getPublisherTopicNames() {
         return

@@ -2,12 +2,11 @@ package com.icesoft.faces.async.common.messaging;
 
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageSelector;
+import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.expression.Or;
 import com.icesoft.net.messaging.jms.JMSAdapter;
-import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -117,12 +116,12 @@ public class MessageService {
     private void setUpMessageServiceClient(
         final ServletContext servletContext) {
 
-        JMSProviderConfiguration _jmsProviderConfiguration =
-            new JMSProviderConfigurationProperties(servletContext);
+        MessageServiceAdapter _messageServiceAdapter =
+            new JMSAdapter(servletContext);
         messageServiceClient =
             new MessageServiceClient(
-                _jmsProviderConfiguration,
-                new JMSAdapter(_jmsProviderConfiguration),
+                _messageServiceAdapter.getMessageServiceConfiguration(),
+                _messageServiceAdapter,
                 servletContext);
         // subscribing to icefaces contextEventTopic...
         MessageHandler _bufferedContextEventsMessageHandler =
