@@ -34,6 +34,7 @@
 package com.icesoft.faces.async.render;
 
 public interface AsyncRenderer extends Disposable {
+    public boolean isBroadcasted();
 
     /**
      * Get the current name of this AsyncRenderer.  Names are used by the {@link
@@ -44,6 +45,8 @@ public interface AsyncRenderer extends Disposable {
      */
     public String getName();
 
+    public void setBroadcasted(final boolean broadcasted);
+
     /**
      * Set the current name of this AsyncRenderer.  Names are used by the {@link
      * RenderManager} to manage the various Renderers so that they can be easily
@@ -51,7 +54,7 @@ public interface AsyncRenderer extends Disposable {
      *
      * @param name The desired name of the renderer.
      */
-    public void setName(String name);
+    public void setName(final String name);
 
     /**
      * Used by the {@link RenderManager} to set the {@link RenderHub} for this
@@ -67,7 +70,7 @@ public interface AsyncRenderer extends Disposable {
      *
      * @param renderManager The RenderManager to use for this AsyncRenderer
      */
-    public void setRenderManager(RenderManager renderManager);
+    public void setRenderManager(final RenderManager renderManager);
 
     /**
      * Called by the RenderManager when the the application is shutting down to

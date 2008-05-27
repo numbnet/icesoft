@@ -34,12 +34,13 @@
 package com.icesoft.faces.async.render;
 
 import edu.emory.mathcs.backport.java.util.concurrent.CopyOnWriteArraySet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The GroupAsyncRenderer is the foundation class for other types of renderers
@@ -58,25 +59,35 @@ import java.util.Set;
  * @author ICEsoft Technologies, Inc.
  * @see RenderManager, OnDemandRenderer, IntervalRenderer, DelayRenderer
  */
-public class GroupAsyncRenderer implements AsyncRenderer {
+public class GroupAsyncRenderer
+implements AsyncRenderer {
+    private static final Log LOG = LogFactory.getLog(GroupAsyncRenderer.class);
 
-    private static Log log = LogFactory.getLog(GroupAsyncRenderer.class);
+    protected final Set group = new CopyOnWriteArraySet();
 
+    protected boolean broadcasted = false;
     protected String name;
-    protected Set group;
     protected RenderManager renderManager;
 
     protected boolean stopRequested = false;
 
     public GroupAsyncRenderer() {
-        group = new CopyOnWriteArraySet();
+        // do nothing.
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public boolean isBroadcasted() {
+        return broadcasted;
+    }
+
+    public void setBroadcasted(final boolean broadcasted) {
+        this.broadcasted = broadcasted;
+    }
+
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -90,23 +101,23 @@ public class GroupAsyncRenderer implements AsyncRenderer {
      *
      * @param renderable the Renderable instance to add to the group.
      */
-    public void add(Renderable renderable) {
+    public void add(final Renderable renderable) {
         synchronized (group) {
             if (!contains(renderable)) {
                 if (group.add(new WeakReference(renderable))) {
-                    if (log.isTraceEnabled()) {
-                        log.trace(name + " added " + renderable);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " added " + renderable);
                     }
                 } else {
-                    if (log.isWarnEnabled()) {
-                        log.warn(name + " already contains " + renderable);
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(name + " already contains " + renderable);
                     }
                 }
             }
         }
     }
 
-    public boolean contains(Renderable renderable) {
+    public boolean contains(final Renderable renderable) {
         Iterator iter = group.iterator();
         while (iter.hasNext()) {
             if (renderable ==
@@ -123,21 +134,21 @@ public class GroupAsyncRenderer implements AsyncRenderer {
      *
      * @param renderable the Renderable instance to remove
      */
-    public void remove(Renderable renderable) {
+    public void remove(final Renderable renderable) {
         synchronized (group) {
             Iterator iter = group.iterator();
             while (iter.hasNext()) {
                 WeakReference ref = (WeakReference) iter.next();
                 if (renderable == (Renderable) ref.get()) {
                     group.remove(ref);
-                    if (log.isTraceEnabled()) {
-                        log.trace(name + " removing " + renderable);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " removing " + renderable);
                     }
                     return;
                 }
             }
-            if (!group.isEmpty() && log.isWarnEnabled()) {
-                log.warn(name + " does not contain " + renderable);
+            if (!group.isEmpty() && LOG.isWarnEnabled()) {
+                LOG.warn(name + " does not contain " + renderable);
             }
         }
     }
@@ -170,26 +181,7 @@ public class GroupAsyncRenderer implements AsyncRenderer {
      *                               not yet been set.
      */
     public void requestRender() {
-        if (renderManager == null) {
-            String message = "RenderManager has not been set";
-            if (log.isErrorEnabled()) {
-                log.error(message);
-            }
-            throw new IllegalStateException(message);
-
-        }
-
-        Iterator iter = group.iterator();
-        if (log.isTraceEnabled()) {
-            log.trace(name + " preparing to render " + group.size());
-        }
-
-        stopRequested = false;
-        while (iter.hasNext() && !stopRequested) {
-            Renderable renderable =
-                    (Renderable) ((WeakReference) iter.next()).get();
-            renderManager.requestRender(renderable);
-        }
+        requestRender(true);
     }
 
     /**
@@ -211,5 +203,30 @@ public class GroupAsyncRenderer implements AsyncRenderer {
         renderManager.removeRenderer(this);
         clear();
         name = null;
+    }
+
+    void requestRender(final boolean allowBroadcasting) {
+        if (renderManager == null) {
+            String message = "RenderManager has not been set";
+            if (LOG.isErrorEnabled()) {
+                LOG.error(message);
+            }
+            throw new IllegalStateException(message);
+
+        }
+
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(name + " preparing to render " + group.size());
+        }
+        if (allowBroadcasting && isBroadcasted()) {
+            // allow for potential broadcasting
+            renderManager.requestRender(this);
+        }
+        Iterator renderables = group.iterator();
+        stopRequested = false;
+        while (renderables.hasNext() && !stopRequested) {
+            renderManager.requestRender(
+                    (Renderable)((WeakReference)renderables.next()).get());
+        }
     }
 }
