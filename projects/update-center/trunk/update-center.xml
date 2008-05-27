@@ -6,7 +6,7 @@
 
         <module codenamebase="org.icefaces.module.auctionMonitor"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_auctionMonitor_1_7_0.jar"
+                distribution="http://localhost:8080/icefaces_auctionMonitor_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="11932910"
                 needsrestart="false"
