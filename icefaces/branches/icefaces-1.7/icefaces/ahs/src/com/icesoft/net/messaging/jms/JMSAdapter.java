@@ -43,10 +43,10 @@ import com.icesoft.util.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.io.IOException;
 
 import javax.jms.InvalidDestinationException;
 import javax.jms.InvalidSelectorException;
@@ -105,6 +105,7 @@ implements MessageServiceAdapter {
         }
         if (this.jmsProviderConfiguration == null) {
             String _serverInfo = servletContext.getServerInfo();
+            LOG.info("Server Info: " + _serverInfo);
             if (_serverInfo.startsWith("Sun Java System Application Server")) {
                 _messagingProperties = "glassfish.properties";
             }
@@ -145,11 +146,10 @@ implements MessageServiceAdapter {
         }
     }
 
-    public void closeConnection()
+    public void close()
     throws MessageServiceException {
 //        synchronized (topicPublisherMap) {
 //            synchronized (topicPublisherMap) {
-                MessageServiceException _messageServiceException = null;
                 if (!topicPublisherMap.isEmpty()) {
                     Iterator _jmsPublisherConnections =
                         topicPublisherMap.values().iterator();
@@ -159,10 +159,7 @@ implements MessageServiceAdapter {
                             ((JMSPublisherConnection)
                                 _jmsPublisherConnections.next()).close();
                         } catch (JMSException exception) {
-                            if (_messageServiceException == null) {
-                                _messageServiceException =
-                                    new MessageServiceException(exception);
-                            }
+                            throw new MessageServiceException(exception);
                         }
                     }
                     topicPublisherMap.clear();
@@ -176,17 +173,19 @@ implements MessageServiceAdapter {
                             ((JMSSubscriberConnection)
                                 _jmsSubscriberConnections.next()).close();
                         } catch (JMSException exception) {
-                            if (_messageServiceException == null) {
-                                _messageServiceException =
-                                    new MessageServiceException(exception);
-                            }
+                            throw new MessageServiceException(exception);
                         }
                     }
                     topicSubscriberMap.clear();
                 }
-                if (_messageServiceException != null) {
-                    throw _messageServiceException;
+                executorService.shutdown();
+                topicConnectionFactory = null;
+                try {
+                    initialContext.close();
+                } catch (NamingException exception) {
+                    throw new MessageServiceException(exception);
                 }
+                initialContext = null;
 //            }
 //        }
     }
@@ -215,12 +214,14 @@ implements MessageServiceAdapter {
                         _jmsPublisherConnection =
                             new JMSPublisherConnection(
                                 lookUpTopic(topicName), this);
+                    } catch (NamingException exception) {
+                        throw new MessageServiceException(exception);
+                    }
+                    try {
                         // throws JMSException, JMSSecurityException.
                         _jmsPublisherConnection.open();
                         topicPublisherMap.put(
                             topicName, _jmsPublisherConnection);
-                    } catch (NamingException exception) {
-                        throw new MessageServiceException(exception);
                     } catch (JMSSecurityException exception) {
                         throw new MessageServiceException(exception);
                     } catch (JMSException exception) {
@@ -341,11 +342,14 @@ implements MessageServiceAdapter {
                         _jmsSubscriberConnection =
                             new JMSSubscriberConnection(
                                 lookUpTopic(topicName), this);
+                    } catch (NamingException exception) {
+                        throw new MessageServiceException(exception);
+                    }
+                    try {
+                        // throws JMSException, JMSSecurityException.
                         _jmsSubscriberConnection.open();
                         topicSubscriberMap.put(
                             topicName, _jmsSubscriberConnection);
-                    } catch (NamingException exception) {
-                        throw new MessageServiceException(exception);
                     } catch (JMSSecurityException exception) {
                         throw new MessageServiceException(exception);
                     } catch (JMSException exception) {
@@ -463,24 +467,27 @@ implements MessageServiceAdapter {
                     return
                         (Topic)
                             initialContext.lookup(
-                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
-                                    "icefaces.contextEventTopic");
+                                (_topicNamePrefix == null ?
+                                    "" : _topicNamePrefix) +
+                                        "icefaces.contextEventTopic");
                 } else if (MessageServiceClient.RENDER_TOPIC_NAME.
                         equals(topicName)) {
                     
                     return
                         (Topic)
                             initialContext.lookup(
-                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
-                                    "icefaces.renderTopic");
+                                (_topicNamePrefix == null ?
+                                    "" : _topicNamePrefix) +
+                                        "icefaces.renderTopic");
                 } else if (MessageServiceClient.RESPONSE_TOPIC_NAME.
                         equals(topicName)) {
 
                     return
                         (Topic)
                             initialContext.lookup(
-                                (_topicNamePrefix == null ? "" : _topicNamePrefix) +
-                                    "icefaces.responseTopic");
+                                (_topicNamePrefix == null ?
+                                    "" : _topicNamePrefix) +
+                                        "icefaces.responseTopic");
                 } else {
                     throw exception;
                 }
