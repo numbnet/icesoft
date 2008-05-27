@@ -43,10 +43,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-import com.icesoft.faces.context.ByteArrayResource;
-import com.icesoft.faces.context.ResourceRegistry;
-import java.io.*;
-
 public class ImageRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -99,22 +95,8 @@ public class ImageRenderer extends DomBasicRenderer {
         validateParameters(facesContext, uiComponent, UIGraphic.class);
     }
 
-    private String processSrcAttribute(FacesContext facesContext, UIGraphic
+    protected String processSrcAttribute(FacesContext facesContext, UIGraphic
             uiGraphic) {
-        Object o = uiGraphic.getValue();
-        if (o instanceof byte[]) {
-        
-          // support for dynamic images
-          ByteArrayResource bar = new ByteArrayResource((byte[]) o);
-          
-          String mimeType = String.valueOf(uiGraphic.getAttributes().get("mimeType"));
-          if(mimeType.equals("null")) {
-            mimeType = "";
-          }
-          
-          return (((ResourceRegistry) facesContext).registerResource(mimeType, bar)).getPath();
-          
-        } else {
           String value = (String) uiGraphic.getValue();
           // support url as an alias for value
           if (value == null) {
@@ -127,7 +109,6 @@ public class ImageRenderer extends DomBasicRenderer {
           } else {
               return "";
           }
-        }
     }
 }
 
