@@ -41,7 +41,6 @@ import org.krysalis.jcharts.properties.BarChartProperties;
 import org.krysalis.jcharts.properties.ChartProperties;
 import org.krysalis.jcharts.properties.ChartTypeProperties;
 import org.krysalis.jcharts.properties.ClusteredBarChartProperties;
-import org.krysalis.jcharts.properties.LegendProperties;
 import org.krysalis.jcharts.properties.LineChartProperties;
 import org.krysalis.jcharts.properties.PointChartProperties;
 import org.krysalis.jcharts.properties.StackedAreaChartProperties;
@@ -59,9 +58,7 @@ public class AxisChart extends AbstractChart {
     }
 
     protected void buildChart() throws Throwable {
-        if (data == null) {
-            getData(outputChart.getData());
-        }
+        getData(outputChart.getData());
         if (type.equalsIgnoreCase(OutputChart.AREA_CHART_TYPE)) {
             buildAreaChart();
         } else if (type.equalsIgnoreCase(OutputChart.AREA_STACKED_CHART_TYPE)) {
