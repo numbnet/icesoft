@@ -94,6 +94,7 @@ FCKeditor.prototype.CreateIce = function(eleId)
 
 function FCKeditor_OnComplete( editorInstance ){
     toogleState(editorInstance);
+    editorInstance.Events.AttachEvent( 'OnBlur', myOnBlur ) ;
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
@@ -165,11 +166,24 @@ function FCKeditorSave(editorInstance) {
             }
             //set the current contents of the editor
             var valueHolder = $(editIns.Name + 'valueHolder');
-            valueHolder.value = editIns.GetXHTML(true);
+            var editorValue = $(editIns.Name);
+            editorValue.value = editIns.GetXHTML(true);
+            valueHolder.value = editorValue.value;
         }
     } 
 
 	var form = Ice.util.findForm(element);
 	iceSubmit(form,element,new Object());
 	return false;
+}
+
+function myOnBlur(editIns) {
+    if (!editIns) return;
+    var editorValue = $(editIns.Name);
+    var saveOnSubmit = $(editIns.Name + 'saveOnSubmit');
+    if (saveOnSubmit && editorValue) {
+	    var valueHolder = $(editIns.Name + 'valueHolder');
+	    editorValue.value = editIns.GetXHTML(true);
+	    valueHolder.value = editorValue.value;    
+    }
 }

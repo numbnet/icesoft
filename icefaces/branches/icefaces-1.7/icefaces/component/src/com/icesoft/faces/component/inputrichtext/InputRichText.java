@@ -70,6 +70,7 @@ public class InputRichText extends UIInput {
     private String editorValue = null;
     private Boolean disabled = null;
     private String skin = null;
+    private Boolean saveOnSubmit = null;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
@@ -310,4 +311,23 @@ public class InputRichText extends UIInput {
         ValueBinding vb = getValueBinding("skin");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "default";
     }
+    
+    /**
+     * <p>Set the value of the <code>saveOnSubmit</code> property.</p>
+     */
+    public void setSaveOnSubmit(boolean saveOnSubmit) {
+        this.saveOnSubmit = new Boolean(saveOnSubmit);
+    }
+
+    /**
+     * <p>Return the value of the <code>saveOnSubmit</code> property.</p>
+     */
+    public boolean isSaveOnSubmit() {
+        if (saveOnSubmit != null) {
+            return saveOnSubmit.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("saveOnSubmit");
+        return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
+                                    .booleanValue() : false;
+    }    
 }
