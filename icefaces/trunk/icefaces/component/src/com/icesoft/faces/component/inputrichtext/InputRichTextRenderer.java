@@ -53,6 +53,12 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");
             script.appendChild(domContext.createTextNode(call.toString()));
             root.appendChild(script);
+            if (inputRichText.isSaveOnSubmit()) {
+                Element saveOnSubmit = domContext.createElement(HTML.INPUT_ELEM);
+                saveOnSubmit.setAttribute(HTML.ID_ATTR, clientId + "saveOnSubmit");
+                saveOnSubmit.setAttribute(HTML.TYPE_ATTR, "hidden");                
+                root.appendChild(saveOnSubmit);
+            }
             //the following call will update the contents of the editor on every render phase
             JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");            
             domContext.stepOver();
