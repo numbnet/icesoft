@@ -487,22 +487,22 @@ public class TreeRenderer extends DomBasicRenderer {
             // is the last child of its parent, and is not expanded
             // Encode the middle image by default
             // *** cleanup replaced line images with blanks ***
-            if (currentNode.isRoot() && !isExpanded ||
+            if (currentNode.isRoot() ||
                 hideRootNode
                 && currentNode.getNextSibling() == null
                 && currentNode == treeComponentRootNode.getFirstChild()
                     ) {
-                iconImage.setAttribute(HTML.SRC_ATTR,
-                                       treeComponent.getNavOpenTopNoSiblingsImage());
-            } else if (currentNode.isRoot() ||
+                iconImage.setAttribute(HTML.SRC_ATTR, isExpanded ?
+                        treeComponent.getNavCloseTopNoSiblingsImage() : treeComponent.getNavOpenTopNoSiblingsImage());
+            } else if (
                        hideRootNode &&
                        treeComponentRootNode.getFirstChild() == currentNode) {
                 if (isExpanded) {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavCloseTopNoSiblingsImage());
+                                           treeComponent.getNavCloseTopImage());
                 } else {
                     iconImage.setAttribute(HTML.SRC_ATTR,
-                                           treeComponent.getNavOpenTopNoSiblingsImage());
+                                           treeComponent.getNavOpenTopImage());
                 }
             } else if (currentNode.getNextSibling() == null) {
                 if (isExpanded) {
