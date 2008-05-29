@@ -1327,12 +1327,15 @@ public class SelectInputDateRenderer
                     log.debug("-------------InputText enterkey Event ??----");
                 }
                 boolean enterKeyPressed = false;
-                if (requestParameterMap.get("ice.event.target") != null &&
-                        requestParameterMap.get("ice.event.keycode") != null) {
+                if (requestParameterMap.get("ice.event.target") != null ) {
                     enterKeyPressed =  requestParameterMap.get("ice.event.target")
                     .equals(clientId + SelectInputDate.CALENDAR_INPUTTEXT) && 
-                            requestParameterMap.get("ice.event.keycode").equals("13");
+                    ("13".equalsIgnoreCase(String.valueOf
+                            (requestParameterMap.get("ice.event.keycode"))) ||
+                                 "onblur".equalsIgnoreCase(String.valueOf
+                                        (requestParameterMap.get("ice.event.type"))));
                 }
+               
                 if (enterKeyPressed) {
                     decodeInputText(facesContext, component);
                     component.queueEvent(new ActionEvent(component));
