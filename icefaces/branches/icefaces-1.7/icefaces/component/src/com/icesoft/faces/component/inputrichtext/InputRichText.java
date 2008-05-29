@@ -45,7 +45,7 @@ public class InputRichText extends UIInput {
     };
     
     public static void loadFCKJSIfRequired() {
-        if (baseURI == null && exist.booleanValue()) {
+        if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
             ResourceRegistry registry =
                 (ResourceRegistry) FacesContext.getCurrentInstance();
             if (registry != null) {
@@ -147,6 +147,8 @@ public class InputRichText extends UIInput {
     }
 
     public URI getBaseURI() {
+        if (baseURI == null)
+            loadFCKJSIfRequired();
         return baseURI;
     }
 
