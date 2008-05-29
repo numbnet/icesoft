@@ -87,27 +87,6 @@ public class MessagesRenderer extends DomBasicRenderer {
         } else {
             messagesIterator = facesContext.getMessages();
         }
-
-        if (!messagesIterator.hasNext()) {
-            UIComponent uiform = findForm(uiComponent);
-            //no data found yet, pass it to the FormRenderer to rerender it later
-            //on complete rendering of the entire form.
-            if (!renderLater && uiform != null) {
-                uiform.getAttributes().put("$ice-msgs$", uiComponent);
-                uiComponent.getAttributes().put("$render-later$", "true");
-            }
-            domContext.stepOver();
-            return;
-        }
-        
-        if (renderLater) {
-            UIComponent uiform = findForm(uiComponent);
-            //second request has been made successfully, now remove the info 
-            if (uiform != null) {
-                uiform.getAttributes().remove("$ice-msgs$");
-                uiComponent.getAttributes().remove("$render-later$");
-            }                
-        }
         
         // the target element to which messages are appended; either td or span
         Element parentTarget = null;
@@ -128,8 +107,40 @@ public class MessagesRenderer extends DomBasicRenderer {
 
         // ICE-2174
         Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
-        boolean isVisible = visible == null || visible.booleanValue();
-        if (!isVisible) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
+        boolean isVisible = visible == null || visible.booleanValue() ;
+        if (!isVisible || !messagesIterator.hasNext()) parentTarget.setAttribute(HTML.STYLE_ATTR, "display:none;");
+
+
+        if (!messagesIterator.hasNext()) {
+            Element emptyChild = null;
+            if (tableLayout) {
+                emptyChild = (Element) domContext.createElement(HTML.TR_ELEM)
+                            .appendChild( domContext.createElement(HTML.TD_ELEM));
+            } else {
+                emptyChild = (Element) domContext.createElement(HTML.LI_ELEM);
+            }
+            parentTarget.appendChild(emptyChild);
+            UIComponent uiform = findForm(uiComponent);
+            //no data found yet, pass it to the FormRenderer to rerender it later
+            //on complete rendering of the entire form.
+            if (!renderLater && uiform != null) {
+                uiform.getAttributes().put("$ice-msgs$", uiComponent);
+                uiComponent.getAttributes().put("$render-later$", "true");
+            }
+            domContext.stepOver();
+            return;
+        }
+        
+        if (renderLater) {
+            UIComponent uiform = findForm(uiComponent);
+            //second request has been made successfully, now remove the info 
+            if (uiform != null) {
+                uiform.getAttributes().remove("$ice-msgs$");
+                uiComponent.getAttributes().remove("$render-later$");
+            }                
+        }
+        
+
 
         FacesMessage nextFacesMessage = null;
         while (messagesIterator.hasNext()) {
