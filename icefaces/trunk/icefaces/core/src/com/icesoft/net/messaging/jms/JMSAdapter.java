@@ -67,7 +67,8 @@ extends AbstractMessageServiceAdapter
 implements MessageServiceAdapter {
     private static final Log LOG = LogFactory.getLog(JMSAdapter.class);
 
-    private JMSProviderConfiguration jmsProviderConfiguration;
+    private JMSProviderConfiguration[] jmsProviderConfigurations;
+    private int index = -1;
 
     private InitialContext initialContext;
     private TopicConnectionFactory topicConnectionFactory;
@@ -77,7 +78,10 @@ implements MessageServiceAdapter {
     public JMSAdapter(final JMSProviderConfiguration jmsProviderConfiguration)
     throws IllegalArgumentException {
         super(jmsProviderConfiguration);
-        this.jmsProviderConfiguration = jmsProviderConfiguration;
+        this.jmsProviderConfigurations =
+            new JMSProviderConfiguration[] {
+                jmsProviderConfiguration
+            };
         ThreadFactory _threadFactory = new ThreadFactory();
         _threadFactory.setPrefix("MessageReceiver Thread");
         executorService = Executors.newCachedThreadPool(_threadFactory);
@@ -91,9 +95,12 @@ implements MessageServiceAdapter {
         LOG.info("Messaging Properties (web.xml): " + _messagingProperties);
         if (_messagingProperties != null) {
             try {
-                this.jmsProviderConfiguration =
-                    new JMSProviderConfigurationProperties(
-                        getClass().getResourceAsStream(_messagingProperties));
+                this.jmsProviderConfigurations =
+                    new JMSProviderConfiguration[] {
+                        new JMSProviderConfigurationProperties(
+                            getClass().
+                                getResourceAsStream(_messagingProperties))
+                    };
             } catch (IOException exception) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(
@@ -103,23 +110,51 @@ implements MessageServiceAdapter {
                 }
             }
         }
-        if (this.jmsProviderConfiguration == null) {
+        if (this.jmsProviderConfigurations == null) {
             String _serverInfo = servletContext.getServerInfo();
             LOG.info("Server Info: " + _serverInfo);
             if (_serverInfo.startsWith("Sun Java System Application Server")) {
-                _messagingProperties = "glassfish.properties";
-            }
-            LOG.info("Messaging Properties: " + _messagingProperties);
-            try {
-                this.jmsProviderConfiguration =
-                    new JMSProviderConfigurationProperties(
-                        getClass().getResourceAsStream(_messagingProperties));
-            } catch (IOException exception) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(
-                        "An error occurred " +
-                            "while reading properties: " + _messagingProperties,
-                        exception);
+                // GlassFish
+                LOG.info("Messaging Properties: glassfish.properties");
+                try {
+                    this.jmsProviderConfigurations =
+                        new JMSProviderConfiguration[] {
+                            new JMSProviderConfigurationProperties(
+                                getClass().
+                                    getResourceAsStream("glassfish.properties"))
+                        };
+                } catch (IOException exception) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(
+                            "An error occurred " +
+                                "while reading properties: " +
+                                    "glassfish.properties",
+                            exception);
+                    }
+                }
+            } else if (_serverInfo.startsWith("JBoss")) {
+                // JBoss
+                LOG.info(
+                    "Messaging Properties: " +
+                        "jboss_ha.properties, jboss.properties");
+                try {
+                    this.jmsProviderConfigurations =
+                        new JMSProviderConfiguration[] {
+                            new JMSProviderConfigurationProperties(
+                                getClass().
+                                    getResourceAsStream("jboss_ha.properties")),
+                            new JMSProviderConfigurationProperties(
+                                getClass().
+                                    getResourceAsStream("jboss.properties"))
+                        };
+                } catch (IOException exception) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(
+                            "An error occurred " +
+                                "while reading properties: " +
+                                    "jboss_ha.properties or jboss.properties",
+                            exception);
+                    }
                 }
             }
         }
@@ -191,7 +226,7 @@ implements MessageServiceAdapter {
     }
 
     public JMSProviderConfiguration getJMSProviderConfiguration() {
-        return jmsProviderConfiguration;
+        return index != -1 ? jmsProviderConfigurations[index] : null;
     }
 
     public void publish(final Message message, final String topicName)
@@ -404,53 +439,68 @@ implements MessageServiceAdapter {
     private void initialize()
     throws NamingException {
         Properties _environmentProperties = new Properties();
-        String _initialContextFactory =
-            jmsProviderConfiguration.getInitialContextFactory();
-        if (_initialContextFactory != null) {
-            _environmentProperties.setProperty(
-                JMSProviderConfiguration.INITIAL_CONTEXT_FACTORY,
-                _initialContextFactory);
-        }
-        String _providerUrl =
-            jmsProviderConfiguration.getProviderURL();
-        if (_providerUrl != null) {
-            _environmentProperties.setProperty(
-                JMSProviderConfiguration.PROVIDER_URL,
-                _providerUrl);
-        }
-        String _urlPackagePrefixes =
-            jmsProviderConfiguration.getURLPackagePrefixes();
-        if (_urlPackagePrefixes != null) {
-            _environmentProperties.setProperty(
-                JMSProviderConfiguration.URL_PACKAGE_PREFIXES,
-                _urlPackagePrefixes);
-        }
-        if (LOG.isInfoEnabled()) {
-            StringBuffer _environment = new StringBuffer();
-            _environment.append("JMS Environment:\r\n");
-            Iterator _properties = _environmentProperties.entrySet().iterator();
-            while (_properties.hasNext()) {
-                Map.Entry _property = (Map.Entry)_properties.next();
-                _environment.append("        ");
-                _environment.append(_property.getKey());
-                _environment.append(" = ");
-                _environment.append(_property.getValue());
-                _environment.append("\r\n");
+        String _initialContextFactory;
+        for (int i = 0; i < jmsProviderConfigurations.length; i++) {
+            _initialContextFactory =
+                jmsProviderConfigurations[i].getInitialContextFactory();
+            if (_initialContextFactory != null) {
+                _environmentProperties.setProperty(
+                    JMSProviderConfiguration.INITIAL_CONTEXT_FACTORY,
+                    _initialContextFactory);
             }
-            LOG.info(_environment.toString());
+            String _providerUrl =
+                jmsProviderConfigurations[i].getProviderURL();
+            if (_providerUrl != null) {
+                _environmentProperties.setProperty(
+                    JMSProviderConfiguration.PROVIDER_URL,
+                    _providerUrl);
+            }
+            String _urlPackagePrefixes =
+                jmsProviderConfigurations[i].getURLPackagePrefixes();
+            if (_urlPackagePrefixes != null) {
+                _environmentProperties.setProperty(
+                    JMSProviderConfiguration.URL_PACKAGE_PREFIXES,
+                    _urlPackagePrefixes);
+            }
+            if (LOG.isInfoEnabled()) {
+                StringBuffer _environment = new StringBuffer();
+                _environment.append("JMS Environment:\r\n");
+                Iterator _properties =
+                    _environmentProperties.entrySet().iterator();
+                while (_properties.hasNext()) {
+                    Map.Entry _property = (Map.Entry)_properties.next();
+                    _environment.append("        ");
+                    _environment.append(_property.getKey());
+                    _environment.append(" = ");
+                    _environment.append(_property.getValue());
+                    _environment.append("\r\n");
+                }
+                LOG.info(_environment.toString());
+            }
+            try {
+                // throws NamingException.
+                initialContext = new InitialContext(_environmentProperties);
+                // throws NamingException.
+                topicConnectionFactory =
+                    (TopicConnectionFactory)
+                        initialContext.lookup(
+                            jmsProviderConfigurations[i].
+                                getTopicConnectionFactoryName());
+                index = i;
+                break;
+            } catch (NamingException exception) {
+                LOG.error(exception.getMessage());
+                if ((i + 1) == jmsProviderConfigurations.length) {
+                    throw exception;
+                }
+            }
         }
-        // throws NamingException.
-        initialContext = new InitialContext(_environmentProperties);
-        // throws NamingException.
-        topicConnectionFactory =
-            (TopicConnectionFactory)
-                initialContext.lookup(
-                    jmsProviderConfiguration.getTopicConnectionFactoryName());
     }
 
     private Topic lookUpTopic(final String topicName)
     throws NamingException {
-        String _topicNamePrefix = jmsProviderConfiguration.getTopicNamePrefix();
+        String _topicNamePrefix =
+            jmsProviderConfigurations[index].getTopicNamePrefix();
         try {
             // throws NamingException.
             return
