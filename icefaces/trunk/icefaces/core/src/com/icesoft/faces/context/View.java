@@ -49,6 +49,9 @@ public class View implements CommandQueue {
     private Runnable dispose;
 
     public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
+        if (Log.isDebugEnabled()) {
+            Log.debug("View Created: " + viewIdentifier + ", ice.session: "  + sessionID);
+        } 
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
@@ -78,6 +81,9 @@ public class View implements CommandQueue {
         });
         this.dispose = new Runnable() {
             public void run() {
+                if (Log.isDebugEnabled()) {
+                    Log.debug("Disposing of View: " + viewIdentifier);
+                }
                 persistentFacesState.setCurrentInstance();
                 facesContext.setCurrentInstance();
                 notifyViewDisposal();
