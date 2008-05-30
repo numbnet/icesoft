@@ -38,6 +38,7 @@ import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 import com.icesoft.util.SeamUtilities;
+import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -160,11 +161,13 @@ class RunnableRender implements Runnable {
                 }
             }
         } finally {
-
-            // 2807 release ThreadLocals
+            // 2807 release ThreadLocal on state 
             state.release();
+        }
+        if (log.isTraceEnabled()) {
+            ThreadLocalUtility.checkThreadLocals("exiting RunnableRender run() method");
         } 
-    }
+   }
 
     /**
      * See note above in run method. Just fiddle with the session to try to cause
