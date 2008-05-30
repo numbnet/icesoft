@@ -14,4 +14,6 @@ public interface FileUploadComponent {
     void setProgress(int percentage);
 
     void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException;
+    
+    boolean renderOnProgress();
 }

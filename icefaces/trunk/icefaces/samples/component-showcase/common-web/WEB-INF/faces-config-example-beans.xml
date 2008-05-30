@@ -359,10 +359,6 @@
             org.icefaces.application.showcase.view.bean.examples.component.inputFile.InputFileController
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
-        <managed-property>
-            <property-name>renderManager</property-name>
-            <value>#{renderManager}</value>
-        </managed-property>
     </managed-bean>
     <!-- FCKEditor  -->
     <managed-bean>

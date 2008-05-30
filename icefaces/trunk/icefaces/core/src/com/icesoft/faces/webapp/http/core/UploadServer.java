@@ -8,6 +8,8 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.util.SeamUtilities;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.ProgressListener;
@@ -64,9 +66,9 @@ public class UploadServer implements Server {
                         final View view = (View) views.get(viewIdentifier);
                         final BridgeFacesContext context = view.getFacesContext();
                         final FileUploadComponent component = (FileUploadComponent) D2DViewHandler.findComponent(componentID, context.getViewRoot());
-                        progressCalculator.setListenerAndContext(component, context);
+                        view.makeCurrent();
+                        progressCalculator.setListenerAndContextAndPFS(component, context, view.getPersistentFacesState());
                         try {
-                            view.makeCurrent();
                             component.upload(
                                     item,
                                     uploadDirectory,
@@ -112,6 +114,7 @@ public class UploadServer implements Server {
         private final int GRANULARITY = 10;
         private FileUploadComponent listener;
         private BridgeFacesContext context;
+        private PersistentFacesState state;
         private int lastGranularlyNotifiablePercent = -1;
 
         public void progress(long read, long total) {
@@ -126,28 +129,66 @@ public class UploadServer implements Server {
             }
         }
 
-        public void setListenerAndContext(
-                FileUploadComponent listener, BridgeFacesContext context) {
+        public void setListenerAndContextAndPFS(
+                FileUploadComponent listener,
+                BridgeFacesContext context,
+                PersistentFacesState state) {
             this.listener = listener;
             this.context = context;
+            this.state = state;
+            // Always setCurrent() right away, in case we never get progress,
+            //  notifications, and are immediately done, in case
+            //  InputFile.upload(-) needs things setup
+            setCurrent();
             potentiallyNotify();
         }
 
         public void reset() {
+            PersistentFacesState st = state;
             BridgeFacesContext ctx = context;
             FileUploadComponent component = listener;
+            state = null;
             context = null;
             listener = null;
             if (ctx != null && component != null) {
                 ctx.setCurrentInstance();
+                st.setCurrentInstance();
                 component.setProgress(0);
             }
         }
-
+        
         protected void potentiallyNotify() {
-            if (listener != null && lastGranularlyNotifiablePercent >= 0) {
-                context.setCurrentInstance();
+            if (listener != null &&
+                context != null &&
+                state != null &&
+                lastGranularlyNotifiablePercent >= 0)
+            {
+                setCurrent();
                 listener.setProgress(lastGranularlyNotifiablePercent);
+                
+                // If we can do server push
+                if (!state.isSynchronousMode() && listener.renderOnProgress()) {
+                    try{
+                        // Seam throws spurious exceptions with PFS.renderLater
+                        //  so we'll work-around that for now. Fix later.
+                        if (SeamUtilities.isSeamEnvironment()) {
+                            state.setupAndExecuteAndRender();
+                        }
+                        else {
+                            state.renderLater();
+                        }
+                    }
+                    catch(Exception e) {
+                        Log.warn("Problem rendering view during file upload", e);
+                    }
+                }
+            }
+        }
+        
+        private void setCurrent() {
+            if(context != null && state != null) {
+                context.setCurrentInstance();
+                state.setCurrentInstance();
             }
         }
     }
