@@ -226,7 +226,7 @@ public class PanelTabSet
         if (!isRendered()) {
             return;
         }
-        if (!isImmediate()) {
+        if (!isImmediate() && eventQueued) {
             _selectedIndex.validate(context, this);            
         }            
         _selectedIndex.updateModel(context, this);
