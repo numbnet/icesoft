@@ -9,6 +9,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +22,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
     //having a static field here is ok because web applications are started in separate classloaders
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     private final static List SessionDispatchers = new ArrayList();
-    private final static List SessionMonitors = new ArrayList();
-    private final static List SessionIDs = new ArrayList();
+    // # 3073 Manage sessions with this structure
+    private final static Map SessionMonitors = new HashMap();
     private Map sessionBoundServers = new HashMap();
     private PseudoServlet invalidRequestServlet;
 
@@ -56,8 +58,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
     //synchronize access in case there are multiple SessionDispatcher instances created
     private static void notifyIfNew(HttpSession session) {
-        synchronized (SessionIDs) {
-            if (!SessionIDs.contains(session.getId())) {
+        synchronized (SessionMonitors) {
+            if (!SessionMonitors.containsKey(session.getId())) {
                 notifySessionInitialized(session);
             }
         }
@@ -100,8 +102,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
      * Create new session bound servers.
      */
     private static void notifySessionInitialized(HttpSession session) {
-        SessionIDs.add(session.getId());
+//        SessionIDs.add(session.getId());
         Monitor monitor = new Monitor(session);
+        SessionMonitors.put(session.getId(), monitor);
 
         Iterator i = SessionDispatchers.iterator();
         while (i.hasNext()) {
@@ -115,20 +118,33 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     private static void notifySessionShutdown(final HttpSession session) {
-        //shutdown session bound servers
-        Iterator i = SessionDispatchers.iterator();
-        while (i.hasNext()) {
-            try {
-                SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
-                sessionDispatcher.sessionShutdown(session);
-            } catch (Exception e) {
-                Log.error(e);
-            }
+
+        if (Log.isDebugEnabled()) {
+            Log.debug("Shutting down session: " + session.getId());
         }
+        synchronized( SessionMonitors ) {
+            String sessionID = session.getId();
+            // avoid executing this method twice
+            if (!SessionMonitors.containsKey(sessionID)) {
+                if (Log.isDebugEnabled()) {
+                    Log.debug("Session: " + sessionID + " already shutdown, skipping");
+                    return;
+                }
+            }
+
+            //shutdown session bound servers
+            Iterator i = SessionDispatchers.iterator();
+            while (i.hasNext()) {
+                try {
+                    SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
+                    sessionDispatcher.sessionShutdown(session);
+                } catch (Exception e) {
+                    Log.error(e);
+                }
+            }
 
         //invalidate session and discard session ID
-        synchronized (SessionIDs) {
-            i = SessionDispatchers.iterator();
+                i = SessionDispatchers.iterator();
             while (i.hasNext()) {
                 try {
                     SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
@@ -138,13 +154,14 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }
             }
 
-            String sessionID = session.getId();
+//            String sessionID = session.getId();
             try {
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
             } finally {
-                SessionIDs.remove(sessionID);
+//                SessionIDs.remove(sessionID);
+                SessionMonitors.remove(sessionID);
             }
         }
     }
@@ -154,7 +171,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         return ((SessionDispatcher) SessionDispatchers.get(0)).lookupServlet(session);
     }
 
-    public static class Listener implements ServletContextListener {
+    public static class Listener implements ServletContextListener, HttpSessionListener {
         private boolean run = true;
 
         public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -162,8 +179,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 public void run() {
                     while (run) {
                         try {
-                            //iterate over the sessions using a copying iterator
-                            Iterator iterator = new ArrayList(SessionMonitors).iterator();
+                            // Iterate over the session monitors using a copying iterator
+                            Iterator iterator = new ArrayList(SessionMonitors.values()).iterator();
                             while (iterator.hasNext()) {
                                 final Monitor sessionMonitor = (Monitor) iterator.next();
                                 sessionMonitor.shutdownIfExpired();
@@ -183,6 +200,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
         public void contextDestroyed(ServletContextEvent servletContextEvent) {
             run = false;
         }
+
+        public void sessionCreated(HttpSessionEvent event) {
+        }
+
+        public void sessionDestroyed(HttpSessionEvent event) {
+            notifySessionShutdown(event.getSession());
+        } 
     }
 
 
@@ -193,7 +217,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
         private Monitor(HttpSession session) {
             this.session = session;
             this.lastAccess = session.getLastAccessedTime();
-            SessionMonitors.add(this);
         }
 
         public void touchSession() {
@@ -212,7 +235,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         public void shutdown() {
-            SessionMonitors.remove(this);
             notifySessionShutdown(session);
         }
 
