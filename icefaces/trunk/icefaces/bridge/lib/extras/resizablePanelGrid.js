@@ -324,6 +324,8 @@ Ice.PanelDivider.addMethods({
   getGhost: function() {
     if(!this.ghost) {
         this.ghost = this.source.cloneNode(true);
+        this.ghost.id = this.source.id + ":ghost";
+        this.ghost.onmousedown = null;
         this.source.parentNode.appendChild(this.ghost);
         this.ghost.style.width = Element.getWidth(this.source) + "px";
         this.getGhost().style.visibility="hidden";
@@ -337,6 +339,8 @@ Ice.PanelDivider.addMethods({
   },
 
   adjustPosition:function(event) {
+      var savedVisibility = this.getNextElement().style.visibility;
+      this.getNextElement().style.visibility = "hidden";
    if (this.horizontal) {
         var leftElementHeight = (Element.getHeight(this.getPreviousElement()));
         var rightElementHeight = (Element.getHeight(this.getNextElement()));
@@ -385,6 +389,7 @@ Ice.PanelDivider.addMethods({
         }
      }
       Ice.PanelDivider.adjustSecondPaneSize(this.source, this.horizontal);
+      this.getNextElement().style.visibility = savedVisibility;
         this.submitInfo(event, inPercent);
   },
   
