@@ -119,12 +119,10 @@ public class Parser {
         TagWire rootWire = new TagWire();
         rootWire.setTag(rootTag);
 
-        synchronized (this) {
-            digester.clear();
-            digester.push(rootTag);
-            digester.push(rootWire);
-            digester.parse(page);
-        }
+        digester.clear();
+        digester.push(rootTag);
+        digester.push(rootWire);
+        digester.parse(page);
 
         TagWire realViewWire = null;
         try {
