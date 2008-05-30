@@ -34,6 +34,7 @@
         <exclude name="lib/mvel14.jar"/>
         <exclude name="lib/jbpm-jpdl.jar"/>
         <exclude name="lib/janino.jar"/>
+		<include name="lib/jboss-common-core.jar"/>
     </fileset>
 	
 	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">

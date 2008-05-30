@@ -30,7 +30,7 @@
 	     <!-- <include name="lib/jstl.jar" /> 
 	       <include name="lib/el-ri.jar" />
 	       <include name="lib/el-api.jar" /> -->
-		
+		<include name="lib/jboss-common-core.jar"/>		
 
 	      <!-- Hibernate and deps -->
 	      <include name="lib/hibernate.jar" />

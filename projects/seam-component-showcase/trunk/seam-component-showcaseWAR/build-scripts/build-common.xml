@@ -399,7 +399,7 @@
 	             <include name="commons-discovery.jar"/>
 	             <include name="xercesImpl.jar"/>
 	             <include name="xml-apis.jar"/>
-	             <include name="el-ri.jar"/>
+	             <include name="el-*.jar"/>
 	           	 <include name="portlet.jar"/>
                  <exclude name="commons-collections.jar"/>
 		   </fileset>

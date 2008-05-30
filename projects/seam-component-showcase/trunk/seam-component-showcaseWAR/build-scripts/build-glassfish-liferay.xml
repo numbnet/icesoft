@@ -31,6 +31,7 @@
         <include name="lib/commons-beanutils.jar"/>
      	<include name="lib/commons-logging.jar" />  
     	<include name="lib/commons-collections.jar" />
+		<include name="lib/jboss-common-core.jar"/>
         <include name="lib/log4j.jar"/>
         <exclude name="lib/mvel14.jar"/>
         <exclude name="lib/jbpm-jpdl.jar"/>
