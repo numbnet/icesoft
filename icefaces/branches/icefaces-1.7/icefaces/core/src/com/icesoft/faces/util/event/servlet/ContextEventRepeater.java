@@ -306,6 +306,9 @@ implements HttpSessionListener, ServletContextListener {
     }
 
     public synchronized void sessionCreated(final HttpSessionEvent event) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("session Created event: " + event.getSession().getId());
+        }
     }
 
     /**
@@ -315,6 +318,12 @@ implements HttpSessionListener, ServletContextListener {
      * @param event the HTTP session event.
      */
     public synchronized void sessionDestroyed(final HttpSessionEvent event) {
+        if (LOG.isDebugEnabled() ) {
+            LOG.debug("SessionDestroyed event, session: " + event.getSession().getId());
+        }
+        // #3073 directly invoke method on SessionDispatcher for all sessions
+        // (Not just wrapped ones)
+        SessionDispatcherListener.sessionDestroyed(event);
         SessionDestroyedEvent sessionDestroyedEvent =
             new SessionDestroyedEvent(event);
         Iterator _listeners = listeners.keySet().iterator();
@@ -368,7 +377,7 @@ implements HttpSessionListener, ServletContextListener {
         }
         if (LOG.isTraceEnabled()) {
             LOG.trace(
-                "View Number: " + viewNumberRetrievedEvent.getViewNumber());
+                "New View number created: " + viewNumberRetrievedEvent.getViewNumber());
         }
     }
 
