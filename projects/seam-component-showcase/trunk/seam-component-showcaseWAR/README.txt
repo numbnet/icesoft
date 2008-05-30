@@ -98,10 +98,22 @@ Glassfish/Liferay bundle (Liferay 4.4.2 on Glassfish V2 UR1)
  * Install 
  * Must have jboss-seam-2.1.0.A1 as minimum
  * ant glassfishv2-liferay4.42
- * copy \dist\glassifhs-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
+ * copy \dist\glassfish-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * make sure you have both the embedded Derby database as well as AS running
  * use URL:- http://localhost:8080/c/portal/login
  * sign in and create some pages and place some of the portlets on them.  If you want
    certain layouts, you may have to alter the css for layout on the pages.  The basic xp-portlet.css
+   in ICEfaces libraries works well for most in full page of portal, but you may have to override some
+   of the style classes if you use a different layout.
+
+Jboss-4.2.2.GA/Liferay5.0.1.RC bundle 
+ * Install 
+ * Must have jboss-seam-2.1.0.A1 as minimum
+ * ant jboss4.2.2-liferay5.0.1.RC
+ * copy \dist\jboss-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
+ * start AS
+ * use URL:- http://localhost:8080/c/portal/login
+ * sign in and create some pages and place some of the portlets on them.  If you want
+   certain layouts, you may have to alter the css for layout on the pages.  The rime-portlet.css
    in ICEfaces libraries works well for most in full page of portal, but you may have to override some
    of the style classes if you use a different layout.

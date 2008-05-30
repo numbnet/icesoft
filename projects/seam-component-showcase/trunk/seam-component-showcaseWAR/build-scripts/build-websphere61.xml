@@ -37,7 +37,7 @@
      <!--    <include name="lib/persistence-api.jar" /> -->
         <include name="lib/cglib.jar"/>
         <include name="lib/antlr.jar" /> 
-	    	
+			<include name="lib/jboss-common-core.jar"/>    	
 	    <!-- for facelets jsp tags -->
 	    <include name="lib/servlet-api.jar"/>
     </fileset>
