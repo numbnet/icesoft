@@ -73,11 +73,9 @@ public class DelayRenderer extends OnDemandRenderer implements Runnable {
      * explicitly set, then the default delay value (60000 ms) is used.
      */
     public void requestRender() {
-
-        ScheduledExecutorService scheduleService =
-                renderManager.getScheduledService();
-        future = scheduleService.schedule(this, delay, TimeUnit.MILLISECONDS);
-
+        future =
+            RenderManager.getInstance().getScheduledService().
+                schedule(this, delay, TimeUnit.MILLISECONDS);
         if (log.isDebugEnabled()) {
             log.debug("delay render started: delay is " + delay + " ms");
         }

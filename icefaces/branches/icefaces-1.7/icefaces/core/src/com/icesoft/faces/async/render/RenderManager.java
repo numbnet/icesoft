@@ -180,6 +180,18 @@ public class RenderManager implements Disposable {
     }
 
     /**
+     * When an AsyncRenderer disposes itself, it also needs to remove itself
+     * from the RenderManager's collection.
+     *
+     * @param renderer  The Renderer to remove
+     */
+    public void removeRenderer(final AsyncRenderer renderer) {
+        if (internalRenderManager != null) {
+            internalRenderManager.removeRenderer(renderer);
+        }
+    }
+
+    /**
      * Submits the supplied Renderable instance to the RenderHub for
      * server-initiated render.
      *
@@ -206,18 +218,6 @@ public class RenderManager implements Disposable {
                     new ServletContextConfiguration(
                         "com.icesoft.faces.async.render",
                         servletConfig.getServletContext()));
-        }
-    }
-
-    /**
-     * When an AsyncRenderer disposes itself, it also needs to remove itself
-     * from the RenderManager's collection.
-     *
-     * @param renderer  The Renderer to remove
-     */
-    protected void removeRenderer(final AsyncRenderer renderer) {
-        if (internalRenderManager != null) {
-            internalRenderManager.removeRenderer(renderer);
         }
     }
 
@@ -253,11 +253,6 @@ public class RenderManager implements Disposable {
         private final ContextDestroyedListener shutdownListener =
             new ContextDestroyedListener(this);
 
-//        private RenderDispatcher applicationRenderDispatcher =
-//            new ApplicationRenderDispatcher();
-//        private RenderDispatcher broadcastRenderDispatcher =
-//            new BroadcastRenderDispatcher(this);
-
         private boolean broadcasted;
 
         private InternalRenderManager(final Configuration configuration) {
@@ -289,8 +284,6 @@ public class RenderManager implements Disposable {
             }
             renderHub.dispose();
             LOG.debug("All renderers and render hub have been disposed.");
-//            applicationRenderDispatcher.dispose();
-//            broadcastRenderDispatcher.dispose();
             ContextEventRepeater.removeListener(shutdownListener);
         }
 
@@ -317,15 +310,7 @@ public class RenderManager implements Disposable {
             return broadcasted;
         }
 
-        public void requestRender(final Renderable renderable) {
-            renderHub.requestRender(renderable);
-        }
-
-        public void setBroadcasted(final boolean broadcasted) {
-            this.broadcasted = broadcasted;
-        }
-
-        protected void removeRenderer(final AsyncRenderer renderer) {
+        public void removeRenderer(final AsyncRenderer renderer) {
             if (renderer == null) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Renderer is null");
@@ -341,6 +326,14 @@ public class RenderManager implements Disposable {
             }
         }
 
+        public void requestRender(final Renderable renderable) {
+            renderHub.requestRender(renderable);
+        }
+
+        public void setBroadcasted(final boolean broadcasted) {
+            this.broadcasted = broadcasted;
+        }
+
         ScheduledThreadPoolExecutor getScheduledService() {
             return renderHub.getScheduledService();
         }
@@ -351,9 +344,6 @@ public class RenderManager implements Disposable {
             }
             if (isBroadcasted() && renderer.isBroadcasted()) {
                 broadcastHub.relayRenderRequest(renderer);
-//                applicationRenderDispatcher.requestRender(renderer);
-//            } else {
-//                broadcastRenderDispatcher.requestRender(renderer);
             }
         }
 
@@ -388,22 +378,26 @@ public class RenderManager implements Disposable {
                 }
                 return (AsyncRenderer)rendererGroupMap.get(name);
             }
-            AsyncRenderer renderer = null;
+            AsyncRenderer renderer;
             switch (type) {
-                case ON_DEMAND:
+                case ON_DEMAND :
                     renderer = new OnDemandRenderer();
                     break;
-                case INTERVAL:
+                case INTERVAL :
                     renderer = new IntervalRenderer();
                     break;
-                case DELAY:
+                case DELAY :
                     renderer = new DelayRenderer();
                     break;
+                default :
+                    // this shouldn't happen
+                    renderer = null;
             }
-            renderer.setBroadcasted(broadcasted);
-            renderer.setName(name);
-            renderer.setRenderManager(this);
-            rendererGroupMap.put(name, renderer);
+            if (renderer != null) {
+                renderer.setBroadcasted(broadcasted);
+                renderer.setName(name);
+                rendererGroupMap.put(name, renderer);
+            }
             if (LOG.isTraceEnabled()) {
                 LOG.trace("New renderer retrieved: " + name);
             }

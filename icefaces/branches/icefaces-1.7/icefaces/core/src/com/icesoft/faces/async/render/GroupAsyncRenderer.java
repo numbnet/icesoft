@@ -42,6 +42,15 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.http.HttpSession;
+import javax.faces.context.FacesContext;
+
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
+import com.icesoft.faces.context.View;
+
 /**
  * The GroupAsyncRenderer is the foundation class for other types of renderers
  * that are designed to operate on a group of {@link Renderable}s.  It
@@ -67,7 +76,6 @@ implements AsyncRenderer {
 
     protected boolean broadcasted = false;
     protected String name;
-    protected RenderManager renderManager;
 
     protected boolean stopRequested = false;
 
@@ -75,24 +83,8 @@ implements AsyncRenderer {
         // do nothing.
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public boolean isBroadcasted() {
-        return broadcasted;
-    }
-
-    public void setBroadcasted(final boolean broadcasted) {
-        this.broadcasted = broadcasted;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
+    public void add(final HttpSession httpSession) {
+        add((Object)httpSession);
     }
 
     /**
@@ -102,64 +94,46 @@ implements AsyncRenderer {
      * @param renderable the Renderable instance to add to the group.
      */
     public void add(final Renderable renderable) {
-        synchronized (group) {
-            if (!contains(renderable)) {
-                if (group.add(new WeakReference(renderable))) {
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace(name + " added " + renderable);
-                    }
-                } else {
-                    if (LOG.isWarnEnabled()) {
-                        LOG.warn(name + " already contains " + renderable);
-                    }
-                }
-            }
-        }
-    }
-
-    public boolean contains(final Renderable renderable) {
-        Iterator iter = group.iterator();
-        while (iter.hasNext()) {
-            if (renderable ==
-                (Renderable) ((WeakReference) iter.next()).get()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Removes a Renderable, via a WeakReference, from the set of Renderables of
-     * this group.
-     *
-     * @param renderable the Renderable instance to remove
-     */
-    public void remove(final Renderable renderable) {
-        synchronized (group) {
-            Iterator iter = group.iterator();
-            while (iter.hasNext()) {
-                WeakReference ref = (WeakReference) iter.next();
-                if (renderable == (Renderable) ref.get()) {
-                    group.remove(ref);
-                    if (LOG.isTraceEnabled()) {
-                        LOG.trace(name + " removing " + renderable);
-                    }
-                    return;
-                }
-            }
-            if (!group.isEmpty() && LOG.isWarnEnabled()) {
-                LOG.warn(name + " does not contain " + renderable);
-            }
-        }
+        add((Object)renderable);
     }
 
     /**
      * Removes all Renderables from the group.
      */
     public void clear() {
+        // todo: remove synchronized block as CopyOnWriteArraySet is used?
         synchronized (group) {
             group.clear();
         }
+    }
+
+    public boolean contains(final HttpSession httpSession) {
+        return contains((Object)httpSession);
+    }
+
+    public boolean contains(final Renderable renderable) {
+        return contains((Object)renderable);
+    }
+
+    /**
+     * Remove all Renderables from the group and removes the reference to the
+     * RenderHub.  Once disposed, a GroupAsyncRenderer cannot be re-used.  This
+     * method is typically used by the RenderManager to cleanly dispose of all
+     * managed Renderers when the application is shutting down.
+     */
+    public void dispose() {
+        requestStop();
+        RenderManager.getInstance().removeRenderer(this);
+        clear();
+        name = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isBroadcasted() {
+        return broadcasted;
     }
 
     /**
@@ -171,6 +145,20 @@ implements AsyncRenderer {
      */
     public boolean isEmpty() {
         return group.isEmpty();
+    }
+
+    public void remove(final HttpSession httpSession) {
+        remove((Object)httpSession);
+    }
+
+    /**
+     * Removes a Renderable, via a WeakReference, from the set of Renderables of
+     * this group.
+     *
+     * @param renderable the Renderable instance to remove
+     */
+    public void remove(final Renderable renderable) {
+        remove((Object)renderable);
     }
 
     /**
@@ -192,41 +180,149 @@ implements AsyncRenderer {
         stopRequested = true;
     }
 
-    /**
-     * Remove all Renderables from the group and removes the reference to the
-     * RenderHub.  Once disposed, a GroupAsyncRenderer cannot be re-used.  This
-     * method is typically used by the RenderManager to cleanly dispose of all
-     * managed Renderers when the application is shutting down.
-     */
-    public void dispose() {
-        requestStop();
-        renderManager.removeRenderer(this);
-        clear();
-        name = null;
+    public void setBroadcasted(final boolean broadcasted) {
+        this.broadcasted = broadcasted;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setRenderManager(final RenderManager renderManager) {
+        // do nothing.
     }
 
     void requestRender(final boolean allowBroadcasting) {
-        if (renderManager == null) {
-            String message = "RenderManager has not been set";
-            if (LOG.isErrorEnabled()) {
-                LOG.error(message);
-            }
-            throw new IllegalStateException(message);
-
-        }
-
         if (LOG.isTraceEnabled()) {
             LOG.trace(name + " preparing to render " + group.size());
         }
         if (allowBroadcasting && isBroadcasted()) {
             // allow for potential broadcasting
-            renderManager.requestRender(this);
+            RenderManager.getInstance().requestRender(this);
         }
-        Iterator renderables = group.iterator();
         stopRequested = false;
-        while (renderables.hasNext() && !stopRequested) {
-            renderManager.requestRender(
-                    (Renderable)((WeakReference)renderables.next()).get());
+        /* 
+         * Note that the Iterator returned by the CopyOnWriteArraySet relies on
+         * an unchanging snapshot of the array at the time the Iterator was
+         * constructed and does not support the mutative remove operation!
+         */
+        for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
+            Object object = ((WeakReference)i.next()).get();
+            if (object instanceof Renderable) {
+                requestRender((Renderable)object);
+            } else if (object instanceof HttpSession) {
+                requestRender((HttpSession)object);
+            }
         }
+    }
+
+    private void add(final Object object) {
+        // todo: remove synchronized block as CopyOnWriteArraySet is used?
+        synchronized (group) {
+            if (!contains(object)) {
+                if (group.add(new WeakReference(object))) {
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " added " + object);
+                    }
+                } else {
+                    if (LOG.isWarnEnabled()) {
+                        LOG.warn(name + " already contains " + object);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean contains(final Object object) {
+        for (Iterator i = group.iterator(); i.hasNext(); ) {
+            if (object == ((WeakReference)i.next()).get()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isValid(final HttpSession httpSession) {
+        try {
+            httpSession.getAttribute("nonExistentAttribute");
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    private void remove(final Object object) {
+        // todo: remove synchronized block as CopyOnWriteArraySet is used?
+        synchronized (group) {
+            for (Iterator i = group.iterator(); i.hasNext(); ) {
+                WeakReference reference = (WeakReference)i.next();
+                if (object == reference.get()) {
+                    group.remove(reference);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(name + " removing " + object);
+                    }
+                    return;
+                }
+            }
+            if (LOG.isWarnEnabled()) {
+                LOG.warn(name + " does not contain " + object);
+            }
+        }
+    }
+
+    private void requestRender(final HttpSession httpSession) {
+        if (isValid(httpSession)) {
+            PersistentFacesState suppressedViewState;
+            if (FacesContext.getCurrentInstance() != null) {
+                suppressedViewState = PersistentFacesState.getInstance();
+            } else {
+                /*
+                 * Invocation from a non-JSF thread should not suppress the
+                 * current view.
+                 */
+                suppressedViewState = null;
+            }
+            for (
+                Iterator i =
+                    ((MainSessionBoundServlet)
+                        SessionDispatcher.
+                            getSingletonSessionServlet(httpSession)).
+                        getViews().values().iterator();
+                i.hasNext();
+                ) {
+
+                final PersistentFacesState viewState =
+                    ((View)i.next()).getPersistentFacesState();
+                if (viewState != suppressedViewState) {
+                    requestRender(
+                        new Renderable() {
+                            public PersistentFacesState getState() {
+                                return viewState;
+                            }
+
+                            public void renderingException(
+                                final RenderingException renderingException) {
+
+                                /*
+                                 * It's up to our View infrastructure to remove
+                                 * dead views.
+                                 */
+                            }
+                        }
+                    );
+                }
+            }
+        } else {
+            /*
+             * Remove from the CopyOnWriteArraySet is allowed here as the
+             * Iterator in requestRender(boolean) relies on an unchanging
+             * snapshot of the array at the time the Iterator was constructed.
+             */
+            remove(httpSession);
+        }
+    }
+
+    private void requestRender(final Renderable renderable) {
+        RenderManager.getInstance().requestRender(renderable);
     }
 }

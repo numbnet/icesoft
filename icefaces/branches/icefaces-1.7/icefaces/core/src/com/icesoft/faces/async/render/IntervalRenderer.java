@@ -87,18 +87,14 @@ public class IntervalRenderer extends OnDemandRenderer implements Runnable {
      * value specified using {@link #setInterval}.
      */
     public void requestRender() {
-
         if (isStarted) {
             return;
         }
-
         isStarted = true;
-
-        ScheduledExecutorService scheduleService =
-                renderManager.getScheduledService();
-        future = scheduleService.scheduleAtFixedRate(this, interval, interval,
-                                                     TimeUnit.MILLISECONDS);
-
+        future =
+            RenderManager.getInstance().getScheduledService().
+                scheduleAtFixedRate(
+                    this, interval, interval, TimeUnit.MILLISECONDS);
         if (log.isDebugEnabled()) {
             log.debug(
                     "interval render started: interval is " + interval + " ms");
