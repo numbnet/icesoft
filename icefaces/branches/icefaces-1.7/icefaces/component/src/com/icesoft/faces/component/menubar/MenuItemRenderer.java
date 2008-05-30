@@ -130,6 +130,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
             throw new InvalidComponentTypeException(
                     "MenuBar expected as parent of top-level MenuItem");
         }
+        // Set the clientId to null as a side effect, so that a unique
+        // clientId will be generated when we are in a UIData component
+        uiComponent.setId(uiComponent.getId()); // ICE-3064
         // If static model declaration (in the jsp) is employed then the
         // immediate parent will be the Menu component
         // Else if the model declaration is in the bean class then there
@@ -545,6 +548,9 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         if (!nextSubMenuItem.isRendered()) {
             return;
         }
+        // Set the clientId to null as a side effect, so that a unique
+        // clientId will be generated when we are in a UIData component
+        nextSubMenuItem.setId(nextSubMenuItem.getId()); // ICE-3064
         String call = null;
         Element subMenuItemDiv = domContext.createElement(HTML.DIV_ELEM);
         submenuDiv.appendChild(subMenuItemDiv);
