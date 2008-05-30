@@ -69,6 +69,7 @@ public interface AsyncRenderer extends Disposable {
      * this AsyncRenderer.
      *
      * @param renderManager The RenderManager to use for this AsyncRenderer
+     * @deprecated
      */
     public void setRenderManager(final RenderManager renderManager);
 
