@@ -92,16 +92,16 @@ public class InputFileData {
         
         // Generate formatted label, such as 4kb, instead of just a plain number
         if (ourLength >= InputFileController.MEGABYTE_LENGTH_BYTES) {
-            return ourLength / InputFileController.MEGABYTE_LENGTH_BYTES + "mb";
+            return ourLength / InputFileController.MEGABYTE_LENGTH_BYTES + " MB";
         }
         else if (ourLength >= InputFileController.KILOBYTE_LENGTH_BYTES) {
-            return ourLength / InputFileController.KILOBYTE_LENGTH_BYTES + "kb";
+            return ourLength / InputFileController.KILOBYTE_LENGTH_BYTES + " KB";
         }
         else if (ourLength == 0) {
             return "0";
         }
         else if (ourLength < InputFileController.KILOBYTE_LENGTH_BYTES) {
-            return ourLength + "b";
+            return ourLength + " B";
         }
         
         return Long.toString(ourLength);

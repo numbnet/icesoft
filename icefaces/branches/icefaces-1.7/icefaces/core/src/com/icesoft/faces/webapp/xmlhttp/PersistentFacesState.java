@@ -38,6 +38,7 @@ import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import com.icesoft.util.SeamUtilities;
 
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
@@ -51,6 +52,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
+import javax.servlet.http.HttpSession;
+import javax.portlet.PortletSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -151,6 +154,16 @@ public class PersistentFacesState implements Serializable {
         this.facesContext = facesContext;
     }
 
+    /**
+     * Returns whether the current view is in synchronous mode, which means
+     *  that server push is not available.
+     * 
+     * @return If in synchronous mode
+     */
+    public boolean isSynchronousMode() {
+        return synchronousMode;
+    }
+    
     /**
      * Render the view associated with this <code>PersistentFacesState</code>.
      * The user's browser will be immediately updated with any changes.
@@ -357,6 +370,26 @@ public class PersistentFacesState implements Serializable {
         }
     }
 
+    public void setupAndExecuteAndRender() throws RenderingException {
+        PersistentFacesState.this.setCurrentInstance();
+        
+        try {
+            Thread.currentThread().setContextClassLoader( PersistentFacesState.this.getRenderableClassLoader() );
+        } catch (SecurityException se) {
+            if (log.isDebugEnabled()) {
+                log.debug("setting context class loader is not permitted", se);
+            }
+        }
+        
+        if (SeamUtilities.isSeamEnvironment() ) {
+            testSession(PersistentFacesState.this);
+        }
+
+        // JIRA #1377 Call execute before render.
+        // #2459 use fully synchronized version internally.
+        executeAndRender();
+    }
+
 
     public ClassLoader getRenderableClassLoader() {
         return renderableClassLoader;
@@ -388,15 +421,18 @@ public class PersistentFacesState implements Serializable {
         public void run() {
             try {
                 Thread.sleep(delay);
-                // JIRA #1377 Call execute before render.
-                // #2459 use fully synchronized version internally.
-                executeAndRender();
+                
+                setupAndExecuteAndRender();
             } catch (RenderingException e) {
                 if (log.isDebugEnabled()) {
                     log.debug("renderLater failed ", e);
                 }
             } catch (InterruptedException e) {
                 //ignore
+            } catch (IllegalStateException e) {
+                if (log.isDebugEnabled()) {
+                    log.debug("renderLater failed ", e);
+                }
             }
         }
     }
@@ -406,6 +442,20 @@ public class PersistentFacesState implements Serializable {
             log.warn("Running in 'synchronous mode'. The page updates were queued but not sent.");
         }
     }
+    
+    private void testSession(PersistentFacesState state) throws IllegalStateException {
+        FacesContext fc = state.getFacesContext();
+        Object o = fc.getExternalContext().getSession(false);
+        if (o != null) {
+            if (o instanceof HttpSession) {
+                HttpSession session = (HttpSession) o;
+                session.getAttributeNames();
+            } else if (o instanceof PortletSession)  {
+                PortletSession ps = (PortletSession) o;
+                ps.getAttributeNames();
+            }
+        }
+    } 
 }
 
 

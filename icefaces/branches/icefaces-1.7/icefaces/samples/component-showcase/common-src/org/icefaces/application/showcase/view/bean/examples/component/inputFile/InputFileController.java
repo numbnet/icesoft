@@ -56,20 +56,13 @@ import java.io.Serializable;
  *
  * @since 1.7
  */
-public class InputFileController
-        implements Renderable, DisposableBean, Serializable {
+public class InputFileController implements Serializable {
 
     public static final Log log = LogFactory.getLog(InputFileController.class);
 
     // File sizes used to generate formatted label
     public static final long MEGABYTE_LENGTH_BYTES = 1048000l;
     public static final long KILOBYTE_LENGTH_BYTES = 1024l;
-
-    // render manager for the application, uses session id for on demand
-    // render group.
-    private RenderManager renderManager;
-    private PersistentFacesState persistentFacesState;
-    private String sessionId;
 
     // files associated with the current user
     private final List fileList =
@@ -78,14 +71,6 @@ public class InputFileController
     private InputFileData currentFile;
     // file upload completed percent (Progress)
     private int fileProgress;
-
-    public InputFileController() {
-        persistentFacesState = PersistentFacesState.getInstance();
-
-        // Get the session id in a container generic way
-        sessionId = FacesContext.getCurrentInstance().getExternalContext()
-                .getSession(false).toString();
-    }
 
     /**
      * <p>Action event method which is triggered when a user clicks on the
@@ -124,7 +109,6 @@ public class InputFileController
     public void fileUploadProgress(EventObject event) {
         InputFile ifile = (InputFile) event.getSource();
         fileProgress = ifile.getFileInfo().getPercent();
-        renderManager.getOnDemandRenderer(sessionId).requestRender();
     }
 
     /**
@@ -153,58 +137,6 @@ public class InputFileController
         }
     }
 
-    /**
-     * Callback method that is called if any exception occurs during an attempt
-     * to render this Renderable.
-     * <p/>
-     * It is up to the application developer to implement appropriate policy
-     * when a RenderingException occurs.  Different policies might be
-     * appropriate based on the severity of the exception.  For example, if the
-     * exception is fatal (the session has expired), no further attempts should
-     * be made to render this Renderable and the application may want to remove
-     * the Renderable from some or all of the
-     * {@link com.icesoft.faces.async.render.GroupAsyncRenderer}s it
-     * belongs to. If it is a transient exception (like a client's connection is
-     * temporarily unavailable) then the application has the option of removing
-     * the Renderable from GroupRenderers or leaving them and allowing another
-     * render call to be attempted.
-     *
-     * @param renderingException The exception that occurred when attempting to
-     *                           render this Renderable.
-     */
-    public void renderingException(RenderingException renderingException) {
-        if (log.isTraceEnabled() &&
-                renderingException instanceof TransientRenderingException) {
-            log.trace("InputFileController Transient Rendering excpetion:", renderingException);
-        } else if (renderingException instanceof FatalRenderingException) {
-            if (log.isTraceEnabled()) {
-                log.trace("InputFileController Fatal rendering exception: ", renderingException);
-            }
-            renderManager.getOnDemandRenderer(sessionId).remove(this);
-            renderManager.getOnDemandRenderer(sessionId).dispose();
-        }
-    }
-
-    /**
-     * Return the reference to the
-     * {@link com.icesoft.faces.webapp.xmlhttp.PersistentFacesState
-     * PersistentFacesState} associated with this Renderable.
-     * <p/>
-     * The typical (and recommended usage) is to get and hold a reference to the
-     * PersistentFacesState in the constructor of your managed bean and return
-     * that reference from this method.
-     *
-     * @return the PersistentFacesState associated with this Renderable
-     */
-    public PersistentFacesState getState() {
-        return persistentFacesState;
-    }
-
-    public void setRenderManager(RenderManager renderManager) {
-        this.renderManager = renderManager;
-        renderManager.getOnDemandRenderer(sessionId).add(this);
-    }
-
     public InputFileData getCurrentFile() {
         return currentFile;
     }
@@ -216,16 +148,4 @@ public class InputFileController
     public List getFileList() {
         return fileList;
     }
-
-    /**
-     * Dispose callback called due to a view closing or session
-     * invalidation/timeout
-     */
-	public void dispose() throws Exception {
-        if (log.isTraceEnabled()) {
-            log.trace("OutputProgressController dispose OnDemandRenderer for session: " + sessionId);
-        }
-        renderManager.getOnDemandRenderer(sessionId).remove(this);
-		renderManager.getOnDemandRenderer(sessionId).dispose();
-	}
 }
