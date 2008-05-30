@@ -293,3 +293,28 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        <![CDATA[
+        <p>Historically, when the inputFile's current file upload was progressing,  
+        and the <b>progressListener</b> was invoked, the <b>progressListener</b>'s bean 
+        would implement <b>com.icesoft.faces.async.render.Renderable</b>, and use the 
+        <b>com.icesoft.faces.async.render.RenderManager</b> in conjunction with the 
+        <b>com.icesoft.faces.async.render.OnDemandRenderer</b>, to do a server push, 
+        to update the view in the browser with the current progress.</p>
+        <p>But now, you can just set <b>progressRender="true"</b>, and the server 
+        push will happen for you, without setting up all that glue code in the bean. 
+        You still have to set your <b>outputProgress</b> component's progress percent 
+        in the bean via the <b>progressListener</b>, and you have to enabled asynchronous 
+        mode, by setting the <b>com.icesoft.faces.synchronousUpdate</b> context parameter 
+        to false.</p>
+        <p>Note: The default value is false.</p>
+		]]>
+    </description>
+    <property-name>progressRender</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+    </property-extension>
+</property>

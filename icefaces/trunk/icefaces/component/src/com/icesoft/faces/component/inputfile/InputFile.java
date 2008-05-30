@@ -110,6 +110,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     private File file;
     private long sizeMax;
     private MethodBinding progressListener;
+    private Boolean progressRender;
 
     /**
      * <p>Return the value of the <code>COMPONENT_TYPE</code> of this
@@ -442,6 +443,23 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         ValueBinding vb = getValueBinding("uploadDirectoryAbsolute");
         return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
     }
+    
+    public void setProgressRender(Boolean progressRender) {
+        this.progressRender = progressRender;
+    }
+    
+    public Boolean getProgressRender() {
+        if (progressRender != null) {
+            return progressRender;
+        }
+        ValueBinding vb = getValueBinding("progressRender");
+        return vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+    }
+    
+    public boolean renderOnProgress() {
+        Boolean progRend = getProgressRender();
+        return (progRend != null) ? progRend.booleanValue() : false;
+    }
 
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
@@ -513,7 +531,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[24];
+        Object values[] = new Object[25];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -538,6 +556,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         values[21] = file;
         values[22] = new Long(sizeMax);
         values[23] = saveAttachedState(context, progressListener);
+        values[24] = progressRender;
         return ((Object) (values));
     }
 
@@ -571,6 +590,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         file = (File) values[21];
         sizeMax = ((Long) values[22]).longValue();
         progressListener = (MethodBinding) restoreAttachedState(context, values[23]);
+        progressRender = (Boolean) values[24];
     }
 
     /**
