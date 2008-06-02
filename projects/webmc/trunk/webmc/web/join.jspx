@@ -32,7 +32,7 @@
 -->
 <!-- This page is used to enter a presentation directly from a url with the 
      presentation name as a parameter. For example, users can bypass login with
-     http://localhost:8080/webmc/webmcDirect.iface?s=The-Wow-Of-Palau -->
+     http://localhost:8080/webmc/join.iface?s=The-Wow-Of-Palau -->
 <f:view xmlns:f="http://java.sun.com/jsf/core"
         xmlns:ice="http://www.icesoft.com/icefaces/component">
     <ice:outputText value="#{participant.directlyEnterPresentation}" 
