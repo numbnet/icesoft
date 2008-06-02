@@ -632,6 +632,15 @@ public class TableRenderer
                                 if (iceColumn.groupFound()) {
                                     Element groupedTd = iceColumn.getGroupedTd();
                                     groupedTd.setAttribute(HTML.ROWSPAN_ATTR, String.valueOf(iceColumn.getGroupCount()));
+                                    if (uiData.isResizable() && childs.hasNext()) {
+                                        Element eTd = domContext.createElement(HTML.TD_ELEM);
+                                        eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
+                                        Element img = domContext.createElement(HTML.IMG_ELEM);
+                                        img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
+                                                FacesContext.getCurrentInstance(), "./xmlhttp/css/xp/css-images/spacer.gif") );
+                                        eTd.appendChild(img);
+                                        tr.appendChild(eTd);
+                                    }  
                                     continue;
                                 } else {
                                     iceColumn.setGroupedTd(td); 
