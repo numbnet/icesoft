@@ -38,7 +38,7 @@
 
 <property>
 	<property-name>selectedPanel</property-name>
-	<property-class>java.util.String</property-class>
+	<property-class>String</property-class>
 	<property-extension>
 		<category>APPEARANCE</category>
 	</property-extension>

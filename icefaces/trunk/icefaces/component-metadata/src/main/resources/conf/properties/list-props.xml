@@ -1,6 +1,6 @@
 <?xml encoding='UTF-8'?>
 
-    <!--
+<!--
   ~  Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
   ~  "The contents of this file are subject to the Mozilla Public License
@@ -34,17 +34,17 @@
   -->
 
 <property>
-      <property-name>layout</property-name>
-      <property-extension>
-          <category>APPEARANCE</category>
-          <editor-class>
-            &chooseOneReferenceDataEditor;
-          </editor-class>
-          <named-value>
-            <name>referenceDataDefiner</name>
+    <property-name>layout</property-name>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <editor-class>
+            &selectOneDomainEditor;
+        </editor-class>
+        <named-value>
+            <name>&domainClass;</name>
             <expression>
-              com.sun.jsfcl.std.reference.ReferenceDataManager.MANY_CHECKBOX_LAYOUT_STYLES
+                &layoutDomain;
             </expression>
-          </named-value>
-      </property-extension>
-    </property>
+        </named-value>
+    </property-extension>
+</property>
