@@ -51,7 +51,7 @@
     <property-extension>
         <category>JAVASCRIPT</category>
         <editor-class>
-            &javascriptEditor;
+             &styleClassEditor;
         </editor-class>
     </property-extension>
 </property>

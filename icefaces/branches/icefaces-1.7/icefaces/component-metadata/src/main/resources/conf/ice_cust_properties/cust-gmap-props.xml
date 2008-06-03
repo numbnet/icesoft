@@ -78,6 +78,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"-101.162109375"</default-value>
     </property-extension>
 </property>
 <property>
@@ -91,6 +92,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"56.46249048388979"</default-value>
     </property-extension>
 </property>
 <property>
@@ -148,6 +150,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"Map"</default-value>
     </property-extension>
 </property>
 <property>
@@ -164,5 +167,6 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>3</default-value>
     </property-extension>
 </property>

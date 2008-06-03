@@ -150,10 +150,11 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &stringEditor;
+            &styleClassEditor;
         </editor-class>
     </property-extension>
 </property>
+
 <property>
     <description>
         Passed through to root DIV tag of rendered MenuItem
