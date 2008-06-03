@@ -58,7 +58,7 @@
 			<li>Method must take a single argument of type java.util.EventObject. </li>
 			<li>Developer must invoke the render() call on the PersistentFacesState instance, inorder to render the page. </li>
 			<li>Beans which implement the progressListener must be in session scope. </li>
-			<li>The PersistentFacesState must be set in the constructor of session bean. </li>
+			<li>The PersistentF28acesState must be set in the constructor of session bean. </li>
 		</ul>
 		</p>
 		]]>
@@ -97,6 +97,9 @@
     <property-class>java.lang.Object</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
+        <editor-class>
+            &methodBindingEditor;
+        </editor-class>
     </property-extension>
 </property>
 <property>
@@ -169,6 +172,7 @@
         <editor-class>
             &integerEditor;
         </editor-class>
+        <default-value>500</default-value>
     </property-extension>
 </property>
 <property>
@@ -182,6 +186,7 @@
         <editor-class>
             &integerEditor;
         </editor-class>
+        <default-value>30</default-value>
     </property-extension>
 </property>
 <property>
@@ -195,6 +200,7 @@
         <editor-class>
             &integerEditor;
         </editor-class>
+        <default-value>35</default-value>
     </property-extension>
 </property>
 

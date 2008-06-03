@@ -80,7 +80,7 @@
     <property-extension>
         <category>ICE_COMPONENT</category>
         <editor-class>
-            &stringEditor;
+             &stringEditor;
         </editor-class>
     </property-extension>
 </property>
@@ -95,7 +95,7 @@
     <property-extension>
         <category>ICE_COMPONENT</category>
         <editor-class>
-            &stringEditor;
+            &selectOneDomainEditor;
         </editor-class>
     </property-extension>
 </property>
