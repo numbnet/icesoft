@@ -30,7 +30,7 @@
   ~  not delete the provisions above, a recipient may use your version of
   ~  this file under either the MPL or the LGPL License."
   ~
-  -->
+-->
 <property>
     <property-name>border</property-name>
     <property-extension>
@@ -76,12 +76,12 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
+            <name>&domainClass;</name>
             <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.MANY_CHECKBOX_LAYOUT_STYLES
+                &layoutDomain;
             </expression>
         </named-value>
     </property-extension>

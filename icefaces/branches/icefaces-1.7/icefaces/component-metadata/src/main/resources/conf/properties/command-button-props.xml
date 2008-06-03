@@ -60,12 +60,12 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
+            <name>&domainClass;</name>
             <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.COMMAND_BUTTON_TYPES
+                &htmlCommandButtonTypesDomain;
             </expression>
         </named-value>
     </property-extension>

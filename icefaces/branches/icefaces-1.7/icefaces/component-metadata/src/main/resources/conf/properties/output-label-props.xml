@@ -38,12 +38,12 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
+            <name>&domainClass;</name>
             <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.COMPONENT_IDS
+                &componentIdsDomain;
             </expression>
         </named-value>
     </property-extension>
