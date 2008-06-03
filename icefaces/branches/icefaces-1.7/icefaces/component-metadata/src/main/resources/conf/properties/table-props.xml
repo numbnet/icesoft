@@ -62,7 +62,7 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &lengthValueEditor;
+            &lengthEditor;
         </editor-class>
     </property-extension>
 </property>
@@ -79,7 +79,7 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &lengthValueEditor;
+            &lengthEditor;
         </editor-class>
     </property-extension>
 </property>
@@ -153,18 +153,14 @@
         sides).			
     </description>			
     <property-name>frame</property-name>
-    <property-extension>
-        <category>ADVANCED</category>
-        <editor-class>
-            &chooseOneReferenceDataEditor;
-        </editor-class>
-        <named-value>
-            <name>referenceDataDefiner</name>
-            <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.TFRAMES
-            </expression>
-        </named-value>
-    </property-extension>
+          <property-extension>
+              <category>ADVANCED</category>
+              <editor-class>&selectOneDomainEditor;</editor-class>
+              <named-value>
+                  <name>&domainClass;</name>
+                  <expression>&htmlTableBordersDomain;</expression>
+              </named-value>
+          </property-extension>
 </property>
 <property>
     <description>
@@ -223,12 +219,12 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
+            <name>&domainClass;</name>
             <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.TABLE_RULES
+                &htmlTableRulesDomain;
             </expression>
         </named-value>
     </property-extension>
@@ -255,7 +251,7 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &lengthValueEditor;
+            &lengthEditor;
         </editor-class>
     </property-extension>
 </property>
@@ -268,7 +264,7 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &lengthValueEditor;
+            &lengthEditor;
         </editor-class>
     </property-extension>
 </property>

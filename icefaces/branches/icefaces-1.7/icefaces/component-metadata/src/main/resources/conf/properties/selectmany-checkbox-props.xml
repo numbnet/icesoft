@@ -56,14 +56,14 @@
     <property-name>layout</property-name>
     <property-extension>
         <category>APPEARANCE</category>
-        <editor-class>
-            &chooseOneReferenceDataEditor;
+               <editor-class>
+           &selectOneDomainEditor;
         </editor-class>
         <named-value>
-            <name>referenceDataDefiner</name>
-            <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.MANY_CHECKBOX_LAYOUT_STYLES
-            </expression>
+          <name>&domainClass;</name>
+          <expression>
+            &layoutDomain;
+          </expression>
         </named-value>
     </property-extension>
 </property>
