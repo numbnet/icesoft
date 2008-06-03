@@ -36,7 +36,13 @@
     <import file="../etc/build-common.xml"/>
     
     <!--property name="ant.project.name" value="auctionMonitor"/-->
-    
+    <target name="compile">
+        <compile>
+            <add.javac.elements>
+                <classpath location="${icefaces.lib.dir}/servlet-api.jar"/>
+            </add.javac.elements>
+        </compile>
+    </target>
     <target name="build.war" depends="compile">
         <build.war web.xml="config/web.sunri.icefaces.ce.xml"/>
     </target>
