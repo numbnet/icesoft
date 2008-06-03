@@ -104,3 +104,26 @@ com.sun.jsfcl.std.property.NumberPropertyEditor
 <!ENTITY sortFieldDomain "com.sun.rave.web.ui.component.propertyeditors.SortFieldDomain.class">
 <!ENTITY themeIconsDomain "com.sun.rave.web.ui.component.propertyeditors.ThemeIconsDomain.class">
 <!ENTITY tabIdsDomain "com.sun.rave.web.ui.component.propertyeditors.TabIdsDomain.class">
+
+<!ENTITY htmlCommandButtonTypesDomain "com.icesoft.faces.ide.vwp.propertyeditors.HtmlCommandButtonTypesDomain.class">
+<!ENTITY textDirectionDomain "com.sun.rave.propertyeditors.domains.TextDirectionDomain.class">
+<!ENTITY htmlRegionShapesDomain "com.sun.rave.propertyeditors.domains.HtmlRegionShapesDomain.class">
+<!ENTITY timeZonesDomain "com.sun.rave.propertyeditors.domains.TimeZonesDomain.class">
+<!ENTITY frameTargetsDomain "com.sun.rave.propertyeditors.domains.HtmlFrameTargetsDomain.class">
+<!ENTITY layoutDomain "com.sun.rave.propertyeditors.domains.LayoutDomain.class">
+<!ENTITY linkTypesDomain "com.sun.rave.propertyeditors.domains.HtmlLinkTypesDomain.class">
+<!ENTITY mimeTypesDomain "com.sun.rave.propertyeditors.domains.MimeTypesDomain.class">
+<!ENTITY charSetsDomain "com.sun.rave.propertyeditors.domains.CharacterSetsDomain.class">
+<!ENTITY dateFormatPatternsDomain "com.sun.rave.propertyeditors.domains.DateFormatPatternsDomain.class">
+<!ENTITY htmlTableBordersDomain "com.sun.rave.propertyeditors.domains.HtmlTableBordersDomain.class">
+<!ENTITY htmlTableRulesDomain "com.sun.rave.propertyeditors.domains.HtmlTableRulesDomain.class">
+<!ENTITY componentIdsDomain "com.sun.rave.propertyeditors.domains.ComponentIdsDomain.class">
+<!ENTITY htmlCommandButtonTypesDomain "com.icesoft.faces.ide.vwp.propertyeditors.HtmlCommandButtonTypesDomain.class">
+<!ENTITY textDirectionDomain "com.sun.rave.propertyeditors.domains.TextDirectionDomain.class">
+<!ENTITY htmlRegionShapesDomain "com.sun.rave.propertyeditors.domains.HtmlRegionShapesDomain.class">
+<!ENTITY timeZonesDomain "com.sun.rave.propertyeditors.domains.TimeZonesDomain.class">
+
+<!--merge TODO: -->
+
+<!ENTITY styleClassEditor "com.sun.rave.propertyeditors.StyleClassPropertyEditor">
+
