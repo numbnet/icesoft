@@ -57,6 +57,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+                <default-value>"none"</default-value>
 	</property-extension>
 </property>
 
@@ -157,7 +158,7 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &stringEditor;
+            &styleClassEditor;
         </editor-class>
     </property-extension>
 </property>

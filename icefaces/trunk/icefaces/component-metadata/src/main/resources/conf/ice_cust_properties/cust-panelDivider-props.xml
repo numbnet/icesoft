@@ -45,6 +45,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>"horizontal"</default-value>
      </property-extension>
 </property>
 

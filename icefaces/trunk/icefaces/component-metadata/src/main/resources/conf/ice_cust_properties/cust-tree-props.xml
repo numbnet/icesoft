@@ -34,7 +34,6 @@
 
 &core-props;
 &actionsource-props;
-&pass-thru-title-props;
 
 <property>
     <description>
@@ -113,7 +112,7 @@
     <property-extension>
         <category>ICE_LAYOUT</category>
         <editor-class>
-            &stringEditor;
+           &selectOneDomainEditor;
         </editor-class>
         <default-value>"hideNavigation"</default-value>
     </property-extension>
@@ -130,7 +129,7 @@
     <property-extension>
         <category>ICE_LAYOUT</category>
         <editor-class>
-            &stringEditor;
+            &selectOneDomainEditor;
         </editor-class>
         <default-value>"hideRootNode"</default-value>
     </property-extension>
@@ -216,7 +215,7 @@
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
-            &stringEditor;
+            &styleClassEditor;
         </editor-class>
     </property-extension>
 </property>

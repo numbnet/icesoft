@@ -59,7 +59,7 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &stringEditor;
+            &styleClassEditor;
         </editor-class>
     </property-extension>
 </property>
@@ -93,6 +93,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"en"</default-value>
     </property-extension>
 </property>
 <property>
@@ -119,6 +120,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"100%"</default-value>
     </property-extension>
 </property>
 <property>
@@ -132,6 +134,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+         <default-value>"200"</default-value>
     </property-extension>
 </property>
 <property>
@@ -149,11 +152,11 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &stringEditor;
+            &selectOneDomainEditor;
         </editor-class>
+        <default-value>"Default"</default-value>
     </property-extension>
 </property>
-
 <property>
     <description>
        <![CDATA[    
