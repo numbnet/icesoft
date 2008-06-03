@@ -59,7 +59,7 @@
 	<property-extension>
 		<category>APPEARANCE</category>
 		<editor-class>
-			&stringEditor;
+			&styleClassEditor;
 		</editor-class>
 	</property-extension>
 </property>
