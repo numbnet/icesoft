@@ -33,23 +33,24 @@
 
 package com.icesoft.faces.async.render;
 
+import com.icesoft.faces.context.View;
+import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+
 import edu.emory.mathcs.backport.java.util.concurrent.CopyOnWriteArraySet;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.faces.context.FacesContext;
+import javax.portlet.PortletSession;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import javax.servlet.http.HttpSession;
-import javax.faces.context.FacesContext;
-
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
-import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
-import com.icesoft.faces.context.View;
 
 /**
  * The GroupAsyncRenderer is the foundation class for other types of renderers
@@ -83,10 +84,6 @@ implements AsyncRenderer {
         // do nothing.
     }
 
-    public void add(final HttpSession httpSession) {
-        add((Object)httpSession);
-    }
-
     /**
      * Adds a Renderable, via a WeakReference, to the set of Renderables of this
      * group.  If the Renderable is already in this set, it is not added again.
@@ -95,6 +92,20 @@ implements AsyncRenderer {
      */
     public void add(final Renderable renderable) {
         add((Object)renderable);
+    }
+
+    /**
+     * <p>
+     *   Adds the current session, via a <code>WeakReference</code>, to this
+     *   <code>GroupAsyncRenderer</code>.  If this already contains the current
+     *   session, it is not added again.
+     * </p>
+     */
+    public void addCurrentSession() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext != null) {
+            add(facesContext.getExternalContext().getSession(false));
+        }
     }
 
     /**
@@ -107,12 +118,15 @@ implements AsyncRenderer {
         }
     }
 
-    public boolean contains(final HttpSession httpSession) {
-        return contains((Object)httpSession);
-    }
-
     public boolean contains(final Renderable renderable) {
         return contains((Object)renderable);
+    }
+
+    public boolean containsCurrentSession() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        return
+            facesContext != null &&
+            contains(facesContext.getExternalContext().getSession(false));
     }
 
     /**
@@ -147,10 +161,6 @@ implements AsyncRenderer {
         return group.isEmpty();
     }
 
-    public void remove(final HttpSession httpSession) {
-        remove((Object)httpSession);
-    }
-
     /**
      * Removes a Renderable, via a WeakReference, from the set of Renderables of
      * this group.
@@ -159,6 +169,20 @@ implements AsyncRenderer {
      */
     public void remove(final Renderable renderable) {
         remove((Object)renderable);
+    }
+
+    /**
+     * <p>
+     *   Removes the current session, via a <code>WeakReference</code>, from
+     *   this <code>GroupAsyncRenderer</code>.
+     * </p>
+     */
+    public void removeCurrentSession() {
+        LOG.info("GroupAsyncRenderer.removeCurrentSession()");
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext != null) {
+            remove(facesContext.getExternalContext().getSession(false));
+        }
     }
 
     /**
@@ -212,6 +236,8 @@ implements AsyncRenderer {
                 requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
                 requestRender((HttpSession)object);
+            } else if (object instanceof PortletSession) {
+                requestRender((PortletSession)object);
             }
         }
     }
@@ -251,6 +277,15 @@ implements AsyncRenderer {
         }
     }
 
+    private boolean isValid(final PortletSession portletSession) {
+        try {
+            portletSession.getAttribute("nonExistentAttribute");
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
     private void remove(final Object object) {
         // todo: remove synchronized block as CopyOnWriteArraySet is used?
         synchronized (group) {
@@ -272,46 +307,7 @@ implements AsyncRenderer {
 
     private void requestRender(final HttpSession httpSession) {
         if (isValid(httpSession)) {
-            PersistentFacesState suppressedViewState;
-            if (FacesContext.getCurrentInstance() != null) {
-                suppressedViewState = PersistentFacesState.getInstance();
-            } else {
-                /*
-                 * Invocation from a non-JSF thread should not suppress the
-                 * current view.
-                 */
-                suppressedViewState = null;
-            }
-            for (
-                Iterator i =
-                    ((MainSessionBoundServlet)
-                        SessionDispatcher.
-                            getSingletonSessionServlet(httpSession)).
-                        getViews().values().iterator();
-                i.hasNext();
-                ) {
-
-                final PersistentFacesState viewState =
-                    ((View)i.next()).getPersistentFacesState();
-                if (viewState != suppressedViewState) {
-                    requestRender(
-                        new Renderable() {
-                            public PersistentFacesState getState() {
-                                return viewState;
-                            }
-
-                            public void renderingException(
-                                final RenderingException renderingException) {
-
-                                /*
-                                 * It's up to our View infrastructure to remove
-                                 * dead views.
-                                 */
-                            }
-                        }
-                    );
-                }
-            }
+            requestRender(httpSession.getId());
         } else {
             /*
              * Remove from the CopyOnWriteArraySet is allowed here as the
@@ -319,6 +315,62 @@ implements AsyncRenderer {
              * snapshot of the array at the time the Iterator was constructed.
              */
             remove(httpSession);
+        }
+    }
+
+    private void requestRender(final PortletSession portletSession) {
+        if (isValid(portletSession)) {
+            requestRender(portletSession.getId());
+        } else {
+            /*
+             * Remove from the CopyOnWriteArraySet is allowed here as the
+             * Iterator in requestRender(boolean) relies on an unchanging
+             * snapshot of the array at the time the Iterator was constructed.
+             */
+            remove(portletSession);
+        }
+    }
+    
+    private void requestRender(final String sessionId) {
+        PersistentFacesState suppressedViewState;
+        if (FacesContext.getCurrentInstance() != null) {
+            suppressedViewState = PersistentFacesState.getInstance();
+        } else {
+            /*
+             * Invocation from a non-JSF thread should not suppress the
+             * current view.
+             */
+            suppressedViewState = null;
+        }
+        for (
+            Iterator i =
+                ((MainSessionBoundServlet)
+                    SessionDispatcher.
+                        getSingletonSessionServlet(sessionId)).
+                    getViews().values().iterator();
+            i.hasNext();
+            ) {
+
+            final PersistentFacesState viewState =
+                ((View)i.next()).getPersistentFacesState();
+            if (viewState != suppressedViewState) {
+                requestRender(
+                    new Renderable() {
+                        public PersistentFacesState getState() {
+                            return viewState;
+                        }
+
+                        public void renderingException(
+                            final RenderingException renderingException) {
+
+                            /*
+                             * It's up to our View infrastructure to remove
+                             * dead views.
+                             */
+                        }
+                    }
+                );
+            }
         }
     }
 

@@ -3,9 +3,6 @@ package org.icefaces.x.core.push;
 import com.icesoft.faces.async.render.OnDemandRenderer;
 import com.icesoft.faces.async.render.RenderManager;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
-
 /**
  * <p>
  *   The <code>SessionRenderer</code> class allows an application to initiate
@@ -20,9 +17,11 @@ import javax.servlet.http.HttpSession;
  * </p>
  */
 public class SessionRenderer {
+    public static final String ALL_SESSIONS = "SessionRenderer.ALL_SESSIONS";
+
     /**
      * <p>
-     *   Add the current session to the group of sessions with the specified
+     *   Adds the current session to the group of sessions with the specified
      *   <code>groupName</code>.  The group is automatically garbage collected
      *   when all its member sessions have become invalid.
      * </p>
@@ -38,12 +37,12 @@ public class SessionRenderer {
     public static void addCurrentSession(final String groupName) {
         // Creates an OnDemandRenderer instance if not already done so.
         RenderManager.getInstance().getOnDemandRenderer(groupName).
-            add(getCurrentSession());
+            addCurrentSession();
     }
 
     /**
      * <p>
-     *   Remove the current session from the group of sessions with the
+     *   Removes the current session from the group of sessions with the
      *   specified <code>groupName</code>.  The group is automatically garbage
      *   collected when all its member sessions have been removed.
      * </p>
@@ -60,14 +59,14 @@ public class SessionRenderer {
         // Does not create an OnDemandRenderer instance.
         OnDemandRenderer renderer = getRenderer(groupName);
         if (renderer != null) {
-            renderer.remove(getCurrentSession());
+            renderer.removeCurrentSession();
             removeRendererIfEmpty(renderer);
         }
     }
 
     /**
      * <p>
-     *   Render the group of sessions with the specified <code>groupName</code>
+     *   Renders the group of sessions with the specified <code>groupName</code>
      *   by performing the JavaServer Faces execute and render life cycle
      *   phases.  If a <code>FacesContext</code> is in the scope of the current
      *   thread scope, the current view will not be asynchronously rendered as
@@ -93,13 +92,6 @@ public class SessionRenderer {
         return
             (OnDemandRenderer)
                 RenderManager.getInstance().getRenderer(groupName);
-    }
-
-    private static HttpSession getCurrentSession() {
-        return
-            (HttpSession)
-                FacesContext.getCurrentInstance().getExternalContext().
-                    getSession(false);
     }
 
     private static void removeRendererIfEmpty(final OnDemandRenderer renderer) {
