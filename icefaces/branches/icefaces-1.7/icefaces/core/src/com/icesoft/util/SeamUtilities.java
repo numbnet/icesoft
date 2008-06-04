@@ -92,7 +92,7 @@ public class SeamUtilities {
     
     /**
      * In order to perform Seam's workspace management, we have to be able
-     * to display various LR conversations within the same viewId
+     * to display various LR conversations within the same viewId ICE-2737
      * @param uri
      * @return
      */
@@ -228,10 +228,14 @@ public class SeamUtilities {
             getConversationIdParameterName();
         }
         int index = uri.indexOf(conversationIdParameter);
-
         if (index>0 ){
-            String substring = uri.substring(index);
-        	returnVal = uri.substring(index+4);
+           String substring = uri.substring(index);
+           returnVal = uri.substring(index+4);
+           /* have to check for other encoding for seam-1.2.1.*/
+           int end = returnVal.indexOf('&');
+           if (end>0){
+        	   returnVal=returnVal.substring(0,end);
+           }else returnVal = uri.substring(index+4);
         }
     	return returnVal;
     }
