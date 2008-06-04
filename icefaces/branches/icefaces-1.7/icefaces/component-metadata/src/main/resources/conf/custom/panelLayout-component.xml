@@ -49,7 +49,7 @@
 		<base-component-type>
 			com.sun.faces.Component
 		</base-component-type>
-		<component-family>com.icesoft.faces.layout</component-family>
+		<component-family>com.icesoft.faces.Layout</component-family>
 		<renderer-type>com.icesoft.faces.PanelLayout</renderer-type>
 	</component-extension>
 
