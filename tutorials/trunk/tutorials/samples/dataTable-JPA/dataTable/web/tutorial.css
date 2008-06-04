@@ -1,0 +1,40 @@
+/* rows */
+.evenRow {
+
+}
+
+.oddRow {
+    background-color: #dedede;
+}
+
+.tableRowSelected{
+    background-color:#ddaa77;
+
+}
+.tableRowMouseOver{
+    background-color:#ffbb99;    
+}
+
+.firstnameHeaderColumn, .firstnameColumn, .lastnameHeaderColumn, .lastnameColumn,
+.phoneColumn, .addressColumn, .cityColumn, .countryColumn{
+    border-right: 1px solid #cbcbcb;
+    border-bottom: 1px solid #cbcbcb;
+    text-align: left;
+}
+
+.firstnameHeaderColumn, .lastnameHeaderColumn{
+    width: 50%;
+    text-align: center;
+}
+
+.firstnameColumn, .lastnameColumn{
+    width: 50%;
+}
+
+.phoneColumn, .addressColumn{
+    width: 200px;
+}
+
+.cityColumn, .countryColumn{
+    width: 175px;
+}
