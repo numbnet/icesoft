@@ -52,6 +52,7 @@ public class BodyRenderer extends DomBasicRenderer {
         setElementAttr(body, HTML.BGCOLOR_ATTR, uiComponent, HTML.BGCOLOR_ATTR);
         setElementAttr(body, "link", uiComponent, "link");
         setElementAttr(body, HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
+        setElementAttr(body, HTML.CLASS_ATTR, uiComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(body, "text", uiComponent, "text");
         setElementAttr(body, "vlink", uiComponent, "vlink");
     }

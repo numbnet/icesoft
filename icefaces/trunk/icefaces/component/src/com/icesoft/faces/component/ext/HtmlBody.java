@@ -10,6 +10,7 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
     private String bgcolor;
     private String link;
     private String style;
+    private String styleClass;
     private String text;
     private String vlink;
 
@@ -64,6 +65,14 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
         this.style = style;
     }
 
+    public String getStyleClass() {
+        return (String) getAttribute("styleClass", styleClass, null);
+    }
+
+    public void setStyleClass(String styleClass) {
+        this.styleClass = styleClass;
+    }
+
     public String getText() {
         return (String) getAttribute("text", text, null);
     }
@@ -97,6 +106,7 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
                 bgcolor,
                 link,
                 style,
+                styleClass,
                 text,
                 vlink,
         };
@@ -109,6 +119,7 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
                 "bgcolor",
                 "link",
                 "style",
+                "styleClass",
                 "text",
                 "vlink",
         };
