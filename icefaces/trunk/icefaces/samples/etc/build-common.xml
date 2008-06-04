@@ -82,6 +82,7 @@
         <include name="commons-lang.jar" if="myfaces"/>
         <include name="jsf-api.jar"  unless="myfaces" />
         <include name="jsf-impl.jar" unless="myfaces" />
+        <include name="servlet-api.jar" unless="myfaces" />
     </patternset>
     
     <patternset id="jsf.deploy.jars" >
