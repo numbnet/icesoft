@@ -32,6 +32,7 @@
   ~
   -->
 
+&core-props;
 <property>
     <description>
     </description>
