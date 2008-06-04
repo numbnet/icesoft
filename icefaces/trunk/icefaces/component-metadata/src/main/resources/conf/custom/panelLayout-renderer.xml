@@ -39,7 +39,7 @@
                 AbsoluteLayout allow placement of components in absolute positions.
                 A flow layout arranges components in relative alignment. ]]>
 	</description>
-	<component-family>com.icesoft.faces.layout</component-family>
+	<component-family>com.icesoft.faces.Layout</component-family>
 	<renderer-type>com.icesoft.faces.PanelLayout</renderer-type>
  
 	<renderer-extension>
