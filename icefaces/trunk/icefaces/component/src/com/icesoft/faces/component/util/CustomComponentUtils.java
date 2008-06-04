@@ -588,4 +588,39 @@ public class CustomComponentUtils {
         dest.setValidator(src.getValidator());
     }
 
+    public static String setPropertyValue(String css, String propName, String value, boolean add) {
+        String[] properties = css.split(";");
+        boolean found = false;
+        StringBuffer newCss = new StringBuffer();
+        for (int i=0; i < properties.length; i++) {
+            String[] property = properties[i].split(":");
+            if (property.length == 2) {
+                if (property[0].equalsIgnoreCase(propName)) {
+                    if (add) {
+                        found = true;
+                        newCss.append(propName + ":"+ value + ";");
+                    }
+                } else {
+                    newCss.append(property[0] + ":" + property[1] + ";");
+                }
+            }
+        }
+        if (add && !found) {
+            newCss.append(propName + ":" + value + ";");
+        }
+        return newCss.toString();
+    }
+    
+    public static String getCssPropertyValue(String css, String propName) {
+        String[] properties = css.split(";");
+        for (int i=0; i < properties.length; i++) {
+            String[] property = properties[i].split(":");
+            if (property.length == 2) {
+                if (property[0].equalsIgnoreCase(propName)) {
+                    return property[1];
+                }
+            }
+        }
+        return null;
+    }
 }
