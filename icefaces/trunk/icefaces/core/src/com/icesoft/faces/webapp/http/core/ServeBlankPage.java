@@ -11,7 +11,7 @@ public class ServeBlankPage implements Server {
     private static final ResponseHandler ResponseHandler = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             response.setHeader("Content-Type", "text/html");
-            new PrintStream(response.writeBody()).println("<html><head><title>This page intentionally left blank</title></head><body></body></html>");
+            new PrintStream(response.writeBody()).println("<html><head><title>This page intentionally left blank</title></head><body bgcolor='#808080'></body></html>");
         }
     };
 
