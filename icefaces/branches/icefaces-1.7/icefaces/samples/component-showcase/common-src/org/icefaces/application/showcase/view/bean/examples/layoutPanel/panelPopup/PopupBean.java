@@ -70,7 +70,7 @@ public class PopupBean implements Serializable {
         this.modalMessage = modalMessage;
     }
 
-    public boolean getDraggableRendered() {
+    public boolean isDraggableRendered() {
         return draggableRendered;
     }
 
@@ -82,6 +82,10 @@ public class PopupBean implements Serializable {
         return modalRendered;
     }
 
+    public void setModalRendered(boolean modalRendered) {
+        this.modalRendered = modalRendered;
+    }
+    
     public boolean getAutoCentre() {
         return autoCentre;
     }
