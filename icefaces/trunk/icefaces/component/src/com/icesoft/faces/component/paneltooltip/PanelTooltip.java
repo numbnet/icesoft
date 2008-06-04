@@ -18,6 +18,7 @@ import com.icesoft.faces.component.DisplayEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelpopup.PanelPopup;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -161,18 +162,18 @@ public class PanelTooltip extends PanelPopup{
         super.applyStyle(facesContext, root);
         String updatedStyle = root.getAttribute(HTML.STYLE_ATTR);
         if (isDynamic() && cssUpdateReceived(facesContext)) {
-            String y = getCssPropertyValue (updatedStyle, "top");
-            String x = getCssPropertyValue(updatedStyle, "left");
+            String y = CustomComponentUtils.getCssPropertyValue (updatedStyle, "top");
+            String x = CustomComponentUtils.getCssPropertyValue(updatedStyle, "left");
             if (y != null)setTooltipY(y);
             if (x != null)setTooltipX(x);
         }
         if (!isDynamic() && !isInitialized()) {
-            updatedStyle = setPropertyValue(updatedStyle, "visibility", "hidden", true);
-            updatedStyle = setPropertyValue(updatedStyle, "display", "none", true);            
+            updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "visibility", "hidden", true);
+            updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "display", "none", true);            
             setInitialized(true);
         }
         if (isDynamic()) {
-            updatedStyle = setPropertyValue(updatedStyle, "position", "absolute", true);
+            updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "position", "absolute", true);
         }
         
         //value change fired must be a dynamic panelPopup
@@ -180,49 +181,15 @@ public class PanelTooltip extends PanelPopup{
                 && !cssUpdateReceived(facesContext))) {
             setValueChangeFired(false);
             if (getState().equals("show")) {
-                updatedStyle = setPropertyValue(updatedStyle, "top", getTooltipY(), true);
-                updatedStyle = setPropertyValue(updatedStyle, "left", getTooltipX(), true);            
+                updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "top", getTooltipY(), true);
+                updatedStyle = CustomComponentUtils.setPropertyValue(updatedStyle, "left", getTooltipX(), true);            
             }
         }
         
         root.setAttribute(HTML.STYLE_ATTR, updatedStyle);
     }
     
-    String setPropertyValue(String css, String propName, String value, boolean add) {
-        String[] properties = css.split(";");
-        boolean found = false;
-        StringBuffer newCss = new StringBuffer();
-        for (int i=0; i < properties.length; i++) {
-            String[] property = properties[i].split(":");
-            if (property.length == 2) {
-                if (property[0].equalsIgnoreCase(propName)) {
-                    if (add) {
-                        found = true;
-                        newCss.append(propName + ":"+ value + ";");
-                    }
-                } else {
-                    newCss.append(property[0] + ":" + property[1] + ";");
-                }
-            }
-        }
-        if (add && !found) {
-            newCss.append(propName + ":" + value + ";");
-        }
-        return newCss.toString();
-    }
-    
-    String getCssPropertyValue(String css, String propName) {
-        String[] properties = css.split(";");
-        for (int i=0; i < properties.length; i++) {
-            String[] property = properties[i].split(":");
-            if (property.length == 2) {
-                if (property[0].equalsIgnoreCase(propName)) {
-                    return property[1];
-                }
-            }
-        }
-        return null;
-    }
+
     void setInitialized(boolean initialized) {
         this.getAttributes().put("comp-initialized", String.valueOf(initialized));
     }

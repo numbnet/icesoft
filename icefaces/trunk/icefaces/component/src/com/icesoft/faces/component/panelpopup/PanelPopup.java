@@ -33,9 +33,12 @@
 
 package com.icesoft.faces.component.panelpopup;
 
+import java.util.Map;
+
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -347,11 +350,33 @@ public class PanelPopup extends HtmlPanelGroup {
 	}
 
 	public void applyStyle(FacesContext facesContext, Element root) {
-		String style = getStyle();
-		if (style != null && style.length() > 0)
+	    String style = getStyle();
+	    String display = "block";
+	    if (!isVisible()) {
+	        display = "none";
+	    }
+
+        Map map = (Map) facesContext.getExternalContext().getSessionMap()
+        .get(CurrentStyle.class.getName());
+        if (map != null) {
+            String currentStyle = String.valueOf(map.get(getClientId(facesContext)));
+            if (currentStyle != null) {
+                currentStyle = CustomComponentUtils.setPropertyValue
+                                (currentStyle, "display", display, true);
+                map.put(getClientId(facesContext), currentStyle);
+                getAttributes()
+                .put("currentStyle", new CurrentStyle(currentStyle));
+                if (style != null) {
+                    style = CustomComponentUtils.setPropertyValue(style, 
+                                        "display", display, true);
+                }
+            }
+        }
+        
+	    if (style != null && style.length() > 0)
 			root.setAttribute(HTML.STYLE_ATTR, style);
 		else
 			root.removeAttribute(HTML.STYLE_ATTR);
-		CurrentStyle.apply(facesContext, this);
+        CurrentStyle.apply(facesContext, this);
 	}
 }
