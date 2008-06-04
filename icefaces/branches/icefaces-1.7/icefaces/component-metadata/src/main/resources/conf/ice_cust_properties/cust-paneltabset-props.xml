@@ -147,14 +147,7 @@
 		<editor-class>
 			&integerEditor;
 		</editor-class>
-		<named-value>
-			<name>minValue</name>
-			<expression>new Integer(0)</expression>
-		</named-value>
-		<named-value>
-			<name>unsetValue</name>
-			<expression>new Integer(Integer.MIN_VALUE)</expression>
-		</named-value>
+		<default-value>0</default-value>
 	</property-extension>
 </property>
 
