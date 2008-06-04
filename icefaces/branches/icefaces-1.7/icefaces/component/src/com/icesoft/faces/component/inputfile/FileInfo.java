@@ -34,14 +34,14 @@
 package com.icesoft.faces.component.inputfile;
 
 public class FileInfo implements Cloneable {
-
-
     private long size = 0;
     private String fileName = null;
     private String contentType = null;
     private String physicalPath = null;
     private int percent = 0;
     private Exception exception = null;
+    private boolean preUpload = false;
+    private boolean postUpload = false;
 
     public String getContentType() {
         return contentType;
@@ -95,6 +95,36 @@ public class FileInfo implements Cloneable {
         this.exception = exception;
     }
 
+    /**
+     * InputFile can now send progress events before the file upload begins,
+     * and after it has completed, to facilitate synchronous mode, so that
+     * applications may turn on and off an indeterminate progress bar during
+     * the file upload, since they can't push incremental progress updates.
+     * @return If this lifecycle is before the file upload begins.
+     */
+    public boolean isPreUpload() {
+        return preUpload;
+    }
+    
+    public void setPreUpload(boolean pre) {
+        preUpload = pre;
+    }
+    
+    /**
+     * InputFile can now send progress events before the file upload begins,
+     * and after it has completed, to facilitate synchronous mode, so that
+     * applications may turn on and off an indeterminate progress bar during
+     * the file upload, since they can't push incremental progress updates.
+     * @return If this lifecycle is after the file upload finishes.
+     */
+    public boolean isPostUpload() {
+        return postUpload;
+    }
+    
+    public void setPostUpload(boolean post) {
+        postUpload = post;
+    }
+    
     void reset() {
         size = 0;
         fileName = null;
@@ -102,6 +132,8 @@ public class FileInfo implements Cloneable {
         physicalPath = null;
         percent = 0;
         exception = null;
+        preUpload = false;
+        postUpload = false;
     }
     
     public Object clone() {
@@ -112,6 +144,22 @@ public class FileInfo implements Cloneable {
         fi.physicalPath = this.physicalPath;
         fi.percent      = this.percent;
         fi.exception    = this.exception;
+        fi.preUpload    = this.preUpload;
+        fi.postUpload   = this.postUpload;
         return fi;
+    }
+    
+    public String toString() {
+        return
+            "FileInfo: {" +
+            "\n  percent=" + percent +
+            ",\n  preUpload=" + preUpload +
+            ",\n  postUpload=" + postUpload +
+            ",\n  exception=" + exception +
+            ",\n  fileName=" + fileName +
+            ",\n  physicalPath=" + physicalPath +
+            ",\n  contentType=" + contentType +
+            ",\n  size=" + size +
+            "\n}";        
     }
 }

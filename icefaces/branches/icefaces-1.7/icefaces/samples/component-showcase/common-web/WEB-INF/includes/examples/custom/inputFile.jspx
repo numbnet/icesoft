@@ -60,10 +60,17 @@ Once the file is uploaded, information about the file is displayed.
 
         <!-- Dipslay File Upload messages -->
         <!--<ice:outputText value="#{msgs['page.inputFile.messages.label']}"/>-->
-        <h:messages layout="table"
+        
+        <!-- Wrap h:messages in panelGroup, since (removed) messages cause a 
+             table to be (un)rendered, which would DOM diff the parent, and
+             we don't the inputFile's parent to be updated, since swapping
+             the inputFile's IFRAME might abort the current upload -->
+        <ice:panelGroup>
+            <h:messages layout="table"
                     globalOnly="false"
                     showDetail="true"
-                    showSummary="true"/>
+                    showSummary="false"/>
+        </ice:panelGroup>
     </ice:panelGroup>
 
     <ice:panelGroup styleClass="exampleBox firstChildTitle inputFileContainer">
