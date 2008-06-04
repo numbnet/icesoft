@@ -55,6 +55,8 @@ import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.AbortProcessingException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -145,6 +147,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             ServletContext servletContext,
             String sessionId)
             throws IOException {
+        reset();        
         this.uploadException = null;
         this.status = UPLOADING;
         this.sizeMax = maxSize;
@@ -198,7 +201,8 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 file = new File(folder, fileName);
                 OutputStream output = new FileOutputStream(file);
                 Streams.copy(stream.openStream(), output, true);
-                if (file.length() == 0) {
+                long fileLength = file.length();
+                if (fileLength == 0) {
                     setProgress(0);
                     file.delete();
                     throw new FileUploadBase.FileUploadIOException(
@@ -206,6 +210,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 }
                 status = SAVED;
                 fileInfo.setPhysicalPath(file.getAbsolutePath());
+                fileInfo.setSize( fileLength );
                 updateFileValueBinding(context);
                 notifyDone(bfc);
             } else {
@@ -267,11 +272,33 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         if (action != null) {
             action.invoke(FacesContext.getCurrentInstance(), null);
         }
-
-        if (fileInfo != null)
-            fileInfo.reset();
     }
+    
+    /**
+     * @see javax.faces.component.UIComponentBase#broadcast(javax.faces.event.FacesEvent)
+     */
+    public void broadcast(FacesEvent event) throws AbortProcessingException {
+        super.broadcast(event);
 
+        if (event instanceof InputFileProgressEvent) {
+            // Later, InputFile.upload(-) does a reset(), but if we're getting
+            //  a pre-upload progress event, we want things reset() here too
+            if(fileInfo.isPreUpload()) {
+                reset();
+                fileInfo.setPreUpload(true);
+            }
+            
+            if(progressListener != null) {
+                progressListener.invoke(
+                    FacesContext.getCurrentInstance(),
+                    new Object[] {event});
+            }
+            
+            setPreUpload(false);
+            setPostUpload(false);
+        }
+    }
+    
     public void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException {
         writer.write("<html style=\"overflow:hidden;\">");
         ArrayList outputStyleComponents = findOutputStyleComponents(context.getViewRoot());
@@ -836,7 +863,15 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         progress = i;
         fileInfo.setPercent(i);
         if (getProgressListener() != null)
-            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new EventObject(this)});
+            getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new InputFileProgressEvent(this)});
+    }
+    
+    void setPreUpload(boolean p) {
+        fileInfo.setPreUpload(p);
+    }
+    
+    void setPostUpload(boolean p) {
+        fileInfo.setPostUpload(p);
     }
 
     public String getCssFile() {
@@ -999,4 +1034,15 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             }
         }
     }
+    
+    /*
+    // Usefull for debugging
+    public void dump() {
+        System.out.println("InputFile  file: " + file);
+        System.out.println("InputFile  progress: " + progress);
+        System.out.println("InputFile  status: " + status);
+        System.out.println("InputFile  uploadException: " + uploadException);
+        System.out.println("InputFile  " + fileInfo);
+    }
+    */
 }

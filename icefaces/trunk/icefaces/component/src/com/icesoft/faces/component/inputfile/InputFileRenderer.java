@@ -44,6 +44,7 @@ import javax.faces.render.Renderer;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Map;
 
 public class InputFileRenderer extends Renderer {
 
@@ -82,11 +83,11 @@ public class InputFileRenderer extends Renderer {
         writer.writeText(
                 "var register = function() {" +
                         "var frame = document.getElementById('" + frameName + "').contentWindow;" +
-                        "var submit = function() { try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } };" +
+                        "var submit = function() { if(arguments.length == 1 && arguments[0] == 1) { Ice.InputFileIdPostUpload = '" + id + "'; Ice.InputFileIdPreUpload = null; } else { Ice.InputFileIdPreUpload = '" + id + "'; Ice.InputFileIdPostUpload = null; } try { '" + id + "'.asExtendedElement().form().submit(); } catch (e) { logger.warn('Form not available', e); } finally { Ice.InputFileIdPreUpload = null; Ice.InputFileIdPostUpload = null; } };" +
                         //trigger form submit when the upload starts
                         "frame.document.getElementsByTagName('form')[0].onsubmit = submit;" +
                         //trigger form submit when the upload ends and re-register handlers
-                        "var uploadEnd = function() { submit(); setTimeout(register, 200); };" +
+                        "var uploadEnd = function() { submit(1); setTimeout(register, 200); };" +
                         "if (frame.attachEvent) { frame.attachEvent('onunload', uploadEnd); } else { frame.onunload = uploadEnd; } };" +
                         //register the callback after a delay because IE6 or IE7 won't make the iframe available fast enough
                         "setTimeout(register, 0);", null);
@@ -112,6 +113,31 @@ public class InputFileRenderer extends Renderer {
                 context.addMessage(c.getClientId(context), MessageUtils.getMessage(context, InputFile.INVALID_FILE_MESSAGE_ID, new Object[]{fileName}));
             } catch (Throwable t) {
                 //ignore
+            }
+        }
+    }
+    
+    public void decode(FacesContext facesContext, UIComponent component) {
+        super.decode(facesContext, component);
+        
+        InputFile inputFile = (InputFile) component;
+        inputFile.setPreUpload(false);
+        inputFile.setPostUpload(false);
+        
+        Map parameter = facesContext.getExternalContext().getRequestParameterMap();
+        String clientId = component.getClientId(facesContext);
+        String preUpload = (String) parameter.get("ice.inputFile.preUpload");
+        String postUpload = (String) parameter.get("ice.inputFile.postUpload");
+        if (preUpload != null && preUpload.length() > 0) {
+            if (preUpload.equals(clientId)) {
+                inputFile.setPreUpload(true);
+                inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
+            }
+        }
+        if (postUpload != null && postUpload.length() > 0) {
+            if (postUpload.equals(clientId)) {
+                inputFile.setPostUpload(true);
+                inputFile.queueEvent( new InputFileProgressEvent(inputFile) );
             }
         }
     }
