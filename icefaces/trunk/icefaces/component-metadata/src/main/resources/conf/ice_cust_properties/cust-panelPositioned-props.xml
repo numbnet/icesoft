@@ -131,7 +131,19 @@
 
 <property>
     <description>
-        	The css class of a child node that is used to drag the item
+         <![CDATA[    
+        	The css class of a child node that is used to drag the item. (e.g.)<br/>
+        	
+            &lt;ice:panelPositioned var="person" <br/>
+                                 value="#{panelPositioned.people}"
+                                 handle="personClass"
+                                &gt;<br/>
+                &lt;ice:panelGroup &gt;<br/>
+                        &lt;ice:outputText style="cursor:move;" styleClass="personClass" value="drag #{person.name}"/&gt;<br/>
+                        &lt;ice:outputText value="this panel can only be dragged by the person name."/&gt;<br/>
+                &lt;/ice:panelGroup&gt;<br/>
+            &lt;/ice:panelPositioned&gt;    <br/> 
+                    	   ]]>   
     </description>
     <property-name>handle</property-name>
     <property-class>java.lang.String</property-class>
