@@ -173,16 +173,14 @@ var Sortable = {
                 onHover: Sortable.onEmptyHover, greedy: false, sort:true});
             options.droppables.push(element);
         }
-        (this.findElements(element, options) || []).each(function(e) {
-            // handles are per-draggable
-            var handle = options.handle ?
-            // Element.childrenWithClassName(e, options.handle)[0] : e;
-            // Above call will cause "not a function" error. See JIRA ICE-1705.
-                         e.getElementsByClassName(options.handle)[0] : e;
+        (options.elements || this.findElements(element, options) || []).each( function(e,i) {
+            var handle = options.handles ? $(options.handles[i]) :
+            (options.handle ? $(e).select('.' + options.handle)[0] : e); 
             options.draggables.push(
-                    new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
+            new Draggable(e, Object.extend(options_for_draggable, { handle: handle })));
             Droppables.add(e, options_for_droppable);
-            options.droppables.push(e);
+            if(options.tree) e.treeNode = element;
+                options.droppables.push(e);      
         });
 
         // keep reference
