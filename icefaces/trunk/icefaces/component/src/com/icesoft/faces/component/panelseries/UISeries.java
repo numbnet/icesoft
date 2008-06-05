@@ -76,7 +76,7 @@ import java.util.Set;
  * component to have any type of children, it is not restricted to use the
  * column component as a first child.
  */
-public class UISeries extends HtmlDataTable {
+public class UISeries extends HtmlDataTable implements SeriesStateHolder {
     public static final String COMPONENT_TYPE = "com.icesoft.faces.series";
     public static final String RENDERER_TYPE = "com.icesoft.faces.seriesRenderer";    
     protected transient DataModel dataModel = null;
@@ -506,6 +506,19 @@ public class UISeries extends HtmlDataTable {
         while (children.hasNext()) {
             saveChildState(facesContext, (UIComponent) children.next());
         }
+    }
+
+    public Object saveSeriesState(FacesContext facesContext) {
+        Object[] values = new Object[1];
+        values[0] = new Integer(getFirst());
+        return values;
+    }
+
+    public void restoreSeriesState(FacesContext facesContext, Object state) {
+        Object[] values = (Object[]) state;
+        Integer first = (Integer) values[0];
+        if (first != null && first.intValue() != getFirst())
+            setFirst(first.intValue());
     }
 
     //  Event associated with the specific rowindex
