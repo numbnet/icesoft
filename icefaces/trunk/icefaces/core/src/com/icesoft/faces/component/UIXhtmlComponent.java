@@ -166,6 +166,14 @@ public class UIXhtmlComponent extends UIComponentBase {
         xmlAttributes = attr == null ? xmlAttributes : attr;
     }
 
+    /**
+     * This isn't intended for use by any other code, it's just to work-around
+     * a Facelets bug. ICE-3137
+     */
+    public Attributes getXmlAttributes() {
+        return xmlAttributes;
+    }
+
     public void addStandardAttribute(String key, Object value) {
         if (standardAttributes == Collections.EMPTY_MAP)
             standardAttributes = new HashMap();
