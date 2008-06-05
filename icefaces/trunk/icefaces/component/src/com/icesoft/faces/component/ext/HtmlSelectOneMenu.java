@@ -660,6 +660,21 @@ public class HtmlSelectOneMenu
         currentStyle = (CurrentStyle) values[19];
         visible = (Boolean) values[20];
     }
+    
+    public void validate(FacesContext context) {
+        Object submittedValue =   getSubmittedValue();
+        super.validate(context);
+        //ICE-3084
+        //if submitted value is a "blank string" its being yanked out by the validate.
+        //submittedValue will not be utilized after this method except to serve the
+        //rendering call, where the selected item needs to be set. So its save to
+        //set the submitted value back to the blank string if it was a blank string
+        //to satisfy the render so there won't be any unnecessary update.
+        if ((submittedValue instanceof String) && ((String) submittedValue).length() < 1){
+           setSubmittedValue(submittedValue);
+        }         
+       
+    }
 }
 
 
