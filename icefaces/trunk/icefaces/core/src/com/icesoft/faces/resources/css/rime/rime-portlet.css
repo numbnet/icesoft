@@ -67,6 +67,10 @@ fieldset {
     padding: 2px;
 }
 
+.iceSelOneRb table tr td {
+    padding: 1px;
+}
+
 .iceInpTxt, .iceInpSecrt {
     margin: 2px;
     padding: 3px;
