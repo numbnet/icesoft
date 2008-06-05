@@ -66,6 +66,10 @@ fieldset {
     padding: 2px;
 }
 
+.iceSelOneRb table tr td {
+    padding: 1px;
+}
+
 .iceInpTxt, .iceInpSecrt {
     font-family: Arial, Helvetica, sans-serif;
     padding: 2px;

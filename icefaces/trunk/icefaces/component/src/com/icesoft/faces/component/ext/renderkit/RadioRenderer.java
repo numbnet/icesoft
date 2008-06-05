@@ -54,6 +54,8 @@ public class RadioRenderer
     protected Element createRootNode(DOMContext domContext) {
         Element rootElement = domContext.createRootElement(HTML.FIELDSET_ELEM);
         Element tableElement = domContext.createElement(HTML.TABLE_ELEM);
+        tableElement.setAttribute("cellpadding", "0");
+        tableElement.setAttribute("cellspacing", "0");
         rootElement.appendChild(tableElement);
         return rootElement;
     }
