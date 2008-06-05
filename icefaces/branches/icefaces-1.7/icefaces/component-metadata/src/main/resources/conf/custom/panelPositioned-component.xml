@@ -43,7 +43,7 @@
 	&ice-cust-panelPositioned-props;
 	<component-extension>
 	    <base-component-type>javax.faces.Data</base-component-type>
-		<component-family>javax.faces.Panel</component-family>
+		<component-family>com.icesoft.faces.dragdrop.PanelPositionedFamily</component-family>
 		<renderer-type>com.icesoft.faces.dragdrop.PanelPositionedRenderer</renderer-type>
 	</component-extension>
 </component>
