@@ -1260,7 +1260,7 @@ public class SelectInputDateRenderer
             return false;
         }
         boolean found = false;
-        String REGEX = clientId;
+        String REGEX = clientId+"_";
         String INPUT = clickedLink;
         Pattern pattern;
         Matcher matcher;
