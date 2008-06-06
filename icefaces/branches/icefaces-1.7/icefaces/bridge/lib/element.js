@@ -452,11 +452,16 @@
 
     This.BodyElement = This.Element.subclass({
         replaceHtml: function(html) {
-            this.disconnectEventListeners();
+             this.disconnectEventListeners();
             //strip <noscript> tag to fix Safari bug
+            // #3131 If this is a response from an error code, there may not be a <noscript> tag.
             var start = new RegExp('\<noscript\>', 'g').exec(html);
-            var end = new RegExp('\<\/noscript\>', 'g').exec(html);
-            this.element.innerHTML = html.substring(0, start.index) + html.substring(end.index + 11, html.length);
+            if (start == null) {
+                this.element.innerHTML = html;
+            } else {
+                var end = new RegExp('\<\/noscript\>', 'g').exec(html);
+                this.element.innerHTML = html.substring(0, start.index) + html.substring(end.index + 11, html.length);
+            }
         }
     });
 
