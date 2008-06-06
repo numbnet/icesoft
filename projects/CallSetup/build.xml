@@ -36,6 +36,7 @@
 	<property name="publish.sample.CallSetup" value="${glassfish.samples.home}/${publish.samples.dir}/${component.name}"/>
     
 	<path id="compile.classpath">
+		<pathelement path="${javac.classpath}"/>
 		<pathelement location="${javaee.jarforsample}"/>
 		<pathelement location="${ssa-api.jarforsample}"/>
     </path>
@@ -76,7 +77,7 @@
     <!-- assemble -->
     <target name="assemble" depends="init"
             description="Create Call Setup sip demo sar files">    
-		<delete file="${sar.dir}/${sip-callsetup-demo.sar}"/>           
+		<delete file="${sar.dir}/${component.name}.sar"/>           
 		<mkdir dir="${sar.dir}"/>
 		<mkdir dir="${sar.web-inf.dir}"/>
 		<mkdir dir="${sar.classes.dir}"/>
@@ -99,7 +100,7 @@
 	
 		<copy todir="${sar.dir}" file="CallSetup.html" verbose="true"/>
 	
-        <jar jarfile="${sar.dir}/${sip-callsetup-demo.sar}" update="yes">
+        <jar jarfile="${sar.dir}/${component.name}.sar" update="yes">
             <fileset dir="${sar.dir}">
                 <include name="**/*"/>
             </fileset>
