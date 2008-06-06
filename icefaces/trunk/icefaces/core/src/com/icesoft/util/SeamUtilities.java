@@ -100,9 +100,10 @@ public class SeamUtilities {
        if (conversationIdParameter == null) {
             getConversationIdParameterName();
        }
-       String reqCid = stripCidFromRequest(uri);
        String ceId = getSeamConversationId();
-       Boolean updated=Boolean.FALSE;
+       String reqCid = stripCidFromRequest(uri);
+       /* next line ICE-3119 when redirect within a conversation and URI contains no cid */
+       if (reqCid.equals(""))reqCid=ceId;
 
        if (!reqCid.equals(ceId)){
 		   try{			   
@@ -112,7 +113,7 @@ public class SeamUtilities {
 	          if (seamSwitchCurrentConversationIdInstanceMethod != null) {
 	            	    seamSwitchConversationStackMethodArgs[0] = reqCid;
 	          }
-              updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
+              Boolean updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
                    .invoke(seamManagerInstance, seamSwitchConversationStackMethodArgs);
 	          if (log.isDebugEnabled()) {
                   log.debug("updated conversation from cid: " +
