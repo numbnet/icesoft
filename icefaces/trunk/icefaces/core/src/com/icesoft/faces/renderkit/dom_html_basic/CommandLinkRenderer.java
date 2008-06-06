@@ -258,21 +258,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
     }
 
     public boolean getRendersChildren() {
-        return true;
-    }
-
-    public void encodeChildren(FacesContext facesContext,
-                               UIComponent uiComponent)
-            throws IOException {
-        validateParameters(facesContext, uiComponent, UICommand.class);
-        Iterator children = uiComponent.getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            nextChild.encodeBegin(facesContext);
-            if (nextChild.getRendersChildren()) {
-                nextChild.encodeChildren(facesContext);
-            }
-            nextChild.encodeEnd(facesContext);
-        }
+        return false;
     }
 }
