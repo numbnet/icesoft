@@ -1,0 +1,72 @@
+<!--
+ Copyright 2004-2005 Sun Microsystems, Inc.  All rights reserved.
+ Use is subject to license terms.
+-->
+
+<!DOCTYPE project [
+  <!ENTITY sampleCommonCommands SYSTEM "../communication-ant.xml">
+]>
+
+<project name="callsetup-example" default="core" basedir=".">
+  <property file="./build.properties"/>
+  <!-- Configure the context path for this application --> 
+  <property name="callsetupsar.home" value="."/> 
+ 
+  <property name="callsetupsar.web.name" value="CallSetup"/>
+
+  <!-- Property names to passed to common targets -->  
+  <property name="binary.name" value="${callsetupsar.web.name}"/>  
+  <property name="sample.name" value="CallSetup"/>
+  <property name="application.type.sar" value="true"/>
+  
+  <property name="sample.home" value="../../" />
+  <property name="lib.home" value="../../../lib" />
+
+  &sampleCommonCommands;
+    
+  <target name="core" depends="sar"
+     description="Copy HTML and JSP pages and build callsetup.sar file" >
+  </target>  
+  
+  <target name="sar" depends="compile,init_common,create_sar_common"/>
+
+  <path id="compile.classpath">
+	<pathelement location="${lib.home}/javaee.jar"/>
+	<pathelement location="${lib.home}/ssa-api.jar"/>
+  </path>
+
+  <target name="compile" 
+            description="Compile Call Setup sip demo sources">  
+		<mkdir dir="${component.classes.dir}"/>
+		<javac srcdir="${src.dir}" 
+               destdir="${component.classes.dir}"
+               failonerror="true">
+		<classpath refid="compile.classpath"/>
+		</javac>		
+  </target>	
+  
+  <!-- ======================================================= -->
+  <!-- Deploy target.                                          -->
+  <!-- ======================================================= -->
+  <target name="deploy" depends="select_binary_common, setpassword, deploy_common"/>
+  
+  <!-- ======================================================= -->
+  <!-- Undeploy target.                                        -->
+  <!-- ======================================================= -->
+  <target name="undeploy" depends="init_common, setpassword, undeploy_common"/>
+  
+  <target name="clean" depends="clean_common"/>            
+
+  <!-- ======================================================= -->
+  <!-- Verify target.                                          -->
+  <!-- ======================================================= -->
+  <target name="verify" depends="select_binary_common,verify_common" />  
+
+  <!-- ======================================================= -->
+  <!-- Javadocs target.                                        -->
+  <!-- ======================================================= -->
+  <target name="javadocs" depends="javadocs_noop_common"/>   
+
+  <target name="all"      depends="core,javadocs,verify,deploy"/>
+</project>
+

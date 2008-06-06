@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <title>SailFin Application Server Separate Bundle - Sample Applications</title>
+  <style type="text/css">
+  body,td,p,div,span,a,ul,ul li, ol, ol li, ol li b, dl,h1,h2,h3,h4,h5,h6,li {
+    font-family:geneva,helvetica,arial,"lucida sans",sans-serif;
+    font-size:10pt
+  }
+  h1 {font-size:18pt}
+  h2 {font-size:14pt}
+  h3 {font-size:12pt}
+  code,kbd,tt,pre {
+    font-family:monaco,courier,"courier new";
+    font-size:10pt;
+  }
+  li {padding-bottom: 8px}
+  p.copy, p.copy a {
+    font-family:geneva,helvetica,arial,"lucida sans",sans-serif;
+    font-size:8pt
+    }
+  p.copy {text-align: center}
+
+  table.grey1,tr.grey1,td.grey1{background:#f1f1f1}
+  th {
+    color:#ffffff;
+    font-family:geneva,helvetica,arial,"lucida sans",sans-serif;
+    font-size:12pt
+  }
+  td.insidehead {
+    font-weight:bold;
+    background:white;
+    text-align: left;
+  }
+  a{text-decoration:none}
+  a:visited{color:#96C}
+  a:hover {text-decoration:underline}
+  </style>
+</head>
+<body alink="#333366" bgcolor="#ffffff" link="#594fbf" marginwidth="10"
+ text="#000000" vlink="#1005fb">
+<table border="0" cellpadding="2" cellspacing="4" width="100%">
+  <tbody>
+    <tr>
+      <td align="right" bgcolor="#587993" valign="top"> <font
+ color="#ffffff" size="-1"><b>SailFin Application Server</b></font>&nbsp;
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p align=right><a href="../index.html">Click here to go back to SailFin Sample Home Page</a></p>
+<!---- Don't modify anything above this line, except for the title tag -------->
+<h1>SailFin Sample Applications - CallSetup</h1>
+<p>
+This demo ("CallSetup") combines a Java EE 5 Application with Sip Servlets. 
+Incoming SIP registrations are processed by a SipServlet that utilizes 
+Java EE 5 annotations and EJB 3.0 to store in to a database. The web interface 
+in the same application looks up a SipFactory and places calls, with the 
+help of B2B User Agent SipServlet. This application illustrates how to utilize 
+the powerful component model, IDEs, and Tools of Java EE 5 to write Sip 
+applications. It also shows how Java EE Web components can add communication 
+capabilities to existing web interfaces, with the help of Sip.
+</p>
+<hr noshade="noshade" size="1">
+<h2>Instructions to deploy the sample application CallSetup</h2>
+<p><B>Note: For executing sailfin samples user must have configured SailFin server. Here 'INSTALL_HOME' is the sailfin installation directory.</b></p>
+<ol>
+  <li>% cd INSTALL_HOME/bin<br><br>
+  </li>
+  <li>% ./asadmin start-domain domain1<br>It would start the server.<br><br>
+  </li>
+  <li>% ./asadmin start-database<br>It would start the database.<br><br>
+  </li>
+  <li>% cd INSTALL_HOME/samples/sipservlet/CallSetup<br>It would point to the sailfin sample 'CallSetup' direcotry which contains 'ant script' for doing build,deploy and undeploy 'CallSetup' sample.<br><br>Script contains individual targets for doing build and create sar file (INSTALL_HOME/lib/ant/bin/ant sar), deploy(INSTALL_HOME/lib/ant/bin/ant deply) and undeploy(INSTALL_HOME/lib/ant/bin/ant undeploy).<br><br>
+  </li>
+  <li>% INSTALL_HOME/lib/ant/bin/ant all<br>It would build all available java files and going to create sar file (CallSetup.sar). It would deploy sar file on sailfin server.<br><br>
+  </li>
+  <li>% INSTALL_HOME/lib/ant/bin/ant undeploy<br>It would undeploy sar file (CallSetup.sar).<br><br>
+  </li>
+</ol>
+<hr noshade="noshade" size="1">
+<h2>Instructions to execute the sample application CallSetup</h2>
+<ol>
+  <li>Download and install a SIP softphone from www.xten.com. The SIP softphone is avaialble only for Linux and Windows. We used X-Lite Client (Version 3.0 omn Windows)<br><Br>Could not get SIP softphone when the SIP UAclient and SIP Server were on same machine. So we placed the clients on separate machines. Also, we turned off Wireless Network interface on the machine hosting the server.<br><br>
+  </li>
+  <li>Once the softphone is installed, open the menu and add the following in the 
+   Menu option, SIP Account Settings<br><br><b>a.</b> Add a name , display name<br><b>b.</b> Add a domain name test.com<br><b>c.</b> On windows the domain proxy setting should point the IP address of machine hosting the Telco AS , suffixed with the port 5060, to the proxy. i.e. Set the radio button option to proxy and enter the  the IP address of your machine hosting the Telco AS , suffixed with the port 5060 as the address.<br>On Linux, you need to look at ServerSettings->SIPProxy option. The outbound SIP proxy and Proxy should point to the IP address of your machine hosting the Telco AS , suffixed with the port 5060 .<br><br>
+  </li>
+  <li>Your sip phone should attempt to register with the application in the telco AS. For this demo, at least two clients must register with the GlassFish/SIP Server<br><br>
+  </li>
+  <li>You can test that the registration is successful by pointing browser to<br><br><B>http://localhost:8080/CallSetup/RegistrationBrowserServlet</b><br><Br>You should see a table with all registered clients.<br><br>
+  </li>
+  <li>Click on the check box next to two registered users and click submit. The phone should ring sequentially at the two selected end points.<br><br>
+  </li>
+</ol>
+<p>Send any support requests or technical queries to <a href="mailto:dev@sailfin.dev.java.net">dev@sailfin.dev.java.net</a></p>
+<!--- Do not modify the rest of the document -->
+<hr noshade="noshade" size="1"><!-- start copyright -->
+<p class="copy"> Copyright &copy; 2007 <a href="http://sun.com">Sun
+Microsystems, Inc.</a>
+All rights reserved. </p>
+<!--  end copyright  -->
+</body>
+</html>
