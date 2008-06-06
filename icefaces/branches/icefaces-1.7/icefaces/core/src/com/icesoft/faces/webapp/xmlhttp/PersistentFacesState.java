@@ -174,6 +174,8 @@ public class PersistentFacesState implements Serializable {
                 log.debug("fatal render failure for viewNumber "
                         + facesContext.getViewNumber());
             }
+            // #3073 Clear threadLocal in all paths
+            localInstance.set(null);
             throw new FatalRenderingException(
                     "fatal render failure for viewNumber "
                             + facesContext.getViewNumber());
@@ -297,6 +299,8 @@ public class PersistentFacesState implements Serializable {
                 log.debug("fatal render failure for viewNumber "
                         + facesContext.getViewNumber());
             }
+            // #3073 Clear threadLocal in all paths
+            localInstance.set(null);
             throw new FatalRenderingException(
                     "fatal render failure for viewNumber "
                             + facesContext.getViewNumber());
