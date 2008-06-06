@@ -225,5 +225,12 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
 	    }
 
     }
+    
+    /**
+     * Delete document source file and other generated files.
+     */
+    public void deleteFiles() {
+        externalConverterFile.delete();
+    }
 
 }

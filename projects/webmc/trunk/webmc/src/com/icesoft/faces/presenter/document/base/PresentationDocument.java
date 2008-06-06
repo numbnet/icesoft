@@ -90,4 +90,9 @@ public interface PresentationDocument {
      * conversion
      */
     public void dispose();
+    
+    /**
+     * Delete document source file and other generated files.
+     */
+    public void deleteFiles();
 }
