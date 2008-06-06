@@ -42,7 +42,6 @@ import com.icesoft.faces.presenter.participant.Participant;
 import com.icesoft.faces.presenter.participant.ParticipantInfo;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.timer.SlideshowTimerBean;
-import com.icesoft.faces.presenter.util.FileNameFilter;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
 import com.icesoft.faces.presenter.util.StringResource;
 
@@ -70,7 +69,6 @@ public class Presentation extends PresentationInfo {
     private OnDemandRenderer renderer;
     private PresentationDocument document;
     private File parentFile;
-    private ArrayList uploadedFiles = new ArrayList();
     private PresentationManagerBean manager;
     private SlideshowTimerBean stimer = new SlideshowTimerBean(this);
     boolean usingPointer = false;
@@ -296,7 +294,7 @@ public class Presentation extends PresentationInfo {
      * @param silent true to hide status messages
      */
     public void stopAutoPlay(boolean silent) {
-        if (stimer.isRunning()) {
+    	if (stimer.isRunning()) {
             stimer.stopSlideshow();
             stimer = new SlideshowTimerBean(this);
             if (!silent) {
@@ -529,26 +527,20 @@ public class Presentation extends PresentationInfo {
      * @param isDefault if the presentation is a generic initial presentation
      */
     public void load(File toLoad, boolean isDefault) {
-        parentFile = toLoad;
         // Stop and reset any previous presentation
         stopAutoPlay(true);
         currentSlideNumber = DEFAULT_SLIDE_NUMBER;
+    	
+    	// Clean up the old document if it exists
+        if (document != null) {
+        	closeDocument();
+        }
+    	
+    	parentFile = toLoad;
+        // delete the file when the app server shuts down.
+        parentFile.deleteOnExit();
 
         log.info("Loading slideshow \'" + parentFile.getName() + "\' for " + name);
-
-        // If the file is not a default presentation, then it should be
-        // removed normally when the presentation ends, or worst case when
-        // the app server shuts down
-        if (!isDefault) {
-            uploadedFiles.add(parentFile);
-            parentFile.deleteOnExit();
-        }
-
-        // Clean up the old document if it exists
-        if (document != null) {
-            document.dispose();
-            document = null;
-        }
 
         // Close the upload dialog on the page
         closeUploadDialog();
@@ -650,52 +642,11 @@ public class Presentation extends PresentationInfo {
         if (document == null) {
             return;
         }
-
+        document.deleteFiles();
         document.dispose();
         document = null;
         currentSlideNumber = DEFAULT_SLIDE_NUMBER;
-        deleteFiles();
-    }
 
-    /**
-     * Method to clean up the files created by a presentation This is normally
-     * .zip and image files If a .zip was found, the extracted files will also
-     * be removed
-     */
-    private void deleteFiles() {
-        for (int i = 0; i < uploadedFiles.size(); i++) {
-            File uploadedFile = (File) uploadedFiles.get(i);
-            int indexOfFileFormat = uploadedFile.getName().lastIndexOf(".");
-            String fileNameWithoutType =
-                    uploadedFile.getName().substring(0, indexOfFileFormat);
-            
-            if (uploadedFile.getName().toLowerCase().indexOf(".zip") != -1) {
-                deleteExtractedFiles(fileNameWithoutType);
-            }
-
-            File[] contents = uploadedFile.getParentFile()
-                    .listFiles(new FileNameFilter(fileNameWithoutType));
-            for (int y = 0; y < contents.length; y++) {
-                contents[y].delete();
-            }
-         }
-    }
-
-    /**
-     * Method to clean up the extracted files from a zip presentation
-     *
-     * @param fileNameWithoutType to cleanup
-     */
-    private void deleteExtractedFiles(String fileNameWithoutType) {
-        File targetFolder = new File(parentFile.getParentFile() + File
-                .separator + ZipPresentationDocument
-                .EXTRACTED_FOLDER + File.separator + getPrefix() + "-" + fileNameWithoutType);
-        File[] contents = targetFolder.listFiles();
-
-        for (int i = 0; i < contents.length; i++) {
-            contents[i].delete();
-        }
-        targetFolder.delete();
     }
 
     /**

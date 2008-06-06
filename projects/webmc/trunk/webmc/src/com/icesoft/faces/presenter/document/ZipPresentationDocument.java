@@ -66,6 +66,9 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
     private static final int MIN_ENTRY_SIZE =
             1000; // minimum zip entry to include (in bytes)
 
+    private String baseDirectory;
+    private String mobileDirectory;
+    
     public ZipPresentationDocument(Presentation presentation) {
         this.presentation = presentation;
     }
@@ -136,8 +139,6 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                 ZipFile zf =
                         new ZipFile(externalConverterFile.getAbsolutePath());
 
-                String baseDirectory;
-                String mobileDirectory;
                 long ourTimestamp = System.currentTimeMillis();
 
                 // Setup the base directory, which can be based on two cases
@@ -169,7 +170,8 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                 // Loop through all entries in the zip and extract as necessary
                 ArrayList generatedFiles = fileCreator(zf, baseDirectory, false);
               	ArrayList generatedFilesMobile = fileCreator(zf, mobileDirectory, true);
-
+                zf.close();
+                
                 // Update the user if no slides were generated (which is unlikely)
                 if (generatedFiles.size() < 1) {
                     if (log.isErrorEnabled()) {
@@ -183,13 +185,13 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
 
                 // Generate a list of Slide objects from the extracted files
                 // This list can then be used by the presentation
-                baseDirectory = EXTRACTED_FOLDER + URL_SLASH +
+                String slideBaseDirectory = EXTRACTED_FOLDER + URL_SLASH +
                                 presentation.getPrefix() + ourTimestamp + URL_SLASH;
-                mobileDirectory = baseDirectory + "mobile" + URL_SLASH;
+                String slideMobileDirectory = slideBaseDirectory + "mobile" + URL_SLASH;
                 externalConverterFilePages = generatedFiles.size();
 
-                slides = slideCreator(generatedFiles,baseDirectory,false);
-                slidesMobile = slideCreator(generatedFilesMobile,mobileDirectory,true);
+                slides = slideCreator(generatedFiles,slideBaseDirectory,false);
+                slidesMobile = slideCreator(generatedFilesMobile,slideMobileDirectory,true);
 
                 // We can show the navigation controls and set the first slide
                 loaded = true;
@@ -209,13 +211,13 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
             }
         }
 
-        private Slide[] slideCreator(ArrayList generatedFiles, String baseDirectory, boolean mobile){
+        private Slide[] slideCreator(ArrayList generatedFiles, String slideBaseDirectory, boolean mobile){
             ArrayList slideArray = new ArrayList(0);
             File currentFile;
             for (int i = 0; i < generatedFiles.size(); i++) {
                 currentFile = (File) generatedFiles.get(i);
                 slideArray.add(new Slide(
-                        baseDirectory + currentFile.getName(),mobile));
+                        slideBaseDirectory + currentFile.getName(),mobile));
             }
             return (Slide[]) slideArray
                     .toArray(new Slide[slideArray.size()]);    	
@@ -268,4 +270,35 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
         
         return "Slide" + slideNumber;
     }
+
+    /**
+     * Method to clean up the extracted files from a zip presentation
+     */
+    public void deleteExtractedFiles() {
+    	deleteExtractedFiles(mobileDirectory);
+    	deleteExtractedFiles(baseDirectory);
+    }
+    
+    /**
+     * Method to clean up the extracted files from a zip presentation
+     *
+     * @param directory to cleanup
+     */
+    private void deleteExtractedFiles(String directory) {
+        File targetFolder = new File(directory);
+        File[] contents = targetFolder.listFiles();
+        for (int i = 0; i < contents.length; i++) {
+            contents[i].delete();
+        }
+        targetFolder.delete();
+    }
+    
+    /**
+     * Delete document source file and other generated files.
+     */
+    public void deleteFiles() {
+        deleteExtractedFiles();
+        externalConverterFile.delete();
+    }
+
 }
