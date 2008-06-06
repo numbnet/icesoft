@@ -102,28 +102,27 @@ public class SeamUtilities {
        }
        String reqCid = stripCidFromRequest(uri);
        String ceId = getSeamConversationId();
-       Boolean updated=Boolean.FALSE;
 
-       if (!reqCid.equals(ceId)){
-		   try{			   
-			  int convId = Integer.parseInt(reqCid);
-		      Object seamManagerInstance =
-	                    seamInstanceMethod.invoke(null, seamInstanceArgs);
-	          if (seamSwitchCurrentConversationIdInstanceMethod != null) {
-	            	    seamSwitchConversationStackMethodArgs[0] = reqCid;
-	          }
-              updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
+       if (!reqCid.equals("") && !reqCid.equals(ceId)){
+	      try{
+		     int convId = Integer.parseInt(reqCid);
+		     Object seamManagerInstance =
+	                  seamInstanceMethod.invoke(null, seamInstanceArgs);
+	         if (seamSwitchCurrentConversationIdInstanceMethod != null) {
+	           	    seamSwitchConversationStackMethodArgs[0] = reqCid;
+	         }
+             Boolean updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
                    .invoke(seamManagerInstance, seamSwitchConversationStackMethodArgs);
-	          if (log.isDebugEnabled()) {
+	         if (log.isDebugEnabled()) {
                   log.debug("updated conversation from cid: " +
                        ceId + ", to: " + reqCid+"  successful="+updated);
-              }		     		    		
-		   }
-		   catch (Exception e) {
+             }		     		    		
+		  }
+		  catch (Exception e) {
 		                seamInstanceMethod = null;
 		                seamManagerClass = null;
 		                log.error("Exception updating Seam's conversation Stack: ", e);
-		   }
+		  }
        }
     }
     
