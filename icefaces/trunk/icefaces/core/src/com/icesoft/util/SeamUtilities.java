@@ -92,7 +92,7 @@ public class SeamUtilities {
     
     /**
      * In order to perform Seam's workspace management, we have to be able
-     * to display various LR conversations within the same viewId
+     * to display various LR conversations within the same viewId ICE-2737
      * @param uri
      * @return
      */
@@ -100,12 +100,10 @@ public class SeamUtilities {
        if (conversationIdParameter == null) {
             getConversationIdParameterName();
        }
-       String ceId = getSeamConversationId();
        String reqCid = stripCidFromRequest(uri);
-       /* next line ICE-3119 when redirect within a conversation and URI contains no cid */
-       if (reqCid.equals(""))reqCid=ceId;
+       String ceId = getSeamConversationId();
 
-       if (!reqCid.equals(ceId)){
+       if (!reqCid.equals("") && !reqCid.equals(ceId)){
 		   try{			   
 			  int convId = Integer.parseInt(reqCid);
 		      Object seamManagerInstance =
@@ -113,7 +111,7 @@ public class SeamUtilities {
 	          if (seamSwitchCurrentConversationIdInstanceMethod != null) {
 	            	    seamSwitchConversationStackMethodArgs[0] = reqCid;
 	          }
-              Boolean updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
+             Boolean updated =  (Boolean)seamSwitchCurrentConversationIdInstanceMethod
                    .invoke(seamManagerInstance, seamSwitchConversationStackMethodArgs);
 	          if (log.isDebugEnabled()) {
                   log.debug("updated conversation from cid: " +
@@ -229,10 +227,14 @@ public class SeamUtilities {
             getConversationIdParameterName();
         }
         int index = uri.indexOf(conversationIdParameter);
-
         if (index>0 ){
             String substring = uri.substring(index);
         	returnVal = uri.substring(index+4);
+           /* have to check for other encoding for seam-1.2.1.*/
+           int end = returnVal.indexOf('&');
+           if (end>0){
+        	   returnVal=returnVal.substring(0,end);
+           }else returnVal = uri.substring(index+4);
         }
     	return returnVal;
     }
