@@ -39,6 +39,7 @@
 		<pathelement path="${javac.classpath}"/>
 		<pathelement location="${javaee.jarforsample}"/>
 		<pathelement location="${ssa-api.jarforsample}"/>
+		<pathelement location="web/WEB-INF/lib/icefaces.jar"/>
     </path>
     <!-- all -->
     <target name="all" depends="compile, assemble"
@@ -95,6 +96,7 @@
 		<copy todir="${sar.dir}">
             <fileset dir="web">
                 <include name="*.jsp"/>
+                <include name="*.xhtml"/>
             </fileset>
         </copy>
 	

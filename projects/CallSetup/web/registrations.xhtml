@@ -1,0 +1,32 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jstl/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html>
+    <head><title>ICEfaces SIP Call Setup Demo</title></head>
+    <body>
+    <h3>ICEfaces SIP Call Setup Demo</h3>
+    <h:form>
+        <h:dataTable var="user"
+                       value="#{callTracker.registrations}" >
+            <h:column>
+                <h:selectBooleanCheckbox value="#{user.selected}" />
+            </h:column>
+
+            <h:column>
+                <h:outputText value="#{user.id}" />
+            </h:column>
+            <h:column>
+                <h:outputText value="#{user.registrationTime}" />
+            </h:column>
+            <h:column>
+                <h:outputText value="#{user.expirationTime}" />
+            </h:column>
+        </h:dataTable>
+        <br/>
+        <h:commandButton value="Call" type="submit" action="#{callTracker.call}"/>
+    </h:form>
+    </body>
+    </html>
+</f:view>
