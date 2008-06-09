@@ -234,6 +234,7 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                     loopIndex++;
                     File toAdd = new File(
                             baseDirectory, replaceUserFilename(currentEntry.getName(), loopIndex));
+                    toAdd.deleteOnExit();
                     if (currentEntry.getSize() > MIN_ENTRY_SIZE) {
                         // Make sure to only deal with image files
                         if ((toAdd.getName().toLowerCase().indexOf(".jpg") != -1) ||
