@@ -1714,7 +1714,7 @@ table.iceSelInpDate tbody tr td table{
 }
 
 .iceMnuItmImage, .iceMnuBarItemImage, .iceMnuBarVrtItemImage {
-    display: none;
+    display: inline;
 }
 
 .iceMnuBarSubMenuInd {
