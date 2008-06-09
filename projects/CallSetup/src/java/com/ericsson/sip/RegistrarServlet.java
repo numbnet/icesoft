@@ -63,6 +63,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.ericsson.sip.Registration;
+import org.icefaces.x.core.push.SessionRenderer;
 
 /**
  * @author lmcpepe
@@ -183,6 +184,8 @@ public class RegistrarServlet extends SipServlet{
         if (appsess != null) {
             appsess.invalidate();
         }
+        //Push the update to the web page
+        SessionRenderer.render("presence");
     }
     
     protected void doInvite(SipServletRequest request) throws ServletException, IOException {
