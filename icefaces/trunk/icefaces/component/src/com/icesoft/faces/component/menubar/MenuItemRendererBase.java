@@ -47,6 +47,9 @@ public class MenuItemRendererBase extends DomBasicRenderer {
 
     public void encodeChildren(FacesContext context, UIComponent component)
             throws IOException {
+        if (!component.isRendered()) {
+            return;
+        }
         for (int i = 0; i < component.getChildCount(); i++) {
             encodeParentAndChildren(context, (UIComponent) component
                     .getChildren().get(i));

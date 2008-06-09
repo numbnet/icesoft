@@ -660,9 +660,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                     link, nextSubMenuItem, menuComponent, true, !vertical);                    
                 ((MenuItem) nextSubMenuItem).addParameter(link);
                 try {
-                    link.encodeBegin(facesContext);
-                    link.encodeChildren(facesContext);
-                    link.encodeEnd(facesContext);
+                    encodeParentAndChildren(facesContext, link);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -706,9 +704,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 link, nextSubMenuItem, menuComponent, false, !vertical);                    
             ((MenuItem) nextSubMenuItem).addParameter(link);
             try {
-                link.encodeBegin(facesContext);
-                link.encodeChildren(facesContext);
-                link.encodeEnd(facesContext);
+                encodeParentAndChildren(facesContext, link);
 
             } catch (IOException e) {
                 e.printStackTrace();
