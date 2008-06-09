@@ -67,16 +67,10 @@ public class PanelLayoutRenderer extends Renderer {
         if (context == null || component == null) {
             throw new NullPointerException();
         }
-        
-        Iterator kids = component.getChildren().iterator();
-        while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
-            kid.encodeBegin(context);
-            if (kid.getRendersChildren()) {
-                kid.encodeChildren(context);
-            }
-            kid.encodeEnd(context);
-        }
+
+        if (!component.isRendered()) return;
+
+        com.icesoft.faces.component.util.CustomComponentUtils.renderChildren(context, component);
     }
 
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
