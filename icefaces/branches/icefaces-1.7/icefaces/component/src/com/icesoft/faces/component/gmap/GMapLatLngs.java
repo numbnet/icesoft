@@ -28,6 +28,7 @@ public class GMapLatLngs extends UIPanel{
     	StringBuffer latLngScript = new StringBuffer();
     	while(it.hasNext()) {
 	    	UIComponent kid = (UIComponent)it.next();
+            if (!kid.isRendered()) continue;	    	
 	    	kid.encodeBegin(context);
 		    if (kid.getRendersChildren()) {
 		    	kid.encodeChildren(context);
