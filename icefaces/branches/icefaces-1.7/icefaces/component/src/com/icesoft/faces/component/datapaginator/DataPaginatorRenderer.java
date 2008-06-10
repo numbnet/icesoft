@@ -263,7 +263,6 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
 
         Element tr = domContext.createElement(HTML.TR_ELEM);
         table.appendChild(tr);
-        Element td;
 
         String styleClass = scroller.getStyleClass();
         table.setAttribute(HTML.CLASS_ATTR, styleClass);
@@ -275,110 +274,76 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             table.removeAttribute(HTML.STYLE_ATTR);
         String scrollButtonCellClass = scroller.getscrollButtonCellClass();
 
-        UIComponent facetComp = scroller.getFirst();
-        if (facetComp != null) {
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getFirst(),
                         DataPaginator.FACET_FIRST);
-        }
 
-        facetComp = scroller.getFastRewind();
-        if (facetComp != null) {
+        // Horizontal shares a table row, but for vertical,
+        // have them each auto-create their own table row
             if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
+            tr = null;
             }
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
-                        DataPaginator.FACET_FAST_REWIND);
-        }
         
-        facetComp = scroller.getPrevious();
-        if (facetComp != null) {
-            if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
-            }
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getFastRewind(),
+                        DataPaginator.FACET_FAST_REWIND);
+        
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getPrevious(),
                         DataPaginator.FACET_PREVIOUS);
-        }
+        
         if (!scroller.isModelResultSet() && scroller.isPaginator()) {
             if (scroller.isVertical()) {
                 tr = domContext.createElement(HTML.TR_ELEM);
                 table.appendChild(tr);
             }
-            td = domContext.createElement(HTML.TD_ELEM);
+            Element td = domContext.createElement(HTML.TD_ELEM);
             tr.appendChild(td);
             Element paginatorTable = domContext.createElement(HTML.TABLE_ELEM);
             td.appendChild(paginatorTable);
             renderPaginator(facesContext, uiComponent, paginatorTable,
                             domContext);
         }
-        facetComp = scroller.getNext();
-        if (facetComp != null) {
-            if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
-            }
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
-                        DataPaginator.FACET_NEXT);
-        }
-
-        facetComp = scroller.getFastForward();
-        if (facetComp != null) {
-            if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
-            }
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
-                        DataPaginator.FACET_FAST_FORWARD);
-        }
         
-        facetComp = scroller.getLast();
-        if (facetComp != null) {
-            if (scroller.isVertical()) {
-                tr = domContext.createElement(HTML.TR_ELEM);
-                table.appendChild(tr);
-            }
-            td = domContext.createElement(HTML.TD_ELEM);
-            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
-            tr.appendChild(td);
-            domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
-            renderFacet(facesContext, scroller, facetComp,
-                        DataPaginator.FACET_LAST);
-        }
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getNext(),
+                        DataPaginator.FACET_NEXT);
+
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getFastForward(),
+                        DataPaginator.FACET_FAST_FORWARD);
+        
+        handleFacet(facesContext, scroller, domContext, table, tr,
+                    scrollButtonCellClass, scroller.getLast(),
+                    DataPaginator.FACET_LAST);
+        
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
+        }
+        
+    protected void handleFacet(FacesContext facesContext,
+                               DataPaginator scroller,
+                               DOMContext domContext,
+                               Element table,
+                               Element tr,
+                               String scrollButtonCellClass,
+                               UIComponent facetComp,
+                               String facetName)
+            throws IOException {
+        if (facetComp != null) {
+            // tr is null when scroller.isVertical()
+            if (tr == null) {
+                tr = domContext.createElement(HTML.TR_ELEM);
+                table.appendChild(tr);
+            }
+            Element td = domContext.createElement(HTML.TD_ELEM);
+            td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
+            tr.appendChild(td);
+            domContext.setCursorParent(td);
+            domContext.streamWrite(facesContext, scroller,
+                                   domContext.getRootNode(), td);
+            renderFacet(facesContext, scroller, facetComp, facetName);
+        }
     }
 
     protected void renderFacet(FacesContext facesContext,
@@ -396,11 +361,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         }
 
         link.encodeBegin(facesContext);
-        facetComp.encodeBegin(facesContext);
-        if (facetComp.getRendersChildren()) {
-            facetComp.encodeChildren(facesContext);
-        }
-        facetComp.encodeEnd(facesContext);
+        encodeParentAndChildren(facesContext, facetComp);
         link.encodeEnd(facesContext);
     }
 
