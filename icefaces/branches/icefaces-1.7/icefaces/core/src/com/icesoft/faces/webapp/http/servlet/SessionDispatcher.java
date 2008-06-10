@@ -126,29 +126,30 @@ public abstract class SessionDispatcher implements PseudoServlet {
         if (Log.isDebugEnabled()) {
             Log.debug("Shutting down session: " + session.getId());
         }
+        String sessionID = session.getId();
+        // avoid executing this method twice
+        if (!SessionMonitors.containsKey(sessionID)) {
+            if (Log.isDebugEnabled()) {
+                Log.debug("Session: " + sessionID + " already shutdown, skipping");
+                return;
+            }
+        }
+
+        //shutdown session bound servers
+        Iterator i = SessionDispatchers.iterator();
+        while (i.hasNext()) {
+            try {
+                SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
+                sessionDispatcher.sessionShutdown(session);
+            } catch (Exception e) {
+                Log.error(e);
+            }
+        }
+
         synchronized( SessionMonitors ) {
-            String sessionID = session.getId();
-            // avoid executing this method twice
-            if (!SessionMonitors.containsKey(sessionID)) {
-                if (Log.isDebugEnabled()) {
-                    Log.debug("Session: " + sessionID + " already shutdown, skipping");
-                    return;
-                }
-            }
 
-            //shutdown session bound servers
-            Iterator i = SessionDispatchers.iterator();
-            while (i.hasNext()) {
-                try {
-                    SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
-                    sessionDispatcher.sessionShutdown(session);
-                } catch (Exception e) {
-                    Log.error(e);
-                }
-            }
-
-        //invalidate session and discard session ID
-                i = SessionDispatchers.iterator();
+            //invalidate session and discard session ID
+            i = SessionDispatchers.iterator();
             while (i.hasNext()) {
                 try {
                     SessionDispatcher sessionDispatcher = (SessionDispatcher) i.next();
@@ -158,13 +159,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }
             }
 
-//            String sessionID = session.getId();
             try {
                 session.invalidate();
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
             } finally {
-//                SessionIDs.remove(sessionID);
                 SessionMonitors.remove(sessionID);
             }
         }
