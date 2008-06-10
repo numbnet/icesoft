@@ -41,7 +41,7 @@ public class GMapMarker extends UIPanel{
 	     Iterator kids = getChildren().iterator();
 	     while (kids.hasNext()) {
 		    UIComponent kid = (UIComponent) kids.next();
-		        if (!kid.isRendered()) continue;
+  
 		    	kid.encodeBegin(context);
 			    if (kid.getRendersChildren()) {
 			    	kid.encodeChildren(context);
