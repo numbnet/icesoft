@@ -212,8 +212,8 @@ Ice.Menu = {
     	}
     },
     hideMenuWithId: function(menu) {
-    	if (menu) {
-	    	menu = $(menu);
+        menu = $(menu);
+        if (menu) {
             if (menu.iframe) menu.iframe.hide(); // ICE-2066, ICE-2912
 	    	menu.style.display='none';
 	    	Ice.Menu.removeFromOpenMenus(menu);
