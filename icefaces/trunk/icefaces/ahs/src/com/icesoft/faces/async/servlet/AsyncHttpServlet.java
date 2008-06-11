@@ -113,6 +113,17 @@ extends HttpServlet {
                 }
                 final ExecuteQueue _executeQueue = new ExecuteQueue();
                 SessionDispatcher _sessionDispatcher = new SessionDispatcher() {
+                    public void service(
+                        final HttpServletRequest httpServletRequest,
+                        final HttpServletResponse httpServletResponse)
+                    throws Exception {
+                        HttpSession _httpSession =
+                            httpServletRequest.getSession(true);
+                        notifyIfNew(_httpSession);
+                        lookupServlet(_httpSession).
+                            service(httpServletRequest, httpServletResponse);
+                    }
+
                     protected PseudoServlet newServlet(
                         final HttpSession httpSession, final Monitor monitor) {
 
