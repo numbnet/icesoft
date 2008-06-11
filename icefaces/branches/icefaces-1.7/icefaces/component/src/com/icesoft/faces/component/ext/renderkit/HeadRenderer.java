@@ -41,27 +41,28 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 public class HeadRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        Element head = ((DOMResponseWriter) facesContext.getResponseWriter()).getHeadElement();
-//        head.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
-        setElementAttr(head, HTML.DIR_ATTR, uiComponent, HTML.DIR_ATTR);
-        setElementAttr(head, HTML.LANG_ATTR, uiComponent, HTML.LANG_ATTR);
-        setElementAttr(head, "profile", uiComponent, "profile");
-        DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
-        domContext.setCursorParent(head);
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement("head", uiComponent);
+        setElementAttr(writer, HTML.DIR_ATTR, uiComponent, HTML.DIR_ATTR);
+        setElementAttr(writer, HTML.LANG_ATTR, uiComponent, HTML.LANG_ATTR);
+        setElementAttr(writer, "profile", uiComponent, "profile");
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement("head");
     }
 
-    private void setElementAttr(Element element, String elementAttrName, UIComponent component, String componentAttrName) {
+    private void setElementAttr(ResponseWriter writer, String elementAttrName, UIComponent component, String componentAttrName) throws IOException {
         Object attrValue = component.getAttributes().get(componentAttrName);
         if (attrValue != null) {
-            element.setAttribute(elementAttrName, attrValue.toString());
+            writer.writeAttribute(elementAttrName, attrValue, componentAttrName);
         }
     }
 }
