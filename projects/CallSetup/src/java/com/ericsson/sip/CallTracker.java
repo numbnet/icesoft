@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -153,6 +154,10 @@ public class CallTracker  {
             e.printStackTrace();
         }
 
+    }
+
+    public String getTime()  {
+        return Calendar.getInstance().getTime().toString();
     }
 }
 
