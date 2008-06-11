@@ -3,11 +3,11 @@ ICEfaces SIP Call Setup Demo
 
 Copy the necessary ICEfaces .jar files into the project:
 
-cp ${icefaces.home}/lib/{backport-util-concurrent.jar,icefaces-facelets.jar,commons-fileupload.jar,icefaces.jar,commons-logging.jar} web/WEB-INF/lib/
+cp ${icefaceshome}/lib/{backport-util-concurrent.jar,icefaces-facelets.jar,commons-fileupload.jar,icefaces.jar,commons-logging.jar} web/WEB-INF/lib/
 
 ant
 
-cp dist/CallSetup.sar ${sailfin.home}/domains/domain1/autodeploy
+cp dist/CallSetup.sar ${sailfinhome}/domains/domain1/autodeploy
 
 Point your browser to
 
