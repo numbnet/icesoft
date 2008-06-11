@@ -121,7 +121,16 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    private static void notifySessionShutdown(final HttpSession session) {
+    /**
+     * Perform the session shutdown tasks for a session that has either been invalidated via
+     * the ICEfaces Session wrapper (internal) or via a sessionDestroyed event from a container
+     * (external). #3164 If the Session has been externally invalidated this method doesn't need
+     * to invalidate it again as that can cause infinite loops in some containers.
+     * 
+     * @param session Session to invalidate
+     * @param invalidateSession if true, the session will be invalidated. 
+     */
+    private static void notifySessionShutdown(final HttpSession session, boolean invalidateSession) {
 
         if (Log.isDebugEnabled()) {
             Log.debug("Shutting down session: " + session.getId());
@@ -159,8 +168,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }
             }
 
+
             try {
-                session.invalidate();
+                if (invalidateSession) {
+                    session.invalidate();
+                }                
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
             } finally {
@@ -212,8 +224,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         public void sessionDestroyed(HttpSessionEvent event) {
-            notifySessionShutdown(event.getSession());
-        } 
+            notifySessionShutdown(event.getSession(), false);
+        }
     }
 
 
@@ -242,7 +254,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         public void shutdown() {
-            notifySessionShutdown(session);
+            notifySessionShutdown(session, true);
         }
 
         public void shutdownIfExpired() {
