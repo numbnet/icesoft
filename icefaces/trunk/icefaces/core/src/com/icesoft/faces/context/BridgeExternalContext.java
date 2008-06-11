@@ -338,7 +338,11 @@ public abstract class BridgeExternalContext extends ExternalContext {
             }
         }
         redirector.redirect(redirectURI);
-        FacesContext.getCurrentInstance().responseComplete();
+        // #3172 FacesContext may be null if we're currently logging out.  
+        FacesContext fc = FacesContext.getCurrentInstance();
+        if (fc != null) {
+            fc.responseComplete();
+        }
     }
 
     public Map getRequestParameterMap() {
