@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
+import javax.faces.context.ResponseWriter;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -45,10 +46,13 @@ import java.io.IOException;
 public class HtmlRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
-        Element html = ((DOMResponseWriter) facesContext.getResponseWriter()).getHtmlElement();
-        html.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext));
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.startElement("html", uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), HTML.ID_ATTR);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
+        ResponseWriter writer = facesContext.getResponseWriter();
+        writer.endElement("html");
     }
 }
