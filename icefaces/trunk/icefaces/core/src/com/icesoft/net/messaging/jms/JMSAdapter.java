@@ -43,7 +43,9 @@ import com.icesoft.util.ThreadFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.io.IOException;
@@ -116,46 +118,41 @@ implements MessageServiceAdapter {
             if (_serverInfo.startsWith("Sun Java System Application Server")) {
                 // GlassFish
                 LOG.info("Messaging Properties: glassfish.properties");
-                try {
-                    this.jmsProviderConfigurations =
-                        new JMSProviderConfiguration[] {
-                            new JMSProviderConfigurationProperties(
-                                getClass().
-                                    getResourceAsStream("glassfish.properties"))
-                        };
-                } catch (IOException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "An error occurred " +
-                                "while reading properties: " +
-                                    "glassfish.properties",
-                            exception);
-                    }
-                }
+                this.jmsProviderConfigurations =
+                    getJMSProviderConfigurations(
+                        new String[] {
+                            "glassfish.properties"
+                        });
             } else if (_serverInfo.startsWith("JBoss")) {
-                // JBoss
+                // JBoss 4.2.x
                 LOG.info(
                     "Messaging Properties: " +
                         "jboss_ha.properties, jboss.properties");
-                try {
-                    this.jmsProviderConfigurations =
-                        new JMSProviderConfiguration[] {
-                            new JMSProviderConfigurationProperties(
-                                getClass().
-                                    getResourceAsStream("jboss_ha.properties")),
-                            new JMSProviderConfigurationProperties(
-                                getClass().
-                                    getResourceAsStream("jboss.properties"))
-                        };
-                } catch (IOException exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "An error occurred " +
-                                "while reading properties: " +
-                                    "jboss_ha.properties or jboss.properties",
-                            exception);
-                    }
-                }
+                this.jmsProviderConfigurations =
+                    getJMSProviderConfigurations(
+                        new String[] {
+                            "jboss_ha.properties",
+                            "jboss.properties"
+                        });
+            } else if (_serverInfo.startsWith("Apache Tomcat")) {
+                // Apache Tomcat 5.x and 6.x / JBoss 4.0.x
+                LOG.info(
+                    "Messaging Properties: " +
+                        "activemq.properties, jboss_ha.properties, " +
+                        "jboss.properties");
+                this.jmsProviderConfigurations =
+                    getJMSProviderConfigurations(
+                        new String[] {
+                            "activemq.properties",
+                            "jboss_ha.properties",
+                            "jboss.properties"
+                        });
+            } else {
+                LOG.info(
+                    "Messaging Properties: " +
+                        "<empty>");
+                this.jmsProviderConfigurations =
+                    new JMSProviderConfiguration[0];
             }
         }
         ThreadFactory _threadFactory = new ThreadFactory();
@@ -436,6 +433,33 @@ implements MessageServiceAdapter {
         return executorService;
     }
 
+    private JMSProviderConfiguration[] getJMSProviderConfigurations(
+        final String[] properties) {
+
+        List _jmsProviderConfigurationSet = new ArrayList();
+        for (int i = 0; i < properties.length; i++) {
+            try {
+                _jmsProviderConfigurationSet.add(
+                    new JMSProviderConfigurationProperties(
+                        getClass().
+                            getResourceAsStream(properties[i])));
+            } catch (IOException exception) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "An error occurred " +
+                            "while reading properties: " + properties[i],
+                        exception);
+                }
+            }
+        }
+        return
+            (JMSProviderConfiguration[])
+                _jmsProviderConfigurationSet.toArray(
+                    new JMSProviderConfiguration[
+                        _jmsProviderConfigurationSet.size()
+                    ]);
+    }
+
     private void initialize()
     throws NamingException {
         Properties _environmentProperties = new Properties();
@@ -464,7 +488,7 @@ implements MessageServiceAdapter {
             }
             if (LOG.isInfoEnabled()) {
                 StringBuffer _environment = new StringBuffer();
-                _environment.append("JMS Environment:\r\n");
+                _environment.append("Trying JMS Environment:\r\n");
                 Iterator _properties =
                     _environmentProperties.entrySet().iterator();
                 while (_properties.hasNext()) {
@@ -489,7 +513,14 @@ implements MessageServiceAdapter {
                 index = i;
                 break;
             } catch (NamingException exception) {
-                LOG.error(exception.getMessage());
+                LOG.error("Failed JMS Environment: " + exception.getMessage());
+                if (initialContext != null) {
+                    try {
+                        initialContext.close();
+                    } catch (NamingException e) {
+                        // ignoring this one.
+                    }
+                }
                 if ((i + 1) == jmsProviderConfigurations.length) {
                     throw exception;
                 }
