@@ -36,7 +36,8 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         Getting Started :
         <ul>
             <li>Register two softphones as mentioned in the README</li>
-            <li>Click <a href="./RegistrationBrowserServlet">List of Registered Users</a> to get started! </li>
+            <li>Click <a href="./RegistrationBrowserServlet">Servlet List of Registered Users</a>. </li>
+            <li>Or dynamically updated <a href="./registrations.iface">ICEfaces Ajax Push List of Registered Users</a> to get started! </li>
         </ul>
     <br>
     </td></tr>
