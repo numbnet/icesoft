@@ -6,7 +6,7 @@
     <html>
     <head><title>ICEfaces SIP CallSetup Demo</title></head>
     <body>
-    <h3>ICEfaces SIP CallSetup Demo</h3>
+    <h3><a href="http://www.icefaces.org">ICEfaces</a> SIP CallSetup Demo with Ajax Push</h3>
     <h:form>
         <h:dataTable var="user"
                        value="#{callTracker.registrations}" >
@@ -26,6 +26,9 @@
         </h:dataTable>
         <br/>
         <h:commandButton value="Call" type="submit" action="#{callTracker.call}"/>
+        <br/>
+        <h:outputText style="font-size: small" value="#{callTracker.time}" />
+
     </h:form>
     </body>
     </html>
