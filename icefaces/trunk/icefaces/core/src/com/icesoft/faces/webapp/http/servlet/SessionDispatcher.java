@@ -57,7 +57,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     //synchronize access in case there are multiple SessionDispatcher instances created
-    private static void notifyIfNew(HttpSession session) {
+    protected static void notifyIfNew(HttpSession session) {
         synchronized (SessionMonitors) {
             if (!SessionMonitors.containsKey(session.getId())) {
                 notifySessionInitialized(session);
@@ -65,11 +65,11 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
     }
 
-    private PseudoServlet lookupServlet(final HttpSession session) {
+    protected PseudoServlet lookupServlet(final HttpSession session) {
         return lookupServlet(session.getId());
     }
 
-    private PseudoServlet lookupServlet(final String sessionId) {
+    protected PseudoServlet lookupServlet(final String sessionId) {
         return (PseudoServlet)sessionBoundServers.get(sessionId);
     }
 
