@@ -139,6 +139,8 @@ public class ChartController implements Serializable {
         if (newChartType != null) {
             currentChartType = newChartType;
             currentChartModel = (AbstractChartData)chartDataModels.get(newChartType);
+            if (currentChartModel!= null)
+                currentChartModel.renderOnSubmit = true;
         }
     }
 
