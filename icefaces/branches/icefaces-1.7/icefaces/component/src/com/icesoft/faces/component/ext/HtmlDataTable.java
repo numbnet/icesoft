@@ -69,7 +69,7 @@ public class HtmlDataTable
     private String scrollHeight = null;
     private String headerClasses = null;
     private Boolean clientOnly = null;
-    
+    private Boolean scrollFooter = null;    
     public HtmlDataTable() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -505,6 +505,20 @@ public class HtmlDataTable
             }
         }
     }
+    
+    public boolean isScrollFooter() {
+        if (scrollFooter != null) {
+            return scrollFooter.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("scrollFooter");
+        Boolean boolVal = vb != null ? (Boolean) vb.getValue(getFacesContext())
+                : null;
+        return boolVal != null ? boolVal.booleanValue() : true;
+    }
+
+    public void setScrollFooter(boolean scrollFooter) {
+        this.scrollFooter = Boolean.valueOf(scrollFooter);
+    }      
 }
    
 

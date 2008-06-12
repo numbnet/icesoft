@@ -220,3 +220,15 @@
         <category>ICE_LAYOUT</category>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        In scrollable mode the footer scrolls as well, to trun the scrolling off
+        it can be set to the false. The default value is true.
+    </description>
+    <property-name>scrollFooter</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+    </property-extension>
+</property>
