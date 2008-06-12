@@ -104,11 +104,15 @@ public class TableRenderer extends DomBasicRenderer {
             Element bodytable = domContext.createElement("table");
             bodyDiv.appendChild(bodytable);
             mainDiv.appendChild(bodyDiv);
-            
-            Element footerDiv = domContext.createElement("div");
-            Element footerTable = domContext.createElement("table");
-            footerDiv.appendChild(footerTable);   
-            mainDiv.appendChild(footerDiv);            
+            Object scollFooter = uiComponent.getAttributes().get("scrollFooter");
+            if (scollFooter != null && ((Boolean)scollFooter).booleanValue()) {
+                System.out.println("FooterScrolling required"); 
+            } else {
+                Element footerDiv = domContext.createElement("div");
+                Element footerTable = domContext.createElement("table");
+                footerDiv.appendChild(footerTable);   
+                mainDiv.appendChild(footerDiv); System.out.println("FooterScrolling not required");                
+            }
         }
         renderFacet(facesContext, uiComponent, domContext, true); //header facet
         renderFacet(facesContext, uiComponent, domContext,
