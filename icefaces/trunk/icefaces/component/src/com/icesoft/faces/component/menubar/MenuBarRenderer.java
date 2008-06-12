@@ -127,6 +127,7 @@ public class MenuBarRenderer extends DomBasicRenderer {
         Element root = (Element)domContext.getRootNode();
         Element clickedHiddenField = domContext.createElement(HTML.INPUT_ELEM);
         clickedHiddenField.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext)+"clickState");
+        clickedHiddenField.setAttribute(HTML.NAME_ATTR, clickedHiddenField.getAttribute("id"));
         clickedHiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
         clickedHiddenField.setAttribute(HTML.VALUE_ATTR, "false");     
         clickedHiddenField.setAttribute(HTML.CLASS_ATTR, "mnuClickState");          
