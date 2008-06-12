@@ -34,7 +34,7 @@ public class TooltipBean implements Serializable{
     Map provinces = new HashMap (); 
     
     List cityList = new ArrayList();
-    Person selectedPerson = null;
+    Person person;
     
     public TooltipBean () {
         List alberta = new ArrayList();
@@ -77,6 +77,8 @@ public class TooltipBean implements Serializable{
         if (contextValue != null) {
             cityList = (List)provinces.get(contextValue);
         }
+	//in case user doesn't close the bottom tooltip panel, keep the tooltipperson in the context
+	 FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("tooltipPerson", person);
     }
 
     public Map getProvinces() {
@@ -100,7 +102,7 @@ public class TooltipBean implements Serializable{
     }
 
     public void displayListener(DisplayEvent event) {
-        Person person =  (Person) ((UIData)event.getTarget().getParent().getParent()).getRowData();
+        person =  (Person) ((UIData)event.getTarget().getParent().getParent()).getRowData();
         FacesContext.getCurrentInstance().getExternalContext().getRequestMap().put("tooltipPerson", person);
     }
     
