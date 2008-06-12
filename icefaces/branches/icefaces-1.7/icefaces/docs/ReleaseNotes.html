@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.0 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -33,7 +33,8 @@ font-weight: bold;
 h4 {
 font-size: 110%
 }
-</style><!-- saved from url=(0022)http://internet.e-mail --></head>
+</style><!-- saved from url=(0022)http://internet.e-mail -->
+</head>
 <body>
 <div style="border: 1px solid rgb(187, 187, 187);">
 <table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%">
@@ -42,10 +43,10 @@ font-size: 110%
 <td width="78%">
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.0
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">April
-14th, 2008</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">June
+12th, 2008</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -57,9 +58,12 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
-<li><a href="ReleaseNotes.html#Changes_170">Changes
-in This Release (v1.7.0)</a></li>
-<li><a href="#migrationnotes">Migration Notes</a></li>
+<li><a href="ReleaseNotes.html#Changes_171">Changes
+in This Release (v1.7.1)</a></li>
+<li><a href="ReleaseNotes.html#Changes_171">Changes
+in&nbsp;v1.7.0</a></li>
+<li><a href="#migrationnotes">1.6.x to 1.7.x
+Migration Notes</a></li>
 <li><a href="#Supported_Platforms">Supported
 Platforms</a>
 <ul>
@@ -92,8 +96,76 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_171"></a>Changes
+in This Release (v1.7.1)</h2>
+<br>
+ICEfaces v1.7.1 is a maintenance release that includes over 100 fixes
+and improvements.&nbsp;<br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release. Review the <a href="#migrationnotes">1.6.x
+to 1.7.x Migration Notes</a>
+if you plan to use an existing ICEfaces 1.6.x&nbsp; application
+with 1.7.x&nbsp;<br>
+<br>
+Please report any issues with
+this build to the ICEfaces <a href="http://www.icefaces.org/JForum/">forums</a>
+or the ICEfaces <a href="http://jira.icefaces.org/">JIRA
+issue tracker</a>.<br>
+<br>
+Notable changes and improvements in this release include:<br>
+
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite</span>
+<ul>
+<li><br></li>
+<li>New ice:html, ice:head, and ice:body components have been added to
+support environments that require JSF components for all significant
+page elements, such as the NetBeans 6.1 Visual Designer.</li>
+<li>The ice:dataTable footer can now optionally be rendered outside of
+the scrollable region via the new "scrollFooter" attribute on the
+dataTable component.</li><li>The ice:inputFile component is now easier to use in asynchronous update mode, and
+offers improved support for use in synchronous mode.</li>
+<li>The ice:graphicImage component can now accept a byte[] for the
+image instead of a URL, which provides better support for rendering
+images from databases, blobs, etc.</li><li>The ice:panelPositioned component can now accept an Array in addition to the existing List types.</li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">New
+Asynchronous Rendering (Ajax Push) APIs</span>&nbsp;
+<ul>
+<li>The new SessionRenderer&nbsp;</li>
+<li>New Broadcast Renderer</li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework</span>
+<ul>
+<li>New auto-detection and configuration for Glassfish Grizzly ARP (Asynchronous Request Processing)</li>
+<li>ponents.</li>
+<li>Support for Firefox v3.0 (RC2)<br></li>
+<li></li>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party Frameworks</span>
+<ul>
+<li>Preliminary support for Spring Web Flow v2.0 (final) is introduced in this release.</li>
+<li>Support for Seam Mail feature</li><li>Improved support for Seam workspaces (Conversation switching)</li></ul></li></ul><br>
+<br>
+<br>
+Refer
+to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10122">ICEfaces
+JIRA Change Log</a> for detailed information on
+all changes included in this release.<br>
 <h2><a name="Changes_170"></a>Changes
-in This Release (v1.7.0)</h2>
+in&nbsp;v1.7.0</h2>
 <br>
 ICEfaces v1.7.0&nbsp;is a certified production release featuring
 over 450 enhancements, improvements, and bug fixes.
@@ -373,7 +445,8 @@ details.
 <ul class="contentIndent">
 </ul>
 <ul class="contentIndent">
-<li><span style="font-weight: bold;">Improved Performance</span>
+<li><span style="font-weight: bold;">Improved
+Performance</span>
 <ul class="contentIndent">
 <li>Significant
 client-side performance improvements have been made when
@@ -520,7 +593,8 @@ Support for 3rd Party Frameworks</span></h3>
 Integration" section in
 the Advanced Topics chapter of the ICEfaces Developer's Guide for
 details.</li>
-<li>Enhanced Seam Component Showcase sample project adds new 1.7 components. Available as a separate download <a href="http://www.icefaces.org/main/downloads/os-downloads.iface?category=JBoss%20Seam" target="_blank">here</a>
+<li>Enhanced Seam Component Showcase sample project adds
+new 1.7 components. Available as a separate download <a href="http://www.icefaces.org/main/downloads/os-downloads.iface?category=JBoss%20Seam" target="_blank">here</a>
 or via SVN:
 "http://anonsvn.icefaces.org/repo/projects/seam-component-showcase/".
 Supports the following additional configurations:
@@ -544,7 +618,11 @@ Flow</span>
 <ul>
 <li>See the new "Spring Framework Integration" section in
 the Advanced Topics chapter of the ICEfaces Developer's Guide for
-details.</li><li>New Spring Web Flow 1. sample project ("Sell Item")&nbsp;available as a separate download <a href="http://www.icefaces.org/main/downloads/os-downloads.iface?category=Spring%20Web%20Flow" target="_blank">here</a><span style="text-decoration: underline;"></span> or via SVN: "http://anonsvn.icefaces.org/repo/projects/icefaces-swf-sellitem-jsf/".</li>
+details.</li>
+<li>New Spring Web Flow 1. sample project ("Sell
+Item")&nbsp;available as a separate download <a href="http://www.icefaces.org/main/downloads/os-downloads.iface?category=Spring%20Web%20Flow" target="_blank">here</a><span style="text-decoration: underline;"></span> or via
+SVN:
+"http://anonsvn.icefaces.org/repo/projects/icefaces-swf-sellitem-jsf/".</li>
 </ul>
 </li>
 </ul>
@@ -623,20 +701,29 @@ ICEfaces Getting Started Guide for details.</li>
 </ul>
 <ul class="contentIndent">
 </ul>
-<ul><li><span style="font-weight: bold;">Default builds and prebuild .war files now target Tomcat 6 w/ JSF 1.2</span></li><ul><li><span style="font-weight: bold;"></span>The
+<ul>
+<li><span style="font-weight: bold;">Default
+builds and prebuild .war files now target Tomcat 6 w/ JSF 1.2</span></li>
+<ul>
+<li><span style="font-weight: bold;"></span>The
 default ant builds and prebuilt .war files for the sample applications
 now use the "tomcat6.0" build target, which is suitable for deployment
-to Tomcat 6 and uses the Sun JSF 1.2 runtime.</li><li>To deploy the
+to Tomcat 6 and uses the Sun JSF 1.2 runtime.</li>
+<li>To deploy the
 samples an application server other than Tomcat 6, you must use the
 build target for the desired server. Type "ant help" for more
-information.</li></ul></ul><br>
+information.</li>
+</ul>
+</ul>
+<br>
 Refer
 to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10080">ICEfaces
 JIRA Change Log</a> for detailed information on
 all changes included in this release.
 <br>
 <br>
-<h2><a name="migrationnotes"></a>Migration
+<h2><a name="migrationnotes"></a>1.6.x to
+1.7.x Migration
 Notes
 </h2>
 <br>
@@ -701,10 +788,18 @@ server's local timezone as its default, and not GMT.</li>
 </ul>
 </ul>
 <h3>Command Sort Header Style Change</h3>
-<ul><li>The ice:commandSortHeader component has been improved to permit
+<ul>
+<li>The ice:commandSortHeader component has been improved to
+permit
 styling of the up/down arrows using images, tied to the themes. This
 provides more flexability in their appearance over the single arrow
-style supported previously.</li><li>Note that the "arrow" attribute on this component is now deprecated and has no effect.</li><li>Refer to the TLD documentation for the commandSortHeader for more information.</li></ul><h3>jsp:root Tag Support in Facelets</h3>
+style supported previously.</li>
+<li>Note that the "arrow" attribute on this component is now
+deprecated and has no effect.</li>
+<li>Refer to the TLD documentation for the commandSortHeader
+for more information.</li>
+</ul>
+<h3>jsp:root Tag Support in Facelets</h3>
 <ul>
 <li>Starting
 with 1.7 when using the jsp:root tag on a facelets-based page the
@@ -742,7 +837,9 @@ section in the ICEfaces Developer's Guide.</li>
 completely revamped for 1.7, with new support for JSR-168 portlets.</li>
 <li>Refer to the &#8220;Developing Portlets with ICEfaces&#8221; section in
 the ICEfaces Developer's Guide for details.</li>
-</ul><br><h2><a name="Supported_Platforms"></a>Supported
+</ul>
+<br>
+<h2><a name="Supported_Platforms"></a>Supported
 Platforms
 </h2>
 <br>
@@ -1281,7 +1378,8 @@ correctly in a portlet environment:
 one portlet
 on a&nbsp;page may cause problems with the functioning of this
 component.</li>
-<li>Drag &amp; drop (via ice:panelGroup) - using drag-and-drop&nbsp;in more
+<li>Drag &amp; drop (via ice:panelGroup) - using
+drag-and-drop&nbsp;in more
 than one portlet on a page may cause drag-and-drop to not
 function in some of the portlets on the page.</li>
 </ul>
@@ -1313,7 +1411,8 @@ framework threads have finished running (related to JMS).</li>
 <ul>
 <li>Using AHS with Glassfish v2 is not supported in this
 release due to an issue that results in the Glassfish server not being
-able to restart after an AHS application has been deployed in a previous
+able to restart after an AHS application has been deployed in a
+previous
 server session. </li>
 </ul>
 <h3><a name="KISampleApps"></a>Sample
