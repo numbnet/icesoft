@@ -32,11 +32,12 @@
  */
 
 div.clearer {
-    clear: both;
-    height: 0;
-    line-height: .01em;
-    padding: 0;
-    margin: 0;
+    clear:both;
+	height:0px;
+    visibility: hidden;
+    line-height:.01em;
+	padding:0;
+	margin:0;
 }
 
 /* header begin */
