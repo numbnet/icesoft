@@ -139,9 +139,6 @@ public class DomainConfig {
         for (String theTopic : TOPICS) {
             server.appendChild(createResourceRef(theTopic));
         }
-
-        System.out.println("DomainConfig.addJMSTopics: topics added");
-
     }
 
     private Element createResourceRef(String ref) {

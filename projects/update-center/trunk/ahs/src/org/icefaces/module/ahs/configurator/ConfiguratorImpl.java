@@ -1,13 +1,9 @@
 package org.icefaces.module.ahs.configurator;
 
-import com.sun.appserv.addons.AddonException;
-import com.sun.appserv.addons.AddonVersion;
-import com.sun.appserv.addons.ConfigurationContext;
-import com.sun.appserv.addons.Configurator;
+import com.sun.appserv.addons.*;
 import org.icefaces.module.ahs.util.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 
 public class ConfiguratorImpl implements Configurator {
 
@@ -21,8 +17,8 @@ public class ConfiguratorImpl implements Configurator {
             FileUtils.extractAndSave(locs.getConfiguratorFile(),
                     ConfigurationLocations.APP_NAME,
                     locs.getDeployDir());
-        } catch (IOException e) {
-            throw new AddonException("could not extract and save " +
+        } catch (Exception e) {
+            throw new AddonFatalException("could not extract and save " +
                     ConfigurationLocations.APP_NAME + " to " +
                     locs.getDeployDir(), e);
         }
@@ -34,7 +30,7 @@ public class ConfiguratorImpl implements Configurator {
             config.addJMSTopics();
             config.save();
         } catch (Exception e) {
-            throw new AddonException("could not modify " + locs.getDomainConfigFile() + " " + e, e);
+            throw new AddonException("could not modify " + locs.getDomainConfigFile(), e);
         }
     }
 
@@ -44,19 +40,18 @@ public class ConfiguratorImpl implements Configurator {
         //According to Sun (both the sparse documentation along with emails from Sun employees involved
         //with the Update Center), there are two ways to get "unconfigure" called.
         (new File(locs.getDeployDir() + File.separator + ConfigurationLocations.APP_NAME)).deleteOnExit();
-        System.out.println("ConfiguratorImpl.unconfigure: called " + locs.getDeployDir() + File.separator + ConfigurationLocations.APP_NAME);
     }
 
     public void disable(ConfigurationContext configurationContext) throws AddonException {
-        //System.out.println("ConfiguratorImpl.disable: no action");
+        throw new AddonException(new UnsupportedOperationException("not yet implemented"));
     }
 
     public void enable(ConfigurationContext configurationContext) throws AddonException {
-        //System.out.println("ConfiguratorImpl.enable: no action");
+        throw new AddonException(new UnsupportedOperationException("not yet implemented"));
     }
 
     public void upgrade(ConfigurationContext configurationContext, AddonVersion addonVersion) throws AddonException {
-        //System.out.println("ConfiguratorImpl.upgrade: no action");
+        throw new AddonException(new UnsupportedOperationException("not yet implemented"));
     }
 
 }

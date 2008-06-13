@@ -8,7 +8,7 @@ public class ConfigurationLocations {
 
     //TODO - move these into a properties file of some kind
     public final static String CONFIGURATOR_NAME = "icefaces_ahs_configurator.jar";
-    public final static String APP_NAME = "ahs-http-server.war";
+    public final static String APP_NAME = "async-http-server.war";
 
     private final static String SEP = File.separator;
 

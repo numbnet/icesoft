@@ -1,11 +1,9 @@
 package org.icefaces.module.ahs.installer;
 
-import com.sun.appserv.addons.AddonException;
-import com.sun.appserv.addons.AddonVersion;
-import com.sun.appserv.addons.InstallationContext;
-import com.sun.appserv.addons.Installer;
+import com.sun.appserv.addons.*;
 import org.icefaces.module.ahs.util.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 
 public class InstallerImpl implements Installer {
@@ -22,7 +20,9 @@ public class InstallerImpl implements Installer {
                     InstallerLocations.CONFIGURATOR_NAME,
                     locs.getAddOnsLibDir());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new AddonFatalException("could not extract and save " +
+                    InstallerLocations.CONFIGURATOR_NAME + " to " +
+                    locs.getAddOnsLibDir(), e);
         }
     }
 
@@ -66,12 +66,19 @@ public class InstallerImpl implements Installer {
          not properly run the lifecycle and call Configurator.unconfigure.
 
          */
-
+    
+        File unconfigureDir = locs.getConfiguratorDeleteDir();
+        if (!unconfigureDir.exists()) {
+            if (!unconfigureDir.mkdir()) {
+                throw new AddonException("could not create configurator delete directory " +
+                        unconfigureDir);
+            }
+        }
         FileUtils.move(locs.getConfiguratorFile(), locs.getConfiguratorDeleteDir());
     }
 
     public void upgrade(InstallationContext installationContext, AddonVersion addonVersion) throws AddonException {
-        System.out.println("InstallerImpl.upgrade: no action");
+        throw new AddonException(new UnsupportedOperationException("not yet implemented"));
     }
 
 }
