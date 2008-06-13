@@ -39,6 +39,8 @@ import org.icefaces.application.showcase.view.bean.BaseBean;
 
 import org.jboss.seam.log.Log;
 
+import org.jboss.seam.annotations.Create;
+import org.jboss.seam.annotations.Destroy;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
@@ -75,14 +77,14 @@ public class SeamInputTextController extends BaseBean{
     private City currentCity = new City();
 
     // city dictionary
-    @In("#{dictionary.cityDictionary}")
+    @In("#{cityDictionary}")
     private SeamCityDictionary cityDictionary;
 
     // list of possible city matches for a given city dictionary lookup
-    private List cityMatchPossibilities;
+    private List cityMatchPossibilities = new ArrayList<City>();
 
     // number of city possibilities to show
-    private static int cityListLength = 15;
+    private int cityListLength = 15;
 
     // value associatd with first selectInput Component
     private String selectedCityValue1 = "";
@@ -92,10 +94,13 @@ public class SeamInputTextController extends BaseBean{
     // selected city information, assigned when user uses mouse or enter key
     // to select a city.
     // default city, no value.
-    @In(required=false) 
-    @Out(required=false)
+ 
     private City selectedCity = new City();
 
+    @Create
+    public void init(){
+    	log.info("creating bean");
+    }
     /**
      * <p>Called by the selectInputText component at set intervals.  By using
      * the change event we can can get the newly typed work and do a look up in
@@ -196,5 +201,9 @@ public class SeamInputTextController extends BaseBean{
     public int getCityListLength() {
         return cityListLength;
     }
-
+   
+    @Destroy
+    public void destroy(){
+    	log.info("destroying bean");
+    }
 }
