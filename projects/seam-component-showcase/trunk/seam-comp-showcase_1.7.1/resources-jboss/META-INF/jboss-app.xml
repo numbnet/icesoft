@@ -1,0 +1,5 @@
+<jboss-app>
+     <loader-repository> 
+      seam.jboss.org:loader=seam-comp-showcase
+   </loader-repository> 
+</jboss-app> 
