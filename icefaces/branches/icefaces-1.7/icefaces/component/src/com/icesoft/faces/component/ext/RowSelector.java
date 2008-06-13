@@ -68,6 +68,7 @@ public class RowSelector extends UIPanel {
     private MethodBinding selectionListener;
     private MethodBinding selectionAction;
     private Integer clickedRow;
+    private Boolean immediate;
     
 
     public static final String COMPONENT_TYPE = "com.icesoft.faces.RowSelector";
@@ -218,6 +219,23 @@ public class RowSelector extends UIPanel {
          this.selectionAction = selectionListener;
      }
 
+    public Boolean getImmediate() {
+        if (immediate != null) {
+            return immediate;
+        }
+        ValueBinding vb = getValueBinding("immediate");
+        if (vb != null) {
+            return (Boolean) vb.getValue(getFacesContext());
+        }
+        // For backwards compatibility, we want RowSelector to continue
+        // broadcasting RowSelectorEvent in ApplyRequestValues, by default,
+        // so we don't break existing applications.
+        return Boolean.TRUE;
+    }
+
+    public void setImmediate(Boolean immediate) {
+        this.immediate = immediate;
+    }
 
 
     public void processDecodes(FacesContext facesContext){
@@ -268,13 +286,23 @@ public class RowSelector extends UIPanel {
                 if (rowSelector.getSelectionListener() != null) {
                     RowSelectorEvent evt =
                             new RowSelectorEvent(rowSelector, rowIndex, b);
-                    evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                    if (getImmediate().booleanValue()) {
+                    	evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                    }
+                    else {
+                        evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                    }
                     rowSelector.queueEvent(evt);
                 }
                 if(rowSelector.getSelectionAction() != null){
                     RowSelectorActionEvent evt =
                         new RowSelectorActionEvent(this);
-                    evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                    if (getImmediate().booleanValue()) {
+                        evt.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+                    }
+                    else {
+                    	evt.setPhaseId(PhaseId.INVOKE_APPLICATION);
+                    }
                     rowSelector.queueEvent(evt);
                 }
 
