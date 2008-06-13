@@ -1698,7 +1698,7 @@ table.iceSelInpDate tbody tr td table{
     color: #FFFFFF;
 }
 
-.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt {
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel {
     color: #FFFFFF;
 }
 
@@ -1711,6 +1711,11 @@ table.iceSelInpDate tbody tr td table{
     font-size: 1.0em;
     /*width: 100%;*/
     vertical-align: top;
+}
+
+.iceDatTbl td span.iceMnuItmLabel {
+    display: inline;
+    padding: 0 0 0 7px;
 }
 
 .iceMnuItmImage, .iceMnuBarItemImage, .iceMnuBarVrtItemImage {
