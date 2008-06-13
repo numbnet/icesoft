@@ -140,8 +140,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
         if (!SessionMonitors.containsKey(sessionID)) {
             if (Log.isDebugEnabled()) {
                 Log.debug("Session: " + sessionID + " already shutdown, skipping");
-                return;
             }
+            return;
         }
 
         //shutdown session bound servers
@@ -168,6 +168,8 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }
             }
 
+            // #3189 do this before invalidating the session
+            SessionMonitors.remove(sessionID);
 
             try {
                 if (invalidateSession) {
@@ -175,8 +177,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
                 }                
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
-            } finally {
-                SessionMonitors.remove(sessionID);
             }
         }
     }
