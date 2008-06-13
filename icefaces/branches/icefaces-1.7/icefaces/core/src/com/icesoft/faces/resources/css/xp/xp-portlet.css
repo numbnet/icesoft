@@ -1501,7 +1501,7 @@ input.iceSelInpDateClosePopup {
     background-color: #2A6CC2;
 }
 
-.iceMnuItm a:hover .iceOutTxt{ 
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel{ 
     color: #FFFFFF;
 }
 
