@@ -1537,7 +1537,7 @@ fieldset {
     background-color: #2A6CC2;
 }
 
-.iceMnuItm a:hover .iceOutTxt{ 
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel{ 
     color: #FFFFFF;
 }
 
@@ -1547,6 +1547,11 @@ fieldset {
     font-size: 1.0em;
     display: inline;
     vertical-align: middle;
+}
+
+.iceDatTbl td span.iceMnuItmLabel {
+    display: inline;
+    padding: 4px 0 0 0;
 }
 
 .iceMnuBarItemImage {

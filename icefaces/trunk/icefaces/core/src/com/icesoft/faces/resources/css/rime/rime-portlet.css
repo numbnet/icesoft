@@ -1647,6 +1647,10 @@ input.iceSelInpDateClosePopup {
     color: #FFFFFF;
 }
 
+.iceMnuItm a:hover .iceMnuItmLabel {
+    color: #FFFFFF;
+}
+
 .iceMnuItmLabel {
     padding-left: 7px;
     font-weight: normal;
