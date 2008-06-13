@@ -177,12 +177,7 @@
             	<include name="import.sql"/>
             </fileset>
         </copy>
-       <copy todir="${war.resources.dir}">
-            <fileset dir="${basedir}/resources-jboss" >
-                <include name="city.xml.zip" />
-            </fileset>
-        </copy>        
-
+   
         <copy todir="${war.dir}">
             <fileset dir="${basedir}/view" />
         </copy>
@@ -214,7 +209,6 @@
         
 	  <copy todir="${war.dir}/WEB-INF/lib">
 			<fileset dir="${lib.dir}">
-				<include name="oscache*.jar" />
                 <include name="jboss-seam-*.jar" />
                 <exclude name="jboss-seam-gen.jar" />
                 <include name="drools.jar"/>
@@ -224,10 +218,10 @@
 
         <copy todir="${war.dir}/WEB-INF/classes/org/icefaces/application/showcase/view/resources">
             <fileset dir="${basedir}/src/org/icefaces/application/showcase/view/resources"> 
-                <include name="messages*.properties"/>
+                <include name="*.*"/>
             </fileset>
-        </copy>
-        
+        </copy>    	
+    	
         <copy todir="${war.dir}/WEB-INF/classes">
             <fileset dir="${basedir}/resources-jboss">
                 <include name="*jpdl.xml" />
@@ -388,12 +382,13 @@
 	<target name="copy-source" description="grap jspx and source from component-showcase">
 	   <copy todir="${basedir}/src">
 		  <fileset dir="${icefaces.home}/samples/component-showcase/facelets/src">
-	   	     <include name="*.*"/>
+	   	     <include name="**/**/**/**/**/**/*.*"/>
 	   	  </fileset>
 	   	  <fileset dir="${icefaces.home}/samples/component-showcase/common-src">
 	   	     <include name="**/**/**/**/model/**/*.java"/>
 	   	  	 <include name="**/**/**/**/util/*.java"/>
 	   	  	 <include name="**/**/**/**/view/**/**/**/**/*.*"/>
+	   	  	 <include name="**/**/**/**/resouces/city.xml.zip"/>
 	   	  </fileset>
 	   </copy>
 	   <copy todir="${basedir}/view">
@@ -406,6 +401,7 @@
 	   	  	 <include name="css/**/*.*"/>
 	   	  </fileset>
 	   </copy>
+		
 	   <copy todir="${basedir}/WEB-INF/includes" overwrite="true">
 	   	  <fileset dir="${icefaces.home}/samples/component-showcase/facelets/web/WEB-INF/includes">
 	  	     <include name="**/*.jspx"/>
@@ -413,15 +409,15 @@
 	   	  <fileset dir="${icefaces.home}/samples/component-showcase/common-web/WEB-INF/includes">
 	  	     <include name="**/*.jspx"/>
 	         <exclude name="**/dataTable-dataScrolling.jspx"/>
+	   	  	 <exclude name="**/page-template.jspx"/>
 	      </fileset>	   	  
 	   	  <fileset dir="${basedir}/view/nonStandardIncludes">
-	   	       <include name="*.jspx"/>
+	   	       <include name="**/*.jspx"/>
 	   	  </fileset>
 	   </copy>
 	   <copy todir="${basedir}/resources-jboss">
 		  <fileset dir="${icefaces.home}/samples/component-showcase/common-src/org/icefaces/application/showcase/view/resources">
 		  	  <include name="messages*.properties"/>
-		  	  <include name="city.xml.zip"/>
 	   	  </fileset>
 	   </copy>
 		
