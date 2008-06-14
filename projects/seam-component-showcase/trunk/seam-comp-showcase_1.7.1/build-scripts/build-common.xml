@@ -410,6 +410,7 @@
 	  	     <include name="**/*.jspx"/>
 	         <exclude name="**/dataTable-dataScrolling.jspx"/>
 	   	  	 <exclude name="**/page-template.jspx"/>
+	   	  	 <exclude name="**/navigation.jspx"/>
 	      </fileset>	   	  
 	   	  <fileset dir="${basedir}/view/nonStandardIncludes">
 	   	       <include name="**/*.jspx"/>

@@ -33,7 +33,9 @@
 
 package com.icesoft.icefaces.samples.showcase.navigation;
 import java.io.Serializable;
+import java.util.Map;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 
@@ -67,8 +69,11 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	@Logger Log log;
 	
 	@Out
-	private String msgKey="splashPage";
+	@In
+	private String msgKey;
 	private String viewPage="";
+	
+	private final String prefixPath="/WEB-INF/includes/examples/custom/";
 
 	
 //	@RequestParameter
@@ -83,6 +88,8 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	@Create
 	public void init(){
 		log.info("creating navigation bean");
+		if (msgKey==null)msgKey="splashPage";
+		else log.info("msgKey="+msgKey);
 	}
 	
 
@@ -92,6 +99,40 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	  super.navigationPathChange(event);
 	  log.info("old way selectedPath = "+super.getSelectedIncludePath());
 	  getMsgBundleKey(this.getSelectedIncludePath());
+	}
+	
+	public void navigationKeyChange(){
+		if (!msgKey.equals("gmap")){
+			log.info("have to look it up!");
+	        FacesContext context = FacesContext.getCurrentInstance();
+	        Map map = context.getExternalContext().getRequestParameterMap();
+	        msgKey = (String) map.get("msgKey");
+	        log.info("looked it up and is="+msgKey);
+	        this.setSelectedIncludePath(findPagePath(msgKey));
+		}
+	}
+	
+	public String navigationPathChange(String slinkValue){
+		log.info("looking for selected path for "+slinkValue);
+		this.msgKey = slinkValue;
+		String temp = findPagePath(slinkValue);
+		log.info("temp page is "+temp);
+		this.setSelectedIncludePath(temp);
+		return "";
+	}
+	
+	protected String findPagePath(String slinkValue){
+		  Object o = entityManager.createQuery("SELECT m FROM MResource m WHERE m.lookup=:keyLookup")
+             .setParameter("keyLookup",msgKey).getSingleResult();
+		  if (o==null){
+			  log.info("didn't get the dang thing!!");
+			  return "";
+		  }
+		  else{
+			  MResource mresource = (MResource)o;
+			  log.info("got it and page jspx is = "+mresource.getPgName());
+			  return this.prefixPath+mresource.getPgName(); 
+		  }		
 	}
 	
 	protected void getMsgBundleKey(String includePath){
