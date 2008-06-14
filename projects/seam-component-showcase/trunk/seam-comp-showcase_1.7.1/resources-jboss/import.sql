@@ -30,7 +30,7 @@ insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('menuPopup.jspx','
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('menuBar.jspx','menuBar','/docs/menuBarDoc.html','http://facestutorials.icefaces.org/tutorial/menuBar-tutorial.html')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('inputRichText.jspx','inputRichText','/docs/inputRichTextDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('inputFile.jspx','inputFile','/docs/inputFileDoc.html','http://facestutorials.icefaces.org/tutorial/inputFile-tutorial.html')
-insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('gMap.jspx','gMap','/docs/gMapDoc.html','none')
+insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('gmap.jspx','gMap','/docs/gMapDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('effects.jspx','effects','/docs/effectsDoc.html','none')
 insert into MResource (pgName,lookUp,pgDoc,pgTutorial) values('dragDrop.jspx','dragDrop','/docs/dragDropDoc.html','http://facestutorials.icefaces.org/tutorial/dragDrop-tutorial.html')
 insert into Employee (departmentName,subdepartmentName,firstName,lastName,phone) values('Western','Calgary','Ethan','Smith','555-4562')

@@ -6,12 +6,13 @@
 
     <page view-id="/showcase.jspx" >
     
-<!-- 	   <begin-conversation join="true" /> -->
-       <param name="msgKey" value="#{navigation.msgKey}"/>
-        <navigation from-action="#{navigation.navigationPathChange}">
-                <redirect view-id="/showcase.jspx" />
-        </navigation> 
-           
+ 	   <begin-conversation join="true" />  
+        <navigation from-action="#{navigation.navigationPathChange('gMap')}">
+           <redirect view-id="/showcase.jspx"/>
+        </navigation>   
+        <navigation from-action="#{navigation.navigationPathChange('inputRichText')}">
+           <redirect view-id="/showcase.jspx"/>
+        </navigation>   
     </page>
     
 </pages>
