@@ -32,23 +32,18 @@
   ~
   -->
 
-<renderer>
+<component>
 	<description>
-	          <![CDATA[
-          <p>head element contains meta information about html document.</p>
-
-          ]]>	
+	Defines a html document
 	</description>
-	<component-family>com.icesoft.faces.Head</component-family>
 
-	<renderer-type>com.icesoft.faces.Head</renderer-type>
+	<display-name>Html</display-name>
+	<component-type>com.icesoft.faces.OutputHtml</component-type>
 
-	<renderer-extension>
-		<instance-name>head</instance-name>
-		<is-container>true</is-container>
-		<renders-children>true</renders-children>
-		<tag-name>head</tag-name>
-		<taglib-prefix>@taglib-prefix@</taglib-prefix>
-		<taglib-uri>@taglib-uri@</taglib-uri>
-	</renderer-extension>
-</renderer>
+	<component-extension>
+		<base-component-type>com.sun.faces.Component</base-component-type>
+		<component-family>com.icesoft.faces.OutputHtml</component-family>
+		<renderer-type>com.icesoft.faces.OutputHtml</renderer-type>
+	</component-extension>
+
+</component>

@@ -4,7 +4,7 @@ package com.icesoft.faces.component.ext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-public class HtmlBody extends javax.faces.component.UIComponentBase{
+public class OutputBody extends javax.faces.component.UIComponentBase{
     private String alink;
     private String background;
     private String bgcolor;
@@ -14,15 +14,15 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
     private String text;
     private String vlink;
 
-    public HtmlBody() {
+    public OutputBody() {
         super();
-        setRendererType("com.icesoft.faces.Body");
+        setRendererType("com.icesoft.faces.OutputBody");
     }
     /**
      * <p>Return the family for this component.</p>
      */
     public String getFamily() {
-        return "com.icesoft.faces.Body";
+        return "com.icesoft.faces.OutputBody";
     }
 
     public String getAlink() {
@@ -130,6 +130,7 @@ public class HtmlBody extends javax.faces.component.UIComponentBase{
         }
     }
 }
+
 
 
 

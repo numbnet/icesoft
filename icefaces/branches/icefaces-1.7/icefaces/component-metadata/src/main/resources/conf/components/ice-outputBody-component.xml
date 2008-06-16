@@ -34,16 +34,17 @@
 
 <component>
 	<description>
-	Defines a html document
+	Body element defines the contents of Html document.
 	</description>
 
-	<display-name>Html</display-name>
-	<component-type>com.icesoft.faces.HtmlDocument</component-type>
+	<display-name>Body</display-name>
+	<component-type>com.icesoft.faces.OutputBody</component-type>
 
+	&ice-outputBody-props;
 	<component-extension>
 		<base-component-type>com.sun.faces.Component</base-component-type>
-		<component-family>com.icesoft.faces.Html</component-family>
-		<renderer-type>com.icesoft.faces.Html</renderer-type>
+		<component-family>com.icesoft.faces.OutputBody</component-family>
+		<renderer-type>com.icesoft.faces.OutputBody</renderer-type>
 	</component-extension>
 
 </component>

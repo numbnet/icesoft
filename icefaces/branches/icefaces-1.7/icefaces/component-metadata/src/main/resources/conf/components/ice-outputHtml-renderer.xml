@@ -32,19 +32,23 @@
   ~
   -->
 
-<component>
+<renderer>
 	<description>
-	Body element defines the contents of Html document.
+	          <![CDATA[
+          <p>Renders an HTML Document "html" element.</p>
+
+          ]]>	
 	</description>
+	<component-family>com.icesoft.faces.OutputHtml</component-family>
 
-	<display-name>Body</display-name>
-	<component-type>com.icesoft.faces.HtmlBody</component-type>
+	<renderer-type>com.icesoft.faces.OutputHtml</renderer-type>
 
-	&ice-body-props;
-	<component-extension>
-		<base-component-type>com.sun.faces.Component</base-component-type>
-		<component-family>com.icesoft.faces.Body</component-family>
-		<renderer-type>com.icesoft.faces.Body</renderer-type>
-	</component-extension>
-
-</component>
+	<renderer-extension>
+		<instance-name>Html</instance-name>
+		<is-container>true</is-container>
+		<renders-children>true</renders-children>
+		<tag-name>outputHtml</tag-name>
+		<taglib-prefix>@taglib-prefix@</taglib-prefix>
+		<taglib-uri>@taglib-uri@</taglib-uri>
+	</renderer-extension>
+</renderer>
