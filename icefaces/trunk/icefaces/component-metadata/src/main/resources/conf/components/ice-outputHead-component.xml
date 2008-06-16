@@ -38,14 +38,14 @@
 	</description>
 
 	<display-name>Head</display-name>
-	<component-type>com.icesoft.faces.HtmlHead</component-type>
+	<component-type>com.icesoft.faces.OutputHead</component-type>
 
 	<!-- &TODO head-props; -->	
-    &ice-head-props;
+    &ice-outputHead-props;
 	<component-extension>
 		<base-component-type>com.sun.faces.Component</base-component-type>
-		<component-family>com.icesoft.faces.Head</component-family>
-		<renderer-type>com.icesoft.faces.Head</renderer-type>
+		<component-family>com.icesoft.faces.OutputHead</component-family>
+		<renderer-type>com.icesoft.faces.OutputHead</renderer-type>
 	</component-extension>
 
 </component>

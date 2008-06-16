@@ -43,7 +43,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
-public class HtmlRenderer extends DomBasicRenderer {
+public class OutputHtmlRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();

@@ -35,18 +35,19 @@
 <renderer>
 	<description>
 	          <![CDATA[
-          <p>Renders the contents of html document.</p>
+          <p>head element contains meta information about html document.</p>
 
           ]]>	
 	</description>
-	<component-family>com.icesoft.faces.Body</component-family>
-	<renderer-type>com.icesoft.faces.Body</renderer-type>
+	<component-family>com.icesoft.faces.OutputHead</component-family>
+
+	<renderer-type>com.icesoft.faces.OutputHead</renderer-type>
 
 	<renderer-extension>
-		<instance-name>body</instance-name>
+		<instance-name>head</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
-		<tag-name>body</tag-name>
+		<tag-name>outputHead</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>

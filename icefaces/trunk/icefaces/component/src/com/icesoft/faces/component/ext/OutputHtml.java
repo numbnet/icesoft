@@ -36,18 +36,18 @@ package com.icesoft.faces.component.ext;
 
 import javax.faces.context.FacesContext;
 
-public class Html extends javax.faces.component.UIComponentBase{
+public class OutputHtml extends javax.faces.component.UIComponentBase{
 
-    public Html() {
+    public OutputHtml() {
         super();
-        setRendererType("com.icesoft.faces.Html");
+        setRendererType("com.icesoft.faces.OutputHtml");
     }
     
     /**
      * <p>Return the family for this component.</p>
      */
     public String getFamily() {
-        return "com.icesoft.faces.Html";
+        return "com.icesoft.faces.OutputHtml";
     }
 
 
