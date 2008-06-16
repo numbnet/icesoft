@@ -35,19 +35,18 @@
 <renderer>
 	<description>
 	          <![CDATA[
-          <p>Renders an HTML Document "html" element.</p>
+          <p>Renders the contents of html document.</p>
 
           ]]>	
 	</description>
-	<component-family>com.icesoft.faces.Html</component-family>
-
-	<renderer-type>com.icesoft.faces.Html</renderer-type>
+	<component-family>com.icesoft.faces.OutputBody</component-family>
+	<renderer-type>com.icesoft.faces.OutputBody</renderer-type>
 
 	<renderer-extension>
-		<instance-name>Html</instance-name>
+		<instance-name>body</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
-		<tag-name>html</tag-name>
+		<tag-name>outputBody</tag-name>
 		<taglib-prefix>@taglib-prefix@</taglib-prefix>
 		<taglib-uri>@taglib-uri@</taglib-uri>
 	</renderer-extension>

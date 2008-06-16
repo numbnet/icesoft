@@ -4,20 +4,20 @@ package com.icesoft.faces.component.ext;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-public class HtmlHead extends javax.faces.component.UIComponentBase{
+public class OutputHead extends javax.faces.component.UIComponentBase{
     private String dir;
     private String lang;
     private String profile;
 
-    public HtmlHead() {
+    public OutputHead() {
         super();
-        setRendererType("com.icesoft.faces.Head");
+        setRendererType("com.icesoft.faces.OutputHead");
     }
     /**
      * <p>Return the family for this component.</p>
      */
     public String getFamily() {
-        return "com.icesoft.faces.Head";
+        return "com.icesoft.faces.OutputHead";
     }
 
     public String getDir() {

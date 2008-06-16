@@ -632,38 +632,40 @@
         </renderer>
 
        <renderer>
-            <component-family>com.icesoft.faces.Html</component-family>
-            <renderer-type>com.icesoft.faces.Html</renderer-type>
-            <renderer-class>com.icesoft.faces.component.ext.renderkit.HtmlRenderer</renderer-class>
+            <component-family>com.icesoft.faces.OutputHtml</component-family>
+            <renderer-type>com.icesoft.faces.OutputHtml</renderer-type>
+            <renderer-class>com.icesoft.faces.component.ext.renderkit.OutputHtmlRenderer</renderer-class>
         </renderer>
         
         <renderer>
-            <component-family>com.icesoft.faces.Head</component-family>
-            <renderer-type>com.icesoft.faces.Head</renderer-type>
-            <renderer-class>com.icesoft.faces.component.ext.renderkit.HeadRenderer</renderer-class>
+            <component-family>com.icesoft.faces.OutputHead</component-family>
+            <renderer-type>com.icesoft.faces.OutputHead</renderer-type>
+            <renderer-class>com.icesoft.faces.component.ext.renderkit.OutputHeadRenderer</renderer-class>
         </renderer>        
         
+
         <renderer>
-            <component-family>com.icesoft.faces.Body</component-family>
-            <renderer-type>com.icesoft.faces.Body</renderer-type>
-            <renderer-class>com.icesoft.faces.component.ext.renderkit.BodyRenderer</renderer-class>
+            <component-family>com.icesoft.faces.OutputBody</component-family>
+            <renderer-type>com.icesoft.faces.OutputBody</renderer-type>
+            <renderer-class>com.icesoft.faces.component.ext.renderkit.OutputBodyRenderer</renderer-class>
         </renderer>
    </render-kit>
-    <component>
-        <component-type>com.icesoft.faces.HtmlDocument</component-type>
-        <component-class>com.icesoft.faces.component.ext.Html</component-class>
-    </component>
-    
-    <component>
-        <component-type>com.icesoft.faces.HtmlHead</component-type>
-        <component-class>com.icesoft.faces.component.ext.HtmlHead</component-class>
-    </component>
-    
-    <component>
-        <component-type>com.icesoft.faces.HtmlBody</component-type>
-        <component-class>com.icesoft.faces.component.ext.HtmlBody</component-class>
-    </component>
 
+    <component>
+        <component-type>com.icesoft.faces.OutputHtml</component-type>
+        <component-class>com.icesoft.faces.component.ext.OutputHtml</component-class>
+    </component>
+    
+    <component>
+        <component-type>com.icesoft.faces.OutputHead</component-type>
+        <component-class>com.icesoft.faces.component.ext.OutputHead</component-class>
+    </component>
+    
+
+ <component>
+        <component-type>com.icesoft.faces.OutputBody</component-type>
+        <component-class>com.icesoft.faces.component.ext.OutputBody</component-class>
+    </component>
     <component>
         <component-type>com.icesoft.faces.HtmlOutputFormat</component-type>
         <component-class>com.icesoft.faces.component.ext.HtmlOutputFormat</component-class>

@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -44,19 +43,25 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class HeadRenderer extends DomBasicRenderer {
+public class OutputBodyRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement("head", uiComponent);
-        setElementAttr(writer, HTML.DIR_ATTR, uiComponent, HTML.DIR_ATTR);
-        setElementAttr(writer, HTML.LANG_ATTR, uiComponent, HTML.LANG_ATTR);
-        setElementAttr(writer, "profile", uiComponent, "profile");
+        writer.startElement("body", uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), HTML.ID_ATTR);
+        setElementAttr(writer, "alink", uiComponent, "alink");
+        setElementAttr(writer, "background", uiComponent, "background");
+        setElementAttr(writer, HTML.BGCOLOR_ATTR, uiComponent, HTML.BGCOLOR_ATTR);
+        setElementAttr(writer, "link", uiComponent, "link");
+        setElementAttr(writer, HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
+        setElementAttr(writer, HTML.CLASS_ATTR, uiComponent, HTML.STYLE_CLASS_ATTR);
+        setElementAttr(writer, "text", uiComponent, "text");
+        setElementAttr(writer, "vlink", uiComponent, "vlink");
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement("head");
+        writer.endElement("body");
     }
 
     private void setElementAttr(ResponseWriter writer, String elementAttrName, UIComponent component, String componentAttrName) throws IOException {

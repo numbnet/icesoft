@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
+import javax.faces.context.ResponseWriter;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -40,34 +41,18 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
-public class BodyRenderer extends DomBasicRenderer {
+public class OutputHtmlRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement("body", uiComponent);
+        writer.startElement("html", uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext), HTML.ID_ATTR);
-        setElementAttr(writer, "alink", uiComponent, "alink");
-        setElementAttr(writer, "background", uiComponent, "background");
-        setElementAttr(writer, HTML.BGCOLOR_ATTR, uiComponent, HTML.BGCOLOR_ATTR);
-        setElementAttr(writer, "link", uiComponent, "link");
-        setElementAttr(writer, HTML.STYLE_ATTR, uiComponent, HTML.STYLE_ATTR);
-        setElementAttr(writer, HTML.CLASS_ATTR, uiComponent, HTML.STYLE_CLASS_ATTR);
-        setElementAttr(writer, "text", uiComponent, "text");
-        setElementAttr(writer, "vlink", uiComponent, "vlink");
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.endElement("body");
-    }
-
-    private void setElementAttr(ResponseWriter writer, String elementAttrName, UIComponent component, String componentAttrName) throws IOException {
-        Object attrValue = component.getAttributes().get(componentAttrName);
-        if (attrValue != null) {
-            writer.writeAttribute(elementAttrName, attrValue, componentAttrName);
-        }
+        writer.endElement("html");
     }
 }
