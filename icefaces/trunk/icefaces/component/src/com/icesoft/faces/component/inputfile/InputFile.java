@@ -57,6 +57,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.AbortProcessingException;
+import javax.faces.FacesException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +66,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.Iterator;
 
 
@@ -89,6 +89,12 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     public static final String UNKNOWN_SIZE_MESSAGE_ID = "com.icesoft.faces.component.inputfile.UNKNOWN_SIZE";
 
     public static final String FILE_UPLOAD_PREFIX = "fileUpload";
+    
+    public static final String SUBMIT_NONE = "none";
+    public static final String SUBMIT_PRE_UPLOAD = "preUpload";
+    public static final String SUBMIT_POST_UPLOAD = "postUpload";
+    public static final String SUBMIT_PRE_POST_UPLOAD = "preAndPostUpload";
+    
     private Boolean disabled;
     private String style;
     private String styleClass;
@@ -113,6 +119,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
     private long sizeMax;
     private MethodBinding progressListener;
     private Boolean progressRender;
+    private String submitOnUpload;
 
     /**
      * <p>Return the value of the <code>COMPONENT_TYPE</code> of this
@@ -487,6 +494,35 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         Boolean progRend = getProgressRender();
         return (progRend != null) ? progRend.booleanValue() : false;
     }
+    
+    public void setSubmitOnUpload(String submitOnUpload) {
+        this.submitOnUpload = submitOnUpload;
+    }
+    
+    public String getSubmitOnUpload() {
+        if (submitOnUpload != null) {
+            return submitOnUpload;
+        }
+        ValueBinding vb = getValueBinding("submitOnUpload");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+    
+    public String getValidatedSubmitOnUpload() {
+        String sol = getSubmitOnUpload();
+        if (sol == null || sol.length() == 0) {
+            sol = SUBMIT_NONE;
+        }
+        else {
+            if (!sol.equals(SUBMIT_NONE) &&
+                !sol.equals(SUBMIT_PRE_UPLOAD) &&
+                !sol.equals(SUBMIT_POST_UPLOAD) &&
+                !sol.equals(SUBMIT_PRE_POST_UPLOAD)) {
+                throw new FacesException( new IllegalArgumentException(
+                    "Invalid value for ice:inputFile's submitOnUpload property: " + sol) );
+            }
+        }
+        return sol;
+    }
 
     /**
      * <p>Set the value of the <code>renderedOnUserRole</code> property.</p>
@@ -558,7 +594,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[25];
+        Object values[] = new Object[26];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -584,6 +620,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         values[22] = new Long(sizeMax);
         values[23] = saveAttachedState(context, progressListener);
         values[24] = progressRender;
+        values[25] = submitOnUpload;
         return ((Object) (values));
     }
 
@@ -618,6 +655,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         sizeMax = ((Long) values[22]).longValue();
         progressListener = (MethodBinding) restoreAttachedState(context, values[23]);
         progressRender = (Boolean) values[24];
+        submitOnUpload = (String) values[25];
     }
 
     /**
