@@ -31,7 +31,7 @@
  *
  */
 
-package com.icesoft.icefaces.samples.showcase.layoutPanels.borderPanel;
+package com.icesoft.icefaces.samples.showcase.layoutPanels.panelCollapsible;
 
 import org.icefaces.application.showcase.model.entity.Person;
 import org.jboss.seam.annotations.Name;

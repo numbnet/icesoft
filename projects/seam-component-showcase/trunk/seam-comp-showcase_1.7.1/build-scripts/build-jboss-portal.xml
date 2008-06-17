@@ -10,7 +10,7 @@
 	<property name="dist.dir" value="dist-jboss-portal" />
 	<property name="exploded-archives.dir" value="exploded-archives-jboss-portal" /> 
 	<property name="portal.build" value="true"/>
-	
+
     <import file="build-common.xml"/>
 
   

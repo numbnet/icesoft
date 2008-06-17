@@ -21,13 +21,6 @@
 	   <target name="compile" description="compile seam-comp-showcase">
 	          <ant antfile="build-scripts/build-common.xml" target="compileactions"/>
 	  </target>
-	<!-- <target name="tomcat55" description="Build seam-comp-showcase for deployment to Tomcat 5.5">
-	     	<ant antfile="build-scripts/build-tomcat55.xml"/>
-	   </target> -->
-	
-      <!-- <target name="jboss405" description="Build seam-comp-showcase for deployment to JBoss 4.0.5.GA">
-		     	<ant antfile="build-scripts/build-jboss405.xml"/>
-		   </target> -->  
 	
   <!--  <target name="websphere61" description="Build seam-comp-showcase for deployment to WebSphere 6.1.0.9">
 		     	<ant antfile="build-scripts/build-websphere61.xml"/>
@@ -44,6 +37,9 @@
 	   <target name="copy-libs" description="copy over libraries to project">
 	   	  <ant antfile="build-scripts/build-common.xml" target="freshen"/> 
 	   </target>
+	   <target name="clear-libs" description="remove current set of libraries of project">
+	      <ant antfile="build-scripts/build-common.xml" target="delete-libs"/>
+	   </target>
 	   <target name="copy-source" description="copy over the jspx and source from component-showcase">
 	   	  <ant antfile="build-scripts/build-common.xml" target="copy-source"/>
 	   </target>
@@ -54,8 +50,7 @@
 	    	<ant antfile="build-scripts/build-weblogic.xml" target="clean" />
 	   	    <ant antfile="build-scripts/build-jboss-portal.xml" target="clean" />
 	   	    <ant antfile="build-scripts/build-glassfish-liferay.xml" target="clean"/>
-	  <!--  	<ant antfile="build-scripts/build-websphere61.xml" target="clean" />
-	    	<ant antfile="build-scripts/build-tomcat55.xml" target="clean" /> --> 
+	  <!--  	<ant antfile="build-scripts/build-websphere61.xml" target="clean" />--> 
 	    	<ant antfile="build-scripts/build-tomcat6.xml" target="clean" />
 	   </target>
 	
@@ -63,5 +58,7 @@
 	<!--build-all will build all variations of this application
 	    The jboss server is the most recently released GA jboss AS -->
 	<target name="build-all" depends="jboss, glassfish, weblogic, tomcat6" description="Build seam-comp-showcase for all supported application servers"/>
- 
+    <target name="test-init" >
+	   <ant antfile="build-scripts/build-common.xml" target="init"/>
+	</target>
 </project>

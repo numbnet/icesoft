@@ -1,4 +1,4 @@
-package com.icesoft.icefaces.samples.showcase.layoutPanels;
+package com.icesoft.icefaces.samples.showcase.layoutPanels.tooltippanel;
 
 import org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelToolTip.PanelToolTipController;
 import java.io.Serializable;

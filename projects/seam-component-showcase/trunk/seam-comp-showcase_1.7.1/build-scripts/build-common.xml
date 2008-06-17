@@ -54,6 +54,11 @@
         <mkdir dir="${classes.action.dir}" />
         <mkdir dir="${dist.dir}" />
     	<mkdir dir="${war.dir}"/>
+        <condition property="deploy.dir" value="${jboss.portal.home}}/server/default/deploy" 
+                  else="${jboss.home}/server/default/deploy">
+                  <istrue value="${portal.build}"/>
+         </condition>
+    	<echo message="deploy  dir is ${deploy.dir}"/>
     </target>  
    
     <target name="compileactions" depends="init"
@@ -89,23 +94,11 @@
 	     <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
 	</target>
     
-	<target name="noejb.archive.405" depends="war" description="package war for dist of jboss4.0.5">
-		 <echo message="for 405 copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
-		 <copy todir="${war.dir}/WEB-INF/lib">
-			<fileset refid="noejb.war.lib.extras" />
-		 </copy>
-		 <copy todir="${war.dir}/WEB-INF" overwrite="true">
-				<fileset dir="${resources.dir}/WEB-INF">
-				        <include name="web*.xml"/>
-				</fileset>
-		 </copy>
-		 <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
-	</target>
 	
 	<target name="portal.war" if="portal.build" description="Building portal application">
 	    <echo message="portal.war target so copying portal files"/>
 		<copy todir="${war.dir}">
-		   <fileset dir="resources-jboss-portal/portlet">
+		   <fileset dir="${basedir}/portlet">
 			    <include name="*.jspx"/>
 			</fileset>
 		</copy>
@@ -123,7 +116,7 @@
 	          <include name="log4j.xml"/>
 	        </fileset>
 	     </copy>  
-       <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
+   <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/> 
 	     <copy todir="${war.dir}/WEB-INF">
 			<fileset refid="noejb.war.lib.extras" />
 	     	<fileset refid="jboss.archive.jar" />
@@ -139,7 +132,7 @@
 			    </fileset>
 		</copy>
 
-    	<echo message="copying resources for jar part of war"/>
+    	<!--<echo message="copying resources for jar part of war"/> -->
         <!-- resources for the jar part of the war -->
 		<copy todir="${war.dir}/WEB-INF/classes" overwrite="true">
 		     <fileset dir="${resources.dir}">
@@ -179,7 +172,9 @@
         </copy>
    
         <copy todir="${war.dir}">
-            <fileset dir="${basedir}/view" />
+            <fileset dir="${basedir}/view">
+        	   <exclude name="nonStandardIncludes/*.*"/>
+        	</fileset>
         </copy>
         
         <copy todir="${war.dir}/WEB-INF">
@@ -188,6 +183,7 @@
                 <include name="classes/**/*.*"/>
                 <exclude name="classes/**/*.class"/>
                 <exclude name="classes/**/*.groovy"/>
+    	   	    <exclude name="includes/*.*"/>
             	<exclude name="jboss-web.xml"/>
             </fileset>
         	<fileset dir="${basedir}/WEB-INF">
@@ -250,7 +246,7 @@
 	
 	
 	
-    <target name="archive" depends="war" 
+    <target name="archive" depends="clean,war" 
             description="Package the archives">
         <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
     </target>
@@ -291,8 +287,9 @@
     <target name="deploy" depends="clean,archive" description="Deploy to JBoss AS">
         <fail unless="jboss.home">jboss.home not set</fail>
         <copy todir="${deploy.dir}" file="${dist.dir}/${project.name}.war" />
-    </target>
+    </target> 
     
+	
     <target name="tomcat6.deploy"  description="Deploy to Tomcat-6">
         <fail unless="tomcat.home">tomcat.home not set</fail>
  	<copy todir="${tomcat.deploy.dir}" file="${dist.dir}/${project.name}.war" />
@@ -424,10 +421,15 @@
 		
 	</target>
 	
+	<target name="delete-libs" description="delete libraries to use other Seam or ICEfaces versions">
+		<delete defaultexcludes="false">
+		   <fileset dir="${lib.dir}" includes="**.jar"/>
+		</delete>
+		 <!-- <delete file="${lib.dir}/*.jar"/>		 
+		<delete dir="${lib.dir}" /> -->
+	</target>
+	
 	<target name="freshen"  description="grab fresh icefaces jars">
-		  <delete file="${lib.dir}/*.jar"/> 
-	 	 <delete dir="${lib.dir}" />
-
 		<copy todir="${lib.dir}">
 	        <fileset dir="${icefaces.home}/lib">
 	             <include name="icefaces*.jar" />
