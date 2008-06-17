@@ -8,8 +8,7 @@
     <!-- resources -->
     <property name="resources.dir" value="resources-jboss" />
 	<property name="dist.dir" value="dist-jboss" />
-	<property name="exploded-archives.dir" value="exploded-archives-jboss" />
-       
+	<property name="exploded-archives.dir" value="exploded-archives-jboss" />     
     <import file="build-common.xml"/>
 
   

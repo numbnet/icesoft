@@ -1,4 +1,4 @@
-package com.icesoft.icefaces.samples.showcase.layoutPanels.popupPanel;
+package com.icesoft.icefaces.samples.showcase.layoutPanels.panelDivider;
 
 import org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelDivider.PanelDividerBean;
 

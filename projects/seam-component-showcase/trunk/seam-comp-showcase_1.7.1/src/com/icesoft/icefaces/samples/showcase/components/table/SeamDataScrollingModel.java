@@ -98,7 +98,6 @@ public class SeamDataScrollingModel implements Serializable{
 	
     @Create
 	public void init(){
-    	  log.info("initializing bean");
 	      selectedDataScrollMode = PAGINATOR_SCROLLING;
 
 	      selectedDataScrollModes = new HashMap();
@@ -124,7 +123,6 @@ public class SeamDataScrollingModel implements Serializable{
 
     public void setSelectedDataScrollMode(String selectedDataScrollMode) {
         this.selectedDataScrollMode = selectedDataScrollMode;
-        log.info("selectedDataScrollMOde is now"+this.selectedDataScrollMode);
     }
 
     public HashMap getSelectedDataScrollModes() {
@@ -137,7 +135,7 @@ public class SeamDataScrollingModel implements Serializable{
 
 	@Destroy
 	public void destroy(){
-      log.info("conversation has timed out or been destroyed");
+		
 	}
 	
    /**
@@ -184,7 +182,6 @@ public class SeamDataScrollingModel implements Serializable{
         }
 
         public int getRows() {
-        	System.out.println("returning rows="+rows);
             return rows;
         }
 

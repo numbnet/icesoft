@@ -36,16 +36,56 @@ package com.icesoft.icefaces.samples.showcase.layoutPanels.seriesPanel;
 
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import static org.jboss.seam.ScopeType.PAGE;
-import java.io.Serializable;
+import org.jboss.seam.framework.EntityQuery;
+import org.jboss.seam.ScopeType;
+import java.util.List;
 
-import org.icefaces.application.showcase.view.bean.examples.layoutPanel.panelSeries.PanelSeriesController;
+import javax.faces.event.ActionEvent;
+
 /**
  * <p>The Cashier Class is used to back the List (panelSeries) Component
  * example.</p>
  */
-@Scope(PAGE)
+@Scope(ScopeType.PAGE)
 @Name("panelSeriesController")
-public class SeamPanelSeriesController extends PanelSeriesController implements Serializable{
+public class SeamPanelSeriesController extends EntityQuery{
+	private static final String EJBQL = "select e from Employee e";
+    // start off with 3 employees.
+	private int employeeCount = 3;
+	
+	@Override
+	public Integer getMaxResults() {
+		return employeeCount;
+	}
+	
+	@Override
+	public String getEjbql(){
+		return EJBQL;
+	}
+
+	public List getEmployees(){
+		return this.getResultList();
+	}
+	
+
+    /**
+     * Adds a new employee to the list of employees.
+     * @param event jsf action event
+     */
+    public void addEmployee(ActionEvent event){
+        employeeCount++;
+    }
+
+    /**
+     * Removes a new employee to the list of employees.
+     * @param event jsf action event
+     */
+    public void removeEmployee(ActionEvent event){
+        employeeCount--;
+    }
+
+    public int getEmployeeCount(){
+        return employeeCount;
+    }
 
 }

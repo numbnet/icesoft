@@ -15,15 +15,6 @@
 
     <fileset id="noejb.war.lib.extras" dir="${basedir}">
        	<!-- Hibernate and deps -->
-            <include name="lib/hibernate.jar"/>
-        	<include name="lib/hibernate-commons-annotations.jar"/>
-            <include name="lib/hibernate-annotations.jar"/>
-        	<include name="lib/hibernate-entitymanager.jar"/>
-        	<include name="lib/hibernate-validator.jar"/>
-        	<include name="lib/jboss-common-core.jar" />
-        	<include name="lib/cglib-nodep.jar"/>
-        	<include name="lib/antlr.jar" />
-            <include name="lib/asm.jar"/>
             <include name="lib/commons-beanutils.jar"/>
          	<include name="lib/commons-logging.jar" />  
         	<include name="lib/commons-collections.jar" />
@@ -32,6 +23,7 @@
             <exclude name="lib/mvel14.jar"/>
             <exclude name="lib/jbpm-jpdl.jar"/>
             <exclude name="lib/janino.jar"/>
+    	    <exclude name="lib/antlr.jar"/>
     </fileset>
 	
 	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">

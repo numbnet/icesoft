@@ -40,6 +40,7 @@ JBoss Portal 2.6.4  :
   * Start AS
   * Access the app at http://localhost:8080/portal/
   * each window from seam-comp-showcase will have it's own portlet window automatically (xml files specify instances already)
+Known-issues:- ICE-2045 
   
 
 WebLogic 10 :  
