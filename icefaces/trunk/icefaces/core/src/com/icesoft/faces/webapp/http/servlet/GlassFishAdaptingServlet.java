@@ -161,16 +161,25 @@ implements PseudoServlet {
                 } else {
                     CometContext cometContext =
                         CometEngine.getEngine().register(contextPath);
+                    int count = 0;
                     while (!cometContext.isActive(this)) {
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException exception) {
                             // ignoring interrupts...
                         }
+                        if (count++ > 10)  {
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug("cometContext.isActive failed");
+                            }
+                            break;
+                        }
                     }
-                    handler.respond(this);
-                    cometContext.resumeCometHandler(this);
-                    unpark();
+                    if (cometContext.isActive(this))  {
+                        handler.respond(this);
+                        cometContext.resumeCometHandler(this);
+                        unpark();
+                    }
                 }
             }
         }
