@@ -49,16 +49,18 @@
 		<p>
 		MethodBinding representing a progress listener method that will be notify 
 		the application on the percentage of the file being uploaded. The expression 
-		must evaluate to a public method that takes an java.util.EventObject 
-		parameter, with a return type of void.
+		must evaluate to a public method that takes a single parameter of type 
+		com.icesoft.faces.component.inputfile.InputFileProgressEvent, with a return type of void.
 		</p>
 		<p>
        These are some things to consider when implementing the progressListener. 
 		<ul>
-			<li>Method must take a single argument of type java.util.EventObject. </li>
-			<li>Developer must invoke the render() call on the PersistentFacesState instance, inorder to render the page. </li>
 			<li>Beans which implement the progressListener must be in session scope. </li>
-			<li>The PersistentF28acesState must be set in the constructor of session bean. </li>
+			<li>The PersistentFacesState must be set in the constructor of session bean. </li>
+			<li>The progressListener method may invoke the executeAndRender() call on the PersistentFacesState instance, or may use the OnDemandRenderer, in order to render the page. </li>
+			<li>The progressListener method must take a single argument of type com.icesoft.faces.component.inputfile.InputFileProgressEvent. </li>
+			<li>From the InputFileProgressEvent's getComponent() or getSource() methods, developers may attain a reference to the InputFile component. </li>
+			<li>If the progressListener is being invoked due to the inputFile causing a form submit (refer to the <b>submitOnUpload</b> attribute), then the InputFile's FileInfo object's isPreUpload() or isPostUpload() method will return true, depending if the form post is from before or after the file upload. </li>
 		</ul>
 		</p>
 		]]>
@@ -322,5 +324,39 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
+     </property-extension>
+</property>
+
+<property>
+    <description>
+        <![CDATA[
+        <p>Depending on the value of <b>submitOnUpload</b>, the inputFile may post its 
+        enclosing form, before and/or after the file upload occurs. Possible values are:</p>
+        <dl>
+        <dt>none</dt>
+        <dd>File uploading will not cause the inputFile's enclosing form, and any other of the form fields, to be submitted to the server.</dd>
+        <dt>preUpload</dt>
+        <dd>The inputFile's enclosing form, and any other of the form fields, will be submitted to the server, immediately before the file uploading begins.</dd>
+        <dt>postUpload</dt>
+        <dd>The inputFile's enclosing form, and any other of the form fields, will be submitted to the server, immediately after the file uploading finishes.</dd>
+        <dt>preAndPostUpload</dt>
+        <dd>The inputFile's enclosing form, and any other of the form fields, will be submitted to the server, both before and after the file uploading takes place.</dd>
+        </dl>        
+        <p>This is to support two different use cases. Applications running in synchronous 
+        mode can not make use of server push, so to depict the beginning and the ending 
+        of the file upload requires browser initiated JSF lifecycles, accomplished via 
+        form submissions. As well, for some applications, it's desirable to submit other 
+        form fields when the user clicks on the file upload button, so that they may be 
+        processed together with the uploaded file.</p>
+        <p>Note: The default value is <b>none</b>.</p>
+		]]>
+    </description>
+    <property-name>submitOnUpload</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
     </property-extension>
 </property>
