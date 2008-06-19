@@ -121,7 +121,6 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         excludes.add("style");
         excludes.add("readonly");
         excludes.add("disabled");
-        excludes.add("onclick");
         PassThruAttributeRenderer.
                 renderAttributes(
                         facesContext, uiSelectOne, getExcludesArray(excludes));
