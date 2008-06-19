@@ -33,15 +33,11 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 import org.w3c.dom.Element;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import java.util.Set;
 
 
 public class RadioRenderer
@@ -58,15 +54,5 @@ public class RadioRenderer
         tableElement.setAttribute("cellspacing", "0");
         rootElement.appendChild(tableElement);
         return rootElement;
-    }
-
-    protected void addJavaScript(FacesContext facesContext,
-                                 UIComponent uiComponent, Element input,
-                                 Set excludes) {
-        if (((IceExtended) uiComponent).getPartialSubmit()) {
-            input.setAttribute("onclick",
-                               "setFocus('');" + this.ICESUBMITPARTIAL);
-            excludes.add("onclick");
-        }
     }
 }

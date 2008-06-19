@@ -69,7 +69,7 @@ public abstract class DomBasicRenderer extends Renderer {
 
 
     // iceSubmitPartial
-    public final String ICESUBMITPARTIAL =
+    public final static String ICESUBMITPARTIAL =
             "iceSubmitPartial(form, this, event);";
     // iceSubmit
     public final String ICESUBMIT = "iceSubmit(form,this,event);";
