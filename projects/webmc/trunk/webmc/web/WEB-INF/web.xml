@@ -89,6 +89,15 @@
         <param-value>4194304</param-value>
     </context-param>
 
+<!-- The default presentations have been placed inside this folder.  If you wish
+     to change this parameter and want to keep the default presentations, 
+     manually change the folder name to match the new name and change the folder
+     name in AutoPresentation createDefaultPresentation()  -->    
+    <context-param>
+        <param-name>com.icesoft.faces.uploadDirectory</param-name>
+        <param-value>uploadDirectory</param-value>
+    </context-param>
+
 <!-- Specifies to the ICEfaces framework whether to support multiple views of a 
      single application from the same browser.  When running in a Portlet 
      environment, this parameter must be set to true. -->

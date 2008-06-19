@@ -103,9 +103,9 @@ public class UnknownPresentationDocument extends CommonPresentationDocument impl
     }
     
     /**
-     * Delete document source file and other generated files.
+     * Delete files generated from uploaded presentation.
      */
-    public void deleteFiles() {
+    public void deleteGeneratedFiles() {
 
     }
 

@@ -92,7 +92,7 @@ public interface PresentationDocument {
     public void dispose();
     
     /**
-     * Delete document source file and other generated files.
+     * Delete files generated from uploaded presentation.
      */
-    public void deleteFiles();
+    public void deleteGeneratedFiles();
 }
