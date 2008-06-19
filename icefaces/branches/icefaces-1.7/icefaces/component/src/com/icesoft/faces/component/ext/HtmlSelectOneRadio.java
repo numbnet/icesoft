@@ -40,6 +40,7 @@ import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
@@ -566,6 +567,18 @@ public class HtmlSelectOneRadio
         currentStyle = (CurrentStyle) values[19];
         visible = (Boolean) values[20];
         autocomplete = (String) values[21];
+    }
+
+    public String getOnclick() {
+        String onclick = super.getOnclick();
+        if (getPartialSubmit()) {
+            if (onclick != null) {
+                onclick += ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+            } else {
+                onclick = ";setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+            }
+        }
+        return onclick;
     }
 }
 
