@@ -103,6 +103,7 @@ Glassfish/Liferay bundle (Liferay 4.4.2 on Glassfish V2 UR1)
 Jboss-4.2.2.GA/Liferay5.0.1.RC bundle 
  * Install 
  * Must have jboss-seam-2.1.0.A1 as minimum
+ * add hibernate.jar and hibernate-validator.jar from seam distribution to server/default/lib
  * ant jboss4.2.2-liferay5.0.1.RC
  * copy \dist\jboss-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * start AS
