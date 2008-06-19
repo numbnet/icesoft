@@ -67,7 +67,6 @@ public class InputRichText extends UIInput {
     private static Boolean exist = Boolean.FALSE;
     private String toolbar;
     private String customConfigPath;
-    private String editorValue = null;
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
@@ -93,12 +92,6 @@ public class InputRichText extends UIInput {
         if (map.containsKey(clientId)) {
             String newValue = map.get(clientId).toString().replace('\n', ' ');
             setSubmittedValue(newValue);
-        }
-        //this property is different from the "value" property.
-        //the value property represents the saved value, and this property 
-        //represents the current contents of the editor
-        if (map.containsKey(clientId+ "valueHolder")) {
-            setEditorValue(map.get(clientId+"valueHolder").toString().replace('\n', ' '));
         }
         super.decode(facesContext);
     }
@@ -268,14 +261,6 @@ public class InputRichText extends UIInput {
         ValueBinding vb = getValueBinding("customConfigPath");
         return vb != null ? CoreUtils.resolveResourceURL(getFacesContext(), (String) vb.getValue(getFacesContext())) : null;
     }
-
-    String getEditorValue() {
-        return editorValue;
-    }
-
-    void setEditorValue(String editorValue) {
-        this.editorValue = editorValue;
-    }    
 
     /**
      * <p>Set the value of the <code>disabled</code> property.</p>

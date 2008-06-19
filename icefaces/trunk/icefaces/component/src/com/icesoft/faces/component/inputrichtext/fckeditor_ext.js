@@ -74,15 +74,30 @@ Ice.FCKeditorUtility = {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
             if (oEditor != null) {
                if (toogleState(oEditor)) return;
+                var valueHolder = $(ele + 'valueHolder');
+                var editorValue = $(ele);                
+                editorValue.value = valueHolder.value  
+                oEditor.SetHTML( editorValue.value) ;
                if (oEditor.EditorWindow.parent.FCK.HasFocus) { 
                     oEditor.EditorWindow.focus();
                     oEditor.focus();                    
-                }            
-                var valueHolder = $(ele + 'valueHolder');
-                var value = valueHolder.value;  
-                oEditor.SetHTML( value) ;
+                }  
             }
         } catch(err) {}
+    },
+    
+    updateFields: function(ele) {
+	    try {
+		    var oEditor = FCKeditorAPI.GetInstance(ele) ;   
+		    if (!oEditor) return;
+		    var editorValue = $(ele);
+		    var saveOnSubmit = $(ele + 'saveOnSubmit');
+		    if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) { 
+		        var valueHolder = $(ele + 'valueHolder');
+		        editorValue.value = oEditor.GetXHTML(true);
+		        valueHolder.value = editorValue.value;    
+		    }
+	    } catch (err) {}     
     }
 };
 
@@ -94,7 +109,6 @@ FCKeditor.prototype.CreateIce = function(eleId)
 
 function FCKeditor_OnComplete( editorInstance ){
     toogleState(editorInstance);
-    editorInstance.Events.AttachEvent( 'OnBlur', myOnBlur ) ;
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
@@ -177,13 +191,3 @@ function FCKeditorSave(editorInstance) {
 	return false;
 }
 
-function myOnBlur(editIns) {
-    if (!editIns) return;
-    var editorValue = $(editIns.Name);
-    var saveOnSubmit = $(editIns.Name + 'saveOnSubmit');
-    if (saveOnSubmit && editorValue) {
-	    var valueHolder = $(editIns.Name + 'valueHolder');
-	    editorValue.value = editIns.GetXHTML(true);
-	    valueHolder.value = editorValue.value;    
-    }
-}
