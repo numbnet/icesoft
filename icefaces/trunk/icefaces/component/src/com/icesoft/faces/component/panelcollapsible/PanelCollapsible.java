@@ -220,8 +220,8 @@ public class PanelCollapsible extends UICommand {
          if(headerFacet != null){
          	headerFacet.processDecodes(context);
          }
+         decode(context);
   	   }
-  	   decode(context);
      }
 
      /* (non-Javadoc)
