@@ -41,8 +41,8 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             		+ "', '" + inputRichText.getFor() + "', '" + inputRichText.getBaseURI().getPath() + "','" + inputRichText.getWidth() + 
             		"', '" + inputRichText.getHeight() + "', '"+ inputRichText.getToolbar()+"', '"+ inputRichText.getCustomConfigPath() + 
             		"', '"+ inputRichText.getSkin() +"'));");
-            String value = inputRichText.getEditorValue();
-            if (value == null && inputRichText.getValue() != null) {
+            String value = "";
+            if (inputRichText.getValue() != null) {
                 value =  inputRichText.getValue().toString();
             }
             addHiddenField (domContext, root,clientId + "valueHolder", 
@@ -59,6 +59,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 saveOnSubmit.setAttribute(HTML.TYPE_ATTR, "hidden");                
                 root.appendChild(saveOnSubmit);
             }
+            div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
             //the following call will update the contents of the editor on every render phase
             JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");            
             domContext.stepOver();
