@@ -407,12 +407,19 @@
 	  	     <include name="**/*.jspx"/>
 	         <exclude name="**/dataTable-dataScrolling.jspx"/>
 	   	  	 <exclude name="**/page-template.jspx"/>
-	   	  	 <exclude name="**/navigation.jspx"/>
+	   	  	 <exclude name="content/navigation.jspx"/>
 	      </fileset>	   	  
-	   	  <fileset dir="${basedir}/view/nonStandardIncludes">
+
+	   </copy>
+		<echo message=" basedir is ${basedir}"/>
+	   <copy todir="${basedir}/WEB-INF/includes"
+	   	 overwrite="true">
+	   	  <fileset dir="${basedir}/nonStandardIncludes" >
 	   	       <include name="**/*.jspx"/>
+	   	  	   <include name="content/navigation.jspx"/>
 	   	  </fileset>
 	   </copy>
+		<echo message="after copying nonstandard templates"/>
 	   <copy todir="${basedir}/resources-jboss">
 		  <fileset dir="${icefaces.home}/samples/component-showcase/common-src/org/icefaces/application/showcase/view/resources">
 		  	  <include name="messages*.properties"/>
@@ -445,6 +452,8 @@
 	             <include name="xml-apis.jar"/>
 	             <include name="el-*.jar"/>
 	           	 <include name="portlet.jar"/>
+	        	 <include name="servlet-api.jar"/>
+	        	 <include name="common-beanutils.jar"/>
                  <exclude name="commons-collections.jar"/>
 		   </fileset>
 	       <fileset dir="${jboss.seam.home}/lib">
