@@ -312,7 +312,7 @@ public class TableRenderer
                 Iterator columns = child.getChildren().iterator();
                 while (columns.hasNext()) {
                     UIComponent column = (UIComponent) columns.next();
-                    if (!(column instanceof UIColumn)) {
+                    if (!(column instanceof UIColumn) || !column.isRendered()) {
                         continue;
                     }
                     Element th = domContext.createElement(element);
