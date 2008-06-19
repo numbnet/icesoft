@@ -166,11 +166,14 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
                 loaded = true;
                 // After loading new slides, trigger preload of slides in the clients.
                 presentation.preload();
+                // Delete the uploaded file here once we are done extraction.
+                externalConverterFile.delete();
 
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +
                              externalConverterFilePages + " pages)");
                 presentation.setCurrentSlideNumber(1);
+
             } catch (Exception e) {
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loadingError") + " " + e.getMessage());
                 if (log.isErrorEnabled()) {
@@ -227,10 +230,9 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
     }
     
     /**
-     * Delete document source file and other generated files.
+     * Delete files generated from uploaded presentation.
      */
-    public void deleteFiles() {
-        externalConverterFile.delete();
+    public void deleteGeneratedFiles() {
     }
 
 }

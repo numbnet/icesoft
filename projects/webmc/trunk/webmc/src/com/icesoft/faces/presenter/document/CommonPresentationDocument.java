@@ -3,6 +3,9 @@ package com.icesoft.faces.presenter.document;
 import java.io.File;
 import java.util.Comparator;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -21,6 +24,8 @@ public class CommonPresentationDocument {
     protected File externalConverterFile;
     protected Slide[] slides;
     protected Slide[] slidesMobile;
+    
+    protected static String ROOT_CONTEXT = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getRealPath("");
     
     /**
      * Method to retrieve the Slide object corresponding to the passed slide

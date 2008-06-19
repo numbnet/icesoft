@@ -37,7 +37,6 @@ import com.icesoft.faces.presenter.presentation.Presentation;
 import com.icesoft.faces.presenter.slide.Slide;
 import com.icesoft.faces.presenter.util.ImageScaler;
 import com.icesoft.faces.presenter.util.MessageBundleLoader;
-import com.icesoft.faces.presenter.presentation.AutoPresentation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -141,23 +140,12 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
 
                 long ourTimestamp = System.currentTimeMillis();
 
-                // Setup the base directory, which can be based on two cases
-                // The first is a user uploaded file, which goes right into web/
-                // The second is a default initial presentation, which would be in
-                // the web/PRESENTATION_FOLDER_NAME/ folder, and needs a different parent
-                if (externalConverterFile.getParentFile().getName()
-                        .equals(AutoPresentation.PRESENTATION_FOLDER_NAME)) {
-                    baseDirectory = externalConverterFile.getParentFile()
-                            .getParentFile() +
-                                             File.separator + EXTRACTED_FOLDER +
-                                             File.separator + presentation.getPrefix() +
-                                             ourTimestamp + File.separator;
-                } else {
-                    baseDirectory = externalConverterFile.getParentFile() +
-                                    File.separator + EXTRACTED_FOLDER + File.separator +
-                                    presentation.getPrefix() + ourTimestamp + File.separator;
-                    
-                }
+                // Setup the base directory
+                baseDirectory = externalConverterFile.getParentFile() +
+                                         File.separator + EXTRACTED_FOLDER +
+                                         File.separator + presentation.getPrefix() +
+                                         ourTimestamp + File.separator;
+
                 mobileDirectory = baseDirectory + "mobile" + File.separator;
                 
                 // Ensure the extraction directories exist
@@ -183,11 +171,16 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                     return;
                 }
 
-                // Generate a list of Slide objects from the extracted files
-                // This list can then be used by the presentation
-                String slideBaseDirectory = EXTRACTED_FOLDER + URL_SLASH +
-                                presentation.getPrefix() + ourTimestamp + URL_SLASH;
-                String slideMobileDirectory = slideBaseDirectory + "mobile" + URL_SLASH;
+                // Generate a list of Slide objects from the extracted files.
+                // Convert a file path to a relative url using String objects.
+                int beginIndex = ROOT_CONTEXT.length();
+                String slideBaseDirectory;
+                if(File.separator.equals("\\")){
+                    slideBaseDirectory = baseDirectory.substring(beginIndex).replaceAll(File.separator + File.separator, URL_SLASH);
+                }else{
+            	    slideBaseDirectory = baseDirectory.substring(beginIndex);
+                }
+                String slideMobileDirectory = slideBaseDirectory + "mobile" + File.separator;
                 externalConverterFilePages = generatedFiles.size();
 
                 slides = slideCreator(generatedFiles,slideBaseDirectory,false);
@@ -197,11 +190,14 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
                 loaded = true;
                 // After loading new slides, trigger preload of slides in the clients.
                 presentation.preload();
+                // Delete the uploaded file here once we are done extraction.
+                externalConverterFile.delete();
 
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.completedLoading") + " " +
                              presentation.getName() + " (" +
                              externalConverterFilePages + " pages)");
                 presentation.setCurrentSlideNumber(1);
+     
             } catch (Exception e) {
                 updateStatus(MessageBundleLoader.getMessage("bean.presentationDocument.loadingError") + " " + e.getMessage());
                 if (log.isErrorEnabled()) {
@@ -273,11 +269,11 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
     }
 
     /**
-     * Method to clean up the extracted files from a zip presentation
+     * Delete files generated from uploaded presentation.
      */
-    public void deleteExtractedFiles() {
-    	deleteExtractedFiles(mobileDirectory);
-    	deleteExtractedFiles(baseDirectory);
+    public void deleteGeneratedFiles() {
+    	deleteGeneratedFiles(mobileDirectory);
+    	deleteGeneratedFiles(baseDirectory);
     }
     
     /**
@@ -285,21 +281,13 @@ public class ZipPresentationDocument extends CommonPresentationDocument implemen
      *
      * @param directory to cleanup
      */
-    private void deleteExtractedFiles(String directory) {
+    private void deleteGeneratedFiles(String directory) {
         File targetFolder = new File(directory);
         File[] contents = targetFolder.listFiles();
         for (int i = 0; i < contents.length; i++) {
             contents[i].delete();
         }
         targetFolder.delete();
-    }
-    
-    /**
-     * Delete document source file and other generated files.
-     */
-    public void deleteFiles() {
-        deleteExtractedFiles();
-        externalConverterFile.delete();
     }
 
 }

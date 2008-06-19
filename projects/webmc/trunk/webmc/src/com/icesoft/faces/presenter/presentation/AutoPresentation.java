@@ -102,7 +102,7 @@ public class AutoPresentation {
             }
 
             // Work from the base presentation folder
-            File rootPath = new File(path + File.separator + PRESENTATION_FOLDER_NAME);
+            File rootPath = new File(path + File.separator + "uploadDirectory" + File.separator + PRESENTATION_FOLDER_NAME);
 
             // Ensure the folder exists and is readable
             if ((!rootPath.exists()) || (!rootPath.canRead())) {

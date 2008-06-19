@@ -642,7 +642,7 @@ public class Presentation extends PresentationInfo {
         if (document == null) {
             return;
         }
-        document.deleteFiles();
+        document.deleteGeneratedFiles();
         document.dispose();
         document = null;
         currentSlideNumber = DEFAULT_SLIDE_NUMBER;
