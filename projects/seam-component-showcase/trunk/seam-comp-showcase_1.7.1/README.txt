@@ -17,8 +17,8 @@ libraries exist on your machine.
 
  for example:-
  	jboss.home = C:/work/webserver/jboss-4.2.2.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.7.0/icefaces  
-	jboss.seam.home = C:/Seam/jboss-seam-2.0.1.GA     
+	icefacesSourceDirectory = C:/ICEfaces-1.7.1/icefaces  
+	jboss.seam.home = C:/Seam/jboss-seam-2.0.2.SP1     
 
 4. run target = copy-libs  (will copy all the required libraries from the above locations)
 5. run target = copy-source (will copy over the jspx pages and beans from component-showcase)
@@ -88,27 +88,21 @@ Glassfish (tested with v2 & v2.1  get hibernate/caching exceptions for asynch wi
   * Deploy dist-glassfish/seam-comp-showcase.war as Web App
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-Glassfish/Liferay bundle (Liferay 4.4.2 on Glassfish V2 UR1)
+Glassfish/Liferay bundle (Liferay 4.4.2 & Glassfish V2 UR1  or liferay 5 & Glassfish v2)
  * Install 
- * Must have jboss-seam-2.1.0.A1 as minimum
+ * Must have jboss-seam-2.1.0.A1 as minimum (or seam-2.0.2)
  * ant glassfishv2-liferay4.42
  * copy \dist\glassfish-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * make sure you have both the embedded Derby database as well as AS running
  * use URL:- http://localhost:8080/c/portal/login
- * sign in and create some pages and place some of the portlets on them.  If you want
-   certain layouts, you may have to alter the css for layout on the pages.  The basic xp-portlet.css
-   in ICEfaces libraries works well for most in full page of portal, but you may have to override some
-   of the style classes if you use a different layout.
+ * sign in and create some pages and place some of the portlets on them.  
 
 Jboss-4.2.2.GA/Liferay5.0.1.RC bundle 
  * Install 
- * Must have jboss-seam-2.1.0.A1 as minimum
+ * Must have jboss-seam-2.1.0.A1 as minimum (Actually seam-2.0.2 looks like it works as well)
  * add hibernate.jar and hibernate-validator.jar from seam distribution to server/default/lib
  * ant jboss4.2.2-liferay5.0.1.RC
  * copy \dist\jboss-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * start AS
  * use URL:- http://localhost:8080/c/portal/login
- * sign in and create some pages and place some of the portlets on them.  If you want
-   certain layouts, you may have to alter the css for layout on the pages.  The rime-portlet.css
-   in ICEfaces libraries works well for most in full page of portal, but you may have to override some
-   of the style classes if you use a different layout.
+ * sign in and create some pages and place some of the portlets on them.  
