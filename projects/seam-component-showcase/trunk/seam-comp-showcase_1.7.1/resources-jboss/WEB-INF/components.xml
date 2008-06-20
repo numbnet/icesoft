@@ -12,14 +12,11 @@
                  http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.0.xsd
                  http://jboss.com/products/seam/framework http://jboss.com/products/seam/framework-2.0.xsd">
 
-
- <!-- <core:init debug="true" jndi-pattern="seam-comp-showcase/#{ejbName}/local"/> -->
    <core:manager conversation-timeout="120000" 
                   concurrent-request-timeout="500"
                   conversation-id-parameter="cid"/>
     
    <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
-   <!-- <component scope="APPLICATION" auto-create="true" name="autoCompleteDictionary" class="com.icesoft.icefaces.samples.showcase.components.autocomplete.AutoCompleteDictionary" /> --> 
     <transaction:entity-transaction entity-manager="#{entityManager}"/>
                   
     <persistence:entity-manager-factory name="componentDatabase"/>

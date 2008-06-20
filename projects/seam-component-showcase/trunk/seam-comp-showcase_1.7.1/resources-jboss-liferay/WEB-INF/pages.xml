@@ -19,4 +19,7 @@
     <page view-id="/Components_Charts.jspx">
        <begin-conversation join="true"/>
     </page>
+       <page view-id="/Components_Rich_Text_Editor.jspx">
+       <begin-conversation join="true"/>
+    </page>
 </pages>
