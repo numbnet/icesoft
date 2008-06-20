@@ -73,9 +73,9 @@ public class SeamSortHeaderModel extends SeamResizableColumnBean{
   
 
 	public SeamSortHeaderModel(){
-		/* need this for portlet version --otherwise already have LR conversation */
-		if (!Manager.instance().isLongRunningConversation())
-			Manager.instance().beginConversation();
+		/* don't need following 2 lines as begun conv in pages.xml for portlet version*/
+//		if (!Manager.instance().isLongRunningConversation())
+//			Manager.instance().beginConversation();
         setEjbql(EJBQL);
     	descending = true;
     	columnName = "lastName";
