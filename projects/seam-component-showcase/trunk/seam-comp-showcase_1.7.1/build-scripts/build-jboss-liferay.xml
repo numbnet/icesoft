@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="Seam Component Showcase - for Glassfish-liferay bundle" default="noejb.archive" basedir=".">
+<project name="Seam Component Showcase - forJboss-liferay bundle" default="noejb.archive" basedir=".">
 
     <!-- Naming -->
     <property name="Name"  value="Seam Component Showcase for Glassfish2-liferay"/>
@@ -14,16 +14,12 @@
     <import file="build-common.xml"/>
 
     <fileset id="noejb.war.lib.extras" dir="${basedir}">
-       	<!-- Hibernate and deps -->
-            <include name="lib/commons-beanutils.jar"/>
-         	<include name="lib/commons-logging.jar" />  
-        	<include name="lib/commons-collections.jar" />
-    		<include name="lib/jboss-common-core.jar"/>
-            <include name="lib/log4j.jar"/>
-            <exclude name="lib/mvel14.jar"/>
-            <exclude name="lib/jbpm-jpdl.jar"/>
-            <exclude name="lib/janino.jar"/>
-    	    <exclude name="lib/antlr.jar"/>
+        <include name="lib/commons-beanutils.jar"/>
+     	<include name="lib/commons-logging.jar" />  
+        <include name="lib/log4j.jar"/>
+        <exclude name="lib/mvel14.jar"/>
+        <exclude name="lib/jbpm-jpdl.jar"/>
+        <exclude name="lib/janino.jar"/>
     </fileset>
 	
 	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">
