@@ -211,6 +211,10 @@ Ice.MenuBarKeyNavigator.addMethods({
         return "iceMnuBar";
     }  
   },
+
+  getMenuItemClass: function() {
+     return "iceMnuItm";
+  },  
   
   hover: function(event) {
     if (this.isClicked(Event.element(event))) {
@@ -265,14 +269,18 @@ Ice.MenuBarKeyNavigator.addMethods({
   
   hideAll:function(event) {
       element = Event.element(event); 
-      var baritem = element.up('.'+ this.getMenuBarItemClass());
-      if (!(baritem && this.isClicked(element))) {
+      var menu = element.up('.'+ this.getRootClass());
+      var menuItem = element.up('.'+ this.getMenuItemClass());
+      if (!(menu && this.displayOnClick)) {
         Ice.Menu.hideAll();
-        if (this.displayOnClick) {       
-            this.setClickState(element, false);
-        }         
       }
-      this.hideAllDisplayOnClickMenus();
+      if(menuItem && this.displayOnClick) {
+        this.hideAllDisplayOnClickMenus();
+        Ice.Menu.hideAll();
+      }else if (!menu && this.displayOnClick) {
+        this.hideAllDisplayOnClickMenus();
+        
+      }
    },
    
    showMenu:function(event) {
@@ -307,6 +315,7 @@ Ice.MenuBarKeyNavigator.addMethods({
             clickState.value="true";
         } else {
             this.hideAllDisplayOnClickMenus();
+            clickState.value="false";
         }        
    },
    
