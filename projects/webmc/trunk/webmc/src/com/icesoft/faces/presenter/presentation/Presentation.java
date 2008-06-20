@@ -66,6 +66,7 @@ public class Presentation extends PresentationInfo {
 
     private int currentSlideNumber = DEFAULT_SLIDE_NUMBER;
     private int progress = -1;
+    private long lastFileProgressTime = 0L;
     private OnDemandRenderer renderer;
     private PresentationDocument document;
     private File parentFile;
@@ -723,7 +724,15 @@ public class Presentation extends PresentationInfo {
                 this.progress = file.getFileInfo().getPercent();
 
                 // Render so the user sees the new progress
-                requestOnDemandRender();
+                long now = System.currentTimeMillis();
+                if(  ( (now - lastFileProgressTime) >= 1000L ) ||
+                     this.progress == 0 ||
+                     this.progress == 100  )
+                {
+                    lastFileProgressTime = now;
+                    System.out.println("Requesting render for progress " + this.progress);
+                    requestOnDemandRender();
+                }
             }
         }
     }
