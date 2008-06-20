@@ -94,6 +94,10 @@ Glassfish/Liferay bundle (Liferay 4.4.2 & Glassfish V2 UR1  or liferay 5 & Glass
  * ant glassfishv2-liferay4.42
  * copy \dist\glassfish-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * make sure you have both the embedded Derby database as well as AS running
+ * KNOWN ISSUE (to be fixed with liferay-5.0.2 problem with liferay injector, so replace the web.xml that is     
+   generated from liferay deployment with the one in the resources-glasfish-liferay folder (on the Server/domains/
+   <domain-name>/autodeploy/seam-comp-showcase
+ * restart the server.  Something still not quite right with database access.  Will look later.
  * use URL:- http://localhost:8080/c/portal/login
  * sign in and create some pages and place some of the portlets on them.  
 

@@ -28,7 +28,7 @@
 	   <target name="jboss-portal"  description="Build seam-comp-showcase and deploy to jboss-portal-2.6.4">
 	     	<ant antfile="build-scripts/build-jboss-portal.xml"/>
 	   </target>
-	   <target name="glassfishv2-liferay4.4.2" description="build seam-comp-showcase to deploy to liferay-glassfish">
+	   <target name="glassfishv2-liferay" description="build seam-comp-showcase to deploy to liferay-glassfish">
                 <ant antfile="build-scripts/build-glassfish-liferay.xml"/>
        </target>
 	   <target name="jboss4.2.2-liferay5.0.1.RC" description="build seam-comp-showcase to deploy to liferay-jboss">
