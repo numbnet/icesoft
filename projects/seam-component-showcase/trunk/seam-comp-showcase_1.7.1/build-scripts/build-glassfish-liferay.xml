@@ -25,14 +25,14 @@
     	<include name="lib/hibernate-entitymanager.jar"/>
     	<include name="lib/hibernate-validator.jar"/>
     	<include name="lib/jboss-common-core.jar" />
-    	<include name="lib/cglib-nodep.jar"/>
+    	<include name="lib/cglib.jar"/>
     	<include name="lib/antlr.jar" />
         <include name="lib/asm.jar"/>
         <include name="lib/commons-beanutils.jar"/>
-     	<include name="lib/commons-logging.jar" />  
+   	    <include name="lib/commons-logging.jar" />    
     	<include name="lib/commons-collections.jar" />
 		<include name="lib/jboss-common-core.jar"/>
-        <include name="lib/log4j.jar"/>
+      <!--  <include name="lib/log4j.jar"/> -->
         <exclude name="lib/mvel14.jar"/>
         <exclude name="lib/jbpm-jpdl.jar"/>
         <exclude name="lib/janino.jar"/>
