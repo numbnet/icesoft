@@ -34,6 +34,7 @@
 package com.icesoft.faces.webapp.parser;
 
 import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.Rules;
 import org.xml.sax.Attributes;
 
 import javax.faces.context.ExternalContext;
@@ -64,6 +65,21 @@ public class JsfJspDigester extends Digester {
         // the html and core namespaces are dynamically loaded now. 
         // loadedNamespaces.add("http://java.sun.com/jsf/html");
         // loadedNamespaces.add("http://java.sun.com/jsf/core");
+    }
+
+    /**
+     * Return the <code>Rules</code> implementation object containing our
+     * rules collection and associated matching policy.  If none has been
+     * established, a default implementation will be created and returned.
+     */
+    public Rules getRules() {
+
+        if (this.rules == null) {
+            this.rules = new RulesBase();
+            this.rules.setDigester(this);
+        }
+        return (this.rules);
+
     }
 
     /**
