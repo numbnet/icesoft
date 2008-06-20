@@ -11,7 +11,6 @@
             <default-locale>en</default-locale>
             <supported-locale>en</supported-locale>
         </locale-config>
-   
       <view-handler>com.icesoft.faces.facelets.D2DSeamFaceletViewHandler</view-handler>
    </application>
 
