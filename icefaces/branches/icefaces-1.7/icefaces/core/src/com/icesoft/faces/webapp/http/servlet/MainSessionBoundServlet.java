@@ -11,7 +11,19 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.ServerProxy;
 import com.icesoft.faces.webapp.http.common.standard.OKHandler;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
-import com.icesoft.faces.webapp.http.core.*;
+import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
+import com.icesoft.faces.webapp.http.core.DisposeBeans;
+import com.icesoft.faces.webapp.http.core.DisposeViews;
+import com.icesoft.faces.webapp.http.core.MultiViewServer;
+import com.icesoft.faces.webapp.http.core.ReceivePing;
+import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
+import com.icesoft.faces.webapp.http.core.RequestVerifier;
+import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.faces.webapp.http.core.SendUpdates;
+import com.icesoft.faces.webapp.http.core.SingleViewServer;
+import com.icesoft.faces.webapp.http.core.UploadServer;
+import com.icesoft.faces.webapp.http.core.ViewBoundServer;
+import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
@@ -110,6 +122,8 @@ public class MainSessionBoundServlet implements PseudoServlet {
             public void run() {
                 //avoid running shutdown more than once
                 shutdown = NOOP;
+                //dispose session scoped beans
+                DisposeBeans.in(session);
                 //send 'session-expired' to all views
                 Iterator i = views.values().iterator();
                 while (i.hasNext()) {
@@ -120,8 +134,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
                 if (sessionMonitor.isExpired()) {
                     disposeViews.waitForViewsShutdown();
                 }
-                //dispose session scoped beans
-                DisposeBeans.in(session);
                 ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
                 //shutdown all contained servers
                 servlet.shutdown();
