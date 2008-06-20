@@ -1,14 +1,16 @@
-<project default="assemble-module">
+<project name="ahs" default="assemble-module">
 
+    <property file="../common.properties"/>
     <property file="build.properties"/>
-
+    <property name="build.dir" value="build" />
+    <property name="classes.dir" value="${build.dir}/classes"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
     </target>
 
 
-    <target name="compile">
+    <target name="compile" depends="clean">
 
         <mkdir dir="${classes.dir}"/>
 
@@ -35,7 +37,7 @@
 
         <jar destfile="${build.dir}/${configurator.archive.name}">
             <fileset dir="${classes.dir}"/>
-            <fileset file="${app.archive}"/>
+            <fileset file="${war.loc}/${war.name}"/>
             <metainf dir="meta">
                 <include name="**/*Configurator"/>
             </metainf>

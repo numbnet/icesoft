@@ -1,0 +1,68 @@
+<project default="gather">
+
+    <property file="common.properties"/>
+
+    <property name="build.dir" value="build"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="clean-all">
+        <delete dir="${build.dir}"/>
+        <ant dir="auctionMonitor" target="clean"/>
+        <ant dir="component-showcase" target="clean"/>
+        <ant dir="webmc" target="clean"/>
+        <ant dir="ahs" target="clean"/>
+    </target>
+
+    <target name="assemble-all" depends="clean">
+        <ant dir="auctionMonitor"/>
+        <ant dir="component-showcase"/>
+        <ant dir="webmc"/>
+        <ant dir="ahs"/>
+    </target>
+
+    <target name="gather" depends="assemble-all">
+        <mkdir dir="${build.dir}"/>
+        <copy todir="${build.dir}">
+            <fileset dir="ahs/build">
+                <include name="**/*.jar"/>
+                <exclude name="**/*configurator.jar"/>
+                <exclude name="**/*installer.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="auctionMonitor/build">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="component-showcase/build">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build.dir}">
+            <fileset dir="webmc/build">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+        <copy file="update-center.xml" todir="${build.dir}"/>
+    </target>
+
+    <target name="deploy" depends="gather">
+        <copy todir="${glassfish.doc.root}">
+            <fileset dir="${build.dir}">
+                <exclude name="**/*.zip"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="zip" depends="gather">
+        <zip destfile="${build.dir}/modules.zip">
+            <fileset dir="${build.dir}"/>
+        </zip>
+    </target>
+
+
+</project>

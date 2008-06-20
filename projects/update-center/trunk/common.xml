@@ -1,6 +1,6 @@
 <project default="assemble">
 
-    <property file="build.properties"/>
+    <property file="common.properties"/>
 
     <property name="build.dir" value="build"/>
     <property name="info.dir" value="${build.dir}/info"/>
@@ -17,7 +17,7 @@
 
     <target name="copy.module">
         <mkdir dir="${module.dir}"/>
-        <copy file="${module.app}" tofile="${module.dir}/${module.war}"/>
+        <copy file="${war.loc}/${war.name}" tofile="${module.dir}/${war.name}"/>
     </target>
 
     <target name="assemble" depends="clean, copy.info, copy.module">
