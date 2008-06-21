@@ -44,7 +44,9 @@
 
         on: function() {
             window.location.href = this.uri;
-        }
+        },
+
+        off: Function.NOOP
     });
 
     This.ElementIndicator = Object.subclass({
