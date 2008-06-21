@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<project name="seam-booking-enhanced" default="jboss" basedir=".">
+ 	
+  <target name="jboss"  description="Build icefaces-booking example and deploy to JBoss 4.2.x.GA">
+	     	<ant antfile="build-scripts/build-jboss.xml"/>
+	   </target>
+
+      <target name="jboss-portal"  description="Build seam-comp-showcase and deploy to jboss-portal-2.6.4">
+	     	<ant antfile="build-scripts/build-jboss-portal.xml"/>
+	   </target>
+	<target name="jboss4.2.2-liferay5.0.1.RC" description="build seam-comp-showcase to deploy to liferay-jboss">
+             <ant antfile="build-scripts/build-jboss-liferay.xml"/>
+      </target> 
+	   <target name="copy-libs" description="copy over libraries to project">
+	   	  <ant antfile="build-scripts/build-common.xml" target="freshen"/> 
+	   </target>
+	
+	   <target name="clean-all" description="Clean up all distributions">
+	      <ant antfile="build-scripts/build-jboss.xml" target="clean" />
+	   	<ant antfile="build-scripts/build-jboss-portal.xml" target="clean" /> 
+    	      <ant antfile="build-scripts/build-jboss-liferay.xml" target="clean" />	    		
+	   </target>
+	
+	
+	<!--build-all will build all variations of this application
+	    The jboss server is the most recently released GA jboss AS -->
+<!--	<target name="build-all" depends="jboss, glassfish, weblogic, tomcat6" description="Build seam-booking-enhanced for various application servers"/> -->
+ 
+</project>
