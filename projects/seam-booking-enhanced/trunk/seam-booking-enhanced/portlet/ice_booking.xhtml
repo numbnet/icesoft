@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+   <ice:outputDeclaration doctypeRoot="HTML"
+                           doctypePublic="-//W3C//DTD HTML 4.01 Transitional//EN"
+                           doctypeSystem="http://www.w3.org/TR/html4/transitional.dtd"/>
+
+     <ice:portlet styleClass="componentBoxPortlet">  
+        <ice:outputStyle href="/xmlhttp/css/rime/rime-portlet.css"/>
+        <ice:outputStyle href="/stylesheet/theme.css"/>
+           <ice:panelGroup style="float:left;">
+              <ice:outputConnectionStatus style="float:right;"/>
+              <ice:panelGroup id="seamBookingPortletPanelId" style="float:left;">
+                 <f:subview id="portalBookingSub">
+					    <!-- Login/Logout -->
+					 	<ice:panelGroup  id="loginInclude" styleClass="formBorderHighlight">
+									<ui:include src="home.xhtml" />
+						</ice:panelGroup>
+					    <!--  master detail of hotels -->
+					    <ice:panelGrid columns="2" rendered="#{identity.loggedIn}">
+					       <ice:panelGroup id="panelMain1" styleClass="formBorderHighlight">
+					          <ui:include src="main.xhtml"/>
+					       </ice:panelGroup>
+					       <ice:panelGroup id="panelMain2Detail" styleClass="formBorderHighlight" 
+					                rendered="#{hotelSearch.showDetails}">
+					          <ui:include src="hotelDetails.xhtml"/>
+					       </ice:panelGroup>
+					    </ice:panelGrid>
+					    <ice:panelGroup id="panelBottom"  
+					           rendered="#{identity.loggedIn}">
+					       <ui:include src="currentBookings.xhtml"/>
+					    </ice:panelGroup>
+					    	    
+        			    <ice:messages/>  
+                     
+                    </f:subview>
+              </ice:panelGroup>
+           </ice:panelGroup>
+
+           <ice:panelGroup style="margin-top:10px;text-align:center;">
+              <p>&#169; 2008 ICEsoft Technologies Inc. &#160; &#8226; &#160;
+              <a href="http://www.icefaces.org" target="_blank" >www.icefaces.org</a>     &#160; &#8226; &#160;
+              Toll Free: 1-877-263-3822 USA and Canada</p>
+           </ice:panelGroup>
+
+    </ice:portlet>
+</f:view>

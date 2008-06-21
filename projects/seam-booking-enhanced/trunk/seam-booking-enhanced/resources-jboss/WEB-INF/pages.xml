@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+
+       no-conversation-view-id="/main.xhtml"
+                 login-view-id="/home.xhtml">
+   
+   
+    <page view-id="/icebooking.xhtml">
+       <begin-conversation join="true"/>
+    </page>
+    <page view-id="*">
+    	<navigation from-action="#{identity.login}">
+    	    <redirect view-id="/icebooking.xhtml"/>
+    	</navigation>
+    
+        <navigation from-action="#{identity.logout}">
+            <redirect view-id="/icebooking.xhtml"/>
+        </navigation>
+
+        <navigation from-action="#{hotelBooking.cancel}">
+            <redirect view-id="/icebooking.xhtml"/>
+        </navigation>
+        
+    </page>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/icebooking.xhtml">
+            <message severity="warn">You must be logged in to use this feature</message>
+        </redirect>
+    </exception>
+
+</pages>

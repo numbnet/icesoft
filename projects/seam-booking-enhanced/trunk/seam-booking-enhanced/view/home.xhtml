@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  
+      xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ice="http://www.icesoft.com/icefaces/component"	  
+      xmlns:s="http://jboss.com/products/seam/taglib">
+<ice:form id="loginformIdHome">
+ 	<fieldset>
+      <ice:panelGrid columns="3" id="loginPanelGroupHome">
+    	  <ice:panelGroup  rendered="#{not identity.loggedIn}">
+				<h:outputLabel for="username">Login Name</h:outputLabel>
+				<h:inputText id="username" value="#{identity.username}" style="width: 165px;"/>
+				<div class="errors"><h:message for="username"/></div>
+    	  </ice:panelGroup>
+	      <ice:panelGroup  rendered="#{not identity.loggedIn}">
+				<h:outputLabel for="password">Password</h:outputLabel>
+				<h:inputSecret id="password" value="#{identity.password}" style="width: 165px;"/>	
+	      </ice:panelGroup>
+	      <div class="buttonBox">
+			    <ice:commandButton value="Logout" action="#{hotelSearch.logout}" rendered="#{identity.loggedIn}" />
+		        <ice:commandButton id="login" action="#{identity.login}" value="Account Login"
+				    styleClass="button"  rendered="#{not identity.loggedIn}"> 
+				 </ice:commandButton>
+          </div>
+	<!-- 		<div class="notes"><s:link id="register" view="/register.xhtml" value="Register New User"/></div> -->
+
+      </ice:panelGrid>
+   </fieldset>
+  </ice:form>
+</ui:composition>

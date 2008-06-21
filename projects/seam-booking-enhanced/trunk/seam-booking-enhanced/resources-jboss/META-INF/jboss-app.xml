@@ -1,0 +1,5 @@
+<jboss-app>
+     <loader-repository> 
+      seam.jboss.org:loader=seam-booking-enhanced
+   </loader-repository> 
+</jboss-app> 

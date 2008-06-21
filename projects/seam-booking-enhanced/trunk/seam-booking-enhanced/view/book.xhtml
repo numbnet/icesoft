@@ -1,0 +1,109 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+
+
+	<h1>Book Hotel</h1>
+
+	
+	
+	<div style="clear:both"/>
+
+	<ice:form id="booking">
+	<fieldset>
+			
+		<s:decorate id="checkinDateDecorate1" template="edit.xhtml">
+		   <ui:define name="label">Check In Date:</ui:define>
+	           <span class="calendar">
+                      <ice:selectInputDate id="checkinDate" value="#{hotelBooking.booking.checkinDate}" 
+                             renderAsPopup="true" partialSubmit="true" >
+                             <f:convertDateTime pattern="MM/dd/yyyy"/>
+                      </ice:selectInputDate>
+                   </span>
+		</s:decorate>		
+                
+		<br/>
+		<s:decorate id="checkoutDateDecorate2" template="edit.xhtml">
+		   <ui:define name="label">Check Out Date:</ui:define>
+		   <span class="calendar">
+                       <ice:selectInputDate id="checkoutDate" value="#{hotelBooking.booking.checkoutDate}" 
+                                   renderAsPopup="true" partialSubmit="true">
+                             <f:convertDateTime pattern="MM/dd/yyyy"/>
+                       </ice:selectInputDate>
+		   </span>
+		</s:decorate>
+				<br/>	
+		<s:decorate id="bedsDecorate" template="edit.xhtml">
+			<ui:define name="label">Room Preference:</ui:define>
+			<h:selectOneMenu id="beds" value="#{hotelBooking.booking.beds}">
+				<f:selectItem itemLabel="One king-size bed" itemValue="1"/>
+				<f:selectItem itemLabel="Two double beds" itemValue="2"/>
+				<f:selectItem itemLabel="Three beds" itemValue="3"/>
+			</h:selectOneMenu>
+		</s:decorate>
+		
+		<s:decorate id="smokingDecorate" template="edit.xhtml">
+			<ui:define name="label">Smoking Preference:</ui:define>
+               <ice:selectOneRadio id="smoking" value="#{hotelBooking.booking.smoking}" 
+                                 layout="pageDirection" styleClass="radio">
+				<f:selectItem itemLabel="Smoking" itemValue="true"/>
+				<f:selectItem itemLabel="Non Smoking" itemValue="false"/>
+              </ice:selectOneRadio>
+		</s:decorate>
+
+		<s:decorate id="creditCardDecorate" template="edit.xhtml">
+			<ui:define name="label">Credit Card #:</ui:define>
+                   <ice:inputText label="Credit Card #" id="creditCard" value="#{hotelBooking.booking.creditCard}" 
+                                           required="true" partialSubmit="true"/> 
+		</s:decorate>
+
+		<s:decorate id="creditCardNameDecorate" template="edit.xhtml">
+			<ui:define name="label">Credit Card Name:</ui:define>
+                  <ice:inputText label="Credit Card Name" id="creditCardName" value="#{hotelBooking.booking.creditCardName}" 
+                             partialSubmit="true" required="true"/>           
+		</s:decorate>
+
+		<s:decorate id="creditCardExpiryDecorate" template="edit.xhtml">
+			<ui:define name="label">Credit Card Expiry:</ui:define>
+               <ice:selectOneMenu id="creditCardExpiryMonth" value="#{hotelBooking.booking.creditCardExpiryMonth}">
+				<f:selectItem itemLabel="Jan" itemValue="1"/>
+				<f:selectItem itemLabel="Feb" itemValue="2"/>
+				<f:selectItem itemLabel="Mar" itemValue="3"/>
+				<f:selectItem itemLabel="Apr" itemValue="4"/>
+				<f:selectItem itemLabel="May" itemValue="5"/>
+				<f:selectItem itemLabel="Jun" itemValue="6"/>
+				<f:selectItem itemLabel="Jul" itemValue="7"/>
+				<f:selectItem itemLabel="Aug" itemValue="8"/>
+				<f:selectItem itemLabel="Sep" itemValue="9"/>
+				<f:selectItem itemLabel="Oct" itemValue="10"/>
+				<f:selectItem itemLabel="Nov" itemValue="11"/>
+				<f:selectItem itemLabel="Dec" itemValue="12"/>
+               </ice:selectOneMenu>
+               <ice:selectOneMenu id="creditCardExpiryYear" value="#{hotelBooking.booking.creditCardExpiryYear}">
+                                <f:selectItem itemLabel="2007" itemValue="2007"/>
+                                <f:selectItem itemLabel="2008" itemValue="2008"/>
+                                <f:selectItem itemLabel="2009" itemValue="2009"/>
+                                <f:selectItem itemLabel="2010" itemValue="2010"/>
+                                <f:selectItem itemLabel="2011" itemValue="2011"/>
+                </ice:selectOneMenu>
+		</s:decorate>
+		
+		<div class="buttonBox">
+		   <ice:panelGroup rendered="#{not hotelBooking.confirmVisible}">
+			 <ice:commandButton id="proceedButton" value="Proceed" action="#{hotelBooking.setBookingDetails}"/>
+			 &#160;
+			 <ice:commandButton id="cancelButton" 
+			                 value="Cancel" 
+			               immediate="true"
+			                action="#{hotelBooking.cancel}"/>
+		   </ice:panelGroup>
+		</div>
+		
+	</fieldset>
+	</ice:form>
+
+</ui:composition>

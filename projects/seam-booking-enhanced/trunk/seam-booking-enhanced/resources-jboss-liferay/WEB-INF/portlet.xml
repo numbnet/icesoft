@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http:/java.sun.com/xml/ns/-app_1_0.xsd"
+             version="1.0"
+             xmlns:xsi="http:/www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http:/java.sun.com/xml/ns/-app_1_0.xsd http:/java.sun.com/xml/ns/-app_1_0.xsd">
+
+    <!-- =================================================================== -->
+    <!-- ICEfaces: booking example                    -->
+    <!-- =================================================================== -->
+
+    <portlet>
+        <portlet-name>icefaces_booking</portlet-name>
+        <display-name>ICEfaces: Booking</display-name>
+        <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
+        <init-param>
+            <name>com.icesoft.faces.portlet.viewPageURL</name>
+            <value>/ice_booking.seam</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <portlet-info>
+            <title>ICEfaces: booking portlet example</title>
+            <short-title>seam-booking-enhanced</short-title>
+            <keywords>ICEfaces Booking Seam Portlet</keywords>
+        </portlet-info>
+    </portlet>
+
+ 
+</portlet-app>
