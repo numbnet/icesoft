@@ -90,8 +90,8 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             script.appendChild(domContext.createTextNode(
                     "'" + id + "'.asExtendedElement().findContainerFor('bridge').bridge.attachStatusManager(" +
                             "function(defaultStatusManager) {" +
-                            "return new Ice.Status.ComponentStatusManager('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', defaultStatusManager);" +
-                            "}, " + component.isShowPopupOnDisconnect() + ");"
+                            "return new Ice.Status.ComponentStatusManager('" + workingID + "', '" + idleID + "', '" + troubleID + "', '" + lostID + "', defaultStatusManager, " + component.isShowPopupOnDisconnect() + ");" +
+                            "});"
             ));
             root.appendChild(script);
         }
