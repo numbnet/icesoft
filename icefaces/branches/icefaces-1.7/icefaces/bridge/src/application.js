@@ -164,9 +164,9 @@
             });
 
             //public method used to modify bridge's status manager
-            this.attachStatusManager = function(setup, withDefault) {
+            this.attachStatusManager = function(setup) {
                 statusManager.off();
-                statusManager = setup(withDefault ? new Ice.Status.DefaultStatusManager(configuration, container) : null);
+                statusManager = setup(new Ice.Status.DefaultStatusManager(configuration, container));
                 logger.info("status indicators were updated");
             };
             //public field used in iceSubmit/iceSubmitPartial
