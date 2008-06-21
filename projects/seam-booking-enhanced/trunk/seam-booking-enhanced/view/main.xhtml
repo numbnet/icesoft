@@ -1,0 +1,76 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	    		xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:s="http://jboss.com/products/seam/taglib"
+                xmlns:ice="http://www.icesoft.com/icefaces/component" >
+
+  <div>
+    <h1>Search Hotels</h1>
+
+	<ice:form id="searchCriteria">
+	  <fieldset> 
+            <ice:selectInputText id="searchString" 
+                 valueChangeListener="#{hotelSearch.handleSearchStringChange}" 
+                 value="#{hotelSearch.searchString}"/>
+                 &#160;
+                 <ice:commandButton id="findHotels" value="Find Hotels" action="#{hotelSearch.find}" />
+                 &#160;
+        <!--     <ice:outputConnectionStatus activeLabel="requesting..." styleClass="connectionStatus"/><br/> -->
+ 
+            <h:outputLabel for="pageSize">Maximum results:</h:outputLabel>&#160;
+            <ice:selectOneMenu id="pageSize" 
+                 value="#{hotelSearch.pageSize}" 
+                 valueChangeListener="#{hotelSearch.handlePageSizeChange}"
+                 partialSubmit="true">
+                    <f:selectItem itemLabel="5" itemValue="5"/>
+                    <f:selectItem itemLabel="10" itemValue="10"/>
+                    <f:selectItem itemLabel="20" itemValue="20"/>
+            </ice:selectOneMenu>
+      </fieldset>
+    </ice:form>
+    
+</div>
+<ice:form>
+ <ice:panelGroup id="searchResults">
+  <ice:panelGroup  style="float: left">
+	<h:outputText value="No Hotels Found" rendered="#{hotels != null and empty hotels}"/>
+    <ice:outputText value="Search Results"/>
+     <ice:dataTable id="hotels" value="#{hotels}" 
+                               var="hot" rendered="#{not empty hotels}"
+                               columnWidths="140,100,100,50,50">
+                <ice:column>
+                 <ice:rowSelector id="selectedHotelValueId"
+                          value="#{hotel.selected}"
+                          selectionListener="#{hotelSearch.rowSelection}"/>  
+                    <f:facet name="header">Name</f:facet>
+                    <ice:outputText value="#{hot.name}" />
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">Address</f:facet>
+                    <ice:outputText value="#{hot.address}" />
+                </ice:column>
+                <ice:column>
+                    <f:facet name="header">City, State</f:facet>
+                    <ice:outputText value="#{hot.city}, #{hot.state}, #{hot.country}" />
+                </ice:column> 
+                <ice:column>
+                    <f:facet name="header">Zip</f:facet>
+                    <ice:outputText value="#{hot.zip}" />
+                </ice:column>
+         <!--        <ice:column>
+                    <f:facet name="header">Book</f:facet>
+                    <s:link id="bookHotelFromMain" value="Book Hotel" action="#{hotelBooking.selectHotel(hot)}"/>                
+                </ice:column> -->
+            </ice:dataTable>
+          <ice:commandLink value="More results" action="#{hotelSearch.nextPage}" rendered="#{hotelSearch.nextPageAvailable}"/>   
+    </ice:panelGroup>
+  </ice:panelGroup>
+
+</ice:form>
+
+
+
+
+</ui:composition>

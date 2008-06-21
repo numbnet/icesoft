@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<project name="seam booking enhanced - forjboss-liferay bundle" default="noejb.archive" basedir=".">
+
+    <!-- Naming -->
+    <property name="Name"  value="seam-booking for liferay and jboss"/>
+
+    <!-- resources -->
+    <property name="resources.dir" value="resources-jboss-liferay" />
+	<property name="dist.dir" value="dist-jboss-liferay" />
+	<property name="exploded-archives.dir" value="exploded-archives-jboss-liferay" />
+	<property name="portal.build" value="true"/>
+	
+    <import file="build-common.xml"/>
+
+    <fileset id="noejb.war.lib.extras" dir="${basedir}">
+            <include name="lib/commons-beanutils.jar"/>
+         	<include name="lib/commons-logging.jar" />  
+        	<include name="lib/commons-collections.jar" />
+            <include name="lib/log4j.jar"/>
+            <exclude name="lib/mvel14.jar"/>
+            <exclude name="lib/jbpm-jpdl.jar"/>
+            <exclude name="lib/janino.jar"/>
+    </fileset>
+	
+	<fileset id="jboss.archive.jar" dir="${lib.dir}">
+	    <include name="lib/jboss-archive.jar"/>
+	</fileset>
+	
+    <fileset id="noejb.war.extras" dir="${resources.dir}">
+	  <include name="WEB-INF/classes/**/*" />
+    </fileset>
+     
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
+		<include name="lib/commons-collections.jar"/>
+	</fileset>
+</project>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<project name="seam-booking-enhanced-jboss-portal" default="deploy"  basedir=".">
+
+    <!-- Naming -->
+    <property name="Name"    value="Seam single page booking WAR deployment for jboss portal"/>
+
+    <!-- resources -->
+    <property name="resources.dir" value="resources-jboss-portal" />
+	<property name="dist.dir" value="dist-jboss-portal" />
+	<property name="exploded-archives.dir" value="exploded-archives-jboss-portal" /> 
+	<property name="portal.build" value="true"/>
+	
+    <import file="build-common.xml"/>
+
+  
+</project>
+

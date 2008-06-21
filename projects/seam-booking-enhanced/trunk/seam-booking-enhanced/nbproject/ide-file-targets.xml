@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir=".." name="seam-booking-enhanced-IDE">
+    
+  <property file="nbproject/debug-jboss.properties"/>
+
+  <target name="debug-nb">
+    <nbjpdaconnect name="seam-booking-enhanced" host="${jpda.host}" address="${jpda.address}" transport="${jpda.transport}">
+      <!--classpath>
+        <path path="exploded-archives/seam-booking-enhanced.jar"/>
+      </classpath>
+      <sourcepath>
+        <path path="src"/>
+      </sourcepath-->
+    </nbjpdaconnect>
+  </target>
+</project>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<deployments>
+	<deployment>
+		<instance>
+			<instance-id>ice_bookingInstance</instance-id>
+			<portlet-ref>icefaces_booking</portlet-ref>
+		</instance>
+	</deployment>
+</deployments>

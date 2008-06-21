@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployments>
+  <deployment>
+    <parent-ref>default</parent-ref>
+    <if-exists>overwrite</if-exists>
+    <page>
+  	 <page-name>icefacesBooking</page-name>
+      <window>
+         <window-name>icefacesBookingWindow</window-name>
+         <instance-ref>ice_bookingInstance</instance-ref>
+         <region>center</region>
+         <height>0</height>
+      </window>
+    </page>
+  </deployment>
+</deployments>
