@@ -199,15 +199,16 @@
     This.DefaultStatusManager = Object.subclass({
         initialize: function(configuration, container) {
             this.container = container;
-            this.connectionLostRedirect = configuration.redirectURI ? new This.RedirectIndicator(configuration.redirectURI) : null;
+            this.connectionLostRedirect = configuration.connectionLostRedirectURI ? new This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
+            this.sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? new This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
             var description = 'To reconnect click the Reload button on the browser or click the button below';
             var sessionExpiredIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_disconnected.gif';
             var connectionLostIcon = configuration.connection.context + '/xmlhttp/css/xp/css-images/connect_caution.gif';
 
             this.busy = new This.PointerIndicator(container);
-            this.sessionExpired = new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
-            this.serverError = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
+            this.sessionExpired = this.sessionExpiredRedirect ? this.sessionExpiredRedirect : new This.OverlayIndicator('User Session Expired', description, sessionExpiredIcon, this)
             this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new This.OverlayIndicator('Network Connection Interrupted', description, connectionLostIcon, this);
+            this.serverError = new This.OverlayIndicator('Server Internal Error', description, connectionLostIcon, this)
             this.connectionTrouble = { on: Function.NOOP, off: Function.NOOP };
         },
 
@@ -244,25 +245,23 @@
     });
 
     This.ComponentStatusManager = Object.subclass({
-        initialize: function(workingID, idleID, troubleID, lostID, dsm) {
+        initialize: function(workingID, idleID, troubleID, lostID, defaultStatusManager, useDefaultStatusManager) {
             var indicators = [];
             var connectionWorking = new Ice.Status.ElementIndicator(workingID, indicators);
             var connectionIdle = new Ice.Status.ElementIndicator(idleID, indicators);
-            var lostIndicator = new Ice.Status.ElementIndicator(lostID, indicators);
+            var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
 
             this.busy = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
             this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);
-            //dsm == default status manager
-            if (dsm) {
-                this.dsm = dsm;
-                this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : new Ice.Status.MuxIndicator(lostIndicator, this.dsm.connectionLost);
-                this.sessionExpired = new Ice.Status.MuxIndicator(this.connectionLost, this.dsm.sessionExpired);
-                this.serverError = new Ice.Status.MuxIndicator(this.connectionLost, this.dsm.serverError);
+            if (useDefaultStatusManager) {
+                this.dsm = defaultStatusManager;
+                this.connectionLost = new Ice.Status.MuxIndicator(connectionLost, this.dsm.connectionLost);
+                this.sessionExpired = new Ice.Status.MuxIndicator(connectionLost, this.dsm.sessionExpired);
+                this.serverError = new Ice.Status.MuxIndicator(connectionLost, this.dsm.serverError);
             } else {
-                this.dsm = { on: Function.NOOP, off: Function.NOOP };
-                this.connectionLost = this.connectionLostRedirect ? this.connectionLostRedirect : lostIndicator;
-                this.sessionExpired = this.connectionLost;
-                this.serverError = this.connectionLost;
+                this.connectionLost = defaultStatusManager.connectionLostRedirect ? defaultStatusManager.connectionLostRedirect : connectionLost;
+                this.sessionExpired = defaultStatusManager.sessionExpiredRedirect ? defaultStatusManager.sessionExpiredRedirect : connectionLost;
+                this.serverError = connectionLost;
             }
         },
 

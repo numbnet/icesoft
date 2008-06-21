@@ -42,7 +42,12 @@ import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.faces.FacesException;
 import javax.faces.application.ViewHandler;
@@ -57,7 +62,12 @@ import java.beans.Beans;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -314,6 +324,12 @@ public class DOMResponseWriter extends ResponseWriter {
         } catch (ConfigurationException e) {
             connectionLostRedirectURI = "null";
         }
+        String sessionExpiredRedirectURI;
+        try {
+            sessionExpiredRedirectURI = "'" + configuration.getAttribute("sessionExpiredRedirectURI").replaceAll("'", "") + "'";
+        } catch (ConfigurationException e) {
+            sessionExpiredRedirectURI = "null";
+        }
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
@@ -323,7 +339,8 @@ public class DOMResponseWriter extends ResponseWriter {
                         "session: '" + sessionIdentifier + "'," +
                         "view: " + viewIdentifier + "," +
                         "synchronous: " + configuration.getAttribute("synchronousUpdate", "false") + "," +
-                        "redirectURI: " + connectionLostRedirectURI + "," +
+                        "connectionLostRedirectURI: " + connectionLostRedirectURI + "," +
+                        "sessionExpiredRedirectURI: " + sessionExpiredRedirectURI + "," +
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
