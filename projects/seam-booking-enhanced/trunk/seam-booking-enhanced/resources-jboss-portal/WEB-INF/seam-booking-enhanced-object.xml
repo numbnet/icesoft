@@ -4,7 +4,7 @@
     <parent-ref>default</parent-ref>
     <if-exists>overwrite</if-exists>
     <page>
-  	 <page-name>icefacesBooking</page-name>
+  	 <page-name>iceSeamBooking</page-name>
       <window>
          <window-name>icefacesBookingWindow</window-name>
          <instance-ref>ice_bookingInstance</instance-ref>
