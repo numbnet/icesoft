@@ -92,7 +92,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
     private HtmlInputText chatMessageField = null;
     private boolean moderatorDialog = false;
     private boolean confirmDialog = false;
-    private boolean uploadDialog = false;
+    private boolean uploadDialog = true;
     private boolean slideTypePres = true;
     private boolean mobile = false;
     private boolean mobileSniffed = false;
@@ -493,6 +493,7 @@ public class Participant extends ParticipantInfo implements Renderable, Disposab
         if (isModerator()) {
             presentation = presentationManager
                     .createPresentation(this, loginBean.getPresentationName());
+            uploadDialog = true;
         } else {
             presentation = presentationManager
                     .getPresentation(loginBean.getPresentationName());
