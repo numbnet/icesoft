@@ -52,7 +52,7 @@
 
         <module codenamebase="org.icefaces.module.componentShowcase"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_componentShowcase_1_7_1.jar"
+                distribution="http://localhost:8080/icefaces_component-showcase_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="6367306"
                 needsrestart="false"

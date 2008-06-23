@@ -3,7 +3,6 @@ package org.icefaces.module.ahs.configurator;
 import com.sun.appserv.addons.AddonException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -14,19 +13,26 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * This class represents the domain.xml file that we need to modify for AHS to be operational.  Basically we need
+ * to add 2 JMS topics, a ConnectionFactory (if one does not yet exist), a connection pool (if one does not exist),
+ * and Comet support on the HTTP listener on port 8080 (if it's not already active).
+ * <p/>
+ * There are a number of things to do to improve this:
+ * <p/>
+ * - make some of the settings configurable via properties rather than hard-coded
+ * - use XPath rather than straight DOM functions for locating elements
+ * - general robustness improvements
+ * - better encapsulation of data structures (e.g. classes for configuration nodes)
+ */
 public class DomainConfig {
 
-    public static final String LISTENER_TAG = "http-listener";
-    public static final String LISTENER_ATTR_NAME = "port";
-    public static final String LISTENER_ATTR_VALUE = "8080";
-
-    public static final String PROPERTY_TAG = "property";
-    public static final String COMET_NAME = "cometSupport";
-    public static final String COMET_VALUE = "true";
+    private static Logger log = Logger.getLogger(DomainConfig.class.getPackage().getName());
 
     public static final String[] TOPICS = {"icefacesContextEventTopic", "icefacesResponseTopic"};
-
 
     private File domainConfigFile;
     private Document document;
@@ -40,115 +46,175 @@ public class DomainConfig {
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
             document = builder.parse(domainConfigFile);
         } catch (ParserConfigurationException e) {
-            throw new AddonException("can not parse domain.xml: " + e, e);
+            String msg = "can not parse domain.xml";
+            log.log(Level.SEVERE, msg, e);
+            throw new AddonException(msg, e);
         } catch (SAXException e) {
-            throw new AddonException("can not parse domain.xml: " + e, e);
+            String msg = "can not parse domain.xml";
+            log.log(Level.SEVERE, msg, e);
+            throw new AddonException(msg, e);
         } catch (IOException e) {
-            throw new AddonException("can not parse domain.xml: " + e, e);
+            String msg = "can not parse domain.xml";
+            log.log(Level.SEVERE, msg, e);
+            throw new AddonException(msg, e);
         }
     }
+
 
     public Document getDocument() {
         return this.document;
     }
 
+
     public void addCometSetting() throws AddonException {
 
-        //Not sure why this doesn't work.  Should probably start using XPath
-//        Element listenerElement = doc.getElementById(listenerId);
-
-        Element listenerElement = getListenerElement(LISTENER_ATTR_VALUE);
-        if (listenerElement == null) {
-            throw new AddonException("could not find " + LISTENER_TAG + " with " +
-                    LISTENER_ATTR_NAME + " = " + LISTENER_ATTR_VALUE);
-        }
-
-        if (!isCometEnabled(listenerElement)) {
-            Element cometProperty = document.createElement(PROPERTY_TAG);
-            cometProperty.setAttribute("name", COMET_NAME);
-            cometProperty.setAttribute("value", COMET_VALUE);
-            listenerElement.appendChild(cometProperty);
-        }
-    }
-
-    public Element getListenerElement(String listenerPort) {
-
-        //TODO:  This is fragile as the id of the listener could change or perhaps comet support
+        //TODO:  This is a bit fragile as the id of the listener could change or perhaps comet support
         //should be added to a different (or more than one) http-listener.  Should update this to be
         //more robust and flexible (e.g. accept configurable properties).
-        NodeList listenerList = document.getElementsByTagName(LISTENER_TAG);
-        Element listenerElement = null;
-        for (int index = 0; index < listenerList.getLength(); index++) {
-            Element listener = (Element) listenerList.item(index);
-            String port = listener.getAttribute(LISTENER_ATTR_NAME);
-            if (port != null && port.equalsIgnoreCase(listenerPort)) {
-                listenerElement = listener;
-                break;
-            }
-        }
-        return listenerElement;
-    }
 
-    private boolean isCometEnabled(Element listenerElement) {
-        NodeList listenerKids = listenerElement.getElementsByTagName(PROPERTY_TAG);
-        for (int index = 0; index < listenerKids.getLength(); index++) {
-            Node kidNode = listenerKids.item(index);
-            Element kid = (Element) listenerKids.item(index);
-            if (kid.getTagName().equalsIgnoreCase(PROPERTY_TAG)) {
-                String attrName = kid.getAttribute("name");
-                if (attrName != null && attrName.equalsIgnoreCase(COMET_NAME)) {
-                    return true;
-                }
-            }
+        Element listenerElement = findElementWithAttribute("http-listener", "port", "8080");
+        if (listenerElement == null) {
+            String msg = "could not find " + "http-listener" + " with " + "port" + " = " + "8080";
+            log.log(Level.WARNING, msg);
+            throw new AddonException(msg);
         }
 
-        return false;
+        Element cometElement = findElementWithAttribute(listenerElement, "property", "name", "cometSupport");
+        if (cometElement == null) {
+            Element cometProperty = document.createElement("property");
+            cometProperty.setAttribute("name", "cometSupport");
+            cometProperty.setAttribute("value", "true");
+            listenerElement.appendChild(cometProperty);
+            log.log(Level.FINEST, "comet support added");
+        } else {
+            String cometSupportValue = cometElement.getAttribute("value");
+            if (cometSupportValue == null || !cometSupportValue.equalsIgnoreCase("true")) {
+                cometElement.setAttribute("value", "true");
+                log.log(Level.FINEST, "comet support turned on");
+            }
+        }
     }
+
 
     public void addJMSTopics() throws AddonException {
 
-        //We are make the assumption that if we can find a single valid topic entry, then the whole configuration is
-        //valid.  This might need to change in the future so that we check all the required entries.
-        if (areTopicsEnabled()) {
-            return;
-        }
-
-        //If there are no valid topics, we add all the necessary configuration elements.
-
-        //Get the resources Node (there should be just one)
-        NodeList resources = document.getElementsByTagName("resources");
-        if (resources.getLength() != 1) {
-            throw new AddonException("too many resources nodes");
-        }
-
-        Element elemResources = (Element) resources.item(0);
+        //Add topics and connection entries to <resources> section as necessary
+        Element resources = getSingleElement("resources");
         for (String theTopic : TOPICS) {
-            elemResources.appendChild(createTopicResource(theTopic));
+            addElementIfNecessary(resources, "admin-object-resource", "jndi-name", theTopic, createTopicResource(theTopic));
         }
+        addElementIfNecessary(resources, "connector-resource", "jndi-name", "ConnectionFactory", createConnectorResource());
+        addElementIfNecessary(resources, "connector-connection-pool", "name", "ConnectionFactory", createConnectorConnectionPool());
 
-        elemResources.appendChild(createConnectorResource());
-        elemResources.appendChild(createConnectorConnectionPool());
-
-        NodeList servers = document.getElementsByTagName("server");
-        if (servers.getLength() != 1) {
-            throw new AddonException("too many server nodes");
-        }
-
-        Element server = (Element) servers.item(0);
-        server.appendChild(createResourceRef("ConnectionFactory"));
+        //Add topics and connection entries to <server> section as necessary.  The assumption here is that there
+        //is a single <servers> section with a single <server> child.
+        Element servers = getSingleElement("servers");
+        Element server = getSingleElement(servers,"server");
         for (String theTopic : TOPICS) {
-            server.appendChild(createResourceRef(theTopic));
+            addElementIfNecessary(server, "resource-ref", "ref", theTopic, createResourceRef(theTopic));
         }
+        addElementIfNecessary(server, "resource-ref", "ref", "ConnectionFactory", createResourceRef("ConnectionFactory"));
     }
 
-    private Element createResourceRef(String ref) {
 
+    public void removeJMSTopics() throws AddonException {
+
+        //We only remove the entries related to the ICEfaces specific topics, not the ConnectionFactory or the
+        //connection pool as they may be used by other, non-ICEfaces, JMS topics.
+
+        //Remove topics from <resources> section if possible
+        Element resources = getSingleElement("resources");
+        for (String theTopic : TOPICS) {
+            removeElementIfPossible(resources, "admin-object-resource", "jndi-name", theTopic);
+        }
+
+        //Remove topics from <server> section if possible
+        Element servers = getSingleElement("servers");
+        Element server = getSingleElement(servers,"server");
+        for (String theTopic : TOPICS) {
+            removeElementIfPossible(server, "resource-ref", "ref", theTopic);
+        }
+
+    }
+
+    private Element findElementWithAttribute(String searchTagName, String searchAttributeName, String searchAttributeValue) {
+        return findElementWithAttribute(document.getDocumentElement(), searchTagName, searchAttributeName, searchAttributeValue);
+    }
+
+    private Element findElementWithAttribute(Element parent, String searchTagName, String searchAttributeName, String searchAttributeValue) {
+
+        NodeList elementList = parent.getElementsByTagName(searchTagName);
+        for (int index = 0; index < elementList.getLength(); index++) {
+            Element result = (Element) elementList.item(index);
+            String attr = result.getAttribute(searchAttributeName);
+            if (attr != null && attr.equalsIgnoreCase(searchAttributeValue)) {
+                log.log(Level.FINEST, "found <" + searchTagName + "> that has attribute '" + searchAttributeName + "'");
+                return result;
+            }
+        }
+        log.log(Level.FINEST, "could not find <" + searchTagName + "> that has attribute '" + searchAttributeName + "'");
+        return null;
+    }
+
+    private Element getSingleElement(Element parent, String tagName) throws AddonException {
+        NodeList resources = parent.getElementsByTagName(tagName);
+        if (resources.getLength() != 1) {
+            String msg = "could not find a single node for " + tagName;
+            log.log(Level.WARNING, msg);
+            throw new AddonException(msg);
+        }
+
+        return (Element) resources.item(0);
+    }
+
+    private Element getSingleElement(String tagName) throws AddonException {
+        return getSingleElement(document.getDocumentElement(),tagName);
+    }
+
+    private void addElementIfNecessary(Element parent, String tagName, String attrName, String attrValue, Element child) {
+        String msg = "added";
+        Element el = findElementWithAttribute(parent, tagName, attrName, attrValue);
+        if (el == null) {
+            parent.appendChild(child);
+        } else {
+            msg = "did not add (already exists)";
+        }
+        log.log(Level.FINEST, msg +
+                "\n  parent         : " + parent.getTagName() +
+                "\n  child          : " + child.getTagName() +
+                "\n  tag            : " + tagName +
+                "\n  attribute name : " + attrName +
+                "\n  attribute value: " + attrValue
+        );
+
+    }
+
+    private void removeElementIfPossible(Element parent, String tagName, String attrName, String attrValue) {
+        String msg = "removed";
+        Element child = findElementWithAttribute(parent, tagName, attrName, attrValue);
+        if (child != null) {
+            parent.removeChild(child);
+        } else {
+            msg = "did not remove (already gone)";
+        }
+        log.log(Level.FINEST, msg +
+                "\n  parent         : " + parent.getTagName() +
+                "\n  child          : " + child +
+                "\n  tag            : " + tagName +
+                "\n  attribute name : " + attrName +
+                "\n  attribute value: " + attrValue
+        );
+
+    }
+
+
+    private Element createResourceRef(String ref) {
         Element resourceRef = document.createElement("resource-ref");
         resourceRef.setAttribute("enabled", "true");
         resourceRef.setAttribute("ref", ref);
-
         return resourceRef;
     }
+
 
     private Element createConnectorConnectionPool() {
         Element pool = document.createElement("connector-connection-pool");
@@ -196,41 +262,13 @@ public class DomainConfig {
         adminObjectResource.setAttribute("res-adapter", "jmsra");
         adminObjectResource.setAttribute("res-type", "javax.jms.Topic");
 
-        Element prop = document.createElement(PROPERTY_TAG);
+        Element prop = document.createElement("property");
         prop.setAttribute("name", "Name");
         prop.setAttribute("value", topic);
 
         adminObjectResource.appendChild(prop);
 
         return adminObjectResource;
-    }
-
-    public boolean areTopicsEnabled() {
-        //If any admin-object-resource is a valid ICEfaces AHS topic, then we assume
-        //the whole configuration is valid.
-        NodeList items = document.getElementsByTagName("admin-object-resource");
-
-        for (int index = 0; index < items.getLength(); index++) {
-            Element elem = (Element) items.item(index);
-            String attrJNDIName = elem.getAttribute("jndi-name");
-            if (attrJNDIName != null && isICEfacesTopic(attrJNDIName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isICEfacesTopic(String topicName) {
-        if (topicName == null) {
-            return false;
-        }
-        for (String topic : TOPICS) {
-            if (topicName.equals(topic)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void save() throws FileNotFoundException, TransformerException {
