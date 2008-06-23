@@ -36,7 +36,7 @@
 
 <!-- File Upload Dialog -->
 <ice:panelPopup id="fileUploadPopup"
-                rendered="#{!participant.mobile}"
+                rendered="#{!participant.mobile and participant.moderator}"
                 visible="#{participant.uploadDialog}" 
                 modal="false"
                 styleClass="fileUploadPopup">
