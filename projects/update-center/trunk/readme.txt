@@ -39,10 +39,10 @@ To build AHS, Auction Monitor, and Component Showcase (assuming that you've made
 cd ./ahs
 ant clean build.servlet.glassfish.war
 
-cd ../auctionMonitor
+cd ./samples/auctionMonitor
 ant clean -Dahs="true" glassfishv2
 
-cd ../component-showcase/facelets
+cd ./samples/component-showcase/facelets
 ant clean -Dahs="true" glassfishv2
 
 To build WebMC takes a bit more work.  It isn't in the normal sample area so you to build it out of the projects directory.  In it's build.properties, you can point at the same "common build" file that you edited above.  You just need to point it (e.g. modify the build.properties) at the common build dir of your "release" build.
@@ -53,13 +53,13 @@ ant clean -Dahs="true" glassfishv2
 
 2) Build Update Center modules (ossrepo/projects/update-center/trunk/)
 
-The Update Center module has a top-level build file that assemble and gather everything that you need together. First, modify the common.properties file and change the icefaces.root property points at your 1.7.1 tag directory.  It may work as is depending on how your working copy of the repository is set up.
+The Update Center module has a top-level build file that assemble and gather everything that you need together. First, modify the common.properties file and change the icefaces.root property points at your 1.7.1 tag directory.
 
-icefaces.root=../../../icefaces/tags/icefaces-1.7.1/icefaces
+icefaces.root=<yourpath>/icefaces/tags/icefaces-1.7.1/icefaces
 
-You may also need to change:
+You also need to change:
 
-war.loc.webmc=../../webmc/trunk/webmc/dist
+war.loc.webmc=<yourpath>/webmc/trunk/webmc/dist
 
 Then, from the trunk directory, just type:
 
