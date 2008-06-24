@@ -66,7 +66,7 @@ public class InstallerImpl implements Installer {
          not properly run the lifecycle and call Configurator.unconfigure.
 
          */
-    
+
         File unconfigureDir = locs.getConfiguratorDeleteDir();
         if (!unconfigureDir.exists()) {
             if (!unconfigureDir.mkdir()) {

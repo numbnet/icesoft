@@ -4,8 +4,6 @@ import com.sun.appserv.addons.*;
 import org.icefaces.module.ahs.util.FileUtils;
 
 import java.io.File;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class ConfiguratorImpl implements Configurator {
 

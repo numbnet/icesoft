@@ -3,6 +3,13 @@
     <property file="common.properties"/>
 
     <property name="build.dir" value="build"/>
+    <property name="modules.dir" value="${build.dir}/modules"/>
+    <property name="modules.ver" value="${module.ver.major}_${module.ver.minor}_${module.ver.patch}"/>
+
+    <property name="module.ahs.dir" value="${modules.dir}/ahs/${modules.ver}"/>
+    <property name="module.auctionMonitor.dir" value="${modules.dir}/auctionMonitor/${modules.ver}"/>
+    <property name="module.component-showcase.dir" value="${modules.dir}/component-showcase/${modules.ver}"/>
+    <property name="module.webmc.dir" value="${modules.dir}/webmc/${modules.ver}"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -25,29 +32,55 @@
 
     <target name="gather" depends="assemble-all">
         <mkdir dir="${build.dir}"/>
-        <copy todir="${build.dir}">
+        <copy file="update-center.xml" todir="${build.dir}"/>
+
+        <mkdir dir="${modules.dir}/resources"/>
+        <copy todir="${modules.dir}/resources">
+            <fileset dir="resources"/>
+        </copy>
+
+        <mkdir dir="${module.ahs.dir}"/>
+        <copy todir="${module.ahs.dir}">
             <fileset dir="ahs/build">
                 <include name="**/*.jar"/>
                 <exclude name="**/*configurator.jar"/>
                 <exclude name="**/*installer.jar"/>
             </fileset>
+            <fileset dir="ahs/web">
+                <include name="**/*.html"/>
+            </fileset>
         </copy>
-        <copy todir="${build.dir}">
+
+        <mkdir dir="${module.auctionMonitor.dir}"/>
+        <copy todir="${module.auctionMonitor.dir}">
             <fileset dir="auctionMonitor/build">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="auctionMonitor/web">
+                <include name="**/*.html"/>
+            </fileset>
         </copy>
-        <copy todir="${build.dir}">
+
+        <mkdir dir="${module.component-showcase.dir}"/>
+        <copy todir="${module.component-showcase.dir}">
             <fileset dir="component-showcase/build">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="component-showcase/web">
+                <include name="**/*.html"/>
+            </fileset>
         </copy>
-        <copy todir="${build.dir}">
+
+        <mkdir dir="${module.webmc.dir}"/>
+        <copy todir="${module.webmc.dir}">
             <fileset dir="webmc/build">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="webmc/web">
+                <include name="**/*.html"/>
+            </fileset>
         </copy>
-        <copy file="update-center.xml" todir="${build.dir}"/>
+
     </target>
 
     <target name="deploy" depends="gather">
