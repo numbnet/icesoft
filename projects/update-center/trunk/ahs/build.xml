@@ -2,7 +2,7 @@
 
     <property file="../common.properties"/>
     <property file="build.properties"/>
-    <property name="build.dir" value="build" />
+    <property name="build.dir" value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
 
     <target name="clean">

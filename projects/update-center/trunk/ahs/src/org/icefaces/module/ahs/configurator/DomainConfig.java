@@ -109,7 +109,7 @@ public class DomainConfig {
         //Add topics and connection entries to <server> section as necessary.  The assumption here is that there
         //is a single <servers> section with a single <server> child.
         Element servers = getSingleElement("servers");
-        Element server = getSingleElement(servers,"server");
+        Element server = getSingleElement(servers, "server");
         for (String theTopic : TOPICS) {
             addElementIfNecessary(server, "resource-ref", "ref", theTopic, createResourceRef(theTopic));
         }
@@ -130,7 +130,7 @@ public class DomainConfig {
 
         //Remove topics from <server> section if possible
         Element servers = getSingleElement("servers");
-        Element server = getSingleElement(servers,"server");
+        Element server = getSingleElement(servers, "server");
         for (String theTopic : TOPICS) {
             removeElementIfPossible(server, "resource-ref", "ref", theTopic);
         }
@@ -168,7 +168,7 @@ public class DomainConfig {
     }
 
     private Element getSingleElement(String tagName) throws AddonException {
-        return getSingleElement(document.getDocumentElement(),tagName);
+        return getSingleElement(document.getDocumentElement(), tagName);
     }
 
     private void addElementIfNecessary(Element parent, String tagName, String attrName, String attrValue, Element child) {

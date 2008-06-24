@@ -6,7 +6,7 @@
 
         <module codenamebase="org.icefaces.module.ahs"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_ahs_1_7_1.jar"
+                distribution="http://localhost:8080/modules/ahs/1_7_1/icefaces_ahs_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="4612867"
                 needsrestart="true"
@@ -16,9 +16,9 @@
             <manifest OpenIDE-Module="org.icefaces.module.ahs"
                       OpenIDE-Module-Display-Category="ICEfaces"
                       OpenIDE-Module-Implementation-Version="20080617"
-                      OpenIDE-Module-Long-Description="Asynchronous HTTP Server/Servlet (AHS) supports scaling of ICEfaces applications that use Ajax Push by using non-blocking IO and JMS for blocking requests"
+                      OpenIDE-Module-Long-Description="ICEfaces Ajax Push server supports scaling of ICEfaces applications that use Ajax Push by using non-blocking IO and JMS for blocking requests"
                       OpenIDE-Module-Module-Dependencies=""
-                      OpenIDE-Module-Name="Asynchronous HTTP Server/Servlet"
+                      OpenIDE-Module-Name="ICEfaces Ajax Push Server"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="Asynchronous HTTP Server/Servlet"
                       OpenIDE-Module-Specification-Version="1.7.1"
@@ -29,7 +29,7 @@
 
         <module codenamebase="org.icefaces.module.auctionMonitor"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_auctionMonitor_1_7_1.jar"
+                distribution="http://localhost:8080/modules/auctionMonitor/1_7_1/icefaces_auctionMonitor_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="4294288"
                 needsrestart="false"
@@ -52,7 +52,7 @@
 
         <module codenamebase="org.icefaces.module.componentShowcase"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_component-showcase_1_7_1.jar"
+                distribution="http://localhost:8080/modules/component-showcase/1_7_1/icefaces_component-showcase_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="6367306"
                 needsrestart="false"
@@ -75,7 +75,7 @@
 
         <module codenamebase="org.icefaces.module.webmc"
                 homepage="http://www.icefaces.org/"
-                distribution="http://localhost:8080/icefaces_webmc_1_7_1.jar"
+                distribution="http://localhost:8080/modules/webmc/1_7_1/icefaces_webmc_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="11933131"
                 needsrestart="false"
