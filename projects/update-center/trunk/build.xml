@@ -92,7 +92,7 @@
     </target>
 
     <target name="zip" depends="gather">
-        <zip destfile="${build.dir}/modules.zip">
+        <zip destfile="${build.dir}/modules_${modules.ver}.zip">
             <fileset dir="${build.dir}"/>
         </zip>
     </target>
