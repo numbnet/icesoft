@@ -78,7 +78,7 @@ public class SeamSortHeaderModel extends SeamResizableColumnBean{
 //			Manager.instance().beginConversation();
         setEjbql(EJBQL);
     	descending = true;
-    	columnName = "lastName";
+    	columnName = "departmentName";
     	orderString=columnName+" asc";
     	buildSortedList();
 	}
