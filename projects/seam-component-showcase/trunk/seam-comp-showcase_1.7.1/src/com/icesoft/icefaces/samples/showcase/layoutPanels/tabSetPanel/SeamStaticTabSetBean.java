@@ -44,6 +44,7 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Destroy;
 
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Create;
 import org.jboss.seam.annotations.Scope;
 
 
@@ -62,4 +63,10 @@ import java.io.Serializable;
 @Name("staticTabbedPaneExample")
 public class SeamStaticTabSetBean extends StaticTabSetBean{
  
+    @Create
+    public void init(){
+        this.setTabbedPane1Visible(true);
+        this.setTabbedPane2Visible(true);
+        this.setTabbedPane3Visible(true);
+    }
 }
