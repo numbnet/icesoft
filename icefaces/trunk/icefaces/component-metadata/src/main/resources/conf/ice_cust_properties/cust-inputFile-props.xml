@@ -96,12 +96,9 @@
         file upload attempts.
     </description>
     <property-name>file</property-name>
-    <property-class>java.lang.Object</property-class>
+    <property-class>java.io.File</property-class>
     <property-extension>
-        <category>ICE_LAYOUT</category>
-        <editor-class>
-            &methodBindingEditor;
-        </editor-class>
+        <category>ADVANCED</category>
     </property-extension>
 </property>
 <property>
