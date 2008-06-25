@@ -112,10 +112,12 @@ public class UploadServer implements Server {
 
     private static class ProgressCalculator {
         private final int GRANULARITY = 10;
+        private final long TIME_MILLISECONDS = 500L;
         private FileUploadComponent listener;
         private BridgeFacesContext context;
         private PersistentFacesState state;
         private int lastGranularlyNotifiablePercent = -1;
+        private long lastTime = -1;
 
         public void progress(long read, long total) {
             if (total > 0) {
@@ -123,10 +125,20 @@ public class UploadServer implements Server {
                 int percentageAboveGranularity = percentage % GRANULARITY;
                 int granularNotifiablePercentage = percentage - percentageAboveGranularity;
                 boolean shouldNotify = granularNotifiablePercentage > lastGranularlyNotifiablePercent;
-                lastGranularlyNotifiablePercent = granularNotifiablePercentage;
-                if (shouldNotify)
+                if (shouldNotify && (lastTime > 0) &&
+                    (granularNotifiablePercentage != 0) &&
+                    (granularNotifiablePercentage != 100))
+                {
+                    long now = System.currentTimeMillis();
+                    if ( (now - lastTime) < TIME_MILLISECONDS ) {
+                        shouldNotify = false;
+                    }
+                }
+                if (shouldNotify) {
+                	lastGranularlyNotifiablePercent = granularNotifiablePercentage;
                     potentiallyNotify();
-            }
+            	}
+        	}
         }
 
         public void setListenerAndContextAndPFS(
@@ -150,6 +162,8 @@ public class UploadServer implements Server {
             state = null;
             context = null;
             listener = null;
+            lastGranularlyNotifiablePercent = -1;
+            lastTime = -1;
             if (ctx != null && component != null) {
                 ctx.setCurrentInstance();
                 st.setCurrentInstance();
@@ -182,6 +196,8 @@ public class UploadServer implements Server {
                         Log.warn("Problem rendering view during file upload", e);
                     }
                 }
+                
+                lastTime = System.currentTimeMillis();
             }
         }
         
