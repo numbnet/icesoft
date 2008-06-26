@@ -9,8 +9,8 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     //having a static field here is ok because web applications are started in separate classloaders
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     private final static List SessionDispatchers = new ArrayList();
-    // # 3073 Manage sessions with this structure
+    //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
     private Map sessionBoundServers = new HashMap();
     private PseudoServlet invalidRequestServlet;
@@ -70,7 +70,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     protected PseudoServlet lookupServlet(final String sessionId) {
-        return (PseudoServlet)sessionBoundServers.get(sessionId);
+        return (PseudoServlet) sessionBoundServers.get(sessionId);
     }
 
     public void shutdown() {
@@ -106,7 +106,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
      * Create new session bound servers.
      */
     private static void notifySessionInitialized(HttpSession session) {
-//        SessionIDs.add(session.getId());
         Monitor monitor = new Monitor(session);
         SessionMonitors.put(session.getId(), monitor);
 
@@ -126,21 +125,16 @@ public abstract class SessionDispatcher implements PseudoServlet {
      * the ICEfaces Session wrapper (internal) or via a sessionDestroyed event from a container
      * (external). #3164 If the Session has been externally invalidated this method doesn't need
      * to invalidate it again as that can cause infinite loops in some containers.
-     * 
-     * @param session Session to invalidate
-     * @param invalidateSession if true, the session will be invalidated. 
+     *
+     * @param session           Session to invalidate
+     * @param invalidateSession if true, the session will be invalidated.
      */
     private static void notifySessionShutdown(final HttpSession session, boolean invalidateSession) {
-
-        if (Log.isDebugEnabled()) {
-            Log.debug("Shutting down session: " + session.getId());
-        }
+        Log.debug("Shutting down session: " + session.getId());
         String sessionID = session.getId();
         // avoid executing this method twice
         if (!SessionMonitors.containsKey(sessionID)) {
-            if (Log.isDebugEnabled()) {
-                Log.debug("Session: " + sessionID + " already shutdown, skipping");
-            }
+            Log.debug("Session: " + sessionID + " already shutdown, skipping");
             return;
         }
 
@@ -155,8 +149,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
             }
         }
 
-        synchronized( SessionMonitors ) {
-
+        synchronized (SessionMonitors) {
             //invalidate session and discard session ID
             i = SessionDispatchers.iterator();
             while (i.hasNext()) {
@@ -167,14 +160,13 @@ public abstract class SessionDispatcher implements PseudoServlet {
                     Log.error(e);
                 }
             }
-
-            // #3189 do this before invalidating the session
+            //ICE-3189 - do this before invalidating the session
             SessionMonitors.remove(sessionID);
 
             try {
                 if (invalidateSession) {
                     session.invalidate();
-                }                
+                }
             } catch (IllegalStateException e) {
                 Log.info("Session already invalidated.");
             }
@@ -187,7 +179,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
     }
 
     public static PseudoServlet getSingletonSessionServlet(final String sessionId) {
-        return ((SessionDispatcher)SessionDispatchers.get(0)).lookupServlet(sessionId);
+        return ((SessionDispatcher) SessionDispatchers.get(0)).lookupServlet(sessionId);
     }
 
     public static class Listener implements ServletContextListener, HttpSessionListener {
