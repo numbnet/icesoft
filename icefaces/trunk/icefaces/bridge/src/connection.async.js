@@ -53,7 +53,6 @@
             this.getURI = configuration.context.current + 'block/receive-updates';
             this.sendURI = configuration.context.current + 'block/send-receive-updates';
             this.receiveURI = configuration.context.async + 'block/receive-updated-views';
-            this.disposeViewsURI = configuration.context.current + 'block/dispose-views';
 
             var timeout = configuration.timeout ? configuration.timeout : 60000;
             this.onSend(function() {
@@ -242,23 +241,6 @@
 
         whenTrouble: function(callback) {
             this.connectionTroubleListeners.push(callback);
-        },
-
-        cancelDisposeViews: function() {
-            this.sendDisposeViews = Function.NOOP;
-        },
-
-        sendDisposeViews: function() {
-            try {
-                this.sendChannel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
-                    Connection.FormPost(request);
-                    request.on(Connection.OK, Connection.Close);
-                });
-            } catch (e) {
-                this.logger.warn('Failed to notify view disposal', e);
-            } finally {
-                this.cancelDisposeViews();
-            }
         },
 
         shutdown: function() {

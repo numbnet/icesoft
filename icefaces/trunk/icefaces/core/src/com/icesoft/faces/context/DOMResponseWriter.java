@@ -317,7 +317,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
         ElementController.from(session).addInto(prefix, body);
         String contextPath = handler.getResourceURL(context, "/");
-        String blockingRequestHandlerContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
+        String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
         String connectionLostRedirectURI;
         try {
             connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
@@ -334,6 +334,7 @@ public class DOMResponseWriter extends ResponseWriter {
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
+                        "window.disposeViewsURI = '" + ahsContextPath + "block/dispose-views';\n" +
                         "var container = '" + configurationID + "'.asElement().parentNode;\n" +
                         "container.bridge = new Ice.Community.Application({" +
                         "session: '" + sessionIdentifier + "'," +
@@ -344,7 +345,7 @@ public class DOMResponseWriter extends ResponseWriter {
                         "connection: {" +
                         "context: {" +
                         "current: '" + contextPath + "'," +
-                        "async: '" + blockingRequestHandlerContextPath + "'}," +
+                        "async: '" + ahsContextPath + "'}," +
                         "timeout: " + configuration.getAttributeAsLong("connectionTimeout", 60000) + "," +
                         "heartbeat: {" +
                         "interval: " + configuration.getAttributeAsLong("heartbeatInterval", 50000) + "," +
