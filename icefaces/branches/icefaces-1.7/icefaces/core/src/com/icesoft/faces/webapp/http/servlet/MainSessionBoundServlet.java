@@ -83,7 +83,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         final Server viewServlet;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new ShutdownHook(new RequestVerifier(sessionID, new DisposeViews(views)));
+            disposeViews = new ShutdownHook(new DisposeViews(sessionID, views));
         } else {
             viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             disposeViews = new ShutdownHook(NOOPServer);

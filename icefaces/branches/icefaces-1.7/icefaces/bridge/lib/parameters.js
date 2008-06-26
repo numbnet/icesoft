@@ -39,6 +39,12 @@
 
         add: function(name, value) {
             this.parameters.push(new This.Association(name, value));
+            return this;
+        },
+
+        addParameter: function(parameter) {
+            this.parameters.push(parameter);
+            return this;
         },
 
         addQuery: function(query) {
