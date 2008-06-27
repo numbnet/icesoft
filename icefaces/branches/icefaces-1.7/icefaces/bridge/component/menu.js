@@ -89,15 +89,12 @@ Ice.Menu = {
             if (menu && menu.style.display=='') return;
             Ice.Menu.showMenuWithId(submenu);
             if (submenuDiv) {
-            	var styleLeft = (Ice.Menu.getPosition(supermenu,"Left") + supermenu.offsetWidth) + "px";
-       		    submenu.style.left = styleLeft;
-       		    var styleTop = Ice.Menu.getPosition(submenuDiv,"Top")  + "px";
-                submenu.style.top = styleTop;
+                 // ICE-3196
+                submenu.clonePosition(supermenu, {setTop:false, setWidth:false, setHeight:false, offsetLeft:supermenu.offsetWidth});
+                submenu.clonePosition(submenuDiv, {setLeft:false, setWidth:false, setHeight:false});
             } else {
-            	var styleLeft = Ice.Menu.getPosition(supermenu,"Left")  + "px";
-    		    submenu.style.left = styleLeft;
-    		    var styleTop = (Ice.Menu.getPosition(supermenu,"Top") + supermenu.offsetHeight) + "px";
-                submenu.style.top = styleTop;
+                 // ICE-3196
+                submenu.clonePosition(supermenu, {setWidth:false, setHeight:false, offsetTop:supermenu.offsetHeight});
             }
             Ice.Menu.showIframe(submenu); // ICE-2066, ICE-2912
 	    }
@@ -271,5 +268,6 @@ Ice.Menu = {
         menuItem.className = menuItem.className.replace(regExp, "");
     }
 }
+
 
 
