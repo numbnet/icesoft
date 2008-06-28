@@ -114,16 +114,27 @@
     This.PointerIndicator = Object.subclass({
         initialize: function(element) {
             this.element = element;
-            this.previousCursor = this.element.style.cursor;
         },
 
         on: /Safari/.test(navigator.userAgent) ? Function.NOOP : function() {
-            this.element.style.cursor = 'wait';
+            var parent = this.element;
+            var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ parent ], function(result, type) {
+                return result.concat($enumerate(parent.getElementsByTagName(type)).toArray());
+            }).collect(function(element) {
+                var c = element.style.cursor;
+                element.style.cursor = 'wait';
+                return function() {
+                    element.style.cursor = c;
+                };
+            });
+
+            this.off = function() {
+                cursorRollbacks.broadcast();
+                this.off = Function.NOOP;
+            }
         },
 
-        off: /Safari/.test(navigator.userAgent) ? Function.NOOP : function() {
-            this.element.style.cursor = this.previousCursor;
-        }
+        off: Function.NOOP
     });
 
     This.OverlayIndicator = Object.subclass({
