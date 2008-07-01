@@ -98,14 +98,14 @@
 <property>
     <description>
     <![CDATA[    
-        The ice:GMap component can locate an address on the map, using the GClientGeocoder implicitly.
+        The ice:gMap component can locate an address on the map, using the GClientGeocoder implicitly.
         <br/>(e.g.) To render a map with the default location.<br/>
-         &lt;ice:GMap address="Calgary"/&gt;
+         &lt;ice:gMap address="Calgary"/&gt;
          <br/><br/>
          To locate the address dynamically, the address needs to be bind with the bean and "locateAddress" attribute needs to return "true", when map needs to be located (e.g.)<br/>
 
          &lt;ice:inputText value="#{gmap.address}" valueChangeListener="#{gmap.addressChanged}" /&gt;<br/>
-         &lt;ice:GMap address="#{gmap.address}" locateAddress="#{gmap.locateAddress}"/&gt;<br/><br/>
+         &lt;ice:gMap address="#{gmap.address}" locateAddress="#{gmap.locateAddress}"/&gt;<br/><br/>
          
          Note: The valueChangeListener sets the value of the "locateAddress" to true of false, that causes the address to be locate on the google map.
 
