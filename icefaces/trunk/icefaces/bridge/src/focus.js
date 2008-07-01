@@ -37,9 +37,11 @@ Ice.Focus = new Object();
 Ice.Focus.userInterupt = false;
 
 Ice.Focus.userInterupt = function (e) {
-    window.logger.debug('Interup pressed');
+    if (window.logger)
+        window.logger.debug('Interup pressed');
     if (Ice.Focus.userInterupt == false) {
-        window.logger.debug('User action. Set focus will be ignored.');
+        if (window.logger)
+            window.logger.debug('User action. Set focus will be ignored.');
         Ice.Focus.userInterupt = true;
     }
 
@@ -60,14 +62,18 @@ Ice.Focus.setFocusNow = function(id) {
             if (ele) {
                 ele.focus();
             } else {
-                window.logger.info('Cannot set focus, no element for id [' + id + "]");
+                if (window.logger)
+                    window.logger.info('Cannot set focus, no element for id [' + id + "]");
             }
-            window.logger.debug('Focus Set on [' + id + "]");
+            if (window.logger)
+                window.logger.debug('Focus Set on [' + id + "]");
         } catch(e) {
-            window.logger.info('Cannot set focus, no element for id [' + id + ']', e);
+            if (window.logger)
+                window.logger.info('Cannot set focus, no element for id [' + id + ']', e);
         }
     } else {
-        window.logger.debug('Focus interupted. Not Set on [' + id + ']');
+        if (window.logger)
+            window.logger.debug('Focus interupted. Not Set on [' + id + ']');
     }
 };
 
