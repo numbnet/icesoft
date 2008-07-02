@@ -63,7 +63,7 @@
 
                 <ice:outputConnectionStatus
                             styleClass="navConnectionStatus"
-                            showPopupOnDisconnect="true"/>
+                            showPopupOnDisconnect="true" displayHourglassWhenActive="true"/>
 
                 <div class="navigationContainer">
                     <jsp:directive.include file="/WEB-INF/includes/content/themeControl.jspx" />

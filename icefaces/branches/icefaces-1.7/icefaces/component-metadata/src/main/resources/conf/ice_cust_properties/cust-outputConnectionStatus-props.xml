@@ -133,4 +133,9 @@
     <property-name>showPopupOnDisconnect</property-name>
     <property-class>boolean</property-class>
 </property>
-        
+
+<property>
+<description>Whether to render hourglass pointer together with the element corresponding to busy state.</description>
+<property-name>displayHourglassWhenActive</property-name>
+<property-class>boolean</property-class>
+</property>
