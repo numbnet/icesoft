@@ -19,6 +19,10 @@ public class ThreadLocalUtility {
 
     private static final Log log = LogFactory.getLog(ThreadLocalUtility.class);
 
+    private static boolean threadLocalFailed;
+    private static String firstFailure;
+    private static int testCount;
+
     /**
      * Check to see if applicable ThreadLocals are cleared. Very verbose, so
      * call only if at suitable log levels.
@@ -27,16 +31,39 @@ public class ThreadLocalUtility {
      */
     public static void checkThreadLocals(String location) {
 
+        testCount++;
         if (!BridgeFacesContext.isThreadLocalNull()) {
+            if (!threadLocalFailed) {
+                firstFailure = "BridgeFacesState failure, location: " + location;
+            }
+            threadLocalFailed = true;
             log.error("BridgeFacesContext ThreadLocal is NON-NULL: " + location);
         }  else {
             log.debug("BridgeFacesContext ThreadLocal is OK: " + location );
         }
 
         if (!PersistentFacesState.isThreadLocalNull()) {
+
+            if (!threadLocalFailed) {
+                firstFailure = "PersistentFacesState failure, location: " + location;
+            } 
+            threadLocalFailed = true;
+
             log.error("PersistentFacesState ThreadLocal is NON-NULL: " + location);
         } else {
             log.debug("PersistentFacesState ThreadLocal is OK: " + location );
         }
+    }
+
+    public static boolean isFailed() {
+        return threadLocalFailed;
+    }
+
+    public static String getFailureLocation() {
+        return firstFailure;
+    }
+
+    public static String getTestCount() {
+        return Integer.toString( testCount );
     } 
 }
