@@ -50,6 +50,7 @@ public class PanelCollapsible extends UICommand {
     }
 
     public void encodeBegin(FacesContext context) throws IOException {
+        setId(getId());
         super.encodeBegin(context);
         if (getAttributes().get(getClientId(getFacesContext()))== null){
         	setExpanded(isExpanded());
