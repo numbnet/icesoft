@@ -63,6 +63,7 @@
 		<exclude name="xml-apis.jar"   if="websphere6" />
         <exclude name="xercesImpl.jar" if="jsf12" />
         <exclude name="xml-apis.jar"   if="jsf12" />
+        <exclude name="icefaces.jar" if="just-ice" />
     </patternset>
     
     <patternset id="additional.icefaces.lib.jars.to.include">
