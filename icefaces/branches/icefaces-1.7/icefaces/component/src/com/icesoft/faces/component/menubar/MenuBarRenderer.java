@@ -35,7 +35,6 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
-import com.icesoft.faces.component.menupopup.MenuPopup;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -124,14 +123,6 @@ public class MenuBarRenderer extends DomBasicRenderer {
             throws IOException {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        Element root = (Element)domContext.getRootNode();
-        Element clickedHiddenField = domContext.createElement(HTML.INPUT_ELEM);
-        clickedHiddenField.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext)+"clickState");
-        clickedHiddenField.setAttribute(HTML.NAME_ATTR, clickedHiddenField.getAttribute("id"));
-        clickedHiddenField.setAttribute(HTML.TYPE_ATTR, "hidden");
-        clickedHiddenField.setAttribute(HTML.VALUE_ATTR, "false");     
-        clickedHiddenField.setAttribute(HTML.CLASS_ATTR, "mnuClickState");          
-        root.appendChild(clickedHiddenField);
         super.encodeEnd(facesContext, uiComponent);
         domContext.streamWrite(facesContext, uiComponent);
     }
