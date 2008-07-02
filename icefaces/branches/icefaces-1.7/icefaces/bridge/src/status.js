@@ -256,15 +256,16 @@
     });
 
     This.ComponentStatusManager = Object.subclass({
-        initialize: function(workingID, idleID, troubleID, lostID, defaultStatusManager, useDefaultStatusManager) {
+        initialize: function(workingID, idleID, troubleID, lostID, defaultStatusManager, showPopups, displayHourglassWhenActive) {
             var indicators = [];
             var connectionWorking = new Ice.Status.ElementIndicator(workingID, indicators);
             var connectionIdle = new Ice.Status.ElementIndicator(idleID, indicators);
             var connectionLost = new Ice.Status.ElementIndicator(lostID, indicators);
+            var busyIndicator = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
 
-            this.busy = new Ice.Status.ToggleIndicator(connectionWorking, connectionIdle);
+            this.busy = displayHourglassWhenActive ? new Ice.Status.MuxIndicator(defaultStatusManager.busy, busyIndicator) : busyIndicator;
             this.connectionTrouble = new Ice.Status.ElementIndicator(troubleID, indicators);
-            if (useDefaultStatusManager) {
+            if (showPopups) {
                 this.dsm = defaultStatusManager;
                 this.connectionLost = new Ice.Status.MuxIndicator(connectionLost, this.dsm.connectionLost);
                 this.sessionExpired = new Ice.Status.MuxIndicator(connectionLost, this.dsm.sessionExpired);

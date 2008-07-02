@@ -65,6 +65,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
     private java.lang.String disconnectedLabel;
     private java.lang.String renderedOnUserRole;
     private Boolean showPopupOnDisconnect; // ICE-2621
+    private Boolean displayHourglassWhenActive;
 
     /**
      * <p>Return the value of the <code>COMPONENT_FAMILY</code> of this
@@ -277,6 +278,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         values[6] = disconnectedLabel;
         values[7] = renderedOnUserRole;
         values[8] = showPopupOnDisconnect;
+        values[9] = displayHourglassWhenActive;
         return ((Object) (values));
     }
 
@@ -295,6 +297,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         disconnectedLabel = (String) values[6];
         renderedOnUserRole = (String) values[7];
         showPopupOnDisconnect = (Boolean) values[8];
+        displayHourglassWhenActive = (Boolean) values[9];
     }
 
     public boolean isShowPopupOnDisconnect() {
@@ -308,5 +311,18 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
 
     public void setShowPopupOnDisconnect(boolean showPopupOnDisconnect) {
         this.showPopupOnDisconnect = Boolean.valueOf(showPopupOnDisconnect);
+    }
+
+    public boolean displayHourglassWhenActive() {
+        if (displayHourglassWhenActive != null) return displayHourglassWhenActive.booleanValue();
+        ValueBinding vb = getValueBinding("displayHourglassWhenActive");
+        if (vb == null) return false;
+        Object value = vb.getValue(getFacesContext());
+        if (value == null) return false;
+        return ((Boolean) value).booleanValue();
+}
+
+    public void setdisplayHourglassWhenActive(boolean displayHourglassWhenActive) {
+        this.displayHourglassWhenActive = Boolean.valueOf(displayHourglassWhenActive);
     }
 }
