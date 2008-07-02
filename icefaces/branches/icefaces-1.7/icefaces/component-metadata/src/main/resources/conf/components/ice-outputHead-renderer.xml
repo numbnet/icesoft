@@ -44,7 +44,7 @@
 	<renderer-type>com.icesoft.faces.OutputHead</renderer-type>
 
 	<renderer-extension>
-		<instance-name>head</instance-name>
+		<instance-name>outputHead</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
 		<tag-name>outputHead</tag-name>

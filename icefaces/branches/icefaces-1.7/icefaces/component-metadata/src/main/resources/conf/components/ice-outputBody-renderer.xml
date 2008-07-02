@@ -43,7 +43,7 @@
 	<renderer-type>com.icesoft.faces.OutputBody</renderer-type>
 
 	<renderer-extension>
-		<instance-name>body</instance-name>
+		<instance-name>outputBody</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
 		<tag-name>outputBody</tag-name>

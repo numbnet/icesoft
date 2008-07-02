@@ -44,7 +44,7 @@
 	<renderer-type>com.icesoft.faces.OutputHtml</renderer-type>
 
 	<renderer-extension>
-		<instance-name>Html</instance-name>
+		<instance-name>outputHtml</instance-name>
 		<is-container>true</is-container>
 		<renders-children>true</renders-children>
 		<tag-name>outputHtml</tag-name>
