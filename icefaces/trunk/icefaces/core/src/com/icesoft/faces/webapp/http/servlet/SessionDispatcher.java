@@ -1,6 +1,7 @@
 package com.icesoft.faces.webapp.http.servlet;
 
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
+import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -195,6 +196,10 @@ public abstract class SessionDispatcher implements PseudoServlet {
                             while (iterator.hasNext()) {
                                 final Monitor sessionMonitor = (Monitor) iterator.next();
                                 sessionMonitor.shutdownIfExpired();
+
+                                if (Log.isTraceEnabled()) {
+                                    ThreadLocalUtility.checkThreadLocals( "- Executing session expiry test");
+                                }
                             }
 
                             Thread.sleep(10000);
