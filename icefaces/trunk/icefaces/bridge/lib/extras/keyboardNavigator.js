@@ -243,25 +243,23 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
   
   configureRootItems: function () {
-     mnuBarItem = this.component.down('.'+ this.getMenuBarItemClass());
-     this.registerEvents(mnuBarItem);
-  },
-  
-  registerEvents:function (mnuBarItem) {
-    if (mnuBarItem) {
-        mnuBarItem.onmouseover = this.hover.bindAsEventListener(this);
-        //add focus support 
-        var anch = mnuBarItem.down('a');
-        anch.onfocus = this.focus.bindAsEventListener(this);
-        if (this.displayOnClick) { 
-            mnuBarItem.onmousedown = this.mousedown.bindAsEventListener(this);
-            this.clicked = false;            
-        }
-        var sibling = mnuBarItem.next('.'+ this.getMenuBarItemClass());
-        if (sibling) {
-            this.registerEvents(sibling);
-        }
-    }  
+    var rootLevelItems = this.component.childNodes;
+    for(i=0; i < rootLevelItems.length; i++) {
+	    if (rootLevelItems[i].tagName == "DIV") {
+	        if (Element.hasClassName(rootLevelItems[i], this.getMenuBarItemClass())) {
+	            rootLevelItems[i].onmouseover = this.hover.bindAsEventListener(this);
+		        //add focus support 
+		        var anch = rootLevelItems[i].firstChild;
+		        if (anch.tagName == "A") {
+		            anch.onfocus = this.focus.bindAsEventListener(this);
+		        }
+		        if (this.displayOnClick) { 
+		            rootLevelItems[i].onmousedown = this.mousedown.bindAsEventListener(this);
+		            this.clicked = false;            
+		        }
+	        }
+	    }
+    }
   },
   
   hideAll:function(event) {
