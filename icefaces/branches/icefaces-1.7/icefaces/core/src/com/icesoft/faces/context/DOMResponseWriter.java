@@ -66,8 +66,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListResourceBundle;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * <p><strong>DOMResponseWriter</strong> is a DOM specific implementation of
@@ -81,6 +83,17 @@ public class DOMResponseWriter extends ResponseWriter {
     public static final String DOCTYPE_OUTPUT = "com.icesoft.doctype.output";
     public static final String DOCTYPE_PRETTY_PRINTING = "com.icesoft.doctype.prettyprinting";
 
+    private static final BundleResolver bridgeMessageResolver = new FailoverBundleResolver("bridge-messages", new ListResourceBundle() {
+        protected Object[][] getContents() {
+            return new Object[][]{
+                    {"session-expired", "User Session Expired"},
+                    {"connection-lost", "Network Connection Interrupted"},
+                    {"server-error", "Server Internal Error"},
+                    {"description", "To reconnect click the Reload button on the browser or click the button below"},
+                    {"button-text", "Reload"}
+            };
+        }
+    });
     private static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
@@ -332,6 +345,7 @@ public class DOMResponseWriter extends ResponseWriter {
         }
         String configurationID = prefix + "configuration-script";
         //add viewIdentifier property to the container element ("body" for servlet env., any element for the portlet env.)
+        ResourceBundle localizedBundle = bridgeMessageResolver.bundleFor(context.getViewRoot().getLocale());
         String startupScript =
                 "if (!window.sessions) window.sessions = []; window.sessions.push('" + sessionIdentifier + "');\n" +
                         "window.disposeViewsURI = '" + ahsContextPath + "block/dispose-views';\n" +
@@ -352,6 +366,13 @@ public class DOMResponseWriter extends ResponseWriter {
                         "timeout: " + configuration.getAttributeAsLong("heartbeatTimeout", 30000) + "," +
                         "retries: " + configuration.getAttributeAsLong("heartbeatRetries", 3) +
                         "}" +
+                        "}," +
+                        "messages: {" +
+                        "sessionExpired: '" + localizedBundle.getString("session-expired") + "'," +
+                        "connectionLost: '" + localizedBundle.getString("connection-lost") + "'," +
+                        "serverError: '" + localizedBundle.getString("server-error") + "'," +
+                        "description: '" + localizedBundle.getString("description") + "'," +
+                        "buttonText: '" + localizedBundle.getString("button-text") + "'" +
                         "}" +
                         "}, container);";
 
