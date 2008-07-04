@@ -45,9 +45,12 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -92,7 +95,7 @@ public class ApplicationBuilder implements Serializable {
     private Application application;
 
     /**
-     * Default constructor, unmarshalls the application meta data.
+     * Default constructor, unmarshalles the application meta data.
      */
     public ApplicationBuilder() {
         loadMetaData();
@@ -101,14 +104,6 @@ public class ApplicationBuilder implements Serializable {
     public void loadMetaData() {
 
         try {
-
-            String schemaPath = FacesUtils.getServletContext().getRealPath(
-                    META_DATA_RESOURCE_PATH);
-            schemaPath += "/" + SCHEMA_FILE_NAME;
-            String metaDataPath =
-                    FacesUtils.getServletContext().getRealPath(META_DATA_RESOURCE_PATH);
-            metaDataPath += "/" + META_DATA_FILE_NAME;
-
             // create a jab context
             JAXBContext jaxbContext =
                     JAXBContext.newInstance(JAXB_FACTORY_PACKAGE);
@@ -116,7 +111,10 @@ public class ApplicationBuilder implements Serializable {
             // schema factory for data validation purposes
             SchemaFactory schemaFactory = SchemaFactory.newInstance(
                     XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = schemaFactory.newSchema(new File(schemaPath));
+            Schema schema = schemaFactory.newSchema(
+                    new StreamSource(
+                            getResourceStream(
+                                    META_DATA_RESOURCE_PATH + "/" + SCHEMA_FILE_NAME)));
 
             // create an unmarshaller and set schema
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -124,14 +122,46 @@ public class ApplicationBuilder implements Serializable {
 
             // grab and assign the application object graph
             application = (Application)
-                    unmarshaller.unmarshal(new File(metaDataPath));
+                    unmarshaller.unmarshal(new StreamSource(
+                            getResourceStream(
+                                    META_DATA_RESOURCE_PATH + "/" + META_DATA_FILE_NAME)));
 
         } catch (JAXBException e) {
             logger.error("JAXB Exception during unmarshalling:", e);
+            throw new IllegalStateException(
+                    "Could not load/unmarshal Application Meta Data: ", e);
         } catch (SAXException e) {
             logger.error("SAX Exception during unmarshalling:", e);
+            throw new IllegalStateException(
+                    "Could not load/unmarshal Application Meta Data: ", e);
         }
 
+    }
+
+    /**
+     * Utility method to get the inputStream of a resource.  This method
+     * tries to handle the API differences between the different server
+     * implementations.
+     *
+     * @param path path to get inputStream of
+     * @return input stream for the given path
+     */
+    private InputStream getResourceStream(String path) {
+
+        InputStream sourceStream =
+                FacesUtils.getServletContext().getResourceAsStream(path);
+
+        if (sourceStream == null) {
+            try {
+                // Work around for websphere
+                sourceStream = new FileInputStream(new File(
+                        FacesUtils.getServletContext().getRealPath(path)));
+            } catch (Exception e) {
+                logger.error("Error getting resource: " + path, e);
+            }
+        }
+
+        return sourceStream;
     }
 
     public Node getDefaultNode() {
