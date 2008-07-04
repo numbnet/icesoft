@@ -36,6 +36,8 @@ package com.icesoft.metadata.generators;
 
 import com.icesoft.jsfmeta.util.AbstractGenerator;
 import com.icesoft.jsfmeta.util.InternalConfig;
+import com.icesoft.metadata.test.DefaultValueTest;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -81,6 +83,10 @@ public class TLDGenerator extends AbstractGenerator {
     
     private String validators[];
     
+    private String defaultValuesFileName;
+    
+    private PrintWriter defaultValuesWriter;    
+    
     static {
         binding = new PropertyBean();
         binding.setPropertyName("binding");
@@ -102,6 +108,7 @@ public class TLDGenerator extends AbstractGenerator {
         tagClassPackage = internalConfig.getProperty("project.taglib.package");
         uri = internalConfig.getProperty("project.taglib.uri");
         validators = null;
+        defaultValuesFileName = internalConfig.getProperty("project.icefaces.defaultValuesFileName");
     }
     
     public boolean getBase() {
@@ -160,9 +167,22 @@ public class TLDGenerator extends AbstractGenerator {
         this.validators = validators;
     }
     
+    private String getDefaultValuesFileName() {
+        return defaultValuesFileName;
+    }
+    
     public void generate() throws IOException {
         
         File outputFile = new File(getDest(), getDescriptor());
+        File defaultValuesFile = null;
+        
+        if (getDefaultValuesFileName() != null) {
+            defaultValuesFile = new File(getDest(), getDefaultValuesFileName());
+            defaultValuesFile.mkdirs();
+            defaultValuesFile.delete();
+            defaultValuesWriter = new PrintWriter(new BufferedWriter(new FileWriter(defaultValuesFile)));
+            defaultValuesWriter.println("<components>");
+        }
         outputFile.mkdirs();
         outputFile.delete();
         writer = new PrintWriter(new BufferedWriter(new FileWriter(outputFile)));
@@ -177,6 +197,14 @@ public class TLDGenerator extends AbstractGenerator {
         footer();
         writer.flush();
         writer.close();
+        
+        if (getDefaultValuesFileName() != null) {
+            defaultValuesWriter.println("</components>");            
+            defaultValuesWriter.flush();
+            defaultValuesWriter.close();
+            new DefaultValueTest(defaultValuesFile.getAbsolutePath());
+        }
+        
     }
     
     private void attribute(ComponentBean cb, RendererBean rb, PropertyBean pb)
@@ -195,6 +223,14 @@ public class TLDGenerator extends AbstractGenerator {
         sb.append("    <attribute>\n");
         sb.append("      <name>" + pb.getPropertyName() + "</name>\n");
         sb.append("      <required>" + pb.isRequired() + "</required>\n");
+        if (getDefaultValuesFileName() != null) {
+            StringBuffer dvsb = new StringBuffer();
+            dvsb.append("      <attribute>\n");             
+            dvsb.append("      <name>" + pb.getPropertyName() + "</name>\n"); 
+            dvsb.append("      <default-value>" + pb.getDefaultValue() + "</default-value>\n"); 
+            dvsb.append("      </attribute>\n");
+            defaultValuesWriter.write(dvsb.toString());
+        }
         sb.append("      <rtexprvalue>false</rtexprvalue>\n");
         if (isVerbose()) {
             AttributeBean ab = rb.getAttribute(pb.getPropertyName());
@@ -283,7 +319,14 @@ public class TLDGenerator extends AbstractGenerator {
             }
         }
         writer.println();
+        if (getDefaultValuesFileName() != null) {
+            defaultValuesWriter.println("  <component>");
+            defaultValuesWriter.println("      <name>" + cb.getComponentClass() + "</name>"); 
+        }        
         attributes(cb, rb);
+        if (getDefaultValuesFileName() != null) {
+            defaultValuesWriter.println("  </component>");
+        }        
         String name;
         for (Iterator names = attributes.keySet().iterator(); names.hasNext(); writer
                 .print((String) attributes.get(name)))
@@ -408,5 +451,7 @@ public class TLDGenerator extends AbstractGenerator {
         }
         
     }
+    
+    
 
 }
