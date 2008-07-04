@@ -196,8 +196,12 @@
             this.KeyListenerNames.each(iterator);
         },
 
+        findBridge: function() {
+            return this.findContainerFor('bridge').bridge;
+        },
+
         findConnection: function() {
-            return this.findContainerFor('bridge').bridge.connection;
+            return this.findBridge().connection;
         },
 
         findContainerFor: function(property) {
@@ -452,7 +456,7 @@
 
     This.BodyElement = This.Element.subclass({
         replaceHtml: function(html) {
-           this.disconnectEventListeners();
+            this.disconnectEventListeners();
             //strip <noscript> tag to fix Safari bug
             // #3131 If this is a response from an error code, there may not be a <noscript> tag.
             var start = new RegExp('\<noscript\>', 'g').exec(html);
