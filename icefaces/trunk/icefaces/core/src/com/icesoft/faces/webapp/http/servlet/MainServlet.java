@@ -6,7 +6,6 @@ import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.faces.webapp.http.core.SessionExpiredServer;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
@@ -58,12 +57,12 @@ public class MainServlet extends HttpServlet {
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionExpiredServer = new BasicAdaptingServlet(new SessionExpiredServer());
-            PseudoServlet sessionServer = new SessionDispatcher(sessionExpiredServer) {
-                protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
+            //don't create new sessions for XMLHTTPRequests identified by the path prefix "block/*"
+            PseudoServlet sessionServer = new SessionVerifier("block\\/", new SessionDispatcher() {
+                protected PseudoServlet newServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration);
                 }
-            };
+            });
 
             if (SeamUtilities.isSpringEnvironment()) {
                 //Need to dispatch to the Spring resource server
