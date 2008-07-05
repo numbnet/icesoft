@@ -3,7 +3,7 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.OKHandler;
+import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class DisposeViews implements Server {
             }
         }
 
-        request.respondWith(OKHandler.HANDLER);
+        request.respondWith(OKResponse.Handler);
     }
 
     public void shutdown() {
