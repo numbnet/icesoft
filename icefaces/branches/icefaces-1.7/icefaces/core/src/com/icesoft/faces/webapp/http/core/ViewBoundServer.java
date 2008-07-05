@@ -1,27 +1,16 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
-import com.icesoft.faces.webapp.command.Command;
-import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.standard.FixedXMLContentHandler;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.faces.FacesException;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Map;
 
 public class ViewBoundServer implements Server {
-    private static final Command SessionExpired = new SessionExpired();
-    private static final FixedXMLContentHandler SessionExpiredHandler = new FixedXMLContentHandler() {
-        public void writeTo(Writer writer) throws IOException {
-            SessionExpired.serializeTo(writer);
-        }
-    };
     private static final ResponseHandler MissingParameterHandler = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             response.setStatus(500);
@@ -46,7 +35,7 @@ public class ViewBoundServer implements Server {
             View view = (View) views.get(viewNumber);
             if (view == null) {
                 //todo: revisit this -- maybe the session was not created yet
-                request.respondWith(SessionExpiredHandler);
+                request.respondWith(SessionExpiredResponse.Handler);
             } else {
 
                 // #2615. Without the following synchronization, the following
@@ -75,7 +64,7 @@ public class ViewBoundServer implements Server {
                         //exception thrown in the middle of JSF lifecycle
                         //respond immediately with session-expired message to avoid any new connections
                         //being initiated by the bridge.
-                        request.respondWith(SessionExpiredHandler);
+                        request.respondWith(SessionExpiredResponse.Handler);
                     } finally {
                         view.release();
                     }
