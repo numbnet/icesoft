@@ -6,11 +6,10 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
-import com.icesoft.faces.webapp.http.common.ServerProxy;
-import com.icesoft.faces.webapp.http.common.standard.OKHandler;
+import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
@@ -26,8 +25,6 @@ import com.icesoft.faces.webapp.http.core.ViewBoundServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
-import edu.emory.mathcs.backport.java.util.concurrent.Semaphore;
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -46,14 +43,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
     private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final SessionExpired SessionExpired = new SessionExpired();
-    private static final Server NOOPServer = new Server() {
-        public void service(Request request) throws Exception {
-            request.respondWith(OKHandler.HANDLER);
-        }
-
-        public void shutdown() {
-        }
-    };
+    private static final Server OKServer = new ResponseHandlerServer(OKResponse.Handler);
     private static final Runnable NOOP = new Runnable() {
         public void run() {
         }
@@ -72,7 +62,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private Collection synchronouslyUpdatedViews = new HashSet();
     private String sessionID;
     private PseudoServlet servlet;
-    private ShutdownHook disposeViews;
     private Runnable shutdown;
 
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
@@ -81,12 +70,13 @@ public class MainSessionBoundServlet implements PseudoServlet {
 
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
         final Server viewServlet;
+        final Server disposeViews;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new ShutdownHook(new DisposeViews(sessionID, views));
+            disposeViews = new DisposeViews(sessionID, views);
         } else {
             viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new ShutdownHook(NOOPServer);
+            disposeViews = OKServer;
         }
 
         final Server sendUpdatedViews;
@@ -95,9 +85,9 @@ public class MainSessionBoundServlet implements PseudoServlet {
         if (configuration.getAttributeAsBoolean("synchronousUpdate", false)) {
             //drain the updated views queue if in 'synchronous mode'
             allUpdatedViews.onPut(drainUpdatedViews);
-            sendUpdatedViews = NOOPServer;
-            sendUpdates = NOOPServer;
-            receivePing = NOOPServer;
+            sendUpdatedViews = OKServer;
+            sendUpdates = OKServer;
+            receivePing = OKServer;
         } else {
             //setup blocking connection server
             sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
@@ -131,9 +121,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
                     commandQueue.put(SessionExpired);
                 }
                 //block until all views notify their disposal only when session expires
-                if (sessionMonitor.isExpired()) {
-                    disposeViews.waitForViewsShutdown();
-                }
                 ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
                 //shutdown all contained servers
                 servlet.shutdown();
@@ -170,36 +157,5 @@ public class MainSessionBoundServlet implements PseudoServlet {
 
     public String getSessionID() {
         return sessionID;
-    }
-
-    private class ShutdownHook extends ServerProxy {
-        public ShutdownHook(Server server) {
-            super(server);
-        }
-
-        public void waitForViewsShutdown() {
-            int size = views.size();
-            final Semaphore lock = new Semaphore(size, true);
-
-            server = new ServerProxy(server) {
-                public void service(Request request) throws Exception {
-                    lock.release();
-                    super.service(request);
-                }
-            };
-
-            try {
-                lock.acquire(size);
-            } catch (InterruptedException e) {
-                //do nothing
-            }
-
-            //block until all views send their "dispose-views" message 
-            try {
-                lock.tryAcquire(size, 15, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Log.warn("Some views failed to confirm their shutdown.");
-            }
-        }
     }
 }

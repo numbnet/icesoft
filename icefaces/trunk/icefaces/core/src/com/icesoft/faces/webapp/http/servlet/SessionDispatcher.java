@@ -1,6 +1,5 @@
 package com.icesoft.faces.webapp.http.servlet;
 
-import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,35 +25,17 @@ public abstract class SessionDispatcher implements PseudoServlet {
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
     private Map sessionBoundServers = new HashMap();
-    private PseudoServlet invalidRequestServlet;
 
-    protected SessionDispatcher() {
-        this(new PseudoServlet() {
-            public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-                throw new SessionExpiredException();
-            }
-
-            public void shutdown() {
-            }
-        });
-    }
-
-    protected SessionDispatcher(PseudoServlet invalidRequestServlet) {
-        this.invalidRequestServlet = invalidRequestServlet;
+    public SessionDispatcher() {
         SessionDispatchers.add(this);
     }
 
     protected abstract PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) throws Exception;
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //only HTTP GET requests can create new sessions 
-        if (request.isRequestedSessionIdValid() || "GET".equalsIgnoreCase(request.getMethod())) {
-            HttpSession session = request.getSession(true);
-            notifyIfNew(session);
-            lookupServlet(session).service(request, response);
-        } else {
-            invalidRequestServlet.service(request, response);
-        }
+        HttpSession session = request.getSession(true);
+        notifyIfNew(session);
+        lookupServlet(session).service(request, response);
     }
 
     //synchronize access in case there are multiple SessionDispatcher instances created
@@ -127,10 +108,9 @@ public abstract class SessionDispatcher implements PseudoServlet {
      * (external). #3164 If the Session has been externally invalidated this method doesn't need
      * to invalidate it again as that can cause infinite loops in some containers.
      *
-     * @param session           Session to invalidate
-     * @param invalidateSession if true, the session will be invalidated.
+     * @param session Session to invalidate
      */
-    private static void notifySessionShutdown(final HttpSession session, boolean invalidateSession) {
+    private static void notifySessionShutdown(final HttpSession session) {
         Log.debug("Shutting down session: " + session.getId());
         String sessionID = session.getId();
         // avoid executing this method twice
@@ -163,14 +143,6 @@ public abstract class SessionDispatcher implements PseudoServlet {
             }
             //ICE-3189 - do this before invalidating the session
             SessionMonitors.remove(sessionID);
-
-            try {
-                if (invalidateSession) {
-                    session.invalidate();
-                }
-            } catch (IllegalStateException e) {
-                Log.info("Session already invalidated.");
-            }
         }
     }
 
@@ -198,7 +170,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                                 sessionMonitor.shutdownIfExpired();
 
                                 if (Log.isTraceEnabled()) {
-                                    ThreadLocalUtility.checkThreadLocals( "- Executing session expiry test");
+                                    ThreadLocalUtility.checkThreadLocals("- Executing session expiry test");
                                 }
                             }
 
@@ -221,7 +193,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         public void sessionDestroyed(HttpSessionEvent event) {
-            notifySessionShutdown(event.getSession(), false);
+            notifySessionShutdown(event.getSession());
         }
     }
 
@@ -251,7 +223,12 @@ public abstract class SessionDispatcher implements PseudoServlet {
         }
 
         public void shutdown() {
-            notifySessionShutdown(session, true);
+            notifySessionShutdown(session);
+            try {
+                session.invalidate();
+            } catch (IllegalStateException e) {
+                Log.info("Session already invalidated.");
+            }
         }
 
         public void shutdownIfExpired() {

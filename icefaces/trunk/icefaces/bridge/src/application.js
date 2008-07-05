@@ -161,7 +161,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 statusManager.sessionExpired.on();
                 //implicit protocol for session expiry
                 //todo: verify if still needed
-                disposeSessionViews(sessionID);
+                //disposeSessionViews(sessionID);
                 dispose();
             });
 
