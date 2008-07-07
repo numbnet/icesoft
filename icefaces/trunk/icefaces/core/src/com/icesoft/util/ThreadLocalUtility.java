@@ -19,9 +19,19 @@ public class ThreadLocalUtility {
 
     private static final Log log = LogFactory.getLog(ThreadLocalUtility.class);
 
+    public static final int EXITING_SERVLET_CORE = 0;
+    public static final int EXITING_SERVER_PUSH = 1;
+    public static final int EXITING_SESSION_MONITOR = 2;
+    private static final int size = 3;
+
+    private static int[] Counts = new int[size];
+
+    private static String Descriptions[] = {"Exiting servlet execution",
+                                            "Exiting server push",
+                                            "Exiting session expiry monitor"}; 
+
     private static boolean threadLocalFailed;
     private static String firstFailure;
-    private static int testCount;
 
     /**
      * Check to see if applicable ThreadLocals are cleared. Very verbose, so
@@ -29,29 +39,30 @@ public class ThreadLocalUtility {
      * 
      * @param location an indication where test is being performed
      */
-    public static void checkThreadLocals(String location) {
+    public static void checkThreadLocals(int location) {
 
-        testCount++;
+
+        Counts[location] ++;
         if (!BridgeFacesContext.isThreadLocalNull()) {
             if (!threadLocalFailed) {
-                firstFailure = "BridgeFacesState failure, location: " + location;
+                firstFailure = "BridgeFacesState failure, location: " + Descriptions[location];
             }
             threadLocalFailed = true;
-            log.error("BridgeFacesContext ThreadLocal is NON-NULL: " + location);
+            log.error("BridgeFacesContext ThreadLocal is NON-NULL: " +  Descriptions[location]);
         }  else {
-            log.debug("BridgeFacesContext ThreadLocal is OK: " + location );
+            log.debug("BridgeFacesContext ThreadLocal is OK: " +  Descriptions[location] );
         }
 
         if (!PersistentFacesState.isThreadLocalNull()) {
 
             if (!threadLocalFailed) {
-                firstFailure = "PersistentFacesState failure, location: " + location;
+                firstFailure = "PersistentFacesState failure, location: " +  Descriptions[location];
             } 
             threadLocalFailed = true;
 
-            log.error("PersistentFacesState ThreadLocal is NON-NULL: " + location);
+            log.error("PersistentFacesState ThreadLocal is NON-NULL: " +  Descriptions[location]);
         } else {
-            log.debug("PersistentFacesState ThreadLocal is OK: " + location );
+            log.debug("PersistentFacesState ThreadLocal is OK: " +  Descriptions[location] );
         }
     }
 
@@ -63,7 +74,7 @@ public class ThreadLocalUtility {
         return firstFailure;
     }
 
-    public static String getTestCount() {
-        return Integer.toString( testCount );
+    public static int[] getTestCounts() {
+        return Counts;
     } 
 }
