@@ -140,9 +140,7 @@ class RunnableRender implements Runnable {
                 testSession(state);
             }
             // #2459 use fully synchronized version internally.
-            RenderTracker.startRenderPass();
             state.executeAndRender();
-            RenderTracker.renderComplete();
 
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
