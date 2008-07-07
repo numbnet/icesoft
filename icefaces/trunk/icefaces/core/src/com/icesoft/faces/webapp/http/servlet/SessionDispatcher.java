@@ -170,7 +170,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                                 sessionMonitor.shutdownIfExpired();
 
                                 if (Log.isTraceEnabled()) {
-                                    ThreadLocalUtility.checkThreadLocals("- Executing session expiry test");
+                                    ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
                                 }
                             }
 
