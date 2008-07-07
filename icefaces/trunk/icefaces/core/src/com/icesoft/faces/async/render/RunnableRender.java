@@ -139,8 +139,10 @@ class RunnableRender implements Runnable {
             if (SeamUtilities.isSeamEnvironment() ) {
                 testSession(state);
             }
-            // #2459 use fully synchronized version internally.     
+            // #2459 use fully synchronized version internally.
+            RenderTracker.startRenderPass();
             state.executeAndRender();
+            RenderTracker.renderComplete();
 
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
@@ -165,7 +167,7 @@ class RunnableRender implements Runnable {
             state.release();
         }
         if (log.isTraceEnabled()) {
-            ThreadLocalUtility.checkThreadLocals("exiting RunnableRender run() method");
+            ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SERVER_PUSH);
         } 
    }
 
