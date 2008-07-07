@@ -165,7 +165,7 @@ class RunnableRender implements Runnable {
             state.release();
         }
         if (log.isTraceEnabled()) {
-            ThreadLocalUtility.checkThreadLocals("exiting RunnableRender run() method");
+            ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SERVER_PUSH);
         } 
    }
 
