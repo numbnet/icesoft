@@ -60,6 +60,7 @@
 	<property-class>java.lang.String</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>embed</default-value>
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -88,6 +89,9 @@
 	</description>
 	<property-name>indeterminate</property-name>
 	<property-class>boolean</property-class>
+    <property-extension>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
 
 <property>
@@ -99,6 +103,7 @@
 	<property-name>value</property-name>
 	<property-class>int</property-class>
 	<property-extension>
+        <default-value>0</default-value>
 		<editor-class>
 			&integerEditor;
 		</editor-class>
@@ -146,3 +151,18 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+            Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent form
+            submit.
+    </description>
+  <property-name>rendered</property-name>
+  <property-class>boolean</property-class>
+  <property-extension>
+      <category>ICE_COMPONENT</category>
+      <default-value>true</default-value>
+  </property-extension>
+</property>
+        

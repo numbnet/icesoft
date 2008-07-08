@@ -163,4 +163,37 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <property-name>columns</property-name>
+    <property-class>int</property-class>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <default-value>-2147483648</default-value>
+        <editor-class>
+            &integerEditor;
+        </editor-class>
+        <named-value>
+            <name>minValue</name>
+            <expression>new Integer(0)</expression>
+        </named-value>
+        <named-value>
+            <name>unsetValue</name>
+            <expression>new Integer(Integer.MIN_VALUE)</expression>
+        </named-value>
+    </property-extension>
+</property>
+
+<property>
+	<description>
+		Set the visibility of this component. When false CSS style is
+		set to display:none
+	</description>
+	<property-name>visible</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+	</property-extension>
+</property>
         

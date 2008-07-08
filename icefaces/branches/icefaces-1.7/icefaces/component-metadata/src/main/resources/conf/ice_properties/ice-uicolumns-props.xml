@@ -44,6 +44,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>APPEARANCE</category>
+        <default-value>0</default-value>
 		<editor-class>
 			&numberEditor;
 		</editor-class>
@@ -67,3 +68,43 @@
 		<is-bindable>false</is-bindable>		
 	</property-extension>
 </property>
+
+<property>
+  <description>
+      Zero-relative row number of the first row to be displayed. If this
+      property is set to zero, rendering will begin with the first row of the
+      underlying data.
+  </description>
+  <property-name>first</property-name>
+  <property-class>int</property-class>
+  <property-extension>
+      <category>DATA</category>
+      <default-value>0</default-value>
+      <editor-class>
+          &integerEditor;
+      </editor-class>
+      <named-value>
+          <name>minValue</name>
+          <expression>new Integer(0)</expression>
+      </named-value>
+      <named-value>
+          <name>unsetValue</name>
+          <expression>new Integer(Integer.MIN_VALUE)</expression>
+      </named-value>
+  </property-extension>
+  </property>
+
+<property>
+    <description>
+            Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent form
+            submit.
+    </description>
+  <property-name>rendered</property-name>
+  <property-class>boolean</property-class>
+  <property-extension>
+      <category>ICE_COMPONENT</category>
+      <default-value>true</default-value>
+  </property-extension>
+</property>
+        
