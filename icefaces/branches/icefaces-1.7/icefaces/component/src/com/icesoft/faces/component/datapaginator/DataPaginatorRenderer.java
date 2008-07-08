@@ -48,23 +48,25 @@
 
 package com.icesoft.faces.component.datapaginator;
 
-import com.icesoft.faces.component.ext.HtmlCommandLink;
-import com.icesoft.faces.component.ext.HtmlDataTable;
-import com.icesoft.faces.component.util.CustomComponentUtils;
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
-import org.w3c.dom.Element;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.faces.FacesException;
 import javax.faces.application.Application;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+
+import org.w3c.dom.Element;
+
+import com.icesoft.faces.component.ext.HtmlCommandLink;
+import com.icesoft.faces.component.panelseries.UISeries;
+import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 public class DataPaginatorRenderer extends DomBasicRenderer {
     public static final String RENDERER_TYPE = "com.icesoft.faces.DataScroller";
@@ -201,7 +203,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             //Reset the dataTable model before setting variables
             scroller.getUIData().setValue(null);
             scroller.getUIData().setRowIndex(-1);
-            ((HtmlDataTable) scroller.getUIData()).ensureFirstRowInRange(); // ICE-2783
+            ((UISeries) scroller.getUIData()).ensureFirstRowInRange(); // ICE-2783
             setVariables(facesContext, scroller);
         }
     }
