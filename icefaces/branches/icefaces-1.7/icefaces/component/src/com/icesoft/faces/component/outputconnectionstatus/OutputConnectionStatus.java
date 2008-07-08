@@ -95,7 +95,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
      * <p>Return the value of the <code>activeClass</code> property.</p>
      */
     public String getActiveClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_ACTIVE_CLASS);
     }
 
@@ -115,14 +115,14 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         }
         ValueBinding vb = getValueBinding("activeLabel");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
-               DEFAULT_LABEL;
+                DEFAULT_LABEL;
     }
 
     /**
      * <p>Return the value of the <code>cautionClass</code> property.</p>
      */
     public String getCautionClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_CAUTION_CLASS);
     }
 
@@ -142,14 +142,14 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         }
         ValueBinding vb = getValueBinding("cautionLabel");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
-               DEFAULT_LABEL;
+                DEFAULT_LABEL;
     }
 
     /**
      * <p>Return the value of the <code>disconnectedClass</code> property.</p>
      */
     public String getDisconnectedClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_DISCONNECT_CLASS);
     }
 
@@ -169,14 +169,14 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         }
         ValueBinding vb = getValueBinding("disconnectedLabel");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
-               DEFAULT_LABEL;
+                DEFAULT_LABEL;
     }
 
     /**
      * <p>Return the value of the <code>inactiveClass</code> property.</p>
      */
     public String getInactiveClass() {
-        return Util.getQualifiedStyleClass(this, 
+        return Util.getQualifiedStyleClass(this,
                 CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_INACTIVE_CLASS);
     }
 
@@ -196,7 +196,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         }
         ValueBinding vb = getValueBinding("inactiveLabel");
         return vb != null ? (String) vb.getValue(getFacesContext()) :
-               DEFAULT_LABEL;
+                DEFAULT_LABEL;
     }
 
     /**
@@ -228,10 +228,10 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
      * <p>Return the value of the <code>styleClass</code> property.</p>
      */
     public String getStyleClass() {
-        return Util.getQualifiedStyleClass(this, 
-                        styleClass, 
-                        CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_STYLE_CLASS, 
-                        "styleClass");
+        return Util.getQualifiedStyleClass(this,
+                styleClass,
+                CSS_DEFAULT.OUTPUT_CONNECTION_STATUS_DEFAULT_STYLE_CLASS,
+                "styleClass");
     }
 
 
@@ -313,16 +313,16 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
         this.showPopupOnDisconnect = Boolean.valueOf(showPopupOnDisconnect);
     }
 
-    public boolean displayHourglassWhenActive() {
+    public boolean isDisplayHourglassWhenActive() {
         if (displayHourglassWhenActive != null) return displayHourglassWhenActive.booleanValue();
         ValueBinding vb = getValueBinding("displayHourglassWhenActive");
         if (vb == null) return false;
         Object value = vb.getValue(getFacesContext());
         if (value == null) return false;
         return ((Boolean) value).booleanValue();
-}
+    }
 
-    public void setdisplayHourglassWhenActive(boolean displayHourglassWhenActive) {
+    public void setDisplayHourglassWhenActive(boolean displayHourglassWhenActive) {
         this.displayHourglassWhenActive = Boolean.valueOf(displayHourglassWhenActive);
     }
 }
