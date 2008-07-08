@@ -612,7 +612,31 @@ public class UISeries extends HtmlDataTable implements SeriesStateHolder {
                }
             }
         }
-    }    
+    }  
+    
+ // ICE-2783
+    public void ensureFirstRowInRange() {
+        int numRowsTotal = getRowCount(); // could be -1
+        int numRowsToShow = getRows();    // always >= 0
+        int firstRowIdx = getFirst();     // always >= 0
+
+        if (numRowsTotal <= 0) {
+            // value of "first" could be from backing bean, therefore don't set indiscriminately
+            if (firstRowIdx != 0) {
+                setFirst(0);
+            }
+        } else if (firstRowIdx >= numRowsTotal) {
+            if (numRowsToShow == 0) {
+                setFirst(0); // all rows in one page
+            } else { // first row of last page
+                setFirst((numRowsTotal - 1) / numRowsToShow * numRowsToShow);
+            }
+        }
+    }
+    
+    public Map getSavedChildren(){
+    	return savedChildren;
+    }
 }
 
 class ChildState implements Serializable {
