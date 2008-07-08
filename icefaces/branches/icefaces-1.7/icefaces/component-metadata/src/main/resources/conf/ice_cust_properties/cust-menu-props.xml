@@ -45,6 +45,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
+        <default-value>horizontal</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -59,6 +60,7 @@
     <property-name>imageDir</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
+        <default-value>/xmlhttp/css/xp/css-images/</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -75,6 +77,7 @@
     <property-name>noIcons</property-name>
     <property-class>java.lang.String</property-class>
     <property-extension>
+        <default-value>false</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -149,5 +152,37 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
     </property-extension>
 </property>
+
+<property>
+	<description>
+
+		Flag indicating that this component's value must be converted
+		and validated immediately (that is, during Apply Request Values
+		phase), rather than waiting until Process Validations phase.
+
+	</description>
+	<property-name>immediate</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ADVANCED</category>
+        <default-value>false</default-value>
+	</property-extension>
+</property>
+
+<property>
+    <description>
+            Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent form
+            submit.
+    </description>
+  <property-name>rendered</property-name>
+  <property-class>boolean</property-class>
+  <property-extension>
+      <category>ICE_COMPONENT</category>
+      <default-value>true</default-value>
+  </property-extension>
+</property>
+        

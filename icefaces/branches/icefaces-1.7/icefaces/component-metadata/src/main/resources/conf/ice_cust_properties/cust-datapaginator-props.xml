@@ -62,6 +62,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
     </property-extension>
   </property>
 
@@ -74,6 +75,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>
     </property-extension>
   </property>
     
@@ -85,6 +87,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>-2147483648</default-value>
           <editor-class>
             &integerEditor;
           </editor-class>	
@@ -98,6 +101,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>-2147483648</default-value>
           <editor-class>
             &integerEditor;
           </editor-class>	
@@ -195,6 +199,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
     </property-extension>
   </property>
  <property>
@@ -207,6 +212,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>
     </property-extension>
   </property>
 <property>
@@ -259,3 +265,32 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+    <description>
+        Flag indicating that this element must never receive focus or be
+        included in a subsequent submit.
+    </description>
+
+    <property-name>disabled</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_COMPONENT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
+
+<property>
+    <description>
+            Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent form
+            submit.
+    </description>
+  <property-name>rendered</property-name>
+  <property-class>boolean</property-class>
+  <property-extension>
+      <category>ICE_COMPONENT</category>
+      <default-value>true</default-value>
+  </property-extension>
+</property>
+        

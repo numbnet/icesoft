@@ -45,6 +45,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>Default Chart title</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -78,6 +79,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>bar</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -94,6 +96,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>Default X title</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -110,6 +113,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>Default Y title</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -199,6 +203,7 @@
     <property-class>java.lang.Object</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>20, 30, 40</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -214,6 +219,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>400</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -229,6 +235,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>400</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -309,6 +316,7 @@
     <property-class>java.lang.Object</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>bottom</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -335,6 +343,7 @@
     <property-class>java.lang.Object</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>0</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>
@@ -419,6 +428,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>false</default-value>
      </property-extension>
 </property>
 
@@ -441,3 +451,32 @@
         </editor-class>
     </property-extension>
 </property>
+
+<property>
+	<description>
+		Flag indicating that this component's value must be converted
+		and validated immediately (that is, during Apply Request Values
+		phase), rather than waiting until Process Validations phase.
+	</description>
+	<property-name>immediate</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ADVANCED</category>
+        <default-value>false</default-value>
+	</property-extension>
+</property>
+
+<property>
+    <description>
+            Flag indicating whether or not this component should be rendered
+            (during Render Response Phase), or processed on any subsequent form
+            submit.
+    </description>
+  <property-name>rendered</property-name>
+  <property-class>boolean</property-class>
+  <property-extension>
+      <category>ICE_COMPONENT</category>
+      <default-value>true</default-value>
+  </property-extension>
+</property>
+        
