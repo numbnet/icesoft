@@ -35,7 +35,7 @@
         <property-name>disabled</property-name>
         <property-extension>
           <category>APPEARANCE</category>
-        <default-value>false</default-value>           
+          <default-value>false</default-value>           
         </property-extension>
       </property>
 
