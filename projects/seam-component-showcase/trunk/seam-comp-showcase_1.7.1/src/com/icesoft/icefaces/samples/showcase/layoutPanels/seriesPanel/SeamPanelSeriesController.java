@@ -34,10 +34,16 @@
 package com.icesoft.icefaces.samples.showcase.layoutPanels.seriesPanel;
 
 
+import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.framework.EntityQuery;
+import org.jboss.seam.log.Log;
 import org.jboss.seam.ScopeType;
+
+import com.icesoft.icefaces.samples.showcase.common.Employee;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -46,12 +52,13 @@ import javax.faces.event.ActionEvent;
  * <p>The Cashier Class is used to back the List (panelSeries) Component
  * example.</p>
  */
-@Scope(ScopeType.PAGE)
+@Scope(ScopeType.CONVERSATION)
 @Name("panelSeriesController")
 public class SeamPanelSeriesController extends EntityQuery{
 	private static final String EJBQL = "select e from Employee e";
     // start off with 3 employees.
 	private int employeeCount = 3;
+	@Logger Log log;
 	
 	@Override
 	public Integer getMaxResults() {
@@ -73,7 +80,7 @@ public class SeamPanelSeriesController extends EntityQuery{
      * @param event jsf action event
      */
     public void addEmployee(ActionEvent event){
-        employeeCount++;
+        this.setMaxResults(++employeeCount);
     }
 
     /**
