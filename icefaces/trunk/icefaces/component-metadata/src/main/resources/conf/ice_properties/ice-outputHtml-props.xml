@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding='UTF-8'?>
 <!--
   ~  Version: MPL 1.1/GPL 2.0/LGPL 2.1
   ~
@@ -31,38 +31,6 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-<!--
-&ice-att-userrole-enabled-props;
-&ice-att-userrole-rendered-props;
--->
-<property>
-    <description>
-        The longitude
-    </description>
-    <property-name>longitude</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>ADVANCED</category>
-        <default-value>-122.1419</default-value>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-<property>
-    <description>
-        The latitude
-    </description>
-    <property-name>latitude</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>ADVANCED</category>
-        <default-value>37.4419</default-value>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
 
 <property>
     <description>
@@ -77,4 +45,3 @@
       <default-value>true</default-value>
   </property-extension>
 </property>
-        
