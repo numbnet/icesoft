@@ -525,12 +525,21 @@ public class BaseComponentGenerator extends AbstractGenerator {
                 writer.outdent();
                 writer.emitExpression("}", true);
                 sb = new StringBuffer("return ");
-                if (pb.getDefaultValue() != null)
-                    sb.append(pb.getDefaultValue());
-                else if (primitive(type))
-                    sb.append((String) defaults.get(type));
-                else
+                //remove me
+                if (pb.getDefaultValue() != null){
+                    if(pb.getDefaultValue().endsWith("\"") && pb.getDefaultValue().startsWith("\"")){
+                        sb.append(pb.getDefaultValue());
+                    }else if (primitive(type)){
+                        sb.append((String) defaults.get(type));
+                    }else if (pb.getDefaultValue() != null 
+                        && pb.getDefaultValue().toLowerCase().trim().length() > 0){
+                        sb.append("\""+pb.getDefaultValue()+"\"");
+                    }
+                }else if (primitive(type)){
+                        sb.append((String) defaults.get(type));
+                }else{
                     sb.append("null");
+                }
                 sb.append(";");
                 writer.emitExpression(sb.toString(), true);
             }
