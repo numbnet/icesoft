@@ -41,5 +41,6 @@
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>DATA</category>
+        <default-value>false</default-value>    		
 	</property-extension>
 </property>
