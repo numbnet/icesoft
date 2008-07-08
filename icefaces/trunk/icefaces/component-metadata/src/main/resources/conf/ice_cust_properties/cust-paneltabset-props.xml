@@ -49,6 +49,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>0</default-value>
 		<editor-class>
 			&valueBindingEditor;
 		</editor-class>
@@ -80,6 +81,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>0</default-value>
 		<editor-class>
 			&integerEditor;
 		</editor-class>
@@ -100,6 +102,7 @@
 	<property-class>java.lang.String</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
+        <default-value>Top</default-value>
 		<editor-class>
 			&stringEditor;
 		</editor-class>
@@ -163,6 +166,7 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>APPEARANCE</category>
+        <default-value>0</default-value>
 		<editor-class>
 			&numberEditor;
 		</editor-class>
@@ -227,6 +231,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>true</default-value>
      </property-extension>
 </property>
 
@@ -238,5 +243,33 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>false</default-value>
      </property-extension>
+</property>
+
+  <property>
+  	<description>
+  			Flag indicating whether or not this component should be rendered
+  			(during Render Response Phase), or processed on any subsequent form
+  			submit.
+  	</description>
+    <property-name>rendered</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_COMPONENT</category>
+        <default-value>true</default-value>
+	</property-extension>
+  </property>
+
+<property>
+	<description>
+		Set the visibility of this component. When false CSS style is
+		set to display:none
+	</description>
+	<property-name>visible</property-name>
+	<property-class>boolean</property-class>
+	<property-extension>
+		<category>ICE_LAYOUT</category>
+        <default-value>true</default-value>
+	</property-extension>
 </property>
