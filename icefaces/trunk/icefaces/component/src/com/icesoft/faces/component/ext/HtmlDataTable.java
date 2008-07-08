@@ -486,27 +486,7 @@ public class HtmlDataTable
         resizableTblColumnsWidthIndex = 0;
     }
 
-    // ICE-2783
-    public void ensureFirstRowInRange() {
-        int numRowsTotal = getRowCount(); // could be -1
-        int numRowsToShow = getRows();    // always >= 0
-        int firstRowIdx = getFirst();     // always >= 0
-
-        if (numRowsTotal <= 0) {
-            // value of "first" could be from backing bean, therefore don't set indiscriminately
-            if (firstRowIdx != 0) {
-                setFirst(0);
-            }
-        } else if (firstRowIdx >= numRowsTotal) {
-            if (numRowsToShow == 0) {
-                setFirst(0); // all rows in one page
-            } else { // first row of last page
-                setFirst((numRowsTotal - 1) / numRowsToShow * numRowsToShow);
-            }
-        }
-    }
-    
-    public boolean isScrollFooter() {
+   public boolean isScrollFooter() {
         if (scrollFooter != null) {
             return scrollFooter.booleanValue();
         }
