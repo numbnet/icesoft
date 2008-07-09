@@ -230,7 +230,6 @@
         <property-class>java.lang.String</property-class>
 	<property-extension>
 		<category>APPEARANCE</category>
-        <default-value>""</default-value>
 		<editor-class>
 			&cssStyleEditor;
 		</editor-class>
