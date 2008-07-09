@@ -75,6 +75,7 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>"application/x-www-form-urlencoded"</default-value>
     </property-extension>
 </property>
 

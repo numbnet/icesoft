@@ -54,7 +54,7 @@
     <property-extension>
         <category>ICE_COMPONENT</category>
         <editor-class>
-            &stringEditor;
+            &integerEditor;
         </editor-class>
     </property-extension>
 </property>

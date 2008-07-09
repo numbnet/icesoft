@@ -35,6 +35,7 @@
   -->
 &ice-att-userrole-rendered-props;
 &core-props; 
+&base-props;
 <property>
     <description>
         <![CDATA[

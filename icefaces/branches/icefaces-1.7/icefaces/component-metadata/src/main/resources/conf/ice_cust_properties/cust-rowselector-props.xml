@@ -44,7 +44,8 @@
 	<property-class>boolean</property-class>	
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-	</property-extension>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
 
 <property>
@@ -58,7 +59,8 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-	</property-extension>
+        <default-value>-1</default-value>
+    </property-extension>
 </property>
 
 <property>
@@ -187,7 +189,8 @@
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_COMPONENT</category>
-	</property-extension>
+        <default-value>true</default-value>
+    </property-extension>
 </property>
 
 <property>
@@ -202,7 +205,8 @@
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_COMPONENT</category>
-	</property-extension>
+        <default-value>true</default-value>
+    </property-extension>
 </property>
     
 <property>
@@ -224,7 +228,8 @@
 			<name>ignoreIsBound</name>
 			<value>true</value>
 		</named-value>
-	</property-extension>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
 <property>
 	<description>
@@ -238,5 +243,6 @@
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-	</property-extension>
+        <default-value>true</default-value>
+    </property-extension>
 </property>
