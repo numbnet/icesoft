@@ -268,7 +268,7 @@ public class OutputConnectionStatus extends HtmlPanelGroup {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[11];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = style;
         values[2] = styleClass;
