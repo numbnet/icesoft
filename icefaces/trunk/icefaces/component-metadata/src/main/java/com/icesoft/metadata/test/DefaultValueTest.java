@@ -98,7 +98,15 @@ public class DefaultValueTest {
                         if (attMap.containsKey(attName)) {
                             String valueInTld = String.valueOf(attMap.get(attName));
                             valueInTld = valueInTld.replaceAll("\"", "");
-                            if (value.equals(valueInTld)) {
+                            if (attributeValueIsSentinel(value)) {
+                               if ("null".equals(valueInTld)) {
+                                   passed++;
+                                   result.append("<tr style='background-color:#339900;'><td >"+ attName +"</td><td> sentinel value found "+ value +"</td></tr>");
+                               } else {
+                                   failed++;
+                                   result.append("<tr style='background-color:#FF6633;'><td >"+ attName +"</td><td>[Warning] sentinel value found : ["+  value + "], &nbsp;&nbsp;&nbsp;and metadata contains a default value ["+ valueInTld +"], However default-value is not required for sentinel value</td></tr>");
+                               }
+                            }else if (value.equals(valueInTld)) {
                                 passed++;
                                 result.append("<tr style='background-color:#339900;'><td >"+ attName +"</td><td>"+ value +"</td></tr>");
                             } else {
@@ -140,6 +148,53 @@ public class DefaultValueTest {
           System.err.println("Error: " + e.getMessage());
       }
     }
+    
+    private boolean attributeValueIsSentinel(String value) {
+        if (value == null) {
+            return true;
+        }
+
+        if ("null".equals(value)) {
+            return true;
+        }
+        
+        if ("".equals(value)) {
+            return true;
+        }
+        
+        if ("false".equals(value)) {
+            return true;
+        }
+        
+        if (String.valueOf(Integer.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Long.MIN_VALUE).equals(value)) {
+            return true;
+        }
+        
+        if (String.valueOf(Short.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Float.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Double.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Byte.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Character.MIN_VALUE).equals(value)) {
+            return true;
+        }
+        return false;
+    }    
 }
 
 
