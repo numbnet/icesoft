@@ -169,7 +169,6 @@
     <property-class>int</property-class>
     <property-extension>
         <category>APPEARANCE</category>
-        <default-value>-2147483648</default-value>
         <editor-class>
             &integerEditor;
         </editor-class>

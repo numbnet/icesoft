@@ -87,7 +87,6 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-        <default-value>-2147483648</default-value>
           <editor-class>
             &integerEditor;
           </editor-class>	
@@ -101,7 +100,6 @@
 	<property-class>int</property-class>
 	<property-extension>
 		<category>ICE_LAYOUT</category>
-        <default-value>-2147483648</default-value>
           <editor-class>
             &integerEditor;
           </editor-class>	

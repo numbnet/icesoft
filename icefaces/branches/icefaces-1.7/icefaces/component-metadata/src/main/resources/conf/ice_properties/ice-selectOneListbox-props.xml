@@ -62,7 +62,6 @@
     <property-class>int</property-class>
     <property-extension>
         <category>JAVASCRIPT</category>
-        <default-value>-2147483648</default-value>
         <editor-class>
             &javascriptEditor;
         </editor-class>

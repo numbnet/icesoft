@@ -42,7 +42,6 @@
         <editor-class>
             &integerEditor;
         </editor-class>
-        <default-value>-2147483648</default-value>
         <named-value>
             <name>minValue</name>
             <expression>new Integer(0)</expression>
@@ -51,7 +50,6 @@
             <name>unsetValue</name>
             <expression>new Integer(Integer.MIN_VALUE)</expression>
         </named-value>       
-      <default-value>-2147483648</default-value>         
     </property-extension>
 </property>
 
