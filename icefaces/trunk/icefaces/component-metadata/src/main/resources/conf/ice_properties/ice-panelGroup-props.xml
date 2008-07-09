@@ -297,3 +297,19 @@
         <is-hidden>true</is-hidden>
     </property-extension>
 </property>
+
+
+<property>
+    <description>
+        CSS style(s) to be applied when this component is rendered.
+    </description>
+    <property-name>style</property-name>
+        <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>APPEARANCE</category>
+        <editor-class>
+            &cssStyleEditor;
+        </editor-class>
+        <default-value>""</default-value>  
+    </property-extension>
+</property>

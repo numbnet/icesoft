@@ -51,6 +51,7 @@
             <name>unsetValue</name>
             <expression>new Integer(Integer.MIN_VALUE)</expression>
         </named-value>       
+      <default-value>-2147483648</default-value>         
     </property-extension>
 </property>
 

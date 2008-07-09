@@ -131,6 +131,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"mouseout"</default-value>
     </property-extension>
 </property>
 
@@ -146,5 +147,6 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>500</default-value>        
     </property-extension>
 </property>

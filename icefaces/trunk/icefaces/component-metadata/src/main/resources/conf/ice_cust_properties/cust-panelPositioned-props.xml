@@ -196,6 +196,7 @@
     <property-class>int</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>0</default-value>  
     </property-extension>
 </property>
 
@@ -209,6 +210,7 @@
     <property-class>int</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>0</default-value>         
     </property-extension>
 </property>
 
