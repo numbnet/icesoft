@@ -12,7 +12,10 @@
         </navigation>   
         <navigation from-action="#{navigation.navigationPathChange('inputRichText')}">
            <redirect view-id="/showcase.jspx"/>
-        </navigation>   
+        </navigation> 
+        <navigation from-action="#{styleBean.changeStyle}">
+           <redirect view-id="/showcase.jspx"/>
+        </navigation>  
     </page>
     
 </pages>
