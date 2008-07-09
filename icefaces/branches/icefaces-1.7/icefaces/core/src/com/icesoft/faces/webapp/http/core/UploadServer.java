@@ -89,7 +89,7 @@ public class UploadServer implements Server {
                             } catch (Throwable tr) {
                                 //ignore
                             }
-                            Log.warn("File upload failed", t);
+                             Log.warn("File upload failed", t);
                         } finally {
                             request.respondWith(new StreamingContentHandler("text/html", "UTF-8") {
                                 public void writeTo(Writer writer) throws IOException {
@@ -187,6 +187,7 @@ public class UploadServer implements Server {
                         //  so we'll work-around that for now. Fix later.
                         if (SeamUtilities.isSeamEnvironment()) {
                             state.setupAndExecuteAndRender();
+                            setCurrent();
                         }
                         else {
                             state.renderLater();
