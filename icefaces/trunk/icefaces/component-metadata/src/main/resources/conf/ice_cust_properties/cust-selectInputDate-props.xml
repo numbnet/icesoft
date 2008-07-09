@@ -127,7 +127,6 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
-        <default-value>false</default-value> 		
 	</property-extension>
 </property>
         
@@ -143,7 +142,6 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
-        <default-value>false</default-value> 		
 	</property-extension>
 </property>
         
@@ -160,7 +158,6 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
-        <default-value>false</default-value> 		
 	</property-extension>
 </property>
 

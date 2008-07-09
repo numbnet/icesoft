@@ -43,6 +43,5 @@
    	<property-class>boolean</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
-        <default-value>false</default-value>          
     </property-extension>
 </property>
