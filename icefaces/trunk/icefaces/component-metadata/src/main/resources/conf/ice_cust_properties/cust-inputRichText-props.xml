@@ -109,7 +109,6 @@
         <editor-class>
             &stringEditor;
         </editor-class>
-        <default-value>""</default-value>        
     </property-extension>
 </property>
 <property>
