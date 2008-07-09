@@ -42,6 +42,7 @@
 	<property-extension>
 		<category>GENERAL</category>
         <is-hidden>true</is-hidden>
-	</property-extension>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
  
