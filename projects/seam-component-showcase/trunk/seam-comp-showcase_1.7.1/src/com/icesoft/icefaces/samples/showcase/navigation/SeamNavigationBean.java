@@ -93,11 +93,14 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	}
 	
 
+	/**
+	 * This method is how the original component-showcase navigates
+	 * Note that it doesn't involve any bookmarking of pages
+	 */
 	@Override
 	@Begin(join=true)
 	public void navigationPathChange(ActionEvent event){
 	  super.navigationPathChange(event);
-	  log.info("old way selectedPath = "+super.getSelectedIncludePath());
 	  getMsgBundleKey(this.getSelectedIncludePath());
 	}
 	
@@ -107,16 +110,13 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	        FacesContext context = FacesContext.getCurrentInstance();
 	        Map map = context.getExternalContext().getRequestParameterMap();
 	        msgKey = (String) map.get("msgKey");
-	        log.info("looked it up and is="+msgKey);
 	        this.setSelectedIncludePath(findPagePath(msgKey));
 		}
 	}
 	
 	public String navigationPathChange(String slinkValue){
-		log.info("looking for selected path for "+slinkValue);
 		this.msgKey = slinkValue;
 		String temp = findPagePath(slinkValue);
-		log.info("temp page is "+temp);
 		this.setSelectedIncludePath(temp);
 		return "";
 	}
@@ -125,34 +125,32 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 		  Object o = entityManager.createQuery("SELECT m FROM MResource m WHERE m.lookup=:keyLookup")
              .setParameter("keyLookup",msgKey).getSingleResult();
 		  if (o==null){
-			  log.info("didn't get the dang thing!!");
 			  return "";
 		  }
 		  else{
 			  MResource mresource = (MResource)o;
-			  log.info("got it and page jspx is = "+mresource.getPgName());
 			  return this.prefixPath+mresource.getPgName(); 
 		  }		
 	}
 	
+	/**
+	 * have to parse to get the key
+	 * 
+	 * @param includePath
+	 */
 	protected void getMsgBundleKey(String includePath){
 	  if (includePath!=null && !includePath.equals("")){
-		  log.info("parse lookup string");
 		  String expr = includePath;
 		  String[] tokens = expr.split("/");
 		  for (int i=0; i<tokens.length; i++){
 			  if (tokens[i].contains(".jspx")){
-				  log.info("found jspx page");
 				  this.viewPage = tokens[i];
-				  log.info("viewPage="+viewPage);
-			  }else log.info("not viewPage :-"+tokens[i]);
+			  }
 		  }
 		  Object o = entityManager.createQuery("SELECT m FROM MResource m WHERE m.pgName=:pageName")
 		                 .setParameter("pageName",viewPage).getSingleResult();
-		  if (o==null)log.info("didn't get the dang thing!!");
-		  else{
+		  if (o!=null){
 			  MResource mresource = (MResource)o;
-			  log.info("got it and mresource = "+mresource.getLookup());
 			  this.msgKey = mresource.getLookup();
 		  }
 		  
