@@ -182,7 +182,6 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
-		<default-value>""</default-value>  
 	</property-extension>
 </property>
 
@@ -229,7 +228,6 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
-        <default-value>""</default-value>		
 	</property-extension>
 </property>
 
@@ -259,7 +257,6 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
-        <default-value>""</default-value>		
 	</property-extension>
 </property>
 
