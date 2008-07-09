@@ -180,7 +180,6 @@
             &integerEditor;
         </editor-class>
 
-        <default-value>null</default-value>
         <named-value>
             <name>minValue</name>
             <expression>new Integer(0)</expression>
