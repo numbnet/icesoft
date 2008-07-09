@@ -48,7 +48,6 @@
         <editor-class>
             &javascriptEditor;
         </editor-class>
-      <default-value>-2147483648</default-value>           
     </property-extension>
 </property>
 
