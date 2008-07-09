@@ -167,27 +167,4 @@
         </editor-class>
     </property-extension>
 </property>
-
-<property>
-    <description>
-        Width (in pixels) of the border to be drawn around this table.
-    </description>
-    <property-name>border</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <category>APPEARANCE</category>
-        <editor-class>
-            &integerEditor;
-        </editor-class>
-
-        <named-value>
-            <name>minValue</name>
-            <expression>new Integer(0)</expression>
-        </named-value>
-        <named-value>
-            <name>unsetValue</name>
-            <expression>new Integer(Integer.MIN_VALUE)</expression>
-        </named-value>
-    </property-extension>
-</property>
         
