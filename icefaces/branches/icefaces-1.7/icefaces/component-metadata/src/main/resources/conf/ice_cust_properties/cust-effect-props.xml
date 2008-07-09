@@ -32,6 +32,7 @@
   ~
   -->
 
+&base-props;
 
 <property>
     <description>
@@ -41,6 +42,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>false</default-value>
     </property-extension>
 </property>
 <property>
@@ -308,6 +310,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>APPEARANCE</category>
+        <default-value>true</default-value>
     </property-extension>
 </property>
 <property>
@@ -320,6 +323,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>APPEARANCE</category>
+        <default-value>true</default-value>
     </property-extension>
 </property>
 <property>
@@ -330,6 +334,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>APPEARANCE</category>
+        <default-value>false</default-value>
     </property-extension>
 </property>
 
@@ -382,6 +387,7 @@
     <property-class>int</property-class>
     <property-extension>
         <category>APPEARANCE</category>
+        <default-value>0</default-value>
     </property-extension>
 </property>
 

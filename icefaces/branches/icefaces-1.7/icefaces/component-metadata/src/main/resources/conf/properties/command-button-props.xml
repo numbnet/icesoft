@@ -68,6 +68,7 @@
                 &htmlCommandButtonTypesDomain;
             </expression>
         </named-value>
+        <default-value>submit</default-value>
     </property-extension>
 </property>
 

@@ -33,6 +33,7 @@
   -->
 &ice-att-userrole-rendered-props;
 &ice-att-style-props;
+&ice-att-displayListener-props;
 &uicommand-novalue-props;
 
 <property>
@@ -98,6 +99,23 @@
     <property-class>java.lang.String</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <editor-class>
+            &stringEditor;
+        </editor-class>
+    </property-extension>
+</property>
+
+<property>
+    <description>
+        Defines the orientation of the top-level menu items. For menuPopup, 
+        the only valid orientation is vertical, where each subsequent top-level 
+        menu item is below the previous. Sub menus appear to the side. 
+    </description>
+    <property-name>orientation</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>vertical</default-value>
         <editor-class>
             &stringEditor;
         </editor-class>

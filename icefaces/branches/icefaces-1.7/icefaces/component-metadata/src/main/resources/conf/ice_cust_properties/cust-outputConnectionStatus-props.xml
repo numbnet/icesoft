@@ -39,7 +39,7 @@
 	<description>
 		The connection status component would show this label, when The
 		connection state is unknown as a heartbeat ping has not been
-		acknowleged. However, connection recovery activities are in
+		acknowledged. However, connection recovery activities are in
 		progress which will change the state to either "Connected" or
 		"Disconnected" status.
 	</description>
@@ -50,6 +50,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+        <default-value>""</default-value>
 	</property-extension>
 </property>
 
@@ -66,6 +67,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+    <default-value>""</default-value>
 	</property-extension>
 </property>
 
@@ -81,6 +83,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+    <default-value>""</default-value>
 	</property-extension>
 </property>
 
@@ -97,6 +100,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+    <default-value>""</default-value>
 	</property-extension>
 </property>
 
@@ -120,6 +124,7 @@
 		]]>			
     </description>
     <property-name>styleClass</property-name>
+    <property-class>java.lang.String</property-class>
     <property-extension>
         <category>APPEARANCE</category>
         <editor-class>
@@ -132,10 +137,18 @@
     <description>Whether to popup a reload dialog when connection is lost: true or false (default).</description>
     <property-name>showPopupOnDisconnect</property-name>
     <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
 
 <property>
 <description>Whether to render hourglass pointer together with the element corresponding to busy state.</description>
-<property-name>displayHourglassWhenActive</property-name>
-<property-class>boolean</property-class>
+    <property-name>displayHourglassWhenActive</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
 </property>
