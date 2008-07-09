@@ -85,6 +85,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"Upload"</default-value>
     </property-extension>
 </property>
 <property>
@@ -132,6 +133,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_COMPONENT</category>
+        <default-value>true</default-value>
     </property-extension>
 </property>
 <property>
@@ -235,6 +237,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>".+"</default-value>
     </property-extension>
 </property>
 <property>

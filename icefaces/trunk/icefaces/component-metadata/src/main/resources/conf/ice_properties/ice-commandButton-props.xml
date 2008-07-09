@@ -45,6 +45,7 @@
 &pass-thru-onfocus-props;
 &pass-thru-onselect-props;
 &pass-thru-tabindex-props;
+&pass-thru-readonly-props;
 &ice-att-userrole-enabled-props;
 &command-button-props;
 

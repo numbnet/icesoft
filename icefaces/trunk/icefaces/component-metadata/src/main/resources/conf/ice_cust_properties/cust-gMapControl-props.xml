@@ -35,6 +35,8 @@
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
 -->
+&base-props;
+
 <property>
     <description>
     <![CDATA[ 
@@ -56,6 +58,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"GLargeMapControl"</default-value>
     </property-extension>
 </property>
 <!--

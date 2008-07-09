@@ -34,7 +34,7 @@
 
 &ice-att-userrole-rendered-props;
 &ice-att-userrole-enabled-props;
-&uicommand-props;
+&uicommand-novalue-props;
 
 <property>
     <description>icon</description>
@@ -45,6 +45,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>/xmlhttp/css/xp/css-images/menu_blank_icon.gif</default-value>
     </property-extension>
 </property>
 
@@ -57,6 +58,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>javascript:;</default-value>
     </property-extension>
 </property>
 
@@ -194,5 +196,22 @@
       <editor-class>
         &javascriptEditor;
       </editor-class>
+    </property-extension>
+</property>
+
+<property>
+	<description>The current value of this component.</description>
+	<property-name>value</property-name>
+	<property-class>java.lang.Object</property-class>
+	<property-extension>
+		<category>DATA</category>
+		<editor-class>
+			&valueBindingEditor;
+		</editor-class>
+		<named-value>
+			<name>ignoreIsBound</name>
+			<value>true</value>
+		</named-value>
+        <default-value>menu item default</default-value>
     </property-extension>
 </property>

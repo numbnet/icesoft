@@ -31,9 +31,9 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-<!--
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
+&base-props;
 
 <property>
     <description>
@@ -46,6 +46,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"-122.1419"</default-value>
     </property-extension>
 </property>
 <property>
@@ -58,8 +59,11 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"37.4419"</default-value>
     </property-extension>
 </property>
+
+<!--
 <property>
     <description>
         TODO           
