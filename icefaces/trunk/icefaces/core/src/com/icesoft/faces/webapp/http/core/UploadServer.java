@@ -187,6 +187,7 @@ public class UploadServer implements Server {
                         //  so we'll work-around that for now. Fix later.
                         if (SeamUtilities.isSeamEnvironment()) {
                             state.setupAndExecuteAndRender();
+                            setCurrent();
                         }
                         else {
                             state.renderLater();
