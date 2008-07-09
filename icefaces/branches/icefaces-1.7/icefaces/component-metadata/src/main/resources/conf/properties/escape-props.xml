@@ -41,6 +41,7 @@
     <property-name>escape</property-name>
     <property-class>boolean</property-class>    
     <property-extension>
-        <category>APPEARANCE</category>                
+        <category>APPEARANCE</category>  
+        <default-value>true</default-value> 
     </property-extension>
 </property>
