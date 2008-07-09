@@ -35,7 +35,7 @@
 
 <!-- todo: inconsistent  -->
 &base-props;
-
+&ice-att-immediate-props;
 <property>
     <description>
         <![CDATA[

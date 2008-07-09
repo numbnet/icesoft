@@ -53,6 +53,7 @@
 		<editor-class>
 			&integerEditor;
 		</editor-class>
+        <default-value>10</default-value>		
 	</property-extension>
 </property>
 
@@ -70,6 +71,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"150"</default-value>        
     </property-extension>
 </property>
 

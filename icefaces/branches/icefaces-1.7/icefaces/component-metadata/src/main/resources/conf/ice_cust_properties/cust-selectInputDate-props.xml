@@ -62,6 +62,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+		<default-value>"/xmlhttp/css/xp/css-images/"</default-value>
 	</property-extension>
 </property>
 
@@ -79,6 +80,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+        <default-value>"MM/dd/yyyy"</default-value>  		
 	</property-extension>
 </property>
 
@@ -125,6 +127,7 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
+        <default-value>false</default-value> 		
 	</property-extension>
 </property>
         
@@ -140,6 +143,7 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
+        <default-value>false</default-value> 		
 	</property-extension>
 </property>
         
@@ -156,6 +160,7 @@
 		<category>ICE_LAYOUT</category>
 		<is-bindable>true</is-bindable>
 		<is-hidden>false</is-hidden>
+        <default-value>false</default-value> 		
 	</property-extension>
 </property>
 
@@ -180,6 +185,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+		<default-value>""</default-value>  
 	</property-extension>
 </property>
 
@@ -226,6 +232,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+        <default-value>""</default-value>		
 	</property-extension>
 </property>
 
@@ -255,6 +262,7 @@
 		<editor-class>
 			&stringEditor;
 		</editor-class>
+        <default-value>""</default-value>		
 	</property-extension>
 </property>
 
@@ -282,3 +290,4 @@
         </editor-class>
     </property-extension>
 </property>
+

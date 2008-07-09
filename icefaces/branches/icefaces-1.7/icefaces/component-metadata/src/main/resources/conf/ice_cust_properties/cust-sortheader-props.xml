@@ -37,6 +37,7 @@
 &base-props;
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
+&ice-att-immediate-props;
   <property>
 	<description>
         <![CDATA[  	
@@ -56,6 +57,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>       
     </property-extension>
   </property>
 
