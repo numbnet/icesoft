@@ -35,6 +35,7 @@
 &ice-att-userrole-enabled-props;
 &ice-att-userrole-rendered-props;
 -->
+&base-props;
 <property>
     <description>
         List of GLatLng component

@@ -42,6 +42,7 @@
     <property-class>int</property-class>    
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>-2147483648</default-value>         
     </property-extension>
 </property>
   

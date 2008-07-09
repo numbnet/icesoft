@@ -31,8 +31,10 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
+&base-props;
 &input-value-props;
-
+&ice-att-immediate-props;
+&required-props;
 <property>
     <description>
         CSS style(s) to be applied when this component is rendered.
@@ -107,6 +109,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>""</default-value>        
     </property-extension>
 </property>
 <property>
@@ -181,6 +184,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>false</default-value>        
     </property-extension>
 </property>
 <property>
@@ -203,6 +207,7 @@
         <editor-class>
             &stringEditor;
         </editor-class>
+        <default-value>"default"</default-value>        
     </property-extension>
 </property>
 <property>
@@ -217,5 +222,6 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>false</default-value>         
     </property-extension>
 </property>

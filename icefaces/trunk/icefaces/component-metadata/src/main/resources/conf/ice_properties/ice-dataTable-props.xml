@@ -49,6 +49,7 @@
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_ADVANCED</category>
+      <default-value>true</default-value>  		
 	</property-extension>
 </property>
 
@@ -98,6 +99,7 @@
     <property-class>boolean</property-class>
     <property-extension>
       <category>ICE_LAYOUT</category>
+      <default-value>false</default-value>        
     </property-extension>
   </property>
 
@@ -184,6 +186,7 @@
             <name>unsetValue</name>
             <expression>new Integer(Integer.MIN_VALUE)</expression>
         </named-value>       
+      <default-value>0</default-value>            
     </property-extension>      	
 </property>
 <property>
@@ -205,6 +208,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_ADVANCED</category>
+      <default-value>false</default-value>          
     </property-extension>
 </property>
 
@@ -218,6 +222,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>        
     </property-extension>
 </property>
 
@@ -230,6 +235,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ICE_LAYOUT</category>
+      <default-value>true</default-value>          
     </property-extension>
 </property>
 
@@ -325,31 +331,3 @@
     </property-extension>
 </property>
 
-<property>
-   <description>
-       When true table is scrollable.
-       (Note: you will also need to set columnWidths, and scrollHeight)
-       When table is scrollable pass-thru attributes like bgcolor will not work
-       because they are passed to the outer scrollable div only, not to the table
-       itself. Use style classes instead. See the styleClass, rowClasses and
-       columnClasses attributes.
-   </description>
-   <property-name>scrollable</property-name>
-   <property-class>boolean</property-class>
-   <property-extension>
-     <category>ICE_LAYOUT</category>
-     <default-value>false</default-value>
-   </property-extension>
- </property>
-
-<property>
-	<description>
-		Sets default sort order, required for sortheader component.
-	</description>
-	<property-name>sortAscending</property-name>
-	<property-class>boolean</property-class>
-	<property-extension>
-		<category>ICE_ADVANCED</category>
-        <default-value>true</default-value>
-	</property-extension>
-</property>
