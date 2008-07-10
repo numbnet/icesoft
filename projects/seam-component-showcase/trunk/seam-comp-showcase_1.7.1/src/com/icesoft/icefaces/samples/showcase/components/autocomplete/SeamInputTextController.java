@@ -99,7 +99,7 @@ public class SeamInputTextController extends BaseBean{
 
     @Create
     public void init(){
-    	log.info("creating bean");
+
     }
     /**
      * <p>Called by the selectInputText component at set intervals.  By using
@@ -204,6 +204,6 @@ public class SeamInputTextController extends BaseBean{
    
     @Destroy
     public void destroy(){
-    	log.info("destroying bean");
+    	
     }
 }
