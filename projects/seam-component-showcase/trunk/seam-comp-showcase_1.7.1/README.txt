@@ -1,10 +1,20 @@
 This is a WAR deployment of  seam component showcase example implemented in Seam.   As such, it 
 doesn't require an ejb3 container and still uses Seam annotations and contexts. 
 
-It can be deployed in JBoss AS 4.x, WebLogic, Glassfish and Tomcat without the EJB3 container.  
+****NEAT THINGS IN THIS VERSION*****
+include component binding example in dataPaginator example, the navigation is in conversation scope, so users
+can do multiple windows of the application in the same session (concurrent dom views).  Note though that all pages
+are not bookmarkable.  If it has page scope, a page refresh will probably set you back to original view of the
+application.  The conversationally scoped views will hold their view.  This application could be changed easily
+to have the key to the MResources table (which holds all the links to info for each of the components) could be
+the page paramter, but since pages are not always required to be bookmarkable, that has been left off.  This same table could also be used to load the documentation (in tabs similar to older version, etc).
+
+This app can be deployed in JBoss AS 4.x, WebLogic, Glassfish and Tomcat without the EJB3 container.  
 Note that the j2ee AS have asynch issues with the Seam2.0.0.GA since the jsf-1.2 implementation is used.
 The old distribution of seam-comp-showcase which is an ear deployment and uses the myfaces (jsf1.1 implementation)
-works better for these older servers.  The j5ee AS work much better with jsf1.2 implementations of which Seam2.0.x recommends.
+works better for these older servers.  The j5ee AS work much better with jsf1.2 implementations of which Seam2.0.x recommends.  There are also a few portlet targets available.
+
+**DIRECTIONS**
 
 1.  download jboss-seam-2.x and unzip all files (as the libraries will be copied from these folders)--may have to build the jars
     NOTE THAT FOR PORTLET EXAMPLES*** you should have jboss-seam-2.0.2.SP1 or jboss-seam-2.1.0.A1 as a minimum.
@@ -88,17 +98,16 @@ Glassfish (tested with v2 & v2.1  get hibernate/caching exceptions for asynch wi
   * Deploy dist-glassfish/seam-comp-showcase.war as Web App
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-Glassfish/Liferay bundle (Liferay 4.4.2 & Glassfish V2 UR1  or liferay 5 & Glassfish v2)
+Glassfish/Liferay bundle (Liferay 5.0.1.RC1 & Glassfish V2)
  * Install 
  * Must have jboss-seam-2.1.0.A1 as minimum (or seam-2.0.2)
- * ant glassfishv2-liferay4.42
+ * ant glassfishv2-liferay
  * copy \dist\glassfish-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * make sure you have both the embedded Derby database as well as AS running
- * KNOWN ISSUE (to be fixed with liferay-5.0.2 problem with liferay injector, so replace the web.xml that is     
-   generated from liferay deployment with the one in the resources-glasfish-liferay folder (on the Server/domains/
-   <domain-name>/autodeploy/seam-comp-showcase
- * restart the server.  Something still not quite right with database access.  Will look later.
- * use URL:- http://localhost:8080/c/portal/login
+ * KNOWN ISSUE (to be fixed with liferay-5.0.2 problem with liferay injector (get extra &gt chars in file), 
+   so replace the web.xml that is generated from liferay deployment with the one in the 
+   resources-glasfish-liferay folder (on the Server/domains/<domain-name>/autodeploy/seam-comp-showcase
+ * restart the server.   * use URL:- http://localhost:8080/c/portal/login
  * sign in and create some pages and place some of the portlets on them.  
 
 Jboss-4.2.2.GA/Liferay5.0.1.RC bundle 
