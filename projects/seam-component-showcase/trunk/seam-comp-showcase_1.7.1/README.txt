@@ -89,11 +89,10 @@ Tomcat with embeddable JBoss (the build is the same as JBoss 4.2.2 GA WAR):
   * Start Tomcat
   * Access the app at http://localhost:8080/seam-comp-showcase/
 
-Glassfish (tested with v2 & v2.1  get hibernate/caching exceptions for asynch with v2
-   HOWEVER---works well with v2.1)
-  * Install Glassfish v2.1
+Glassfish (tested with v2.1 & v2.2)
+  * Install Glassfish v2.1 or v2.2
   * ant glassfish
-  * Start GlassFish
+  * Start GlassFish after starting embedded Derby database (bin/asadmin start-database)
   * Load the admin console http://localhost:4848/
   * Deploy dist-glassfish/seam-comp-showcase.war as Web App
   * Access the app at http://localhost:8080/seam-comp-showcase/
