@@ -67,7 +67,7 @@ public class MainServlet extends HttpServlet {
                 //Need to dispatch to the Spring resource server
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
-            dispatcher.dispatchOn(".*(block\\)", new SessionVerifier(sessionDispatcher));
+            dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher));
             dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
