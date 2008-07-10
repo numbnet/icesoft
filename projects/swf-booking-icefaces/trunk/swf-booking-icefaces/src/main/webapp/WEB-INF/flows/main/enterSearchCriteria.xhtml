@@ -3,7 +3,6 @@
 	    		xmlns:ui="http://java.sun.com/jsf/facelets"
 	  			xmlns:h="http://java.sun.com/jsf/html"
 	  			xmlns:f="http://java.sun.com/jsf/core"
-	  			xmlns:sf="http://www.springframework.org/tags/faces"
 				template="/WEB-INF/layouts/standard.xhtml">
 
 <ui:define name="content">
@@ -21,9 +20,7 @@
 							<h:outputLabel for="searchString">Search String:</h:outputLabel>
 						</div>
 						<div class="input">
-							<sf:clientTextValidator promptMessage="Search hotels by name, address, city, or zip.">
 								<h:inputText id="searchString" value="#{searchCriteria.searchString}" />
-							</sf:clientTextValidator>
 						</div>
 					</div>
 					<div class="field">
@@ -37,7 +34,7 @@
 				   		</div>
 					</div>
 					<div class="buttonGroup">
-						<sf:commandButton id="findHotels" value="Find Hotels" processIds="*" action="search" />
+						<h:commandButton id="findHotels" value="Find Hotels"  action="search" />
 					</div>
 			    </fieldset>
 			</h:form>			  
@@ -80,7 +77,7 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">Action</f:facet>
-						<sf:commandLink id="cancel" value="Cancel" processIds="bookingsFragment" action="cancelBooking" />
+						<h:commandLink id="cancel" value="Cancel" action="cancelBooking" />
 					</h:column>
 				</h:dataTable>
 			</h:form>
