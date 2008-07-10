@@ -24,7 +24,6 @@
 	<classpathentry kind="lib" path="lib/icefaces-facelets.jar"/>
 	<classpathentry kind="lib" path="lib/portlet.jar"/>
       <classpathentry kind="lib" path="lib/krysalis-jCharts-1.0.0-alpha-1.jar"/>
-      <classpathentry kind="lib" path="lib/servlet-api.jar"/>
       <classpathentry kind="lib" path="lib/backport-util-concurrent.jar"/>
  	<classpathentry kind="src" output="classes" path="src"/>
 	<classpathentry kind="output" path="bin"/>
