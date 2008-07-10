@@ -61,21 +61,6 @@
         <default-value>"37.4419"</default-value>
     </property-extension>
 </property>
-<property>
-	<description>
-		If user is in given role, this component will be rendered
-		normally. If not, the component will be in disabled state.
-	</description>
-	<property-name>enabledOnUserRole</property-name>
-
-	<property-class>java.lang.String</property-class>
-	<property-extension>
-		<category>ICE_ADVANCED</category>
-		<editor-class>
-			&stringEditor;
-		</editor-class>
-	</property-extension>
-</property>
 
 <!--
 <property>
