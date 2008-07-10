@@ -17,26 +17,22 @@ Build Spring Web Flow by invoking "ant" in "build-spring-webflow".
 
 Build ICEfaces by invoking "ant" in "icefaces"
 
-Copy from "icefaces/lib" to "swf-booking-icefaces/lib/global" the following:
+Copy from "icefaces/lib" to "swf-booking-icefaces/src/main/webapp/WEB-INF/lib" the following:
+(this will be fixed once we determine how to add local .jar files to the
+ivy build)
 
 backport-util-concurrent.jar
 commons-fileupload.jar
 icefaces.jar
 icefaces-comps.jar
 icefaces-facelets.jar
-jsf-api-1.2.jar
-jsf-impl-1.2.jar
 
 Build the demo by invoking the following in "swf-booking-icefaces":
 
 ant jar
-rm target/war-expanded/WEB-INF/lib/com.springsource.com.sun.faces-1.2.0.08.jar target/war-expanded/WEB-INF/lib/com.springsource.javax.faces-1.2.0.08.jar
-cp lib/global/*.jar target/war-expanded/WEB-INF/lib/
+(repeat or "ant clean" if it fails)
 
-(this will be fixed once we determine how to add local .jar files to the 
-ivy build)
-
-cp -r target/war-expanded to your Tomcat 6 webapps directory.
+cp target/artifacts/swf-booking-faces.war  to your Tomcat 6 webapps directory.
 
 Launch the application via
 
