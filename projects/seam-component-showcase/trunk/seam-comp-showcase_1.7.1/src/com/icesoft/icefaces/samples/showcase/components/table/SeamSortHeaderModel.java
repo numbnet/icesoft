@@ -65,7 +65,6 @@ import java.io.Serializable;
 @Name("sortHeaderModel")
 public class SeamSortHeaderModel extends SeamResizableColumnBean{
 	private static final String EJBQL = "select e from Employee e";
-    // table of person data
 
     private boolean descending;
     private String columnName;
@@ -73,9 +72,6 @@ public class SeamSortHeaderModel extends SeamResizableColumnBean{
   
 
 	public SeamSortHeaderModel(){
-		/* don't need following 2 lines as begun conv in pages.xml for portlet version*/
-//		if (!Manager.instance().isLongRunningConversation())
-//			Manager.instance().beginConversation();
         setEjbql(EJBQL);
     	descending = true;
     	columnName = "departmentName";
@@ -83,9 +79,6 @@ public class SeamSortHeaderModel extends SeamResizableColumnBean{
     	buildSortedList();
 	}
 	
-    /**
-     *
-     */
  
 	public void buildSortedList(){
         setEjbql(EJBQL);
@@ -129,7 +122,10 @@ public class SeamSortHeaderModel extends SeamResizableColumnBean{
 			sort(this.columnName, this.descending);
 		}
 	}
-
+	@Override
+	public Integer getMaxResults() {
+		return 100;
+	}
 	@Destroy
 	public void destroy(){
 
