@@ -20,7 +20,7 @@ public class GMapControl extends UIPanel{
     }
     
     private String name;
-    private String localeName;
+    private String localName;
     private String position;
 
 	public String getName() {
@@ -54,17 +54,17 @@ public class GMapControl extends UIPanel{
             removeControl(context, mapClientId);
             return;
         }
-        if (localeName != null && !localeName.equalsIgnoreCase(currentName)) {
+        if (localName != null && !localName.equalsIgnoreCase(currentName)) {
             //control name has been changed so removed the previous control
             removeControl(context, mapClientId);
         }
-        localeName = currentName;
+        localName = currentName;
         JavascriptContext.addJavascriptCall(context, 
         "Ice.GoogleMap.addControl('"+ mapClientId +"', '"+ currentName +"');");
     }
     
     private void removeControl(FacesContext facesContext, String mapId) {
         JavascriptContext.addJavascriptCall(facesContext, 
-                "Ice.GoogleMap.removeControl('"+ mapId +"', '"+ localeName +"');");
+                "Ice.GoogleMap.removeControl('"+ mapId +"', '"+ localName +"');");
     }
 }
