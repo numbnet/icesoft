@@ -58,7 +58,7 @@ public class MainServlet extends HttpServlet {
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             //don't create new sessions for XMLHTTPRequests identified by the path prefix "block/*"
-            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
+            PseudoServlet sessionDispatcher = new SessionDispatcher() {
                 protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration);
                 }
