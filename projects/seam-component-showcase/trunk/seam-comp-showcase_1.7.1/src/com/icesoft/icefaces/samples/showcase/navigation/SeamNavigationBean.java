@@ -87,7 +87,6 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	   	
 	@Create
 	public void init(){
-		log.info("creating navigation bean");
 		if (msgKey==null)msgKey="splashPage";
 		else log.info("msgKey="+msgKey);
 	}
@@ -106,7 +105,6 @@ public class SeamNavigationBean extends NavigationBean implements Serializable{
 	
 	public void navigationKeyChange(){
 		if (!msgKey.equals("gmap")){
-			log.info("have to look it up!");
 	        FacesContext context = FacesContext.getCurrentInstance();
 	        Map map = context.getExternalContext().getRequestParameterMap();
 	        msgKey = (String) map.get("msgKey");
