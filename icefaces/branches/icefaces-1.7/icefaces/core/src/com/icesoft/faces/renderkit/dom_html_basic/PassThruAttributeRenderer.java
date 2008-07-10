@@ -143,7 +143,7 @@ public class PassThruAttributeRenderer {
         renderAttributes(
                 facesContext, uiComponent, null, null, excludedAttributes);
     }
-    
+
     /**
      * Render pass thru attributes to the attributeElement (instead of root) 
      * associated with the UIComponent parameter. The excludedAttributes
@@ -166,7 +166,7 @@ public class PassThruAttributeRenderer {
         renderBooleanAttributes(
                 facesContext, uiComponent, attributeElement, excludedAttributes);
         CurrentStyle.apply(facesContext, uiComponent, styleElement, null);
-        
+
         if(attributeElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
@@ -239,7 +239,7 @@ public class PassThruAttributeRenderer {
         if (uiComponent == null) {
             throw new FacesException("Null pointer exception");
         }
-        
+
         if(targetElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
@@ -307,18 +307,15 @@ public class PassThruAttributeRenderer {
         if (uiComponent == null) {
             throw new FacesException("Component instance is null");
         }
-        
         if(targetElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
-            
             Element rootElement = (Element) domContext.getRootNode();
             if (rootElement == null) {
                 throw new FacesException("DOMContext is not initialized");
             }
             targetElement = rootElement;
         }
-        
         List excludedAttributesList = null;
         if (excludedAttributes != null && excludedAttributes.length > 0) {
             excludedAttributesList = Arrays.asList(excludedAttributes);
@@ -339,18 +336,18 @@ public class PassThruAttributeRenderer {
                     uiComponent.getAttributes().get(nextPassThruAttributeName);
             // Only render non-null attributes.
             // Some components have attribute values
-            // set to the Wrapper classes' minimum value - don't render 
+            // set to the Wrapper classes' minimum value - don't render
             // an attribute with this sentinel value.
             if (nextPassThruAttributeValue != null &&
                 !attributeValueIsSentinel(nextPassThruAttributeValue)) {
                 targetElement.setAttribute(
                         nextPassThruAttributeName.toString(),
                         nextPassThruAttributeValue.toString());
-            } else {
-                targetElement.removeAttribute(
-                        nextPassThruAttributeName.toString());
+//remove the else clause that was here; it's trying to remove a node
+//that doesn't exist
             }
         }
+
     }
 
     /**
