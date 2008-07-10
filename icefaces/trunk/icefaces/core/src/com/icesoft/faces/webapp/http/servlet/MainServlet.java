@@ -58,17 +58,17 @@ public class MainServlet extends HttpServlet {
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             //don't create new sessions for XMLHTTPRequests identified by the path prefix "block/*"
-            PseudoServlet sessionServer = new SessionVerifier("block\\/", new SessionDispatcher() {
-                protected PseudoServlet newServlet(HttpSession session, SessionDispatcher.Monitor sessionMonitor) {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
+                protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration);
                 }
-            });
-
+            };
             if (SeamUtilities.isSpringEnvironment()) {
                 //Need to dispatch to the Spring resource server
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
-            dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|block\\/|/spring/)", sessionServer);
+            dispatcher.dispatchOn(".*(block\\)", new SessionVerifier(sessionDispatcher));
+            dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
         } catch (Exception e) {
             throw new ServletException(e);
