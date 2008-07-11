@@ -67,13 +67,13 @@ import javax.faces.event.ValueChangeEvent;
  *
  * @since 0.3.0
  */
-@Scope(ScopeType.CONVERSATION)
+@Scope(ScopeType.PAGE)
 @Name("dataScrollingModel")
 public class SeamDataScrollingModel implements Serializable{
 	@Logger Log log;
 	
-	@In("#{employeesList.resultList}")
-	ArrayList employees;
+	@In("#{employeesListAll.resultList}")
+	private List employees;
 	
 	@In(value="dataPaginator",required=false)
 	DataPaginator dataPaginatorBinding;
@@ -92,12 +92,13 @@ public class SeamDataScrollingModel implements Serializable{
     public static final String PAGINATOR_SCROLLING = "paging";
 
     // currently select scrolling state select by user.
-    private String selectedDataScrollMode;
+    private String selectedDataScrollMode=PAGINATOR_SCROLLING;
     private static HashMap selectedDataScrollModes;
 
 	
     @Create
 	public void init(){
+    	  if (employees==null)employees= new ArrayList();
 	      selectedDataScrollMode = PAGINATOR_SCROLLING;
 
 	      selectedDataScrollModes = new HashMap();
@@ -129,13 +130,13 @@ public class SeamDataScrollingModel implements Serializable{
         return selectedDataScrollModes;
     }
     
-    public ArrayList getEmployees(){
+    public List getEmployees(){
     	return this.employees;
     }
 
 	@Destroy
 	public void destroy(){
-		
+		log.info("destroying datapaginator bean");
 	}
 	
    /**
