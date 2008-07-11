@@ -1,0 +1,222 @@
+<!--
+~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+~
+~ "The contents of this file are subject to the Mozilla Public License
+~ Version 1.1 (the "License"); you may not use this file except in
+~ compliance with the License. You may obtain a copy of the License at
+~ http://www.mozilla.org/MPL/
+~
+~ Software distributed under the License is distributed on an "AS IS"
+~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+~ License for the specific language governing rights and limitations under
+~ the License.
+~
+~ The Original Code is ICEfaces 1.5 open source software code, released
+~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+~
+~ Contributor(s): _____________________.
+~
+~ Alternatively, the contents of this file may be used under the terms of
+~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+~ License), in which case the provisions of the LGPL License are
+~ applicable instead of those above. If you wish to allow use of your
+~ version of this file only under the terms of the LGPL License and not to
+~ allow others to use your version of this file under the MPL, indicate
+~ your decision by deleting the provisions above and replace them with
+~ the notice and other provisions required by the LGPL License. If you do
+~ not delete the provisions above, a recipient may use your version of
+~ this file under either the MPL or the LGPL License."
+~
+-->
+
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+
+<!-- Demonstration -->
+<ice:panelTab id="icepnltab" label="#{msgs['tabbedHeadings.demo']}">
+
+
+<!-- Description -->
+<ice:panelGroup styleClass="formBorderHighlight">
+    <h3>
+        <ice:outputText value="#{msgs['component.dragDrop.instructions']}"/>
+    </h3>
+    <h4>
+        <ice:outputText value="#{msgs['component.dragDrop.subInstructions']}"/>
+    </h4>
+</ice:panelGroup>
+
+<!-- Layout the links and buttons. -->
+<ice:panelGroup styleClass="formBorderHighlight" style="float: left;">
+
+<!-- Store  -->
+<h3>
+    <ice:outputText value="#{msgs['component.dragDrop.store']}"
+                    style="font-weight: bold; text-align:center;"/>
+</h3>
+<ice:panelSeries id="PnlSrs"
+                 value="#{cart.storeTableAsList}"
+                 var="item">
+    <div style="float: left;margin: 2px; padding: 5px; margin-right: 20px; border: 1px solid #999999;">
+        <!-- drag the image, name and price over to the cart... -->
+        <ice:panelGroup id="PnlGrp"
+                        draggable="true"
+                        dragListener="#{cart.cartListener}"
+                        dragValue="#{item.key}"
+                        dragOptions="dragGhost"
+                        dragMask="dragging,drag_cancel,hover_end,hover_start"
+                        dropMask="dragging,drag_cancel,hover_start,hover_end"
+                        styleClass="dragDropImage">
+            <ice:graphicImage id="GrphImg"
+                              width="100px"
+                              height="75px"
+                              url="#{item.image}"
+                              styleClass="dragDropImageSrc"
+                              alt="#{item.name}"/>
+            <br/>
+            <ice:outputText id="DDName" value="#{msgs['component.dragDrop.store.name']}#{item.name}"/>
+            <br/>
+            <ice:outputText id="DDPrice" value="#{msgs['component.dragDrop.store.price']}#{item.priceFormatted}"/>
+        </ice:panelGroup>
+        <ice:outputText id="DDQty" value="#{msgs['component.dragDrop.store.quantity']}#{item.quantity}"/>
+    </div>
+</ice:panelSeries>
+
+<div style="clear: left;"/>
+
+
+<ice:panelGroup style="margin-top: 10px;">
+    <!-- Cart Title -->
+    <h3>
+        <ice:outputText value="#{msgs['component.dragDrop.cart']}"
+                        style="font-weight: bold; text-align:center"/>
+    </h3>
+
+    <!-- Cart items -->
+    <ice:panelGroup style="float: left;">
+        <ice:dataTable id="DataTbl"
+                       value="#{cart.purchasedList}"
+                       var="item"
+                       style="padding: 0px; margin: 0px;"
+                       styleClass="cartLayoutTable"
+                       footerClass="shoppingCartFooter"
+                       columnClasses="cartImageColumn,cartNameColumn,cartPriceColumn,cartQuantityColumn, cartCostColumn,cartReturnColumn"
+                       border="1" cellpadding="2">
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.image']}"/>
+                </f:facet>
+                <ice:panelGroup>
+                    <ice:graphicImage id="cartItemImage" url="#{item.imageSmall}"
+                                      styleClass="dragDropImageSmall"
+                                      alt="#{item.name}"/>
+                </ice:panelGroup>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.name']}"/>
+                </f:facet>
+                <ice:outputText id="DDNameout" value="#{item.name}"/>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.price']}"/>
+                </f:facet>
+                <ice:outputText id="DDPriceout" value="#{item.priceFormatted}"/>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.quantity']}"/>
+                </f:facet>
+                <ice:panelGroup effect="#{item.effect}">
+                    <ice:outputText id="DDQtyout" value="#{item.purchasedQuantity}"/>
+                </ice:panelGroup>
+
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.cost']}"/>
+                </f:facet>
+                <ice:outputText id="DDCostout" value="#{item.productTotal}"/>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText value="#{msgs['component.dragDrop.cart.returnOne']}"/>
+                </f:facet>
+                <ice:commandButton id="DDRtn" actionListener="#{item.returnOne}"
+                                   value="#{msgs['component.dragDrop.cart.return']}"/>
+            </ice:column>
+            <f:facet name="footer">
+                <ice:outputText id="DDTotalout"
+                                value="#{msgs['component.dragDrop.cart.total']} #{cart.totalPriceFormatted} (#{cart.purchasedCount} #{cart.itemString})"/>
+            </f:facet>
+        </ice:dataTable>
+    </ice:panelGroup>
+
+    <!-- Drop Zones -->
+    <ice:panelGroup styleClass="cartDropWrapper" style="margin-left: 5px;float:left;width:55px;">
+        <ice:panelGroup id="cartDropTarget" dropTarget="true"
+                        hoverclass="droptargethover"
+                        dropValue="cartDropTarget"
+                        styleClass="cartDropZone">
+
+            <ice:graphicImage value="/images/shopping-cart.gif"
+                              alt="Shopping Cart"
+                              width="50" height="40"/>
+            <br/>
+            <ice:outputText
+                    styleClass="cartDropZonText1"
+                    value="#{msgs['component.dragDrop.cartZoneLabel2']}"/>
+
+        </ice:panelGroup>
+    </ice:panelGroup>
+</ice:panelGroup>
+
+
+</ice:panelGroup>
+
+</ice:panelTab>
+
+<!--
+The bean is  responsible for streaming html documentation to
+this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/dragDropDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<!--
+Template for component source code.  This servlet loads
+the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/components/dragDrop.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/dragDrop-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
+
+</ice:panelTabSet>
+
+</ice:form>

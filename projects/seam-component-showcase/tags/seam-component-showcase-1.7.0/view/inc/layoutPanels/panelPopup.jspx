@@ -1,0 +1,258 @@
+<!--
+~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+~
+~ "The contents of this file are subject to the Mozilla Public License
+~ Version 1.1 (the "License"); you may not use this file except in
+~ compliance with the License. You may obtain a copy of the License at
+~ http://www.mozilla.org/MPL/
+~
+~ Software distributed under the License is distributed on an "AS IS"
+~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+~ License for the specific language governing rights and limitations under
+~ the License.
+~
+~ The Original Code is ICEfaces 1.5 open source software code, released
+~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+~
+~ Contributor(s): _____________________.
+~
+~ Alternatively, the contents of this file may be used under the terms of
+~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+~ License), in which case the provisions of the LGPL License are
+~ applicable instead of those above. If you wish to allow use of your
+~ version of this file only under the terms of the LGPL License and not to
+~ allow others to use your version of this file under the MPL, indicate
+~ your decision by deleting the provisions above and replace them with
+~ the notice and other provisions required by the LGPL License. If you do
+~ not delete the provisions above, a recipient may use your version of
+~ this file under either the MPL or the LGPL License."
+~
+-->
+
+<!--
+In this demonstration, four types of popup panel components can be toggled on and
+off.
+The Draggable panel can be moved. The Modal panel cannot be moved, interrupts
+the application
+and must be dismissed before the application's functionality will return. The 
+autoCentre attribute will cause the popup to maintain a centred position in the
+browser window, and the popup will stay centred in the viewable area of the window
+even as the user resizes or scrolls the window. Likewise, the autoPosition attribute
+acts like the autoCentre attibute, except that the user can specify in pixels from the top
+left of the window, where the popup should remain.
+-->
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Example include, also see source code include.
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+
+    <!-- Application title  -->
+    <ice:panelGroup styleClass="formBorderHighlight">
+        <h3>
+            <ice:outputText id="title"
+                    value="#{msgs['component.popupPanel.title']}"/>
+        </h3>
+        <h4>
+            <ice:outputText id="instructions"
+                    value="#{msgs['component.popupPanel.instructions']}"/>
+        </h4>
+
+        <!-- popup selection -->
+        <ice:panelGrid columns="2" styleClass="popupControls">
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.draggable.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="draggableChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showDraggablePanel}"/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.modal.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="modalChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showModalPanel}"/>
+            <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.autoCentre.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="autoCentreChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showAutoCentrePanel}"/>
+             <ice:outputText styleClass="propertyLabel"
+                            value="#{msgs['component.popupPanel.autoPosition.controlLabel']}"/>
+            <ice:selectBooleanCheckbox id="autoPositionChk"
+                                       partialSubmit="true"
+                                       value="#{popup.showAutoPositionPanel}"/>
+              <ice:outputText styleClass="propertyLabel"  rendered="#{popup.showAutoPositionPanel}"
+                            value="#{msgs['component.popupPanel.autoPosition.inputLabel']}"/>
+            <ice:inputText id="autoPositionInput" rendered="#{popup.showAutoPositionPanel}"
+                                       partialSubmit="true"
+                                       value="#{popup.autoPositionInput}"/>
+        </ice:panelGrid>
+    </ice:panelGroup>
+
+    <!-- panel popup code, draggable type  -->
+    <ice:panelGroup style="position:relative; width:100%; height:0px;">
+    <ice:panelPopup id="draggablePP"
+            draggable="true"
+            rendered="#{popup.showDraggablePanel}"
+            visible="#{popup.showDraggablePanel}"
+            style="z-index: 1000;top:-100px;left:10%;position: absolute; width: 300px; height: 150px;">
+
+        <f:facet name="header">
+            <ice:panelGrid id="draggablePanelGrid"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="2"
+                           columnClasses="none, popupButton">
+                <ice:outputText value="#{msgs['component.popupPanel.draggable.title']}"/>
+                <ice:commandButton id="popupClose" type="button"
+                                   image="#{popup.closePopupImage}"
+                                   actionListener="#{popup.closeDraggablePopup}"
+                                   style="cursor: pointer;"/>
+            </ice:panelGrid>
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGrid id="dragContent"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="1"
+                           styleClass="popupModalBody">
+                <ice:outputText
+                        value="#{msgs['component.popupPanel.draggable.content']}"/>
+            </ice:panelGrid>
+        </f:facet>
+
+    </ice:panelPopup>
+    </ice:panelGroup>
+
+    <!-- panel popup code, modal type -->
+    <ice:panelPopup id="popupDiv"
+                    rendered="true"
+                    visible="#{popup.showModalPanel}"
+                    modal="true"
+                    style="z-index:1001;  width: 300px; height: 150px;">
+
+        <f:facet name="header">
+            <ice:outputText styleClass="popupTitle"
+                            value="#{msgs['component.popupPanel.modal.title']}"/>
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGrid id="modalPanelGrid"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="1"
+                           styleClass="popupModalBody">
+                <ice:outputText
+                        value="#{msgs['component.popupPanel.modal.content']}"/>
+                <ice:commandButton id="closeModal"
+                                   actionListener="#{popup.closeModalPopup}"
+                                   value="Close"
+                                   style="z-index:2;"/>
+            </ice:panelGrid>
+        </f:facet>
+
+    </ice:panelPopup>
+    
+    <!-- panel popup code, draggable type  -->
+    <ice:panelPopup id="autoCentrePP"
+            draggable="true"
+            rendered="#{popup.showAutoCentrePanel}"
+            visible="#{popup.showAutoCentrePanel}"
+            autoCentre="true"
+            style="z-index: 1000;width: 300px; height: 150px;">
+
+        <f:facet name="header">
+            <ice:panelGrid id="autoCentPanelGrid"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="2"
+                           columnClasses="none, popupButton">
+                <ice:outputText value="#{msgs['component.popupPanel.autoCentre.title']}"/>
+                <ice:commandButton id="autoCentPopupClose" type="button"
+                                   image="#{popup.closePopupImage}"
+                                   actionListener="#{popup.closeAutoCentrePopup}"
+                                   style="cursor: pointer;"/>
+            </ice:panelGrid>
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGrid id="autoCentContent"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="1"
+                           styleClass="popupModalBody">
+                <ice:outputText
+                        value="#{msgs['component.popupPanel.autoCentre.content']}"/>
+            </ice:panelGrid>
+        </f:facet>
+
+    </ice:panelPopup>
+    
+    <!-- panel popup code, draggable type  -->
+    <ice:panelPopup id="autoPositionPP"
+            draggable="true"
+            rendered="#{popup.showAutoPositionPanel}"
+            visible="#{popup.showAutoPositionPanel}"
+            style="z-index: 1000;width: 300px; height: 150px;"
+            autoPosition="#{popup.autoPositionInput}">
+
+        <f:facet name="header">
+            <ice:panelGrid id="autoPosPanelGrid"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="2"
+                           columnClasses="none, popupButton">
+                <ice:outputText value="#{msgs['component.popupPanel.autoPosition.title']}"/>
+                <ice:commandButton id="autoPosPopupClose" type="button"
+                                   image="#{popup.closePopupImage}"
+                                   actionListener="#{popup.closeAutoPositionPopup}"
+                                   style="cursor: pointer;"/>
+            </ice:panelGrid>
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGrid id="autoPosContent"
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="1"
+                           styleClass="popupModalBody">
+                <ice:outputText
+                        value="#{msgs['component.popupPanel.autoPosition.content']}"/>
+            </ice:panelGrid>
+        </f:facet>
+
+    </ice:panelPopup>
+
+</ice:panelTab>
+
+<!--
+The bean is responsible for streaming html documentation to
+this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/panelPopupDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelPopup.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<ice:panelTab label="#{msgs['tabbedHeadings.tutorial']}">
+    <iframe src="http://facestutorials.icefaces.org/tutorial/panelPopup-tutorial.html"
+            class="includeIframe"
+            width="100%"></iframe>
+</ice:panelTab>
+
+</ice:panelTabSet>
+
+</ice:form>

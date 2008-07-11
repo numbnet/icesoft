@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<project name="Seam Component Showcase - for Glassfish-liferay bundle" default="noejb.archive" basedir=".">
+
+    <!-- Naming -->
+    <property name="Name"  value="Seam Component Showcase for Glassfish2-liferay"/>
+
+    <!-- resources -->
+    <property name="resources.dir" value="resources-jboss-liferay" />
+	<property name="dist.dir" value="dist-jboss-liferay" />
+	<property name="exploded-archives.dir" value="exploded-archives-jboss-liferay" />
+	<property name="portal.build" value="true"/>
+	
+    <import file="build-common.xml"/>
+
+    <fileset id="noejb.war.lib.extras" dir="${basedir}">
+       	<!-- Hibernate and deps -->
+            <include name="lib/hibernate.jar"/>
+        	<include name="lib/hibernate-commons-annotations.jar"/>
+            <include name="lib/hibernate-annotations.jar"/>
+        	<include name="lib/hibernate-entitymanager.jar"/>
+        	<include name="lib/hibernate-validator.jar"/>
+        	<include name="lib/jboss-common-core.jar" />
+        	<include name="lib/cglib-nodep.jar"/>
+        	<include name="lib/antlr.jar" />
+            <include name="lib/asm.jar"/>
+            <include name="lib/commons-beanutils.jar"/>
+         	<include name="lib/commons-logging.jar" />  
+        	<include name="lib/commons-collections.jar" />
+    		<include name="lib/jboss-common-core.jar"/>
+            <include name="lib/log4j.jar"/>
+            <exclude name="lib/mvel14.jar"/>
+            <exclude name="lib/jbpm-jpdl.jar"/>
+            <exclude name="lib/janino.jar"/>
+    </fileset>
+	
+	<fileset id="jboss.archive.jar" dir="${jboss.seam.home}/examples/jpa">
+	     <include name="lib/jboss-archive-browsing.jar"/>
+	</fileset>
+	
+    <fileset id="noejb.war.extras" dir="${resources.dir}">
+	  <include name="WEB-INF/classes/**/*" />
+          <include name="WEB-INF/tld/liferay-portlet.tld"/>
+    </fileset>
+     
+	<fileset id="icefaces.extra" dir="${icefaces.home}">
+		<include name="lib/commons-collections.jar"/>
+	</fileset>
+</project>
+

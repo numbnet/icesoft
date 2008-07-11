@@ -1,0 +1,860 @@
+/*
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * "The contents of this file are subject to the Mozilla Public License
+ * Version 1.1 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific language governing rights and limitations under
+ * the License.
+ *
+ * The Original Code is ICEfaces 1.5 open source software code, released
+ * November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+ * Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+ * 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+ *
+ * Contributor(s): _____________________.
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+ * License), in which case the provisions of the LGPL License are
+ * applicable instead of those above. If you wish to allow use of your
+ * version of this file only under the terms of the LGPL License and not to
+ * allow others to use your version of this file under the MPL, indicate
+ * your decision by deleting the provisions above and replace them with
+ * the notice and other provisions required by the LGPL License. If you do
+ * not delete the provisions above, a recipient may use your version of
+ * this file under either the MPL or the LGPL License."
+ *
+ */
+
+/* controls the appearance of links throughout the application */
+a:link, a:hover, a:visited, a:active {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+/* demo titles */
+h2 {
+    font-size: 1.6em;
+}
+
+h2 .iceOutTxt {
+    color: #136baa;
+}
+
+/* description of each component example */
+h3 {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* sub-description used directly underneath h3 */
+h4 {
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 1em;
+    font-weight: normal;                                                                      
+
+}
+
+/* table labels in examples */
+h5 {
+    margin: 5px;
+    margin-left: 0;
+    padding: 0;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+/* table header labels */
+h6 {
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 2px;
+    font-size: 1em;
+}
+
+.propertyLabel {
+    font-weight: bold;
+}
+
+/* backing bean labels */
+.valueHeader {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 2px;
+    font-style: oblique;
+}
+
+.valueText {
+    font-size: x-small;
+}
+
+/* vertical alignment of labels */
+.formBorderHighlight td input,
+    .formBorderHighlight td label {
+    vertical-align: middle;
+}
+
+/* Component tabset labels */
+.componentPanelTabSetLayout {
+    width: 99%;
+    height: 400px;
+
+}
+
+.componentPanelTabSetLayout .MiddleMiddle {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/*
+ Navigation
+*/
+.navTree {
+    overflow: auto;
+    height: 475px;
+}
+
+.navThemeChange, .navTree {
+    border: 1px solid #ABC0D4;
+    margin: 5px;
+    margin-top: 0;
+    width: 250px;
+    background-color: white;
+}
+
+div.navThemeChange {
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: transparent;
+    width: 245px;
+}
+
+.navTree {
+    background-color: white;
+}
+
+.navConnectionStatus {
+    position: absolute;
+    top: 150px;
+    right: 25px;
+}
+
+.labelSelector {
+    font-size: 12px;
+    text-align: center;
+}
+
+.labelSelector h3 {
+    font-size: 12px;
+
+}
+
+.themeSelector input {
+    font-size: 12px;
+}
+
+.attributeColumnLabel {
+    vertical-align: middle;
+}
+
+.attributeColumnValue {
+
+}
+
+.includeIframe {
+    border: 1px solid #DEDEDE;
+    width: 99%;
+    height: 450px;
+    background-color: white;
+}
+
+.componentContentPanelStack {
+    vertical-align: top;
+    width: 99%;
+}
+
+
+.formBorderHighlight, .treeNodeControlButtonsBorder, .effectsControlsBorder {
+    vertical-align: top; /*width: 100%;*/
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.calBorderHighlight {
+    vertical-align: top;
+    border: 1px solid #CCCCCC;
+    padding: 10px;
+    float: left;
+    margin-right: 10px;
+    width: 250px;
+    height: 350px;
+}
+
+/*
+  Selection Demo
+*/
+/* main layout*/
+.selectionLabelColumn {
+    white-space: nowrap;
+}
+
+.selectTagMenu {
+    width: 115px;
+}
+
+.selectManyMenu {
+    width: 115px;
+    height: 60px;
+}
+
+/* IE bugfix - white background on radio and checkboxes */
+.selectionRadioGroup input {
+    background-color: #efefef;
+}
+
+.selectionRadioGroup .iceInpTxt {
+    background-color: #FFFFFF;
+}
+
+.selectionRadioGroup, .selectionListBoxGroup {
+    background-color: #efefef;
+    text-align: center;
+    border: 1px solid #bbb;
+}
+
+.selectionRadioGroup td {
+    vertical-align: middle;
+    padding: 5px;
+    width: 10%;
+}
+
+.selectionRadioGroup {
+    width: 275px;
+}
+
+.selectionListBoxGroup {
+    vertical-align: top;
+    padding: 5px;
+}
+
+.selectionListBoxGroup select {
+    width: 100px;
+    height: 70px;
+}
+
+.selectionRadioGroup label {
+/*font-size: 12px;*/
+}
+
+.selectionCheckSelectCombo {
+    width: 100%;
+}
+
+.selectionCheckSelectCombo td {
+    width: 50%;
+}
+
+/*
+  Calendar Styles
+ */
+
+.iceSelInpDate {
+    width: 90px;
+}
+
+.weekend a{
+    background-color: #999999;
+}
+
+.weekend a span {
+    color: white;
+}
+
+.august span {
+    font-weight: bold;
+}
+
+.progressBarColumn {
+    vertical-align: top;
+    text-align: left;
+}
+
+/*
+ Progress bar component style
+*/
+.iceProgressBarComponentLayout {
+    width: 50%;
+    vertical-align: top;
+    text-align: left;
+}
+
+.progressSelectMenu {
+    width: 120px;
+}
+
+/*
+  Drag and Drop
+*/
+
+/* store and shopping cart list*/
+.shoppingCart {
+    text-align: center;
+    vertical-align: top;
+}
+
+.cartDropZone {
+    border: thin solid rgb( 200, 200, 200 );
+    padding-top: 5px;
+    height: 80px;
+    width: 120px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.cartDropZonText1 {
+    font-weight: bold;
+    text-align: left;
+}
+
+.dragDropImageSrc {
+    cursor: move;
+    border: solid #999999 1px;
+}
+
+.dragDropImageSmall {
+    width: 50px;
+    height: 38px;
+}
+
+.cartDropWrapper {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0; /*padding-top: 50px;*/
+}
+
+
+.cartImageColumn, .cartNameColumn, .cartPriceColumn, .cartQuantityColumn,
+    .cartCostColumn, .cartReturnColumn, .shoppingCartFooter, .triangleColumn, expandableTableColumn {
+    white-space: nowrap;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    text-align: left;
+}
+
+.cartImageColumn, .cartNameColumn, .cartPriceColumn, .cartQuantityColumn,
+    .cartCostColumn, .cartReturnColumn, .shoppingCartFooter, .triangleColumn {
+    color: #000000;
+}
+
+.cartReturnColumn {
+    width: 90px;
+    text-align: center;
+}
+
+.cartQuantityColumn {
+    text-align: center;
+}
+
+.cartCostColumn {
+    width: 40px;
+}
+
+.cartNameColumn {
+    width: 80px;
+}
+
+/* grey box around content blocks */
+.formBorderHighlight table {
+    border-collapse: collapse;
+}
+
+
+.listReceipt {
+    width: 100%;
+}
+
+.shoppingListItemName, .shoppingListItemQuantity {
+    text-align: left;
+    width: 150px;
+}
+
+.shoppingListValue {
+    text-align: right;
+}
+
+/*
+  panelPopup demo
+*/
+
+.popupButton {
+    text-align: right;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    padding-right: 4px;
+}
+
+.popupTitle span {
+    text-align: left;
+    vertical-align: middle;
+    font-weight: bold;
+    padding: 4px;
+    color: #FFFFFF;
+    font-size: 1.0em;
+}
+
+.popupModalBody {
+    margin-top: 15px;
+}
+
+.popupModalBody input {
+    float: right;
+    margin-right: 2px;
+    margin-top: 40px;
+}
+
+.icePnlPopHdr {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 1.10em;
+}
+
+.popupControls td {
+    vertical-align: middle;
+}
+
+/*
+  Effects demo
+*/
+/* label alignment */
+.effectsControlsBorder {
+    height: 130px;
+}
+
+.effectsControlsBorder td {
+    vertical-align: middle;
+}
+
+.specAttributes td {
+    padding: 2px;
+    vertical-align: middle;
+}
+
+.effectsSelectMenu {
+    width: 130px;
+}
+
+.moveModeSelectMenu {
+    width: 90px;
+}
+
+.effectDemoPanelGroup {
+    width: 300px;
+    margin: 2px;
+    padding: 5px;
+    height: 120px;
+    background: #fff;
+    border: 1px solid black;
+    text-align: center;
+
+}
+
+.effectDemoPanelGroupContainer {
+    width: 310px;
+
+    height: 150px;
+
+}
+
+.effectSpecContainer {
+    width: 330px;
+    height: 130px;
+}
+
+.effectSpecContainer td {
+    height: 35px;
+    padding-right: 15px;
+}
+
+/* prevent fade effect from resizing results table */
+.effectDemoResultsTable {
+    width: 450px;
+}
+
+.effectFirstRow {
+    height: 150px;
+}
+
+.effectSecondRow {
+    height: 40px;
+}
+
+.effectThirdRow {
+    height: 40px;
+}
+
+/*
+  Connection status page
+*/
+.connectionStatusGraphics {
+    text-align: center;
+}
+
+.connectionStatusGraphics td {
+    font-weight: bold; /*font-size:1em;*/
+    padding: 5px;
+}
+
+/* paragraph describing component */
+.connectionExplanation {
+    margin-bottom: 5px; /*font-size:1.2em;*/
+}
+
+
+/*
+  Text Entry, Buttons & Links
+*/
+/* label alignment */
+.textFieldNameRow td {
+    padding-bottom: 5px;
+    padding-right: 5px;
+    vertical-align: middle;
+}
+
+.textFieldCommentsRow td {
+    padding-bottom: 5px;
+    padding-right: 5px;
+    vertical-align: top;
+}
+
+/* Data Table sytles*/
+.iceCmdSrtHdr, .iceCmdSrtHdr:hover {
+    text-decoration: underline;
+}
+
+.iceCmdSrtHdr:hover {
+    color: #999999;
+}
+
+.sortHeaderFirstCol, .sortHeaderLastCol, .sortHeaderPhoneCol, .sortHeaderEmailCol,
+.firstCol, .lastCol, .phoneCol, .emailCol {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-left: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.firstCol, .lastCol, .phoneCol, .emailCol {
+    color: #000000;
+}
+
+.sortHeaderFirstCol, .sortHeaderLastCol, .sortHeaderPhoneCol,
+.firstCol, .lastCol, .phoneCol {
+    width: 70px;
+}
+
+.sortHeaderEmailCol,
+.emailCol {
+    width: 180px;
+
+}
+
+.tableCol {
+    white-space: nowrap;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #CCCCCC;
+    text-align: left;
+}
+
+/* Panel stack example */
+.panelGroupColour, .panelGroupFruit, .panelGroupMineral {
+    padding: 10px;
+    border: 1px solid;
+    width: 421px;
+}
+
+.panelGroupColour {
+    background-color: whitesmoke;
+}
+
+.panelGroupFruit {
+    background-color: seashell;
+}
+
+.panelGroupMineral {
+    background-color: lavender;
+}
+
+/* emphasize parent row */
+.groupRowStyle {
+    font-weight: bold;
+}
+
+/* Inventory column sytles*/
+.expandColumn {
+    text-align: center;
+}
+
+.descriptionColumn {
+    text-align: left;
+}
+
+.dateColumn {
+    text-align: left;
+}
+
+.quantityColumn {
+    text-align: center;
+}
+
+.priceColumn {
+    text-align: right;
+}
+
+.totalColumn {
+    text-align: right;
+}
+
+/* autoComplete table */
+.autoCompleteLayout table {
+    vertical-align: top;
+    border-collapse: collapse;
+}
+
+.autoCompleteLayout table td {
+    padding-left: 0;
+}
+
+.selectInputTextCol {
+    padding-right: 10px;
+
+}
+
+.beanCol {
+    padding-right: 0;
+}
+
+.cityCol {
+    width: 125px;
+
+}
+
+.stateCol {
+    width: 125px;
+
+}
+
+.zipCol {
+    width: 50px;
+}
+
+.iceSelInpTxtRow, .iceSelInpTxtSelRow {
+    height: 15px;
+}
+
+.iceSelInpTxtSelRow {
+    color: #FFFFFF;
+}
+
+.quantityLabel {
+    border: 1px solid silver;
+    height: 15px;
+    margin-top: 2px;
+    padding-top: 5px;
+    text-align: left;
+    width: 40px
+}
+
+.columnsColumn {
+    padding: 0px;
+}
+
+/* encapsulates the columns dataTable element and restricts it to the given size */
+.columnsContainer {
+    height: 375px;
+    overflow: scroll;
+    border: 1px solid #dedede;
+}
+
+.droptargethover {
+    background-color: #ffff99;
+
+}
+
+/* position panels */
+.positionPanelContainer {
+    width: 200px;
+    border-top: 1px solid black;
+}
+
+/* chart component */
+.addPieceColumn {
+    width: 300px;
+}
+
+.removePieceColumn {
+    width: 250px;
+}
+
+/* panelCollapsible Component Example */
+.pnlClpsblLnks span,
+    .pnlClpsblLnks.nodec, .pnlClpsblLnks:link, .pnlClpsblLnks:hover, .pnlClpsblLnks:visited {
+    color: #004080;
+    text-decoration: underline;
+}
+
+.pnlClpsblDemoHdr span, .pnlClpsblDemoHdr-dis span,
+    .pnlClpsblDemoColpsdHdr span, .pnlClpsblDemoColpsdHdr-dis span {
+    padding-left: 20px;
+}
+
+.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div,
+    .pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div {
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 17px;
+}
+
+.pnlClpsblDemoHdr div, .pnlClpsblDemoHdr-dis div {
+    background-image: url( "../images/panelCollapsible/arrowDown.gif" );
+}
+
+.pnlClpsblDemoColpsdHdr div, .pnlClpsblDemoColpsdHdr-dis div {
+    background-image: url( "../images/panelCollapsible/arrowCollapsed.gif" );
+}
+
+.pnlBrdrDemoNorth, .pnlBrdrDemoEast, .pnlBrdrDemoWest, .pnlBrdrDemoCenter, .pnlBrdrDemoSouth {
+    border: 1px solid #CCCCCC;
+    padding: 5px;
+    vertical-align: top;
+}
+
+/* Panel Border Example*/
+.pnlBrdrDemo {
+    width: 60%;
+}
+
+.pnlBrdrDemoNorth {
+    background-color: #EEEEEE;
+    font-weight: bold;
+    text-align: center;
+    height: 60px;
+}
+
+.pnlBrdrDemoEast {
+    background-color: #EEEEEE;
+    width: 20%;
+}
+
+.pnlBrdrDemoWest {
+    background-color: #EEEEEE;
+    width: 30%;
+}
+
+.pnlBrdrDemoCenter {
+    background-color: #EEEEEE;
+    width: 50%;
+}
+
+.pnlBrdrDemoSouth {
+    background-color: #EEEEEE;
+}
+
+.mainBorderLayoutNorth {
+    height:60px;
+    padding:0;
+}
+/* added this for proper rendering in IE */
+.iceFileUpload {
+ height: 50px;
+ overflow:hidden;
+}
+.cellBGglossyDARK {
+    background: #FFFFFF url( '../images/fileUpload/bgslice_glossydarkblue.jpg' ) repeat-x top left;
+    padding: 10px 10px 10px 10px;
+    font: 10px tahoma, arial, sans-serif;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.rowSelectDmoCol1, .rowSelectDmoCol2 {
+    vertical-align: top;
+}
+
+.rowSelectDmoCol1 .iceOutTxt, .rowSelectDmoCol2 .iceOutTxt {
+    padding: 8px;
+}
+
+/* Series panel example */
+.seriesPanelItems {
+    float: left;
+    margin: 2px;
+    padding: 8px;
+    border: 1px solid #999999;
+}
+
+.inputRichTextDemoCol1 {
+    width: 700px;
+}
+
+.columnsSelectedCell {
+    background-color: #2A6CC2;
+    font-weight: bold;
+    padding: 0;
+}
+
+/* insure that tabset content is top aligned vertically. */
+.icePnlTbSetCnt {
+    vertical-align: top;
+}
+
+
+.myDvrPanel1, .myDvrPanel2  {
+    width:310px;
+    height:230px; 
+}
+
+.myDvrPanel3 {
+    width:650px;
+    height:300px;	
+}
+
+.myDvrPanel3Child {
+    width:99%;  
+    height:99%; 
+}
+
+.dvrPnlGrdCol1, .dvrPnlGrdCol2 {
+	padding:3px;
+}
+
+.iceGmpMapTd div.gmap{
+    width:600px;  
+    height:400px;	
+}
