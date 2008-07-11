@@ -23,7 +23,7 @@ import com.icesoft.faces.component.ext.RowSelectorEvent;
 @Name("rowSelectController")
 public class SeamRowSelectorController implements Serializable{
 	
-	@In("#{employeesList.resultList}")
+	@In("#{employeesListRowSelector.resultList}")
 	private List employees;
 	   // list of selected employees
     private ArrayList selectedEmployees = new ArrayList();
