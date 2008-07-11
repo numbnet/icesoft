@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<f:loadBundle
+		basename="com.icesoft.icefaces.samples.showcase.resources.messages"
+		var="msgs" />
+
+	<ice:outputDeclaration doctypeRoot="HTML"
+		doctypePublic="-//W3C//DTD XHTML 1.0 Transitional//EN"
+		doctypeSystem="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+
+	<head>
+
+		<ui:insert name="faceletHeader">Headers </ui:insert>
+
+	</head>
+    <body>
+        <!--
+            This is the main formating table which represents a layout view for
+            the application components.  The components are pretty straightforward:
+            header, left menu, and body components.  Follow the includes
+            to see each individual components makeup.
+        -->
+
+        <ui:include src="./header.jspx" />
+
+        <div class="columnleft">
+             <ui:include src="./navigation.jspx" />
+        </div>
+
+        <div class="columnMiddle">
+
+            <!-- Demo Title -->
+            <div style="margin-top: 15px;" >
+                <h2><ice:outputText
+                    value="#{navigation.selectedPanel.menuContentTitle}"/></h2></div>
+
+            <ice:outputConnectionStatus styleClass="navConnectionStatus" />
+
+            <ui:insert name="content">
+                <ice:panelGroup styleClass="contentIncludePanelGroup">
+						<ui:include src="./content-facelet.jspx" />
+				</ice:panelGroup>
+            </ui:insert>
+
+        </div>
+
+        <!-- common footer layout markup -->
+        <ui:include src="./footer.jspx" />
+
+  
+    </body>
+</html>

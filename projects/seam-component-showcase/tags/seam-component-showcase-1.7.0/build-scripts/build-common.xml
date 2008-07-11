@@ -1,0 +1,457 @@
+<?xml version="1.0"?>
+
+<project name="seam-comp-showcase"  basedir=".">
+
+    <!-- Give user a chance to override without editing this file or typing -D -->
+    <property file="${basedir}/build.properties" />
+
+    <property name="profile" value="dev" />
+    <property file="build-${profile}.properties" />
+
+
+	<!-- set global properties for this build -->
+	<property name="project.name" value="seam-comp-showcase"/>
+    <property name="src.action.dir" value="src" />
+    <property name="src.test.dir" value="src/test" />
+    <property name="lib.dir" value="lib" />
+	<property name="view.dir" value="view" />
+    <property name="war.dir" value="${exploded-archives.dir}/${project.name}.war" />
+    <property name="classes.model.dir" value="${war.dir}/WEB-INF/classes" />
+    <property name="action.dir" value="WEB-INF/classes" />
+    <property name="war.resources.dir" value="${war.dir}/WEB-INF/resources" />
+    <property name="classes.action.dir" value="${war.dir}/${action.dir}" />
+    <property name="test.dir" value="test-build" />
+    <property name="bootstrap.dir" value="${basedir}/bootstrap" />
+    <property name="deploy.dir" value="${jboss.home}/server/default/deploy" />
+    <property name="tomcat.deploy.dir" value="${tomcat.home}/webapps" />
+    <property name="war.deploy.dir" value="${deploy.dir}/${project.name}.war" />
+    <property name="testng.jar" value="${basedir}/lib/testng-5.6-jdk15.jar" />
+    <property name="javac.debug" value="true" />
+    <property name="javac.deprecation" value="false" />
+    <property name="debug" value="false" />
+    
+    <fileset id="lib" dir="${lib.dir}">
+        <include name="*.jar" />
+    </fileset>
+    
+    <path id="build.classpath">
+        <fileset refid="lib" />
+    </path>
+		<!-- check to see if the source for icefaces is available to get component docs-->
+	<target name="resource-check" description="check for component docs directory">
+		<available file="${icefaces.home}/component/doc" type="dir" property="source.present"/> 
+               <echo message="source directory is installed ${source.present}"/>
+               <condition property="component.docs.dir" value="${icefaces.home}/component/doc" 
+                        else="${icefaces.home}/docs/components">
+                        <istrue value="${source.present}"/>
+               </condition>
+               <echo message=" component docs dir is ${component.docs.dir}"/>
+ 	</target>	
+	
+
+    <target name="init" depends="resource-check" description="Initialize the build">
+        <mkdir dir="${classes.model.dir}" />
+        <mkdir dir="${classes.action.dir}" />
+        <mkdir dir="${dist.dir}" />
+    	<mkdir dir="${war.dir}"/>
+    </target>  
+   
+    <target name="compileactions" depends="init"
+            description="Compile the Java source code"
+            unless="eclipse.running">
+        <javac classpathref="build.classpath" 
+               destdir="${classes.action.dir}"
+               debug="${javac.debug}" 
+               deprecation="${javac.deprecation}" 
+               nowarn="on">
+            <classpath path="${classes.model.dir}"/>
+            <src path="${src.action.dir}" />
+        </javac>
+    </target>
+
+ 
+    <target name="copyclasses" depends="init"
+            description="Copy the classes that were compiled by eclipse"
+            if="eclipse.running">
+        <copy todir="${classes.model.dir}">
+            <fileset dir="classes/model">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+        <copy todir="${classes.action.dir}">
+            <fileset dir="classes/action">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+    </target>
+	
+	<target name="noejb.archive" depends="war,noejb.war" description="package war for distribution">
+	     <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
+	</target>
+    
+	<target name="noejb.archive.405" depends="war" description="package war for dist of jboss4.0.5">
+		 <echo message="for 405 copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
+		 <copy todir="${war.dir}/WEB-INF/lib">
+			<fileset refid="noejb.war.lib.extras" />
+		 </copy>
+		 <copy todir="${war.dir}/WEB-INF" overwrite="true">
+				<fileset dir="${resources.dir}/WEB-INF">
+				        <include name="web*.xml"/>
+				</fileset>
+		 </copy>
+		 <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
+	</target>
+	
+	<target name="portal.war" if="portal.build" description="Building portal application">
+	    <echo message="portal.war target so copying portal files"/>
+		<copy todir="${war.dir}">
+		   <fileset dir="resources-jboss-portal/portlet">
+			    <include name="*.jspx"/>
+			</fileset>
+		</copy>
+		<copy todir="${war.dir}/WEB-INF">
+		    <fileset dir="${resources.dir}/WEB-INF">
+		        <include name="*.xml" />
+		    </fileset>
+		</copy>
+	</target>
+	
+    <target name="noejb.war" depends="war" description="Copy extra libs for Tomcat6 deploy">
+       <echo message="noejb.war copying to dir ${war.dir}/WEB-INF/classes"/>
+         <copy todir="${war.dir}/WEB-INF/classes">
+	        <fileset dir="${resources.dir}">
+	          <include name="log4j.xml"/>
+	        </fileset>
+	     </copy>  
+       <echo message="copying to dir ${war.dir}/WEB-INF/lib from ${jboss.seam.home}/lib"/>
+	     <copy todir="${war.dir}/WEB-INF">
+			<fileset refid="noejb.war.lib.extras" />
+	     	<fileset refid="jboss.archive.jar" />
+	     	<fileset refid="icefaces.extra" />
+	    </copy>
+     	
+	 	
+		<!-- Copy in resources, with filtering -->
+		<copy todir="${war.dir}/WEB-INF" overwrite="true">
+				<fileset dir="${resources.dir}/WEB-INF">
+			        <include name="web*.xml"/>
+			        <include name="components.xml"/>
+			    </fileset>
+		</copy>
+
+    	<echo message="copying resources for jar part of war"/>
+        <!-- resources for the jar part of the war -->
+		<copy todir="${war.dir}/WEB-INF/classes" overwrite="true">
+		     <fileset dir="${resources.dir}">
+			    <include name="seam.properties"/>
+			    <include name="log4j.xml"/>
+			 </fileset>
+		</copy>
+    	<echo message="copying noejb.war.extras"/>
+    	<copy todir="${war.dir}">
+    			<fileset refid="noejb.war.extras" />
+    		</copy>       	
+    </target>
+    
+	<target name="servlet.war"  unless="portal.war"
+		description="copies servlet specific files">
+        <copy todir="${war.dir}/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
+            	<include name="pages.xml"/>
+            </fileset>
+        </copy>
+	</target>
+	
+    <target name="war" depends="compileactions,copyclasses,portal.war,servlet.war" 
+            description="Build the distribution .war file">
+   		<echo message=" war building ....get Persistence"/>
+       <copy todir="${war.dir}/WEB-INF/classes">
+    	   <fileset dir="${resources.dir}">
+        	    <include name="META-INF/*.*"/>
+    	   	    <exclude name="META-INF/context.xml"/>
+        	</fileset>
+    	</copy> 
+        <copy todir="${war.dir}/WEB-INF/classes">
+            <fileset dir="${basedir}/resources-jboss">
+                <include name="seam.properties" />
+            	<include name="import.sql"/>
+            </fileset>
+        </copy>
+       <copy todir="${war.resources.dir}">
+            <fileset dir="${basedir}/resources-jboss" >
+                <include name="city.xml.zip" />
+            </fileset>
+        </copy>        
+
+        <copy todir="${war.dir}">
+            <fileset dir="${basedir}/view" />
+        </copy>
+        
+        <copy todir="${war.dir}/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
+                <include name="*.*"/>
+                <include name="classes/**/*.*"/>
+                <exclude name="classes/**/*.class"/>
+                <exclude name="classes/**/*.groovy"/>
+            	<exclude name="jboss-web.xml"/>
+            </fileset>
+            <filterset>
+                <filter token="debug"       value="${debug}" />
+                <filter token="jndiPattern" value="${project.name}/#{ejbName}/local"/>
+                <filter token="embeddedEjb" value="false"/>
+            </filterset>
+        </copy>
+        
+        <copy todir="${war.dir}/WEB-INF">
+            <fileset dir="${basedir}/resources-jboss/WEB-INF">
+                <include name="lib/*.*"/>
+                <include name="classes/**/*.class"/>
+            </fileset>
+        </copy>
+        
+	  <copy todir="${war.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}">
+				<include name="oscache*.jar" />
+                <include name="jboss-seam-*.jar" />
+                <exclude name="jboss-seam-gen.jar" />
+                <include name="drools.jar"/>
+                <include name="antlr.jar"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${war.dir}/WEB-INF/classes/com/icesoft/icefaces/samples/showcase/resources">
+            <fileset dir="${basedir}/resources-jboss"> 
+                <include name="messages*.properties"/>
+            </fileset>
+        </copy>
+        
+        <copy todir="${war.dir}/WEB-INF/classes">
+            <fileset dir="${basedir}/resources-jboss">
+                <include name="*jpdl.xml" />
+                <include name="hibernate.cfg.xml" />
+                <include name="jbpm.cfg.xml" />
+            </fileset>
+        </copy>
+        <copy todir="${war.dir}/docs" preservelastmodified="true">
+      		<fileset dir="${component.docs.dir}"/>
+        </copy>	
+        
+        <copy todir="${war.dir}/WEB-INF">
+           <fileset dir="${basedir}">
+             <include name="lib/jboss-seam.jar" />
+             <include name="lib/jboss-el.jar" />
+             <include name="lib/commons-digester*.jar" />
+             <include name="lib/commons-beanutils-*.jar" />
+	         <include name="lib/icefaces*.jar" />
+		     <include name="lib/backport-util-concurrent.jar" />
+		     <include name="lib/commons-fileupload.jar"/> 	
+             <include name="lib/krysalis-jCharts-*.jar"/>
+	      </fileset>
+        </copy>  
+    	
+    </target>
+	
+	
+	
+    <target name="archive" depends="war" 
+            description="Package the archives">
+        <jar jarfile="${dist.dir}/${project.name}.war" basedir="${war.dir}"/>
+    </target>
+    
+    <target name="datasource">
+        <fail unless="jboss.home">jboss.home not set</fail>
+        <copy todir="${deploy.dir}">
+            <fileset dir="${basedir}/resources">
+                <include name="${project.name}-${profile}-ds.xml" />
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="explode" depends="war,datasource" 
+            description="Deploy the exploded archive">
+        <fail unless="jboss.home">jboss.home not set</fail>
+        
+        <mkdir dir="${war.deploy.dir}"/>
+        <copy todir="${war.deploy.dir}">
+            <fileset dir="${war.dir}"/>
+        </copy>
+    </target>
+    
+    <target name="unexplode" description="Undeploy the exploded archive">
+        <delete failonerror="no">
+            <fileset dir="${war.deploy.dir}">
+                <exclude name="**/*.jar"/>
+            </fileset>
+        </delete>
+        <delete file="${deploy.dir}/${project.name}-${profile}-ds.xml" failonerror="no"/>
+        <delete dir="${war.deploy.dir}" failonerror="no"/>
+    </target>
+    
+    <target name="restart" depends="explode" description="Restart the exploded archive">
+        <touch file="${war.deploy.dir}/WEB-INF/web.xml"/>
+    </target>
+    
+    <target name="deploy" depends="clean,archive" description="Deploy to JBoss AS">
+        <fail unless="jboss.home">jboss.home not set</fail>
+        <copy todir="${deploy.dir}" file="${dist.dir}/${project.name}.war" />
+    </target>
+    
+    <target name="tomcat6.deploy"  description="Deploy to Tomcat-6">
+        <fail unless="tomcat.home">tomcat.home not set</fail>
+ 	<copy todir="${tomcat.deploy.dir}" file="${dist.dir}/${project.name}.war" />
+    </target>
+    
+    
+    <target name="undeploy" description="Undeploy the example from JBoss">
+        <delete file="${deploy.dir}/${project.name}.war" />
+        <delete file="${deploy.dir}/${project.name}-dev-ds.xml" />
+        <delete file="${deploy.dir}/${project.name}-prod-ds.xml" />
+    </target>
+    
+    <target name="clean" description="Cleans up the build directory">
+        <delete dir="${dist.dir}"/>
+        <delete dir="${war.dir}"/>
+        <delete dir="${basedir}/test-report"/>
+        <delete dir="${basedir}/test-output"/>
+        <delete failonerror="no">
+            <fileset dir="${test.dir}">
+                <exclude name="**/*.class" if="eclipse.running"/>
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="compiletest" unless="eclipse.running" description="Compile the Java source code for the tests">
+        <mkdir dir="${test.dir}"/>
+        <javac classpathref="build.classpath"
+               destdir="${test.dir}"
+               debug="${javac.debug}"
+               deprecation="${javac.deprecation}"
+               nowarn="on">
+            <src path="${src.action.dir}" />
+            <src path="${src.test.dir}" />
+        </javac>
+    </target>
+    
+    <target name="copytestclasses" if="eclipse.running" description="Copy classes compiled by eclipse to the test dir">
+        <mkdir dir="${test.dir}"/>
+        <copy todir="${test.dir}">
+            <fileset dir="classes/model">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+        <copy todir="${test.dir}">
+            <fileset dir="classes/action">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+        <copy todir="${test.dir}">
+            <fileset dir="classes/test">
+                <include name="**/*.class"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="buildtest" depends="compiletest,copytestclasses" description="Build the tests">
+        <copy todir="${test.dir}">
+            <fileset dir="${basedir}/resources">
+                <exclude name="META-INF/persistence*.xml"/>
+                <exclude name="import*.sql"/>
+                <exclude name="${project.name}-*-ds.xml"/>
+            </fileset>
+        </copy>
+        <copy tofile="${test.dir}/META-INF/persistence.xml" 
+              file="${basedir}/resources/META-INF/persistence-test-war.xml"
+              overwrite="true"/>
+        <copy tofile="${test.dir}/import.sql" 
+              file="${basedir}/resources/import-test.sql"
+              overwrite="true"/>
+        <copy todir="${test.dir}" flatten="true">
+            <fileset dir="${src.test.dir}">
+                <include name="**/*Test.xml" />
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="test" depends="buildtest" description="Run the tests">            
+        <taskdef resource="testngtasks" classpath="${testng.jar}" />
+        <testng outputdir="${basedir}/test-report">
+            <classpath path="${test.dir}" />
+            <classpath path="${bootstrap.dir}" />
+            <classpath refid="build.classpath" />
+            <xmlfileset dir="${test.dir}" includes="*Test.xml" />
+        </testng>
+    </target>
+    
+	<target name="freshen"  description="grab fresh icefaces jars">
+		  <delete file="${lib.dir}/*.jar"/> 
+	 	 <delete dir="${lib.dir}" />
+
+		<copy todir="${lib.dir}">
+	        <fileset dir="${icefaces.home}/lib">
+	             <include name="icefaces*.jar" />
+		         <exclude name="icefaces-ahs.jar"/>
+	             <include name="backport-util-concurrent.jar" />	
+		         <include name="commons-fileupload.jar"/> 
+	             <include name="commons-logging*.jar"/>
+	             <include name="krysalis-*.jar"/>
+	             <include name="commons-digester*.jar"/>
+	             <include name="commons-el.jar"/>
+	             <include name="commons-discovery.jar"/>
+	             <include name="xercesImpl.jar"/>
+	             <include name="xml-apis.jar"/>
+	             <include name="el-*.jar"/>
+	           	 <include name="portlet.jar"/>
+                 <exclude name="commons-collections.jar"/>
+		   </fileset>
+	       <fileset dir="${jboss.seam.home}/lib">
+	            <include name="jboss-seam.jar"/>
+	            <include name="cglib.jar"/>
+                <include name="cglib-nodep.jar"/>
+	            <include name="dom4j.jar"/>
+	             <include name="jboss-seam-debug.jar"/>
+	             <include name="jboss-el.jar"/>
+	             <include name="hibernate*.jar"/>
+                 <include name="asm.jar"/>
+	              <include name="jsf*.jar"/>
+	              <include name="antlr.jar"/>
+	              <include name="jboss-seam-ui.jar"/>
+	              <include name="javassist.jar"/>
+	              <include name="jbpm*.jar"/>
+	              <include name="jboss-el.jar" />
+	              <include name="antlr*.jar"/>
+	              <include name="servlet-api.jar"/>
+	              <include name="jsf-api.jar"/>
+	              <include name="jsf-impl.jar"/>
+	              <include name="jstl.jar"/>
+	              <include name="persistence-api.jar"/>
+	              <include name="jta.jar"/>
+	              <include name="jboss-archive-browsing.jar"/>
+	              <include name="log4j.jar"/>
+                  <include name="commons-collections.jar"/>
+	              <include name="commons-beanutils.jar"/>
+	              <include name="commons-lang.jar"/>
+	              <include name="el-*.jar"/>
+	        </fileset>
+	   </copy>	    
+	</target>
+
+	<target name="purge" depends="undeploy" description="clean out jboss deployments of crashing applications"> 
+	  <delete dir="${jboss.home}/server/default/tmp/deploy" />
+	  <mkdir dir="${jboss.home}/server/default/tmp/deploy/" />
+	  <delete dir="${jboss.home}/server/default/tmp/sessions" />
+	  <mkdir dir="${jboss.home}/server/default/tmp/sessions" />
+  	  <delete dir="${jboss.home}/server/default/work/jboss.web/localhost/${project.name}" />
+	</target>
+
+	<target name="settings" depends="init" description="check settings ">
+	    <echo message="ICEfaces home: ${icefaces.home}"/>
+		<echo message="Seam home: ${jboss.seam.home}"/>
+		<echo message="Jboss server: ${jboss.home}"/>
+		<echo message="Tomcat server: ${tomcat.home}"/>
+		<echo message="Tomcat deploy directory: ${tomcat.deploy.dir}"/>
+		<echo message="war deploy directory: ${war.deploy.dir}"/>
+		<echo message="library dir: ${lib.dir}"/>
+		<echo message="dist.dir: ${dist.dir}"/>
+	</target>
+
+</project>

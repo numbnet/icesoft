@@ -1,0 +1,271 @@
+<!--
+~ Version: MPL 1.1/GPL 2.0/LGPL 2.1
+~
+~ "The contents of this file are subject to the Mozilla Public License
+~ Version 1.1 (the "License"); you may not use this file except in
+~ compliance with the License. You may obtain a copy of the License at
+~ http://www.mozilla.org/MPL/
+~
+~ Software distributed under the License is distributed on an "AS IS"
+~ basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+~ License for the specific language governing rights and limitations under
+~ the License.
+~
+~ The Original Code is ICEfaces 1.5 open source software code, released
+~ November 5, 2006. The Initial Developer of the Original Code is ICEsoft
+~ Technologies Canada, Corp. Portions created by ICEsoft are Copyright (C)
+~ 2004-2006 ICEsoft Technologies Canada, Corp. All Rights Reserved.
+~
+~ Contributor(s): _____________________.
+~
+~ Alternatively, the contents of this file may be used under the terms of
+~ the GNU Lesser General Public License Version 2.1 or later (the "LGPL"
+~ License), in which case the provisions of the LGPL License are
+~ applicable instead of those above. If you wish to allow use of your
+~ version of this file only under the terms of the LGPL License and not to
+~ allow others to use your version of this file under the MPL, indicate
+~ your decision by deleting the provisions above and replace them with
+~ the notice and other provisions required by the LGPL License. If you do
+~ not delete the provisions above, a recipient may use your version of
+~ this file under either the MPL or the LGPL License."
+~
+-->
+
+<ice:form id="iceform"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+<ice:panelTabSet id="icepnltabset" styleClass="componentPanelTabSetLayout">
+<!--
+  Example include, also see source code include.
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.demo']}">
+  <ice:panelGroup styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText
+                        value="Example 1"/>
+            </h3>
+            <h4>
+                <ice:outputText 
+                        value="This example is using a panelTooltip with hideOn = 'mouseout', To close this tooltip please move the mouse off. The panelTooltip is placed inside the panelSeries"/>
+            </h4>
+            <ice:panelSeries id="icepnlsrs" var="pnlPerson"
+                       value="#{scrollerList.resultList}" rows="5"
+                     >
+                <ice:panelGroup style="float: left; width: 60px;"> 
+                <ice:panelGroup panelTooltip="pnlSerPanelToolTip" >
+                    <ice:outputText id="firstname" value="#{pnlPerson.firstName}"/>
+                </ice:panelGroup>
+                <ice:panelTooltip id="pnlSerPanelToolTip"
+                        hideOn="mouseout"
+                        style="width: 300px;"
+                                                
+                        >
+             
+                    <f:facet name="body">
+                        <ice:panelGroup>
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column1']} : "/>
+                                <ice:outputText id="tooltip_firstname" value="#{pnlPerson.firstName}"/> <br/>
+
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column2']} : "/>
+                                <ice:outputText id="tooltip_lastname" value="#{pnlPerson.lastName}"/><br/>
+
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column3']} : "/>
+                                <ice:outputText id="tooltip_phoneno" value="#{pnlPerson.phoneNo}"/><br/>
+
+                                <ice:outputText style="display:inline" value="#{msgs['component.table.column4']} : "/>
+                                <ice:outputText id="tooltip_email" value="#{pnlPerson.email}"/><br/>
+
+                        </ice:panelGroup>
+                    </f:facet>
+                </ice:panelTooltip>                
+             </ice:panelGroup>
+        </ice:panelSeries>
+        <br/>
+        <br/>
+    </ice:panelGroup>  
+    <ice:panelGrid
+            styleClass="componentLayoutRootTable"
+            columns="2">
+
+        <!-- Application title  -->
+        <ice:panelGroup styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText 
+                        value="Example 2"/>
+            </h3>
+            <h4>
+                <ice:outputText 
+                        value="This panelTooltip using hideOn = 'none', hoverDelay='1000' milliseconds. To close the tooltip window please click on the close button."/>
+            </h4>
+
+            <!-- popup selection -->
+            <ice:panelGrid id="icepnlgrd" columns="4" styleClass="popupControls" cellpadding="6"
+                                       cellspacing="6">
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Alberta">
+                    <ice:outputText id="alberta" value="Alberta" />
+                </ice:panelGroup>
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Ontario">
+                    <ice:outputText id="ontario" value="Ontario" />
+                </ice:panelGroup>
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Nova Scotia">
+                    <ice:outputText id="novascotia" value="Nova Scotia" />
+                </ice:panelGroup> 
+                <ice:panelGroup panelTooltip="provinceInfo" contextValue="Saskatchewan">
+                    <ice:outputText id="saskatchewan" value="Saskatchewan" />
+                </ice:panelGroup>
+                           
+            </ice:panelGrid>
+        </ice:panelGroup>
+        
+       </ice:panelGrid>
+      
+    <ice:panelGroup styleClass="formBorderHighlight">
+            <h3>
+                <ice:outputText
+                        value="Example 3"/>
+            </h3>
+            <h4>
+                <ice:outputText 
+                        value="This example is using a draggable panelTooltip with hideOn = 'mousedown', hoverDelay='1000' milliseconds. To bring the tooltip up, please hover on the first name of any row. To close this tooltip please click outside the tooltip panel. The panelTooltip is placed outside of the dataTable"/>
+            </h4>
+            <ice:dataTable id="toolTipdata" var="person"
+                       styleClass="dataPaginatorTable"
+                       value="#{personsF.resultList}" rows="8"
+                       columnClasses="firstCol,lastCol,phoneCol,emailCol">
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="col_1" value="#{msgs['component.table.column1']}"/>
+                </f:facet>
+                <ice:panelGroup panelTooltip=":::recordPanelToolTip">
+                    <ice:outputText id="first_Name" value="#{person.firstName}"/>
+                </ice:panelGroup>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="col_2" value="#{msgs['component.table.column2']}"/>
+                </f:facet>
+                <ice:outputText id="last_Name" value="#{person.lastName}"/>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="col_3" value="#{msgs['component.table.column3']}"/>
+                </f:facet>
+                <ice:outputText id="phone_No" value="#{person.phoneNo}"/>
+            </ice:column>
+
+            <ice:column>
+                <f:facet name="header">
+                    <ice:outputText id="col_4" value="#{msgs['component.table.column4']}"/>
+                </f:facet>
+                <ice:outputLink id="mail_to" value="mailto:#{person.email}">
+                    <ice:outputText id="email" value="#{person.email}"/>
+                </ice:outputLink>
+            </ice:column>
+        </ice:dataTable>
+    </ice:panelGroup>
+ 
+	<ice:panelTooltip id="recordPanelToolTip"
+	           hideOn="mousedown"
+	           hoverDelay="1000"
+	           draggable="true"
+	           style="width: 300px; height:200px;"
+	           displayListener="#{tooltip.displayListener}"
+	           >
+	
+	       <f:facet name="header">
+	           <ice:panelGrid id="draggablePanelGrid"
+	                          width="100%" cellpadding="0"
+	                          cellspacing="0" columns="2"
+	                          columnClasses="none, popupButton">
+	               <ice:outputText value="#{msgs['component.paneltooltip.tabledemoheader']}"/>
+	           </ice:panelGrid>
+	       </f:facet>
+	
+	       <f:facet name="body">
+	           <ice:panelGroup>
+	                   <ice:outputText style="display:inline" value="#{msgs['component.table.column1']} : "/>
+	                   <ice:inputText id="tooltip_firstname" value="#{tooltipPerson.firstName}"/> <br/>
+	
+	                   <ice:outputText style="display:inline" value="#{msgs['component.table.column2']} : "/>
+	                   <ice:inputText id="tooltip_lastname" value="#{tooltipPerson.lastName}"/><br/>
+	
+	                   <ice:outputText style="display:inline" value="#{msgs['component.table.column3']} : "/>
+	                   <ice:inputText id="tooltip_phoneno" value="#{tooltipPerson.phoneNo}"/><br/>
+	
+	                   <ice:outputText style="display:inline" value="#{msgs['component.table.column4']} : "/>
+	                   <ice:inputText id="tooltip_email" value="#{tooltipPerson.email}"/><br/>
+
+	           </ice:panelGroup>
+	       </f:facet>
+	
+	   </ice:panelTooltip>                
+   
+                    
+    <ice:panelTooltip id="provinceInfo"
+                hideOn="none"
+                draggable="true"
+                hoverDelay="1000"
+                style="width: 200px;height:200px;"
+                displayListener="#{tooltip.provinceDspListener}"
+                visible="#{tooltip.visible}"                
+                >
+
+        <f:facet name="header">
+            <ice:panelGrid 
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="2"
+                           columnClasses="none, popupButton">
+                <ice:outputText value="City names"/>
+                <ice:commandButton id="popupClose" type="button"
+                                   image="/images/popupPanel/popupclose.gif"
+                                   actionListener="#{tooltip.hideTooltip}"
+                                   style="cursor: pointer;"/>
+            </ice:panelGrid>        
+        </f:facet>
+
+        <f:facet name="body">
+            <ice:panelGrid
+                           width="100%" cellpadding="0"
+                           cellspacing="0" columns="1"
+                           styleClass="popupModalBody">
+                <ice:dataTable id="cities" value="#{tooltip.cityList}" var="city">
+                    <ice:column>
+                        <ice:outputText id="cityname" value="#{city}" />
+                    </ice:column>
+                </ice:dataTable>
+            </ice:panelGrid>
+        </f:facet>
+    </ice:panelTooltip>
+
+
+</ice:panelTab>
+
+<!--
+The bean is responsible for streaming html documentation to
+this placeholder
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.description']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="docFrame"
+                    value="#{ctxtUtil['/docs/panelTooltipDoc.html']}"
+                    escape="false"/>
+</ice:panelTab>
+
+<!--
+  Template for component source code.  This servlet loads
+  the component example jsp include as an xml stream
+-->
+<ice:panelTab label="#{msgs['tabbedHeadings.source']}">
+    <!-- ICE-2714: generating iframe markup to include context path -->
+    <ice:outputText id="srcFrame"
+                    value="#{ctxtUtil['/sourcecodeStream.html?path=./inc/layoutPanels/panelTooltip.jspx']}"
+                    escape="false"/>
+</ice:panelTab>
+
+</ice:panelTabSet>
+
+</ice:form>
