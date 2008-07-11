@@ -26,7 +26,8 @@
     
    <component scope="APPLICATION" auto-create="true" name="renderManager" class="com.icesoft.faces.async.render.RenderManager" /> 
   	<framework:entity-query name="personsList" ejbql="select p from Person p" />
-	<framework:entity-query name="employeesListRowSelector" ejbql="select e from Employee e where e.departmentName = 'Central' order by e.lastName asc, e.firstName asc "/>   	
-	<framework:entity-query name="employeesList" ejbql="select e from Employee e"/>
+	<framework:entity-query name="employeesListRowSelector" ejbql="select e from Employee e where e.departmentName = 'Central' order by e.lastName asc, e.firstName asc "/> 
+    <framework:entity-query name="employeesList" ejbql="select e from Employee e where e.departmentName = 'Central'"/>
+    <framework:entity-query name="employeesListAll" ejbql="select e from Employee e"/>
 
 </components>
