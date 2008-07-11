@@ -3,15 +3,11 @@ package com.icesoft.faces.async.servlet;
 import com.icesoft.faces.async.common.AbstractHandler;
 import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.common.Handler;
-import com.icesoft.faces.async.common.SequenceNumbers;
 import com.icesoft.faces.async.common.SessionManager;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.standard.NotFoundHandler;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -22,44 +18,14 @@ extends AbstractHandler
 implements Handler, Runnable {
     private static final int STATE_UNINITIALIZED = 0;
     private static final int STATE_PROCESSING_REQUEST = 1;
-    private static final int STATE_WAITING_FOR_RESPONSE = 2;
-    private static final int STATE_RESPONSE_IS_READY = 3;
-    private static final int STATE_DONE = 4;
+    private static final int STATE_DONE = 2;
 
     private static final Log LOG = LogFactory.getLog(ProcessHandler.class);
-
-    private static final ResponseHandler CLOSE_RESPONSE_HANDLER =
-        new ResponseHandler() {
-            public void respond(Response response) throws Exception {
-                /*
-                 * let the bridge know that this blocking connection should not
-                 * be re-initialized...
-                 */
-                // entity header fields
-                response.setHeader("Content-Length", 0);
-                // extension header fields
-                response.setHeader("X-Connection", "close");
-            }
-        };
-    private static final ResponseHandler EMPTY_RESPONSE_HANDLER =
-        new ResponseHandler() {
-            public void respond(final Response response)
-            throws Exception {
-                // general header fields
-                response.setHeader("Pragma", "no-cache");
-                response.setHeader("Cache-Control", "no-cache, no-store");
-                // entity header fields
-                response.setHeader("Content-Length", 0);
-                response.setHeader("Content-Type", "text/xml");
-            }
-        };
 
     private final SessionManager sessionManager;
     private final Request request;
 
     private Set iceFacesIdSet;
-    private SequenceNumbers sequenceNumbers;
-    private List updatedViewsList;
 
     private int state = STATE_UNINITIALIZED;
 
@@ -92,13 +58,27 @@ implements Handler, Runnable {
                 }
                 URI _requestUri = request.getURI();
                 String _path = _requestUri.getPath();
-                if (
-                    _path == null ||
-                    (
-                        !_path.endsWith("/block/receive-updated-views") &&
-                        !_path.endsWith("/block/receive-updated-views/")
-                    )) {
+                // There are now two type of HTTP requests to be handled by AHS:
+                //
+                // - .../block/receive-updated-views (the old blocking request)
+                // - .../block/dispose-views (the new non-blocking request)
+                if (_path != null && (
+                        _path.endsWith("/block/receive-updated-views") ||
+                        _path.endsWith("/block/receive-updated-views/"))) {
 
+                    new ReceiveUpdatedViewsHandler(
+                        request, iceFacesIdSet, sessionManager, executeQueue).
+                            handle();
+                    state = STATE_DONE;
+                } else if (
+                    _path != null && (
+                        _path.endsWith("/block/dispose-views") ||
+                        _path.endsWith("/block/dispose-views/"))) {
+
+                    new DisposeViewsHandler(
+                        request, sessionManager, executeQueue).
+                            handle();
+                } else {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug(
                             "404 Not Found (Request-URI: " + _requestUri + ")");
@@ -114,90 +94,9 @@ implements Handler, Runnable {
                                 exception);
                         }
                     }
+                    state = STATE_DONE;
                     return;
                 }
-                if (iceFacesIdSet.isEmpty()) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug(
-                            "404 Not Found (ICEfaces ID(s))");
-                    }
-                    try {
-                        request.respondWith(new NotFoundHandler(""));
-                    } catch (Exception exception) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(
-                                "An error occurred " +
-                                    "while trying to respond with: " +
-                                        "404 Not Found!",
-                                exception);
-                        }
-                    }
-                    return;
-                }
-                extractSequenceNumbers();
-                // checking pending request...
-                ProcessHandler _processHandler =
-                    (ProcessHandler)
-                        sessionManager.getRequestManager().pull(iceFacesIdSet);
-                if (_processHandler != null) {
-                    // respond to pending request.
-                    try {
-                        _processHandler.request.respondWith(
-                            EMPTY_RESPONSE_HANDLER);
-                    } catch (Exception exception) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(
-                                "An error occurred while " +
-                                    "trying to response with: 200 OK!",
-                                exception);
-                        }
-                    }
-                }
-                state = STATE_WAITING_FOR_RESPONSE;
-            case STATE_WAITING_FOR_RESPONSE :
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("State: Waiting for Response");
-                }
-                if (sessionManager.isValid(iceFacesIdSet)) {
-                    updatedViewsList =
-                        sessionManager.getUpdatedViewsManager().
-                            pull(iceFacesIdSet, sequenceNumbers);
-                    if (updatedViewsList == null || updatedViewsList.isEmpty()) {
-                        sessionManager.getRequestManager().
-                            push(iceFacesIdSet, this);
-                        return;
-                    }
-                    state = STATE_RESPONSE_IS_READY;
-                } else {
-                    try {
-                        request.respondWith(CLOSE_RESPONSE_HANDLER);
-                    } catch (Exception exception) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(
-                                "An error occurred while " +
-                                    "trying to responde with: 200 OK (close)",
-                                exception);
-                        }
-                    }
-                    return;
-                }
-            case STATE_RESPONSE_IS_READY :
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("State: Response is Ready");
-                }
-                try {
-                    request.respondWith(
-                        new UpdatedViewsResponseHandler(
-                            request, updatedViewsList));
-                } catch (Exception exception) {
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(
-                            "An error occurred while " +
-                                "trying to response with: 200 OK!",
-                            exception);
-                    }
-                }
-                state = STATE_DONE;
             case STATE_DONE :
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("State: Done");
@@ -205,17 +104,6 @@ implements Handler, Runnable {
                 break;
             default :
                 // this should never happen!
-        }
-    }
-
-    private void extractSequenceNumbers() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Extracting Sequence Number(s)...");
-        }
-        sequenceNumbers =
-            new SequenceNumbers(request.getHeaderAsStrings("X-Window-Cookie"));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Sequence Number(s): " + sequenceNumbers);
         }
     }
 }

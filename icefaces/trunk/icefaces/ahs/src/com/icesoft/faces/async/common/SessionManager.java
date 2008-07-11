@@ -57,6 +57,10 @@ implements
         // do nothing.
     }
 
+    public MessageService getMessageService() {
+        return messageService;
+    }
+
     public RequestManager getRequestManager() {
         return requestManager;
     }
