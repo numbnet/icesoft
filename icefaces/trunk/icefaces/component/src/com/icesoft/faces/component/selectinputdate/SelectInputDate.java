@@ -153,7 +153,7 @@ public class SelectInputDate
      */
     private final String DEFAULT_CLOSEPOPUP = "cal_off.gif";
 
-    public final static String CALENDAR_INPUTTEXT = "_calendarInputtext";
+    public final static String CALENDAR_INPUTTEXT = "";
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
 
@@ -974,4 +974,3 @@ public class SelectInputDate
         }
     }
 }
-
