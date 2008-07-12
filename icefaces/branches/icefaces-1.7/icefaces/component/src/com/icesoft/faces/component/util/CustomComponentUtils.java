@@ -495,7 +495,8 @@ public class CustomComponentUtils {
     }
 
     public static void decodeUIInput(FacesContext facesContext,
-                                     UIComponent component) {
+                                     UIComponent component,
+                                     String clientId) {
         if (!(component instanceof EditableValueHolder)) {
             throw new IllegalArgumentException("Component "
                                                + component
@@ -505,7 +506,6 @@ public class CustomComponentUtils {
         }
         Map paramMap = facesContext.getExternalContext()
                 .getRequestParameterMap();
-        String clientId = component.getClientId(facesContext);
         if (paramMap.containsKey(clientId)) {
             //request parameter found, set submittedValue
             ((EditableValueHolder) component).setSubmittedValue(paramMap
@@ -519,7 +519,12 @@ public class CustomComponentUtils {
             }
         }
     }
-
+    
+    public static void decodeUIInput(FacesContext facesContext,
+                                     UIComponent component) {
+        decodeUIInput(facesContext, component, component.getClientId(facesContext));
+    }
+    
     public static Date getDateValue(UIComponent component) {
         if (!(component instanceof ValueHolder)) {
             throw new IllegalArgumentException("Component : " +
