@@ -113,6 +113,8 @@ public class SelectInputDateRenderer
 
     // constant for selectinputdate links
     private static final String CALENDAR = "_calendar";
+    private static final String CALENDAR_CLICK = "_calendarClick";
+    private static final String ROOT_DIV = "_rootDiv";
     
     private static final String INPUT_TEXT_TITLE =
         "com.icesoft.faces.component.selectinputdate.INPUT_TEXT_TITLE";
@@ -207,8 +209,9 @@ public class SelectInputDateRenderer
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
             boolean popupState = selectInputDate.isShowPopup();
             
-            setRootElementId(facesContext, root, uiComponent);
             clientId = uiComponent.getClientId(facesContext);
+            if (uiComponent.getId() != null)
+                root.setAttribute("id", clientId + ROOT_DIV);
             if (selectInputDate.isRenderAsPopup()) {
                 if (log.isTraceEnabled()) {
                     log.trace("Render as popup");
@@ -1104,7 +1107,7 @@ public class SelectInputDateRenderer
         parameter.setId(
                 component.getId() + "_" + valueForLink.getTime() + "_param");
         parameter.setTransient(true);
-        parameter.setName(component.getClientId(facesContext));
+        parameter.setName(component.getClientId(facesContext) + CALENDAR_CLICK);
         parameter.setValue(
                 converter.getAsString(facesContext, component, valueForLink));
 
@@ -1280,12 +1283,25 @@ public class SelectInputDateRenderer
     */
     public void decode(FacesContext facesContext, UIComponent component) {
         validateParameters(facesContext, component, SelectInputDate.class);
+        SelectInputDate dateSelect = (SelectInputDate) component;
         Map requestParameterMap =
                 facesContext.getExternalContext().getRequestParameterMap();
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
         String clientId = component.getClientId(facesContext);
-        if (clickedLink != null) {
+        
+        Object eventCapturedId = requestParameterMap.get("ice.event.captured");
+        String monthClientId = clientId + SELECT_MONTH;
+        String yearClientId = clientId + SELECT_YEAR;
+        if (monthClientId.equals(eventCapturedId)) {
+            dateSelect.setNavEvent(true);
+            dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(monthClientId)));
+        }
+        else if (yearClientId.equals(eventCapturedId)) {
+            dateSelect.setNavEvent(true);
+            dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(yearClientId)));
+        }
+        else if (clickedLink != null) {
             if (log.isDebugEnabled()) {
                 log.debug("linkId::" + linkId + "  clickedLink::" +
                           clickedLink + "  clientId::" + clientId);
@@ -1335,25 +1351,10 @@ public class SelectInputDateRenderer
                                  "onblur".equalsIgnoreCase(String.valueOf
                                         (requestParameterMap.get("ice.event.type"))));
                 }
-               
+                decodeInputText(facesContext, component);
                 if (enterKeyPressed) {
-                    decodeInputText(facesContext, component);
                     component.queueEvent(new ActionEvent(component));
                 }
-            }
-
-        }
-        SelectInputDate dateSelect = (SelectInputDate) component;
-        clientId = component.getClientId(facesContext) + SELECT_MONTH;
-        Object eventCapturedId = requestParameterMap.get("ice.event.captured");
-        if (clientId.equals(eventCapturedId)) {
-            dateSelect.setNavEvent(true);
-            dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(clientId)));
-        } else {
-            clientId = component.getClientId(facesContext) + SELECT_YEAR;
-            if (clientId.equals(eventCapturedId)) {
-                dateSelect.setNavEvent(true);
-                dateSelect.setNavDate((Date) getConvertedValue(facesContext, component, requestParameterMap.get(clientId)));
             }
         }
     }
@@ -1420,14 +1421,14 @@ public class SelectInputDateRenderer
             log.debug("decodeUIInput::");
             log.debug("#################################");
         }
-        String inputDateTextId = component.getClientId(facesContext) +
-            SelectInputDate.CALENDAR_INPUTTEXT;
+        String clientId = component.getClientId(facesContext); 
+        String inputDateTextId = clientId + SelectInputDate.CALENDAR_INPUTTEXT;
         if (requestParameterMap.containsKey(inputDateTextId)) {
             String inputDateButtonId = component.getClientId(facesContext) +
                 CALENDAR_BUTTON;
             ((BridgeFacesContext)facesContext).setFocusId(inputDateButtonId);
         }
-        CustomComponentUtils.decodeUIInput(facesContext, component);
+        CustomComponentUtils.decodeUIInput(facesContext, component, clientId+CALENDAR_CLICK);
         // not a navigation event
         dateSelect.setNavEvent(false);
     }
