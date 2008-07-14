@@ -139,13 +139,8 @@ public class MainServlet extends HttpServlet {
             messageServiceClient.subscribe(
                 MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
                 disposeViewsHandler.getMessageSelector());
-        } catch (MessageServiceException exception) {
-            // todo: create DummyAdapter
-            messageServiceClient = null/*new DummyAdapter()*/;
-        }
-        messageServiceClient.addMessageHandler(
-            disposeViewsHandler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
-        try {
+            messageServiceClient.addMessageHandler(
+                disposeViewsHandler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
             if (LOG.isErrorEnabled()) {
