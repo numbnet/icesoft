@@ -32,6 +32,7 @@ public class PushModeSerializer implements DOMSerializer {
         for (int i = 0; i < changed.length; i++) {
             Element changeRoot =
                     DOMUtils.ascendToNodeWithID(changed[i]);
+            changed[i] = changeRoot;
             Integer depth = new Integer(getDepth(changeRoot));
             HashSet peers = (HashSet) depthMaps.get(depth);
             if (null == peers)  {
@@ -42,7 +43,6 @@ public class PushModeSerializer implements DOMSerializer {
             //at its same depth in the DOM
             peers.add(changeRoot);
         }
-        HashSet elementList = new HashSet();
         Iterator allDepths = depthMaps.keySet().iterator();
         while (allDepths.hasNext())  {
             Integer baseDepth = (Integer) allDepths.next();
@@ -55,66 +55,48 @@ public class PushModeSerializer implements DOMSerializer {
                 }
             }
         }
+
+        //Merge all remaining elements at different depths
+        //Collection is a Set so duplicates will be discarded
+        HashSet topElements = new HashSet();
         Iterator allDepthMaps = depthMaps.values().iterator();
         while (allDepthMaps.hasNext())  {
-            elementList.addAll((HashSet) allDepthMaps.next());
+            topElements.addAll((HashSet) allDepthMaps.next());
         }
-/*        for (int i = 0; i < changed.length; i++) {
-           for (int j = 0; j < i; j++) {
-                if (changed[j] == null)
-                    continue;
-                // If new is already in, then discard new
-                if (changeRoot == changed[j]) {
-                    changeRoot = null;
-                    break;
-                }
-                // If new is parent of old, then replace old with new
-                else if (isAncestor(changeRoot, changed[j])) {
-                    changed[j] = null;
-                }
-                // If new is a child of old, then discard new
-                else if (isAncestor(changed[j], changeRoot)) {
-                    changeRoot = null;
-                    break;
-                }
-            }
-            changed[i] = changeRoot;
-        }
-
-        ArrayList elementList = new ArrayList(changed.length);
-        for (int i = 0; i < changed.length; i++) {
-            Element element = (Element) changed[i];
-            if (null != element) {
-                elementList.add(element);
-            }
-        }
-*/
-        if (!elementList.isEmpty()) {
-            Iterator i = elementList.iterator();
+        
+        if (!topElements.isEmpty()) {
             boolean reload = false;
-            while (i.hasNext()) {
-                String tag = ((Element) i.next()).getTagName();
-//System.out.println("update node " + tag);
+            int j = 0;
+            Element[] elements = new Element[topElements.size()];
+            HashSet dupCheck = new HashSet();
+            //copy the succsessful changed elements and check for change
+            //to head or body
+            for (int i = 0; i < changed.length; i++) {
+                Element element = (Element) changed[i];
+                String tag = element.getTagName();
                 //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
                 reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
+                if (topElements.contains(element))  {
+                   if (!dupCheck.contains(element))  {
+                        dupCheck.add(element);
+                        elements[j++] = element;
+                    }
+                }
             }
             if (reload) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)
                 commandQueue.put(new Reload(viewNumber));
             } else {
-                Element[] elements = (Element[]) elementList.toArray(new Element[elementList.size()]);
                 commandQueue.put(new UpdateElements(elements));
             }
         }
 
         oldDocument = document;
-//        System.out.println();
     }
 
     //prune the children by looking for ancestors in the parents collection 
     private void pruneAncestors(Integer parentDepth, Collection parents,
                                 Integer childDepth, Collection children)  {
-//System.out.println("checking level " + parentDepth + " for children in " + childDepth);
         Iterator parentList = parents.iterator();
         while (parentList.hasNext())  {
             Node parent = (Node) parentList.next();
@@ -122,7 +104,6 @@ public class PushModeSerializer implements DOMSerializer {
             while (childList.hasNext())  {
                 Node child = (Node) childList.next();
                 if (isAncestor(parentDepth, parent, childDepth, child))  {
-//System.out.println("pruning " + child);
                     childList.remove();
                 }
             }
