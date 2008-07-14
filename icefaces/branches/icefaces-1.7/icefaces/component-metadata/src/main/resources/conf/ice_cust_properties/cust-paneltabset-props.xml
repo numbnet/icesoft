@@ -39,6 +39,8 @@
 &ice-att-title-props;
 &base-props;
 &events-props;
+&ice-att-partialsubmit-props;
+&ice-att-immediate-props;
 <property>
 	<description>
 		Sets or retrieves which field of a given data source, as
