@@ -38,6 +38,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -150,6 +151,10 @@ public class PanelPopupRenderer extends GroupRenderer {
 		} catch (Exception e) {
 			log.error("Error rendering Modal Panel Popup ", e);
 		}
+        JavascriptContext.fireEffect(uiComponent, facesContext);
+        LocalEffectEncoder
+                .encodeLocalEffects(uiComponent, root, facesContext);
+		
 		// get tables , our table is the first and only one
 		NodeList tables = root.getElementsByTagName(HTML.TABLE_ELEM);
 		// assumption we want the first table in tables. there should only be
