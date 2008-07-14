@@ -152,6 +152,9 @@ public class MainServlet extends HttpServlet {
     }
 
     private void tearDownMessageServiceClient() {
+        if (null == messageServiceClient)  {
+            return;
+        }
         try {
             messageServiceClient.stop();
         } catch (MessageServiceException exception) {
