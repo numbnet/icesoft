@@ -28,6 +28,8 @@ public class SendUpdatedViews implements Server, Runnable {
             response.setHeader("Content-Length", 0);
         }
     };
+    //Define here to avoid classloading problems after application exit
+    private static final ResponseHandler NoopHandler = NOOPResponse.Handler;
     private static final Server AfterShutdown = new Server() {
         public void service(Request request) throws Exception {
             request.respondWith(CloseResponse);
@@ -89,7 +91,7 @@ public class SendUpdatedViews implements Server, Runnable {
 
     public void run() {
         if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
-            respondIfPendingRequest(NOOPResponse.Handler);
+            respondIfPendingRequest(NoopHandler);
         }
     }
 
