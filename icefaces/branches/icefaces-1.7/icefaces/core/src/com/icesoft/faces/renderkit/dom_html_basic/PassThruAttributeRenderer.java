@@ -145,7 +145,7 @@ public class PassThruAttributeRenderer {
     }
 
     /**
-     * Render pass thru attributes to the attributeElement (instead of root)
+     * Render pass thru attributes to the attributeElement (instead of root) 
      * associated with the UIComponent parameter. The excludedAttributes
      * argument is a String array of the names of attributes to omit. Do not
      * render attributes contained in the excludedAttributes argument.
@@ -307,18 +307,15 @@ public class PassThruAttributeRenderer {
         if (uiComponent == null) {
             throw new FacesException("Component instance is null");
         }
-
         if(targetElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
-
             Element rootElement = (Element) domContext.getRootNode();
             if (rootElement == null) {
                 throw new FacesException("DOMContext is not initialized");
             }
             targetElement = rootElement;
         }
-
         List excludedAttributesList = null;
         if (excludedAttributes != null && excludedAttributes.length > 0) {
             excludedAttributesList = Arrays.asList(excludedAttributes);
@@ -346,11 +343,11 @@ public class PassThruAttributeRenderer {
                 targetElement.setAttribute(
                         nextPassThruAttributeName.toString(),
                         nextPassThruAttributeValue.toString());
-            } else {
-                targetElement.removeAttribute(
-                        nextPassThruAttributeName.toString());
+//remove the else clause that was here; it's trying to remove a node
+//that doesn't exist
             }
         }
+
     }
 
     /**
