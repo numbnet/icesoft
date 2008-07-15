@@ -22,6 +22,8 @@ public interface Request {
 
     boolean containsParameter(String name);
 
+    String[] getParameterNames();
+
     String getParameter(String name);
 
     String[] getParameterAsStrings(String name);
