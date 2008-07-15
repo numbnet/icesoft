@@ -6,17 +6,14 @@ import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.jms.JMSAdapter;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
 import com.icesoft.util.SeamUtilities;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -25,12 +22,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
+
     static {
         final String headless = "java.awt.headless";
         if (null == System.getProperty(headless)) {
@@ -43,7 +41,6 @@ public class MainServlet extends HttpServlet {
     private ServletContext context;
     private MonitorRunner monitorRunner;
     private MessageServiceClient messageServiceClient;
-    private DisposeViewsHandler disposeViewsHandler;
 
     public void init(ServletConfig servletConfig) throws ServletException {
         super.init(servletConfig);
@@ -69,16 +66,16 @@ public class MainServlet extends HttpServlet {
             setUpMessageServiceClient();
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            //don't create new sessions for XMLHTTPRequests identified by the path prefix "block/*"
             PseudoServlet sessionDispatcher = new SessionDispatcher() {
                 protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
-                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration);
+                    return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient);
                 }
             };
             if (SeamUtilities.isSpringEnvironment()) {
                 //Need to dispatch to the Spring resource server
                 dispatcher.dispatchOn("/spring/resources/", resourceServer);
             }
+            //don't create new sessions for XMLHTTPRequests identified by "block/*" prefixed paths
             dispatcher.dispatchOn(".*(block\\/)", new SessionVerifier(sessionDispatcher));
             dispatcher.dispatchOn(".*(\\.iface$|\\.jsf|\\.faces$|\\.jsp$|\\.jspx$|\\.html$|\\.xhtml$|\\.seam$|uploadHtml$|/spring/)", sessionDispatcher);
             dispatcher.dispatchOn(".*", resourceServer);
@@ -99,16 +96,15 @@ public class MainServlet extends HttpServlet {
     }
 
     public void destroy() {
-        tearDownMessageServiceClient();
         monitorRunner.stop();
         DisposeBeans.in(context);
         dispatcher.shutdown();
+        tearDownMessageServiceClient();
     }
 
     private boolean isJMSAvailable() {
         try {
-            this.getClass().getClassLoader().loadClass(
-                "javax.jms.TopicConnectionFactory");
+            this.getClass().getClassLoader().loadClass("javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
@@ -117,58 +113,27 @@ public class MainServlet extends HttpServlet {
 
     private void setUpMessageServiceClient() {
         if (!isJMSAvailable()) {
-            // todo: create DummyAdapter
             return;
         }
-        MessageServiceAdapter messageServiceAdapter = new JMSAdapter(context);
-        messageServiceClient =
-            new MessageServiceClient(
-                messageServiceAdapter.getMessageServiceConfiguration(),
-                messageServiceAdapter,
-                context);
-        disposeViewsHandler = new DisposeViewsHandler();
-        disposeViewsHandler.setCallback(
-            new DisposeViewsHandler.Callback() {
-                public void disposeView(
-                    final String iceFacesId, final String viewNumber) {
-
-                    // todo: dispose view (Ted/Mircea)
-                }
-            });
         try {
-            messageServiceClient.subscribe(
-                MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
-                disposeViewsHandler.getMessageSelector());
-            messageServiceClient.addMessageHandler(
-                disposeViewsHandler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+            messageServiceClient = new MessageServiceClient(new JMSAdapter(context), context);
+            //todo: make message selector static to avoid instantiating the message handler
+            messageServiceClient.subscribe(MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME, new DisposeViewsHandler().getMessageSelector());
             messageServiceClient.start();
         } catch (MessageServiceException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Failed to start message delivery!", exception);
-            }
-            // todo: create DummyAdapter
-            messageServiceClient = null/*new DummyAdapter()*/;
+            LOG.error("Failed to start message delivery!", exception);
+            messageServiceClient = null;
         }
     }
 
     private void tearDownMessageServiceClient() {
-        try {
-            messageServiceClient.stop();
-        } catch (MessageServiceException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Failed to stop message delivery!", exception);
-            }
+        if (messageServiceClient == null) {
+            return;
         }
-        messageServiceClient.removeMessageHandler(
-            disposeViewsHandler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
         try {
             messageServiceClient.stop();
         } catch (MessageServiceException exception) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(
-                    "Failed to close connection due to some internal error!",
-                    exception);
-            }
+            LOG.error("Failed to close connection due to some internal error!", exception);
         }
     }
 }
