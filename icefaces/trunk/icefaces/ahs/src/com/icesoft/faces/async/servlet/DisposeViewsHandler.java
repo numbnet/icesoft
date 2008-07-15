@@ -74,22 +74,16 @@ implements Handler, Runnable {
                 // Parameter Value : <ICEfaces ID>:<View Number>,
                 //                   <ICEfaces ID>:<View Number>, etc.
                 StringBuffer _message = new StringBuffer();
-                String[] _iceViews = request.getParameterAsStrings("ice.views");
-                for (int i = 0; i < _iceViews.length; i++) {
-                    StringTokenizer _iceFacesIdViewPairs =
-                        new StringTokenizer(_iceViews[i], ",");
-                    while (_iceFacesIdViewPairs.hasMoreTokens()) {
-                        StringTokenizer _iceFacesIdViewPair =
-                            new StringTokenizer(
-                                _iceFacesIdViewPairs.nextToken(), ":");
+                String[] _iceSessions = request.getParameterNames();
+                for (int i = 0; i < _iceSessions.length; i++) {
+                    String[] _iceViews = request.getParameterAsStrings(_iceSessions[i]);
+                    for (int j = 0; j < _iceViews.length; j++) {
                         _message.
                             // ICEfaces ID
-                            append(_iceFacesIdViewPair.nextToken()).
-                                append(";").
+                            append(_iceSessions[i]).append(";").
                             // View Number
-                            append(_iceFacesIdViewPair.nextToken()).
-                                append("\r\n");
-                    }
+                            append(_iceViews[j]).append("\r\n");
+                   }
                 }
                 sessionManager.getMessageService().publish(
                     _message.toString(),

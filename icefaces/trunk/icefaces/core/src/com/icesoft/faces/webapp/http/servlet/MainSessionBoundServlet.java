@@ -25,6 +25,8 @@ import com.icesoft.faces.webapp.http.core.ViewBoundServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
+import com.icesoft.net.messaging.MessageServiceClient;
+import com.icesoft.net.messaging.MessageHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -64,19 +66,39 @@ public class MainSessionBoundServlet implements PseudoServlet {
     private PseudoServlet servlet;
     private Runnable shutdown;
 
-    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration) {
+    public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
 
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
         final Server viewServlet;
         final Server disposeViews;
+        final MessageHandler handler;
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
-            disposeViews = new DisposeViews(sessionID, views);
+            if (messageService == null) {
+                disposeViews = new DisposeViews(sessionID, views);
+                handler = null;
+            } else {                
+                disposeViews = OKServer;
+                handler = new DisposeViewsHandler();
+                handler.setCallback(
+                    new DisposeViewsHandler.Callback() {
+                        public void disposeView(final String sessionIdentifier, final String viewIdentifier) {
+                            if (sessionID.equals(sessionIdentifier)) {
+                                View view = (View) views.remove(viewIdentifier);
+                                if (view != null) {
+                                    view.dispose();
+                                }
+                            }
+                        }
+                    });
+                messageService.addMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+            }
         } else {
             viewServlet = new SingleViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             disposeViews = OKServer;
+            handler = null;
         }
 
         final Server sendUpdatedViews;
@@ -120,7 +142,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
                     CommandQueue commandQueue = (CommandQueue) i.next();
                     commandQueue.put(SessionExpired);
                 }
-                //block until all views notify their disposal only when session expires
                 ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
                 //shutdown all contained servers
                 servlet.shutdown();
@@ -129,6 +150,11 @@ public class MainSessionBoundServlet implements PseudoServlet {
                 while (viewIterator.hasNext()) {
                     View view = (View) viewIterator.next();
                     view.dispose();
+                }
+
+                if (handler != null) {
+                    //todo: introduce NOOP handler
+                    messageService.removeMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
                 }
             }
         };

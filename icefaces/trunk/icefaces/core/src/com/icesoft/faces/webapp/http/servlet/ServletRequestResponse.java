@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class ServletRequestResponse implements Request, Response {
@@ -105,6 +106,11 @@ public class ServletRequestResponse implements Request, Response {
 
     public boolean containsParameter(String name) {
         return request.getParameter(name) != null;
+    }
+
+    public String[] getParameterNames() {
+        Collection result = request.getParameterMap().keySet();
+        return (String[]) result.toArray(new String[result.size()]);
     }
 
     public String getParameter(String name) {

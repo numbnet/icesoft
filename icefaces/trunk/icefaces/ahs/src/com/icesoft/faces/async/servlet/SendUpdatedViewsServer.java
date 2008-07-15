@@ -45,18 +45,22 @@ implements Server {
             LOG.debug("Extracting ICEfaces ID(s)...");
         }
         Set _iceFacesIdSet = new HashSet();
-        String[] _iceFacesIds =
-            request.getParameterAsStrings("ice.session");
-        for (int i = 0; i < _iceFacesIds.length; i++) {
-            if (sessionManager.isValid(_iceFacesIds[i])) {
-                _iceFacesIdSet.add(_iceFacesIds[i]);
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(
-                        "Invalid ICEfaces ID: " +
-                            _iceFacesIds[i] + ")");
+        try {
+            String[] _iceFacesIds =
+                request.getParameterAsStrings("ice.session");
+            for (int i = 0; i < _iceFacesIds.length; i++) {
+                if (sessionManager.isValid(_iceFacesIds[i])) {
+                    _iceFacesIdSet.add(_iceFacesIds[i]);
+                } else {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(
+                            "Invalid ICEfaces ID: " +
+                                _iceFacesIds[i] + ")");
+                    }
                 }
             }
+        } catch (Exception e) {
+            //todo: remove this
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("ICEfaces ID(s): " + _iceFacesIdSet);
