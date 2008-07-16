@@ -81,14 +81,15 @@ Ice.MenuBarKeyNavigator = Class.create(Ice.KeyNavigator, {
   initialize: function($super, componentId, displayOnClick) {
     $super(componentId);
     this.displayOnClick = displayOnClick;
-    document.onclick = this.hideAll.bindAsEventListener(this);
-
+    this.component.onclick = this.hideAll.bindAsEventListener(this);
+    document.onclick = this.hideAllDocument.bindAsEventListener(this);    
+  
     if (Element.hasClassName(this.component, 'iceMnuBarVrt')) {
         this.vertical = true;
     } else {
         this.vertical = false;
     }
-    this.setClickState(this.component, false); 
+    this.clicked = true;
     this.configureRootItems();
   }
 });
@@ -213,26 +214,26 @@ Ice.MenuBarKeyNavigator.addMethods({
   },
   
   hover: function(event) {
-    if (this.isClicked(Event.element(event))) {
-	    element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
-	    if (!element) return;
+    if (this.clicked) {
+        element = Event.element(event).up('.'+ this.getMenuBarItemClass()); 
+        if (!element) return;
         var submenu = $(element.id + '_sub');
-	    Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
-	    if (this.vertical) {
-	        var rootElement = element.up('.'+ this.getRootClass())
-	        Ice.Menu.show(rootElement,submenu,element);
-	    } else {
-	        Ice.Menu.show(element,submenu,null);
-	    }
+        Ice.Menu.hideOrphanedMenusNotRelatedTo(element);
+        if (this.vertical) {
+            var rootElement = element.up('.'+ this.getRootClass())
+            Ice.Menu.show(rootElement,submenu,element);
+        } else {
+            Ice.Menu.show(element,submenu,null);
+        }
     }
   },
   
   mousedown: function(event) {
     element = Event.element(event);  
-    if (this.isClicked(element)) {
-        this.setClickState(element, false);
+    if (this.clicked) {
+        this.clicked = false;
     } else {
-        this.setClickState(element, true); 
+        this.clicked = true;    
         this.hover(event);
     }
   },
@@ -254,11 +255,11 @@ Ice.MenuBarKeyNavigator.addMethods({
         anch.onfocus = this.focus.bindAsEventListener(this);
         if (this.displayOnClick) { 
             mnuBarItem.onmousedown = this.mousedown.bindAsEventListener(this);
-            this.setClickState(mnuBarItem, false);           
+            this.clicked = false;            
         }
         var sibling = mnuBarItem.next('.'+ this.getMenuBarItemClass());
         if (sibling) {
-	        this.registerEvents(sibling);
+            this.registerEvents(sibling);
         }
     }  
   },
@@ -266,55 +267,25 @@ Ice.MenuBarKeyNavigator.addMethods({
   hideAll:function(event) {
       element = Event.element(event); 
       var baritem = element.up('.'+ this.getMenuBarItemClass());
-      if (!(baritem && this.isClicked(element))) {
+      if (!(baritem && this.clicked)) {
         Ice.Menu.hideAll();
         if (this.displayOnClick) {       
-            this.setClickState(element, false);
+            this.clicked = false;
         }         
       }
-      this.hideAllDisplayOnClickMenus();
+      event.stopPropagation();
    },
    
+  hideAllDocument:function(event) {
+    Ice.Menu.hideAll();
+  },
+      
    showMenu:function(event) {
      element = Event.element(event);    
      var baritem = element.up('.'+ this.getMenuBarItemClass());
      if (baritem && this.displayOnClick) {
         this.mousedown(event);
      }
-   },
-   
-   isClicked:function(element) {
-	    if (!this.displayOnClick) {
-	          return true;
-	    }
-        var root = element.up('.'+ this.getRootClass());
-        if (!root) return true;
-        var clickState = $(root.id + 'clickState');
-        if (!clickState) return true;  
-        return (clickState.value == "true");  
-   },
-   
-   setClickState:function(element, state) {
-        if (!this.displayOnClick){
-            this.click = state;
-            return;
-        }
-        var root = element.up('.'+ this.getRootClass());
-        if (!root) return true;
-        var clickState = $(root.id + 'clickState');
-        if (!clickState) return true;
-        if (state) {
-            clickState.value="true";
-        } else {
-            this.hideAllDisplayOnClickMenus();
-        }        
-   },
-   
-   hideAllDisplayOnClickMenus: function() {
-        var allDisplayOnClickMns = $$("input.mnuClickState");
-        for(i=0; i <allDisplayOnClickMns.length; i++) {
-	       allDisplayOnClickMns[i].value="false";
-        }
    }
 
 });
