@@ -31,12 +31,63 @@
  *
  */
 
+window.logger = new Ice.Log.Logger([ 'window' ]);
+window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
+
 [ Ice.Community ].as(function(This) {
+    var views = window.views = window.views ? window.views : [];
+    var registerView = function(session, view) {
+        views.push(new Ice.Parameter.Association(session, view));
+    };
+
+    var deregisterAllViews = function() {
+        views.clear();
+    };
+
+    var channel = new Ice.Ajax.Client(logger.child('dispose'));
+    var sendDisposeViews = function(parameters) {
+        if (parameters.isEmpty()) return;
+        try {
+            var query = parameters.inject(new Ice.Parameter.Query(), function(query, parameter) {
+                return query.addParameter(parameter);
+            });
+
+            channel.postSynchronously(window.disposeViewsURI, query.asURIEncodedString(), function(request) {
+                Ice.Connection.FormPost(request);
+                request.on(Ice.Connection.OK, Ice.Connection.Close);
+            });
+        } catch (e) {
+            logger.warn('Failed to notify view disposal', e);
+        }
+    };
+
+    var disposeView = function(session, view) {
+        views = views.reject(function(i) {
+            return i.name == session && i.value == view;
+        });
+        sendDisposeViews([new Ice.Parameter.Association(session, view)]);
+    };
+
+    var disposeSessionViews = function(session) {
+        var sessionViews = views.select(function(i) {
+            return i.name == session;
+        });
+        views = views.complement(sessionViews);
+        sendDisposeViews(sessionViews);
+    };
+
+    var disposeWindowViews = function() {
+        sendDisposeViews(views);
+        views.clear();
+    };
+
+    window.onBeforeUnload(disposeWindowViews);
 
     This.Application = Object.subclass({
         initialize: function(configuration, container) {
             var sessionID = configuration.session;
             var viewID = configuration.view;
+            registerView(sessionID, viewID);
             var logger = window.logger.child(sessionID.substring(0, 4) + '#' + viewID);
             var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
@@ -67,14 +118,14 @@
                 logger.info('Redirecting to ' + url);
                 //avoid view disposal on navigation rules
                 if (url.contains('rvn=')) {
-                    connection.cancelDisposeViews();
+                    deregisterAllViews();
                 }
                 window.location.href = url;
             });
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
                 var url = window.location.href;
-                connection.cancelDisposeViews();
+                deregisterAllViews();
                 if (url.contains('rvn=')) {
                     window.location.reload();
                 } else {
@@ -108,13 +159,10 @@
             commandDispatcher.register('session-expired', function() {
                 logger.warn('Session has expired');
                 statusManager.sessionExpired.on();
-                connection.sendDisposeViews();
+                //implicit protocol for session expiry
+                //todo: verify if still needed
+                disposeSessionViews(sessionID);
                 dispose();
-            });
-
-            window.onBeforeUnload(function() {
-                connection.sendDisposeViews();
-                connection.shutdown();
             });
 
             window.onUnload(function() {
@@ -143,7 +191,7 @@
 
             connection.onServerError(function (response) {
                 logger.warn('server side error');
-                connection.sendDisposeViews();
+                disposeView(sessionID, viewID);
                 if (response.isEmpty()) {
                     statusManager.serverError.on();
                 } else {
@@ -176,9 +224,6 @@
         }
     });
 });
-
-window.logger = new Ice.Log.Logger([ 'window' ]);
-window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.logger) : new Ice.Log.WindowLogHandler(window.logger, window);
 
 window.onLoad(function() {
     window.documentSynchronizer = new Ice.Document.Synchronizer(window.logger);
