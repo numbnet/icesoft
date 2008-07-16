@@ -376,6 +376,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         //phases
         if (com.icesoft.util.SeamUtilities.isSpring2Environment())  {
             this.viewRoot = null;
+        } else {
+            //clear the request map except when we have SWF2
+            externalContext.release();
         }
         // #2807 release thread locals
         setCurrentInstance(null);
