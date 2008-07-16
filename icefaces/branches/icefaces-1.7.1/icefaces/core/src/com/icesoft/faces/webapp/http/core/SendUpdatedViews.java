@@ -1,6 +1,5 @@
 package com.icesoft.faces.webapp.http.core;
 
-import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
@@ -18,14 +17,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public class SendUpdatedViews implements Server, Runnable {
-    private static final NOOP NOOPCommand = new NOOP();
     private static final Runnable NOOP = new Runnable() {
         public void run() {
-        }
-    };
-    private static final ResponseHandler NOOPResponse = new FixedXMLContentHandler() {
-        public void writeTo(Writer writer) throws IOException {
-            NOOPCommand.serializeTo(writer);
         }
     };
     private static final ResponseHandler CloseResponse = new ResponseHandler() {
@@ -96,7 +89,7 @@ public class SendUpdatedViews implements Server, Runnable {
 
     public void run() {
         if ((System.currentTimeMillis() > responseTimeoutTime) && (!pendingRequest.isEmpty())) {
-            respondIfPendingRequest(NOOPResponse);
+            respondIfPendingRequest(NOOPResponse.Handler);
         }
     }
 
