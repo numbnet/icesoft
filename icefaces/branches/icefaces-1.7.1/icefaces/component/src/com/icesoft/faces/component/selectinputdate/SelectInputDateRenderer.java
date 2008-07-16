@@ -390,6 +390,16 @@ public class SelectInputDateRenderer
                 addAttributeToElementFromResource(facesContext,
                     CALENDAR_SUMMARY, table, HTML.SUMMARY_ATTR);
                 root.appendChild(table);
+                
+                Element dateText = domContext.createElement(HTML.INPUT_ELEM);
+                dateText.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
+                dateText.setAttribute(HTML.VALUE_ATTR,
+                                      selectInputDate.getTextToRender());
+                dateText.setAttribute(HTML.ID_ATTR,
+                                      clientId + SelectInputDate.CALENDAR_INPUTTEXT);
+                dateText.setAttribute(HTML.NAME_ATTR,
+                                      clientId + SelectInputDate.CALENDAR_INPUTTEXT);
+                root.appendChild(dateText);
             }
         }
         clientId = uiComponent.getClientId(facesContext);
@@ -1289,6 +1299,7 @@ public class SelectInputDateRenderer
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
         String clientId = component.getClientId(facesContext);
+//System.out.println("SIDR.decode()  clientId: " + clientId);
         
         Object eventCapturedId = requestParameterMap.get("ice.event.captured");
         String monthClientId = clientId + SELECT_MONTH;
@@ -1441,37 +1452,39 @@ public class SelectInputDateRenderer
         String showPopup = (String) requestParameterMap.get(popupState);
         SelectInputDate dateSelect = (SelectInputDate) component;
         String clientId = dateSelect.getClientId(facesContext);
+//System.out.println("SIDR.decodeInputText()  clientId: " + clientId);
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
         String inputTextDateId = clientId + SelectInputDate.CALENDAR_INPUTTEXT;
+//System.out.println("SIDR.decodeInputText()  inputTextDateId: " + inputTextDateId);
 
         // inputtext is only available in popup mode 
-        if (requestParameterMap.containsKey(inputTextDateId) &&
-            dateSelect.isRenderAsPopup()) {
+        if (requestParameterMap.containsKey(inputTextDateId)) {
             if (log.isDebugEnabled()) {
                 log.debug("decoding InputText EnterKey::");
                 log.debug("###################################");
             }
             if (showPopup != null) {
- 
-                
                 if (checkLink((String) clickedLink, clientId)) {
                     if (showPopup.equalsIgnoreCase("true")) {
+//System.out.println("SIDR.decodeInputText()  setShowPopup( true )");
                         dateSelect.setShowPopup(true);
                     } else {
+//System.out.println("SIDR.decodeInputText()  setShowPopup( false )");
                         dateSelect.setShowPopup(false);
                     }
                 }
-                Object inputTextDate = requestParameterMap.get(inputTextDateId);
-                if (inputTextDate == null) {
-                    dateSelect.setSubmittedValue(null);
-                }
-                else if (String.valueOf(inputTextDate).trim().length() == 0) {
-                    dateSelect.setSubmittedValue("");
-                }
-                else {
-                    dateSelect.setSubmittedValue(inputTextDate);
-                }
+            }
+            Object inputTextDate = requestParameterMap.get(inputTextDateId);
+//System.out.println("SIDR.decodeInputText()  inputTextDate: " + inputTextDate);
+            if (inputTextDate == null) {
+                dateSelect.setSubmittedValue(null);
+            }
+            else if (String.valueOf(inputTextDate).trim().length() == 0) {
+                dateSelect.setSubmittedValue("");
+            }
+            else {
+                dateSelect.setSubmittedValue(inputTextDate);
             }
         }
     }
