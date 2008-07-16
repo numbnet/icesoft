@@ -217,9 +217,13 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 statusManager = setup(withDefault ? new Ice.Status.DefaultStatusManager(configuration, container) : null);
                 logger.info("status indicators were updated");
             };
-            //public field used in iceSubmit/iceSubmitPartial
+            //public methods
             this.connection = connection;
             this.dispose = dispose;
+            this.disposeAndNotify = function() {
+                disposeView(sessionID, viewID);
+                dispose();
+            };
             logger.info('bridge loaded!');
         }
     });

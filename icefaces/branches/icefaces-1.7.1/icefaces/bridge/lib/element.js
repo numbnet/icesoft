@@ -196,8 +196,12 @@
             this.KeyListenerNames.each(iterator);
         },
 
+        findBridge: function() {
+            return this.findContainerFor('bridge').bridge;
+        },
+
         findConnection: function() {
-            return this.findContainerFor('bridge').bridge.connection;
+            return this.findBridge().connection;
         },
 
         findContainerFor: function(property) {
