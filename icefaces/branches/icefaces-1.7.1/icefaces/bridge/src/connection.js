@@ -65,8 +65,6 @@
             this.timeoutBomb = { cancel: Function.NOOP };
             this.logger.info('synchronous mode');
             this.sendURI = configuration.context.current + 'block/send-receive-updates';
-            this.disposeViewsURI = configuration.context.current + 'block/dispose-views';
-
             var timeout = configuration.timeout ? configuration.timeout : 60000;
             this.onSend(function() {
                 this.timeoutBomb.cancel();
@@ -126,24 +124,7 @@
             this.connectionDownListeners.push(callback);
         },
 
-        whenTrouble: function(callback) {
-            //do nothing
-        },
-
-        cancelDisposeViews: function() {
-            this.sendDisposeViews = Function.NOOP;
-        },
-
-        sendDisposeViews: function() {
-            try {
-                this.channel.postSynchronously(this.disposeViewsURI, this.defaultQuery.asURIEncodedString(), function(request) {
-                    Connection.FormPost(request);
-                    request.on(Connection.OK, Connection.Close);
-                });
-            } catch (e) {
-                this.logger.warn('Failed to notify view disposal', e);
-            }
-        },
+        whenTrouble: Function.NOOP,
 
         shutdown: function() {
             //shutdown once
