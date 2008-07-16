@@ -1374,7 +1374,7 @@ public class SelectInputDateRenderer
         dateSelect.setNavDate(
             (Date) getConvertedValue(
                 facesContext, dateSelect, requestParameterMap.get(
-                    dateSelect.getClientId(facesContext))));
+                    dateSelect.getClientId(facesContext) + CALENDAR_CLICK)));
     }
 
     private void decodePopup(FacesContext facesContext, UIComponent component) {
@@ -1443,10 +1443,7 @@ public class SelectInputDateRenderer
         String clientId = dateSelect.getClientId(facesContext);
         Object linkId = getLinkId(facesContext, component);
         Object clickedLink = requestParameterMap.get(linkId);
-
-        String inputTextDateId = component.getClientId(facesContext) +
-        SelectInputDate.CALENDAR_INPUTTEXT;
-        Object inputTextDate = requestParameterMap.get(inputTextDateId);
+        String inputTextDateId = clientId + SelectInputDate.CALENDAR_INPUTTEXT;
 
         // inputtext is only available in popup mode 
         if (requestParameterMap.containsKey(inputTextDateId) &&
@@ -1465,6 +1462,7 @@ public class SelectInputDateRenderer
                         dateSelect.setShowPopup(false);
                     }
                 }
+                Object inputTextDate = requestParameterMap.get(inputTextDateId);
                 if (inputTextDate == null) {
                     dateSelect.setSubmittedValue(null);
                 }
