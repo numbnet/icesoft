@@ -41,6 +41,10 @@ public class RequestProxy implements Request {
         return request.containsParameter(name);
     }
 
+    public String[] getParameterNames() {
+        return request.getParameterNames();
+    }
+
     public String getParameter(String name) {
         return request.getParameter(name);
     }
