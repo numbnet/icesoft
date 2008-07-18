@@ -119,20 +119,24 @@ Ice.modal = {
 
             iframe.style.top = '0';
             iframe.style.left = '0';
+            iframe.style.border = '0';
             //trick to avoid bug in IE, see http://support.microsoft.com/kb/927917
             modal.parentNode.insertBefore(iframe, modal);
             var resize = function() {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame');
                 if (frame) {
-                    var documentWidth = document.documentElement.scrollWidth;
-                    var bodyWidth = document.body.scrollWidth;
-                    var documentHeight = document.documentElement.scrollHeight;
-                    var bodyHeight = document.body.scrollHeight;
-                    var width = (bodyWidth > documentWidth ? bodyWidth : documentWidth) ;
-                    var height = (bodyHeight > documentHeight ? bodyHeight : documentHeight)
-                    frame.style.width = width + 'px';
-                    frame.style.height = height + 'px';
+                    var scrollOffsets = document.viewport.getScrollOffsets();
+                    var viewportDimensions = document.viewport.getDimensions();
+                    var modal = $(target);
+                    if (Prototype.Browser.Opera && parseFloat(window.opera.version()) >= 9.5) {
+                        viewportDimensions.width = document.documentElement.clientWidth;
+                        viewportDimensions.height = document.documentElement.clientHeight;
+                    }
+                    frame.style.top = scrollOffsets.top + "px";
+                    frame.style.left = scrollOffsets.left + "px";
+                    frame.style.width = viewportDimensions.width + 'px';
+                    frame.style.height = viewportDimensions.height + 'px';
                     frame.style.visibility = 'visible';
                     var modalWidth = 100;
                     var modalHeight = 100;
@@ -141,11 +145,16 @@ Ice.modal = {
                         modalHeight = Element.getHeight(modal);
                     } catch (e) {
                     }
-                    modalWidth = parseInt(modalWidth) / 2;
-                    modalHeight = parseInt(modalHeight) / 2;
-                    modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
-                    modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
-
+                    if (viewportDimensions.height > modalHeight) {
+                        modal.style.top = scrollOffsets.top + Math.floor((viewportDimensions.height - modalHeight) / 2) + "px";
+                    } else {
+                        modal.style.top = scrollOffsets.top - (modalHeight - viewportDimensions.height) + "px";
+                    }
+                    if (viewportDimensions.width > modalWidth) {
+                        modal.style.left = scrollOffsets.left + Math.floor((viewportDimensions.width - modalWidth) / 2) + "px";
+                    } else {
+                        modal.style.left = scrollOffsets.left - (modalWidth - viewportDimensions.width) + "px";
+                    }
                 }
             };
             resize();
