@@ -1,5 +1,8 @@
 package com.icesoft.faces.webapp.http.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.icesoft.faces.webapp.command.Command;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
@@ -12,6 +15,7 @@ import java.io.Writer;
 import java.util.Map;
 
 public class SendUpdates implements Server {
+    private static Log log = LogFactory.getLog(SendUpdates.class);
     private static final Command NOOP = new NOOP();
     private Map commandQueues;
 
@@ -39,7 +43,11 @@ public class SendUpdates implements Server {
             String viewIdentifier = request.getParameter("ice.view");
             if (commandQueues.containsKey(viewIdentifier)) {
                 CommandQueue queue = (CommandQueue) commandQueues.get(viewIdentifier);
-                queue.take().serializeTo(writer);
+                Command command = queue.take();
+                if (log.isDebugEnabled()) {
+                    log.debug(command);
+                }
+                command.serializeTo(writer);
             } else {
                 NOOP.serializeTo(writer);
             }
