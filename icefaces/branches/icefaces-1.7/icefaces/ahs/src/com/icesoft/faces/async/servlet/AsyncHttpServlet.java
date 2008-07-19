@@ -112,14 +112,14 @@ extends HttpServlet {
                             "in servlet-mode...");
                 }
                 final ExecuteQueue _executeQueue = new ExecuteQueue();
-                SessionDispatcher _sessionDispatcher = new SessionDispatcher() {
+                SessionDispatcher _sessionDispatcher = new SessionDispatcher(getServletContext()) {
                     public void service(
                         final HttpServletRequest httpServletRequest,
                         final HttpServletResponse httpServletResponse)
                     throws Exception {
                         HttpSession _httpSession =
                             httpServletRequest.getSession(true);
-                        notifyIfNew(_httpSession);
+                        checkSession(_httpSession);
                         lookupServlet(_httpSession).
                             service(httpServletRequest, httpServletResponse);
                     }

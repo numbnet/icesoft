@@ -128,7 +128,7 @@ implements CometProcessor, ContextEventListener {
             if (!eventResponderMap.containsKey(session)) {
                 MainSessionBoundServlet servlet =
                     (MainSessionBoundServlet)
-                        SessionDispatcher.getSingletonSessionServlet(session);
+                        SessionDispatcher.getSingletonSessionServlet(session, getServletContext());
                 eventResponderMap.put(
                     session,
                     new EventResponder(

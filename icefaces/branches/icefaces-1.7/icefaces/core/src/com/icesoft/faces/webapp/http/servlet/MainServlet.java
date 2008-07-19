@@ -66,7 +66,7 @@ public class MainServlet extends HttpServlet {
             setUpMessageServiceClient();
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionDispatcher = new SessionDispatcher() {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
                 protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient);
                 }
