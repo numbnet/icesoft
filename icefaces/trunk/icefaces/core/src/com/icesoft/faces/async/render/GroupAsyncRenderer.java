@@ -38,19 +38,17 @@ import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-
 import edu.emory.mathcs.backport.java.util.concurrent.CopyOnWriteArraySet;
-
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.context.FacesContext;
 import javax.portlet.PortletSession;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The GroupAsyncRenderer is the foundation class for other types of renderers
@@ -70,7 +68,7 @@ import org.apache.commons.logging.LogFactory;
  * @see RenderManager, OnDemandRenderer, IntervalRenderer, DelayRenderer
  */
 public class GroupAsyncRenderer
-implements AsyncRenderer {
+        implements AsyncRenderer {
     private static final Log LOG = LogFactory.getLog(GroupAsyncRenderer.class);
 
     protected final Set group = new CopyOnWriteArraySet();
@@ -79,9 +77,10 @@ implements AsyncRenderer {
     protected String name;
 
     protected boolean stopRequested = false;
+    private Map applicationMap;
 
     public GroupAsyncRenderer() {
-        // do nothing.
+        applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
     }
 
     /**
@@ -91,14 +90,14 @@ implements AsyncRenderer {
      * @param renderable the Renderable instance to add to the group.
      */
     public void add(final Renderable renderable) {
-        add((Object)renderable);
+        add((Object) renderable);
     }
 
     /**
      * <p>
-     *   Adds the current session, via a <code>WeakReference</code>, to this
-     *   <code>GroupAsyncRenderer</code>.  If this already contains the current
-     *   session, it is not added again.
+     * Adds the current session, via a <code>WeakReference</code>, to this
+     * <code>GroupAsyncRenderer</code>.  If this already contains the current
+     * session, it is not added again.
      * </p>
      */
     public void addCurrentSession() {
@@ -119,14 +118,14 @@ implements AsyncRenderer {
     }
 
     public boolean contains(final Renderable renderable) {
-        return contains((Object)renderable);
+        return contains((Object) renderable);
     }
 
     public boolean containsCurrentSession() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return
-            facesContext != null &&
-            contains(facesContext.getExternalContext().getSession(false));
+                facesContext != null &&
+                        contains(facesContext.getExternalContext().getSession(false));
     }
 
     /**
@@ -168,13 +167,13 @@ implements AsyncRenderer {
      * @param renderable the Renderable instance to remove
      */
     public void remove(final Renderable renderable) {
-        remove((Object)renderable);
+        remove((Object) renderable);
     }
 
     /**
      * <p>
-     *   Removes the current session, via a <code>WeakReference</code>, from
-     *   this <code>GroupAsyncRenderer</code>.
+     * Removes the current session, via a <code>WeakReference</code>, from
+     * this <code>GroupAsyncRenderer</code>.
      * </p>
      */
     public void removeCurrentSession() {
@@ -230,14 +229,14 @@ implements AsyncRenderer {
          * an unchanging snapshot of the array at the time the Iterator was
          * constructed and does not support the mutative remove operation!
          */
-        for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
-            Object object = ((WeakReference)i.next()).get();
+        for (Iterator i = group.iterator(); !stopRequested && i.hasNext();) {
+            Object object = ((WeakReference) i.next()).get();
             if (object instanceof Renderable) {
-                requestRender((Renderable)object);
+                requestRender((Renderable) object);
             } else if (object instanceof HttpSession) {
-                requestRender((HttpSession)object);
+                requestRender((HttpSession) object);
             } else if (object instanceof PortletSession) {
-                requestRender((PortletSession)object);
+                requestRender((PortletSession) object);
             }
         }
     }
@@ -260,8 +259,8 @@ implements AsyncRenderer {
     }
 
     private boolean contains(final Object object) {
-        for (Iterator i = group.iterator(); i.hasNext(); ) {
-            if (object == ((WeakReference)i.next()).get()) {
+        for (Iterator i = group.iterator(); i.hasNext();) {
+            if (object == ((WeakReference) i.next()).get()) {
                 return true;
             }
         }
@@ -289,8 +288,8 @@ implements AsyncRenderer {
     private void remove(final Object object) {
         // todo: remove synchronized block as CopyOnWriteArraySet is used?
         synchronized (group) {
-            for (Iterator i = group.iterator(); i.hasNext(); ) {
-                WeakReference reference = (WeakReference)i.next();
+            for (Iterator i = group.iterator(); i.hasNext();) {
+                WeakReference reference = (WeakReference) i.next();
                 if (object == reference.get()) {
                     group.remove(reference);
                     if (LOG.isTraceEnabled()) {
@@ -330,7 +329,7 @@ implements AsyncRenderer {
             remove(portletSession);
         }
     }
-    
+
     private void requestRender(final String sessionId) {
         PersistentFacesState suppressedViewState;
         if (FacesContext.getCurrentInstance() != null) {
@@ -343,32 +342,32 @@ implements AsyncRenderer {
             suppressedViewState = null;
         }
         for (
-            Iterator i =
-                ((MainSessionBoundServlet)
-                    SessionDispatcher.
-                        getSingletonSessionServlet(sessionId)).
-                    getViews().values().iterator();
-            i.hasNext();
-            ) {
+                Iterator i =
+                        ((MainSessionBoundServlet)
+                                SessionDispatcher.
+                                        getSingletonSessionServlet(sessionId, applicationMap)).
+                                getViews().values().iterator();
+                i.hasNext();
+                ) {
 
             final PersistentFacesState viewState =
-                ((View)i.next()).getPersistentFacesState();
+                    ((View) i.next()).getPersistentFacesState();
             if (viewState != suppressedViewState) {
                 requestRender(
-                    new Renderable() {
-                        public PersistentFacesState getState() {
-                            return viewState;
-                        }
+                        new Renderable() {
+                            public PersistentFacesState getState() {
+                                return viewState;
+                            }
 
-                        public void renderingException(
-                            final RenderingException renderingException) {
+                            public void renderingException(
+                                    final RenderingException renderingException) {
 
-                            /*
-                             * It's up to our View infrastructure to remove
-                             * dead views.
-                             */
+                                /*
+                                * It's up to our View infrastructure to remove
+                                * dead views.
+                                */
+                            }
                         }
-                    }
                 );
             }
         }
