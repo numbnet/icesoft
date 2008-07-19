@@ -6,7 +6,6 @@ import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
-import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.jms.JMSAdapter;
@@ -29,6 +28,7 @@ import java.net.URI;
 
 public class MainServlet extends HttpServlet {
     private static final Log LOG = LogFactory.getLog(MainServlet.class);
+
     static {
         final String headless = "java.awt.headless";
         if (null == System.getProperty(headless)) {
@@ -66,7 +66,7 @@ public class MainServlet extends HttpServlet {
             setUpMessageServiceClient();
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionDispatcher = new SessionDispatcher() {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
                 protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient);
                 }

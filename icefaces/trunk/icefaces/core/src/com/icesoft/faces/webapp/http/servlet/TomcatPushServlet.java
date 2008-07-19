@@ -8,10 +8,19 @@ import com.icesoft.faces.util.event.servlet.ICEfacesIDRetrievedEvent;
 import com.icesoft.faces.util.event.servlet.SessionDestroyedEvent;
 import com.icesoft.faces.util.event.servlet.ViewNumberRetrievedEvent;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import org.apache.catalina.CometEvent;
+import org.apache.catalina.CometProcessor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.EOFException;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,19 +28,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometProcessor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class TomcatPushServlet extends HttpServlet
-implements CometProcessor, ContextEventListener {
+        implements CometProcessor, ContextEventListener {
     private static final Log LOG = LogFactory.getLog(TomcatPushServlet.class);
 
     private final Map eventResponderMap = new HashMap();
@@ -52,7 +50,7 @@ implements CometProcessor, ContextEventListener {
      * @throws ServletException
      */
     public void event(final CometEvent event)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         CometEvent.EventType eventType = event.getEventType();
         if (eventType == CometEvent.EventType.BEGIN) {
             begin(event);
@@ -75,7 +73,7 @@ implements CometProcessor, ContextEventListener {
         HttpSession session = event.getHttpSession();
         synchronized (eventResponderMap) {
             if (eventResponderMap.containsKey(session)) {
-                ((EventResponder)eventResponderMap.get(session)).dispose();
+                ((EventResponder) eventResponderMap.get(session)).dispose();
             }
         }
         // do nothing.
@@ -107,7 +105,7 @@ implements CometProcessor, ContextEventListener {
     }
 
     protected void begin(final CometEvent event)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         /*
          * EventType.BEGIN : BEGIN will be called at the beginning of the
          *                   processing of the connection. It can be used to
@@ -127,20 +125,20 @@ implements CometProcessor, ContextEventListener {
         synchronized (eventResponderMap) {
             if (!eventResponderMap.containsKey(session)) {
                 MainSessionBoundServlet servlet =
-                    (MainSessionBoundServlet)
-                        SessionDispatcher.getSingletonSessionServlet(session);
+                        (MainSessionBoundServlet)
+                                SessionDispatcher.getSingletonSessionServlet(session, getServletContext());
                 eventResponderMap.put(
-                    session,
-                    new EventResponder(
-                        servlet.getSessionID(),
-                        servlet.getAllUpdatedViews(),
-                        servlet.getSynchronouslyUpdatedViews()));
+                        session,
+                        new EventResponder(
+                                servlet.getSessionID(),
+                                servlet.getAllUpdatedViews(),
+                                servlet.getSynchronouslyUpdatedViews()));
             }
         }
     }
-    
+
     protected void end(final CometEvent event)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         /*
          * EventType.END   : END may be called to end the processing of the
          *                   request. Fields that have been initialized in the
@@ -155,9 +153,9 @@ implements CometProcessor, ContextEventListener {
          */
         event.close();
     }
-    
+
     protected void error(final CometEvent event)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         /*
          * EventType.ERROR : ERROR will be called by the container in the case
          *                   where an IOException or a similar unrecoverable
@@ -170,9 +168,9 @@ implements CometProcessor, ContextEventListener {
          */
         event.close();
     }
-    
+
     protected void read(final CometEvent event)
-    throws IOException, ServletException {
+            throws IOException, ServletException {
         /*
          * EventType.READ  : READ indicates that input data is available, and
          *                   that one read can be made without blocking. The
@@ -219,17 +217,17 @@ implements CometProcessor, ContextEventListener {
         } catch (EOFException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
-                    "An EOF exception occurred " +
-                        "while trying to read the request.",
-                    exception);
+                        "An EOF exception occurred " +
+                                "while trying to read the request.",
+                        exception);
             }
             error(event);
             return;
         } catch (IOException exception) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(
-                    "An I/O error occurred while trying to read the request.",
-                    exception);
+                        "An I/O error occurred while trying to read the request.",
+                        exception);
             }
             error(event);
             return;
@@ -238,7 +236,7 @@ implements CometProcessor, ContextEventListener {
         HttpSession session = request.getSession(false);
         synchronized (eventResponderMap) {
             if (eventResponderMap.containsKey(session)) {
-                eventResponder = (EventResponder)eventResponderMap.get(session);
+                eventResponder = (EventResponder) eventResponderMap.get(session);
             } else {
                 eventResponder = null;
             }
@@ -259,16 +257,16 @@ implements CometProcessor, ContextEventListener {
     }
 
     protected void service(
-        final HttpServletRequest request, final HttpServletResponse response)
-    throws IOException, ServletException {
+            final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException, ServletException {
         // Not used by Tomcat6
         throw
-            new ServletException(
-                "service() not supported by TomcatPushServlet. Configure the " +
-                "connector, replacing protocol=\"HTTP/1.1\" with " +
-                "protocol=\"org.apache.coyote.http11.Http11NioProtocol\"");
+                new ServletException(
+                        "service() not supported by TomcatPushServlet. Configure the " +
+                                "connector, replacing protocol=\"HTTP/1.1\" with " +
+                                "protocol=\"org.apache.coyote.http11.Http11NioProtocol\"");
     }
-    
+
     private static class EventResponder implements Runnable {
         private static final Log LOG = LogFactory.getLog(EventResponder.class);
 
@@ -279,8 +277,8 @@ implements CometProcessor, ContextEventListener {
         private CometEvent pendingRequest;
 
         private EventResponder(
-            final String sessionID, final ViewQueue allUpdatedViews,
-            final Collection synchronouslyUpdatedViews) {
+                final String sessionID, final ViewQueue allUpdatedViews,
+                final Collection synchronouslyUpdatedViews) {
 
             this.sessionID = sessionID;
             this.allUpdatedViews = allUpdatedViews;
@@ -301,9 +299,9 @@ implements CometProcessor, ContextEventListener {
                     } catch (IOException exception) {
                         if (LOG.isErrorEnabled()) {
                             LOG.error(
-                                "An I/O error occurred " +
-                                    "while trying to send a response.",
-                                exception);
+                                    "An I/O error occurred " +
+                                            "while trying to send a response.",
+                                    exception);
                         }
                     }
                 }
@@ -326,102 +324,102 @@ implements CometProcessor, ContextEventListener {
         }
 
         private boolean sendResponse(final HttpServletResponse response)
-        throws IOException {
+                throws IOException {
             return responseSender.send(response);
         }
 
         private final ResponseSender UpdatedViewsSender =
-            new ResponseSender() {
-                public boolean send(final HttpServletResponse response)
-                throws IOException {
-                    synchronized (allUpdatedViews) {
-                        Set updatedViewSet = getUpdatedViews();
-                        if (!updatedViewSet.isEmpty()) {
-                            response.setContentType("text/xml; charset=UTF-8");
-                            response.addHeader(
-                                    "X-Powered-By", "Tomcat Push Servlet");
-                            String[] viewIdentifiers =
-                                (String[])
-                                    updatedViewSet.toArray(
-                                        new String[updatedViewSet.size()]);
-                            PrintWriter writer = response.getWriter();
-                            writer.write("<updated-views>");
-                            for (int i = 0; i < viewIdentifiers.length; i++) {
-                                if (i != 0) {
-                                    writer.write(' ');
+                new ResponseSender() {
+                    public boolean send(final HttpServletResponse response)
+                            throws IOException {
+                        synchronized (allUpdatedViews) {
+                            Set updatedViewSet = getUpdatedViews();
+                            if (!updatedViewSet.isEmpty()) {
+                                response.setContentType("text/xml; charset=UTF-8");
+                                response.addHeader(
+                                        "X-Powered-By", "Tomcat Push Servlet");
+                                String[] viewIdentifiers =
+                                        (String[])
+                                                updatedViewSet.toArray(
+                                                        new String[updatedViewSet.size()]);
+                                PrintWriter writer = response.getWriter();
+                                writer.write("<updated-views>");
+                                for (int i = 0; i < viewIdentifiers.length; i++) {
+                                    if (i != 0) {
+                                        writer.write(' ');
+                                    }
+                                    writer.write(
+                                            sessionID + ":" + viewIdentifiers[i]);
                                 }
-                                writer.write(
-                                    sessionID + ":" + viewIdentifiers[i]);
+                                writer.write("</updated-views>");
+                                writer.flush();
+                                return true;
+                            } else {
+                                return false;
                             }
-                            writer.write("</updated-views>");
-                            writer.flush();
-                            return true;
-                        } else {
-                            return false;
                         }
                     }
-                }
-            };
+                };
         private final ResponseSender LastUpdatedViewsSender =
-            new ResponseSender() {
-                public boolean send(final HttpServletResponse response)
-                throws IOException {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException exception) {
-                        // ignoring interrupts.
-                    }
-                    synchronized (allUpdatedViews) {
-                        Set updatedViewSet = getUpdatedViews();
-                        if (!updatedViewSet.isEmpty()) {
-                            response.setContentType("text/xml; charset=UTF-8");
-                            response.addHeader(
-                                    "X-Powered-By", "Tomcat Push Servlet");
-                            String[] viewIdentifiers =
-                                (String[])
-                                    updatedViewSet.toArray(
-                                        new String[updatedViewSet.size()]);
-                            PrintWriter writer = response.getWriter();
-                            writer.write("<updated-views>");
-                            for (int i = 0; i < viewIdentifiers.length; i++) {
-                                if (i != 0) {
-                                    writer.write(' ');
+                new ResponseSender() {
+                    public boolean send(final HttpServletResponse response)
+                            throws IOException {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException exception) {
+                            // ignoring interrupts.
+                        }
+                        synchronized (allUpdatedViews) {
+                            Set updatedViewSet = getUpdatedViews();
+                            if (!updatedViewSet.isEmpty()) {
+                                response.setContentType("text/xml; charset=UTF-8");
+                                response.addHeader(
+                                        "X-Powered-By", "Tomcat Push Servlet");
+                                String[] viewIdentifiers =
+                                        (String[])
+                                                updatedViewSet.toArray(
+                                                        new String[updatedViewSet.size()]);
+                                PrintWriter writer = response.getWriter();
+                                writer.write("<updated-views>");
+                                for (int i = 0; i < viewIdentifiers.length; i++) {
+                                    if (i != 0) {
+                                        writer.write(' ');
+                                    }
+                                    writer.write(
+                                            sessionID + ":" + viewIdentifiers[i]);
                                 }
-                                writer.write(
-                                    sessionID + ":" + viewIdentifiers[i]);
+                                writer.write("</updated-views>");
+                                writer.flush();
+                                responseSender = ConnectionCloseSender;
+                                return true;
+                            } else {
+                                return false;
                             }
-                            writer.write("</updated-views>");
-                            writer.flush();
-                            responseSender = ConnectionCloseSender;
-                            return true;
-                        } else {
-                            return false;
                         }
                     }
-                }
-            };
+                };
         private final ResponseSender ConnectionCloseSender =
-            new ResponseSender() {
-                public boolean send(final HttpServletResponse response)
-                throws IOException {
-                    /*
-                     * let the bridge know that this blocking connection should
-                     * not be re-initialized...
-                     */
-                    // entity header fields
-                    response.setHeader("Content-Length", "0");
-                    // extension header fields
-                    response.setHeader("X-Connection", "close");
-                    response.addHeader(
-                        "X-Powered-By", "Tomcat Push Servlet");
-                    return true;
-                }
-            };
+                new ResponseSender() {
+                    public boolean send(final HttpServletResponse response)
+                            throws IOException {
+                        /*
+                        * let the bridge know that this blocking connection should
+                        * not be re-initialized...
+                        */
+                        // entity header fields
+                        response.setHeader("Content-Length", "0");
+                        // extension header fields
+                        response.setHeader("X-Connection", "close");
+                        response.addHeader(
+                                "X-Powered-By", "Tomcat Push Servlet");
+                        return true;
+                    }
+                };
         private ResponseSender responseSender = UpdatedViewsSender;
 
         private static interface ResponseSender {
             public boolean send(final HttpServletResponse response)
-            throws IOException;
+                    throws IOException;
         }
     }
 }
