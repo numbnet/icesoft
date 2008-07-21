@@ -120,8 +120,8 @@ public class MainServlet extends HttpServlet {
             //todo: make message selector static to avoid instantiating the message handler
             messageServiceClient.subscribe(MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME, new DisposeViewsHandler().getMessageSelector());
             messageServiceClient.start();
-        } catch (MessageServiceException exception) {
-            LOG.error("Failed to start message delivery!", exception);
+        } catch (Exception exception) {
+            LOG.warn("Did not start Ajax Push JMS services: ", exception);
             messageServiceClient = null;
         }
     }
