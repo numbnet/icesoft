@@ -5,7 +5,7 @@
         <display-name>Chat</display-name>
         <portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
         <init-param>
-            <name>com.icesoft.faces.VIEW</name>
+            <name>com.icesoft.faces.portlet.viewPageURL</name>
             <value>/chat.iface</value>
         </init-param>
         <supports>
