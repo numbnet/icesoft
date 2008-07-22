@@ -74,7 +74,14 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
     private Effect onkeypresseffect;
     private Effect onkeydowneffect;
     private Effect onkeyupeffect;
-
+    private static String[] supportedPassThru = {
+            "title",
+            "dir",
+            "lang",
+            "style"
+    };
+    
+    
     public HtmlOutputText() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -471,5 +478,10 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         onkeyupeffect = (Effect) values[16];
         currentStyle = (CurrentStyle) values[17];
         visible = (Boolean) values[18];
+    }
+
+
+    public String[] getSupportedPassThru() {
+        return supportedPassThru;
     }
 }
