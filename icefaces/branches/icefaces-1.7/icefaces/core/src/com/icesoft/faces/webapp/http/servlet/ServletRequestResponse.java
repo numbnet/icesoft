@@ -55,8 +55,8 @@ public class ServletRequestResponse implements Request, Response {
                         uri = URI.create(req.getRequestURL().toString());
                     } catch (NullPointerException e) {
                         //TODO remove this catch block when GlassFish bug is addressed
-                        if (log.isErrorEnabled()) {
-                            log.error("Null Protocol Scheme in request", e);
+                        if (log.isDebugEnabled()) {
+                            log.debug("Null Protocol Scheme in request", e);
                         }
                         uri = URI.create("http://" + req.getServerName() + ":"
                                 + req.getServerPort() + req.getRequestURI());
