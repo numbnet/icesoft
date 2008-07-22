@@ -121,7 +121,7 @@ public class MainServlet extends HttpServlet {
             messageServiceClient.subscribe(MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME, new DisposeViewsHandler().getMessageSelector());
             messageServiceClient.start();
         } catch (Exception exception) {
-            LOG.warn("Did not start Ajax Push JMS services: ", exception);
+            LOG.info("Did not start Ajax Push JMS services: " + exception);
             messageServiceClient = null;
         }
     }
