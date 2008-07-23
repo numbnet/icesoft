@@ -31,7 +31,7 @@
  *
  */
 
-package org.icefaces.ui;
+package com.icesoft.icefaces.samples.datatable.ui;
 
 /**
  * <p>The DataSource class is a utility class used by the data table paginator

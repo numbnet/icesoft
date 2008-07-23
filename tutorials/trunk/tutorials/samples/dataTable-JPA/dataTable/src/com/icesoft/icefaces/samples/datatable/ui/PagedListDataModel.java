@@ -1,4 +1,4 @@
-package org.icefaces.ui;
+package com.icesoft.icefaces.samples.datatable.ui;
 
 import javax.faces.model.DataModel;
 

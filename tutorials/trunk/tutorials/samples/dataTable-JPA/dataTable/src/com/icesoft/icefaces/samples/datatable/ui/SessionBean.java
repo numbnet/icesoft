@@ -1,13 +1,13 @@
-package org.icefaces.ui;
+package com.icesoft.icefaces.samples.datatable.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.DataModel;
 
-import org.icefaces.jpa.Customer;
-import org.icefaces.jpa.CustomerDAO;
-import org.icefaces.jpa.EntityManagerHelper;
+import com.icesoft.icefaces.samples.datatable.jpa.Customer;
+import com.icesoft.icefaces.samples.datatable.jpa.CustomerDAO;
+import com.icesoft.icefaces.samples.datatable.jpa.EntityManagerHelper;
 
 import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.async.render.Renderable;

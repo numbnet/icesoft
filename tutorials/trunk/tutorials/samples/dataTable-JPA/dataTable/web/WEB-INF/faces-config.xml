@@ -22,7 +22,7 @@
         </description>
         <managed-bean-name>dirtyDataController</managed-bean-name>
         <managed-bean-class>
-            org.icefaces.ui.DirtyDataController
+            com.icesoft.icefaces.samples.datatable.ui.DirtyDataController
         </managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
@@ -30,7 +30,7 @@
 	<managed-bean>
 		<managed-bean-name>sessionBean</managed-bean-name>
 		<managed-bean-class>
-			org.icefaces.ui.SessionBean
+			com.icesoft.icefaces.samples.datatable.ui.SessionBean
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
         <managed-property>
