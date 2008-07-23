@@ -113,7 +113,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
         } else {
             //setup blocking connection server
             sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
-            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(views));
+            sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views));
             receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
         }
 
