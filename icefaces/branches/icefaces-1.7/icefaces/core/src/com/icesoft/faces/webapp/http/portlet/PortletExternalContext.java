@@ -220,7 +220,7 @@ public class PortletExternalContext extends BridgeExternalContext {
             }
         };
         Map previousRequestMap = requestMap;
-        requestMap = new PortletRequestAttributeMap(initialRequest);
+        requestMap = Collections.synchronizedMap(new PortletRequestAttributeMap(initialRequest));
         //propagate attributes
         requestMap.putAll(previousRequestMap);
         update(renderRequest, renderResponse);

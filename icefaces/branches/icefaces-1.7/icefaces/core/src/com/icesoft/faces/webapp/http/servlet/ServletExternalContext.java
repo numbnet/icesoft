@@ -129,7 +129,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             }
         };
         Map previousRequestMap = requestMap;
-        requestMap = new ServletRequestAttributeMap(initialRequest);
+        requestMap = Collections.synchronizedMap(new ServletRequestAttributeMap(initialRequest));
         //propagate attributes
         requestMap.putAll(previousRequestMap);
         update(servletRequest, servletResponse);

@@ -203,7 +203,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     //todo: them between requests
     public Map collectBundles() {
         Map result = new HashMap();
-        Iterator entries = new ArrayList(requestMap.entrySet()).iterator();
+        Iterator entries = requestMap.entrySet().iterator();
         while (entries.hasNext()) {
             Map.Entry entry = (Map.Entry) entries.next();
             Object value = entry.getValue();
