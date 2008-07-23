@@ -66,6 +66,12 @@
             this.logger.info('synchronous mode');
             this.sendURI = configuration.context.current + 'block/send-receive-updates';
             var timeout = configuration.timeout ? configuration.timeout : 60000;
+
+            //clear connectionDownListeners to avoid bogus connection lost messages
+            window.onBeforeUnload(function() {
+                this.connectionDownListeners.clear();
+            }.bind(this));
+
             this.onSend(function() {
                 this.timeoutBomb.cancel();
                 this.timeoutBomb = this.connectionDownListeners.broadcaster().delayExecutionFor(timeout);

@@ -54,6 +54,11 @@
             this.sendURI = configuration.context.current + 'block/send-receive-updates';
             this.receiveURI = configuration.context.async + 'block/receive-updated-views';
 
+            //clear connectionDownListeners to avoid bogus connection lost messages
+            window.onBeforeUnload(function() {
+                this.connectionDownListeners.clear();
+            }.bind(this));
+
             var timeout = configuration.timeout ? configuration.timeout : 60000;
             this.onSend(function() {
                 this.timeoutBomb.cancel();
