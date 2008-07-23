@@ -55,10 +55,19 @@ public class ViewBoundServer implements Server {
                     } catch (FacesException e) {
                         //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
                         Throwable nestedException = e.getCause();
-                        if (nestedException == null || nestedException instanceof Error) {
+                        if (nestedException == null) {
                             throw e;
                         } else {
-                            throw (Exception) nestedException;
+                            //find the deepest cause
+                            while (nestedException.getCause() != null) {
+                                nestedException = nestedException.getCause();
+                            }
+
+                            if (nestedException instanceof Exception) {
+                                throw (Exception) nestedException;
+                            } else {
+                                throw e;
+                            }
                         }
                     } catch (SessionExpiredException e) {
                         //exception thrown in the middle of JSF lifecycle
