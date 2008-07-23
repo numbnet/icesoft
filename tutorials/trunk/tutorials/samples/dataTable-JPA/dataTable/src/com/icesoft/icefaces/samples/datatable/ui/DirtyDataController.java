@@ -1,9 +1,9 @@
-package org.icefaces.ui;
+package com.icesoft.icefaces.samples.datatable.ui;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.icefaces.jpa.Customer;
+import com.icesoft.icefaces.samples.datatable.jpa.Customer;
 
 public class DirtyDataController {
     

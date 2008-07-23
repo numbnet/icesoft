@@ -1,9 +1,9 @@
-package org.icefaces.ui;
+package com.icesoft.icefaces.samples.datatable.ui;
 
 
 import javax.faces.event.ActionEvent;
 
-import org.icefaces.jpa.Customer;
+import com.icesoft.icefaces.samples.datatable.jpa.Customer;
 
 /**
  * <p>This class wraps the Customer object with view specific methods and 

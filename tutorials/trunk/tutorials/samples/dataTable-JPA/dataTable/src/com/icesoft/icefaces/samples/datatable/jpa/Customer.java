@@ -1,4 +1,4 @@
-package org.icefaces.jpa;
+package com.icesoft.icefaces.samples.datatable.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

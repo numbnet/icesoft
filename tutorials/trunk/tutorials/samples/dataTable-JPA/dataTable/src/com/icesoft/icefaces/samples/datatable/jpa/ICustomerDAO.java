@@ -1,4 +1,4 @@
-package org.icefaces.jpa;
+package com.icesoft.icefaces.samples.datatable.jpa;
 
 import java.util.List;
 
