@@ -31,7 +31,7 @@
         <renderer>
             <component-family>javax.faces.Output</component-family>
             <renderer-type>com.icesoft.faces.Text</renderer-type>
-            <renderer-class>com.icesoft.faces.renderkit.dom_html_basic.TextRenderer</renderer-class>
+            <renderer-class>com.icesoft.faces.renderkit.dom_html_basic.OutputTextRenderer</renderer-class>
         </renderer>  
     </render-kit>
 

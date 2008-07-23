@@ -1,14 +1,14 @@
-package com.icesoft.faces.component.ext.renderkit;
+package com.icesoft.faces.renderkit.dom_html_basic;
 
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
+import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
-import com.icesoft.faces.component.ext.HtmlOutputText;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
