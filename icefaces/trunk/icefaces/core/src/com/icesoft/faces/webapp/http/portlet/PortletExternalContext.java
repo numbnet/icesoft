@@ -1,8 +1,8 @@
 package com.icesoft.faces.webapp.http.portlet;
 
 import com.icesoft.faces.context.BridgeExternalContext;
-import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.AcegiAuthWrapper;
+import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.util.EnumerationIterator;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -14,16 +14,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
-import javax.portlet.*;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletContext;
+import javax.portlet.PortletException;
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import javax.portlet.WindowState;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.security.Principal;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -82,7 +90,7 @@ public class PortletExternalContext extends BridgeExternalContext {
 
         //ICE-2846: check for deprecated configuration parameter as well
         adjustPortletSessionInactiveInterval = configuration.getAttributeAsBoolean("portlet.adjustSessionInactiveInterval",
-                configuration.getAttributeAsBoolean("adjustPortletSessionInactiveInterval",true));
+                configuration.getAttributeAsBoolean("adjustPortletSessionInactiveInterval", true));
 
         updateOnPageLoad(renderRequest, renderResponse);
         insertNewViewrootToken();
@@ -106,9 +114,9 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void update(final HttpServletRequest request, HttpServletResponse response) {
-        
+
         //ICE-2519
-        if(adjustPortletSessionInactiveInterval){
+        if (adjustPortletSessionInactiveInterval) {
             adjustPortletSessionInactiveInterval();
         }
 
@@ -127,8 +135,8 @@ public class PortletExternalContext extends BridgeExternalContext {
 
         Object req = request.getAttribute("javax.portlet.request");
 
-        if ((req != null) && (req instanceof PortletRequest) ) {
-            PortletRequest portletRequest = (PortletRequest) req; 
+        if ((req != null) && (req instanceof PortletRequest)) {
+            PortletRequest portletRequest = (PortletRequest) req;
 
             Enumeration propertyNames = portletRequest.getPropertyNames();
             while (propertyNames.hasMoreElements()) {
@@ -136,7 +144,7 @@ public class PortletExternalContext extends BridgeExternalContext {
                 requestHeaderMap.put(name, portletRequest.getProperty(name));
                 requestHeaderValuesMap.put(name, portletRequest.getProperties(name));
             }
-        } 
+        }
 
         if (persistSeamKey) setSeamLifecycleShortcut();
 
@@ -170,7 +178,7 @@ public class PortletExternalContext extends BridgeExternalContext {
         }
 
         long lastAccessed = session.getLastAccessedTime();
-        session.setMaxInactiveInterval((int) (((System.currentTimeMillis() - lastAccessed) + inactiveIncrement)/1000) );
+        session.setMaxInactiveInterval((int) (((System.currentTimeMillis() - lastAccessed) + inactiveIncrement) / 1000));
         if (Log.isTraceEnabled()) {
             Log.trace("max inactive interval adjust to " + session.getMaxInactiveInterval());
         }
@@ -220,7 +228,7 @@ public class PortletExternalContext extends BridgeExternalContext {
             }
         };
         Map previousRequestMap = requestMap;
-        requestMap = new PortletRequestAttributeMap(initialRequest);
+        requestMap = Collections.synchronizedMap(new PortletRequestAttributeMap(initialRequest));
         //propagate attributes
         requestMap.putAll(previousRequestMap);
         update(renderRequest, renderResponse);
@@ -355,8 +363,8 @@ public class PortletExternalContext extends BridgeExternalContext {
     //but request is a PortletRequest
     private static AuthenticationVerifier createAuthenticationVerifier(final PortletRequest request) {
         Principal principal = request.getUserPrincipal();
-        if ( (AuthenticationClass != null)  &&  ((null == principal) || 
-                AuthenticationClass.isInstance(principal))  )  {
+        if ((AuthenticationClass != null) && ((null == principal) ||
+                AuthenticationClass.isInstance(principal))) {
             return new AcegiAuthWrapper(principal);
         } else {
             return new AuthenticationVerifier() {
@@ -369,7 +377,7 @@ public class PortletExternalContext extends BridgeExternalContext {
                     return request.isUserInRole(role);
                 }
 
-                public boolean isReusable()  {
+                public boolean isReusable() {
                     return false;
                 }
             };

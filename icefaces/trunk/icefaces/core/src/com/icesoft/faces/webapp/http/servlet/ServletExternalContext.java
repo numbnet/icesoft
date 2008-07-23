@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class ServletExternalContext extends BridgeExternalContext {
     private static final Log Log = LogFactory.getLog(ServletExternalContext.class);
-                                        
+
     private final ServletContext context;
     private final HttpSession session;
     private AuthenticationVerifier authenticationVerifier;
@@ -90,7 +90,7 @@ public class ServletExternalContext extends BridgeExternalContext {
         Enumeration headerParameterNames = request.getHeaderNames();
         while (headerParameterNames.hasMoreElements()) {
             String name = (String) headerParameterNames.nextElement();
-            requestHeaderMap.put(name, request.getHeader(name));            
+            requestHeaderMap.put(name, request.getHeader(name));
             requestHeaderValuesMap.put(name, request.getHeaders(name));
         }
 
@@ -129,7 +129,7 @@ public class ServletExternalContext extends BridgeExternalContext {
             }
         };
         Map previousRequestMap = requestMap;
-        requestMap = new ServletRequestAttributeMap(initialRequest);
+        requestMap = Collections.synchronizedMap(new ServletRequestAttributeMap(initialRequest));
         //propagate attributes
         requestMap.putAll(previousRequestMap);
         update(servletRequest, servletResponse);
