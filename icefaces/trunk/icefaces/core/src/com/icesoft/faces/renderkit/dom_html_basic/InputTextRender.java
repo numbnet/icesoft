@@ -16,6 +16,9 @@ import com.icesoft.faces.util.Debug;
 public class InputTextRender extends BaseRenderer{
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        //readonly or disabled components are not required to submit the value
+        if(DomBasicRenderer.isStatic(uiComponent)) return;
+        
         String clientId = uiComponent.getClientId(facesContext);
         Map requestMap =
                 facesContext.getExternalContext().getRequestParameterMap();
@@ -41,6 +44,8 @@ public class InputTextRender extends BaseRenderer{
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
+        //it must call the super.encode to support effects and facesMessage recovery
+        super.encodeEnd(facesContext, uiComponent);
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.INPUT_ELEM);
     }

@@ -7,7 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.RendererUtil;
+import com.icesoft.faces.util.CoreUtils;
 
 public class BaseRenderer extends Renderer{
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -30,7 +32,8 @@ public class BaseRenderer extends Renderer{
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         super.encodeEnd(facesContext, uiComponent);    
-        
+        CoreUtils.recoverFacesMessages(facesContext, uiComponent);
+        JavascriptContext.fireEffect(uiComponent, facesContext);
     }
     
     public String getResourceURL(FacesContext context, String path) {
