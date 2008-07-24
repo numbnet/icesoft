@@ -192,16 +192,24 @@
                 }
             }.bind(this).repeatExecutionEvery(1000);
 
-            //get the updates for the view
+            var pickUpdates = function() {
+                this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
+                    Connection.FormPost(request);
+                    request.on(Connection.OK, this.receiveCallback);
+                    request.on(Connection.OK, Connection.Close);
+                }.bind(this));
+            }.bind(this);
+
+            //pick any updates that might be generated in between bridge re-initialization
+            //todo: replace heuristic with more exact solution
+            pickUpdates.delayExecutionFor(1000);
+
+            //monitor & pick updates for this view
             this.updatesMonitor = function() {
                 try {
                     var views = this.updatedViews.loadValue().split(' ');
                     if (views.include(fullViewID)) {
-                        this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
-                            Connection.FormPost(request);
-                            request.on(Connection.OK, this.receiveCallback);
-                            request.on(Connection.OK, Connection.Close);
-                        }.bind(this));
+                        pickUpdates();
                         this.updatedViews.saveValue(views.complement([ fullViewID ]).join(' '));
                     }
                 } catch (e) {
