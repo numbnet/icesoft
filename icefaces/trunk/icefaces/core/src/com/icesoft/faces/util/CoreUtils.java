@@ -1,5 +1,6 @@
 package com.icesoft.faces.util;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.faces.application.FacesMessage;
@@ -7,6 +8,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 
 import org.w3c.dom.Element;
 
