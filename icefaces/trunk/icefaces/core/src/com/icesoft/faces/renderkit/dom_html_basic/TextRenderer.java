@@ -35,6 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.UIXhtmlComponent;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.RendererUtil;
 import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -248,8 +249,21 @@ public class TextRenderer extends DomBasicInputRenderer {
         
         HashSet excludes = new HashSet();
         addJavaScript(facesContext, uiComponent, root, currentValue, excludes);
+        String[] attributes = (String[]) uiComponent.getAttributes().get(RendererUtil.SUPPORTED_PASSTHRU_ATT);
+        if (attributes != null) {
+            for (int i=0; i < attributes.length; i++) {
+                if (excludes.contains(attributes[i])) continue;
+                Object value = null;
+                if ((value = uiComponent.getAttributes().get(attributes[i])) != null &&
+                        PassThruAttributeRenderer.attributeValueIsSentinel(attributes[i])
+                        ) {
+                    root.setAttribute(attributes[i], String.valueOf(value));
+                }
+            } 
+        } else {
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
+        }
         String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
         if (mousedownScript != null) {
             mousedownScript+= ";this.focus();";

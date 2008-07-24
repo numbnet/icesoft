@@ -377,7 +377,7 @@ public class PassThruAttributeRenderer {
         return false;
     }
 
-    private static boolean attributeValueIsSentinel(Object value) {
+    public static boolean attributeValueIsSentinel(Object value) {
         if (value == null) {
             return false;
         }
