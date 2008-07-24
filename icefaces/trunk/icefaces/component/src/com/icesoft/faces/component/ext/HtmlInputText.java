@@ -112,6 +112,34 @@ public class HtmlInputText
     private Effect onkeypresseffect;
     private Effect onkeydowneffect;
     private Effect onkeyupeffect;
+    private static String[] supportedPassThru = {
+        "accesskey",
+        "alt",
+        "autocomplete",
+        "dir",
+        "disabled",
+        "lang",
+        "maxlength",
+        "onblur",
+        "onchange",
+        "onclick",
+        "onfocus",
+        "ondblclick",
+        "onblur",
+        "onkeydown",
+        "onkeypress",
+        "onkeyup",
+        "onmousedown",
+        "onmousemove",
+        "onmouseout",
+        "onmouseover",
+        "onmouseup",
+        "onselect",
+        "readonly",
+        "size",
+        "style",
+        "tabindex",
+        "title"    };
 
     private CurrentStyle currentStyle;
 
@@ -820,4 +848,8 @@ public class HtmlInputText
         ValueBinding vb = getValueBinding("autocomplete");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
+    
+    public String[] getSupportedPassThru() {
+        return supportedPassThru;
+    }    
 }
