@@ -47,6 +47,8 @@ public class OutputTextRenderer extends BaseRenderer{
         if (!(uiComponent instanceof HtmlOutputText)) {
             return;
         }
+        //it must call the super.encode to support effects and facesMessage recovery
+        super.encodeEnd(facesContext, uiComponent);        
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.endElement(HTML.SPAN_ELEM);
     }
