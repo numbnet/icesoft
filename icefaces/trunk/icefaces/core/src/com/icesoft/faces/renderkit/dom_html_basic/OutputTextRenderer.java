@@ -27,7 +27,7 @@ public class OutputTextRenderer extends BaseRenderer{
             return;
         }
         
-        RendererUtil.writeRootElement(writer, uiComponent, clientId, HTML.SPAN_ELEM);
+        writeRootElement(writer, uiComponent, clientId, HTML.SPAN_ELEM);
         String convertedValue = null;
         convertedValue = DomBasicInputRenderer.converterGetAsString(facesContext, 
                                                         uiComponent, rawValue);

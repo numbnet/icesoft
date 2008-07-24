@@ -72,7 +72,7 @@ public abstract class DomBasicRenderer extends Renderer {
     public final static String ICESUBMITPARTIAL =
             "iceSubmitPartial(form, this, event);";
     // iceSubmit
-    public final String ICESUBMIT = "iceSubmit(form,this,event);";
+    public final static String ICESUBMIT = "iceSubmit(form,this,event);";
 
     // component family constants for UIForm and WebUIForm
     public static final String WEB_UIFORM = "com.sun.rave.web.ui.Form";
