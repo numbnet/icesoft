@@ -15,6 +15,11 @@
             com.icesoft.faces.context.FacesContextFactoryImpl
         </faces-context-factory>
     </factory>
+
+   <lifecycle>
+      <phase-listener>com.icesoft.faces.application.PartialSubmitPhaseListener</phase-listener>
+   </lifecycle>
+
     
     <render-kit>
         <description>The ICEsoft Renderers.</description>
