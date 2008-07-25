@@ -63,11 +63,10 @@ public interface ResourceRegistry {
      * that proper resolution is achieved when template subdirectories or
      * forwards are used.
      *
-     * @param mimeType the mime-type of the resource
      * @param resource the resource
      * @return the URI of the resource
      */
-    URI registerResource(String mimeType, Resource resource);
+    URI registerResource(Resource resource);
 
     /**
      * Register resource to be served. The URI is encoded using
@@ -75,37 +74,10 @@ public interface ResourceRegistry {
      * that proper resolution is achieved when template subdirectories or
      * forwards are used.
      *
-     * @param mimeType      the mime-type of the resource
      * @param resource      the resource
      * @param linkerHandler handler used to specify any other resource relatively
      *                      referenced by the main resource (such as '@import' rules)
      * @return the URI of the resource
      */
-    URI registerResource(String mimeType, Resource resource, ResourceLinker.Handler linkerHandler);
-
-    /**
-     * Register resource to be served. The URI is encoded using
-     * {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)} so
-     * that proper resolution is achieved when template subdirectories or
-     * forwards are used.
-     *
-     * @param name     the name of the resource
-     * @param resource the resource
-     * @return the URI of the resource
-     */
-    URI registerNamedResource(String name, Resource resource);
-
-    /**
-     * Register resource to be served. The URI is encoded using
-     * {@link javax.faces.application.ViewHandler#getResourceURL(javax.faces.context.FacesContext,String)} so
-     * that proper resolution is achieved when template subdirectories or
-     * forwards are used.
-     *
-     * @param name          the name of the resource
-     * @param resource      the resource
-     * @param linkerHandler handler used to specify any other resource relatively
-     *                      referenced by the main resource (such as '@import' rules)
-     * @return the URI of the resource
-     */
-    URI registerNamedResource(String name, Resource resource, ResourceLinker.Handler linkerHandler);
+    URI registerResource(Resource resource, ResourceLinker.Handler linkerHandler);
 }

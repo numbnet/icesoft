@@ -33,20 +33,7 @@
 
 package com.icesoft.faces.component.outputchart;
 
-import java.awt.Color;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-
+import com.icesoft.faces.context.ResourceRegistry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.krysalis.jcharts.Chart;
@@ -57,7 +44,14 @@ import org.krysalis.jcharts.properties.LegendProperties;
 import org.krysalis.jcharts.properties.PointChartProperties;
 import org.krysalis.jcharts.test.TestDataGenerator;
 
-import com.icesoft.faces.context.ResourceRegistry;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractChart {
     private final Log log = LogFactory.getLog(AbstractChart.class);
@@ -89,12 +83,12 @@ public abstract class AbstractChart {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             JPEGEncoder.encode(getChart(), 1.0f, bos);
             outputChart.setChartResource(new ChartResource(bos));
-            outputChart.setChartURI(((ResourceRegistry) context).registerResource("image/jpeg", outputChart.getChartResource()));
+            outputChart.setChartURI(((ResourceRegistry) context).registerResource(outputChart.getChartResource()));
             bos.flush();
             bos.close();
         } else {
-            log.equals("The jchart is not defined for the "+ 
-                    outputChart.getClientId(FacesContext.getCurrentInstance())+
+            log.equals("The jchart is not defined for the " +
+                    outputChart.getClientId(FacesContext.getCurrentInstance()) +
                     ", please check if the proper [type] has been defined");
         }
     }
@@ -118,7 +112,7 @@ public abstract class AbstractChart {
         String type = ((OutputChart) uiComponent).getType();
         if (OutputChart.PIE2D_CHART_TYPE.equalsIgnoreCase(type) ||
                 OutputChart.PIE3D_CHART_TYPE.equalsIgnoreCase(type)) {
-                return new PieChart(uiComponent);
+            return new PieChart(uiComponent);
         } else {
             return new AxisChart(uiComponent);
         }
@@ -137,12 +131,12 @@ public abstract class AbstractChart {
 
     public String[] getAsStringArray(Object obj) {
         if (obj instanceof String[]) {
-            return (String[]) obj;  
+            return (String[]) obj;
         } else if (obj instanceof String) {
             return ((String) obj).split(",");
         } else if (obj instanceof List) {
             return (String[]) ((List) obj).toArray(new String[0]);
-        }else {
+        } else {
             return null;
         }
     }
@@ -212,7 +206,7 @@ public abstract class AbstractChart {
                 paintArray[i] = (Paint) objList.get(i);
             }
         } else if (obj instanceof String[]) {
-        	String[] colors = (String[]) obj;
+            String[] colors = (String[]) obj;
             paintArray = new Paint[colors.length];
             for (int i = 0; i < colors.length; i++) {
                 paintArray[i] = colorMap.getColor(colors[i]);
@@ -294,14 +288,14 @@ public abstract class AbstractChart {
             return null;
         }
         LegendProperties legendProperties = new LegendProperties();
-   		legendProperties.setPlacement(legendPlacementMap.getLegendPlacement(legendPlacement));
-   		Object legendColumns = outputChart.getLegendColumns();
-   		if (legendColumns instanceof Integer) {
-   			legendProperties.setNumColumns(((Integer)outputChart.getLegendColumns()).intValue());
-   		}else if (legendColumns instanceof String) {
-   			legendProperties.setNumColumns(Integer.parseInt(outputChart.getLegendColumns().toString()));
-   		}
-   		return legendProperties;
+        legendProperties.setPlacement(legendPlacementMap.getLegendPlacement(legendPlacement));
+        Object legendColumns = outputChart.getLegendColumns();
+        if (legendColumns instanceof Integer) {
+            legendProperties.setNumColumns(((Integer) outputChart.getLegendColumns()).intValue());
+        } else if (legendColumns instanceof String) {
+            legendProperties.setNumColumns(Integer.parseInt(outputChart.getLegendColumns().toString()));
+        }
+        return legendProperties;
     }
 }
 
@@ -346,17 +340,17 @@ class ShapeMap extends HashMap {
 }
 
 class LegendPlacementMap extends HashMap {
-	public LegendPlacementMap() {
-		this.put("top", new Integer(LegendProperties.TOP));
-		this.put("bottom", new Integer(LegendProperties.BOTTOM));
-		this.put("left", new Integer(LegendProperties.LEFT));
-		this.put("right", new Integer(LegendProperties.RIGHT));
-	}
-	
-	public int getLegendPlacement(String key) {
-		if (!super.containsKey(key)) {
-			return 0;
-		}
-		return Integer.parseInt(super.get(key).toString());
-	}
+    public LegendPlacementMap() {
+        this.put("top", new Integer(LegendProperties.TOP));
+        this.put("bottom", new Integer(LegendProperties.BOTTOM));
+        this.put("left", new Integer(LegendProperties.LEFT));
+        this.put("right", new Integer(LegendProperties.RIGHT));
+    }
+
+    public int getLegendPlacement(String key) {
+        if (!super.containsKey(key)) {
+            return 0;
+        }
+        return Integer.parseInt(super.get(key).toString());
+    }
 }
