@@ -233,6 +233,7 @@
                 <file name="tooltip_panelpopup.js"/>
                 <file name="resizablePanelGrid.js"/>
                 <file name="keyboardNavigator.js"/>
+                <file name="dataTable.js"/>
             </filelist>
             <filelist dir="${build.dir}/component">
                 <file name="menu.js"/>
