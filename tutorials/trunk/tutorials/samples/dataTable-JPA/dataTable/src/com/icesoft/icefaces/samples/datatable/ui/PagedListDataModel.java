@@ -22,7 +22,8 @@ public abstract class PagedListDataModel<T> extends DataModel {
     int pageSize;
     int rowIndex;
     DataPage<T> page;
-    SessionBean sessionBean;
+    // Triggers a fetch from the database
+    protected boolean dirtyData = false;
     
     /*
      * Create a datamodel that pages through the data showing the specified
@@ -33,7 +34,6 @@ public abstract class PagedListDataModel<T> extends DataModel {
         this.pageSize = pageSize;
         this.rowIndex = -1;
         this.page = null;
-        this.sessionBean = sessionBean;
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class PagedListDataModel<T> extends DataModel {
 
         // Check if rowIndex is equal to startRow,
         // useful for dynamic sorting on pages
-        if (rowIndex == page.getStartRow() && sessionBean.isDirtyData()){   
+        if (rowIndex == page.getStartRow() && dirtyData){   
         	page = fetchPage(rowIndex, pageSize);
         }
 
@@ -168,5 +168,17 @@ public abstract class PagedListDataModel<T> extends DataModel {
      * Method which must be implemented in cooperation with the
      * managed bean class to fetch data on demand.
      */
-    public abstract DataPage<T> fetchPage(int startRow, int pageSize);
+    public abstract DataPage<T> fetchPage(int startRow, int pageSize);    
+    
+    public boolean isDirtyData() {
+        return dirtyData;
+    }
+
+    public void setDirtyData(boolean dirtyData) {
+        this.dirtyData = dirtyData;
+    }
+   
+    public void setDirtyData() {
+        dirtyData = true;
+    }
 }

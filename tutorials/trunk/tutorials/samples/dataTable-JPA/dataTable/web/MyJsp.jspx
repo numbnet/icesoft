@@ -62,7 +62,7 @@
 					               var="customerbean">
 					<ice:column>					
 					<ice:rowSelector value="#{customerbean.expanded}" selectedClass="tableRowSelected" mouseOverClass="tableRowMouseOver" toggleOnClick="false"></ice:rowSelector>
-							<ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="firstnameColumn,lastnameColumn">
+							<ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="dataColumn">
 								<ice:commandLink actionListener="#{customerbean.toggleSelected}">
 									<ice:outputText value="#{customerbean.customer.contactfirstname}"/>
                                 </ice:commandLink>
@@ -70,7 +70,7 @@
                                     <ice:outputText value="#{customerbean.customer.contactlastname}"/>
                                 </ice:commandLink>
 							</ice:panelGrid>
-							<ice:panelGrid columns="4" rendered="#{customerbean.expanded}" width="100%" columnClasses="phoneColumn,addressColumn,cityColumn,countryColumn">
+							<ice:panelGrid columns="4" rendered="#{customerbean.expanded}" width="100%" columnClasses="inputColumn,inputColumn,buttonColumn,buttonColumn">
 								<ice:inputText value="#{customerbean.tempcontactfirstname}"></ice:inputText>
 								<ice:inputText value="#{customerbean.tempcontactlastname}"></ice:inputText>
 								<ice:commandButton value="Commit" actionListener="#{customerbean.commit}"></ice:commandButton>
@@ -78,7 +78,7 @@
 
 							</ice:panelGrid>
 							<f:facet name="header">
-                            <ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="firstnameHeaderColumn,lastnameHeaderColumn" >
+                            <ice:panelGrid columns="2" width="100%" cellspacing="1" columnClasses="headerColumn" >
                                 <ice:commandSortHeader arrow="true" columnName="#{sessionBean.CONTACTFIRSTNAME}">
                                     <ice:outputText value="#{sessionBean.FIRSTCOLUMNNAME}"/>
                                 </ice:commandSortHeader>
