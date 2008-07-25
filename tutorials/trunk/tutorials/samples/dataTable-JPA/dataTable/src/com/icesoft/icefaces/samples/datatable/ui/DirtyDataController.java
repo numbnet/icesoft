@@ -19,7 +19,7 @@ public class DirtyDataController {
 			List<CustomerBean> sessionView = CURRENT_SESSIONS.get(i).getUiCustomerBeans();
 			for(int y=0; y<sessionView.size(); y++){
 				if(((CustomerBean)sessionView.get(y)).getCustomer().getCustomernumber().toString().equals(customer.getCustomernumber().toString())){
-					CURRENT_SESSIONS.get(i).setDirtyData();
+					CURRENT_SESSIONS.get(i).getOnePageDataModel().setDirtyData();
 					break;
 				}
 			}

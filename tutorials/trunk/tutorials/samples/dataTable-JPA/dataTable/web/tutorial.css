@@ -15,26 +15,25 @@
     background-color:#ffbb99;    
 }
 
-.firstnameHeaderColumn, .firstnameColumn, .lastnameHeaderColumn, .lastnameColumn,
-.phoneColumn, .addressColumn, .cityColumn, .countryColumn{
+.headerColumn, dataColumn, inputColumn, buttonColumn{
     border-right: 1px solid #cbcbcb;
     border-bottom: 1px solid #cbcbcb;
     text-align: left;
 }
 
-.firstnameHeaderColumn, .lastnameHeaderColumn{
+.headerColumn{
     width: 50%;
     text-align: center;
 }
 
-.firstnameColumn, .lastnameColumn{
+.dataColumn{
     width: 50%;
 }
 
-.phoneColumn, .addressColumn{
+.inputColumn{
     width: 200px;
 }
 
-.cityColumn, .countryColumn{
+.buttonColumn{
     width: 175px;
 }

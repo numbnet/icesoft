@@ -45,13 +45,10 @@ public abstract class DataSource {
 	protected String sortColumnName;
     protected boolean sortAscending;
 
-    // Triggers a fetch from the database
-    protected boolean dirtyData = false;
-
     // DataModel bound to dataTable
     protected PagedListDataModel<CustomerBean> onePageDataModel;
     // bound to rows attribute in dataTable
-    int pageSize = 5;
+    protected int pageSize = 5;
 
     protected DataSource(String defaultSortColumn) {
         sortColumnName = defaultSortColumn;
@@ -79,7 +76,7 @@ public abstract class DataSource {
      */
     public void setSortColumnName(String sortColumnName) {
     	if(!sortColumnName.equals(this.sortColumnName)){
-    	    dirtyData = true;
+    	    onePageDataModel.setDirtyData();
             this.sortColumnName = sortColumnName;
     	}
     }
@@ -100,23 +97,15 @@ public abstract class DataSource {
      */
     public void setSortAscending(boolean sortAscending) {
     	if(sortAscending != (this.sortAscending)){
-    	    dirtyData = true;
+    	    onePageDataModel.setDirtyData();
             this.sortAscending = sortAscending;
     	}
     }
-    
-    public boolean isDirtyData() {
-        return dirtyData;
-    }
 
-    public void setDirtyData(boolean dirtyData) {
-        this.dirtyData = dirtyData;
-    }
-   
-    public void setDirtyData() {
-        dirtyData = true;
-    }
-
+	public PagedListDataModel<CustomerBean> getOnePageDataModel() {
+		return onePageDataModel;
+	}
+	
 	public int getPageSize() {
 		return pageSize;
 	}

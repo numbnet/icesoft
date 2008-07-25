@@ -173,7 +173,7 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 		joinRenderGroups();	
 		
         // Reset the dirtyData flag.
-        dirtyData = false;
+		onePageDataModel.setDirtyData(false);
 
 		return new DataPage<CustomerBean>(totalNumberCustomers,startRow,uiCustomerBeans);
     }
