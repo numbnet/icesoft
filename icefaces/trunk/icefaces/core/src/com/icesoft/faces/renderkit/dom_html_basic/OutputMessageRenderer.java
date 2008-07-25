@@ -72,9 +72,7 @@ public class OutputMessageRenderer extends DomBasicRenderer {
                 (String) uiComponent.getAttributes().get("styleClass");
         if (style != null
             || styleClass != null
-            || idNotNull(uiComponent)
-            ||
-            PassThruAttributeRenderer.passThruAttributeExists(uiComponent)) {
+            || idNotNull(uiComponent)) {
             spanIsRequired = true;
         }
 

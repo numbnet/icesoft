@@ -127,12 +127,12 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
 
     public void renderPassThruAttributes(UIComponent uiComponent,
                                          Element input) {
-        Iterator passTrhuAttributes = PassThruAttributeRenderer
-                .getpassThruAttributeNames().iterator();
-        while (passTrhuAttributes.hasNext()) {
-            String attribute = passTrhuAttributes.next().toString();
-            renderAttribute(uiComponent, input, attribute, attribute);
-        }
+//        Iterator passTrhuAttributes = PassThruAttributeRenderer
+//                .getpassThruAttributeNames().iterator();
+//        while (passTrhuAttributes.hasNext()) {
+//            String attribute = passTrhuAttributes.next().toString();
+//            renderAttribute(uiComponent, input, attribute, attribute);
+//        }
         //only "disabled" boolean attribute applies on a checkbox 
         renderAttribute(uiComponent, input, HTML.DISABLED_ATTR,
                         HTML.DISABLED_ATTR);

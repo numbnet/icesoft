@@ -255,10 +255,8 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         if (!domContext.isInitialized()) {
             Element table = domContext.createRootElement(HTML.TABLE_ELEM);
             setRootElementId(facesContext, table, scroller);
-            if (PassThruAttributeRenderer.passThruAttributeExists(scroller)) {
-                PassThruAttributeRenderer
+            PassThruAttributeRenderer
                         .renderAttributes(facesContext, scroller, null);
-            }
         }
         Element table = (Element) domContext.getRootNode();
         DOMContext.removeChildren(table);

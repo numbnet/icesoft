@@ -173,11 +173,8 @@ public class TreeRenderer extends DomBasicRenderer {
 
         // clean up, and remove nodes
         DOMContext.removeChildren(rootDomNode);
-
-        if (PassThruAttributeRenderer.passThruAttributeExists(uiComponent)) {
-            PassThruAttributeRenderer
+        PassThruAttributeRenderer
                     .renderAttributes(facesContext, uiComponent, null);
-        }
 
         // startNode is used in conjunction with endNode as an alternative to streamWrite method
         domContext.startNode(facesContext, treeComponent, rootDomNode);

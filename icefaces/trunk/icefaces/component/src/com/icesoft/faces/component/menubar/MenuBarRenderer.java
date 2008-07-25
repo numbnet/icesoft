@@ -89,10 +89,8 @@ public class MenuBarRenderer extends DomBasicRenderer {
             menuDiv.removeAttribute(HTML.STYLE_ATTR);
         DOMContext.removeChildren(menuDiv);
 
-        if (PassThruAttributeRenderer.passThruAttributeExists(uiComponent)) {
-            PassThruAttributeRenderer
+        PassThruAttributeRenderer
                     .renderAttributes(facesContext, uiComponent, null);
-        }
         
         domContext.stepInto(uiComponent);
         

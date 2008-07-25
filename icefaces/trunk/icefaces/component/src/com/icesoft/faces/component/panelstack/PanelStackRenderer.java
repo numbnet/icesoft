@@ -60,11 +60,8 @@ public class PanelStackRenderer extends DomBasicRenderer {
             Element panelStackTable =
                     domContext.createRootElement(HTML.TABLE_ELEM);
             setRootElementId(facesContext, panelStackTable, uiComponent);
-            if (PassThruAttributeRenderer
-                    .passThruAttributeExists(uiComponent)) {
-                PassThruAttributeRenderer
+            PassThruAttributeRenderer
                         .renderAttributes(facesContext, uiComponent, null);
-            }
         }
         Element panelStackTable = (Element) domContext.getRootNode();
         DOMContext.removeChildren(panelStackTable);

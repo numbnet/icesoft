@@ -78,11 +78,8 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         //Because of variouse text position, layout could have different combination of tr and td
         //therefore we are storing nodes to the component itself.
         buildLayout(table, uiComponent, domContext);
-
-        if (PassThruAttributeRenderer.passThruAttributeExists(uiComponent)) {
-            PassThruAttributeRenderer
+        PassThruAttributeRenderer
                     .renderAttributes(facesContext, uiComponent, null);
-        }
 
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
