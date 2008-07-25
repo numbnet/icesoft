@@ -100,6 +100,7 @@ implements HttpSessionListener, ServletContextListener {
     //todo: fix it... this is just a temporary solution
     private static SessionDispatcher.Listener SessionDispatcherListener;
     private static ContextDestroyedEvent classloadCDEvent;
+    private static SessionDestroyedEvent classloadSDEvent;
 
     static {
         SessionDispatcherListener = new SessionDispatcher.Listener();
