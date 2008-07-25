@@ -43,6 +43,7 @@ import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -739,6 +740,10 @@ public class TableRenderer
         uiData.setRowIndex(-1);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
+        if (isScrollable(uiComponent)) {
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.dataTable.onLoad('" +
+                    uiComponent.getClientId(facesContext) + "');");
+        }
     }
 
     private void encodeColumns(FacesContext facesContext, UIComponent columns,
