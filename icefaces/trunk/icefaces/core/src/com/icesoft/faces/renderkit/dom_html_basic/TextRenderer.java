@@ -302,13 +302,6 @@ public class TextRenderer extends DomBasicInputRenderer {
             || title != null) {
             return true;
         }
-        Map attributes = uiComponent.getAttributes();
-        if (attributes.size() != 0) {
-            if (PassThruAttributeRenderer
-                    .passThruAttributeExists(uiComponent)) {
-                return true;
-            }
-        }
         if (idNotNull(uiComponent) && !uiComponent.getId().startsWith("_")) {
             return true;
         }

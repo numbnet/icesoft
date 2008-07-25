@@ -53,79 +53,81 @@ import java.util.Map;
  */
 public class PassThruAttributeRenderer {
 
-    private static List passThruAttributeNames = new ArrayList();
-    private static List booleanPassThruAttributeNames = new ArrayList();
-
+    private static final String[] passThruAttributeNames =  {
+        "accept",
+        "accesskey",
+        "alt",
+        "bgcolor",
+        "border",
+        "cellpadding",
+        "cellspacing",
+        "charset",
+        "cols",
+        "coords",
+        "dir",
+        "enctype",
+        "frame",
+        "height",
+        "hreflang",
+        "lang",
+        "longdesc",
+        "maxlength",
+        "onblur",
+        "onchange",
+        "onclick",
+        "ondblclick",
+        "onfocus",
+        "onkeydown",
+        "onkeypress",
+        "onkeyup",
+        "onload",
+        "onmousedown",
+        "onmousemove",
+        "onmouseout",
+        "onmouseover",
+        "onmouseup",
+        "onreset",
+        "onselect",
+        "onsubmit",
+        "onunload",
+        "rel",
+        "rev",
+        "rows",
+        "rules",
+        "shape",
+        "size",
+        "style",
+        "summary",
+        "tabindex",
+        "target",
+        "title",
+        "usemap",
+        "width",
+        "width",
+        "onclickeffect",
+        "ondblclickeffect",
+        "onmousedowneffect",
+        "onmouseupeffect",
+        "onmousemoveeffect",
+        "onmouseovereffect",
+        "onmouseouteffect",
+        "onchangeeffect",
+        "onreseteffect",
+        "onsubmiteffect",
+        "onkeypresseffect",
+        "onkeydowneffect",
+        "onkeyupeffect",
+        "autocomplete"
+    };
+    
     static {
-        passThruAttributeNames.add("accept");
-        passThruAttributeNames.add("accesskey");
-        passThruAttributeNames.add("alt");
-        passThruAttributeNames.add("bgcolor");
-        passThruAttributeNames.add("border");
-        passThruAttributeNames.add("cellpadding");
-        passThruAttributeNames.add("cellspacing");
-        passThruAttributeNames.add("charset");
-        passThruAttributeNames.add("cols");
-        passThruAttributeNames.add("coords");
-        passThruAttributeNames.add("dir");
-        passThruAttributeNames.add("enctype");
-        passThruAttributeNames.add("frame");
-        passThruAttributeNames.add("height");
-        passThruAttributeNames.add("hreflang");
-        passThruAttributeNames.add("lang");
-        passThruAttributeNames.add("longdesc");
-        passThruAttributeNames.add("maxlength");
-        passThruAttributeNames.add("onblur");
-        passThruAttributeNames.add("onchange");
-        passThruAttributeNames.add("onclick");
-        passThruAttributeNames.add("ondblclick");
-        passThruAttributeNames.add("onfocus");
-        passThruAttributeNames.add("onkeydown");
-        passThruAttributeNames.add("onkeypress");
-        passThruAttributeNames.add("onkeyup");
-        passThruAttributeNames.add("onload");
-        passThruAttributeNames.add("onmousedown");
-        passThruAttributeNames.add("onmousemove");
-        passThruAttributeNames.add("onmouseout");
-        passThruAttributeNames.add("onmouseover");
-        passThruAttributeNames.add("onmouseup");
-        passThruAttributeNames.add("onreset");
-        passThruAttributeNames.add("onselect");
-        passThruAttributeNames.add("onsubmit");
-        passThruAttributeNames.add("onunload");
-        passThruAttributeNames.add("rel");
-        passThruAttributeNames.add("rev");
-        passThruAttributeNames.add("rows");
-        passThruAttributeNames.add("rules");
-        passThruAttributeNames.add("shape");
-        passThruAttributeNames.add("size");
-        passThruAttributeNames.add("style");
-        passThruAttributeNames.add("summary");
-        passThruAttributeNames.add("tabindex");
-        passThruAttributeNames.add("target");
-        passThruAttributeNames.add("title");
-        passThruAttributeNames.add("usemap");
-        passThruAttributeNames.add("width");
-        passThruAttributeNames.add("width");
-        passThruAttributeNames.add("onclickeffect");
-        passThruAttributeNames.add("ondblclickeffect");
-        passThruAttributeNames.add("onmousedowneffect");
-        passThruAttributeNames.add("onmouseupeffect");
-        passThruAttributeNames.add("onmousemoveeffect");
-        passThruAttributeNames.add("onmouseovereffect");
-        passThruAttributeNames.add("onmouseouteffect");
-        passThruAttributeNames.add("onchangeeffect");
-        passThruAttributeNames.add("onreseteffect");
-        passThruAttributeNames.add("onsubmiteffect");
-        passThruAttributeNames.add("onkeypresseffect");
-        passThruAttributeNames.add("onkeydowneffect");
-        passThruAttributeNames.add("onkeyupeffect");
-        passThruAttributeNames.add("autocomplete");
-
-        booleanPassThruAttributeNames.add("disabled");
-        booleanPassThruAttributeNames.add("readonly");
-        booleanPassThruAttributeNames.add("ismap");
+        Arrays.sort(passThruAttributeNames);
     }
+    private static final String[] booleanPassThruAttributeNames = {
+        "disabled",
+        "ismap",     
+        "readonly"
+    };
 
     /**
      * Render pass thru attributes to the root element of the DOMContext
@@ -233,13 +235,6 @@ public class PassThruAttributeRenderer {
             Element targetElement,
             String[] excludedAttributes) {
 
-        if (facesContext == null) {
-            throw new FacesException("Null pointer exception");
-        }
-        if (uiComponent == null) {
-            throw new FacesException("Null pointer exception");
-        }
-
         if(targetElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
@@ -250,24 +245,16 @@ public class PassThruAttributeRenderer {
             targetElement = rootElement;
         }
 
-        List excludedAttributesList = null;
-        if (excludedAttributes != null && excludedAttributes.length > 0) {
-            excludedAttributesList = Arrays.asList(excludedAttributes);
-        }
-
         Object nextPassThruAttributeName;
         Object nextPassThruAttributeValue = null;
-        Iterator passThruNameIterator =
-                booleanPassThruAttributeNames.iterator();
         boolean primitiveAttributeValue;
-
-        while (passThruNameIterator.hasNext()) {
-            nextPassThruAttributeName = (passThruNameIterator.next());
-            if (excludedAttributesList != null) {
-                if (excludedAttributesList
-                        .contains(nextPassThruAttributeName)) {
-                    continue;
-                }
+        if (excludedAttributes == null) excludedAttributes = new String[0];
+        
+        for (int i =0; i < passThruAttributeNames.length; i++) {
+            nextPassThruAttributeName = passThruAttributeNames[i];
+            if (excludedAttributes.length > 0 &&
+                    Arrays.binarySearch(excludedAttributes,  nextPassThruAttributeName) > -1){
+                       continue;
             }
             nextPassThruAttributeValue = uiComponent.getAttributes().get(
                     nextPassThruAttributeName);
@@ -287,14 +274,7 @@ public class PassThruAttributeRenderer {
                     targetElement.setAttribute(
                             nextPassThruAttributeName.toString(),
                             nextPassThruAttributeName.toString());
-                } else {
-                    targetElement.removeAttribute(
-                            nextPassThruAttributeName.toString());
                 }
-
-            } else {
-                targetElement.removeAttribute(
-                        nextPassThruAttributeName.toString());
             }
         }
     }
@@ -316,21 +296,15 @@ public class PassThruAttributeRenderer {
             }
             targetElement = rootElement;
         }
-        List excludedAttributesList = null;
-        if (excludedAttributes != null && excludedAttributes.length > 0) {
-            excludedAttributesList = Arrays.asList(excludedAttributes);
-        }
 
         Object nextPassThruAttributeName = null;
         Object nextPassThruAttributeValue = null;
-        Iterator passThruNameIterator = passThruAttributeNames.iterator();
-        while (passThruNameIterator.hasNext()) {
-            nextPassThruAttributeName = (passThruNameIterator.next());
-            if (excludedAttributesList != null) {
-                if (excludedAttributesList
-                        .contains(nextPassThruAttributeName)) {
-                    continue;
-                }
+        if (excludedAttributes == null) excludedAttributes = new String[0];        
+        for  (int i = 0; i < passThruAttributeNames.length; i++) {
+            nextPassThruAttributeName = passThruAttributeNames[i];
+            if (excludedAttributes.length > 0 &&
+                    Arrays.binarySearch(excludedAttributes,  nextPassThruAttributeName) > -1){
+                       continue;
             }
             nextPassThruAttributeValue =
                     uiComponent.getAttributes().get(nextPassThruAttributeName);
@@ -350,32 +324,6 @@ public class PassThruAttributeRenderer {
 
     }
 
-    /**
-     * Determine whether any of the attributes defined for the UIComponent
-     * instance are pass thru attributes.
-     *
-     * @param uiComponent
-     * @return true if the UIComponent parameter has one or more attributes
-     *         defined that are pass thru attributes
-     */
-    public static boolean passThruAttributeExists(UIComponent uiComponent) {
-        if (uiComponent == null) {
-            return false;
-        }
-        Map componentAttributes = uiComponent.getAttributes();
-        if (componentAttributes.size() <= 0) {
-            return false;
-        }
-        if (componentAttributesIncludePassThruAttribute(componentAttributes,
-                                                        passThruAttributeNames)) {
-            return true;
-        }
-        if (componentAttributesIncludePassThruAttribute(componentAttributes,
-                                                        booleanPassThruAttributeNames)) {
-            return true;
-        }
-        return false;
-    }
 
     public static boolean attributeValueIsSentinel(Object value) {
         if (value == null) {
@@ -434,26 +382,7 @@ public class PassThruAttributeRenderer {
         return false;
     }
 
-    private static boolean componentAttributesIncludePassThruAttribute(
-            Map componentAttributes, List passThru) {
-        Object componentAttributeKey;
-        Object componentAttributeValue;
-        Iterator attributeKeys = componentAttributes.keySet().iterator();
-        while (attributeKeys.hasNext()) {
-            componentAttributeKey = attributeKeys.next();
-            if (passThru.contains(componentAttributeKey)) {
-                componentAttributeValue =
-                        componentAttributes.get(componentAttributeKey);
-                if ((componentAttributeValue != null) &&
-                    (componentAttributeValue != "")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    static final List getpassThruAttributeNames() {
+    static final String[] getpassThruAttributeNames() {
         return passThruAttributeNames;
     }
 }
