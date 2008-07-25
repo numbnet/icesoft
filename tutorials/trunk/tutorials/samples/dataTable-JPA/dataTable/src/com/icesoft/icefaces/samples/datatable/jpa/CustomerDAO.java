@@ -5,6 +5,8 @@ import java.util.logging.Level;
 
 import javax.persistence.EntityManager;
 
+import org.hibernate.CacheMode;
+
 
 /**
  * Data access object (DAO) for domain model class Customer.
@@ -152,7 +154,7 @@ public class CustomerDAO implements ICustomerDAO{
 			String queryString = "select c from Customer c order by c." + sortColumnName + " " + (sortAscending?"asc":"desc");
 			// Hint required to force update from database, which prevents stale
 			// data being assigned from the l2 cache.
-			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).setHint("org.hibernate.cacheable", "false").setHint("org.hibernate.cacheMode", "CacheMode.REFRESH").getResultList(); 
+			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).setHint("org.hibernate.cacheable", new Boolean(false)).setHint("org.hibernate.cacheMode", CacheMode.REFRESH).getResultList(); 
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find all failed", Level.SEVERE, re);
 			;
