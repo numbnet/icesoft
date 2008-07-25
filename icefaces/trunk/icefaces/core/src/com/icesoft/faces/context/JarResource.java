@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class JarResource implements Resource {
-    private static Date StartTime = new Date(System.currentTimeMillis());
+    private final Date lastModified = new Date();
     private String path;
 
     public JarResource(String path) {
@@ -17,10 +17,14 @@ public class JarResource implements Resource {
     }
 
     public Date lastModified() {
-        return StartTime;
+        return lastModified;
     }
 
     public InputStream open() throws IOException {
         return this.getClass().getClassLoader().getResourceAsStream(path);
+    }
+
+    public void withOptions(Options options) throws IOException {
+        options.setFileName(path);
     }
 }

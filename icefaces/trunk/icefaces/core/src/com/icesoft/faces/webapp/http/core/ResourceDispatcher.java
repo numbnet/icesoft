@@ -39,34 +39,15 @@ public class ResourceDispatcher implements Server {
         compressResource.service(request);
     }
 
-    public URI registerResource(String mimeType, Resource resource) {
-        return registerResource(mimeType, resource, NOOPHandler);
+    public URI registerResource(Resource resource) {
+        return registerResource(resource, NOOPHandler);
     }
 
-    public URI registerResource(final String mimeType, Resource resource, ResourceLinker.Handler handler) {
+    public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
         final String name = prefix + encode(resource) + "/";
         if (!registered.contains(name)) {
             registered.add(name);
-            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(mimeType, resource));
-            if (handler != NOOPHandler) {
-                handler.linkWith(new RelativeResourceLinker(name));
-            }
-        }
-
-        return URI.create(name);
-    }
-
-    public URI registerNamedResource(String name, Resource resource) {
-        return registerNamedResource(name, resource, NOOPHandler);
-    }
-
-    public URI registerNamedResource(String fileName, Resource resource, ResourceLinker.Handler handler) {
-        final String name = prefix + encode(resource) + "-" + fileName;
-        if (!registered.contains(name)) {
-            registered.add(name);
-            String pathExpression = name.replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
-            String type = mimeTypeMatcher.mimeTypeFor(fileName);
-            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(type, resource));
+            dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(resource));
             if (handler != NOOPHandler) {
                 handler.linkWith(new RelativeResourceLinker(name));
             }
@@ -81,27 +62,26 @@ public class ResourceDispatcher implements Server {
     }
 
     private class ResourceServer implements Server, ResponseHandler {
-        private ResponseHandler notModified = new ResponseHandler() {
+        private final Date lastModified = new Date();
+        private final ResponseHandler notModified = new ResponseHandler() {
             public void respond(Response response) throws Exception {
                 response.setStatus(304);
                 response.setHeader("ETag", encode(resource));
                 response.setHeader("Date", new Date());
-                response.setHeader("Last-Modified", resource.lastModified());
+                response.setHeader("Last-Modified", lastModified);
                 response.setHeader("Expires", monitor.expiresBy());
             }
         };
-        private String mimeType;
         private final Resource resource;
 
-        public ResourceServer(String mimeType, Resource resource) {
-            this.mimeType = mimeType;
+        public ResourceServer(Resource resource) {
             this.resource = resource;
         }
 
         public void service(Request request) throws Exception {
             try {
                 Date modifiedSince = request.getHeaderAsDate("If-Modified-Since");
-                if (resource.lastModified().getTime() > modifiedSince.getTime() + 1000) {
+                if (lastModified.getTime() > modifiedSince.getTime() + 1000) {
                     request.respondWith(this);
                 } else {
                     request.respondWith(notModified);
@@ -111,16 +91,52 @@ public class ResourceDispatcher implements Server {
             }
         }
 
-        public void respond(Response response) throws Exception {
+        public void respond(final Response response) throws Exception {
+            ResourceOptions options = new ResourceOptions();
+            resource.withOptions(options);
+            if (options.mimeType == null && options.fileName != null) {
+                options.mimeType = mimeTypeMatcher.mimeTypeFor(options.fileName);
+            }
             response.setHeader("ETag", encode(resource));
             response.setHeader("Cache-Control", "public");
-            response.setHeader("Content-Type", mimeType);
-            response.setHeader("Last-Modified", resource.lastModified());
-            response.setHeader("Expires", monitor.expiresBy());
+            response.setHeader("Content-Type", options.mimeType);
+            response.setHeader("Last-Modified", options.lastModified);
+            response.setHeader("Expires", options.expiresBy);
+            if (options.attachement) {
+                response.setHeader("Content-Disposition", "attachment; filename=" + options.fileName);
+            }
             response.writeBodyFrom(resource.open());
         }
 
         public void shutdown() {
+        }
+
+        private class ResourceOptions implements Resource.Options {
+            private Date lastModified = new Date();
+            private Date expiresBy = monitor.expiresBy();
+            private String mimeType;
+            private String fileName;
+            private boolean attachement;
+
+            public void setMimeType(String type) {
+                mimeType = type;
+            }
+
+            public void setLastModified(Date date) {
+                lastModified = date;
+            }
+
+            public void setFileName(String name) {
+                fileName = name;
+            }
+
+            public void setExpiresBy(Date date) {
+                expiresBy = date;
+            }
+
+            public void setAsAttachement() {
+                attachement = true;
+            }
         }
     }
 
@@ -137,8 +153,7 @@ public class ResourceDispatcher implements Server {
 
         public void registerRelativeResource(String path, Resource relativeResource) {
             String pathExpression = (name + path).replaceAll("\\/", "\\/").replaceAll("\\.", "\\.");
-            String type = mimeTypeMatcher.mimeTypeFor(path);
-            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(type, relativeResource));
+            dispatcher.dispatchOn(".*" + pathExpression + "$", new ResourceServer(relativeResource));
         }
     }
 }

@@ -62,7 +62,15 @@ import javax.faces.render.RenderKitFactory;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 //for now extend BridgeFacesContext since there are so many 'instanceof' tests
@@ -374,7 +382,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
-        if (com.icesoft.util.SeamUtilities.isSpring2Environment())  {
+        if (com.icesoft.util.SeamUtilities.isSpring2Environment()) {
             this.viewRoot = null;
         } else {
             //clear the request map except when we have SWF2
@@ -443,7 +451,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI loadJavascriptCode(final Resource resource) {
-        String uri = resourceDispatcher.registerResource("text/javascript", resource).toString();
+        String uri = resourceDispatcher.registerResource(resource).toString();
         if (!jsCodeURIs.contains(uri)) {
             jsCodeURIs.add(uri);
         }
@@ -451,7 +459,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI loadJavascriptCode(Resource resource, ResourceLinker.Handler linkerHandler) {
-        String uri = resourceDispatcher.registerResource("text/javascript", resource, linkerHandler).toString();
+        String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
         if (!jsCodeURIs.contains(uri)) {
             jsCodeURIs.add(uri);
         }
@@ -459,7 +467,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI loadCSSRules(Resource resource) {
-        String uri = resourceDispatcher.registerResource("text/css", resource).toString();
+        String uri = resourceDispatcher.registerResource(resource).toString();
         if (!cssRuleURIs.contains(uri)) {
             cssRuleURIs.add(uri);
         }
@@ -468,27 +476,19 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
 
     public URI loadCSSRules(Resource resource, ResourceLinker.Handler linkerHandler) {
-        String uri = resourceDispatcher.registerResource("text/css", resource, linkerHandler).toString();
+        String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
         if (!cssRuleURIs.contains(uri)) {
             cssRuleURIs.add(uri);
         }
         return resolve(uri);
     }
 
-    public URI registerResource(String mimeType, Resource resource) {
-        return resolve(resourceDispatcher.registerResource(mimeType, resource).toString());
+    public URI registerResource(Resource resource) {
+        return resolve(resourceDispatcher.registerResource(resource).toString());
     }
 
-    public URI registerResource(String mimeType, Resource resource, ResourceLinker.Handler linkerHandler) {
-        return resolve(resourceDispatcher.registerResource(mimeType, resource, linkerHandler).toString());
-    }
-
-    public URI registerNamedResource(String name, Resource resource) {
-        return resolve(resourceDispatcher.registerNamedResource(name, resource).toString());
-    }
-
-    public URI registerNamedResource(String name, Resource resource, ResourceLinker.Handler linkerHandler) {
-        return resolve(resourceDispatcher.registerNamedResource(name, resource, linkerHandler).toString());
+    public URI registerResource(Resource resource, ResourceLinker.Handler linkerHandler) {
+        return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
     }
 
     private URI resolve(String uri) {

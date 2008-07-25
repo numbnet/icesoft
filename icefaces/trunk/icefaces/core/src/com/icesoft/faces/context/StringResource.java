@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class StringResource implements Resource {
-    private static final Date LastModified = new Date();
+    private final Date lastModified = new Date();
     private String content;
     private String encoding;
 
@@ -24,10 +24,14 @@ public class StringResource implements Resource {
     }
 
     public Date lastModified() {
-        return LastModified;
+        return lastModified;
     }
 
     public InputStream open() throws IOException {
         return new ByteArrayInputStream(content.getBytes(encoding));
+    }
+
+    public void withOptions(Options options) throws IOException {
+        options.setMimeType("text/plain; encoding=" + encoding);
     }
 }

@@ -33,32 +33,33 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import javax.faces.component.UIGraphic;
-import javax.faces.context.FacesContext;
-
 import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.ResourceRegistry;
+
+import javax.faces.component.UIGraphic;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+import java.util.Map;
 
 public class ImageRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.ImageRenderer {
 
-    protected String processSrcAttribute(FacesContext facesContext, UIGraphic
-            uiGraphic) {
+    protected String processSrcAttribute(FacesContext facesContext, UIGraphic uiGraphic) {
         Object o = uiGraphic.getValue();
         if (o instanceof byte[]) {
+            final Map attributes = uiGraphic.getAttributes();
+            final String mimeType = attributes.containsKey("mimeType") ? String.valueOf(attributes.get("mimeType")) : "";
+            ByteArrayResource bar = new ByteArrayResource((byte[]) o) {
+                public void withOptions(Options options) throws IOException {
+                    super.withOptions(options);
+                    options.setMimeType(mimeType);
+                }
+            };
 
-          ByteArrayResource bar = new ByteArrayResource((byte[]) o);
-          
-          String mimeType = String.valueOf(uiGraphic.getAttributes().get("mimeType"));
-          if(mimeType.equals("null")) {
-            mimeType = "";
-          }
-          
-          return (((ResourceRegistry) facesContext).registerResource(mimeType, bar)).getPath();
-          
+            return (((ResourceRegistry) facesContext).registerResource(bar)).getPath();
         } else {
-          // delegate to the parent class  
-          return super.processSrcAttribute(facesContext, uiGraphic);
+            // delegate to the parent class
+            return super.processSrcAttribute(facesContext, uiGraphic);
         }
     }
 }
