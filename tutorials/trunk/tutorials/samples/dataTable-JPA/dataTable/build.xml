@@ -76,11 +76,9 @@
     <target name="war" depends="compileactions" 
             description="Build the distribution .war file">
    		<echo message=" war building ....get Persistence"/>
-       <copy todir="${war.dir}/WEB-INF/classes">
-    	   <fileset dir="${src.action.dir}">
-        	    <include name="META-INF/*.*"/>
-    	   	    <exclude name="META-INF/context.xml"/>
-        	</fileset>
+
+        <copy todir="${war.dir}/WEB-INF/classes">
+    	   <fileset dir="${src.action.dir}" />
     	</copy>         
 
         <copy todir="${war.dir}">
@@ -90,14 +88,7 @@
 	     <copy todir="${war.dir}/WEB-INF/lib">
 		<fileset refid="lib" />
 	    </copy>
-        
-        <!-- resources for the jar part of the war -->
-    	<echo message="copying noejb.war.extras"/>
-    	<copy todir="${war.dir}">
-	    <fileset dir="${src.action.dir}">
-		<include name="META-INF/context.xml" />
-	    </fileset>
-        </copy>
+
     	
     </target>
 
