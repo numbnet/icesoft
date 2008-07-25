@@ -2,7 +2,6 @@ package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.ByteArrayResource;
 import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
@@ -12,10 +11,12 @@ import com.icesoft.faces.util.CoreUtils;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Date;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -25,6 +26,8 @@ public class InputRichText extends UIInput {
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
     private static final Resource ICE_FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
     private static final Resource FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
+    private static final Date lastModified = new Date();
+
     private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
             try {
@@ -33,9 +36,26 @@ public class InputRichText extends UIInput {
                 ZipEntry entry;
                 while ((entry = zip.getNextEntry()) != null) {
                     if (!entry.isDirectory()) {
-                        String entryName = entry.getName();
-                        Resource linkedResource = new ByteArrayResource(toByteArray(zip));
-                        linker.registerRelativeResource(entryName, linkedResource);
+                        final String entryName = entry.getName();
+                        final byte[] content = toByteArray(zip);
+                        linker.registerRelativeResource(entryName, new Resource() {
+                            public String calculateDigest() {
+                                return String.valueOf(content);
+                            }
+
+                            public Date lastModified() {
+                                return lastModified;
+                            }
+
+                            public InputStream open() throws IOException {
+                                return new ByteArrayInputStream(content);
+                            }
+
+                            public void withOptions(Resource.Options options) {
+                                options.setFileName(entryName);
+                                options.setLastModified(lastModified);
+                            }
+                        });
                     }
                 }
             } catch (IOException e) {
@@ -43,20 +63,20 @@ public class InputRichText extends UIInput {
             }
         }
     };
-    
+
     public static void loadFCKJSIfRequired() {
         if (FacesContext.getCurrentInstance() != null && baseURI == null && exist.booleanValue()) {
             ResourceRegistry registry =
-                (ResourceRegistry) FacesContext.getCurrentInstance();
+                    (ResourceRegistry) FacesContext.getCurrentInstance();
             if (registry != null) {
                 baseURI = registry.loadJavascriptCode(FCK_EDITOR_JS, FCK_LINKED_BASE);
                 registry.loadJavascriptCode(ICE_FCK_EDITOR_JS);
             } else {
                 //LOG fckeditor's library has not loaded, component will not work as desired
             }
-        }        
+        }
     }
-    
+
     private String language;
     private String _for;
     private String style;
@@ -70,7 +90,7 @@ public class InputRichText extends UIInput {
     private Boolean disabled = null;
     private String skin = null;
     private Boolean saveOnSubmit = null;
-    
+
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;
     }
@@ -85,7 +105,7 @@ public class InputRichText extends UIInput {
         baseURI = null;
         exist = Boolean.TRUE;
     }
-    
+
     public void decode(FacesContext facesContext) {
         Map map = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
@@ -99,6 +119,7 @@ public class InputRichText extends UIInput {
     public void encodeBegin(FacesContext context) throws IOException {
         super.encodeBegin(context);
     }
+
     /**
      * <p>Set the value of the <code>language</code> property.</p>
      */
@@ -225,7 +246,7 @@ public class InputRichText extends UIInput {
         while ((len = input.read(buf)) > -1) output.write(buf, 0, len);
         return output.toByteArray();
     }
-    
+
     /**
      * <p>Set the value of the <code>toolbar</code> property.</p>
      */
@@ -242,8 +263,8 @@ public class InputRichText extends UIInput {
         }
         ValueBinding vb = getValueBinding("toolbar");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "Default";
-    }    
-    
+    }
+
     /**
      * <p>Set the value of the <code>customConfigPath</code> property.</p>
      */
@@ -278,8 +299,8 @@ public class InputRichText extends UIInput {
         }
         ValueBinding vb = getValueBinding("disabled");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
-                                    .booleanValue() : false;
-    } 
+                .booleanValue() : false;
+    }
 
     /**
      * <p>Set the value of the <code>skin</code> property.</p>
@@ -298,7 +319,7 @@ public class InputRichText extends UIInput {
         ValueBinding vb = getValueBinding("skin");
         return vb != null ? (String) vb.getValue(getFacesContext()) : "default";
     }
-    
+
     /**
      * <p>Set the value of the <code>saveOnSubmit</code> property.</p>
      */
@@ -315,6 +336,6 @@ public class InputRichText extends UIInput {
         }
         ValueBinding vb = getValueBinding("saveOnSubmit");
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
-                                    .booleanValue() : false;
-    }    
+                .booleanValue() : false;
+    }
 }

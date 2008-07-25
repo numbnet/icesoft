@@ -10,6 +10,13 @@ import java.util.Date;
 public interface Resource {
 
     /**
+     * Calculate a digest that uniquely identifies the content of the resource.
+     *
+     * @return the digest
+     */
+    String calculateDigest();
+
+    /**
      * Open reading stream.
      *
      * @return the stream
@@ -20,13 +27,31 @@ public interface Resource {
      * Return timestamp when resource was last updated or created.
      *
      * @return the timestamp
+     * @deprecated use {@link Resource.Options#setLastModified} instead
      */
     Date lastModified();
 
     /**
-     * Calculate a digest that uniquely identifies the content of the resource.
+     * Set additional options for resource downloading.
      *
-     * @return the digest
+     * @param options
+     * @throws IOException
      */
-    String calculateDigest();
+    void withOptions(Options options) throws IOException;
+
+    /**
+     * Callback for setting optional download information.
+     */
+    interface Options {
+
+        void setMimeType(String mimeType);
+
+        void setLastModified(Date date);
+
+        void setFileName(String fileName);
+
+        void setExpiresBy(Date date);
+
+        void setAsAttachement();
+    }
 }
