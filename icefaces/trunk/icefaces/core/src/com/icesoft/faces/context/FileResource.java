@@ -24,4 +24,9 @@ public class FileResource implements Resource {
     public InputStream open() throws IOException {
         return new FileInputStream(file);
     }
+
+    public void withOptions(Options options) throws IOException {
+        options.setLastModified(new Date(file.lastModified()));
+        options.setFileName(file.getName());
+    }
 }

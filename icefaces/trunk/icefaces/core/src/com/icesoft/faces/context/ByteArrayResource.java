@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class ByteArrayResource implements Resource {
-    private static final Date LastModified = new Date();
+    private final Date lastModified = new Date();
     private byte[] content;
 
     public ByteArrayResource(byte[] content) {
@@ -18,10 +18,14 @@ public class ByteArrayResource implements Resource {
     }
 
     public Date lastModified() {
-        return LastModified;
+        return lastModified;
     }
 
     public InputStream open() throws IOException {
         return new ByteArrayInputStream(content);
+    }
+
+    public void withOptions(Options options) throws IOException {
+        //no options
     }
 }
