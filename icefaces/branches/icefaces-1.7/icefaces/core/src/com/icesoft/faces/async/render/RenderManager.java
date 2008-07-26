@@ -221,6 +221,22 @@ public class RenderManager implements Disposable {
         }
     }
 
+    public void setCorePoolSize(int corePoolSize) {
+        internalRenderManager.setCorePoolSize(corePoolSize);
+    }
+
+    public void setMaxPoolSize(int maxPoolSize) {
+        internalRenderManager.setMaxPoolSize(maxPoolSize);
+    }
+
+    public void setKeepAliveTime(long keepAliveTime) {
+        internalRenderManager.setKeepAliveTime(keepAliveTime);
+    }
+
+    public void setRenderQueueCapacity(int renderQueueCapacity) {
+        internalRenderManager.setRenderQueueCapacity(renderQueueCapacity);
+    }
+
     /**
      * This method is used by {@link GroupAsyncRenderer}s that need to request
      * render calls based on some sort of schedule.  It uses a separate,
@@ -246,7 +262,7 @@ public class RenderManager implements Disposable {
         private static final Log LOG =
             LogFactory.getLog(InternalRenderManager.class);
 
-        private final RenderHub renderHub = new RenderHub();
+        private final RenderHub renderHub;
         private final BroadcastHub broadcastHub = new BroadcastHub();
         private final Map rendererGroupMap =
             Collections.synchronizedMap(new HashMap());
@@ -256,6 +272,7 @@ public class RenderManager implements Disposable {
         private boolean broadcasted;
 
         private InternalRenderManager(final Configuration configuration) {
+            renderHub = new RenderHub(configuration);
             setBroadcasted(
                     configuration.getAttributeAsBoolean("broadcasted", false));
             ContextEventRepeater.addListener(shutdownListener);
@@ -332,6 +349,22 @@ public class RenderManager implements Disposable {
 
         public void setBroadcasted(final boolean broadcasted) {
             this.broadcasted = broadcasted;
+        }
+            
+        public void setCorePoolSize(int corePoolSize) {
+            renderHub.setCorePoolSize(corePoolSize);
+        }
+
+        public void setMaxPoolSize(int maxPoolSize) {
+            renderHub.setMaxPoolSize(maxPoolSize);
+        }
+
+        public void setKeepAliveTime(long keepAliveTime) {
+            renderHub.setKeepAliveTime(keepAliveTime);
+        }
+
+        public void setRenderQueueCapacity(int renderQueueCapacity) {
+            renderHub.setRenderQueueCapacity(renderQueueCapacity);
         }
 
         ScheduledThreadPoolExecutor getScheduledService() {

@@ -38,6 +38,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.icesoft.faces.webapp.http.common.Configuration;
 
 /**
  * The RenderHub is designed to handle all server-side rendering calls. Although
@@ -67,10 +68,10 @@ public class RenderHub {
      * instances.  It uses the supplied settings for defaults.
      */
     private ThreadPoolExecutor renderService;
-    private int corePoolSize = 10;
-    private int maxPoolSize = 15;
-    private long keepAliveTime = 300000;
-    private int renderQueueCapacity = 1000;
+    private int corePoolSize;
+    private int maxPoolSize;
+    private long keepAliveTime;
+    private int renderQueueCapacity;
 
     /**
      * The specialized thread pool used to execute render calls at some future
@@ -97,8 +98,14 @@ public class RenderHub {
      * Public constructor.  Although it possible for developers to construct and
      * use their own RenderHub, it is highly recommended that a RenderManager be
      * used.  The RenderManager creates and uses it's own internal RenderHub.
+     * @param configuration
      */
-    public RenderHub() {
+    public RenderHub(Configuration configuration) {
+        corePoolSize = configuration.getAttributeAsInteger("corePoolSize", 10);
+        maxPoolSize = configuration.getAttributeAsInteger("maxPoolSize", 15);
+        keepAliveTime = configuration.getAttributeAsLong("keepAliveTime", 300000);
+        renderQueueCapacity = configuration.getAttributeAsInteger("renderQueueCapacity", 1000);
+
         rejectionHandler = new RejectionHandler();
         threadFactory = new RenderThreadFactory();
     }
@@ -124,6 +131,9 @@ public class RenderHub {
      */
     public void setCorePoolSize(int corePoolSize) {
         this.corePoolSize = corePoolSize;
+        //todo: do we need to dynamically re-configure services
+        resetCoreService();
+        resetScheduledService();
     }
 
     /**
@@ -147,6 +157,8 @@ public class RenderHub {
      */
     public void setMaxPoolSize(int maxPoolSize) {
         this.maxPoolSize = maxPoolSize;
+        //todo: do we need to dynamicaly re-configure service
+        resetCoreService();
     }
 
     /**
@@ -169,6 +181,8 @@ public class RenderHub {
      */
     public void setKeepAliveTime(long keepAliveTime) {
         this.keepAliveTime = keepAliveTime;
+        //todo: do we need to dynamically re-configure service
+        resetCoreService();
     }
 
     /**
@@ -182,6 +196,8 @@ public class RenderHub {
 
     public void setRenderQueueCapacity(int renderQueueCapacity) {
         this.renderQueueCapacity = renderQueueCapacity;
+        //todo: do we need to dynamically re-configure service
+        resetCoreService();
     }
 
     /**
@@ -289,6 +305,20 @@ public class RenderHub {
         if (scheduledService != null) {
             scheduledService.shutdown();
             scheduledService = null;
+        }
+    }
+
+    private synchronized void resetCoreService() {
+        if (renderService != null) {
+            renderService.shutdown();
+            createCoreService();
+        }
+    }
+
+    private synchronized void resetScheduledService() {
+        if (scheduledService != null) {
+            scheduledService.shutdown();
+            createScheduledService();
         }
     }
 }
