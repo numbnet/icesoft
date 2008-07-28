@@ -36,6 +36,8 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.renderkit.RendererUtil;
+
 import org.w3c.dom.Element;
 
 import javax.faces.FacesException;
@@ -163,10 +165,31 @@ public class PassThruAttributeRenderer {
                                         Element attributeElement,
                                         Element styleElement,
                                         String[] excludedAttributes) {
-        renderNonBooleanAttributes(
+        if (excludedAttributes == null) excludedAttributes = new String[0]; 
+        if (excludedAttributes.length > 0) {
+            Arrays.sort(excludedAttributes);
+        }        
+        String[] supportedAttributes = (String[]) uiComponent.getAttributes()
+                           .get(RendererUtil.SUPPORTED_PASSTHRU_ATT);
+        attributeElement = getTargetElement (facesContext, uiComponent, attributeElement);
+        if (supportedAttributes == null) {
+            renderNonBooleanAttributes(
                 facesContext, uiComponent, attributeElement, excludedAttributes);
-        renderBooleanAttributes(
+            renderBooleanAttributes(
                 facesContext, uiComponent, attributeElement, excludedAttributes);
+        } else {
+            for (int i=0; i < supportedAttributes.length; i++) {
+                if (excludedAttributes.length > 0 &&
+                        Arrays.binarySearch(excludedAttributes,  supportedAttributes[i]) > -1){
+                           continue;
+                }                
+                Object value = null;
+                if ((value = uiComponent.getAttributes().get(supportedAttributes[i])) != null &&
+                        !PassThruAttributeRenderer.attributeValueIsSentinel(supportedAttributes[i])) {
+                    attributeElement.setAttribute(supportedAttributes[i], value.toString());
+                }
+            }            
+        }
         CurrentStyle.apply(facesContext, uiComponent, styleElement, null);
 
         if(attributeElement == null) {
@@ -235,20 +258,9 @@ public class PassThruAttributeRenderer {
             Element targetElement,
             String[] excludedAttributes) {
 
-        if(targetElement == null) {
-            DOMContext domContext =
-                    DOMContext.getDOMContext(facesContext, uiComponent);
-            Element rootElement = (Element) domContext.getRootNode();
-            if (rootElement == null) {
-                throw new FacesException("DOMContext is null");
-            }
-            targetElement = rootElement;
-        }
-
         Object nextPassThruAttributeName;
         Object nextPassThruAttributeValue = null;
         boolean primitiveAttributeValue;
-        if (excludedAttributes == null) excludedAttributes = new String[0];
         
         for (int i =0; i < passThruAttributeNames.length; i++) {
             nextPassThruAttributeName = passThruAttributeNames[i];
@@ -284,22 +296,9 @@ public class PassThruAttributeRenderer {
             Element targetElement,
             String[] excludedAttributes) {
 
-        if (uiComponent == null) {
-            throw new FacesException("Component instance is null");
-        }
-        if(targetElement == null) {
-            DOMContext domContext =
-                    DOMContext.getDOMContext(facesContext, uiComponent);
-            Element rootElement = (Element) domContext.getRootNode();
-            if (rootElement == null) {
-                throw new FacesException("DOMContext is not initialized");
-            }
-            targetElement = rootElement;
-        }
-
         Object nextPassThruAttributeName = null;
         Object nextPassThruAttributeValue = null;
-        if (excludedAttributes == null) excludedAttributes = new String[0];        
+
         for  (int i = 0; i < passThruAttributeNames.length; i++) {
             nextPassThruAttributeName = passThruAttributeNames[i];
             if (excludedAttributes.length > 0 &&
@@ -384,5 +383,19 @@ public class PassThruAttributeRenderer {
 
     static final String[] getpassThruAttributeNames() {
         return passThruAttributeNames;
+    }
+    
+    static Element getTargetElement(FacesContext facesContext, 
+            UIComponent uiComponent, Element targetElement) {
+        if(targetElement == null) {
+            DOMContext domContext =
+                    DOMContext.getDOMContext(facesContext, uiComponent);
+            Element rootElement = (Element) domContext.getRootNode();
+            if (rootElement == null) {
+                throw new FacesException("DOMContext is null");
+            }
+            targetElement = rootElement;
+        }
+        return targetElement;
     }
 }
