@@ -37,6 +37,7 @@ import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
 import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
+import com.icesoft.util.StaticTimerUtility;
 import com.icesoft.util.SeamUtilities;
 import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
@@ -139,8 +140,17 @@ class RunnableRender implements Runnable {
             if (SeamUtilities.isSeamEnvironment() ) {
                 testSession(state);
             }
+
+            if (StaticTimerUtility.Log.isTraceEnabled()) {
+                StaticTimerUtility.startSubjobTimer();
+            }
+
             // #2459 use fully synchronized version internally.
             state.executeAndRender();
+
+            if (StaticTimerUtility.Log.isTraceEnabled())  {
+                StaticTimerUtility.subJobTimerComplete();
+            } 
 
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
