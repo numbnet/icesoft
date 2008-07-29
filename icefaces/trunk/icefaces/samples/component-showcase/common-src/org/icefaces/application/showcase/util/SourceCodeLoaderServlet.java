@@ -33,6 +33,9 @@
 
 package org.icefaces.application.showcase.util;
 
+import com.uwyn.jhighlight.renderer.XhtmlRendererFactory;
+import com.uwyn.jhighlight.tools.FileUtils;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,7 +84,7 @@ public class SourceCodeLoaderServlet extends HttpServlet {
                     // Setting the context type to text/xml provides style
                     // attributes for most browsers which should make reading
                     // the code easier.
-                    response.setContentType("text/plain");
+                    response.setContentType("text/html");
                     responseStream = response.getWriter();
                     StringBuffer stringBuffer = new StringBuffer();
                     int ch;
@@ -99,7 +102,20 @@ public class SourceCodeLoaderServlet extends HttpServlet {
                         m = JAVA_PATTERN.matcher(stringBuffer);
                         toReturn = m.replaceFirst("/* MPL License text (see http://www.mozilla.org/MPL/) */\n");
                     }
-                    responseStream.print(toReturn);
+                    String name = sourcePath
+                            .substring(sourcePath.lastIndexOf("/") + 1);
+                    String type = "";
+                    if (sourcePath.endsWith(".java")) {
+                        type = XhtmlRendererFactory.JAVA;
+                    } else if (sourcePath.endsWith(".jspx")) {
+                        type = XhtmlRendererFactory.XHTML;
+                    } else if (sourcePath.endsWith(".xhtml")) {
+                        type = XhtmlRendererFactory.XHTML;
+                    }
+                    String toReturnHigh = 
+                        XhtmlRendererFactory.getRenderer(type)
+                            .highlight(name, toReturn, "utf8", false);
+                    responseStream.print(toReturnHigh);
                     responseStream.close();
                     sourceStream.close();
                 } catch (IOException e) {
