@@ -55,7 +55,7 @@ import java.util.Map;
  */
 public class PassThruAttributeRenderer {
 
-    private static final String[] passThruAttributeNames =  {
+    public static final String[] passThruAttributeNames =  {
         "accept",
         "accesskey",
         "alt",
@@ -121,15 +121,18 @@ public class PassThruAttributeRenderer {
         "onkeyupeffect",
         "autocomplete"
     };
-    
-    static {
-        Arrays.sort(passThruAttributeNames);
-    }
-    private static final String[] booleanPassThruAttributeNames = {
+
+    public static final String[] booleanPassThruAttributeNames = {
         "disabled",
         "ismap",     
         "readonly"
     };
+    
+    static {
+        Arrays.sort(passThruAttributeNames);
+        Arrays.sort(booleanPassThruAttributeNames);
+    }
+
 
     /**
      * Render pass thru attributes to the root element of the DOMContext
@@ -175,8 +178,6 @@ public class PassThruAttributeRenderer {
         if (supportedAttributes == null) {
             renderNonBooleanAttributes(
                 facesContext, uiComponent, attributeElement, excludedAttributes);
-            renderBooleanAttributes(
-                facesContext, uiComponent, attributeElement, excludedAttributes);
         } else {
             for (int i=0; i < supportedAttributes.length; i++) {
                 if (excludedAttributes.length > 0 &&
@@ -188,8 +189,10 @@ public class PassThruAttributeRenderer {
                         !PassThruAttributeRenderer.attributeValueIsSentinel(value)) {
                     attributeElement.setAttribute(supportedAttributes[i], value.toString());
                 }
-            }            
+            } 
         }
+        renderBooleanAttributes(
+                facesContext, uiComponent, attributeElement, excludedAttributes);
         CurrentStyle.apply(facesContext, uiComponent, styleElement, null);
 
         if(attributeElement == null) {
@@ -262,8 +265,8 @@ public class PassThruAttributeRenderer {
         Object nextPassThruAttributeValue = null;
         boolean primitiveAttributeValue;
         
-        for (int i =0; i < passThruAttributeNames.length; i++) {
-            nextPassThruAttributeName = passThruAttributeNames[i];
+        for (int i =0; i < booleanPassThruAttributeNames.length; i++) {
+            nextPassThruAttributeName = booleanPassThruAttributeNames[i];
             if (excludedAttributes.length > 0 &&
                     Arrays.binarySearch(excludedAttributes,  nextPassThruAttributeName) > -1){
                        continue;
