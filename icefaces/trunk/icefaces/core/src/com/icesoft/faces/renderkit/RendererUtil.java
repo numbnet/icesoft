@@ -26,9 +26,10 @@ public class RendererUtil {
             if (excludeArrayList.contains(attributes[i])) continue;
             Object value = null;
             if ((value = uiComponent.getAttributes().get(attributes[i])) != null &&
-                    !PassThruAttributeRenderer.attributeValueIsSentinel(attributes[i])) {
+                    !PassThruAttributeRenderer.attributeValueIsSentinel(value)) {
                 writer.writeAttribute(attributes[i], value, null);
             }
         }
+        
     } 
 }

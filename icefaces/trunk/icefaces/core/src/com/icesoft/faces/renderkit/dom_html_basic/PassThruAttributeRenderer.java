@@ -185,7 +185,7 @@ public class PassThruAttributeRenderer {
                 }                
                 Object value = null;
                 if ((value = uiComponent.getAttributes().get(supportedAttributes[i])) != null &&
-                        !PassThruAttributeRenderer.attributeValueIsSentinel(supportedAttributes[i])) {
+                        !PassThruAttributeRenderer.attributeValueIsSentinel(value)) {
                     attributeElement.setAttribute(supportedAttributes[i], value.toString());
                 }
             }            

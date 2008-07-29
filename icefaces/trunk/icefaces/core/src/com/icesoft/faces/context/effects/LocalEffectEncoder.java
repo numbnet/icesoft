@@ -39,6 +39,8 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
+
 import java.util.Map;
 
 /**
@@ -69,7 +71,7 @@ public class LocalEffectEncoder {
 
 
     public static void encodeLocalEffects(UIComponent comp, Element rootNode,
-                                          FacesContext facesContext) {
+                                          FacesContext facesContext, ResponseWriter writer) {
         Map atts = comp.getAttributes();
         try {
             for (int i = 0; i < EVENTS.length; i++) {
@@ -93,8 +95,11 @@ public class LocalEffectEncoder {
                     if (original == null) {
                         original = "";
                     }
-
-                    rootNode.setAttribute(ATTRIBUTES[i], value + original);
+                    if (rootNode != null) {
+                        rootNode.setAttribute(ATTRIBUTES[i], value + original);
+                    } else if (writer != null) {
+                        writer.writeAttribute(ATTRIBUTES[i], value + original, null);                       
+                    }
                 }
             }
         } catch (Exception e) {
@@ -104,7 +109,17 @@ public class LocalEffectEncoder {
             }
         }
     }
-
+    
+    public static void encodeLocalEffects(UIComponent comp, Element rootNode,
+            FacesContext facesContext) {
+        encodeLocalEffects(comp, rootNode, facesContext, null);
+    }
+    
+    public static void encodeLocalEffects(UIComponent comp, ResponseWriter writer,
+            FacesContext facesContext) {
+        encodeLocalEffects(comp, null, facesContext, writer);
+    }
+    
     public static void encodeLocalEffect(String id, Effect fx, String event, FacesContext facesContext){
         String value = JavascriptContext.applyEffect(fx, id, facesContext);
         //TODO: refactor so that is dosen't clobber an existing effect
