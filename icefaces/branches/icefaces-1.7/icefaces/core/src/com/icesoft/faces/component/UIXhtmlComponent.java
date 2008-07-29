@@ -202,4 +202,33 @@ public class UIXhtmlComponent extends UIComponentBase {
         return this.getClass() + "@" + this.hashCode() + ":tag=[" +
                this.getTag() + "]";
     }
+    
+    //We may want to consider a transient implementation of this component
+    /*
+    public boolean isTransient()  {
+        return true;
+    }
+   */
+
+    public Object saveState(FacesContext facesContext)  {
+        Object[] values = new Object[5];
+        values[0] = super.saveState(facesContext);
+        values[1] = tag;
+        values[2] = standardAttributes;
+        //xmlAttributes are not serializable, so are not immediately
+        //supported
+        // values[3] = xmlAttributes;
+        values[4] = elValueExpressions;
+        return ((Object) values);
+    }
+    
+    public void restoreState(FacesContext facesContext, Object state)  {
+        Object values[] = (Object[]) state;
+        super.restoreState(facesContext, values[0]);
+        tag = (String) values[1];
+        standardAttributes = (Map) values[2];
+        // xmlAttributes = (Attributes) values[3];
+        elValueExpressions = (Map) values[4];
+    }
+
 }
