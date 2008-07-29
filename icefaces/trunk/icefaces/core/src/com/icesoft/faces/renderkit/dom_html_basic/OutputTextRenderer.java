@@ -8,6 +8,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.RendererUtil;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -39,7 +40,8 @@ public class OutputTextRenderer extends BaseRenderer{
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-        }        
+        }   
+        LocalEffectEncoder.encodeLocalEffects(uiComponent,writer, facesContext);
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

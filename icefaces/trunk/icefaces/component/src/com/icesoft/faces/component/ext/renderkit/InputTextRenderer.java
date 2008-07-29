@@ -3,10 +3,12 @@ package com.icesoft.faces.component.ext.renderkit;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputText;
+import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -38,5 +40,7 @@ public class InputTextRenderer extends
         } else {
             writer.writeAttribute(HTML.ONBLUR_ATTR, onblur + "setFocus('');", null);            
         }
+        LocalEffectEncoder.encodeLocalEffects(uiComponent,writer, 
+                FacesContext.getCurrentInstance());  
     }
 }
