@@ -33,8 +33,6 @@ public class InputTextRender extends BaseRenderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
         writeRootElement(writer, uiComponent, clientId, HTML.INPUT_ELEM, new String[0]);
-        Object value = getValue(facesContext, uiComponent);
-        writer.writeAttribute(HTML.VALUE_ATTR, value, null);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);        
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
@@ -47,6 +45,8 @@ public class InputTextRender extends BaseRenderer{
         //it must call the super.encode to support effects and facesMessage recovery
         super.encodeEnd(facesContext, uiComponent);
         ResponseWriter writer = facesContext.getResponseWriter();
+        Object value = getValue(facesContext, uiComponent);
+        writer.writeAttribute(HTML.VALUE_ATTR, value, null);
         writer.endElement(HTML.INPUT_ELEM);
     }
     
