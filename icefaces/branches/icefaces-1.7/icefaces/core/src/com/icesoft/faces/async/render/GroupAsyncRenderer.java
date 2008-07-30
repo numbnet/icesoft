@@ -38,6 +38,7 @@ import com.icesoft.faces.webapp.http.servlet.MainSessionBoundServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.faces.webapp.xmlhttp.RenderingException;
+import com.icesoft.util.StaticTimerUtility;
 import edu.emory.mathcs.backport.java.util.concurrent.CopyOnWriteArraySet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -229,6 +230,10 @@ public class GroupAsyncRenderer
          * an unchanging snapshot of the array at the time the Iterator was
          * constructed and does not support the mutative remove operation!
          */
+        if (StaticTimerUtility.Log.isTraceEnabled()) {
+            StaticTimerUtility.newJob( group.size() );
+            StaticTimerUtility.startJobTmer();
+        } 
         for (Iterator i = group.iterator(); !stopRequested && i.hasNext();) {
             Object object = ((WeakReference) i.next()).get();
             if (object instanceof Renderable) {
