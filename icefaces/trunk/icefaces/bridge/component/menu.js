@@ -153,6 +153,7 @@ Ice.Menu = {
             }
             
             Ice.Menu.showPopup(posx, posy, popupMenu);
+            Event.observe(document, "click", Ice.Menu.hidePopupMenu);
         }
     },
     setMenuContext: function(mnuCtx) {
@@ -266,6 +267,10 @@ Ice.Menu = {
         var n = menuItem.className.replace(/^\s+|\s+$/g, "").split(/\s+/).length / 2;
         var regExp = new RegExp("( portlet-menu-item-hover-selected| \\S+-hover){" + n + "}$");
         menuItem.className = menuItem.className.replace(regExp, "");
+    },
+    hidePopupMenu:function() {
+        Ice.Menu.hideAll();
+        Event.stopObserving(document, "click", Ice.Menu.hidePopupMenu);
     }
 }
 
