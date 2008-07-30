@@ -20,28 +20,19 @@ public class OutputTextRenderer extends BaseRenderer{
         UIOutput component = (UIOutput) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        Object rawValue = component.getValue(); 
+        Object value = component.getValue(); 
         //This is not ice:outputText, so just render the value
         //this will be true for open HTML in the JSP
         if (!(component instanceof HtmlOutputText)) {
-            writer.write(String.valueOf(rawValue));
+            writer.write(String.valueOf(value));
             return;
         }
         
         writeRootElement(writer, uiComponent, clientId, HTML.SPAN_ELEM);
-        String convertedValue = null;
-        convertedValue = DomBasicInputRenderer.converterGetAsString(facesContext, 
-                                                        uiComponent, rawValue);
-        boolean valueTextRequiresEscape = DOMUtils.escapeIsRequired(uiComponent);
-        if (valueTextRequiresEscape) {
-            convertedValue = DOMUtils.escapeAnsi(convertedValue);
-        } 
-        writer.write(convertedValue);
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         }   
-        LocalEffectEncoder.encodeLocalEffects(uiComponent,writer, facesContext);
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -50,8 +41,19 @@ public class OutputTextRenderer extends BaseRenderer{
             return;
         }
         //it must call the super.encode to support effects and facesMessage recovery
-        super.encodeEnd(facesContext, uiComponent);        
+        super.encodeEnd(facesContext, uiComponent); 
         ResponseWriter writer = facesContext.getResponseWriter();
+        UIOutput component = (UIOutput) uiComponent;
+        Object rawValue = component.getValue();         
+        String convertedValue = null;
+        convertedValue = DomBasicInputRenderer.converterGetAsString(facesContext, 
+                                                        uiComponent, rawValue);
+        boolean valueTextRequiresEscape = DOMUtils.escapeIsRequired(uiComponent);
+        if (valueTextRequiresEscape) {
+            convertedValue = DOMUtils.escapeAnsi(convertedValue);
+        } 
+        writer.write(convertedValue);
         writer.endElement(HTML.SPAN_ELEM);
+        LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);
     }
 }
