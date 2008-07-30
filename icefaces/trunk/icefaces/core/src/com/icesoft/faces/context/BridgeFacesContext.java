@@ -60,6 +60,7 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 //for now extend BridgeFacesContext since there are so many 'instanceof' tests
@@ -491,6 +493,40 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
     }
 
+    //adapting deprecated methods to current API
+    
+    public URI registerResource(final String mimeType, final Resource resource) {
+        return registerResource(new ProxyResource(resource) {
+            public void withOptions(Options options) throws IOException {
+                options.setMimeType(mimeType);
+            }
+        });
+    }
+
+    public URI registerResource(final String mimeType, final Resource resource, ResourceLinker.Handler linkerHandler) {
+        return registerResource(new ProxyResource(resource) {
+            public void withOptions(Options options) throws IOException {
+                options.setMimeType(mimeType);
+            }
+        }, linkerHandler);
+    }
+
+    public URI registerNamedResource(final String name, Resource resource) {
+        return registerResource(new ProxyResource(resource) {
+            public void withOptions(Options options) throws IOException {
+                options.setFileName(name);
+            }
+        });
+    }
+
+    public URI registerNamedResource(final String name, Resource resource, ResourceLinker.Handler linkerHandler) {
+        return registerResource(new ProxyResource(resource) {
+            public void withOptions(Options options) throws IOException {
+                options.setFileName(name);
+            }
+        }, linkerHandler);
+    }
+
     private URI resolve(String uri) {
         return URI.create(application.getViewHandler().getResourceURL(this, uri));
     }
@@ -583,5 +619,29 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
 
         return false;
+    }
+
+    private static class ProxyResource implements Resource {
+        private final Resource resource;
+
+        public ProxyResource(Resource resource) {
+            this.resource = resource;
+        }
+
+        public String calculateDigest() {
+            return resource.calculateDigest();
+        }
+
+        public InputStream open() throws IOException {
+            return resource.open();
+        }
+
+        public Date lastModified() {
+            return resource.lastModified();
+        }
+
+        public void withOptions(Options options) throws IOException {
+            resource.withOptions(options);
+        }
     }
 }
