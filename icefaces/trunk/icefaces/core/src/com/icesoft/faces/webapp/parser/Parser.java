@@ -99,14 +99,13 @@ public class Parser {
      * The main parsing logic.  Creates a Digester to parse page into a tag
      * processing tree, and then executes the JSP lifecycle across that tree.
      * The end result is a JSF component rooted with a UIViewRoot component.
-     * #2936, for the short term, synchronize this method. 
      *
      * @param page    The Reader for the page.
      * @param context
      * @throws java.io.IOException      If stream IO fails.
      * @throws org.xml.sax.SAXException If digester encounters invalid XML.
      */
-    public synchronized void parse(Reader page, FacesContext context)
+    public void parse(Reader page, FacesContext context)
             throws java.io.IOException, org.xml.sax.SAXException {
         // Need a mock pageContext
         StubPageContext pageContext = new StubPageContext(context);
@@ -120,12 +119,17 @@ public class Parser {
         TagWire rootWire = new TagWire();
         rootWire.setTag(rootTag);
 
-        digester.clear();
-        digester.push(rootTag);
-        digester.push(rootWire);
-        digester.parse(page);
-
         TagWire realViewWire = null;
+        String viewTagClassName = null;
+        synchronized(this)  {
+            digester.clear();
+            digester.push(rootTag);
+            digester.push(rootWire);
+            digester.parse(page);
+            realViewWire = digester.getViewWire();
+            viewTagClassName = digester.getViewTagClassName();
+        }
+
         try {
 
             // #2551 We have captured the real View Tag (from wherever it was in the tree)
@@ -137,7 +141,6 @@ public class Parser {
             //  This duplicates what the previous code was doing, except the created
             // ViewTag has the attributes set
 
-            realViewWire = digester.getViewWire();
             Tag viewTag;
             if (null != realViewWire) {
                 viewTag = realViewWire.getTag();
@@ -145,7 +148,6 @@ public class Parser {
                 viewTag.setParent(null);
             } else {
                 //fallback case for pages with no view tag
-                String viewTagClassName = digester.getViewTagClassName();
                 if (null == viewTagClassName)
                     throw new IllegalStateException(
                             "ICEfaces parser unable to determine JSF implementation ViewTag class.");
