@@ -106,19 +106,6 @@ public class PassThruAttributeRenderer {
         "usemap",
         "width",
         "width",
-        "onclickeffect",
-        "ondblclickeffect",
-        "onmousedowneffect",
-        "onmouseupeffect",
-        "onmousemoveeffect",
-        "onmouseovereffect",
-        "onmouseouteffect",
-        "onchangeeffect",
-        "onreseteffect",
-        "onsubmiteffect",
-        "onkeypresseffect",
-        "onkeydowneffect",
-        "onkeyupeffect",
         "autocomplete"
     };
 
