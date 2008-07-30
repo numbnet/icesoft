@@ -87,10 +87,6 @@
     <managed-bean-scope>
         request
     </managed-bean-scope>
-    <managed-property>
-        <property-name>renderManager</property-name>
-        <value>#{rmanager}</value>
-    </managed-property>
 </managed-bean>
 
 <managed-bean>
@@ -121,10 +117,6 @@
     <managed-bean-scope>
         request
     </managed-bean-scope>
-    <managed-property>
-        <property-name>renderManager</property-name>
-        <value>#{rmanager}</value>
-    </managed-property>
 </managed-bean>
 
 <managed-bean>
