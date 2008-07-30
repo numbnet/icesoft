@@ -36,16 +36,12 @@ package com.icesoft.applications.faces.auctionMonitor.beans;
 import com.icesoft.applications.faces.auctionMonitor.ChatState;
 import com.icesoft.applications.faces.auctionMonitor.Message;
 import com.icesoft.applications.faces.auctionMonitor.MessageLog;
-import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.faces.async.render.Renderable;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
-import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
 import com.icesoft.faces.context.DisposableBean;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.icefaces.x.core.push.SessionRenderer;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -57,7 +53,7 @@ import java.util.Map;
  * Bean class used to store user information, as well as local information for
  * messages and viewing information
  */
-public class UserBean implements Renderable, DisposableBean {
+public class UserBean implements DisposableBean {
     private static final String DEFAULT_NICK = "Anonymous";
     private static final String MINIMIZE_IMAGE =
             "./images/button_triangle_close.gif";
@@ -72,10 +68,6 @@ public class UserBean implements Renderable, DisposableBean {
 
     private static final ChatState chatState = ChatState.getInstance();
     private static Log log = LogFactory.getLog(UserBean.class);
-
-    private OnDemandRenderer renderer = null;
-
-    private PersistentFacesState persistentState;
 
     private String autoLoad = " ";
     private String message = "";
@@ -96,8 +88,7 @@ public class UserBean implements Renderable, DisposableBean {
 
 
     public UserBean() {
-        // rendermanager persistent state
-        persistentState = PersistentFacesState.getInstance();
+        SessionRenderer.addCurrentSession("auction");
     }
 
     public boolean isMinimized() {
@@ -417,7 +408,6 @@ public class UserBean implements Renderable, DisposableBean {
             buttonImage = MAXIMIZE_IMAGE;
             position = bottom();
         }
-        reRender();
 
         return ("switchMinimized");
     }
@@ -427,107 +417,12 @@ public class UserBean implements Renderable, DisposableBean {
      * is normally called when a message is added to the log
      */
     private void updateMessageLog() {
+        //move all users to chat list bottom
         chatState.updateAll();
-        position = bottom();
+        SessionRenderer.render("auction");
     }
 
-    /**
-     * Method to get the current state and render the page again This method is
-     * called whenever the messageLog is updated through updateMessageLog() The
-     * updateMessageLog method causes the updateAll method to be called on the
-     * current state Inside the updateAll method is a call to this reRender
-     * method For scalability purposes, this method now uses the
-     * OnDemandRenderer The user viewpoint is always moved to the bottom of the
-     * latest log
-     */
-    public void reRender() {
-        position = bottom();
 
-        if (renderer != null) {
-            renderer.requestRender();
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("OnDemandRenderer was not available (it was null)");
-            }
-        }
-    }
-
-    /**
-     * Method to set the render manager, which should come from
-     * faces-config.xml
-     *
-     * @param manager manager to use
-     */
-    public void setRenderManager(RenderManager manager) {
-        if (manager != null) {
-            renderer = manager.getOnDemandRenderer(AuctionBean.RENDERER_NAME);
-            renderer.add(this);
-        }
-    }
-
-    /**
-     * Method to get the render manager, just return null to satisfy WAS
-     */
-    public RenderManager getRenderManager() {
-        return null;
-    }
-
-    /**
-     * Method to return the current persistent faces state This is used by the
-     * enterprise render manager
-     *
-     * @return PersistentFacesState to use
-     */
-    public PersistentFacesState getState() {
-        return persistentState;
-    }
-
-    /**
-     * Method called if an exception occurs during the render manager process
-     * As a result of any exception, the user will be removed from the conversation
-     *
-     * @param renderingException that happened
-     */
-    public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled() &&
-                renderingException instanceof TransientRenderingException) {
-            log.debug("UserBean Transient Rendering exception:", renderingException);
-        } else if (renderingException instanceof FatalRenderingException) {
-            if (log.isDebugEnabled()) {
-                log.debug("UserBean Fatal rendering exception: ", renderingException);
-            }
-            performCleanup();
-        }
-    }
-
-    /**
-     * New view has been created
-     */
-    public void viewCreated() {
-        // add ourselves to the render group.
-        if (renderer != null){
-            renderer.add(this);
-        }
-    }
-
-    protected boolean performCleanup() {
-        try {
-            // remove ourselves from the render group.
-            if (renderer != null && renderer.contains(this)){
-                renderer.remove(this);
-                // remove the user.
-                if (chatState != null){
-                    chatState.removeUserChild(this);
-                }
-            }
-            return true;
-        } catch (Exception failedCleanup) {
-            if (log.isErrorEnabled()) {
-                log.error("Failed to cleanup a clock bean", failedCleanup);
-            }
-        }
-        return false;
-    }
     
     /**
      * View has been disposed either by window closing or a session timeout.
@@ -536,6 +431,10 @@ public class UserBean implements Renderable, DisposableBean {
         if (log.isDebugEnabled()) {
             log.debug("UserBean Dispose called - cleaning up");
         }
-        performCleanup();
+        // remove the user.
+        if (chatState != null){
+            chatState.removeUserChild(this);
+        }
     }
+    
 }

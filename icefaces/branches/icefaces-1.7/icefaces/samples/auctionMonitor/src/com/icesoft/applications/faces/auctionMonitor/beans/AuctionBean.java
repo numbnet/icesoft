@@ -34,9 +34,7 @@
 package com.icesoft.applications.faces.auctionMonitor.beans;
 
 import com.icesoft.applications.faces.auctionMonitor.AuctionEvent;
-import com.icesoft.applications.faces.auctionMonitor.AuctionListener;
 import com.icesoft.applications.faces.auctionMonitor.AuctionMonitorItemDetailer;
-import com.icesoft.applications.faces.auctionMonitor.AuctionState;
 import com.icesoft.applications.faces.auctionMonitor.comparator.AuctionMonitorItemBidsComparator;
 import com.icesoft.applications.faces.auctionMonitor.comparator.AuctionMonitorItemComparator;
 import com.icesoft.applications.faces.auctionMonitor.comparator.AuctionMonitorItemPriceComparator;
@@ -44,14 +42,6 @@ import com.icesoft.applications.faces.auctionMonitor.comparator.AuctionMonitorIt
 import com.icesoft.applications.faces.auctionMonitor.comparator.AuctionMonitorItemTitleComparator;
 import com.icesoft.applications.faces.auctionMonitor.stubs.ItemType;
 import com.icesoft.applications.faces.auctionMonitor.stubs.StubServer;
-import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.RenderManager;
-import com.icesoft.faces.async.render.Renderable;
-import com.icesoft.faces.context.DisposableBean;
-import com.icesoft.faces.webapp.xmlhttp.FatalRenderingException;
-import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
-import com.icesoft.faces.webapp.xmlhttp.RenderingException;
-import com.icesoft.faces.webapp.xmlhttp.TransientRenderingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,7 +52,7 @@ import java.util.Arrays;
  * Class used to handle searching and sorting of auction items, as well as front
  * end interpretation
  */
-public class AuctionBean implements AuctionListener, Renderable, DisposableBean {
+public class AuctionBean  {
     private static Log log = LogFactory.getLog(AuctionBean.class);
     private static int userCount = 0;
     public static final String RENDERER_NAME = "demand";
@@ -73,10 +63,8 @@ public class AuctionBean implements AuctionListener, Renderable, DisposableBean 
     private AuctionMonitorItemComparator searchItemsComparator =
             new AuctionMonitorItemTimeLeftComparator();
     private String autoLoad = " ";
-    private PersistentFacesState persistentState = null;
     private boolean isFreshSearch;
     private AuctionMonitorItemBean queryItem;
-    private OnDemandRenderer renderer = null;
 
     // style related constants
 
@@ -102,8 +90,6 @@ public class AuctionBean implements AuctionListener, Renderable, DisposableBean 
 
 
     public AuctionBean() {
-        AuctionState.getInstance().addAuctionListener(this);
-        persistentState = PersistentFacesState.getInstance();
     }
 
     public ItemType getItem(String itemIDStr) throws Exception {
@@ -334,10 +320,6 @@ public class AuctionBean implements AuctionListener, Renderable, DisposableBean 
         Arrays.sort(searchItemBeans, searchItemsComparator);
     }
 
-    public void handleAuctionEvent(AuctionEvent auctionEvent) {
-        reRender();
-    }
-
     public static synchronized void incrementUsers() {
         userCount++;
     }
@@ -351,61 +333,4 @@ public class AuctionBean implements AuctionListener, Renderable, DisposableBean 
         }
     }
 
-    public void reRender() {
-        if (renderer != null) {
-            renderer.requestRender();
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("OnDemandRenderer was not available (it was null)");
-            }
-        }
-    }
-
-    public void setRenderManager(RenderManager manager) {
-        if (manager != null) {
-            renderer = manager.getOnDemandRenderer(RENDERER_NAME);
-            renderer.add(this);
-        }
-    }
-
-    public PersistentFacesState getState() {
-        return persistentState;
-    }
-
-    public void renderingException(RenderingException renderingException) {
-        if (log.isDebugEnabled() &&
-                renderingException instanceof TransientRenderingException) {
-            log.debug("AuctionBean Transient Rendering exception:", renderingException);
-        } else if (renderingException instanceof FatalRenderingException) {
-            if (log.isDebugEnabled()) {
-                log.debug("AuctionBean Fatal rendering exception: ", renderingException);
-            }
-            performCleanup();
-        }
-    }
-
-    protected boolean performCleanup() {
-        try {
-            // remove ourselves from the render group.
-            if (renderer != null){
-                renderer.remove(this);
-            }
-            return true;
-        } catch (Exception failedCleanup) {
-            if (log.isErrorEnabled()) {
-                log.error("Failed to cleanup a clock bean", failedCleanup);
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * View has been disposed either by window closing or a session timeout.
-     */
-    public void dispose() throws Exception {
-        if (log.isDebugEnabled()) {
-            log.debug("AuctionBean Dispose called - cleaning up");
-        }
-        performCleanup();
-    }
 }
