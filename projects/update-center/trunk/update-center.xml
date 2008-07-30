@@ -32,7 +32,7 @@
                 distribution="http://localhost:8080/modules/auctionMonitor/1_7_1/icefaces_auctionMonitor_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="4294288"
-                needsrestart="false"
+                needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
                 releasedate="2008/06/12">
 
@@ -55,7 +55,7 @@
                 distribution="http://localhost:8080/modules/component-showcase/1_7_1/icefaces_component-showcase_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="6367306"
-                needsrestart="false"
+                needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
                 releasedate="2008/06/12">
 
@@ -78,7 +78,7 @@
                 distribution="http://localhost:8080/modules/webmc/1_7_1/icefaces_webmc_1_7_1.jar"
                 license="MPLorLGPL"
                 downloadsize="11933131"
-                needsrestart="false"
+                needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
                 releasedate="2008/06/12">
 
