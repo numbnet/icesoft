@@ -145,43 +145,22 @@ public class ChatState {
     }
 
     /**
-     * Method to loop through all children UserBeans and force each one to
-     * update Each UserBean is extracted, cast, and then has reRender() called
-     * This is done inside a separate thread because otherwise there is a
-     * possibility of deadlock with the routine clock render calls in auction
-     * monitor Doing this may add more overhead, but much more stability
-     *
-     * @return boolean true if the update thread was executed
-     */
-    public boolean updateAll() {
-        Thread updater = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Iterator users = userList.iterator();
-                    UserBean current;
-                    while (users.hasNext()) {
-                        current = (UserBean) users.next();
+     * Method to loop through all children UserBeans and move each
+     * to the bottom of the chat log
+    */
+    public void updateAll() {
+        Iterator users = userList.iterator();
+        UserBean current;
+        while (users.hasNext()) {
+            current = (UserBean) users.next();
 
-                        if (current != null) {
-                            Thread.currentThread().setContextClassLoader(
-                                    current.getClass().getClassLoader());
-                            current.reRender();
-                        } else {
-                            users.remove();
-                        }
-                    }
-                } catch (Exception e) {
-                    if (log.isErrorEnabled()) {
-                        log.error(
-                                "Updating all users from the ChatState failed because of " +
-                                e);
-                    }
-                }
+            if (current != null) {
+                current.moveToBottom();
+            } else {
+                users.remove();
             }
-        });
-        updater.start();
+        }
 
-        return (true);
     }
     
     /**

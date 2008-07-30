@@ -33,7 +33,8 @@
 
 package com.icesoft.applications.faces.auctionMonitor.beans;
 
-import com.icesoft.applications.faces.auctionMonitor.AuctionEvent;
+import org.icefaces.x.core.push.SessionRenderer;
+
 import com.icesoft.applications.faces.auctionMonitor.AuctionState;
 import com.icesoft.applications.faces.auctionMonitor.stubs.ItemType;
 import com.icesoft.faces.context.effects.Effect;
@@ -42,6 +43,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.util.Calendar;
+import java.util.Map;
 
 /**
  * Class used to represent a single item within the auction This class handles
@@ -174,22 +176,13 @@ public class AuctionMonitorItemBean extends ItemType {
             tempLocalBid - localHighBid <= MAX_BID_INCREASE) {
             localHighBid = tempLocalBid;
             bidMessage = false;
-            AuctionState.getAuctionMap().put(getItemID() + ".price",
-                                             new Double(localHighBid));
-            AuctionState.getAuctionMap().put(getItemID() + ".bidCount",
-                                             new Integer(Integer.parseInt(
-                                                     AuctionState
-                                                             .getAuctionMap()
-                                                             .get(getItemID() +
-                                                                  ".bidCount").toString()) +
-                                                                                           1));
-            AuctionState auctionState = AuctionState.getInstance();
+            Map auctionMap = AuctionState.getAuctionMap();
+            auctionMap.put(getItemID() + ".price", new Double(localHighBid));
+            auctionMap.put(getItemID() + ".bidCount", new Integer(
+                    Integer.parseInt(auctionMap.get(getItemID() +".bidCount")
+                        .toString()) + 1 ) );
             getCurrentPrice();
-            if (null != auctionState) {
-                auctionState.fireAuctionEvent(
-                        new AuctionEvent(getItemID(), localHighBid));
-            }
-
+            SessionRenderer.render("auction");
         }
         else if (tempLocalBid <= localHighBid){
             bidMessage = false;
