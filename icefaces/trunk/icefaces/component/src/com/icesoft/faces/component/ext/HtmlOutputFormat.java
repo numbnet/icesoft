@@ -78,4 +78,59 @@ public class HtmlOutputFormat
                 "styleClass"); 
     }
 
+        
+      private java.lang.String dir;
+
+  /**
+   * <p>Return the value of the <code>dir</code> property.  Contents:</p><p>
+   * Direction indication for text that does not inherit directionality.
+   *           Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
+   * </p>
+   */
+  public java.lang.String getDir() {
+    if (null != this.dir) {
+      return this.dir;
+    }
+    ValueBinding _vb = getValueBinding("dir");
+    if (_vb != null) {
+      return (java.lang.String) _vb.getValue(getFacesContext());
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * <p>Set the value of the <code>dir</code> property.</p>
+   */
+  public void setDir(java.lang.String dir) {
+    this.dir = dir;
+  }
+  
+    private java.lang.String lang;
+
+  /**
+   * <p>Return the value of the <code>lang</code> property.  Contents:</p><p>
+   * Code describing the language used in the generated markup
+   *           for this component.
+   * </p>
+   */
+  public java.lang.String getLang() {
+    if (null != this.lang) {
+      return this.lang;
+    }
+    ValueBinding _vb = getValueBinding("lang");
+    if (_vb != null) {
+      return (java.lang.String) _vb.getValue(getFacesContext());
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * <p>Set the value of the <code>lang</code> property.</p>
+   */
+  public void setLang(java.lang.String lang) {
+    this.lang = lang;
+  }
+
 }

@@ -163,12 +163,14 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[5];
+        Object values[] = new Object[7];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
         values[3] = currentStyle;
         values[4] = visible;
+        values[5] = dir;
+        values[6] = lang;
         return ((Object) (values));
     }
 
@@ -183,6 +185,8 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
         effect = (Effect) values[2];
         currentStyle = (CurrentStyle) values[3];
         visible = (Boolean) values[4];
+        dir = (String) values[5];
+        lang = (String) values[6];
     }
 
 
@@ -273,4 +277,59 @@ public class HtmlMessage extends javax.faces.component.html.HtmlMessage {
                 CSS_DEFAULT.WARN_STYLE_CLASS,
                 "warnClass");  
     }
+    
+      private java.lang.String dir;
+
+  /**
+   * <p>Return the value of the <code>dir</code> property.  Contents:</p><p>
+   * Direction indication for text that does not inherit directionality.
+   *           Valid values are "LTR" (left-to-right) and "RTL" (right-to-left).
+   * </p>
+   */
+  public java.lang.String getDir() {
+    if (null != this.dir) {
+      return this.dir;
+    }
+    ValueBinding _vb = getValueBinding("dir");
+    if (_vb != null) {
+      return (java.lang.String) _vb.getValue(getFacesContext());
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * <p>Set the value of the <code>dir</code> property.</p>
+   */
+  public void setDir(java.lang.String dir) {
+    this.dir = dir;
+  }
+  
+    private java.lang.String lang;
+
+  /**
+   * <p>Return the value of the <code>lang</code> property.  Contents:</p><p>
+   * Code describing the language used in the generated markup
+   *           for this component.
+   * </p>
+   */
+  public java.lang.String getLang() {
+    if (null != this.lang) {
+      return this.lang;
+    }
+    ValueBinding _vb = getValueBinding("lang");
+    if (_vb != null) {
+      return (java.lang.String) _vb.getValue(getFacesContext());
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * <p>Set the value of the <code>lang</code> property.</p>
+   */
+  public void setLang(java.lang.String lang) {
+    this.lang = lang;
+  }
+
 }
