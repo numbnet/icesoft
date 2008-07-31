@@ -388,4 +388,90 @@ public class PassThruAttributeRenderer {
         }
         return targetElement;
     }
+    
+        /**
+     * Render pass thru attributes to the root element of the DOMContext
+     * associated with the UIComponent parameter. The IncludedAttributes
+     * argument is a String array of the names of attributes to include.
+     *
+     * @param facesContext
+     * @param uiComponent
+     * @param included nonBooleanHtmlAttributes
+     */
+    public static void renderHtmlAttributes(FacesContext facesContext,
+                                        UIComponent uiComponent,
+                                        String[] nonBooleanHtmlAttributes) {
+        renderHtmlAttributes(
+                facesContext, uiComponent, null, null, nonBooleanHtmlAttributes);
+    }
+    
+    /**
+     * Render pass thru attributes to the root element of the DOMContext
+     * associated with the UIComponent parameter. The IncludedAttributes
+     * argument is a String array of the names of attributes to include.
+     *
+     * @param facesContext
+     * @param uiComponent
+     * @param attributeElement
+     * @param styleElement The Element to apply styling on
+     * @param included nonBooleanHtmlAttributes
+     */
+    /**
+     * Render pass thru attributes to the root element of the DOMContext
+     * associated with the UIComponent parameter. The IncludedAttributes
+     * argument is a String array of the names of attributes to include.
+     *
+     * @param facesContext
+     * @param uiComponent
+     * @param attributeElement
+     * @param styleElement The Element to apply styling on
+     * @param included nonBooleanHtmlAttributes
+     */
+    public static void renderHtmlAttributes(FacesContext facesContext,
+                                        UIComponent uiComponent,
+                                        Element attributeElement,
+                                        Element styleElement, String[] htmlAttributes) {
+                                        
+        attributeElement = getTargetElement (facesContext, uiComponent, attributeElement);
+        renderNonBooleanHtmlAttributes(uiComponent, attributeElement, htmlAttributes);  
+        CurrentStyle.apply(facesContext, uiComponent, styleElement, null);
+
+        if(attributeElement == null) {
+            DOMContext domContext =
+                    DOMContext.getDOMContext(facesContext, uiComponent);
+            Element rootElement = (Element) domContext.getRootNode();
+            attributeElement = rootElement;
+        }
+        
+        //TODO remove the following:
+        LocalEffectEncoder
+                .encodeLocalEffects(uiComponent, attributeElement, facesContext);
+        renderOnFocus(uiComponent, attributeElement);
+        renderOnBlur(attributeElement);
+    }        
+    
+    private static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
+            Element targetElement, String[] nonBooleanhtmlAttributes) {
+
+        Object nextPassThruAttributeName = null;
+        Object nextPassThruAttributeValue = null;
+
+        for  (int i = 0; i < nonBooleanhtmlAttributes.length; i++) {
+            nextPassThruAttributeName = nonBooleanhtmlAttributes[i];
+            nextPassThruAttributeValue =
+                    uiComponent.getAttributes().get(nextPassThruAttributeName);
+            // Only render non-null attributes.
+            // Some components have attribute values
+            // set to the Wrapper classes' minimum value - don't render
+            // an attribute with this sentinel value.
+            if (nextPassThruAttributeValue != null) {
+                targetElement.setAttribute(
+                        nextPassThruAttributeName.toString(),
+                        nextPassThruAttributeValue.toString());
+                //remove the else clause that was here; it's trying to remove a node
+                //that doesn't exist
+            }
+        }
+    }      
+        
 }
