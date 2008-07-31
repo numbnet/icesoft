@@ -262,25 +262,25 @@ public class AttributeConstants {
                new String[]{};
            attributes[0] = (ICE_EFFECT);
            final String[] ICE_PANELBORDER = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.HEIGHT,  AttributeConstants.LANG,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  HEIGHT,  LANG,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[1] = (ICE_PANELBORDER);
            final String[] ICE_COLUMN = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[2] = (ICE_COLUMN);
            final String[] ICE_COLUMNGROUP = 
                new String[]{};
            attributes[3] = (ICE_COLUMNGROUP);
            final String[] ICE_COLUMNS = 
-               new String[]{ AttributeConstants.ROWS };                        
+               new String[]{ ROWS };                        
            attributes[4] = (ICE_COLUMNS);
            final String[] ICE_DATAPAGINATOR = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[5] = (ICE_DATAPAGINATOR);
            final String[] ICE_INPUTFILE = 
-               new String[]{ AttributeConstants.ACCEPT,  AttributeConstants.ACCESSKEY,  AttributeConstants.HEIGHT,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONFOCUS,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ ACCEPT,  ACCESSKEY,  HEIGHT,  ONBLUR,  ONCHANGE,  ONFOCUS,  STYLE,  TABINDEX,  TITLE,  WIDTH };                        
            attributes[6] = (ICE_INPUTFILE);
            final String[] ICE_GMAP = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TYPE };                        
+               new String[]{ STYLE,  TYPE };                        
            attributes[7] = (ICE_GMAP);
            final String[] ICE_GMAPCONTROL = 
                new String[]{};
@@ -301,94 +301,94 @@ public class AttributeConstants {
                new String[]{};
            attributes[13] = (ICE_GMAPMARKER);
            final String[] ICE_HEADERROW = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[14] = (ICE_HEADERROW);
            final String[] ICE_CHECKBOX = 
                new String[]{};
            attributes[15] = (ICE_CHECKBOX);
            final String[] ICE_COMMANDBUTTON = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE,  AttributeConstants.TYPE };                        
+               new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE,  TYPE };                        
            attributes[16] = (ICE_COMMANDBUTTON);
            final String[] ICE_COMMANDLINK = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.CHARSET,  AttributeConstants.COORDS,  AttributeConstants.DIR,  AttributeConstants.HREFLANG,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.REL,  AttributeConstants.REV,  AttributeConstants.SHAPE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TARGET,  AttributeConstants.TITLE,  AttributeConstants.TYPE };                        
+               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
            attributes[17] = (ICE_COMMANDLINK);
            final String[] ICE_DATATABLE = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ROWS,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[18] = (ICE_DATATABLE);
            final String[] ICE_FORM = 
-               new String[]{ AttributeConstants.ACCEPT,  AttributeConstants.ACCEPTCHARSET,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.ENCTYPE,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONRESET,  AttributeConstants.ONSUBMIT,  AttributeConstants.STYLE,  AttributeConstants.TARGET,  AttributeConstants.TITLE };                        
+               new String[]{ ACCEPT,  ACCEPTCHARSET,  AUTOCOMPLETE,  DIR,  ENCTYPE,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONRESET,  ONSUBMIT,  STYLE,  TARGET,  TITLE };                        
            attributes[19] = (ICE_FORM);
            final String[] ICE_GRAPHICIMAGE = 
-               new String[]{ AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.HEIGHT,  AttributeConstants.LANG,  AttributeConstants.LONGDESC,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TITLE,  AttributeConstants.USEMAP,  AttributeConstants.WIDTH };                        
+               new String[]{ ALT,  DIR,  HEIGHT,  LANG,  LONGDESC,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TITLE,  USEMAP,  WIDTH };                        
            attributes[20] = (ICE_GRAPHICIMAGE);
            final String[] ICE_INPUTHIDDEN = 
                new String[]{};
            attributes[21] = (ICE_INPUTHIDDEN);
            final String[] ICE_INPUTSECRET = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.MAXLENGTH,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[22] = (ICE_INPUTSECRET);
            final String[] ICE_INPUTTEXT = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.MAXLENGTH,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[23] = (ICE_INPUTTEXT);
            final String[] ICE_INPUTTEXTAREA = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.COLS,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.ROWS,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  COLS,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  ROWS,  STYLE,  TABINDEX,  TITLE };                        
            attributes[24] = (ICE_INPUTTEXTAREA);
            final String[] ICE_MESSAGE = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[25] = (ICE_MESSAGE);
            final String[] ICE_MESSAGES = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[26] = (ICE_MESSAGES);
            final String[] ICE_OUTPUTFORMAT = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[27] = (ICE_OUTPUTFORMAT);
            final String[] ICE_OUTPUTLABEL = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TABINDEX,  TITLE };                        
            attributes[28] = (ICE_OUTPUTLABEL);
            final String[] ICE_OUTPUTLINK = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.CHARSET,  AttributeConstants.COORDS,  AttributeConstants.DIR,  AttributeConstants.HREFLANG,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.REL,  AttributeConstants.REV,  AttributeConstants.SHAPE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TARGET,  AttributeConstants.TITLE,  AttributeConstants.TYPE };                        
+               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
            attributes[29] = (ICE_OUTPUTLINK);
            final String[] ICE_OUTPUTTEXT = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[30] = (ICE_OUTPUTTEXT);
            final String[] ICE_PANELGRID = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[31] = (ICE_PANELGRID);
            final String[] ICE_PANELGROUP = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[32] = (ICE_PANELGROUP);
            final String[] ICE_RADIO = 
                new String[]{};
            attributes[33] = (ICE_RADIO);
            final String[] ICE_SELECTBOOLEANCHECKBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[34] = (ICE_SELECTBOOLEANCHECKBOX);
            final String[] ICE_SELECTMANYCHECKBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.BORDER,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[35] = (ICE_SELECTMANYCHECKBOX);
            final String[] ICE_SELECTMANYLISTBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[36] = (ICE_SELECTMANYLISTBOX);
            final String[] ICE_SELECTMANYMENU = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[37] = (ICE_SELECTMANYMENU);
            final String[] ICE_SELECTONELISTBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[38] = (ICE_SELECTONELISTBOX);
            final String[] ICE_SELECTONEMENU = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[39] = (ICE_SELECTONEMENU);
            final String[] ICE_SELECTONERADIO = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.BORDER,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[40] = (ICE_SELECTONERADIO);
            final String[] ICE_INPUTRICHTEXT = 
-               new String[]{ AttributeConstants.HEIGHT,  AttributeConstants.STYLE,  AttributeConstants.WIDTH };                        
+               new String[]{ HEIGHT,  STYLE,  WIDTH };                        
            attributes[41] = (ICE_INPUTRICHTEXT);
            final String[] ICE_MENUBAR = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[42] = (ICE_MENUBAR);
            final String[] ICE_MENUITEM = 
-               new String[]{ AttributeConstants.ALT,  AttributeConstants.ONCLICK,  AttributeConstants.TARGET,  AttributeConstants.TITLE };                        
+               new String[]{ ALT,  ONCLICK,  TARGET,  TITLE };                        
            attributes[43] = (ICE_MENUITEM);
            final String[] ICE_MENUITEMSEPARATOR = 
                new String[]{};
@@ -397,73 +397,73 @@ public class AttributeConstants {
                new String[]{};
            attributes[45] = (ICE_MENUITEMS);
            final String[] ICE_MENUPOPUP = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[46] = (ICE_MENUPOPUP);
            final String[] ICE_OUTPUTBODY = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.STYLE };                        
+               new String[]{ BGCOLOR,  STYLE };                        
            attributes[47] = (ICE_OUTPUTBODY);
            final String[] ICE_OUTPUTCHART = 
-               new String[]{ AttributeConstants.HEIGHT,  AttributeConstants.STYLE,  AttributeConstants.TYPE,  AttributeConstants.WIDTH };                        
+               new String[]{ HEIGHT,  STYLE,  TYPE,  WIDTH };                        
            attributes[48] = (ICE_OUTPUTCHART);
            final String[] ICE_OUTPUTCONNECTIONSTATUS = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[49] = (ICE_OUTPUTCONNECTIONSTATUS);
            final String[] ICE_OUTPUTDECLARATION = 
                new String[]{};
            attributes[50] = (ICE_OUTPUTDECLARATION);
            final String[] ICE_OUTPUTHEAD = 
-               new String[]{ AttributeConstants.DIR,  AttributeConstants.LANG };                        
+               new String[]{ DIR,  LANG };                        
            attributes[51] = (ICE_OUTPUTHEAD);
            final String[] ICE_OUTPUTHTML = 
                new String[]{};
            attributes[52] = (ICE_OUTPUTHTML);
            final String[] ICE_OUTPUTMEDIA = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[53] = (ICE_OUTPUTMEDIA);
            final String[] ICE_OUTPUTSTYLE = 
                new String[]{};
            attributes[54] = (ICE_OUTPUTSTYLE);
            final String[] ICE_PANELCOLLAPSIBLE = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[55] = (ICE_PANELCOLLAPSIBLE);
            final String[] ICE_PANELDIVIDER = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[56] = (ICE_PANELDIVIDER);
            final String[] ICE_PANELLAYOUT = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[57] = (ICE_PANELLAYOUT);
            final String[] ICE_PANELPOPUP = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ STYLE,  TITLE };                        
            attributes[58] = (ICE_PANELPOPUP);
            final String[] ICE_PANELSERIES = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ROWS,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[59] = (ICE_PANELSERIES);
            final String[] ICE_PANELSTACK = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[60] = (ICE_PANELSTACK);
            final String[] ICE_PANELTAB = 
-               new String[]{ AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TITLE };                        
            attributes[61] = (ICE_PANELTAB);
            final String[] ICE_PANELTABSET = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.HEIGHT,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ROWS,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  HEIGHT,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[62] = (ICE_PANELTABSET);
            final String[] ICE_PANELTOOLTIP = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE,  TITLE };                        
            attributes[63] = (ICE_PANELTOOLTIP);
            final String[] ICE_PORTLET = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[64] = (ICE_PORTLET);
            final String[] ICE_OUTPUTPROGRESS = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[65] = (ICE_OUTPUTPROGRESS);
            final String[] ICE_ROWSELECTOR = 
                new String[]{};
            attributes[66] = (ICE_ROWSELECTOR);
            final String[] ICE_SELECTINPUTDATE = 
-               new String[]{ AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ AUTOCOMPLETE,  DIR,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TABINDEX,  TITLE };                        
            attributes[67] = (ICE_SELECTINPUTDATE);
            final String[] ICE_SELECTINPUTTEXT = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.AUTOCOMPLETE,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.MAXLENGTH,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.ROWS,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  ROWS,  SIZE,  STYLE,  TABINDEX,  TITLE,  WIDTH };                        
            attributes[68] = (ICE_SELECTINPUTTEXT);
            final String[] ICE_COMMANDSORTHEADER = 
                new String[]{};
@@ -472,82 +472,82 @@ public class AttributeConstants {
                new String[]{};
            attributes[70] = (ICE_TREENODE);
            final String[] ICE_TREE = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[71] = (ICE_TREE);
            final String[] ICE_PANELPOSITIONED = 
-               new String[]{ AttributeConstants.ROWS,  AttributeConstants.STYLE };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[72] = (ICE_PANELPOSITIONED);
            final String[] H_COMMANDBUTTON = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[73] = (H_COMMANDBUTTON);
            final String[] H_COMMANDLINK = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.CHARSET,  AttributeConstants.COORDS,  AttributeConstants.DIR,  AttributeConstants.HREFLANG,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.REL,  AttributeConstants.REV,  AttributeConstants.SHAPE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TARGET,  AttributeConstants.TITLE,  AttributeConstants.TYPE };                        
+               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
            attributes[74] = (H_COMMANDLINK);
            final String[] H_DATATABLE = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[75] = (H_DATATABLE);
            final String[] H_FORMFORM = 
-               new String[]{ AttributeConstants.ACCEPT,  AttributeConstants.ACCEPTCHARSET,  AttributeConstants.DIR,  AttributeConstants.ENCTYPE,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONRESET,  AttributeConstants.ONSUBMIT,  AttributeConstants.STYLE,  AttributeConstants.TARGET,  AttributeConstants.TITLE };                        
+               new String[]{ ACCEPT,  ACCEPTCHARSET,  DIR,  ENCTYPE,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONRESET,  ONSUBMIT,  STYLE,  TARGET,  TITLE };                        
            attributes[76] = (H_FORMFORM);
            final String[] H_GRAPHICIMAGE = 
-               new String[]{ AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.HEIGHT,  AttributeConstants.LANG,  AttributeConstants.LONGDESC,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TITLE,  AttributeConstants.USEMAP,  AttributeConstants.WIDTH };                        
+               new String[]{ ALT,  DIR,  HEIGHT,  LANG,  LONGDESC,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TITLE,  USEMAP,  WIDTH };                        
            attributes[77] = (H_GRAPHICIMAGE);
            final String[] H_INPUTHIDDEN = 
                new String[]{};
            attributes[78] = (H_INPUTHIDDEN);
            final String[] H_INPUTSECRET = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.MAXLENGTH,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[79] = (H_INPUTSECRET);
            final String[] H_INPUTTEXT = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.ALT,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.MAXLENGTH,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.SIZE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
            attributes[80] = (H_INPUTTEXT);
            final String[] H_INPUTTEXTAREA = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.COLS,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.ROWS,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  COLS,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  ROWS,  STYLE,  TABINDEX,  TITLE };                        
            attributes[81] = (H_INPUTTEXTAREA);
            final String[] H_MESSAGEMESSAGE = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[82] = (H_MESSAGEMESSAGE);
            final String[] H_MESSAGESMESSAGES = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[83] = (H_MESSAGESMESSAGES);
            final String[] H_OUTPUTFORMAT = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[84] = (H_OUTPUTFORMAT);
            final String[] H_OUTPUTLABEL = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TABINDEX,  TITLE };                        
            attributes[85] = (H_OUTPUTLABEL);
            final String[] H_OUTPUTLINK = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.CHARSET,  AttributeConstants.COORDS,  AttributeConstants.DIR,  AttributeConstants.HREFLANG,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.REL,  AttributeConstants.REV,  AttributeConstants.SHAPE,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TARGET,  AttributeConstants.TITLE,  AttributeConstants.TYPE };                        
+               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
            attributes[86] = (H_OUTPUTLINK);
            final String[] H_OUTPUTTEXT = 
-               new String[]{ AttributeConstants.STYLE,  AttributeConstants.TITLE };                        
+               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
            attributes[87] = (H_OUTPUTTEXT);
            final String[] H_PANELGRID = 
-               new String[]{ AttributeConstants.BGCOLOR,  AttributeConstants.BORDER,  AttributeConstants.CELLPADDING,  AttributeConstants.CELLSPACING,  AttributeConstants.DIR,  AttributeConstants.FRAME,  AttributeConstants.LANG,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.RULES,  AttributeConstants.STYLE,  AttributeConstants.SUMMARY,  AttributeConstants.TITLE,  AttributeConstants.WIDTH };                        
+               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[88] = (H_PANELGRID);
            final String[] H_PANELGROUP = 
-               new String[]{ AttributeConstants.STYLE };                        
+               new String[]{ STYLE };                        
            attributes[89] = (H_PANELGROUP);
            final String[] H_SELECTBOOLEANCHECKBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[90] = (H_SELECTBOOLEANCHECKBOX);
            final String[] H_SELECTMANYCHECKBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.BORDER,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[91] = (H_SELECTMANYCHECKBOX);
            final String[] H_SELECTMANYLISTBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[92] = (H_SELECTMANYLISTBOX);
            final String[] H_SELECTMANYMENU = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[93] = (H_SELECTMANYMENU);
            final String[] H_SELECTONELISTBOX = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[94] = (H_SELECTONELISTBOX);
            final String[] H_SELECTONEMENU = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[95] = (H_SELECTONEMENU);
            final String[] H_SELECTONERADIO = 
-               new String[]{ AttributeConstants.ACCESSKEY,  AttributeConstants.BORDER,  AttributeConstants.DIR,  AttributeConstants.LANG,  AttributeConstants.ONBLUR,  AttributeConstants.ONCHANGE,  AttributeConstants.ONCLICK,  AttributeConstants.ONDBLCLICK,  AttributeConstants.ONFOCUS,  AttributeConstants.ONKEYDOWN,  AttributeConstants.ONKEYPRESS,  AttributeConstants.ONKEYUP,  AttributeConstants.ONMOUSEDOWN,  AttributeConstants.ONMOUSEMOVE,  AttributeConstants.ONMOUSEOUT,  AttributeConstants.ONMOUSEOVER,  AttributeConstants.ONMOUSEUP,  AttributeConstants.ONSELECT,  AttributeConstants.STYLE,  AttributeConstants.TABINDEX,  AttributeConstants.TITLE };                        
+               new String[]{ ACCESSKEY,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
            attributes[96] = (H_SELECTONERADIO);
     }
 
