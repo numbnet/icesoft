@@ -370,4 +370,61 @@ public class PassThruAttributeWriter {
     static final List getpassThruAttributeNames() {
         return passThruAttributeNames;
     }
+    
+    /**
+     * Write pass thru attributes associated with the UIComponent parameter. 
+     *
+     * @param writer
+     * @param uiComponent
+     * @throws IOException
+     */
+    public static void renderHtmlAttributes(ResponseWriter writer,
+                                        UIComponent uiComponent,
+                                        String[] htmlAttributes)
+            throws IOException {
+                if (writer == null) {
+            throw new FacesException("Null pointer exception");
+        }
+
+        if (uiComponent == null) {
+            throw new FacesException("Component instance is null");
+        }
+
+        Object nextPassThruAttributeName = null;
+        Object nextPassThruAttributeValue = null;
+
+        for (int i = 0; i < htmlAttributes.length; i++) {
+            nextPassThruAttributeName = htmlAttributes[i];
+            nextPassThruAttributeValue =
+                    uiComponent.getAttributes().get(nextPassThruAttributeName);
+            // Only render non-null attributes.
+            // Some components have integer attribute values
+            // set to the Wrapper classes' minimum value - don't render
+            // an attribute with this sentinel value.
+            if (nextPassThruAttributeValue != null && !valueIsIntegerSentinelValue(nextPassThruAttributeValue)) {
+                writer.writeAttribute(
+                        nextPassThruAttributeName.toString(),
+                        nextPassThruAttributeValue,
+                        nextPassThruAttributeValue.toString());
+            //remove the else clause that was here; it's trying to remove a node
+            //that doesn't exist
+            }
+        }
+    }
+    
+    private static boolean valueIsIntegerSentinelValue(Object value) {
+
+        if (value instanceof String) {
+            return false;
+        }else if (value instanceof Number) {
+            if (value instanceof Integer) {
+                if (((Integer) value).intValue() == Integer.MIN_VALUE) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
 }
