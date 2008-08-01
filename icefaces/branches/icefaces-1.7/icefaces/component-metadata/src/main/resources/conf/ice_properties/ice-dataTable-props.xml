@@ -126,8 +126,20 @@
       <category>ICE_LAYOUT</category>
     </property-extension>
   </property>
-  
-  <property>
+
+<property>
+    <description>
+        A comma separated list of the widths of each column for a resizable table. Please note that column widths must be
+        set in pixels. This attribute does not yet support percentage column widths.
+    </description>
+    <property-name>resizableColumnWidths</property-name>
+    <property-class>java.lang.String</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+    </property-extension>
+</property>
+
+<property>
 	<description>
 	    <![CDATA[
         <p>
