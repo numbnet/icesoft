@@ -60,6 +60,7 @@ public class TableRenderer extends DomBasicRenderer {
         validateParameters(facesContext, uiComponent, null);
         ResponseWriter responseWriter = facesContext.getResponseWriter();
         Debug.assertTrue(responseWriter != null, "ResponseWriter is null");
+        uiComponent.getAttributes().get("resizableColumnWidths");
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
 
