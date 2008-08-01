@@ -283,6 +283,7 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
         if (!menuItem.isDisabled()) {
             anchor.setAttribute(HTML.HREF_ATTR, menuItem.getLink());
+            anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
             if (menuItem.getTarget() != null) {
                 anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
             }
