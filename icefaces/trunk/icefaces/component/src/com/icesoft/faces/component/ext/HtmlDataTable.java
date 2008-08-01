@@ -466,7 +466,12 @@ public class HtmlDataTable
             String clientOnlyId = getClientId(context) + "clientOnly";
             String clientOnlyIdInParam = String.valueOf(requestParameterMap.get("ice.event.captured"));
             if (clientOnlyId.equals(clientOnlyIdInParam)) {
-                resizableTblColumnsWidth = String.valueOf(requestParameterMap.get(clientOnlyId)).split(",");
+                String columnWidths = String.valueOf(requestParameterMap.get(clientOnlyId));
+                resizableTblColumnsWidth = columnWidths.split(",");
+                ValueBinding vb = getValueBinding("resizableColumnWidths");
+                if (vb != null) {
+                    vb.setValue(context, columnWidths);
+                }
             }
         }
         //--
@@ -474,6 +479,7 @@ public class HtmlDataTable
 
     private String resizableTblColumnsWidth[] = new String[0];
     private int resizableTblColumnsWidthIndex = 0;
+    private boolean isResizableColumnWidthsSet = false;
     
     public String getNextResizableTblColumnWidth() {
         if (resizableTblColumnsWidthIndex < resizableTblColumnsWidth.length) {
@@ -498,7 +504,31 @@ public class HtmlDataTable
 
     public void setScrollFooter(boolean scrollFooter) {
         this.scrollFooter = Boolean.valueOf(scrollFooter);
-    }      
+    }
+
+    public String getResizableColumnWidths() {
+        if (isResizableColumnWidthsSet) {
+            StringBuffer result = new StringBuffer();
+            result.append(resizableTblColumnsWidth[0]);
+            for (int i = 1; i < resizableTblColumnsWidth.length; i++) {
+                result.append(",");
+                result.append(resizableTblColumnsWidth[i]);
+            }
+            return result.toString();
+        }
+        ValueBinding vb = getValueBinding("resizableColumnWidths");
+        if (vb == null) return null;
+        String columnWidths = (String) vb.getValue(getFacesContext());
+        if (columnWidths != null) {
+            resizableTblColumnsWidth = columnWidths.split(",");
+        }
+        return columnWidths;
+    }
+
+    public void setResizableColumnWidths(String columnWidths) {
+        resizableTblColumnsWidth = columnWidths.split(",");
+        isResizableColumnWidthsSet = true;
+    }
 }
    
 
