@@ -450,28 +450,43 @@ public class PassThruAttributeRenderer {
         renderOnBlur(attributeElement);
     }        
     
+    private static boolean valueIsIntegerSentinelValue(Object value) {
+
+        if (value instanceof String) {
+            return false;
+        }else if (value instanceof Number) {
+            if (value instanceof Integer) {
+                if (((Integer) value).intValue() == Integer.MIN_VALUE) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
     private static void renderNonBooleanHtmlAttributes(UIComponent uiComponent,
             Element targetElement, String[] nonBooleanhtmlAttributes) {
 
         Object nextPassThruAttributeName = null;
         Object nextPassThruAttributeValue = null;
 
-        for  (int i = 0; i < nonBooleanhtmlAttributes.length; i++) {
+        for (int i = 0; i < nonBooleanhtmlAttributes.length; i++) {
             nextPassThruAttributeName = nonBooleanhtmlAttributes[i];
             nextPassThruAttributeValue =
                     uiComponent.getAttributes().get(nextPassThruAttributeName);
             // Only render non-null attributes.
-            // Some components have attribute values
+            // Some components have integer attribute values
             // set to the Wrapper classes' minimum value - don't render
             // an attribute with this sentinel value.
-            if (nextPassThruAttributeValue != null) {
+            if (nextPassThruAttributeValue != null && !valueIsIntegerSentinelValue(nextPassThruAttributeValue)) {
                 targetElement.setAttribute(
                         nextPassThruAttributeName.toString(),
                         nextPassThruAttributeValue.toString());
-                //remove the else clause that was here; it's trying to remove a node
-                //that doesn't exist
+            //remove the else clause that was here; it's trying to remove a node
+            //that doesn't exist
             }
         }
-    }      
+    }    
         
 }
