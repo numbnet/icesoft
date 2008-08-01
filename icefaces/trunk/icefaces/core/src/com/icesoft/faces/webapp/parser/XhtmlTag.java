@@ -38,6 +38,7 @@ import org.xml.sax.Attributes;
 
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentTag;
+import javax.faces.context.FacesContext;
 
 /**
  * This class contains the tag processing logic for all XHTML tags.
@@ -45,7 +46,6 @@ import javax.faces.webapp.UIComponentTag;
 public class XhtmlTag extends UIComponentTag {
     private String tagName;
     private Attributes attributes;
-    private static int uniqueId = 0;
 
     /**
      * RendererType getter.
@@ -71,10 +71,6 @@ public class XhtmlTag extends UIComponentTag {
         UIXhtmlComponent component = (UIXhtmlComponent) comp;
         component.setTag(getTagName());
         component.setXmlAttributes(getAttributes());
-        // Assign a unique ID;
-        String id = new String("icesoftXhtmlID" + uniqueId++);
-        component.setId(id);
-        this.setId(id);
     }
 
     /**

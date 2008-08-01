@@ -39,7 +39,6 @@ import javax.faces.webapp.UIComponentTag;
 
 public class IceOutputTextTag extends UIComponentTag {
     private String value;
-    private static int uniqueId = 0;
 
     public String getRendererType() {
         return "javax.faces.Text";
@@ -54,11 +53,6 @@ public class IceOutputTextTag extends UIComponentTag {
         UIOutput component = (UIOutput) comp;
         component.setValue(value);
         component.setRendererType("com.icesoft.faces.Text");
-
-        // Assign a unique ID;
-        String id = new String("_iceID" + uniqueId++);
-        component.setId(id);
-        this.setId(id);
 
         // don't escape plain text
         component.getAttributes().put("escape", "false");
