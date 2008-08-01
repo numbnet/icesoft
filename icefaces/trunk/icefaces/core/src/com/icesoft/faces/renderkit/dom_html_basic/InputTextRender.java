@@ -1,17 +1,14 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import java.io.IOException;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.ValueHolder;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import com.icesoft.faces.context.effects.CurrentStyle;
-import com.icesoft.faces.renderkit.RendererUtil;
-import com.icesoft.faces.util.Debug;
 
 public class InputTextRender extends BaseRenderer{
 
@@ -32,8 +29,16 @@ public class InputTextRender extends BaseRenderer{
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        writeRootElement(writer, uiComponent, clientId, HTML.INPUT_ELEM, new String[0]);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);        
+        //writeRootElement(writer, uiComponent, clientId, HTML.INPUT_ELEM, new String[0]);
+        writer.startElement(HTML.INPUT_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        
+        if(uiComponent instanceof javax.faces.component.html.HtmlInputText){
+            PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT));
+        }else{
+            PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, AttributeConstants.getAttributes(AttributeConstants.ICE_INPUTTEXT));
+        }
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);              
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
