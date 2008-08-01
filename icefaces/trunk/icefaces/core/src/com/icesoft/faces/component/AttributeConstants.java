@@ -3,7 +3,7 @@ package com.icesoft.faces.component;
 
 
 /**
- *<p>Auto-generated Component Base class. Generated on Jul 31, 2008
+ *<p>Auto-generated Component Base class. Generated on Aug 1, 2008
  *Do <strong>NOT</strong> modify; all changes
  *<strong>will</strong> be lost!</p>
  * This class contains mappings between icefaces component
@@ -436,7 +436,7 @@ public class AttributeConstants {
                new String[]{ STYLE,  TITLE };                        
            attributes[58] = (ICE_PANELPOPUP);
            final String[] ICE_PANELSERIES = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ ROWS,  STYLE };                        
            attributes[59] = (ICE_PANELSERIES);
            final String[] ICE_PANELSTACK = 
                new String[]{ STYLE };                        
@@ -448,7 +448,7 @@ public class AttributeConstants {
                new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  HEIGHT,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
            attributes[62] = (ICE_PANELTABSET);
            final String[] ICE_PANELTOOLTIP = 
-               new String[]{ STYLE,  TITLE };                        
+               new String[]{ STYLE };                        
            attributes[63] = (ICE_PANELTOOLTIP);
            final String[] ICE_PORTLET = 
                new String[]{ STYLE };                        
@@ -475,7 +475,7 @@ public class AttributeConstants {
                new String[]{ STYLE };                        
            attributes[71] = (ICE_TREE);
            final String[] ICE_PANELPOSITIONED = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ ROWS,  STYLE };                        
            attributes[72] = (ICE_PANELPOSITIONED);
            final String[] H_COMMANDBUTTON = 
                new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
