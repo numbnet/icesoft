@@ -1,5 +1,6 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -9,12 +10,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
-import com.icesoft.faces.renderkit.RendererUtil;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
 
 public class OutputTextRenderer extends BaseRenderer{
+    
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTTEXT);
+    
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
         UIOutput component = (UIOutput) uiComponent;
@@ -28,7 +31,9 @@ public class OutputTextRenderer extends BaseRenderer{
             return;
         }
         
-        writeRootElement(writer, uiComponent, clientId, HTML.SPAN_ELEM);
+        writer.startElement(HTML.SPAN_ELEM, uiComponent);
+        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
