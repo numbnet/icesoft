@@ -37,14 +37,17 @@ public class MultiViewServer implements Server {
         View view;
         if (request.containsParameter("rvn")) {
             String redirectViewNumber = request.getParameter("rvn");
-            view = (View) views.get(redirectViewNumber);
-            if (view == null) {
-                view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
-                views.put(redirectViewNumber, view);
-                ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
-            } else {
-                view.updateOnPageRequest(request);
-                view.switchToNormalMode();
+            //synchronize to atomically test and possibly put new View into the map
+            synchronized (views) {
+                view = (View) views.get(redirectViewNumber);
+                if (view == null) {
+                    view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+                    views.put(redirectViewNumber, view);
+                    ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
+                } else {
+                    view.updateOnPageRequest(request);
+                    view.switchToNormalMode();
+                }
             }
         } else {
             String viewNumber = String.valueOf(++viewCount);
