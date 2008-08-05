@@ -11,6 +11,8 @@ import javax.faces.context.ResponseWriter;
 
 
 public class InputTextRender extends BaseRenderer{
+    
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         //readonly or disabled components are not required to submit the value
@@ -33,11 +35,8 @@ public class InputTextRender extends BaseRenderer{
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         
-        if(uiComponent instanceof javax.faces.component.html.HtmlInputText){
-            PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT));
-        }else{
-            PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, AttributeConstants.getAttributes(AttributeConstants.ICE_INPUTTEXT));
-        }
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);              
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
