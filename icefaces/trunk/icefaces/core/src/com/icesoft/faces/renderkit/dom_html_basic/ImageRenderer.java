@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
@@ -45,6 +46,7 @@ import java.io.IOException;
 
 public class ImageRenderer extends DomBasicRenderer {
 
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_GRAPHICIMAGE);
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
@@ -72,7 +74,7 @@ public class ImageRenderer extends DomBasicRenderer {
         ResponseWriter responseWriter = facesContext.getResponseWriter();
         Debug.assertTrue(responseWriter != null, "ResponseWriter is null");
         PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+                .renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         String altAttribute = (String) uiComponent.getAttributes().get("alt");
         if (altAttribute == null) {
