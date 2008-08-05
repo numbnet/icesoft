@@ -1,11 +1,11 @@
 package com.icesoft.faces.context;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ArrayList;
 
 public abstract class AbstractCopyingAttributeMap extends HashMap {
 
@@ -18,18 +18,17 @@ public abstract class AbstractCopyingAttributeMap extends HashMap {
         }
     }
 
-    public Object put(Object o, Object o1) {
-        setAttribute(String.valueOf(o), o1);
-        return super.put(o, o1);
+    public Object put(Object key, Object value) {
+        setAttribute(String.valueOf(key), value);
+        return super.put(key, value);
     }
 
     public void putAll(Map map) {
         Iterator i = map.entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry entry = (Map.Entry) i.next();
-            setAttribute(String.valueOf(entry.getKey()), entry.getValue());
+            put(entry.getKey(), entry.getValue());
         }
-        super.putAll(map);
     }
 
     public Object remove(Object o) {
@@ -41,9 +40,8 @@ public abstract class AbstractCopyingAttributeMap extends HashMap {
         //copy the enumeration to avoid concurrency problems
         Iterator i = new ArrayList(Collections.list(getAttributeNames())).iterator();
         while (i.hasNext()) {
-            removeAttribute(String.valueOf(i.next()));
+            remove(i.next());
         }
-        super.clear();
     }
 
     public abstract Enumeration getAttributeNames();
