@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.util.SeamUtilities;
@@ -57,7 +58,9 @@ public class FormRenderer extends DomBasicRenderer {
             "com.icesoft.faces.FormRequiredHidden";
     public static final String FOCUS_HIDDEN_FIELD = "focus_hidden_field";
     private static final Log log = LogFactory.getLog(FormRenderer.class);
-
+    
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_FORMFORM);
+    
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UIForm.class);
         UIForm uiForm = (UIForm) uiComponent;
@@ -181,8 +184,12 @@ public class FormRenderer extends DomBasicRenderer {
         //String contextClass = facesContext.getClass().toString();
         //root.setAttribute("context_type", contextClass);
 
-        PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        String autoComplete = (String)uiComponent.getAttributes().get("autocomplete");
+        if(autoComplete != null){
+            root.setAttribute("autocomplete", autoComplete);
+        }
+                
         facesContext.getApplication().getViewHandler().writeState(facesContext);
 
         // don't override user-defined value
