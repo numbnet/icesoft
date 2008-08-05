@@ -66,6 +66,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is supposed to provide a generic interface to the
@@ -202,15 +203,19 @@ public abstract class BridgeExternalContext extends ExternalContext {
     //todo: them between requests
     public Map collectBundles() {
         Map result = new HashMap();
-        Iterator entries = requestMap.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry entry = (Map.Entry) entries.next();
-            Object value = entry.getValue();
-            if (value != null) {
-                String className = value.getClass().getName();
-                if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
-                        (className.indexOf("BundleMap") > 0)) {     //MyFaces
-                    result.put(entry.getKey(), value);
+        Set set = requestMap.entrySet();
+        //synchronize iteration as described in http://java.sun.com/j2se/1.4.2/docs/api/java/util/Collections.html#synchronizedMap(java.util.Map)
+        synchronized (requestMap) {
+            Iterator entries = set.iterator();
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                Object value = entry.getValue();
+                if (value != null) {
+                    String className = value.getClass().getName();
+                    if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
+                            (className.indexOf("BundleMap") > 0)) {     //MyFaces
+                        result.put(entry.getKey(), value);
+                    }
                 }
             }
         }
