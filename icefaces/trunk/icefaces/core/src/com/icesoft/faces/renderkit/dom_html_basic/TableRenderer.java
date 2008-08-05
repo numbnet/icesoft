@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
@@ -50,6 +51,8 @@ import java.util.StringTokenizer;
 
 public class TableRenderer extends DomBasicRenderer {
 
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_DATATABLE);
+    
     public boolean getRendersChildren() {
         return true;
     }
@@ -68,8 +71,8 @@ public class TableRenderer extends DomBasicRenderer {
             Element root = null;
             root = domContext.createRootElement("table");
             setRootElementId(facesContext, root, uiComponent);
-            PassThruAttributeRenderer.renderAttributes(
-                    facesContext, uiComponent, new String[] { "rows" });
+            PassThruAttributeRenderer.renderHtmlAttributes(
+                    facesContext, uiComponent, passThruAttributes);
         }
         Element root = (Element) domContext.getRootNode();
         DOMContext.removeChildren(root);
