@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 
@@ -44,6 +45,7 @@ import java.util.HashSet;
 
 public class SecretRenderer extends DomBasicInputRenderer {
 
+    private final static String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTSECRET);
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UIInput.class);
@@ -73,19 +75,18 @@ public class SecretRenderer extends DomBasicInputRenderer {
 
         Element root = (Element) domContext.getRootNode();
 
-        String dir = (String) uiComponent.getAttributes().get("dir");
-        if (dir != null) {
-            root.setAttribute("dir", dir);
-        }
-
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             root.setAttribute("class", styleClass);
         }
-        PassThruAttributeRenderer.renderAttributes(
-                facesContext, uiComponent, null);
+        PassThruAttributeRenderer.renderHtmlAttributes(
+                facesContext, uiComponent, passThruAttributes);
 
+        String autoComplete = (String)uiComponent.getAttributes().get("autocomplete");
+        if(autoComplete != null){
+            root.setAttribute("autocomplete", autoComplete);
+        }
         // render the current value of the component as the value of the "value"
         // attribute  if and only if the value of the component attribute 
         // "redisplay" is the string "true"
