@@ -97,6 +97,7 @@ public final class HTML {
     public static final String WIDTH_ATTR = "width";
     public static final String READONLY_ATTR = "readonly";
     public static final String ACCEPT_ATTR = "accept";
+    public static final String ACCEPTCHARSET_ATTR = "accept-charset";
 
     // Common event handler attributes
     public static final String ONCLICK_ATTR = "onclick";
@@ -128,6 +129,7 @@ public final class HTML {
                     EVENT_HANDLER_ATTRIBUTES_WITHOUT_ONCLICK,
                     new String[]{ONCLICK_ATTR});
 
+    public static final String ONSUBMIT_ATTR = "onsubmit";
     // Input field event handler attributes
     public static final String ONFOCUS_ATTR = "onfocus";
     public static final String ONBLUR_ATTR = "onblur";
@@ -249,6 +251,8 @@ public final class HTML {
                     ONSUMBIT_ATTR,
                     TARGET_ATTR,
             };
+    
+    public static final String AUTOCOMPLETE_ATTR = "autocomplete";
     public static final String[] FORM_PASSTHROUGH_ATTRIBUTES =
             (String[]) ArrayUtils.concat(
                     FORM_ATTRIBUTES,
