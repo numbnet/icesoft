@@ -1,9 +1,10 @@
 
 package com.icesoft.faces.component;
 
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 /**
- *<p>Auto-generated Component Base class. Generated on Aug 5, 2008
+ *<p>Auto-generated Component Base class. Generated on Aug 6, 2008
  *Do <strong>NOT</strong> modify; all changes
  *<strong>will</strong> be lost!</p>
  * This class helps with Renderer to get component
@@ -11,57 +12,6 @@ package com.icesoft.faces.component;
  * 
  */
 public class ExtendedAttributeConstants {
-
-    private final static String ACCEPT = "accept";
-    private final static String ACCEPTCHARSET = "acceptcharset";
-    private final static String ACCESSKEY = "accesskey";
-    private final static String ALT = "alt";
-    private final static String BGCOLOR = "bgcolor";
-    private final static String BORDER = "border";
-    private final static String CELLPADDING = "cellpadding";
-    private final static String CELLSPACING = "cellspacing";
-    private final static String CHARSET = "charset";
-    private final static String COLS = "cols";
-    private final static String COORDS = "coords";
-    private final static String DIR = "dir";
-    private final static String ENCTYPE = "enctype";
-    private final static String FRAME = "frame";
-    private final static String HEIGHT = "height";
-    private final static String HREFLANG = "hreflang";
-    private final static String LANG = "lang";
-    private final static String LONGDESC = "longdesc";
-    private final static String MAXLENGTH = "maxlength";
-    private final static String ONBLUR = "onblur";
-    private final static String ONCHANGE = "onchange";
-    private final static String ONCLICK = "onclick";
-    private final static String ONDBLCLICK = "ondblclick";
-    private final static String ONFOCUS = "onfocus";
-    private final static String ONKEYDOWN = "onkeydown";
-    private final static String ONKEYPRESS = "onkeypress";
-    private final static String ONKEYUP = "onkeyup";
-    private final static String ONMOUSEDOWN = "onmousedown";
-    private final static String ONMOUSEMOVE = "onmousemove";
-    private final static String ONMOUSEOUT = "onmouseout";
-    private final static String ONMOUSEOVER = "onmouseover";
-    private final static String ONMOUSEUP = "onmouseup";
-    private final static String ONRESET = "onreset";
-    private final static String ONSELECT = "onselect";
-    private final static String ONSUBMIT = "onsubmit";
-    private final static String REL = "rel";
-    private final static String REV = "rev";
-    private final static String ROWS = "rows";
-    private final static String RULES = "rules";
-    private final static String SHAPE = "shape";
-    private final static String SIZE = "size";
-    private final static String STYLE = "style";
-    private final static String SUMMARY = "summary";
-    private final static String TABINDEX = "tabindex";
-    private final static String TARGET = "target";
-    private final static String TITLE = "title";
-    private final static String TYPE = "type";
-    private final static String USEMAP = "usemap";
-    private final static String WIDTH = "width";
-    private final static String AUTOCOMPLETE = "autocomplete";
 
     public final static int ICE_EFFECT = 0;
 
@@ -215,25 +165,25 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[0] = (ICE_EFFECT);
            final String[] ICE_PANELBORDER = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  HEIGHT,  LANG,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[1] = (ICE_PANELBORDER);
            final String[] ICE_COLUMN = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[2] = (ICE_COLUMN);
            final String[] ICE_COLUMNGROUP = 
                new String[]{};
            attributes[3] = (ICE_COLUMNGROUP);
            final String[] ICE_COLUMNS = 
-               new String[]{ ROWS };                        
+               new String[]{ HTML.ROWS_ATTR };                        
            attributes[4] = (ICE_COLUMNS);
            final String[] ICE_DATAPAGINATOR = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[5] = (ICE_DATAPAGINATOR);
            final String[] ICE_INPUTFILE = 
-               new String[]{ ACCEPT,  ACCESSKEY,  HEIGHT,  ONBLUR,  ONCHANGE,  ONFOCUS,  STYLE,  TABINDEX,  TITLE,  WIDTH };                        
+               new String[]{ HTML.ACCEPT_ATTR,  HTML.ACCESSKEY_ATTR,  HTML.HEIGHT_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONFOCUS_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[6] = (ICE_INPUTFILE);
            final String[] ICE_GMAP = 
-               new String[]{ STYLE,  TYPE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TYPE_ATTR };                        
            attributes[7] = (ICE_GMAP);
            final String[] ICE_GMAPCONTROL = 
                new String[]{};
@@ -254,94 +204,94 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[13] = (ICE_GMAPMARKER);
            final String[] ICE_HEADERROW = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[14] = (ICE_HEADERROW);
            final String[] ICE_CHECKBOX = 
                new String[]{};
            attributes[15] = (ICE_CHECKBOX);
            final String[] ICE_COMMANDBUTTON = 
-               new String[]{ ACCESSKEY,  ALT,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE,  TYPE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TYPE_ATTR };                        
            attributes[16] = (ICE_COMMANDBUTTON);
            final String[] ICE_COMMANDLINK = 
-               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.CHARSET_ATTR,  HTML.COORDS_ATTR,  HTML.DIR_ATTR,  HTML.HREFLANG_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.REL_ATTR,  HTML.REV_ATTR,  HTML.SHAPE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
            attributes[17] = (ICE_COMMANDLINK);
            final String[] ICE_DATATABLE = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ROWS_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[18] = (ICE_DATATABLE);
            final String[] ICE_FORM = 
-               new String[]{ ACCEPT,  ACCEPTCHARSET,  AUTOCOMPLETE,  DIR,  ENCTYPE,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONRESET,  ONSUBMIT,  STYLE,  TARGET,  TITLE };                        
+               new String[]{ HTML.ACCEPTCHARSET_ATTR,  HTML.ACCEPT_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.ENCTYPE_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR };                        
            attributes[19] = (ICE_FORM);
            final String[] ICE_GRAPHICIMAGE = 
-               new String[]{ ALT,  DIR,  HEIGHT,  LANG,  LONGDESC,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TITLE,  USEMAP,  WIDTH };                        
+               new String[]{ HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.LONGDESC_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.USEMAP_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[20] = (ICE_GRAPHICIMAGE);
            final String[] ICE_INPUTHIDDEN = 
                new String[]{};
            attributes[21] = (ICE_INPUTHIDDEN);
            final String[] ICE_INPUTSECRET = 
-               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[22] = (ICE_INPUTSECRET);
            final String[] ICE_INPUTTEXT = 
-               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[23] = (ICE_INPUTTEXT);
            final String[] ICE_INPUTTEXTAREA = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  COLS,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  ROWS,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.ROWS_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[24] = (ICE_INPUTTEXTAREA);
            final String[] ICE_MESSAGE = 
-               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[25] = (ICE_MESSAGE);
            final String[] ICE_MESSAGES = 
-               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[26] = (ICE_MESSAGES);
            final String[] ICE_OUTPUTFORMAT = 
-               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[27] = (ICE_OUTPUTFORMAT);
            final String[] ICE_OUTPUTLABEL = 
-               new String[]{ ACCESSKEY,  DIR,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[28] = (ICE_OUTPUTLABEL);
            final String[] ICE_OUTPUTLINK = 
-               new String[]{ ACCESSKEY,  CHARSET,  COORDS,  DIR,  HREFLANG,  LANG,  ONBLUR,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  REL,  REV,  SHAPE,  STYLE,  TABINDEX,  TARGET,  TITLE,  TYPE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.CHARSET_ATTR,  HTML.COORDS_ATTR,  HTML.DIR_ATTR,  HTML.HREFLANG_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.REL_ATTR,  HTML.REV_ATTR,  HTML.SHAPE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
            attributes[29] = (ICE_OUTPUTLINK);
            final String[] ICE_OUTPUTTEXT = 
-               new String[]{ DIR,  LANG,  STYLE,  TITLE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[30] = (ICE_OUTPUTTEXT);
            final String[] ICE_PANELGRID = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.FRAME_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[31] = (ICE_PANELGRID);
            final String[] ICE_PANELGROUP = 
-               new String[]{ STYLE };                        
+               new String[]{};
            attributes[32] = (ICE_PANELGROUP);
            final String[] ICE_RADIO = 
                new String[]{};
            attributes[33] = (ICE_RADIO);
            final String[] ICE_SELECTBOOLEANCHECKBOX = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[34] = (ICE_SELECTBOOLEANCHECKBOX);
            final String[] ICE_SELECTMANYCHECKBOX = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.BORDER_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[35] = (ICE_SELECTMANYCHECKBOX);
            final String[] ICE_SELECTMANYLISTBOX = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[36] = (ICE_SELECTMANYLISTBOX);
            final String[] ICE_SELECTMANYMENU = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[37] = (ICE_SELECTMANYMENU);
            final String[] ICE_SELECTONELISTBOX = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  SIZE,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[38] = (ICE_SELECTONELISTBOX);
            final String[] ICE_SELECTONEMENU = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[39] = (ICE_SELECTONEMENU);
            final String[] ICE_SELECTONERADIO = 
-               new String[]{ ACCESSKEY,  AUTOCOMPLETE,  BORDER,  DIR,  LANG,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[40] = (ICE_SELECTONERADIO);
            final String[] ICE_INPUTRICHTEXT = 
-               new String[]{ HEIGHT,  STYLE,  WIDTH };                        
+               new String[]{ HTML.HEIGHT_ATTR,  HTML.STYLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[41] = (ICE_INPUTRICHTEXT);
            final String[] ICE_MENUBAR = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[42] = (ICE_MENUBAR);
            final String[] ICE_MENUITEM = 
-               new String[]{ ALT,  ONCLICK,  TARGET,  TITLE };                        
+               new String[]{ HTML.ALT_ATTR,  HTML.ONCLICK_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR };                        
            attributes[43] = (ICE_MENUITEM);
            final String[] ICE_MENUITEMSEPARATOR = 
                new String[]{};
@@ -350,73 +300,73 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[45] = (ICE_MENUITEMS);
            final String[] ICE_MENUPOPUP = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[46] = (ICE_MENUPOPUP);
            final String[] ICE_OUTPUTBODY = 
-               new String[]{ BGCOLOR,  STYLE };                        
+               new String[]{ HTML.BGCOLOR_ATTR,  HTML.STYLE_ATTR };                        
            attributes[47] = (ICE_OUTPUTBODY);
            final String[] ICE_OUTPUTCHART = 
-               new String[]{ HEIGHT,  STYLE,  TYPE,  WIDTH };                        
+               new String[]{ HTML.HEIGHT_ATTR,  HTML.STYLE_ATTR,  HTML.TYPE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[48] = (ICE_OUTPUTCHART);
            final String[] ICE_OUTPUTCONNECTIONSTATUS = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[49] = (ICE_OUTPUTCONNECTIONSTATUS);
            final String[] ICE_OUTPUTDECLARATION = 
                new String[]{};
            attributes[50] = (ICE_OUTPUTDECLARATION);
            final String[] ICE_OUTPUTHEAD = 
-               new String[]{ DIR,  LANG };                        
+               new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR };                        
            attributes[51] = (ICE_OUTPUTHEAD);
            final String[] ICE_OUTPUTHTML = 
                new String[]{};
            attributes[52] = (ICE_OUTPUTHTML);
            final String[] ICE_OUTPUTMEDIA = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[53] = (ICE_OUTPUTMEDIA);
            final String[] ICE_OUTPUTSTYLE = 
                new String[]{};
            attributes[54] = (ICE_OUTPUTSTYLE);
            final String[] ICE_PANELCOLLAPSIBLE = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[55] = (ICE_PANELCOLLAPSIBLE);
            final String[] ICE_PANELDIVIDER = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[56] = (ICE_PANELDIVIDER);
            final String[] ICE_PANELLAYOUT = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[57] = (ICE_PANELLAYOUT);
            final String[] ICE_PANELPOPUP = 
-               new String[]{ STYLE,  TITLE };                        
+               new String[]{ HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[58] = (ICE_PANELPOPUP);
            final String[] ICE_PANELSERIES = 
-               new String[]{ ROWS,  STYLE };                        
+               new String[]{ HTML.ROWS_ATTR,  HTML.STYLE_ATTR };                        
            attributes[59] = (ICE_PANELSERIES);
            final String[] ICE_PANELSTACK = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[60] = (ICE_PANELSTACK);
            final String[] ICE_PANELTAB = 
-               new String[]{ DIR,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TITLE };                        
+               new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[61] = (ICE_PANELTAB);
            final String[] ICE_PANELTABSET = 
-               new String[]{ BGCOLOR,  BORDER,  CELLPADDING,  CELLSPACING,  DIR,  FRAME,  HEIGHT,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ROWS,  RULES,  STYLE,  SUMMARY,  TITLE,  WIDTH };                        
+               new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ROWS_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[62] = (ICE_PANELTABSET);
            final String[] ICE_PANELTOOLTIP = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[63] = (ICE_PANELTOOLTIP);
            final String[] ICE_PORTLET = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[64] = (ICE_PORTLET);
            final String[] ICE_OUTPUTPROGRESS = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[65] = (ICE_OUTPUTPROGRESS);
            final String[] ICE_ROWSELECTOR = 
                new String[]{};
            attributes[66] = (ICE_ROWSELECTOR);
            final String[] ICE_SELECTINPUTDATE = 
-               new String[]{ AUTOCOMPLETE,  DIR,  LANG,  ONCLICK,  ONDBLCLICK,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  STYLE,  TABINDEX,  TITLE };                        
+               new String[]{ HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[67] = (ICE_SELECTINPUTDATE);
            final String[] ICE_SELECTINPUTTEXT = 
-               new String[]{ ACCESSKEY,  ALT,  AUTOCOMPLETE,  DIR,  LANG,  MAXLENGTH,  ONBLUR,  ONCHANGE,  ONCLICK,  ONDBLCLICK,  ONFOCUS,  ONKEYDOWN,  ONKEYPRESS,  ONKEYUP,  ONMOUSEDOWN,  ONMOUSEMOVE,  ONMOUSEOUT,  ONMOUSEOVER,  ONMOUSEUP,  ONSELECT,  ROWS,  SIZE,  STYLE,  TABINDEX,  TITLE,  WIDTH };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.ROWS_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[68] = (ICE_SELECTINPUTTEXT);
            final String[] ICE_COMMANDSORTHEADER = 
                new String[]{};
@@ -425,10 +375,10 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[70] = (ICE_TREENODE);
            final String[] ICE_TREE = 
-               new String[]{ STYLE };                        
+               new String[]{ HTML.STYLE_ATTR };                        
            attributes[71] = (ICE_TREE);
            final String[] ICE_PANELPOSITIONED = 
-               new String[]{ ROWS,  STYLE };                        
+               new String[]{ HTML.ROWS_ATTR,  HTML.STYLE_ATTR };                        
            attributes[72] = (ICE_PANELPOSITIONED);
     }
 
