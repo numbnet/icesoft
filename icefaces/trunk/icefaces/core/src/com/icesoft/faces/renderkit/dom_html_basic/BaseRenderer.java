@@ -8,7 +8,6 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.render.Renderer;
 
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.renderkit.RendererUtil;
 import com.icesoft.faces.util.CoreUtils;
 
 public class BaseRenderer extends Renderer{
@@ -40,20 +39,4 @@ public class BaseRenderer extends Renderer{
         return DomBasicRenderer.getResourceURL(context, path);
     }    
     
-    protected void writeRootElement(ResponseWriter writer, 
-            UIComponent uiComponent,
-            String clientId,
-            String element) throws IOException{
-        writeRootElement(writer, uiComponent, clientId, element, new String[0]);
-    }
-    
-    protected void writeRootElement(ResponseWriter writer, 
-            UIComponent uiComponent, 
-            String clientId,
-            String element,
-            String[] excludeArray) throws IOException{
-        writer.startElement(element, uiComponent);
-        writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        RendererUtil.renderPassThruAttributes(writer, uiComponent, excludeArray);
-    }
 }

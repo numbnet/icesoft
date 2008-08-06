@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -45,6 +46,11 @@ import java.util.HashSet;
 
 public class TextareaRenderer extends DomBasicInputRenderer {
 
+    //private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXTAREA);
+    //handled onmousedown, onblur 
+    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.ROWS_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+           
+    
     public void encodeBegin(FacesContext context, UIComponent component)
             throws IOException {
         validateParameters(context, component, UIInput.class);
@@ -78,8 +84,14 @@ public class TextareaRenderer extends DomBasicInputRenderer {
         if (styleClass != null) {
             root.setAttribute("class", styleClass);
         }
+        
+        String autoComplete =
+                (String) component.getAttributes().get("autocomplete");
+        if (autoComplete != null) {
+            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, autoComplete);
+        }
         PassThruAttributeRenderer
-                .renderAttributes(facesContext, component, null);
+                .renderHtmlAttributes(facesContext, component, passThruAttributes);
 
         Object rows = component.getAttributes().get("rows");
         if (rows != null && ((Integer)rows).intValue() > -1) {
@@ -95,11 +107,6 @@ public class TextareaRenderer extends DomBasicInputRenderer {
             root.setAttribute("cols", "20");
         }
         
-        String dir = (String) component.getAttributes().get("dir");
-        if (dir != null) {
-            root.setAttribute("dir", dir);
-        }
-
         Text valueNode = (Text) root.getFirstChild();
         if (currentValue != null) {
             valueNode.setData(currentValue);

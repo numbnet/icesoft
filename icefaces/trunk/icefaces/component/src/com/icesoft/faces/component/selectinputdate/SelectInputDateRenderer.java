@@ -59,6 +59,7 @@ import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+//import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.MessageUtils;
@@ -158,6 +159,10 @@ public class SelectInputDateRenderer
         "com.icesoft.faces.component.selectinputdate.NEXT_YEAR_LABEL";
     private static final int yearListSize = 11;
 
+    //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTDATE);
+    //handled title
+    private static final String[] passThruAttributes = new String[]{ HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+           
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
     */
@@ -322,8 +327,7 @@ public class SelectInputDateRenderer
                     FormRenderer.addHiddenField(
                         facesContext,
                         parentForm.getClientId(facesContext)+ ":_idcl");
-                    PassThruAttributeRenderer.renderAttributes(
-                        facesContext, uiComponent, new String[] {"title"});
+                    PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
                     domContext.stepOver();
                     return ;
                 }
@@ -472,8 +476,8 @@ public class SelectInputDateRenderer
             // assumption we want the first table in tables. there should only be one
             Element table = (Element) tables.item(0);
 
-            PassThruAttributeRenderer.renderAttributes(
-                facesContext, uiComponent, new String[] {"title"});
+            PassThruAttributeRenderer.renderHtmlAttributes(
+                facesContext, uiComponent, passThruAttributes);
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
 
@@ -507,8 +511,7 @@ public class SelectInputDateRenderer
             // assume table is the first child
             Element table = (Element) root.getFirstChild();
 
-            PassThruAttributeRenderer.renderAttributes(
-                facesContext, uiComponent, new String[] {"title"});
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
             table.appendChild(tr1);

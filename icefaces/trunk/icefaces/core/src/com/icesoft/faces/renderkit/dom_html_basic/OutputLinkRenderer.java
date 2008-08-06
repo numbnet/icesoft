@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
@@ -42,6 +43,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class OutputLinkRenderer extends DomBasicRenderer {
+    
+    //private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTLINK);
+    //handle style
+    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.CHARSET_ATTR,  HTML.COORDS_ATTR,  HTML.DIR_ATTR,  HTML.HREFLANG_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.REL_ATTR,  HTML.REV_ATTR,  HTML.SHAPE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
+           
     /**
      * @return false as this component does not specially
      *         handle rendering its children.
@@ -110,7 +116,7 @@ public class OutputLinkRenderer extends DomBasicRenderer {
         }
 
         // ICE-2169
-        PassThruAttributeWriter.renderAttributes(writer, uiComponent, new String[]{HTML.STYLE_ATTR});
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
         Boolean visibleAttribute = (Boolean) uiComponent.getAttributes().get("visible");
         boolean isVisible = visibleAttribute == null ? true : visibleAttribute.booleanValue();
         String style = (String) uiComponent.getAttributes().get(HTML.STYLE_ATTR);

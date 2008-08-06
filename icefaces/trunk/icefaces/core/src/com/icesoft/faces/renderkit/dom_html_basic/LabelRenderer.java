@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -59,6 +60,7 @@ import java.io.IOException;
 
 public class LabelRenderer extends DomBasicInputRenderer {
 
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTLABEL);
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
@@ -71,8 +73,8 @@ public class LabelRenderer extends DomBasicInputRenderer {
             Element root = domContext.createElement("label");
             domContext.setRootNode(root);
             setRootElementId(facesContext, root, uiComponent);
-            PassThruAttributeRenderer.renderAttributes(
-                    facesContext, uiComponent, null);
+            PassThruAttributeRenderer.renderHtmlAttributes(
+                    facesContext, uiComponent, passThruAttributes);
         }
         Element root = (Element) domContext.getRootNode();
 

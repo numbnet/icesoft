@@ -105,6 +105,15 @@ public class MessagesRenderer extends DomBasicRenderer {
             setRootElementId(facesContext, parentTarget, uiComponent);
         }
 
+        //dir lang
+        String dir = (String)uiComponent.getAttributes().get("dir");
+        if(dir != null){
+            parentTarget.setAttribute(HTML.DIR_ATTR, dir);
+        }
+        String lang = (String)uiComponent.getAttributes().get("lang");
+        if(lang != null){
+            parentTarget.setAttribute(HTML.LANG_ATTR, lang);
+        }
         // ICE-2174
         Boolean visible = (Boolean) uiComponent.getAttributes().get("visible");
         boolean isVisible = visible == null || visible.booleanValue() ;

@@ -118,6 +118,16 @@ public class MessageRenderer extends DomBasicRenderer {
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
         boolean showDetail = ((UIMessage) uiComponent).isShowDetail();
 
+        //dir lang
+        String dir = (String)uiComponent.getAttributes().get("dir");
+        if(dir != null){
+            root.setAttribute(HTML.DIR_ATTR, dir);
+        }
+        String lang = (String)uiComponent.getAttributes().get("lang");
+        if(lang != null){
+            root.setAttribute(HTML.LANG_ATTR, lang);
+        }
+        
         // ICE-2174
         String title = (String) uiComponent.getAttributes().get("title");
         if (title == null && tooltip && showSummary) title = summary;
