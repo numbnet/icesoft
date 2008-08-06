@@ -32,6 +32,7 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
+&i18n-props;
 &base-props;
 &message-common-props;
 &ice-ext-core-styled-props;
