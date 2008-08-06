@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Document;
@@ -51,6 +52,8 @@ import java.util.Iterator;
 
 public class OutputMessageRenderer extends DomBasicRenderer {
 
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTFORMAT);
+ 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, null);
@@ -131,7 +134,7 @@ public class OutputMessageRenderer extends DomBasicRenderer {
                     rootSpan.setAttribute("class", styleClass);
                 }
                 PassThruAttributeRenderer
-                        .renderAttributes(facesContext, uiComponent, null);
+                        .renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
                 rootSpan.appendChild(textNode);
             } else {
                 domContext.setRootNode(textNode);

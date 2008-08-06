@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.component.selectinputtext;
 
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
@@ -61,6 +62,10 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
     private static final Log log =
             LogFactory.getLog(SelectInputTextRenderer.class);
 
+    //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTTEXT);
+    //handle         HTML.ONKEYDOWN_ATTR, HTML.ONKEYUP_ATTR, HTML.ONFOCUS_ATTR, HTML.ONBLUR_ATTR
+    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,   HTML.ONKEYPRESS_ATTR,   HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.ROWS_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
+           
     public boolean getRendersChildren() {
         return true;
     }
@@ -125,12 +130,12 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         clientId);
             }
         }
-        Set excludes = new HashSet();
-        excludes.add(HTML.ONKEYDOWN_ATTR);
-        excludes.add(HTML.ONKEYUP_ATTR);
-        excludes.add(HTML.ONFOCUS_ATTR);
-        excludes.add(HTML.ONBLUR_ATTR);
-        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
+//        Set excludes = new HashSet();
+//        excludes.add(HTML.ONKEYDOWN_ATTR);
+//        excludes.add(HTML.ONKEYUP_ATTR);
+//        excludes.add(HTML.ONFOCUS_ATTR);
+//        excludes.add(HTML.ONBLUR_ATTR);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         JavascriptContext.addJavascriptCall(facesContext, call);
     }
 

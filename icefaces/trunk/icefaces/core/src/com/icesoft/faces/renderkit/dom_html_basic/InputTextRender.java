@@ -31,7 +31,6 @@ public class InputTextRender extends BaseRenderer{
     throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = uiComponent.getClientId(facesContext);
-        //writeRootElement(writer, uiComponent, clientId, HTML.INPUT_ELEM, new String[0]);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         
