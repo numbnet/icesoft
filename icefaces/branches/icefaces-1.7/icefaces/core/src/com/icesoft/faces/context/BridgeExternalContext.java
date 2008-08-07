@@ -49,6 +49,9 @@ import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -56,6 +59,7 @@ import javax.faces.render.ResponseStateManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -403,9 +407,20 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
+        
         if ((AuthenticationClass != null) && ((null == principal) ||
                 AuthenticationClass.isInstance(principal))) {
-            return new AcegiAuthWrapper(principal);
+            if (AuthenticationClass.isInstance(principal))
+                return new AcegiAuthWrapper(principal);
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                SecurityContext sc = (SecurityContext) session.getAttribute(
+                    HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+                if (sc != null) {
+                    return new AcegiAuthWrapper(sc.getAuthentication());
+                }
+            }
+            return new AcegiAuthWrapper(null); 
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
