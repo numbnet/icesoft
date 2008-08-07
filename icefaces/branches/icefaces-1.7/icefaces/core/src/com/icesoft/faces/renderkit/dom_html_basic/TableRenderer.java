@@ -34,6 +34,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.Debug;
 import org.w3c.dom.Element;
 
@@ -394,6 +395,10 @@ public class TableRenderer extends DomBasicRenderer {
         if (!uiComponent.isRendered()) {
             return;
         }
+        if (isScrollable(uiComponent)) {
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.dataTable.onLoad('" +
+                    uiComponent.getClientId(facesContext) + "');");
+        }
     }
 
     protected int getNumberOfChildColumns(UIComponent component) {
@@ -434,6 +439,7 @@ public class TableRenderer extends DomBasicRenderer {
         spacerImg.setAttribute(HTML.ALT_ATTR, "");
         spacerImg.setAttribute(HTML.STYLE_ATTR, "width:1px"); // ICE-2417
 //        spacer.appendChild(spacerImg); commented out for ICE-2654
+        spacer.appendChild(domContext.createElement(HTML.DIV_ELEM));
         return spacer;
     }
 

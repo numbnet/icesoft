@@ -42,7 +42,7 @@ Ice.dataTable.DataTable = Class.create({
     resize: function() {
         var table = $(this.id);
         if (!table) return;
-        var spacer = table.select("div.iceDatTblScrlSpr > table > thead > tr > th:last-child")[0];
+        var spacer = table.select("div.iceDatTblScrlSpr > table > thead > tr > th:last-child > div")[0];
         var body = table.select("div.iceDatTblScrlSpr + div")[0];
         var borderLeftWidth = body.getStyle("borderLeftWidth");
         var borderRightWidth = body.getStyle("borderRightWidth");
@@ -57,10 +57,12 @@ Ice.dataTable.DataTable.hash = $H();
 Ice.dataTable.onLoad = function(id) {
     var table = Ice.dataTable.DataTable.hash.get(id);
     if (table) {
+        Event.stopObserving(window, "load", table.resizeObserver);
         Event.stopObserving(window, "resize", table.resizeObserver);
     }
     table = new Ice.dataTable.DataTable(id);
     table.resize();
+    Event.observe(window, "load", table.resizeObserver);
     Event.observe(window, "resize", table.resizeObserver);
     Ice.dataTable.DataTable.hash.set(id, table);
 };
