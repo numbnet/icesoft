@@ -49,10 +49,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.HashSet;
 import java.util.Arrays;
+import java.io.Writer;
+import java.io.IOException;
+import java.io.StringWriter;
 
 public class DOMUtils {
-    private static int DEFAULT_DOM_STRING_PRESIZE = 4096;
-    private static int DEFAULT_NODE_STRING_PRESIZE = 256;
     private static HashSet TAGS_THAT_CAN_CLOSE_SHORT = new HashSet(
             Arrays.asList(new String[] {
                 "img", "input", "br", "hr", "meta", 
@@ -70,50 +71,52 @@ public class DOMUtils {
                 systemID + "\">";
     }
 
-    public static String DOMtoString(Document document) {
-        return printNode(
-                document,
-                new StringBuffer(DEFAULT_DOM_STRING_PRESIZE));
+    public static String nodeToString(Node node) throws IOException {
+        StringWriter writer = new StringWriter();
+        try {
+            printNode(node, writer);
+        } finally {
+            writer.flush();
+            return writer.toString();
+    }
     }
 
-    public static String nodeToString(Node node) {
-        return printNode(
-                node,
-                new StringBuffer(DEFAULT_NODE_STRING_PRESIZE));
+    public static String childrenToString(Node node) throws IOException {
+        StringWriter writer = new StringWriter();
+        try {
+            printChildNodes(node, writer);
+        } finally {
+            writer.flush();
+            return writer.toString();
+    }
     }
 
-    public static String childrenToString(Node node) {
+    public static void printChildNodes(Node node, Writer writer) throws IOException {
         NodeList children = node.getChildNodes();
-        Node child;
-        StringBuffer stringbuffer =
-                new StringBuffer(DEFAULT_DOM_STRING_PRESIZE);
         int l = children.getLength();
         for (int i = 0; i < l; i++) {
-            child = children.item(i);
-            stringbuffer.append(nodeToString(child));
+            printNode(children.item(i), writer);
         }
-        return stringbuffer.toString();
     }
 
-    private static String printNode(Node node, StringBuffer stringbuffer) {
-        printNode(node, stringbuffer, 0, true, false);
-        return stringbuffer.toString();
+    public static void printNode(Node node, Writer writer) throws IOException {
+        printNode(node, writer, 0, true, false);
     }
 
     private static void printNode(
-            Node node, StringBuffer stringbuffer,
+            Node node, Writer writer,
             int depth, boolean allowAddingWhitespace,
-            boolean addTrailingNewline) {
+            boolean addTrailingNewline) throws IOException {
 
         switch (node.getNodeType()) {
 
             case Node.DOCUMENT_NODE:
-                //stringbuffer.append("<xml version=\"1.0\">\n");
+                //writer.write("<xml version=\"1.0\">\n");
                 // recurse on each child
                 NodeList nodes = node.getChildNodes();
                 if (nodes != null) {
                     for (int i = 0; i < nodes.getLength(); i++) {
-                        printNode(nodes.item(i), stringbuffer, depth + 1,
+                        printNode(nodes.item(i), writer, depth + 1,
                                 allowAddingWhitespace, false);
                     }
                 }
@@ -123,26 +126,26 @@ public class DOMUtils {
                 String name = node.getNodeName();
                 //#2393 removed limited test for <br>
                 
-                stringbuffer.append("<");
-                stringbuffer.append(name);
+                writer.write("<");
+                writer.write(name);
                 NamedNodeMap attributes = node.getAttributes();
                 for (int i = 0; i < attributes.getLength(); i++) {
                     Node current = attributes.item(i);
-                    stringbuffer.append(" ");
-                    stringbuffer.append(current.getNodeName());
-                    stringbuffer.append("=\"");
-                    stringbuffer.append(escapeAnsi(current.getNodeValue()));
-                    stringbuffer.append("\"");
+                    writer.write(" ");
+                    writer.write(current.getNodeName());
+                    writer.write("=\"");
+                    writer.write(escapeAnsi(current.getNodeValue()));
+                    writer.write("\"");
                 }
 
 
                 // #2393 allow short closing of certain tags
                 if ( !node.hasChildNodes() && xmlShortClosingAllowed(node) ) {
-                    stringbuffer.append(" />");
+                    writer.write(" />");
                     break;
                 }                        
 
-                stringbuffer.append(">");
+                writer.write(">");
                 // recurse on each child
                 NodeList children = node.getChildNodes();
 
@@ -162,21 +165,21 @@ public class DOMUtils {
                                         !isWhitespaceText(nextChild) && isNewlineAllowedTag(nextChild);
                             }
                         }
-                        printNode(children.item(i), stringbuffer, depth + 1,
+                        printNode(children.item(i), writer, depth + 1,
                                 allowAddingWhitespace,
                                 childAddTrailingNewline);
                     }
                 }
 
-                stringbuffer.append("</");
-                stringbuffer.append(name);
-                stringbuffer.append(">");
+                writer.write("</");
+                writer.write(name);
+                writer.write(">");
                 if (allowAddingWhitespace && addTrailingNewline)
-                    stringbuffer.append("\n");
+                    writer.write("\n");
                 break;
 
             case Node.TEXT_NODE:
-                stringbuffer.append(node.getNodeValue());
+                writer.write(node.getNodeValue());
                 break;
         }
     }
