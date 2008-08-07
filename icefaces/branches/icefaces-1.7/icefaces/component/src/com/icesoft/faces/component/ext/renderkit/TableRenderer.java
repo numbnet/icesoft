@@ -740,10 +740,6 @@ public class TableRenderer
         uiData.setRowIndex(-1);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
-        if (isScrollable(uiComponent)) {
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.dataTable.onLoad('" +
-                    uiComponent.getClientId(facesContext) + "');");
-        }
     }
 
     private void encodeColumns(FacesContext facesContext, UIComponent columns,
