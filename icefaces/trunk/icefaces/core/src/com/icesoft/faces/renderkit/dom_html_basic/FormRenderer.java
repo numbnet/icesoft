@@ -288,6 +288,7 @@ public class FormRenderer extends DomBasicRenderer {
         Element root = (Element) domContext.getRootNode();
         Element hiddenFieldsDiv = domContext.createElement(HTML.DIV_ELEM);
         hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
+        hiddenFieldsDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
         root.appendChild(hiddenFieldsDiv);
         
         Iterator commandLinkFields = map.entrySet().iterator();
