@@ -30,7 +30,7 @@ public class NormalModeSerializer implements DOMSerializer {
             if (null != body) {
                 //insert a containing element for bridge anchoring
                 writer.write("<div>\n");
-                writer.write(DOMUtils.childrenToString(body));
+                DOMUtils.printChildNodes(body, writer);
                 writer.write("</div>\n");
             }
         } else {
@@ -57,7 +57,7 @@ public class NormalModeSerializer implements DOMSerializer {
                     writer.write(DOMUtils.DocumentTypetoString(publicID, systemID,
                             root));
                 }
-                writer.write(DOMUtils.DOMtoString(document));
+                DOMUtils.printNode(document, writer);
             } else {
                 //use a serializer. not as performant.
                 JAXPSerializer serializer =
