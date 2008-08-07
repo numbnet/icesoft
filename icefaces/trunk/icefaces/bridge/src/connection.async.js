@@ -69,7 +69,6 @@
                 this.timeoutBomb.cancel();
             }.bind(this));
 
-            this.badResponseCallback = this.connectionDownListeners.broadcaster();
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
             this.receiveCallback = function(response) {
                 try {
