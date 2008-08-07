@@ -69,7 +69,6 @@
                 this.timeoutBomb.cancel();
             }.bind(this));
 
-            this.badResponseCallback = this.connectionDownListeners.broadcaster();
             this.serverErrorCallback = this.onServerErrorListeners.broadcaster();
             this.receiveCallback = function(response) {
                 try {
@@ -130,7 +129,6 @@
                 this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
                     this.sendXWindowCookie(request);
                     Connection.FormPost(request);
-                    request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.ServerError, this.serverErrorCallback);
                     request.on(Connection.OK, this.receiveXWindowCookie);
                     request.on(Connection.OK, function(response) {
@@ -193,11 +191,11 @@
             }.bind(this).repeatExecutionEvery(1000);
 
             var pickUpdates = function() {
-                        this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
-                            Connection.FormPost(request);
-                            request.on(Connection.OK, this.receiveCallback);
-                            request.on(Connection.OK, Connection.Close);
-                        }.bind(this));
+                this.sendChannel.postAsynchronously(this.getURI, this.defaultQuery.asURIEncodedString(), function(request) {
+                    Connection.FormPost(request);
+                    request.on(Connection.OK, this.receiveCallback);
+                    request.on(Connection.OK, Connection.Close);
+                }.bind(this));
             }.bind(this);
 
             //pick any updates that might be generated in between bridge re-initialization
