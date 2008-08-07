@@ -130,7 +130,6 @@
                 this.listener = this.receiveChannel.postAsynchronously(this.receiveURI, query.asURIEncodedString(), function(request) {
                     this.sendXWindowCookie(request);
                     Connection.FormPost(request);
-                    request.on(Connection.BadResponse, this.badResponseCallback);
                     request.on(Connection.ServerError, this.serverErrorCallback);
                     request.on(Connection.OK, this.receiveXWindowCookie);
                     request.on(Connection.OK, function(response) {
