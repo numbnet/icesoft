@@ -44,6 +44,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
@@ -51,7 +52,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 public class OutputProgressRenderer extends DomBasicInputRenderer {
-
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTPROGRESS);
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -71,7 +73,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         Element table = (Element) domContext.getRootNode();
         String style = ((OutputProgress) uiComponent).getStyle();
         if(style != null && style.length() > 0)
-            table.setAttribute(HTML.STYLE_ATTR, style);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         else
             table.removeAttribute(HTML.STYLE_ATTR);
         //In order to fix IRAPtor Bug 291, we took out buildLayout() from the intialized block, 
