@@ -4,6 +4,7 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -12,6 +13,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 public class PortletRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_PORTLET);
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -36,8 +39,7 @@ public class PortletRenderer extends DomBasicRenderer {
             root.setAttribute("class", styleClass);
         }
 
-        PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         facesContext.getApplication().getViewHandler().writeState(facesContext);
 
         try {
