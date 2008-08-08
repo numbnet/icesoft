@@ -37,6 +37,8 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -45,12 +47,13 @@ import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 
 public class OutputHeadRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTHEAD);
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement("head", uiComponent);
-        setElementAttr(writer, HTML.DIR_ATTR, uiComponent, HTML.DIR_ATTR);
-        setElementAttr(writer, HTML.LANG_ATTR, uiComponent, HTML.LANG_ATTR);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         setElementAttr(writer, "profile", uiComponent, "profile");
     }
 
