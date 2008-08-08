@@ -51,12 +51,7 @@ public class ButtonRenderer
         } else {
             submitCode = this.ICESUBMIT + "return false;";
         }
-        if (onclick == null) {
-            onclick = submitCode;
-        } else {
-            onclick += submitCode;
-        }
-        root.setAttribute("onclick", onclick);
+        root.setAttribute("onclick", combinedPassThru(onclick, submitCode));
 
     }
 

@@ -35,6 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UICommand;
@@ -45,6 +46,8 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ButtonRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_COMMANDBUTTON);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UICommand.class);
@@ -167,8 +170,7 @@ public class ButtonRenderer extends DomBasicRenderer {
 
         JavascriptContext.fireEffect(uiComponent, facesContext);
 
-        PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         //add iceSubmit for image and submit button only
         if (typeAttribute.equals("submit") || typeAttribute.equals("image")) {
             renderOnClick(uiComponent, root);
@@ -185,12 +187,7 @@ public class ButtonRenderer extends DomBasicRenderer {
     protected void renderOnClick(UIComponent uiComponent, Element root) {
         String onclick = (String) uiComponent.getAttributes().get("onclick");
         String submitCode = this.ICESUBMIT + "return false;";
-        if (onclick == null) {
-            onclick = submitCode;
-        } else {
-            onclick += submitCode;
-        }
-        root.setAttribute("onclick", onclick);
+        root.setAttribute("onclick", combinedPassThru(onclick, submitCode));
     }
 
     public void encodeChildren(FacesContext facesContext,
