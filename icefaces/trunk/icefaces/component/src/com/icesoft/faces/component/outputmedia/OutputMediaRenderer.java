@@ -35,7 +35,9 @@ package com.icesoft.faces.component.outputmedia;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.util.CoreUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -48,6 +50,8 @@ import java.util.Map;
 import java.util.Properties;
 
 public class OutputMediaRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTMEDIA);
     private static Map players = new HashMap();
 
     {
@@ -118,7 +122,7 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         setElementAttr(object, "standby", mediaComponent, "standbyText");
         setElementAttr(object, HTML.ID_ATTR, idAndName);
         setElementAttr(object, HTML.NAME_ATTR, idAndName);
-        setElementAttr(object, HTML.STYLE_ATTR, mediaComponent, HTML.STYLE_ATTR);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         setElementAttr(object, HTML.CLASS_ATTR, mediaComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(object, HTML.TYPE_ATTR, mediaComponent, "mimeType");
 
@@ -127,7 +131,7 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         setElementAttr(embed, HTML.SRC_ATTR, sourceURL);
         setElementAttr(embed, HTML.ID_ATTR, idAndName);
         setElementAttr(embed, HTML.NAME_ATTR, idAndName);
-        setElementAttr(embed, HTML.STYLE_ATTR, mediaComponent, HTML.STYLE_ATTR);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, embed, embed, passThruAttributes);
         setElementAttr(embed, HTML.CLASS_ATTR, mediaComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(embed, HTML.TYPE_ATTR, mediaComponent, "mimeType");
 
