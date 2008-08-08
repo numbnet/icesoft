@@ -35,6 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.DOMUtils;
+import com.icesoft.faces.component.AttributeConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -51,6 +52,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class CommandLinkRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_COMMANDLINK);
 
     private static final String HIDDEN_FIELD_NAME = "cl";
 
@@ -124,6 +126,8 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         DOMContext.removeChildren(root);
         renderLinkText(uiComponent, domContext, root);
 
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+
         Map parameterMap = getParameterMap(uiComponent);
         renderOnClick(facesContext, uiComponent, root, parameterMap);
 
@@ -133,8 +137,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             root.setAttribute("class", styleClass);
         }
 
-        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
-                new String[]{"onclick"});
         if (disabled) {
             root.removeAttribute("disabled");
         }
@@ -192,18 +194,10 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         Object onClick = uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
 
         //if onClick attribute set by the user, pre append it.
-        if (onClick != null) {
-            onClick = onClick.toString() + ";" +
-                    getJavaScriptOnClickString(facesContext,
-                            uiComponent, uiFormClientId,
-                            parameters);
-        } else {
-            onClick = getJavaScriptOnClickString(facesContext,
+            String rendererOnClick = getJavaScriptOnClickString(facesContext,
                     uiComponent, uiFormClientId,
                     parameters);
-        }
-        root.setAttribute("onclick",
-                onClick.toString()); // replaced command w/component
+        root.setAttribute("onclick", combinedPassThru((String) onClick, rendererOnClick));
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
