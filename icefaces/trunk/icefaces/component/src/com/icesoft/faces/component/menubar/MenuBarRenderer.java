@@ -35,6 +35,7 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -49,7 +50,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 public class MenuBarRenderer extends DomBasicRenderer {
-
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_MENUBAR);
 
     public static final String PATH_DELIMITER = "-";
 
@@ -89,9 +91,8 @@ public class MenuBarRenderer extends DomBasicRenderer {
             menuDiv.removeAttribute(HTML.STYLE_ATTR);
         DOMContext.removeChildren(menuDiv);
 
-        PassThruAttributeRenderer
-                    .renderAttributes(facesContext, uiComponent, null);
-        
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+
         domContext.stepInto(uiComponent);
         
         trailingEncodeBegin(facesContext, uiComponent);
