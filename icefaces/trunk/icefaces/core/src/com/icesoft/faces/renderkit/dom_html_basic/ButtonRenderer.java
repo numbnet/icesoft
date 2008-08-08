@@ -35,7 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.AttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UICommand;
@@ -46,8 +46,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ButtonRenderer extends DomBasicRenderer {
-    private static final String[] passThruAttributes =
-            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_COMMANDBUTTON);
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_COMMANDBUTTON);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, UICommand.class);
