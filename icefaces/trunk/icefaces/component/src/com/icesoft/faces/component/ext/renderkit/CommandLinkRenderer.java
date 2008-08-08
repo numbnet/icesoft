@@ -71,18 +71,10 @@ public class CommandLinkRenderer extends
             Object passThruOnClick = uiComponent.getAttributes().get(                    
                 HTML.ONCLICK_ATTR);
 
-            String onClick = "";
             // if onClick attribute set by the user, pre append it.
-            if (passThruOnClick != null) {
-                onClick = passThruOnClick.toString()
-                    + ";"
-                    + this.getJavaScriptPartialOnClickString(facesContext,
-                          uiComponent, uiFormClientId, parameters);
-            } else {
-                onClick = this.getJavaScriptPartialOnClickString(facesContext,
+                String rendererOnClick = this.getJavaScriptPartialOnClickString(facesContext,
                     uiComponent, uiFormClientId, parameters); 
-            }
-            root.setAttribute("onclick", onClick);
+            root.setAttribute("onclick", combinedPassThru((String) passThruOnClick, rendererOnClick));
         } else {
             super.renderOnClick(facesContext, uiComponent, root, parameters);
         }
