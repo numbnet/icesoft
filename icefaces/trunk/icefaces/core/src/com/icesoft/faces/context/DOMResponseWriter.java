@@ -327,8 +327,7 @@ public class DOMResponseWriter extends ResponseWriter {
         script.setAttribute("type", "text/javascript");
         String calls = JavascriptContext.getJavascriptCalls(context);
         script.appendChild(document.createTextNode(calls));
-
-        ElementController.from(session).addInto(prefix, body);
+        
         String contextPath = handler.getResourceURL(context, "/");
         String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
         String connectionLostRedirectURI;
