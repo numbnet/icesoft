@@ -118,7 +118,7 @@ public class AttributeConstantsTest extends TestCase {
     }
     
     private boolean isKnownDiff(String name){
-        String knownDiffAttributes[] = new String[]{"autocomplete", "type", "size"};
+        String knownDiffAttributes[] = new String[]{"autocomplete", "size"};
         for (int i = 0; i < knownDiffAttributes.length; i++) {
             String tmp = knownDiffAttributes[i];
             if(tmp.equalsIgnoreCase(name)){
