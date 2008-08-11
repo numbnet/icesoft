@@ -12,12 +12,16 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.FormRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 public class PanelCollapsibleRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_PANELCOLLAPSIBLE);
 
     private static Log log = LogFactory.getLog(PanelCollapsibleRenderer.class);
 
@@ -35,11 +39,7 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
             setRootElementId(facesContext, rootSpan, uiComponent);
         }
         Element root = (Element) domContext.getRootNode();
-        String style = panelCollapsible.getStyle();
-        
-        if (style != null) {
-        	root.setAttribute(HTML.STYLE_ATTR, style);
-        }
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         root.setAttribute(HTML.CLASS_ATTR, panelCollapsible.getStyleClass());
         
         //create "header" div and append to the parent, don't render any children yet
