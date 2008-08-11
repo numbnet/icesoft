@@ -359,6 +359,9 @@ public class TableRenderer
                     domContext.setCursorParent(th);
                     encodeParentAndChildren(facesContext, column);                    
                 }
+                if (isScrollable(uiComponent)) {
+                    tr.appendChild(scrollBarSpacer(domContext, facesContext));
+                }
             }
         }
     }
