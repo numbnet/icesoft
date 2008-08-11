@@ -34,9 +34,11 @@
 package com.icesoft.faces.component.outputchart;
 
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -44,6 +46,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 public class OutputChartRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTCHART);
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -77,8 +81,7 @@ public class OutputChartRenderer extends DomBasicRenderer {
                 getFirstChild().//tr
                 getFirstChild();//td
         DOMContext.removeChildren(td);
-        td.setAttribute(HTML.WIDTH_ATTR, outputChart.getWidth());
-        td.setAttribute(HTML.HEIGHT_ATTR, outputChart.getHeight());
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, td, table, passThruAttributes);
         Element image = (Element) domContext.createElement(HTML.IMG_ELEM);
         image.setAttribute(HTML.SRC_ATTR, outputChart.getChartURI().getPath());
        
