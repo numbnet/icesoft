@@ -35,6 +35,7 @@ package com.icesoft.faces.component.tree;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.InvalidComponentTypeException;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
@@ -62,6 +63,8 @@ import java.util.Map;
  * @version 1.1
  */
 public class TreeRenderer extends DomBasicRenderer {
+    private static final String[] passThruAttributes =
+            ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_TREE);
 
     /**
      *
@@ -173,8 +176,7 @@ public class TreeRenderer extends DomBasicRenderer {
 
         // clean up, and remove nodes
         DOMContext.removeChildren(rootDomNode);
-        PassThruAttributeRenderer
-                    .renderAttributes(facesContext, uiComponent, null);
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         // startNode is used in conjunction with endNode as an alternative to streamWrite method
         domContext.startNode(facesContext, treeComponent, rootDomNode);
