@@ -110,21 +110,9 @@ public class AttributeConstantsTest extends TestCase {
                 String message = "ICE Component="+ compName+" defined more html attribute="+ice_attributes[i];
                 Logger.getLogger(AttributeConstantsTest.class.getName()).log(Level.INFO, message);
                 //TODO enable test case, info only now
-//                if(!isKnownDiff(temp)){
-//                    fail(message +" is not known diff");
-//                }
+
             }
         }
     }
-    
-    private boolean isKnownDiff(String name){
-        String knownDiffAttributes[] = new String[]{"autocomplete", "size"};
-        for (int i = 0; i < knownDiffAttributes.length; i++) {
-            String tmp = knownDiffAttributes[i];
-            if(tmp.equalsIgnoreCase(name)){
-                return true;
-            }
-        }
-        return false;
-    }
+
 }
