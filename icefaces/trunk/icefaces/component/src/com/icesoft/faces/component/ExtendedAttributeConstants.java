@@ -4,7 +4,7 @@ package com.icesoft.faces.component;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 /**
- *<p>Auto-generated Component Base class. Generated on Aug 8, 2008
+ *<p>Auto-generated Component Base class. Generated on Aug 11, 2008
  *Do <strong>NOT</strong> modify; all changes
  *<strong>will</strong> be lost!</p>
  * This class helps with Renderer to get component
@@ -210,7 +210,7 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[15] = (ICE_CHECKBOX);
            final String[] ICE_COMMANDBUTTON = 
-               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            attributes[16] = (ICE_COMMANDBUTTON);
            final String[] ICE_COMMANDLINK = 
                new String[]{ HTML.ACCESSKEY_ATTR,  HTML.CHARSET_ATTR,  HTML.COORDS_ATTR,  HTML.DIR_ATTR,  HTML.HREFLANG_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.REL_ATTR,  HTML.REV_ATTR,  HTML.SHAPE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
@@ -306,7 +306,7 @@ public class ExtendedAttributeConstants {
                new String[]{ HTML.BGCOLOR_ATTR,  HTML.STYLE_ATTR };                        
            attributes[47] = (ICE_OUTPUTBODY);
            final String[] ICE_OUTPUTCHART = 
-               new String[]{ HTML.HEIGHT_ATTR,  HTML.STYLE_ATTR,  HTML.TYPE_ATTR,  HTML.WIDTH_ATTR };                        
+               new String[]{ HTML.HEIGHT_ATTR,  HTML.STYLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[48] = (ICE_OUTPUTCHART);
            final String[] ICE_OUTPUTCONNECTIONSTATUS = 
                new String[]{ HTML.STYLE_ATTR };                        
