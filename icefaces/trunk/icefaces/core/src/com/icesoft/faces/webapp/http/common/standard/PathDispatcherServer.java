@@ -6,55 +6,38 @@ import com.icesoft.faces.webapp.http.common.Server;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Pattern;
 
 public class PathDispatcherServer implements Server {
     private List matchers = new ArrayList();
+    private List servers = new ArrayList();
 
     public void service(Request request) throws Exception {
         String path = request.getURI().getPath();
-        Iterator i = matchers.iterator();
-        boolean matched = false;
-        while (!matched && i.hasNext()) {
-            matched = ((Matcher) i.next()).serviceOnMatch(path, request);
-        }
-
-        if (!matched) {
-            request.respondWith(new NotFoundHandler("Could not find resource at " + path));
-        }
-    }
-
-    public void dispatchOn(String pathExpression, Server toServer) {
-        matchers.add(new Matcher(pathExpression, toServer));
-    }
-
-    public void shutdown() {
-        Iterator i = matchers.iterator();
+        ListIterator i = matchers.listIterator();
         while (i.hasNext()) {
-            Matcher matcher = (Matcher) i.next();
-            matcher.shutdown();
-        }
-    }
-
-    private class Matcher {
-        private Pattern pattern;
-        private Server server;
-
-        public Matcher(String expression, Server server) {
-            this.pattern = Pattern.compile(expression);
-            this.server = server;
-        }
-
-        boolean serviceOnMatch(String path, Request request) throws Exception {
+            int index = i.nextIndex();
+            Pattern pattern = (Pattern) i.next();
             if (pattern.matcher(path).find()) {
+                Server server = (Server) servers.get(index);
                 server.service(request);
-                return true;
-            } else {
-                return false;
+                return;
             }
         }
 
-        public void shutdown() {
+        request.respondWith(new NotFoundHandler("Could not find resource at " + path));
+    }
+
+    public void dispatchOn(String pathExpression, final Server toServer) {
+        matchers.add(Pattern.compile(pathExpression));
+        servers.add(toServer);
+    }
+
+    public void shutdown() {
+        Iterator i = servers.iterator();
+        while (i.hasNext()) {
+            Server server = (Server) i.next();
             server.shutdown();
         }
     }
