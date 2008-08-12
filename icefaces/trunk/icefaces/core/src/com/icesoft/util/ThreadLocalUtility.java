@@ -33,6 +33,9 @@ public class ThreadLocalUtility {
     private static boolean threadLocalFailed;
     private static String firstFailure;
 
+    // whether to keep counts and do tests or not
+    private static boolean testingEnabled; 
+
     /**
      * Check to see if applicable ThreadLocals are cleared. Very verbose, so
      * call only if at suitable log levels.
@@ -41,6 +44,9 @@ public class ThreadLocalUtility {
      */
     public static void checkThreadLocals(int location) {
 
+        if (!testingEnabled) {
+            return;
+        } 
 
         Counts[location] ++;
         if (!BridgeFacesContext.isThreadLocalNull()) {
@@ -76,5 +82,10 @@ public class ThreadLocalUtility {
 
     public static int[] getTestCounts() {
         return Counts;
-    } 
+    }
+
+
+    public static void setPerformTesting(boolean testingEnabled) {
+        ThreadLocalUtility.testingEnabled = testingEnabled;
+    }
 }
