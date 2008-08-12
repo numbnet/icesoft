@@ -150,10 +150,7 @@ public abstract class SessionDispatcher implements PseudoServlet {
                             while (iterator.hasNext()) {
                                 final Monitor sessionMonitor = (Monitor) iterator.next();
                                 sessionMonitor.shutdownIfExpired();
-
-                                if (Log.isTraceEnabled()) {
-                                    ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
-                                }
+                                ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SESSION_MONITOR);
                             }
 
                             Thread.sleep(10000);
