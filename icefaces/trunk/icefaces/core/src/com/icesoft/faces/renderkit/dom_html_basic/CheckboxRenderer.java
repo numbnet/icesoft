@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
@@ -50,7 +51,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CheckboxRenderer extends DomBasicInputRenderer {
-
+    private static final String[] booleanCheckboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTBOOLEANCHECKBOX);
     public boolean getRendersChildren() {
         return true;
     }
@@ -118,21 +119,17 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         }
         JavascriptContext.fireEffect(uiComponent, facesContext);
         LocalEffectEncoder.encodeLocalEffects(uiComponent, input, facesContext);
-        renderPassThruAttributes(uiComponent, input);
+        renderPassThruAttributes(facesContext, uiComponent, input);
         CurrentStyle.apply(facesContext, uiComponent, input, null);
         HashSet excludes = new HashSet();
         addJavaScript(facesContext, uiComponent, input, excludes);
     }
 
 
-    public void renderPassThruAttributes(UIComponent uiComponent,
+    public void renderPassThruAttributes(FacesContext facesContext, 
+                                         UIComponent uiComponent,
                                          Element input) {
-//        Iterator passTrhuAttributes = PassThruAttributeRenderer
-//                .getpassThruAttributeNames().iterator();
-//        while (passTrhuAttributes.hasNext()) {
-//            String attribute = passTrhuAttributes.next().toString();
-//            renderAttribute(uiComponent, input, attribute, attribute);
-//        }
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, booleanCheckboxPassThruAttributes);
         //only "disabled" boolean attribute applies on a checkbox 
         renderAttribute(uiComponent, input, HTML.DISABLED_ATTR,
                         HTML.DISABLED_ATTR);
