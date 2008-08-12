@@ -155,6 +155,7 @@ public class DOMResponseWriter extends ResponseWriter {
     }
 
     public void endDocument() throws IOException {
+        domContexts.clear();
         if (!isStreamWriting()) {
             enhanceAndFixDocument();
             serializer.serialize(document);
