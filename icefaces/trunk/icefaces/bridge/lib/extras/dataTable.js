@@ -44,6 +44,7 @@ Ice.dataTable.DataTable = Class.create({
         if (!table) return;
         var spacer = table.select("div.iceDatTblScrlSpr > table > thead > tr > th:last-child > div")[0];
         var body = table.select("div.iceDatTblScrlSpr + div")[0];
+        if (!spacer || !body) return;
         var borderLeftWidth = body.getStyle("borderLeftWidth");
         var borderRightWidth = body.getStyle("borderRightWidth");
         body.setStyle({borderLeftWidth:0, borderRightWidth:0});
