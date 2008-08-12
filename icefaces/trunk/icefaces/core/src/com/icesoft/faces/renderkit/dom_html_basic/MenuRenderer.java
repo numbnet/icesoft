@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import org.w3c.dom.Document;
@@ -42,6 +43,10 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.faces.component.*;
 import javax.faces.component.html.HtmlSelectManyCheckbox;
+import javax.faces.component.html.HtmlSelectManyListbox;
+import javax.faces.component.html.HtmlSelectManyMenu;
+import javax.faces.component.html.HtmlSelectOneListbox;
+import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
@@ -57,7 +62,11 @@ import java.util.logging.Level;
 public class MenuRenderer extends DomBasicInputRenderer {
 
     private static Logger log =  Logger.getLogger(MenuRenderer.class.getName());
-
+    private static final String[] selectOneMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONEMENU);
+    private static final String[] selectManyMenuPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYMENU);
+    private static final String[] selectOneListboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONELISTBOX);
+    private static final String[] selectManyListboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYLISTBOX);
+    
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, null);
         if (isStatic(uiComponent)) {
@@ -371,8 +380,16 @@ public class MenuRenderer extends DomBasicInputRenderer {
         addJavaScript(facesContext, uiComponent, root, currentValue.toString(),
                       excludes);
 
-        PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
-                                                   getExcludesArray(excludes));
+        if (uiComponent instanceof HtmlSelectOneMenu) {
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectOneMenuPassThruAttributes);
+        } else if (uiComponent instanceof HtmlSelectManyMenu) {
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectManyMenuPassThruAttributes);
+        } else if (uiComponent instanceof HtmlSelectOneListbox) {
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectOneListboxPassThruAttributes);
+        } else if (uiComponent instanceof HtmlSelectManyListbox) { 
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent,selectManyListboxPassThruAttributes);
+        }
+        
         excludes.clear();
 
         domContext.stepInto(uiComponent);

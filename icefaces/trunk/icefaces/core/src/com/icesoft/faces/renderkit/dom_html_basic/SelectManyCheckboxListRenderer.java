@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -50,7 +51,7 @@ import java.util.*;
 
 
 public class SelectManyCheckboxListRenderer extends MenuRenderer {
-
+    private static final String[] selectManyCheckboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYCHECKBOX);
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
 
@@ -245,10 +246,10 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         excludes.add("readonly");
         String[] excludesStringArray = new String[excludes.size()];
         excludesStringArray = (String[]) excludes.toArray(excludesStringArray);
-        PassThruAttributeRenderer.renderAttributes(
+        PassThruAttributeRenderer.renderHtmlAttributes(
                 facesContext, uiComponent,
                 inputElement, rootTable,
-                excludesStringArray);
+                selectManyCheckboxPassThruAttributes);
     }
 
     protected void renderOption(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -306,7 +307,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (selectItemLabel != null) 
         	label.appendChild(domContext.createTextNode(selectItemLabel));
 
-        PassThruAttributeRenderer.renderAttributes(facesContext, selectMany, input, label, getExcludesArray(excludes));
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, selectMany, input, label, selectManyCheckboxPassThruAttributes);
 
         rootNode.appendChild(input);
         rootNode.appendChild(label);
