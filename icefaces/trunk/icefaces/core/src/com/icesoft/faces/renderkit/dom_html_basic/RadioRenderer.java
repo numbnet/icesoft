@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -49,7 +50,7 @@ import java.util.Set;
 
 
 public class RadioRenderer extends SelectManyCheckboxListRenderer {
-
+    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONERADIO);
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
@@ -118,12 +119,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
                                                           selectItem.getValue())));
 
         // style is rendered on containing table
-        excludes.add("style");
-        excludes.add("readonly");
-        excludes.add("disabled");
-        PassThruAttributeRenderer.
-                renderAttributes(
-                        facesContext, uiSelectOne, getExcludesArray(excludes));
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         Element label = domContext.createElement("label");
         td.appendChild(label);
@@ -192,8 +188,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         Element label = domContext.createElement(HTML.LABEL_ATTR);
         label.setAttribute(HTML.FOR_ATTR, radioClientId);
         if (selectItemLabel != null) label.appendChild(domContext.createTextNode(selectItemLabel));
-        
-        PassThruAttributeRenderer.renderAttributes(facesContext, selectOne, input, label, getExcludesArray(excludes));
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, selectOne, input, label, passThruAttributes);
 
         rootNode.appendChild(input);
         rootNode.appendChild(label);
