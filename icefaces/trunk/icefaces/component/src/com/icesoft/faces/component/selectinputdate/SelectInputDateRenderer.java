@@ -161,7 +161,7 @@ public class SelectInputDateRenderer
 
     //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_SELECTINPUTDATE);
     //handled title
-    private static final String[] passThruAttributes = new String[]{ HTML.AUTOCOMPLETE_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+    private static final String[] passThruAttributes = new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            
     /* (non-Javadoc)
     * @see javax.faces.render.Renderer#getRendersChildren()
@@ -242,9 +242,8 @@ public class SelectInputDateRenderer
                 if( selectInputDate.getTabindex() != null ){
                 	dateText.setAttribute(HTML.TABINDEX_ATTR, selectInputDate.getTabindex());
                 }
-                if (selectInputDate.getAutocomplete() != null) {
-                    dateText.setAttribute("autocomplete",
-                                          selectInputDate.getAutocomplete());
+                if (selectInputDate.getAutocomplete() != null && "off".equalsIgnoreCase(selectInputDate.getAutocomplete())) {
+                    dateText.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                 }
                 String tooltip = null;
                 tooltip = selectInputDate.getTitle();
