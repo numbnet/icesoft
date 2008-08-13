@@ -162,6 +162,9 @@ public class Parser {
             pageContext.removeAttribute(
                     "javax.faces.webapp.COMPONENT_TAG_STACK",
                     PageContext.REQUEST_SCOPE);
+            pageContext.removeAttribute(
+                    "javax.faces.webapp.GLOBAL_ID_VIEW",
+                    PageContext.REQUEST_SCOPE);
         } catch (Exception e) {
             log.error("Failed to execute JSP lifecycle.", e);
             if (log.isDebugEnabled()) {
