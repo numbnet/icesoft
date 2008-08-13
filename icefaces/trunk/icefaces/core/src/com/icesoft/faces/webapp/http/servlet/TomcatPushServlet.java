@@ -124,15 +124,15 @@ public class TomcatPushServlet extends HttpServlet
         HttpSession session = event.getHttpServletRequest().getSession(false);
         synchronized (eventResponderMap) {
             if (!eventResponderMap.containsKey(session)) {
-                MainSessionBoundServlet servlet =
+                MainSessionBoundServlet server =
                         (MainSessionBoundServlet)
-                                SessionDispatcher.getSingletonSessionServlet(session, getServletContext());
+                                SessionDispatcher.getSingletonSessionServer(session, getServletContext());
                 eventResponderMap.put(
                         session,
                         new EventResponder(
-                                servlet.getSessionID(),
-                                servlet.getAllUpdatedViews(),
-                                servlet.getSynchronouslyUpdatedViews()));
+                                server.getSessionID(),
+                                server.getAllUpdatedViews(),
+                                server.getSynchronouslyUpdatedViews()));
             }
         }
     }

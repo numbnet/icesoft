@@ -4,6 +4,7 @@ import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.common.SessionManager;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
 import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
@@ -16,11 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+//todo: rename to SessionBoundServer
 public class SessionBoundServlet
-implements PseudoServlet {
+implements Server {
     private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
-
-    private PseudoServlet servlet;
+    private PathDispatcherServer pathDispatcherServer;
 
     public SessionBoundServlet(
         final Configuration configuration, final SessionManager sessionManager,
@@ -42,24 +43,18 @@ implements PseudoServlet {
         //       with the appropriate Request URI.
         Server _server =
             new SendUpdatedViewsServer(sessionManager, executeQueue, monitor);
-        PathDispatcherServer _pathDispatcherServer = new PathDispatcherServer();
-        _pathDispatcherServer.dispatchOn(
+        pathDispatcherServer = new PathDispatcherServer();
+        pathDispatcherServer.dispatchOn(
             ".*block\\/receive\\-updated\\-views$", _server);
-        _pathDispatcherServer.dispatchOn(
+        pathDispatcherServer.dispatchOn(
             ".*block\\/dispose\\-views$", _server);
-        servlet =
-            new EnvironmentAdaptingServlet(
-                _pathDispatcherServer, configuration, servletContext);
     }
 
-    public void service(
-        final HttpServletRequest httpServletRequest,
-        final HttpServletResponse httpServletResponse)
-    throws Exception {
-        servlet.service(httpServletRequest, httpServletResponse);
+    public void service(Request request) throws Exception {
+        pathDispatcherServer.service(request);
     }
 
     public void shutdown() {
-        servlet.shutdown();
+        pathDispatcherServer.shutdown();
     }
 }

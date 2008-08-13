@@ -9,8 +9,8 @@ import com.icesoft.faces.async.server.AsyncHttpServer;
 import com.icesoft.faces.async.server.AsyncHttpServerSettings;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.ConfigurationException;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.PathDispatcher;
-import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.ServletConfigConfiguration;
 import com.icesoft.faces.webapp.http.servlet.ServletContextConfiguration;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -110,23 +110,9 @@ public class AsyncHttpServlet
                                     "in servlet-mode...");
                 }
                 final ExecuteQueue _executeQueue = new ExecuteQueue();
-                SessionDispatcher _sessionDispatcher = new SessionDispatcher(getServletContext()) {
-                    public void service(
-                            final HttpServletRequest httpServletRequest,
-                            final HttpServletResponse httpServletResponse)
-                            throws Exception {
-                        HttpSession _httpSession =
-                                httpServletRequest.getSession(true);
-                        checkSession(_httpSession);
-                        lookupServlet(_httpSession).
-                                service(httpServletRequest, httpServletResponse);
-                    }
-
-                    protected PseudoServlet newServlet(
-                            final HttpSession httpSession, final Monitor monitor) {
-
-                        return
-                                new SessionBoundServlet(
+                SessionDispatcher _sessionDispatcher = new SessionDispatcher(_servletContextConfiguration, getServletContext()) {
+                    protected Server newServer(final HttpSession httpSession, final Monitor monitor) {
+                        return new SessionBoundServlet(
                                         _servletContextConfiguration,
                                         _sessionManager,
                                         _executeQueue,

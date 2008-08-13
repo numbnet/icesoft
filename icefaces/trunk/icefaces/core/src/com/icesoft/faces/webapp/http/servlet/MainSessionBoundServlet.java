@@ -7,9 +7,10 @@ import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
-import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
+import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
@@ -30,8 +31,6 @@ import com.icesoft.net.messaging.MessageHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,17 +39,18 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MainSessionBoundServlet implements PseudoServlet {
+//todo: rename to MainSessionBoundServer and move in com.icesoft.faces.webapp.http.core
+public class MainSessionBoundServlet implements Server {
+    private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final String ResourcePrefix = "/block/resource/";
     private static final String ResourceRegex = ".*" + ResourcePrefix.replaceAll("\\/", "\\/") + ".*";
-    private static final Log Log = LogFactory.getLog(MainSessionBoundServlet.class);
     private static final SessionExpired SessionExpired = new SessionExpired();
     private static final Server OKServer = new ResponseHandlerServer(OKResponse.Handler);
     private static final Runnable NOOP = new Runnable() {
         public void run() {
         }
     };
-    private Runnable drainUpdatedViews = new Runnable() {
+    private final Runnable drainUpdatedViews = new Runnable() {
         public void run() {
             allUpdatedViews.removeAll(synchronouslyUpdatedViews);
             if (!allUpdatedViews.isEmpty()) {
@@ -59,17 +59,16 @@ public class MainSessionBoundServlet implements PseudoServlet {
             allUpdatedViews.clear();
         }
     };
-    private Map views = Collections.synchronizedMap(new HashMap());
-    private ViewQueue allUpdatedViews = new ViewQueue();
-    private Collection synchronouslyUpdatedViews = new HashSet();
-    private String sessionID;
-    private PseudoServlet servlet;
+    private final Map views = Collections.synchronizedMap(new HashMap());
+    private final ViewQueue allUpdatedViews = new ViewQueue();
+    private final Collection synchronouslyUpdatedViews = new HashSet();
+    private final PathDispatcherServer dispatcher = new PathDispatcherServer();
+    private final String sessionID;
     private Runnable shutdown;
 
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
-
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
         final Server viewServlet;
         final Server disposeViews;
@@ -120,7 +119,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
         Server upload = new UploadServer(views, configuration);
         Server receiveSendUpdates = new RequestVerifier(sessionID, new ViewBoundServer(new ReceiveSendUpdates(views, synchronouslyUpdatedViews), sessionMonitor, views));
 
-        PathDispatcherServer dispatcher = new PathDispatcherServer();
         dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
         dispatcher.dispatchOn(".*block\\/receive\\-updated\\-views$", sendUpdatedViews);
         dispatcher.dispatchOn(".*block\\/receive\\-updates$", sendUpdates);
@@ -129,7 +127,6 @@ public class MainSessionBoundServlet implements PseudoServlet {
         dispatcher.dispatchOn(ResourceRegex, resourceDispatcher);
         dispatcher.dispatchOn(".*uploadHtml", upload);
         dispatcher.dispatchOn(".*", viewServlet);
-        servlet = new EnvironmentAdaptingServlet(dispatcher, configuration, session.getServletContext());
         shutdown = new Runnable() {
             public void run() {
                 //avoid running shutdown more than once
@@ -144,7 +141,7 @@ public class MainSessionBoundServlet implements PseudoServlet {
                 }
                 ContextEventRepeater.iceFacesIdDisposed(session, sessionID);
                 //shutdown all contained servers
-                servlet.shutdown();
+                dispatcher.shutdown();
                 //dispose all views
                 Iterator viewIterator = views.values().iterator();
                 while (viewIterator.hasNext()) {
@@ -160,8 +157,8 @@ public class MainSessionBoundServlet implements PseudoServlet {
         };
     }
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        servlet.service(request, response);
+    public void service(Request request) throws Exception {
+        dispatcher.service(request);
     }
 
     public void shutdown() {

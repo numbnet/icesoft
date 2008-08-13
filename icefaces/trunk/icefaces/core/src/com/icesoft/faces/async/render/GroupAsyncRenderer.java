@@ -350,7 +350,7 @@ public class GroupAsyncRenderer
                 Iterator i =
                         ((MainSessionBoundServlet)
                                 SessionDispatcher.
-                                        getSingletonSessionServlet(sessionId, applicationMap)).
+                                        getSingletonSessionServer(sessionId, applicationMap)).
                                 getViews().values().iterator();
                 i.hasNext();
                 ) {
