@@ -231,9 +231,9 @@ public class GroupAsyncRenderer
          * constructed and does not support the mutative remove operation!
          */
         if (StaticTimerUtility.Log.isTraceEnabled()) {
-            StaticTimerUtility.newJob( group.size() );
+            StaticTimerUtility.newJob(group.size());
             StaticTimerUtility.startJobTmer();
-        } 
+        }
         for (Iterator i = group.iterator(); !stopRequested && i.hasNext();) {
             Object object = ((WeakReference) i.next()).get();
             if (object instanceof Renderable) {
@@ -350,7 +350,7 @@ public class GroupAsyncRenderer
                 Iterator i =
                         ((MainSessionBoundServlet)
                                 SessionDispatcher.
-                                        getSingletonSessionServlet(sessionId, applicationMap)).
+                                        getSingletonSessionServer(sessionId, applicationMap)).
                                 getViews().values().iterator();
                 i.hasNext();
                 ) {

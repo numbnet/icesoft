@@ -4,6 +4,7 @@ import com.icesoft.faces.async.render.RenderManager;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.FileLocator;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.ResourceServer;
 import com.icesoft.net.messaging.MessageServiceClient;
@@ -66,8 +67,8 @@ public class MainServlet extends HttpServlet {
             setUpMessageServiceClient();
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
-            PseudoServlet sessionDispatcher = new SessionDispatcher(context) {
-                protected PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) {
+            PseudoServlet sessionDispatcher = new SessionDispatcher(configuration, context) {
+                protected Server newServer(HttpSession session, Monitor sessionMonitor) {
                     return new MainSessionBoundServlet(session, sessionMonitor, idGenerator, mimeTypeMatcher, monitorRunner, configuration, messageServiceClient);
                 }
             };
