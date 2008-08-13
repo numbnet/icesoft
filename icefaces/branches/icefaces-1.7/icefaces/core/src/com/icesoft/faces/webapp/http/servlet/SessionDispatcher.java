@@ -1,5 +1,8 @@
 package com.icesoft.faces.webapp.http.servlet;
 
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.util.ThreadLocalUtility;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,71 +23,83 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class SessionDispatcher implements PseudoServlet {
+public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
     private final static Log Log = LogFactory.getLog(SessionDispatcher.class);
     //ICE-3073 - manage sessions with this structure
     private final static Map SessionMonitors = new HashMap();
-    private Map sessionBoundServers = new HashMap();
+    private final static CurrentServer CurrentSessionBoundServer = new CurrentServer();
+    private final Map sessionBoundServers = new HashMap();
     private ServletContext context;
 
-    public SessionDispatcher(ServletContext context) {
+    public SessionDispatcher(Configuration configuration, ServletContext context) {
+        super(new Server() {
+            public void service(Request request) throws Exception {
+                //lookup session bound server -- this is a lock-free strategy
+                CurrentSessionBoundServer.lookup().service(request);
+            }
+
+            public void shutdown() {
+                //the shutdown is executed by the overriding SessionDispatcher.shutdown method 
+            }
+        }, configuration, context);
         //avoid instance collision -- Glassfish shares EAR module classloaders
         associateSessionDispatcher(context);
         this.context = context;
     }
 
-    protected abstract PseudoServlet newServlet(HttpSession session, Monitor sessionMonitor) throws Exception;
-
     public void service(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession(true);
         checkSession(session);
-        lookupServlet(session).service(request, response);
+        //attach session bound server to the current thread -- this is a lock-free strategy
+        CurrentSessionBoundServer.attach(lookupServer(session));
+        super.service(request, response);
     }
+
+    public void shutdown() {
+        Iterator i = sessionBoundServers.values().iterator();
+        while (i.hasNext()) {
+            Server server = (Server) i.next();
+            server.shutdown();
+        }
+    }
+
+    protected abstract Server newServer(HttpSession session, Monitor sessionMonitor) throws Exception;
 
     protected void checkSession(HttpSession session) {
         try {
             final String id = session.getId();
-
             final Monitor monitor;
-        synchronized (SessionMonitors) {
+            synchronized (SessionMonitors) {
                 if (!SessionMonitors.containsKey(id)) {
                     monitor = new Monitor(session);
                     SessionMonitors.put(id, monitor);
                 } else {
                     monitor = (Monitor) SessionMonitors.get(id);
-            }
+                }
                 //it is possible to have multiple web-app contexts associated with the same session ID
                 monitor.addInSessionContext(context);
-        }
+            }
 
             synchronized (sessionBoundServers) {
                 if (!sessionBoundServers.containsKey(id)) {
-                    sessionBoundServers.put(id, this.newServlet(session, monitor));
-    }
+                    sessionBoundServers.put(id, this.newServer(session, monitor));
+                }
             }
         } catch (Exception e) {
             Log.error(e);
         }
     }
 
-    protected PseudoServlet lookupServlet(final HttpSession session) {
-        return lookupServlet(session.getId());
+    protected Server lookupServer(final HttpSession session) {
+        return lookupServer(session.getId());
     }
 
-    protected PseudoServlet lookupServlet(final String sessionId) {
-        return (PseudoServlet) sessionBoundServers.get(sessionId);
-    }
-
-    public void shutdown() {
-        Iterator i = sessionBoundServers.values().iterator();
-        while (i.hasNext()) {
-            PseudoServlet server = (PseudoServlet) i.next();
-            server.shutdown();
-        }
+    protected Server lookupServer(final String sessionId) {
+        return (Server) sessionBoundServers.get(sessionId);
     }
 
     private void sessionShutdown(HttpSession session) {
-        PseudoServlet servlet = (PseudoServlet) sessionBoundServers.get(session.getId());
+        Server servlet = (Server) sessionBoundServers.get(session.getId());
         servlet.shutdown();
     }
 
@@ -111,30 +126,30 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         SessionDispatcher sessionDispatcher = lookupSessionDispatcher(context);
         //shutdown session bound server
+        try {
+            sessionDispatcher.sessionShutdown(session);
+        } catch (Exception e) {
+            Log.error(e);
+        }
+
+        synchronized (SessionMonitors) {
             try {
-                sessionDispatcher.sessionShutdown(session);
+                sessionDispatcher.sessionDestroy(session);
             } catch (Exception e) {
                 Log.error(e);
             }
-
-        synchronized (SessionMonitors) {
-                try {
-                    sessionDispatcher.sessionDestroy(session);
-                } catch (Exception e) {
-                    Log.error(e);
-                }
             //ICE-3189 - do this before invalidating the session
             SessionMonitors.remove(sessionID);
         }
     }
 
     //Exposing MainSessionBoundServlet for Tomcat 6 Ajax Push
-    public static PseudoServlet getSingletonSessionServlet(final HttpSession session, ServletContext context) {
-        return lookupSessionDispatcher(context).lookupServlet(session);
+    public static Server getSingletonSessionServer(final HttpSession session, ServletContext context) {
+        return lookupSessionDispatcher(context).lookupServer(session);
     }
 
-    public static PseudoServlet getSingletonSessionServlet(final String sessionId, Map applicationMap) {
-        return lookupSessionDispatcher(applicationMap).lookupServlet(sessionId);
+    public static Server getSingletonSessionServer(final String sessionId, Map applicationMap) {
+        return lookupSessionDispatcher(applicationMap).lookupServer(sessionId);
     }
 
     public static class Listener implements ServletContextListener, HttpSessionListener {
@@ -236,6 +251,16 @@ public abstract class SessionDispatcher implements PseudoServlet {
 
         public void addInSessionContext(ServletContext context) {
             contexts.add(context);
+        }
     }
+
+    private static class CurrentServer extends ThreadLocal {
+        public Server lookup() {
+            return (Server) get();
+        }
+
+        public void attach(Server server) {
+            set(server);
+        }
     }
 }

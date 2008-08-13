@@ -3,31 +3,27 @@ package com.icesoft.faces.async.servlet;
 import com.icesoft.faces.async.common.ExecuteQueue;
 import com.icesoft.faces.async.common.SessionManager;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
-import com.icesoft.faces.webapp.http.servlet.EnvironmentAdaptingServlet;
-import com.icesoft.faces.webapp.http.servlet.PseudoServlet;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class SessionBoundServlet
-implements PseudoServlet {
-    private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
+import javax.servlet.ServletContext;
 
-    private PseudoServlet servlet;
+//todo: rename to SessionBoundServer
+public class SessionBoundServlet
+        implements Server {
+    private static final Log LOG = LogFactory.getLog(SessionBoundServlet.class);
+    private PathDispatcherServer pathDispatcherServer;
 
     public SessionBoundServlet(
-        final Configuration configuration, final SessionManager sessionManager,
-        final ExecuteQueue executeQueue,
-        final SessionDispatcher.Monitor monitor,
-        final ServletContext servletContext)
-    throws IllegalArgumentException {
+            final Configuration configuration, final SessionManager sessionManager,
+            final ExecuteQueue executeQueue,
+            final SessionDispatcher.Monitor monitor,
+            final ServletContext servletContext)
+            throws IllegalArgumentException {
         if (configuration == null) {
             throw new IllegalArgumentException("configuration is null");
         }
@@ -41,25 +37,19 @@ implements PseudoServlet {
         //       should create a separate DisposeViewsServer and register that
         //       with the appropriate Request URI.
         Server _server =
-            new SendUpdatedViewsServer(sessionManager, executeQueue, monitor);
-        PathDispatcherServer _pathDispatcherServer = new PathDispatcherServer();
-        _pathDispatcherServer.dispatchOn(
-            ".*block\\/receive\\-updated\\-views$", _server);
-        _pathDispatcherServer.dispatchOn(
-            ".*block\\/dispose\\-views$", _server);
-        servlet =
-            new EnvironmentAdaptingServlet(
-                _pathDispatcherServer, configuration, servletContext);
+                new SendUpdatedViewsServer(sessionManager, executeQueue, monitor);
+        pathDispatcherServer = new PathDispatcherServer();
+        pathDispatcherServer.dispatchOn(
+                ".*block\\/receive\\-updated\\-views$", _server);
+        pathDispatcherServer.dispatchOn(
+                ".*block\\/dispose\\-views$", _server);
     }
 
-    public void service(
-        final HttpServletRequest httpServletRequest,
-        final HttpServletResponse httpServletResponse)
-    throws Exception {
-        servlet.service(httpServletRequest, httpServletResponse);
+    public void service(Request request) throws Exception {
+        pathDispatcherServer.service(request);
     }
 
     public void shutdown() {
-        servlet.shutdown();
+        pathDispatcherServer.shutdown();
     }
 }
