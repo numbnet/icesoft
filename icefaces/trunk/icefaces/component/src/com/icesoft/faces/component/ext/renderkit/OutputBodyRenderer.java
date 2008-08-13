@@ -33,12 +33,10 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import org.w3c.dom.Element;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -59,7 +57,7 @@ public class OutputBodyRenderer extends DomBasicRenderer {
         setElementAttr(writer, HTML.CLASS_ATTR, uiComponent, HTML.STYLE_CLASS_ATTR);
         setElementAttr(writer, "text", uiComponent, "text");
         setElementAttr(writer, "vlink", uiComponent, "vlink");
-        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent) throws IOException {

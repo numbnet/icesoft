@@ -33,14 +33,10 @@
 
 package com.icesoft.faces.component.ext.renderkit;
 
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import org.w3c.dom.Element;
 
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
@@ -53,7 +49,7 @@ public class OutputHeadRenderer extends DomBasicRenderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent) throws IOException {
         ResponseWriter writer = facesContext.getResponseWriter();
         writer.startElement("head", uiComponent);
-        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
         setElementAttr(writer, "profile", uiComponent, "profile");
     }
 

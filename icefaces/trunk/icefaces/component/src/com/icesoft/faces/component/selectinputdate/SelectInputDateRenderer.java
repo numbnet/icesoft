@@ -475,8 +475,7 @@ public class SelectInputDateRenderer
             // assumption we want the first table in tables. there should only be one
             Element table = (Element) tables.item(0);
 
-            PassThruAttributeRenderer.renderHtmlAttributes(
-                facesContext, uiComponent, passThruAttributes);
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
             Element tr1 = domContext.createElement(HTML.TR_ELEM);
 
