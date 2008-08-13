@@ -37,37 +37,44 @@ import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import java.util.HashSet;
 
 public class TextRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TextRenderer {
+    
+    //private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_INPUTTEXT);
+    //handled onkeypress onfocus onblur onmousedown
+    private static final String[] passThruAttributes = 
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYUP_ATTR,   HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+           
     protected void addJavaScript(FacesContext facesContext,
                                  UIComponent uiComponent, Element root,
-                                 String currentValue, HashSet excludes) {
+                                 String currentValue) {
         //exclude following events
-        excludes.add("onkeypress");
-        excludes.add("onfocus");
-        excludes.add("onblur");
-        
-        String onkeypress = ((HtmlInputText)uiComponent).getOnkeypress() != null ? ((HtmlInputText)uiComponent).getOnkeypress() : "";
-        String onfocus = ((HtmlInputText)uiComponent).getOnfocus() != null ? ((HtmlInputText)uiComponent).getOnfocus() : "";
-        String onblur = ((HtmlInputText)uiComponent).getOnblur() != null ? ((HtmlInputText)uiComponent).getOnblur() : "";
+//        excludes.add("onkeypress");
+//        excludes.add("onfocus");
+//        excludes.add("onblur");
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        String onkeypress = ((HtmlInputText)uiComponent).getOnkeypress();
+        String onfocus = ((HtmlInputText)uiComponent).getOnfocus();
+        String onblur = ((HtmlInputText)uiComponent).getOnblur();
                 
         //Add the enter key behavior by default
-        root.setAttribute("onkeypress", onkeypress + this.ICESUBMIT);
+        root.setAttribute("onkeypress", combinedPassThru(onkeypress, this.ICESUBMIT));
         // set the focus id
-        root.setAttribute("onfocus", onfocus + "setFocus(this.id);");
+        root.setAttribute("onfocus", combinedPassThru(onfocus, "setFocus(this.id);"));
         // clear focus id
-        root.setAttribute("onblur", onblur + "setFocus('');");
+        root.setAttribute("onblur", combinedPassThru(onblur, "setFocus('');"));
         
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute("onblur", onblur + "setFocus('');" + 
-                                        "iceSubmitPartial(form,this,event); return false;");
+            root.setAttribute("onblur", combinedPassThru(onblur, "setFocus('');" + 
+                                        "iceSubmitPartial(form,this,event); return false;"));
         }
 
     }

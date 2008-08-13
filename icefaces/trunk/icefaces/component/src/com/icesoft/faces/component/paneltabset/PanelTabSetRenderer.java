@@ -779,14 +779,11 @@ public class PanelTabSetRenderer
             throw new FacesException("CommandLink must be contained in a form");
         }
         String uiFormClientId = uiForm.getClientId(facesContext);
-        String onclick = "";
-        if (tab.getOnclick()!= null){
-            onclick = tab.getOnclick();
-        }
-        root.setAttribute("onclick", onclick + getJavaScriptOnClickString(facesContext,
+        String onclick = tab.getOnclick();
+        root.setAttribute("onclick", combinedPassThru(onclick, getJavaScriptOnClickString(facesContext,
                                                                 tabSet,
                                                                 uiFormClientId,
-                                                                parameters)); // replaced command w/component
+                                                                parameters))); // replaced command w/component
     }
 
     private String getJavaScriptOnClickString(FacesContext facesContext,

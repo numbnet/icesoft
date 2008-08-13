@@ -44,7 +44,6 @@ public class AttributeConstantsTest extends TestCase {
         "H_SELECTONEMENU",
         "H_SELECTONERADIO"
     };
-    
     private static final String RI_ATTRIBUTES_HELPER = "com.icesoft.faces.component.AttributeConstants";
     private static final String ICE_ATTRIBUTES_HELPER = "com.icesoft.faces.component.ExtendedAttributeConstants";
 
@@ -74,7 +73,13 @@ public class AttributeConstantsTest extends TestCase {
                 iceCompName = "ICE_MESSAGES";
             }
             ice_attributes = ExtendedAttributeConstants.getAttributes(getCompIndex(ICE_ATTRIBUTES_HELPER, iceCompName));
-            compareHtmlAttributesWithRI(h_attributes, ice_attributes, iceCompName);
+            
+            //TODO enable the following case
+            String message = "ICE Component=" + iceCompName + " defined more html attribute=";
+            compareHtmlAttributesWithRI(h_attributes, ice_attributes, message, Boolean.FALSE);
+            //the following case should pass
+            message = "ICE Component=" + iceCompName + " does not have html attribute=";
+            compareHtmlAttributesWithRI(ice_attributes, h_attributes, message, Boolean.TRUE);
         }
     }
 
@@ -97,20 +102,20 @@ public class AttributeConstantsTest extends TestCase {
         return index;
     }
 
-    private void compareHtmlAttributesWithRI(String[] h_attributes, String[] ice_attributes, String compName) {
+    private void compareHtmlAttributesWithRI(String[] first_attributes, String[] second_attributes, String message, boolean failed) {
 
         HashMap hashMap = new HashMap();
-        for (int i = 0; i < h_attributes.length; i++) {
-            hashMap.put(h_attributes[i], h_attributes[i]);
+        for (int i = 0; i < first_attributes.length; i++) {
+            hashMap.put(first_attributes[i], first_attributes[i]);
         }
 
-        for (int i = 0; i < ice_attributes.length; i++) {            
-            Object value = hashMap.get(ice_attributes[i]);
+        for (int i = 0; i < second_attributes.length; i++) {
+            Object value = hashMap.get(second_attributes[i]);
             if (value == null) {
-                String message = "ICE Component="+ compName+" defined more html attribute="+ice_attributes[i];
-                Logger.getLogger(AttributeConstantsTest.class.getName()).log(Level.INFO, message);
-                //TODO enable test case, info only now
-
+                Logger.getLogger(AttributeConstantsTest.class.getName()).log(Level.INFO, message + second_attributes[i]);
+                if(failed){
+                    fail(message);
+                }
             }
         }
     }
