@@ -185,9 +185,9 @@ public class FormRenderer extends DomBasicRenderer {
         //root.setAttribute("context_type", contextClass);
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-        String autoComplete = (String)uiComponent.getAttributes().get("autocomplete");
-        if(autoComplete != null){
-            root.setAttribute("autocomplete", autoComplete);
+        String autoComplete = (String)uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
+        if(autoComplete != null && "off".equalsIgnoreCase(autoComplete)){
+            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
                 
         facesContext.getApplication().getViewHandler().writeState(facesContext);

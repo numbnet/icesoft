@@ -42,13 +42,8 @@ import org.w3c.dom.Element;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlSelectManyCheckbox;
 import javax.faces.context.FacesContext;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class is responsible for the rendering of html pass thru attributes.
@@ -432,18 +427,22 @@ public class PassThruAttributeRenderer {
                                         Element attributeElement,
                                         Element styleElement, String[] htmlAttributes) {
                                         
-        attributeElement = getTargetElement (facesContext, uiComponent, attributeElement);
-        renderNonBooleanHtmlAttributes(uiComponent, attributeElement, htmlAttributes);  
-        CurrentStyle.apply(facesContext, uiComponent, styleElement, null);
-
         if(attributeElement == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
+            if(domContext == null){
+                 throw new FacesException("DOMContext is null");
+            }
             Element rootElement = (Element) domContext.getRootNode();
+            if (rootElement == null) {
+                throw new FacesException("DOMContext is null");
+            }
             attributeElement = rootElement;
         }
+        renderNonBooleanHtmlAttributes(uiComponent, attributeElement, htmlAttributes);  
         
-        //TODO remove the following:
+        //TODO remove the following:        
+        CurrentStyle.apply(facesContext, uiComponent, styleElement, null);              
         LocalEffectEncoder
                 .encodeLocalEffects(uiComponent, attributeElement, facesContext);
         renderOnFocus(uiComponent, attributeElement);

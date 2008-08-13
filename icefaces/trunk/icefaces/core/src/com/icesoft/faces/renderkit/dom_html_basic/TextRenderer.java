@@ -33,9 +33,9 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.component.UIXhtmlComponent;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.renderkit.RendererUtil;
 import com.icesoft.faces.util.DOMUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -46,12 +46,15 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIOutput;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
 
 
 public class TextRenderer extends DomBasicInputRenderer {
 
+    private static final String output_passThruAttributes[] = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTTEXT);
+    //private static final String input_passThruAttributes[] = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT);
+    //handled onmousedown
+    private static final String input_passThruAttributes[] = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+           
     public void encodeChildren(FacesContext facesContext,
                                UIComponent uiComponent) {
         validateParameters(facesContext, uiComponent, null);
@@ -169,7 +172,7 @@ public class TextRenderer extends DomBasicInputRenderer {
             ((Element) rootSpan).setAttribute("class", styleClass);
         }
         PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+                .renderHtmlAttributes(facesContext, uiComponent, output_passThruAttributes);
     }
 
     /**
@@ -247,30 +250,10 @@ public class TextRenderer extends DomBasicInputRenderer {
             root.setAttribute("class", styleClass);
         }
         
-        HashSet excludes = new HashSet();
-        addJavaScript(facesContext, uiComponent, root, currentValue, excludes);
-        String[] attributes = (String[]) uiComponent.getAttributes().get(RendererUtil.SUPPORTED_PASSTHRU_ATT);
-        if (attributes != null) {
-            for (int i=0; i < attributes.length; i++) {
-                if (excludes.contains(attributes[i])) continue;
-                Object value = null;
-                if ((value = uiComponent.getAttributes().get(attributes[i])) != null &&
-                        PassThruAttributeRenderer.attributeValueIsSentinel(attributes[i])
-                        ) {
-                    root.setAttribute(attributes[i], String.valueOf(value));
-                }
-            } 
-        } else {
-        PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
-        }
-        String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
-        if (mousedownScript != null) {
-            mousedownScript+= ";this.focus();";
-        } else {
-            mousedownScript = "this.focus();";
-        }
-        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, mousedownScript);
+        addJavaScript(facesContext, uiComponent, root, currentValue);
+
+        String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
         domContext.streamWrite(facesContext, uiComponent);
 
     }
@@ -310,9 +293,9 @@ public class TextRenderer extends DomBasicInputRenderer {
 
     protected void addJavaScript(FacesContext facesContext,
                                  UIComponent uiComponent, Element root,
-                                 String currentValue,
-                                 HashSet excludes) {
-
+                                 String currentValue) {
+                                 
+        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, input_passThruAttributes);
 
     }
 }
