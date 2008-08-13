@@ -42,13 +42,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.HashSet;
 
 public class TextareaRenderer extends DomBasicInputRenderer {
 
     //private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXTAREA);
-    //handled onmousedown, onblur 
-    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.ROWS_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
+    //handled onmousedown rows
+    private static final String[] passThruAttributes = new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ONBLUR_ATTR, HTML.COLS_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR };                        
            
     
     public void encodeBegin(FacesContext context, UIComponent component)
@@ -86,9 +85,9 @@ public class TextareaRenderer extends DomBasicInputRenderer {
         }
         
         String autoComplete =
-                (String) component.getAttributes().get("autocomplete");
-        if (autoComplete != null) {
-            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, autoComplete);
+                (String) component.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
+        if (autoComplete != null && "off".equalsIgnoreCase(autoComplete)) {
+            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
         PassThruAttributeRenderer
                 .renderHtmlAttributes(facesContext, component, passThruAttributes);
@@ -115,24 +114,13 @@ public class TextareaRenderer extends DomBasicInputRenderer {
             // structure of the textarea element in the DOM
             valueNode.setData("");
         }
-        HashSet excludes = new HashSet();
-        addJavaScript(facesContext, component, root, currentValue, excludes);
+
         //fix for ICE-2514
-        String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
-        if (mousedownScript != null) {
-            mousedownScript+= ";this.focus();";
-        } else {
-            mousedownScript = "this.focus();";
-        }
-        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, mousedownScript);         
+        String mousedownScript = (String)component.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript,"this.focus;"));        
         domContext.stepOver();
         domContext.streamWrite(facesContext, component);
     }
 
-    protected void addJavaScript(FacesContext facesContext,
-                                 UIComponent uiComponent, Element root,
-                                 String currentValue,
-                                 HashSet excludes) {
-    }
 
 }

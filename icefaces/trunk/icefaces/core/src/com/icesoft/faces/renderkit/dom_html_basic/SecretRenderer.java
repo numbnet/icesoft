@@ -41,11 +41,13 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
-import java.util.HashSet;
 
 public class SecretRenderer extends DomBasicInputRenderer {
 
-    private final static String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTSECRET);
+    //private final static String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTSECRET);
+    //handled onMouseDown
+    private final static String[] passThruAttributes = 
+               new String[]{ HTML.ACCESSKEY_ATTR,  HTML.ALT_ATTR,  HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.MAXLENGTH_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCHANGE_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.ONSELECT_ATTR,  HTML.SIZE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TITLE_ATTR }; 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UIInput.class);
@@ -83,9 +85,9 @@ public class SecretRenderer extends DomBasicInputRenderer {
         PassThruAttributeRenderer.renderHtmlAttributes(
                 facesContext, uiComponent, passThruAttributes);
 
-        String autoComplete = (String)uiComponent.getAttributes().get("autocomplete");
-        if(autoComplete != null){
-            root.setAttribute("autocomplete", autoComplete);
+        String autoComplete = (String)uiComponent.getAttributes().get(HTML.AUTOCOMPLETE_ATTR);
+        if(autoComplete != null && "off".equalsIgnoreCase(autoComplete)){
+            root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
         // render the current value of the component as the value of the "value"
         // attribute  if and only if the value of the component attribute 
@@ -96,16 +98,9 @@ public class SecretRenderer extends DomBasicInputRenderer {
             root.setAttribute("value", "");
         }
 
-        HashSet excludes = new HashSet();
-        addJavaScript(facesContext, uiComponent, root, excludes);
         //fix for ICE-2514
-        String mousedownScript = root.getAttribute(HTML.ONMOUSEDOWN_ATTR);
-        if (mousedownScript != null) {
-            mousedownScript+= ";this.focus();";
-        } else {
-            mousedownScript = "this.focus();";
-        }
-        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, mousedownScript);         
+        String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+        root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));        
         domContext.streamWrite(facesContext, uiComponent);
     }
 
@@ -120,8 +115,4 @@ public class SecretRenderer extends DomBasicInputRenderer {
                && redisplayAttribute.toString().toLowerCase().equals("true");
     }
 
-    protected void addJavaScript(FacesContext facesContext,
-                                 UIComponent uiComponent, Element root,
-                                 HashSet excludes) {
-    }
 }
