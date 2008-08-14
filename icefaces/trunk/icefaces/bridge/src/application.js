@@ -92,6 +92,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             var statusManager = new Ice.Status.DefaultStatusManager(configuration, container);
             var scriptLoader = new Ice.Script.Loader(logger);
             var commandDispatcher = new Ice.Command.Dispatcher();
+            var documentSynchronizer = new Ice.Document.Synchronizer(window.logger, sessionID, viewID);
             var parameters = Ice.Parameter.Query.create(function(query) {
                 query.add('ice.session', sessionID);
                 query.add('ice.view', viewID);
@@ -182,11 +183,10 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                     replaceContainerHTML(response.content());
                 } else if (mimeType.startsWith('text/xml')) {
                     commandDispatcher.deserializeAndExecute(response.contentAsDOM().documentElement);
+                    documentSynchronizer.synchronize();
                 } else {
                     logger.warn('unknown content in response');
                 }
-
-                window.documentSynchronizer.synchronize();
             });
 
             connection.onServerError(function (response) {
@@ -227,10 +227,6 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             logger.info('bridge loaded!');
         }
     });
-});
-
-window.onLoad(function() {
-    window.documentSynchronizer = new Ice.Document.Synchronizer(window.logger);
 });
 
 window.onKeyPress(function(e) {
