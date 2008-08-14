@@ -44,15 +44,16 @@
     };
 
     This.Synchronizer = Object.subclass({
-        initialize: function(logger) {
+        initialize: function(logger, sessionID, viewID) {
             this.logger = logger.child('synchronizer');
             this.ajax = new Ajax.Client(this.logger);
-            if (window.frames[0].location.hash.length > 0) this.reload();
+            this.historyFrame = window.frames['history-frame:' + sessionID + ':' + viewID];
+            if (this.historyFrame.location.hash.length > 0) this.reload();
         },
 
         synchronize: function() {
             try {
-                window.frames[0].location.hash = '#reload';
+                this.historyFrame.location.hash = '#reload';
                 this.logger.debug('mark document as modified');
                 this.synchronize = Function.NOOP;
             } catch(e) {
