@@ -355,6 +355,9 @@ input.iceSelInpDateClosePopup {
 ----- for datatable when cell content length exceeds-----
 */
 .iceDatTbl td span.iceOutTxt{
+  display:block;
+  overflow:hidden;
+  padding:2px 0; 
 }
 /* etc */
 
