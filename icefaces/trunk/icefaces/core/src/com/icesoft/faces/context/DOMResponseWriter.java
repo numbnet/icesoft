@@ -288,29 +288,6 @@ public class DOMResponseWriter extends ResponseWriter {
     private void enhanceBody(Element body) {
         //id required for forwarded (server-side) redirects
         body.setAttribute("id", "document:body");
-        Element iframe = document.createElement("iframe");
-        body.insertBefore(iframe, body.getFirstChild());
-        iframe.setAttribute("id", "history-frame");
-        Object request = context.getExternalContext().getRequest();
-
-        final String frameURI;
-        //another "workaround" to resolve the iframe URI
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest httpRequest = (HttpServletRequest) request;
-            if (httpRequest.getRequestURI() == null) {
-                frameURI = "about:blank";
-            } else {
-                frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
-                        "/xmlhttp/blank");
-            }
-        } else {
-            frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank"); // ICE-2553
-        }
-        iframe.setAttribute("title", "Icefaces Redirect");
-        iframe.setAttribute("src", frameURI);
-        iframe.setAttribute("frameborder", "0");
-        iframe.setAttribute("style",
-                "z-index: 10000; visibility: hidden; width: 0; height: 0; position: absolute; opacity: 0.22; filter: alpha(opacity=22);");
 
         // TODO This is only meant to be a transitional focus retention(management) solution.
         String focusId = context.getFocusId();
@@ -318,7 +295,6 @@ public class DOMResponseWriter extends ResponseWriter {
             JavascriptContext.focus(context, focusId);
         }
         ViewHandler handler = context.getApplication().getViewHandler();
-        Map session = context.getExternalContext().getSessionMap();
         String sessionIdentifier = context.getIceFacesId();
         String viewIdentifier = context.getViewNumber();
         String prefix = sessionIdentifier + ':' + viewIdentifier + ':';
@@ -381,6 +357,33 @@ public class DOMResponseWriter extends ResponseWriter {
         configurationElement.setAttribute("type", "text/javascript");
         configurationElement.appendChild(document.createTextNode(startupScript));
         body.insertBefore(configurationElement, body.getFirstChild());
+
+        Element iframe = document.createElement("iframe");
+        body.insertBefore(iframe, body.getFirstChild());
+        String iframeID = "history-frame:" + sessionIdentifier + ":" + viewIdentifier;
+        iframe.setAttribute("id", iframeID);
+        iframe.setAttribute("name", iframeID);
+        Object request = context.getExternalContext().getRequest();
+
+        final String frameURI;
+        //another "workaround" to resolve the iframe URI
+        if (request instanceof HttpServletRequest) {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            if (httpRequest.getRequestURI() == null) {
+                frameURI = "about:blank";
+            } else {
+                frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(),
+                        "/xmlhttp/blank");
+            }
+        } else {
+            frameURI = CoreUtils.resolveResourceURL(FacesContext.getCurrentInstance(), "/xmlhttp/blank"); // ICE-2553
+        }
+        iframe.setAttribute("title", "Icefaces Redirect");
+        iframe.setAttribute("src", frameURI);
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("style",
+                "z-index: 10000; visibility: hidden; width: 0; height: 0; position: absolute; opacity: 0.22; filter: alpha(opacity=22);");
+
 
         Element noscript = (Element) body.appendChild(document.createElement("noscript"));
         Element noscriptMeta = (Element) noscript.appendChild(document.createElement("meta"));
