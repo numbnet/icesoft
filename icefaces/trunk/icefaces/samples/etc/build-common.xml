@@ -49,6 +49,7 @@
                 commons-el.jar
                 commons-fileupload.jar
                 commons-logging.jar
+                FastInfoset.jar
                 icefaces.jar
                 icefaces-comps.jar
                 el-api.jar

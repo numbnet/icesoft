@@ -273,7 +273,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         //
         if (responseWriter != null) {
             Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(document, commandQueue, viewNumber);
+            domSerializer = new PushModeSerializer(configuration, document, commandQueue, viewNumber);
         }
     }
 
@@ -392,6 +392,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
         // #2807 release thread locals
         setCurrentInstance(null);
+        ((DOMResponseWriter) responseWriter).release();
     }
 
     public void dispose() {
