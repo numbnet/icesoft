@@ -94,7 +94,7 @@ public class DOMResponseWriter extends ResponseWriter {
             };
         }
     });
-    private static DocumentBuilder DOCUMENT_BUILDER;
+    static DocumentBuilder DOCUMENT_BUILDER;
 
     static {
         try {
@@ -107,7 +107,7 @@ public class DOMResponseWriter extends ResponseWriter {
 
     private static boolean isStreamWritingFlag = false;
     private final Map domContexts = new HashMap();
-    private final Document document = DOCUMENT_BUILDER.newDocument();
+    private Document document = DOCUMENT_BUILDER.newDocument();
     private final BridgeFacesContext context;
     private final DOMSerializer serializer;
     private final Configuration configuration;
@@ -160,6 +160,11 @@ public class DOMResponseWriter extends ResponseWriter {
             enhanceAndFixDocument();
             serializer.serialize(document);
         }
+    }
+    
+    public void release()  {
+        document = null;
+        cursor = null;
     }
 
     public void flush() throws IOException {

@@ -1,12 +1,17 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.util.DOMUtils;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.command.UpdateElements;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,16 +22,32 @@ import java.util.Collection;
 
 public class PushModeSerializer implements DOMSerializer {
     private Document oldDocument;
+    private byte[] domBytes;
     private CommandQueue commandQueue;
     private String viewNumber;
+    private boolean compressDOM = false;
 
-    public PushModeSerializer(Document currentDocument, CommandQueue commandQueue, String viewNumber) {
+    public PushModeSerializer(Configuration configuration, Document currentDocument, CommandQueue commandQueue, String viewNumber) {
         this.oldDocument = currentDocument;
         this.commandQueue = commandQueue;
         this.viewNumber = viewNumber;
+        compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
+        compactDOM();
     }
 
     public void serialize(Document document) throws IOException {
+        if ( compressDOM && (null != domBytes) )  {
+            DOMDocumentParser parser = new DOMDocumentParser();
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(domBytes);
+            oldDocument = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
+            try {
+                parser.parse(oldDocument, byteIn);
+                //parser retains reference to DOM, causes memory leak
+                parser = null;
+            } catch (Exception e)  {
+                e.printStackTrace();
+            }
+        }
         Node[] changed = DOMUtils.domDiff(oldDocument, document);
         HashMap depthMaps = new HashMap();
         for (int i = 0; i < changed.length; i++) {
@@ -92,6 +113,23 @@ public class PushModeSerializer implements DOMSerializer {
         }
 
         oldDocument = document;
+        compactDOM();
+    }
+    
+    void compactDOM()  {
+        if (compressDOM)  {
+            
+            DOMDocumentSerializer serializer = new DOMDocumentSerializer();
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream(10000);
+            serializer.setOutputStream(byteOut);
+            try {
+                serializer.serialize(oldDocument);
+            } catch (IOException e)  {
+                e.printStackTrace();
+            }
+            domBytes = byteOut.toByteArray();
+            oldDocument = null;
+        }
     }
 
     //prune the children by looking for ancestors in the parents collection 
