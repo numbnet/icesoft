@@ -107,6 +107,7 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                              new This.Connection.AsyncConnection(logger, sessionID, viewID, configuration.connection, parameters, commandDispatcher);
             var dispose = function() {
                 dispose = Function.NOOP;
+                documentSynchronizer.shutdown();
                 connection.shutdown();
             }
 
