@@ -47,7 +47,7 @@
         initialize: function(logger, sessionID, viewID) {
             this.logger = logger.child('synchronizer');
             this.ajax = new Ajax.Client(this.logger);
-            this.historyFrame = window.frames['history-frame:' + sessionID + ':' + viewID];
+            this.historyFrame = ('history-frame:' + sessionID + ':' + viewID).asElement().contentWindow;
             if (this.historyFrame.location.hash.length > 0) this.reload();
         },
 
@@ -73,6 +73,10 @@
             } catch (e) {
                 this.logger.error('failed to reload body', e);
             }
+        },
+
+        shutdown: function() {
+            this.synchronize = Function.NOOP;
         }
     });
 });
