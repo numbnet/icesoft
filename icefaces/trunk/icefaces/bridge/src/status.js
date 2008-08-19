@@ -152,7 +152,7 @@
             var messageContainerStyle = messageContainer.style;
             messageContainerStyle.position = 'absolute';
             messageContainerStyle.textAlign = 'center';
-            messageContainerStyle.zIndex = '10001';
+            messageContainerStyle.zIndex = '28001';
             messageContainerStyle.color = 'black';
             messageContainerStyle.backgroundColor = 'white';
             messageContainerStyle.paddingLeft = '0';
@@ -233,7 +233,7 @@
             overlayStyle.display = 'block';
             overlayStyle.visibility = 'visible';
             overlayStyle.backgroundColor = 'white';
-            overlayStyle.zIndex = '10000';
+            overlayStyle.zIndex = '28000';
             overlayStyle.top = '0';
             overlayStyle.left = '0';
             overlayStyle.opacity = 0.22;
