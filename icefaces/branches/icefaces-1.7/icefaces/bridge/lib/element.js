@@ -264,41 +264,6 @@
             this.element.onfocus = onFocusListener;
         },
 
-        replaceHostElementWith: function(newElement) {
-            this.eachAttributeName(function(attributeName) {
-                var newValue = newElement[attributeName]
-                var oldValue = this.element[attributeName];
-                if (oldValue != newValue) {
-                    this.element[attributeName] = newValue;
-                }
-            }.bind(this));
-
-            //'style' attribute special case
-            var newStyle = newElement.getAttribute('style');
-            var oldStyle = this.element.getAttribute('style');
-            if (newStyle != oldStyle) {
-                this.element.setAttribute('style', newStyle);
-            }
-
-            //overwrite listeners and bind them to the existing element
-            this.eachListenerName(function(listenerName) {
-                var name = listenerName.toLowerCase();
-                this.element[name] = newElement[name] ? newElement[name].bind(this.element) : null;
-                newElement[name] = null;
-            }.bind(this));
-        },
-
-        eachAttributeName: function(iterator) {
-            //core and i18n attributes (except 'id' and 'style' attributes)
-            ['className', 'title', 'lang'].each(iterator);
-            //input element attributes
-            ['name', 'value', 'checked', 'disabled', 'readOnly',
-                'size', 'maxLength', 'src', 'alt', 'useMap', 'isMap',
-                'tabIndex', 'accessKey', 'accept'].each(iterator);
-            //'dir' attribute cannot be updated dynamically in IE 7
-            //'type' attribute cannot be updated dynamically in Firefox 2.0
-        },
-
         serializeOn: function(query) {
             switch (this.element.type.toLowerCase()) {
                 case 'image':
