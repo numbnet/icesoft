@@ -217,6 +217,17 @@ public class D2DViewHandler extends ViewHandler {
                 if(!ignore)
                     super.setLocale(locale);
             }
+            
+            private static final int MAX_COUNT = 500;
+            private int count = 0;
+            
+            public String createUniqueId() {
+              String uniqueId = super.createUniqueId(); 
+              if(++count < MAX_COUNT) { 
+                uniqueId = uniqueId.intern(); 
+              }
+              return uniqueId;  
+            }
         };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
         root.setViewId(null == viewId ? "default" : viewId);
