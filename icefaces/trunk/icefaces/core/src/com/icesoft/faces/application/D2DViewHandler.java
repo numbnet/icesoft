@@ -226,7 +226,7 @@ public class D2DViewHandler extends ViewHandler {
               if(++count < MAX_COUNT) { 
                 uniqueId = uniqueId.intern(); 
               }
-              return uniqueId;  
+              return uniqueId;
             }
         };
         root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
