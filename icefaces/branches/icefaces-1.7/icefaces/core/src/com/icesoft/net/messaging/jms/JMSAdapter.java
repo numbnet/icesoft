@@ -147,6 +147,14 @@ implements MessageServiceAdapter {
                             "jboss_ha.properties",
                             "jboss.properties"
                         });
+            } else if (_serverInfo.startsWith("WebLogic")) {
+                // BEA WebLogic
+                LOG.info("Messaging Properties: weblogic.properties");
+                this.jmsProviderConfigurations =
+                    getJMSProviderConfigurations(
+                        new String[] {
+                            "weblogic.properties"
+                        });
             } else {
                 LOG.info(
                     "Messaging Properties: " +
