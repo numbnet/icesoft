@@ -47,7 +47,15 @@
         initialize: function(logger, sessionID, viewID) {
             this.logger = logger.child('synchronizer');
             this.ajax = new Ajax.Client(this.logger);
-            this.historyFrame = ('history-frame:' + sessionID + ':' + viewID).asElement().contentWindow;
+            var id = 'history-frame:' + sessionID + ':' + viewID;
+            try {
+                //ICE-3242 under certain circumstances accessing location's hash property can throw an exception in Firefox                
+                window.frames[id].location.hash;
+                this.historyFrame = window.frames[id];
+            } catch (e) {
+                //alternative way of looking up the frame
+                this.historyFrame = id.asElement().contentWindow;
+            }
             if (this.historyFrame.location.hash.length > 0) this.reload();
         },
 
