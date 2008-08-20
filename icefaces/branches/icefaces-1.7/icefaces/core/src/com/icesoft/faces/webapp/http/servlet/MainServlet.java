@@ -103,6 +103,15 @@ public class MainServlet extends HttpServlet {
         tearDownMessageServiceClient();
     }
 
+    private boolean isAsyncHttpServiceAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass("com.icesoft.faces.async.server.AsyncHttpServerAdaptingServlet");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
     private boolean isJMSAvailable() {
         try {
             this.getClass().getClassLoader().loadClass("javax.jms.TopicConnectionFactory");
@@ -113,7 +122,7 @@ public class MainServlet extends HttpServlet {
     }
 
     private void setUpMessageServiceClient() {
-        if (!isJMSAvailable()) {
+        if (!isAsyncHttpServiceAvailable() || !isJMSAvailable()) {
             return;
         }
         try {
