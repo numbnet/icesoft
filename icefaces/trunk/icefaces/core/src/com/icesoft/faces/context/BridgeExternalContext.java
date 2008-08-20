@@ -64,6 +64,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -330,7 +331,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
         if (SeamUtilities.isSeamEnvironment()) {
             SeamUtilities.switchToCurrentSeamConversation(requestURI);
         }
-        final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
+        final URI uri;
+        try {
+            /*
+             * ICE-3427: URI.create(String) and URI(String) do not encode for
+             *           us. However, the multi-argument constructors do!
+             */
+            uri = new URI(null, null, SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier), null);
+        } catch (URISyntaxException exception) {
+            throw new RuntimeException(exception);
+        }
         final String redirectURI;
         if (uri.isAbsolute()) {
             redirectURI = uri.toString();
