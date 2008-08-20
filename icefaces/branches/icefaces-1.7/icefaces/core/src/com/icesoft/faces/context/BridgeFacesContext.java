@@ -284,14 +284,18 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void setViewRoot(UIViewRoot viewRoot) {
-        final String path = viewRoot.getViewId();
-        if (PageTemplatePattern.matcher(path).matches()) {
-            //pointing this FacesContext to the new view
-            responseWriter = null;
-            this.viewRoot = viewRoot;
-        } else {
-            commandQueue.put(new Reload(viewNumber));
-            application.setViewHandler(new SwitchViewHandler(application.getViewHandler(), path));
+        // #3424. Allow viewRoot to be set to null. On page reload, this object
+        // is reused, but viewRoot must be nullable
+        this.viewRoot = viewRoot;
+        if (viewRoot != null) {
+            final String path = viewRoot.getViewId();
+            if (PageTemplatePattern.matcher(path).matches()) {
+                //pointing this FacesContext to the new view
+                responseWriter = null;
+            } else {
+                commandQueue.put(new Reload(viewNumber));
+                application.setViewHandler(new SwitchViewHandler(application.getViewHandler(), path));
+            }
         }
     }
 
