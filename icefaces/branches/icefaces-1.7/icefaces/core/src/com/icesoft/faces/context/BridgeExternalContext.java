@@ -64,8 +64,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -212,17 +212,17 @@ public abstract class BridgeExternalContext extends ExternalContext {
         //synchronize iteration as described in http://java.sun.com/j2se/1.4.2/docs/api/java/util/Collections.html#synchronizedMap(java.util.Map)
         synchronized (requestMap) {
             Iterator entries = set.iterator();
-        while (entries.hasNext()) {
-            Map.Entry entry = (Map.Entry) entries.next();
-            Object value = entry.getValue();
-            if (value != null) {
-                String className = value.getClass().getName();
-                if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
-                        (className.indexOf("BundleMap") > 0)) {     //MyFaces
-                    result.put(entry.getKey(), value);
+            while (entries.hasNext()) {
+                Map.Entry entry = (Map.Entry) entries.next();
+                Object value = entry.getValue();
+                if (value != null) {
+                    String className = value.getClass().getName();
+                    if ((className.indexOf("LoadBundleTag") > 0) ||  //Sun RI
+                            (className.indexOf("BundleMap") > 0)) {     //MyFaces
+                        result.put(entry.getKey(), value);
+                    }
                 }
             }
-        }
         }
 
         return result;
@@ -331,7 +331,16 @@ public abstract class BridgeExternalContext extends ExternalContext {
         if (SeamUtilities.isSeamEnvironment()) {
             SeamUtilities.switchToCurrentSeamConversation(requestURI);
         }
-        final URI uri = URI.create(SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier));
+        final URI uri;
+        try {
+            /*
+             * ICE-3427: URI.create(String) and URI(String) do not encode for
+             *           us. However, the multi-argument constructors do!
+             */
+            uri = new URI(null, null, SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier), null);
+        } catch (URISyntaxException exception) {
+            throw new RuntimeException(exception);
+        }
         final String redirectURI;
         if (uri.isAbsolute()) {
             redirectURI = uri.toString();
