@@ -127,6 +127,8 @@ public class View implements CommandQueue {
                 } else {
                     //page reload
                     externalContext.updateOnPageLoad(request, response);
+                    // #3424 clear viewRoot to get JSF into createView path.  
+                    facesContext.setViewRoot(null);
                 }
             }
 
