@@ -336,6 +336,13 @@ public abstract class BridgeExternalContext extends ExternalContext {
             /*
              * ICE-3427: URI.create(String) and URI(String) do not encode for
              *           us. However, the multi-argument constructors do!
+             *
+             * Note: We're not specifically checking to see if the passed
+             *       requestURI is absolute or relative. Using the
+             *       URI(String scheme, String host, String path, String fragment)
+             *       constructor and passing the requestURI as a path regardless
+             *       of its form might seem confusing. However, the result is as
+             *       desired.
              */
             uri = new URI(null, null, SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier), null);
         } catch (URISyntaxException exception) {
