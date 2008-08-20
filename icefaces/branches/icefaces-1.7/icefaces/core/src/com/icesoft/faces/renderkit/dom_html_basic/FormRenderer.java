@@ -87,11 +87,7 @@ public class FormRenderer extends DomBasicRenderer {
             domContext.setRootNode(root);
             root.setAttribute("id", formClientId);
             root.setAttribute("method", "post");
-            String action = null;
-            // can't use a string constant we need to pass in the form id
-            // form id is not accessible in the form action attribute
-            action = "iceSubmit('" + formClientId + "');";
-            root.setAttribute("action", action);
+            root.setAttribute("action", "javascript:;");
 
             String styleClass =
                     (String) uiComponent.getAttributes().get("styleClass");
