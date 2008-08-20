@@ -486,7 +486,7 @@ implements MessageServiceAdapter {
                     JMSProviderConfiguration.URL_PACKAGE_PREFIXES,
                     _urlPackagePrefixes);
             }
-            if (LOG.isInfoEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 StringBuffer _environment = new StringBuffer();
                 _environment.append("Trying JMS Environment:\r\n");
                 Iterator _properties =
@@ -499,7 +499,7 @@ implements MessageServiceAdapter {
                     _environment.append(_property.getValue());
                     _environment.append("\r\n");
                 }
-                LOG.info(_environment.toString());
+                LOG.debug(_environment.toString());
             }
             try {
                 // throws NamingException.
@@ -511,6 +511,21 @@ implements MessageServiceAdapter {
                             jmsProviderConfigurations[i].
                                 getTopicConnectionFactoryName());
                 index = i;
+                if (LOG.isInfoEnabled()) {
+                    StringBuffer _environment = new StringBuffer();
+                    _environment.append("Using JMS Environment:\r\n");
+                    Iterator _properties =
+                        _environmentProperties.entrySet().iterator();
+                    while (_properties.hasNext()) {
+                        Map.Entry _property = (Map.Entry)_properties.next();
+                        _environment.append("        ");
+                        _environment.append(_property.getKey());
+                        _environment.append(" = ");
+                        _environment.append(_property.getValue());
+                        _environment.append("\r\n");
+                    }
+                    LOG.info(_environment.toString());
+                }
                 break;
             } catch (NamingException exception) {
                 LOG.error("Failed JMS Environment: " + exception.getMessage());
