@@ -330,7 +330,7 @@ Ice.PanelDivider.addMethods({
         this.ghost.style.width = Element.getWidth(this.source) + "px";
         this.getGhost().style.visibility="hidden";
     }
-
+      this.ghost.setStyle({width:this.source.getStyle("width")});
     return this.ghost;
   },
 
@@ -372,24 +372,25 @@ Ice.PanelDivider.addMethods({
         var totalWidth = (parseInt(leftElementWidth) + parseInt(rightElementWidth));
         var diff = this.getDifference(event);
         if (this.resizeAction == "inc") {
-            inPercent = ((leftElementWidth - splitterWidth) + diff) /totalWidth  ;
+            inPercent = (leftElementWidth + diff) /tableWidth  ;
             leftInPercent = Math.round(inPercent * 100);      
             rightInPercent = 100 - leftInPercent;
-            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+            this.getPreviousElement().style.width = leftInPercent + "%";
 //            this.getNextElement().style.width = rightInPercent + "%"
 
 
         } else {
-            inPercent = ((leftElementWidth - splitterWidth)  - diff) / totalWidth ; 
+            inPercent = (leftElementWidth - diff) / tableWidth ; 
             leftInPercent = Math.round(inPercent * 100); 
             rightInPercent = 100 - leftInPercent;
-            this.getPreviousElement().style.width = (leftInPercent-3) + "%";
+            this.getPreviousElement().style.width = leftInPercent + "%";
 //            this.getNextElement().style.width = rightInPercent + "%"
 
         }
      }
       Ice.PanelDivider.adjustSecondPaneSize(this.source, this.horizontal);
       this.getNextElement().style.visibility = savedVisibility;
+      inPercent = inPercent + 0.01;
         this.submitInfo(event, inPercent);
   },
   
