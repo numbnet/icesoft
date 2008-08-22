@@ -33,8 +33,7 @@ public class InputTextRenderer extends BaseRenderer{
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        
-        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+        renderHtmlAttributes(writer, uiComponent);
 
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);              
         Object styleClass = uiComponent.getAttributes().get("styleClass");
@@ -64,5 +63,9 @@ public class InputTextRenderer extends BaseRenderer{
         return DomBasicInputRenderer.converterGetAsString(facesContext, 
                 uiComponent, ((UIInput) uiComponent).getValue());
     }
-    
+   
+    protected void renderHtmlAttributes(ResponseWriter writer, UIComponent uiComponent)
+    throws IOException{
+        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+    }       
 }

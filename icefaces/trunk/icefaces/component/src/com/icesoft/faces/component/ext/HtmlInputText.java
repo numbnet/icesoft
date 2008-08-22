@@ -849,5 +849,30 @@ public class HtmlInputText
     
     public String[] getSupportedPassThru() {
         return supportedPassThru;
+    } 
+    
+    public String getOnkeypress() {
+        String onkeyPress = super.getOnkeypress();
+        if (onkeyPress != null) {
+            return onkeyPress + DomBasicRenderer.ICESUBMIT;
+        } 
+        return DomBasicRenderer.ICESUBMIT;
+    }
+    
+    public String getOnblur() {
+        String onblur = super.getOnblur();
+        if (onblur == null) onblur = "";
+        if (getPartialSubmit()) {
+            return onblur + "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
+        }
+        return onblur + "setFocus('');";
+    }  
+    
+    public String getOnfocus() {
+        String onfocus = super.getOnfocus();
+        if (onfocus != null) {
+            return onfocus + "setFocus(this.id);";
+        } 
+        return onfocus;
     }    
 }
