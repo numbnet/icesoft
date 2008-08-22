@@ -492,7 +492,7 @@ public class MenuRenderer extends DomBasicInputRenderer {
                     isSelected = true;
                     break;
                 }
-            } else if (formattedSelectedValue.equals(formattedSentinel)) {
+            } else if (formattedSelectedValue != null && formattedSelectedValue.equals(formattedSentinel)) {
                 isSelected = true;
                 break;
             }
