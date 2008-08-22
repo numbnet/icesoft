@@ -69,6 +69,8 @@
     <path id="compile.test.classpath">
         <pathelement location="${build.classes.dir}"/>
         <fileset dir="../component-metadata/target" includes="*.jar"/>
+        <fileset dir="${lib.dir}" includes="*.jar" excludes="jsf-api.jar, jsf-impl.jar, ${ant.project.name}.jar"/>
+        <fileset dir="${lib.dir}/ext" includes="*.jar" />
     </path>
 
     <macrodef name="build.jar">
@@ -220,8 +222,7 @@
                 <pathelement location="../component-metadata/target/generated-sources/component/main/java"/>
             </src>
             <classpath>
-                <path refid="compile.run.classpath" />
-                <path refid="compile.test.classpath"/>
+                <path refid="compile.test.classpath"/>           
                 <pathelement location="${ant.home}/lib/junit.jar"/>                
             </classpath>
         </javac>
@@ -233,9 +234,9 @@
             <sysproperty key="basedir" value="." />
             <formatter type="plain" />
             <classpath>
-                <pathelement path="${test.classes.dir}"/>
-                <path refid="compile.run.classpath" />
-                <path refid="compile.test.classpath"/>
+                <pathelement path="${test.classes.dir}"/>          
+                <pathelement path="${build.classes.dir}"/> 
+                <path refid="compile.test.classpath"/>                
             </classpath>
             <batchtest todir="${test.classes.dir}/test-reports">
                 <fileset dir="test/java">
