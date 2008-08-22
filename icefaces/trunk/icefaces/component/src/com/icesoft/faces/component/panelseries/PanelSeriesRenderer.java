@@ -80,12 +80,12 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
         PanelSeries list = (PanelSeries) uiComponent;
         UISeries uiList = (UISeries) uiComponent;
         int rowIndex = uiList.getFirst();
-        uiList.setRowIndex(rowIndex);
         int numberOfRowsToDisplay = uiList.getRows();
         int countOfRowsDisplayed = 0;
-        while (uiList.isRowAvailable()) {
-            if ((numberOfRowsToDisplay > 0) &&
-                (countOfRowsDisplayed >= numberOfRowsToDisplay)) {
+        while ( (numberOfRowsToDisplay > 0) &&
+                (countOfRowsDisplayed < numberOfRowsToDisplay)) {
+             uiList.setRowIndex(rowIndex);
+             if(!uiList.isRowAvailable()){
                 break;
             }
             Iterator childs;
@@ -101,7 +101,6 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
             }
             rowIndex++;
             countOfRowsDisplayed++;
-            uiList.setRowIndex(rowIndex);
         }
         uiList.setRowIndex(-1);
 
