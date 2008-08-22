@@ -10,7 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
 
-public class InputTextRender extends BaseRenderer{
+public class InputTextRenderer extends BaseRenderer{
     
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_INPUTTEXT);
 

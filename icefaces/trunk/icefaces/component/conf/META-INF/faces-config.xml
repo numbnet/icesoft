@@ -550,7 +550,7 @@
         <renderer>
             <component-family>javax.faces.Input</component-family>
             <renderer-type>com.icesoft.faces.Text</renderer-type>
-            <renderer-class>com.icesoft.faces.component.ext.renderkit.TextRenderer</renderer-class>
+            <renderer-class>com.icesoft.faces.component.ext.renderkit.InputTextRenderer</renderer-class>
         </renderer>
 
  
@@ -828,8 +828,6 @@
         <component-class>com.icesoft.faces.component.ext.RowSelector</component-class>
     </component>
     
-
-
     <!--
     <component>
         <component-type>com.icesoft.faces.Map</component-type>
