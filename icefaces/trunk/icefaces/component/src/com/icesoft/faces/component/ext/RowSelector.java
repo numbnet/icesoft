@@ -251,6 +251,8 @@ public class RowSelector extends UIPanel {
         if (selectedRows == null || selectedRows.trim().length() == 0) {
             return;
         }
+        
+        Integer oldRow = getClickedRow();
 
         // What row number am I, was I clicked?
         int rowIndex = dataTable.getRowIndex();
@@ -306,22 +308,14 @@ public class RowSelector extends UIPanel {
                     rowSelector.queueEvent(evt);
                 }
 
-                // ICE-2024: should clear the whole table, not just the displayed page.
+                // ICE-3440
                 if (!getMultiple().booleanValue()) {
-                    for (int i = 0; i < dataTable.getRowCount(); i++) {
-                        if (i != rowIndex) {
-                            dataTable.setRowIndex(i);
-                            setValue(Boolean.FALSE);
-                        }
+                    if (oldRow != null && oldRow.intValue() >= 0 && oldRow.intValue() != rowIndex) {
+                        dataTable.setRowIndex(oldRow.intValue());
+                        setValue(Boolean.FALSE);
+                        dataTable.setRowIndex(rowIndex);
                     }
                 }
-            } else {
-/* ICE-2024: see above.
-                if (Boolean.FALSE.equals(rowSelector.getMultiple())) {
-                    // Clear all other selections
-                    rowSelector.setValue(Boolean.FALSE);
-                }
-*/
             }
         } catch (Exception e) {
             e.printStackTrace();
