@@ -120,13 +120,7 @@ class RunnableRender implements Runnable {
         //we have to hope that the appropriate class loader settings were
         //transferred to this new thread.  If not, then the security policy
         //will need to be altered to allow this.
-        try {
-            Thread.currentThread().setContextClassLoader( state.getRenderableClassLoader() );
-        } catch (SecurityException se) {
-            if (log.isDebugEnabled()) {
-                log.debug("setting context class loader is not permitted", se);
-            }
-        }
+        state.setCurrentContextClassLoader();
 
         try {
 
