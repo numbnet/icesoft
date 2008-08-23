@@ -80,9 +80,13 @@ public class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
     private static ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static InheritableThreadLocal localInstance = new InheritableThreadLocal();
-    private BridgeFacesContext facesContext;
-    private Lifecycle lifecycle;
+    private static Lifecycle lifecycle;
+    static {
+        LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+    }
 
+    private BridgeFacesContext facesContext;
     private ClassLoader renderableClassLoader = null;
     private boolean synchronousMode;
     private Collection viewListeners;
@@ -96,8 +100,6 @@ public class PersistentFacesState implements Serializable {
         this.facesContext = facesContext;
         this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
-        LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-        this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         this.setCurrentInstance();
     }
 
