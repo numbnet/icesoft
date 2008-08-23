@@ -37,8 +37,7 @@ public class ViewBoundServer implements Server {
                 //todo: revisit this -- maybe the session was not created yet
                 request.respondWith(SessionExpiredResponse.Handler);
             } else {
-
-                // #2615. Without the following synchronization, the following
+                // ICE-2615. Without the following synchronization, the following
                 // problems can occur. Assume HTTP-1 has a request and is in some
                 // phase of the JSF lifecycle. Another partial submit request
                 // arrives on HTTP-2 immediately after. It wont hit synchronization
@@ -47,38 +46,40 @@ public class ViewBoundServer implements Server {
                 // via the updateOnXMLHttpRequest method on the view. Further, once HTTP-1
                 // releases the monitor and HTTP-2 gets it, the outbound thread can
                 // clear the requestMap member variable via view.release() below
-                synchronized (view.getFacesContext()) {
-                    try {
-                        view.updateOnXMLHttpRequest(request);
-                        sessionMonitor.touchSession();
-                        server.service(request);
-                    } catch (FacesException e) {
-                        //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
-                        Throwable nestedException = e.getCause();
-                        if (nestedException == null) {
-                            throw e;
-                        } else {
-                            //find the deepest cause
-                            while (nestedException.getCause() != null) {
-                                nestedException = nestedException.getCause();
-                            }
-
-                            if (nestedException instanceof Exception) {
-                                throw (Exception) nestedException;
-                            } else {
-                                throw e;
-                            }
-                        }
-                    } catch (SessionExpiredException e) {
-                        //exception thrown in the middle of JSF lifecycle
-                        //respond immediately with session-expired message to avoid any new connections
-                        //being initiated by the bridge.
-                        request.respondWith(SessionExpiredResponse.Handler);
-                    } finally {
-                        view.release();
+                try {
+                    view.updateOnXMLHttpRequest(request);
+                    sessionMonitor.touchSession();
+                    server.service(request);
+                } catch (FacesException e) {
+                    //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
+                    Throwable nestedException = e.getCause();
+                    if (nestedException == null) {
+                        throw e;
+                    } else {
+                        throw findInitialCause(nestedException, e);
                     }
+                } catch (SessionExpiredException e) {
+                    //exception thrown in the middle of JSF lifecycle
+                    //respond immediately with session-expired message to avoid any new connections
+                    //being initiated by the bridge.
+                    request.respondWith(SessionExpiredResponse.Handler);
+                } finally {
+                    view.release();
                 }
             }
+        }
+    }
+
+    private static Exception findInitialCause(Throwable nestedException, FacesException defaultException) {
+        //find the deepest cause
+        while (nestedException.getCause() != null) {
+            nestedException = nestedException.getCause();
+        }
+
+        if (nestedException instanceof Exception) {
+            return (Exception) nestedException;
+        } else {
+            return defaultException;
         }
     }
 
