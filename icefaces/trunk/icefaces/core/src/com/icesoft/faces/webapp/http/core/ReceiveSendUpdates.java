@@ -31,10 +31,8 @@ public class ReceiveSendUpdates implements Server {
 
     public void service(final Request request) throws Exception {
         synchronouslyUpdatedViews.add(request.getParameter("ice.view"));
-
         FacesContext context = FacesContext.getCurrentInstance();
         renderCycle(context);
-
         request.respondWith(new SendUpdates.Handler(commandQueues, request));
     }
 
@@ -42,10 +40,7 @@ public class ReceiveSendUpdates implements Server {
     }
 
     private void renderCycle(FacesContext context) {
-        synchronized (context) {
-            com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            LifecycleExecutor.getLifecycleExecutor(context).apply(context);
-        }
+        com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
+        LifecycleExecutor.getLifecycleExecutor(context).apply(context);
     }
-
 }
