@@ -78,8 +78,8 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
-    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
-    private static InheritableThreadLocal localInstance = new InheritableThreadLocal();
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final InheritableThreadLocal localInstance = new InheritableThreadLocal();
     private static Lifecycle lifecycle;
     static {
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
