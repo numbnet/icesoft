@@ -312,27 +312,24 @@ public class PersistentFacesState implements Serializable {
         }
     }
     
-    public void setupAndExecuteAndRender() throws RenderingException {
-        PersistentFacesState.this.setCurrentInstance();
-        
+
+    public void setCurrentContextClassLoader() {
         try {
             Thread.currentThread().setContextClassLoader(renderableClassLoader);
         } catch (SecurityException se) {
             log.debug("setting context class loader is not permitted", se);
         }
-        
+    }
+
+    public void setupAndExecuteAndRender() throws RenderingException {
+        setCurrentInstance();
+        setCurrentContextClassLoader();
         if (SeamUtilities.isSeamEnvironment() ) {
             testSession();
         }
-
         // JIRA #1377 Call execute before render.
         // #2459 use fully synchronized version internally.
         executeAndRender();
-    }
-
-
-    public ClassLoader getRenderableClassLoader() {
-        return renderableClassLoader;
     }
 
     /**
