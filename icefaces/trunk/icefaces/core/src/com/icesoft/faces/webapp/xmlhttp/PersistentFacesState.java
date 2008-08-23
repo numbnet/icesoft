@@ -93,8 +93,7 @@ public class PersistentFacesState implements Serializable {
         //JIRA case ICE-1365
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
-        renderableClassLoader = Thread.currentThread().getContextClassLoader();
-
+        this.renderableClassLoader = Thread.currentThread().getContextClassLoader();
         this.facesContext = facesContext;
         this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
@@ -175,7 +174,7 @@ public class PersistentFacesState implements Serializable {
                         + facesContext.getViewNumber());
             }
             // #3073 Clear threadLocal in all paths
-            localInstance.set(null);
+            release();
             throw new FatalRenderingException(
                     "fatal render failure for viewNumber "
                             + facesContext.getViewNumber());
@@ -187,7 +186,6 @@ public class PersistentFacesState implements Serializable {
         synchronized (facesContext) {
             try {
                 lifecycle.render(facesContext);
-                facesContext.release();
             } catch (Exception e) {
                 Throwable throwable = e;
                 while (throwable != null) {
@@ -213,8 +211,8 @@ public class PersistentFacesState implements Serializable {
                         "transient render failure for viewNumber "
                                 + facesContext.getViewNumber(), e);
             } finally {
-                localInstance.set(null);
-                facesContext.resetCurrentInstance();
+                facesContext.release();
+                release();
             }
         }
     }
@@ -300,7 +298,7 @@ public class PersistentFacesState implements Serializable {
                         + facesContext.getViewNumber());
             }
             // #3073 Clear threadLocal in all paths            
-            localInstance.set(null);
+            release();
             throw new FatalRenderingException(
                     "fatal render failure for viewNumber "
                             + facesContext.getViewNumber());
@@ -353,8 +351,7 @@ public class PersistentFacesState implements Serializable {
                         "transient render failure for viewNumber "
                                 + facesContext.getViewNumber(), e);
             }  finally {
-                localInstance.set(null);
-                facesContext.resetCurrentInstance();
+                release();
             }
         }
     }
@@ -378,7 +375,7 @@ public class PersistentFacesState implements Serializable {
         PersistentFacesState.this.setCurrentInstance();
         
         try {
-            Thread.currentThread().setContextClassLoader( PersistentFacesState.this.getRenderableClassLoader() );
+            Thread.currentThread().setContextClassLoader(renderableClassLoader);
         } catch (SecurityException se) {
             if (log.isDebugEnabled()) {
                 log.debug("setting context class loader is not permitted", se);

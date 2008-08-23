@@ -116,10 +116,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         setCurrentInstance(this);
     }
 
-    public void resetCurrentInstance() {
-        FacesContext.setCurrentInstance(null);
-    }
-
     public static boolean isThreadLocalNull() {
         return getCurrentInstance() == null;
     }
