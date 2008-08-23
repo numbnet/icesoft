@@ -22,7 +22,6 @@ import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.SendUpdates;
 import com.icesoft.faces.webapp.http.core.SingleViewServer;
 import com.icesoft.faces.webapp.http.core.UploadServer;
-import com.icesoft.faces.webapp.http.core.ViewBoundServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
@@ -117,7 +116,7 @@ public class MainSessionBoundServlet implements Server {
         }
 
         Server upload = new UploadServer(views, configuration);
-        Server receiveSendUpdates = new RequestVerifier(sessionID, new ViewBoundServer(new ReceiveSendUpdates(views, synchronouslyUpdatedViews), sessionMonitor, views));
+        Server receiveSendUpdates = new RequestVerifier(sessionID, new ReceiveSendUpdates(views, synchronouslyUpdatedViews, sessionMonitor));
 
         dispatcher.dispatchOn(".*block\\/send\\-receive\\-updates$", receiveSendUpdates);
         dispatcher.dispatchOn(".*block\\/receive\\-updated\\-views$", sendUpdatedViews);
