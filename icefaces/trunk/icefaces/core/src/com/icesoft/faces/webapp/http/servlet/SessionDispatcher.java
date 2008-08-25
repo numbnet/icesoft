@@ -36,6 +36,7 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
             public void service(Request request) throws Exception {
                 //lookup session bound server -- this is a lock-free strategy
                 CurrentSessionBoundServer.lookup().service(request);
+                CurrentSessionBoundServer.dettach();
             }
 
             public void shutdown() {
@@ -261,6 +262,10 @@ public abstract class SessionDispatcher extends EnvironmentAdaptingServlet {
 
         public void attach(Server server) {
             set(server);
+        }
+
+        public void dettach() {
+            set(null);
         }
     }
 }
