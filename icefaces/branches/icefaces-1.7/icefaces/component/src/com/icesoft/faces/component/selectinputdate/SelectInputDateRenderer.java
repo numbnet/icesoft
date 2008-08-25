@@ -112,9 +112,17 @@ public class SelectInputDateRenderer
     private static final String NEXT_YEAR = "_nextyr";
 
     // constant for selectinputdate links
-    private static final String CALENDAR = "_calendar";
+    private static final String CALENDAR = "_calendar_";
     private static final String CALENDAR_CLICK = "_calendarClick";
     private static final String ROOT_DIV = "_rootDiv";
+    
+    private static final int IS_NOT             = 0;
+    private static final int IS_CALENDAR_BUTTON = 1;
+    private static final int IS_CALENDAR        = 2;
+    private static final int IS_PREV_MONTH      = 3;
+    private static final int IS_NEXT_MONTH      = 4;
+    private static final int IS_PREV_YEAR       = 5;
+    private static final int IS_NEXT_YEAR       = 6;
     
     private static final String INPUT_TEXT_TITLE =
         "com.icesoft.faces.component.selectinputdate.INPUT_TEXT_TITLE";
@@ -1066,11 +1074,10 @@ public class SelectInputDateRenderer
             titleText = getMessageWithParamFromResource(
                 facesContext, PREV_YEAR_TITLE, year);
         } else {
-            link.setId(component.getId() + "_" + content.hashCode() + this
-                    .CALENDAR);
+            link.setId(component.getId() + CALENDAR + content.hashCode());
             if (log.isDebugEnabled()) {
-                log.debug("linkId=" + component.getId() + "_" +
-                          content.hashCode() + this.CALENDAR);
+                log.debug("linkId=" +
+                    component.getId() + CALENDAR + content.hashCode());
             }
         }
 
@@ -1101,13 +1108,13 @@ public class SelectInputDateRenderer
                 img.setAlt(altText);
             if(titleText != null)
                 img.setTitle(titleText);
-            img.setId(component.getId() + "_" + content.hashCode() + "_img");
+            img.setId(component.getId() + "_img_" + content.hashCode());
             img.setTransient(true);
             link.getChildren().add(img);
         } else {            
             HtmlOutputText text = new HtmlOutputText();
             text.setValue(content);
-            text.setId(component.getId() + "_" + content.hashCode() + "_text");
+            text.setId(component.getId() + "_text_" + content.hashCode());
             text.setTransient(true);
             text.setTitle(day);
             link.getChildren().add(text);
@@ -1268,24 +1275,29 @@ public class SelectInputDateRenderer
         return formId + ":_idcl";
     }
 
-    private boolean checkLink(String clickedLink, String clientId) {
+    private int checkLink(String clickedLink, String clientId) {
         if (clickedLink == null) {
-            return false;
+            return IS_NOT;
         }
-        boolean found = false;
-        String REGEX = clientId+"_";
-        String INPUT = clickedLink;
-        Pattern pattern;
-        Matcher matcher;
-
-        pattern = Pattern.compile(REGEX);
-        matcher = pattern.matcher(INPUT);
-
-        while (matcher.find()) {
-            found = true;
+        else if( (clientId+CALENDAR_BUTTON).equals(clickedLink) ) {
+            return IS_CALENDAR_BUTTON;
         }
-
-        return found;
+        else if( clickedLink.startsWith(clientId+CALENDAR) ) {
+            return IS_CALENDAR;
+        }
+        else if( (clientId+PREV_MONTH).equals(clickedLink) ) {
+            return IS_PREV_MONTH;
+        }
+        else if( (clientId+NEXT_MONTH).equals(clickedLink) ) {
+            return IS_NEXT_MONTH;
+        }
+        else if( (clientId+PREV_YEAR).equals(clickedLink) ) {
+            return IS_PREV_YEAR;
+        }
+        else if( (clientId+NEXT_YEAR).equals(clickedLink) ) {
+            return IS_NEXT_YEAR;
+        }
+        return IS_NOT;
     }
 
     /* (non-Javadoc)
@@ -1319,7 +1331,8 @@ public class SelectInputDateRenderer
             }
             
             String sclickedLink = (String) clickedLink;
-            if (checkLink(sclickedLink, clientId)) {
+            int check = checkLink(sclickedLink, clientId); 
+            if (check != IS_NOT) {
                 if (log.isDebugEnabled()) {
                     log.debug("---------------------------------");
                     log.debug("----------START::DECODE----------");
@@ -1328,21 +1341,21 @@ public class SelectInputDateRenderer
                               " clientId::" + clientId);
                 }
 
-                if (sclickedLink.endsWith(this.PREV_MONTH) ||
-                    sclickedLink.endsWith(this.NEXT_MONTH) ||
-                    sclickedLink.endsWith(this.PREV_YEAR) ||
-                    sclickedLink.endsWith(this.NEXT_YEAR)) {
+                if (check == IS_PREV_MONTH ||
+                    check == IS_NEXT_MONTH ||
+                    check == IS_PREV_YEAR ||
+                    check == IS_NEXT_YEAR) {
                     if (log.isDebugEnabled()) {
                         log.debug("-------------Navigation Event-------------");
                     }
                     decodeNavigation(facesContext, component);
-                } else if (sclickedLink.endsWith(this.CALENDAR)) {
+                } else if (check == IS_CALENDAR) {
                     if (log.isDebugEnabled()) {
                         log.debug(
                                 "-------------Select Date Event-------------");
                     }
                     decodeSelectDate(facesContext, component);
-                } else if (sclickedLink.endsWith(this.CALENDAR_BUTTON)) {
+                } else if (check == IS_CALENDAR_BUTTON) {
                     if (log.isDebugEnabled()) {
                         log.debug(
                                 "-------------Popup Event-------------------");
@@ -1465,7 +1478,7 @@ public class SelectInputDateRenderer
                 log.debug("###################################");
             }
             if (showPopup != null) {
-                if (checkLink((String) clickedLink, clientId)) {
+                if (checkLink((String) clickedLink, clientId) != IS_NOT) {
                     if (showPopup.equalsIgnoreCase("true")) {
 //System.out.println("SIDR.decodeInputText()  setShowPopup( true )");
                         dateSelect.setShowPopup(true);
