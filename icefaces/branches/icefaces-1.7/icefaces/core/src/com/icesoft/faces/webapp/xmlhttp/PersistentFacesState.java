@@ -77,13 +77,9 @@ public class PersistentFacesState implements Serializable {
     private static final Log log = LogFactory.getLog(PersistentFacesState.class);
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final InheritableThreadLocal localInstance = new InheritableThreadLocal();
-    private static Lifecycle lifecycle;
-    static {
-        LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-        lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-    }
 
     private final ClassLoader renderableClassLoader;
+    private final Lifecycle lifecycle;
     private final boolean synchronousMode;
     private final Collection viewListeners;
     private final ReentrantLock lifecycleLock;
@@ -95,6 +91,8 @@ public class PersistentFacesState implements Serializable {
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
         this.renderableClassLoader = Thread.currentThread().getContextClassLoader();
+        LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+        this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
         this.facesContext = facesContext;
         this.lifecycleLock = lifecycleLock;
         this.viewListeners = viewListeners;
@@ -217,7 +215,7 @@ public class PersistentFacesState implements Serializable {
         try {
             acquireLifecycleLock();
             installThreadLocals();
-            
+
             if (ImplementationUtil.isJSF12()) {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
@@ -429,7 +427,7 @@ public class PersistentFacesState implements Serializable {
         }
         transientRenderingException(e);
     }
-    
+
     private void failIfDisposed() throws FatalRenderingException {
         if (disposed) {
             //ICE-3073 Clear threadLocal in all paths
