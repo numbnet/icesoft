@@ -82,10 +82,10 @@ public class PersistentFacesState implements Serializable {
         lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
     }
 
+    private final ClassLoader renderableClassLoader;
+    private final boolean synchronousMode;
+    private final Collection viewListeners;
     private BridgeFacesContext facesContext;
-    private ClassLoader renderableClassLoader = null;
-    private boolean synchronousMode;
-    private Collection viewListeners;
     private boolean disposed;
 
     public PersistentFacesState(BridgeFacesContext facesContext, Collection viewListeners, Configuration configuration) {
