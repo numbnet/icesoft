@@ -41,6 +41,7 @@ import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,15 +86,17 @@ public class PersistentFacesState implements Serializable {
     private final ClassLoader renderableClassLoader;
     private final boolean synchronousMode;
     private final Collection viewListeners;
+    private final ReentrantLock lifecycleLock;
     private BridgeFacesContext facesContext;
     private boolean disposed;
 
-    public PersistentFacesState(BridgeFacesContext facesContext, Collection viewListeners, Configuration configuration) {
+    public PersistentFacesState(BridgeFacesContext facesContext, ReentrantLock lifecycleLock, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
         this.renderableClassLoader = Thread.currentThread().getContextClassLoader();
         this.facesContext = facesContext;
+        this.lifecycleLock = lifecycleLock;
         this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
         this.setCurrentInstance();
@@ -165,23 +168,19 @@ public class PersistentFacesState implements Serializable {
      * The user's browser will be immediately updated with any changes.
      */
     public void render() throws RenderingException {
-        if (disposed) {
-            //ICE-3073 Clear threadLocal in all paths
+        failIfDisposed();
+        warnIfSynchronous();
+        try {
+            acquireLifecycleLock();
+            installThreadLocals();
+            //todo: why is this necessary? is this the best place to have this call?
+            facesContext.setFocusId("");
+            lifecycle.render(facesContext);
+        } catch (Exception e) {
+            throwRenderingException(e);
+        } finally {
+            facesContext.release();
             release();
-            fatalRenderingException();
-        }
-        warn();
-        setCurrentInstances();
-        facesContext.setFocusId("");
-        synchronized (facesContext) {
-            try {
-                lifecycle.render(facesContext);
-            } catch (Exception e) {
-                throwRenderingException(e);
-            } finally {
-                release();
-                facesContext.release();
-            }
         }
     }
 
@@ -191,57 +190,13 @@ public class PersistentFacesState implements Serializable {
      * from calling {@link #render} during view rendering.
      */
     public void renderLater() {
-        warn();
+        warnIfSynchronous();
         executorService.execute(new RenderRunner());
     }
 
     public void renderLater(long miliseconds) {
-        warn();
+        warnIfSynchronous();
         executorService.execute(new RenderRunner(miliseconds));
-    }
-
-    /**
-     * Redirect browser to a different URI. The user's browser will be
-     * immediately redirected without any user interaction required.
-     *
-     * @param uri the relative or absolute URI.
-     */
-    public void redirectTo(String uri) {
-        warn();
-        try {
-            facesContext.setCurrentInstance();
-            facesContext.getExternalContext().redirect(uri);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Redirect browser to a different page. The redirect page is selected based
-     * on the navigation rule. The user's browser will be immediately redirected
-     * without any user interaction required.
-     *
-     * @param outcome the 'from-outcome' field in the navigation rule.
-     */
-    public void navigateTo(String outcome) {
-        warn();
-        try {
-            facesContext.setCurrentInstance();
-            facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, facesContext.getViewRoot().getViewId(), outcome);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Threads that used to server request/response cycles in an application
-     * server are generally pulled from a pool.  Just before the thread is done
-     * completing the cycle, we should clear any local instance variables to
-     * ensure that they are not hanging on to any session references, otherwise
-     * the session and their resources are not released.
-     */
-    public void release() {
-        localInstance.set(null);
     }
 
     /**
@@ -254,46 +209,38 @@ public class PersistentFacesState implements Serializable {
      * of their resources, releasing this monitor between the call to this method
      * and the call to {@link PersistentFacesState#render} can allow deadlocks
      * to occur. Use {@link PersistentFacesState#executeAndRender} instead
-     * @deprecated 
+     *
+     * @deprecated this method should not be exposed
      */
     public void execute() throws RenderingException {
-        if (disposed) {
-            //ICE-3073 Clear threadLocal in all paths
-            release();
-            fatalRenderingException();
-        }
-        setCurrentInstances();
-        synchronized (facesContext) {
-            try {
-                if (ImplementationUtil.isJSF12()) {
-                    //facesContext.renderResponse() skips phase listeners
-                    //in JSF 1.2, so do a full execute with no stale input
-                    //instead
-                    facesContext.getExternalContext().getRequestParameterMap().clear();
-                } else {
-                    facesContext.renderResponse();
-                }
-                lifecycle.execute(facesContext);
-
-                // ICE-2478 JSF 1.2 will set this flag because our requestParameter
-                // map is empty. We don't actually want to execute a lifecycle, we
-                // just want the restoreView phase listeners to be executed for Seam.
-                // However, we need to reset the 'just set' responseComplete flag
-                // or our server push renders will not occur. 
-                if (ImplementationUtil.isJSF12()) {
-                    facesContext.resetResponseComplete();
-                }
-            } catch (Exception e) {
-                throwRenderingException(e);
-            } finally {
-                release();
+        failIfDisposed();
+        try {
+            acquireLifecycleLock();
+            installThreadLocals();
+            
+            if (ImplementationUtil.isJSF12()) {
+                //facesContext.renderResponse() skips phase listeners
+                //in JSF 1.2, so do a full execute with no stale input
+                //instead
+                facesContext.getExternalContext().getRequestParameterMap().clear();
+            } else {
+                facesContext.renderResponse();
             }
-        }
-    }
+            lifecycle.execute(facesContext);
 
-    private void setCurrentInstances() {
-        facesContext.setCurrentInstance();
-        setCurrentInstance();
+            // ICE-2478 JSF 1.2 will set this flag because our requestParameter
+            // map is empty. We don't actually want to execute a lifecycle, we
+            // just want the restoreView phase listeners to be executed for Seam.
+            // However, we need to reset the 'just set' responseComplete flag
+            // or our server push renders will not occur.
+            if (ImplementationUtil.isJSF12()) {
+                facesContext.resetResponseComplete();
+            }
+        } catch (Exception e) {
+            throwRenderingException(e);
+        } finally {
+            release();
+        }
     }
 
     /**
@@ -305,28 +252,79 @@ public class PersistentFacesState implements Serializable {
      * @since 1.7
      */
     public void executeAndRender() throws RenderingException {
-        synchronized (facesContext) {
-            execute();
-            render();
-        }
-    }
-
-    public void setCurrentContextClassLoader() {
-        try {
-            Thread.currentThread().setContextClassLoader(renderableClassLoader);
-        } catch (SecurityException se) {
-            log.debug("setting context class loader is not permitted", se);
-        }
+        acquireLifecycleLock();
+        execute();
+        render();
     }
 
     public void setupAndExecuteAndRender() throws RenderingException {
-        setCurrentContextClassLoader();
+        acquireLifecycleLock();
+        installContextClassLoader();
         if (SeamUtilities.isSeamEnvironment()) {
             testSession();
         }
         // JIRA #1377 Call execute before render.
         // #2459 use fully synchronized version internally.
         executeAndRender();
+    }
+
+    /**
+     * Redirect browser to a different URI. The user's browser will be
+     * immediately redirected without any user interaction required.
+     *
+     * @param uri the relative or absolute URI.
+     */
+    public void redirectTo(String uri) {
+        warnIfSynchronous();
+        try {
+            acquireLifecycleLock();
+            installThreadLocals();
+            facesContext.getExternalContext().redirect(uri);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            release();
+        }
+    }
+
+    /**
+     * Redirect browser to a different page. The redirect page is selected based
+     * on the navigation rule. The user's browser will be immediately redirected
+     * without any user interaction required.
+     *
+     * @param outcome the 'from-outcome' field in the navigation rule.
+     */
+    public void navigateTo(String outcome) {
+        warnIfSynchronous();
+        try {
+            acquireLifecycleLock();
+            installThreadLocals();
+            facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, facesContext.getViewRoot().getViewId(), outcome);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            release();
+        }
+    }
+
+    /**
+     * Threads that used to server request/response cycles in an application
+     * server are generally pulled from a pool.  Just before the thread is done
+     * completing the cycle, we should clear any local instance variables to
+     * ensure that they are not hanging on to any session references, otherwise
+     * the session and their resources are not released.
+     */
+    public void release() {
+        localInstance.set(null);
+        releaseLifecycleLock();
+    }
+
+    public void installContextClassLoader() {
+        try {
+            Thread.currentThread().setContextClassLoader(renderableClassLoader);
+        } catch (SecurityException se) {
+            log.debug("setting context class loader is not permitted", se);
+        }
     }
 
     /**
@@ -367,10 +365,26 @@ public class PersistentFacesState implements Serializable {
         }
     }
 
-    private void warn() {
+    private void acquireLifecycleLock() {
+        lifecycleLock.lock();
+    }
+
+    private void releaseLifecycleLock() {
+        //release all locks corresponding to current thread!
+        for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
+            lifecycleLock.unlock();
+        }
+    }
+
+    private void warnIfSynchronous() {
         if (synchronousMode) {
             log.warn("Running in 'synchronous mode'. The page updates were queued but not sent.");
         }
+    }
+
+    private void installThreadLocals() {
+        facesContext.setCurrentInstance();
+        setCurrentInstance();
     }
 
     private void testSession() throws IllegalStateException {
@@ -414,5 +428,13 @@ public class PersistentFacesState implements Serializable {
             }
         }
         transientRenderingException(e);
+    }
+    
+    private void failIfDisposed() throws FatalRenderingException {
+        if (disposed) {
+            //ICE-3073 Clear threadLocal in all paths
+            release();
+            fatalRenderingException();
+        }
     }
 }

@@ -120,7 +120,7 @@ class RunnableRender implements Runnable {
         //we have to hope that the appropriate class loader settings were
         //transferred to this new thread.  If not, then the security policy
         //will need to be altered to allow this.
-        state.setCurrentContextClassLoader();
+        state.installContextClassLoader();
 
         try {
 
@@ -148,7 +148,6 @@ class RunnableRender implements Runnable {
 
         } catch (IllegalStateException ise) {
             renderable.renderingException( new TransientRenderingException( ise ));
-
         } catch (RenderingException ex) {
             renderable.renderingException(ex);
             if (ex instanceof TransientRenderingException) {
@@ -164,10 +163,8 @@ class RunnableRender implements Runnable {
                     log.error("unknown render exception", ex);
                 }
             }
-        } finally {
-            // 2807 release ThreadLocal on state 
-            state.release();
         }
+        
         ThreadLocalUtility.checkThreadLocals(ThreadLocalUtility.EXITING_SERVER_PUSH);
    }
 
