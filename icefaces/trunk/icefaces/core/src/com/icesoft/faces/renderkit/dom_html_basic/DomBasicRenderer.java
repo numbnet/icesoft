@@ -64,6 +64,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 
 public abstract class DomBasicRenderer extends Renderer {
 
@@ -817,4 +819,35 @@ public abstract class DomBasicRenderer extends Renderer {
             return passThru;
         return passThru + renderer;
     }     
+    
+    // ICE-3392 pool clientId's
+    // The hash map is initialized with an initial capacity, which multiplied
+    // by the load factor determines when to rehash, we set the maxmimum number
+    // of entries to something below that, so that it never has to rehash.
+    // Note that we are using this special constructor to create an LRU cache. 
+    private static Map clientIdsMap = 
+            Collections.synchronizedMap(new LinkedHashMap(1400, 0.75f, true) {
+        
+        private static final int MAX_ENTRIES = 1000;
+        
+        protected boolean removeEldestEntry(Map.Entry eldest) {
+            return size() > MAX_ENTRIES;
+        }
+    }
+            );
+
+    public String convertClientId(FacesContext context, String clientId) {
+
+        if (clientId != null) {
+            String pooledClientId = (String) clientIdsMap.get(clientId);
+            if (pooledClientId != null) {
+                return pooledClientId;
+            } else {
+                clientIdsMap.put(clientId, clientId);
+                return clientId;
+            }
+        } else {
+            return null;
+        }
+    }
 }
