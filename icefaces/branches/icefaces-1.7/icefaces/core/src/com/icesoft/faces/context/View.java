@@ -12,7 +12,6 @@ import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.util.SeamUtilities;
-import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,7 +31,8 @@ public class View implements CommandQueue {
         public void run() {
         }
     };
-    private Lock lock = new ReentrantLock();
+    private ReentrantLock queueLock = new ReentrantLock();
+    private ReentrantLock lifecycleLock = new ReentrantLock();
     private BridgeExternalContext externalContext;
     private BridgeFacesContext facesContext;
     private PersistentFacesState persistentFacesState;
@@ -49,9 +49,6 @@ public class View implements CommandQueue {
     private Runnable dispose;
 
     public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
-        if (Log.isDebugEnabled()) {
-            Log.debug("View Created: " + viewIdentifier + ", ice.session: "  + sessionID);
-        } 
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
@@ -69,7 +66,7 @@ public class View implements CommandQueue {
             }
         });
         this.facesContext = new BridgeFacesContext(externalContext, viewIdentifier, sessionID, this, configuration, resourceDispatcher);
-        this.persistentFacesState = new PersistentFacesState(facesContext, viewListeners, configuration);
+        this.persistentFacesState = new PersistentFacesState(facesContext, lifecycleLock, viewListeners, configuration);
         this.onPut(new Runnable() {
             public void run() {
                 try {
@@ -81,11 +78,8 @@ public class View implements CommandQueue {
         });
         this.dispose = new Runnable() {
             public void run() {
-                if (Log.isDebugEnabled()) {
-                    Log.debug("Disposing of View: " + viewIdentifier);
-                }
-                persistentFacesState.setCurrentInstance();
-                facesContext.setCurrentInstance();
+                Log.debug("Disposing " + this);
+                installThreadLocals();
                 notifyViewDisposal();
                 release();
                 persistentFacesState.dispose();
@@ -96,9 +90,16 @@ public class View implements CommandQueue {
                 dispose = DoNothing;
             }
         };
+        acquireLifecycleLock();
+        Log.debug("Created " + this);
+    }
+
+    private void acquireLifecycleLock() {
+        lifecycleLock.lock();
     }
 
     public void updateOnXMLHttpRequest(Request request) throws Exception {
+        acquireLifecycleLock();
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
@@ -114,6 +115,7 @@ public class View implements CommandQueue {
     }
 
     public void updateOnPageRequest(Request request) throws Exception {
+        acquireLifecycleLock();
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 if (differentURI((HttpServletRequest) request)) {
@@ -141,11 +143,13 @@ public class View implements CommandQueue {
     }
 
     public void switchToNormalMode() {
+        acquireLifecycleLock();
         facesContext.switchToNormalMode();
         externalContext.switchToNormalMode();
     }
 
     public void switchToPushMode() {
+        acquireLifecycleLock();
         //collect bundles put by Tag components when the page is parsed
         bundles = externalContext.collectBundles();
         facesContext.switchToPushMode();
@@ -166,17 +170,17 @@ public class View implements CommandQueue {
     }
 
     public void put(Command command) {
-        lock.lock();
+        queueLock.lock();
         currentCommand = currentCommand.coalesceWith(command);
-        lock.unlock();
+        queueLock.unlock();
         broadcastTo(onPutListeners);
     }
 
     public Command take() {
-        lock.lock();
+        queueLock.lock();
         Command command = currentCommand;
         currentCommand = NOOP;
-        lock.unlock();
+        queueLock.unlock();
         broadcastTo(onTakeListeners);
         return command;
     }
@@ -220,10 +224,15 @@ public class View implements CommandQueue {
     }
 
     public void makeCurrent() {
+        acquireLifecycleLock();
+        installThreadLocals();
         externalContext.injectBundles(bundles);
+        facesContext.applyBrowserDOMChanges();
+    }
+
+    public void installThreadLocals() {
         persistentFacesState.setCurrentInstance();
         facesContext.setCurrentInstance();
-        facesContext.applyBrowserDOMChanges();
     }
 
     private void notifyViewDisposal() {
@@ -236,5 +245,9 @@ public class View implements CommandQueue {
                 Log.warn("Failed to invoke view listener", t);
             }
         }
+    }
+
+    public String toString() {
+        return "View[" + sessionID + ":" + viewIdentifier + "]";
     }
 }
