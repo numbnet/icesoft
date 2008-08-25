@@ -116,10 +116,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         setCurrentInstance(this);
     }
 
-    public void resetCurrentInstance() {
-        FacesContext.setCurrentInstance(null);
+    public static boolean isThreadLocalNull() {
+        return getCurrentInstance() == null;
     }
-
 
     public Application getApplication() {
         return application;
@@ -373,10 +372,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.responseComplete = false;
     }
 
-    public static boolean isThreadLocalNull() {
-        return getCurrentInstance() == null;
-    }
-
     /**
      * The release() found in FacesContextImpl is more comprehensive: since they
      * blow away the context instance after a response, they null/false out much
@@ -395,7 +390,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
             //clear the request map except when we have SWF2
             externalContext.release();
         }
-        // ICE-2807 clear threadLocal references
+        // #2807 release thread locals
         setCurrentInstance(null);
     }
 
