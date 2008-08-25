@@ -82,8 +82,10 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
         int rowIndex = uiList.getFirst();
         int numberOfRowsToDisplay = uiList.getRows();
         int countOfRowsDisplayed = 0;
-        while ( (numberOfRowsToDisplay > 0) &&
-                (countOfRowsDisplayed < numberOfRowsToDisplay)) {
+        while (  ( numberOfRowsToDisplay == 0 ) ||
+                 ( (numberOfRowsToDisplay > 0) &&
+                   (countOfRowsDisplayed < numberOfRowsToDisplay) )  )
+        {
              uiList.setRowIndex(rowIndex);
              if(!uiList.isRowAvailable()){
                 break;
