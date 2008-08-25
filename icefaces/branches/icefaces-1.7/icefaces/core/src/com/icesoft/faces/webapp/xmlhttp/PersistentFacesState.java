@@ -252,6 +252,7 @@ public class PersistentFacesState implements Serializable {
      * of their resources, releasing this monitor between the call to this method
      * and the call to {@link PersistentFacesState#render} can allow deadlocks
      * to occur. Use {@link PersistentFacesState#executeAndRender} instead
+     * @deprecated 
      */
     public void execute() throws RenderingException {
         if (disposed) {
@@ -317,7 +318,6 @@ public class PersistentFacesState implements Serializable {
     }
 
     public void setupAndExecuteAndRender() throws RenderingException {
-        setCurrentInstance();
         setCurrentContextClassLoader();
         if (SeamUtilities.isSeamEnvironment()) {
             testSession();
@@ -414,9 +414,3 @@ public class PersistentFacesState implements Serializable {
         transientRenderingException(e);
     }
 }
-
-
-
-
-
-
