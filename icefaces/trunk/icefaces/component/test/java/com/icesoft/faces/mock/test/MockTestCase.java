@@ -31,9 +31,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  *
@@ -101,9 +99,19 @@ public class MockTestCase extends TestCase {
         defaultMockContainer();
     }
 
-    public static Test suite() {
-
-        return new TestSuite(CommandButtonSaveStateTest.class);
+    @Override
+    protected void tearDown() throws Exception {
+        application = null;
+        viewHandler = null;
+        servletConfig = null;
+        externalContext = null;
+        facesContext = null;
+        lifecycle = null;
+        httpServletRequest = null;
+        httpServletResponse = null;
+        servletContext = null;
+        httpSession = null;
+        properties = null;
     }
 
     public ViewHandler getViewHandler() {
