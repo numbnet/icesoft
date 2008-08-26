@@ -33,7 +33,9 @@
 
 package com.icesoft.faces.component.inputfile;
 
-public class FileInfo implements Cloneable {
+import java.io.Serializable;
+
+public class FileInfo implements Cloneable, Serializable {
     private long size = 0;
     private String fileName = null;
     private String contentType = null;
