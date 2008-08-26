@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class ChartResource implements Resource {
+    private static long prevDigest = 0;
     ByteArrayOutputStream bos;
 
     public ChartResource(ByteArrayOutputStream bos) {
@@ -16,7 +17,14 @@ public class ChartResource implements Resource {
     }
 
     public String calculateDigest() {
-        return String.valueOf(System.currentTimeMillis());
+        long digest = System.currentTimeMillis();
+        synchronized (getClass()) { // ICE-3052
+            if (digest <= prevDigest) {
+                digest = prevDigest + 1;
+            }
+            prevDigest = digest;
+        }
+        return String.valueOf(digest);
     }
 
     public Date lastModified() {
