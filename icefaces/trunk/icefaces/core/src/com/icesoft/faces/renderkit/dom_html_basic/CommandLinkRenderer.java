@@ -33,9 +33,9 @@
 
 package com.icesoft.faces.renderkit.dom_html_basic;
 
+import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.component.AttributeConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
@@ -53,7 +53,6 @@ import java.util.Map;
 
 public class CommandLinkRenderer extends DomBasicRenderer {
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_COMMANDLINK);
-
     private static final String HIDDEN_FIELD_NAME = "cl";
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -64,10 +63,8 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         String commandLinkClientId = uiComponent.getClientId(facesContext);
         Map requestParameterMap =
                 facesContext.getExternalContext().getRequestParameterMap();
-        String commonCommandLinkHiddenFieldName = deriveCommonHiddenFieldName(
-                facesContext, (UICommand) uiComponent);
-        String hiddenFieldNameInRequestMap = (String) requestParameterMap
-                .get(commonCommandLinkHiddenFieldName);
+        String commonCommandLinkHiddenFieldName = deriveCommonHiddenFieldName(facesContext, uiComponent);
+        String hiddenFieldNameInRequestMap = (String) requestParameterMap.get(commonCommandLinkHiddenFieldName);
         if (hiddenFieldNameInRequestMap == null
                 || hiddenFieldNameInRequestMap.equals("")
                 || !commandLinkClientId.equals(hiddenFieldNameInRequestMap)) {
@@ -75,14 +72,10 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             return;
         }
         // this command link caused the submit so queue an event
-        ActionEvent actionEvent = new ActionEvent(uiComponent);
-        uiComponent.queueEvent(actionEvent);
+        uiComponent.queueEvent(new ActionEvent(uiComponent));
     }
 
-    protected static String deriveCommonHiddenFieldName(
-            FacesContext facesContext,
-            UIComponent uiComponent) {
-
+    protected static String deriveCommonHiddenFieldName(FacesContext facesContext, UIComponent uiComponent) {
         if (Beans.isDesignTime()) {
             return "";
         }
@@ -98,15 +91,13 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-
         validateParameters(facesContext, uiComponent, UICommand.class);
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         boolean disabled = false;
         try {
-            disabled = Boolean.valueOf(String.valueOf(
-                    uiComponent.getAttributes().get("disabled"))).booleanValue();
+            disabled = Boolean.valueOf(String.valueOf(uiComponent.getAttributes().get("disabled"))).booleanValue();
         } catch (Exception e) {
         }
 
@@ -120,7 +111,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
             }
             domContext.setRootNode(root);
             setRootElementId(facesContext, root, uiComponent);
-
         }
         Element root = (Element) domContext.getRootNode();
         DOMContext.removeChildren(root);
@@ -131,8 +121,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         Map parameterMap = getParameterMap(uiComponent);
         renderOnClick(facesContext, uiComponent, root, parameterMap);
 
-        String styleClass =
-                (String) uiComponent.getAttributes().get("styleClass");
+        String styleClass = (String) uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             root.setAttribute("class", styleClass);
         }
@@ -140,10 +129,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         if (disabled) {
             root.removeAttribute("disabled");
         }
-        FormRenderer.addHiddenField(facesContext,
-                deriveCommonHiddenFieldName(
-                        facesContext,
-                        (UICommand) uiComponent));
+        FormRenderer.addHiddenField(facesContext, deriveCommonHiddenFieldName(facesContext, uiComponent));
         Iterator parameterKeys = parameterMap.keySet().iterator();
         while (parameterKeys.hasNext()) {
             String nextKey = (String) parameterKeys.next();
@@ -152,12 +138,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         domContext.stepInto(uiComponent);
     }
 
-
-    /**
-     * @param uiComponent
-     * @param domContext
-     * @param root
-     */
     private void renderLinkText(UIComponent uiComponent, DOMContext
             domContext, Element root) {
         Object currentValue = ((UICommand) uiComponent).getValue();
@@ -177,12 +157,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         }
     }
 
-    /**
-     * @param facesContext
-     * @param uiComponent
-     * @param root
-     * @param parameters
-     */
     protected void renderOnClick(FacesContext facesContext,
                                  UIComponent uiComponent,
                                  Element root, Map parameters) {
@@ -190,59 +164,46 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         if (uiForm == null) {
             throw new FacesException("CommandLink must be contained in a form");
         }
-        String uiFormClientId = uiForm.getClientId(facesContext);
         Object onClick = uiComponent.getAttributes().get(HTML.ONCLICK_ATTR);
-
         //if onClick attribute set by the user, pre append it.
-            String rendererOnClick = getJavaScriptOnClickString(facesContext,
-                    uiComponent, uiFormClientId,
-                    parameters);
+        String rendererOnClick = getJavaScriptOnClickString(facesContext, uiComponent, parameters);
         root.setAttribute("onclick", combinedPassThru((String) onClick, rendererOnClick));
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
-        DOMContext domContext =
-                DOMContext.getDOMContext(facesContext, uiComponent);
+        DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
     }
 
 
-    private String getJavaScriptOnClickString(FacesContext facesContext,
-                                              UIComponent uiComponent,
-                                              String formClientId,
-                                              Map parameters) {
-        return getJavascriptHiddenFieldSetters(facesContext,
-                (UICommand) uiComponent,
-                formClientId, parameters)
-                + "iceSubmit("
-                + " document.forms['" + formClientId + "'],"
-                + " this,event); "
-                + "return false;";
+    private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
+        return getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
+                "iceSubmit(form,this,event);";
     }
 
     /**
      * @param facesContext
      * @param uiCommand
-     * @param formClientId
      * @param parameters
      * @return
      */
     protected static String getJavascriptHiddenFieldSetters(
             FacesContext facesContext,
-            UICommand uiCommand, String formClientId, Map parameters) {
+            UICommand uiCommand, Map parameters) {
         StringBuffer buffer;
-        buffer = new StringBuffer("document.forms['" + formClientId + "']['");
+        buffer = new StringBuffer("var form=formOf(this);form['");
         buffer.append(deriveCommonHiddenFieldName(facesContext, uiCommand));
-        buffer.append(
-                "'].value='" + uiCommand.getClientId(facesContext) + "';");
+        buffer.append("'].value='");
+        buffer.append(uiCommand.getClientId(facesContext));
+        buffer.append("';");
         Iterator parameterKeys = parameters.keySet().iterator();
         while (parameterKeys.hasNext()) {
             String nextParamName = (String) parameterKeys.next();
             Object nextParamValue = parameters.get(nextParamName);
-            buffer.append("document.forms['" + formClientId + "']['");
+            buffer.append("form['");
             buffer.append(nextParamName);
             buffer.append("'].value='");
             buffer.append(nextParamValue);
