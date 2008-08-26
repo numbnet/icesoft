@@ -33,14 +33,14 @@
 
 package com.icesoft.faces.context.effects;
 
-import java.text.DecimalFormat;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
 
 /**
  * Utility class to set arguments for effects
  */
-public class EffectsArguments {
+public class EffectsArguments implements Serializable{
 
     private Map map = new HashMap();
     private List parameter = new ArrayList();
@@ -134,4 +134,4 @@ public class EffectsArguments {
         
         return sb.toString();
     }
-}
+ }

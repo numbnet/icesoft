@@ -35,6 +35,7 @@ package com.icesoft.faces.context.effects;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import java.io.Serializable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
@@ -42,7 +43,6 @@ import org.w3c.dom.Element;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +50,7 @@ import java.util.Map;
  * Effects can change a components style. This class keeps track of these
  * changes
  */
-public class CurrentStyle {
+public class CurrentStyle implements Serializable {
 
     /**
      * Name of field used to send CSS Updated

@@ -33,10 +33,12 @@
 
 package com.icesoft.faces.context.effects;
 
+import java.io.Serializable;
+
 /**
  * Base class for all javascript effects
  */
-public abstract class Effect {
+public abstract class Effect implements Serializable{
 
 
     protected EffectsArguments ea = new EffectsArguments();
