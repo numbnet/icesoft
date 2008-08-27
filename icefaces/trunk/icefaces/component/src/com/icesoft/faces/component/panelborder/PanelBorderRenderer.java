@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.panelborder;
 
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -58,7 +59,14 @@ public class PanelBorderRenderer extends DomBasicRenderer {
     public static final String HIDE_E = "hide east";
     public static final String HIDE_S = "hide south";
     public static final String HIDE_W = "hide west";
-
+    
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELBORDER,
+            PASSTHRU_EXCLUDE);
+    
     /* (non-Javadoc)
      * @see javax.faces.render.Renderer#getRendersChildren()
      */
@@ -94,7 +102,7 @@ public class PanelBorderRenderer extends DomBasicRenderer {
 
         Element table = (Element) domContext.getRootNode();
         PassThruAttributeRenderer
-                .renderAttributes(facesContext, uiComponent, null);
+            .renderHtmlAttributes(facesContext, uiComponent, PASSTHRU);
         table.setAttribute(HTML.CLASS_ATTR, borderLayout.getStyleClass());
         String style = borderLayout.getStyle();
         if(style != null && style.length() > 0)

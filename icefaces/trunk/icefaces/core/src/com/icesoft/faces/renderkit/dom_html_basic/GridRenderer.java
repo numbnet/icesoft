@@ -34,6 +34,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.component.AttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -43,6 +44,9 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class GridRenderer extends DomBasicRenderer {
+    private static final String[] PASSTHRU =
+        AttributeConstants.getAttributes(
+            AttributeConstants.H_PANELGRID);
 
     public boolean getRendersChildren() {
         return true;
@@ -57,8 +61,7 @@ public class GridRenderer extends DomBasicRenderer {
             Element root = domContext.createElement("table");
             domContext.setRootNode(root);
             setRootElementId(facesContext, root, uiComponent);
-            PassThruAttributeRenderer.renderAttributes(
-                    facesContext, uiComponent, null);
+            doPassThru(facesContext, uiComponent);
         }
         Element root = (Element) domContext.getRootNode();
         String styleClass = ((HtmlPanelGrid) uiComponent).getStyleClass();
@@ -66,7 +69,12 @@ public class GridRenderer extends DomBasicRenderer {
             root.setAttribute("class", styleClass);
         }
     }
-
+    
+    protected void doPassThru(FacesContext facesContext, UIComponent uiComponent) {
+        PassThruAttributeRenderer.renderHtmlAttributes(
+            facesContext, uiComponent, PASSTHRU);
+    }
+    
     private void renderHeaderFacet(FacesContext facesContext,
                                    UIComponent uiComponent,
                                    DOMContext domContext) throws IOException {

@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
@@ -17,6 +18,13 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class PanelDividerRenderer extends DomBasicRenderer{
+    // Basically, everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELDIVIDER,
+            PASSTHRU_EXCLUDE);
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {

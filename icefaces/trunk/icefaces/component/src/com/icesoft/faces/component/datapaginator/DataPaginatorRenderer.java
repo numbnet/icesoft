@@ -63,6 +63,7 @@ import org.w3c.dom.Element;
 import com.icesoft.faces.component.ext.HtmlCommandLink;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -71,8 +72,15 @@ import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 public class DataPaginatorRenderer extends DomBasicRenderer {
     public static final String RENDERER_TYPE = "com.icesoft.faces.DataScroller";
 
-    protected static final String PAGE_NAVIGATION = "idx".intern();
+    protected static final String PAGE_NAVIGATION = "idx";
 
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_DATAPAGINATOR,
+            PASSTHRU_EXCLUDE);
+    
     public boolean getRendersChildren() {
         return true;
     }
@@ -256,7 +264,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             Element table = domContext.createRootElement(HTML.TABLE_ELEM);
             setRootElementId(facesContext, table, scroller);
             PassThruAttributeRenderer
-                        .renderAttributes(facesContext, scroller, null);
+                        .renderHtmlAttributes(facesContext, scroller, PASSTHRU);
         }
         Element table = (Element) domContext.getRootNode();
         DOMContext.removeChildren(table);
