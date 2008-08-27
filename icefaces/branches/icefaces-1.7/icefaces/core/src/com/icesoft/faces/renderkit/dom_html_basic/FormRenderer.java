@@ -55,7 +55,6 @@ public class FormRenderer extends DomBasicRenderer {
             "command_link_hidden_field";
     private static final String COMMAND_LINK_HIDDEN_FIELDS_KEY =
             "com.icesoft.faces.FormRequiredHidden";
-    public static final String FOCUS_HIDDEN_FIELD = "focus_hidden_field";
     private static final Log log = LogFactory.getLog(FormRenderer.class);
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
@@ -74,7 +73,6 @@ public class FormRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
-
         validateParameters(facesContext, uiComponent, UIForm.class);
         validateNestingForm(uiComponent);
         DOMContext domContext =
@@ -186,7 +184,6 @@ public class FormRenderer extends DomBasicRenderer {
         if (userDefinedValue == null || userDefinedValue.equalsIgnoreCase("")) {
             root.setAttribute("onsubmit", "return false;");
         }
-        addHiddenField(facesContext, FOCUS_HIDDEN_FIELD);
 
         try {
             domContext.startNode(facesContext, uiComponent, root);
