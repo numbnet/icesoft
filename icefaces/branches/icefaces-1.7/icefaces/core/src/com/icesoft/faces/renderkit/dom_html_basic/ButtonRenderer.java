@@ -51,18 +51,14 @@ public class ButtonRenderer extends DomBasicRenderer {
         if (isStatic(uiComponent)) {
             return;
         }
-        boolean thisButtonInvokedSubmit =
-                didThisButtonInvokeSubmit(facesContext, uiComponent);
-        if (!thisButtonInvokedSubmit) {
+        if (!didThisButtonInvokeSubmit(facesContext, uiComponent)) {
             return;
         }
-        String type = ((String) uiComponent.getAttributes().get("type"))
-                .toLowerCase();
+        String type = ((String) uiComponent.getAttributes().get("type")).toLowerCase();
         if ((type != null) && (type.equals("reset"))) {
             return;
         }
-        ActionEvent actionEvent = new ActionEvent(uiComponent);
-        uiComponent.queueEvent(actionEvent);
+        uiComponent.queueEvent(new ActionEvent(uiComponent));
     }
 
     /**
@@ -72,31 +68,11 @@ public class ButtonRenderer extends DomBasicRenderer {
      */
     private boolean didThisButtonInvokeSubmit(
             FacesContext facesContext, UIComponent uiComponent) {
-        boolean thisButtonInvokedSubmit = false;
         //find if the form submitted by a textField, workaround to deal with the default behaviour of the browser
         //(e.g.) if a form has a button on it, and enter key pressed on a text field, form submitted by the first intance of button
-        if (!isTextFieldInvokedSubmit(facesContext)) {
-            Map requestParameterMap =
-                    facesContext.getExternalContext().getRequestParameterMap();
-            String componentClientId = uiComponent.getClientId(facesContext);
-            String clientIdInRequestMap =
-                    (String) requestParameterMap.get(componentClientId);
-            thisButtonInvokedSubmit = clientIdInRequestMap != null;
-            if (!thisButtonInvokedSubmit) {
-                // detect whether this button is an image button
-                // that invoked the submit
-                String clientIdXCoordinateInRequestMap =
-                        componentClientId + ".x";
-                String clientIdYCoordinateInRequestMap =
-                        componentClientId + ".y";
-                if (requestParameterMap.get(componentClientId + ".x") != null
-                    || requestParameterMap.get(componentClientId + ".y") !=
-                       null) {
-                    thisButtonInvokedSubmit = true;
-                }
-            }
-        }
-        return thisButtonInvokedSubmit;
+        Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
+        String componentClientId = uiComponent.getClientId(facesContext);
+        return requestParameterMap.containsKey(componentClientId);
     }
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -125,7 +101,7 @@ public class ButtonRenderer extends DomBasicRenderer {
         String typeAttribute =
                 ((String) uiComponent.getAttributes().get("type"));
         if (typeAttribute == null || (!typeAttribute.equals("reset") &&
-                                      (!typeAttribute.equals("button")))) {
+                (!typeAttribute.equals("button")))) {
             typeAttribute = "submit";
         }
         typeAttribute = typeAttribute.toLowerCase();
@@ -143,7 +119,7 @@ public class ButtonRenderer extends DomBasicRenderer {
             //Paths to resources can be dependent on the environment so
             //we should use proper JSF techniques to resolve them.
             String pathToImage = getResourceURL(facesContext, imageAttribute);
-            
+
             root.setAttribute("src", pathToImage);
             root.removeAttribute("value");
         } else {
@@ -202,20 +178,5 @@ public class ButtonRenderer extends DomBasicRenderer {
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         validateParameters(facesContext, uiComponent, UICommand.class);
-    }
-
-    private boolean isTextFieldInvokedSubmit(FacesContext facesContext) {
-        Object textFieldfocus =
-                facesContext.getExternalContext().getRequestParameterMap()
-                        .get(FormRenderer.FOCUS_HIDDEN_FIELD);
-        if (textFieldfocus == null) {
-            return false;
-        }
-
-        if (textFieldfocus.toString().length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
