@@ -34,15 +34,26 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
 public class GridRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.GridRenderer {
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELGRID);
 
+    protected void doPassThru(FacesContext facesContext, UIComponent uiComponent) {
+        PassThruAttributeRenderer.renderHtmlAttributes(
+            facesContext, uiComponent, PASSTHRU);
+    }
+    
     // row styles are returned by reference
     public String[] getRowStyles(UIComponent uiComponent) {
         if (((String[]) getRowStyleClasses(uiComponent)).length <= 0) {

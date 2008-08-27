@@ -38,6 +38,7 @@ import com.icesoft.faces.component.dragdrop.DragEvent;
 import com.icesoft.faces.component.dragdrop.DropEvent;
 import com.icesoft.faces.component.ext.HtmlPanelGroup;
 import com.icesoft.faces.component.menupopup.MenuPopupHelper;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.DragDrop;
@@ -66,6 +67,13 @@ public class GroupRenderer
     protected static final String DROP = "dropID";
     private static Log log = LogFactory.getLog(GroupRenderer.class);
 
+    // Basically, everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELGROUP,
+            PASSTHRU_EXCLUDE);
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {

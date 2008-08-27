@@ -35,6 +35,7 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.component.AttributeConstants;
 import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
@@ -43,6 +44,13 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public class GroupRenderer extends DomBasicRenderer {
+    // Basically, everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        AttributeConstants.getAttributes(
+            AttributeConstants.H_PANELGROUP,
+            PASSTHRU_EXCLUDE);
 
     public boolean getRendersChildren() {
         return true;

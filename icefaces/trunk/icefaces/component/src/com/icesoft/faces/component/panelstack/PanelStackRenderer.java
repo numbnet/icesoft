@@ -34,6 +34,7 @@
 package com.icesoft.faces.component.panelstack;
 
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -46,6 +47,14 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 
 public class PanelStackRenderer extends DomBasicRenderer {
+    // Basically, everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELSTACK,
+            PASSTHRU_EXCLUDE);
+    
     public boolean getRendersChildren() {
         return true;
     }
@@ -60,8 +69,8 @@ public class PanelStackRenderer extends DomBasicRenderer {
             Element panelStackTable =
                     domContext.createRootElement(HTML.TABLE_ELEM);
             setRootElementId(facesContext, panelStackTable, uiComponent);
-            PassThruAttributeRenderer
-                        .renderAttributes(facesContext, uiComponent, null);
+            PassThruAttributeRenderer.renderHtmlAttributes(
+                facesContext, uiComponent, PASSTHRU);
         }
         Element panelStackTable = (Element) domContext.getRootNode();
         DOMContext.removeChildren(panelStackTable);

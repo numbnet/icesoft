@@ -165,7 +165,7 @@ public class ExtendedAttributeConstants {
                new String[]{};
            attributes[0] = (ICE_EFFECT);
            final String[] ICE_PANELBORDER = 
-               new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
+               new String[]{ HTML.ALIGN_ATTR, HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.HEIGHT_ATTR,  HTML.LANG_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
            attributes[1] = (ICE_PANELBORDER);
            final String[] ICE_COLUMN = 
                new String[]{ HTML.STYLE_ATTR };                        
@@ -388,5 +388,25 @@ public class ExtendedAttributeConstants {
         }
         return (String[])attributes[i];
     }
-
+    
+    public static String[] getAttributes(int index, String[] remove) {
+        String[] attributes = getAttributes(index);
+        if(attributes == null)
+            return null;
+        String[] copy = new String[attributes.length - remove.length];
+        int copyIndex = 0;
+        for(int i = 0; i < attributes.length; i++) {
+            boolean shouldRemove = false;
+            for(int j = 0; j < remove.length; j++) {
+                if(attributes[i].equals(remove[j])) {
+                    shouldRemove = true;
+                    break;
+                }
+            }
+            if(!shouldRemove) {
+                copy[copyIndex++] = attributes[i];
+            }
+        }
+        return copy;
+    }
 }

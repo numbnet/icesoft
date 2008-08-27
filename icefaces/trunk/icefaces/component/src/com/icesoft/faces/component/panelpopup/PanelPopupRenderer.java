@@ -35,6 +35,7 @@ package com.icesoft.faces.component.panelpopup;
 
 import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
+import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
@@ -62,7 +63,15 @@ import java.io.IOException;
 public class PanelPopupRenderer extends GroupRenderer {
 	private static Log log = LogFactory.getLog(PanelPopupRenderer.class);
 
-	/*
+    // Basically, everything is excluded
+    private static final String[] PASSTHRU_EXCLUDE =
+        new String[] { HTML.STYLE_ATTR };
+    private static final String[] PASSTHRU =
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_PANELPOPUP,
+            PASSTHRU_EXCLUDE);
+    
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer#getRendersChildren()
@@ -162,9 +171,8 @@ public class PanelPopupRenderer extends GroupRenderer {
 		Element table = (Element) tables.item(0);
 		// clean out child nodes and build a fresh selectinputdate
 		DOMContext.removeChildrenByTagName(table, HTML.TR_ELEM);
-
-		PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent,
-				null);
+        
+        doPassThru(facesContext, uiComponent);
 		String handleId = null;
 		if (panelPopup.getHeader() != null) {
 			Element headerTr = domContext.createElement(HTML.TR_ELEM);
@@ -279,6 +287,11 @@ public class PanelPopupRenderer extends GroupRenderer {
 
         JavascriptContext.addJavascriptCall(facesContext, "Ice.iFrameFix.start('" + clientId + "','" +
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank") + "');");
+    }
+    
+    protected void doPassThru(FacesContext facesContext, UIComponent uiComponent) {
+        PassThruAttributeRenderer.renderHtmlAttributes(
+            facesContext, uiComponent, PASSTHRU);
     }
 
 	private String modalJavascript(Boolean modal, Boolean visible,

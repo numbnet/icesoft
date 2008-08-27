@@ -144,4 +144,24 @@ public class AttributeConstants {
         return (String[])attributes[i];
     }
 
+    public static String[] getAttributes(int index, String[] remove) {
+        String[] attributes = getAttributes(index);
+        if(attributes == null)
+            return null;
+        String[] copy = new String[attributes.length - remove.length];
+        int copyIndex = 0;
+        for(int i = 0; i < attributes.length; i++) {
+            boolean shouldRemove = false;
+            for(int j = 0; j < remove.length; j++) {
+                if(attributes[i].equals(remove[j])) {
+                    shouldRemove = true;
+                    break;
+                }
+            }
+            if(!shouldRemove) {
+                copy[copyIndex++] = attributes[i];
+            }
+        }
+        return copy;
+    }
 }
