@@ -125,6 +125,7 @@ public class PassThruAttributeRenderer {
      * @param facesContext
      * @param uiComponent
      * @param excludedAttributes attributes to exclude
+     * @deprecated 
      */
     public static void renderAttributes(FacesContext facesContext,
                                         UIComponent uiComponent,
@@ -144,6 +145,7 @@ public class PassThruAttributeRenderer {
      * @param attributeElement
      * @param styleElement The Element to apply styling on
      * @param excludedAttributes attributes to exclude
+     * @deprecated
      */
     public static void renderAttributes(FacesContext facesContext,
                                         UIComponent uiComponent,
