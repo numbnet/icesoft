@@ -135,6 +135,7 @@ public class PassThruAttributeWriter {
      * @param uiComponent
      * @param excludedAttributes attributes to exclude
      * @throws IOException
+     * @deprecated
      */
     public static void renderAttributes(ResponseWriter writer,
                                         UIComponent uiComponent,
