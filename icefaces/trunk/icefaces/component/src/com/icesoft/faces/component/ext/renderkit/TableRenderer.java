@@ -35,15 +35,14 @@ package com.icesoft.faces.component.ext.renderkit;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.PORTLET_CSS_DEFAULT;
+import com.icesoft.faces.component.commandsortheader.CommandSortHeader;
 import com.icesoft.faces.component.ext.HeaderRow;
 import com.icesoft.faces.component.ext.ColumnGroup;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.RowSelector;
 import com.icesoft.faces.component.ext.UIColumns;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.util.CoreUtils;
@@ -325,6 +324,25 @@ public class TableRenderer
                     } else {
                         styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col ")+ styleClass;                        
                     }
+                    String sortColumn = htmlDataTable.getSortColumn();
+
+                    if (sortColumn != null) {
+                        Iterator it = column.getChildren().iterator();
+
+                        while (it.hasNext()) {
+                            UIComponent columnChild = (UIComponent) it.next();
+
+                            if (columnChild instanceof CommandSortHeader) {
+                                String columnName = ((CommandSortHeader) columnChild).getColumnName();
+
+                                if (sortColumn.equals(columnName)) {
+                                    styleClass += CSS_DEFAULT.TABLE_ACTIVE_SORT_COLUMN ;
+                                }
+
+                                break;
+                            }
+                        }
+                    }                    
                     th.setAttribute(HTML.CLASS_ATTR, styleClass);
                     Integer colspan = null;
                     try {
@@ -437,7 +455,20 @@ public class TableRenderer
             cursorParent = columnHeaderDiv;
         }
         if ("header".equalsIgnoreCase(facet) ){
-            th.setAttribute("class",getHeaderStyles(uiComponent)[styleIndex]);
+            String styles = this.getHeaderStyles(uiComponent)[styleIndex];
+            String sortColumn = htmlDataTable.getSortColumn();
+            UIComponent headerFacet = nextColumn.getFacet("header");
+
+            if (sortColumn != null && (headerFacet instanceof CommandSortHeader)) {
+                String columnName = ((CommandSortHeader) headerFacet).getColumnName();
+
+                if (sortColumn.equals(columnName)) {
+                    styles += CSS_DEFAULT.TABLE_ACTIVE_SORT_COLUMN;
+                }
+            }
+
+            th.setAttribute("class", styles);
+            
         } else {
             th.setAttribute("class",getFooterClass(htmlDataTable));
         }

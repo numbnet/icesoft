@@ -385,6 +385,8 @@ fieldset {
     border-left-style: none;
     border-top-style: none;
 }
+
+.iceDatTblActvSrtHdr{}
 /*
 ----- for datatable when cell content length exceeds-----
 */
