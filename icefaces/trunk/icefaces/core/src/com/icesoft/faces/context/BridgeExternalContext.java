@@ -322,7 +322,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         return initParameterMap;
     }
 
-    public void redirect(String requestURI) throws IOException {
+    public void redirect(final String requestURI) throws IOException {
         // Seam ONLY ...first have to decide if we are requesting the same URI as previous
         // since Seam can redirect to same page/view.  With seam workspace management
         // a new page/view can be selected from the current one which
@@ -331,6 +331,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
         if (SeamUtilities.isSeamEnvironment()) {
             SeamUtilities.switchToCurrentSeamConversation(requestURI);
         }
+        String uriString = SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier);
+        int index = uriString.lastIndexOf('?');
         final URI uri;
         try {
             /*
@@ -339,12 +341,21 @@ public abstract class BridgeExternalContext extends ExternalContext {
              *
              * Note: We're not specifically checking to see if the passed
              *       requestURI is absolute or relative. Using the
-             *       URI(String scheme, String host, String path, String fragment)
-             *       constructor and passing the requestURI as a path regardless
-             *       of its form might seem confusing. However, the result is as
-             *       desired.
+             *       multi-argument URI(...) constructor and passing the
+             *       requestURI as a path regardless of its form might seem
+             *       confusing. However, the result is as desired.
              */
-            uri = new URI(null, null, SeamUtilities.encodeSeamConversationId(requestURI, viewIdentifier), null);
+            uri =
+                new URI(
+                    null,                                              // scheme
+                    null,                                            // userInfo
+                    null,                                                // host
+                    -1,                                                  // port
+                    index != -1 ?                                        // path
+                        uriString.substring(0, index) : uriString,
+                    index != -1 ?                                       // query
+                        uriString.substring(index + 1) : null,
+                    null);                                           // fragment
         } catch (URISyntaxException exception) {
             throw new RuntimeException(exception);
         }
