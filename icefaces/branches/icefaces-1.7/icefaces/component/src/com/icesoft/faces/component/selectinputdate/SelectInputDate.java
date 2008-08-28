@@ -715,6 +715,22 @@ public class SelectInputDate
             return super.getValue();
         }
     }
+    
+    public boolean getPartialSubmit() {
+        if (partialSubmit != null) {
+            return partialSubmit.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("partialSubmit");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        if (boolVal != null) {
+            return boolVal.booleanValue();
+        }
+        if (Util.isParentPartialSubmit(this)) {
+            return true;
+        }
+        return true;
+    }
 
     private String highlightClass;
 
