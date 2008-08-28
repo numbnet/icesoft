@@ -795,4 +795,26 @@ public abstract class DomBasicRenderer extends Renderer {
         return context.getApplication().getViewHandler()
                 .getResourceURL(context, path);
     }
+
+    /**
+     * This is a utility method for concatenating two Strings, where passThru
+     *  is typically null or an empty String, and renderer is usually non-null,
+     *  but can in theory be null, and we want to minimise needless new String
+     *  creation.
+     * 
+     * @param passThru The passthru attribute from the component
+     * @param renderer The Javascript that the Renderer needs to output
+     * @return A String concatenation of passThru + renderer
+     */
+    public static String combinedPassThru(String passThru, String renderer) {
+        int passThruLen = (passThru == null) ? 0 : passThru.length();
+        int rendererLen = (renderer == null) ? 0 : renderer.length();
+        if(passThruLen == 0 && rendererLen == 0)
+            return null;
+        if(passThruLen == 0)
+            return renderer;
+        if(rendererLen == 0)
+            return passThru;
+        return passThru + renderer;
+    }     
 }
