@@ -295,7 +295,6 @@ input.iceSelInpDateClosePopup {
 }
 
 .iceDatTblHdr{} /*was iceTblHeader */
-.iceDatTblActvSrtHdr{}
 .iceDatTblFtr {
     background: none;
     border-top: 1px solid #CCCCCC;  
