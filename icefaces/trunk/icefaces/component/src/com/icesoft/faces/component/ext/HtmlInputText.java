@@ -90,7 +90,7 @@ public class HtmlInputText
     private static final boolean DEFAULT_ACTION_KEY_EVENT = false;
     private static final boolean DEFAULT_VISIBLE = true;
     private String styleClass = null;
-    private Boolean partialSubmit = null;
+    protected Boolean partialSubmit = null;
     private String enabledOnUserRole = null;
     private String renderedOnUserRole = null;
     private MethodBinding action = null;

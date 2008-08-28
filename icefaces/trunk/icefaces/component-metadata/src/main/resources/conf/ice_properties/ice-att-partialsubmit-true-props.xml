@@ -34,11 +34,12 @@
 
 <property>
 	<description>
-		Enable component to perform partial submit. Default value is false.
+		Enable component to perform partial submit. Default value is true.
 	</description>
 	<property-name>partialSubmit</property-name>
 	<property-class>boolean</property-class>
 	<property-extension>
 		<category>ICE_COMPONENT</category>
-	</property-extension>
+        <default-value>true</default-value>
+    </property-extension>
 </property>

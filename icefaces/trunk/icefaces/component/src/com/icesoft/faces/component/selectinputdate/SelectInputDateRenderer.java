@@ -246,7 +246,10 @@ public class SelectInputDateRenderer
                                       selectInputDate.getCalendarInputClass());
                 dateText.setAttribute(HTML.ONFOCUS_ATTR, "setFocus('');");
                 dateText.setAttribute("onkeypress", this.ICESUBMIT);
-                dateText.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');"+ this.ICESUBMITPARTIAL);
+                String onblur = combinedPassThru(
+                    "setFocus('');",
+                    selectInputDate.getPartialSubmit()?ICESUBMITPARTIAL:null);
+                dateText.setAttribute(HTML.ONBLUR_ATTR, onblur);
                 if( selectInputDate.getTabindex() != null ){
                 	dateText.setAttribute(HTML.TABINDEX_ATTR, selectInputDate.getTabindex());
                 }
