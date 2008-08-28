@@ -340,6 +340,8 @@ input.iceSelInpDateClosePopup {
     background-repeat: repeat-x;
 }
 
+.iceDatTblActvSrtHdr{}
+
 .iceDatTblBlkTd {
    border-bottom: 1px solid #CCCCCC;    
 }
