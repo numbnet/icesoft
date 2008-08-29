@@ -98,24 +98,24 @@ public class SelectInputDateRenderer
     private static final Log log =
             LogFactory.getLog(SelectInputDateRenderer.class);
 
-    private static final String CALENDAR_TABLE = "_calendarTable";
-    private static final String CALENDAR_BUTTON = "_calendarButton";
-    private static final String CALENDAR_POPUP = "_calendarPopup";
-    private static final String HIDDEN_FIELD_NAME = "showPopup";
-    private static final String DATE_SELECTED = "dateSelected";
+    private static final String CALENDAR_TABLE = "_ct";
+    private static final String CALENDAR_BUTTON = "_cb";
+    private static final String CALENDAR_POPUP = "_cp";
+    private static final String HIDDEN_FIELD_NAME = "sp";
+    private static final String DATE_SELECTED = "ds";
 
     // constants for navigation link ids
-    private static final String SELECT_MONTH = "_selMo";
-    private static final String SELECT_YEAR = "_selYr";
-    private static final String PREV_MONTH = "_prevmo";
-    private static final String NEXT_MONTH = "_nextmo";
-    private static final String PREV_YEAR = "_prevyr";
-    private static final String NEXT_YEAR = "_nextyr";
+    private static final String SELECT_MONTH = "_sm";
+    private static final String SELECT_YEAR = "_sy";
+    private static final String PREV_MONTH = "_pm";
+    private static final String NEXT_MONTH = "_nm";
+    private static final String PREV_YEAR = "_py";
+    private static final String NEXT_YEAR = "_ny";
 
     // constant for selectinputdate links
-    private static final String CALENDAR = "_calendar_";
-    private static final String CALENDAR_CLICK = "_calendarClick";
-    private static final String ROOT_DIV = "_rootDiv";
+    private static final String CALENDAR = "_c_";
+    private static final String CALENDAR_CLICK = "_cc";
+    private static final String ROOT_DIV = "_rd";
     
     private static final int IS_NOT             = 0;
     private static final int IS_CALENDAR_BUTTON = 1;
