@@ -71,6 +71,7 @@ function iceSubmitPartial(form, component, evt) {
     }
     query.sendOn(currentConnection($element(form), $element(component)));
     resetHiddenFieldsFor(form);
+    return false;
 }
 
 function iceSubmit(aForm, aComponent, anEvent) {
@@ -114,6 +115,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
     }
 
     resetHiddenFieldsFor(aForm);
+    return false;
 }
 
 //todo: determine if the cleanup of hidden fields should be at framework or component level

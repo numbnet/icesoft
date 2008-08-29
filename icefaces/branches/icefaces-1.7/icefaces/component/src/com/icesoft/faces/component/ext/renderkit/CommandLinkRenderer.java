@@ -88,6 +88,6 @@ public class CommandLinkRenderer extends
     private String getJavaScriptPartialOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
         return com.icesoft.faces.renderkit.dom_html_basic.CommandLinkRenderer
                 .getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
-                "iceSubmitPartial(form,this,event)";
+                "return iceSubmitPartial(form,this,event);";
     }
 }
