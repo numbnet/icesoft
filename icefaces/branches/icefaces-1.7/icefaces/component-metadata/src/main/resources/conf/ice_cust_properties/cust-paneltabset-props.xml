@@ -39,7 +39,7 @@
 &ice-att-title-props;
 &base-props;
 &events-props;
-&ice-att-partialsubmit-props;
+&ice-att-partialsubmit-true-props;
 &ice-att-immediate-props;
 <property>
 	<description>
