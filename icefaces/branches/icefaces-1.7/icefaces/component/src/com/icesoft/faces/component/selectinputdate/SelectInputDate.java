@@ -156,6 +156,7 @@ public class SelectInputDate
     public final static String CALENDAR_INPUTTEXT = "";
     private Boolean _renderMonthAsDropdown;
     private Boolean _renderYearAsDropdown;
+    private String inputTitle = null;
 
     /**
      * Creates an instance and sets renderer type to "com.icesoft.faces.Calendar".
@@ -968,6 +969,21 @@ public class SelectInputDate
         }
         this.highlightDayClass = "";
         this.highlightWeekClass = "";
+    }
+
+    public String getInputTitle() {
+        if (this.inputTitle != null) {
+            return this.inputTitle;
+        }
+        ValueBinding vb = getValueBinding("inputTitle");
+        if (vb != null) {
+            return (String) vb.getValue(getFacesContext());
+        }
+        return null;
+    }
+
+    public void setInputTitle(String inputTitle) {
+        this.inputTitle = inputTitle;
     }
 
     static class UnitMap extends HashMap {
