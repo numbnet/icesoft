@@ -181,7 +181,7 @@ public class CommandLinkRenderer extends DomBasicRenderer {
 
     private String getJavaScriptOnClickString(FacesContext facesContext, UIComponent uiComponent, Map parameters) {
         return getJavascriptHiddenFieldSetters(facesContext, (UICommand) uiComponent, parameters) +
-                "iceSubmit(form,this,event);";
+                "return iceSubmit(form,this,event);";
     }
 
     /**
