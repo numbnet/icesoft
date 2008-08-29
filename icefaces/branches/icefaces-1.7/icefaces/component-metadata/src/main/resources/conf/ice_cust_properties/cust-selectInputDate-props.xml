@@ -286,3 +286,11 @@
     </property-extension>
 </property>
 
+<property>
+    <description>Tooltip for the text input field.</description>
+    <property-name>inputTitle</property-name>
+    <property-extension>
+        <category>ADVANCED</category>
+    </property-extension>
+</property>
+        
