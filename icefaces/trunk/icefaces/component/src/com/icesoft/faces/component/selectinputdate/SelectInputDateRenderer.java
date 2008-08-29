@@ -257,7 +257,7 @@ public class SelectInputDateRenderer
                     dateText.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
                 }
                 String tooltip = null;
-                tooltip = selectInputDate.getTitle();
+                tooltip = selectInputDate.getInputTitle();
                 if(tooltip == null || tooltip.length() == 0) {
                     // extract the popupdate format and use it as a tooltip
                     tooltip = getMessageWithParamFromResource(
