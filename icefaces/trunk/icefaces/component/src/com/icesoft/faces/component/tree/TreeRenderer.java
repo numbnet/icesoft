@@ -260,7 +260,7 @@ public class TreeRenderer extends DomBasicRenderer {
             requestMap.put(varAttribute, current);
             domContext.setCursorParent(parentDOMNode);
 
-            treeNodeDiv.setAttribute(HTML.NAME_ATTR, "treeNodeDiv");
+            treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
             treeNodeDiv
                     .setAttribute(HTML.CLASS_ATTR, treeComponent.getTreeRowStyleClass());
             parentDOMNode.appendChild(treeNodeDiv);
@@ -284,12 +284,12 @@ public class TreeRenderer extends DomBasicRenderer {
             requestMap.put(varAttribute, current);
             domContext.setCursorParent(parentDOMNode);
 
-            treeNodeDiv.setAttribute(HTML.NAME_ATTR, "treeNodeDiv");
+            treeNodeDiv.setAttribute(HTML.NAME_ATTR, "nd");
             treeNodeDiv
                     .setAttribute(HTML.CLASS_ATTR, treeComponent.getTreeRowStyleClass());
             // treeNodeDiv id is assigned here when roo node is hidden
             treeNodeDiv.setAttribute(HTML.ID_ATTR, treeComponent
-                    .getClientId(facesContext) + "-div-root");
+                    .getClientId(facesContext) + "-d-rt");
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
             // startNode is used in conjunction with endNode as an alternative to streamWrite method
@@ -306,9 +306,9 @@ public class TreeRenderer extends DomBasicRenderer {
             ((IceUserObject) current.getUserObject()).isExpanded()) {
             // render CHILD div
             Element childDiv = domContext.createElement(HTML.DIV_ELEM);
-            childDiv.setAttribute(HTML.NAME_ATTR, "CHILD");
+            childDiv.setAttribute(HTML.NAME_ATTR, "c");
             childDiv.setAttribute(HTML.ID_ATTR, treeNodeDiv
-                    .getAttribute(HTML.ID_ATTR) + "-child");
+                    .getAttribute(HTML.ID_ATTR) + "-c");
 
             treeNodeDiv.appendChild(childDiv);
             
@@ -567,7 +567,7 @@ public class TreeRenderer extends DomBasicRenderer {
                                                                  .getModel()
                                                                  .getRoot());
         treeNodeDiv.setAttribute(HTML.ID_ATTR, treeComponent
-                .getClientId(facesContext) + "-div-" + pathToNode);
+                .getClientId(facesContext) + "-d-" + pathToNode);
 
         try {
             encodeParentAndChildren(facesContext, treeNode);
