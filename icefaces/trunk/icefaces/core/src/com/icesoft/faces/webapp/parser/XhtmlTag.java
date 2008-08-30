@@ -38,7 +38,7 @@ import org.xml.sax.Attributes;
 
 import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentTag;
-import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 
 /**
  * This class contains the tag processing logic for all XHTML tags.
@@ -70,7 +70,18 @@ public class XhtmlTag extends UIComponentTag {
         super.setProperties(comp);
         UIXhtmlComponent component = (UIXhtmlComponent) comp;
         component.setTag(getTagName());
-        component.setXmlAttributes(getAttributes());
+        Attributes attr = getAttributes();
+        if(attr != null) {
+            for(int i = 0; i < attr.getLength(); i++) {
+                String value = (String) attr.getValue(i);
+                if (isValueReference(value)) {
+                    ValueBinding vb = getFacesContext().getApplication().createValueBinding(value);
+                    component.addValueBindingAttribute(attr.getQName(i), vb);
+                } else {
+                    component.addStandardAttribute(attr.getQName(i), value);
+                }
+            }
+        }
     }
 
     /**
