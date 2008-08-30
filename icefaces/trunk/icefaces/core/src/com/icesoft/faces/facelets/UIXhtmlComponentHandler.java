@@ -4,9 +4,12 @@ import com.sun.facelets.tag.jsf.ComponentHandler;
 import com.sun.facelets.tag.jsf.ComponentConfig;
 import com.sun.facelets.tag.TagAttribute;
 import com.sun.facelets.FaceletContext;
+import com.sun.facelets.el.LegacyValueBinding;
 import com.icesoft.faces.component.UIXhtmlComponent;
 
 import javax.faces.component.UIComponent;
+import javax.faces.el.ValueBinding;
+import javax.el.ValueExpression;
 
 /**
  * @author Mark Collette
@@ -33,12 +36,10 @@ public class UIXhtmlComponentHandler extends ComponentHandler {
                 current.addStandardAttribute(qName, value);
             }
             else {
-                // We don't always include the EL jars, so our
-                //  code has to use reflection to refer to
-                //  javax.el.ValueExpression
-                Object value =
+                ValueExpression ve =
                         attribs[i].getValueExpression(ctx, Object.class);
-                current.addELValueExpression(qName, value);
+                ValueBinding vb = new LegacyValueBinding(ve);
+                current.addValueBindingAttribute(qName, vb);
             }
         }
         return current;
