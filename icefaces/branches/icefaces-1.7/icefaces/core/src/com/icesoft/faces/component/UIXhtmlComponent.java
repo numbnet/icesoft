@@ -40,6 +40,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -53,39 +54,12 @@ public class UIXhtmlComponent extends UIComponentBase {
     public static final String RENDERER_TYPE =
             "com.icesoft.domXhtml";
     
-    private static final Attributes EMPTY_ATTRIBUTES = new AttributesImpl();
     private static final Log log = LogFactory.getLog(UIXhtmlComponent.class);
-    private static Method getELContextMethod;
-    private static Method getValueMethod;
 
     private String tag;
-    private Attributes xmlAttributes = EMPTY_ATTRIBUTES;
-    private Map standardAttributes = Collections.EMPTY_MAP;
-    private Map elValueExpressions = Collections.EMPTY_MAP;
+    private Map standardAttributes;
+    private Map valueBindingAttributes;
     private boolean createdByFacelets = false;
-
-    static {
-        try {
-            Class ELAdaptorClass =
-                    Class.forName("com.sun.facelets.el.ELAdaptor");
-            getELContextMethod = ELAdaptorClass
-                    .getMethod("getELContext", new Class[]{FacesContext.class});
-            Class ValueExpressionClass =
-                    Class.forName("javax.el.ValueExpression");
-            Class ELContextClass = Class.forName("javax.el.ELContext");
-            getValueMethod = ValueExpressionClass
-                    .getMethod("getValue", new Class[]{ELContextClass});
-        }
-        catch (Throwable e) {
-            //EL libraries not available, which either means that we're
-            //not using Facelets, or someone forgot to include a JAR
-            if (log.isDebugEnabled()) {
-                log.debug(
-                        "EL libraries not detected; Facelets are not supported by this configuration: " +
-                        e.getMessage());
-            }
-        }
-    }
 
     public UIXhtmlComponent() {
         setRendererType( RENDERER_TYPE );
@@ -101,53 +75,41 @@ public class UIXhtmlComponent extends UIComponentBase {
 
     public Map getTagAttributes() {
         Map allAttributes = new HashMap();
-        int length = xmlAttributes.getLength();
-        for (int i = 0; i < length; i++) {
-            allAttributes
-                    .put(xmlAttributes.getQName(i), xmlAttributes.getValue(i));
+        
+        // Straight text attributes
+        if (standardAttributes != null) {
+            Iterator attributeIterator = standardAttributes.entrySet().iterator();
+            while (attributeIterator.hasNext()) {
+                Map.Entry attribute = (Map.Entry) attributeIterator.next();
+                allAttributes.put(
+                    attribute.getKey().toString(),
+                    attribute.getValue().toString());
+            }
         }
 
-        // Straight text attributes from Facelets
-        Iterator attributeIterator = standardAttributes.entrySet().iterator();
-        while (attributeIterator.hasNext()) {
-            Map.Entry attribute = (Map.Entry) attributeIterator.next();
-            allAttributes.put(attribute.getKey().toString(),
-                              attribute.getValue().toString());
-        }
-
-        // EL expression attributes from Facelets
-        if (getELContextMethod != null && getValueMethod != null) {
-            try {
-                Object elContext = getELContextMethod.invoke(null,
-                                                             new Object[]{
-                                                                     FacesContext.getCurrentInstance()});
-
-                if (elContext != null) {
-                    Iterator elAttributeIterator =
-                            elValueExpressions.entrySet().iterator();
-                    while (elAttributeIterator.hasNext()) {
-                        Map.Entry attribute =
-                                (Map.Entry) elAttributeIterator.next();
-                        Object name = attribute.getKey();
-                        Object value = attribute.getValue();
-                        if (value != null) {
-                            Object evaluatedValue = getValueMethod
-                                    .invoke(value, new Object[]{elContext});
-                            if (evaluatedValue != null) {
-                                allAttributes.put(name.toString(),
-                                                  evaluatedValue.toString());
-                            }
+        // EL expression attributes
+        if (valueBindingAttributes != null) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            Iterator vbAttributeIterator =
+                valueBindingAttributes.entrySet().iterator();
+            while (vbAttributeIterator.hasNext()) {
+                Map.Entry attribute =
+                    (Map.Entry) vbAttributeIterator.next();
+                Object name = attribute.getKey();
+                ValueBinding vb = (ValueBinding) attribute.getValue();
+                try {
+                    if (vb != null) {
+                        Object evaluatedValue = vb.getValue(facesContext);
+                        if (evaluatedValue != null) {
+                            allAttributes.put(
+                                name.toString(),
+                                evaluatedValue.toString());
                         }
                     }
                 }
-            }
-            catch (IllegalAccessException iae) {
-                // It shouldn't be possible for these reflection exceptions to happen
-                throw new RuntimeException(iae);
-            }
-            catch (InvocationTargetException ite) {
-                // It shouldn't be possible for these reflection exceptions to happen
-                throw new RuntimeException(ite);
+                catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -162,36 +124,16 @@ public class UIXhtmlComponent extends UIComponentBase {
         this.tag = tag;
     }
 
-    public void setXmlAttributes(Attributes attr) {
-        xmlAttributes = attr == null ? xmlAttributes : attr;
-    }
-
-    /**
-     * This isn't intended for use by any other code, it's just to work-around
-     * a Facelets bug. ICE-3137
-     */
-    public Attributes getXmlAttributes() {
-        return xmlAttributes;
-    }
-
     public void addStandardAttribute(String key, Object value) {
-        if (standardAttributes == Collections.EMPTY_MAP)
+        if (standardAttributes == null)
             standardAttributes = new HashMap();
         standardAttributes.put(key, value);
     }
 
-    /**
-     * Since we might not always include the EL jars, we can't refer to those
-     * classes in our method signatures, so the second param to this method has
-     * to be "Object", even though it must specifically take a ValueExpression
-     *
-     * @param key
-     * @param valueExpression Must be a javax.el.ValueExpression
-     */
-    public void addELValueExpression(String key, Object valueExpression) {
-        if (elValueExpressions == Collections.EMPTY_MAP)
-            elValueExpressions = new HashMap();
-        elValueExpressions.put(key, valueExpression);
+    public void addValueBindingAttribute(String key, ValueBinding vb) {
+        if (valueBindingAttributes == null)
+            valueBindingAttributes = new HashMap();
+        valueBindingAttributes.put(key, vb);
     }
 
     public void setCreatedByFacelets() {
@@ -211,14 +153,11 @@ public class UIXhtmlComponent extends UIComponentBase {
    */
 
     public Object saveState(FacesContext facesContext)  {
-        Object[] values = new Object[5];
+        Object[] values = new Object[4];
         values[0] = super.saveState(facesContext);
         values[1] = tag;
         values[2] = standardAttributes;
-        //xmlAttributes are not serializable, so are not immediately
-        //supported
-        // values[3] = xmlAttributes;
-        values[4] = elValueExpressions;
+        values[3] = valueBindingAttributes;
         return ((Object) values);
     }
     
@@ -227,8 +166,6 @@ public class UIXhtmlComponent extends UIComponentBase {
         super.restoreState(facesContext, values[0]);
         tag = (String) values[1];
         standardAttributes = (Map) values[2];
-        // xmlAttributes = (Attributes) values[3];
-        elValueExpressions = (Map) values[4];
+        valueBindingAttributes = (Map) values[3];
     }
-
 }
