@@ -21,7 +21,7 @@ public class ResourceServer implements Server {
         //match any path that does not point to WEB-INF directory
         pathDispatcher.dispatchOn("^(?!.*WEB\\-INF.*).*$", new FileServer(fileLocator, mimeTypeMatcher));
         if (configuration.getAttributeAsBoolean("compressResources", true)) {
-            dispatcher = new CompressingServer(pathDispatcher);
+            dispatcher = new CompressingServer(pathDispatcher, mimeTypeMatcher, configuration);
         } else {
             dispatcher = pathDispatcher;
         }

@@ -6,11 +6,11 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.SessionExpired;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
-import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
-import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
+import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
 import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.faces.webapp.http.core.DisposeViews;
@@ -23,10 +23,10 @@ import com.icesoft.faces.webapp.http.core.SendUpdates;
 import com.icesoft.faces.webapp.http.core.SingleViewServer;
 import com.icesoft.faces.webapp.http.core.UploadServer;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.net.messaging.MessageHandler;
+import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
 import com.icesoft.util.MonitorRunner;
-import com.icesoft.net.messaging.MessageServiceClient;
-import com.icesoft.net.messaging.MessageHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -68,7 +68,7 @@ public class MainSessionBoundServlet implements Server {
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
         sessionID = idGenerator.newIdentifier();
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
-        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor);
+        final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
         final Server viewServlet;
         final Server disposeViews;
         final MessageHandler handler;
@@ -77,20 +77,20 @@ public class MainSessionBoundServlet implements Server {
             if (messageService == null) {
                 disposeViews = new DisposeViews(sessionID, views);
                 handler = null;
-            } else {                
+            } else {
                 disposeViews = OKServer;
                 handler = new DisposeViewsHandler();
                 handler.setCallback(
-                    new DisposeViewsHandler.Callback() {
-                        public void disposeView(final String sessionIdentifier, final String viewIdentifier) {
-                            if (sessionID.equals(sessionIdentifier)) {
-                                View view = (View) views.remove(viewIdentifier);
-                                if (view != null) {
-                                    view.dispose();
+                        new DisposeViewsHandler.Callback() {
+                            public void disposeView(final String sessionIdentifier, final String viewIdentifier) {
+                                if (sessionID.equals(sessionIdentifier)) {
+                                    View view = (View) views.remove(viewIdentifier);
+                                    if (view != null) {
+                                        view.dispose();
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
                 messageService.addMessageHandler(handler, MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
             }
         } else {
