@@ -7,6 +7,7 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.standard.CompressingServer;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -23,16 +24,17 @@ public class ResourceDispatcher implements Server {
         }
     };
     private PathDispatcherServer dispatcher = new PathDispatcherServer();
-    private Server compressResource = new CompressingServer(dispatcher);
+    private Server compressResource;
     private MimeTypeMatcher mimeTypeMatcher;
     private String prefix;
     private ArrayList registered = new ArrayList();
     private SessionDispatcher.Monitor monitor;
 
-    public ResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor) {
+    public ResourceDispatcher(String prefix, MimeTypeMatcher mimeTypeMatcher, SessionDispatcher.Monitor monitor, Configuration configuration) {
         this.prefix = prefix;
         this.mimeTypeMatcher = mimeTypeMatcher;
         this.monitor = monitor;
+        this.compressResource = new CompressingServer(dispatcher, mimeTypeMatcher, configuration);
     }
 
     public void service(Request request) throws Exception {
