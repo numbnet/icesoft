@@ -15,6 +15,7 @@ public class NotModifiedHandler implements ResponseHandler {
     public void respond(Response response) throws Exception {
         response.setStatus(304);
         response.setHeader("Date", new Date());
-        response.setHeader("Expires", expirationDate);
+//        response.setHeader("Expires", expirationDate);
+        response.setHeader("Content-Length", 0);
     }
 }

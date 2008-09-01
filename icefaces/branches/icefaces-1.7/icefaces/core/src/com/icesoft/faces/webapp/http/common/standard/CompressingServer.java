@@ -6,6 +6,8 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.ResponseProxy;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.faces.webapp.http.common.MimeTypeMatcher;
+import com.icesoft.faces.webapp.http.common.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -13,23 +15,37 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
+import java.util.List;
+import java.util.Arrays;
 
-//todo: handle fixed size responses
 public class CompressingServer implements Server {
     private static final Log log = LogFactory.getLog(CompressingServer.class);
     private Server server;
+    private MimeTypeMatcher mimeTypeMatcher;
+    private List noCompressForMimeTypes;
 
-    public CompressingServer(Server server) {
+    public CompressingServer(Server server, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
         this.server = server;
+        this.mimeTypeMatcher = mimeTypeMatcher;
+        this.noCompressForMimeTypes = Arrays.asList(configuration.getAttribute("noCompress",
+            "image/gif image/png image/jpeg image/tiff " +
+            "application/pdf application/zip application/x-compress application/x-gzip application/java-archive " +
+            "video/x-sgi-movie audio/x-mpeg video/mp4 video/mpeg"
+        ).split(" "));
     }
 
     public void service(Request request) throws Exception {
+        String mimeType = mimeTypeMatcher.mimeTypeFor(request.getURI().getPath());
+        if (noCompressForMimeTypes.contains(mimeType)) {
+            server.service(request);
+        } else {
         String acceptEncodingHeader = request.getHeader("Accept-Encoding");
-        if (acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
+            if(acceptEncodingHeader != null && (acceptEncodingHeader.indexOf("gzip") >= 0 || acceptEncodingHeader.indexOf("compress") >= 0)) {
             server.service(new CompressingRequest(request));
         } else {
             server.service(request);
         }
+    }
     }
 
     public void shutdown() {
