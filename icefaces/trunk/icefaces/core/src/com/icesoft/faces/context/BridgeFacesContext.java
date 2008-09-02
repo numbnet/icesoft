@@ -380,6 +380,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      */
     public void release() {
         faceMessages.clear();
+        maxSeverity = null;
         renderResponse = false;
         responseComplete = false;
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
