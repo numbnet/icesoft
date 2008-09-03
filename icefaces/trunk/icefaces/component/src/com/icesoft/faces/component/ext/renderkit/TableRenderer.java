@@ -537,7 +537,13 @@ public class TableRenderer
         Element root = (Element) domContext.getRootNode();
 
         if (isScrollable(uiComponent)) {
+        	Element hdrTbl = this.getScrollableHeaderTableElement(root);
+        	hdrTbl.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent, 
+                    CSS_DEFAULT.TABLE_SCRL_HDR_TBL));
             root = getScrollableBodyTableElement(root);
+            root.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent, 
+                    CSS_DEFAULT.TABLE_SCRL_BDY_TBL));
+            
         }
         DOMContext.removeChildrenByTagName(root, HTML.TBODY_ELEM);
         Element tBody = (Element) domContext.createElement(HTML.TBODY_ELEM);
