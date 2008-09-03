@@ -452,6 +452,11 @@ public class DOMResponseWriter extends ResponseWriter {
             link.setAttribute("type", "text/css");
             link.setAttribute("href", handler.getResourceURL(context, css));
         }
+
+        //fix IE image caching bug -- see: http://www.mister-pixel.com/index.php?Content__state=whats_the_problem
+        Element link = (Element) container.appendChild(document.createElement("script"));
+        link.setAttribute("type", "text/javascript");
+        link.appendChild(document.createTextNode("try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}"));
     }
 
     private Element fixHtml() {
