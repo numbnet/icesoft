@@ -86,10 +86,10 @@ public class UIColumns extends UISeries {
 
     protected void iterate(FacesContext facesContext, PhaseId phase) {
         // process the column header facet
-        if (isHeaderFacet() && (UIComponent) getFacets().get("header")!= null) {
+        if (isHeaderFacet() && (UIComponent) getFacet("header")!= null) {
             // clear row index
             setRowIndex(-1);
-            UIComponent facet = (UIComponent) getFacets().get("header");
+            UIComponent facet = (UIComponent) getFacet("header");
             int rowsProcessed = 0;
             int currentRowIndex = getFirst() - 1;
             int displayedRows = getRows();
