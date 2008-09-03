@@ -59,6 +59,7 @@ public class GMapRenderer extends DomBasicRenderer{
 	     if (context == null || component == null) {
 	         throw new NullPointerException();
 	     }
+	     if (component.getChildCount() == 0)return;
 	     Iterator kids = component.getChildren().iterator();
 	     while (kids.hasNext()) {
 		    UIComponent kid = (UIComponent) kids.next();

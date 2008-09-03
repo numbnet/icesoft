@@ -237,9 +237,11 @@ public class PanelTabSet
     private UIComponent getUIComponent(UIComponent uiComponent) {
         if (uiComponent instanceof UINamingContainer ||
             uiComponent instanceof UIForm) {
-            List children = uiComponent.getChildren();
-            for (int i = 0, len = children.size(); i < len; i++) {
-                uiComponent = getUIComponent((UIComponent) children.get(i));
+            if (uiComponent.getChildCount() > 0) {
+                List children = uiComponent.getChildren();
+                for (int i = 0, len = children.size(); i < len; i++) {
+                    uiComponent = getUIComponent((UIComponent) children.get(i));
+                }
             }
         }
         return uiComponent;

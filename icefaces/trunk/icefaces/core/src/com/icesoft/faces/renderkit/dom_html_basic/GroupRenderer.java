@@ -93,11 +93,13 @@ public class GroupRenderer extends DomBasicRenderer {
         validateParameters(facesContext, uiComponent, null);
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        Iterator children = uiComponent.getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            if (nextChild.isRendered()) {
-                encodeParentAndChildren(facesContext, nextChild);
+        if (uiComponent.getChildCount() > 0) {
+            Iterator children = uiComponent.getChildren().iterator();
+            while (children.hasNext()) {
+                UIComponent nextChild = (UIComponent) children.next();
+                if (nextChild.isRendered()) {
+                    encodeParentAndChildren(facesContext, nextChild);
+                }
             }
         }
         // set the cursor here since nothing happens in encodeEnd

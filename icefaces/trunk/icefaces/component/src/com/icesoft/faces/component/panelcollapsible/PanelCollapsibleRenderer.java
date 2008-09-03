@@ -90,14 +90,16 @@ public class PanelCollapsibleRenderer extends DomBasicRenderer {
         //if expanded get the content div and render all its children 
         if (panelCollapsible.isExpanded()) {
         	Element contents = (Element)domContext.getRootNode().getFirstChild().getNextSibling();
-        	domContext.setCursorParent(contents);        	
-	        Iterator children = uiComponent.getChildren().iterator();
-	        while (children.hasNext()) {
-	            UIComponent nextChild = (UIComponent) children.next();
-	            if (nextChild.isRendered()) {
-	                encodeParentAndChildren(facesContext, nextChild);
-	            }
-	        }
+        	domContext.setCursorParent(contents);    
+        	if (uiComponent.getChildCount() > 0){
+    	        Iterator children = uiComponent.getChildren().iterator();
+    	        while (children.hasNext()) {
+    	            UIComponent nextChild = (UIComponent) children.next();
+    	            if (nextChild.isRendered()) {
+    	                encodeParentAndChildren(facesContext, nextChild);
+    	            }
+    	        }
+        	}
         }
         domContext.stepOver();
     }

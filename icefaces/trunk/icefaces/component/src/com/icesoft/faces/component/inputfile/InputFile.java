@@ -946,6 +946,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
 
     private static ArrayList findOutputStyleComponents(UIComponent parent) {
         ArrayList returnValue = null;
+        if (parent.getChildCount() == 0) return returnValue;
         Iterator children = parent.getChildren().iterator();
         UIComponent childComponent = null;
         while (children.hasNext()) {

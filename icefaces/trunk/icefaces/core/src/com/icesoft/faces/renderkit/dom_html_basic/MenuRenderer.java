@@ -579,8 +579,9 @@ public class MenuRenderer extends DomBasicInputRenderer {
     protected Iterator getSelectItems(UIComponent uiComponent) {
 
         List selectItems = new ArrayList();
+        if (uiComponent.getChildCount() == 0) return selectItems.iterator();
         Iterator children = uiComponent.getChildren().iterator();
-
+        
         while (children.hasNext()) {
             UIComponent nextSelectItemChild = (UIComponent) children.next();
             if (nextSelectItemChild instanceof UISelectItem) {

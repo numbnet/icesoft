@@ -203,24 +203,25 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                     series.setRowIndex(index);
                     Object cell = cells.next();
 
-
-                    Iterator childs;
-                    childs = uiComponent.getChildren().iterator();
-                    while (childs.hasNext()) {
-                        UIComponent nextChild = (UIComponent) childs.next();
-                        if (nextChild.isRendered()) {
-                            domContext.setCursorParent(root);
-                            domContext.streamWrite(facesContext, uiComponent,
-                                                   root,
-                                                   root);
-                            encodeParentAndChildren(facesContext, nextChild);
-                            String childId =
-                                    nextChild.getClientId(facesContext);
-
-                            ppm.setIndex(childId, index);
-                            DnDCache.getInstance(facesContext, false)
-                                    .putPositionPanelValue(childId, seriesList,
-                                                           index);
+                    if (uiComponent.getChildCount() > 0) {
+                        Iterator childs;
+                        childs = uiComponent.getChildren().iterator();
+                        while (childs.hasNext()) {
+                            UIComponent nextChild = (UIComponent) childs.next();
+                            if (nextChild.isRendered()) {
+                                domContext.setCursorParent(root);
+                                domContext.streamWrite(facesContext, uiComponent,
+                                                       root,
+                                                       root);
+                                encodeParentAndChildren(facesContext, nextChild);
+                                String childId =
+                                        nextChild.getClientId(facesContext);
+    
+                                ppm.setIndex(childId, index);
+                                DnDCache.getInstance(facesContext, false)
+                                        .putPositionPanelValue(childId, seriesList,
+                                                               index);
+                            }
                         }
                     }
                     index++;
