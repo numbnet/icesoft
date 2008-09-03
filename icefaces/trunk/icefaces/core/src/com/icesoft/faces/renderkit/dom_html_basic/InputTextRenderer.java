@@ -1,6 +1,8 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
+import com.icesoft.faces.context.effects.CurrentStyle;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -16,8 +18,8 @@ public class InputTextRenderer extends BaseRenderer{
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         //readonly or disabled components are not required to submit the value
+        super.decode(facesContext, uiComponent);
         if(DomBasicRenderer.isStatic(uiComponent)) return;
-        
         String clientId = uiComponent.getClientId(facesContext);
         Map requestMap =
                 facesContext.getExternalContext().getRequestParameterMap();
@@ -34,7 +36,10 @@ public class InputTextRenderer extends BaseRenderer{
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         renderHtmlAttributes(writer, uiComponent);
-
+        PassThruAttributeWriter.renderBooleanAttributes(
+                writer, 
+                uiComponent, 
+                new String[0]);
         writer.writeAttribute(HTML.NAME_ATTR, clientId, null);              
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {

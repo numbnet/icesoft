@@ -35,6 +35,8 @@ package com.icesoft.faces.context.effects;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+
+import java.io.IOException;
 import java.io.Serializable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,6 +44,7 @@ import org.w3c.dom.Element;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import javax.faces.el.ValueBinding;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,9 +108,18 @@ public class CurrentStyle implements Serializable {
      */
     public static void apply(FacesContext facesContext,
                              UIComponent uiComponent) {
-        apply(facesContext, uiComponent, null, null);
+        apply(facesContext, uiComponent, null, null, null);
     }
 
+    public static void apply(FacesContext facesContext, UIComponent uiComponent, 
+            Element targetElement, String style) {
+        apply(facesContext, uiComponent, targetElement, style, null);
+    }
+    
+    public static void apply(FacesContext facesContext, UIComponent uiComponent, 
+            ResponseWriter writer) {
+        apply(facesContext, uiComponent, null, null, writer);        
+    }
     /**
      * Apply css changes to rendered component
      *
@@ -117,8 +129,8 @@ public class CurrentStyle implements Serializable {
      * @param style
      */
     public static void apply(FacesContext facesContext, UIComponent uiComponent, 
-                             Element targetElement, String style) {
-        if(targetElement == null) {
+                             Element targetElement, String style, ResponseWriter writer) {
+        if(targetElement == null && writer == null) {
             DOMContext domContext =
                     DOMContext.getDOMContext(facesContext, uiComponent);
             Object node = domContext.getRootNode();
@@ -199,6 +211,15 @@ public class CurrentStyle implements Serializable {
                 targetElement.setAttribute(HTML.STYLE_ATTR, jspStyle);
             else
                 targetElement.removeAttribute(HTML.STYLE_ATTR);
+        }
+        if (writer != null) {
+            try {
+                writer.writeAttribute(HTML.STYLE_ATTR, jspStyle, null);
+            } catch (IOException exception) {
+                if (log.isErrorEnabled()) {
+                    log.error("Exception setting style attribute", exception);
+                }
+            }
         }
     }
 

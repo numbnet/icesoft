@@ -12,6 +12,7 @@ import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
 
 public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basic.InputTextRenderer {
@@ -29,6 +30,11 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
     protected void renderHtmlAttributes(ResponseWriter writer, UIComponent uiComponent)
             throws IOException{
         PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+        //renderer is responsible to write the autocomplete attribute
+        Object autoComplete = ((HtmlInputText)uiComponent).getAutocomplete();
+        if (autoComplete != null) {
+            writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, autoComplete, null);
+        }
     }
     
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
