@@ -58,7 +58,7 @@ public class OutputTextRenderer extends BaseRenderer{
             convertedValue = DOMUtils.escapeAnsi(convertedValue);
         } 
         writer.write(convertedValue);
+        LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);        
         writer.endElement(HTML.SPAN_ELEM);
-        LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);
     }
 }
