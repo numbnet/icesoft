@@ -377,9 +377,6 @@ public class TableRenderer
                     domContext.setCursorParent(th);
                     encodeParentAndChildren(facesContext, column);                    
                 }
-                if (isScrollable(uiComponent)) {
-                    tr.appendChild(scrollBarSpacer(domContext, facesContext));
-                }
             }
         }
     }
@@ -558,8 +555,12 @@ public class TableRenderer
         if (uiData.getRowCount() == 0) {
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             tBody.appendChild(tr);
-            Element td = (Element) domContext.createElement(HTML.TD_ELEM);
-            tr.appendChild(td);            
+            int cols = getNumberOfChildColumns(uiData);
+            if( cols == 0 ) cols = 1;
+            for(int i = 0 ; i < cols ; i++ ){
+            	Element td = (Element) domContext.createElement(HTML.TD_ELEM);
+                tr.appendChild(td);        
+            }
             domContext.stepOver();
             return;
         }        
