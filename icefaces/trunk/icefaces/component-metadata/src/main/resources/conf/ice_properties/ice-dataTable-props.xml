@@ -159,7 +159,9 @@
                 <li>iceDatTblRow1</li>
                 <li>iceDatTblRow2</li>                
                 <li>iceDatTblHdr</li>
-                <li>iceDatTblFtr</li>                
+                <li>iceDatTblFtr</li>   
+                <li>iceDatTblScrlHdrTbl</li>  
+                <li>iceDatTblScrlBdyTbl</li>           
               </ul>   
               The following style class is being rendered for the div of the 
               "header" if the dataTable is scrollable. 
