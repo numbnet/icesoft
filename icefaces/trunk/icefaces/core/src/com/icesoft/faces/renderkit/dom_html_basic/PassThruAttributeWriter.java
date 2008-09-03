@@ -35,7 +35,11 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import javax.faces.FacesException;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+
+import com.icesoft.faces.context.effects.CurrentStyle;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,7 +173,7 @@ public class PassThruAttributeWriter {
         writer.writeAttribute("onfocus", "setFocus('');", "onfocus");
     }
 
-    private static void renderBooleanAttributes(
+    public static void renderBooleanAttributes(
             ResponseWriter writer, UIComponent uiComponent,
             String[] excludedAttributes)
             throws IOException {
@@ -411,6 +415,9 @@ public class PassThruAttributeWriter {
             //that doesn't exist
             }
         }
+        //this call maintains the css related changes made by the effects on the client
+        //especially the "visible" attribute.
+        CurrentStyle.apply(FacesContext.getCurrentInstance(), uiComponent, writer); 
     }
     
     private static boolean valueIsIntegerSentinelValue(Object value) {

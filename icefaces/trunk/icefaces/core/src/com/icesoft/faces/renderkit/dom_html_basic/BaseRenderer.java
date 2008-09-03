@@ -11,13 +11,14 @@ import javax.faces.convert.ConverterException;
 import javax.faces.el.ValueBinding;
 import javax.faces.render.Renderer;
 
+import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 
 public class BaseRenderer extends Renderer{
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
+        CurrentStyle.decode(facesContext, uiComponent);
         super.decode(facesContext, uiComponent);
-
     }
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
