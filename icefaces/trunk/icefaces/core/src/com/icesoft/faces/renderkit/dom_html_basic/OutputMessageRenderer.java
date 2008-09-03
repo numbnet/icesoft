@@ -81,11 +81,13 @@ public class OutputMessageRenderer extends DomBasicRenderer {
 
         // get a list of the UIParameter child components
         ArrayList uiParameterChildren = new ArrayList();
-        Iterator allChildren = uiComponent.getChildren().iterator();
-        while (allChildren.hasNext()) {
-            UIComponent nextChild = (UIComponent) allChildren.next();
-            if (nextChild instanceof UIParameter) {
-                uiParameterChildren.add(((UIParameter) nextChild).getValue());
+        if (uiComponent.getChildCount() > 0) {
+            Iterator allChildren = uiComponent.getChildren().iterator();
+            while (allChildren.hasNext()) {
+                UIComponent nextChild = (UIComponent) allChildren.next();
+                if (nextChild instanceof UIParameter) {
+                    uiParameterChildren.add(((UIParameter) nextChild).getValue());
+                }
             }
         }
 

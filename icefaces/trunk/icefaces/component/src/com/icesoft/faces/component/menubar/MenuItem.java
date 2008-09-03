@@ -291,6 +291,7 @@ public class MenuItem extends MenuItemBase {
     }
 
     void addParameter(UIComponent link) {
+        if (getChildCount() == 0 )return;
         List children = getChildren();
 
         for (int i = 0; i < children.size(); i++) {

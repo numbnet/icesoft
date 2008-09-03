@@ -38,6 +38,7 @@ public class GMapMarker extends UIPanel{
     }
     
     public void encodeChildren(FacesContext context) throws IOException {
+         if (getChildCount() == 0 )return;
 	     Iterator kids = getChildren().iterator();
 	     while (kids.hasNext()) {
 		    UIComponent kid = (UIComponent) kids.next();

@@ -126,10 +126,12 @@ public class UIColumns extends UISeries {
                 if (!isRowAvailable()) {
                     break;
                 }
-                Iterator kids = getChildren().iterator();
-                while (kids.hasNext()) {
-                    UIComponent kid = (UIComponent) kids.next();
-                    processKids(facesContext, phase, kid);
+                if (getChildCount() > 0) {
+                    Iterator kids = getChildren().iterator();
+                    while (kids.hasNext()) {
+                        UIComponent kid = (UIComponent) kids.next();
+                        processKids(facesContext, phase, kid);
+                    }
                 }
             }
             // reset row index

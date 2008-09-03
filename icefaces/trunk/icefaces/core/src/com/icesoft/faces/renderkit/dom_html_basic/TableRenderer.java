@@ -237,6 +237,7 @@ public class TableRenderer extends DomBasicRenderer {
 
     protected void resetFacetChildId(UIComponent component) {
         component.setId(component.getId());
+        if (component.getChildCount() == 0)return;
         Iterator facetChild = component.getChildren().iterator();
         while (facetChild.hasNext()) {
             UIComponent child = (UIComponent) facetChild.next();
@@ -342,17 +343,19 @@ public class TableRenderer extends DomBasicRenderer {
                     columnStyleIndex = 0;
                 }
 
-                // recursively render the components contained within this td (column)
-                Iterator childrenOfThisColumn =
-                        nextColumn.getChildren().iterator();
-                domContext.setCursorParent(td);
-                domContext.streamWrite(facesContext, uiComponent,
-                                       domContext.getRootNode(), td);
-                while (childrenOfThisColumn.hasNext()) {
-                    UIComponent nextChild =
-                            (UIComponent) childrenOfThisColumn.next();
-                    if (nextChild.isRendered()) {
-                        encodeParentAndChildren(facesContext, nextChild);
+                if (nextColumn.getChildCount() > 0) {
+                    // recursively render the components contained within this td (column)
+                    Iterator childrenOfThisColumn =
+                            nextColumn.getChildren().iterator();
+                    domContext.setCursorParent(td);
+                    domContext.streamWrite(facesContext, uiComponent,
+                                           domContext.getRootNode(), td);
+                    while (childrenOfThisColumn.hasNext()) {
+                        UIComponent nextChild =
+                                (UIComponent) childrenOfThisColumn.next();
+                        if (nextChild.isRendered()) {
+                            encodeParentAndChildren(facesContext, nextChild);
+                        }
                     }
                 }
             }
@@ -414,11 +417,13 @@ public class TableRenderer extends DomBasicRenderer {
 
     protected List getRenderedChildColumnsList(UIComponent component) {
         List results = new ArrayList();
-        Iterator kids = component.getChildren().iterator();
-        while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
-            if ((kid instanceof UIColumn) && kid.isRendered()) {
-                results.add(kid);
+        if (component.getChildCount() > 0) {
+            Iterator kids = component.getChildren().iterator();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                if ((kid instanceof UIColumn) && kid.isRendered()) {
+                    results.add(kid);
+                }
             }
         }
         return results;

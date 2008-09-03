@@ -321,6 +321,7 @@ public abstract class DomBasicRenderer extends Renderer {
             UIComponent parent,
             String searchChildId) {
         UIComponent foundChild = null;
+        if (parent.getChildCount() == 0)return foundChild;
         Iterator children = parent.getChildren().iterator();
         UIComponent nextChild = null;
         while (children.hasNext()) {
@@ -353,11 +354,13 @@ public abstract class DomBasicRenderer extends Renderer {
         if (parent.getRendersChildren()) {
             parent.encodeChildren(facesContext);
         } else {
-            Iterator children = parent.getChildren().iterator();
-            while (children.hasNext()) {
-                UIComponent nextChild = (UIComponent) children.next();
-                if (nextChild.isRendered()) {
-                    encodeParentAndChildren(facesContext, nextChild);
+            if (parent.getChildCount() > 0) {
+                Iterator children = parent.getChildren().iterator();
+                while (children.hasNext()) {
+                    UIComponent nextChild = (UIComponent) children.next();
+                    if (nextChild.isRendered()) {
+                        encodeParentAndChildren(facesContext, nextChild);
+                    }
                 }
             }
         }
@@ -441,12 +444,14 @@ public abstract class DomBasicRenderer extends Renderer {
      */
     static Map getParameterMap(UIComponent uiComponent) {
         Map parameterMap = new HashMap();
-        Iterator children = uiComponent.getChildren().iterator();
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            if (nextChild instanceof UIParameter) {
-                UIParameter uiParam = (UIParameter) nextChild;
-                parameterMap.put(uiParam.getName(), uiParam.getValue());
+        if (uiComponent.getChildCount() > 0) {
+            Iterator children = uiComponent.getChildren().iterator();
+            while (children.hasNext()) {
+                UIComponent nextChild = (UIComponent) children.next();
+                if (nextChild instanceof UIParameter) {
+                    UIParameter uiParam = (UIParameter) nextChild;
+                    parameterMap.put(uiParam.getName(), uiParam.getValue());
+                }
             }
         }
         return parameterMap;

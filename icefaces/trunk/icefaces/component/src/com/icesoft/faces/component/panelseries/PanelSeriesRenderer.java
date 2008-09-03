@@ -91,14 +91,16 @@ public class PanelSeriesRenderer extends DomBasicRenderer {
                 break;
             }
             Iterator childs;
-            childs = list.getChildren().iterator();
-            while (childs.hasNext()) {
-                UIComponent nextChild = (UIComponent) childs.next();
-                if (nextChild.isRendered()) {
-                    domContext.setCursorParent(root);
-                    domContext.streamWrite(facesContext, uiComponent,
-                                           domContext.getRootNode(), root);
-                    encodeParentAndChildren(facesContext, nextChild);
+            if (list.getChildCount() > 0) {
+                childs = list.getChildren().iterator();
+                while (childs.hasNext()) {
+                    UIComponent nextChild = (UIComponent) childs.next();
+                    if (nextChild.isRendered()) {
+                        domContext.setCursorParent(root);
+                        domContext.streamWrite(facesContext, uiComponent,
+                                               domContext.getRootNode(), root);
+                        encodeParentAndChildren(facesContext, nextChild);
+                    }
                 }
             }
             rowIndex++;

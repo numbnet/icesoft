@@ -134,8 +134,10 @@ public class MenuItems extends MenuItemBase {
                 nextChildMenuItemBase.setAction(amb);
             }
             
-            List grandChildren = nextChild.getChildren();
-            setParentsRecursive(nextChild, grandChildren, als, almb, amb);
+            if (nextChild.getChildCount() > 0) {
+                List grandChildren = nextChild.getChildren();
+                setParentsRecursive(nextChild, grandChildren, als, almb, amb);
+            }
         }
     }
     

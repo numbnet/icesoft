@@ -560,9 +560,11 @@ public class D2DViewHandler extends ViewHandler {
         if (component.getRendersChildren()) {
             component.encodeChildren(context);
         } else {
-            Iterator kids = component.getChildren().iterator();
-            while (kids.hasNext()) {
-                renderResponse(context, (UIComponent) kids.next());
+            if (component.getChildCount() > 0) {
+                Iterator kids = component.getChildren().iterator();
+                while (kids.hasNext()) {
+                    renderResponse(context, (UIComponent) kids.next());
+                }
             }
         }
 
@@ -650,10 +652,12 @@ public class D2DViewHandler extends ViewHandler {
                 }
             }
             if (hasKids) {
-                Iterator kids = component.getChildren().iterator();
-                while (kids.hasNext()) {
-                    tracePrintComponentTree(
-                            context, (UIComponent) kids.next(), levels + 1, sb, null);
+                if (component.getChildCount() > 0) {
+                    Iterator kids = component.getChildren().iterator();
+                    while (kids.hasNext()) {
+                        tracePrintComponentTree(
+                                context, (UIComponent) kids.next(), levels + 1, sb, null);
+                    }
                 }
             }
 

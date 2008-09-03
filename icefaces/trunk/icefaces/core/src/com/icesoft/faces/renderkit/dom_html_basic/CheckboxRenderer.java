@@ -153,12 +153,14 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
         validateParameters(facesContext, uiComponent, null);
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
-        Iterator children = uiComponent.getChildren().iterator();
-        domContext.setCursorParent(domContext.getRootNode());
-        while (children.hasNext()) {
-            UIComponent nextChild = (UIComponent) children.next();
-            if (nextChild.isRendered()) {
-                encodeParentAndChildren(facesContext, nextChild);
+        if (uiComponent.getChildCount() > 0) {
+            Iterator children = uiComponent.getChildren().iterator();
+            domContext.setCursorParent(domContext.getRootNode());
+            while (children.hasNext()) {
+                UIComponent nextChild = (UIComponent) children.next();
+                if (nextChild.isRendered()) {
+                    encodeParentAndChildren(facesContext, nextChild);
+                }
             }
         }
         domContext.stepOver();

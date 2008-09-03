@@ -198,14 +198,16 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         DataPaginator scroller = (DataPaginator) uiComponent;
         if (!scroller.isModelResultSet()) {
             super.encodeBegin(facesContext, uiComponent);
-
-            // clear children before render
-            List kids = scroller.getChildren();
-            for (int i = 0; i < kids.size(); i++) {
-                UIComponent kid = (UIComponent) kids.get(i);
-                // do not remove the output text - bug #333
-                if (!kid.getFamily().equalsIgnoreCase("javax.faces.Output")) {
-                    scroller.getChildren().remove(kids.get(i));
+                
+            if (scroller.getChildCount() > 0) {
+                // clear children before render
+                List kids = scroller.getChildren();
+                for (int i = 0; i < kids.size(); i++) {
+                    UIComponent kid = (UIComponent) kids.get(i);
+                    // do not remove the output text - bug #333
+                    if (!kid.getFamily().equalsIgnoreCase("javax.faces.Output")) {
+                        scroller.getChildren().remove(kids.get(i));
+                    }
                 }
             }
             //Reset the dataTable model before setting variables
@@ -491,6 +493,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         parameter.setTransient(true);
         parameter.setName(scroller.getClientId(facesContext));
         parameter.setValue(facetName);
+        //getChildren doesn't need any check for the childCount
         List children = link.getChildren();
         children.add(parameter);
         scroller.getChildren().add(link);

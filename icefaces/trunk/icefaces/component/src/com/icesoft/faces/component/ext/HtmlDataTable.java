@@ -188,26 +188,28 @@ public class HtmlDataTable
         // reset row index
         setRowIndex(-1);
         // process each child column and it's facets once
-        Iterator columns = getChildren().iterator();
-        while (columns.hasNext()) {
-            UIComponent column = (UIComponent) columns.next();
-            if (!(column instanceof UIColumn) &&
-                !(column instanceof UIColumns)) {
-                continue;
-            }
-            if (!column.isRendered()) {
-                continue;
-            }
-            if (column instanceof UIColumn) {
-                Iterator columnFacets = column.getFacets().keySet().iterator();
-                while (columnFacets.hasNext()) {
-                    UIComponent columnFacet = (UIComponent) column.getFacets()
-                            .get(columnFacets.next());
-                    processKids(facesContext, phase, columnFacet);
+        if (getChildCount() > 0 ) {
+            Iterator columns = getChildren().iterator();
+            while (columns.hasNext()) {
+                UIComponent column = (UIComponent) columns.next();
+                if (!(column instanceof UIColumn) &&
+                    !(column instanceof UIColumns)) {
+                    continue;
                 }
-
-            } else if (column instanceof UIColumns) {
-                processKids(facesContext, phase, column);
+                if (!column.isRendered()) {
+                    continue;
+                }
+                if (column instanceof UIColumn) {
+                    Iterator columnFacets = column.getFacets().keySet().iterator();
+                    while (columnFacets.hasNext()) {
+                        UIComponent columnFacet = (UIComponent) column.getFacets()
+                                .get(columnFacets.next());
+                        processKids(facesContext, phase, columnFacet);
+                    }
+    
+                } else if (column instanceof UIColumns) {
+                    processKids(facesContext, phase, column);
+                }
             }
         }
 
@@ -231,25 +233,29 @@ public class HtmlDataTable
                 break;
             }
             // loop over children
-            Iterator children = getChildren().iterator();
-            while (children.hasNext()) {
-                UIComponent child = (UIComponent) children.next();
-                if (!(child instanceof UIColumn) &&
-                    !(child instanceof UIColumns)) {
-                    continue;
-                }
-                if (child instanceof UIColumn) {
-                    Iterator granchildren = child.getChildren().iterator();
-                    while (granchildren.hasNext()) {
-                        UIComponent granchild =
-                                (UIComponent) granchildren.next();
-                        if (!granchild.isRendered()) {
-                            continue;
-                        }
-                        processKids(facesContext, phase, granchild);
+            if (getChildCount() > 0) {
+                Iterator children = getChildren().iterator();
+                while (children.hasNext()) {
+                    UIComponent child = (UIComponent) children.next();
+                    if (!(child instanceof UIColumn) &&
+                        !(child instanceof UIColumns)) {
+                        continue;
                     }
-                } else if (child instanceof UIColumns) {
-                    processKids(facesContext, phase, child);
+                    if (child instanceof UIColumn) {
+                        if (child.getChildCount() > 0) {
+                            Iterator granchildren = child.getChildren().iterator();
+                            while (granchildren.hasNext()) {
+                                UIComponent granchild =
+                                        (UIComponent) granchildren.next();
+                                if (!granchild.isRendered()) {
+                                    continue;
+                                }
+                                processKids(facesContext, phase, granchild);
+                            }
+                        }
+                    } else if (child instanceof UIColumns) {
+                        processKids(facesContext, phase, child);
+                    }
                 }
             }
         }
@@ -259,14 +265,15 @@ public class HtmlDataTable
     }
 
     protected void restoreChildrenState(FacesContext facesContext) {
-        Iterator kids = getChildren().iterator();
-        while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
-            if (kid instanceof UIColumn) {
-                restoreChildState(facesContext, kid);
+        if (getChildCount() > 0) {
+            Iterator kids = getChildren().iterator();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                if (kid instanceof UIColumn) {
+                    restoreChildState(facesContext, kid);
+                }
             }
         }
-
     }
 
     /**
@@ -274,11 +281,13 @@ public class HtmlDataTable
      * <code>setRowIndex()</code>.</p>
      */
     protected void saveChildrenState(FacesContext facesContext) {
-        Iterator kids = getChildren().iterator();
-        while (kids.hasNext()) {
-            UIComponent kid = (UIComponent) kids.next();
-            if (kid instanceof UIColumn) {
-                saveChildState(facesContext, kid);
+        if (getChildCount() > 0) {        
+            Iterator kids = getChildren().iterator();
+            while (kids.hasNext()) {
+                UIComponent kid = (UIComponent) kids.next();
+                if (kid instanceof UIColumn) {
+                    saveChildState(facesContext, kid);
+                }
             }
         }
     }

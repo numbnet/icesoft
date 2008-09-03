@@ -1193,6 +1193,7 @@ public class Tree extends UICommand implements NamingContainer {
      * @param context
      */
     protected void restoreChildrenState(FacesContext context) {
+        if (getChildCount() == 0) return;
         Iterator kids = getChildren().iterator();
         while (kids.hasNext()) {
             UIComponent kid = (UIComponent) kids.next();
@@ -1251,7 +1252,7 @@ public class Tree extends UICommand implements NamingContainer {
      * @param context
      */
     protected void saveChildrenState(FacesContext context) {
-
+        if (getChildCount() == 0) return;
         Iterator kids = getChildren().iterator();
         while (kids.hasNext()) {
             UIComponent kid = (UIComponent) kids.next();

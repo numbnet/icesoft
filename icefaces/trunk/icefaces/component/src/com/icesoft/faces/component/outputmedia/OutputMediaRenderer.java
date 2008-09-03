@@ -136,25 +136,25 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         setElementAttr(embed, HTML.TYPE_ATTR, mediaComponent, "mimeType");
 
         appendParamElement(sourceParamName, sourceURL, object, domContext);
-
-        List children = mediaComponent.getChildren();
-        Object component;
-        UIParameter parameter;
-        String paramName;
-        for (int i = 0; i < children.size(); i++) {
-            component = children.get(i);
-            if (!(component instanceof UIParameter)) {
-                continue;
+        if (mediaComponent.getChildCount() > 0 ){
+            List children = mediaComponent.getChildren();
+            Object component;
+            UIParameter parameter;
+            String paramName;
+            for (int i = 0; i < children.size(); i++) {
+                component = children.get(i);
+                if (!(component instanceof UIParameter)) {
+                    continue;
+                }
+                parameter = (UIParameter) component;
+                paramName = parameter.getName();
+                appendParamElement(paramName, parameter.getValue().toString(), object, domContext);
+                if (paramName == null || embed.hasAttribute(paramName)) {
+                    continue;
+                }
+                setElementAttr(embed, paramName, parameter, HTML.VALUE_ATTR);
             }
-            parameter = (UIParameter) component;
-            paramName = parameter.getName();
-            appendParamElement(paramName, parameter.getValue().toString(), object, domContext);
-            if (paramName == null || embed.hasAttribute(paramName)) {
-                continue;
-            }
-            setElementAttr(embed, paramName, parameter, HTML.VALUE_ATTR);
         }
-
         object.appendChild(embed);
 
         domContext.stepOver();

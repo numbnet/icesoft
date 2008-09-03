@@ -151,67 +151,69 @@ public class GridRenderer extends DomBasicRenderer {
         // time a columns-worth of children has been rendered. 
         // Children with attribute "rendered" == false are not rendered and do
         // not occupy a table cell.
-        Iterator children = uiComponent.getChildren().iterator();
-        if (children != null) {
-            if (!children.hasNext()) {
-                tr = (Element) domContext.createElement(HTML.TR_ELEM);
-                tr.setAttribute(HTML.STYLE_ATTR , "display: none;");
-                Element td = (Element) domContext.createElement(HTML.TD_ELEM);
-                tr.appendChild(td);
-                tbody.appendChild(tr);
-            }
-            int numberOfColumns = getConvertedColumnAttribute(uiComponent);
-            int rowIndex =
-                    -1;// this initial value ensures zero-based indexing in ids
-            int columnIndex =
-                    numberOfColumns; // this initial value invoked initialization of first row
-            String columnStyleClasses[] = getColumnStyleClasses(uiComponent);
-            String rowStyleClasses[] = getRowStyles(uiComponent);
-            int columnStyleIndex = 0;
-            int rowStyleIndex = 0;
-            int numberOfColumnStyles = columnStyleClasses.length - 1;
-            int numberOfRowStyles = rowStyleClasses.length;
-            UIComponent facet = null;
-            while (children.hasNext()) {
-                UIComponent nextChild = (UIComponent) children.next();
-                if (!nextChild.isRendered()) {
-                    continue;
-                }
-                // detect whether a new row is needed
-                if (columnIndex >= numberOfColumns) {
-                    tr = domContext.createElement("tr");
+        if (uiComponent.getChildCount() > 0) {
+            Iterator children = uiComponent.getChildren().iterator();
+            if (children != null) {
+                if (!children.hasNext()) {
+                    tr = (Element) domContext.createElement(HTML.TR_ELEM);
+                    tr.setAttribute(HTML.STYLE_ATTR , "display: none;");
+                    Element td = (Element) domContext.createElement(HTML.TD_ELEM);
+                    tr.appendChild(td);
                     tbody.appendChild(tr);
-                    if (numberOfRowStyles > 0) {
-                        tr.setAttribute("class",rowStyleClasses[rowStyleIndex++]);
-                        if (rowStyleIndex >= numberOfRowStyles) {
-                            rowStyleIndex = 0;
-                        }
+                }
+                int numberOfColumns = getConvertedColumnAttribute(uiComponent);
+                int rowIndex =
+                        -1;// this initial value ensures zero-based indexing in ids
+                int columnIndex =
+                        numberOfColumns; // this initial value invoked initialization of first row
+                String columnStyleClasses[] = getColumnStyleClasses(uiComponent);
+                String rowStyleClasses[] = getRowStyles(uiComponent);
+                int columnStyleIndex = 0;
+                int rowStyleIndex = 0;
+                int numberOfColumnStyles = columnStyleClasses.length - 1;
+                int numberOfRowStyles = rowStyleClasses.length;
+                UIComponent facet = null;
+                while (children.hasNext()) {
+                    UIComponent nextChild = (UIComponent) children.next();
+                    if (!nextChild.isRendered()) {
+                        continue;
                     }
-                    columnStyleIndex = 0;
-                    columnIndex = 0;
-                    rowIndex++;
+                    // detect whether a new row is needed
+                    if (columnIndex >= numberOfColumns) {
+                        tr = domContext.createElement("tr");
+                        tbody.appendChild(tr);
+                        if (numberOfRowStyles > 0) {
+                            tr.setAttribute("class",rowStyleClasses[rowStyleIndex++]);
+                            if (rowStyleIndex >= numberOfRowStyles) {
+                                rowStyleIndex = 0;
+                            }
+                        }
+                        columnStyleIndex = 0;
+                        columnIndex = 0;
+                        rowIndex++;
+                    }
+                    // create the td for this child
+                    Element td = domContext.createElement("td");
+                    tr.appendChild(td);
+                    td.setAttribute("id", getIndexedClientId(facesContext,
+                                                             uiComponent,
+                                                             columnIndex,
+                                                             rowIndex));
+               
+                    writeColStyles(columnStyleClasses, numberOfColumnStyles,
+                                   columnStyleIndex, td, columnIndex + 1, uiComponent);
+                    if (++columnStyleIndex > numberOfColumnStyles) {
+                        columnStyleIndex = 0;
+                    }
+    
+                    domContext.setCursorParent(td);
+                    domContext.streamWrite(facesContext, uiComponent,
+                                           domContext.getRootNode(), td);
+                    encodeParentAndChildren(facesContext, nextChild);
+                    columnIndex++;
                 }
-                // create the td for this child
-                Element td = domContext.createElement("td");
-                tr.appendChild(td);
-                td.setAttribute("id", getIndexedClientId(facesContext,
-                                                         uiComponent,
-                                                         columnIndex,
-                                                         rowIndex));
-           
-                writeColStyles(columnStyleClasses, numberOfColumnStyles,
-                               columnStyleIndex, td, columnIndex + 1, uiComponent);
-                if (++columnStyleIndex > numberOfColumnStyles) {
-                    columnStyleIndex = 0;
-                }
-
-                domContext.setCursorParent(td);
-                domContext.streamWrite(facesContext, uiComponent,
-                                       domContext.getRootNode(), td);
-                encodeParentAndChildren(facesContext, nextChild);
-                columnIndex++;
-            }
-        } 
+            } 
+        }
         renderFooterFacet(facesContext, uiComponent, domContext);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);

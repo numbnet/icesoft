@@ -180,8 +180,8 @@ public class Util extends Object {
                                       UIComponent uiComponent) {
 
         List selectItems = new ArrayList();
+        if (uiComponent.getChildCount() == 0) return selectItems;
         Iterator children = uiComponent.getChildren().iterator();
-
         while (children.hasNext()) {
             UIComponent nextSelectItemChild = (UIComponent) children.next();
             if (nextSelectItemChild instanceof UISelectItem) {

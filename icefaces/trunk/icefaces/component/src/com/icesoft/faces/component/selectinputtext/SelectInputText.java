@@ -266,6 +266,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
     void resetId(UIComponent component) {
         String id = component.getId();
         component.setId(id); // Forces client id to be reset
+        if (component.getChildCount() == 0)return;
         Iterator kids = component.getChildren().iterator();
         while (kids.hasNext()) {
             UIComponent kid = (UIComponent) kids.next();
