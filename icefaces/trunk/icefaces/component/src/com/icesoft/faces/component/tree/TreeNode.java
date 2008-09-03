@@ -134,14 +134,14 @@ public class TreeNode extends UIComponentBase implements NamingContainer {
      * @return content
      */
     public UIComponent getContent() {
-        return (UIComponent) getFacets().get(FACET_CONTENT);
+        return (UIComponent) getFacet(FACET_CONTENT);
     }
 
     /**
      * @return icon
      */
     public UIComponent getIcon() {
-        return (UIComponent) getFacets().get(FACET_ICON);
+        return (UIComponent) getFacet(FACET_ICON);
     }
 
 

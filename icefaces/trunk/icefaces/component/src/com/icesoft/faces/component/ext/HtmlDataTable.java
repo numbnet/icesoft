@@ -182,7 +182,7 @@ public class HtmlDataTable
         // process component facets once
         Iterator facets = getFacets().keySet().iterator();
         while (facets.hasNext()) {
-            UIComponent facet = (UIComponent) getFacets().get(facets.next());
+            UIComponent facet = (UIComponent) getFacet(facets.next().toString());
             processKids(facesContext, phase, facet);
         }
         // reset row index

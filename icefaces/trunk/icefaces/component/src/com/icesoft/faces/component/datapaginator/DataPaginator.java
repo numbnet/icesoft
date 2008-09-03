@@ -343,7 +343,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getFirst() {
-        return (UIComponent) getFacets().get(FIRST_FACET_NAME);
+        return (UIComponent) getFacet(FIRST_FACET_NAME);
     }
 
     /**
@@ -358,7 +358,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getLast() {
-        return (UIComponent) getFacets().get(LAST_FACET_NAME);
+        return (UIComponent) getFacet(LAST_FACET_NAME);
     }
 
     /**
@@ -373,7 +373,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getNext() {
-        return (UIComponent) getFacets().get(NEXT_FACET_NAME);
+        return (UIComponent) getFacet(NEXT_FACET_NAME);
     }
 
     /**
@@ -389,7 +389,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getFastForward() {
-        return (UIComponent) getFacets().get(FAST_FORWARD_FACET_NAME);
+        return (UIComponent) getFacet(FAST_FORWARD_FACET_NAME);
     }
 
     /**
@@ -405,7 +405,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getFastRewind() {
-        return (UIComponent) getFacets().get(FAST_REWIND_FACET_NAME);
+        return (UIComponent) getFacet(FAST_REWIND_FACET_NAME);
     }
 
     /**
@@ -421,7 +421,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * component.</p>
      */
     public UIComponent getPrevious() {
-        return (UIComponent) getFacets().get(PREVIOUS_FACET_NAME);
+        return (UIComponent) getFacet(PREVIOUS_FACET_NAME);
     }
 
     /**
