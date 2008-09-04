@@ -171,7 +171,6 @@ public class FormRenderer extends DomBasicRenderer {
 
         }
 
-
         //String contextClass = facesContext.getClass().toString();
         //root.setAttribute("context_type", contextClass);
 
@@ -208,16 +207,16 @@ public class FormRenderer extends DomBasicRenderer {
                 DOMContext.getDOMContext(facesContext, uiComponent);
         // set static class variable for support of myfaces command link
         renderCommandLinkHiddenFields(facesContext, uiComponent);
-        
+
         //check if the messages renderer asked to be rendered later,
         //if yes, then re-render it
-        if (uiComponent.getAttributes().get("$ice-msgs$") != null)  {
-            UIComponent messages = (UIComponent)uiComponent.getAttributes().get("$ice-msgs$");
+        if (uiComponent.getAttributes().get("$ice-msgs$") != null) {
+            UIComponent messages = (UIComponent) uiComponent.getAttributes().get("$ice-msgs$");
             messages.encodeBegin(facesContext);
             messages.encodeChildren(facesContext);
             messages.encodeEnd(facesContext);
         }
-        
+
         domContext.stepOver();
         domContext.endNode(facesContext, uiComponent, domContext.getRootNode());
     }
@@ -274,8 +273,9 @@ public class FormRenderer extends DomBasicRenderer {
         Element root = (Element) domContext.getRootNode();
         Element hiddenFieldsDiv = domContext.createElement(HTML.DIV_ELEM);
         hiddenFieldsDiv.setAttribute(HTML.ID_ATTR, uiComponent.getClientId(facesContext) + "hdnFldsDiv");
+        hiddenFieldsDiv.setAttribute(HTML.STYLE_ATTR, "display:none;");
         root.appendChild(hiddenFieldsDiv);
-        
+
         Iterator commandLinkFields = map.entrySet().iterator();
         while (commandLinkFields.hasNext()) {
             Map.Entry nextField = (Map.Entry) commandLinkFields.next();
