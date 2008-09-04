@@ -408,7 +408,7 @@ public class HtmlGraphicImage
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[19];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
@@ -425,6 +425,8 @@ public class HtmlGraphicImage
         values[16] = onkeyupeffect;
         values[17] = currentStyle;
         values[18] = visible;
+        values[19] = mimeType;
+        values[20] = styleClass;
         return ((Object) (values));
     }
 
@@ -448,6 +450,8 @@ public class HtmlGraphicImage
         onkeydowneffect = (Effect) values[15];
         onkeyupeffect = (Effect) values[16];
         currentStyle = (CurrentStyle) values[17];
-        visible = (Boolean) values[18];
+        visible = (Boolean)values[18];
+        mimeType = (String)values[19];
+        styleClass = (String)values[20];
     }
 }

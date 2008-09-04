@@ -1,8 +1,9 @@
 /*
  * limited scope mock objects test 
  */
-package com.icesoft.faces.mock.test;
+package com.icesoft.faces.mock.test.container;
 
+import com.icesoft.faces.metadata.ICECompsListHelper;
 import com.sun.faces.mock.MockApplication;
 import com.sun.faces.mock.MockExternalContext;
 import com.sun.faces.mock.MockFacesContext;
@@ -10,9 +11,11 @@ import com.sun.faces.mock.MockHttpServletRequest;
 import com.sun.faces.mock.MockHttpServletResponse;
 import com.sun.faces.mock.MockHttpSession;
 import com.sun.faces.mock.MockLifecycle;
+import com.sun.faces.mock.MockRenderKit;
 import com.sun.faces.mock.MockServletConfig;
 import com.sun.faces.mock.MockServletContext;
 import com.sun.faces.mock.MockViewHandler;
+import com.sun.rave.jsfmeta.beans.RendererBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Properties;
@@ -26,6 +29,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
+import javax.faces.render.RenderKit;
+import javax.faces.render.RenderKitFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -39,11 +44,12 @@ import junit.framework.TestCase;
  */
 public class MockTestCase extends TestCase {
 
+    //Mock Container
     private Application application;
     private ViewHandler viewHandler;
     private ServletConfig servletConfig;
     private ExternalContext externalContext;
-    private FacesContext facesContext;
+    private MockFacesContext facesContext;
     private Lifecycle lifecycle;
     private HttpServletRequest httpServletRequest;
     private HttpServletResponse httpServletResponse;
@@ -83,16 +89,18 @@ public class MockTestCase extends TestCase {
 
         ApplicationFactory applicationFactory = (ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY);
         application = (MockApplication) applicationFactory.getApplication();
-        viewHandler = new MockViewHandler();
-        application.setViewHandler(new MockViewHandler());
+        facesContext.setApplication(application);
 
-    //TODO:
-//        RenderKitFactory renderKitFactory = (RenderKitFactory)FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
-//        RenderKit renderkit = new MockRenderKit();
-//        renderKitFactory.addRenderKit(renderKitFactoryName, renderkit);
+        viewHandler = new MockViewHandler();
+        application.setViewHandler(viewHandler);
+
+        //TODO:
+        RenderKitFactory renderKitFactory = (RenderKitFactory)FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
+        RenderKit renderkit = new MockRenderKit();
+        renderKitFactory.addRenderKit(renderKitFactoryName, renderkit);
+        renderKitFactory.addRenderKit(RenderKitFactory.HTML_BASIC_RENDER_KIT, renderkit);
     }
 
-    //TODO: other containers
     @Override
     protected void setUp() throws Exception {
 
@@ -118,7 +126,6 @@ public class MockTestCase extends TestCase {
         return viewHandler;
     }
 
-    //todo External Context
     protected FacesContext getFacesContext() {
         return facesContext;
     }
@@ -144,17 +151,11 @@ public class MockTestCase extends TestCase {
         return null;
     }
 
-    protected void booleanAttribute(UIComponent uiComponent, String attributeName, boolean expectedValue) {
+    public UIComponent[] getUIComponents(){
+        return ICECompsListHelper.getComponents();
+    }
 
-        Object value = uiComponent.getAttributes().get(attributeName);
-        String message = null;
-        if (value != null) {
-            Boolean booleanValue = (Boolean) value;
-            message = " component=" + uiComponent + " property " + attributeName + " value=" + booleanValue.toString();
-            Logger.getLogger(CommandButtonSaveStateTest.class.getName()).log(Level.INFO, message);
-        } else {
-            message = " component=" + uiComponent + " property " + attributeName + "=null";
-            Logger.getLogger(CommandButtonSaveStateTest.class.getName()).log(Level.INFO, message);
-        }
+    public RendererBean getRendererBean(String componentFamily, String rendererType){
+        return ICECompsListHelper.getRenderer(componentFamily, rendererType);
     }
 }

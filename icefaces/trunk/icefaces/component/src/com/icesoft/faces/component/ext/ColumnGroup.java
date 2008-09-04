@@ -1,6 +1,7 @@
 package com.icesoft.faces.component.ext;
 
 import javax.faces.component.UIPanel;
+import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
@@ -30,6 +31,22 @@ public class ColumnGroup extends UIPanel{
         }
         ValueBinding vb = getValueBinding("renderedOnUserRole");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+         super.restoreState(context, values[0]);
+         renderedOnUserRole = (String)values[1];        
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[2];
+        }
+        values[0] = super.saveState(context);
+        values[1] = renderedOnUserRole;
+        return values;
     }
     
     /**

@@ -104,7 +104,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     private String orientation; // horizontal | vertical ; default = horizontal
     private String style;
     private String renderedOnUserRole = null;
-    private Boolean noIcons;
+    private String noIcons;
     private Boolean displayOnClick;
     /**
      * default no args constructor
@@ -148,7 +148,7 @@ public class MenuBar extends UICommand implements NamingContainer {
     public String getNoIcons() {
 
         if (noIcons != null) {
-            return noIcons.toString();
+            return noIcons;
         }
         ValueBinding vb = getValueBinding("noIcons");
         if (vb != null) {
@@ -165,7 +165,7 @@ public class MenuBar extends UICommand implements NamingContainer {
      * @param b
      */
     public void setNoIcons(String b) {
-        noIcons = new Boolean(b);
+        noIcons = b;
     }
 
     /**

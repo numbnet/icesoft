@@ -25,6 +25,8 @@ public class GMap extends UIPanel{
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
+
+
     private Boolean locateAddress ;
     private boolean initilized = false;
     private String address;
@@ -286,5 +288,35 @@ public class GMap extends UIPanel{
         return Util.getQualifiedStyleClass(this, 
                 CSS_DEFAULT.GMAP_TXT_TD);
     }    
+            
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        renderedOnUserRole = (String)values[1];
+        longitude = (String)values[2];
+        styleClass = (String)values[3];
+        zoomLevel = (Integer)values[4];
+        type = (String)values[5];
+        style = (String)values[6];
+        latitude = (String)values[7];
+        address = (String)values[8];
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[9];
+        }
+        values[0] = super.saveState(context);
+        values[1] = renderedOnUserRole;
+        values[2] = longitude;
+        values[3] = styleClass;
+        values[4] = zoomLevel;
+        values[5] = type;
+        values[6] = style;
+        values[7] = latitude;
+        values[8] = address;
+        return values;
+    }
 }
 

@@ -126,4 +126,23 @@ public class GMapMarker extends UIPanel{
 	public void setLatitude(String latitude) {
 		this.latitude = latitude;
 	}
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        latitude = (String)values[1];
+        longitude = (String)values[2];
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[3];
+        }
+        values[0] = super.saveState(context);
+        values[1] = latitude;
+        values[2] = longitude;
+        return values;
+    }
+
 }

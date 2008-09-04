@@ -156,9 +156,16 @@ public class HtmlDataTable
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[4];
+        Object values[] = new Object[9];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
+        values[2] = columnWidths;
+        values[3] = headerClasses;
+        values[4] = sortColumn;
+        values[5] = sortAscending;
+        values[6] = scrollHeight;
+        values[7] = scrollFooter;
+        values[8] = clientOnly;
         return ((Object) (values));
     }
 
@@ -170,6 +177,13 @@ public class HtmlDataTable
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         renderedOnUserRole = (String) values[1];
+        columnWidths = (String)values[2];
+        headerClasses = (String)values[3];
+        sortColumn = (String)values[4];
+        sortAscending = (Boolean)values[5];
+        scrollHeight = (String)values[6];
+        scrollFooter = (Boolean)values[7];
+        clientOnly = (Boolean)values[8];
     }
 
     public String getComponentType() {

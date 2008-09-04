@@ -50,5 +50,23 @@ public class GMapLatLngs extends UIPanel{
 
 	public void setValue(List value) {
 		this.value = value;
-	}	
+	}
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;        
+        super.restoreState(context, values[0]);
+        value = (List)values[1];
+    }
+
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[2];
+        }
+        values[0] = super.saveState(context);
+        values[1] = value;
+        return values;
+    }
+
 }

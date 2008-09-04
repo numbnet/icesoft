@@ -88,6 +88,10 @@ public class MenuItems extends MenuItemBase {
         return null;
     }
 
+    public void setValue(Object value){
+        this.value = (String)value;
+    }
+
     /**
      * @param value
      */

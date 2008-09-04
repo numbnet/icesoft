@@ -864,7 +864,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[18];
+        Object values[] = new Object[21];
         values[0] = super.saveState(context);
         values[1] = _for;
         values[2] = _fastStep;
@@ -883,6 +883,9 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         values[15] = _immediate;
         values[16] = saveAttachedState(context, _actionListener);
         values[17] = _vertical;
+        values[18] = renderedOnUserRole;
+        values[19] = enabledOnUserRole;
+        values[20] = disabled;
         return values;
     }
 
@@ -911,6 +914,10 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         _actionListener =
                 (MethodBinding) restoreAttachedState(context, values[16]);
         _vertical = (Boolean) values[17];
+        renderedOnUserRole = (String)values[18];
+        enabledOnUserRole = (String)values[19];
+        disabled = (Boolean)values[20];
+
     }
 
     /**

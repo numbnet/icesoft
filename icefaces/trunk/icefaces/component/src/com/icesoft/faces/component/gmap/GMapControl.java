@@ -67,4 +67,23 @@ public class GMapControl extends UIPanel{
         JavascriptContext.addJavascriptCall(facesContext, 
                 "Ice.GoogleMap.removeControl('"+ mapId +"', '"+ localName +"');");
     }
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        name = (String)values[1];
+    }
+
+    public Object saveState(FacesContext context) {
+
+        if(values == null){
+            values = new Object[2];
+        }
+        values[0] = super.saveState(context);
+        values[1] = name;
+        return values;
+    }
+    
+    
 }

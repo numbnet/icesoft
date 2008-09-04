@@ -1,174 +1,75 @@
 package com.icesoft.faces.metadata;
 
-import java.io.IOException;
-import java.net.URL;
 
-import javax.faces.component.UIComponentBase;
-import javax.faces.render.RenderKitFactory;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.xml.sax.SAXException;
 
-import com.icesoft.jsfmeta.MetadataXmlParser;
 import com.sun.rave.jsfmeta.beans.ComponentBean;
-import com.sun.rave.jsfmeta.beans.FacesConfigBean;
 import com.sun.rave.jsfmeta.beans.RendererBean;
+import javax.faces.component.UIComponent;
 
-public class RendererTypeTest extends TestCase {
+public class RendererTypeTest extends ICECompsTestCase {
 
-	private ComponentBean[] componentBeans;
 
-	private UIComponentBase[] uiComponentBases;
+    public static Test suite() {
+        return new TestSuite(RendererTypeTest.class);
+    }
 
-	private RendererBean[] rendererBeans;
+    public static void main() {
+        junit.textui.TestRunner.run(RendererTypeTest.suite());
+    }
 
-	public static Test suite() {
-		return new TestSuite(RendererTypeTest.class);
-	}
+    public void testNamingType() {
 
-	public static void main() {
-		junit.textui.TestRunner.run(RendererTypeTest.suite());
-	}
+        ComponentBean[] oldComponentBeans = getComponentBeanInfo();
+        ComponentBean[] componentBeans = new ComponentBean[oldComponentBeans.length];
+        System.arraycopy(oldComponentBeans, 0, componentBeans, 0, oldComponentBeans.length);
 
-	protected void setUp() {
+        UIComponent[] oldUIComponentBases = getComponents();
+        UIComponent[] uiComponentBases = new UIComponent[oldUIComponentBases.length];
+        System.arraycopy(oldUIComponentBases, 0, uiComponentBases, 0, oldUIComponentBases.length);
 
-		if (componentBeans == null && uiComponentBases == null) {
-			componentBeans = getComponentBeanInfo();
-			rendererBeans = getRendererBean();
-			uiComponentBases = new UIComponentBase[componentBeans.length];
+        RendererBean[] oldRendererBeans = getRendererBean();
+        RendererBean[] rendererBeans = new RendererBean[oldRendererBeans.length];
+        System.arraycopy(oldRendererBeans, 0, rendererBeans, 0, oldRendererBeans.length);
+        
+        for (int i = 0; i < componentBeans.length; i++) {
+            String renderTypeUIComponent = uiComponentBases[i].getRendererType();
+            String renderTypeComponentBean = componentBeans[i].getRendererType();
 
-			for (int j = 0; j < componentBeans.length; j++) {
-				Object newObject = null;
+            boolean notSameRenderType = renderTypeUIComponent != null && renderTypeComponentBean != null && !renderTypeUIComponent.trim().equalsIgnoreCase(
+                    renderTypeComponentBean.trim());
 
-				try {
-					Class namedClass = Class.forName(componentBeans[j]
-							.getComponentClass());
-					newObject = namedClass.newInstance();
+            String message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + renderTypeUIComponent + "\n faces-config declared renderType=" + renderTypeComponentBean + "\n\n";
+            assertFalse(message, notSameRenderType);
+            
 
-					if (newObject instanceof UIComponentBase) {
-						uiComponentBases[j] = (UIComponentBase) newObject;
+            String familyTypeUIComponent = uiComponentBases[i].getFamily();
+            String familyTypeComponentBean = componentBeans[i].getComponentFamily();
 
-					}
-				} catch (NullPointerException e) {
-					e.printStackTrace();
-					fail(e.getMessage());
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-					fail(e.getMessage());
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-					fail(e.getMessage());
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-					fail(e.getMessage());
-				}
-			}
-		}
-	}
+            boolean notSameRenderTypeTwo = familyTypeUIComponent != null && familyTypeComponentBean != null && !familyTypeUIComponent.trim().equalsIgnoreCase(
+                    familyTypeComponentBean.trim());
 
-	public void testRendererType() {
+            String messageTwo = "FamilyType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component familyType=" + familyTypeUIComponent + "\n faces-config declared familyType=" + familyTypeComponentBean + "\n\n";
+            assertFalse(messageTwo, notSameRenderTypeTwo);
+        }
+        
+                
+        for (int i = 0; i < rendererBeans.length; i++) {
+            String message = "";
+            try {
+                String rendererClass = rendererBeans[i].getRendererClass();
+                System.out.println("rendererClass=" + rendererClass);
+                Class namedClass = Class.forName(rendererClass);
+                String packageName = namedClass.getPackage().getName();
 
-		for (int i = 0; i < componentBeans.length; i++) {
-			String renderTypeUIComponent = uiComponentBases[i]
-					.getRendererType();
-			String renderTypeComponentBean = componentBeans[i]
-					.getRendererType();
+                message = "RenderType not the same for Component Class=" + componentBeans[i].getComponentClass() + "\n component renderType=" + rendererBeans[i].getRendererType() + "\n renderer class=" + rendererClass + "\n\n";
+            } catch (Exception e) {
+                fail(message);
+            }
+        }
+    }
 
-			boolean notSameRenderType = renderTypeUIComponent != null
-					&& renderTypeComponentBean != null
-					&& !renderTypeUIComponent.trim().equalsIgnoreCase(
-							renderTypeComponentBean.trim());
-
-			String message = "RenderType not the same for Component Class="
-					+ componentBeans[i].getComponentClass()
-					+ "\n component renderType=" + renderTypeUIComponent
-					+ "\n faces-config declared renderType="
-					+ renderTypeComponentBean + "\n\n";
-			assertFalse(message, notSameRenderType);
-		}
-	}
-
-	public void testRendererClass() {
-
-		for (int i = 0; i < rendererBeans.length; i++) {
-
-			String message = "";
-			try {
-				String rendererClass = rendererBeans[i].getRendererClass();
-				System.out.println("rendererClass=" + rendererClass);
-				Class namedClass = Class.forName(rendererClass);
-				String packageName = namedClass.getPackage().getName();
-
-				message = "RenderType not the same for Component Class="
-						+ componentBeans[i].getComponentClass()
-						+ "\n component renderType="
-						+ rendererBeans[i].getRendererType()
-						+ "\n renderer class=" + rendererClass + "\n\n";
-			} catch (Exception e) {
-				fail(message);
-			}
-		}
-	}
-
-	public void testFamilyType() {
-
-		for (int i = 0; i < componentBeans.length; i++) {
-			String familyTypeUIComponent = uiComponentBases[i].getFamily();
-			String familyTypeComponentBean = componentBeans[i]
-					.getComponentFamily();
-
-			boolean notSameRenderType = familyTypeUIComponent != null
-					&& familyTypeComponentBean != null
-					&& !familyTypeUIComponent.trim().equalsIgnoreCase(
-							familyTypeComponentBean.trim());
-
-			String message = "FamilyType not the same for Component Class="
-					+ componentBeans[i].getComponentClass()
-					+ "\n component familyType=" + familyTypeUIComponent
-					+ "\n faces-config declared familyType="
-					+ familyTypeComponentBean + "\n\n";
-			assertFalse(message, notSameRenderType);
-		}
-	}
-	
-	//TODO: baseline Component
-
-	private FacesConfigBean getFacesConfigBean() {
-
-		FacesConfigBean facesConfigBean = null;
-		MetadataXmlParser jsfMetaParser = new MetadataXmlParser();
-		try {
-			ClassLoader classLoader = Thread.currentThread()
-					.getContextClassLoader();
-			URL localUrl = classLoader.getResource(".");
-			String newPath = "file:" + localUrl.getPath()
-					+ "../../../component/conf/META-INF/faces-config.xml";
-			URL url = new URL(newPath);
-
-			facesConfigBean = jsfMetaParser.parse(url);
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		} catch (SAXException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
-		return facesConfigBean;
-	}
-
-	private ComponentBean[] getComponentBeanInfo() {
-
-		ComponentBean[] cb = getFacesConfigBean().getComponents();
-		return cb;
-	}
-
-	private RendererBean[] getRendererBean() {
-
-		RendererBean[] rb = getFacesConfigBean().getRenderKit(
-				RenderKitFactory.HTML_BASIC_RENDER_KIT).getRenderers();
-		return rb;
-	}
 }

@@ -214,6 +214,24 @@ public class UIColumns extends UISeries {
 
     }
 
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        rendered = Boolean.valueOf(values[1].toString()).booleanValue();
+        renderedSet = Boolean.valueOf(values[2].toString()).booleanValue();                
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[3];
+        }
+        values[0] = super.saveState(context);
+        values[1] = Boolean.valueOf(rendered);
+        values[2] = Boolean.valueOf(renderedSet);
+        return values;
+    }
+
     public boolean isHeaderFacet() {
         return (((HtmlDataTable) getParent()).getRowIndex() < 0) ? true : false;
     }
