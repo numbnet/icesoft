@@ -265,6 +265,7 @@
     <description>
         <![CDATA[
               <p>Defines the base class name for all style classes. Default value is <b>iceSelInpDate</b></p>
+              if enabled
               <ul>
                 <li>iceSelInpDate</li>
                 <li>iceSelInpDateInput</li>
@@ -273,7 +274,23 @@
                 <li>iceSelInpDateWeek</li>
                 <li>iceSelInpDateDay</li>
                 <li>iceSelInpDateCur</li>
-              </ul>              
+                <li>iceSelInpDatePopup</li>
+                <li>iceSelInpDateOpenPopup</li>
+                <li>iceSelInpDateClosePopup</li>                
+              </ul>
+              
+              if disabled
+              <ul>
+                <li>iceSelInpDate-dis</li>
+                <li>iceSelInpDateInput-dis</li>
+                <li>iceSelInpDateMonthYear-dis</li>
+                <li>iceSelInpDateMovePrev-dis</li>
+                <li>iceSelInpDateMoveNext-dis</li>
+                <li>iceSelInpDateWeek-dis</li>
+                <li>iceSelInpDateDay-dis</li>
+                <li>iceSelInpDatePopup-dis</li>
+                <li>iceSelInpDateOpenPopup-dis</li>
+              </ul>             
 		]]>		
     </description>
     <property-name>styleClass</property-name>
