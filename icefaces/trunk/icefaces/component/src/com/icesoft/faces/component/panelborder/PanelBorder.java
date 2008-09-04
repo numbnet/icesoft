@@ -248,13 +248,15 @@ public class PanelBorder
         this.style = style;
     }
 
-
+    private Object values[];
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[17];
+        if(values == null){
+            values = new Object[28];
+        }
         values[0] = super.saveState(context);
         values[1] = _layout;
         values[2] = styleClass;
@@ -272,6 +274,18 @@ public class PanelBorder
         values[14] = dir;
         values[15] = lang;
         values[16] = title;
+        values[17] = Boolean.valueOf(renderNorth);
+        values[18] = Boolean.valueOf(renderNorthSet);
+        values[19] = Boolean.valueOf(renderSouth);
+        values[20] = Boolean.valueOf(renderSouthSet);
+        values[21] = Boolean.valueOf(renderEast);
+        values[22] = Boolean.valueOf(renderEastSet);
+        values[23] = Boolean.valueOf(renderWest);
+        values[24] = Boolean.valueOf(renderWestSet);
+        values[25] = Boolean.valueOf(renderCenter);
+        values[26] = Boolean.valueOf(renderCenterSet);
+        values[27] = style;
+        
         return ((Object) (values));
     }
 
@@ -298,6 +312,17 @@ public class PanelBorder
         dir = (String) values[14];
         lang = (String) values[15];
         title = (String) values[16];
+        renderNorth = Boolean.valueOf(values[17].toString()).booleanValue();
+        renderNorthSet = Boolean.valueOf(values[18].toString()).booleanValue();
+        renderSouth = Boolean.valueOf(values[19].toString()).booleanValue();
+        renderSouthSet = Boolean.valueOf(values[20].toString()).booleanValue();
+         renderEast = Boolean.valueOf(values[21].toString()).booleanValue();
+         renderEastSet = Boolean.valueOf(values[22].toString()).booleanValue();
+        renderWest = Boolean.valueOf(values[23].toString()).booleanValue();
+         renderWestSet = Boolean.valueOf(values[24].toString()).booleanValue();
+         renderCenter = Boolean.valueOf(values[25].toString()).booleanValue();
+         renderCenterSet = Boolean.valueOf(values[26].toString()).booleanValue();
+         style = (String)values[27];
     }
 
     /**

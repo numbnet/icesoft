@@ -159,8 +159,8 @@ public class Tree extends UICommand implements NamingContainer {
     private String var;
     private String styleClass;
     private String style;
-    private Boolean hideRootNode;
-    private Boolean hideNavigation;
+    private String hideRootNode;
+    private String hideNavigation;
 
     private DefaultMutableTreeNode currentNode;
     private String nodePath;
@@ -830,8 +830,8 @@ public class Tree extends UICommand implements NamingContainer {
         var = (String) values[19];
         styleClass = (String) values[20];
         style = (String) values[21];
-        hideRootNode = (Boolean) values[22];
-        hideNavigation = (Boolean) values[23];
+        hideRootNode = (String) values[22];
+        hideNavigation = (String) values[23];
         currentNode = (DefaultMutableTreeNode) values[24];
         nodePath = (String) values[25];
     }
@@ -1051,7 +1051,7 @@ public class Tree extends UICommand implements NamingContainer {
     public String getHideNavigation() {
 
         if (hideNavigation != null) {
-            return hideNavigation.toString();
+            return hideNavigation;
         }
         ValueBinding vb = getValueBinding("hideNavigation");
         if (vb != null) {
@@ -1065,7 +1065,7 @@ public class Tree extends UICommand implements NamingContainer {
      * @param b
      */
     public void setHideNavigation(String b) {
-        hideNavigation = new Boolean(b);
+        hideNavigation = b;
     }
 
     /**
@@ -1074,7 +1074,7 @@ public class Tree extends UICommand implements NamingContainer {
     public String getHideRootNode() {
 
         if (hideRootNode != null) {
-            return hideRootNode.toString();
+            return hideRootNode;
         }
         ValueBinding vb = getValueBinding("hideRootNode");
         if (vb != null) {
@@ -1087,7 +1087,7 @@ public class Tree extends UICommand implements NamingContainer {
      * @param b
      */
     public void setHideRootNode(String b) {
-        hideRootNode = new Boolean(b);
+        hideRootNode = b;
     }
 
     public String getTitle() {

@@ -198,6 +198,40 @@ public class ApplyEffect extends UIComponentBase {
         }
     }
 
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+            
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        fire = (Boolean)values[1];
+        autoReset = (Boolean)values[2];
+        transitory = (Boolean)values[3];
+        submit = (Boolean)values[4];
+        effectType = (String)values[5];
+        event = (String)values[6];
+        options =  (String)values[7];
+        sequence = (String)values[8];
+        sequenceNumber = (Integer)values[9];
+    }
+
+    public Object saveState(FacesContext context) {
+       
+        if(values == null){
+            values = new Object[10];
+        }
+        values[0] = super.saveState(context);
+        values[1] = fire;
+        values[2] = autoReset;
+        values[3] = transitory;
+        values[4] = submit;
+        values[5] = effectType;
+        values[6] = event;
+        values[7] = options;
+        values[8] = sequence;
+        values[9] = sequenceNumber;
+        return values;
+    }
+
     public Integer getSequenceNumber() {
         ValueBinding vb = getValueBinding("sequenceNumber");
         if (vb != null) {

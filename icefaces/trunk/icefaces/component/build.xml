@@ -230,7 +230,7 @@
 
     <target name="test" depends="junit-present, compile-tests" if="junit.present" description="Run the test cases">
         <mkdir dir="${test.classes.dir}/test-reports" />
-        <junit printSummary="yes" haltonerror="true" haltonfailure="true" fork="true" dir=".">
+        <junit printSummary="yes" haltonerror="false" haltonfailure="false" fork="true" dir=".">
             <sysproperty key="basedir" value="." />
             <formatter type="plain" />
             <classpath>

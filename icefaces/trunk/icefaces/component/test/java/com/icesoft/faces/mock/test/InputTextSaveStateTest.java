@@ -4,6 +4,7 @@
  */
 package com.icesoft.faces.mock.test;
 
+import com.icesoft.faces.mock.test.container.MockTestCase;
 import com.icesoft.faces.component.ext.HtmlForm;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.context.effects.Effect;

@@ -122,17 +122,27 @@ public class UIColumn extends javax.faces.component.UIColumn {
         this.binding = (String) _values[1];
         this.id = (String) _values[2];
         this.renderedOnUserRole = (String) _values[3];
+        this.groupOn = (String)_values[4];
+        this.style = (String)_values[5];
+        this.rowspan = (String)_values[6];
+        this.styleClass = (String)_values[7];
+        this.colspan = (String)_values[8];
     }
 
     /**
      * <p>Save the state of this component.</p>
      */
     public Object saveState(FacesContext _context) {
-        Object _values[] = new Object[4];
+        Object _values[] = new Object[9];
         _values[0] = super.saveState(_context);
         _values[1] = this.binding;
         _values[2] = this.id;
         _values[3] = this.renderedOnUserRole;
+        _values[4] = this.groupOn;
+        _values[5] = this.style;
+        _values[6] = this.rowspan;
+        _values[7] = this.styleClass;
+        _values[8] = this.colspan;
         return _values;
     }
 

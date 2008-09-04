@@ -2,7 +2,7 @@
  * tree structure and component state
  */
 
-package com.icesoft.faces.mock.test;
+package com.icesoft.faces.mock.test.container;
 
 import java.io.Serializable;
 

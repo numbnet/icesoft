@@ -146,4 +146,26 @@ public class GMapDirection extends UIPanel{
 		String forClientId = forComponent.getClientId(context);
 		return (forClientId.indexOf(':') > 1)? forClientId : null;
 	}
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values =  (Object[])state;
+        super.restoreState(context, values[0]);
+        to = (String)values[1];
+        from = (String)values[2];
+        textualDivId = (String)values[3];
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[4];
+        }
+        values[0] = super.saveState(context);
+        values[1] = to;
+        values[2] = from;
+        values[3] = textualDivId;
+        return values;
+    }
+
+
 }
