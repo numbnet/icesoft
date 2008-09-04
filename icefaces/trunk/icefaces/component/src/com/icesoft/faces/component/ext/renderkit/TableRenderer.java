@@ -683,7 +683,7 @@ public class TableRenderer
                                         eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
                                         Element img = domContext.createElement(HTML.IMG_ELEM);
                                         img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
-                                                FacesContext.getCurrentInstance(), "./xmlhttp/css/xp/css-images/spacer.gif") );
+                                                FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
                                         eTd.appendChild(img);
                                         tr.appendChild(eTd);
                                     }  
@@ -739,7 +739,7 @@ public class TableRenderer
                             eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
                             Element img = domContext.createElement(HTML.IMG_ELEM);
                             img.setAttribute(HTML.SRC_ATTR, CoreUtils.resolveResourceURL(
-                                    FacesContext.getCurrentInstance(), "./xmlhttp/css/xp/css-images/spacer.gif") );
+                                    FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
                             eTd.appendChild(img);
                             tr.appendChild(eTd);
                         }
