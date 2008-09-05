@@ -69,7 +69,7 @@ import java.util.Set;
  * @see RenderManager, OnDemandRenderer, IntervalRenderer, DelayRenderer
  */
 public class GroupAsyncRenderer
-        implements AsyncRenderer {
+implements AsyncRenderer {
     private static final Log LOG = LogFactory.getLog(GroupAsyncRenderer.class);
 
     protected final Set group = new CopyOnWriteArraySet();
@@ -91,7 +91,7 @@ public class GroupAsyncRenderer
      * @param renderable the Renderable instance to add to the group.
      */
     public void add(final Renderable renderable) {
-        add((Object) renderable);
+        add((Object)renderable);
     }
 
     /**
@@ -104,7 +104,7 @@ public class GroupAsyncRenderer
     public void addCurrentSession() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
-            add(facesContext.getExternalContext().getSession(false));
+            add(facesContext.getExternalContext().getSession(true));
         }
     }
 
@@ -119,14 +119,14 @@ public class GroupAsyncRenderer
     }
 
     public boolean contains(final Renderable renderable) {
-        return contains((Object) renderable);
+        return contains((Object)renderable);
     }
 
     public boolean containsCurrentSession() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return
-                facesContext != null &&
-                        contains(facesContext.getExternalContext().getSession(false));
+            facesContext != null &&
+                contains(facesContext.getExternalContext().getSession(false));
     }
 
     /**
@@ -168,7 +168,7 @@ public class GroupAsyncRenderer
      * @param renderable the Renderable instance to remove
      */
     public void remove(final Renderable renderable) {
-        remove((Object) renderable);
+        remove((Object)renderable);
     }
 
     /**
@@ -231,17 +231,17 @@ public class GroupAsyncRenderer
          * constructed and does not support the mutative remove operation!
          */
         if (StaticTimerUtility.Log.isTraceEnabled()) {
-            StaticTimerUtility.newJob( group.size() );
+            StaticTimerUtility.newJob(group.size());
             StaticTimerUtility.startJobTmer();
         } 
-        for (Iterator i = group.iterator(); !stopRequested && i.hasNext();) {
-            Object object = ((WeakReference) i.next()).get();
+        for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
+            Object object = ((WeakReference)i.next()).get();
             if (object instanceof Renderable) {
-                requestRender((Renderable) object);
+                requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
-                requestRender((HttpSession) object);
+                requestRender((HttpSession)object);
             } else if (object instanceof PortletSession) {
-                requestRender((PortletSession) object);
+                requestRender((PortletSession)object);
             }
         }
     }
@@ -264,8 +264,8 @@ public class GroupAsyncRenderer
     }
 
     private boolean contains(final Object object) {
-        for (Iterator i = group.iterator(); i.hasNext();) {
-            if (object == ((WeakReference) i.next()).get()) {
+        for (Iterator i = group.iterator(); i.hasNext(); ) {
+            if (object == ((WeakReference)i.next()).get()) {
                 return true;
             }
         }
@@ -293,8 +293,8 @@ public class GroupAsyncRenderer
     private void remove(final Object object) {
         // todo: remove synchronized block as CopyOnWriteArraySet is used?
         synchronized (group) {
-            for (Iterator i = group.iterator(); i.hasNext();) {
-                WeakReference reference = (WeakReference) i.next();
+            for (Iterator i = group.iterator(); i.hasNext(); ) {
+                WeakReference reference = (WeakReference)i.next();
                 if (object == reference.get()) {
                     group.remove(reference);
                     if (LOG.isTraceEnabled()) {
@@ -347,32 +347,32 @@ public class GroupAsyncRenderer
             suppressedViewState = null;
         }
         for (
-                Iterator i =
-                        ((MainSessionBoundServlet)
-                                SessionDispatcher.
-                                        getSingletonSessionServer(sessionId, applicationMap)).
-                                getViews().values().iterator();
-                i.hasNext();
-                ) {
+            Iterator i =
+                ((MainSessionBoundServlet)
+                    SessionDispatcher.
+                        getSingletonSessionServer(sessionId, applicationMap)).
+                            getViews().values().iterator();
+            i.hasNext();
+            ) {
 
             final PersistentFacesState viewState =
-                    ((View) i.next()).getPersistentFacesState();
+                ((View) i.next()).getPersistentFacesState();
             if (viewState != suppressedViewState) {
                 requestRender(
-                        new Renderable() {
-                            public PersistentFacesState getState() {
-                                return viewState;
-                            }
-
-                            public void renderingException(
-                                    final RenderingException renderingException) {
-
-                                /*
-                                * It's up to our View infrastructure to remove
-                                * dead views.
-                                */
-                            }
+                    new Renderable() {
+                        public PersistentFacesState getState() {
+                            return viewState;
                         }
+
+                        public void renderingException(
+                            final RenderingException renderingException) {
+
+                            /*
+                             * It's up to our View infrastructure to remove
+                             * dead views.
+                             */
+                        }
+                    }
                 );
             }
         }
