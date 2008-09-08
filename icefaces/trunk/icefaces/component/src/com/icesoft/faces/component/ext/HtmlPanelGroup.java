@@ -654,10 +654,10 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[2] = style;
         values[3] = scrollWidth;
         values[4] = scrollHeight;
-        values[6] = dragListener;
+        values[6] = saveAttachedState(context, dragListener);
         values[7] = dragValue;
         values[8] = dropTarget;
-        values[9] = dropListener;
+        values[9] = saveAttachedState(context, dropListener);
         values[10] = dropValue;
         values[11] = dragMask;
         values[12] = dropMask;
@@ -693,10 +693,10 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         scrollWidth = (String) values[3];
         scrollHeight = (String) values[4];
         draggable = (String) values[5];
-        dragListener = (MethodBinding) values[6];
+        dragListener = (MethodBinding)restoreAttachedState(context, values[6]);
         dragValue = values[7];
         dropTarget = (String) values[8];
-        dropListener = (MethodBinding) values[9];
+        dropListener = (MethodBinding)restoreAttachedState(context, values[9]);
         dropValue = values[10];
         dragMask = (String) values[11];
         dropMask = (String) values[12];

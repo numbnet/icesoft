@@ -238,7 +238,7 @@ public class PanelPositioned extends UISeries {
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = style;
-        values[3] = listener;
+        values[3] = saveAttachedState(context, listener);
         return values;
     }
 
@@ -247,7 +247,7 @@ public class PanelPositioned extends UISeries {
         super.restoreState(context, state[0]);
         styleClass = (String) state[1];
         style = (String) state[2];
-        listener = (MethodBinding) state[3];
+        listener = (MethodBinding) restoreAttachedState(context, state[3]);
     }
 
     //Array type support added to the component
