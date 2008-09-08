@@ -35,7 +35,6 @@ package com.icesoft.faces.component.menubar;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -44,8 +43,8 @@ import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionListener;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ActionEvent;
-import java.util.Iterator;
 import java.util.List;
+import javax.faces.context.FacesContext;
 
 
 /**
@@ -470,5 +469,23 @@ public class MenuItem extends MenuItemBase {
         }
         ValueBinding vb = getValueBinding("onclick");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    private Object states[];
+    public Object saveState(FacesContext context){
+        if(states == null){
+            states = new Object[3];
+        }
+        states[0] = super.saveState(context);
+        states[1] = saveAttachedState(context, action);
+        states[2] = saveAttachedState(context, actionListener);
+        return states;
+    }
+
+    public void restoreState(FacesContext context, Object state){
+        states = (Object[])state;
+        super.restoreState(context, states[0]);
+        action = (MethodBinding)restoreAttachedState(context, states[1]);
+        actionListener = (MethodBinding)restoreAttachedState(context, states[2]);
     }
 }

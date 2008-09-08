@@ -32,7 +32,7 @@ public class TestDataProvider {
         "java.lang.Boolean",
         "javax.faces.component.UIComponent",
         "com.icesoft.faces.utils.UpdatableProperty"
-    };
+    };       
     private final static Object[] valueObjects = new Object[]{
         new MockDataObject("empty"),
         new MockDataList(),
@@ -41,7 +41,7 @@ public class TestDataProvider {
         Boolean.FALSE,
         new com.icesoft.faces.context.effects.Move(),
         new MockDataObject("objectValue"),        
-        null, //TODO new MockMethodBinding(),
+        new MockMethodBinding(),
         9,
         new Integer(99),
         new java.util.Date(System.currentTimeMillis()),

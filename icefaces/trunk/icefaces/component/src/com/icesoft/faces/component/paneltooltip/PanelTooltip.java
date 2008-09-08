@@ -357,4 +357,24 @@ public class PanelTooltip extends PanelPopup{
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() : "show".equals(getTooltipInfo().getState());
     }
+
+    private Object states[];
+
+    public void restoreState(FacesContext context, Object state) {
+        states = (Object[])state;
+        super.restoreState(context, states[0]);
+        displayListener = (MethodBinding)restoreAttachedState(context, states[1]);
+    }
+
+    public Object saveState(FacesContext context) {
+        if(states == null){
+            states = new Object[2];
+        }
+        states[0] = super.saveState(context);
+        states[1] = saveAttachedState(context, displayListener);
+
+        return states;
+    }
+
+
 }

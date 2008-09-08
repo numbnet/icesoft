@@ -6,11 +6,14 @@ package com.icesoft.faces.mock.test;
 import com.icesoft.faces.mock.test.container.MockTestCase;
 import com.icesoft.faces.mock.test.container.MockSerializedView;
 import com.icesoft.faces.component.ext.HtmlForm;
+import com.icesoft.faces.mock.test.data.MockDataObject;
 import com.sun.faces.application.StateManagerImpl;
+import com.sun.faces.mock.MockMethodBinding;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -27,6 +30,7 @@ import java.util.zip.GZIPOutputStream;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIViewRoot;
+import javax.faces.el.MethodBinding;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -70,7 +74,7 @@ public class SerializedViewTest extends MockTestCase {
         CompPropsUtils.describe_useRefl_field(uiComponent, fieldMap);
 
         Map propsMap = new HashMap();
-        //Generic Reflection failed
+        //Generic Reflection
         //CompPropsUtils.describe_useBeanUtils(uiComponent, propsMap);
         CompPropsUtils.describe_useMetaBeanInfo(uiComponent, propsMap);
 
@@ -151,22 +155,29 @@ public class SerializedViewTest extends MockTestCase {
                     keyValue = (String) classesMap.get(keyProp);
 
                     value = testDataProvider.getSimpleTestObject(keyValue);
-                    //TODO methodBinding
-                    if (value == null) {
-
-                        //TODO fail in this case
-                        //fail("no matching class Type found, add in TestDataProvider");
-                        continue;
-                    }
-
+                    
                     message = "Component=" + uiComponent.getClass().getName() + " name=" + keyProp + " class=" + keyValue + " setValue=" + value;
-                    //Logger.getLogger(SerializedViewTest.class.getName()).log(Level.INFO, message);
 
                     if (keyValue.equalsIgnoreCase("com.icesoft.faces.utils.UpdatableProperty")
                             || keyValue.equalsIgnoreCase("java.io.File")
                             || keyProp.equalsIgnoreCase("disabled")) {
                         continue;
                     }
+                    
+                    if(keyValue.equalsIgnoreCase("javax.faces.el.MethodBinding")){
+                        //limited scope
+                        Class args[] = new Class[]{};
+                        value =  getFacesContext().getApplication().createMethodBinding("#{mock.methodBinding}",
+                                args);        
+                    }
+                    
+                    if(keyValue.equalsIgnoreCase("java.util.Map")){
+                        Map tempMap = (Map)value;
+                        for (int j = 0; j < 4; j++) {
+                            tempMap.put(new Integer(j), new Integer(j));
+                        }
+                    }
+
                     //try to set instance as well as attribute map
                     PropertyUtils.setProperty(uiComponent, keyProp, value);
                     if (keyValue.equals("java.lang.String")) {
@@ -181,7 +192,7 @@ public class SerializedViewTest extends MockTestCase {
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, message, ex);
                 } catch (NoSuchMethodException ex) {
                     //TODO enable me
-                    //fail(message);                    
+                    fail(message);                    
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, "FIX ME:" + message, ex);
                     continue;
                 }
@@ -241,9 +252,11 @@ public class SerializedViewTest extends MockTestCase {
             ObjectInputStream ois = new ObjectInputStream(gis);
 
             readView = (MockSerializedView) ois.readObject();
-
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Serialized View failed  " + ex.getMessage());
+        } catch(NotSerializableException ex){
+             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Serialized View failed  " + ex.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -283,7 +296,7 @@ public class SerializedViewTest extends MockTestCase {
                     }
                     int m = testDataProvider.getMatchClass(propClassName);
                     //            "java.util.List", //1
-                    //            "java.lang.Object", //2
+                    //            "java.lang.Double", //2
                     //            "java.lang.String", //3
                     //            "boolean", //4
                     //            "com.icesoft.faces.context.effects.Effect", //5
@@ -312,17 +325,28 @@ public class SerializedViewTest extends MockTestCase {
                                 fail(message);
                             }
                             break;
-                        case 4:
+                        case 4://limited boolean
                             assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
                             break;
                         case 5:
                             assertEquals(message, expectedValue.toString(), actualValue.toString());
                             break;
                         case 6:
-                            assertEquals(message, expectedValue, actualValue);
+                            if(!(actualValue instanceof MockDataObject)){
+                                fail(message);
+                            }else{
+                                if(!((MockDataObject)expectedValue).getTest().equals(((MockDataObject)actualValue).getTest())){
+                                    fail(message);
+                                }
+                            }
                             break;
                         case 7:
-                            //TODO "javax.faces.el.MethodBinding"
+                            //limited scope "javax.faces.el.MethodBinding"
+                            if(actualValue instanceof MockMethodBinding){
+                                assertEquals(message, "#{mock.methodBinding}", ((MockMethodBinding)actualValue).getExpressionString());
+                            }else{
+                                fail(message);
+                            }
                             break;
                         case 8:
                             assertEquals(message, Integer.parseInt(expectedValue.toString()), Integer.parseInt(actualValue.toString()));
@@ -336,19 +360,19 @@ public class SerializedViewTest extends MockTestCase {
                         case 11:
                             assertEquals(message, ((java.io.File) expectedValue).getPath(), ((java.io.File) actualValue).getPath());
                             break;
-                        case 12://TODO "java.util.Map"
-                            //assertEquals(message, ((java.util.Map) expectedValue).size(), ((java.util.Map) actualValue).size());
+                        case 12://limited "java.util.Map"
+                            assertEquals(message, 4, ((java.util.Map) actualValue).size());
                             break;
                         case 13://TODO "javax.faces.convert.Converter"
                             break;
-                        case 14:
+                        case 14://limited java.lang.Boolean
                             assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
                             break;
                         case 15:
                             assertEquals(message, ((UIComponent) expectedValue).getRendererType(), ((UIComponent) actualValue).getRendererType());
                             break;
                         case 16:
-                            //TODOD
+                            //TODO "com.icesoft.faces.utils.UpdatableProperty"
                             break;
 
                         default:
@@ -357,8 +381,7 @@ public class SerializedViewTest extends MockTestCase {
                 } catch (IllegalAccessException ex) {
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InvocationTargetException ex) {
-                    //TODO fail this one
-                    //Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NoSuchMethodException ex) {
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (AssertionFailedError error) {
