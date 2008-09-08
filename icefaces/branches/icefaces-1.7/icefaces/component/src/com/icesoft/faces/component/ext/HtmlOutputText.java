@@ -60,6 +60,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
     private String renderedOnUserRole = null;
     private Effect effect;
     private Boolean visible = null;
+    private Boolean nospan = null;
 
     private CurrentStyle currentStyle;
 
@@ -137,6 +138,26 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         Boolean boolVal =
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return boolVal != null ? boolVal.booleanValue() : DEFAULT_VISIBLE;
+    }
+
+    /**
+     * <p>Set the value of the <code>nospan</code> property.</p>
+     */
+    public void setNospan(boolean nospan) {
+        this.nospan = Boolean.valueOf(nospan);
+    }
+
+    /**
+     * <p>Return the value of the <code>nospan</code> property.</p>
+     */
+    public boolean getNospan() {
+        if (nospan != null) {
+            return nospan.booleanValue();
+        }
+        ValueBinding vb = getValueBinding("nospan");
+        Boolean boolVal =
+                vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
+        return boolVal != null ? boolVal.booleanValue() : false;
     }
 
     /**
