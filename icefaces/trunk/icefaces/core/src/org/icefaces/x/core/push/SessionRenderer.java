@@ -32,9 +32,12 @@ public class SessionRenderer {
      * @param      groupName
      *                 the name of the group of sessions to add the current
      *                 session to.
+     * @throws     IllegalStateException
+     *                 if no current session is active.
      * @see        #removeCurrentSession(String)
      */
-    public static void addCurrentSession(final String groupName) {
+    public static void addCurrentSession(final String groupName)
+    throws IllegalStateException {
         // Creates an OnDemandRenderer instance if not already done so.
         RenderManager.getInstance().getOnDemandRenderer(groupName).
             addCurrentSession();
