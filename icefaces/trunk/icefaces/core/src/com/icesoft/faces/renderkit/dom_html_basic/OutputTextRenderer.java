@@ -33,11 +33,14 @@ public class OutputTextRenderer extends BaseRenderer{
 
         Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
         if (nospan != null && nospan.booleanValue()) return;
-
+        Object styleClass = uiComponent.getAttributes().get("styleClass");
+        //could be true only for the h:outputText
+        if (styleClass == null)return;
+        
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
-        Object styleClass = uiComponent.getAttributes().get("styleClass");
+
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
         }   
@@ -64,7 +67,10 @@ public class OutputTextRenderer extends BaseRenderer{
 
         Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
         if (nospan != null && nospan.booleanValue()) return;
-
+        Object styleClass = uiComponent.getAttributes().get("styleClass");
+        //could be true only for the h:outputText
+        if (styleClass == null)return;
+        
         LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);        
         writer.endElement(HTML.SPAN_ELEM);
     }
