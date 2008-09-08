@@ -498,6 +498,7 @@ public class TableRenderer
         //syleIndex should be increment here
         nextColumn.encodeBegin(facesContext);
         nextColumn.setRowIndex(rowIndex);
+        String sortColumn = htmlDataTable.getSortColumn();
         while (nextColumn.isRowAvailable()) {
             UIComponent headerFacet = getFacetByName(nextColumn, facet);
 
@@ -505,7 +506,14 @@ public class TableRenderer
                 Node oldParent = domContext.getCursorParent();
                 Element th = domContext.createElement(element);
                 tr.appendChild(th);
-                th.setAttribute("class",getHeaderStyles(uiComponent)[styleIndex]);
+                String styleClass = getHeaderStyles(uiComponent)[styleIndex];
+                if (headerFacet instanceof CommandSortHeader) {
+                    String columnName = ((CommandSortHeader) headerFacet).getColumnName();
+                    if (sortColumn.equals(columnName)) {
+                        styleClass += CSS_DEFAULT.TABLE_ACTIVE_SORT_COLUMN ;
+                    }                    
+                }
+                th.setAttribute("class",styleClass);
                 if (width != null) {
                     th.setAttribute("style", "width:" + width + ";");
                 }
