@@ -30,7 +30,10 @@ public class OutputTextRenderer extends BaseRenderer{
             writer.write(String.valueOf(value));
             return;
         }
-        
+
+        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
+        if (nospan != null && nospan.booleanValue()) return;
+
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
         PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
@@ -58,6 +61,10 @@ public class OutputTextRenderer extends BaseRenderer{
             convertedValue = DOMUtils.escapeAnsi(convertedValue);
         } 
         writer.write(convertedValue);
+
+        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
+        if (nospan != null && nospan.booleanValue()) return;
+
         LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);        
         writer.endElement(HTML.SPAN_ELEM);
     }
