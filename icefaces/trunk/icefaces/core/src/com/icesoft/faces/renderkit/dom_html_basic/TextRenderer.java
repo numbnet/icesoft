@@ -276,6 +276,9 @@ public class TextRenderer extends DomBasicInputRenderer {
             }
         }
 
+        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
+        if (nospan != null && nospan.booleanValue()) return false;
+
         String style = (String) uiComponent.getAttributes().get("style");
         String styleClass =
                 (String) uiComponent.getAttributes().get("styleClass");

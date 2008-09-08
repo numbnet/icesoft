@@ -57,6 +57,14 @@
         </editor-class>
     </property-extension>
 </property>
-
-
-
+<property>
+    <description>
+        Flag indicating no span tag rendered for text. Default is false.
+    </description>
+    <property-name>nospan</property-name>
+    <property-class>boolean</property-class>
+    <property-extension>
+        <category>ICE_LAYOUT</category>
+        <default-value>false</default-value>
+    </property-extension>
+</property>
