@@ -85,26 +85,54 @@ implements AsyncRenderer {
     }
 
     /**
-     * Adds a Renderable, via a WeakReference, to the set of Renderables of this
-     * group.  If the Renderable is already in this set, it is not added again.
+     * <p>
+     *   Adds the specified <code>renderable</code>, via a
+     *   <code>WeakReference</code>, to the set of <code>Renderable</code>s of
+     *   this group.  If it is already in this set, it is not added again.
+     * </p>
      *
-     * @param renderable the Renderable instance to add to the group.
+     * @param      renderable
+     *                 the Renderable instance to add to the group.
+     * @throws     IllegalArgumentException
+     *                 if the specified <code>renderable</code> is
+     *                 <code>null</code>.
      */
-    public void add(final Renderable renderable) {
-        add((Object)renderable);
+    public void add(final Renderable renderable)
+    throws IllegalArgumentException {
+        if (renderable != null) {
+            add((Object)renderable);
+        } else {
+            throw new IllegalArgumentException("renderable is null");
+        }
     }
 
     /**
      * <p>
-     * Adds the current session, via a <code>WeakReference</code>, to this
-     * <code>GroupAsyncRenderer</code>.  If this already contains the current
-     * session, it is not added again.
+     *   Adds the current session, via a <code>WeakReference</code>, to this
+     *   <code>GroupAsyncRenderer</code>.  If this already contains the current
+     *   session, it is not added again.
      * </p>
+     *
+     * @throws     IllegalStateException
+     *                 if no current session is active.
      */
-    public void addCurrentSession() {
+    public void addCurrentSession()
+    throws IllegalStateException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
-            add(facesContext.getExternalContext().getSession(true));
+            Object session =
+                facesContext.getExternalContext().getSession(false);
+            if (session != null) {
+                add(session);
+            } else {
+                LOG.warn(
+                    "Unable to add current session: " +
+                        "no current session active");
+                throw
+                    new IllegalStateException(
+                        "Unable to add current session: " +
+                            "no current session active");
+            }
         }
     }
 
@@ -173,15 +201,23 @@ implements AsyncRenderer {
 
     /**
      * <p>
-     * Removes the current session, via a <code>WeakReference</code>, from
-     * this <code>GroupAsyncRenderer</code>.
+     *   Removes the current session, via a <code>WeakReference</code>, from
+     *   this <code>GroupAsyncRenderer</code>.
      * </p>
      */
     public void removeCurrentSession() {
         LOG.info("GroupAsyncRenderer.removeCurrentSession()");
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (facesContext != null) {
-            remove(facesContext.getExternalContext().getSession(false));
+            Object session =
+                facesContext.getExternalContext().getSession(false);
+            if (session != null) {
+                remove(session);
+            } else {
+                LOG.warn(
+                    "Unable to remove current session: " +
+                        "no current session active");
+            }
         }
     }
 
