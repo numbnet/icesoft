@@ -271,8 +271,19 @@ implements AsyncRenderer {
             StaticTimerUtility.startJobTmer();
         } 
         for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
-            Object object = ((WeakReference)i.next()).get();
-            if (object instanceof Renderable) {
+            /*
+             * From the CopyOnWriteArraySet:
+             *
+             *     "The returned iterator provides a snapshot of the state of
+             *     the set when the iterator was constructed.  No
+             *     synchronization is needed while traversing the iterator.  The
+             *     iterator does NOT support the remove method."
+             */
+            WeakReference reference = (WeakReference)i.next(); 
+            Object object = reference.get();
+            if (object == null) {
+                group.remove(reference);
+            } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
                 requestRender((HttpSession)object);
