@@ -393,7 +393,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
         // #2807 release thread locals
         setCurrentInstance(null);
-        ((DOMResponseWriter) responseWriter).release();
+        if (null != responseWriter)  {
+            ((DOMResponseWriter) responseWriter).release();
+        }
     }
 
     public void dispose() {
