@@ -533,17 +533,29 @@ public class HtmlSelectOneListbox
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[20];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
         values[3] = renderedOnUserRole;
         values[4] = styleClass;
         values[5] = effect;
-        values[13] = onchangeeffect;
-        values[19] = currentStyle;
-        values[20] = visible;
+        values[6] = onclickeffect;
+        values[7] = ondblclickeffect;
+        values[8] = onmousedowneffect;
+        values[9] = onmouseupeffect;
+        values[10] = onmousemoveeffect;
+        values[11] = onmouseovereffect;
+        values[12] = onmouseouteffect;
+        values[13] = onkeypresseffect;
+        values[14] = onkeydowneffect;
+        values[15] = onkeyupeffect;
+        values[16] = onchangeeffect;
+        values[17] = autocomplete;
+        values[18] = currentStyle;
+        values[19] = visible;
         return ((Object) (values));
+        
     }
 
     /**
@@ -558,9 +570,20 @@ public class HtmlSelectOneListbox
         renderedOnUserRole = (String) values[3];
         styleClass = (String) values[4];
         effect = (Effect) values[5];
-        onchangeeffect = (Effect) values[13];
-        currentStyle = (CurrentStyle) values[19];
-        visible = (Boolean) values[20];
+        onclickeffect = (Effect) values[6];
+        ondblclickeffect = (Effect) values[7];
+        onmousedowneffect = (Effect) values[8];
+        onmouseupeffect = (Effect) values[9];
+        onmousemoveeffect = (Effect) values[10];
+        onmouseovereffect = (Effect) values[11];
+        onmouseouteffect = (Effect) values[12];
+        onkeypresseffect = (Effect) values[13];
+        onkeydowneffect = (Effect) values[14];
+        onkeyupeffect = (Effect) values[15];
+        onchangeeffect = (Effect) values[16];
+        autocomplete = (String) values[17];
+        currentStyle = (CurrentStyle) values[18];
+        visible = (Boolean) values[19];
     }
 }
 
