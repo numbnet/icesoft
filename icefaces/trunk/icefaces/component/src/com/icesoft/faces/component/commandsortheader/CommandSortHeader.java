@@ -114,10 +114,11 @@ public class CommandSortHeader
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[3];
+        Object values[] = new Object[4];
         values[0] = super.saveState(context);
         values[1] = _columnName;
         values[2] = _arrow;
+        values[3] = styleClass;
         return ((Object) (values));
     }
 
@@ -130,6 +131,7 @@ public class CommandSortHeader
         super.restoreState(context, values[0]);
         _columnName = (String) values[1];
         _arrow = (Boolean) values[2];
+        styleClass = (String)values[3];
     }
 
     private String styleClass;
@@ -216,4 +218,6 @@ public class CommandSortHeader
                 vb != null ? (Boolean) vb.getValue(getFacesContext()) : null;
         return v != null ? v.booleanValue() : false;
     }
+
+
 }

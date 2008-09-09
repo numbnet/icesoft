@@ -389,7 +389,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[11];
+        Object[] state = new Object[12];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -401,6 +401,7 @@ public class RowSelector extends UIPanel {
         state[8] = selectedMouseOverClass;
         state[9] = saveAttachedState(context, selectionListener);
         state[10] = saveAttachedState(context, selectionAction);
+        state[11] = immediate;
         return state;
     }
 
@@ -419,6 +420,7 @@ public class RowSelector extends UIPanel {
             restoreAttachedState(context, state[9]);
         selectionAction = (MethodBinding)
             restoreAttachedState(context, state[10]);
+        immediate = (Boolean)state[11];
     }
     
     String styleClass;

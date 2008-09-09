@@ -293,19 +293,24 @@ public class PanelPopup extends HtmlPanelGroup {
 		this.modal = Boolean.valueOf(modal);
 	}
 
+        private Object values[];
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
 	 */
 	public Object saveState(FacesContext context) {
-		Object values[] = new Object[10];
+
+            if(values == null){
+                values = new Object[11];
+            }
 		values[0] = super.saveState(context);
 		values[5] = styleClass;
 		values[6] = style;
 		values[7] = resizable;
 		values[8] = modal;
 		values[9] = title;
+                values[10] = autoPosition;
 		return ((Object) (values));
 	}
 
@@ -323,6 +328,7 @@ public class PanelPopup extends HtmlPanelGroup {
 		resizable = (Boolean) values[7];
 		modal = (Boolean) values[8];
 		title = (String) values[9];
+                autoPosition = (String)values[10];
 	}
 
 	private String title = null;

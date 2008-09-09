@@ -364,15 +364,20 @@ public class PanelTooltip extends PanelPopup{
         states = (Object[])state;
         super.restoreState(context, states[0]);
         displayListener = (MethodBinding)restoreAttachedState(context, states[1]);
+        styleClass = (String)states[2];
+        hideOn = (String)states[3];
+        hoverDelay = (Integer)states[4];
     }
 
     public Object saveState(FacesContext context) {
         if(states == null){
-            states = new Object[2];
+            states = new Object[5];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, displayListener);
-
+        states[2] = styleClass;
+        states[3] = hideOn;
+        states[4] = hoverDelay;
         return states;
     }
 

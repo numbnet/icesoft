@@ -171,16 +171,20 @@ public class PanelStack extends HtmlPanelGroup {
         return Util.getQualifiedStyleClass(this, CSS_DEFAULT.PANEL_STACK_COL);
     }
 
+    private Object values[];
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[4];
+        if(values == null){
+            values = new Object[5];
+        }
         values[0] = super.saveState(context);
         values[1] = selectedPanel;
         values[2] = styleClass;
         values[3] = style;
+        values[4] = renderedOnUserRole;
         return ((Object) (values));
     }
 
@@ -194,6 +198,7 @@ public class PanelStack extends HtmlPanelGroup {
         selectedPanel = (String) values[1];
         styleClass = (String) values[2];
         style = (String) values[3];
+        renderedOnUserRole = (String)values[4];
     }
 
 
