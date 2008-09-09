@@ -424,7 +424,7 @@ public class DOMResponseWriter extends ResponseWriter {
     private void appendContentReferences(Element container) {
         //load libraries
         Collection libs = new ArrayList();
-        if (context.getExternalContext().getInitParameter(D2DViewHandler.INCLUDE_OPEN_AJAX_HUB) != null) {
+        if (configuration.getAttributeAsBoolean("openAjaxHub", false)) {
             libs.add("/xmlhttp/openajax.js");
         }
         libs.add("/xmlhttp" + StartupTime.getStartupInc() + "icefaces-d2d.js");
