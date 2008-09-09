@@ -170,12 +170,13 @@ public class HtmlForm
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[5];
+        Object values[] = new Object[6];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
         values[3] = renderedOnUserRole;
         values[4] = autocomplete;
+        values[5] = styleClass;
         return ((Object) (values));
     }
 
@@ -190,6 +191,7 @@ public class HtmlForm
         enabledOnUserRole = (String) values[2];
         renderedOnUserRole = (String) values[3];
         autocomplete = (String) values[4];
+        styleClass = (String) values[5];
     }
 }
 

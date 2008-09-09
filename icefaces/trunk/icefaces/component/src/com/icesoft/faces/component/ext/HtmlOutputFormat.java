@@ -35,7 +35,10 @@ package com.icesoft.faces.component.ext;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
+import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.context.effects.Effect;
 
+import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 public class HtmlOutputFormat
@@ -47,7 +50,8 @@ public class HtmlOutputFormat
     public static final String COMPONENT_FAMILY = "javax.faces.Output";
     public static final String RENDERER_TYPE = "javax.faces.Format";
     private String styleClass = null;
-
+    private String lang;
+    private String dir;
     public HtmlOutputFormat() {
         super();
         setRendererType(RENDERER_TYPE);
@@ -79,8 +83,6 @@ public class HtmlOutputFormat
     }
 
         
-      private java.lang.String dir;
-
   /**
    * <p>Return the value of the <code>dir</code> property.  Contents:</p><p>
    * Direction indication for text that does not inherit directionality.
@@ -106,7 +108,6 @@ public class HtmlOutputFormat
     this.dir = dir;
   }
   
-    private java.lang.String lang;
 
   /**
    * <p>Return the value of the <code>lang</code> property.  Contents:</p><p>
@@ -133,4 +134,28 @@ public class HtmlOutputFormat
     this.lang = lang;
   }
 
+  /**
+   * <p>Gets the state of the instance as a <code>Serializable</code>
+   * Object.</p>
+   */
+  public Object saveState(FacesContext context) {
+      Object values[] = new Object[4];
+      values[0] = super.saveState(context);
+      values[1] = styleClass;
+      values[2] = dir;
+      values[3] = lang;
+      return ((Object) (values));
+  }
+
+  /**
+   * <p>Perform any processing required to restore the state from the entries
+   * in the state Object.</p>
+   */
+  public void restoreState(FacesContext context, Object state) {
+      Object values[] = (Object[]) state;
+      super.restoreState(context, values[0]);
+      styleClass = (String) values[1];
+      dir = (String) values[2];
+      lang = (String) values[3];
+  }
 }

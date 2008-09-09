@@ -654,6 +654,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[2] = style;
         values[3] = scrollWidth;
         values[4] = scrollHeight;
+        values[5] = draggable;        
         values[6] = saveAttachedState(context, dragListener);
         values[7] = dragValue;
         values[8] = dropTarget;
@@ -669,14 +670,17 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         values[18] = onmousemoveeffect;
         values[19] = onmouseovereffect;
         values[20] = onmouseouteffect;
-        values[24] = onkeypresseffect;
-        values[25] = onkeydowneffect;
-        values[26] = onkeyupeffect;
-        values[27] = currentStyle;
-        values[28] = visible;
-        values[29] = menuPopup;
-        values[30] = panelTooltip;
-        values[31] = contextValue;
+        values[21] = onkeypresseffect;
+        values[22] = onkeydowneffect;
+        values[23] = onkeyupeffect;
+        values[24] = currentStyle;
+        values[25] = visible;
+        values[26] = menuPopup;
+        values[27] = panelTooltip;
+        values[28] = contextValue;
+        values[29] = renderedStyle;
+        values[30] = dragOptions;
+        values[31] = hoverclass; 
         return values;
 
     }
@@ -689,7 +693,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
         renderedOnUserRole = (String) values[1];
-        state = values[2];
+        style = (String) values[2];
         scrollWidth = (String) values[3];
         scrollHeight = (String) values[4];
         draggable = (String) values[5];
@@ -708,14 +712,17 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
         onmousemoveeffect = (Effect) values[18];
         onmouseovereffect = (Effect) values[19];
         onmouseouteffect = (Effect) values[20];
-        onkeypresseffect = (Effect) values[24];
-        onkeydowneffect = (Effect) values[25];
-        onkeyupeffect = (Effect) values[26];
-        currentStyle = (CurrentStyle) values[27];
-        visible = (Boolean) values[28];
-        menuPopup = (String) values[29];
-        panelTooltip = (String) values[30];
-        contextValue = values[31];
+        onkeypresseffect = (Effect) values[21];
+        onkeydowneffect = (Effect) values[22];
+        onkeyupeffect = (Effect) values[23];
+        currentStyle = (CurrentStyle) values[24];
+        visible = (Boolean) values[25];
+        menuPopup = (String) values[26];
+        panelTooltip = (String) values[27];
+        contextValue = values[28];
+        renderedStyle = (String)values[29];
+        dragOptions = (String)values[30];
+        hoverclass = (String)values[31];        
     }
 
     /**
