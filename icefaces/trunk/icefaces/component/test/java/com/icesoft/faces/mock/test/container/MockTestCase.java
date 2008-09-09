@@ -4,6 +4,7 @@
 package com.icesoft.faces.mock.test.container;
 
 import com.icesoft.faces.metadata.ICECompsListHelper;
+import com.sun.faces.config.WebConfiguration;
 import com.sun.faces.mock.MockApplication;
 import com.sun.faces.mock.MockExternalContext;
 import com.sun.faces.mock.MockFacesContext;
@@ -12,8 +13,6 @@ import com.sun.faces.mock.MockHttpServletResponse;
 import com.sun.faces.mock.MockHttpSession;
 import com.sun.faces.mock.MockLifecycle;
 import com.sun.faces.mock.MockRenderKit;
-import com.sun.faces.mock.MockServletConfig;
-import com.sun.faces.mock.MockServletContext;
 import com.sun.faces.mock.MockViewHandler;
 import com.sun.rave.jsfmeta.beans.RendererBean;
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +25,6 @@ import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.render.RenderKit;
@@ -45,15 +43,15 @@ import junit.framework.TestCase;
 public class MockTestCase extends TestCase {
 
     //Mock Container
-    private Application application;
-    private ViewHandler viewHandler;
-    private ServletConfig servletConfig;
-    private ExternalContext externalContext;
+    private MockApplication application;
+    private MockViewHandler viewHandler;
+    private MockServletConfig servletConfig;
+    private MockExternalContext externalContext;
     private MockFacesContext facesContext;
     private Lifecycle lifecycle;
     private HttpServletRequest httpServletRequest;
     private HttpServletResponse httpServletResponse;
-    private ServletContext servletContext;
+    private MockServletContext servletContext;
     private HttpSession httpSession;
 
     //TODO
@@ -69,9 +67,10 @@ public class MockTestCase extends TestCase {
 
     protected void defaultMockContainer() {
 
+        //Servlet API 2.4
         servletContext = new MockServletContext();
         servletConfig = new MockServletConfig(servletContext);
-        httpSession = new MockHttpSession();
+        httpSession = new MockHttpSession(servletContext);
 
         httpServletRequest = new MockHttpServletRequest(httpSession);
         httpServletResponse = new MockHttpServletResponse();
@@ -91,6 +90,8 @@ public class MockTestCase extends TestCase {
         application = (MockApplication) applicationFactory.getApplication();
         facesContext.setApplication(application);
 
+        //TODO:
+        WebConfiguration webConfig = WebConfiguration.getInstance(servletContext);
         viewHandler = new MockViewHandler();
         application.setViewHandler(viewHandler);
 
