@@ -165,7 +165,7 @@ public class HtmlMessages extends javax.faces.component.html.HtmlMessages {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[7];
+        Object values[] = new Object[12];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = effect;
@@ -173,6 +173,11 @@ public class HtmlMessages extends javax.faces.component.html.HtmlMessages {
         values[4] = visible;
         values[5] = dir;
         values[6] = lang;
+        values[7] = errorClass ;
+        values[8] = fatalClass ;
+        values[9] = infoClass ;
+        values[10] = warnClass ;
+        values[11] = styleClass ;        
         return ((Object) (values));
     }
 
@@ -189,6 +194,11 @@ public class HtmlMessages extends javax.faces.component.html.HtmlMessages {
         visible = (Boolean) values[4];
         dir = (String)values[5];
         lang = (String)values[6];
+        errorClass = (String)values[7];
+        fatalClass = (String)values[8];
+        infoClass = (String)values[9];
+        warnClass = (String)values[10];
+        styleClass = (String)values[11];         
     }
 
     /**

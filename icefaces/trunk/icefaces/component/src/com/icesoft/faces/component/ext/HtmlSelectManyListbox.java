@@ -521,16 +521,28 @@ public class HtmlSelectManyListbox
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[20];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
         values[3] = renderedOnUserRole;
         values[4] = styleClass;
         values[5] = effect;
-        values[13] = onchangeeffect;
-        values[19] = currentStyle;
-        values[20] = visible;
+        values[6] = currentStyle;
+        values[7] = visible;
+        values[8] = onclickeffect;
+        values[9] = ondblclickeffect;
+        values[10] = onmousedowneffect;
+        values[11] = onmouseupeffect;
+        values[12] = onmousemoveeffect;
+        values[13] = onmouseovereffect;
+        values[14] = onmouseouteffect;
+        values[15] = onkeypresseffect;
+        values[16] = onkeydowneffect;
+        values[17] = onkeyupeffect;
+        values[18] = onchangeeffect;
+        values[19] = autocomplete;        
+        
         return ((Object) (values));
     }
 
@@ -546,9 +558,20 @@ public class HtmlSelectManyListbox
         renderedOnUserRole = (String) values[3];
         styleClass = (String) values[4];
         effect = (Effect) values[5];
-        onchangeeffect = (Effect) values[13];
-        currentStyle = (CurrentStyle) values[19];
-        visible = (Boolean) values[20];
+        currentStyle = (CurrentStyle) values[6];
+        visible = (Boolean) values[7];
+        onclickeffect = (Effect) values[8];
+        ondblclickeffect = (Effect) values[9];
+        onmousedowneffect = (Effect) values[10];
+        onmouseupeffect = (Effect) values[11];
+        onmousemoveeffect = (Effect) values[12];
+        onmouseovereffect = (Effect) values[13];
+        onmouseouteffect = (Effect) values[14];
+        onkeypresseffect = (Effect) values[15];
+        onkeydowneffect = (Effect) values[16];
+        onkeyupeffect = (Effect) values[17];      
+        onchangeeffect = (Effect) values[18];
+        autocomplete = (String) values[19];
     }
 }
 
