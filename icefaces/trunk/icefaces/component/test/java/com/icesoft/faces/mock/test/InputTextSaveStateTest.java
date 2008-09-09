@@ -7,8 +7,6 @@ package com.icesoft.faces.mock.test;
 import com.icesoft.faces.mock.test.container.MockTestCase;
 import com.icesoft.faces.component.ext.HtmlForm;
 import com.icesoft.faces.component.ext.HtmlInputText;
-import com.icesoft.faces.context.effects.Effect;
-import com.icesoft.faces.context.effects.Fade;
 import com.sun.faces.application.StateManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,7 @@ public class InputTextSaveStateTest extends MockTestCase {
         Object state = uiViewRoot.processSaveState(getFacesContext());
 
         StateManagerImpl stateManager = new StateManagerImpl();
+        //MockStateManager stateManager = (MockStateManager)getFacesContext().getApplication().getStateManager();
         List treeList = new ArrayList();
         invokePrivateMethod("captureChild",
                 new Class[]{List.class, Integer.TYPE, UIComponent.class},
