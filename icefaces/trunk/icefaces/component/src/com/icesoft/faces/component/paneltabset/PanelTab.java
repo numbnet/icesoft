@@ -245,11 +245,14 @@ public class PanelTab
         return v != null ? v.booleanValue() : false;
     }
 
+    private Object values[];
     /* (non-Javadoc)
      * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        if(values == null){
+            values = new Object[21];
+        }
         values[0] = super.saveState(context);
         values[1] = label;
         values[2] = disabled;
@@ -270,6 +273,7 @@ public class PanelTab
         values[17] = onkeypress;
         values[18] = onkeydown;
         values[19] = onkeyup;
+        values[20] = icon;
         return ((Object) (values));
     }
 
@@ -298,6 +302,7 @@ public class PanelTab
         onkeypress = (String) values[17];
         onkeydown = (String) values[18];
         onkeyup = (String) values[19];
+        icon = (String)values[20];
     }
 
     /* (non-Javadoc)

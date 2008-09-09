@@ -634,7 +634,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[12];
+        Object values[] = new Object[18];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -647,6 +647,12 @@ public class SelectInputDate
         values[9] = navDate;
         values[10] = _renderMonthAsDropdown;
         values[11] = _renderYearAsDropdown;
+        values[12] = style;
+        values[13] = styleClass;
+        values[14] = highlightValue;
+        values[15] = highlightUnit;
+        values[16] = inputTitle;
+        values[17] = highlightClass;
         return ((Object) (values));
     }
 
@@ -667,6 +673,12 @@ public class SelectInputDate
         navDate = (Date) values[9];
         _renderMonthAsDropdown = (Boolean) values[10];
         _renderYearAsDropdown = (Boolean) values[11];
+        style = (String)values[12];
+        styleClass = (String)values[13];
+        highlightValue = (String)values[14];
+        highlightUnit = (String)values[15];
+        inputTitle = (String)values[16];
+        highlightClass = (String)values[17];
     }
 
     private Map linkMap = new HashMap();

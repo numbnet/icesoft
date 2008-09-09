@@ -570,7 +570,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[29];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -600,6 +600,9 @@ public class PanelTabSet
         values[26] = dir;
         values[27] = lang;
         values[28] = title;
+        values[29] = partialSubmit;
+        values[30] = renderedOnUserRole;
+        values[31] = visible;
         return ((Object) (values));
     }
 
@@ -638,6 +641,9 @@ public class PanelTabSet
         dir = (String) values[26];
         lang = (String) values[27];
         title = (String) values[28];
+        partialSubmit = (Boolean)values[29];
+        renderedOnUserRole = (String)values[30];
+        visible = (Boolean)values[31];
     }
 
     public Object saveSeriesState(FacesContext facesContext) {

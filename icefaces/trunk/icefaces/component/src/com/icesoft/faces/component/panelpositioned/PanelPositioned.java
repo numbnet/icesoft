@@ -234,11 +234,17 @@ public class PanelPositioned extends UISeries {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[4];
+        Object[] values = new Object[10];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = style;
         values[3] = saveAttachedState(context, listener);
+        values[4] = hoverclass;
+        values[5] = handle;
+        values[6] = renderedOnUserRole;
+        values[7] = constraint;
+        values[8] = enabledOnUserRole;
+        values[9] = overlap;
         return values;
     }
 
@@ -248,6 +254,12 @@ public class PanelPositioned extends UISeries {
         styleClass = (String) state[1];
         style = (String) state[2];
         listener = (MethodBinding) restoreAttachedState(context, state[3]);
+        hoverclass =(String)state[4];
+        handle = (String)state[5];
+        renderedOnUserRole =(String)state[6];
+        constraint = (String)state[7];
+        enabledOnUserRole = (String)state[8];
+        overlap = (String)state[9];
     }
 
     //Array type support added to the component

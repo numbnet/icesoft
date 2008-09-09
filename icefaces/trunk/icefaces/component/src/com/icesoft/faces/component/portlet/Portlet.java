@@ -91,4 +91,24 @@ public class Portlet extends UINamingContainer {
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
+
+    private Object values[];
+    public void restoreState(FacesContext context, Object state) {
+        values = (Object[])state;
+        super.restoreState(context, values[0]);
+        style = (String)values[1];
+        styleClass = (String)values[2];
+    }
+
+    public Object saveState(FacesContext context) {
+        if(values == null){
+            values = new Object[3];
+        }
+        values[0] = super.saveState(context);
+        values[1] = style;
+        values[2] = styleClass;
+        return values;
+    }
+    
+    
 }
