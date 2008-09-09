@@ -55,6 +55,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * This is the JSFX parser.  It digests a JSFX file into a tag processing tree,
@@ -201,9 +203,10 @@ public class Parser {
         // Start tag processing;
         tag.doStartTag();
 
+        UIComponent myComponent = null; // reference will be used after doEndTag
         if (tag instanceof UIComponentTag) {
             UIComponentTag compTag = (UIComponentTag) tag;
-            UIComponent myComponent = compTag.getComponentInstance();
+            myComponent = compTag.getComponentInstance();
 
             if (myComponent != null) {
                 if (myComponent instanceof UIViewRoot) {
@@ -241,6 +244,16 @@ public class Parser {
         }
         // Do end tag processing;
         tag.doEndTag();
+        
+        // ICE-3443: to save memory, trim the COMPONENT_IDS list capacity
+        // to its actual size
+        if (null != myComponent) {
+            Map attributes = myComponent.getAttributes();
+            ArrayList idsList = (ArrayList) attributes.get("javax.faces.webapp.COMPONENT_IDS");
+            if (null != idsList) {
+                idsList.trimToSize();
+            }
+        }
     }
 
 
