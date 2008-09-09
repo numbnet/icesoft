@@ -36,8 +36,13 @@ package com.icesoft.faces.webapp.parser;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIOutput;
 import javax.faces.webapp.UIComponentTag;
+import javax.servlet.jsp.tagext.Tag;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
 
 public class IceOutputTextTag extends UIComponentTag {
+    private static Set noSpanTagSet = new HashSet(Arrays.asList(new String[]{"script", "style", "title"}));
     private String value;
 
     public String getRendererType() {
@@ -56,6 +61,11 @@ public class IceOutputTextTag extends UIComponentTag {
 
         // don't escape plain text
         component.getAttributes().put("escape", "false");
+
+        Tag parentTag = getParent();
+        if (parentTag instanceof XhtmlTag && noSpanTagSet.contains(((XhtmlTag) parentTag).getTagName().toLowerCase())) {
+            component.getAttributes().put("nospan", Boolean.TRUE);
+        }
     }
 
     /**
