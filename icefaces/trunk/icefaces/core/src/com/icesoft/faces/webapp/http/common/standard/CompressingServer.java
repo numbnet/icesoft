@@ -27,7 +27,7 @@ public class CompressingServer implements Server {
     public CompressingServer(Server server, MimeTypeMatcher mimeTypeMatcher, Configuration configuration) {
         this.server = server;
         this.mimeTypeMatcher = mimeTypeMatcher;
-        this.noCompressForMimeTypes = Arrays.asList(configuration.getAttribute("noCompress",
+        this.noCompressForMimeTypes = Arrays.asList(configuration.getAttribute("compressResourcesExclusions",
                 "image/gif image/png image/jpeg image/tiff " +
                         "application/pdf application/zip application/x-compress application/x-gzip application/java-archive " +
                         "video/x-sgi-movie audio/x-mpeg video/mp4 video/mpeg"
