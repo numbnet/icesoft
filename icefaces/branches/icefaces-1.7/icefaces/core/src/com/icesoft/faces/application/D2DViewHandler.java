@@ -91,8 +91,6 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.reloadInterval";
     private final static String DO_JSF_STATE_MANAGEMENT =
             "com.icesoft.faces.doJSFStateManagement";
-    public final static String INCLUDE_OPEN_AJAX_HUB =
-            "com.icesoft.faces.openAjaxHub";
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
     public static final String CHAR_ENCODING = "UTF-8";
