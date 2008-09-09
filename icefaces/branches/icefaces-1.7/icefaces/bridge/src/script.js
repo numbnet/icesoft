@@ -24,7 +24,7 @@
             if (uri) {
                 if (!this.referencedScripts.include(script.src)) {
                     this.logger.debug('loading : ' + uri);
-                    this.client.getAsynchronously(uri, '', function(request) {
+                    this.client.getSynchronously(uri, '', function(request) {
                         request.on(Ice.Connection.OK, function() {
                             this.referencedScripts.push(uri);
                             this.logger.debug('evaluating script at : ' + uri);
