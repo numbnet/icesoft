@@ -35,6 +35,7 @@ package com.icesoft.faces.component.style;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.el.ValueBinding;
+import javax.faces.context.FacesContext;
 
 /**
  * The OutputStyle component will include an additional style sheet for Internet
@@ -112,5 +113,26 @@ public class OutputStyle extends UIComponentBase {
         this.href = href;
     }
 
+    /**
+     * <p>Gets the state of the instance as a <code>Serializable</code>
+     * Object.</p>
+     */
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[3];
+        values[0] = super.saveState(context);
+        values[1] = href;
+        values[2] = userAgent;
+        return ((Object) (values));
+    }
 
+    /**
+     * <p>Perform any processing required to restore the state from the entries
+     * in the state Object.</p>
+     */
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        href = (String) values[1];
+        userAgent = (String) values[2];
+    }
 }
