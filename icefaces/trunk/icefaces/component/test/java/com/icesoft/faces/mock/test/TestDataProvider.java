@@ -31,7 +31,8 @@ public class TestDataProvider {
         "javax.faces.convert.Converter",
         "java.lang.Boolean",
         "javax.faces.component.UIComponent",
-        "com.icesoft.faces.utils.UpdatableProperty"
+        "com.icesoft.faces.utils.UpdatableProperty",
+
     };       
     private final static Object[] valueObjects = new Object[]{
         new MockDataObject("empty"),

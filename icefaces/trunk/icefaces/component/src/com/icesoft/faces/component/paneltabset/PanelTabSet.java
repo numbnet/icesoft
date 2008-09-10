@@ -273,8 +273,12 @@ public class PanelTabSet
     		super.removeFacesListener(listener[i]);
     	}
     	Iterator it = listenerList.iterator();
+        Object temp = null;
     	while(it.hasNext()) {
-    		super.addFacesListener((TabChangeListener)it.next());
+            temp = it.next();
+            if(temp instanceof TabChangeListener){
+    		super.addFacesListener((TabChangeListener)temp);
+            }
     	}
     }
 

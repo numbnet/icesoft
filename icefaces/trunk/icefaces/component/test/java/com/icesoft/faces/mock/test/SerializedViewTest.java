@@ -81,16 +81,18 @@ public class SerializedViewTest extends MockTestCase {
         //CompPropsUtils.describe_useBeanUtils(uiComponent, propsMap);
         CompPropsUtils.describe_useMetaBeanInfo(uiComponent, propsMap);
 
+        TestDataProvider testDataProvider = new TestDataProvider();
+
         Iterator iterator = fieldMap.keySet().iterator();
         String message = "Component=" + uiComponent.getClass().getName() + "\n Field details: ";
         String fieldName = null;
         String fieldValue = null;
-        boolean modified = false;
+
         String className = null;
         while (iterator.hasNext()) {
             fieldName = (String) iterator.next();
             fieldValue = (String) fieldMap.get(fieldName);
-
+            boolean modified = false;
             //Coding style with instance name
             if (fieldName.startsWith("_")) {
                 fieldName = fieldName.substring(1);
@@ -115,6 +117,13 @@ public class SerializedViewTest extends MockTestCase {
 //                }
             } else if (isRelativeRules(uiComponent, fieldName, fieldValue)) {
 
+//                if(fieldName.equalsIgnoreCase("currentStyle")){
+//                    //resultMap.put(fieldName, fieldValue);
+//                    continue;
+//                }
+//                if(fieldName.equalsIgnoreCase("onchangeeffect")){
+//                    resultMap.put("onchangeeffect", fieldValue);
+//                }
                 message += "\n\tManual Verify: has method impl, name=" + fieldName + " classType = " + fieldValue;
             } else {
 
@@ -129,13 +138,34 @@ public class SerializedViewTest extends MockTestCase {
                     if (modified) {
                         fieldName = "_" + fieldName;
                     }
-                    message += "\n\tManual Verify: no method impl, instance name=" + fieldName + " classType=" + fieldValue;
+
+                    try {
+
+                        if (fieldValue.startsWith("[L")) {
+                            continue;
+                        }
+                        message += "\n\tManual Verify: no method impl, instance name=" + fieldName + " classType=" + fieldValue;
+                        Object expectedvalue = testDataProvider.getSimpleTestObject(fieldValue);
+                        setPrivateFieldValue(uiComponent, uiComponent.getClass(), fieldName, expectedvalue);
+                        
+                        Object changed_value = getPrivateFieldValue(uiComponent, uiComponent.getClass(), fieldName);
+                        
+                        String clientId = uiComponent.getClientId(getFacesContext());
+
+//                        message = "Component=" + uiComponent.getClass().getName() + "\n Field details: ";
+//                        message += "\n\tManual Verify: no method impl, instance name=" + fieldName + " classType=" + fieldValue;
+//                        verifyWithDefault(testDataProvider, fieldValue, message, expectedvalue, changed_value);
+//
+
+                    } catch (AssertionFailedError error) {
+                        print(error.getMessage());
+                    }
                 }
             }
         }
 
         if (!message.endsWith("\n Field details: ")) {
-            //print(message);
+            print(message);
         }
     }
 
@@ -158,24 +188,22 @@ public class SerializedViewTest extends MockTestCase {
                     keyValue = (String) classesMap.get(keyProp);
 
                     value = testDataProvider.getSimpleTestObject(keyValue);
-                    
+
                     message = "Component=" + uiComponent.getClass().getName() + " name=" + keyProp + " class=" + keyValue + " setValue=" + value;
 
-                    if (keyValue.equalsIgnoreCase("com.icesoft.faces.utils.UpdatableProperty")
-                            || keyValue.equalsIgnoreCase("java.io.File")
-                            || keyProp.equalsIgnoreCase("disabled")) {
+                    if (keyValue.equalsIgnoreCase("com.icesoft.faces.utils.UpdatableProperty") || keyValue.equalsIgnoreCase("java.io.File") || keyProp.equalsIgnoreCase("disabled")) {
                         continue;
                     }
-                    
-                    if(keyValue.equalsIgnoreCase("javax.faces.el.MethodBinding")){
+
+                    if (keyValue.equalsIgnoreCase("javax.faces.el.MethodBinding")) {
                         //limited scope
                         Class args[] = new Class[]{};
-                        value =  getFacesContext().getApplication().createMethodBinding("#{mock.methodBinding}",
-                                args);        
+                        value = getFacesContext().getApplication().createMethodBinding("#{mock.methodBinding}",
+                                args);
                     }
-                    
-                    if(keyValue.equalsIgnoreCase("java.util.Map")){
-                        Map tempMap = (Map)value;
+
+                    if (keyValue.equalsIgnoreCase("java.util.Map")) {
+                        Map tempMap = (Map) value;
                         for (int j = 0; j < 4; j++) {
                             tempMap.put(new Integer(j), new Integer(j));
                         }
@@ -194,9 +222,9 @@ public class SerializedViewTest extends MockTestCase {
                     fail(message);
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, message, ex);
                 } catch (NoSuchMethodException ex) {
-                    //TODO enable me
-                    fail(message);                    
+                    //TODO enable me                    
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, "FIX ME:" + message, ex);
+                    fail(message);
                     continue;
                 }
                 expectedValueMap.put(keyProp, keyValue);
@@ -258,8 +286,8 @@ public class SerializedViewTest extends MockTestCase {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Serialized View failed  " + ex.getMessage());
-        } catch(NotSerializableException ex){
-             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotSerializableException ex) {
+            Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
             fail("Serialized View failed  " + ex.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(ExternalizableTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,6 +304,93 @@ public class SerializedViewTest extends MockTestCase {
         List<UIComponent> restoredChildren = firstForm.getChildren();
 
         verifyExpectedOutput(restoredChildren, expectedMap, testDataProvider);
+    }
+
+    private void verifyWithDefault(TestDataProvider testDataProvider, String propClassName, String message, Object expectedValue, Object actualValue) {
+        int m = testDataProvider.getMatchClass(propClassName);
+        //            "java.util.List", //1
+        //            "java.lang.Double", //2
+        //            "java.lang.String", //3
+        //            "boolean", //4
+        //            "com.icesoft.faces.context.effects.Effect", //5
+        //            "java.lang.Object", //6
+        //            "javax.faces.el.MethodBinding",//7
+        //            "int",//8
+        //            "java.lang.Integer",//9
+        //            "java.util.Date", //10
+        //            "java.io.File", //11
+        //            "java.util.Map", //12
+        //            "javax.faces.convert.Converter", //13
+        //            "java.lang.Boolean", //14
+        //            "javax.faces.component.UIComponent", //15
+        //            "com.icesoft.faces.utils.UpdatableProperty" //16
+        switch (m) {
+            case 1:
+                assertEquals(message, ((java.util.List) expectedValue).size(), ((java.util.List) actualValue).size());
+                break;
+            case 2:
+                assertEquals(message, Double.parseDouble(expectedValue.toString()), Double.parseDouble(actualValue.toString()));
+                break;
+            case 3:
+                String expectedValue_string = (String) expectedValue;
+                String actualValue_string = (String) actualValue;
+                if (!expectedValue.equals(actualValue_string) && actualValue_string.indexOf(expectedValue_string) == -1) {
+                    fail(message);
+                }
+                break;
+            case 4://limited boolean
+                assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
+                break;
+            case 5:
+                assertEquals(message, expectedValue.toString(), actualValue.toString());
+                break;
+            case 6:
+                if (!(actualValue instanceof MockDataObject)) {
+                    fail(message);
+                } else {
+                    if (!((MockDataObject) expectedValue).getTest().equals(((MockDataObject) actualValue).getTest())) {
+                        fail(message);
+                    }
+                }
+                break;
+            case 7:
+                //limited scope "javax.faces.el.MethodBinding"
+                if (actualValue instanceof MockMethodBinding) {
+                    assertEquals(message, "#{mock.methodBinding}", ((MockMethodBinding) actualValue).getExpressionString());
+                } else {
+                    fail(message);
+                }
+                break;
+            case 8:
+                assertEquals(message, Integer.parseInt(expectedValue.toString()), Integer.parseInt(actualValue.toString()));
+                break;
+            case 9:
+                assertEquals(message, (Integer) expectedValue, (Integer) actualValue);
+                break;
+            case 10:
+                assertEquals(message, ((java.util.Date) expectedValue).getTime(), ((java.util.Date) actualValue).getTime());
+                break;
+            case 11:
+                assertEquals(message, ((java.io.File) expectedValue).getPath(), ((java.io.File) actualValue).getPath());
+                break;
+            case 12://limited "java.util.Map"
+                assertEquals(message, 4, ((java.util.Map) actualValue).size());
+                break;
+            case 13://TODO "javax.faces.convert.Converter"
+                break;
+            case 14://limited java.lang.Boolean
+                assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
+                break;
+            case 15:
+                assertEquals(message, ((UIComponent) expectedValue).getRendererType(), ((UIComponent) actualValue).getRendererType());
+                break;
+            case 16:
+                //TODO "com.icesoft.faces.utils.UpdatableProperty"
+                break;
+
+            default:
+                fail("unknown property class where " + message);
+        }
     }
 
     private void verifyExpectedOutput(List<UIComponent> restoredChildren, Map expectedMap, TestDataProvider testDataProvider) {
@@ -297,90 +412,8 @@ public class SerializedViewTest extends MockTestCase {
                         fail(message);
                         continue;
                     }
-                    int m = testDataProvider.getMatchClass(propClassName);
-                    //            "java.util.List", //1
-                    //            "java.lang.Double", //2
-                    //            "java.lang.String", //3
-                    //            "boolean", //4
-                    //            "com.icesoft.faces.context.effects.Effect", //5
-                    //            "java.lang.Object", //6
-                    //            "javax.faces.el.MethodBinding",//7
-                    //            "int",//8
-                    //            "java.lang.Integer",//9
-                    //            "java.util.Date", //10
-                    //            "java.io.File", //11
-                    //            "java.util.Map", //12
-                    //            "javax.faces.convert.Converter", //13
-                    //            "java.lang.Boolean", //14
-                    //            "javax.faces.component.UIComponent", //15
-                    //            "com.icesoft.faces.utils.UpdatableProperty" //16
-                    switch (m) {
-                        case 1:
-                            assertEquals(message, ((java.util.List)expectedValue).size(), ((java.util.List)actualValue).size());
-                            break;
-                        case 2:
-                            assertEquals(message, Double.parseDouble(expectedValue.toString()), Double.parseDouble(actualValue.toString()));
-                            break;
-                        case 3:
-                            String expectedValue_string = (String) expectedValue;
-                            String actualValue_string = (String) actualValue;
-                            if (!expectedValue.equals(actualValue_string) && actualValue_string.indexOf(expectedValue_string) == -1) {
-                                fail(message);
-                            }
-                            break;
-                        case 4://limited boolean
-                            assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
-                            break;
-                        case 5:
-                            assertEquals(message, expectedValue.toString(), actualValue.toString());
-                            break;
-                        case 6:
-                            if(!(actualValue instanceof MockDataObject)){
-                                fail(message);
-                            }else{
-                                if(!((MockDataObject)expectedValue).getTest().equals(((MockDataObject)actualValue).getTest())){
-                                    fail(message);
-                                }
-                            }
-                            break;
-                        case 7:
-                            //limited scope "javax.faces.el.MethodBinding"
-                            if(actualValue instanceof MockMethodBinding){
-                                assertEquals(message, "#{mock.methodBinding}", ((MockMethodBinding)actualValue).getExpressionString());
-                            }else{
-                                fail(message);
-                            }
-                            break;
-                        case 8:
-                            assertEquals(message, Integer.parseInt(expectedValue.toString()), Integer.parseInt(actualValue.toString()));
-                            break;
-                        case 9:
-                            assertEquals(message, (Integer) expectedValue, (Integer) actualValue);
-                            break;
-                        case 10:
-                            assertEquals(message, ((java.util.Date) expectedValue).getTime(), ((java.util.Date) actualValue).getTime());
-                            break;
-                        case 11:
-                            assertEquals(message, ((java.io.File) expectedValue).getPath(), ((java.io.File) actualValue).getPath());
-                            break;
-                        case 12://limited "java.util.Map"
-                            assertEquals(message, 4, ((java.util.Map) actualValue).size());
-                            break;
-                        case 13://TODO "javax.faces.convert.Converter"
-                            break;
-                        case 14://limited java.lang.Boolean
-                            assertEquals(message, Boolean.parseBoolean(expectedValue.toString()), Boolean.parseBoolean(actualValue.toString()));
-                            break;
-                        case 15:
-                            assertEquals(message, ((UIComponent) expectedValue).getRendererType(), ((UIComponent) actualValue).getRendererType());
-                            break;
-                        case 16:
-                            //TODO "com.icesoft.faces.utils.UpdatableProperty"
-                            break;
+                    verifyWithDefault(testDataProvider, propClassName, message, expectedValue, actualValue);
 
-                        default:
-                            fail("unknown property class where " + message);
-                    }
                 } catch (IllegalAccessException ex) {
                     Logger.getLogger(SerializedViewTest.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InvocationTargetException ex) {
@@ -393,8 +426,6 @@ public class SerializedViewTest extends MockTestCase {
             }
         }
     }
-
-
 
     private void print(String message) {
         Logger.getLogger(SerializedViewTest.class.getName()).log(Level.INFO, message);
