@@ -276,4 +276,44 @@ public class PanelDivider extends UIPanel{
         return (position > 0  && position <= 100);
     }
     
+    /**
+     * <p>Gets the state of the instance as a <code>Serializable</code>
+     * Object.</p>
+     */
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[12];
+        values[0] = super.saveState(context);
+        values[1] = style;
+        values[2] = styleClass;
+        values[3] = dividerPosition;
+        values[4] = renderedOnUserRole;
+        values[5] = orientation;
+        values[6] = previousOrientation;
+        values[7] = decoded ? Boolean.TRUE : Boolean.FALSE;
+        values[8] = firstPaneStyle;
+        values[9] = secondPaneStyle;
+        values[10] = new Integer(submittedDividerPosition);
+        values[11] = new Integer(previousDividerPosition);
+        return ((Object) (values));
+    }
+
+    /**
+     * <p>Perform any processing required to restore the state from the entries
+     * in the state Object.</p>
+     */
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        style = (String) values[1];
+        styleClass = (String) values[2];
+        dividerPosition = (Integer) values[3];
+        renderedOnUserRole = (String) values[4];
+        orientation = (String) values[5];
+        previousOrientation = (String) values[6];
+        decoded = ((Boolean) values[7]).booleanValue();
+        firstPaneStyle = (String) values[8];
+        secondPaneStyle = (String) values[9];
+        submittedDividerPosition = ((Integer) values[10]).intValue();
+        previousDividerPosition = ((Integer)values[11]).intValue();
+    }
 }
