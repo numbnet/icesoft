@@ -338,4 +338,37 @@ public class InputRichText extends UIInput {
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
     }
+
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[12];
+        values[0] = super.saveState(context);
+        values[1] = customConfigPath;
+        values[2] = disabled;
+        values[3] = _for;
+        values[4] = styleClass;
+        values[5] = height;
+        values[6] = language;
+        values[7] = saveOnSubmit;
+        values[8] = skin;
+        values[9] = style;
+        values[10] = toolbar;
+        values[11] = width;
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        customConfigPath = (String) values[1];
+        disabled = (Boolean) values[2];
+        _for = (String) values[3];
+        styleClass = (String) values[4];
+        height = (String) values[5];
+        language = (String) values[6];
+        saveOnSubmit = (Boolean) values[7];
+        skin = (String) values[8];
+        style = (String) values[9];
+        toolbar = (String) values[10];
+        width = (String) values[11];
+    }
 }
