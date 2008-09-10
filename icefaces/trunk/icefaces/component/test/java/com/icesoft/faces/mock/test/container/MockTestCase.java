@@ -15,13 +15,15 @@ import com.sun.faces.mock.MockLifecycle;
 import com.sun.faces.mock.MockRenderKit;
 import com.sun.faces.mock.MockViewHandler;
 import com.sun.rave.jsfmeta.beans.RendererBean;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FactoryFinder;
-import javax.faces.application.Application;
 import javax.faces.application.ApplicationFactory;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
@@ -29,8 +31,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.lifecycle.Lifecycle;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -82,6 +82,10 @@ public class MockTestCase extends TestCase {
         FactoryFinder.setFactory(FactoryFinder.RENDER_KIT_FACTORY, renderKitFactoryName);
 
         externalContext = new MockExternalContext(servletContext, httpServletRequest, httpServletResponse);
+
+        Map myRequestParameterMap = new HashMap();
+        myRequestParameterMap.put("clientid_inputText","event");
+        externalContext.setRequestParameterMap(myRequestParameterMap);
         lifecycle = new MockLifecycle();
 
         facesContext = new MockFacesContext(externalContext, lifecycle);
@@ -150,6 +154,40 @@ public class MockTestCase extends TestCase {
             Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    protected Object getPrivateFieldValue(Object instance, Class className, String fieldName){
+        try {            
+            Field field = className.getDeclaredField(fieldName);
+            field.setAccessible(true);
+                   
+            return field.get(instance);
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, className.getName()+" "+ex.getMessage(), ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    protected void setPrivateFieldValue(Object instance, Class className, String fieldName, Object value){
+        try {            
+            Field field = className.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(instance, value);
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, className.getName()+" "+ex.getMessage(), ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(MockTestCase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public UIComponent[] getUIComponents(){
