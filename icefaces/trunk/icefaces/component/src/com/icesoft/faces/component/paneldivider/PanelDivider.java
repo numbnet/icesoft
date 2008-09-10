@@ -281,7 +281,7 @@ public class PanelDivider extends UIPanel{
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[12];
+        Object values[] = new Object[13];
         values[0] = super.saveState(context);
         values[1] = style;
         values[2] = styleClass;
@@ -294,6 +294,7 @@ public class PanelDivider extends UIPanel{
         values[9] = secondPaneStyle;
         values[10] = new Integer(submittedDividerPosition);
         values[11] = new Integer(previousDividerPosition);
+        values[12] = new Integer(DEFAULT_POSITION);
         return ((Object) (values));
     }
 
@@ -315,5 +316,6 @@ public class PanelDivider extends UIPanel{
         secondPaneStyle = (String) values[9];
         submittedDividerPosition = ((Integer) values[10]).intValue();
         previousDividerPosition = ((Integer)values[11]).intValue();
+        DEFAULT_POSITION = ((Integer)values[12]).intValue();
     }
 }
