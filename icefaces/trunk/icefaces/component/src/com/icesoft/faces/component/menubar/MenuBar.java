@@ -409,5 +409,30 @@ public class MenuBar extends UICommand implements NamingContainer {
         }
         super.encodeBegin(context);
     }
+
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[8];
+        values[0] = super.saveState(context);
+        values[1] = displayOnClick;
+        values[2] = imageDir;
+        values[3] = noIcons;
+        values[4] = orientation;
+        values[5] = renderedOnUserRole;
+        values[6] = style;
+        values[7] = styleClass;
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        displayOnClick = (Boolean) values[1];
+        imageDir = (String) values[2];
+        noIcons = (String) values[3];
+        orientation = (String) values[4];
+        renderedOnUserRole = (String) values[5];
+        style = (String) values[6];
+        styleClass = (String) values[7];
+    }
 }
 

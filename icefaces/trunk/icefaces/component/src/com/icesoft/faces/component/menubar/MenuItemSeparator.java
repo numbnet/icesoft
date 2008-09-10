@@ -36,6 +36,8 @@ package com.icesoft.faces.component.menubar;
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
 
+import javax.faces.context.FacesContext;
+
 
 /**
  * MenuItemSeparator is a JSF component class representing an ICEfaces
@@ -88,5 +90,18 @@ public class MenuItemSeparator extends MenuItemBase {
                 styleClass, 
                 CSS_DEFAULT.MENU_ITEM_SEPARATOR_STYLE, 
                 "styleClass");
+    }
+
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[2];
+        values[0] = super.saveState(context);
+        values[1] = styleClass;
+        return values;
+    }
+
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        styleClass = (String) values[1];
     }
 }

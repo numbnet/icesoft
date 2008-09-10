@@ -474,11 +474,22 @@ public class MenuItem extends MenuItemBase {
     private Object states[];
     public Object saveState(FacesContext context){
         if(states == null){
-            states = new Object[3];
+            states = new Object[14];
         }
         states[0] = super.saveState(context);
         states[1] = saveAttachedState(context, action);
         states[2] = saveAttachedState(context, actionListener);
+        states[3] = alt;
+        states[4] = disabled;
+        states[5] = enabledOnUserRole;
+        states[6] = icon;
+        states[7] = link;
+        states[8] = onclick;
+        states[9] = renderedOnUserRole;
+        states[10] = styleClass;
+        states[11] = target;
+        states[12] = title;
+        states[13] = saveAttachedState(context, value);
         return states;
     }
 
@@ -487,5 +498,16 @@ public class MenuItem extends MenuItemBase {
         super.restoreState(context, states[0]);
         action = (MethodBinding)restoreAttachedState(context, states[1]);
         actionListener = (MethodBinding)restoreAttachedState(context, states[2]);
+        alt = (String) states[3];
+        disabled = (Boolean) states[4];
+        enabledOnUserRole = (String) states[5];
+        icon = (String) states[6];
+        link = (String) states[7];
+        onclick = (String) states[8];
+        renderedOnUserRole = (String) states[9];
+        styleClass = (String) states[10];
+        target = (String) states[11];
+        title = (String) states[12];
+        value = restoreAttachedState(context, states[13]);
     }
 }
