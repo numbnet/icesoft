@@ -390,12 +390,12 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
+            if (null != responseWriter)  {
+                ((DOMResponseWriter) responseWriter).release();
+            }
         }
         // #2807 release thread locals
         setCurrentInstance(null);
-        if (null != responseWriter)  {
-            ((DOMResponseWriter) responseWriter).release();
-        }
     }
 
     public void dispose() {
