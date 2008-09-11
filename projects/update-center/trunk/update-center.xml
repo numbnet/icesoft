@@ -8,14 +8,14 @@
                 homepage="http://www.icefaces.org/"
                 distribution="http://localhost:8080/modules/ahs/1_7_1/icefaces_ahs_1_7_1.jar"
                 license="MPLorLGPL"
-                downloadsize="4612867"
+                downloadsize="4606864"
                 needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
-                releasedate="2008/06/12">
+                releasedate="2008/08/27">
 
             <manifest OpenIDE-Module="org.icefaces.module.ahs"
                       OpenIDE-Module-Display-Category="ICEfaces"
-                      OpenIDE-Module-Implementation-Version="20080617"
+                      OpenIDE-Module-Implementation-Version="20080827"
                       OpenIDE-Module-Long-Description="ICEfaces Ajax Push server supports scaling of ICEfaces applications that use Ajax Push by using non-blocking IO and JMS for blocking requests"
                       OpenIDE-Module-Module-Dependencies=""
                       OpenIDE-Module-Name="ICEfaces Ajax Push Server"
@@ -31,16 +31,16 @@
                 homepage="http://www.icefaces.org/"
                 distribution="http://localhost:8080/modules/auctionMonitor/1_7_1/icefaces_auctionMonitor_1_7_1.jar"
                 license="MPLorLGPL"
-                downloadsize="4294288"
+                downloadsize="4285134"
                 needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
-                releasedate="2008/06/12">
+                releasedate="2008/08/27">
 
             <manifest OpenIDE-Module="org.icefaces.module.auctionMonitor"
                       OpenIDE-Module-Display-Category="ICEfaces"
-                      OpenIDE-Module-Implementation-Version="20080617"
+                      OpenIDE-Module-Implementation-Version="20080827"
                       OpenIDE-Module-Long-Description="Auction Monitor is an ICEfaces web application that simulates an online auction.  It demonstrates the benefits of Ajax Push and component-based development."
-                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080617"
+                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080827"
                       OpenIDE-Module-Name="ICEfaces Auction Monitor"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="ICEfaces Auction Monitor"
@@ -54,16 +54,16 @@
                 homepage="http://www.icefaces.org/"
                 distribution="http://localhost:8080/modules/component-showcase/1_7_1/icefaces_component-showcase_1_7_1.jar"
                 license="MPLorLGPL"
-                downloadsize="6367306"
+                downloadsize="6361995"
                 needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
-                releasedate="2008/06/12">
+                releasedate="2008/08/27">
 
             <manifest OpenIDE-Module="org.icefaces.module.componentShowcase"
                       OpenIDE-Module-Display-Category="ICEfaces"
-                      OpenIDE-Module-Implementation-Version="20080617"
+                      OpenIDE-Module-Implementation-Version="20080827"
                       OpenIDE-Module-Long-Description="Component Showcase is an ICEfaces web application that demonstrates the ICEfaces component suite as well as providing source code to illustrate best practices."
-                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080617"
+                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080827"
                       OpenIDE-Module-Name="ICEfaces Component Showcase"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="ICEfaces Component Showcase"
@@ -77,16 +77,16 @@
                 homepage="http://www.icefaces.org/"
                 distribution="http://localhost:8080/modules/webmc/1_7_1/icefaces_webmc_1_7_1.jar"
                 license="MPLorLGPL"
-                downloadsize="11933131"
+                downloadsize="10756310"
                 needsrestart="true"
                 moduleauthor="ICEsoft Technologies, Inc."
-                releasedate="2008/06/12">
+                releasedate="2008/08/27">
 
             <manifest OpenIDE-Module="org.icefaces.module.webmc"
                       OpenIDE-Module-Display-Category="ICEfaces"
-                      OpenIDE-Module-Implementation-Version="20080617"
+                      OpenIDE-Module-Implementation-Version="20080827"
                       OpenIDE-Module-Long-Description="WebMC is an ICEfaces presentation and collaboration web application demonstrating the benefits of Ajax Push."
-                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080617"
+                      OpenIDE-Module-Module-Dependencies="org.icefaces.module.ahs = 20080827"
                       OpenIDE-Module-Name="ICEfaces WebMC"
                       OpenIDE-Module-Requires=""
                       OpenIDE-Module-Short-Description="ICEfaces WebMC"
