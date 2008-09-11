@@ -53,7 +53,9 @@ public class InputTextRenderer extends BaseRenderer{
         super.encodeEnd(facesContext, uiComponent);
         ResponseWriter writer = facesContext.getResponseWriter();
         Object value = getValue(facesContext, uiComponent);
-        writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        if (value != null) {
+            writer.writeAttribute(HTML.VALUE_ATTR, value, null);
+        }
         writer.endElement(HTML.INPUT_ELEM);
     }
     
