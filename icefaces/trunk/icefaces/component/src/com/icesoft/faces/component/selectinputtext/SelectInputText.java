@@ -571,7 +571,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[12];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = listVar;
@@ -581,6 +581,9 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         values[6] = itemList;
         values[7] = options;
         values[8] = saveAttachedState(context, textChangeListener);
+        values[9] = changedComponentIds;
+        values[10] = Integer.valueOf(index);
+        values[11] = itemMap;
         return ((Object) (values));
     }
 
@@ -600,5 +603,8 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         options = (String)values[7];
         textChangeListener = (MethodBinding)
             restoreAttachedState(context, values[8]);
+        changedComponentIds = (List) values[9];
+        index = ((Integer) values[10]).intValue();
+        itemMap = (Map) values[11];
     }
 }
