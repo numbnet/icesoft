@@ -115,6 +115,10 @@ public class AsyncServerDetector implements Server {
                             "Asynchronous HTTP Service available: " +
                                 isAsyncHttpServiceAvailable);
                     }
+                    boolean isJMSAvailable = isJMSAvailable();
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("JMS API available: " + isJMSAvailable);
+                    }
                     if (isAsyncHttpServiceAvailable &&
                         configuration.getAttribute(
                             "blockingRequestHandler",
@@ -122,7 +126,8 @@ public class AsyncServerDetector implements Server {
                                 "async.server", true) ?
                                     "icefaces-ahs" :
                                     "icefaces").
-                                equalsIgnoreCase("icefaces-ahs")) {
+                                equalsIgnoreCase("icefaces-ahs") &&
+                        isJMSAvailable) {
 
                         LOG.info(
                             "Adapting to Asynchronous HTTP Service " +
@@ -155,6 +160,16 @@ public class AsyncServerDetector implements Server {
             this.getClass().getClassLoader().loadClass(
                 "com.icesoft.faces.async.server." +
                     "AsyncHttpServerAdaptingServlet");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
+    private boolean isJMSAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass(
+                "javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
@@ -210,7 +225,7 @@ public class AsyncServerDetector implements Server {
             final Configuration configuration) {
 
             try {
-                return
+                return                             
                     (Server)
                         constructor.newInstance(
                             new Object[]{
