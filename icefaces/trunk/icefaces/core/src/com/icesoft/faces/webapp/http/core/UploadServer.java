@@ -66,7 +66,7 @@ public class UploadServer implements Server {
                         final View view = (View) views.get(viewIdentifier);
                         final BridgeFacesContext context = view.getFacesContext();
                         final FileUploadComponent component = (FileUploadComponent) D2DViewHandler.findComponent(componentID, context.getViewRoot());
-                        view.makeCurrent();
+                        view.installThreadLocals();
                         progressCalculator.setListenerAndContextAndPFS(component, context, view.getPersistentFacesState());
                         try {
                             component.upload(

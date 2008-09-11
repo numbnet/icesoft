@@ -1,42 +1,47 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.util.DOMUtils;
-import com.icesoft.faces.webapp.http.common.Configuration;
-import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.command.UpdateElements;
+import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
-import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.HashMap;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class PushModeSerializer implements DOMSerializer {
     private Document oldDocument;
     private byte[] domBytes;
-    private CommandQueue commandQueue;
+    private View view;
+    private BridgeFacesContext context;
     private String viewNumber;
     private boolean compressDOM = false;
 
-    public PushModeSerializer(Configuration configuration, Document currentDocument, CommandQueue commandQueue, String viewNumber) {
+    public PushModeSerializer(Configuration configuration, Document currentDocument, View view, BridgeFacesContext context, String viewNumber) {
         this.oldDocument = currentDocument;
-        this.commandQueue = commandQueue;
+        this.view = view;
+        this.context = context;
         this.viewNumber = viewNumber;
-        compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
+        this.compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
         compactDOM();
     }
 
-    public void serialize(Document document) throws IOException {
-        if ( compressDOM && (null != domBytes) )  {
+    public void serialize(final Document document) throws IOException {
+        if (compressDOM && (null != domBytes)) {
             DOMDocumentParser parser = new DOMDocumentParser();
             ByteArrayInputStream byteIn = new ByteArrayInputStream(domBytes);
             oldDocument = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
@@ -44,7 +49,7 @@ public class PushModeSerializer implements DOMSerializer {
                 parser.parse(oldDocument, byteIn);
                 //parser retains reference to DOM, causes memory leak
                 parser = null;
-            } catch (Exception e)  {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -56,7 +61,7 @@ public class PushModeSerializer implements DOMSerializer {
             changed[i] = changeRoot;
             Integer depth = new Integer(getDepth(changeRoot));
             HashSet peers = (HashSet) depthMaps.get(depth);
-            if (null == peers)  {
+            if (null == peers) {
                 peers = new HashSet();
                 depthMaps.put(depth, peers);
             }
@@ -65,14 +70,14 @@ public class PushModeSerializer implements DOMSerializer {
             peers.add(changeRoot);
         }
         Iterator allDepths = depthMaps.keySet().iterator();
-        while (allDepths.hasNext())  {
+        while (allDepths.hasNext()) {
             Integer baseDepth = (Integer) allDepths.next();
             Iterator checkDepths = depthMaps.keySet().iterator();
             while (checkDepths.hasNext()) {
                 Integer checkDepth = (Integer) checkDepths.next();
-                if (baseDepth.intValue() < checkDepth.intValue())  {
+                if (baseDepth.intValue() < checkDepth.intValue()) {
                     pruneAncestors(baseDepth, (HashSet) depthMaps.get(baseDepth),
-                                   checkDepth, (HashSet) depthMaps.get(checkDepth) );
+                            checkDepth, (HashSet) depthMaps.get(checkDepth));
                 }
             }
         }
@@ -81,10 +86,10 @@ public class PushModeSerializer implements DOMSerializer {
         //Collection is a Set so duplicates will be discarded
         HashSet topElements = new HashSet();
         Iterator allDepthMaps = depthMaps.values().iterator();
-        while (allDepthMaps.hasNext())  {
+        while (allDepthMaps.hasNext()) {
             topElements.addAll((HashSet) allDepthMaps.next());
         }
-        
+
         if (!topElements.isEmpty()) {
             boolean reload = false;
             int j = 0;
@@ -97,8 +102,8 @@ public class PushModeSerializer implements DOMSerializer {
                 String tag = element.getTagName();
                 //send reload command if 'html', 'body', or 'head' elements need to be updated (see: ICE-3063)
                 reload = reload || "html".equalsIgnoreCase(tag) || "head".equalsIgnoreCase(tag);
-                if (topElements.contains(element))  {
-                   if (!dupCheck.contains(element))  {
+                if (topElements.contains(element)) {
+                    if (!dupCheck.contains(element)) {
                         dupCheck.add(element);
                         elements[j++] = element;
                     }
@@ -106,25 +111,25 @@ public class PushModeSerializer implements DOMSerializer {
             }
             if (reload) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)
-                commandQueue.put(new Reload(viewNumber));
+                view.preparePage(new PreparedPage(document));
+                view.put(new Reload(viewNumber));
             } else {
-                commandQueue.put(new UpdateElements(elements));
+                view.put(new UpdateElements(elements));
             }
         }
 
         oldDocument = document;
         compactDOM();
     }
-    
-    void compactDOM()  {
-        if (compressDOM)  {
-            
+
+    void compactDOM() {
+        if (compressDOM) {
             DOMDocumentSerializer serializer = new DOMDocumentSerializer();
             ByteArrayOutputStream byteOut = new ByteArrayOutputStream(10000);
             serializer.setOutputStream(byteOut);
             try {
                 serializer.serialize(oldDocument);
-            } catch (IOException e)  {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             domBytes = byteOut.toByteArray();
@@ -134,14 +139,14 @@ public class PushModeSerializer implements DOMSerializer {
 
     //prune the children by looking for ancestors in the parents collection 
     private void pruneAncestors(Integer parentDepth, Collection parents,
-                                Integer childDepth, Collection children)  {
+                                Integer childDepth, Collection children) {
         Iterator parentList = parents.iterator();
-        while (parentList.hasNext())  {
+        while (parentList.hasNext()) {
             Node parent = (Node) parentList.next();
             Iterator childList = children.iterator();
-            while (childList.hasNext())  {
+            while (childList.hasNext()) {
                 Node child = (Node) childList.next();
-                if (isAncestor(parentDepth, parent, childDepth, child))  {
+                if (isAncestor(parentDepth, parent, childDepth, child)) {
                     childList.remove();
                 }
             }
@@ -149,7 +154,7 @@ public class PushModeSerializer implements DOMSerializer {
         }
     }
 
-    private int getDepth(Node node)  {
+    private int getDepth(Node node) {
         int depth = 0;
         Node parent = node;
         while ((parent = parent.getParentNode()) != null) {
@@ -159,15 +164,15 @@ public class PushModeSerializer implements DOMSerializer {
     }
 
     private boolean isAncestor(Integer parentDepth, Node parent,
-                               Integer childDepth, Node child)  {
+                               Integer childDepth, Node child) {
         if (!parent.hasChildNodes()) {
             return false;
         }
         Node testParent = child;
         int testDepth = childDepth.intValue();
         int stopDepth = parentDepth.intValue();
-        while ( ((testParent = testParent.getParentNode()) != null) &&
-                (testDepth > stopDepth) ){
+        while (((testParent = testParent.getParentNode()) != null) &&
+                (testDepth > stopDepth)) {
             testDepth--;
             if (testParent.equals(parent)) {
                 return true;
@@ -176,18 +181,19 @@ public class PushModeSerializer implements DOMSerializer {
         return false;
     }
 
-    private boolean isAncestor(Node test, Node child) {
-        if (test == null || child == null)
-            return false;
-        if (!test.hasChildNodes()) {
-            return false;
+    private class PreparedPage extends NoCacheContentHandler {
+        private final Document document;
+
+        public PreparedPage(Document document) {
+            super("text/html", "UTF-8");
+            this.document = document;
         }
-        Node parent = child;
-        while ((parent = parent.getParentNode()) != null) {
-            if (test.equals(parent)) {
-                return true;
-            }
+
+        public void respond(Response response) throws Exception {
+            super.respond(response);
+            Writer writer = new OutputStreamWriter(response.writeBody(), "UTF-8");
+            DOMSerializer serializer = new NormalModeSerializer(context, writer);
+            serializer.serialize(document);
         }
-        return false;
     }
 }
