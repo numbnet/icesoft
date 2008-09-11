@@ -8,9 +8,15 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.FactoryFinder;
 import java.util.Map;
 
 public class MultiViewServer implements Server {
+    private final static LifecycleFactory LIFECYCLE_FACTORY = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+    private Lifecycle lifecycle = LIFECYCLE_FACTORY.getLifecycle(LIFECYCLE_FACTORY.DEFAULT_LIFECYCLE);
+
     private int viewCount = 0;
     private Map views;
     private ViewQueue asynchronouslyUpdatedViews;
@@ -18,7 +24,6 @@ public class MultiViewServer implements Server {
     private Configuration configuration;
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
-    private Server server;
     private ResourceDispatcher resourceDispatcher;
 
     public MultiViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue asynchronouslyUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
@@ -29,7 +34,6 @@ public class MultiViewServer implements Server {
         this.asynchronouslyUpdatedViews = asynchronouslyUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
-        this.server = new PageServer();
     }
 
     public void service(Request request) throws Exception {
@@ -41,27 +45,24 @@ public class MultiViewServer implements Server {
             synchronized (views) {
                 view = (View) views.get(redirectViewNumber);
                 if (view == null) {
-                    view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+                    view = new View(redirectViewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
                     views.put(redirectViewNumber, view);
                     ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(redirectViewNumber));
                 } else {
                     view.updateOnPageRequest(request);
-                    view.switchToNormalMode();
                 }
             }
         } else {
             String viewNumber = String.valueOf(++viewCount);
-            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+            view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         }
         sessionMonitor.touchSession();
-        server.service(request);
-        view.switchToPushMode();
+        view.servePage(request);
         view.release();
     }
 
     public void shutdown() {
-        server.shutdown();
     }
 }

@@ -5,8 +5,12 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
+import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -18,6 +22,10 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.FactoryFinder;
+import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,6 +39,17 @@ public class View implements CommandQueue {
         public void run() {
         }
     };
+    private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
+        public void respond(Response response) throws Exception {
+            super.respond(response);
+            com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
+            switchToNormalMode();
+            LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
+            switchToPushMode();
+        }
+    };
+    private ResponseHandler responseHandler = lifecycleResponseHandler;
+
     private ReentrantLock queueLock = new ReentrantLock();
     private ReentrantLock lifecycleLock = new ReentrantLock();
     private BridgeExternalContext externalContext;
@@ -47,13 +66,16 @@ public class View implements CommandQueue {
     private SessionDispatcher.Monitor sessionMonitor;
     private ResourceDispatcher resourceDispatcher;
     private Runnable dispose;
+    private Lifecycle lifecycle;
 
-    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
+    public View(final String viewIdentifier, String sessionID, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Lifecycle lifecycle) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
         this.resourceDispatcher = resourceDispatcher;
+        this.lifecycle = lifecycle;
+
         //fail fast if environment cannot be detected
         this.externalContext = new UnknownExternalContext(this, configuration);
         request.detectEnvironment(new Request.Environment() {
@@ -129,8 +151,6 @@ public class View implements CommandQueue {
                 } else {
                     //page reload
                     externalContext.updateOnPageLoad(request, response);
-                    // #3424 clear viewRoot to get JSF into createView path.
-                    facesContext.setViewRoot(null);
                 }
             }
 
@@ -140,20 +160,6 @@ public class View implements CommandQueue {
             }
         });
         makeCurrent();
-    }
-
-    public void switchToNormalMode() {
-        acquireLifecycleLock();
-        facesContext.switchToNormalMode();
-        externalContext.switchToNormalMode();
-    }
-
-    public void switchToPushMode() {
-        acquireLifecycleLock();
-        //collect bundles put by Tag components when the page is parsed
-        bundles = externalContext.collectBundles();
-        facesContext.switchToPushMode();
-        externalContext.switchToPushMode();
     }
 
     /**
@@ -223,16 +229,30 @@ public class View implements CommandQueue {
         dispose.run();
     }
 
-    public void makeCurrent() {
+    public void installThreadLocals() {
+        persistentFacesState.setCurrentInstance();
+        facesContext.setCurrentInstance();
+    }
+
+    private void makeCurrent() {
         acquireLifecycleLock();
         installThreadLocals();
         externalContext.injectBundles(bundles);
         facesContext.applyBrowserDOMChanges();
     }
 
-    public void installThreadLocals() {
-        persistentFacesState.setCurrentInstance();
-        facesContext.setCurrentInstance();
+    private void switchToNormalMode() {
+        acquireLifecycleLock();
+        facesContext.switchToNormalMode();
+        externalContext.switchToNormalMode();
+    }
+
+    private void switchToPushMode() {
+        acquireLifecycleLock();
+        //collect bundles put by Tag components when the page is parsed
+        bundles = externalContext.collectBundles();
+        facesContext.switchToPushMode();
+        externalContext.switchToPushMode();
     }
 
     private void notifyViewDisposal() {
@@ -249,5 +269,18 @@ public class View implements CommandQueue {
 
     public String toString() {
         return "View[" + sessionID + ":" + viewIdentifier + "]";
+    }
+
+    public void servePage(Request request) throws Exception {
+        request.respondWith(responseHandler);
+    }
+
+    void preparePage(final ResponseHandler handler) {
+        responseHandler = new ResponseHandler() {
+            public void respond(Response response) throws Exception {
+                handler.respond(response);                
+                responseHandler = lifecycleResponseHandler;
+            }
+        };
     }
 }
