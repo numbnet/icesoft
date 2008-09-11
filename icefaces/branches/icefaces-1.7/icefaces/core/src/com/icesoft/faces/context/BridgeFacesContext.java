@@ -34,7 +34,6 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
-import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
@@ -90,21 +89,21 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ResponseWriter responseWriter;
     private DOMSerializer domSerializer;
     private UIViewRoot viewRoot;
-    private String iceFacesId;
+    private String sessionID;
     private String viewNumber;
-    private CommandQueue commandQueue;
+    private View view;
     private Configuration configuration;
     private Collection jsCodeURIs = new ArrayList();
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
 
-    public BridgeFacesContext(BridgeExternalContext externalContext, String view, String icefacesID, CommandQueue commandQueue, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public BridgeFacesContext(BridgeExternalContext externalContext, String viewIdentifier, String sessionID, View view, Configuration configuration, ResourceDispatcher resourceDispatcher) {
         setCurrentInstance(this);
         this.externalContext = externalContext;
-        this.viewNumber = view;
-        this.iceFacesId = icefacesID;
-        this.commandQueue = commandQueue;
+        this.viewNumber = viewIdentifier;
+        this.sessionID = sessionID;
+        this.view = view;
         this.configuration = configuration;
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.externalContext = externalContext;
@@ -269,7 +268,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         //
         if (responseWriter != null) {
             Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(document, commandQueue, viewNumber);
+            domSerializer = new PushModeSerializer(document, view, this, viewNumber);
         }
     }
 
@@ -292,14 +291,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 //pointing this FacesContext to the new view
                 responseWriter = null;
             } else {
-                commandQueue.put(new Reload(viewNumber));
+                view.put(new Reload(viewNumber));
                 application.setViewHandler(new SwitchViewHandler(application.getViewHandler(), path));
             }
         }
     }
 
     public String getIceFacesId() {
-        return iceFacesId;
+        return sessionID;
     }
 
     /**

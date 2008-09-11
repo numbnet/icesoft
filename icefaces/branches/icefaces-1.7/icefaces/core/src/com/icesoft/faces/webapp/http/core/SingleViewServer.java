@@ -8,9 +8,15 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
 import javax.servlet.http.HttpSession;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.FactoryFinder;
 import java.util.Map;
 
 public class SingleViewServer implements Server {
+    private final static LifecycleFactory LIFECYCLE_FACTORY = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+    private Lifecycle lifecycle = LIFECYCLE_FACTORY.getLifecycle(LIFECYCLE_FACTORY.DEFAULT_LIFECYCLE);
+
     private static final String viewNumber = "1";
     private Map views;
     private String sessionID;
@@ -18,7 +24,6 @@ public class SingleViewServer implements Server {
     private Configuration configuration;
     private SessionDispatcher.Monitor sessionMonitor;
     private HttpSession session;
-    private Server server;
     private ResourceDispatcher resourceDispatcher;
 
     public SingleViewServer(HttpSession session, String sessionID, SessionDispatcher.Monitor sessionMonitor, Map views, ViewQueue allUpdatedViews, Configuration configuration, ResourceDispatcher resourceDispatcher) {
@@ -29,7 +34,6 @@ public class SingleViewServer implements Server {
         this.allUpdatedViews = allUpdatedViews;
         this.configuration = configuration;
         this.resourceDispatcher = resourceDispatcher;
-        this.server = new PageServer();
     }
 
     //synchronize to avoid concurrent state modifications of the single View
@@ -37,21 +41,18 @@ public class SingleViewServer implements Server {
         //create single view or re-create view if the request is the result of a redirect
         View view = (View) views.get(viewNumber);
         if (view == null) {
-            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
+            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         } else {
             view.updateOnPageRequest(request);
         }
 
-        view.switchToNormalMode();
         sessionMonitor.touchSession();
-        server.service(request);
-        view.switchToPushMode();
+        view.servePage(request);
         view.release();
     }
 
     public void shutdown() {
-        server.shutdown();
     }
 }

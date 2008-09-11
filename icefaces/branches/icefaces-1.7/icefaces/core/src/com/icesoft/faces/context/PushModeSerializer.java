@@ -4,11 +4,15 @@ import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.command.UpdateElements;
+import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
+import com.icesoft.faces.webapp.http.common.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashSet;
@@ -17,12 +21,14 @@ import java.util.Collection;
 
 public class PushModeSerializer implements DOMSerializer {
     private Document oldDocument;
-    private CommandQueue commandQueue;
+    private View view;
+    private BridgeFacesContext context;
     private String viewNumber;
 
-    public PushModeSerializer(Document currentDocument, CommandQueue commandQueue, String viewNumber) {
+    public PushModeSerializer(Document currentDocument, View view, BridgeFacesContext context, String viewNumber) {
         this.oldDocument = currentDocument;
-        this.commandQueue = commandQueue;
+        this.view = view;
+        this.context = context;
         this.viewNumber = viewNumber;
     }
 
@@ -51,7 +57,7 @@ public class PushModeSerializer implements DOMSerializer {
                 Integer checkDepth = (Integer) checkDepths.next();
                 if (baseDepth.intValue() < checkDepth.intValue())  {
                     pruneAncestors(baseDepth, (HashSet) depthMaps.get(baseDepth),
-                                   checkDepth, (HashSet) depthMaps.get(checkDepth) );
+                            checkDepth, (HashSet) depthMaps.get(checkDepth));
                 }
             }
         }
@@ -63,7 +69,7 @@ public class PushModeSerializer implements DOMSerializer {
         while (allDepthMaps.hasNext())  {
             topElements.addAll((HashSet) allDepthMaps.next());
         }
-        
+
         if (!topElements.isEmpty()) {
             boolean reload = false;
             int j = 0;
@@ -85,9 +91,10 @@ public class PushModeSerializer implements DOMSerializer {
             }
             if (reload) {
                 //reload document instead of applying an update for the entire page (see: ICE-2189)
-                commandQueue.put(new Reload(viewNumber));
+                view.preparePage(new PreparedPage(document));
+                view.put(new Reload(viewNumber));
             } else {
-                commandQueue.put(new UpdateElements(elements));
+                view.put(new UpdateElements(elements));
             }
         }
 
@@ -128,8 +135,8 @@ public class PushModeSerializer implements DOMSerializer {
         Node testParent = child;
         int testDepth = childDepth.intValue();
         int stopDepth = parentDepth.intValue();
-        while ( ((testParent = testParent.getParentNode()) != null) &&
-                (testDepth > stopDepth) ){
+        while (((testParent = testParent.getParentNode()) != null) &&
+                (testDepth > stopDepth)) {
             testDepth--;
             if (testParent.equals(parent)) {
                 return true;
@@ -138,18 +145,19 @@ public class PushModeSerializer implements DOMSerializer {
         return false;
     }
 
-    private boolean isAncestor(Node test, Node child) {
-        if (test == null || child == null)
-            return false;
-        if (!test.hasChildNodes()) {
-            return false;
+    private class PreparedPage extends NoCacheContentHandler {
+        private final Document document;
+
+        public PreparedPage(Document document) {
+            super("text/html", "UTF-8");
+            this.document = document;
         }
-        Node parent = child;
-        while ((parent = parent.getParentNode()) != null) {
-            if (test.equals(parent)) {
-                return true;
-            }
+
+        public void respond(Response response) throws Exception {
+            super.respond(response);
+            Writer writer = new OutputStreamWriter(response.writeBody(), "UTF-8");
+            DOMSerializer serializer = new NormalModeSerializer(context, writer);
+            serializer.serialize(document);
         }
-        return false;
     }
 }
