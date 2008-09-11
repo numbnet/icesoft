@@ -183,6 +183,10 @@ implements HttpSessionListener, ServletContextListener {
                 "Asynchronous HTTP Service available: " +
                     isAsyncHttpServiceAvailable);
         }
+        boolean isJMSAvailable = isJMSAvailable();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("JMS API available: " + isJMSAvailable);
+        }
         if (isAsyncHttpServiceAvailable &&
             _configuration.getAttribute(
                 "blockingRequestHandler",
@@ -190,7 +194,8 @@ implements HttpSessionListener, ServletContextListener {
                     "async.server", true) ?
                         "icefaces-ahs" :
                         "icefaces").
-                    equalsIgnoreCase("icefaces-ahs")) {
+                    equalsIgnoreCase("icefaces-ahs") &&
+            isJMSAvailable) {
 
             try {
                 contextEventPublisher =
@@ -396,6 +401,16 @@ implements HttpSessionListener, ServletContextListener {
             this.getClass().getClassLoader().loadClass(
                 "com.icesoft.faces.async.server." +
                     "AsyncHttpServerAdaptingServlet");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
+
+    private boolean isJMSAvailable() {
+        try {
+            this.getClass().getClassLoader().loadClass(
+                "javax.jms.TopicConnectionFactory");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;
