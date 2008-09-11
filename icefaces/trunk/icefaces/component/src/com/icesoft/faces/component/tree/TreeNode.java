@@ -36,6 +36,7 @@ package com.icesoft.faces.component.tree;
 import javax.faces.component.NamingContainer;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.context.FacesContext;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
@@ -144,5 +145,18 @@ public class TreeNode extends UIComponentBase implements NamingContainer {
         return (UIComponent) getFacet(FACET_ICON);
     }
 
+    public Object saveState(FacesContext context) {
+        Object values[] = new Object[3];
+        values[0] = super.saveState(context);
+        values[1] = mutable;
+        values[2] = tree;
+        return values;
+    }
 
+    public void restoreState(FacesContext context, Object state) {
+        Object values[] = (Object[]) state;
+        super.restoreState(context, values[0]);
+        mutable = (DefaultMutableTreeNode) values[1];
+        tree = (Tree) values[2];
+    }
 }
