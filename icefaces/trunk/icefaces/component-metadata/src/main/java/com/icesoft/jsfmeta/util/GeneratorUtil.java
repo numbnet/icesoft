@@ -76,6 +76,21 @@ public class GeneratorUtil {
         return file;
     }
     
+    public static String getBaseLineFolder(String resourceFile) {
+        String result = ".";
+        try {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            URL localUrl = classLoader.getResource(resourceFile);
+            if (localUrl != null) {
+                result = convertFileUrlToPath(localUrl);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
     /**
      * Kind of hack-ish attempt at solving problem that if the directory,
      *  where we're building the component-metadata in,  has special
