@@ -73,10 +73,12 @@ public class FacesContextFactoryImpl extends FacesContextFactory {
             if (SeamUtilities.isSpringEnvironment())  {
                 PersistentFacesState persistentState = 
                         PersistentFacesState.getInstance();
-                BridgeFacesContext bcontext = 
-                        (BridgeFacesContext) persistentState.getFacesContext();
-                bcontext.setCurrentInstance();
-                return bcontext;
+                if (null != persistentState)  {
+                    BridgeFacesContext bcontext = 
+                            (BridgeFacesContext) persistentState.getFacesContext();
+                    bcontext.setCurrentInstance();
+                    return bcontext;
+                }
             }
         }
         if (delegate == null) {
