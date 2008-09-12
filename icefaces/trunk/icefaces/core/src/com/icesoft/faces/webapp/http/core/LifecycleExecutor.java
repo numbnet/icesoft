@@ -12,7 +12,7 @@ import com.icesoft.faces.webapp.http.servlet.SpringWebFlowInstantiationServlet;
 
 public abstract class LifecycleExecutor {
     private static Log log = LogFactory.getLog(LifecycleExecutor.class);
-    private static LifecycleExecutor jsfExecutor = null;
+    static LifecycleExecutor jsfExecutor = null;
     private static LifecycleExecutor swfExecutor = null;
 
     public static LifecycleExecutor getLifecycleExecutor(FacesContext context)  {
