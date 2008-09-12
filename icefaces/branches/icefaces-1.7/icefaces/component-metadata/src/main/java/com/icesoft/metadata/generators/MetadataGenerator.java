@@ -123,7 +123,7 @@ public final class MetadataGenerator {
     //TODO: move to catalog
     private void init(){
         
-        String standard_html_renderkit = "jar:file:"+GeneratorUtil.getWorkingFolder()+"jsfmeta-resources.jar!/com/sun/faces/standard-html-renderkit.xml";
+        String standard_html_renderkit = "jar:"+GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
         String standard_html_renderkit_overlay = "jar:file:"+GeneratorUtil.getWorkingFolder()+"jsfmeta-resources.jar!/com/sun/rave/jsfmeta/standard-html-renderkit-overlay.xml";
         String standard_html_renderkit_fixup = "jar:file:"+GeneratorUtil.getWorkingFolder()+"jsfmeta-resources.jar!/META-INF/standard-html-renderkit-fixups.xml";
         

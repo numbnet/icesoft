@@ -65,6 +65,21 @@ public class GeneratorUtil {
         return WORKING_FOLDER;
     }
     
+    public static String getBaseLineFolder(String resourceFile) {
+        String result = ".";
+        try {
+            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+            URL localUrl = classLoader.getResource(resourceFile);
+            if (localUrl != null) {
+                result = convertFileUrlToPath(localUrl);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
     public static File getDestFolder(String path) throws FileNotFoundException{
         File file = new File(path);
         if(!file.exists()){
