@@ -220,7 +220,11 @@ public class PersistentFacesState implements Serializable {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
                 //instead
-                facesContext.getExternalContext().getRequestParameterMap().clear();
+                Map requestParameterMap = 
+                    facesContext.getExternalContext().getRequestParameterMap();
+                requestParameterMap.clear();
+                //Seam appears to need ViewState set during push
+                requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
             } else {
                 facesContext.renderResponse();
             }
