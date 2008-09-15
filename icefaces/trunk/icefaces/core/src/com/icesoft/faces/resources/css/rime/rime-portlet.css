@@ -146,6 +146,7 @@ fieldset {
 
 .iceSelInpDateInput {
     width: 150px;
+    margin: 2px;
 }
 
 input.iceSelInpDateOpenPopup {
@@ -1394,7 +1395,7 @@ input.iceSelInpDateClosePopup {
 .iceSelInpTxtTxt {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
-    margin: 10px 0 0 0;
+    margin: 10px 0 0 2px;
     padding: 2px;
 }
 

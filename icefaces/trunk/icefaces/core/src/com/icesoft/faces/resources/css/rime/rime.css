@@ -180,6 +180,7 @@ table.iceSelInpDate tbody tr td table{
 
 .iceSelInpDateInput {
     width: 150px;
+    margin: 2px;
 }
 
 .iceSelInpDateOpenPopup {
@@ -1434,7 +1435,7 @@ table.iceSelInpDate tbody tr td table{
 .iceSelInpTxtTxt {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
-    margin: 10px 0 0 0;
+    margin: 10px 0 0 2px;
     padding: 2px;
 }
 

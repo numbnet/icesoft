@@ -78,6 +78,7 @@ fieldset {
 .iceSelOneMnu, .iceSelMnyLb, .iceSelMnyMnu, .iceSelOneLb {
     font-family: Arial, Helvetica, sans-serif;
     padding: 1px;
+    margin: 2px;
 }
 
 .iceInpTxtArea {
@@ -128,6 +129,7 @@ fieldset {
 
 .iceSelInpDateInput {
     width: 150px;
+    margin: 2px;
 }
 
 input.iceSelInpDateOpenPopup {
@@ -1268,7 +1270,7 @@ input.iceSelInpDateClosePopup {
 .iceSelInpTxtTxt {
     border: 1px solid #ABABAB;
     background-color: #FFFFFF;
-    margin: 0px;
+    margin: 2px;
     padding: 2px;
 }
 
