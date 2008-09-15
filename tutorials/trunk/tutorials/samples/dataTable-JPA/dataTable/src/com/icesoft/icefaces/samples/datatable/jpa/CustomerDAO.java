@@ -152,9 +152,9 @@ public class CustomerDAO implements ICustomerDAO{
 				null);
 		try {
 			String queryString = "select c from Customer c order by c." + sortColumnName + " " + (sortAscending?"asc":"desc");
-			// Hint required to force update from database, which prevents stale
-			// data being assigned from the l2 cache.
-			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).setHint("org.hibernate.cacheable", new Boolean(false)).setHint("org.hibernate.cacheMode", CacheMode.REFRESH).getResultList(); 
+			// Hint required with TopLink to force update from database, which 
+			// prevents stale data being assigned from the l2 cache.
+			return getEntityManager().createQuery(queryString).setFirstResult(startRow).setMaxResults(maxResults).getResultList(); 
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find all failed", Level.SEVERE, re);
 			;
