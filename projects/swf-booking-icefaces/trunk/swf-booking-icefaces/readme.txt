@@ -5,9 +5,9 @@ To build and run this example you will need the latest Spring Web Flow
 and ICEfaces code:
 
 svn checkout http://anonsvn.icefaces.org/repo/icefaces/trunk/icefaces/
-svn checkout https://springframework.svn.sourceforge.net/svnroot/springframework/spring-webflow/tags/spring-webflow-2.0.2.RELEASE
+svn checkout https://springframework.svn.sourceforge.net/svnroot/springframework/spring-webflow/tags/spring-webflow-2.0.3.RELEASE
 
-In spring-webflow-2.0.2.RELEASE/spring-webflow-samples add an external link 
+In spring-webflow-2.0.3.RELEASE/spring-webflow-samples add an external link 
 to this demo:
 
 svn propset svn:externals "swf-booking-icefaces http://anonsvn.icefaces.org/repo/projects/swf-booking-icefaces/trunk/swf-booking-icefaces" .
