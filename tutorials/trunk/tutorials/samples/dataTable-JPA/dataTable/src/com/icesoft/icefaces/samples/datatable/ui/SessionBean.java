@@ -174,7 +174,14 @@ public class SessionBean extends DataSource implements Renderable, DisposableBea
 		
         // Reset the dirtyData flag.
 		onePageDataModel.setDirtyData(false);
-
+        
+		// This is required when using Hibernate JPA.  If the EntityManager is not
+		// cleared or closed objects are cached and stale objects will show up 
+		// in the table.
+		// This way, the detached objects are reread from the database.
+		// This call is not required with TopLink JPA.
+		EntityManagerHelper.getEntityManager().clear();
+		
 		return new DataPage<CustomerBean>(totalNumberCustomers,startRow,uiCustomerBeans);
     }
 
