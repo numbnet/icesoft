@@ -69,14 +69,9 @@
     <property-extension>
         <category>ADVANCED</category>
         <editor-class>
-            &chooseOneReferenceDataEditor;
+            &stringEditor;
         </editor-class>
-        <named-value>
-            <name>referenceDataDefiner</name>
-            <expression>
-                com.sun.jsfcl.std.reference.ReferenceDataManager.IMAGE_MAP_NAMES
-            </expression>
-        </named-value>
+
     </property-extension>
 </property>
 
