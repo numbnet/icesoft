@@ -80,6 +80,14 @@ public class TextareaRenderer extends DomBasicInputRenderer {
         }
         PassThruAttributeRenderer
                 .renderAttributes(facesContext, component, null);
+        String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
+        Object attribute;
+        for (int i = 0; i < attributes.length; i++) {
+            attribute = component.getAttributes().get(attributes[i]);
+            if (attribute instanceof Boolean && ((Boolean) attribute).booleanValue()) {
+                root.setAttribute(attributes[i], attributes[i]);
+            }
+        }
 
         Object rows = component.getAttributes().get("rows");
         if (rows != null && ((Integer)rows).intValue() > -1) {
