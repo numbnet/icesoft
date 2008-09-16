@@ -58,6 +58,8 @@ function iceSubmitPartial(form, component, evt) {
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
     if (Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
+    if(Ice.FCKeditorUtility) 
+        Ice.FCKeditorUtility.saveAll();          
     query.add('ice.submit.partial', true);
     $event(evt, component).serializeOn(query);
     if (form && form.id) {
@@ -85,6 +87,8 @@ function iceSubmit(aForm, aComponent, anEvent) {
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
     if (Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
+    if(Ice.FCKeditorUtility) 
+        Ice.FCKeditorUtility.saveAll();    
     query.add('ice.submit.partial', false);
     //all key events are discarded except when 'enter' is pressed...not good!
     if (event.isKeyEvent()) {
