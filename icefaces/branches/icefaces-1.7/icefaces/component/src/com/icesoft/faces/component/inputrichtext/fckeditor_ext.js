@@ -98,7 +98,26 @@ Ice.FCKeditorUtility = {
 		        valueHolder.value = editorValue.value;    
 		    }
 	    } catch (err) {}     
-    }
+    },
+    
+    saveAll: function() {
+        try {
+            if (Ice.FCKeditorUtility.saveClicked) return;
+            var all = Ice.Repository.getAll();
+            for (i=0; i < all.length; i++) {  
+                var ele = all[i].thirdPartyObject.InstanceName;
+                var oEditor = FCKeditorAPI.GetInstance(ele) ;   
+                if (!oEditor) return;
+                var editorValue = $(ele);
+                var saveOnSubmit = $(ele + 'saveOnSubmit');
+                if (saveOnSubmit && editorValue && oEditor.GetXHTML(true).length > 0) { 
+                    var valueHolder = $(ele + 'valueHolder');
+                    editorValue.value = oEditor.GetXHTML(true);
+                   valueHolder.value = editorValue.value;
+                }
+            }
+        } catch (err) {}     
+    }    
 };
 
 FCKeditor.prototype.CreateIce = function(eleId)
@@ -185,9 +204,10 @@ function FCKeditorSave(editorInstance) {
             valueHolder.value = editorValue.value;
         }
     } 
-
+    Ice.FCKeditorUtility.saveClicked=true;
 	var form = Ice.util.findForm(element);
 	iceSubmit(form,element,new Object());
+	Ice.FCKeditorUtility.saveClicked=false;
 	return false;
 }
 
