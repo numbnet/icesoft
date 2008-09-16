@@ -36,6 +36,7 @@ package com.icesoft.jsfmeta.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GeneratorUtil {
@@ -65,8 +66,8 @@ public class GeneratorUtil {
         return WORKING_FOLDER;
     }
     
-    public static String getBaseLineFolder(String resourceFile) {
-        String result = ".";
+    public static String getBaseLineFolder(String resourceFile) throws MalformedURLException {
+        String result = null;
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             URL localUrl = classLoader.getResource(resourceFile);
@@ -76,6 +77,10 @@ public class GeneratorUtil {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+        
+        if(result == null){
+            throw new MalformedURLException("no such file as "+ resourceFile);                        
         }
         return result;
     }

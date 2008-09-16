@@ -35,6 +35,7 @@
 
 <!--
 <!ENTITY numberEditor "org.netbeans.modules.visualweb.propertyeditors.IntegerPropertyEditor">
+<!ENTITY stringEditorWithShortDescription "com.sun.jsfcl.std.StringEditorWithShortDescription">
 -->
 <!ENTITY converterEditor "org.netbeans.modules.visualweb.propertyeditors.ConverterPropertyEditor">
 <!--
@@ -63,10 +64,8 @@
 <!ENTITY dateEditor "org.netbeans.modules.visualweb.propertyeditors.DatePropertyEditor">
 
 <!ENTITY converterEditor "org.netbeans.modules.visualweb.propertyeditors.ConverterPropertyEditor">
-<!ENTITY chooseOneReferenceDataEditor "com.sun.jsfcl.std.property.ChooseOneReferenceDataPropertyEditor">
-<!ENTITY chooseManyReferenceDataEditor "com.sun.jsfcl.std.property.ChooseManyReferenceDataPropertyEditor">
 
-<!ENTITY stringEditorWithShortDescription "com.sun.jsfcl.std.StringEditorWithShortDescription">
+
 <!ENTITY selectOneDomainEditor "org.netbeans.modules.visualweb.propertyeditors.SelectOneDomainEditor">
 <!ENTITY domainClass "com.sun.rave.propertyeditors.DOMAIN_CLASS">
 
@@ -85,6 +84,8 @@
 <!ENTITY mimeTypesDomain "com.sun.rave.propertyeditors.domains.MimeTypesDomain.class">
 <!ENTITY charSetsDomain "com.sun.rave.propertyeditors.domains.CharacterSetsDomain.class">
 <!ENTITY dateFormatPatternsDomain "com.sun.rave.propertyeditors.domains.DateFormatPatternsDomain.class">
+<!ENTITY inputComponentIdsDomain "com.sun.rave.propertyeditors.domains.InputComponentIdsDomain.class">
+<!ENTITY htmlCheckboxLayoutDomain "com.icesoft.faces.ide.vwp.propertyeditors.HtmlCheckboxLayoutStylesDomain.class">
 <!ENTITY htmlTableBordersDomain "com.sun.rave.propertyeditors.domains.HtmlTableBordersDomain.class">
 <!ENTITY htmlTableRulesDomain "com.sun.rave.propertyeditors.domains.HtmlTableRulesDomain.class">
 <!ENTITY componentIdsDomain "com.sun.rave.propertyeditors.domains.ComponentIdsDomain.class">
