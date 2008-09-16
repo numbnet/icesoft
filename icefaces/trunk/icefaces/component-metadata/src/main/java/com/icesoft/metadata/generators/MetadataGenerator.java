@@ -50,6 +50,7 @@ import com.sun.rave.jsfmeta.beans.RendererBean;
 import com.sun.rave.jsfmeta.beans.ValidatorBean;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.xml.sax.SAXException;
 
@@ -122,20 +123,25 @@ public final class MetadataGenerator {
     
     //TODO: move to catalog
     private void init(){
-        
-        String standard_html_renderkit = "jar:"+GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
-        String standard_html_renderkit_overlay = "jar:file:"+GeneratorUtil.getWorkingFolder()+"jsfmeta-resources.jar!/com/sun/rave/jsfmeta/standard-html-renderkit-overlay.xml";
-        String standard_html_renderkit_fixup = "jar:file:"+GeneratorUtil.getWorkingFolder()+"jsfmeta-resources.jar!/META-INF/standard-html-renderkit-fixups.xml";
-        
-        String[] baseUrlList = new String[]{standard_html_renderkit, standard_html_renderkit_overlay, standard_html_renderkit_fixup};
-        parseXML(baseUrlList);
-        
-        exclude();
-        
-        String component_faces_config = "file:"+GeneratorUtil.getWorkingFolder()+"../../../component/conf/META-INF/faces-config.xml";
-        String extended_faces_config = "file:"+GeneratorUtil.getWorkingFolder()+"conf/extended-faces-config.xml";
-        String[] urlList = new String[]{component_faces_config, extended_faces_config};
-        parseXML(urlList);
+        try {
+
+            String standard_html_renderkit = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/faces/standard-html-renderkit.xml");
+            String standard_html_renderkit_overlay = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-overlay.xml");
+            String standard_html_renderkit_fixup = "jar:" + GeneratorUtil.getBaseLineFolder("com/sun/rave/jsfmeta/standard-html-renderkit-fixups.xml");
+
+            String[] baseUrlList = new String[]{standard_html_renderkit, standard_html_renderkit_overlay, standard_html_renderkit_fixup};
+            parseXML(baseUrlList);
+
+            exclude();
+
+            String component_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "../../../component/conf/META-INF/faces-config.xml";
+            String extended_faces_config = "file:" + GeneratorUtil.getWorkingFolder() + "conf/extended-faces-config.xml";
+            String[] urlList = new String[]{component_faces_config, extended_faces_config};
+            parseXML(urlList);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MetadataGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(1);
+        }
         
     }
     

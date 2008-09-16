@@ -56,6 +56,8 @@
         <pathelement location="${maven.build.output}" />
         <fileset dir="${lib.dir}" includes="*.jar" excludes="jsf-api-1.2.jar,jsf-impl-1.2.jar" >
         </fileset>
+        <fileset dir="${lib.dir}/ext" includes="*.jar" >
+        </fileset>
     </path>
     <target name="clean" description="Clean the output directory">
         <delete dir="${maven.build.directory}" />
@@ -88,8 +90,7 @@
         </javac>
         <copy todir="${maven.build.output}" filtering="on">
             <fileset dir="src/main/resources" />
-        </copy>
-        <copy file="src/main/resources/jar_xml_dtd/jsfmeta-resources.jar" todir="${maven.build.output}" />
+        </copy>        
     </target>    
        
     <!-- generator -->
