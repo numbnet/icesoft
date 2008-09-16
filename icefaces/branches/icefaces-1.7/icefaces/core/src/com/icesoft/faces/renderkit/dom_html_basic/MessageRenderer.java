@@ -63,11 +63,12 @@ public class MessageRenderer extends DomBasicRenderer {
         FacesMessage facesMessage =
                 getSingleMessage(facesContext, (UIMessage) uiComponent);
 
-        if (facesMessage == null) {
-            domContext.stepOver();
-            return;
+        if ("javax.faces.Message".equals(uiComponent.getRendererType())) {
+            if (facesMessage == null) {
+                domContext.stepOver();
+                return;
+            }
         }
-
         if (!domContext.isInitialized()) {
             Element span = domContext.createElement(HTML.SPAN_ELEM);
             domContext.setRootNode(span);
@@ -75,7 +76,12 @@ public class MessageRenderer extends DomBasicRenderer {
         }
         Element root = (Element) domContext.getRootNode();
 
-
+        if (!"javax.faces.Message".equals(uiComponent.getRendererType())) {
+            if (facesMessage == null) {
+                domContext.stepOver();
+                return;
+            }
+        }
 
 
         // Remove the previous message 
@@ -118,6 +124,16 @@ public class MessageRenderer extends DomBasicRenderer {
         boolean showSummary = ((UIMessage) uiComponent).isShowSummary();
         boolean showDetail = ((UIMessage) uiComponent).isShowDetail();
 
+        //dir lang
+        String dir = (String)uiComponent.getAttributes().get("dir");
+        if(dir != null){
+            root.setAttribute(HTML.DIR_ATTR, dir);
+        }
+        String lang = (String)uiComponent.getAttributes().get("lang");
+        if(lang != null){
+            root.setAttribute(HTML.LANG_ATTR, lang);
+        }
+        
         // ICE-2174
         String title = (String) uiComponent.getAttributes().get("title");
         if (title == null && tooltip && showSummary) title = summary;
