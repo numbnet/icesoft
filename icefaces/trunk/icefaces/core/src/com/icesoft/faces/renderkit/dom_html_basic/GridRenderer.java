@@ -227,11 +227,11 @@ public class GridRenderer extends DomBasicRenderer {
     private String getIndexedClientId(FacesContext facesContext,
                                       UIComponent uiComponent,
                                       int columnIndex, int rowIndex) {
-        return uiComponent.getClientId(facesContext)
+        return getPooledClientId(uiComponent.getClientId(facesContext)
                + "-"
                + rowIndex
                + "-"
-               + columnIndex;
+               + columnIndex);
     }
 
     private int getConvertedColumnAttribute(UIComponent uiComponent) {

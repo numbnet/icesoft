@@ -112,7 +112,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
 
         input.setAttribute("name", uiSelectOne.getClientId(facesContext));
-        String inputID = uiComponent.getClientId(facesContext) + ":_" + counter;
+        String inputID = getPooledClientId(uiComponent.getClientId(facesContext) + ":_" + counter);
         input.setAttribute("id", inputID);
         input.setAttribute("value", (formatComponentValue(facesContext,
                                                           uiSelectOne,
@@ -158,7 +158,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(radioIndex);
 
         String selectOneClientId = selectOne.getClientId(facesContext);
-        String radioClientId = selectOneClientId + ":_" + radioIndex;
+        String radioClientId = getPooledClientId(selectOneClientId + ":_" + radioIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectOne, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

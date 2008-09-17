@@ -529,7 +529,7 @@ public class PanelTabSetRenderer
         // create a new table data Element using the DOMContext API
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        tabSet.getClientId(facesContext) + "ht" + tabIndex);
+                        getPooledClientId(tabSet.getClientId(facesContext) + "ht" + tabIndex));
         // append the td to the tr
         tr.appendChild(td);
 
@@ -594,10 +594,9 @@ public class PanelTabSetRenderer
             disableStyleClassSuffix = "";
             // Build a command link
             Element link = domContext.createElement(HTML.ANCHOR_ELEM);
-            link.setAttribute(HTML.NAME_ATTR, tabSet.getClientId(facesContext) +
-                                              "." + tabIndex);
-            link.setAttribute(HTML.ID_ATTR, tabSet.getClientId(facesContext) +
-                                            "." + tabIndex);
+            String linkId = getPooledClientId(tabSet.getClientId(facesContext) + "." + tabIndex);
+            link.setAttribute(HTML.NAME_ATTR, linkId);
+            link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
             // set focus handler
             link.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
@@ -879,7 +878,7 @@ public class PanelTabSetRenderer
         // create a new table data Element
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        tabSet.getClientId(facesContext) + "td" + tabCount);
+                        getPooledClientId(tabSet.getClientId(facesContext) + "td" + tabCount));
         // append the new table data Element to the table row
         tr.appendChild(td);
 

@@ -202,7 +202,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         rootTR.appendChild(td);
         
         String clientId = uiComponent.getClientId(facesContext);
-        String itemId = clientId + ":_" + counter;
+        String itemId = getPooledClientId(clientId + ":_" + counter);
         
         Element inputElement = domContext.createElement("input");
         inputElement
@@ -275,7 +275,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(checkboxIndex);
 
         String selectManyClientId = selectMany.getClientId(facesContext);
-        String checkboxClientId = selectManyClientId + ":_" + checkboxIndex;
+        String checkboxClientId = convertClientId(facesContext, selectManyClientId + ":_" + checkboxIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectMany, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

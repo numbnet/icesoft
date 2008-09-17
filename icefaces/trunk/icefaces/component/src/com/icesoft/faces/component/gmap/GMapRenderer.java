@@ -85,8 +85,9 @@ public class GMapRenderer extends DomBasicRenderer{
 			 					 String name,
 			 					 String value) {
      	Element hidden = domContext.createElement(HTML.INPUT_ELEM);
-    	hidden.setAttribute(HTML.ID_ATTR, clientId + name);
-    	hidden.setAttribute(HTML.NAME_ATTR, clientId + name);
+     	String hiddenId = getPooledClientId(clientId + name);
+    	hidden.setAttribute(HTML.ID_ATTR, hiddenId);
+    	hidden.setAttribute(HTML.NAME_ATTR, hiddenId);
     	if (value != null) {
     		hidden.setAttribute(HTML.VALUE_ATTR, value);
     	}

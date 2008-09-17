@@ -457,9 +457,9 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         if (text != null) {
             link.appendChild(domContext.createTextNode(text));
         }
-        String linkid = scroller.getClientId(facesContext) +
+        String linkid = convertClientId(facesContext, scroller.getClientId(facesContext) +
                         DataPaginatorRenderer.PAGE_NAVIGATION +
-                        Integer.toString(pageIndex);
+                        Integer.toString(pageIndex));
         String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 
         		";*/"document.forms['" + formId + "']['" +
               scroller.getClientId(facesContext) + "'].value='" +
