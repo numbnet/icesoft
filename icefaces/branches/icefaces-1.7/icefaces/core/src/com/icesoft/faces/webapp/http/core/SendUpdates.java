@@ -54,6 +54,9 @@ public class SendUpdates implements Server {
                     //environments
                     System.out.println(command);
                 }
+                if (log.isTraceEnabled())  {
+                    log.trace(command);
+                }
                 command.serializeTo(writer);
             } else {
                 NOOP.serializeTo(writer);
