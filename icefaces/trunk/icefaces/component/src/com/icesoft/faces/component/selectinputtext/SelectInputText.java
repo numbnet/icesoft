@@ -607,4 +607,9 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         index = ((Integer) values[10]).intValue();
         itemMap = (Map) values[11];
     }
+
+    public String getOnkeypress() {
+        if (isDisabled() || isReadonly()) return "";
+        return super.getOnkeypress();
+    }
 }
