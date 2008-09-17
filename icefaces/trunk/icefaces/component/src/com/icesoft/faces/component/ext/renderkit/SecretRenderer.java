@@ -89,6 +89,14 @@ public class SecretRenderer
         }
         PassThruAttributeRenderer.renderHtmlAttributes(
                 facesContext, uiComponent, passThruAttributes);
+        String[] attributes = new String[]{HTML.DISABLED_ATTR, HTML.READONLY_ATTR};
+        Object attribute;
+        for (int i = 0; i < attributes.length; i++) {
+            attribute = uiComponent.getAttributes().get(attributes[i]);
+            if (attribute instanceof Boolean && ((Boolean) attribute).booleanValue()) {
+                root.setAttribute(attributes[i], attributes[i]);
+            }
+        }
 
         // render the current value of the component as the value of the "value"
         // attribute  if and only if the value of the component attribute 
