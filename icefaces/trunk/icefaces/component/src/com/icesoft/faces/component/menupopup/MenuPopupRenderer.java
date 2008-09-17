@@ -62,7 +62,7 @@ public class MenuPopupRenderer extends MenuBarRenderer {
             // Put the top level menu items into a separate child div
             Element submenuDiv = domContext.createElement(HTML.DIV_ELEM);
             submenuDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL_SUBMENU");
-            String subMenuDivId = uiComponent.getClientId(facesContext) + "_sub";
+            String subMenuDivId = getPooledClientId(uiComponent.getClientId(facesContext) + "_sub");
             submenuDiv.setAttribute(HTML.ID_ATTR, subMenuDivId);
             
             //TODO Figure out what style class to use on the inner div

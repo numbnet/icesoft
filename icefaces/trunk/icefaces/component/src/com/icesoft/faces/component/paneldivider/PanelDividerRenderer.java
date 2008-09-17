@@ -58,7 +58,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         dividerContainer.appendChild(domContext.createTextNode("&nbsp;"));
         renderPane(facesContext, uiComponent, true);
         container.appendChild(dividerContainer);
-        dividerContainer.setAttribute(HTML.ID_ATTR, clientId + "Divider");
+        dividerContainer.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "Divider"));
         renderPane(facesContext, uiComponent, false);
         addHiddenField(domContext, root, clientId, PanelDivider.FIRST_PANL_STYLE, panelDivider.getPanePosition(true));
         addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
@@ -79,11 +79,11 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         UIComponent facet= null;
         if (isFrist) {
             facet = panelDivider.getFirstFacet();
-            pane.setAttribute(HTML.ID_ATTR, clientId+= "First");
+            pane.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId+= "First"));
             pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getFirstPaneClass());
         } else {
             facet = panelDivider.getSecondFacet();
-            pane.setAttribute(HTML.ID_ATTR, clientId+= "Second");    
+            pane.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId+= "Second"));    
             pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getSecondPaneClass());  
         }
         pane.setAttribute(HTML.STYLE_ATTR, panelDivider.getPanePosition(isFrist));
@@ -103,8 +103,9 @@ public class PanelDividerRenderer extends DomBasicRenderer{
             String name,
             String value) {
             Element hidden = domContext.createElement(HTML.INPUT_ELEM);
-            hidden.setAttribute(HTML.ID_ATTR, clientId + name);
-            hidden.setAttribute(HTML.NAME_ATTR, clientId + name);
+            String hiddenId = getPooledClientId(clientId + name);
+            hidden.setAttribute(HTML.ID_ATTR, hiddenId);
+            hidden.setAttribute(HTML.NAME_ATTR, hiddenId);
             if (value != null) {
             hidden.setAttribute(HTML.VALUE_ATTR, value);
             }

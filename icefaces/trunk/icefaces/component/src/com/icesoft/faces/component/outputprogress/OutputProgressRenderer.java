@@ -207,17 +207,17 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         }
 
         textTd.appendChild(percentageText);
-        textTd.setAttribute("id", uiComponent
+        textTd.setAttribute("id", getPooledClientId(uiComponent
                 .getClientId(FacesContext.getCurrentInstance()) +
-                                                                "percentageText");
+                                                                "percentageText"));
 
         Element bgBar = domContext.createElement(HTML.DIV_ELEM);
         bgBar.setAttribute(HTML.CLASS_ATTR, progressBar.getBackgroundClass());
         bgBar.setAttribute(HTML.STYLE_ATTR, "position:relative;");
 
         Element fillBar = domContext.createElement(HTML.DIV_ELEM);
-        fillBar.setAttribute(HTML.ID_ATTR, uiComponent
-                .getClientId(FacesContext.getCurrentInstance()) + "bar");
+        fillBar.setAttribute(HTML.ID_ATTR, getPooledClientId(uiComponent
+                .getClientId(FacesContext.getCurrentInstance()) + "bar"));
 
         if (progressBar.getIndeterminate() == false) { //determinate mode
             fillBar.setAttribute(HTML.CLASS_ATTR, progressBar.getFillClass());

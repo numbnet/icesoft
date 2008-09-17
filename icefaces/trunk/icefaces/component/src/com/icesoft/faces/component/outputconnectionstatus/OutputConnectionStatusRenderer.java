@@ -66,21 +66,21 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             else
                 root.removeAttribute(HTML.STYLE_ATTR);
 
-            String idleID = id + ":connection-idle";
+            String idleID = getPooledClientId(id + ":connection-idle");
             root.appendChild(getNextNode(domContext,
                     component.getInactiveClass(),
                     component.getInactiveLabel(),
                     idleID, true));
-            String workingID = id + ":connection-working";
+            String workingID = getPooledClientId(id + ":connection-working");
             root.appendChild(getNextNode(domContext, component.getActiveClass(),
                     component.getActiveLabel(),
                     workingID, false));
-            String troubleID = id + ":connection-trouble";
+            String troubleID = getPooledClientId(id + ":connection-trouble");
             root.appendChild(getNextNode(domContext,
                     component.getCautionClass(),
                     component.getCautionLabel(),
                     troubleID, false));
-            String lostID = id + ":connection-lost";
+            String lostID = getPooledClientId(id + ":connection-lost");
             root.appendChild(getNextNode(domContext,
                     component.getDisconnectedClass(),
                     component.getDisconnectedLabel(),

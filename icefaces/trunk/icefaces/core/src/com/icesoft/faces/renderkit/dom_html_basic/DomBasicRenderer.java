@@ -841,7 +841,7 @@ public abstract class DomBasicRenderer extends Renderer {
     }
             );
 
-    public String convertClientId(FacesContext context, String clientId) {
+    public static String getPooledClientId(String clientId) {
 
         if (clientId != null) {
             String pooledClientId = (String) clientIdsMap.get(clientId);
@@ -854,5 +854,9 @@ public abstract class DomBasicRenderer extends Renderer {
         } else {
             return null;
         }
+    }
+    
+    public String convertClientId(FacesContext context, String clientId) {
+        return getPooledClientId(clientId);    
     }
 }

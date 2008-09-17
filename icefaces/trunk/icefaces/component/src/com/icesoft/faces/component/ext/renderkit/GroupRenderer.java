@@ -339,7 +339,7 @@ public class GroupRenderer
                                         UIComponent uiComponent, String name) {
         Element ele = domContext.createElement(HTML.INPUT_ELEM);
         ele.setAttribute(HTML.TYPE_ATTR, "hidden");
-        String n = getHiddenFieldName(facesContext, uiComponent, name);
+        String n = getPooledClientId(getHiddenFieldName(facesContext, uiComponent, name));
         ele.setAttribute(HTML.NAME_ATTR, n);
         ele.setAttribute(HTML.ID_ATTR, n);
         ele.setAttribute(HTML.VALUE_ATTR, "");

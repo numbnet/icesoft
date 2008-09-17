@@ -20,7 +20,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         if (!domContext.isInitialized()) {
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
-            root.setAttribute(HTML.ID_ATTR, clientId + "container");
+            root.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "container"));
             Element div = domContext.createElement(HTML.DIV_ELEM);
             root.setAttribute(HTML.CLASS_ATTR, inputRichText.getStyleClass());
             if (inputRichText.getStyle() != null) {
@@ -33,7 +33,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 domContext.stepOver();
                 return;
             } else {
-                div.setAttribute(HTML.ID_ATTR, clientId + "editor");
+                div.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "editor"));
             }
             StringBuffer call = new StringBuffer();
 
@@ -45,9 +45,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getValue() != null) {
                 value =  inputRichText.getValue().toString();
             }
-            addHiddenField (domContext, root,clientId + "valueHolder", 
+            addHiddenField (domContext, root, getPooledClientId(clientId + "valueHolder"), 
                                     value);
-            addHiddenField (domContext, root,clientId + "Disabled",
+            addHiddenField (domContext, root, getPooledClientId(clientId + "Disabled"),
                                     String.valueOf(inputRichText.isDisabled()));            
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");

@@ -96,8 +96,8 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                 else
                     root.removeAttribute(HTML.CLASS_ATTR);
                 Element orderField = domContext.createElement(HTML.INPUT_ELEM);
-                String orderFieldId =
-                        getHiddenFieldName(facesContext, uiComponent, INPUT_ID);
+                String orderFieldId = getPooledClientId(
+                        getHiddenFieldName(facesContext, uiComponent, INPUT_ID));
                 orderField.setAttribute(HTML.ID_ATTR, orderFieldId);
                 orderField.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);
                 orderField.setAttribute(HTML.NAME_ATTR, orderFieldId);
