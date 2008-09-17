@@ -131,7 +131,9 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
         excludes.add(HTML.ONFOCUS_ATTR);
         excludes.add(HTML.ONBLUR_ATTR);
         PassThruAttributeRenderer.renderAttributes(facesContext, uiComponent, getExcludesArray(excludes));
-        JavascriptContext.addJavascriptCall(facesContext, call);
+        if (!component.isDisabled() && !component.isReadonly()) {
+            JavascriptContext.addJavascriptCall(facesContext, call);
+        }
     }
 
     public void encodeChildren(FacesContext facesContext,

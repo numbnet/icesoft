@@ -600,4 +600,9 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         textChangeListener = (MethodBinding)
             restoreAttachedState(context, values[8]);
     }
+
+    public String getOnkeypress() {
+        if (isDisabled() || isReadonly()) return "";
+        return super.getOnkeypress();
+    }
 }
