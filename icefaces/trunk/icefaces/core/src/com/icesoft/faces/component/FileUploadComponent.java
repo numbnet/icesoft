@@ -9,11 +9,9 @@ import java.io.Writer;
 
 public interface FileUploadComponent {
 
-    void upload(FileItemStream fileItemStream, String uploadDirectory, boolean uploadDirectoryAbsolute, long maxSize, BridgeFacesContext bfg, ServletContext servletContext, String sessionId) throws IOException;
+    void upload(FileItemStream fileItemStream, String uploadDirectory, boolean uploadDirectoryAbsolute, long maxSize, ServletContext servletContext, String sessionId) throws IOException;
 
-    void setProgress(int percentage);
+    void updateProgress(int percentage);
 
     void renderIFrame(Writer writer, BridgeFacesContext context) throws IOException;
-    
-    boolean renderOnProgress();
 }

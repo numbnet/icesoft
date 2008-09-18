@@ -40,6 +40,8 @@ import com.icesoft.faces.component.style.OutputStyle;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.utils.MessageUtils;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
+import com.icesoft.util.SeamUtilities;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.util.Streams;
@@ -150,7 +152,6 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             String uploadDirectory,
             boolean uploadDirectoryAbsolute,
             long maxSize,
-            BridgeFacesContext bfc,
             ServletContext servletContext,
             String sessionId)
             throws IOException {
@@ -206,10 +207,12 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 if (!folderFile.exists())
                     folderFile.mkdirs();
                 file = new File(folder, fileName);
+////System.out.println("upload(-)  fileName: " + fileName);
                 OutputStream output = new FileOutputStream(file);
                 Streams.copy(stream.openStream(), output, true);
                 long fileLength = file.length();
                 if (fileLength == 0) {
+////System.out.println("upload(-)  fileLength is zero");
                     setProgress(0);
                     file.delete();
                     throw new FileUploadBase.FileUploadIOException(
@@ -218,14 +221,16 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 status = SAVED;
                 fileInfo.setPhysicalPath(file.getAbsolutePath());
                 fileInfo.setSize( fileLength );
+////System.out.println("upload(-)  SAVED");
                 updateFileValueBinding(context);
-                notifyDone(bfc);
+                notifyDone();
+////System.out.println("upload(-)  ActionListeners");
             } else {
                 fileInfo.reset();
                 file = null;
                 status = INVALID_NAME_PATTERN;
                 context.addMessage(getClientId(context), MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
-                notifyDone(bfc);
+                notifyDone();
             }
         } catch (FileUploadBase.FileUploadIOException uploadException) {
             this.uploadException = uploadException.getCause();
@@ -236,31 +241,37 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             } catch (FileUploadBase.UnknownSizeException e) {
                 status = UNKNOWN_SIZE;
             } catch (FileUploadBase.InvalidContentTypeException e) {
+////System.out.println("upload(-)  INVALID :: InvalidContentType: " + e.getMessage());
                 status = INVALID;
             } catch (Throwable t) {
+////System.out.println("upload(-)  INVALID :: Throwable: " + t.getMessage());
+////t.printStackTrace();
                 status = INVALID;
             }
             fileInfo.setException(uploadException);
             if (file != null)
                 file.delete();
-            notifyDone(bfc);
+            notifyDone();
             throw uploadException;
         }
         catch (IOException e) { // Eg: If creating the saved file fails
             this.uploadException = e;
+////System.out.println("upload(-)  INVALID :: IOException: " + e.getMessage());
+////e.printStackTrace();
             status = INVALID;
             fileInfo.setException(e);
             if (file != null)
                 file.delete();
-            notifyDone(bfc);
+            notifyDone();
             throw e;
         }
+        
+////System.out.println("upload(-)  Method bottom");
+        renderIfAppropriate(true);
     }
 
-    protected void notifyDone(BridgeFacesContext bfc) {
+    protected void notifyDone() {
         ActionEvent event = new ActionEvent(this);
-
-        bfc.setCurrentInstance();
 
         //this is true for JSF 1.1 only
         MethodBinding actionListener = getActionListener();
@@ -914,6 +925,46 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         fileInfo.setPercent(i);
         if (getProgressListener() != null)
             getProgressListener().invoke(FacesContext.getCurrentInstance(), new Object[]{new InputFileProgressEvent(this)});
+    }
+
+    /**
+     * To be called by the UploadServer, allowing us to move the progressRender
+     * functionality right into the InputFile component 
+     * @param i The progress percentage
+     */
+    public void updateProgress(int i) {
+////System.out.println("updateProgress()  progress: " + i);
+        setProgress(i);
+        renderIfAppropriate(renderOnProgress());
+    }
+    
+    private void renderIfAppropriate(boolean appropriate) {
+////System.out.println("renderIfAppropriate()  appropriate: " + appropriate);
+        if (!appropriate)
+            return;
+        
+        // If we can do server push
+        PersistentFacesState state = PersistentFacesState.getInstance();
+        if (!state.isSynchronousMode()) {
+            try{
+////System.out.println("renderIfAppropriate()    Seam: " + SeamUtilities.isSeamEnvironment());
+////System.out.println("renderIfAppropriate()    Spring: " + SeamUtilities.isSpringEnvironment());
+                // Seam throws spurious exceptions with PFS.renderLater
+                //  so we'll work-around that for now. Fix later.
+                if (SeamUtilities.isSeamEnvironment() ||
+                    SeamUtilities.isSpringEnvironment()) {
+                    state.setupAndExecuteAndRender();
+                    state.setAllCurrentInstances();
+                }
+                else {
+                    state.renderLater();
+                }
+////System.out.println("renderIfAppropriate()    Rendered");
+            }
+            catch(Exception e) {
+                log.warn("Problem rendering view during file upload", e);
+            }
+        }
     }
     
     void setPreUpload(boolean p) {
