@@ -64,17 +64,16 @@ public class UploadServer implements Server {
                         }
                     } else {
                         final View view = (View) views.get(viewIdentifier);
+                        view.installThreadLocals();
                         final BridgeFacesContext context = view.getFacesContext();
                         final FileUploadComponent component = (FileUploadComponent) D2DViewHandler.findComponent(componentID, context.getViewRoot());
-                        view.installThreadLocals();
-                        progressCalculator.setListenerAndContextAndPFS(component, context, view.getPersistentFacesState());
+                        progressCalculator.setListenerAndContextAndPFS(component, view.getPersistentFacesState());
                         try {
                             component.upload(
                                     item,
                                     uploadDirectory,
                                     uploadDirectoryAbsolute,
                                     maxSize,
-                                    context,
                                     servletRequest.getSession().getServletContext(),
                                     servletRequest.getRequestedSessionId());
                         } catch (IOException e) {
@@ -89,7 +88,7 @@ public class UploadServer implements Server {
                             } catch (Throwable tr) {
                                 //ignore
                             }
-                             Log.warn("File upload failed", t);
+                            Log.warn("File upload failed", t);
                         } finally {
                             request.respondWith(new StreamingContentHandler("text/html", "UTF-8") {
                                 public void writeTo(Writer writer) throws IOException {
@@ -114,7 +113,6 @@ public class UploadServer implements Server {
         private final int GRANULARITY = 10;
         private final long TIME_MILLISECONDS = 500L;
         private FileUploadComponent listener;
-        private BridgeFacesContext context;
         private PersistentFacesState state;
         private int lastGranularlyNotifiablePercent = -1;
         private long lastTime = -1;
@@ -135,78 +133,62 @@ public class UploadServer implements Server {
                     }
                 }
                 if (shouldNotify) {
-                	lastGranularlyNotifiablePercent = granularNotifiablePercentage;
+                    lastGranularlyNotifiablePercent = granularNotifiablePercentage;
                     potentiallyNotify();
-            	}
-        	}
+                }
+            }
         }
 
         public void setListenerAndContextAndPFS(
                 FileUploadComponent listener,
-                BridgeFacesContext context,
                 PersistentFacesState state) {
             this.listener = listener;
-            this.context = context;
             this.state = state;
-            // Always setCurrent() right away, in case we never get progress,
-            //  notifications, and are immediately done, in case
+            // Always setAllCurrentInstances() right away, in case we never 
+            //  get progress, notifications, and are immediately done, in case
             //  InputFile.upload(-) needs things setup
-            setCurrent();
+            if(state != null) {
+                state.setAllCurrentInstances();
+            }
             potentiallyNotify();
         }
 
         public void reset() {
             PersistentFacesState st = state;
-            BridgeFacesContext ctx = context;
             FileUploadComponent component = listener;
             state = null;
-            context = null;
             listener = null;
             lastGranularlyNotifiablePercent = -1;
             lastTime = -1;
-            if (ctx != null && component != null) {
-                ctx.setCurrentInstance();
-                st.setCurrentInstance();
-                component.setProgress(0);
-            }
-        }
-
-        protected void potentiallyNotify() {
-            if (listener != null &&
-                context != null &&
-                state != null &&
-                lastGranularlyNotifiablePercent >= 0)
-            {
-                setCurrent();
-                listener.setProgress(lastGranularlyNotifiablePercent);
-                
-                // If we can do server push
-                if (!state.isSynchronousMode() && listener.renderOnProgress()) {
-                    try{
-                        // Seam throws spurious exceptions with PFS.renderLater
-                        //  so we'll work-around that for now. Fix later.
-                        if (SeamUtilities.isSeamEnvironment()) {
-                            state.setupAndExecuteAndRender();
-                            setCurrent();
-                        }
-                        else {
-                            state.renderLater();
-                        }
-                    }
-                    catch(Exception e) {
-                        Log.warn("Problem rendering view during file upload", e);
-                    }
-                }
-                
-                lastTime = System.currentTimeMillis();
+            if (component != null) {
+                potentiallyNotify(st, component, 0);
             }
         }
         
-        private void setCurrent() {
-            if(context != null && state != null) {
-                context.setCurrentInstance();
-                state.setCurrentInstance();
+        protected void potentiallyNotify() {
+            if (listener != null &&
+                state != null &&
+                lastGranularlyNotifiablePercent >= 0)
+            {
+                lastTime = potentiallyNotify(
+                    state, listener, lastGranularlyNotifiablePercent);
             }
+        }
+        
+        protected long potentiallyNotify(
+            PersistentFacesState st,
+            FileUploadComponent component,
+            int percent)
+        {
+            st.acquireUploadLifecycleLock();
+            try {
+                st.setAllCurrentInstances();
+                component.updateProgress(percent);
+            }
+            finally {
+                st.releaseUploadLifecycleLock();
+            }
+            return System.currentTimeMillis();
         }
     }
 }
