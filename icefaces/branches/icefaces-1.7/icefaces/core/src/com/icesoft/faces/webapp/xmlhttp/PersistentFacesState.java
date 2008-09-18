@@ -378,6 +378,33 @@ public class PersistentFacesState implements Serializable {
         }
     }
 
+    /**
+     * This is not a public API, but is intended for temporary use
+     *  by UploaderServer only.
+     * @deprecated
+     */
+    public void acquireUploadLifecycleLock() {
+        acquireLifecycleLock();
+    }
+
+    /**
+     * This is not a public API, but is intended for temporary use
+     *  by UploaderServer only.
+     * @deprecated
+     */
+    public void releaseUploadLifecycleLock() {
+        releaseLifecycleLock();
+    }
+    
+    /**
+     * This is not a public API, but is intended for temporary use
+     *  by UploaderServer only.
+     * @deprecated
+     */
+    public void setAllCurrentInstances() {
+        installThreadLocals();
+    }
+    
     private void warnIfSynchronous() {
         if (synchronousMode) {
             log.warn("Running in 'synchronous mode'. The page updates were queued but not sent.");
