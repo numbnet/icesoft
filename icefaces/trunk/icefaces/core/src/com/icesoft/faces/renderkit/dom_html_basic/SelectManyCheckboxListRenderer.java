@@ -108,8 +108,14 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
 
         //We should call uiComponent.getValue() only once, becase if it binded with the bean,
         //The bean method would be called as many time as this method call.
-        Object componentValue = ((UIInput) uiComponent).getValue();
-
+        Object[] submittedValue = null;
+        Object componentValue = null;
+        if (options.hasNext()) {
+            submittedValue = getSubmittedSelectedValues(uiComponent);
+            if (submittedValue == null) {
+                componentValue = getCurrentSelectedValues(uiComponent);
+            }
+        }
         while (options.hasNext()) {
             SelectItem nextSelectItem = (SelectItem) options.next();
 
@@ -144,12 +150,12 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                 for (int i = 0; i < selectItemsArray.length; ++i) {
                     renderOption(facesContext, uiComponent, selectItemsArray[i],
                                  renderVertically, rootTable, nextTR, counter,
-                                 componentValue);
+                                 submittedValue, componentValue);
                 }
             } else {
                 renderOption(facesContext, uiComponent, nextSelectItem,
                              renderVertically, rootTable, rootTR, counter,
-                             componentValue);
+                             submittedValue, componentValue);
             }
         }
 
@@ -178,7 +184,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
                                 Element rootTable, Element rootTR, int counter,
-                                Object componentValue)
+                                Object[] submittedValue, Object componentValue)
             throws IOException {
 
         DOMContext domContext =
@@ -234,7 +240,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         inputElement.setAttribute("value", formattedOptionValue);
         inputElement.setAttribute("type", "checkbox");
 
-        if (isValueSelected(facesContext, selectItem, uiComponent)) {
+        if (isValueSelected(facesContext, selectItem, uiComponent,
+            submittedValue, componentValue))
+        {
             inputElement.setAttribute("checked", Boolean.TRUE.toString());
         }
         if (disabled) {
@@ -267,6 +275,10 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (selectItemList.isEmpty()) {
             throw new IllegalStateException("Could not find select items for UISelectMany component.");
         }
+        
+        Object[] submittedValue = getSubmittedSelectedValues(uiComponent);
+        Object componentValue = (submittedValue != null) ? null :
+            getCurrentSelectedValues(uiComponent);
 
         UISelectMany selectMany = (UISelectMany) forComponent;
         int checkboxIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
@@ -297,7 +309,9 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (selectItem.isDisabled()) {
             input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
         }
-        if (isValueSelected(facesContext, selectItem, selectMany)) {
+        if (isValueSelected(facesContext, selectItem, selectMany,
+            submittedValue, componentValue))
+        {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
         }
         addJavaScript(facesContext, selectMany, input, excludes);
