@@ -284,7 +284,8 @@ public class MenuRenderer extends DomBasicInputRenderer {
 
     protected void renderOption(FacesContext facesContext,
                                 UIComponent uiComponent,
-                                SelectItem selectItem, Element optionGroup)
+                                SelectItem selectItem, Element optionGroup,
+                                Object[] submittedValues, Object selectedValues)
             throws IOException {
 
         DOMContext domContext =
@@ -303,7 +304,9 @@ public class MenuRenderer extends DomBasicInputRenderer {
                                                   selectItem.getValue());
         option.setAttribute("value", valueString);
 
-        if (isValueSelected(facesContext, selectItem, uiComponent)) {
+        if (isValueSelected(facesContext, selectItem, uiComponent,
+                            submittedValues, selectedValues))
+        {
             option.setAttribute("selected", "selected");
         }
         if (selectItem.isDisabled()) {
@@ -315,13 +318,17 @@ public class MenuRenderer extends DomBasicInputRenderer {
         option.appendChild(labelNode);
     }
 
-    protected boolean isValueSelected(FacesContext facesContext, SelectItem selectItem, UIComponent uiComponent) {
-        Object submittedValues[] = getSubmittedSelectedValues(uiComponent);
+    protected boolean isValueSelected(
+        FacesContext facesContext,
+        SelectItem selectItem,
+        UIComponent uiComponent,
+        Object[] submittedValues,
+        Object selectedValues)
+    {
         if (submittedValues != null) {
             String valueString = formatComponentValue(facesContext, uiComponent, selectItem.getValue());
             return isSelected(valueString, submittedValues);
         }
-        Object selectedValues = getCurrentSelectedValues(uiComponent);
         return isSelected(selectItem.getValue(), selectedValues, facesContext, uiComponent);
     }
 
@@ -438,6 +445,14 @@ public class MenuRenderer extends DomBasicInputRenderer {
         DOMContext.removeChildrenByTagName(rootSelectElement, "optgroup");
 
         Iterator selectItems = getSelectItems(uiComponent);
+        Object[] submittedValues = null;
+        Object selectedValues = null;
+        if (selectItems.hasNext()) {
+            submittedValues = getSubmittedSelectedValues(uiComponent);
+            if (submittedValues == null) {
+                selectedValues = getCurrentSelectedValues(uiComponent);
+            }
+        }
         while (selectItems.hasNext()) {
             SelectItem nextSelectItem = (SelectItem) selectItems.next();
             if (nextSelectItem instanceof SelectItemGroup) {
@@ -449,10 +464,11 @@ public class MenuRenderer extends DomBasicInputRenderer {
                         ((SelectItemGroup) nextSelectItem).getSelectItems();
                 for (int i = 0; i < selectItemsArray.length; ++i) {
                     renderOption(facesContext, uiComponent, selectItemsArray[i],
-                                 optGroup);
+                                 optGroup, submittedValues, selectedValues);
                 }
             } else {
-                renderOption(facesContext, uiComponent, nextSelectItem, null);
+                renderOption(facesContext, uiComponent, nextSelectItem, null,
+                             submittedValues, selectedValues);
             }
         }
     }
