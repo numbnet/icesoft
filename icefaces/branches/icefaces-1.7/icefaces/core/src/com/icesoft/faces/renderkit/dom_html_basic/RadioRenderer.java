@@ -54,16 +54,12 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
                                 UIComponent uiComponent,
                                 SelectItem selectItem, boolean renderVertically,
                                 Element rootTable, Element rootTR, int counter,
-                                Object componentValue)
+                                Object[] submittedValue, Object componentValue)
             throws IOException {
         UISelectOne uiSelectOne = (UISelectOne) uiComponent;
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiSelectOne);
 
-        Object submittedValue = uiSelectOne.getSubmittedValue();
-        if (submittedValue == null) {
-            submittedValue = componentValue;
-        }
         if (renderVertically) {
             rootTR = domContext.createElement("tr");
             rootTable.appendChild(rootTR);
@@ -104,7 +100,9 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
             excludes.add("accesskey");
         }
 
-        if (isValueSelected(facesContext, selectItem, uiSelectOne)) {
+        if (isValueSelected(facesContext, selectItem, uiSelectOne,
+            submittedValue, componentValue))
+        {
             input.setAttribute("checked", "checked");
         } else {
             input.removeAttribute("checked");
@@ -154,6 +152,10 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         if (selectItemList.isEmpty()) {
             throw new IllegalStateException("Could not find select items for UISelectOne component.");
         }
+        
+        Object[] submittedValue = getSubmittedSelectedValues(uiComponent);
+        Object componentValue = (submittedValue != null) ? null :
+            getCurrentSelectedValues(uiComponent);
 
         UISelectOne selectOne = (UISelectOne) forComponent;
         int radioIndex = ((Integer) uiComponent.getAttributes().get("index")).intValue();
@@ -184,7 +186,9 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         if (selectItem.isDisabled()) {
             input.setAttribute(HTML.DISABLED_ATTR, HTML.DISABLED_ATTR);
         }
-        if (isValueSelected(facesContext, selectItem, selectOne)) {
+        if (isValueSelected(facesContext, selectItem, selectOne,
+            submittedValue, componentValue))
+        {
             input.setAttribute(HTML.CHECKED_ATTR, HTML.CHECKED_ATTR);
         }
         addJavaScript(facesContext, selectOne, input, excludes);
