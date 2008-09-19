@@ -35,7 +35,6 @@
 
 <!--
 <!ENTITY numberEditor "org.netbeans.modules.visualweb.propertyeditors.IntegerPropertyEditor">
-<!ENTITY stringEditorWithShortDescription "com.sun.jsfcl.std.StringEditorWithShortDescription">
 -->
 <!ENTITY converterEditor "org.netbeans.modules.visualweb.propertyeditors.ConverterPropertyEditor">
 <!--
