@@ -110,7 +110,7 @@ public class MainSessionBoundServlet implements Server {
             receivePing = OKServer;
         } else {
             //setup blocking connection server
-            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, session.getServletContext(), monitorRunner, configuration));
+            sendUpdatedViews = new RequestVerifier(sessionID, new AsyncServerDetector(sessionID, synchronouslyUpdatedViews, allUpdatedViews, monitorRunner, configuration, messageService));
             sendUpdates = new RequestVerifier(sessionID, new SendUpdates(configuration, views));
             receivePing = new RequestVerifier(sessionID, new ReceivePing(views));
         }
