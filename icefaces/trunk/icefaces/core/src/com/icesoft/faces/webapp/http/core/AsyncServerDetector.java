@@ -82,13 +82,16 @@ package com.icesoft.faces.webapp.http.core;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
+import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.MonitorRunner;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import java.lang.reflect.Constructor;
+import java.util.Collection;
 
 import javax.servlet.ServletContext;
-import java.util.Collection;
-import java.lang.reflect.Constructor;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AsyncServerDetector implements Server {
     private static final Log LOG = LogFactory.getLog(AsyncServerDetector.class);
@@ -101,8 +104,9 @@ public class AsyncServerDetector implements Server {
 
     public AsyncServerDetector(
         final String icefacesID, final Collection synchronouslyUpdatedViews,
-        final ViewQueue allUpdatedViews, final ServletContext servletContext,
-        final MonitorRunner monitorRunner, final Configuration configuration) {
+        final ViewQueue allUpdatedViews, final MonitorRunner monitorRunner,
+        final Configuration configuration,
+        final MessageServiceClient messageServiceClient) {
 
         if (factory == null) {
             synchronized (LOCK) {
@@ -144,7 +148,7 @@ public class AsyncServerDetector implements Server {
         server =
             factory.newServer(
                 icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                servletContext, monitorRunner, configuration);
+                monitorRunner, configuration, messageServiceClient);
     }
 
     public void service(Request request) throws Exception {
@@ -180,9 +184,9 @@ public class AsyncServerDetector implements Server {
         public Server newServer(
             final String icefacesID, final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
-            final ServletContext servletContext,
             final MonitorRunner monitorRunner,
-            final Configuration configuration);
+            final Configuration configuration,
+            final MessageServiceClient messageServiceClient);
     }
 
     private static class AsyncHttpServerAdaptingServletFactory
@@ -201,7 +205,7 @@ public class AsyncServerDetector implements Server {
                                     String.class,
                                     Collection.class,
                                     ViewQueue.class,
-                                    ServletContext.class
+                                    MessageServiceClient.class
                             });
             } catch (Exception exception) {
                 // Possible exceptions: ClassNotFoundException,
@@ -220,9 +224,9 @@ public class AsyncServerDetector implements Server {
         public Server newServer(
             final String icefacesID, final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
-            final ServletContext servletContext,
             final MonitorRunner monitorRunner,
-            final Configuration configuration) {
+            final Configuration configuration,
+            final MessageServiceClient messageServiceClient) {
 
             try {
                 return                             
@@ -232,7 +236,7 @@ public class AsyncServerDetector implements Server {
                                     icefacesID,
                                     synchronouslyUpdatedViews,
                                     allUpdatedViews,
-                                    servletContext
+                                    messageServiceClient
                             });
             } catch (Exception exception) {
                 // Possible exceptions: IntantiationException,
@@ -250,7 +254,7 @@ public class AsyncServerDetector implements Server {
                 return
                     factory.newServer(
                         icefacesID, synchronouslyUpdatedViews, allUpdatedViews,
-                        servletContext, monitorRunner, configuration);
+                        monitorRunner, configuration, messageServiceClient);
             }
         }
     }
@@ -260,9 +264,9 @@ public class AsyncServerDetector implements Server {
         public Server newServer(
             final String icefacesID, final Collection synchronouslyUpdatedViews,
             final ViewQueue allUpdatedViews,
-            final ServletContext servletContext,
             final MonitorRunner monitorRunner,
-            final Configuration configuration) {
+            final Configuration configuration,
+            final MessageServiceClient messageServiceClient) {
 
             return
                 new SendUpdatedViews(
