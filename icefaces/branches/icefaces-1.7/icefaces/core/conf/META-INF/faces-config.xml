@@ -8,6 +8,7 @@
 
     <application>
         <view-handler>com.icesoft.faces.application.D2DViewHandler</view-handler>
+        <default-render-kit-id>ICEfacesRenderKit</default-render-kit-id>
     </application>
     
     <factory>
@@ -22,6 +23,8 @@
     
     <render-kit>
         <description>The ICEsoft Renderers.</description>
+        <render-kit-id>ICEfacesRenderKit</render-kit-id>
+        <render-kit-class>com.icesoft.faces.renderkit.D2DRenderKit</render-kit-class>
         <renderer>
             <component-family>javax.faces.Command</component-family>
             <renderer-type>javax.faces.Link</renderer-type>
@@ -168,6 +171,8 @@
     </component>
 
    <render-kit>
+        <render-kit-id>ICEfacesRenderKit</render-kit-id>
+        <render-kit-class>com.icesoft.faces.renderkit.D2DRenderKit</render-kit-class>
         <renderer>
             <component-family>javax.faces.Output</component-family>
             <renderer-type>com.icesoft.faces.component.Include</renderer-type>
