@@ -67,6 +67,16 @@
         <param-name>com.icesoft.faces.synchronousUpdate</param-name>
         <param-value>true</param-value>
     </context-param>
+    
+<!-- Specifies to the ICEfaces framework whether to compress the server-side DOM 
+     representation after each response. This saves a considerable amount of
+     of memory per client. However, since this is decompressed/compressed for
+     every update, it may not bring significant memory savings to applications 
+     that make frequent use of AJAX push.
+    <context-param>
+        <param-name>com.icesoft.faces.compressDOM</param-name>
+        <param-value>true</param-value>
+    </context-param> -->
 
 <!-- Specifies the amount of time in milliseconds that the bridge will wait for  
      a response from the server for a user-initiated request before declaring 
