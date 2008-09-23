@@ -216,7 +216,29 @@ public class D2DViewHandler extends ViewHandler {
                     super.setLocale(locale);
             }
         };
-        root.setRenderKitId(RenderKitFactory.HTML_BASIC_RENDER_KIT);
+        
+        Locale locale = null;
+        String renderKitId = null;
+        UIViewRoot oldRoot = context.getViewRoot();
+        if (oldRoot != null) {
+            locale = oldRoot.getLocale();
+            renderKitId = oldRoot.getRenderKitId();
+        }
+        if (locale == null) {
+            // For some reason the RI goes back to the top level ViewHandler
+            // Something about decorated implementations
+            locale = context.getApplication().getViewHandler().
+                calculateLocale(context);
+        }
+        if (renderKitId == null) {
+            // For some reason the RI goes back to the top level ViewHandler
+            // Something about decorated implementations
+            renderKitId = context.getApplication().getViewHandler().
+                calculateRenderKitId(context);
+        }
+        root.setLocale(locale);
+        root.setRenderKitId(renderKitId);
+        
         root.setViewId(null == viewId ? "default" : viewId);
         
         String renderedViewId = getRenderedViewId(context, root.getViewId());
@@ -521,6 +543,7 @@ public class D2DViewHandler extends ViewHandler {
                 responseWriter.startDocument();
                 renderResponse(context, root);
                 responseWriter.endDocument();
+                tracePrintComponentTree(context);
             }
 
         } else {
@@ -573,15 +596,23 @@ public class D2DViewHandler extends ViewHandler {
         if (log.isTraceEnabled()) {
             StringBuffer sb = new StringBuffer(4096);
             sb.append("tracePrintComponentTree() vvvvvv\n");
-            tracePrintComponentTree(context, component, 0, sb, null);
+            java.util.Set nonICEfacesRenderers = new java.util.HashSet();
+            tracePrintComponentTree(context, component, 0, sb, null, nonICEfacesRenderers);
             log.trace(sb.toString());
+            if (!nonICEfacesRenderers.isEmpty()) {
+                log.trace("Non-ICEfaces Renderers: " + nonICEfacesRenderers.size());
+                Iterator otherRenderers = nonICEfacesRenderers.iterator();
+                while (otherRenderers.hasNext())
+                    log.trace("             Renderer: " + otherRenderers.next());
+            }
             log.trace("tracePrintComponentTree() ^^^^^^");
         }
     }
 
     private void tracePrintComponentTree(
             FacesContext context, UIComponent component,
-            int levels, StringBuffer sb, String facetName) {
+            int levels, StringBuffer sb, String facetName,
+            java.util.Set nonICEfacesRenderers) {
         if (component == null) {
             sb.append("null\n");
             return;
@@ -613,6 +644,20 @@ public class D2DViewHandler extends ViewHandler {
             open.append(" clientId: ");
             open.append(component.getClientId(context));
         }
+        String rendererType = component.getRendererType();
+        if (rendererType != null) {
+            open.append(" renderer: ");
+            Object renderer = context.getRenderKit().getRenderer(
+                component.getFamily(), rendererType);
+            if (renderer == null)
+                open.append("null");
+            else {
+                String rendererClassName = renderer.getClass().getName();
+                if (!rendererClassName.startsWith("com.icesoft"))
+                    nonICEfacesRenderers.add(rendererClassName);
+                open.append(rendererClassName);
+            }
+        }
         if (hasKids) {
             open.append(" kids: ");
             open.append(Integer.toString(component.getChildCount()));
@@ -633,14 +678,18 @@ public class D2DViewHandler extends ViewHandler {
                 for (int i = 0; i < facetKeys.length; i++) {
                     tracePrintComponentTree(
                             context, (UIComponent) facetsMap.get(facetKeys[i]),
-                            levels + 1, sb, facetKeys[i].toString());
+                            levels + 1, sb, facetKeys[i].toString(),
+                            nonICEfacesRenderers);
                 }
             }
             if (hasKids) {
-                Iterator kids = component.getChildren().iterator();
-                while (kids.hasNext()) {
-                    tracePrintComponentTree(
-                            context, (UIComponent) kids.next(), levels + 1, sb, null);
+                if (component.getChildCount() > 0) {
+                    Iterator kids = component.getChildren().iterator();
+                    while (kids.hasNext()) {
+                        tracePrintComponentTree(
+                                context, (UIComponent) kids.next(), levels + 1,
+                                sb, null, nonICEfacesRenderers);
+                    }
                 }
             }
 
