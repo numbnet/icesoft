@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,21 +28,33 @@ public class InputRichText extends UIInput {
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.InputRichTextRenderer";
     private static final Resource ICE_FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor_ext.js");
     private static final Resource FCK_EDITOR_JS = new JarResource("com/icesoft/faces/component/inputrichtext/fckeditor.js");
+    private static final String FCK_EDITOR_ZIP = "com/icesoft/faces/component/inputrichtext/fckeditor.zip";
     private static final Date lastModified = new Date();
+    private static final Map ZipEntryCache = new HashMap();
 
-    private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
-        public void linkWith(ResourceLinker linker) {
+    static {
             try {
-                InputStream in = this.getClass().getClassLoader().getResourceAsStream("com/icesoft/faces/component/inputrichtext/fckeditor.zip");
+            InputStream in = InputRichText.class.getClassLoader().getResourceAsStream(FCK_EDITOR_ZIP);
                 ZipInputStream zip = new ZipInputStream(in);
                 ZipEntry entry;
                 while ((entry = zip.getNextEntry()) != null) {
                     if (!entry.isDirectory()) {
-                        final String entryName = entry.getName();
-                        final byte[] content = toByteArray(zip);
+                    ZipEntryCache.put(entry.getName(), toByteArray(zip));
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
+        public void linkWith(ResourceLinker linker) {
+            Iterator i = ZipEntryCache.keySet().iterator();
+            while (i.hasNext()) {
+                final String entryName = (String) i.next();
                         linker.registerRelativeResource(entryName, new Resource() {
                             public String calculateDigest() {
-                                return String.valueOf(content);
+                        return String.valueOf(FCK_EDITOR_ZIP + entryName);
                             }
 
                             public Date lastModified() {
@@ -48,7 +62,7 @@ public class InputRichText extends UIInput {
                             }
 
                             public InputStream open() throws IOException {
-                                return new ByteArrayInputStream(content);
+                        return new ByteArrayInputStream((byte[]) ZipEntryCache.get(entryName));
                             }
 
                             public void withOptions(Resource.Options options) {
@@ -58,10 +72,6 @@ public class InputRichText extends UIInput {
                         });
                     }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
     };
 
     public static void loadFCKJSIfRequired() {
