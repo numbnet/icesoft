@@ -32,7 +32,7 @@ public class InputRichText extends UIInput {
     private static final Date lastModified = new Date();
     private static final Map ZipEntryCache = new HashMap();
 
-    static {
+    private static void loadZipEntryCache() {
         try {
             InputStream in = InputRichText.class.getClassLoader().getResourceAsStream(FCK_EDITOR_ZIP);
             ZipInputStream zip = new ZipInputStream(in);
@@ -49,6 +49,11 @@ public class InputRichText extends UIInput {
 
     private static final ResourceLinker.Handler FCK_LINKED_BASE = new ResourceLinker.Handler() {
         public void linkWith(ResourceLinker linker) {
+            synchronized(ZipEntryCache) {
+                if (ZipEntryCache.isEmpty()) {
+                    loadZipEntryCache();
+                }
+            }
             Iterator i = ZipEntryCache.keySet().iterator();
             while (i.hasNext()) {
                 final String entryName = (String) i.next();
