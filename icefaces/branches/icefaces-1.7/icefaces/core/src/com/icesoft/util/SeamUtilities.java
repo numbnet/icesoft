@@ -227,14 +227,15 @@ public class SeamUtilities {
             getConversationIdParameterName();
         }
         int index = uri.indexOf(conversationIdParameter);
+        int length=conversationIdParameter.length()+1;
         if (index>0 ){
            String substring = uri.substring(index);
-           returnVal = uri.substring(index+4);
+           returnVal = uri.substring(index+length);
            /* have to check for other encoding for seam-1.2.1.*/
            int end = returnVal.indexOf('&');
            if (end>0){
         	   returnVal=returnVal.substring(0,end);
-           }else returnVal = uri.substring(index+4);
+           }else returnVal = uri.substring(index+length);
         }
     	return returnVal;
     }
