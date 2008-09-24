@@ -345,26 +345,26 @@ public class PortletExternalContext extends BridgeExternalContext {
     }
 
     public void release() {
-       	/**
-    	 * ICE-2990/JBSEAM-3426:- have to save the seam request variables 
-    	 * for seam redirection
-    	 */
-        String requestServletPath = (String)requestAttributes.getAttribute("org.jboss.seam.web.requestServletPath");
-        String requestContextPath = (String)requestAttributes.getAttribute("org.jboss.seam.web.requestContextPath");
-        String requestPathInfo = (String)requestAttributes.getAttribute("org.jboss.seam.web.requestPathInfo");    	    	
+        //ICE-2990, JBSEAM-3426:  We need to save the request attributes before the release()
+        //and restore them after the release() in order to support Seam redirection.
+        RequestAttributes tempAttributes = null;
+        if (SeamUtilities.isSeamEnvironment()) {
+            tempAttributes = SimpleRequestAttributes;
+            copySeamRequestAttributes(requestAttributes,tempAttributes);
+        }
+
         super.release();
+        
         initialRequest.repopulatePseudoAPIAttributes();
         allowMode = DoNotAllow;
         authenticationVerifier = releaseVerifier(authenticationVerifier);
         dispatcher = RequestNotAvailable;
-     	if(SeamUtilities.isSeamEnvironment()){
-     		// put them back in
-     	    requestAttributes.setAttribute("org.jboss.seam.web.requestServletPath", requestServletPath);
-     	    requestAttributes.setAttribute("org.jboss.seam.web.requestContextPath", requestContextPath);
-     	    requestAttributes.setAttribute("org.jboss.seam.web.requestPathInfo", "");      		
-     	}else{                
-          requestAttributes = NOOPRequestAttributes;
-     	}
+        if (SeamUtilities.isSeamEnvironment()) {
+            //ICE-2990, JBSEAM-3426
+            copySeamRequestAttributes(tempAttributes,requestAttributes);
+        } else {
+            requestAttributes = NOOPRequestAttributes;
+        }
     }
 
     //Identical code to BridgeExternalContext.createAuthenticationVerifier
