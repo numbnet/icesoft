@@ -236,7 +236,8 @@
             <classpath>
                 <pathelement path="${test.classes.dir}"/>          
                 <pathelement path="${build.classes.dir}"/> 
-                <path refid="compile.test.classpath"/>                
+                <path refid="compile.test.classpath"/>    
+                <pathelement path="${src.dir}"/>
             </classpath>
             <batchtest todir="${test.classes.dir}/test-reports">
                 <fileset dir="test/java">
