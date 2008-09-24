@@ -62,7 +62,9 @@ public class D2DRenderKit extends RenderKit {
         Renderer renderer = null;
         synchronized(this) {
             Map rendererType2renderer = (Map) family2rendererType.get(family);
-            renderer = (Renderer) rendererType2renderer.get(rendererType);
+            if (rendererType2renderer != null) {
+                renderer = (Renderer) rendererType2renderer.get(rendererType);
+            }
         }
         if (renderer == null) {
             renderer = getDelegate().getRenderer(family, rendererType);
