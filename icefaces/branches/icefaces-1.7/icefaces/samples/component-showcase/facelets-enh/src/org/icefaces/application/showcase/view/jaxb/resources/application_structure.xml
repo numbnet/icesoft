@@ -1826,7 +1826,7 @@
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/tree/TreeController.java"/>
             <!-- DataTable Paging example -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataPaginator.DataScrollingModel"
-                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataTable/DataScrollingModel.java"/>
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataPaginator/DataScrollingModel.java"/>
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.dataTable.DataTableBase"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/dataTable/DataTableBase.java"/>
             <!-- DataTable sortable header-->
