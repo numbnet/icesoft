@@ -64,6 +64,10 @@ public class D2DRenderKit extends RenderKit {
             Map rendererType2renderer = (Map) family2rendererType.get(family);
             renderer = (Renderer) rendererType2renderer.get(rendererType);
         }
+        if (renderer == null) {
+            renderer = getDelegate().getRenderer(family, rendererType);
+//System.out.println("D2DRenderKit.getRenderer()  DELEGATE\n  family: " + family + "\n  rendererType: " + rendererType + "\n  renderer: " + renderer.getClass().getName());
+        }
 //System.out.println("D2DRenderKit.getRenderer()\n  family: " + family + "\n  rendererType: " + rendererType + "\n  renderer: " + renderer.getClass().getName());
         return renderer;
     }
