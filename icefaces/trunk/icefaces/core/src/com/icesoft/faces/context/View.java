@@ -5,12 +5,12 @@ import com.icesoft.faces.webapp.command.CommandQueue;
 import com.icesoft.faces.webapp.command.NOOP;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Response;
+import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
+import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
-import com.icesoft.faces.webapp.http.core.LifecycleExecutor;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -20,12 +20,9 @@ import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.faces.lifecycle.Lifecycle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.FactoryFinder;
-import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,6 +74,7 @@ public class View implements CommandQueue {
         this.lifecycle = lifecycle;
 
         //fail fast if environment cannot be detected
+        //todo: assimilate ExternalContext into BridgeFacesContext
         this.externalContext = new UnknownExternalContext(this, configuration);
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
@@ -138,6 +136,7 @@ public class View implements CommandQueue {
 
     public void updateOnPageRequest(Request request) throws Exception {
         acquireLifecycleLock();
+        //todo: always recreate BridgeFacesContext & Co. on page load -- override ICE-3424 fixes
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 if (differentURI((HttpServletRequest) request)) {
@@ -214,7 +213,6 @@ public class View implements CommandQueue {
     public void release() {
         facesContext.release();
         persistentFacesState.release();
-        externalContext.release();
     }
 
     public BridgeFacesContext getFacesContext() {
@@ -278,7 +276,7 @@ public class View implements CommandQueue {
     void preparePage(final ResponseHandler handler) {
         responseHandler = new ResponseHandler() {
             public void respond(Response response) throws Exception {
-                handler.respond(response);                
+                handler.respond(response);
                 responseHandler = lifecycleResponseHandler;
             }
         };
