@@ -166,6 +166,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         // Jira #1358 The hashmap contains vectors of FacesMessages, not FacesMessages
         // See following method.
         ArrayList buffer = new ArrayList();
+        if (faceMessages.values() == null) return Collections.EMPTY_LIST.iterator();        
         Iterator i = faceMessages.values().iterator();
         while (i.hasNext()) {
             buffer.addAll((Vector) i.next());
