@@ -399,7 +399,9 @@ input {
    background-color: #026AFF;   
 }
 
-.iceDatTblActvSrtHdr{}
+.iceDatTblActvSrtHdr td {
+    color: white;
+}
 /*
 ----- for datatable when cell content length exceeds-----
 */
