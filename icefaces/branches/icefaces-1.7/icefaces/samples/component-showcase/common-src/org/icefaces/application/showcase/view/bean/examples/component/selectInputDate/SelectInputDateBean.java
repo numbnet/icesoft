@@ -64,7 +64,6 @@ public class SelectInputDateBean extends BaseBean {
         super();
         valueChangeEffect2 = new Highlight("#fda505");
         valueChangeEffect2.setFired(true);
-        date2 = new GregorianCalendar(1867, 6, 1).getTime();
     }
 
     /**
