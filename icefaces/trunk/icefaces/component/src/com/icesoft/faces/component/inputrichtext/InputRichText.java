@@ -6,11 +6,16 @@ import com.icesoft.faces.context.JarResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.ResourceLinker;
 import com.icesoft.faces.context.ResourceRegistry;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.FacesEvent;
+import javax.faces.event.ValueChangeEvent;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -354,6 +359,15 @@ public class InputRichText extends UIInput {
                 .booleanValue() : false;
     }
 
+    public void broadcast(FacesEvent event)
+    throws AbortProcessingException {
+        if (event instanceof ValueChangeEvent) {
+            FacesContext facesContext = getFacesContext();
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + getClientId(facesContext) + "');");            
+        }
+        super.broadcast(event);
+    }
+    
     public Object saveState(FacesContext context) {
         Object values[] = new Object[12];
         values[0] = super.saveState(context);
