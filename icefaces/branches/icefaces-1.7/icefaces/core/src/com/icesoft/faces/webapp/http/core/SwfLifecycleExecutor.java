@@ -52,6 +52,7 @@ public class SwfLifecycleExecutor extends LifecycleExecutor  {
             ServletExternalContext servletExternalContext = 
                 new ServletExternalContext(
                         servletContext, servletRequest, servletResponse );
+            servletExternalContext.setAjaxRequest(true);
             FlowExecutionResult result;
             if (null != flowExecutionKey)  {
                 result = flowExecutor.resumeExecution(
