@@ -30,7 +30,7 @@
  * this file under either the MPL or the LGPL License."
  *
  */
- 
+
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
@@ -69,6 +69,7 @@ Object.extend(Ice.FCKeditor,  Ice.Repository);
 
 Ice.FCKeditorUtility = Class.create();
 Ice.FCKeditorUtility = {
+    //this will be only call on valueChange event
     updateValue: function(ele) {
         try {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
@@ -85,8 +86,10 @@ Ice.FCKeditorUtility = {
             }
         } catch(err) {}
     },
-    
+
+    //this event will be fired on mouseout event, so clear the activeEditor property
     updateFields: function(ele) {
+        Ice.FCKeditorUtility.activeEditor = "";
 	    try {
 		    var oEditor = FCKeditorAPI.GetInstance(ele) ;   
 		    if (!oEditor) return;
@@ -158,52 +161,25 @@ function toogleState(editorInstance) {
             return false;      
        }
                    
-    }
+}
+    
 function FCKeditorSave(editorInstance) {
-    var iceInstance = Ice.Repository.getInstance(editorInstance.Name);
-    if (iceInstance._for != '') {
-    	var all = Ice.Repository.getAll();
-    	
-	    for (i=0; i < all.length; i++) {
-			var instanceName = all[i].thirdPartyObject.InstanceName;
-		 	var editIns = FCKeditorAPI.GetInstance(instanceName);
-		 	if (editIns != null) {
-		 		var element = $(instanceName);
-				element.value = editIns.GetXHTML(true);
-			}
-		}
-
-    } else {
-        var all = Ice.Repository.getAll();
-        for (i=0; i < all.length; i++) {   
-            var instanceName = all[i].thirdPartyObject.InstanceName;
-            var editIns = FCKeditorAPI.GetInstance(instanceName);
-            //if the editor is not visible on this view, just skip and continue
-            if (editIns == null) continue;
-            //clear malformed parameters
-            var unwantedField = $(instanceName + "___Config");
-            if (unwantedField){
-                unwantedField.value = "";
-                unwantedField.name = unwantedField.id;
-            }
-            var element = $(editIns.Name);
-            //Save the dirty editor only that had the focus
-            var editorWindow = editIns.EditorWindow;
-            var hasFocus = true;
-            if (editorWindow) {
-                hasFocus = editorWindow.parent.FCK.HasFocus;
-            }
-            if(editIns.IsDirty() && hasFocus) {
-                element.value = editIns.GetXHTML(true);
-                editIns.ResetIsDirty();
-            }
-            //set the current contents of the editor
-            var valueHolder = $(editIns.Name + 'valueHolder');
-            var editorValue = $(editIns.Name);
-            editorValue.value = editIns.GetXHTML(true);
-            valueHolder.value = editorValue.value;
-        }
-    } 
+//if there are more than one editors on the page, then on save operation the 
+//"editorInstance" is always a reference of last component on the page, so we 
+//need to use the Ice.FCKeditorUtility.activeEditor instead
+    var instanceName = Ice.FCKeditorUtility.activeEditor;
+    var editIns = FCKeditorAPI.GetInstance(instanceName);
+    if (editIns == null) return;    
+    //clear malformed parameters
+    var unwantedField = $(instanceName + "___Config");
+    if (unwantedField){
+        unwantedField.value = "";
+        unwantedField.name = unwantedField.id;
+    }
+    var element = $(editIns.Name); 
+    element.value = editIns.GetXHTML(true);
+    var valueHolder = $(editIns.Name + 'valueHolder');    
+    valueHolder.value = element.value ;                 
     Ice.FCKeditorUtility.saveClicked=true;
 	var form = Ice.util.findForm(element);
 	iceSubmit(form,element,new Object());
