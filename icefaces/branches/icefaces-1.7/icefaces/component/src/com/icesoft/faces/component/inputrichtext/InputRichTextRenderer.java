@@ -1,14 +1,15 @@
 package com.icesoft.faces.component.inputrichtext;
 
-import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
-import org.w3c.dom.Element;
+import java.io.IOException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import java.io.IOException;
+
+import org.w3c.dom.Element;
+
+import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
+import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class InputRichTextRenderer extends DomBasicInputRenderer {
 
@@ -27,14 +28,7 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
             root.appendChild(div);
-            if (inputRichText.isToolbarOnly()) {
-                div.setAttribute(HTML.ID_ATTR, inputRichText.getId());
-                div.setAttribute(HTML.STYLE_ATTR, "width:"+ inputRichText.getWidth() +"px; height:"+ inputRichText.getHeight() +"px;");                
-                domContext.stepOver();
-                return;
-            } else {
-                div.setAttribute(HTML.ID_ATTR, clientId + "editor");
-            }
+            div.setAttribute(HTML.ID_ATTR, clientId + "editor");
             StringBuffer call = new StringBuffer();
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
@@ -59,9 +53,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 saveOnSubmit.setAttribute(HTML.TYPE_ATTR, "hidden");                
                 root.appendChild(saveOnSubmit);
             }
+            
             div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
-            //the following call will update the contents of the editor on every render phase
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");            
+            div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");
             domContext.stepOver();
         }
     }
