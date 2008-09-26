@@ -303,6 +303,15 @@ public class ServletExternalContext extends BridgeExternalContext {
     }
 
     /**
+     * called from PersistentFacesState.execute() as these request attributes give problems
+     * to ajax-push with Seam. ICE-2990,JBSEAM-3426
+     */
+    public void removeSeamAttributes(){
+        requestAttributes = NOOPRequestAttributes;
+    }
+  
+    
+    /**
      * Utility method that returns the original value of the supplied String
      * unless it is emtpy (val.trim().length() == 0).  In that particlar case
      * the value returned is null.

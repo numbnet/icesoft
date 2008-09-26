@@ -366,7 +366,15 @@ public class PortletExternalContext extends BridgeExternalContext {
             requestAttributes = NOOPRequestAttributes;
         }
     }
-
+    /**
+     * called from PersistentFacesState.execute() as these request attributes give problems
+     * to ajax-push with Seam.
+     */
+    public void removeSeamAttributes(){
+    	requestAttributes.removeAttribute("org.jboss.seam.web.requestServletPath");
+      	requestAttributes.removeAttribute("org.jboss.seam.web.requestContextPath");
+      	requestAttributes.removeAttribute("org.jboss.seam.web.requestPathInfo");
+    }
     //Identical code to BridgeExternalContext.createAuthenticationVerifier
     //but request is a PortletRequest
     private static AuthenticationVerifier createAuthenticationVerifier(final PortletRequest request) {

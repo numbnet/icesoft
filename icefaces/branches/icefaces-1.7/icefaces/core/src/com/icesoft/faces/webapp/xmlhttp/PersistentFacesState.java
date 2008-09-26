@@ -34,6 +34,7 @@
 package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
@@ -223,9 +224,14 @@ public class PersistentFacesState implements Serializable {
                 Map requestParameterMap = 
                     facesContext.getExternalContext().getRequestParameterMap();
                 requestParameterMap.clear();
+                if (SeamUtilities.isSeamEnvironment()){
+                	//ICE-2990/JBSEAM-3426 must have empty requestAttributes for push to work with Seam
+                	((BridgeExternalContext)facesContext.getExternalContext()).removeSeamAttributes();
+                }
                 //Seam appears to need ViewState set during push
                 requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
             } else {
+
                 facesContext.renderResponse();
             }
             lifecycle.execute(facesContext);

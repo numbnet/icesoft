@@ -198,6 +198,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
     public abstract void update(HttpServletRequest request, HttpServletResponse response);
 
     public abstract void updateOnPageLoad(Object request, Object response);
+    
+    public abstract void removeSeamAttributes();
 
     public void addCookie(Cookie cookie) {
         responseCookieMap.put(cookie.getName(), cookie);
@@ -512,5 +514,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
             destination.setAttribute("org.jboss.seam.web.requestPathInfo","");
         }
     }
+    
+   
 
 }
