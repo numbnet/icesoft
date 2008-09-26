@@ -153,7 +153,8 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             boolean uploadDirectoryAbsolute,
             long maxSize,
             ServletContext servletContext,
-            String sessionId)
+            String sessionId,
+            PersistentFacesState state)
             throws IOException {
         reset();        
         this.uploadException = null;
@@ -213,7 +214,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 long fileLength = file.length();
                 if (fileLength == 0) {
 ////System.out.println("upload(-)  fileLength is zero");
-                    setProgress(0);
+                    setProgressSafely(state, 0);
                     file.delete();
                     throw new FileUploadBase.FileUploadIOException(
                             new FileUploadBase.InvalidContentTypeException());
@@ -222,15 +223,14 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
                 fileInfo.setPhysicalPath(file.getAbsolutePath());
                 fileInfo.setSize( fileLength );
 ////System.out.println("upload(-)  SAVED");
-                updateFileValueBinding(context);
-                notifyDone();
+                notifyDoneSafely(state, true);
 ////System.out.println("upload(-)  ActionListeners");
             } else {
                 fileInfo.reset();
                 file = null;
                 status = INVALID_NAME_PATTERN;
                 context.addMessage(getClientId(context), MessageUtils.getMessage(context, INVALID_NAME_PATTERN_MESSAGE_ID, new Object[]{fileName, namePattern}));
-                notifyDone();
+                notifyDoneSafely(state, false);
             }
         } catch (FileUploadBase.FileUploadIOException uploadException) {
             this.uploadException = uploadException.getCause();
@@ -251,7 +251,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             fileInfo.setException(uploadException);
             if (file != null)
                 file.delete();
-            notifyDone();
+            notifyDoneSafely(state, false);
             throw uploadException;
         }
         catch (IOException e) { // Eg: If creating the saved file fails
@@ -262,14 +262,28 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
             fileInfo.setException(e);
             if (file != null)
                 file.delete();
-            notifyDone();
+            notifyDoneSafely(state, false);
             throw e;
         }
         
 ////System.out.println("upload(-)  Method bottom");
-        renderIfAppropriate(true);
+        renderIfAppropriate(state, true);
     }
-
+    
+    protected void notifyDoneSafely(PersistentFacesState state, boolean updateFile) {
+        state.acquireUploadLifecycleLock();
+        try {
+            state.setAllCurrentInstances();
+            if (updateFile) {
+                updateFileValueBinding();
+            }
+            notifyDone();
+        }
+        finally {
+            state.releaseUploadLifecycleLock();
+        }
+    }
+    
     protected void notifyDone() {
         ActionEvent event = new ActionEvent(this);
 
@@ -854,11 +868,11 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * that would be updated when a new file was saved. This provides
      * backwards compatibility with that.
      */
-    protected void updateFileValueBinding(FacesContext context) {
+    protected void updateFileValueBinding() {
         try {
             ValueBinding vb = getValueBinding("file");
             if (vb != null)
-                vb.setValue(context, getFile());
+                vb.setValue(FacesContext.getCurrentInstance(), getFile());
         }
         catch (Exception e) {
             log.warn("The InputFile's file attribute has a ValueBinding, whose value could not be set", e);
@@ -919,6 +933,17 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         return progress;
     }
 
+    protected void setProgressSafely(PersistentFacesState state, int i) {
+        state.acquireUploadLifecycleLock();
+        try {
+            state.setAllCurrentInstances();
+            setProgress(i);
+        }
+        finally {
+            state.releaseUploadLifecycleLock();
+        }
+    }
+    
     public void setProgress(int i) {
 
         progress = i;
@@ -932,19 +957,18 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * functionality right into the InputFile component 
      * @param i The progress percentage
      */
-    public void updateProgress(int i) {
+    public void updateProgress(PersistentFacesState state, int i) {
 ////System.out.println("updateProgress()  progress: " + i);
-        setProgress(i);
-        renderIfAppropriate(renderOnProgress());
+        setProgressSafely(state, i);
+        renderIfAppropriate(state, renderOnProgress());
     }
     
-    private void renderIfAppropriate(boolean appropriate) {
+    private void renderIfAppropriate(PersistentFacesState state, boolean appropriate) {
 ////System.out.println("renderIfAppropriate()  appropriate: " + appropriate);
         if (!appropriate)
             return;
         
         // If we can do server push
-        PersistentFacesState state = PersistentFacesState.getInstance();
         if (!state.isSynchronousMode()) {
             try{
 ////System.out.println("renderIfAppropriate()    Seam: " + SeamUtilities.isSeamEnvironment());
