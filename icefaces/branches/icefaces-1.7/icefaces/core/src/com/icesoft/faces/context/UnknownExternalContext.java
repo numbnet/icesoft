@@ -182,4 +182,8 @@ public class UnknownExternalContext extends BridgeExternalContext {
     public void updateOnPageLoad(Object request, Object response) {
         throw new UnsupportedOperationException(message);
     }
+
+	public void removeSeamAttributes() {
+		 throw new UnsupportedOperationException(message);
+	}
 }
