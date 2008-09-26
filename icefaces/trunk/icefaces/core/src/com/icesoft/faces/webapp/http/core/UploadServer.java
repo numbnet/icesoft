@@ -65,9 +65,10 @@ public class UploadServer implements Server {
                     } else {
                         final View view = (View) views.get(viewIdentifier);
                         view.installThreadLocals();
+                        final PersistentFacesState state = view.getPersistentFacesState(); 
                         final BridgeFacesContext context = view.getFacesContext();
                         final FileUploadComponent component = (FileUploadComponent) D2DViewHandler.findComponent(componentID, context.getViewRoot());
-                        progressCalculator.setListenerAndContextAndPFS(component, view.getPersistentFacesState());
+                        progressCalculator.setListenerAndContextAndPFS(component, state);
                         try {
                             component.upload(
                                     item,
@@ -75,7 +76,8 @@ public class UploadServer implements Server {
                                     uploadDirectoryAbsolute,
                                     maxSize,
                                     servletRequest.getSession().getServletContext(),
-                                    servletRequest.getRequestedSessionId());
+                                    servletRequest.getRequestedSessionId(),
+                                    state);
                         } catch (IOException e) {
                             try {
                                 progressCalculator.reset();
@@ -183,7 +185,7 @@ public class UploadServer implements Server {
             st.acquireUploadLifecycleLock();
             try {
                 st.setAllCurrentInstances();
-                component.updateProgress(percent);
+                component.updateProgress(st, percent);
             }
             finally {
                 st.releaseUploadLifecycleLock();
