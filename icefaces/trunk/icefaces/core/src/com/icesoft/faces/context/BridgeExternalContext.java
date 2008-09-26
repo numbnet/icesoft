@@ -105,6 +105,29 @@ public abstract class BridgeExternalContext extends ExternalContext {
         public void setAttribute(String name, Object value) {
         }
     };
+    
+    //ICE-2990, JBSEAM-3426
+    protected RequestAttributes SimpleRequestAttributes = new RequestAttributes() {
+
+        private HashMap seamAttributes = new HashMap();
+
+        public Object getAttribute(String name) {
+            return seamAttributes.get(name);
+        }
+
+        public Enumeration getAttributeNames() {
+            return Collections.enumeration(seamAttributes.keySet());
+        }
+
+        public void removeAttribute(String name) {
+            seamAttributes.remove(name);
+        }
+
+        public void setAttribute(String name, Object value) {
+            seamAttributes.put(name, value);
+        }
+    };
+
     protected static final Dispatcher CannotDispatchOnXMLHTTPRequest = new Dispatcher() {
         public void dispatch(String path) throws IOException, FacesException {
             throw new IOException("Cannot dispatch on XMLHTTP request.");
@@ -473,6 +496,21 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
         return UserInfoNotAvailable;
     }
+    
+    //ICE-2990, JBSEAM-3426
+    protected void copySeamRequestAttributes(RequestAttributes source,RequestAttributes destination){
+        Enumeration names = source.getAttributeNames();
+        while(names.hasMoreElements()){
+            String name = (String)names.nextElement();
+            Object value = source.getAttribute(name);
+            destination.setAttribute(name,value);
+        }
 
+        //For some reason, this attribute must be present and not-null or Seam won't like it
+        //so we make sure it is injected no matter what.
+        if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null ){
+            destination.setAttribute("org.jboss.seam.web.requestPathInfo","");
+        }
+    }
 
 }
