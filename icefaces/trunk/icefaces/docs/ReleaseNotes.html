@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.1 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.2 RC1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -33,8 +33,7 @@ font-weight: bold;
 h4 {
 font-size: 110%
 }
-</style><!-- saved from url=(0022)http://internet.e-mail -->
-</head>
+</style><!-- saved from url=(0022)http://internet.e-mail --></head>
 <body>
 <div style="border: 1px solid rgb(187, 187, 187);">
 <table style="background: rgb(230, 243, 251) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial;" border="0" width="100%">
@@ -43,10 +42,10 @@ font-size: 110%
 <td width="78%">
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.1
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.2
+RC1
 Release Notes</h2>
-<p style="margin-left: 16px; margin-bottom: 12px;">June
-17th, 2008</p>
+<p style="margin-left: 16px; margin-bottom: 12px;">September 29th, 2008</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -58,8 +57,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="ReleaseNotes.html#Changes_172">Changes
+in This Release (v1.7.2 RC1)</a></li>
 <li><a href="ReleaseNotes.html#Changes_171">Changes
-in This Release (v1.7.1)</a></li>
+in&nbsp;v1.7.1</a></li>
 <li><a href="ReleaseNotes.html#Changes_170">Changes
 in&nbsp;v1.7.0</a></li>
 <li><a href="#migrationnotes">1.6.x to 1.7.x
@@ -84,7 +85,7 @@ Containers</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
 <li><a href="#KIJSF">JSF 1.2</a></li>
 <li><a href="#KIPortlets">Portlets</a></li>
-<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li>
+<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li><li><a href="#Seam">JBoss Seam</a></li><li><a href="#Spring">Spring Web Flow</a></li>
 <li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
@@ -96,8 +97,246 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_172"></a>Changes
+in This Release (v1.7.2 RC1)</h2>
+<br>
+ICEfaces v1.7.2 is a maintenance release that includes&nbsp;over 100 fixes
+and improvements.&nbsp;<br>
+<br>
+Review the <a href="ReleaseNotes.html#Known_Issues">Known
+Issues</a>
+prior to using this release. Review the <a href="#migrationnotes">1.6.x
+to 1.7.x Migration Notes</a>
+if you plan to use an existing ICEfaces 1.6.x&nbsp; application
+with 1.7.x.<br>
+<br>
+Please report any issues with
+this release to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/">forums</a>
+or the ICEfaces <a target="_blank" href="http://jira.icefaces.org/">JIRA
+issue tracker</a>.<br>
+<br>
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<span style="font-weight: bold;"></span>
+<ul class="contentIndent">
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Component Suite</span>
+<br>
+<br>
+<ul>
+<li>A new ice:outputResource component has been added to
+ease download of application resources such as report documents (.pdf,
+.doc), images, etc.</li>
+<li>An issue that could cause&nbsp;ice:inputFile file uploads to fail intermittently&nbsp;has been resolved. </li><li>ice:outputText
+has a new "nospan" attribute, which can be used to disable wrapping of
+outputText content with a &lt;SPAN&gt; element.</li><li>The
+ice:selectInputDate component has a new attribute, "inputTitle" which
+can be used to specify a "title" attribute on the&nbsp;input element
+only (only applies when "renderAsPopup=true").</li><li>&nbsp;ice:dataTable
+supports a new attribute, "resizableColumnWidths", which can be used to
+capture and specify the column widths for each column in a dataTable
+with user-resizable columns.</li><li>ice:dataTable supports a new theme
+CSS styleclass, "iceDatTblActvSrtHdr", which can be used to style the
+active sort header in a sortable dataTable.</li><li>The performance of
+the ice:menuItem renderer has been improved which will result in
+greatly improved rendering performance for menus with a lot of
+menuItems.&nbsp; <br></li></ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework</span>
+<br>
+<br>
+<ul>
+<li>A new "sessionExpiredRedirectURI" configuration
+parameter has been added to support automatic redirection to a
+specified page upon session expiry. See "Documentation Changes" section
+below for details.</li><li>The text messages used by the ICEfaces bridge to display error message
+dialogs ("Connection Lost", "Session Expired", etc.) can now be
+specified in an application resource bundle for localization and
+customization. See <a href="http://jira.icefaces.org/browse/ICE-3016" target="_blank">ICE-3016</a> for details.</li><li>A
+new JavaScript API has been added to the ICEfaces bridge to permit
+closing and disposing of a view from within JavaScript in the browser.
+This is useful in situations such as portlet development where the
+portlet &nbsp;region in the browser may have a widget to close the
+portlet. See <a href="http://jira.icefaces.org/browse/ICE-3266" target="_blank">ICE-3266</a> for details.</li><li>The mouse pointer will now change to an hourglass when a partial (or full) submit is pending.</li><li>New auto-detection and configuration for BEA WebLogic with ICEfaces AHS server.</li>
+<li>ICEfaces will now automatically revert back to non-AHS async
+communications mode if the AHS configuration fails at any step. Log
+output clearly indicates when this occurs.</li><li>Improved DOMdiffing
+and serialization algorithm resulting in an approx. 10% performance
+throughput improvement, subject to potentially much greater impact
+depending on the nature of the application content.</li><li>A new TRACE
+level log has been added that will dump the contents of each DOM update
+to be sent to the client to the log file. Use TRACE level logging for
+the "com.icesoft.faces.webapp.http.core.SendUpdates" class&nbsp;to
+enable this logging.</li><li>The icefaces-facelets.jar has been updated to version 1.1.15.B1 of Facelets.</li><li>The Sun JSF 1.2 runtime libraries included in the icefaces/lib directory has been updated to JSF1.2_09.</li></ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party
+Framework Support</span>
+<br>
+<br>
+<ul>
+<li>Spring Web Flow</li>
+<ul>
+<li>This release includes improved support for Spring WebFlow (v2.0.3). Support is generally complete, but see the <a href="#Spring">Known Issues</a> section for details on specific outstanding issues. For a usage example see the <a href="http://sventon.icefaces.org/svn/repobrowser.svn?path=%2fprojects%2fswf-booking-icefaces%2ftrunk%2fswf-booking-icefaces&amp;revision=17658&amp;name=repo" target="_blank">swf-booking-faces</a> sample project.</li>
+</ul>
+<li>JBoss Seam</li>
+<ul>
+<li>The Seam exception redirection feature is now supported.</li><li>Seam 2.0.2 deployed to&nbsp;JBoss 4.2.3 (JSF1.2_09) is now supported.</li><li>There are Known Issues in this release when used with JBoss Seam v2.1RC1. See the <a href="#Seam">Known Issues</a> section for details. </li></ul>
+</ul>
+</li>
+</ul>
+<br>
+<h3><span style="font-weight: bold;">Documentation
+Changes</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Developer's Guide</span>&nbsp;</li>
+</ul>
+<div style="margin-left: 40px;">
+<ul>
+<li>The following configuration parameters, from Appendix B of
+the
+Developer's Guide (pg. 128), have been added or modified
+since the ICEfaces 1.7.0 release:&nbsp;</li>
+</ul>
+</div>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.connectionLostRedirectURI</span></big>,
+default value = null.
+<p>Specifies a page URI to redirect the client to when an
+asynchronous connection is lost. The parameter value must be surrounded
+by single quotes and an ice:outputConnectionStatus component must be
+present on the page. Note: This parameter is only applicable to
+asynchronous&nbsp; applications as it is the async connection lost
+event that triggers the redirect&nbsp;(com.icesoft.faces.synchronousUpdate=false,
+which is the ICEfaces default).&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressResources</span></big>,
+default value = true.
+<p>The compressResources setting is used to tell the
+ICEfaces framework whether or not to compress (i.e. gzip)
+internal resources that are served directly by the framework. This
+includes theme CSS stylesheets, images, JavaScript,&nbsp; etc. Some
+browsers can have difficulty with compression (notably IE 6) and
+compression can be redundant for resources that are already compressed.
+As of this release, ICEfaces, bu default,&nbsp;applies a list of
+mime-types to exclude from compression, even if the value is set to
+true. This list includes:&nbsp;
+</p>
+<ul>
+<li>application/java-archive</li>
+<li>application/pdf</li>
+<li>application/x-compress</li>
+<li>application/x-gzip</li>
+<li>application/zip</li>
+<li>audio/x-mpeg</li>
+<li>image/gif</li>
+<li>image/jpeg</li>
+<li>image/png</li>
+<li>image/tiff</li>
+<li>video/mp4</li>
+<li>video/mpeg</li>
+<li>video/x-sgi-movie</li>
+</ul>
+<p>If you wish to override or supplement this list and
+provide your own mime-types to be excluded from compression, use the <big><span style="font-family: monospace;">com.icesoft.faces.compressResourcesExclusions</span></big>
+parameter.<br>
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressResourcesExclusions</span></big>,
+default value = "image/gif image/png image/jpeg image/tiff
+application/pdf application/zip application/x-compress
+application/x-gzip application/java-archive video/x-sgi-movie
+audio/x-mpeg video/mp4 video/mpeg".
+<p>This parameter is used to override or supplement the
+default list of mime-types that are excluded from
+compression by ICEfaces. The compressResourcesExclusions parameter
+takes a space delimited list of mime types for which compression will
+not be applied. Please note that if you use this parameter, you are
+overriding the default list of mime-types that ICEfaces excludes by
+default and you'll need to specify all the mime-types that you want to
+exclude, including any of the &nbsp;mime-types excluded by default.
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.<span style="font-family: monospace;">sessionExpiredRedirectURI</span></span></big>,
+default value = null.
+<p>Specifies a page URI to redirect the client to upon session expiry.
+Redirection will occur immediately when using asynchronous mode, or
+upon the first partial or full-submit after the session expires in
+synchronous mode.
+</p>
+</li>
+</ul>
+</ul>
+<div style="margin-left: 40px;">
+<ul>
+<li>Starting with ICEfaces 1.7.1, the "Glassfish v2" section
+under "Optimizing Asynchronous
+Communications for Scalability" in the "Advanced Topics" chapter (on
+pg. 54) should be&nbsp;changed as follows:&nbsp;</li>
+</ul>
+</div>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li>Remove Step 1 (configuring the GrizzlyPushServlet) under
+"To configure ICEfaces to use Grizzly:". Beginning with ICEfaces 1.7.1
+this configuration step is no longer required or
+supported.&nbsp;Note that Step&nbsp;2 ("Add the cometSupport
+property to your http-listener") is still required.</li>
+<li>ICEfaces will now auto-detect GlassFish + Grizzly and
+will try to use the ARP capabilities of Grizzly if they are enabled. To
+disable using the ARP facilities of Glassfish Grizzly and Jetty, the
+com.icesoft.faces.useARP property can be set to false inside the
+web.xml. Note that the previous&nbsp;Jetty-specific
+com.icesoft.faces.useJettyContinuations configuration parameter can
+still be used but is now deprecated.</li>
+<li>If this auto-configuration fails, ICEfaces will revert to
+using the traditional Thread Blocking async IO mechanism. You can
+verify that ICEfaces is using the Grizzly ARP mechanism by reviewing
+the ICEfaces log file (at INFO level). The following log messages may
+be present:</li>
+</ul>
+<ul>
+<ul>
+<li style="font-family: Courier New,Courier,monospace;">GlassFish
+ARP available: true</li>
+<li style="font-family: Courier New,Courier,monospace;">Adapting
+to GlassFish ARP environment</li>
+<li style="font-family: Courier New,Courier,monospace;">Failed
+to add Comet handler... (if ARP configuration fails only)<span style="font-family: Courier New,Courier,monospace;"></span></li>
+<li style="font-family: Courier New,Courier,monospace;"><span style="font-family: Courier New,Courier,monospace;">Falling
+back to Thread Blocking environment (if ARP configuration fails only)</span></li>
+</ul>
+</ul>
+</ul>
+<br>
+Refer
+to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10130">ICEfaces
+JIRA Change Log</a> for detailed information on
+all the changes included in this release.<br>
+<br>
 <h2><a name="Changes_171"></a>Changes
-in This Release (v1.7.1)</h2>
+in&nbsp;v1.7.1</h2>
 <br>
 ICEfaces v1.7.1 is a maintenance release that includes over 100 fixes
 and improvements.&nbsp;<br>
@@ -1298,7 +1537,7 @@ Tools
 Platform<br>
 </td>
 <td style="vertical-align: top; text-align: right;">3.1.1/1.0,
-3.2/1.5, 3.3/2.0<br>
+3.2/1.5, 3.3/2.0, 3.3<br>
 </td>
 </tr>
 <tr>
@@ -1641,7 +1880,13 @@ application
 configured to use AHS, the application server may log harmless
 exceptions related to the classloader unloading classes before
 framework threads have finished running (related to JMS).</li>
-</ul>
+</ul><h3><a name="Seam"></a>JBoss Seam</h3><ul><li>The following ICEfaces features are not reliable when used with Seam
+v2.1RC1 and will be addressed prior to ICEfaces 1.7.2 final release:</li><ul><li>Ajax push operations</li><li>ice:inputFile component</li></ul></ul><h3><a name="Spring"></a>Spring WebFlow</h3>
+<ul><li>The access-failure-initiated-login feature of Spring Web Flow
+is not supported in this release. A work-around is to ensure your
+application structure requires login prior to permitting users access
+to restricted content, etc. See <a href="http://jira.icefaces.org/browse/ICE-3536" target="_blank">ICE-3536</a> for details.</li></ul>
+
 <h3><a name="KISampleApps"></a>Sample
 Applications</h3>
 <ul>
@@ -1740,16 +1985,20 @@ to be timing related and seems to be more apparent with multiple users.
 </ul>
 </ul>
 <ul>
-<li><span style="font-weight: bold;">Tomcat v6.0 / JBoss 4.2 with NIO Connector</span>
+<li><span style="font-weight: bold;">Tomcat v6.0 /
+JBoss 4.2 with NIO Connector</span>
 </li>
 </ul>
 <ul>
 <ul>
-<li>When using the optional Tomcat 6 NIO connector (can also be used with JBoss 4.2) with
- asynchronous ICEfaces applications a NullPointerException can be thrown
-when using the TomcatPushServlet (located in the com.icesoft.faces.webapp.http.servlet package)
- due to Tomcat recycling objects that are still in use by the TomcatPushServlet. The issue seems
-to be timing related and is more apparent with multiple users.</li><li>Workarounds
+<li>When using the optional Tomcat 6 NIO connector (can also
+be used with JBoss 4.2) with asynchronous ICEfaces applications a
+NullPointerException can be thrown
+when using the TomcatPushServlet (located in the
+com.icesoft.faces.webapp.http.servlet package) due to Tomcat recycling
+objects that are still in use by the TomcatPushServlet. The issue seems
+to be timing related and is more apparent with multiple users.</li>
+<li>Workarounds
 for this issue include not configuring the optional Tomcat NIO
 connector and configuringthe ICEfaces AHS server configuration for NIO
 asynchronous communications instead.</li>
