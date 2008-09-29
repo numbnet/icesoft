@@ -113,28 +113,31 @@
 
     This.PointerIndicator = Object.subclass({
         initialize: function(element) {
-            this.element = element;
-        },
+            this.toggle = function() {
+                //block any other action from triggering the indicator before being in 'off' state again
+                this.on = Function.NOOP;
+                //prepare cursor shape rollback 
+                var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ element ], function(result, type) {
+                    return result.concat($enumerate(element.getElementsByTagName(type)).toArray());
+                }).collect(function(e) {
+                    var c = e.style.cursor;
+                    e.style.cursor = 'wait';
+                    return function() {
+                        e.style.cursor = c;
+                    };
+                });
 
-        on: /Safari/.test(navigator.userAgent) ? Function.NOOP : function() {
-            var parent = this.element;
-            var cursorRollbacks = ['input', 'select', 'textarea', 'button', 'a'].inject([ parent ], function(result, type) {
-                return result.concat($enumerate(parent.getElementsByTagName(type)).toArray());
-            }).collect(function(element) {
-                var c = element.style.cursor;
-                element.style.cursor = 'wait';
-                return function() {
-                    element.style.cursor = c;
+                this.off = function() {
+                    cursorRollbacks.broadcast();
+
+                    this.on = this.toggle;
+                    this.off = Function.NOOP;
                 };
-            });
+            };
 
-            this.off = function() {
-                cursorRollbacks.broadcast();
-                this.off = Function.NOOP;
-            }
-        },
-
-        off: Function.NOOP
+            this.on = /Safari/.test(navigator.userAgent) ? Function.NOOP : this.toggle;
+            this.off = Function.NOOP;
+        }
     });
 
     This.OverlayIndicator = Object.subclass({
