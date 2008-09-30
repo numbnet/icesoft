@@ -40,10 +40,6 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
         views.push(new Ice.Parameter.Association(session, view));
     };
 
-    var deregisterAllViews = function() {
-        views.clear();
-    };
-
     var channel = new Ice.Ajax.Client(logger.child('dispose'));
     var sendDisposeViews = function(parameters) {
         if (parameters.isEmpty()) return;
@@ -118,23 +114,11 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
                 //replace ampersand entities incorrectly decoded by Safari 2.0.4
                 var url = element.getAttribute("url").replace(/&#38;/g, "&");
                 logger.info('Redirecting to ' + url);
-                //avoid view disposal on navigation rules
-                if (url.contains('rvn=')) {
-                    deregisterAllViews();
-                }
                 window.location.href = url;
             });
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
-                var url = window.location.href;
-                deregisterAllViews();
-                if (url.contains('rvn=')) {
-                    window.location.reload();
-                } else {
-                    var view = element.getAttribute('view');
-                    var queryPrefix = url.contains('?') ? '&' : '?';
-                    window.location.href = url + queryPrefix + 'rvn=' + view;
-                }
+                window.location.reload();
             });
             commandDispatcher.register('macro', function(message) {
                 $enumerate(message.childNodes).each(function(subMessage) {

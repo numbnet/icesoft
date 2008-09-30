@@ -46,11 +46,10 @@ import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.util.SeamUtilities;
+import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+import org.acegisecurity.context.SecurityContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -105,7 +104,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         public void setAttribute(String name, Object value) {
         }
     };
-    
+
     //ICE-2990, JBSEAM-3426
     protected RequestAttributes SimpleRequestAttributes = new RequestAttributes() {
 
@@ -369,35 +368,20 @@ public abstract class BridgeExternalContext extends ExternalContext {
              *       confusing. However, the result is as desired.
              */
             uri =
-                new URI(
-                    null,                                              // scheme
-                    null,                                            // userInfo
-                    null,                                                // host
-                    -1,                                                  // port
-                    index != -1 ?                                        // path
-                        uriString.substring(0, index) : uriString,
-                    index != -1 ?                                       // query
-                        uriString.substring(index + 1) : null,
-                    null);                                           // fragment
+                    new URI(
+                            null,                                              // scheme
+                            null,                                            // userInfo
+                            null,                                                // host
+                            -1,                                                  // port
+                            index != -1 ?                                        // path
+                                    uriString.substring(0, index) : uriString,
+                            index != -1 ?                                       // query
+                                    uriString.substring(index + 1) : null,
+                            null);                                           // fragment
         } catch (URISyntaxException exception) {
             throw new RuntimeException(exception);
         }
-        final String redirectURI;
-        if (uri.isAbsolute()) {
-            redirectURI = uri.toString();
-        } else {
-            String query = uri.getQuery();
-            if (query == null) {
-                redirectURI = uri + "?rvn=" + viewIdentifier;
-            } else {
-                if (query.matches(".*rvn=.*")) {
-                    redirectURI = uri.toString();
-                } else {
-                    redirectURI = uri + "&rvn=" + viewIdentifier;
-                }
-            }
-        }
-        redirector.redirect(redirectURI);
+        redirector.redirect(uri.toString());
         // #3172 FacesContext may be null if we're currently logging out.  
         FacesContext fc = FacesContext.getCurrentInstance();
         if (fc != null) {
@@ -457,7 +441,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     protected static AuthenticationVerifier createAuthenticationVerifier(final HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
-        
+
         if ((AuthenticationClass != null) && ((null == principal) ||
                 AuthenticationClass.isInstance(principal))) {
             if (AuthenticationClass.isInstance(principal))
@@ -465,12 +449,12 @@ public abstract class BridgeExternalContext extends ExternalContext {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 SecurityContext sc = (SecurityContext) session.getAttribute(
-                    HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+                        HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
                 if (sc != null) {
                     return new AcegiAuthWrapper(sc.getAuthentication());
                 }
             }
-            return new AcegiAuthWrapper(null); 
+            return new AcegiAuthWrapper(null);
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
@@ -496,20 +480,20 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
         return UserInfoNotAvailable;
     }
-    
+
     //ICE-2990, JBSEAM-3426
-    protected void copySeamRequestAttributes(RequestAttributes source,RequestAttributes destination){
+    protected void copySeamRequestAttributes(RequestAttributes source, RequestAttributes destination) {
         Enumeration names = source.getAttributeNames();
-        while(names.hasMoreElements()){
-            String name = (String)names.nextElement();
+        while (names.hasMoreElements()) {
+            String name = (String) names.nextElement();
             Object value = source.getAttribute(name);
-            destination.setAttribute(name,value);
+            destination.setAttribute(name, value);
         }
 
         //For some reason, this attribute must be present and not-null or Seam won't like it
         //so we make sure it is injected no matter what.
-        if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null ){
-            destination.setAttribute("org.jboss.seam.web.requestPathInfo","");
+        if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null) {
+            destination.setAttribute("org.jboss.seam.web.requestPathInfo", "");
         }
     }
 

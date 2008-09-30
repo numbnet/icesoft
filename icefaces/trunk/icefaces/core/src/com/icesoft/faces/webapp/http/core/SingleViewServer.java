@@ -7,10 +7,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import javax.servlet.http.HttpSession;
-import javax.faces.lifecycle.LifecycleFactory;
-import javax.faces.lifecycle.Lifecycle;
 import javax.faces.FactoryFinder;
+import javax.faces.lifecycle.Lifecycle;
+import javax.faces.lifecycle.LifecycleFactory;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class SingleViewServer implements Server {
@@ -44,8 +44,6 @@ public class SingleViewServer implements Server {
             view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
             ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
-        } else {
-            view.updateOnPageRequest(request);
         }
 
         sessionMonitor.touchSession();
