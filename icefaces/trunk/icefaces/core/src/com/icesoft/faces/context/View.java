@@ -134,7 +134,7 @@ public class View implements CommandQueue {
         makeCurrent();
     }
 
-    public void updateOnPageRequest(Request request) throws Exception {
+    private void updateOnPageRequest(Request request) throws Exception {
         acquireLifecycleLock();
         //todo: always recreate BridgeFacesContext & Co. on page load -- override ICE-3424 fixes
         request.detectEnvironment(new Request.Environment() {
@@ -270,6 +270,7 @@ public class View implements CommandQueue {
     }
 
     public void servePage(Request request) throws Exception {
+        updateOnPageRequest(request);
         request.respondWith(responseHandler);
     }
 
