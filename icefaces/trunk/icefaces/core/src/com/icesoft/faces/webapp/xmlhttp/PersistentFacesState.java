@@ -215,10 +215,6 @@ public class PersistentFacesState implements Serializable {
      * @deprecated this method should not be exposed
      */
     public void execute() throws RenderingException {
-        //guard against reentrant rendering of the current view
-        if (this.equals(PersistentFacesState.getInstance()))  {
-            return;
-        }
         failIfDisposed();
         try {
             acquireLifecycleLock();
@@ -262,6 +258,10 @@ public class PersistentFacesState implements Serializable {
      * @since 1.7
      */
     public void executeAndRender() throws RenderingException {
+        //guard against reentrant rendering of the current view
+        if (this.equals(PersistentFacesState.getInstance()))  {
+            return;
+        }
         acquireLifecycleLock();
         execute();
         render();
