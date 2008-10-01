@@ -162,6 +162,13 @@
         <ice:outputText
                 value="#{msgs['node.outputMedia.label']}"/>
     </ice:commandLink>
+     <br />
+    <ice:commandLink id="outputResourceContentPanel"
+                     actionListener="#{navigation.navigationStackChange}">
+        <f:param name="stackName" value="outputResourceContentPanel" />
+        <ice:outputText
+                value="#{msgs['node.outputResource.label']}"/>
+    </ice:commandLink>
     <br />
     <ice:commandLink id="gMapContentPanel"
                      actionListener="#{navigation.navigationStackChange}">

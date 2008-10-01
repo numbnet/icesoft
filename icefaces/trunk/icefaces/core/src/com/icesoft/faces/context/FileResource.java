@@ -29,4 +29,8 @@ public class FileResource implements Resource {
         options.setLastModified(new Date(file.lastModified()));
         options.setFileName(file.getName());
     }
+    
+    public File getFile(){
+    	return file;
+    }
 }

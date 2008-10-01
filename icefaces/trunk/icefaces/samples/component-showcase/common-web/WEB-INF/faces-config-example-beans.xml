@@ -408,6 +408,12 @@
         </managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    
+    <managed-bean>
+		<managed-bean-name>resourceBean</managed-bean-name>
+		<managed-bean-class>org.icefaces.application.showcase.view.bean.examples.component.outputResource.OutputResourceBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 
    
 </faces-config>

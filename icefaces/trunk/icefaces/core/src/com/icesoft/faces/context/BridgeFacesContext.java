@@ -499,7 +499,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
 
     public URI loadCSSRules(Resource resource, ResourceLinker.Handler linkerHandler) {
-        String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
+    	String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
         if (!cssRuleURIs.contains(uri)) {
             cssRuleURIs.add(uri);
         }
@@ -507,11 +507,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI registerResource(Resource resource) {
-        return resolve(resourceDispatcher.registerResource(resource).toString());
+    	return registerResource(resource, null);
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler linkerHandler) {
-        return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
+    	if( resource == null ){
+    		log.warn("Cannot register a null resource");
+    		return null;
+    	}        
+    	return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
     }
 
     //adapting deprecated methods to current API

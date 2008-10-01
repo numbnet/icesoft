@@ -261,6 +261,13 @@
                                  <jsp:directive.include file="/WEB-INF/includes/examples/custom/gmap.jspx" />
                              </f:subview>
                          </ice:panelGroup>
+                         
+                         
+                         <ice:panelGroup id="outputResourceContentPanel" >
+                             <f:subview id="oResSub">
+                                 <jsp:directive.include file="/WEB-INF/includes/examples/custom/outputResource.jspx" />
+                             </f:subview>
+                         </ice:panelGroup>
 
                          <ice:panelGroup id="inputRichTextPanel" >
                              <f:subview id="inputRichTextSub">

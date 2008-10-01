@@ -223,6 +223,7 @@
   <!ENTITY ice-cust-paneltabset-props SYSTEM "ice_cust_properties/cust-paneltabset-props.xml">
   <!ENTITY ice-cust-paneltab-props SYSTEM "ice_cust_properties/cust-paneltab-props.xml">
   <!ENTITY ice-cust-outputprogress-props SYSTEM "ice_cust_properties/cust-outputprogress-props.xml">
+  <!ENTITY ice-cust-outputresource-props SYSTEM "ice_cust_properties/cust-outputresource-props.xml">
   <!ENTITY ice-cust-selectInputDate-props SYSTEM "ice_cust_properties/cust-selectInputDate-props.xml">
   <!ENTITY ice-cust-selectinputtext-props SYSTEM "ice_cust_properties/cust-selectinputtext-props.xml">
   <!ENTITY ice-cust-sortheader-props SYSTEM "ice_cust_properties/cust-sortheader-props.xml">
@@ -372,6 +373,9 @@
   
   <!ENTITY outputprogress-component   SYSTEM "custom/outputprogress-component.xml">
   <!ENTITY outputprogress-renderer    SYSTEM "custom/outputprogress-renderer.xml">
+  
+  <!ENTITY outputresource-component   SYSTEM "custom/outputResource-component.xml">
+  <!ENTITY outputresource-renderer    SYSTEM "custom/outputResource-renderer.xml">
   
   <!ENTITY panelBorder-component   SYSTEM "custom/panelBorder-component.xml">
   <!ENTITY panelBorder-renderer    SYSTEM "custom/panelBorder-renderer.xml">
@@ -532,6 +536,7 @@
     &inputRichText-component;	
 	&panelstack-component;
 	&outputprogress-component;
+	&outputresource-component;
 	&panelBorder-component;
 	&outputConnectionStatus-component;
 	&datapaginator-component;
@@ -615,6 +620,7 @@
         &inputRichText-renderer;   
 		&panelstack-renderer;
 		&outputprogress-renderer;
+		&outputresource-renderer;
 		&panelBorder-renderer;
 		&outputConnectionStatus-renderer;
 		&datapaginator-renderer;
