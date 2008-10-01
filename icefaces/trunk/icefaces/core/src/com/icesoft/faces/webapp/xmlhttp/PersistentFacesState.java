@@ -166,10 +166,6 @@ public class PersistentFacesState implements Serializable {
      * The user's browser will be immediately updated with any changes.
      */
     public void render() throws RenderingException {
-        //guard against reentrant rendering of the current view
-        if (this.equals(PersistentFacesState.getInstance()))  {
-            return;
-        }
         failIfDisposed();
         warnIfSynchronous();
         try {
