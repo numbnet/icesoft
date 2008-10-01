@@ -46,7 +46,9 @@ public class ResourceDispatcher implements Server {
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler handler) {
-        final String name = prefix + encode(resource) + "/";
+    	if( handler == null )
+    		handler = NOOPHandler;
+    	final String name = prefix + encode(resource) + "/";
         if (!registered.contains(name)) {
             registered.add(name);
             dispatcher.dispatchOn(".*" + name.replaceAll("\\/", "\\/") + "$", new ResourceServer(resource));

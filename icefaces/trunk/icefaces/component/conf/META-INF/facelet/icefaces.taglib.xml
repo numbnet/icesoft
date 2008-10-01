@@ -433,6 +433,14 @@
 		</component>
 	</tag>
 	<tag>
+		<tag-name>outputResource</tag-name>
+		<component>
+			<component-type>com.icesoft.faces.OutputResource</component-type>
+			<renderer-type>com.icesoft.faces.OutputResourceRenderer</renderer-type>
+			<handler-class>com.icesoft.faces.component.facelets.IceComponentHandler</handler-class>
+		</component>
+	</tag>
+	<tag>
 		<tag-name>outputStyle</tag-name>
 		<component>
 			<component-type>com.icesoft.faces.OutputStyleComp</component-type>
