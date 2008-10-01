@@ -1,7 +1,6 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
-import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -39,10 +38,9 @@ public class MultiViewServer implements Server {
     public void service(Request request) throws Exception {
         //extract viewNumber if this request is from a redirect
         String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+        View view = new View(viewNumber, sessionID, session, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
         views.put(viewNumber, view);
         sessionMonitor.touchSession();
-        ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         view.servePage(request);
         view.release();
     }

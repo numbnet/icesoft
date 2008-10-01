@@ -34,6 +34,7 @@
 package com.icesoft.faces.webapp.xmlhttp;
 
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
@@ -41,7 +42,6 @@ import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
-import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -82,19 +82,17 @@ public class PersistentFacesState implements Serializable {
     private final Lifecycle lifecycle;
     private final boolean synchronousMode;
     private final Collection viewListeners;
-    private final ReentrantLock lifecycleLock;
-    private BridgeFacesContext facesContext;
+    private View view;
     private boolean disposed;
 
-    public PersistentFacesState(BridgeFacesContext facesContext, ReentrantLock lifecycleLock, Collection viewListeners, Configuration configuration) {
+    public PersistentFacesState(View view, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
         //Save a reference to the web app classloader so that server-side
         //render requests work regardless of how they are originated.
         this.renderableClassLoader = Thread.currentThread().getContextClassLoader();
         LifecycleFactory factory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         this.lifecycle = factory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
-        this.facesContext = facesContext;
-        this.lifecycleLock = lifecycleLock;
+        this.view = view;
         this.viewListeners = viewListeners;
         this.synchronousMode = configuration.getAttributeAsBoolean("synchronousUpdate", false);
         this.setCurrentInstance();
@@ -143,12 +141,7 @@ public class PersistentFacesState implements Serializable {
      * @return the FacesContext for this instance
      */
     public FacesContext getFacesContext() {
-        return facesContext;
-    }
-
-    //todo: try to remove this method in the future
-    public void setFacesContext(BridgeFacesContext facesContext) {
-        this.facesContext = facesContext;
+        return view.getFacesContext();
     }
 
     /**
@@ -168,9 +161,10 @@ public class PersistentFacesState implements Serializable {
     public void render() throws RenderingException {
         failIfDisposed();
         warnIfSynchronous();
+        BridgeFacesContext facesContext = view.getFacesContext();
         try {
-            acquireLifecycleLock();
-            installThreadLocals();
+            view.acquireLifecycleLock();
+            view.installThreadLocals();
             //todo: why is this necessary? is this the best place to have this call?
             facesContext.setFocusId("");
             lifecycle.render(facesContext);
@@ -213,15 +207,14 @@ public class PersistentFacesState implements Serializable {
     public void execute() throws RenderingException {
         failIfDisposed();
         try {
-            acquireLifecycleLock();
-            installThreadLocals();
-            
+            view.acquireLifecycleLock();
+            view.installThreadLocals();
+            BridgeFacesContext facesContext = view.getFacesContext();
             if (ImplementationUtil.isJSF12()) {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
                 //instead
-                Map requestParameterMap = 
-                    facesContext.getExternalContext().getRequestParameterMap();
+                Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
                 requestParameterMap.clear();
                 //Seam appears to need ViewState set during push
                 requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
@@ -254,13 +247,13 @@ public class PersistentFacesState implements Serializable {
      * @since 1.7
      */
     public void executeAndRender() throws RenderingException {
-        acquireLifecycleLock();
+        view.acquireLifecycleLock();
         execute();
         render();
     }
 
     public void setupAndExecuteAndRender() throws RenderingException {
-        acquireLifecycleLock();
+        view.acquireLifecycleLock();
         installContextClassLoader();
         if (SeamUtilities.isSeamEnvironment()) {
             testSession();
@@ -279,9 +272,9 @@ public class PersistentFacesState implements Serializable {
     public void redirectTo(String uri) {
         warnIfSynchronous();
         try {
-            acquireLifecycleLock();
-            installThreadLocals();
-            facesContext.getExternalContext().redirect(uri);
+            view.acquireLifecycleLock();
+            view.installThreadLocals();
+            view.getFacesContext().getExternalContext().redirect(uri);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -299,15 +292,16 @@ public class PersistentFacesState implements Serializable {
     public void navigateTo(String outcome) {
         warnIfSynchronous();
         try {
-            acquireLifecycleLock();
-            installThreadLocals();
+            view.acquireLifecycleLock();
+            view.installThreadLocals();
+            BridgeFacesContext facesContext = view.getFacesContext();
             facesContext.getApplication().getNavigationHandler().handleNavigation(facesContext, facesContext.getViewRoot().getViewId(), outcome);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             release();
         }
-    }    
+    }
 
     /**
      * Threads that used to server request/response cycles in an application
@@ -318,7 +312,7 @@ public class PersistentFacesState implements Serializable {
      */
     public void release() {
         localInstance.set(null);
-        releaseLifecycleLock();
+        view.releaseLifecycleLock();
     }
 
     public void installContextClassLoader() {
@@ -365,59 +359,46 @@ public class PersistentFacesState implements Serializable {
                 log.debug("renderLater failed ", e);
             }
         }
-    }    
-
-    private void acquireLifecycleLock() {
-        lifecycleLock.lock();
-    }
-
-    private void releaseLifecycleLock() {
-        //release all locks corresponding to current thread!
-        for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
-            lifecycleLock.unlock();
-        }
     }
 
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void acquireUploadLifecycleLock() {
-        acquireLifecycleLock();
+        view.acquireLifecycleLock();
     }
 
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void releaseUploadLifecycleLock() {
-        releaseLifecycleLock();
+        view.releaseLifecycleLock();
     }
-    
+
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void setAllCurrentInstances() {
-        installThreadLocals();
+        view.installThreadLocals();
     }
-    
+
     private void warnIfSynchronous() {
         if (synchronousMode) {
             log.warn("Running in 'synchronous mode'. The page updates were queued but not sent.");
         }
     }
 
-    private void installThreadLocals() {
-        facesContext.setCurrentInstance();
-        setCurrentInstance();
-    }
-
     private void testSession() throws IllegalStateException {
-        Object o = facesContext.getExternalContext().getSession(false);
+        Object o = view.getFacesContext().getExternalContext().getSession(false);
         if (o != null) {
             if (o instanceof HttpSession) {
                 HttpSession session = (HttpSession) o;
@@ -430,19 +411,19 @@ public class PersistentFacesState implements Serializable {
     }
 
     private void fatalRenderingException() throws FatalRenderingException {
-        final String message = "fatal render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "fatal render failure for " + view;
         log.debug(message);
         throw new FatalRenderingException(message);
     }
 
     private void fatalRenderingException(Exception e) throws FatalRenderingException {
-        final String message = "fatal render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "fatal render failure for " + view;
         log.debug(message, e);
         throw new FatalRenderingException(message, e);
     }
 
     private void transientRenderingException(Exception e) throws TransientRenderingException {
-        final String message = "transient render failure for viewNumber " + facesContext.getViewNumber();
+        final String message = "transient render failure for " + view;
         log.debug(message, e);
         throw new TransientRenderingException(message, e);
     }
@@ -458,7 +439,7 @@ public class PersistentFacesState implements Serializable {
         }
         transientRenderingException(e);
     }
-    
+
     private void failIfDisposed() throws FatalRenderingException {
         if (disposed) {
             //ICE-3073 Clear threadLocal in all paths
