@@ -1,7 +1,6 @@
 package com.icesoft.faces.webapp.http.core;
 
 import com.icesoft.faces.context.View;
-import com.icesoft.faces.util.event.servlet.ContextEventRepeater;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -41,9 +40,8 @@ public class SingleViewServer implements Server {
         //create single view or re-create view if the request is the result of a redirect
         View view = (View) views.get(viewNumber);
         if (view == null) {
-            view = new View(viewNumber, sessionID, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+            view = new View(viewNumber, sessionID, session, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
             views.put(viewNumber, view);
-            ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewNumber));
         }
 
         sessionMonitor.touchSession();

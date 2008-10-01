@@ -36,7 +36,11 @@ import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
+import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
+import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
+import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,6 +62,8 @@ import javax.faces.context.ResponseStream;
 import javax.faces.context.ResponseWriter;
 import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -66,12 +72,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class BridgeFacesContext extends FacesContext implements ResourceRegistry {
@@ -81,6 +87,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Application application;
     private BridgeExternalContext externalContext;
     private HashMap faceMessages = new HashMap();
+    private Map bundles = Collections.EMPTY_MAP;
     private FacesMessage.Severity maxSeverity;
     private boolean renderResponse;
     private boolean responseComplete;
@@ -97,15 +104,22 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
 
-    public BridgeFacesContext(BridgeExternalContext externalContext, String viewIdentifier, String sessionID, View view, Configuration configuration, ResourceDispatcher resourceDispatcher) {
+    public BridgeFacesContext(Request request, final String viewIdentifier, String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor) throws Exception {
         setCurrentInstance(this);
-        this.externalContext = externalContext;
+        request.detectEnvironment(new Request.Environment() {
+            public void servlet(Object request, Object response) {
+                externalContext = new ServletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor);
+            }
+
+            public void portlet(Object request, Object response, Object portletConfig) {
+                externalContext = new PortletExternalContext(viewIdentifier, request, response, view, configuration, sessionMonitor, portletConfig);
+            }
+        });
         this.viewNumber = viewIdentifier;
         this.sessionID = sessionID;
         this.view = view;
         this.configuration = configuration;
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
-        this.externalContext = externalContext;
         this.resourceDispatcher = resourceDispatcher;
         this.switchToNormalMode();
     }
@@ -240,8 +254,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
     public void switchToNormalMode() {
         try {
-            //ICE-3424 - clear viewRoot to force JSF lifecycle into creating a new one
-            viewRoot = null;
+            externalContext.switchToNormalMode();
             domSerializer = new NormalModeSerializer(this, externalContext.getWriter("UTF-8"));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -249,7 +262,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void switchToPushMode() {
-        //todo: pull document in this class
+        //collect bundles put by Tag components when the page is parsed
+        bundles = externalContext.collectBundles();
+        externalContext.switchToPushMode();
 
         // Jira #1330.
         // Normally, just masking a null object just leads to
@@ -296,7 +311,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 view.put(new Reload(viewNumber));
                 application.setViewHandler(new SwitchViewHandler(application.getViewHandler(), path));
             }
-        } 
+        }
     }
 
     public String getIceFacesId() {
@@ -391,7 +406,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
-            if (null != responseWriter)  {
+            if (null != responseWriter) {
                 ((DOMResponseWriter) responseWriter).release();
             }
         }
@@ -400,6 +415,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public void dispose() {
+        externalContext.dispose();
     }
 
     public void applyBrowserDOMChanges() {
@@ -499,7 +515,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     //adapting deprecated methods to current API
-    
+
     public URI registerResource(final String mimeType, final Resource resource) {
         return registerResource(new ProxyResource(resource) {
             public void withOptions(Options options) throws IOException {
@@ -562,6 +578,24 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         }
 
         return result;
+    }
+
+    public void processPostback(Request request) throws Exception {
+        request.detectEnvironment(new Request.Environment() {
+            public void servlet(Object request, Object response) {
+                externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
+                //#2139 this is a postback, so insert the key now
+                externalContext.insertPostbackKey();
+            }
+
+            public void portlet(Object request, Object response, Object config) {
+                //this call cannot arrive from a Portlet
+            }
+        });
+    }
+
+    public void injectBundles() {
+        externalContext.injectBundles(bundles);
     }
 
     private class DispatchingViewHandler extends ViewHandlerProxy {

@@ -23,10 +23,12 @@ public class ReceiveSendUpdates implements Server {
         }
     };
     private static Lifecycle lifecycle;
+
     static {
         LifecycleFactory LifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
         lifecycle = LifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
     }
+
     private final SessionDispatcher.Monitor sessionMonitor;
     private final Map views;
     private final Collection synchronouslyUpdatedViews;
@@ -48,7 +50,7 @@ public class ReceiveSendUpdates implements Server {
                 request.respondWith(SessionExpiredResponse.Handler);
             } else {
                 try {
-                    view.updateOnXMLHttpRequest(request);
+                    view.processPostback(request);
                     synchronouslyUpdatedViews.add(request.getParameter("ice.view"));
                     sessionMonitor.touchSession();
                     renderCycle(view.getFacesContext());
