@@ -38,23 +38,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.security.Principal;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
+import org.springframework.security.Authentication;
+import org.springframework.security.GrantedAuthority;
 
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+import org.springframework.security.context.SecurityContext;
+import org.springframework.security.context.HttpSessionContextIntegrationFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.security.Principal;
 
-public class AcegiAuthWrapper implements AuthenticationVerifier {
-    private static Log Log = LogFactory.getLog(AcegiAuthWrapper.class);
+public class SpringAuthWrapper implements AuthenticationVerifier {
+    private static Log Log = LogFactory.getLog(SpringAuthWrapper.class);
 
     Authentication authentication;
 
-    public AcegiAuthWrapper(Principal principal) {
+    public SpringAuthWrapper(Principal principal) {
         this.authentication = (Authentication) principal;
     }
 
@@ -90,19 +90,19 @@ public class AcegiAuthWrapper implements AuthenticationVerifier {
         Principal principal = request.getUserPrincipal();
         
         if (principal instanceof Authentication)  {
-            return new AcegiAuthWrapper(principal);
+            return new SpringAuthWrapper(principal);
         }
         
         HttpSession session = request.getSession(false);
         if (session != null) {
             SecurityContext sc = (SecurityContext) session.getAttribute(
-                HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+                HttpSessionContextIntegrationFilter.SPRING_SECURITY_CONTEXT_KEY);
             if (sc != null) {
-                return new AcegiAuthWrapper(sc.getAuthentication());
+                return new SpringAuthWrapper(sc.getAuthentication());
             }
         }
         
-        return new AcegiAuthWrapper(null); 
+        return new SpringAuthWrapper(null); 
     }
 
 }

@@ -38,6 +38,7 @@
 package com.icesoft.faces.context;
 
 import com.icesoft.faces.env.AcegiAuthWrapper;
+import com.icesoft.faces.env.SpringAuthWrapper;
 import com.icesoft.faces.env.AuthenticationVerifier;
 import com.icesoft.faces.env.RequestAttributes;
 import com.icesoft.faces.webapp.command.CommandQueue;
@@ -48,9 +49,6 @@ import com.icesoft.faces.webapp.http.core.DisposeBeans;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
 
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
@@ -79,14 +77,24 @@ import java.util.Set;
  */
 public abstract class BridgeExternalContext extends ExternalContext {
     private static final Log Log = LogFactory.getLog(BridgeExternalContext.class);
-    protected static Class AuthenticationClass;
+    protected static Class AuthenticationClass = null;
+    protected static Class AcegiAuthenticationClass = null;
+    protected static Class SpringAuthenticationClass = null;
 
     static {
         try {
-            AuthenticationClass = Class.forName("org.acegisecurity.Authentication");
+            AcegiAuthenticationClass = Class.forName("org.acegisecurity.Authentication");
+            AuthenticationClass = AcegiAuthenticationClass;
             Log.debug("Acegi Security detected.");
         } catch (Throwable t) {
             Log.debug("Acegi Security not detected.");
+        }
+        try {
+            SpringAuthenticationClass = Class.forName("org.springframework.security.Authentication");
+            AuthenticationClass = SpringAuthenticationClass;
+            Log.debug("Spring Security detected.");
+        } catch (Throwable t) {
+            Log.debug("Spring Security not detected.");
         }
     }
 
@@ -462,17 +470,14 @@ public abstract class BridgeExternalContext extends ExternalContext {
         
         if ((AuthenticationClass != null) && ((null == principal) ||
                 AuthenticationClass.isInstance(principal))) {
-            if (AuthenticationClass.isInstance(principal))
-                return new AcegiAuthWrapper(principal);
-            HttpSession session = request.getSession(false);
-            if (session != null) {
-                SecurityContext sc = (SecurityContext) session.getAttribute(
-                    HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
-                if (sc != null) {
-                    return new AcegiAuthWrapper(sc.getAuthentication());
-                }
+                
+            if (null != SpringAuthenticationClass)  {
+                return SpringAuthWrapper.getVerifier(request);
+            } else { 
+                // (null != AcegiAuthenticationClass) 
+                return AcegiAuthWrapper.getVerifier(request);
             }
-            return new AcegiAuthWrapper(null); 
+                
         } else {
             return new AuthenticationVerifier() {
                 public boolean isUserInRole(String role) {
