@@ -9,8 +9,8 @@
            http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
 
 	<!-- Configure Spring Security -->
-	<security:http auto-config="true" session-fixation-protection="newSession">
-		<security:form-login login-page="/pages/login" login-processing-url="/pages/loginProcess" default-target-url="/spring/main" authentication-failure-url="/pages/login?login_error=1"/>
+	<security:http auto-config="true">
+		<security:form-login login-page="/pages/login" login-processing-url="/pages/loginProcess" default-target-url="/spring/main" authentication-failure-url="/pages/login?login_error=1" always-use-default-target="true"/>
 		<security:logout logout-url="/spring/logout" logout-success-url="/pages/logoutSuccess" />
 	</security:http>
     
