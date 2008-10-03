@@ -172,7 +172,13 @@
 <property>
     <description>
         <![CDATA[
-        If true, specifies that the resource should be downloaded as an attachment. 
+        If true (default), specifies that the resource should be cached by the 
+        resource registry. If cached, resources having the same signature (@see
+        Resource.calculateDigest() ) will be registered only once, and the same
+        response will be be provided for that resource by the ResourceServer. 
+        Therefore, if the developer has to dynamically set any properties on 
+        the outputResource component, and have those properties applied dynamically
+        to individual users, then the 'shared' attribute should be set to false.
 		]]>		
     </description>
     <property-name>shared</property-name>
