@@ -213,8 +213,8 @@ public class View implements CommandQueue {
 
     public void release() {
         facesContext.release();
-        persistentFacesState.release();
         externalContext.release();
+        persistentFacesState.release();
     }
 
     public BridgeFacesContext getFacesContext() {
