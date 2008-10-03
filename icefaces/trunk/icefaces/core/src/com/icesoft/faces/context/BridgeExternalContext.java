@@ -192,7 +192,9 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected BridgeExternalContext(String viewIdentifier, CommandQueue commandQueue, Configuration configuration) {
         this.viewIdentifier = viewIdentifier;
         this.commandQueue = commandQueue;
-        this.standardScope = configuration.getAttributeAsBoolean("standardRequestScope", false);
+        // ICE-3549
+        this.standardScope = SeamUtilities.isSeamEnvironment() ||
+                             configuration.getAttributeAsBoolean("standardRequestScope", false);
     }
 
     public abstract String getRequestURI();
