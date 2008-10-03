@@ -209,6 +209,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     public abstract void updateOnPageLoad(Object request, Object response);
 
+    public abstract void removeSeamAttributes();
+
     public void addCookie(Cookie cookie) {
         responseCookieMap.put(cookie.getName(), cookie);
         cookieTransporter.send(cookie);
@@ -304,7 +306,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected void resetRequestMap() {
         if (standardScope) {
             DisposeBeans.in(requestMap);
-            requestMap.clear();
+            if (!requestMap.isEmpty())requestMap.clear();
         }
     }
 
