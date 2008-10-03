@@ -31,16 +31,17 @@ public class View implements CommandQueue {
         public void run() {
         }
     };
-    private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
-        public void respond(Response response) throws Exception {
-            super.respond(response);
-            com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
-            facesContext.switchToNormalMode();
-            LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
-            facesContext.switchToPushMode();
-        }
-    };
     private final Page lifecycleExecutedPage = new Page() {
+        private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
+            public void respond(Response response) throws Exception {
+                super.respond(response);
+                com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
+                facesContext.switchToNormalMode();
+                LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
+                facesContext.switchToPushMode();
+            }
+        };
+
         public void serve(Request request) throws Exception {
             if (facesContext != null) {
                 facesContext.dispose();
