@@ -306,7 +306,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
     protected void resetRequestMap() {
         if (standardScope) {
             DisposeBeans.in(requestMap);
-            requestMap.clear();
+            if (!requestMap.isEmpty())requestMap.clear();
         }
     }
 
@@ -520,6 +520,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         if (destination.getAttribute("org.jboss.seam.web.requestPathInfo") == null ){
             destination.setAttribute("org.jboss.seam.web.requestPathInfo","");
         }
+    	
     }
     
    
