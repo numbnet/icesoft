@@ -151,10 +151,13 @@ public class View implements CommandQueue {
     }
 
     public void acquireLifecycleLock() {
-        lifecycleLock.lock();
+        if (!lifecycleLock.isHeldByCurrentThread()) {
+            lifecycleLock.lock();
+        }
     }
 
     public void releaseLifecycleLock() {
+        lifecycleLock.lock();
         //release all locks corresponding to current thread!
         for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
             lifecycleLock.unlock();
