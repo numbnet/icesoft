@@ -33,6 +33,7 @@
 
 package com.icesoft.faces.webapp.xmlhttp;
 
+import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewListener;
@@ -169,6 +170,7 @@ public class PersistentFacesState implements Serializable {
             facesContext.setFocusId("");
             lifecycle.render(facesContext);
         } catch (Exception e) {
+            release();
             throwRenderingException(e);
         } finally {
             facesContext.release();
@@ -216,6 +218,10 @@ public class PersistentFacesState implements Serializable {
                 //instead
                 Map requestParameterMap = facesContext.getExternalContext().getRequestParameterMap();
                 requestParameterMap.clear();
+                if (SeamUtilities.isSeamEnvironment()) {
+                    //ICE-2990/JBSEAM-3426 must have empty requestAttributes for push to work with Seam
+                    ((BridgeExternalContext) facesContext.getExternalContext()).removeSeamAttributes();
+                }
                 //Seam appears to need ViewState set during push
                 requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
             } else {
@@ -232,9 +238,8 @@ public class PersistentFacesState implements Serializable {
                 facesContext.resetResponseComplete();
             }
         } catch (Exception e) {
-            throwRenderingException(e);
-        } finally {
             release();
+            throwRenderingException(e);
         }
     }
 
