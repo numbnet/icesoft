@@ -33,19 +33,14 @@
 package org.icefaces.application.showcase.view.bean.examples.component.outputResource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 
 import com.icesoft.faces.context.ByteArrayResource;
-import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
-import com.icesoft.faces.context.StringResource;
 
 public class OutputResourceBean{
 	
@@ -53,15 +48,15 @@ public class OutputResourceBean{
 	private Resource pdfResource;
 	private Resource pdfResourceDynFileName;
 	private String fileName = "Choose-a-new-file-name";
+	private static final String RESOURCE_PATH = "/WEB-INF/classes/org/icefaces/application/showcase/view/resources/";
 		
 
 	public OutputResourceBean(){
-		ServletContext context = ((HttpSession)FacesContext.getCurrentInstance().getExternalContext()
-			.getSession(false)).getServletContext();
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		try{
-			imgResource = new ByteArrayResource( toByteArray( new FileInputStream( new File( context.getRealPath("/WEB-INF/resource/logo.jpg")))));
-			pdfResource = new FileResource( new File(context.getRealPath("/WEB-INF/resource/WP_Security_Whitepaper.pdf")));
-			pdfResourceDynFileName = new FileResource( new File(context.getRealPath("/WEB-INF/resource/WP_Security_Whitepaper.pdf")));
+			imgResource = new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "logo.jpg")));
+			pdfResource =  new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "WP_Security_Whitepaper.pdf")));
+			pdfResourceDynFileName = new ByteArrayResource( toByteArray( context.getResourceAsStream( RESOURCE_PATH + "WP_Security_Whitepaper.pdf")));
 		}
 		catch(Exception e){
 			e.printStackTrace();
