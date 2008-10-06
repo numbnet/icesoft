@@ -21,10 +21,18 @@ public class ServletRequestAttributes implements RequestAttributes {
     }
 
     public void removeAttribute(String name) {
-        request.removeAttribute(name);
+        try {
+            request.removeAttribute(name);
+        }
+        catch(Exception e) {
+        }
     }
 
     public void setAttribute(String name, Object value) {
-        request.setAttribute(name, value);
+        try {
+            request.setAttribute(name, value);
+        }
+        catch(Exception e) {
+        }
     }
 }
