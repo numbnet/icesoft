@@ -178,7 +178,8 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
             }
             component.populateItemList();
             Iterator matchs = component.getItemList();
-
+            int rows = component.getRows();
+            int rowCounter = 0;
             if (component.getSelectFacet() != null) {
                 if (log.isDebugEnabled()) {
                     log.debug(
@@ -193,7 +194,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         facesContext.getExternalContext().getRequestMap();
                 //set index to 0, so child components can get client id from autoComplete component
                 component.setIndex(0);
-                while (matchs.hasNext()) {
+                while (matchs.hasNext() && (rowCounter++ < rows)) {System.out.println("1.7");
                     Element div = domContext.createElement(HTML.DIV_ELEM);
                     SelectItem item = (SelectItem) matchs.next();
                     requestMap.put(component.getListVar(), item.getValue());
@@ -237,7 +238,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 if (matchs.hasNext()) {
                     StringBuffer sb = new StringBuffer("<div>");
                     SelectItem item = null;
-                    while (matchs.hasNext()) {
+                    while (matchs.hasNext() && (rowCounter++ < rows)) {System.out.println("1.7");
                         item = (SelectItem) matchs.next();
                         String itemLabel = item.getLabel();
                         if(itemLabel == null) {
