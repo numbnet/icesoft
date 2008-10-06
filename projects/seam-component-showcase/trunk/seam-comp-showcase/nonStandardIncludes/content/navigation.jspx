@@ -165,6 +165,14 @@
                      value="#{msgs['node.gMap.label']}"
     				 action="#{navigation.navigationPathChange('gMap')}"/>
     <br />
+        <!-- Output Resource -->
+    <ice:commandLink id="outputResourcePanel"
+                     actionListener="#{navigation.navigationPathChange}">
+        <f:param name="includePath" value="/WEB-INF/includes/examples/custom/outputResource.jspx" />
+        <ice:outputText
+                value="#{msgs['node.outputResource.label']}"/>
+    </ice:commandLink>
+    <br/>
     <!-- Tables Collapsible Panel -->
     <ice:panelCollapsible id="tableCompClpsbl" expanded="false" styleClass="navPnlClpsbl" >
         <f:facet name="header">
