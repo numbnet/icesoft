@@ -33,8 +33,8 @@
 
 package com.icesoft.faces.webapp.xmlhttp;
 
-import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.BridgeExternalContext;
+import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.ViewListener;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
@@ -179,8 +179,8 @@ public class PersistentFacesState implements Serializable {
             release();
             throwRenderingException(e);
         } finally {
-            lifecycleLock.unlock();
             facesContext.release();
+            release();
         }
     }
 
@@ -204,32 +204,34 @@ public class PersistentFacesState implements Serializable {
      * This is typically followed immediatly by a call to
      * {@link PersistentFacesState#render}.
      * <p/>
-     * This method does not obtain a lock on the current JSF lifecycle, so 
-     * concurrent accesss from the application is not protected.
-     *  Use {@link PersistentFacesState#executeAndRender} instead
+     * This method obtains and releases the monitor on the FacesContext object.
+     * If starting a JSF lifecycle causes 3rd party frameworks to perform locking
+     * of their resources, releasing this monitor between the call to this method
+     * and the call to {@link PersistentFacesState#render} can allow deadlocks
+     * to occur. Use {@link PersistentFacesState#executeAndRender} instead
      *
      * @deprecated this method should not be exposed
      */
     public void execute() throws RenderingException {
         failIfDisposed();
         try {
+            acquireLifecycleLock();
             installThreadLocals();
 
             if (ImplementationUtil.isJSF12()) {
                 //facesContext.renderResponse() skips phase listeners
                 //in JSF 1.2, so do a full execute with no stale input
                 //instead
-                Map requestParameterMap = 
-                    facesContext.getExternalContext().getRequestParameterMap();
+                Map requestParameterMap =
+                        facesContext.getExternalContext().getRequestParameterMap();
                 requestParameterMap.clear();
-                if (SeamUtilities.isSeamEnvironment()){
-                	//ICE-2990/JBSEAM-3426 must have empty requestAttributes for push to work with Seam
-                	((BridgeExternalContext)facesContext.getExternalContext()).removeSeamAttributes();
+                if (SeamUtilities.isSeamEnvironment()) {
+                    //ICE-2990/JBSEAM-3426 must have empty requestAttributes for push to work with Seam
+                    ((BridgeExternalContext) facesContext.getExternalContext()).removeSeamAttributes();
                 }
                 //Seam appears to need ViewState set during push
                 requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
             } else {
-
                 facesContext.renderResponse();
             }
             lifecycle.execute(facesContext);
@@ -245,7 +247,6 @@ public class PersistentFacesState implements Serializable {
         } catch (Exception e) {
             release();
             throwRenderingException(e);
-        } finally {
         }
     }
 
@@ -259,14 +260,8 @@ public class PersistentFacesState implements Serializable {
      */
     public void executeAndRender() throws RenderingException {
         acquireLifecycleLock();
-        try {
-            execute();
-            render();
-        } catch (RenderingException e)  {
-            throw(e);
-        } finally {
-            release();
-        }
+        execute();
+        render();
     }
 
     public void setupAndExecuteAndRender() throws RenderingException {
@@ -378,10 +373,13 @@ public class PersistentFacesState implements Serializable {
     }
 
     private void acquireLifecycleLock() {
-        lifecycleLock.lock();
+        if (!lifecycleLock.isHeldByCurrentThread()) {
+            lifecycleLock.lock();
+        }
     }
 
     private void releaseLifecycleLock() {
+        lifecycleLock.lock();
         //release all locks corresponding to current thread!
         for (int i = 0, count = lifecycleLock.getHoldCount(); i < count; i++) {
             lifecycleLock.unlock();
@@ -390,7 +388,8 @@ public class PersistentFacesState implements Serializable {
 
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void acquireUploadLifecycleLock() {
@@ -399,22 +398,24 @@ public class PersistentFacesState implements Serializable {
 
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void releaseUploadLifecycleLock() {
         releaseLifecycleLock();
     }
-    
+
     /**
      * This is not a public API, but is intended for temporary use
-     *  by UploaderServer only.
+     * by UploaderServer only.
+     *
      * @deprecated
      */
     public void setAllCurrentInstances() {
         installThreadLocals();
     }
-    
+
     private void warnIfSynchronous() {
         if (synchronousMode) {
             log.warn("Running in 'synchronous mode'. The page updates were queued but not sent.");
