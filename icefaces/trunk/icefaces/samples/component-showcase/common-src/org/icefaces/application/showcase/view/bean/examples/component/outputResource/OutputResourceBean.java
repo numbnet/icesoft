@@ -47,7 +47,7 @@ import com.icesoft.faces.context.FileResource;
 import com.icesoft.faces.context.Resource;
 import com.icesoft.faces.context.StringResource;
 
-public final class OutputResourceBean{
+public class OutputResourceBean{
 	
 	private Resource imgResource;
 	private Resource pdfResource;
