@@ -2,6 +2,7 @@ This is a WAR deployment of  seam component showcase example implemented in Seam
 doesn't require an ejb3 container and still uses Seam annotations and contexts. 
 
 ****NEAT THINGS IN THIS VERSION*****
+The new outputResource component is now included.
 include component binding example in dataPaginator example, the navigation is in conversation scope, so users
 can do multiple windows of the application in the same session (concurrent dom views).  Note though that all pages
 are not bookmarkable.  If it has page scope, a page refresh will probably set you back to original view of the
@@ -18,7 +19,7 @@ works better for these older servers.  The j5ee AS work much better with jsf1.2 
 
 1.  download jboss-seam-2.x and unzip all files (as the libraries will be copied from these folders)--may have to build the jars
     NOTE THAT FOR PORTLET EXAMPLES*** you should have jboss-seam-2.0.2.SP1 or jboss-seam-2.1.0.A1 as a minimum.
-2.  download and unzip Icefaces (1.7.1final release) 
+2.  download and unzip Icefaces (1.7.2final release) 
 
 3. update the following properties in build.properties file to point to 
 the appropriate directories where the jboss-4.2.* server, icefaces libraries and jboss-seam
@@ -27,7 +28,7 @@ libraries exist on your machine.
 
  for example:-
  	jboss.home = C:/work/webserver/jboss-4.2.2.GA 
-	icefacesSourceDirectory = C:/ICEfaces-1.7.1/icefaces  
+	icefacesSourceDirectory = C:/ICEfaces-1.7.2/icefaces  
 	jboss.seam.home = C:/Seam/jboss-seam-2.0.2.SP1     
 
 4. run target = copy-libs  (will copy all the required libraries from the above locations)
@@ -117,4 +118,17 @@ Jboss-4.2.2.GA/Liferay5.0.1.RC bundle
  * copy \dist\jboss-liferay\seam-comp-showcase to \Documents and Settings\<user profile>\liferay
  * start AS
  * use URL:- http://localhost:8080/c/portal/login
- * sign in and create some pages and place some of the portlets on them.  
+ * sign in and create some pages and place some of the portlets on them. 
+
+Websphere -6.1
+admin console:- http://localhost:9060/ibm/console
+  * Install and run WebSphere 6.1
+  * Set a Websphere web container custom property "com.ibm.ws.webcontainer.invokefilterscompatibility" to true.  See Seam reference guide chapter for details.
+  * Set a Websphere web container custom property "prependSlashToResource" to true.  See Seam reference guide chapter for details.
+  * ant websphere61
+  * Deploy dist-websphere61/jboss-seam-jpa.war and specify a context_root
+  * From the "Enterprise Applications" list select: "jboss-seam-jpa" --> "Manager Modules" --> "jboss-seam-jpa.war" --> "Classes loaded with application class loader first", and then Apply
+  * Start the application
+  * Access it at http://localhost:9080/context_root/index.html
+
+ 
