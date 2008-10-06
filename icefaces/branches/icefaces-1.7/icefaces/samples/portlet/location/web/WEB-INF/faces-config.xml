@@ -10,6 +10,7 @@
         <locale-config>
             <default-locale>en</default-locale>
             <supported-locale>en_US</supported-locale>
+            <supported-locale>es</supported-locale>
         </locale-config>
     </application>
 
