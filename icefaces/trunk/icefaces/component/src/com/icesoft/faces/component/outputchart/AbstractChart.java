@@ -82,10 +82,12 @@ public abstract class AbstractChart {
             }
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             JPEGEncoder.encode(getChart(), 1.0f, bos);
-            outputChart.setChartResource(new ChartResource(bos));
-            outputChart.setChartURI(((ResourceRegistry) context).registerResource(outputChart.getChartResource()));
+            byte[] data = bos.toByteArray();
             bos.flush();
             bos.close();
+            bos = null;
+            outputChart.setChartResource(new ChartResource(data));
+            outputChart.setChartURI(((ResourceRegistry) context).registerResource(outputChart.getChartResource()));
         } else {
             log.equals("The jchart is not defined for the " +
                     outputChart.getClientId(FacesContext.getCurrentInstance()) +

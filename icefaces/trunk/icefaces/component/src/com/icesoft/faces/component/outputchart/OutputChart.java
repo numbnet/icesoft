@@ -608,7 +608,7 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[22];
+        Object values[] = new Object[24];
         values[0] = super.saveState(context);
         values[1] = new Integer(imageCounter);
         values[2] = width;
@@ -628,8 +628,11 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         values[16] = legendColumns;
         values[17] = horizontal ? Boolean.TRUE : Boolean.FALSE;
         values[18] = horizontalSet ? Boolean.TRUE : Boolean.FALSE;
-        values[19] = type;
-        values[20] = saveAttachedState(context, renderOnSubmitMethodBinding);
+        values[19] = chartURI;
+        values[20] = chartResource;
+        values[21] = saveAttachedState(context, renderOnSubmitMethodBinding);
+        values[22] = type;
+        values[23] = parentFormId;
         return ((Object) (values));
     }
 
@@ -658,8 +661,11 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
         legendColumns = values[16];
         horizontal = ((Boolean) values[17]).booleanValue();
         horizontalSet = ((Boolean) values[18]).booleanValue();
-        type = (String) values[19];
-        renderOnSubmitMethodBinding = (MethodBinding) restoreAttachedState(context, values[20]);
+        chartURI = (URI) values[19];
+        chartResource = (ChartResource) values[20];
+        renderOnSubmitMethodBinding = (MethodBinding) restoreAttachedState(context, values[21]);
+        type = (String) values[22];
+        parentFormId = (String) values[23];
     }
 
 	public ChartResource getChartResource() {
