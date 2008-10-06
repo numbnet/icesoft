@@ -194,7 +194,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         facesContext.getExternalContext().getRequestMap();
                 //set index to 0, so child components can get client id from autoComplete component
                 component.setIndex(0);
-                while (matchs.hasNext() && (rowCounter++ < rows)) {System.out.println("1.7");
+                while (matchs.hasNext() && (rowCounter++ < rows)) {
                     Element div = domContext.createElement(HTML.DIV_ELEM);
                     SelectItem item = (SelectItem) matchs.next();
                     requestMap.put(component.getListVar(), item.getValue());
