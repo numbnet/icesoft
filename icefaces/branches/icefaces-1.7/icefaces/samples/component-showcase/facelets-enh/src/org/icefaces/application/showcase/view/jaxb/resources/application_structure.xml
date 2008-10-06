@@ -97,6 +97,10 @@
                       label="node.outputMedia.label"
                       leaf="true" link="true"
                       contentRef="outputMediaContentDesc"/>
+                <node id="outputResourceNode"
+                      label="node.outputResource.label"
+                      leaf="true" link="true"
+                      contentRef="outputResourceContentDesc"/>
                 <node id="menuBarNode"
                       label="node.menuBar.label"
                       leaf="true" link="true"
@@ -1167,6 +1171,44 @@
                 </tutorials>
             </documentation>
         </content-descriptor>
+        
+         <content-descriptor
+                id="outputResourceContentDesc" title="node.outputResource.label"
+                templateRef="tabbedContainer">
+            <example>
+                <resource-reference
+                        resourceRef="outputResourceExplResc"/>
+            </example>
+            <source-code templateRef="documentationContainer">
+                 <jspx-pages>
+                    <resource-reference
+                            label="outputResource.jspx"
+                            resourceRef="outputResourceExplResc"/>
+                </jspx-pages>
+                <beans>
+                    <resource-reference
+                            label="OutputResourceBean.java"
+                            resourceRef="org.icefaces.application.showcase.view.bean.examples.component.outputResource.OutputResourceBean"/>
+                </beans>
+            </source-code>
+            <documentation templateRef="documentationContainer">
+                <documents>
+                    <resource-reference
+                            label="OutputResource"
+                            resourceRef="outputResourceDoc"/>
+                </documents>
+                <tlds>
+                    <resource-reference
+                            label="outputMedia"
+                            resourceRef="outputResourceTld"/>
+                </tlds>
+                <tutorials>
+                    <resource-reference
+                            label="Tutorials"
+                            resourceRef="generalTutorial"/>
+                </tutorials>
+            </documentation>
+        </content-descriptor>
 
         <content-descriptor
                 id="treeContentDesc" title="node.tree.title"
@@ -1702,6 +1744,8 @@
                       path="/WEB-INF/includes/examples/custom/effects.jspx"/>
             <resource id="outputMediaExplResc"
                       path="/WEB-INF/includes/examples/custom/outputMedia.jspx"/>
+             <resource id="outputResourceExplResc"
+                      path="/WEB-INF/includes/examples/custom/outputResource.jspx"/>
             <resource id="treeExplResc"
                       path="/WEB-INF/includes/examples/custom/tree.jspx"/>
             <resource id="outputConnectionStatusExplResc"
@@ -1803,6 +1847,9 @@
             <!-- output Media -->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.outputMedia.Media"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/outputMedia/Media.java"/>
+            <!-- output Resource -->
+            <resource id="org.icefaces.application.showcase.view.bean.examples.component.outputResource.OutputResourceBean"
+                      path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/outputResource/OutputResourceBean.java"/>
             <!-- Menu Bar-->
             <resource id="org.icefaces.application.showcase.view.bean.examples.component.menuBar.MenuBarBean"
                       path="/WEB-INF/classes/org/icefaces/application/showcase/view/bean/examples/component/menuBar/MenuBarBean.java"/>
@@ -1958,6 +2005,9 @@
             <resource id="outputMediaDoc"
                       pathType="include"
                       path="/docs/outputMediaDoc.html"/>
+             <resource id="outputResourceDoc"
+                      pathType="include"
+                      path="/docs/outputResourceDoc.html"/>
             <resource id="outputProgressDoc"
                       pathType="include"
                       path="/docs/outputProgressDoc.html"/>
@@ -2156,6 +2206,9 @@
             <resource id="outputMediaTld"
                       pathType="include"
                       path="/docs/tld/ice/outputMedia.html"/>
+            <resource id="outputResourceTld"
+                      pathType="include"
+                      path="/docs/tld/ice/outputResource.html"/>
             <resource id="outputProgressTld"
                       pathType="include"
                       path="/docs/tld/ice/outputProgress.html"/>
