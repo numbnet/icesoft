@@ -302,7 +302,7 @@ public class OutputProgress extends UIComponentBase {
      * </p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[10];
         values[0] = super.saveState(context);
         values[1] = label;
         values[2] = labelPosition;
@@ -312,6 +312,7 @@ public class OutputProgress extends UIComponentBase {
         values[6] = style;
         values[7] = renderedOnUserRole;
         values[8] = styleClass;
+        values[9] = indeterminate;
         return ((Object) (values));
     }
 
@@ -331,6 +332,7 @@ public class OutputProgress extends UIComponentBase {
         style = (String) values[6];
         renderedOnUserRole = (String) values[7];
         styleClass = (String)values[8];
+        indeterminate = (Boolean) values[9];
     }
 
     /**

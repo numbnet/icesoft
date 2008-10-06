@@ -93,7 +93,7 @@ public class PanelLayout extends javax.faces.component.UIComponentBase {
         }
     }
     private Boolean visible;
-    private boolean DEFAULT_VISIBLE;
+    private static final boolean DEFAULT_VISIBLE = false;
 
     /**
      * <p>Set the value of the <code>visible</code> property.</p>

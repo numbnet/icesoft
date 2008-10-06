@@ -87,8 +87,6 @@ public class PanelBorder
     private String lang = null;
     private String title = null;
     private String renderedOnUserRole = null;
-    
-    List defaultLayout = new ArrayList();
 
     /**
      * <p>Return the value of the <code>north</code> property.</p>
@@ -137,11 +135,6 @@ public class PanelBorder
 
     public PanelBorder() {
         setRendererType(DEFAULT_RENDERER_TYPE);
-        defaultLayout.add(PanelBorder.NORTH_LAYOUT);
-        defaultLayout.add(PanelBorder.EAST_LAYOUT);
-        defaultLayout.add(PanelBorder.SOUTH_LAYOUT);
-        defaultLayout.add(PanelBorder.WEST_LAYOUT);
-        defaultLayout.add(PanelBorder.CENTER_LAYOUT);
     }
 
     /**
@@ -686,7 +679,7 @@ public class PanelBorder
     }
 
     public List getLayoutAsList() {
-
+        List defaultLayout = new ArrayList(5);
         if (isRenderCenter()) {
             if (!defaultLayout.contains(PanelBorder.CENTER_LAYOUT)) {
                 defaultLayout.add(PanelBorder.CENTER_LAYOUT);

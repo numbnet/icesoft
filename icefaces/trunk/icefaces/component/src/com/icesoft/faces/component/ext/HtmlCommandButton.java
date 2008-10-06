@@ -593,7 +593,7 @@ public class HtmlCommandButton
      * @return Object values[]
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[20];
         values[0] = super.saveState(context);
         values[1] = enabledOnUserRole;
         values[2] = renderedOnUserRole;
@@ -606,13 +606,14 @@ public class HtmlCommandButton
         values[9] = onmousemoveeffect;
         values[10] = onmouseovereffect;
         values[11] = onmouseouteffect;
-
-        values[15] = onkeypresseffect;
-        values[16] = onkeydowneffect;
-        values[17] = onkeyupeffect;
-        values[18] = currentStyle;
-        values[19] = visible;
-        values[20] = partialSubmit;
+        values[12] = onkeypresseffect;
+        values[13] = onkeydowneffect;
+        values[14] = onkeyupeffect;
+        values[15] = currentStyle;
+        values[16] = visible;
+        values[17] = partialSubmit;
+        values[18] = disabled ? Boolean.TRUE : Boolean.FALSE;
+        values[19] = disabled_set ? Boolean.TRUE : Boolean.FALSE;
         return ((Object) (values));
     }
 
@@ -630,7 +631,6 @@ public class HtmlCommandButton
         renderedOnUserRole = (String) values[2];
         styleClass = (String) values[3];
         effect = (Effect) values[4];
-
         onclickeffect = (Effect) values[5];
         ondblclickeffect = (Effect) values[6];
         onmousedowneffect = (Effect) values[7];
@@ -638,13 +638,14 @@ public class HtmlCommandButton
         onmousemoveeffect = (Effect) values[9];
         onmouseovereffect = (Effect) values[10];
         onmouseouteffect = (Effect) values[11];
-
-        onkeypresseffect = (Effect) values[15];
-        onkeydowneffect = (Effect) values[16];
-        onkeyupeffect = (Effect) values[17];
-        currentStyle = (CurrentStyle) values[18];
-        visible = (Boolean) values[19];
-        partialSubmit = (Boolean) values[20];
+        onkeypresseffect = (Effect) values[12];
+        onkeydowneffect = (Effect) values[13];
+        onkeyupeffect = (Effect) values[14];
+        currentStyle = (CurrentStyle) values[15];
+        visible = (Boolean) values[16];
+        partialSubmit = (Boolean) values[17];
+        disabled = ((Boolean) values[18]).booleanValue();
+        disabled_set = ((Boolean) values[19]).booleanValue();
     }
 
     /**

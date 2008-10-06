@@ -98,15 +98,17 @@ public class Portlet extends UINamingContainer {
         super.restoreState(context, values[0]);
         style = (String)values[1];
         styleClass = (String)values[2];
+        namespace = (String) values[3];
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[3];
+            values = new Object[4];
         }
         values[0] = super.saveState(context);
         values[1] = style;
         values[2] = styleClass;
+        values[3] = namespace;
         return values;
     }
     

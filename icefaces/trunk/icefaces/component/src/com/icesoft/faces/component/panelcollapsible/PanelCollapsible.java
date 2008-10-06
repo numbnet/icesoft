@@ -295,7 +295,7 @@ public class PanelCollapsible extends UICommand {
     
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[7];
+        Object[] state = new Object[8];
         state[0] = super.saveState(context);
         state[1] = style;
         state[2] = styleClass;
@@ -303,6 +303,7 @@ public class PanelCollapsible extends UICommand {
         state[4] = enabledOnUserRole;
         state[5] = renderedOnUserRole;
         state[6] = toggleOnClick;
+        state[7] = Boolean.valueOf(disabledSet);
         
         return state;
     }
@@ -316,6 +317,7 @@ public class PanelCollapsible extends UICommand {
         enabledOnUserRole = (String)state[4];
         renderedOnUserRole = (String)state[5];
         toggleOnClick = (Boolean)state[6];        
+        disabledSet = ((Boolean) state[7]).booleanValue();
     }
     
     //At the time of the creation of the component both JSP and facelets

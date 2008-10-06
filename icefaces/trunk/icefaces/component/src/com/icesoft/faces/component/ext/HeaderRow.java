@@ -120,23 +120,24 @@ public class HeaderRow extends UIPanel {
         return super.isRendered();
     }
 
-    private Object values[];
     public void restoreState(FacesContext context, Object state) {
-        values = (Object[])state;        
+        Object[] values = (Object[])state;        
         super.restoreState(context, values[0]);
         renderedOnUserRole = (String)values[1];
         style = (String)values[2];
         styleClass = (String)values[3];
+        colspan = (String) values[4];
+        rowspan = (String) values[5];
     }
 
     public Object saveState(FacesContext context) {
-        if(values == null){
-            values = new Object[4];
-        }
+        Object[] values = new Object[6];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = style;
         values[3] = styleClass;
+        values[4] = colspan;
+        values[5] = rowspan;
         return values;
     }
     
