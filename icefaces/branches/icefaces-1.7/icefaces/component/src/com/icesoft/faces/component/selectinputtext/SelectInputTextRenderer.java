@@ -238,7 +238,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 if (matchs.hasNext()) {
                     StringBuffer sb = new StringBuffer("<div>");
                     SelectItem item = null;
-                    while (matchs.hasNext() && (rowCounter++ < rows)) {System.out.println("1.7");
+                    while (matchs.hasNext() && (rowCounter++ < rows)) {
                         item = (SelectItem) matchs.next();
                         String itemLabel = item.getLabel();
                         if(itemLabel == null) {
