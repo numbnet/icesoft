@@ -195,7 +195,11 @@
                 <filter token="embeddedEjb" value="false"/>
             </filterset>
         </copy>
-        
+        <copy todir="${war.dir}/WEB-INF">     
+         	<fileset dir="${basedir}/WEB-INF">
+         	   <include name="resource/*.*"/>
+         	</fileset>
+        </copy>      
         <copy todir="${war.dir}/WEB-INF">
             <fileset dir="${basedir}/resources-jboss/WEB-INF">
                 <include name="lib/*.*"/>
@@ -395,10 +399,9 @@
 	   	  <fileset dir="${icefaces.home}/samples/component-showcase/common-web">
 	   	     <include name="images/**/*.*"/>
 	   	  	 <include name="media/*.*"/>
-	   	  	 <include name="css/**/*.*"/>
-	   	  </fileset>
+	   	  	 <include name="css/**/*.*"/>   	  	 
+	   	  </fileset>  
 	   </copy>
-		
 	   <copy todir="${basedir}/WEB-INF/includes" overwrite="true">
 	   	  <fileset dir="${icefaces.home}/samples/component-showcase/facelets/web/WEB-INF/includes">
 	  	     <include name="**/*.jspx"/>
@@ -409,7 +412,11 @@
 	   	  	 <exclude name="**/page-template.jspx"/>
 	   	  	 <exclude name="content/navigation.jspx"/>
 	      </fileset>	   	  
-
+	   </copy>
+	   <copy todir="${basedir}/WEB-INF">
+	   	  <fileset dir="${icefaces.home}/samples/component-showcase/common-web/WEB-INF">
+	   	     <include name="resource/*.*"/>
+	   	  </fileset>
 	   </copy>
 		<echo message=" basedir is ${basedir}"/>
 	   <copy todir="${basedir}/WEB-INF/includes"
