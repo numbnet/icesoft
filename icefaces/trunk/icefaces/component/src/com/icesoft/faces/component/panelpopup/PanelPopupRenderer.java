@@ -54,6 +54,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 /**
  * <p>
  * PanelPopupRenderer is an extension of ICEfaces D2D GroupRenderer responsible
@@ -178,7 +180,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element headerTr = domContext.createElement(HTML.TR_ELEM);
 			Element headerTd = domContext.createElement(HTML.TD_ELEM);
 			headerTd.setAttribute(HTML.CLASS_ATTR, headerClass);
-			handleId = getPooledClientId(uiComponent.getClientId(facesContext) + "Handle");
+			handleId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "Handle");
 			headerTd.setAttribute(HTML.ID_ATTR, handleId);
 			headerTr.appendChild(headerTd);
 			// add header facet to header tr and add to table
@@ -201,7 +203,7 @@ public class PanelPopupRenderer extends GroupRenderer {
 			Element bodyTd = domContext.createElement(HTML.TD_ELEM);
 
 			bodyTd.setAttribute(HTML.CLASS_ATTR, bodyClass);
-			bodyTr.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "-tr"));
+			bodyTr.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "-tr"));
 			bodyTr.appendChild(bodyTd);
 			// add body facet to body tr then add to table
 			table.appendChild(bodyTr);

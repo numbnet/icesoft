@@ -9,6 +9,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class InputRichTextRenderer extends DomBasicInputRenderer {
 
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
@@ -19,14 +21,14 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         if (!domContext.isInitialized()) {
             Element root = domContext.createRootElement(HTML.DIV_ELEM);
-            root.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "container"));
+            root.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "container"));
             Element div = domContext.createElement(HTML.DIV_ELEM);
             root.setAttribute(HTML.CLASS_ATTR, inputRichText.getStyleClass());
             if (inputRichText.getStyle() != null) {
                 root.setAttribute(HTML.STYLE_ATTR, inputRichText.getStyle());
             }
             root.appendChild(div);
-            div.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "editor"));
+            div.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "editor"));
             StringBuffer call = new StringBuffer();
 
             call.append("Ice.FCKeditor.register ('" + clientId + "', new Ice.FCKeditor('" + clientId + "', '" + inputRichText.getLanguage() 
@@ -37,9 +39,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
             if (inputRichText.getValue() != null) {
                 value =  inputRichText.getValue().toString();
             }
-            addHiddenField (domContext, root, getPooledClientId(clientId + "valueHolder"), 
+            addHiddenField (domContext, root, ClientIdPool.get(clientId + "valueHolder"), 
                                     value);
-            addHiddenField (domContext, root, getPooledClientId(clientId + "Disabled"),
+            addHiddenField (domContext, root, ClientIdPool.get(clientId + "Disabled"),
                                     String.valueOf(inputRichText.isDisabled()));            
             Element script = domContext.createElement(HTML.SCRIPT_ELEM);
             script.setAttribute(HTML.TYPE_ATTR, "text/javascript");

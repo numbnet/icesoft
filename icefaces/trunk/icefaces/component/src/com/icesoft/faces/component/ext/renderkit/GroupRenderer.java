@@ -59,6 +59,8 @@ import javax.faces.el.MethodBinding;
 import java.io.IOException;
 import java.util.Map;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class GroupRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.GroupRenderer {
 
@@ -339,7 +341,7 @@ public class GroupRenderer
                                         UIComponent uiComponent, String name) {
         Element ele = domContext.createElement(HTML.INPUT_ELEM);
         ele.setAttribute(HTML.TYPE_ATTR, "hidden");
-        String n = getPooledClientId(getHiddenFieldName(facesContext, uiComponent, name));
+        String n = ClientIdPool.get(getHiddenFieldName(facesContext, uiComponent, name));
         ele.setAttribute(HTML.NAME_ATTR, n);
         ele.setAttribute(HTML.ID_ATTR, n);
         ele.setAttribute(HTML.VALUE_ATTR, "");

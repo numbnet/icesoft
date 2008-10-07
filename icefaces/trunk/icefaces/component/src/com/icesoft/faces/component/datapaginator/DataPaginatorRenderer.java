@@ -69,6 +69,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class DataPaginatorRenderer extends DomBasicRenderer {
     public static final String RENDERER_TYPE = "com.icesoft.faces.DataScroller";
 
@@ -457,7 +459,7 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
         if (text != null) {
             link.appendChild(domContext.createTextNode(text));
         }
-        String linkid = convertClientId(facesContext, scroller.getClientId(facesContext) +
+        String linkid = ClientIdPool.get(scroller.getClientId(facesContext) +
                         DataPaginatorRenderer.PAGE_NAVIGATION +
                         Integer.toString(pageIndex));
         String onClick = /*"document.forms['"+ formId + "']" + "['"+ formId +":_idcl']" + ".value='" +  linkid  + "'"+ 

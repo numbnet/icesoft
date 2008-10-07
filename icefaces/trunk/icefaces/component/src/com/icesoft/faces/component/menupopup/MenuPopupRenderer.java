@@ -49,6 +49,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class MenuPopupRenderer extends MenuBarRenderer {
     protected void trailingEncodeBegin(FacesContext facesContext, UIComponent uiComponent) {
         DOMContext domContext =
@@ -62,7 +64,7 @@ public class MenuPopupRenderer extends MenuBarRenderer {
             // Put the top level menu items into a separate child div
             Element submenuDiv = domContext.createElement(HTML.DIV_ELEM);
             submenuDiv.setAttribute(HTML.NAME_ATTR, "TOP_LEVEL_SUBMENU");
-            String subMenuDivId = getPooledClientId(uiComponent.getClientId(facesContext) + "_sub");
+            String subMenuDivId = ClientIdPool.get(uiComponent.getClientId(facesContext) + "_sub");
             submenuDiv.setAttribute(HTML.ID_ATTR, subMenuDivId);
             
             //TODO Figure out what style class to use on the inner div

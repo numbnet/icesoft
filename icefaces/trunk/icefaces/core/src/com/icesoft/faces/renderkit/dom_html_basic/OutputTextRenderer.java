@@ -14,6 +14,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class OutputTextRenderer extends BaseRenderer{
     
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTTEXT);
@@ -22,7 +24,7 @@ public class OutputTextRenderer extends BaseRenderer{
     throws IOException {
         UIOutput component = (UIOutput) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
-        String clientId = DomBasicRenderer.getPooledClientId(uiComponent.getClientId(facesContext));
+        String clientId = ClientIdPool.get(uiComponent.getClientId(facesContext));
         Object value = component.getValue(); 
         //This is not ice:outputText, so just render the value
         //this will be true for open HTML in the JSP

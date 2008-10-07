@@ -63,6 +63,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 /**
  * <p>PanelTabSetRenderer extends DomBasicRenderer and is responsible for
  * rendering PanelTabSet and PanelTab components.</p>
@@ -529,7 +531,7 @@ public class PanelTabSetRenderer
         // create a new table data Element using the DOMContext API
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        getPooledClientId(tabSet.getClientId(facesContext) + "ht" + tabIndex));
+                        ClientIdPool.get(tabSet.getClientId(facesContext) + "ht" + tabIndex));
         // append the td to the tr
         tr.appendChild(td);
 
@@ -594,7 +596,7 @@ public class PanelTabSetRenderer
             disableStyleClassSuffix = "";
             // Build a command link
             Element link = domContext.createElement(HTML.ANCHOR_ELEM);
-            String linkId = getPooledClientId(tabSet.getClientId(facesContext) + "." + tabIndex);
+            String linkId = ClientIdPool.get(tabSet.getClientId(facesContext) + "." + tabIndex);
             link.setAttribute(HTML.NAME_ATTR, linkId);
             link.setAttribute(HTML.ID_ATTR, linkId);
             link.setAttribute(HTML.HREF_ATTR, "javascript:;");
@@ -878,7 +880,7 @@ public class PanelTabSetRenderer
         // create a new table data Element
         Element td = domContext.createElement(HTML.TD_ELEM);
         td.setAttribute(HTML.ID_ATTR,
-                        getPooledClientId(tabSet.getClientId(facesContext) + "td" + tabCount));
+                        ClientIdPool.get(tabSet.getClientId(facesContext) + "td" + tabCount));
         // append the new table data Element to the table row
         tr.appendChild(td);
 

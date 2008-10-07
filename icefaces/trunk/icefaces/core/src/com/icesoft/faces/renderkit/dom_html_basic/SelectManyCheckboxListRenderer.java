@@ -49,6 +49,7 @@ import javax.faces.model.SelectItemGroup;
 import java.io.IOException;
 import java.util.*;
 
+import com.icesoft.util.pooling.ClientIdPool;
 
 public class SelectManyCheckboxListRenderer extends MenuRenderer {
     private static final String[] selectManyCheckboxPassThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTMANYCHECKBOX);
@@ -208,7 +209,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         rootTR.appendChild(td);
         
         String clientId = uiComponent.getClientId(facesContext);
-        String itemId = getPooledClientId(clientId + ":_" + counter);
+        String itemId = ClientIdPool.get(clientId + ":_" + counter);
         
         Element inputElement = domContext.createElement("input");
         inputElement
@@ -287,7 +288,7 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(checkboxIndex);
 
         String selectManyClientId = selectMany.getClientId(facesContext);
-        String checkboxClientId = convertClientId(facesContext, selectManyClientId + ":_" + checkboxIndex);
+        String checkboxClientId = ClientIdPool.get(selectManyClientId + ":_" + checkboxIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectMany, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

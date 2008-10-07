@@ -58,6 +58,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.StringTokenizer;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 /**
  * Renderer for Positioned Panel
  */
@@ -96,7 +98,7 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                 else
                     root.removeAttribute(HTML.CLASS_ATTR);
                 Element orderField = domContext.createElement(HTML.INPUT_ELEM);
-                String orderFieldId = getPooledClientId(
+                String orderFieldId = ClientIdPool.get(
                         getHiddenFieldName(facesContext, uiComponent, INPUT_ID));
                 orderField.setAttribute(HTML.ID_ATTR, orderFieldId);
                 orderField.setAttribute(HTML.TYPE_ATTR, HTML.INPUT_TYPE_HIDDEN);

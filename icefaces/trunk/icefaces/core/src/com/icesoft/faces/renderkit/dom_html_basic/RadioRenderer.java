@@ -48,6 +48,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.icesoft.util.pooling.ClientIdPool;
 
 public class RadioRenderer extends SelectManyCheckboxListRenderer {
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_SELECTONERADIO);
@@ -110,7 +111,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         }
 
         input.setAttribute("name", uiSelectOne.getClientId(facesContext));
-        String inputID = getPooledClientId(uiComponent.getClientId(facesContext) + ":_" + counter);
+        String inputID = ClientIdPool.get(uiComponent.getClientId(facesContext) + ":_" + counter);
         input.setAttribute("id", inputID);
         input.setAttribute("value", (formatComponentValue(facesContext,
                                                           uiSelectOne,
@@ -160,7 +161,7 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         SelectItem selectItem = (SelectItem) selectItemList.get(radioIndex);
 
         String selectOneClientId = selectOne.getClientId(facesContext);
-        String radioClientId = getPooledClientId(selectOneClientId + ":_" + radioIndex);
+        String radioClientId = ClientIdPool.get(selectOneClientId + ":_" + radioIndex);
 
         String selectItemValue = formatComponentValue(facesContext, selectOne, selectItem.getValue());
         String selectItemLabel = selectItem.getLabel();

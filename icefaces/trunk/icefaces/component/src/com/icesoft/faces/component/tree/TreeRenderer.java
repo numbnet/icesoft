@@ -56,6 +56,8 @@ import javax.swing.tree.TreeModel;
 import java.io.IOException;
 import java.util.Map;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 /**
  * TreeRenderer is an ICEfaces D2D renderer for the Tree component.
  *
@@ -288,7 +290,7 @@ public class TreeRenderer extends DomBasicRenderer {
             treeNodeDiv
                     .setAttribute(HTML.CLASS_ATTR, treeComponent.getTreeRowStyleClass());
             // treeNodeDiv id is assigned here when roo node is hidden
-            treeNodeDiv.setAttribute(HTML.ID_ATTR, getPooledClientId(treeComponent
+            treeNodeDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(treeComponent
                     .getClientId(facesContext) + "-d-rt"));
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
@@ -307,7 +309,7 @@ public class TreeRenderer extends DomBasicRenderer {
             // render CHILD div
             Element childDiv = domContext.createElement(HTML.DIV_ELEM);
             childDiv.setAttribute(HTML.NAME_ATTR, "c");
-            childDiv.setAttribute(HTML.ID_ATTR, getPooledClientId(treeNodeDiv
+            childDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(treeNodeDiv
                     .getAttribute(HTML.ID_ATTR) + "-c"));
 
             treeNodeDiv.appendChild(childDiv);
@@ -451,7 +453,7 @@ public class TreeRenderer extends DomBasicRenderer {
         if (isBranchNode && !hideNavigation) {
             Element navAnchor = domContext.createElement(HTML.ANCHOR_ELEM);
             navAnchor.setAttribute(HTML.HREF_ATTR, "javascript:;");
-            navAnchor.setAttribute(HTML.ID_ATTR, getPooledClientId(
+            navAnchor.setAttribute(HTML.ID_ATTR, ClientIdPool.get(
                                    treeComponent.getClientId(facesContext) + ":" + pathToCurrentRoot));
             navAnchor.setAttribute(HTML.ONFOCUS_ATTR, "setFocus(this.id);");
             navAnchor.setAttribute(HTML.ONBLUR_ATTR, "setFocus('');");
@@ -566,7 +568,7 @@ public class TreeRenderer extends DomBasicRenderer {
                                                          (DefaultMutableTreeNode) treeComponent
                                                                  .getModel()
                                                                  .getRoot());
-        treeNodeDiv.setAttribute(HTML.ID_ATTR, getPooledClientId(treeComponent
+        treeNodeDiv.setAttribute(HTML.ID_ATTR, ClientIdPool.get(treeComponent
                 .getClientId(facesContext) + "-d-" + pathToNode));
 
         try {

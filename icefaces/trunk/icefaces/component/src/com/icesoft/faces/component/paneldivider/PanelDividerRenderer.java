@@ -17,6 +17,8 @@ import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class PanelDividerRenderer extends DomBasicRenderer{
     // Basically, everything is excluded
     private static final String[] PASSTHRU_EXCLUDE =
@@ -58,7 +60,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         dividerContainer.appendChild(domContext.createTextNode("&nbsp;"));
         renderPane(facesContext, uiComponent, true);
         container.appendChild(dividerContainer);
-        dividerContainer.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId + "Divider"));
+        dividerContainer.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId + "Divider"));
         renderPane(facesContext, uiComponent, false);
         addHiddenField(domContext, root, clientId, PanelDivider.FIRST_PANL_STYLE, panelDivider.getPanePosition(true));
         addHiddenField(domContext, root, clientId, PanelDivider.SECOND_PANL_STYLE, panelDivider.getPanePosition(false));
@@ -79,11 +81,11 @@ public class PanelDividerRenderer extends DomBasicRenderer{
         UIComponent facet= null;
         if (isFrist) {
             facet = panelDivider.getFirstFacet();
-            pane.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId+= "First"));
+            pane.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId+= "First"));
             pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getFirstPaneClass());
         } else {
             facet = panelDivider.getSecondFacet();
-            pane.setAttribute(HTML.ID_ATTR, getPooledClientId(clientId+= "Second"));    
+            pane.setAttribute(HTML.ID_ATTR, ClientIdPool.get(clientId+= "Second"));    
             pane.setAttribute(HTML.CLASS_ATTR, panelDivider.getSecondPaneClass());  
         }
         pane.setAttribute(HTML.STYLE_ATTR, panelDivider.getPanePosition(isFrist));
@@ -103,7 +105,7 @@ public class PanelDividerRenderer extends DomBasicRenderer{
             String name,
             String value) {
             Element hidden = domContext.createElement(HTML.INPUT_ELEM);
-            String hiddenId = getPooledClientId(clientId + name);
+            String hiddenId = ClientIdPool.get(clientId + name);
             hidden.setAttribute(HTML.ID_ATTR, hiddenId);
             hidden.setAttribute(HTML.NAME_ATTR, hiddenId);
             if (value != null) {
