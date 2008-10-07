@@ -213,7 +213,6 @@
 
     This.DefaultStatusManager = Object.subclass({
         initialize: function(configuration, container) {
-            this.configuration = configuration;
             this.container = container;
             this.connectionLostRedirect = configuration.connectionLostRedirectURI ? new This.RedirectIndicator(configuration.connectionLostRedirectURI) : null;
             this.sessionExpiredRedirect = configuration.sessionExpiredRedirectURI ? new This.RedirectIndicator(configuration.sessionExpiredRedirectURI) : null;
@@ -230,7 +229,7 @@
 
         on: function() {
             var overlay = this.container.ownerDocument.createElement('iframe');
-            overlay.setAttribute('src', this.configuration.connection.context + '/xmlhttp/blank');
+            overlay.setAttribute('src', 'about:blank');
             overlay.setAttribute('frameborder', '0');
             var overlayStyle = overlay.style;
             overlayStyle.position = 'absolute';
