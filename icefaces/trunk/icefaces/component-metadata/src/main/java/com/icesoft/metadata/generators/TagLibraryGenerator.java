@@ -302,7 +302,7 @@ public class TagLibraryGenerator extends AbstractGenerator {
         writer.emitImport("com.icesoft.faces.component.ext.*");
         writer.emitImport("com.icesoft.faces.component.panelpositioned.*");        
         writer.emitImport("com.icesoft.faces.component.paneltabset.*");
-
+        writer.emitImport("com.icesoft.util.pooling.ELPool");
         
         
         if (constantMethodBindingPackage != null)
@@ -460,8 +460,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                         true);
                 writer.indent();
                 writer.emitExpression(
-                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding("
-                        + var + ");", true);
+                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding(ELPool.get("
+                        + var + "));", true);
                 writer.emitExpression("_component.setValueBinding(\"" + name
                         + "\", _vb);", true);
                 writer.outdent();
@@ -485,8 +485,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             + ")) {", true);
                     writer.indent();
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", actionArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), actionArgs);", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -506,8 +506,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             + ")) {", true);
                     writer.indent();
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", actionListenerArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), actionListenerArgs);", true);
 
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
@@ -523,8 +523,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             + ")) {", true);
                     writer.indent();
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", validatorArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), validatorArgs);", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -540,9 +540,9 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
                     writer
                             .emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
                             + var
-                            + ", valueChangeListenerArgs);",
+                            + "), valueChangeListenerArgs);",
                             true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
@@ -562,8 +562,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             "Class progressListenerArgs[] = { java.util.EventObject.class };",
                             true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", progressListenerArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), progressListenerArgs);", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -586,8 +586,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             "Class[] panelPositionedArgs = new Class[]{PanelPositionedEvent.class};",
                             true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", panelPositionedArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), panelPositionedArgs);", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -610,8 +610,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             "Class[] dragListenerArgs = new Class[]{DragEvent.class};",
                             true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", dragListenerArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), dragListenerArgs);", true);
                     String className = cb.getComponentClass();
                     //RGDM
 
@@ -641,8 +641,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             "Class[] dropListenerArgs= new Class[]{DropEvent.class};",
                             true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", dropListenerArgs );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), dropListenerArgs );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -662,8 +662,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                                     "Class[] selectionListenerArgs= new Class[]{RowSelectorEvent.class};",
                                     true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                                    + var + ", selectionListenerArgs );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), selectionListenerArgs );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -681,8 +681,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                     writer.indent();
 
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                                    + var + ", null );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), null );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -703,8 +703,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                                     "Class[] selectionListenerArgs= new Class[]{TabChangeEvent.class};",
                                     true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                                    + var + ", selectionListenerArgs );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), selectionListenerArgs );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -725,8 +725,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                                     "Class[] selectionListenerArgs= new Class[]{OutputChart.class};",
                                     true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                                    + var + ", selectionListenerArgs);", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), selectionListenerArgs);", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -750,8 +750,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                             "Class[] displayListenerArgs= new Class[]{DisplayEvent.class};",
                             true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                            + var + ", displayListenerArgs );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                            + var + "), displayListenerArgs );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -772,8 +772,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                                     "Class[] listenerArgs= new Class[]{TextChangeEvent.class};",
                                     true);
                     writer.emitExpression(
-                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding("
-                                    + var + ", listenerArgs );", true);
+                            "MethodBinding _mb = getFacesContext().getApplication().createMethodBinding(ELPool.get("
+                                    + var + "), listenerArgs );", true);
                     writer.emitExpression("_component.getAttributes().put(\""
                             + name + "\", _mb);", true);
                     writer.outdent();
@@ -794,8 +794,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                         true);
                 writer.indent();
                 writer.emitExpression(
-                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding("
-                        + var + ");", true);
+                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding(ELPool.get("
+                        + var + "));", true);
                 writer.emitExpression("_component.setValueBinding(\"" + name
                         + "\", _vb);", true);
                 writer.outdent();
@@ -816,8 +816,8 @@ public class TagLibraryGenerator extends AbstractGenerator {
                         true);
                 writer.indent();
                 writer.emitExpression(
-                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding("
-                        + var + ");", true);
+                        "ValueBinding _vb = getFacesContext().getApplication().createValueBinding(ELPool.get("
+                        + var + "));", true);
                 writer.emitExpression("_component.setValueBinding(\"" + name
                         + "\", _vb);", true);
                 writer.outdent();
