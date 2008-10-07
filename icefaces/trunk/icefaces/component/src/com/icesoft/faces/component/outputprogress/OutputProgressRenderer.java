@@ -51,6 +51,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeRenderer;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class OutputProgressRenderer extends DomBasicInputRenderer {
     private static final String[] passThruAttributes =
             ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_OUTPUTPROGRESS);
@@ -207,7 +209,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         }
 
         textTd.appendChild(percentageText);
-        textTd.setAttribute("id", getPooledClientId(uiComponent
+        textTd.setAttribute("id", ClientIdPool.get(uiComponent
                 .getClientId(FacesContext.getCurrentInstance()) +
                                                                 "percentageText"));
 
@@ -216,7 +218,7 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         bgBar.setAttribute(HTML.STYLE_ATTR, "position:relative;");
 
         Element fillBar = domContext.createElement(HTML.DIV_ELEM);
-        fillBar.setAttribute(HTML.ID_ATTR, getPooledClientId(uiComponent
+        fillBar.setAttribute(HTML.ID_ATTR, ClientIdPool.get(uiComponent
                 .getClientId(FacesContext.getCurrentInstance()) + "bar"));
 
         if (progressBar.getIndeterminate() == false) { //determinate mode

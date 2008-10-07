@@ -56,6 +56,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.icesoft.util.pooling.ClientIdPool;
 
 public class SelectInputTextRenderer extends DomBasicInputRenderer {
     private final String AUTOCOMPLETE_DIV = "autoCompleteDiv";
@@ -80,7 +81,7 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         String clientId = uiComponent.getClientId(facesContext);
-        String divId = getPooledClientId(clientId + AUTOCOMPLETE_DIV);
+        String divId = ClientIdPool.get(clientId + AUTOCOMPLETE_DIV);
         String call = " new Ice.Autocompleter('" + clientId + "','" + divId +
                       "', " + component.getOptions() + " ,'" + component.getRowClass() + "','" +
                       component.getSelectedRowClass() + "');";

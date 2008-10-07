@@ -13,6 +13,8 @@ import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class GMapRenderer extends DomBasicRenderer{
 	
     public boolean getRendersChildren() {
@@ -85,7 +87,7 @@ public class GMapRenderer extends DomBasicRenderer{
 			 					 String name,
 			 					 String value) {
      	Element hidden = domContext.createElement(HTML.INPUT_ELEM);
-     	String hiddenId = getPooledClientId(clientId + name);
+     	String hiddenId = ClientIdPool.get(clientId + name);
     	hidden.setAttribute(HTML.ID_ATTR, hiddenId);
     	hidden.setAttribute(HTML.NAME_ATTR, hiddenId);
     	if (value != null) {

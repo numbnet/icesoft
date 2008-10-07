@@ -44,6 +44,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class OutputConnectionStatusRenderer extends DomBasicRenderer {
 
     public void encodeBegin(FacesContext context, UIComponent uiComponent)
@@ -66,21 +68,21 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
             else
                 root.removeAttribute(HTML.STYLE_ATTR);
 
-            String idleID = getPooledClientId(id + ":connection-idle");
+            String idleID = ClientIdPool.get(id + ":connection-idle");
             root.appendChild(getNextNode(domContext,
                     component.getInactiveClass(),
                     component.getInactiveLabel(),
                     idleID, true));
-            String workingID = getPooledClientId(id + ":connection-working");
+            String workingID = ClientIdPool.get(id + ":connection-working");
             root.appendChild(getNextNode(domContext, component.getActiveClass(),
                     component.getActiveLabel(),
                     workingID, false));
-            String troubleID = getPooledClientId(id + ":connection-trouble");
+            String troubleID = ClientIdPool.get(id + ":connection-trouble");
             root.appendChild(getNextNode(domContext,
                     component.getCautionClass(),
                     component.getCautionLabel(),
                     troubleID, false));
-            String lostID = getPooledClientId(id + ":connection-lost");
+            String lostID = ClientIdPool.get(id + ":connection-lost");
             root.appendChild(getNextNode(domContext,
                     component.getDisconnectedClass(),
                     component.getDisconnectedLabel(),

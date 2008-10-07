@@ -43,6 +43,8 @@ import javax.faces.context.FacesContext;
 import java.io.IOException;
 import java.util.Iterator;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class GridRenderer extends DomBasicRenderer {
     private static final String[] PASSTHRU =
         AttributeConstants.getAttributes(
@@ -227,7 +229,7 @@ public class GridRenderer extends DomBasicRenderer {
     private String getIndexedClientId(FacesContext facesContext,
                                       UIComponent uiComponent,
                                       int columnIndex, int rowIndex) {
-        return getPooledClientId(uiComponent.getClientId(facesContext)
+        return ClientIdPool.get(uiComponent.getClientId(facesContext)
                + "-"
                + rowIndex
                + "-"
