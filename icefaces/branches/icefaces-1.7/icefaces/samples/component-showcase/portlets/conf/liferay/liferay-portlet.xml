@@ -370,12 +370,12 @@
     <!-- ICEfaces Component-Showcase: OutputResource                         -->
     <!-- =================================================================== -->
 
-    <portlet>
+    <!-- portlet>
         <portlet-name>components_output_resource</portlet-name>
         <instanceable>true</instanceable>
         <render-weight>1</render-weight>
         <ajaxable>false</ajaxable>
-    </portlet>
+    </portlet -->
 
     <!-- =================================================================== -->
 

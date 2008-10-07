@@ -38,7 +38,7 @@
         <portlet id="components_table_sortableHeader"/>
         <portlet id="components_textEntry"/>
         <portlet id="components_tree"/>
-        <portlet id="components_output_resource"/>
+        <!-- portlet id="components_output_resource"/ -->
         
     </category>
 
