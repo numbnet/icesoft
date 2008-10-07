@@ -21,59 +21,64 @@ public class NormalModeSerializer implements DOMSerializer {
     }
 
     public void serialize(Document document) throws IOException {
-        if (context.isContentIncluded()) {
-            if (log.isDebugEnabled()) {
-                log.debug("treating request as a fragment");
-            }
-
-            Node body = DOMUtils.getChildByNodeName(document.getDocumentElement(), "body");
-            if (null != body) {
-                //insert a containing element for bridge anchoring
-                writer.write("<div>\n");
-                DOMUtils.printChildNodes(body, writer);
-                writer.write("</div>\n");
-            }
-        } else {
-            if (log.isDebugEnabled()) {
-                log.debug("treating request as a whole page (not a fragment)");
-            }
-            Map requestMap = context.getExternalContext().getRequestMap();
-            String publicID =
-                    (String) requestMap.get(DOMResponseWriter.DOCTYPE_PUBLIC);
-            String systemID =
-                    (String) requestMap.get(DOMResponseWriter.DOCTYPE_SYSTEM);
-            String root =
-                    (String) requestMap.get(DOMResponseWriter.DOCTYPE_ROOT);
-            String output =
-                    (String) requestMap.get(DOMResponseWriter.DOCTYPE_OUTPUT);
-            boolean prettyPrinting =
-                    Boolean.valueOf((String) requestMap
-                            .get(DOMResponseWriter.DOCTYPE_PRETTY_PRINTING))
-                            .booleanValue();
-
-            //todo: replace this with a complete new implementation that doesn't rely on xslt but can serialize xml, xhtml, and html.
-            if (output == null || ("html".equals(output) && !prettyPrinting)) {
-                if (publicID != null && systemID != null && root != null) {
-                    writer.write(DOMUtils.DocumentTypetoString(publicID, systemID,
-                            root));
+        try {
+            if (context.isContentIncluded()) {
+                if (log.isDebugEnabled()) {
+                    log.debug("treating request as a fragment");
                 }
-                DOMUtils.printNode(document, writer);
+
+                Node body = DOMUtils.getChildByNodeName(document.getDocumentElement(), "body");
+                if (null != body) {
+                    //insert a containing element for bridge anchoring
+                    writer.write("<div>\n");
+                    DOMUtils.printChildNodes(body, writer);
+                    writer.write("</div>\n");
+                }
             } else {
-                //use a serializer. not as performant.
-                JAXPSerializer serializer =
-                        new JAXPSerializer(writer, publicID, systemID);
-                if ("xml".equals(output)) {
-                    serializer.outputAsXML();
-                } else {
-                    serializer.outputAsHTML();
+                if (log.isDebugEnabled()) {
+                    log.debug("treating request as a whole page (not a fragment)");
                 }
-                if (prettyPrinting) {
-                    serializer.printPretty();
-                }
-                serializer.serialize(document);
-            }
-        }
+                Map requestMap = context.getExternalContext().getRequestMap();
+                String publicID =
+                        (String) requestMap.get(DOMResponseWriter.DOCTYPE_PUBLIC);
+                String systemID =
+                        (String) requestMap.get(DOMResponseWriter.DOCTYPE_SYSTEM);
+                String root =
+                        (String) requestMap.get(DOMResponseWriter.DOCTYPE_ROOT);
+                String output =
+                        (String) requestMap.get(DOMResponseWriter.DOCTYPE_OUTPUT);
+                boolean prettyPrinting =
+                        Boolean.valueOf((String) requestMap
+                                .get(DOMResponseWriter.DOCTYPE_PRETTY_PRINTING))
+                                .booleanValue();
 
-        writer.flush();
+                //todo: replace this with a complete new implementation that doesn't rely on xslt but can serialize xml, xhtml, and html.
+                if (output == null || ("html".equals(output) && !prettyPrinting)) {
+                    if (publicID != null && systemID != null && root != null) {
+                        writer.write(DOMUtils.DocumentTypetoString(publicID, systemID,
+                                root));
+                    }
+                    DOMUtils.printNode(document, writer);
+                } else {
+                    //use a serializer. not as performant.
+                    JAXPSerializer serializer = new JAXPSerializer(writer, publicID, systemID);
+                    if ("xml".equals(output)) {
+                        serializer.outputAsXML();
+                    } else {
+                        serializer.outputAsHTML();
+                    }
+                    if (prettyPrinting) {
+                        serializer.printPretty();
+                    }
+                    serializer.serialize(document);
+                }
+            }
+
+            writer.flush();
+        } catch (IOException e) {
+            //a ClientAbortException (cause: SocketException) might be thrown if the browser closed
+            //the connection before consuming the entire stream
+            log.info("Connection aborted by client", e);
+        }
     }
 }
