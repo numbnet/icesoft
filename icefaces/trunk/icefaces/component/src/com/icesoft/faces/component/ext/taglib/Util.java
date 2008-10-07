@@ -72,10 +72,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-
 import javax.faces.component.UIViewRoot;
+
+import com.icesoft.util.pooling.CSSNamePool;
 
 public class Util extends Object {
     private static Log log = LogFactory.getLog(Util.class);
@@ -492,7 +491,7 @@ public class Util extends Object {
           if (isNoneAttributeClass) {
               //1- This requested class is used internally by the component and
               //not visible to the developer (or can not be set using an attribute)
-              return getPooledClassName(appendLocalClassToStyleClass(uiComponent, userDefinedStyleClass));
+              return CSSNamePool.get(appendLocalClassToStyleClass(uiComponent, userDefinedStyleClass));
           }
 
           String disabledSuffix = disabled ? CSS_DEFAULT.DIS_SUFFIX: "";
@@ -508,7 +507,7 @@ public class Util extends Object {
               styleClass = defaulStyleClass +
               disabledSuffix+ CoreUtils.getPortletStyleClass(portletClass) +
               " " + ((styleClass!=null)? styleClass + disabledSuffix :"");
-              return getPooledClassName(styleClass.trim());
+              return CSSNamePool.get(styleClass.trim());
           } else {
               //3- the following code is to deal with other style class
               //attributes that has been defined on the components (e.g.)
@@ -524,7 +523,7 @@ public class Util extends Object {
               if (subClass != null) {
                   newClass += " " + subClass + disabledSuffix;
               }
-              return getPooledClassName(newClass.trim());
+              return CSSNamePool.get(newClass.trim());
           }
        }
 
@@ -602,31 +601,5 @@ public class Util extends Object {
             }
         }
         return false;
-    }
-    
-    private static Map classNamesMap = 
-            Collections.synchronizedMap(new LinkedHashMap(140, 0.75f, true) {
-        
-        private static final int MAX_ENTRIES = 100;
-        
-        protected boolean removeEldestEntry(Map.Entry eldest) {
-            return size() > MAX_ENTRIES;
-        }
-    }
-            );
-            
-    public static String getPooledClassName(String className) {
-
-        if (className != null) {
-            String pooledClassName = (String) classNamesMap.get(className);
-            if (pooledClassName != null) {
-                return pooledClassName;
-            } else {
-                classNamesMap.put(className, className);
-                return className;
-            }
-        } else {
-            return null;
-        }
     }
 } // end of class Util

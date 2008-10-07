@@ -31,40 +31,13 @@
  *
  */
 
-package com.icesoft.faces.renderkit.dom_html_basic;
+package com.icesoft.util.pooling;
 
-import com.icesoft.faces.component.UIXhtmlComponent;
+public class XhtmlPool {
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.context.ResponseWriter;
-import javax.faces.render.Renderer;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-
-import com.icesoft.util.pooling.XhtmlPool;
-
-public class XMLRenderer extends Renderer {
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        UIXhtmlComponent xhtmlComponent = (UIXhtmlComponent) uiComponent;
-        ResponseWriter writer = facesContext.getResponseWriter();
-        writer.startElement(xhtmlComponent.getTag(), xhtmlComponent);
-
-        Iterator attributeIterator =
-                xhtmlComponent.getTagAttributes().entrySet().iterator();
-        while (attributeIterator.hasNext()) {
-            Map.Entry attribute = (Map.Entry) attributeIterator.next();
-            writer.writeAttribute((String) attribute.getKey(),
-                                  XhtmlPool.get((String) attribute.getValue()), null);
-        }
-    }
-
-    public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        UIXhtmlComponent xhtmlComponent = (UIXhtmlComponent) uiComponent;
-        facesContext.getResponseWriter().endElement(xhtmlComponent.getTag());
+    private static StringInternMapLRU pool = new StringInternMapLRU(1000);
+    
+    public static String get(String string) {
+        return pool.get(string);
     }
 }
-
