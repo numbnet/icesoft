@@ -30,7 +30,7 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
+ 
 Ice.FCKeditor = Class.create();
 
 Ice.FCKeditor.prototype = {
@@ -69,7 +69,7 @@ Object.extend(Ice.FCKeditor,  Ice.Repository);
 
 Ice.FCKeditorUtility = Class.create();
 Ice.FCKeditorUtility = {
-    //this will be only call on valueChange event
+    //this will be only called on every render cycle
     updateValue: function(ele) {
         try {
             var oEditor = FCKeditorAPI.GetInstance(ele) ;
@@ -78,11 +78,16 @@ Ice.FCKeditorUtility = {
                 var valueHolder = $(ele + 'valueHolder');
                 var editorValue = $(ele);                
                 editorValue.value = valueHolder.value  
-                oEditor.SetHTML( editorValue.value) ;
-               if (oEditor.EditorWindow.parent.FCK.HasFocus) { 
-                    oEditor.EditorWindow.focus();
-                    oEditor.focus();                    
-                }  
+                editorContent = oEditor.GetXHTML(true);
+                //update the editor only, when there is a value change 
+                if (editorContent != editorValue.value) {
+	                oEditor.SetHTML( editorValue.value) ;
+	                try {
+		                if (oEditor.HasFocus) { 
+		                    oEditor.Focus();                    
+		                } 
+	                } catch (err) {logger.info(err);} 
+                }
             }
         } catch(err) {}
     },
@@ -134,6 +139,9 @@ function FCKeditor_OnComplete( editorInstance ){
 	editorInstance.LinkedField.form.onsubmit = function() {
 		return FCKeditorSave(editorInstance);
 	}
+    try {
+        editorInstance.Focus();
+    } catch (err) {logger.info(err);}      
 }
 
 function toogleState(editorInstance) {
