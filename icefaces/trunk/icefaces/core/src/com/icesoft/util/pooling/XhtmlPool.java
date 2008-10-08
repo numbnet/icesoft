@@ -35,7 +35,7 @@ package com.icesoft.util.pooling;
 
 public class XhtmlPool {
 
-    private static StringInternMapLRU pool = new StringInternMapLRU(1000);
+    private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.xhtmlPoolMaxSize");
     
     public static String get(String string) {
         return pool.get(string);

@@ -35,7 +35,7 @@ package com.icesoft.util.pooling;
 
 public class CSSNamePool {
 
-    private static StringInternMapLRU pool = new StringInternMapLRU(1000);
+    private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.cssNamePoolMaxSize");
     
     public static String get(String className) {
         return pool.get(className);
