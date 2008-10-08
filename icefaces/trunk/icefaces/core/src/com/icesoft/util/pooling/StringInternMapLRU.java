@@ -45,10 +45,10 @@ public class StringInternMapLRU {
     private static final Log log = LogFactory.getLog(StringInternMapLRU.class);
     private static final int DEFAULT_MAX_SIZE = 100000;
     
-    private Map map = null;
-    private int defaultSize = DEFAULT_MAX_SIZE;
-    private String contextParam = "";
-    private boolean disabled = false;
+    private Map map;
+    private int defaultSize;
+    private String contextParam;
+    private boolean disabled;
 
     public StringInternMapLRU() {
         this(DEFAULT_MAX_SIZE);
@@ -66,13 +66,14 @@ public class StringInternMapLRU {
 
         this.defaultSize = defaultSize;
         this.contextParam = contextParam;
+        this.disabled = false;
     }
     
     private void createMap() {
     
         int maxSize = defaultSize;
 
-        if (!contextParam.equals("")) {
+        if (contextParam != null) {
             String maxSizeParam = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(contextParam);
             if (maxSizeParam != null && maxSizeParam.length() > 0) {
                 int configuredMaxSize = 0;
@@ -84,8 +85,8 @@ public class StringInternMapLRU {
                 if (configuredMaxSize > 0) {
                     maxSize = configuredMaxSize;
                 } else {
-                    maxSize = 10;
                     disabled = true;
+                    return;
                 }
             }
         }
@@ -103,21 +104,36 @@ public class StringInternMapLRU {
 
     public String get(String string) {
 
-        if (map == null) createMap();
-        if (disabled) {
-            return string;
+        // Thread unsafe check, to reduce synchronised locks 
+        if (map == null && !disabled) { 
+            synchronized(this) { 
+                // Actual thread-safe check 
+                if (map == null && !disabled) { 
+                    createMap(); 
+                } 
+            } 
+        } 
+        if (disabled) { 
+            return string; 
+        } 
+        if (string == null) { 
+            return null; 
+        } 
+        String pooledString = (String) map.get(string); 
+        if (pooledString != null) { 
+            return pooledString; 
+        } else { 
+            map.put(string, string); 
+            return string; 
+        }
+    }
+    
+    public int getSize() {
+    
+        if(map == null || disabled) {
+            return 0;
         } else {
-            if (string != null) {
-                String pooledString = (String) map.get(string);
-                if (pooledString != null) {
-                    return pooledString;
-                } else {
-                    map.put(string, string);
-                    return string;
-                }
-            } else {
-                return null;
-            }
+            return map.size();
         }
     }
 }
