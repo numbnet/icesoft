@@ -354,13 +354,4 @@ public class InputRichText extends UIInput {
         return vb != null ? ((Boolean) vb.getValue(getFacesContext()))
                 .booleanValue() : false;
     }
-    
-    public void broadcast(FacesEvent event)
-    throws AbortProcessingException {
-        if (event instanceof ValueChangeEvent) {
-            FacesContext facesContext = getFacesContext();
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + getClientId(facesContext) + "');");            
-        }
-        super.broadcast(event);
-    }    
 }
