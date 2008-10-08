@@ -22,7 +22,7 @@
 
             <ice:panelGroup>
 
-                <ice:gMap id="gmap" address="#{cityMap.address}" locateAddress="false">
+                <ice:gMap id="gmap" address="#{cityMap.address}" locateAddress="#{cityMap.locateAddress}">
                     <ice:gMapControl id="largectrl" name="GLargeMapControl" rendered="true"/>
                     <ice:gMapControl id="scalectrl" name="GScaleControl" rendered="true"/>
                     <ice:gMapControl id="typectrl" name="GMapTypeControl" rendered="true"/>
