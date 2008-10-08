@@ -35,7 +35,7 @@ package com.icesoft.util.pooling;
 
 public class ClientIdPool {
 
-    private static StringInternMapLRU pool = new StringInternMapLRU(1000);
+    private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.clientIdPoolMaxSize");
     
     public static String get(String clientId) {
         return pool.get(clientId);

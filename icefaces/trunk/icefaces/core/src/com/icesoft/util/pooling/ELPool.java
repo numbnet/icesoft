@@ -35,7 +35,7 @@ package com.icesoft.util.pooling;
 
 public class ELPool {
 
-    private static StringInternMapLRU pool = new StringInternMapLRU(100);
+    private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.elPoolMaxSize");
     
     public static String get(String valueReference) {
         return pool.get(valueReference);

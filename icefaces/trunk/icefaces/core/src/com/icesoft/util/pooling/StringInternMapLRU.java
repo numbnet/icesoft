@@ -30,56 +30,94 @@
  * this file under either the MPL or the LGPL License."
  *
  */
-
 package com.icesoft.util.pooling;
 
 import java.util.Map;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class StringInternMapLRU {
 
-    private static final int DEFAULY_MAX_SIZE = 100000;
-    private static final int DEFAULT_CAPACITY = ((DEFAULY_MAX_SIZE*4)/3) + 10;
+    private static final Log log = LogFactory.getLog(StringInternMapLRU.class);
+    private static final int DEFAULT_MAX_SIZE = 100000;
     
-    private Map map;
+    private Map map = null;
+    private int defaultSize = DEFAULT_MAX_SIZE;
+    private String contextParam = "";
+    private boolean disabled = false;
 
     public StringInternMapLRU() {
-    
-        map = Collections.synchronizedMap(new LinkedHashMap(DEFAULT_CAPACITY, 0.75f, true) {
-        
-            protected boolean removeEldestEntry(Map.Entry eldest) {
-                return size() > DEFAULY_MAX_SIZE;
-            }
-        }
-            );
+        this(DEFAULT_MAX_SIZE);
     }
 
-    public StringInternMapLRU(final int size) {
-    
-        int capacity = ((size*4)/3) + 10;
-    
-        map = Collections.synchronizedMap(new LinkedHashMap(capacity, 0.75f, true) {
-        
-            protected boolean removeEldestEntry(Map.Entry eldest) {
-                return size() > size;
-            }
-        }
-            );
+    public StringInternMapLRU(int size) {
+        this(size, "");
     }
     
+    public StringInternMapLRU(String contextParam) {
+        this(DEFAULT_MAX_SIZE, contextParam);
+    }
+
+    public StringInternMapLRU(int defaultSize, String contextParam) {
+
+        this.defaultSize = defaultSize;
+        this.contextParam = contextParam;
+    }
+    
+    private void createMap() {
+    
+        int maxSize = defaultSize;
+
+        if (!contextParam.equals("")) {
+            String maxSizeParam = FacesContext.getCurrentInstance().getExternalContext().getInitParameter(contextParam);
+            if (maxSizeParam != null && maxSizeParam.length() > 0) {
+                int configuredMaxSize = 0;
+                try {
+                    configuredMaxSize = Integer.parseInt(maxSizeParam);
+                } catch (Exception e) {
+                    log.error("Couldn't parse context-param: " + contextParam + ".", e);
+                }
+                if (configuredMaxSize > 0) {
+                    maxSize = configuredMaxSize;
+                } else {
+                    maxSize = 10;
+                    disabled = true;
+                }
+            }
+        }
+
+        int capacity = ((maxSize * 4) / 3) + 10;
+        final int finalSize = maxSize;
+
+        map = Collections.synchronizedMap(new LinkedHashMap(capacity, 0.75f, true) {
+            
+            protected boolean removeEldestEntry(Map.Entry eldest) {
+                return size() > finalSize;
+            }
+        });
+    }
+
     public String get(String string) {
 
-        if (string != null) {
-            String pooledString = (String) map.get(string);
-            if (pooledString != null) {
-                return pooledString;
-            } else {
-                map.put(string, string);
-                return string;
-            }
+        if (map == null) createMap();
+        if (disabled) {
+            return string;
         } else {
-            return null;
+            if (string != null) {
+                String pooledString = (String) map.get(string);
+                if (pooledString != null) {
+                    return pooledString;
+                } else {
+                    map.put(string, string);
+                    return string;
+                }
+            } else {
+                return null;
+            }
         }
     }
 }
