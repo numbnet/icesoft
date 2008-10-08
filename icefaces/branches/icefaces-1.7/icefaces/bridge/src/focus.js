@@ -31,11 +31,6 @@
  *
  */
 
-//todo: is this really necessary?!
-Ice.isValidID = function(id) {
-    return /^\w[\w\d\-\:]*$/g.test(id);
-};
-
 //todo: implement focus management!
 var currentFocus;
 Ice.Focus = new Object();
@@ -59,7 +54,7 @@ Ice.Focus.setFocus = function(id) {
 };
 
 Ice.Focus.setFocusNow = function(id) {
-    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined') && Ice.isValidID(id)) {
+    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined')) {
         try {
             id.asExtendedElement().focus();
             setFocus(id);
