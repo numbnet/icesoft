@@ -359,15 +359,6 @@ public class InputRichText extends UIInput {
                 .booleanValue() : false;
     }
 
-    public void broadcast(FacesEvent event)
-    throws AbortProcessingException {
-        if (event instanceof ValueChangeEvent) {
-            FacesContext facesContext = getFacesContext();
-            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + getClientId(facesContext) + "');");            
-        }
-        super.broadcast(event);
-    }
-    
     public Object saveState(FacesContext context) {
         Object values[] = new Object[12];
         values[0] = super.saveState(context);
