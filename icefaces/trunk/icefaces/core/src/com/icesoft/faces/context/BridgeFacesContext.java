@@ -103,6 +103,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
+    private boolean compressDOM = false;
 
     public BridgeFacesContext(Request request, final String viewIdentifier, String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor) throws Exception {
         setCurrentInstance(this);
@@ -119,6 +120,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.sessionID = sessionID;
         this.view = view;
         this.configuration = configuration;
+        this.compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.resourceDispatcher = resourceDispatcher;
         this.switchToNormalMode();
@@ -406,7 +408,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
-            if (null != responseWriter) {
+            if (null != responseWriter && compressDOM) {
                 ((DOMResponseWriter) responseWriter).release();
             }
         }
