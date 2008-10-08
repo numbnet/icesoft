@@ -44,6 +44,7 @@ public class Coordinator {
     private String groupName;
 
     private static final String CURRENT_CITY_KEY = "org.icefaces.location.current.city";
+    private static final String LOCATION_UPDATED_KEY = "org.icefaces.location.updated";
 
     public Coordinator() {
     }
@@ -66,7 +67,24 @@ public class Coordinator {
             SessionRenderer.addCurrentSession(groupName);
         }
         setApplicationAttribute(CURRENT_CITY_KEY,currentCity);
+        setApplicationAttribute(LOCATION_UPDATED_KEY,Boolean.TRUE);
         SessionRenderer.render(groupName);
+    }
+
+    public boolean isAddressUpdated() {
+        Object att = getApplicationAttribute(LOCATION_UPDATED_KEY);
+        if( att == null ){
+            return false;
+        }
+        return ((Boolean)att).booleanValue();
+    }
+
+    public void setAddressUpdated(boolean addressUpdated) {
+        if(addressUpdated){
+            setApplicationAttribute(LOCATION_UPDATED_KEY,Boolean.TRUE);
+        } else {
+            setApplicationAttribute(LOCATION_UPDATED_KEY,Boolean.FALSE);
+        }
     }
 
     private Object getApplicationAttribute(String name) {

@@ -32,77 +32,17 @@
  */
 package org.icefaces.sample.location;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class Map {
 
     private Coordinator coordinator;
 
-    // address to search for
-    private String geoCoderAddress = "";
-
-    // city location selected from a preset list
-    private String standardAddress = "";
-
-    // whether we should search for an address or not
-    private boolean locateAddress = false;
-
-    private List points = new ArrayList();
-    private boolean showControls = true;
-    private boolean showMarkers = true;
-    
-    // value bound to the gmap component
-    private String address = "";
-
     public Map() {
-    }
-
-    public String getStandardAddress() {
-        return standardAddress;
-    }
-
-    public void setStandardAddress(String standardAddress) {
-        this.standardAddress = standardAddress;
-        this.address = standardAddress;
-    }
-
-    public List getPoints() {
-        return points;
-    }
-
-    public void setPoints(List points) {
-        this.points = points;
-    }
-
-    public String getGeoCoderAddress() {
-        return geoCoderAddress;
-    }
-
-    public void setGeoCoderAddress(String geoCoderAddress) {
-        this.geoCoderAddress = geoCoderAddress;
-    }
-
-    public boolean isShowControls() {
-        return showControls;
-    }
-
-    public void setShowControls(boolean showControls) {
-        this.showControls = showControls;
-    }
-
-    public boolean isShowMarkers() {
-        return showMarkers;
-    }
-
-    public void setShowMarkers(boolean showMarkers) {
-        this.showMarkers = showMarkers;
     }
 
     public String getAddress() {
         City currentCity = coordinator.getCurrentCity();
 
-        if( currentCity == null ){
+        if (currentCity == null) {
             return "";
         }
 
@@ -110,7 +50,7 @@ public class Map {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        //do nothing
     }
 
     public Coordinator getCoordinator() {
@@ -119,5 +59,17 @@ public class Map {
 
     public void setCoordinator(Coordinator coordinator) {
         this.coordinator = coordinator;
+    }
+
+    public boolean isLocateAddress() {
+        boolean locate = coordinator.isAddressUpdated();
+        if (locate) {
+            coordinator.setAddressUpdated(false);
+        }
+        return locate;
+    }
+
+    public void setLocateAddress(boolean locateAddress) {
+        //do nothing
     }
 }
