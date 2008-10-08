@@ -94,6 +94,10 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
             root.appendChild(input);
             input.setAttribute(HTML.NAME_ATTR, clientId);
             input.setAttribute(HTML.CLASS_ATTR, component.getInputTextClass());
+            
+            String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
+            input.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
+
             String inputStyle = component.getWidthAsStyle();
             if(inputStyle != null && inputStyle.length() > 0)
                 input.setAttribute(HTML.STYLE_ATTR, inputStyle);

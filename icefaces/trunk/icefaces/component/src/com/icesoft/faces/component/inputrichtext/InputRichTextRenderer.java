@@ -1,6 +1,7 @@
 package com.icesoft.faces.component.inputrichtext;
 
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import org.w3c.dom.Element;
@@ -54,7 +55,9 @@ public class InputRichTextRenderer extends DomBasicInputRenderer {
                 root.appendChild(saveOnSubmit);
             }
             div.setAttribute(HTML.ONMOUSEOUT_ATTR, "Ice.FCKeditorUtility.updateFields('" + clientId + "');");
-            div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");            
+            div.setAttribute(HTML.ONMOUSEOVER_ATTR, "Ice.FCKeditorUtility.activeEditor ='" + clientId + "';");
+            JavascriptContext.addJavascriptCall(facesContext, "Ice.FCKeditorUtility.updateValue ('" + clientId + "');");            
+
             domContext.stepOver();
         }
     }
