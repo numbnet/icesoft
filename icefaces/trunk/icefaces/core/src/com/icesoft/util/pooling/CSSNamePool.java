@@ -38,6 +38,10 @@ public class CSSNamePool {
     private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.cssNamePoolMaxSize");
     
     public static String get(String className) {
-        return pool.get(className);
+        return (String) pool.get(className);
+    }
+    
+    public static int getSize() {
+        return pool.getSize();
     }
 }

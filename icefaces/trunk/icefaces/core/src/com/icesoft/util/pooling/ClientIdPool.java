@@ -38,6 +38,10 @@ public class ClientIdPool {
     private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.clientIdPoolMaxSize");
     
     public static String get(String clientId) {
-        return pool.get(clientId);
+        return (String) pool.get(clientId);
+    }
+    
+    public static int getSize() {
+        return pool.getSize();
     }
 }

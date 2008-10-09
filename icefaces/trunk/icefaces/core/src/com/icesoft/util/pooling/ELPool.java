@@ -38,6 +38,10 @@ public class ELPool {
     private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.elPoolMaxSize");
     
     public static String get(String valueReference) {
-        return pool.get(valueReference);
+        return (String) pool.get(valueReference);
+    }
+    
+    public static int getSize() {
+        return pool.getSize();
     }
 }

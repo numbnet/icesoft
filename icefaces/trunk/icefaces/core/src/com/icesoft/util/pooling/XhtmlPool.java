@@ -37,7 +37,11 @@ public class XhtmlPool {
 
     private static StringInternMapLRU pool = new StringInternMapLRU("com.icesoft.faces.xhtmlPoolMaxSize");
     
-    public static String get(String string) {
-        return pool.get(string);
+    public static Object get(Object value) {
+        return pool.get(value);
+    }
+    
+    public static int getSize() {
+        return pool.getSize();
     }
 }
