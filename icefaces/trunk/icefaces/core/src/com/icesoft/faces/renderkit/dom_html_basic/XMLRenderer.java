@@ -43,8 +43,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.icesoft.util.pooling.XhtmlPool;
-
 public class XMLRenderer extends Renderer {
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
@@ -57,7 +55,7 @@ public class XMLRenderer extends Renderer {
         while (attributeIterator.hasNext()) {
             Map.Entry attribute = (Map.Entry) attributeIterator.next();
             writer.writeAttribute((String) attribute.getKey(),
-                                  XhtmlPool.get((String) attribute.getValue()), null);
+                                  attribute.getValue(), null);
         }
     }
 

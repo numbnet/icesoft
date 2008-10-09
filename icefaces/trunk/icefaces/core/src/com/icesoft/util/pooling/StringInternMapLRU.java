@@ -102,7 +102,7 @@ public class StringInternMapLRU {
         });
     }
 
-    public String get(String string) {
+    public Object get(Object value) {
 
         // Thread unsafe check, to reduce synchronised locks 
         if (map == null && !disabled) { 
@@ -114,17 +114,17 @@ public class StringInternMapLRU {
             } 
         } 
         if (disabled) { 
-            return string; 
+            return value; 
         } 
-        if (string == null) { 
+        if (value == null) { 
             return null; 
         } 
-        String pooledString = (String) map.get(string); 
-        if (pooledString != null) { 
-            return pooledString; 
+        Object pooledValue = map.get(value); 
+        if (pooledValue != null) { 
+            return pooledValue; 
         } else { 
-            map.put(string, string); 
-            return string; 
+            map.put(value, value); 
+            return value; 
         }
     }
     

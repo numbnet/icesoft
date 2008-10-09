@@ -15,7 +15,13 @@ import javax.faces.lifecycle.LifecycleFactory;
 import java.util.Collection;
 import java.util.Map;
 
+import com.icesoft.util.pooling.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ReceiveSendUpdates implements Server {
+
+    private static final Log log = LogFactory.getLog(ReceiveSendUpdates.class);
     private static final ResponseHandler MissingParameterHandler = new ResponseHandler() {
         public void respond(Response response) throws Exception {
             response.setStatus(500);
@@ -55,6 +61,14 @@ public class ReceiveSendUpdates implements Server {
                     sessionMonitor.touchSession();
                     renderCycle(view.getFacesContext());
                     request.respondWith(new SendUpdates.Handler(views, request));
+                    
+                    // String pools usage logging
+                    log.debug("String intern pools sizes:" 
+                        + "\nClientIdPool: " + ClientIdPool.getSize()
+                        + "\nCSSNamePool: " + CSSNamePool.getSize()
+                        + "\nELPool: " + ELPool.getSize()
+                        + "\nXhtmlPool: " + XhtmlPool.getSize());
+                        
                 } catch (FacesException e) {
                     //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
                     Throwable nestedException = e.getCause();

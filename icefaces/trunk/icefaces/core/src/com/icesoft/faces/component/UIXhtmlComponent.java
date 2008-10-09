@@ -123,13 +123,13 @@ public class UIXhtmlComponent extends UIComponentBase {
     }
 
     public void setTag(String tag) {
-        this.tag = XhtmlPool.get(tag);
+        this.tag = (String) XhtmlPool.get(tag);
     }
 
     public void addStandardAttribute(String key, Object value) {
         if (standardAttributes == null)
             standardAttributes = new HashMap();
-        standardAttributes.put(key, value);
+        standardAttributes.put(key, XhtmlPool.get(value));
     }
 
     public void addValueBindingAttribute(String key, ValueBinding vb) {
