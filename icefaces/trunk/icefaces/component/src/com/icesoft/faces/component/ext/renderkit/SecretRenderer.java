@@ -106,18 +106,23 @@ public class SecretRenderer
         } else {
             root.setAttribute("value", "");
         }
-
+        
+        HtmlInputSecret secret = (HtmlInputSecret) uiComponent;
         //Add the enter key behavior by default
-        root.setAttribute("onkeypress", combinedPassThru(((HtmlInputSecret) uiComponent).getOnkeypress(), this.ICESUBMIT));
+        root.setAttribute("onkeypress", combinedPassThru(secret.getOnkeypress(), this.ICESUBMIT));
         // set the focus id
-        root.setAttribute("onfocus", combinedPassThru(((HtmlInputSecret) uiComponent).getOnfocus(), "setFocus(this.id);"));
+        root.setAttribute("onfocus", combinedPassThru(secret.getOnfocus(), "setFocus(this.id);"));
         // clear focus id
-        root.setAttribute("onblur", combinedPassThru(((HtmlInputSecret) uiComponent).getOnblur(), "setFocus('');"));
-
+        String applicationOnblur = secret.getOnblur();  
+        String rendererOnblur = null;
         if (((IceExtended) uiComponent).getPartialSubmit()) {
-            root.setAttribute("onblur", combinedPassThru(((HtmlInputSecret) uiComponent).getOnblur(), "setFocus('');" +
-                    "iceSubmitPartial(form,this,event); return false;"));
+            rendererOnblur = "setFocus('');iceSubmitPartial(form,this,event); return false;";
         }
+        else {
+            rendererOnblur = "setFocus('');";
+        }
+        root.setAttribute("onblur", combinedPassThru(applicationOnblur, rendererOnblur));
+
         //fix for ICE-2514
         String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
         root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
