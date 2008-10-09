@@ -15,6 +15,8 @@ import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.util.CoreUtils;
 
+import com.icesoft.util.pooling.ClientIdPool;
+
 public class BaseRenderer extends Renderer{
     public void decode(FacesContext facesContext, UIComponent uiComponent) {
         CurrentStyle.decode(facesContext, uiComponent);
@@ -76,4 +78,7 @@ public class BaseRenderer extends Renderer{
         }
     }    
     
+    public String convertClientId(FacesContext context, String clientId) {
+        return ClientIdPool.get(clientId);    
+    }   
 }
