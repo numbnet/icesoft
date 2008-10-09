@@ -54,11 +54,11 @@
             <ice:inputText id="modalMessageInput"
                            value="#{popup.modalMessage}"
                            disabled="#{popup.modalRendered}"
-                           size="30" maxlength="90"/>
+                           size="30" maxlength="90" style="font-size:12px"/>
             <ice:commandButton id="toggleModal"
                                value="#{popup.determineModalButtonText}"
                                disabled="#{popup.modalRendered}"
-                               style="margin-right: 2px;"
+                               style="margin-right: 2px;font-size:12px"
                                actionListener="#{popup.toggleModal}"/>
         </ice:panelGroup>
     </ice:panelGroup>
@@ -75,10 +75,11 @@
             <ice:inputText id="draggableMessageInput"
                            value="#{popup.draggableMessage}"
                            disabled="#{popup.draggableRendered}"
-                           size="30" maxlength="90"/>
+                           size="30" maxlength="90" style="font-size:12px"/>
             <ice:commandButton id="toggleDraggable"
                                value="#{popup.determineDraggableButtonText}"
                                disabled="#{popup.draggableRendered}"
+                               style="font-size:12px"
                                actionListener="#{popup.toggleDraggable}"/>
         </ice:panelGroup>
         <ice:panelGroup styleClass="clearer"/>
