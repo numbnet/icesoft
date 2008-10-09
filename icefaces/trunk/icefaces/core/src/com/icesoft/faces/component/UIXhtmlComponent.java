@@ -48,6 +48,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.icesoft.util.pooling.XhtmlPool;
+
 public class UIXhtmlComponent extends UIComponentBase {
     public static final String COMPONENT_FAMILY =
             "com.icesoft.faces.XhtmlComponent";
@@ -121,7 +123,7 @@ public class UIXhtmlComponent extends UIComponentBase {
     }
 
     public void setTag(String tag) {
-        this.tag = tag;
+        this.tag = XhtmlPool.get(tag);
     }
 
     public void addStandardAttribute(String key, Object value) {

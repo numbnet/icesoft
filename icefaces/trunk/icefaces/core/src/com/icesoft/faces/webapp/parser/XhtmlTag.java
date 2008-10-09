@@ -40,6 +40,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.webapp.UIComponentTag;
 import javax.faces.el.ValueBinding;
 
+import com.icesoft.util.pooling.ELPool;
+
 /**
  * This class contains the tag processing logic for all XHTML tags.
  */
@@ -75,7 +77,7 @@ public class XhtmlTag extends UIComponentTag {
             for(int i = 0; i < attr.getLength(); i++) {
                 String value = (String) attr.getValue(i);
                 if (isValueReference(value)) {
-                    ValueBinding vb = getFacesContext().getApplication().createValueBinding(value);
+                    ValueBinding vb = getFacesContext().getApplication().createValueBinding(ELPool.get(value));
                     component.addValueBindingAttribute(attr.getQName(i), vb);
                 } else {
                     component.addStandardAttribute(attr.getQName(i), value);
