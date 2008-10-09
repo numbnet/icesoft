@@ -246,7 +246,8 @@
                             <ice:inputText id="text_nickname_chat"
                                            value="#{UserBean.nick}"
                                            title="Enter a nickname used in the chat"
-                                           styleClass="textField"/></td>
+                                           styleClass="textField"
+                                           actionListener="#{UserBean.enterConversation}"/></td>
                         <td align="center"><ice:commandButton
                                 id="join_chat_button" styleClass="orangeButtons"
                                 value="Join Chat"
