@@ -25,11 +25,16 @@ public class OutputTextRenderer extends BaseRenderer{
         UIOutput component = (UIOutput) uiComponent;
         ResponseWriter writer = facesContext.getResponseWriter();
         String clientId = ClientIdPool.get(uiComponent.getClientId(facesContext));
-        Object value = component.getValue(); 
         //This is not ice:outputText, so just render the value
         //this will be true for open HTML in the JSP
         if (!(component instanceof HtmlOutputText)) {
-            writer.write(String.valueOf(value));
+            Object value = component.getValue();
+            if (value != null) {
+                String svalue = String.valueOf(value);
+                if (svalue.length() > 0) {
+                    writer.write(svalue);
+                }
+            }
             return;
         }
 
@@ -58,9 +63,8 @@ public class OutputTextRenderer extends BaseRenderer{
         ResponseWriter writer = facesContext.getResponseWriter();
         UIOutput component = (UIOutput) uiComponent;
         Object rawValue = component.getValue();         
-        String convertedValue = null;
-        convertedValue = DomBasicInputRenderer.converterGetAsString(facesContext, 
-                                                        uiComponent, rawValue);
+        String convertedValue = DomBasicInputRenderer.converterGetAsString(
+            facesContext, uiComponent, rawValue);
         boolean valueTextRequiresEscape = DOMUtils.escapeIsRequired(uiComponent);
         if (valueTextRequiresEscape) {
             convertedValue = DOMUtils.escapeAnsi(convertedValue);
