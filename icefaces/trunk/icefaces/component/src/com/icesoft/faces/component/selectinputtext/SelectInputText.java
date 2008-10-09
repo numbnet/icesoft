@@ -115,8 +115,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
     private int index = -1;
     
     private MethodBinding textChangeListener;
-    private String onkeypress;
-    
+
     public SelectInputText() {
         super();
         JavascriptContext.includeLib(JavascriptContext.ICE_EXTRAS,
@@ -609,17 +608,8 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         itemMap = (Map) values[11];
     }
 
-
     public String getOnkeypress() {
         if (isDisabled() || isReadonly()) return "";
-          if (onkeypress != null) {
-              return onkeypress;
-          }
-          ValueBinding vb = getValueBinding("onkeypress");
-          return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+        return super.getOnkeypress();
     }
-
-    public void setOnkeypress(String onkeypress) {
-      this.onkeypress = onkeypress;
-    }    
 }
