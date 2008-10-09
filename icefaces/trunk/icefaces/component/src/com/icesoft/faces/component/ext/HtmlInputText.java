@@ -112,32 +112,6 @@ public class HtmlInputText
     private Effect onkeypresseffect;
     private Effect onkeydowneffect;
     private Effect onkeyupeffect;
-    private static String[] supportedPassThru = {
-        "accesskey",
-        "alt",
-        "autocomplete",
-        "dir",
-        "lang",
-        "maxlength",
-        "onblur",
-        "onchange",
-        "onclick",
-        "onfocus",
-        "ondblclick",
-        "onblur",
-        "onkeydown",
-        "onkeypress",
-        "onkeyup",
-        "onmousedown",
-        "onmousemove",
-        "onmouseout",
-        "onmouseover",
-        "onmouseup",
-        "onselect",
-        "size",
-        "style",
-        "tabindex",
-        "title"    };
 
     private CurrentStyle currentStyle;
 
@@ -846,33 +820,4 @@ public class HtmlInputText
         ValueBinding vb = getValueBinding("autocomplete");
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
-    
-    public String[] getSupportedPassThru() {
-        return supportedPassThru;
-    } 
-    
-    public String getOnkeypress() {
-        String onkeyPress = super.getOnkeypress();
-        if (onkeyPress != null) {
-            return onkeyPress + DomBasicRenderer.ICESUBMIT;
-        } 
-        return DomBasicRenderer.ICESUBMIT;
-    }
-    
-    public String getOnblur() {
-        String onblur = super.getOnblur();
-        if (onblur == null) onblur = "";
-        if (getPartialSubmit()) {
-            return onblur + "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL;
-        }
-        return onblur + "setFocus('');";
-    }  
-    
-    public String getOnfocus() {
-        String onfocus = super.getOnfocus();
-        if (onfocus != null) {
-            return onfocus + "setFocus(this.id);";
-        } 
-        return onfocus;
-    }    
 }

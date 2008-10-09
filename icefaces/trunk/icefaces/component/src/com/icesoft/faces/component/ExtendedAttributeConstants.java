@@ -388,12 +388,63 @@ public class ExtendedAttributeConstants {
         }
         return (String[])attributes[i];
     }
-    
+
+    /**
+     * This method is used to exclude entries from a components's list of 
+     *  passthrough attributes.
+     * 
+     * It's optimised to assume that remove has been hand-coded to be a subset
+     *  of the component attributes returnd from getAttributes(int).
+     */
     public static String[] getAttributes(int index, String[] remove) {
         String[] attributes = getAttributes(index);
         if(attributes == null)
             return null;
+        if(remove == null || remove.length == 0)
+            return attributes;
         String[] copy = new String[attributes.length - remove.length];
+        int copyIndex = 0;
+        for(int i = 0; i < attributes.length; i++) {
+            boolean shouldRemove = false;
+            for(int j = 0; j < remove.length; j++) {
+                if(attributes[i].equals(remove[j])) {
+                    shouldRemove = true;
+                    break;
+                }
+            }
+            if(!shouldRemove) {
+                copy[copyIndex++] = attributes[i];
+            }
+        }
+        return copy;
+    }
+    
+    /**
+     * This method is used to exclude entries from a components's list of 
+     *  passthrough attributes. It's used to give ownership of javascript 
+     *  related passthrough attributes attributes to the LocalEffectEncoder.
+     * 
+     * The remove parameter most likely contains entries that are not in the  
+     *  list of component attributes returnd from getAttributes(int).
+     */
+    public static String[] getAttributesExceptJavascript(int index, String[] remove) {
+        String[] attributes = getAttributes(index);
+        if(attributes == null)
+            return null;
+        if(remove == null || remove.length == 0)
+            return attributes;
+        
+        int numToRemove = 0; 
+        for(int i = 0; i < attributes.length; i++) {
+            for(int j = 0; j < remove.length; j++) {
+                if(attributes[i].equals(remove[j])) {
+                    numToRemove++;
+                    break;
+                }
+            }
+        }
+        
+        String[] copy = new String[attributes.length - numToRemove];
         int copyIndex = 0;
         for(int i = 0; i < attributes.length; i++) {
             boolean shouldRemove = false;

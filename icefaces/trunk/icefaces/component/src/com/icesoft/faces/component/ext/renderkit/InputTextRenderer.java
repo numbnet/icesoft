@@ -1,6 +1,8 @@
 package com.icesoft.faces.component.ext.renderkit;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -8,23 +10,51 @@ import javax.faces.context.ResponseWriter;
 import javax.faces.event.ActionEvent;
 
 import com.icesoft.faces.component.ExtendedAttributeConstants;
+import com.icesoft.faces.component.IceExtended;
 import com.icesoft.faces.component.ext.HtmlInputText;
 import com.icesoft.faces.component.ext.KeyEvent;
 import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.renderkit.dom_html_basic.PassThruAttributeWriter;
+import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 
 public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basic.InputTextRenderer {
-    
-    private static final String[] passThruAttributes = ExtendedAttributeConstants.getAttributes(ExtendedAttributeConstants.ICE_INPUTTEXT);
-           
+    // LocalEffectEncoder takes ownership of any passthrough attributes
+    private static final String[] jsEvents = LocalEffectEncoder.maskEvents(
+        ExtendedAttributeConstants.getAttributes(
+            ExtendedAttributeConstants.ICE_INPUTTEXT));
+    private static final String[] passThruAttributes =
+        ExtendedAttributeConstants.getAttributesExceptJavascript(
+            ExtendedAttributeConstants.ICE_INPUTTEXT,
+            jsEvents);
+    private static Map rendererJavascript;
+    private static Map rendererJavascriptPartialSubmit;
+    static {
+        rendererJavascript = new HashMap();
+        rendererJavascript.put(HTML.ONKEYPRESS_ATTR,
+            DomBasicRenderer.ICESUBMIT);
+        rendererJavascript.put(HTML.ONFOCUS_ATTR,
+            "setFocus(this.id);");
+        rendererJavascript.put(HTML.ONBLUR_ATTR,
+            "setFocus('');");
+        rendererJavascriptPartialSubmit = new HashMap();
+        rendererJavascriptPartialSubmit.put(HTML.ONKEYPRESS_ATTR,
+            DomBasicRenderer.ICESUBMIT);
+        rendererJavascriptPartialSubmit.put(HTML.ONFOCUS_ATTR,
+            "setFocus(this.id);");
+        rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
+            "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
+    }
+
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
             throws IOException {
         super.encodeBegin(facesContext, uiComponent);
         ResponseWriter writer = facesContext.getResponseWriter();
-        LocalEffectEncoder.encodeLocalEffects(uiComponent, writer,
-                FacesContext.getCurrentInstance());
+        Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit()
+            ? rendererJavascriptPartialSubmit : rendererJavascript;
+        LocalEffectEncoder.encode(
+            facesContext, uiComponent, jsEvents, rendererJS, null, writer);
     }
     
     protected void renderHtmlAttributes(ResponseWriter writer, UIComponent uiComponent)

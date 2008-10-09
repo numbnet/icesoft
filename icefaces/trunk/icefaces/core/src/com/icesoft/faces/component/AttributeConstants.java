@@ -148,6 +148,8 @@ public class AttributeConstants {
         String[] attributes = getAttributes(index);
         if(attributes == null)
             return null;
+        if(remove == null || remove.length == 0)
+            return attributes;
         String[] copy = new String[attributes.length - remove.length];
         int copyIndex = 0;
         for(int i = 0; i < attributes.length; i++) {
