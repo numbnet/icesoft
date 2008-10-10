@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.7.2 Release Notes</title>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1"><title>ICEfaces® v1.8 DR#1 Release Notes</title>
 
 <style>
 body, td, th, input {
@@ -43,10 +43,11 @@ font-size: 110%
 <td width="78%">
 <h1 style="border-bottom: 0px none; margin-left: 16px; margin-top: 8px;">ICEfaces<sup><small>®</small></sup>
 </h1>
-<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.7.2
+<h2 style="border-bottom: 0px none; font-weight: bold; margin-left: 16px;">v1.8
+DR#1
 Release Notes</h2>
 <p style="margin-left: 16px; margin-bottom: 12px;">October
-8th, 2008</p>
+15th, 2008</p>
 </td>
 <td align="center" valign="middle" width="22%"><img alt="ICEfaces Logo" src="resources/ICEfaces-logo.gif" style=""><br>
 </td>
@@ -58,8 +59,10 @@ Release Notes</h2>
 <h2><a name="Overview"></a>Overview</h2>
 This document contains the following sections:<br>
 <ul>
+<li><a href="#Changes_18DR1">Changes
+in This Release (v1.8 DR#1)</a></li>
 <li><a href="#Changes_172">Changes
-in This Release (v1.7.2)</a></li>
+in&nbsp;v1.7.2</a></li>
 <li><a href="#Changes_171">Changes
 in&nbsp;v1.7.1</a></li>
 <li><a href="#Changes_170">Changes
@@ -80,16 +83,13 @@ Containers</a></li>
 </li>
 <li><a href="#Known_Issues">Known Issues</a><br>
 <ul>
+<li><a href="#KIDocs">Documentation</a></li>
 <li><a href="#KIGeneral">General</a></li>
-<li><a href="KIDocs">Documentation</a></li>
 <li><a href="#KIJSPMarkup">JSP Markup</a></li>
 <li><a href="#KIICS">ICEfaces Component Suite</a></li>
 <li><a href="#KIJSF">JSF 1.2</a></li>
 <li><a href="#KIPortlets">Portlets</a></li>
-<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li>
-<li><a href="#Seam">JBoss Seam</a></li>
-<li><a href="#Spring">Spring Web Flow</a></li>
-<li><a href="#KISampleApps">Sample Applications</a></li>
+<li><a href="#KIAHS">Async HTTP Server (AHS)</a></li><li><a href="#KISampleApps">Sample Applications</a></li>
 <li><a href="#KIappservers">Application Servers</a></li>
 </ul>
 </li>
@@ -100,8 +100,188 @@ ICEfaces </a></li>
 information</a></li>
 </ul>
 <br>
+<h2><a name="Changes_18DR1"></a>Changes
+in This Release (v1.8 DR#1)</h2>
+<br>
+ICEfaces v1.8 DR#1 is a Development Build that provides an early-access
+preview of new features, enhancements, and fixes that will be included
+in the upcoming ICEfaces v1.8 release. This build has been lightly
+tested and is unsuitable for production use.<br>
+<br>
+Review the <a href="#Known_Issues">Known
+Issues</a>
+prior to using this release.<br>
+<br>
+You may report any issues with this build to the ICEfaces <a target="_blank" href="http://www.icefaces.org/JForum/forums/show/25.page">Development
+Build Feedback</a> forum.<br>
+<br>
+<h3><span style="font-weight: bold;">Notable
+Improvements
+&amp; Enhancements</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Framework
+Optimization</span><br>
+<br>
+<ul>
+<li>Significant changes to ICEfaces' internal
+implementation were made in this release as part of a comprehensive
+memory and CPU optimization effort.&nbsp;These changes do not
+affect backwards-compatibility.</li>
+<li>Typical Java heap consumption is reduced approx. 30-50%
+in this release vs. 1.7.x, varying depending on the use of the new
+"compressDOM" feature and the nature of the application.</li>
+<li>Server-side&nbsp;rendering performance in this
+release has&nbsp;been improved approx. 10% - 25% for the same
+content vs. 1.7.2.</li>
+<li>ICEfaces now supports optional compression of the
+server-side DOM to
+reduce Java heap consumption between view renders.</li>
+<li>Additional&nbsp;configuration parameters related to
+new optimization features have been introduced&nbsp;in this
+release.
+See the "Documentation Changes" section below for details.</li>
+</ul>
+</li>
+</ul>
+<span style="font-weight: bold;"></span><span style="font-weight: bold;"></span>
+<ul class="contentIndent">
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">Sample
+Applications</span>
+<br>
+<ul>
+<li>New "Location" portlet sample</li>
+<ul>
+<li>Demonstrates using ICEfaces Ajax-push techniques for
+inter-portlet communication between three different ICEfaces portlets.</li>
+<li>Can be found in
+the&nbsp;"../icefaces/samples/portlet/location" directory.</li>
+<li>Also included in the ICEfaces 1.7.2 release.</li>
+</ul>
+<li>Component Showcase</li>
+<ul>
+<li>The "Source" view feature in the facelets-enh version
+of the ICEfaces Component Showcase application has been enhanced to
+support code syntax highlighting.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">3rd Party
+Frameworks</span><br>
+<br>
+<ul>
+<li>Spring WebFlow 2.0</li>
+<ul>
+<li>An known-issue in ICEfaces 1.7.2 that
+prevented&nbsp;forced-login-redirects from working properly has
+been resolved in this release.</li>
+</ul>
+</ul>
+</li>
+</ul>
+<span style="font-weight: bold;"></span>
+<h3><span style="font-weight: bold;">Documentation
+Changes</span></h3>
+<ul class="contentIndent">
+<li><span style="font-weight: bold;">ICEfaces
+Developer's Guide</span>&nbsp;</li>
+</ul>
+<div style="margin-left: 40px;">
+<ul>
+<li>The following configuration parameters, from Appendix B of
+the
+Developer's Guide (pg. 128), have been added or modified in this
+release:&nbsp;</li>
+</ul>
+</div>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.compressDOM</span></big>,
+default value = false.
+<p>Specifies whether or not the server-side DOM should be
+compressed between view renders to reduce the amount of server heap
+memory required. Enabling this feature can provide significant memory
+consumption savings at the cost of some additional CPU cycles to
+perform the compression.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.clientIdPoolMaxSize</span></big>,
+default value = 100000.
+<p>Specifies the size of the String pool used for caching
+client ID strings. The default value of 100,000 requires approx. 1MB of
+Java heap. Specifying an integer value of 0 will disable the client ID
+String pool.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.cssNamePoolMaxSize</span></big>,
+default value = 100000.
+<p>Specifies the size of the String pool used for caching
+CSS class names strings. The default value of 100,000 requires approx.
+1MB of
+Java heap. Specifying an integer value of 0 will disable the CSS
+class-name String pool.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.elPoolMaxSize</span></big>,
+default value = 100000.
+<p>Specifies the size of the String pool used for caching
+EL expression strings. The default value of 100,000 requires approx.
+1MB of
+Java heap. Specifying an integer value of 0 will disable the EL
+expression String pool.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.xhtmlPoolMaxSize</span></big>,
+default value = 100000.
+<p>Specifies the size of the String pool used for caching
+literal XHTML tags and attributes strings. The default value of 100,000 requires approx.
+1MB of
+Java heap. Specifying an integer value of 0 will disable the&nbsp;XHTML tags and attributes String pool.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+<ul style="margin-left: 40px;" class="contentIndent">
+<ul>
+<li><big style="font-weight: bold;"><span style="font-family: monospace;">com.icesoft.faces.standardRequestScope</span></big>,
+default value = false.
+<p>The behaviour of the standardRequestScope parameter has
+been slightly modified. The default value is false but, since the Seam
+framework requires that this be set to true, the ICEfaces framework now
+checks for Seam integration at runtime and sets standardRequestScope to
+true if Seam is detected.&nbsp;
+</p>
+</li>
+</ul>
+</ul>
+
+<br>
+Refer
+to the <a target="_blank" href="http://jira.icefaces.org/secure/IssueNavigator.jspa?reset=true&amp;pid=10021&amp;fixfor=10141">ICEfaces
+JIRA Change Log</a> for detailed information on
+all the changes included in this release.<br>
+<br>
 <h2><a name="Changes_172"></a>Changes
-in This Release (v1.7.2)</h2>
+in&nbsp;v1.7.2</h2>
 <br>
 ICEfaces v1.7.2 is a maintenance release that includes&nbsp;over
 100 fixes
@@ -231,7 +411,6 @@ default of "com.icesoft.faces.standardRequestScope=FALSE" will apply.</li>
 </ul>
 </li>
 </ul>
-
 <h3><span style="font-weight: bold;">Documentation
 Changes</span></h3>
 <ul class="contentIndent">
@@ -1904,15 +2083,6 @@ configured to use AHS, the application server may log harmless
 exceptions related to the classloader unloading classes before
 framework threads have finished running (related to JMS).</li>
 </ul>
-<h3><a name="Spring"></a>Spring WebFlow</h3>
-<ul>
-<li>The access-failure-initiated-login feature of Spring Web
-Flow
-is not supported in this release. A work-around is to ensure your
-application structure requires login prior to permitting users access
-to restricted content, etc. See <a href="http://jira.icefaces.org/browse/ICE-3536" target="_blank">ICE-3536</a>
-for details.</li>
-</ul>
 <h3><a name="KISampleApps"></a>Sample
 Applications</h3>
 <ul>
@@ -2000,7 +2170,6 @@ application build script target for Tomcat 6 will include the correct
 </ul>
 </li>
 </ul>
-
 </ul>
 <ul>
 <li><span style="font-weight: bold;">Tomcat v6.0 /
