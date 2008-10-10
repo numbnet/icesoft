@@ -45,6 +45,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.webapp.UIComponentTag;
 import javax.faces.webapp.UIComponentELTag;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import java.util.HashMap;
 
 
@@ -85,6 +86,10 @@ public class ELSetPropertiesRule extends Rule {
                     values.put(name,
                                getMethodExpression(facesContext, name, value,
                                                    ActionEvent.class));
+                } else if ("valueChangeListener".equals(name)) {
+                    values.put(name,
+                               getMethodExpression(facesContext, name, value,
+                                                   ValueChangeEvent.class));
                 } else {
                     values.put(name,
                                getValueExpression(facesContext, name, value));
@@ -129,15 +134,19 @@ public class ELSetPropertiesRule extends Rule {
                                                String name, String value)  {
 
         Class argType = Object.class;
-        try {
-            if ( value.equalsIgnoreCase("true") || 
-                        value.equalsIgnoreCase("false") ) {
-                argType = Boolean.class;
-            } else if (null != Integer.valueOf(value)) {
-                //attempt to coerce to Integer type for standard JSF components
-                argType = Integer.class;
+        // For some reason, tab index is typed to be a String, even though
+        //  it can only be positive integral values
+        if (!name.equals("tabindex")) {
+            try {
+                if (value.equalsIgnoreCase("true") ||
+                    value.equalsIgnoreCase("false") ) {
+                    argType = Boolean.class;
+                } else if (null != Integer.valueOf(value)) {
+                    //attempt to coerce to Integer type for standard JSF components
+                    argType = Integer.class;
+                }
+            } catch (NumberFormatException e) {
             }
-        } catch (NumberFormatException e) {
         }
 
         
