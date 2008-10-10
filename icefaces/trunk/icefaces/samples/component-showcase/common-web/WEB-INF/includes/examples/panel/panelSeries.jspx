@@ -80,7 +80,7 @@
                 <ice:graphicImage value="/images/employee.gif"
                                   width="69" height="97" style="float:right"/>
 
-                <ice:panelGroup style="padding:10px;background:url(#{styleBean.imageDirectory}table_col_header.gif);">
+                <ice:panelGroup styleClass="iceDatTblColHdr">
                     <ice:outputText id="name" value="#{employee.firstName} #{employee.lastName}" style="font-weight:bold;"/>
                 </ice:panelGroup>
                 <ice:panelGroup style="padding:10px;">
