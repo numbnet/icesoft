@@ -1,0 +1,20 @@
+<project default="jar"> 
+
+  <target name="jar" > 
+    <mkdir dir="dist"/>
+    <copy file="lib/commons-logging.jar" tofile="dist/commons-logging.jar" /> 
+
+    <jar destfile="dist/testClient.jar" 
+         basedir="."
+	 manifest="meta-inf/MANIFEST.MF"
+	 excludes="src/, classes/, lib/**, *.ipr, *.iws, *.iml, dist/, *.xml, scripts/**, testLogs/*, testClient.jar " >
+	 <fileset dir="classes/production/icefacesClient" />
+	 
+
+    </jar> 	  
+   </target>
+
+   <target name="clean"> 
+      <delete dir="dist" />
+   </target> 
+</project>
