@@ -75,7 +75,6 @@ public class View implements CommandQueue {
         this.resourceDispatcher = resourceDispatcher;
         this.lifecycle = lifecycle;
         this.allServedViews = allServedViews;
-        this.facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, this, configuration, resourceDispatcher, sessionMonitor);
         this.persistentFacesState = new PersistentFacesState(this, viewListeners, configuration);
         ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewIdentifier));
         //fail fast if environment cannot be detected
