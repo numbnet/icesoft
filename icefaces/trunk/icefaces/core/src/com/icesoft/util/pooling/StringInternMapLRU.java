@@ -43,7 +43,7 @@ import org.apache.commons.logging.LogFactory;
 public class StringInternMapLRU {
 
     private static final Log log = LogFactory.getLog(StringInternMapLRU.class);
-    private static final int DEFAULT_MAX_SIZE = 100000;
+    private static final int DEFAULT_MAX_SIZE = 95000;
     
     private Map map;
     private int defaultSize;
