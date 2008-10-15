@@ -94,6 +94,17 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
             input.setAttribute("disabled", "disabled");
         }
 
+        boolean readonly = false;
+        if (uiComponent.getAttributes().get("readonly") != null) {
+            if ((uiComponent.getAttributes().get("readonly"))
+                    .equals(Boolean.TRUE)) {
+                readonly = true;
+            }
+        }
+        if (readonly) {
+            input.setAttribute("readonly", "readonly");
+        }
+        
         HashSet excludes = new HashSet();
         String accesskey =
                 (String) uiComponent.getAttributes().get("accesskey");
@@ -119,7 +130,6 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
 
         // style is rendered on containing table
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
-
         Element label = domContext.createElement("label");
         td.appendChild(label);
         label.setAttribute("for", inputID);
@@ -194,7 +204,11 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         label.setAttribute(HTML.FOR_ATTR, radioClientId);
         if (selectItemLabel != null) label.appendChild(domContext.createTextNode(selectItemLabel));
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, selectOne, input, label, passThruAttributes);
-
+        PassThruAttributeRenderer.renderBooleanAttributes(
+                facesContext,
+                uiComponent,
+                input,
+                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ; 
         rootNode.appendChild(input);
         rootNode.appendChild(label);
 

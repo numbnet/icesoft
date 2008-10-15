@@ -249,16 +249,27 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         if (disabled) {
             inputElement.setAttribute("disabled", "disabled");
         }
-
+        
+        boolean readonly = false;
+        if (uiComponent.getAttributes().get("readonly") != null) {
+            if ((uiComponent.getAttributes().get("readonly"))
+                    .equals(Boolean.TRUE)) {
+                readonly = true;
+            }
+        }
+        if (readonly) {
+            inputElement.setAttribute("readonly", "readonly");
+        }
+        
         excludes.add("style");
         excludes.add("border");
-        excludes.add("readonly");
         String[] excludesStringArray = new String[excludes.size()];
         excludesStringArray = (String[]) excludes.toArray(excludesStringArray);
         PassThruAttributeRenderer.renderHtmlAttributes(
                 facesContext, uiComponent,
                 inputElement, rootTable,
                 selectManyCheckboxPassThruAttributes);
+      
     }
 
     protected void renderOption(FacesContext facesContext, UIComponent uiComponent) throws IOException {
@@ -323,7 +334,11 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         	label.appendChild(domContext.createTextNode(selectItemLabel));
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, selectMany, input, label, selectManyCheckboxPassThruAttributes);
-
+        PassThruAttributeRenderer.renderBooleanAttributes(
+                facesContext,
+                uiComponent,
+                input,
+                PassThruAttributeRenderer.EMPTY_STRING_ARRAY) ;  
         rootNode.appendChild(input);
         rootNode.appendChild(label);
 
