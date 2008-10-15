@@ -49,7 +49,7 @@ import java.util.Arrays;
  * This class is responsible for the rendering of html pass thru attributes.
  */
 public class PassThruAttributeRenderer {
-
+    public static final String[] EMPTY_STRING_ARRAY = {};
     public static final String[] passThruAttributeNames =  {
         "accept",
         "accesskey",
@@ -240,7 +240,7 @@ public class PassThruAttributeRenderer {
         }
     }
 
-    private static void renderBooleanAttributes(
+    public static void renderBooleanAttributes(
             FacesContext facesContext, UIComponent uiComponent,
             Element targetElement,
             String[] excludedAttributes) {

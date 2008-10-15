@@ -131,8 +131,11 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
                                          Element input) {
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, booleanCheckboxPassThruAttributes);
         //only "disabled" boolean attribute applies on a checkbox 
-        renderAttribute(uiComponent, input, HTML.DISABLED_ATTR,
-                        HTML.DISABLED_ATTR);
+        PassThruAttributeRenderer.renderBooleanAttributes(
+                facesContext,
+                uiComponent,
+                input,
+                new String[]{}) ;
         // onfocus
         String original = (String) uiComponent.getAttributes().get("onfocus");
         String onfocus = "setFocus(this.id);";
