@@ -77,9 +77,8 @@ public class ImageRenderer extends DomBasicRenderer {
                 .renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         Object ismap = uiComponent.getAttributes().get("ismap");
-        boolean isHandled = ((Boolean)ismap).booleanValue();
-        if(isHandled){
-            root.setAttribute("ismap", ismap.toString());
+        if (ismap instanceof Boolean && ((Boolean)ismap).booleanValue()) {
+            root.setAttribute("ismap", "ismap");
         }
         
         String altAttribute = (String) uiComponent.getAttributes().get("alt");
