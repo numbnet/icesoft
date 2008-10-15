@@ -12,6 +12,7 @@ public class ClientDescriptor {
     private int clientCount;
     private String url;
     private boolean isBranch;
+    private boolean usingProxy;
 
 
     /**
@@ -30,7 +31,8 @@ public class ClientDescriptor {
                             int initialRequestDelay,
                             int interRequestDelay,
                             int requestCount,
-                            boolean branch) {
+                            boolean branch,
+                            boolean usingProxy) {
         
         this.clientClass = clientClass;
         this.initialRequestDelay = initialRequestDelay;
@@ -39,6 +41,7 @@ public class ClientDescriptor {
         isBranch = branch;
         this.requestCount = requestCount;
         this.url = url;
+        this.usingProxy = usingProxy;
     }
 
     public int getClientCount() {
@@ -67,6 +70,14 @@ public class ClientDescriptor {
 
     public String getUrl() {
         return url;
+    }
+
+    public boolean isUsingProxy() {
+        return usingProxy;
+    }
+
+    public void setUsingProxy(boolean usingProxy) {
+        this.usingProxy = usingProxy;
     }
 
     public String toString() {

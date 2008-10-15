@@ -93,6 +93,7 @@ public abstract class Client {
                      int repeatCount,
                      int repeatDelay,
                      boolean isBranch,
+                     boolean isUsingProxy,
                      int clientId) {
 
         try {
@@ -102,6 +103,29 @@ public abstract class Client {
             this.repeatCount = repeatCount;
             this.clientId = clientId;
             this.branch = isBranch;
+
+
+            if (isUsingProxy) {
+                int spos = url.indexOf("//");
+                if (spos > -1) {
+                    spos = url.indexOf(":", spos+1);
+                    spos++;
+                    int epos = url.indexOf("/", spos);
+                    if (epos > -1) {
+
+                        String prior = url.substring(0, spos);
+                        String posterior = url.substring(epos);
+                        int port = Integer.parseInt( url.substring(spos, epos ));
+                        System.out.println("Prior = " + prior + " port = " + port + ", post=" + posterior);
+
+                        this.initialUrl = prior + Integer.toString( port + clientId ) +  posterior;
+                    }
+                }
+            }
+
+            System.out.println("Launching client: " + clientId + " to URL: " + initialUrl);
+
+
 
             this.initialUrl = url;
             if (!this.initialUrl.endsWith("/") ) {

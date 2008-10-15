@@ -77,7 +77,7 @@ public class ReceiveUpdatesActor extends ActorBase {
             requestCountThisInterval++;
 
             log.fine( updates );
-            System.out.println(updates);
+//            System.out.println(updates);
 
 
         } catch (Exception e) {

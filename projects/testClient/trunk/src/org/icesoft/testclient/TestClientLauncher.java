@@ -159,6 +159,7 @@ public class TestClientLauncher {
                                  (overrideRepeatCount == 0) ? c.getRequestCount() : overrideRepeatCount,
                                  (overrideInterRequestDelay == 0) ? c.getInterRequestDelay(): overrideInterRequestDelay,
                                  c.isBranch(),
+                                 c.isUsingProxy(), 
                                  idx);
                     reporter.addClient( client );
                     try {
@@ -237,6 +238,7 @@ public class TestClientLauncher {
                                                             10000,    // 1 sec initial delay
                                                             20000,   // 20 seconds between each
                                                             10000,   // Do 10000 of them
+                                                            false,
                                                             false); // passed. Can be Head or branch
 
         ClientDescriptor srClient = new ClientDescriptor( "org.icesoft.testclient.client.SyncTestPostbackClient",
@@ -245,6 +247,7 @@ public class TestClientLauncher {
                                                           10000,
                                                           400,
                                                           40000,
+                                                          false,
                                                           false);
 
         defineClient(pingClient);
