@@ -70,12 +70,12 @@ public abstract class JSFClient extends Client {
             this.repeatDelay = repeatDelay;
             this.repeatCount = repeatCount;
             this.clientId = clientId;
-            this.url = url;
+            this.initialUrl = url;
             
 //            this.branch = isBranch;
 
-            if (!this.url.endsWith("/") ) {
-                this.url += "/";
+            if (!this.initialUrl.endsWith("/") ) {
+                this.initialUrl += "/";
             }
 
 

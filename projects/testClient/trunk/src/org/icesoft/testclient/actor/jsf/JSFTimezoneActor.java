@@ -37,7 +37,7 @@ public class JSFTimezoneActor extends ActorBase {
         try {
 
             tempTime = System.currentTimeMillis();
-            String timezoneResult  = controller.post(controller.getUrl() + "timezone.faces",
+            String timezoneResult  = controller.post(controller.getShorterUrl() + "timezone.faces",
                                                      getDataFull(controller));
 
 //            System.out.println("Timezone result: " + timezoneResult);

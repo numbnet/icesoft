@@ -47,12 +47,21 @@ public abstract class Client {
     private static final Logger log = Logger.getLogger(" org.icesoft.testclient.client");
 
 
-    protected String url = "";
+    // Initial URL refers to the initial page, which may not just be the name of the app.
+    // eg http://host:port/pathA/pathB/pathC/page1.iface
+    protected String initialUrl = "";
+
+    // Shorter URL refers to just the app portion, suitable for adding the
+    // /block/ping and /block/receive-updates commands too,  eg.  http://host:port/pathA/
+    protected String shorterUrl;
 
     public Pattern branchViewNumberPattern = Pattern.compile("viewIdentifier=([^;]*);", Pattern.DOTALL);
     public Pattern branchIceIdPattern = Pattern.compile("window.session=\'([^\']*)\';", Pattern.DOTALL);
     public Pattern viewNumberPattern = Pattern.compile("Ice.Community.Application.*view:([^,]*),", Pattern.DOTALL);
     public Pattern iceIdPattern = Pattern.compile("Ice.Community.Application.*session: \'([^,]*)\',", Pattern.DOTALL);
+
+    // For finding the short form URL. Update as complications arise
+    public Pattern shortUrlPattern = Pattern.compile("(http://.*:[0-9]*/[^/.]*/)", Pattern.DOTALL);
 
     protected String initialResponse;
     
@@ -94,9 +103,9 @@ public abstract class Client {
             this.clientId = clientId;
             this.branch = isBranch;
 
-            this.url = url;
-            if (!this.url.endsWith("/") ) {
-                this.url += "/";
+            this.initialUrl = url;
+            if (!this.initialUrl.endsWith("/") ) {
+                this.initialUrl += "/";
             } 
 
 
@@ -121,6 +130,17 @@ public abstract class Client {
             viewNumberMatcher.find();
             viewNumber = viewNumberMatcher.group(1).trim();
 
+            Matcher shortMatcher;
+            shortMatcher = shortUrlPattern.matcher( url );
+            shortMatcher.find();
+
+            try {
+            shorterUrl = shortMatcher.group(1).trim();
+            System.out.println("Short URL = " + shorterUrl);
+
+            } catch (Exception e) {
+                System.out.println("Exception looking: " + e);
+            }
 
             Matcher iceIdMatcher;
 
@@ -222,8 +242,8 @@ public abstract class Client {
     }
 
 
-    public String getUrl() {
-        return url;
+    public String getInitialUrl() {
+        return initialUrl;
     }
 
     public String getIceId() {
@@ -283,7 +303,23 @@ public abstract class Client {
         this.iceId = iceId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setInitialUrl(String url) {
+        this.initialUrl = url;
+    }
+
+    /**
+     * Get the shorter form of the page URL, consisting of http://host:port/app/
+     * suitable for appending the blocking commands to. This method should be
+     * used by all actors wishing to construct commands for the server from
+     * the intial page URL during testing.  
+     *
+     * @return The shorter form URL.
+     */
+    public String getShorterUrl() {
+        return shorterUrl;
+    }
+
+    public void setShorterUrl(String shorterUrl) {
+        this.shorterUrl = shorterUrl;
     }
 }
