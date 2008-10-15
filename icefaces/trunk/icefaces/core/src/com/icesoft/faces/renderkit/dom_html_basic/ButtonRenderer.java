@@ -146,6 +146,8 @@ public class ButtonRenderer extends DomBasicRenderer {
         JavascriptContext.fireEffect(uiComponent, facesContext);
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+        PassThruAttributeRenderer.renderBooleanAttributes(facesContext, 
+                uiComponent, root, PassThruAttributeRenderer.EMPTY_STRING_ARRAY);       
         //add iceSubmit for image and submit button only
         if (typeAttribute.equals("submit") || typeAttribute.equals("image")) {
             renderOnClick(uiComponent, root);

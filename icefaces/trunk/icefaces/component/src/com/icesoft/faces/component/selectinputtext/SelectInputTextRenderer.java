@@ -134,13 +134,16 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                         "SelectInputText:encodeBegin():component created with the following id : " +
                         clientId);
             }
+            PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+            PassThruAttributeRenderer.renderBooleanAttributes(facesContext, 
+                    uiComponent, input, PassThruAttributeRenderer.EMPTY_STRING_ARRAY);            
         }
 //        Set excludes = new HashSet();
 //        excludes.add(HTML.ONKEYDOWN_ATTR);
 //        excludes.add(HTML.ONKEYUP_ATTR);
 //        excludes.add(HTML.ONFOCUS_ATTR);
 //        excludes.add(HTML.ONBLUR_ATTR);
-        PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
+
         if (!component.isDisabled() && !component.isReadonly()) {
             JavascriptContext.addJavascriptCall(facesContext, call);
         }
@@ -172,10 +175,10 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
                 component.setChangedComponentId(null);
             }
         }
-        renderAttribute(uiComponent, input, HTML.DISABLED_ATTR,
-                        HTML.DISABLED_ATTR);
-        renderAttribute(uiComponent, input, HTML.READONLY_ATTR,
-                        HTML.READONLY_ATTR);
+//        renderAttribute(uiComponent, input, HTML.DISABLED_ATTR,
+//                        HTML.DISABLED_ATTR);
+//        renderAttribute(uiComponent, input, HTML.READONLY_ATTR,
+//                        HTML.READONLY_ATTR);
         domContext.stepOver();
         domContext.streamWrite(facesContext, uiComponent);
     }
