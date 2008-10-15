@@ -78,6 +78,7 @@ public class DefaultValueTest {
             result.append("<tr><td colspan='2' style='background-color:#999999;'> <h4>"+ clazz + "</h4></td></tr>");
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
         PropertyDescriptor[] pd = null;
 
