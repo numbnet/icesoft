@@ -13,7 +13,7 @@ public class SaxClientParser implements ContentHandler {
 
 
     private enum TOKEN { CLIENT_CLASS, CLIENT_URL, CLIENT_COUNT, CLIENT_INITIAL_DELAY,
-                                CLIENT_INTER_DELAY, CLIENT_REPEAT_COUNT, CLIENT_IS_BRANCH }
+                                CLIENT_INTER_DELAY, CLIENT_REPEAT_COUNT, CLIENT_IS_BRANCH, USING_PROXY }
 
     private TestClientLauncher launcher;
 
@@ -21,6 +21,7 @@ public class SaxClientParser implements ContentHandler {
 
     private String className;
     private String testUrl;
+    private boolean usingProxy;
     private int clientCount;
     private int initialDelay;
     private int interDelay;
@@ -87,6 +88,8 @@ public class SaxClientParser implements ContentHandler {
             tokenInProgress = TOKEN.CLIENT_REPEAT_COUNT;
         } else if (localName.equalsIgnoreCase("branch") ) {
             tokenInProgress = TOKEN.CLIENT_IS_BRANCH;
+        } else if (localName.equalsIgnoreCase("usingProxy")) {
+            tokenInProgress = TOKEN.USING_PROXY;
         } 
     }
 
@@ -104,7 +107,8 @@ public class SaxClientParser implements ContentHandler {
                                                        initialDelay,
                                                        interDelay,
                                                        repeatCount,
-                                                       isBranch);
+                                                       isBranch,
+                                                       usingProxy);
             launcher.defineClient( cd );
 
         } else {
@@ -135,8 +139,12 @@ public class SaxClientParser implements ContentHandler {
                     break;
 
                 case CLIENT_IS_BRANCH:
-                    isBranch = Boolean.getBoolean( tempField );
+                    isBranch = Boolean.parseBoolean ( tempField );
                     break;
+                
+                case USING_PROXY:
+                    usingProxy = Boolean.parseBoolean ( tempField );
+                    break; 
             }
         }
     }
