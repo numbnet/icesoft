@@ -27,7 +27,7 @@ public class PingActor extends ActorBase {
             // temporary workaround until I can configure the PingActor and the receiveUpdates
             // actor separately
             tempTime = System.currentTimeMillis();
-            String pingResult  = controller.post(controller.getUrl() + "block/ping",
+            String pingResult  = controller.post(controller.getShorterUrl() + "block/ping",
                                                  getDataFull(controller));
 
              runningAverage =

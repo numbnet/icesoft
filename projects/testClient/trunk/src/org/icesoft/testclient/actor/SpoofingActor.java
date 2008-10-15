@@ -42,10 +42,10 @@ public class SpoofingActor extends ActorBase {
 
             String updates;
             if (JSessionId != null) {
-                updates = this.post(controller.getUrl() + command,
+                updates = this.post(controller.getShorterUrl() + command,
                                     getData(controller) + "\n");
             } else {
-                updates = controller.post(controller.getUrl() + command,
+                updates = controller.post(controller.getShorterUrl() + command,
                                           getData(controller) + "\n");
             }
 

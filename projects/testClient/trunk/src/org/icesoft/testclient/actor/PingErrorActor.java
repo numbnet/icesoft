@@ -22,7 +22,7 @@ public class PingErrorActor extends ActorBase {
         try {
 
             tempTime = System.currentTimeMillis();
-            String errorResult  = controller.post(controller.getUrl() + "block/ping",
+            String errorResult  = controller.post(controller.getShorterUrl() + "block/ping",
                                                   getDataFull(controller));
              runningAverage =
                     updateRunningAverage( (System.currentTimeMillis() - tempTime),

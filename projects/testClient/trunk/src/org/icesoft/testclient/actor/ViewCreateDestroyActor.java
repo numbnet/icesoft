@@ -51,7 +51,7 @@ public class ViewCreateDestroyActor extends ActorBase {
                 System.out.println("Doing the login");
 
 
-                URL firstPageURL = new URL(controller.getUrl() );
+                URL firstPageURL = new URL(controller.getShorterUrl() );
                 long start = System.currentTimeMillis();
                 URLConnection firstPageConnection = firstPageURL.openConnection();
                 firstPageConnection.setRequestProperty("Cookie", controller.getCookie() );
@@ -107,7 +107,7 @@ public class ViewCreateDestroyActor extends ActorBase {
             System.out.println("OK, disposing-view");
 
             String updates =
-                    controller.post(controller.getUrl() + "block/dispose-views",
+                    controller.post(controller.getShorterUrl() + "block/dispose-views",
                                     getDataFull(controller));
 
             requestCountThisInterval ++;

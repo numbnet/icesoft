@@ -43,7 +43,7 @@ public class LoginActor extends ActorBase {
 
 //                System.out.println("--> Logging in: " + getDataFull(controller) );
                 tempTime = System.currentTimeMillis();
-                String loginResult  = controller.post(controller.getUrl() + "block/send-receive-updates",
+                String loginResult  = controller.post(controller.getShorterUrl() + "block/send-receive-updates",
                                                       getDataFull(controller));
 
 

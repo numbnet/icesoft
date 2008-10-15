@@ -20,7 +20,7 @@ public class SyncTestUpdatesActor extends ActorBase {
 
             tempTime = System.currentTimeMillis();
             String updates =
-                    controller.post(controller.getUrl() + "block/send-receive-updates",
+                    controller.post(controller.getShorterUrl() + "block/send-receive-updates",
                                     getDataFull(controller));
               runningAverage =
                     updateRunningAverage( (System.currentTimeMillis() - tempTime),

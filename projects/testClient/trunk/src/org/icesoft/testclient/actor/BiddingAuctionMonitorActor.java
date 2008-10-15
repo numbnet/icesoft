@@ -39,7 +39,7 @@ Pattern auctionValuePattern = Pattern.compile("iceForm:iceTable:0:item_currentPr
 
             tempTime = System.currentTimeMillis();
             String updatedViews =
-                    controller.post(controller.getUrl() + "block/receive-updated-views",
+                    controller.post(controller.getShorterUrl() + "block/receive-updated-views",
                                     getData(controller) + "\n");
 
 
@@ -50,7 +50,7 @@ Pattern auctionValuePattern = Pattern.compile("iceForm:iceTable:0:item_currentPr
             System.out.println("Posting receieve-updates");
 
             String updates =
-                    controller.post(controller.getUrl() + "block/receive-updates",
+                    controller.post(controller.getShorterUrl() + "block/receive-updates",
                                     getDataFull(controller));
              runningAverage =
                     updateRunningAverage( (System.currentTimeMillis() - tempTime),

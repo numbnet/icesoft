@@ -53,7 +53,7 @@ public class ChatInteractorActor extends ReceiveUpdatesActor {
 //            System.out.println("--> sending message: " + getDataFull(controller) );
             tempTime = System.currentTimeMillis();
             System.out.println("Chatting! ");
-            String chatResult  = controller.post(controller.getUrl() + "block/send-receive-updates",
+            String chatResult  = controller.post(controller.getShorterUrl() + "block/send-receive-updates",
                                                   getDataFull(controller));
 
 //            System.out.println("Result: " + chatResult);

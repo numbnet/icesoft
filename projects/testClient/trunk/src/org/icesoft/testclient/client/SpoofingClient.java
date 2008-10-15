@@ -41,9 +41,9 @@ public class SpoofingClient extends Client {
             this.clientId = clientId;
             this.branch = isBranch;
 
-            this.url = url;
-            if (!this.url.endsWith("/") ) {
-                this.url += "/";
+            this.initialUrl = url;
+            if (!this.initialUrl.endsWith("/") ) {
+                this.initialUrl += "/";
             }
 
 
