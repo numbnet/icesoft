@@ -40,6 +40,10 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
         views.push(new Ice.Parameter.Association(session, view));
     };
 
+    var deregisterAllViews = function() {
+        views.clear();
+    };
+
     var channel = new Ice.Ajax.Client(logger.child('dispose'));
     var sendDisposeViews = function(parameters) {
         if (parameters.isEmpty()) return;
@@ -118,7 +122,15 @@ window.console && window.console.firebug ? new Ice.Log.FirebugLogHandler(window.
             });
             commandDispatcher.register('reload', function(element) {
                 logger.info('Reloading');
-                window.location.reload();
+                var url = window.location.href;
+                deregisterAllViews();
+                if (url.contains('rvn=')) {
+                    window.location.reload();
+                } else {
+                    var view = element.getAttribute('view');
+                    var queryPrefix = url.contains('?') ? '&' : '?';
+                    window.location.href = url + queryPrefix + 'rvn=' + view;
+                }
             });
             commandDispatcher.register('macro', function(message) {
                 $enumerate(message.childNodes).each(function(subMessage) {

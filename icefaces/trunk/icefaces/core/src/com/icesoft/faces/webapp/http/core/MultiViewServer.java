@@ -37,12 +37,30 @@ public class MultiViewServer implements Server {
 
     public void service(Request request) throws Exception {
         //extract viewNumber if this request is from a redirect
-        String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, session, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
-        views.put(viewNumber, view);
+        final View view;
+        synchronized (views) {
+            if (request.containsParameter("rvn")) {
+                String viewIdentifier = request.getParameter("rvn");
+                if (views.containsKey(viewIdentifier)) {
+                    view = (View) views.get(viewIdentifier);
+                } else {
+                    view = createView(request);
+                }
+            } else {
+                view = createView(request);
+            }
+        }
+
         sessionMonitor.touchSession();
         view.servePage(request);
         view.release();
+    }
+
+    private View createView(Request request) throws Exception {
+        String viewNumber = String.valueOf(++viewCount);
+        View view = new View(viewNumber, sessionID, session, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+        views.put(viewNumber, view);
+        return view;
     }
 
     public void shutdown() {

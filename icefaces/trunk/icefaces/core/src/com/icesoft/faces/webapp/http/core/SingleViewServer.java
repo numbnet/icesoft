@@ -36,12 +36,16 @@ public class SingleViewServer implements Server {
     }
 
     //synchronize to avoid concurrent state modifications of the single View
-    public synchronized void service(Request request) throws Exception {
+    public void service(Request request) throws Exception {
         //create single view or re-create view if the request is the result of a redirect
-        View view = (View) views.get(viewNumber);
-        if (view == null) {
-            view = new View(viewNumber, sessionID, session, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
-            views.put(viewNumber, view);
+        final View view;
+        synchronized (views) {
+            if (views.containsKey(viewNumber)) {
+                view = (View) views.get(viewNumber);
+            } else {
+                view = new View(viewNumber, sessionID, session, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+                views.put(viewNumber, view);
+            }
         }
 
         sessionMonitor.touchSession();
