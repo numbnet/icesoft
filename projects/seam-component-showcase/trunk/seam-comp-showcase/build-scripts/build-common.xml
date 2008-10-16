@@ -390,6 +390,7 @@
 	   	  	 <include name="**/**/**/**/util/*.java"/>
 	   	  	 <include name="**/**/**/**/view/**/**/**/**/*.*"/>
 	   	  	 <include name="**/**/**/**/resouces/city.xml.zip"/>
+	   	  	 <exclude name="**/**/**/**/util/SourceCodeLoaderServlet.java"/>
 	   	  </fileset>
 	   </copy>
 	   <copy todir="${basedir}/view">
