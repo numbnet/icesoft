@@ -24,14 +24,7 @@ public class ReceiveUpdatesActor extends ActorBase {
 
     public void act(Client controller) {
 
-        // This for a NASA test case where the initial page URL is not the base
-        // portion of the URL. Gotta work around that. 
-
-        String url = controller.getShorterUrl(); 
-        int epos = url.indexOf("Page1_0");
-        if (epos > -1) {
-            url = url.substring(0, epos);
-        }
+        String url = controller.getShorterUrl();
 
         try {
 
