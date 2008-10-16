@@ -60,8 +60,7 @@ public abstract class Client {
     public Pattern viewNumberPattern = Pattern.compile("Ice.Community.Application.*view:([^,]*),", Pattern.DOTALL);
     public Pattern iceIdPattern = Pattern.compile("Ice.Community.Application.*session: \'([^,]*)\',", Pattern.DOTALL);
 
-    // For finding the short form URL. Update as complications arise
-    public Pattern shortUrlPattern = Pattern.compile("(http://.*:[0-9]*/[^/.]*/)", Pattern.DOTALL);
+//    public Pattern shortUrlPattern = Pattern.compile("(http://.*:[0-9]*/[^/.]*/)", Pattern.DOTALL);
 
     protected String initialResponse;
     
@@ -105,6 +104,8 @@ public abstract class Client {
             this.branch = isBranch;
 
 
+            this.initialUrl = url;
+
             if (isUsingProxy) {
                 int spos = url.indexOf("//");
                 if (spos > -1) {
@@ -125,9 +126,6 @@ public abstract class Client {
 
             System.out.println("Launching client: " + clientId + " to URL: " + initialUrl);
 
-
-
-            this.initialUrl = url;
             if (!this.initialUrl.endsWith("/") ) {
                 this.initialUrl += "/";
             } 
@@ -154,17 +152,10 @@ public abstract class Client {
             viewNumberMatcher.find();
             viewNumber = viewNumberMatcher.group(1).trim();
 
-            Matcher shortMatcher;
-            shortMatcher = shortUrlPattern.matcher( url );
-            shortMatcher.find();
-
-            try {
-            shorterUrl = shortMatcher.group(1).trim();
-            System.out.println("Short URL = " + shorterUrl);
-
-            } catch (Exception e) {
-                System.out.println("Exception looking: " + e);
-            }
+            shorterUrl = extractShorterUrl(initialUrl);
+            if (!shorterUrl.endsWith("/")) {
+                shorterUrl += "/";
+            } 
 
             Matcher iceIdMatcher;
 
@@ -187,7 +178,7 @@ public abstract class Client {
             }
             // Let the Client subclass do it's initialization
 
-            log.info(this + " Running with: " + repeatCount + " reps - requests every: " + repeatDelay + " ms");
+            log.info(this + " Client: " + clientId + " at Url: " + shorterUrl + " running with: " + repeatCount + " reps - requests every: " + repeatDelay + " ms");
             initSubclient();
 
         } catch (Exception e) {
@@ -263,6 +254,25 @@ public abstract class Client {
         result = getInputAsString(
                 new InputStreamReader(urlConnection.getInputStream()) );
         return result;
+    }
+
+    private String extractShorterUrl(String initialUrl) {
+
+        int epos = initialUrl.indexOf(":");
+        if (epos > -1) {
+            epos = initialUrl.indexOf(":", epos+1);
+            epos = initialUrl.indexOf("/", epos+1);
+            if (epos > -1) {
+                epos = initialUrl.indexOf("/", epos+1);
+
+                if (epos == -1) {
+                    return initialUrl;
+                } else {
+                    return initialUrl.substring( 0, epos);
+                }
+            }
+        }
+        throw new IllegalArgumentException ("Illegal URL Format for this test program, missing parts"); 
     }
 
 

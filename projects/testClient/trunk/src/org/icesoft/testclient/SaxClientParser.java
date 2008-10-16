@@ -100,7 +100,6 @@ public class SaxClientParser implements ContentHandler {
             throws SAXException {
 
         if (localName.equalsIgnoreCase("client") ) {
-            System.out.println("defining client!");
             ClientDescriptor cd = new ClientDescriptor(className,
                                                        testUrl,
                                                        clientCount,
