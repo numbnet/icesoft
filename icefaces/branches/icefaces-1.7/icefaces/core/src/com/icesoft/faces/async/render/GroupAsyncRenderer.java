@@ -78,10 +78,8 @@ implements AsyncRenderer {
     protected String name;
 
     protected boolean stopRequested = false;
-    private Map applicationMap;
 
     public GroupAsyncRenderer() {
-        applicationMap = FacesContext.getCurrentInstance().getExternalContext().getApplicationMap();
     }
 
     /**
@@ -132,6 +130,12 @@ implements AsyncRenderer {
                     new IllegalStateException(
                         "Unable to add current session: " +
                             "no current session active");
+            }
+        } else {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn(
+                    "Add current session cannot be done from non-JSF thread. " +
+                        "Failed to add session to group '" + name + "'.");
             }
         }
     }
@@ -269,7 +273,13 @@ implements AsyncRenderer {
         if (StaticTimerUtility.Log.isTraceEnabled()) {
             StaticTimerUtility.newJob(group.size());
             StaticTimerUtility.startJobTmer();
-        } 
+        }
+        /*
+         * Invocation from a non-JSF thread currently cannot invoke a render
+         * on sessions.
+         */
+        boolean fromJSFThread = FacesContext.getCurrentInstance() != null;
+        boolean containsSessions = false;
         for (Iterator i = group.iterator(); !stopRequested && i.hasNext(); ) {
             /*
              * From the CopyOnWriteArraySet:
@@ -286,9 +296,23 @@ implements AsyncRenderer {
             } else if (object instanceof Renderable) {
                 requestRender((Renderable)object);
             } else if (object instanceof HttpSession) {
-                requestRender((HttpSession)object);
+                containsSessions = true;
+                if (fromJSFThread) {
+                    requestRender((HttpSession)object);
+                }
             } else if (object instanceof PortletSession) {
-                requestRender((PortletSession)object);
+                containsSessions = true;
+                if (fromJSFThread) {
+                    requestRender((PortletSession)object);
+                }
+            }
+        }
+        if (!fromJSFThread && containsSessions) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn(
+                    "Render request done from non-JSF thread. Session(s) " +
+                        "contained in group '" + name + "' did not receive a " +
+                        "render.");
             }
         }
     }
@@ -397,8 +421,11 @@ implements AsyncRenderer {
             Iterator i =
                 ((MainSessionBoundServlet)
                     SessionDispatcher.
-                        getSingletonSessionServer(sessionId, applicationMap)).
-                            getViews().values().iterator();
+                        getSingletonSessionServer(
+                            sessionId,
+                            FacesContext.getCurrentInstance().
+                                getExternalContext().getApplicationMap())
+                ).getViews().values().iterator();
             i.hasNext();
             ) {
 
