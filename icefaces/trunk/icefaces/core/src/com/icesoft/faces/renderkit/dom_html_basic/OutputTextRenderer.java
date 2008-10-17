@@ -1,6 +1,7 @@
 package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
+
 import java.io.IOException;
 
 import javax.faces.component.UIComponent;
@@ -36,11 +37,8 @@ public class OutputTextRenderer extends BaseRenderer{
             return;
         }
 
-        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
-        if (nospan != null && nospan.booleanValue()) return;
+        if (!requiresSpan(uiComponent)) return;
         Object styleClass = uiComponent.getAttributes().get("styleClass");
-        //could be true only for the h:outputText
-        if (styleClass == null)return;
         
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
@@ -68,14 +66,30 @@ public class OutputTextRenderer extends BaseRenderer{
             convertedValue = DOMUtils.escapeAnsi(convertedValue);
         } 
         writer.write(convertedValue);
-
-        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
-        if (nospan != null && nospan.booleanValue()) return;
-        Object styleClass = uiComponent.getAttributes().get("styleClass");
-        //could be true only for the h:outputText
-        if (styleClass == null)return;
-        
+        if (!requiresSpan(uiComponent)) return;
         LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);        
         writer.endElement(HTML.SPAN_ELEM);
     }
+    
+    private boolean requiresSpan(UIComponent uiComponent) {
+        Boolean nospan = (Boolean) uiComponent.getAttributes().get("nospan");
+        if (nospan != null && nospan.booleanValue()) return false;
+        String style = (String) uiComponent.getAttributes().get("style");
+        String styleClass =
+                (String) uiComponent.getAttributes().get("styleClass");
+        String title = (String) uiComponent.getAttributes().get("title");
+        String dir = (String) uiComponent.getAttributes().get("dir");
+        String lang = (String) uiComponent.getAttributes().get("lang");
+        if (styleClass != null
+            || style != null
+            || title != null
+            || dir != null
+            || lang != null) {
+            return true;
+        }
+        if (uiComponent.getId() != null && !uiComponent.getId().startsWith("_")) {
+            return true;
+        }
+        return false;
+    }    
 }

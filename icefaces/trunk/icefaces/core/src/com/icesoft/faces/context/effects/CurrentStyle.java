@@ -212,7 +212,7 @@ public class CurrentStyle implements Serializable {
             else
                 targetElement.removeAttribute(HTML.STYLE_ATTR);
         }
-        if (writer != null) {
+        if (writer != null && jspStyle != null) {
             try {
                 writer.writeAttribute(HTML.STYLE_ATTR, jspStyle, null);
             } catch (IOException exception) {
