@@ -101,7 +101,8 @@ public class OutputTextRenderer extends BaseRenderer{
             || lang != null) {
             return true;
         }
-        if (uiComponent.getId() != null && !uiComponent.getId().startsWith("_")) {
+        String id = uiComponent.getId();
+        if (id != null && !id.startsWith("_") && !id.startsWith("j_id")) {
             return true;
         }
         return false;
