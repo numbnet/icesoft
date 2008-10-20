@@ -1223,8 +1223,13 @@ document.viewport = {
         var B = Prototype.Browser;
         $w('width height').each(function(d) {
             var D = d.capitalize();
-            dimensions[d] = (B.WebKit && !document.evaluate) ? self['inner' + D] :
-                            (B.Opera) ? document.body['client' + D] : document.documentElement['client' + D];
+            if (B.WebKit && !document.evaluate) {
+                dimensions[d] = self['inner' + D];
+            } else if (B.Opera && parseFloat(window.opera.version()) < 9.5 || !document.compatMode || document.compatMode != "CSS1Compat") {
+                dimensions[d] = document.body['client' + D];
+            } else {
+                dimensions[d] = document.documentElement['client' + D];
+            }
         });
         return dimensions;
     },
