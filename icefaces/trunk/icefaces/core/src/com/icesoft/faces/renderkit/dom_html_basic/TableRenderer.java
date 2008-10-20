@@ -53,7 +53,7 @@ import java.util.StringTokenizer;
 public class TableRenderer extends DomBasicRenderer {
 
     private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_DATATABLE);
-    
+
     public boolean getRendersChildren() {
         return true;
     }
@@ -82,21 +82,22 @@ public class TableRenderer extends DomBasicRenderer {
             root.setAttribute("class", styleClass);
         }
         Object cellspacing = uiComponent.getAttributes().get(HTML.CELLSPACING_ATTR);
-        if (cellspacing != null) { 
+        if (cellspacing != null) {
             root.setAttribute(HTML.CELLSPACING_ATTR, String.valueOf(cellspacing));
         } else {
             root.setAttribute(HTML.CELLSPACING_ATTR, "0");
         }
-        
+
         if (isScrollable(uiComponent)) {
-            Element tr = domContext.createElement("tr");  
+            Element tr = domContext.createElement("tr");
             root.appendChild(tr);
-            Element td = domContext.createElement("td");                
-            tr.appendChild(td); 
+            Element td = domContext.createElement("td");
+            tr.appendChild(td);
             Element mainDiv = domContext.createElement("div");
             td.appendChild(mainDiv);
             Element headerDiv = domContext.createElement("div");
             Element headerTable = domContext.createElement("table");
+            headerTable.setAttribute("style","width:100%;");
             headerDiv.appendChild(headerTable);
 
             mainDiv.appendChild(headerDiv);
@@ -104,17 +105,18 @@ public class TableRenderer extends DomBasicRenderer {
             String height =
                     (String) uiComponent.getAttributes().get("scrollHeight");
             bodyDiv.setAttribute("style",
-                                 "overflow:auto;height:" + height + ";");
-
+                               "overflow:auto;width:100%;"+ (height!=null&&height.length()>0?"height:" + height + ";":""));
+            
             Element bodytable = domContext.createElement("table");
+            bodytable.setAttribute("style","width:100%;");
             bodyDiv.appendChild(bodytable);
             mainDiv.appendChild(bodyDiv);
             Object scollFooter = uiComponent.getAttributes().get("scrollFooter");
             if (!(scollFooter != null && ((Boolean)scollFooter).booleanValue())) {
                 Element footerDiv = domContext.createElement("div");
                 Element footerTable = domContext.createElement("table");
-                footerDiv.appendChild(footerTable);   
-                mainDiv.appendChild(footerDiv);                
+                footerDiv.appendChild(footerTable);
+                mainDiv.appendChild(footerDiv);
             }
         }
         renderFacet(facesContext, uiComponent, domContext, true); //header facet
@@ -173,8 +175,8 @@ public class TableRenderer extends DomBasicRenderer {
             thead = domContext.createElement(tag);
             root.appendChild(thead);
         }
-        // if the header is associated with the UIData component then encode the 
-        // header inside a tr and th element that span the whole table. 
+        // if the header is associated with the UIData component then encode the
+        // header inside a tr and th element that span the whole table.
         if (headerFacet != null && headerFacet.isRendered()) {
             resetFacetChildId(headerFacet);
             Element tr = domContext.createElement("tr");
@@ -193,7 +195,7 @@ public class TableRenderer extends DomBasicRenderer {
             encodeParentAndChildren(facesContext, headerFacet);
         }
 
-        // if one or more of the child columns has a header facet then render a 
+        // if one or more of the child columns has a header facet then render a
         // row to accommodate the header(s); render an empty th for each column
         // that has no header facet
         if (childHeaderFacetExists) {
@@ -301,7 +303,7 @@ public class TableRenderer extends DomBasicRenderer {
         while (uiData.isRowAvailable()) {
             // Have we finished the required number of rows ? Note that
             // numberOfRowsToDisplay == 0 means that we display all remaining rows
-            // of the underlying model and in this case we rely on the 
+            // of the underlying model and in this case we rely on the
             // isRowAvailable method (above) to limit rendering work.
             if (numberOfRowsToDisplay > 0
                 && countOfRowsDisplayed >= numberOfRowsToDisplay) {
@@ -440,13 +442,6 @@ public class TableRenderer extends DomBasicRenderer {
     protected Element scrollBarSpacer(DOMContext domContext, FacesContext facesContext) {
         Element spacer = domContext.createElement("th");
         spacer.setAttribute(HTML.STYLE_ATTR, "padding:0"); // ICE-2654
-        String url = getResourceURL(facesContext, "/xmlhttp/css/xp/css-images/selection_spacer.gif");
-        Element spacerImg = domContext.createElement(HTML.IMG_ELEM);
-        spacerImg.setAttribute(HTML.SRC_ATTR, url);
-        spacerImg.setAttribute(HTML.BORDER_ATTR,"0");
-        spacerImg.setAttribute(HTML.ALT_ATTR, "");
-        spacerImg.setAttribute(HTML.STYLE_ATTR, "width:1px"); // ICE-2417
-//        spacer.appendChild(spacerImg); commented out for ICE-2654
         spacer.appendChild(domContext.createElement(HTML.DIV_ELEM));
         return spacer;
     }
@@ -458,19 +453,19 @@ public class TableRenderer extends DomBasicRenderer {
         }
         return null;
     }
-    
+
     protected Element getScrollableHeaderTableElement(Element root) {
         // First table in first div path : table/tr/td/div/div0/table
         return (Element) root.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getFirstChild();
     }
-    
+
     protected Element getScrollableBodyTableElement(Element root) {
         // First table in second div path table/tr/td/div/div1/table
         return (Element) root.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getNextSibling().getFirstChild();
     }
-    
+
     protected Element getScrollableFooterTableElement(Element root) {
         // First table in second div path table/tr/td/div/div1/table
         return (Element) root.getFirstChild().getFirstChild().getFirstChild().getFirstChild().getNextSibling().getNextSibling().getFirstChild();
-    }    
+    }
 }
