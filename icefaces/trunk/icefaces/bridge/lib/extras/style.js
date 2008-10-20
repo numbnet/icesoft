@@ -125,6 +125,8 @@ Ice.modal = {
                 //lookup element again because 'resize' closure is registered only once
                 var frame = document.getElementById('iceModalFrame');
                 if (frame) {
+                    var frameDisp = frame.style.display;
+                    frame.style.display = "none";
                     var documentWidth = document.documentElement.scrollWidth;
                     var bodyWidth = document.body.scrollWidth;
                     var documentHeight = document.documentElement.scrollHeight;
@@ -145,7 +147,7 @@ Ice.modal = {
                     modalHeight = parseInt(modalHeight) / 2;
                     modal.style.top = (parseInt(height) / 2) - modalHeight + "px";
                     modal.style.left = (parseInt(width) / 2 ) - modalWidth + "px";
-
+                    frame.style.display = frameDisp;
                 }
             };
             resize();
