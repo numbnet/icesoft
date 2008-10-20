@@ -180,7 +180,7 @@ public class LocalEffectEncoder {
                 }
                 
                 String applicationValue = (String) atts.get(currentEvent);
-                String rendererValue = (String) rendererValues.get(currentEvent);
+                String rendererValue = rendererValues == null ? null : (String) rendererValues.get(currentEvent);
                 
                 String value = DomBasicRenderer.combinedPassThru(
                     DomBasicRenderer.combinedPassThru(

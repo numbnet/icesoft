@@ -35,7 +35,7 @@ public class InputTextRenderer extends BaseRenderer{
         String clientId = uiComponent.getClientId(facesContext);
         writer.startElement(HTML.INPUT_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        renderHtmlAttributes(writer, uiComponent);
+        renderHtmlAttributes(facesContext, writer, uiComponent);
         PassThruAttributeWriter.renderBooleanAttributes(
                 writer, 
                 uiComponent, 
@@ -71,8 +71,10 @@ public class InputTextRenderer extends BaseRenderer{
                 uiComponent, ((UIInput) uiComponent).getValue());
     }
    
-    protected void renderHtmlAttributes(ResponseWriter writer, UIComponent uiComponent)
-    throws IOException{
-        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+    protected void renderHtmlAttributes(
+        FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
+        throws IOException{
+        PassThruAttributeWriter.renderHtmlAttributes(
+            writer, uiComponent, passThruAttributes);
     }       
 }
