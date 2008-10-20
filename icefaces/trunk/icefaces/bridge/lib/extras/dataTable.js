@@ -42,14 +42,41 @@ Ice.dataTable.DataTable = Class.create({
     resize: function() {
         var table = $(this.id);
         if (!table) return;
-        var spacer = table.select("div.iceDatTblScrlSpr > table > thead > tr > th:last-child > div")[0];
+        var scrollTable = table.select("div.iceDatTblScrlSpr")[0];
+	//no scrollabletable
+        if (!scrollTable) return;
+
+        var spacer = scrollTable.select("table > thead > tr > th:last-child > div")[0];
         var body = table.select("div.iceDatTblScrlSpr + div")[0];
-        if (!spacer || !body) return;
+	//nobody
+        if (!body) return;
+
         var borderLeftWidth = body.getStyle("borderLeftWidth");
         var borderRightWidth = body.getStyle("borderRightWidth");
+        var width=body.getWidth();
+        var scrollWidth=width - body.clientWidth;
+	
+	//no scroller
+        if (scrollWidth == 0) return;
+
         body.setStyle({borderLeftWidth:0, borderRightWidth:0});
-        spacer.setStyle({width:body.getWidth() - body.clientWidth + "px"});
+        var innerTable = body.select("table")[0];
+        var headerTable = scrollTable.select("table")[0];
+  
+        if (spacer)
+          spacer.setStyle({width:scrollWidth + "px"});
+
+        //fixing IE6 bug, table width should be decreased by scrollWidth    
+        var innerTable = body.select("table")[0];
+        if (innerTable){
+          var innerTableWidth = innerTable.getWidth(); 
+          if (Prototype.Browser.IE) { 
+            innerTable.setStyle({width:body.clientWidth  + "px"});
+          }
+        }
+
         body.setStyle({borderLeftWidth:borderLeftWidth, borderRightWidth:borderRightWidth});
+
     }
 });
 

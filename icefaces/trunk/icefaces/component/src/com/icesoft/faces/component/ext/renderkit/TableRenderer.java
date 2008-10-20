@@ -60,7 +60,7 @@ import java.util.*;
 public class TableRenderer
         extends com.icesoft.faces.renderkit.dom_html_basic.TableRenderer {
 
-    
+
     private static final String SELECTED_ROWS = "sel_rows";
 
     public String getComponentStyleClass(UIComponent uiComponent) {
@@ -80,9 +80,9 @@ public class TableRenderer
     public String[] getRowStyles(UIComponent uiComponent) {
         if (((String[]) getRowStyleClasses(uiComponent)).length <= 0) {
             String[] rowStyles = new String[2];
-            rowStyles[0] = Util.getQualifiedStyleClass(uiComponent, 
+            rowStyles[0] = Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_ROW_CLASS1);
-            rowStyles[1] =Util.getQualifiedStyleClass(uiComponent, 
+            rowStyles[1] =Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_ROW_CLASS2);
             return rowStyles;
         } else {
@@ -95,22 +95,22 @@ public class TableRenderer
         replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");
     	if (((String[]) getHeaderStyleClasses(uiComponent)).length <= 0) {
             String[] headerStyles = new String[2];
-            headerStyles[0] = Util.getQualifiedStyleClass(uiComponent, 
+            headerStyles[0] = Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS1) + ((headerClass.length() > 0)
                     ? headerClass : "");
-            headerStyles[1] =Util.getQualifiedStyleClass(uiComponent, 
+            headerStyles[1] =Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS2)+ ((headerClass.length() > 0)
                             ? headerClass : "");
-            
+
             return headerStyles;
         } else {
             return getHeaderStyleClasses(uiComponent);
         }
     }
-    
+
     public void writeColStyles(String[] columnStyles, int columnStylesMaxIndex,
                                int columnStyleIndex, Element td,
-                               int colNumber, 
+                               int colNumber,
                                UIComponent uiComponent
                                 ) {
         if (columnStyles.length > 0) {
@@ -140,12 +140,12 @@ public class TableRenderer
         uiData.setRowIndex(-1);
         Element root = (Element) domContext.getRootNode();
         if (isScrollable(uiComponent)) {
-            
+
             if (header) {
                 // First table in first div path : table/tr/td/div/div0/table
                 root = getScrollableHeaderTableElement(root);
-                ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR, 
-                        Util.getQualifiedStyleClass(uiComponent, 
+                ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR,
+                        Util.getQualifiedStyleClass(uiComponent,
                         CSS_DEFAULT.TABLE_SCRL_SPR));
             } else {
                 // First table in second div path table/tr/td/div/div2/table
@@ -153,8 +153,8 @@ public class TableRenderer
                     root = getScrollableBodyTableElement(root);
                 } else {
                     root = getScrollableFooterTableElement(root);
-                    ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR, 
-                            Util.getQualifiedStyleClass(uiComponent, 
+                    ((Element)root.getParentNode()).setAttribute(HTML.CLASS_ATTR,
+                            Util.getQualifiedStyleClass(uiComponent,
                             CSS_DEFAULT.TABLE_SCRL_SPR+CSS_DEFAULT.TABLE_FOOTER_CLASS));
                 }
             }
@@ -166,8 +166,8 @@ public class TableRenderer
         if (headerFacet != null || childHeaderFacetExists) {
             thead = domContext.createElement(tag);
             root.appendChild(thead);
-        
-        
+
+
             if (header) {
             	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
             			.PORTLET_SECTION_HEADER).length() > 1) {
@@ -175,7 +175,7 @@ public class TableRenderer
                 			.PORTLET_SECTION_HEADER);
             	}
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
-                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);               
+                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);
                 if (childHeaderFacetExists) {
                     renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
                     if (!uiData.isClientOnly()) {
@@ -185,30 +185,30 @@ public class TableRenderer
                         clientOnly.setAttribute(HTML.NAME_ATTR, uiData.getClientId(facesContext) + "clientOnly");
                         root.appendChild(clientOnly);
                         uiData.resetResizableTblColumnsWidthIndex();
-                    }    
+                    }
                 }
             } else {
             	if(CoreUtils.getPortletStyleClass(PORTLET_CSS_DEFAULT
             			.PORTLET_SECTION_FOOTER).length() > 1) {
                 	thead.setAttribute(HTML.CLASS_ATTR, PORTLET_CSS_DEFAULT
                 			.PORTLET_SECTION_FOOTER);
-            	}            	
+            	}
                 if (childHeaderFacetExists) {
                     renderColumnHeader(facesContext, uiComponent, thead, facet, element, header);
                 }
-                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);                 
+                renderColumnGroup(facesContext, uiComponent, headerFacet, thead, facetClass, element);
                 renderTableHeader(facesContext, uiComponent, headerFacet, thead, facetClass, element);
-             
+
             }
             domContext.setCursorParent(root);
         }
     }
 
-    private void renderColumnHeader(FacesContext facesContext, 
+    private void renderColumnHeader(FacesContext facesContext,
                                     UIComponent uiComponent,
-                                    Element thead, 
-                                    String facet, 
-                                    String element, 
+                                    Element thead,
+                                    String facet,
+                                    String element,
                                     boolean header) throws IOException {
         StringTokenizer columnWitdths = getColumnWidths(uiComponent);
         DOMContext domContext =
@@ -224,16 +224,17 @@ public class TableRenderer
             while (childColumns.hasNext()) {
 
                 UIComponent nextColumn = (UIComponent) childColumns.next();
-                
+
                 if (columnWitdths != null && columnWitdths.hasMoreTokens()) {
                     width = columnWitdths.nextToken();
                 } else {
                     if (isScrollable(uiComponent)) {
-                        width = "150px";
+                        width = "100%";
+
                     } else {
                         width = null;
                     }
-                    
+
                 }
                 if (!nextColumn.isRendered()) continue;
                 if (nextColumn instanceof UIColumn) {
@@ -253,7 +254,7 @@ public class TableRenderer
                                                          styleIndex,
                                                          headerStyleLength);
                 }
-                
+
                 if (styleIndex++ == (headerStyleLength-1)) {
                     styleIndex = 0;
                 }
@@ -271,15 +272,15 @@ public class TableRenderer
 */
             }
     }
- 
-    private void renderColumnGroup(FacesContext facesContext, 
+
+    private void renderColumnGroup(FacesContext facesContext,
             UIComponent uiComponent,
             UIComponent headerFacet,
             Element thead,
             String facetClass,
             String element
             ) throws IOException{
-        
+
         DOMContext domContext =
             DOMContext.getDOMContext(facesContext, uiComponent);
         if (headerFacet== null || !(headerFacet instanceof ColumnGroup)) return;
@@ -308,7 +309,7 @@ public class TableRenderer
                 if (rowStyle != null) {
                     tr.setAttribute(HTML.STYLE_ATTR, rowStyle);
                 }
-                thead.appendChild(tr);                
+                thead.appendChild(tr);
                 Iterator columns = child.getChildren().iterator();
                 while (columns.hasNext()) {
                     UIComponent column = (UIComponent) columns.next();
@@ -316,13 +317,13 @@ public class TableRenderer
                         continue;
                     }
                     Element th = domContext.createElement(element);
-                    tr.appendChild(th);     
+                    tr.appendChild(th);
                     String styleClass = ((com.icesoft.faces.component.ext.UIColumn)
-                            column).getStyleClass();    
+                            column).getStyleClass();
                     if(styleClass == null) {
                         styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col");
                     } else {
-                        styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col ")+ styleClass;                        
+                        styleClass = baseClass.replaceAll(sourceClass, sourceClass+"Col ")+ styleClass;
                     }
                     String sortColumn = htmlDataTable.getSortColumn();
 
@@ -342,14 +343,14 @@ public class TableRenderer
                                 break;
                             }
                         }
-                    }                    
+                    }
                     th.setAttribute(HTML.CLASS_ATTR, styleClass);
                     Integer colspan = null;
                     try {
                         colspan = Integer.valueOf(((com.icesoft.faces.component.ext.UIColumn)
                                 column).getColspan());
                     } catch (Exception e) {}
-                                                
+
                     if (htmlDataTable.isResizable()) {
                         if (colspan != null) {
                             colspan = new Integer(colspan.intValue()+ colspan.intValue());
@@ -357,11 +358,11 @@ public class TableRenderer
                             colspan = new Integer(2);
                         }
                     }
-                    
+
                     if (colspan != null) {
-                        th.setAttribute(HTML.COLSPAN_ATTR, colspan.toString());               
+                        th.setAttribute(HTML.COLSPAN_ATTR, colspan.toString());
                     }
-                    
+
                     String rowspan = ((com.icesoft.faces.component.ext.UIColumn)
                                                 column).getRowspan();
                     if (rowspan != null) {
@@ -373,15 +374,15 @@ public class TableRenderer
                     if (style != null) {
                         th.setAttribute(HTML.STYLE_ATTR, style);
                     }
-                    
+
                     domContext.setCursorParent(th);
-                    encodeParentAndChildren(facesContext, column);                    
+                    encodeParentAndChildren(facesContext, column);
                 }
             }
         }
     }
-    
-    private void renderTableHeader(FacesContext facesContext, 
+
+    private void renderTableHeader(FacesContext facesContext,
                                     UIComponent uiComponent,
                                     UIComponent headerFacet,
                                     Element thead,
@@ -424,7 +425,7 @@ public class TableRenderer
         HtmlDataTable htmlDataTable = (HtmlDataTable) uiComponent;
         Element th = domContext.createElement(element);
         tr.appendChild(th);
-        
+
         Element cursorParent = th;
         if (htmlDataTable.isResizable()) {
             if (!lastChild) {
@@ -435,11 +436,11 @@ public class TableRenderer
                 Element resizeHandler = domContext.createElement(HTML.DIV_ELEM);
                 resizeHandler.setAttribute(HTML.STYLE_ATTR, "cursor: e-resize; display:block;  height:100%;");
                 resizeHandler.setAttribute(HTML.ONMOUSEDOWN_ATTR, "new Ice.ResizableGrid(event);");
-                resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");            
+                resizeHandler.setAttribute(HTML.CLASS_ATTR, "iceDatTblResHdlr");
                 resizeHandler.appendChild(domContext.createTextNode("&nbsp;"));
                 handlerTd.appendChild(resizeHandler);
                 tr.appendChild(handlerTd);
-            } 
+            }
             Element columnHeaderDiv = domContext.createElement(HTML.DIV_ELEM);
             columnHeaderDiv.setAttribute(HTML.ID_ATTR, "hdrDv"+ columnIndex);
             th.appendChild(columnHeaderDiv);
@@ -465,11 +466,11 @@ public class TableRenderer
             }
 
             th.setAttribute("class", styles);
-            
+
         } else {
             th.setAttribute("class",getFooterClass(htmlDataTable));
         }
-      
+
         if (width != null) {
             th.setAttribute("style", "width:" + width + ";overflow:hidden;");
         }
@@ -521,7 +522,7 @@ public class TableRenderer
                 domContext.setCursorParent(th);
                 domContext.streamWrite(facesContext, uiComponent,
                                        domContext.getRootNode(), th);
-                	
+
                 encodeParentAndChildren(facesContext, headerFacet);
                 domContext.setCursorParent(oldParent);
             }
@@ -546,12 +547,12 @@ public class TableRenderer
 
         if (isScrollable(uiComponent)) {
         	Element hdrTbl = this.getScrollableHeaderTableElement(root);
-        	hdrTbl.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent, 
+        	hdrTbl.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_SCRL_HDR_TBL));
             root = getScrollableBodyTableElement(root);
-            root.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent, 
+            root.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_SCRL_BDY_TBL));
-            
+
         }
         DOMContext.removeChildrenByTagName(root, HTML.TBODY_ELEM);
         Element tBody = (Element) domContext.createElement(HTML.TBODY_ELEM);
@@ -573,11 +574,11 @@ public class TableRenderer
             if( cols == 0 ) cols = 1;
             for(int i = 0 ; i < cols ; i++ ){
             	Element td = (Element) domContext.createElement(HTML.TD_ELEM);
-                tr.appendChild(td);        
+                tr.appendChild(td);
             }
             domContext.stepOver();
             return;
-        }        
+        }
         if (uiData.getRowCount() >=0 && uiData.getRowCount() <= rowIndex) {
             domContext.stepOver();
             return;
@@ -615,7 +616,7 @@ public class TableRenderer
             rowSelectedField.setAttribute(HTML.NAME_ATTR, paramId);
             rowSelectedField.setAttribute(HTML.TYPE_ATTR, "hidden");
             hiddenInputNode = rowSelectedField;
-            rowSelectionFunctionName = "Ice.tableRowClicked"; 
+            rowSelectionFunctionName = "Ice.tableRowClicked";
         }
 
         String columnStyles[] = getColumnStyleClasses(uiComponent);
@@ -633,17 +634,17 @@ public class TableRenderer
             if (rowSelectorFound && toggleOnClick) {
                  tr.setAttribute("onclick", rowSelectionFunctionName +
                      "(event, "+rowSelectionUseEvent+",'"+uiData.getRowIndex()+
-                     "', '"+ formId +"', '"+ paramId +"');");            	
+                     "', '"+ formId +"', '"+ paramId +"');");
             }
             String id = uiComponent.getClientId(facesContext);
             tr.setAttribute(HTML.ID_ATTR, id);
             if (rowSelectorFound) {
                 if (Boolean.TRUE.equals(rowSelector.getValue())){
                     selectedClass  += " "+ rowSelector.getSelectedClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'");                     
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getSelectedMouseOverClass() +"'");
                 } else {
                     selectedClass  += " "+ rowSelector.getStyleClass();
-                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");                    
+                    tr.setAttribute(HTML.ONMOUSEOVER_ATTR, "this.className='"+ CoreUtils.getPortletStyleClass("portlet-section-body-hover") + " "+ rowSelector.getMouseOverClass() +"'");
                 }
 //              tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='"+ selectedClass +"'"); commented out for ICE-2571
                 tr.setAttribute(HTML.ONMOUSEOUT_ATTR, "this.className='" +
@@ -653,7 +654,7 @@ public class TableRenderer
             tBody.appendChild(tr);
             selectedClass = getPortletAlternateRowClass(selectedClass, rowIndex);
             tr.setAttribute(HTML.CLASS_ATTR, selectedClass);
-           
+
             if(rowStylesMaxIndex >= 0){ // Thanks denis tsyplakov
                if (++rowStyleIndex > rowStylesMaxIndex) {
                     rowStyleIndex = 0;
@@ -663,13 +664,13 @@ public class TableRenderer
             StringTokenizer columnWitdths =
                     getColumnWidths(uiData);
             while (childs.hasNext()) {
-                String width = "150px;";
+                  String width = "100%";
                 if (isScrollable(uiComponent) &&
                         columnWitdths != null &&
                         columnWitdths.hasMoreTokens()) {
                         width = columnWitdths.nextToken();
 
-                }                
+                }
                 UIComponent nextChild = (UIComponent) childs.next();
                 if (nextChild.isRendered()) {
                     if (nextChild instanceof UIColumn) {
@@ -678,7 +679,7 @@ public class TableRenderer
                         String iceColumnStyleClass = null;
                         //we want to perform this operation on ice:column only
                         if (nextChild instanceof com.icesoft.faces.component.ext.UIColumn) {
-                            com.icesoft.faces.component.ext.UIColumn iceColumn = 
+                            com.icesoft.faces.component.ext.UIColumn iceColumn =
                                 (com.icesoft.faces.component.ext.UIColumn)nextChild;
                             iceColumnStyle = iceColumn.getStyle();
                             iceColumnStyleClass = iceColumn.getStyleClass();
@@ -694,14 +695,14 @@ public class TableRenderer
                                                 FacesContext.getCurrentInstance(), "/xmlhttp/css/xp/css-images/spacer.gif") );
                                         eTd.appendChild(img);
                                         tr.appendChild(eTd);
-                                    }  
+                                    }
                                     continue;
                                 } else {
-                                    iceColumn.setGroupedTd(td); 
+                                    iceColumn.setGroupedTd(td);
                                 }
                             }
-                        }                        
-                        
+                        }
+
 //                        if (uiData.isResizable()) {
 //                            td.setAttribute(HTML.COLSPAN_ATTR, "2");
 //                        }
@@ -714,10 +715,10 @@ public class TableRenderer
                         writeColStyles(columnStyles, columnStylesMaxIndex,
                                        columnStyleIndex, td, colNumber++,
                                        uiComponent);
-                        
+
                         if (isScrollable(uiComponent) && width != null)  {
                             td.setAttribute("style", "width:" + width +
-                            ";overflow:hidden;");                            
+                            ";overflow:hidden;");
                         }
                         if (iceColumnStyle != null) {
                             String existingStyle = td.getAttribute(HTML.STYLE_ATTR);
@@ -727,7 +728,7 @@ public class TableRenderer
                                 td.setAttribute(HTML.STYLE_ATTR, iceColumnStyle);
                             }
                         }
-                        
+
                         if (iceColumnStyleClass != null) {
                             String existingStyleClass = td.getAttribute(HTML.CLASS_ATTR);
                             if (existingStyleClass != null) {
@@ -735,13 +736,13 @@ public class TableRenderer
                             } else {
                                 td.setAttribute(HTML.CLASS_ATTR, iceColumnStyleClass);
                             }
-                        }                        
-   
-                        
+                        }
+
+
                         tr.appendChild(td);
                         // if column styles exist, then apply the appropriate one
 
-                        
+
                         if (uiData.isResizable() && childs.hasNext()) {
                             Element eTd = domContext.createElement(HTML.TD_ELEM);
                             eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
@@ -751,7 +752,7 @@ public class TableRenderer
                             eTd.appendChild(img);
                             tr.appendChild(eTd);
                         }
-                        
+
                         if (++columnStyleIndex > columnStylesMaxIndex) {
                             columnStyleIndex = 0;
                         }
@@ -760,8 +761,8 @@ public class TableRenderer
                         domContext.setCursorParent(td);
                         domContext.streamWrite(facesContext, uiComponent,
                                                domContext.getRootNode(), td);
-                        
-                        
+
+
                         encodeParentAndChildren(facesContext, nextChild);
                         domContext.setCursorParent(oldCursorParent);
 
@@ -779,11 +780,11 @@ public class TableRenderer
             rowIndex++;
             countOfRowsDisplayed++;
             if ((numberOfRowsToDisplay > 0 &&
-                    countOfRowsDisplayed >= numberOfRowsToDisplay) || 
+                    countOfRowsDisplayed >= numberOfRowsToDisplay) ||
                     (uiData.getRowCount() >=0 && rowIndex >= uiData.getRowCount())) {
                     break;
-            }            
-            
+            }
+
             uiData.setRowIndex(rowIndex);
         }
         uiData.setRowIndex(-1);
@@ -919,29 +920,29 @@ public class TableRenderer
         int size = getRenderedChildColumnsList(component).size();
         Iterator it = getRenderedChildColumnsList(component).iterator();
         while (it.hasNext()) {
-        	UIComponent uiComponent = (UIComponent)it.next(); 
+        	UIComponent uiComponent = (UIComponent)it.next();
         	if (uiComponent instanceof UIColumns) {
         		size +=((UIColumns)uiComponent).getRowCount();
         	}
         }
         return size;
     }
-    
+
     protected String[] getColumnStyleClasses(UIComponent uiComponent) {
         String[] columnStyles = super.getColumnStyleClasses(uiComponent);
         if (columnStyles.length == 0) {
             columnStyles = new String[2];
-            columnStyles[0] = Util.getQualifiedStyleClass(uiComponent, 
-                    CSS_DEFAULT.TABLE_COLUMN_CLASS1); 
-            columnStyles[1] = Util.getQualifiedStyleClass(uiComponent, 
-                    CSS_DEFAULT.TABLE_COLUMN_CLASS2);   
+            columnStyles[0] = Util.getQualifiedStyleClass(uiComponent,
+                    CSS_DEFAULT.TABLE_COLUMN_CLASS1);
+            columnStyles[1] = Util.getQualifiedStyleClass(uiComponent,
+                    CSS_DEFAULT.TABLE_COLUMN_CLASS2);
         } else {
             for (int i=0; i < columnStyles.length; i++) {
                 columnStyles[i] = Util.getQualifiedStyleClass(uiComponent,
                               columnStyles[i],
                               CSS_DEFAULT.TABLE_COLUMN_CLASS,
-                              "columnClasses"                            
-                                           ); 
+                              "columnClasses"
+                                           );
             }
         }
         return columnStyles;
@@ -953,27 +954,27 @@ public class TableRenderer
             rowClasses[i] = Util.getQualifiedStyleClass(uiComponent,
                             rowClasses[i],
                           CSS_DEFAULT.TABLE_ROW_CLASS,
-                          "rowClasses"                            
-                                       ); 
+                          "rowClasses"
+                                       );
         }
         return rowClasses;
     }
-    
+
     public String[] getHeaderStyleClasses(UIComponent uiComponent) {
         String headerClass = getHeaderClass(uiComponent).
-        replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");    	
+        replaceAll(CSS_DEFAULT.TABLE_STYLE_CLASS + CSS_DEFAULT.TABLE_HEADER_CLASS, "");
        String[] headerClasses = getStyleClasses(uiComponent, "headerClasses");
        for (int i=0; i < headerClasses.length; i++) {
            headerClasses[i] = Util.getQualifiedStyleClass(uiComponent,
                    headerClasses[i],
                          CSS_DEFAULT.TABLE_COLUMN_HEADER_CLASS,
-                         "headerClasses"                            
+                         "headerClasses"
                                       )+ ((headerClass.length() > 0)
                                               ? headerClass : "");
        }
-       return headerClasses;       
+       return headerClasses;
     }
-    
+
     String getPortletAlternateRowClass(String selectedClass, int rowIndex) {
         String rowClass = PORTLET_CSS_DEFAULT.PORTLET_SECTION_ALTERNATE;
         if ((rowIndex % 2) == 0) {
@@ -985,7 +986,7 @@ public class TableRenderer
             return selectedClass += CoreUtils.getPortletStyleClass("" + rowClass);
         }
     }
-    
+
     void resetGroupState(UIComponent uiComponent) {
         Iterator childs = uiComponent.getChildren().iterator();
         while(childs.hasNext()) {
