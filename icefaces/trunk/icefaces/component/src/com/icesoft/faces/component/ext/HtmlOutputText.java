@@ -75,13 +75,17 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
     private Effect onkeypresseffect;
     private Effect onkeydowneffect;
     private Effect onkeyupeffect;
-    private static String[] supportedPassThru = {
-            "title",
-            "dir",
-            "lang",
-            "style"
-    };
     
+    private String onclick;
+    private String ondblclick;
+    private String onmousedown;
+    private String onmouseup;
+    private String onmousemove;
+    private String onmouseover;
+    private String onmouseout;
+    private String onkeypress;
+    private String onkeydown;
+    private String onkeyup;
     
     public HtmlOutputText() {
         super();
@@ -425,7 +429,187 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         JavascriptContext
                 .includeLib(JavascriptContext.ICE_EXTRAS, getFacesContext());
     }
+    
+    /**
+     * <p>Return the value of the <code>onclick</code> property.</p>
+     */
+    public String getOnclick() {
+        if (onclick != null) {
+            return onclick;
+        }
+        ValueBinding vb = getValueBinding("onclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
 
+    /**
+     * <p>Set the value of the <code>onclick</code> property.</p>
+     */
+    public void setOnclick(String onclick) {
+        this.onclick = onclick;
+    }
+    
+    /**
+     * <p>Return the value of the <code>ondblclick</code> property.</p>
+     */
+    public String getOndblclick() {
+        if (ondblclick != null) {
+            return ondblclick;
+        }
+        ValueBinding vb = getValueBinding("ondblclick");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>ondblclick</code> property.</p>
+     */
+    public void setOndblclick(String ondblclick) {
+        this.ondblclick = ondblclick;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmousedown</code> property.</p>
+     */
+    public String getOnmousedown() {
+        if (onmousedown != null) {
+            return onmousedown;
+        }
+        ValueBinding vb = getValueBinding("onmousedown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmousedown</code> property.</p>
+     */
+    public void setOnmousedown(String onmousedown) {
+        this.onmousedown = onmousedown;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseup</code> property.</p>
+     */
+    public String getOnmouseup() {
+        if (onmouseup != null) {
+            return onmouseup;
+        }
+        ValueBinding vb = getValueBinding("onmouseup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseup</code> property.</p>
+     */
+    public void setOnmouseup(String onmouseup) {
+        this.onmouseup = onmouseup;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmousemove</code> property.</p>
+     */
+    public String getOnmousemove() {
+        if (onmousemove != null) {
+            return onmousemove;
+        }
+        ValueBinding vb = getValueBinding("onmousemove");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmousemove</code> property.</p>
+     */
+    public void setOnmousemove(String onmousemove) {
+        this.onmousemove = onmousemove;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseover</code> property.</p>
+     */
+    public String getOnmouseover() {
+        if (onmouseover != null) {
+            return onmouseover;
+        }
+        ValueBinding vb = getValueBinding("onmouseover");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseover</code> property.</p>
+     */
+    public void setOnmouseover(String onmouseover) {
+        this.onmouseover = onmouseover;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onmouseout</code> property.</p>
+     */
+    public String getOnmouseout() {
+        if (onmouseout != null) {
+            return onmouseout;
+        }
+        ValueBinding vb = getValueBinding("onmouseout");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onmouseout</code> property.</p>
+     */
+    public void setOnmouseout(String onmouseout) {
+        this.onmouseout = onmouseout;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeypress</code> property.</p>
+     */
+    public String getOnkeypress() {
+        if (onkeypress != null) {
+            return onkeypress;
+        }
+        ValueBinding vb = getValueBinding("onkeypress");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeypress</code> property.</p>
+     */
+    public void setOnkeypress(String onkeypress) {
+        this.onkeypress = onkeypress;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeydown</code> property.</p>
+     */
+    public String getOnkeydown() {
+        if (onkeydown != null) {
+            return onkeydown;
+        }
+        ValueBinding vb = getValueBinding("onkeydown");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeydown</code> property.</p>
+     */
+    public void setOnkeydown(String onkeydown) {
+        this.onkeydown = onkeydown;
+    }
+    
+    /**
+     * <p>Return the value of the <code>onkeyup</code> property.</p>
+     */
+    public String getOnkeyup() {
+        if (onkeyup != null) {
+            return onkeyup;
+        }
+        ValueBinding vb = getValueBinding("onkeyup");
+        return vb != null ? (String) vb.getValue(getFacesContext()) : null;
+    }
+
+    /**
+     * <p>Set the value of the <code>onkeyup</code> property.</p>
+     */
+    public void setOnkeyup(String onkeyup) {
+        this.onkeyup = onkeyup;
+    }
+    
     /**
      * <p>Return the value of the <code>rendered</code> property.</p>
      */
@@ -455,7 +639,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[31];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = styleClass;
@@ -471,10 +655,20 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         values[14] = onkeypresseffect;
         values[15] = onkeydowneffect;
         values[16] = onkeyupeffect;
-        values[17] = currentStyle;
-        values[18] = visible;
-        values[19] = dir;
-        values[20] = lang;
+        values[17] = onclick;
+        values[18] = ondblclick;
+        values[19] = onmousedown;
+        values[20] = onmouseup;
+        values[21] = onmousemove;
+        values[22] = onmouseover;
+        values[23] = onmouseout;
+        values[24] = onkeypress;
+        values[25] = onkeydown;
+        values[26] = onkeyup;
+        values[27] = currentStyle;
+        values[28] = visible;
+        values[29] = dir;
+        values[30] = lang;
         return ((Object) (values));
     }
 
@@ -499,17 +693,21 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         onkeypresseffect = (Effect) values[14];
         onkeydowneffect = (Effect) values[15];
         onkeyupeffect = (Effect) values[16];
-        currentStyle = (CurrentStyle) values[17];
-        visible = (Boolean) values[18];
-        dir = (String) values[19];
-        lang = (String) values [20];
+        onclick = (String) values[17];
+        ondblclick = (String) values[18];
+        onmousedown = (String) values[19];
+        onmouseup = (String) values[20];
+        onmousemove = (String) values[21];
+        onmouseover = (String) values[22];
+        onmouseout = (String) values[23];
+        onkeypress = (String) values[24];
+        onkeydown = (String) values[25];
+        onkeyup = (String) values[26];
+        currentStyle = (CurrentStyle) values[27];
+        visible = (Boolean) values[28];
+        dir = (String) values[29];
+        lang = (String) values [30];
     }
-
-
-    public String[] getSupportedPassThru() {
-        return supportedPassThru;
-    }
-    
         
       private java.lang.String dir;
 

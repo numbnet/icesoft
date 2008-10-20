@@ -106,7 +106,7 @@ public class AttributeConstants {
                new String[]{ HTML.ACCESSKEY_ATTR,  HTML.CHARSET_ATTR,  HTML.COORDS_ATTR,  HTML.DIR_ATTR,  HTML.HREFLANG_ATTR,  HTML.LANG_ATTR,  HTML.ONBLUR_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONFOCUS_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.REL_ATTR,  HTML.REV_ATTR,  HTML.SHAPE_ATTR,  HTML.STYLE_ATTR,  HTML.TABINDEX_ATTR,  HTML.TARGET_ATTR,  HTML.TITLE_ATTR,  HTML.TYPE_ATTR };                        
            attributes[13] = (H_OUTPUTLINK);
            final String[] H_OUTPUTTEXT = 
-               new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
+               new String[]{ HTML.DIR_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.STYLE_ATTR,  HTML.TITLE_ATTR };                        
            attributes[14] = (H_OUTPUTTEXT);
            final String[] H_PANELGRID = 
                new String[]{ HTML.BGCOLOR_ATTR,  HTML.BORDER_ATTR,  HTML.CELLPADDING_ATTR,  HTML.CELLSPACING_ATTR,  HTML.DIR_ATTR,  HTML.FRAME_ATTR,  HTML.LANG_ATTR,  HTML.ONCLICK_ATTR,  HTML.ONDBLCLICK_ATTR,  HTML.ONKEYDOWN_ATTR,  HTML.ONKEYPRESS_ATTR,  HTML.ONKEYUP_ATTR,  HTML.ONMOUSEDOWN_ATTR,  HTML.ONMOUSEMOVE_ATTR,  HTML.ONMOUSEOUT_ATTR,  HTML.ONMOUSEOVER_ATTR,  HTML.ONMOUSEUP_ATTR,  HTML.RULES_ATTR,  HTML.STYLE_ATTR,  HTML.SUMMARY_ATTR,  HTML.TITLE_ATTR,  HTML.WIDTH_ATTR };                        
@@ -144,13 +144,30 @@ public class AttributeConstants {
         return (String[])attributes[i];
     }
 
+    /**
+     * This method is used to exclude entries from a components's list of 
+     *  passthrough attributes. The remove parameter may contain entries 
+     *  that are not in the list of component attributes returnd from 
+     *  getAttributes(int).
+     */
     public static String[] getAttributes(int index, String[] remove) {
         String[] attributes = getAttributes(index);
         if(attributes == null)
             return null;
         if(remove == null || remove.length == 0)
             return attributes;
-        String[] copy = new String[attributes.length - remove.length];
+        
+        int numToRemove = 0; 
+        for(int i = 0; i < attributes.length; i++) {
+            for(int j = 0; j < remove.length; j++) {
+                if(attributes[i].equals(remove[j])) {
+                    numToRemove++;
+                    break;
+                }
+            }
+        }
+        
+        String[] copy = new String[attributes.length - numToRemove];
         int copyIndex = 0;
         for(int i = 0; i < attributes.length; i++) {
             boolean shouldRemove = false;

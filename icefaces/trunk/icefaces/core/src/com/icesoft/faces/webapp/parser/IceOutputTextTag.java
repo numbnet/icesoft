@@ -57,7 +57,7 @@ public class IceOutputTextTag extends UIComponentTag {
         super.setProperties(comp);
         UIOutput component = (UIOutput) comp;
         component.setValue(value);
-        component.setRendererType("com.icesoft.faces.Text");
+        component.setRendererType("com.icesoft.faces.PlainText");
 
         // don't escape plain text
         component.getAttributes().put("escape", "false");

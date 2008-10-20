@@ -25,7 +25,7 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         ExtendedAttributeConstants.getAttributes(
             ExtendedAttributeConstants.ICE_INPUTTEXT));
     private static final String[] passThruAttributes =
-        ExtendedAttributeConstants.getAttributesExceptJavascript(
+        ExtendedAttributeConstants.getAttributes(
             ExtendedAttributeConstants.ICE_INPUTTEXT,
             jsEvents);
     private static Map rendererJavascript;
@@ -46,25 +46,20 @@ public class InputTextRenderer extends com.icesoft.faces.renderkit.dom_html_basi
         rendererJavascriptPartialSubmit.put(HTML.ONBLUR_ATTR,
             "setFocus('');" + DomBasicRenderer.ICESUBMITPARTIAL);
     }
-
-    public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
-            throws IOException {
-        super.encodeBegin(facesContext, uiComponent);
-        ResponseWriter writer = facesContext.getResponseWriter();
-        Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit()
-            ? rendererJavascriptPartialSubmit : rendererJavascript;
-        LocalEffectEncoder.encode(
-            facesContext, uiComponent, jsEvents, rendererJS, null, writer);
-    }
     
-    protected void renderHtmlAttributes(ResponseWriter writer, UIComponent uiComponent)
+    protected void renderHtmlAttributes(FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
             throws IOException{
-        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+        PassThruAttributeWriter.renderHtmlAttributes(
+            writer, uiComponent, passThruAttributes);
         //renderer is responsible to write the autocomplete attribute
         Object autoComplete = ((HtmlInputText)uiComponent).getAutocomplete();
         if (autoComplete != null) {
             writer.writeAttribute(HTML.AUTOCOMPLETE_ATTR, autoComplete, null);
         }
+        Map rendererJS = ((IceExtended) uiComponent).getPartialSubmit()
+            ? rendererJavascriptPartialSubmit : rendererJavascript;
+        LocalEffectEncoder.encode(
+            facesContext, uiComponent, jsEvents, rendererJS, null, writer);
     }
     
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

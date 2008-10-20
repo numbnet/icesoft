@@ -16,8 +16,14 @@ import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
 
 public class OutputTextRenderer extends BaseRenderer{
-    
-    private static final String[] passThruAttributes = AttributeConstants.getAttributes(AttributeConstants.H_OUTPUTTEXT);
+    // LocalEffectEncoder takes ownership of any passthrough attributes
+    private static final String[] jsEvents = LocalEffectEncoder.maskEvents(
+        AttributeConstants.getAttributes(
+            AttributeConstants.H_OUTPUTTEXT));
+    private static final String[] passThruAttributes =
+        AttributeConstants.getAttributes(
+            AttributeConstants.H_OUTPUTTEXT,
+            jsEvents);
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
@@ -42,11 +48,11 @@ public class OutputTextRenderer extends BaseRenderer{
         
         writer.startElement(HTML.SPAN_ELEM, uiComponent);
         writer.writeAttribute(HTML.ID_ATTR, clientId, HTML.ID_ATTR);
-        PassThruAttributeWriter.renderHtmlAttributes(writer, uiComponent, passThruAttributes);
+        renderHtmlAttributes(facesContext, writer, uiComponent);
 
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
-        }   
+        }
     }
     
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)
@@ -67,8 +73,16 @@ public class OutputTextRenderer extends BaseRenderer{
         } 
         writer.write(convertedValue);
         if (!requiresSpan(uiComponent)) return;
-        LocalEffectEncoder.encodeLocalEffects(uiComponent, writer, facesContext);        
         writer.endElement(HTML.SPAN_ELEM);
+    }
+    
+    protected void renderHtmlAttributes(
+        FacesContext facesContext, ResponseWriter writer, UIComponent uiComponent)
+        throws IOException {
+        PassThruAttributeWriter.renderHtmlAttributes(
+            writer, uiComponent, passThruAttributes);
+        LocalEffectEncoder.encode(
+            facesContext, uiComponent, jsEvents, null, null, writer);
     }
     
     private boolean requiresSpan(UIComponent uiComponent) {
