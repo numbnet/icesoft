@@ -19,6 +19,8 @@ import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
 public class CoreUtils {
 	private static Boolean renderPortletStyleClass;
 	private static Boolean portletEnvironment;
+
+    private static boolean jsfStateSaving;
 	
     public static String resolveResourceURL(FacesContext facesContext, String path) {
         return facesContext.getApplication().getViewHandler().getResourceURL(facesContext, path);
@@ -177,5 +179,14 @@ public class CoreUtils {
         hideOn +"','"+ delay+"', '"+ dynamic+"', '"+ formId +"', '"+ ctxValue +"','"+
                 CoreUtils.resolveResourceURL(facesContext, "/xmlhttp/blank")+"');";
         rootElement.setAttribute("onmouseover", onmouseover);
+    }
+    
+    public static void setJSFStateSaving(boolean isJSFStateSaved) {
+        System.out.println("--> Setting jsf state saving to : " + isJSFStateSaved );
+        jsfStateSaving = isJSFStateSaved;
+    }
+
+    public static boolean isJSFStateSaving() {
+        return jsfStateSaving;
     }
 }
