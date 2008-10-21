@@ -6,7 +6,7 @@ package com.icesoft.faces.mock.test.container;
 import com.icesoft.faces.metadata.ICECompsListHelper;
 import com.sun.faces.config.WebConfiguration;
 import com.sun.faces.mock.MockApplication;
-import com.sun.faces.mock.MockExternalContext;
+import com.icesoft.faces.mock.test.container.MockExternalContext;
 import com.sun.faces.mock.MockFacesContext;
 import com.sun.faces.mock.MockHttpServletRequest;
 import com.sun.faces.mock.MockHttpServletResponse;
