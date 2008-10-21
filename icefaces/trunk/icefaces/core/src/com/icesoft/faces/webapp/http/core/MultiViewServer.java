@@ -51,9 +51,12 @@ public class MultiViewServer implements Server {
             }
         }
 
-        sessionMonitor.touchSession();
-        view.servePage(request);
-        view.release();
+        try {
+            sessionMonitor.touchSession();
+            view.servePage(request);
+        } finally {
+            view.release();
+        }
     }
 
     private View createView(Request request) throws Exception {

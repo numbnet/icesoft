@@ -48,9 +48,12 @@ public class SingleViewServer implements Server {
             }
         }
 
-        sessionMonitor.touchSession();
-        view.servePage(request);
-        view.release();
+        try {
+            sessionMonitor.touchSession();
+            view.servePage(request);
+        } finally {
+            view.release();
+        }
     }
 
     public void shutdown() {
