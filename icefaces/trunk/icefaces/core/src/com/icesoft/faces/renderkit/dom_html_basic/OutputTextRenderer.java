@@ -10,20 +10,12 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
-import com.icesoft.faces.context.effects.LocalEffectEncoder;
-import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 import com.icesoft.faces.util.DOMUtils;
 
 public class OutputTextRenderer extends BaseRenderer{
-    // LocalEffectEncoder takes ownership of any passthrough attributes
-    private static final String[] jsEvents = LocalEffectEncoder.maskEvents(
-        AttributeConstants.getAttributes(
-            AttributeConstants.H_OUTPUTTEXT));
     private static final String[] passThruAttributes =
         AttributeConstants.getAttributes(
-            AttributeConstants.H_OUTPUTTEXT,
-            jsEvents);
+            AttributeConstants.H_OUTPUTTEXT);
     
     public void encodeBegin(FacesContext facesContext, UIComponent uiComponent)
     throws IOException {
@@ -81,8 +73,6 @@ public class OutputTextRenderer extends BaseRenderer{
         throws IOException {
         PassThruAttributeWriter.renderHtmlAttributes(
             writer, uiComponent, passThruAttributes);
-        LocalEffectEncoder.encode(
-            facesContext, uiComponent, jsEvents, null, null, writer);
     }
     
     private boolean requiresSpan(UIComponent uiComponent) {
