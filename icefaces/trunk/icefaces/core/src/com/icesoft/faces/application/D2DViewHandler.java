@@ -35,11 +35,14 @@ package com.icesoft.faces.application;
 
 import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
+import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
 import com.icesoft.faces.webapp.parser.JspPageToDocument;
 import com.icesoft.faces.webapp.parser.Parser;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
+import com.sun.faces.util.Util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -91,6 +94,7 @@ public class D2DViewHandler extends ViewHandler {
             "com.icesoft.faces.reloadInterval";
     private final static String DO_JSF_STATE_MANAGEMENT =
             "com.icesoft.faces.doJSFStateManagement";
+
     private final static String LAST_LOADED_KEY = "_lastLoaded";
     private final static String LAST_CHECKED_KEY = "_lastChecked";
     public static final String CHAR_ENCODING = "UTF-8";
@@ -100,7 +104,6 @@ public class D2DViewHandler extends ViewHandler {
     public static final String DEFAULT_VIEW_ID = "default";
 
     private String actionURLSuffix;
-    protected boolean jsfStateManagement;
     //reloadInterval internally in milliseconds
     protected long reloadInterval;
     protected long reloadIntervalDefault = 2;
@@ -109,6 +112,9 @@ public class D2DViewHandler extends ViewHandler {
     protected Parser parser;
     private ViewHandler delegate;
 
+    // hmmm this seems to be a per user variable? By this time, the code
+    // has been narrowed down to just one thread anyway. 
+    private boolean stateWritten;
 
     public D2DViewHandler() {
         try {
@@ -158,7 +164,8 @@ public class D2DViewHandler extends ViewHandler {
         }
         renderResponse(context);
 
-        if (jsfStateManagement) {
+        // Not sure this is still necessary. 
+        if ( CoreUtils.isJSFStateSaving() ) {
             StateManager stateMgr = context.getApplication().getStateManager();
             stateMgr.saveSerializedView(context);
             // JSF 1.1 removes transient components here, but I don't think that 1.2 does
@@ -184,49 +191,10 @@ public class D2DViewHandler extends ViewHandler {
         if (SeamUtilities.isSeamEnvironment()) {
             ((BridgeExternalContext) context.getExternalContext()).removeSeamLifecycleShortcut();
         }
-        UIViewRoot root = new UIViewRoot() {
-            public void setLocale(Locale locale) {
-                //ignore locale set by RestoreViewPhase since it is using the first locale in the Accept-Language list,
-                //instead it should calculate the locale
-                int setLocaleIndex = -1;
-                int lifeCycleRestoreViewIndex = -1;
-                StackTraceElement[] ste = (new RuntimeException()).getStackTrace();
-                for(int i = 0; (i < 10 && i < ste.length); i++) {
-                    String className = ste[i].getClassName().toLowerCase();
-                    String methodName = ste[i].getMethodName().toLowerCase();
-                    if( setLocaleIndex == -1 &&
-                        methodName.indexOf("setlocale") >= 0 )
-                    {
-                        setLocaleIndex = i;
-                    }
-                    if( lifeCycleRestoreViewIndex == -1 &&
-                        className.indexOf("lifecycle") >= 0 &&
-                        (className.indexOf("restoreview") >= 0 ||
-                         methodName.indexOf("restoreview") >= 0) )
-                    {
-                        lifeCycleRestoreViewIndex = i;
-                        break;
-                    }
-                }
-                boolean ignore =
-                    setLocaleIndex >= 0 &&
-                    lifeCycleRestoreViewIndex >= 0 &&
-                    setLocaleIndex + 1 == lifeCycleRestoreViewIndex;
-                if(!ignore)
-                    super.setLocale(locale);
-            }
-            
-            private static final int MAX_COUNT = 500;
-            private int count = 0;
-            
-            public String createUniqueId() {
-              String uniqueId = super.createUniqueId(); 
-              if(++count < MAX_COUNT) { 
-                uniqueId = uniqueId.intern(); 
-              }
-              return uniqueId;
-            }
-        };
+
+        // #3422 Needs to be a public class instantiable by JSF
+        UIViewRoot root = new SettableLocaleViewRoot();
+
         
         Locale locale = null;
         String renderKitId = null;
@@ -254,6 +222,8 @@ public class D2DViewHandler extends ViewHandler {
         
         String renderedViewId = getRenderedViewId(context, root.getViewId());
         root.setViewId(renderedViewId);
+
+        stateWritten = false;
         
         return root;
     }
@@ -299,18 +269,36 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
-        UIViewRoot currentRoot = context.getViewRoot();
-        // For spring webflow
-        if (SeamUtilities.isSpringEnvironment() ) {
-            return currentRoot;
-        } 
-        if (null != currentRoot &&
+        if (CoreUtils.isJSFStateSaving()) {
+
+            System.out.println("Going to restore view! ");
+            String renderKitId =
+                    calculateRenderKitId(context);
+            long start = System.nanoTime();
+            UIViewRoot viewRoot = Util.getStateManager(context).restoreView(context,
+                                                                              viewId,
+                                                                              renderKitId);
+
+            if (log.isDebugEnabled() ) {
+                log.debug("\n Restored ViewRoot from state management: " + viewRoot + " in " + (System.nanoTime()-start)/1e9f);
+            } 
+            stateWritten = false;
+            return viewRoot;
+        } else {
+
+            UIViewRoot currentRoot = context.getViewRoot();
+            // For spring webflow
+            if (SeamUtilities.isSpringEnvironment() ) {
+                return currentRoot;
+            }
+            if (null != currentRoot &&
                 getRenderedViewId(context, viewId)
                         .equals( getRenderedViewId(context,
-                                currentRoot.getViewId()))) {
-            return currentRoot;
-        } else {
-            return null;
+                                                   currentRoot.getViewId()))) {
+                return currentRoot;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -568,8 +556,10 @@ public class D2DViewHandler extends ViewHandler {
 
     protected void renderResponse(FacesContext context, UIComponent component)
             throws IOException {
-        if (!component.isRendered())
+
+        if (!component.isRendered()) {
             return;
+        } 
 
         // UIViewRoot.encodeBegin(FacesContext) resets its counter for
         //   createUniqueId(), which we don't want, or else we get
@@ -716,10 +706,75 @@ public class D2DViewHandler extends ViewHandler {
         }
     }
 
+    /**
+     * This method is called from the Form renderer during the encodeBegin method.
+     * Its intent was to write the component tree and state into the response. Either
+     * the entire state is written if client side state saving is configured, or
+     * a token is written if server side saving is configured.
+     *
+     * This method will be called once per form on the page, and so should take care
+     * to filter the number of times state is retrieved via the JSF methods.
+     *
+     * When this method is called, it will call DOMResponseWriter.saveNextNode()
+     * to capture the next nodes written to the ResponseWriter. JSF does something similar,
+     * where their ResponseWriter saves the next writes into a temporary output stream
+     * for subsequent copying into the real output stream potentially several times.
+     *
+     *
+     *
+     * @param context
+     * @throws IOException
+     */
     public void writeState(FacesContext context) throws IOException {
+
         if (delegateView(context)) {
+            System.out.println("++ Write State has a delegater");
             delegate.writeState(context);
+            return;
         }
+
+        if (!CoreUtils.isJSFStateSaving()) {
+            return;
+        } 
+
+        // We only need to capture the state once per rendering request. It is
+        // possible to be inserted once per form in the response.
+        if (stateWritten) {
+            return;
+        }
+
+        StateManager stateManager = Util.getStateManager(context);
+        long start = System.nanoTime();
+
+        StateManager.SerializedView sv = stateManager.saveSerializedView( context );
+        if (log.isDebugEnabled()) {
+            log.debug("Saved serialized state in: " + (System.nanoTime()-start)/1e9f + "seconds");
+        }
+
+        Object [] structureAndState = new Object[2];
+        structureAndState[0] = sv.getStructure();
+        structureAndState[1] = sv.getState();
+
+        // Tell the DOMResponseWriter to capture the nodes created by JSF
+        ResponseWriter writer = context.getResponseWriter();
+        if (writer != null && (writer instanceof DOMResponseWriter)) {
+            ((DOMResponseWriter) writer).setSaveNextNode(true);
+        }
+
+        // get JSF to write state (captured by DOMResponseWriter)
+        stateManager.writeState(context, sv );
+
+        // turn off state saving node capture
+        if (writer != null && (writer instanceof DOMResponseWriter)) {
+                    ((DOMResponseWriter) writer).setSaveNextNode(false);
+        }
+
+        stateWritten = true;
+        if (log.isDebugEnabled()) {
+            log.debug("State saved and serialized in " + (System.nanoTime()-start)/1e9f + " seconds");
+        }
+        System.out.println("State saved and serialized in " + (System.nanoTime()-start)/1e9f + " seconds");
+
     }
 
     public Locale calculateLocale(FacesContext context) {
@@ -878,8 +933,8 @@ public class D2DViewHandler extends ViewHandler {
         } catch (NumberFormatException e) {
             reloadInterval = reloadIntervalDefault * 1000;
         }
-        jsfStateManagement = Boolean.valueOf(jsfStateManagementParameter).booleanValue();
-        if (!jsfStateManagement) {
+        CoreUtils.setJSFStateSaving( Boolean.valueOf(jsfStateManagementParameter).booleanValue() || SeamUtilities.isSeamEnvironment());
+        if (CoreUtils.isJSFStateSaving()) {
             log.debug("JSF State Management not provided");
         }
         parametersInitialized = true;
