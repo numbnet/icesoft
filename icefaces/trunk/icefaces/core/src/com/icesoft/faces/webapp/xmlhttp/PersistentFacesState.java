@@ -37,9 +37,11 @@ import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.context.BridgeFacesContext;
 import com.icesoft.faces.context.View;
 import com.icesoft.faces.context.ViewListener;
+import com.icesoft.faces.context.BridgeExternalContext;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.SessionExpiredException;
 import com.icesoft.faces.webapp.parser.ImplementationUtil;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
 import edu.emory.mathcs.backport.java.util.concurrent.Executors;
@@ -85,6 +87,9 @@ public class PersistentFacesState implements Serializable {
     private final Collection viewListeners;
     private View view;
     private boolean disposed;
+    // For server push, the JSF state saving key generated after each render must
+    // be preserved for the next artificial lifecycle so we can restore state
+    private String stateRestorationId;
 
     public PersistentFacesState(View view, Collection viewListeners, Configuration configuration) {
         //JIRA case ICE-1365
@@ -206,7 +211,7 @@ public class PersistentFacesState implements Serializable {
      *
      * @deprecated this method should not be exposed
      */
-    public void execute() throws RenderingException {
+    public void execute() throws RenderingException {                               
         failIfDisposed();
         try {
             view.acquireLifecycleLock();
@@ -224,19 +229,28 @@ public class PersistentFacesState implements Serializable {
                 }
                 //Seam appears to need ViewState set during push
                 requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
+
+                // If state saving is turned on, we need to insert the saved state
+                // restoration key for this user into the request map for JSF.
+                // Even if no state saving, inserting this key will at least
+                // cause the JSF lifecycle to run, which we want to do for
+                // consistency.
+                String postback;
+                if (CoreUtils.isJSFStateSaving() && stateRestorationId != null) {
+                    postback = stateRestorationId;
+                } else{
+                    postback = "not reload";
+                }
+
+                facesContext.getExternalContext().
+                        getRequestParameterMap().
+                        put( BridgeExternalContext.PostBackKey, postback);
+
             } else {
                 facesContext.renderResponse();
             }
             lifecycle.execute(facesContext);
 
-            // ICE-2478 JSF 1.2 will set this flag because our requestParameter
-            // map is empty. We don't actually want to execute a lifecycle, we
-            // just want the restoreView phase listeners to be executed for Seam.
-            // However, we need to reset the 'just set' responseComplete flag
-            // or our server push renders will not occur.
-            if (ImplementationUtil.isJSF12()) {
-                facesContext.resetResponseComplete();
-            }
         } catch (Exception e) {
             release();
             throwRenderingException(e);
@@ -451,5 +465,21 @@ public class PersistentFacesState implements Serializable {
             release();
             fatalRenderingException();
         }
+    }
+
+    public String getStateRestorationId() {
+        return stateRestorationId;
+    }
+
+    /**
+     * JSF state saving requires a state id token written into the contents of
+     * the forms in the client. For server push, however, this field has to be updated each
+     * time state is serialized so that the subsequent push operation can artificially
+     * insert the id into the request map for JSF code to find. 
+     *
+     * @param stateRestorationId The state id
+     */
+    public void setStateRestorationId(String stateRestorationId) {
+        this.stateRestorationId = stateRestorationId;
     }
 }
