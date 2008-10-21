@@ -158,7 +158,16 @@ public class MenuItem extends MenuItemBase {
     public void setValue(Object value) {
         this.value = value;
     }
-
+    
+    public boolean isLinkSpecified() {
+        if (link != null)
+            return true;
+        ValueBinding vb = getValueBinding("link");
+        if (vb != null)
+            return true;
+        return false;
+    }
+    
     /**
      * <p>Return the value of the <code>link</code> property.</p>
      */

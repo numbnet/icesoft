@@ -282,13 +282,21 @@ public class MenuItemRenderer extends MenuItemRendererBase {
                 DOMContext.getDOMContext(facesContext, menuItem);
         Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
         if (!menuItem.isDisabled()) {
-            anchor.setAttribute(HTML.HREF_ATTR, menuItem.getLink());
-            anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
-            if (menuItem.getTarget() != null) {
-                anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
+            String link = menuItem.getLink();
+            if (link != null && link.length() > 0) {
+                anchor.setAttribute(HTML.HREF_ATTR, link);
             }
-            if(menuItem.getOnclick() != null) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
+            String target = menuItem.getTarget(); 
+            if (target != null && target.length() > 0) {
+                anchor.setAttribute(HTML.TARGET_ATTR, target);
+            }
+            String onclick = menuItem.getOnclick(); 
+            if (onclick != null && onclick.length() > 0) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, onclick);
+            }
+            if ( (!menuItem.isLinkSpecified()) &&
+                 (onclick == null || onclick.length() == 0) ) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
             }
         }
         
@@ -354,12 +362,21 @@ public class MenuItemRenderer extends MenuItemRendererBase {
 
         Element anchor = domContext.createElement(HTML.ANCHOR_ELEM);
         if (!menuItem.isDisabled()) {
-            anchor.setAttribute(HTML.HREF_ATTR, menuItem.getLink());
-            if (menuItem.getTarget() != null) {
-                anchor.setAttribute(HTML.TARGET_ATTR, menuItem.getTarget());
+            String link = menuItem.getLink();
+            if (link != null && link.length() > 0) {
+                anchor.setAttribute(HTML.HREF_ATTR, link);
             }
-            if(menuItem.getOnclick() != null) {
-                anchor.setAttribute(HTML.ONCLICK_ATTR, menuItem.getOnclick());
+            String target = menuItem.getTarget(); 
+            if (target != null && target.length() > 0) {
+                anchor.setAttribute(HTML.TARGET_ATTR, target);
+            }
+            String onclick = menuItem.getOnclick(); 
+            if (onclick != null && onclick.length() > 0) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, onclick);
+            }
+            if ( (!menuItem.isLinkSpecified()) &&
+                 (onclick == null || onclick.length() == 0) ) {
+                anchor.setAttribute(HTML.ONCLICK_ATTR, "return false;");
             }
         }
 
