@@ -35,20 +35,27 @@ package com.icesoft.faces.renderkit.dom_html_basic;
 
 import com.icesoft.faces.component.AttributeConstants;
 import com.icesoft.faces.context.DOMContext;
+import com.icesoft.faces.context.DOMResponseWriter;
 import com.icesoft.faces.context.effects.CurrentStyle;
+import com.icesoft.faces.util.DOMUtils;
+import com.icesoft.faces.webapp.xmlhttp.PersistentFacesState;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.faces.FacesException;
+import javax.faces.render.ResponseStateManager;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
+import javax.faces.context.ResponseWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.List;
 
 public class FormRenderer extends DomBasicRenderer {
 
@@ -184,16 +191,57 @@ public class FormRenderer extends DomBasicRenderer {
             root.setAttribute(HTML.AUTOCOMPLETE_ATTR, "off");
         }
                 
-        facesContext.getApplication().getViewHandler().writeState(facesContext);
-
         // don't override user-defined value
         String userDefinedValue = root.getAttribute("onsubmit");
         if (userDefinedValue == null || userDefinedValue.equalsIgnoreCase("")) {
             root.setAttribute("onsubmit", "return false;");
         }
 
+        facesContext.getApplication().getViewHandler().writeState(facesContext);
+        // Retrieve the Node created by that state saving operation and
+        // add it to the form root (otherwise it winds up outside the Form)
+        ResponseWriter writer = facesContext.getResponseWriter();
+        if (writer != null && (writer instanceof DOMResponseWriter)) {
+
+            Node  node =  ((DOMResponseWriter) writer).getSavedNode();  // this will be the containing <div>
+            Node copy;
+            if (node != null) {
+
+                // Append the div, but now go search through it for the child that contains the actual
+                // id so we can preserve this for any future server push operations
+
+                // that's not working because the node child relationships are being broken
+                // from the first root when I add it to the 4th, so it's not the id,
+                // it's that there are only one set of objects created, that's what's changed. 
+
+                copy = node.cloneNode(true);
+                root.appendChild(copy);
+
+
+                node = node.getFirstChild();
+                boolean nextField = false;
+                while(node != null) {
+
+                    if ( node.getNodeValue().endsWith("javax.faces.ViewState\" value=\"")) {
+                        nextField = true;
+                    } else if (nextField) {
+
+                        if (log.isDebugEnabled()) {
+                            log.debug("State id for server push state saving: " + node.getNodeValue() +
+                                               ", node name: " + node.getNodeName());
+                        }
+
+                        PersistentFacesState.getInstance().setStateRestorationId( node.getNodeValue() );
+                        break;
+                    }
+                    node = node.getNextSibling();
+                }
+            } 
+        }
+
         try {
             domContext.startNode(facesContext, uiComponent, root);
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
