@@ -46,6 +46,7 @@ import com.icesoft.faces.webapp.command.Redirect;
 import com.icesoft.faces.webapp.command.SetCookie;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.core.DisposeBeans;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.util.SeamUtilities;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -156,7 +157,7 @@ public abstract class BridgeExternalContext extends ExternalContext {
         }
     };
     private static final String SEAM_LIFECYCLE_SHORTCUT = "com.icesoft.faces.shortcutLifecycle";
-    private static String PostBackKey;
+    public static String PostBackKey;
 
     static {
         //We will place VIEW_STATE_PARAM in the requestMap so that
@@ -269,7 +270,8 @@ public abstract class BridgeExternalContext extends ExternalContext {
 
     /**
      * Insert an object into the Parameter map, making JSF think
-     * the request is a postback.
+     * the request is a postback. This should only be called in non-state
+     * savings environments
      */
     protected void insertPostbackKey() {
         if (null != PostBackKey) {

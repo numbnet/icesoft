@@ -38,6 +38,7 @@ import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
@@ -211,14 +212,23 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public RenderKit getRenderKit() {
-        UIViewRoot viewRoot = getViewRoot();
-        if (null == viewRoot) {
-            return (null);
-        }
-        String renderKitId = viewRoot.getRenderKitId();
-        if (null == renderKitId) {
-            return (null);
-        }
+
+        // Have to figure out why this has changed in behaviour
+
+//        if (!CoreUtils.isJSFStateSaving() )  {
+//            UIViewRoot viewRoot = getViewRoot();
+//            if (null == viewRoot) {
+//                return (null);
+//            }
+//            String renderKitId = viewRoot.getRenderKitId();
+//            if (null == renderKitId) {
+//                return (null);
+//            }
+//        }
+
+        String renderKitId = getApplication().getDefaultRenderKitId();
+//        String renderKitId = getApplication().getViewHandler().
+//                calculateRenderKitId(this);
 
         RenderKitFactory renderKitFactory = (RenderKitFactory)
                 FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
@@ -325,7 +335,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * associated with a single user.
      */
     public String getViewNumber() {
-        return viewNumber;
+        return viewNumber;                                       
     }
 
     /**
@@ -377,10 +387,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.responseComplete = true;
     }
 
-    public void resetRenderResponse() {
-        this.renderResponse = false;
-    }
-
     /**
      * Necessary for ICE-2478. This method should only be called from an
      * environment where server push is active. For normal JSF lifecycle
@@ -401,6 +407,12 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         maxSeverity = null;
         renderResponse = false;
         responseComplete = false;
+
+        // if we're doing state management, we always clear the viewRoot between requests.
+        if (CoreUtils.isJSFStateSaving() ) {
+            this.viewRoot = null;
+        } 
+
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
         if (com.icesoft.util.SeamUtilities.isSpring2Environment()) {
@@ -590,8 +602,11 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         request.detectEnvironment(new Request.Environment() {
             public void servlet(Object request, Object response) {
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
-                //#2139 this is a postback, so insert the key now
-                externalContext.insertPostbackKey();
+                //#2139 Don't insert a false postback key if state saving is configured,
+                // as this will overwrite the real state saving key
+                if (!CoreUtils.isJSFStateSaving()) {
+                    externalContext.insertPostbackKey();
+                }
             }
 
             public void portlet(Object request, Object response, Object config) {
