@@ -6,8 +6,10 @@ import java.util.Date;
 
 import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
@@ -20,7 +22,7 @@ public class OutputResource extends UIComponentBase {
 	public static final String COMPONENT_FAMILY = "com.icesoft.faces.OutputResource";
 	public static final String COMPONENT_TYPE = "com.icesoft.faces.OutputResource";
 	public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.OutputResourceRenderer";
-
+    private static Log log = LogFactory.getLog(OutputResource.class);
 	protected Resource resource;
 	private String mimeType;
 	private Date lastModified;
@@ -63,6 +65,12 @@ public class OutputResource extends UIComponentBase {
 
 	public Resource getResource() {
 		ValueBinding vb = getValueBinding("resource");
+		if (vb == null) {
+		    if (log.isInfoEnabled()) {
+		        log.info("The \"resource\" is not defined");
+		    }
+		    return null;
+		}
 		resource = (Resource) vb.getValue(getFacesContext());
 		if( resource != null ){
 			int newResourceHashCode = resource.hashCode();
