@@ -31,6 +31,10 @@
  *
  */
 
+Ice.isValidID = function(id) {
+    return /^\w[\w\-\:]*$/.test(id);
+};
+
 //todo: implement focus management!
 var currentFocus;
 Ice.Focus = new Object();
@@ -54,7 +58,7 @@ Ice.Focus.setFocus = function(id) {
 };
 
 Ice.Focus.setFocusNow = function(id) {
-    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined')) {
+    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined') && Ice.isValidID(id)) {
         try {
             id.asExtendedElement().focus();
             setFocus(id);
