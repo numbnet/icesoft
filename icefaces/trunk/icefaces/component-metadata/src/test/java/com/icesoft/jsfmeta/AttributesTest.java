@@ -158,10 +158,18 @@ public class AttributesTest extends TestCase{
                 sunComp = getClassObject("javax.faces.component.html."+ component);
                 iceExtendedComp = getClassObject(componentClass);
                 sunPropMap = getProperties(sunComp);
+                if (iceExtendedComp == null) {
+                    System.out.println("\r\n\r\n\r\n "+ componentClass + " is null"); 
+                    continue;
+                }
                 iceExtendedCompPropMap = getProperties(iceExtendedComp);
             } else if (customComponents.containsKey(componentType)) {
                 componentClass = customComponents.get(componentType).toString();
-                customComp = getClassObject(componentClass);      
+                customComp = getClassObject(componentClass);     
+                if (customComp == null) {
+                    System.out.println("\r\n\r\n\r\n "+ componentClass + " is null"); 
+                    continue;
+                }                
                 customCompPropMap = getProperties(customComp);
             }
             System.out.println("\r\n\r\n\r\n\t\t\t\t-= "+ componentClass + " =-"); 
