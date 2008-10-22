@@ -84,7 +84,7 @@ public class HtmlPanelGroup extends javax.faces.component.html.HtmlPanelGroup {
 
     private CurrentStyle currentStyle;
     // This is needed to avoid unessisary dom updates.
-    private String renderedStyle;
+    private transient String renderedStyle;
 
     private Effect effect;
     protected Boolean visible = null;
