@@ -31,41 +31,7 @@
   ~  this file under either the MPL or the LGPL License."
   ~
   -->
-&ice-att-userrole-rendered-props;
-&ice-att-style-props;
-&ice-att-displayListener-props;
-&uicommand-novalue-props;
-
-<property>
-    <description>
-        <![CDATA[Set directory for location of the tree images.
-            Default directory is /xmlhttp/css/xp/css-images/ which is include in the icefaces.jar.]]>
-    </description>
-    <property-name>imageDir</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-
-
-
-<property>
-    <description>
-        <![CDATA[If true, this component will not rendered icons and icon spacers in menuItems.
-        The default is false. By default icons are rendered.]]>
-    </description>
-    <property-name>noIcons</property-name>
-    <property-class>java.lang.String</property-class>
-    <property-extension>
-        <editor-class>
-            &stringEditor;
-        </editor-class>
-    </property-extension>
-</property>
-
+&ice-cust-menu-props;
 <property>
     <description>
         <![CDATA[

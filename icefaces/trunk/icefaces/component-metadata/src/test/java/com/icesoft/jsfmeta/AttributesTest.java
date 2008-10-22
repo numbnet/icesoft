@@ -140,10 +140,9 @@ public class AttributesTest extends TestCase{
         for(int i=0; i<componentBeans.length; i++){
             String componentType = componentBeans[i].getComponentType();  
             String component = componentType.substring(componentType.lastIndexOf(".")+1);
-            if (componentType.equals("com.icesoft.faces.ApplyEffect") ) continue;
-            System.out.println(); 
-            System.out.println("\t\t\t\t"+ componentType); 
-            System.out.println();             
+            String componentClass = null;
+            if (componentType.equals("com.icesoft.faces.ApplyEffect") ||
+                    componentType.equals("com.icesoft.faces.BorderLayout")    ) continue;
             boolean isExtended = false;
             Object sunComp = null;
             Object iceExtendedComp = null;
@@ -155,19 +154,24 @@ public class AttributesTest extends TestCase{
             // 1. check if its an extended component
             if (extendedComponents.contains(component)){
                 isExtended = true;
+                componentClass = "com.icesoft.faces.component.ext."+ component ;             
                 sunComp = getClassObject("javax.faces.component.html."+ component);
-                iceExtendedComp = getClassObject("com.icesoft.faces.component.ext."+ component);
+                iceExtendedComp = getClassObject(componentClass);
                 sunPropMap = getProperties(sunComp);
                 iceExtendedCompPropMap = getProperties(iceExtendedComp);
             } else if (customComponents.containsKey(componentType)) {
-                customComp = getClassObject(customComponents.get(componentType).toString());      
+                componentClass = customComponents.get(componentType).toString();
+                customComp = getClassObject(componentClass);      
                 customCompPropMap = getProperties(customComp);
             }
+            System.out.println("\r\n\r\n\r\n\t\t\t\t-= "+ componentClass + " =-"); 
             
             PropertyBean[] propertyBeans = componentBeans[i].getProperties();
             for(int j=0; j<propertyBeans.length; j++){
                 PropertyBean property = propertyBeans[j];
                 String propertyName = property.getPropertyName();
+                Object componentValue = null;
+                Object metadataValue = property.getDefaultValue();
                 if (isExtended) {
                     String baseProp = null;
                     String extendedProp = null;
@@ -178,18 +182,35 @@ public class AttributesTest extends TestCase{
                     }
                     
                     if (iceExtendedCompPropMap.containsKey(property.getPropertyName())) {
-                        extendedProp = iceExtendedCompPropMap.get(property.getPropertyName()).toString();
+                        componentValue = iceExtendedCompPropMap.get(property.getPropertyName()).toString();
                     } else {
-                        extendedProp = "Property not found";                             
+                        componentValue = "Property not found";                             
                     }
-                    //assert
-                    System.out.println(propertyName + ":\tbase component value ["+ baseProp + "]\t extended component value ["+ extendedProp + "]\tmetadata value [" + property.getDefaultValue() + "]");
                 } else {
                     if (customCompPropMap.containsKey(property.getPropertyName())) {
-                        //assert
-                        System.out.println(propertyName + ":\tcomponent value ["+ customCompPropMap.get(propertyName) + "]\t metadata value [" + property.getDefaultValue() + "]");
+                        componentValue = customCompPropMap.get(propertyName);
                     }
                 }
+                if (metadataValue == null) {
+                    metadataValue = "null";
+                }   
+
+                if (componentValue == null) {
+                    componentValue = "null";
+                }
+                //remove all double quote
+                metadataValue = metadataValue.toString().replaceAll("\"", "");
+                boolean isSentinel = false;
+                
+                if (attributeValueIsSentinel(componentValue.toString()) || propertyName.equals("style")) {
+                    isSentinel = true;
+                } else {
+                    assertEquals("PropertyName :<"+ propertyName + ">", componentValue, metadataValue );    
+                }
+                System.out.print("\r\nisSentinel ["+ isSentinel +"] \tassertionMade ["+ !isSentinel +"] \tpropertyName ["+ propertyName + "] \tcomponentValue ["+ componentValue + "]\t metadataValue [" + metadataValue + "]");
+                
+   
+                
             }//for
         }
         }catch (Exception e){}
@@ -282,11 +303,59 @@ public class AttributesTest extends TestCase{
                         String value = readMethod.invoke(instance, new Object[0])+"";
                         PropMap.put(attName, value);
                     } catch (Exception e) {
-                        PropMap.put(attName, "Method can not be invoked out of JSF lifecycle");
+                        //"Method can not be invoked out of JSF lifecycle"
+                        PropMap.put(attName, "null");
                     }
                 }
             }    
             return PropMap;
         } catch (Exception e ){ return Collections.EMPTY_MAP;}
     }
+    
+    private boolean attributeValueIsSentinel(String value) {
+        if (value == null) {
+            return true;
+        }
+
+        if ("null".equals(value)) {
+            return true;
+        }
+        
+        if ("".equals(value)) {
+            return true;
+        }
+        
+        if ("false".equals(value)) {
+            return true;
+        }
+        
+        if (String.valueOf(Integer.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Long.MIN_VALUE).equals(value)) {
+            return true;
+        }
+        
+        if (String.valueOf(Short.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Float.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Double.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Byte.MIN_VALUE).equals(value)) {
+            return true;
+        }
+
+        if (String.valueOf(Character.MIN_VALUE).equals(value)) {
+            return true;
+        }
+        return false;
+    } 
 }
