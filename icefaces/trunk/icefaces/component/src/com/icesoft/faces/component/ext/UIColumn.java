@@ -58,9 +58,9 @@ public class UIColumn extends javax.faces.component.UIColumn {
     private String style = null;
     private String styleClass = null;
     private String groupOn = null;
-    private String previousGroupValue = null;
+    private transient String previousGroupValue = null;
     private int groupCount = 1;
-    private Element groupedTd;
+    private transient Element groupedTd;
     // binding
     private String binding = null;
 
