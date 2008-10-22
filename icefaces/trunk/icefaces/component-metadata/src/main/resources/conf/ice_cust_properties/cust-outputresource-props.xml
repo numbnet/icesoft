@@ -166,6 +166,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>true</default-value>  
     </property-extension>
 </property>
 
@@ -185,6 +186,7 @@
     <property-class>boolean</property-class>
     <property-extension>
         <category>ADVANCED</category>
+        <default-value>true</default-value>         
     </property-extension>
 </property>
 
