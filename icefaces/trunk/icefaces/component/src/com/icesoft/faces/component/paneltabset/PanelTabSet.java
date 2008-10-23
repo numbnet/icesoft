@@ -574,7 +574,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[32];
+        Object values[] = new Object[33];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -607,6 +607,7 @@ public class PanelTabSet
         values[29] = partialSubmit;
         values[30] = renderedOnUserRole;
         values[31] = visible;
+        values[32] = saveAttachedState(context, listenerList);        
         return ((Object) (values));
     }
 
@@ -648,6 +649,16 @@ public class PanelTabSet
         partialSubmit = (Boolean)values[29];
         renderedOnUserRole = (String)values[30];
         visible = (Boolean)values[31];
+        List restoredListenerList = (List)
+        restoreAttachedState(context, values[32]);
+        if (restoredListenerList != null) {
+            if (null != listenerList) {
+                listenerList.addAll(restoredListenerList);
+            } else {
+                listenerList = restoredListenerList;
+            }            
+        }
+   
     }
 
     public Object saveSeriesState(FacesContext facesContext) {
@@ -1183,7 +1194,7 @@ public class PanelTabSet
     }
 
         
-    private boolean eventQueued = false;
+    private transient boolean eventQueued = false;
     public void queueEvent(FacesEvent event) {
         if (event instanceof TabChangeEvent) {
             eventQueued = true;

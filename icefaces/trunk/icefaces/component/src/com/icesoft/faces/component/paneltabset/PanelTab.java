@@ -251,7 +251,7 @@ public class PanelTab
      */
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[21];
+            values = new Object[22];
         }
         values[0] = super.saveState(context);
         values[1] = label;
@@ -274,6 +274,8 @@ public class PanelTab
         values[18] = onkeydown;
         values[19] = onkeyup;
         values[20] = icon;
+        values[21] = iconAlignRight;        
+        
         return ((Object) (values));
     }
 
@@ -303,6 +305,7 @@ public class PanelTab
         onkeydown = (String) values[18];
         onkeyup = (String) values[19];
         icon = (String)values[20];
+        iconAlignRight = (Boolean)values[21];        
     }
 
     /* (non-Javadoc)

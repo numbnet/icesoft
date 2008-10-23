@@ -634,7 +634,7 @@ public class SelectInputDate
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[27];
+        Object values[] = new Object[25];
         values[0] = super.saveState(context);
         values[1] = _renderAsPopup;
         values[2] = _popupDateFormat;
@@ -657,11 +657,10 @@ public class SelectInputDate
         values[19] = highlightMonthClass;
         values[20] = highlightWeekClass;
         values[21] = highlightYearClass;
-        values[22] = hightlightRules;
-        values[23] = linkMap;
-        values[24] = selectedDayLink;
-        values[25] = showPopup;
-        values[26] = unitMap;
+        values[22] = linkMap;
+        values[23] = selectedDayLink;
+        values[24] = showPopup;
+        
         return ((Object) (values));
     }
 
@@ -692,11 +691,9 @@ public class SelectInputDate
         highlightMonthClass = (String) values[19];
         highlightWeekClass = (String) values[20];
         highlightYearClass = (String) values[21];
-        hightlightRules = (Map) values[22];
-        linkMap = (Map) values[23];
-        selectedDayLink = (String) values[24];
-        showPopup = (List) values[25];
-        unitMap = (Map) values[26];
+        linkMap = (Map) values[22];
+        selectedDayLink = (String) values[23];
+        showPopup = (List) values[24];
     }
 
     private Map linkMap = new HashMap();
@@ -850,8 +847,8 @@ public class SelectInputDate
         return vb != null ? (String) vb.getValue(getFacesContext()) : "";
     }
 
-    private Map hightlightRules = new HashMap();
-    private Map unitMap = new UnitMap();
+    private transient Map hightlightRules = new HashMap();
+    private transient Map unitMap = new UnitMap();
 
     private void buildHighlightMap() {
         validateHighlight();

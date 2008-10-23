@@ -42,15 +42,15 @@ public class PanelDivider extends UIPanel{
     private String renderedOnUserRole = null;
    
     private String orientation = null;
-    private String previousOrientation = null;
+    private transient String previousOrientation = null;
     
-    private boolean decoded = false;
+    private transient boolean decoded = false;
     
-    private String firstPaneStyle;
-    private String secondPaneStyle;
+//    private String firstPaneStyle;
+//    private String secondPaneStyle;
     private int DEFAULT_POSITION = 50;
     private int submittedDividerPosition = -1;
-    private int previousDividerPosition = -1;
+//    private int previousDividerPosition = -1;
     
     public PanelDivider() {
         setRendererType(DEFAULT_RENDERER_TYPE);
@@ -61,10 +61,10 @@ public class PanelDivider extends UIPanel{
     public void decode(FacesContext facesContext) {
         Map map = facesContext.getExternalContext().getRequestParameterMap();
         String clientId = getClientId(facesContext);
-        if (map.containsKey(clientId + FIRST_PANL_STYLE)) {
-            firstPaneStyle = String.valueOf(map.get(clientId + FIRST_PANL_STYLE));
-            secondPaneStyle = String.valueOf(map.get(clientId + SECOND_PANL_STYLE)); 
-        }
+//        if (map.containsKey(clientId + FIRST_PANL_STYLE)) {
+//            firstPaneStyle = String.valueOf(map.get(clientId + FIRST_PANL_STYLE));
+//            secondPaneStyle = String.valueOf(map.get(clientId + SECOND_PANL_STYLE)); 
+//        }
         if (map.containsKey(clientId + IN_PERCENT) 
                 && map.get(clientId + IN_PERCENT) != null && 
                         !"".equals(map.get(clientId + IN_PERCENT))) {
@@ -75,7 +75,7 @@ public class PanelDivider extends UIPanel{
         } else {
             decoded = false;
         }
-        previousDividerPosition = getDividerPosition();
+//        previousDividerPosition = getDividerPosition();
         super.decode(facesContext);
     }
     
@@ -281,20 +281,20 @@ public class PanelDivider extends UIPanel{
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[13];
+        Object values[] = new Object[8];
         values[0] = super.saveState(context);
         values[1] = style;
         values[2] = styleClass;
         values[3] = dividerPosition;
         values[4] = renderedOnUserRole;
         values[5] = orientation;
-        values[6] = previousOrientation;
-        values[7] = decoded ? Boolean.TRUE : Boolean.FALSE;
-        values[8] = firstPaneStyle;
-        values[9] = secondPaneStyle;
-        values[10] = new Integer(submittedDividerPosition);
-        values[11] = new Integer(previousDividerPosition);
-        values[12] = new Integer(DEFAULT_POSITION);
+//        values[6] = previousOrientation;
+//        values[7] = decoded ? Boolean.TRUE : Boolean.FALSE;
+//        values[8] = firstPaneStyle;
+//        values[9] = secondPaneStyle;
+        values[6] = new Integer(submittedDividerPosition);
+//        values[11] = new Integer(previousDividerPosition);
+        values[7] = new Integer(DEFAULT_POSITION);
         return ((Object) (values));
     }
 
@@ -310,12 +310,12 @@ public class PanelDivider extends UIPanel{
         dividerPosition = (Integer) values[3];
         renderedOnUserRole = (String) values[4];
         orientation = (String) values[5];
-        previousOrientation = (String) values[6];
-        decoded = ((Boolean) values[7]).booleanValue();
-        firstPaneStyle = (String) values[8];
-        secondPaneStyle = (String) values[9];
-        submittedDividerPosition = ((Integer) values[10]).intValue();
-        previousDividerPosition = ((Integer)values[11]).intValue();
-        DEFAULT_POSITION = ((Integer)values[12]).intValue();
+//        previousOrientation = (String) values[6];
+//        decoded = ((Boolean) values[7]).booleanValue();
+//        firstPaneStyle = (String) values[8];
+//        secondPaneStyle = (String) values[9];
+        submittedDividerPosition = ((Integer) values[6]).intValue();
+//        previousDividerPosition = ((Integer)values[11]).intValue();
+        DEFAULT_POSITION = ((Integer)values[7]).intValue();
     }
 }
