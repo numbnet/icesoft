@@ -110,7 +110,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * Map for selectItems, where the key is the "SelectItem.getlabel()" and the
      * value is the selectItem object
      */
-    Map itemMap = new HashMap();
+    transient Map itemMap = new HashMap();
 
     private int index = -1;
     
@@ -571,7 +571,7 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[12];
+        Object values[] = new Object[11];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = listVar;
@@ -583,7 +583,6 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
         values[8] = saveAttachedState(context, textChangeListener);
         values[9] = changedComponentIds;
         values[10] = Integer.valueOf(index);
-        values[11] = itemMap;
         return ((Object) (values));
     }
 
@@ -605,7 +604,6 @@ public class SelectInputText extends HtmlInputText implements NamingContainer {
             restoreAttachedState(context, values[8]);
         changedComponentIds = (List) values[9];
         index = ((Integer) values[10]).intValue();
-        itemMap = (Map) values[11];
     }
 
     public String getOnkeypress() {
