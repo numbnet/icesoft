@@ -6,6 +6,12 @@ import com.icesoft.faces.webapp.http.common.Response;
 import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
+import com.icesoft.util.pooling.CSSNamePool;
+import com.icesoft.util.pooling.ClientIdPool;
+import com.icesoft.util.pooling.ELPool;
+import com.icesoft.util.pooling.XhtmlPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.faces.FacesException;
 import javax.faces.FactoryFinder;
@@ -14,10 +20,6 @@ import javax.faces.lifecycle.Lifecycle;
 import javax.faces.lifecycle.LifecycleFactory;
 import java.util.Collection;
 import java.util.Map;
-
-import com.icesoft.util.pooling.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class ReceiveSendUpdates implements Server {
 
@@ -52,8 +54,7 @@ public class ReceiveSendUpdates implements Server {
         } else {
             View view = (View) views.get(viewNumber);
             if (view == null) {
-                //todo: revisit this -- maybe the session was not created yet
-                request.respondWith(SessionExpiredResponse.Handler);
+                request.respondWith(new ReloadResponse(viewNumber));
             } else {
                 try {
                     view.processPostback(request);
@@ -61,14 +62,14 @@ public class ReceiveSendUpdates implements Server {
                     sessionMonitor.touchSession();
                     renderCycle(view.getFacesContext());
                     request.respondWith(new SendUpdates.Handler(views, request));
-                    
+
                     // String pools usage logging
-                    log.debug("String intern pools sizes:" 
-                        + "\nClientIdPool: " + ClientIdPool.getSize()
-                        + "\nCSSNamePool: " + CSSNamePool.getSize()
-                        + "\nELPool: " + ELPool.getSize()
-                        + "\nXhtmlPool: " + XhtmlPool.getSize());
-                        
+                    log.debug("String intern pools sizes:"
+                            + "\nClientIdPool: " + ClientIdPool.getSize()
+                            + "\nCSSNamePool: " + CSSNamePool.getSize()
+                            + "\nELPool: " + ELPool.getSize()
+                            + "\nXhtmlPool: " + XhtmlPool.getSize());
+
                 } catch (FacesException e) {
                     //"workaround" for exceptions zealously captured & wrapped by the JSF implementations
                     Throwable nestedException = e.getCause();

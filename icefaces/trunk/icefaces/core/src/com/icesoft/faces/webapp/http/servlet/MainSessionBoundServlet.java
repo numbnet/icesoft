@@ -11,18 +11,7 @@ import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.common.standard.OKResponse;
 import com.icesoft.faces.webapp.http.common.standard.PathDispatcherServer;
 import com.icesoft.faces.webapp.http.common.standard.ResponseHandlerServer;
-import com.icesoft.faces.webapp.http.core.AsyncServerDetector;
-import com.icesoft.faces.webapp.http.core.DisposeBeans;
-import com.icesoft.faces.webapp.http.core.DisposeViews;
-import com.icesoft.faces.webapp.http.core.MultiViewServer;
-import com.icesoft.faces.webapp.http.core.ReceivePing;
-import com.icesoft.faces.webapp.http.core.ReceiveSendUpdates;
-import com.icesoft.faces.webapp.http.core.RequestVerifier;
-import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.webapp.http.core.SendUpdates;
-import com.icesoft.faces.webapp.http.core.SingleViewServer;
-import com.icesoft.faces.webapp.http.core.UploadServer;
-import com.icesoft.faces.webapp.http.core.ViewQueue;
+import com.icesoft.faces.webapp.http.core.*;
 import com.icesoft.net.messaging.MessageHandler;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.util.IdGenerator;
@@ -31,12 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 //todo: rename to MainSessionBoundServer and move in com.icesoft.faces.webapp.http.core
 public class MainSessionBoundServlet implements Server {
@@ -66,7 +50,7 @@ public class MainSessionBoundServlet implements Server {
     private Runnable shutdown;
 
     public MainSessionBoundServlet(final HttpSession session, final SessionDispatcher.Monitor sessionMonitor, IdGenerator idGenerator, MimeTypeMatcher mimeTypeMatcher, MonitorRunner monitorRunner, Configuration configuration, final MessageServiceClient messageService) {
-        sessionID = idGenerator.newIdentifier();
+        this.sessionID = restoreOrCreateSessionID(session, idGenerator);
         ContextEventRepeater.iceFacesIdRetrieved(session, sessionID);
         final ResourceDispatcher resourceDispatcher = new ResourceDispatcher(ResourcePrefix, mimeTypeMatcher, sessionMonitor, configuration);
         final Server viewServlet;
@@ -154,6 +138,18 @@ public class MainSessionBoundServlet implements Server {
                 }
             }
         };
+    }
+
+    private static String restoreOrCreateSessionID(HttpSession session, IdGenerator idGenerator) {
+        String key = MainSessionBoundServlet.class.getName();
+        Object o = session.getAttribute(key);
+        if (o == null) {
+            String id = idGenerator.newIdentifier();
+            session.setAttribute(key, id);
+            return id;
+        } else {
+            return (String) o;
+        }
     }
 
     public void service(Request request) throws Exception {
