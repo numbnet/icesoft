@@ -91,11 +91,8 @@ import java.util.WeakHashMap;
  */
 public class ContextEventRepeater
 implements HttpSessionListener, ServletContextListener {
-    private static final String MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME =
-        "com.icesoft.faces.util.event.servlet.MessagingContextEventPublisher";
-
     private static final Log LOG =
-            LogFactory.getLog(ContextEventRepeater.class);
+        LogFactory.getLog(ContextEventRepeater.class);
 
     //todo: fix it... this is just a temporary solution
     private static SessionDispatcher.Listener SessionDispatcherListener;
@@ -176,60 +173,31 @@ implements HttpSessionListener, ServletContextListener {
         Configuration _configuration =
             new ServletContextConfiguration(
                 "com.icesoft.faces", event.getServletContext());
-        // checking if Asynchronous HTTP Service is available...
-        boolean isAsyncHttpServiceAvailable = isAsyncHttpServiceAvailable();
-        if (LOG.isInfoEnabled()) {
-            LOG.info(
-                "Asynchronous HTTP Service available: " +
-                    isAsyncHttpServiceAvailable);
-        }
-        boolean isJMSAvailable = isJMSAvailable();
-        if (LOG.isInfoEnabled()) {
-            LOG.info("JMS API available: " + isJMSAvailable);
-        }
-        if (isAsyncHttpServiceAvailable &&
+        String _blockingRequestHandler =
             _configuration.getAttribute(
                 "blockingRequestHandler",
                 _configuration.getAttributeAsBoolean(
-                    "async.server", true) ?
-                        "icefaces-ahs" :
-                        "icefaces").
-                    equalsIgnoreCase("icefaces-ahs") &&
-            isJMSAvailable) {
+                    "async.server", false) ?
+                        "icefaces-ahs" : "icefaces");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Blocking Request Handler: " + _blockingRequestHandler);
+        }
+        boolean _isJMSAvailable = isJMSAvailable();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("JMS API available: " + _isJMSAvailable);
+        }
+        if (_blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") &&
+            _isJMSAvailable) {
 
+            contextEventPublisher = new MessagingContextEventPublisher();
+            contextEventPublisher.setContextEventRepeater(this);
             try {
-                contextEventPublisher =
-                    (ContextEventPublisher)
-                        Class.forName(
-                            MESSAGING_CONTEXT_EVENT_PUBLISHER_CLASS_NAME).
-                               newInstance();
-                contextEventPublisher.setContextEventRepeater(this);
-                try {
-                    contextEventPublisher.publish(
-                        new ContextInitializedEvent(event));
-                } catch (Exception exception) {
-                    contextEventPublisher = null;
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Couldn't publish event!", exception);
-                    }
-                }
-            } catch (ClassNotFoundException exception) {
+                contextEventPublisher.publish(
+                    new ContextInitializedEvent(event));
+            } catch (Exception exception) {
+                contextEventPublisher = null;
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("MessagingContextEventPublisher is not found!");
-                }
-            } catch (IllegalAccessException exception) {
-                if (LOG.isFatalEnabled()) {
-                    LOG.fatal(
-                        "Failed to access constructor of " +
-                            "MessagingContextEventPublisher!",
-                        exception);
-                }
-            } catch (InstantiationException exception) {
-                if (LOG.isFatalEnabled()) {
-                    LOG.fatal(
-                        "Failed to " +
-                            "instantiate MessagingContextEventPublisher!",
-                        exception);
+                    LOG.debug("Couldn't publish event!", exception);
                 }
             }
         }
@@ -396,17 +364,6 @@ implements HttpSessionListener, ServletContextListener {
                     new ContextEvent[_contextEventSet.size()]);
     }
 
-    private boolean isAsyncHttpServiceAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass(
-                "com.icesoft.faces.async.server." +
-                    "AsyncHttpServerAdaptingServlet");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
-        }
-    }
-
     private boolean isJMSAvailable() {
         try {
             this.getClass().getClassLoader().loadClass(
@@ -421,8 +378,8 @@ implements HttpSessionListener, ServletContextListener {
         final HttpSession session) {
 
         Iterator it = bufferedContextEvents.keySet().iterator();
-        Object event = null;
-        HttpSession bufferedSession = null;
+        Object event;
+        HttpSession bufferedSession;
         while (it.hasNext()) {
             event = it.next();
             bufferedSession = (HttpSession) bufferedContextEvents.get(event);

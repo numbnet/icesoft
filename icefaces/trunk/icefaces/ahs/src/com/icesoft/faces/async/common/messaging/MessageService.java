@@ -145,14 +145,19 @@ public class MessageService {
         messageHandlerMap.put(
             ContextEventMessageHandler.Callback.class,
             _contextEventMessageHandler);
-        subscribe(
-            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
-            new MessageSelector(
-                new Or(
-                    _bufferedContextEventsMessageHandler.getMessageSelector().
-                        getExpression(),
-                    _contextEventMessageHandler.getMessageSelector().
-                        getExpression())));
+        try {
+            subscribe(
+                MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME,
+                new MessageSelector(
+                    new Or(
+                        _bufferedContextEventsMessageHandler.
+                            getMessageSelector().getExpression(),
+                        _contextEventMessageHandler.getMessageSelector().
+                            getExpression())));
+        } catch (MessageServiceException exception) {
+            tearDownMessageServiceClient();
+            return;
+        }
         messageServiceClient.addMessageHandler(
             _bufferedContextEventsMessageHandler,
             MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
@@ -175,17 +180,22 @@ public class MessageService {
         messageHandlerMap.put(
             UpdatedViewsMessageHandler.Callback.class,
             _updatedViewsMessageHandler);
-        subscribe(
-            MessageServiceClient.RESPONSE_TOPIC_NAME,
-            new MessageSelector(
-                new Or(
-                    _announcementMessageHandler.getMessageSelector().
-                        getExpression(),
+        try {
+            subscribe(
+                MessageServiceClient.RESPONSE_TOPIC_NAME,
+                new MessageSelector(
                     new Or(
-                        _purgeMessageHandler.getMessageSelector().
+                        _announcementMessageHandler.getMessageSelector().
                             getExpression(),
-                        _updatedViewsMessageHandler.getMessageSelector().
-                            getExpression()))));
+                        new Or(
+                            _purgeMessageHandler.getMessageSelector().
+                                getExpression(),
+                            _updatedViewsMessageHandler.getMessageSelector().
+                                getExpression()))));
+        } catch (MessageServiceException exception) {
+            tearDownMessageServiceClient();
+            return;
+        }
         messageServiceClient.addMessageHandler(
             _announcementMessageHandler,
             MessageServiceClient.RESPONSE_TOPIC_NAME);
@@ -197,9 +207,53 @@ public class MessageService {
             MessageServiceClient.RESPONSE_TOPIC_NAME);
     }
 
-    private void subscribe(
-        final String topicName, final MessageSelector messageSelector) {
+    private void tearDownMessageServiceClient() {
+        stop();
+        messageServiceClient.removeMessageHandler(
+            (MessageHandler)
+                messageHandlerMap.get(
+                    UpdatedViewsMessageHandler.Callback.class),
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
+        messageServiceClient.removeMessageHandler(
+            (MessageHandler)
+                messageHandlerMap.get(
+                    PurgeMessageHandler.Callback.class),
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
+        messageServiceClient.removeMessageHandler(
+            (MessageHandler)
+                messageHandlerMap.get(
+                    AnnouncementMessageHandler.Callback.class),
+            MessageServiceClient.RESPONSE_TOPIC_NAME);
+        try {
+            messageServiceClient.unsubscribe(
+                MessageServiceClient.RESPONSE_TOPIC_NAME);
+        } catch (MessageServiceException exception) {
+            // ignore exception.
+        }
+        messageServiceClient.removeMessageHandler(
+            (MessageHandler)
+                messageHandlerMap.get(
+                    ContextEventMessageHandler.Callback.class),
+            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+        messageServiceClient.removeMessageHandler(
+            (MessageHandler)
+                messageHandlerMap.get(
+                    BufferedContextEventsMessageHandler.Callback.class),
+            MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+        try {
+            messageServiceClient.unsubscribe(
+                MessageServiceClient.CONTEXT_EVENT_TOPIC_NAME);
+        } catch (MessageServiceException exception) {
+            // ignore exception.
+        }
+        messageHandlerMap.clear();
+        close();
+        messageServiceClient = null;
+    }
 
+    private void subscribe(
+        final String topicName, final MessageSelector messageSelector)
+    throws MessageServiceException {
         try {
             messageServiceClient.subscribe(topicName, messageSelector);
         } catch (MessageServiceException exception) {
@@ -212,18 +266,15 @@ public class MessageService {
                         exception.getMessage() + "\r\n" +
                     "    Exception cause: " +
                         exception.getCause() + "\r\n\r\n" +
-                    "The icefaces-ahs.jar is included in the deployment, but " +
+                    "The deployment is configured to use ICEfaces AHS, but " +
                         "the JMS topics are not\r\n" +
-                    "configured correctly on the application server. If you " +
-                        "intended to use the\r\n" +
-                    "Asynchronous HTTP Server (AHS), please refer to the " +
-                        "ICEfaces Developer's Guide\r\n" +
-                    "for instructions on how to configure the JMS topics on " +
-                        "the application server.\r\n" +
-                    "If you did not intend to use AHS, please remove the " +
-                        "icefaces-ahs.jar from your\r\n" +
-                    "deployment and try again.\r\n");
+                    "configured correctly on the application server.  Please " +
+                        "refer to the ICEfaces\r\n" +
+                    "Developer's Guide for instructions on how to configure " +
+                        "the JMS topics on the\r\n" +
+                    "application server.\r\n");
             }
+            throw exception;
         }
     }
 }

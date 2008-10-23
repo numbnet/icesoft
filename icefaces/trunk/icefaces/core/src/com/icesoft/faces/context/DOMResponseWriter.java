@@ -314,7 +314,7 @@ public class DOMResponseWriter extends ResponseWriter {
         script.appendChild(document.createTextNode(calls));
         
         String contextPath = handler.getResourceURL(context, "/");
-        String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", !isAsyncHttpServiceAvailable() ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
+        String ahsContextPath = URI.create("/").resolve(configuration.getAttribute("blockingRequestHandlerContext", configuration.getAttribute("asyncServerContext", configuration.getAttribute("blockingRequestHandler", configuration.getAttributeAsBoolean("async.server", false) ? "icefaces-ahs" : "icefaces").equalsIgnoreCase("icefaces") ? contextPath.replaceAll("/", "") : "async-http-server")) + "/").toString();
         String connectionLostRedirectURI;
         try {
             connectionLostRedirectURI = "'" + configuration.getAttribute("connectionLostRedirectURI").replaceAll("'", "") + "'";
@@ -553,17 +553,6 @@ public class DOMResponseWriter extends ResponseWriter {
             String message = "The cursor is not an element: " + DOMUtils.toDebugString(cursor);
             log.error(message);
             throw new RuntimeException(message, e);
-        }
-    }
-
-    private boolean isAsyncHttpServiceAvailable() {
-        try {
-            this.getClass().getClassLoader().loadClass(
-                    "com.icesoft.faces.async.server." +
-                            "AsyncHttpServerAdaptingServlet");
-            return true;
-        } catch (ClassNotFoundException exception) {
-            return false;
         }
     }
 
