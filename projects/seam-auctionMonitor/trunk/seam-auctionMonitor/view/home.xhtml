@@ -39,7 +39,7 @@
               If you want to sign in, you need to register first.
             </p>
                         
-            <s:button view="/register.xhtml" value="Register >"/>
+            <s:button id="registerBttn" view="/register.xhtml" value="Register >"/>
           </td>
           <td class="verticalLine"/>
           <td class="indented">
@@ -51,7 +51,7 @@
               <b>*tip*</b> you can log in using <i>demo/demo</i>.            
             </p>
             
-            <h:form>
+            <h:form id="hform">
               <p>
                 <b>User ID</b><br/>
                 <h:inputText id="username" value="#{identity.username}"/>

@@ -25,9 +25,9 @@
     <ice:panelGroup styleClass="edit">
         <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 
-            <h:outputLabel for="searchString">search</h:outputLabel>
+            <h:outputLabel id="searchOut" for="searchString">search</h:outputLabel>
 
-			<ice:selectInputText rows="4" width="200"
+			<ice:selectInputText id="selectInput" rows="4" width="200"
 				                 value="#{viewManager.searchString}"
                                  valueChangeListener="#{viewManager.updateList}"/>
 	        <br/>
@@ -44,7 +44,7 @@
 <div id="resultsDiv">
     <ice:outputText value="No auctionitem exists"
                     rendered="#{empty viewManager.auctionItemsList}"/>
-    <ice:form>
+    <ice:form id="iceForm">
         <ice:dataTable width="100%" cellspacing="1"
                        id="auctionitemList"
                        var="auctionitemBean"
@@ -88,7 +88,7 @@
                                     value="Price"/>
                        </f:facet>
                      <ice:panelGroup>
-                        <ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}">
+                        <ice:outputText id="price" value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}">
                             <f:convertNumber type="currency"
                                              currencySymbol="$"/>
                         </ice:outputText>
@@ -100,7 +100,7 @@
                                     value="Bids"/>
                 </f:facet>
                      <ice:panelGroup>
-                         <ice:outputText value="#{auctionitemBean.auctionitem.bidCount}"/>
+                         <ice:outputText id="bids" value="#{auctionitemBean.auctionitem.bidCount}"/>
                     </ice:panelGroup>
             </ice:column>                      
             <ice:column>
@@ -109,7 +109,7 @@
                                     value="Expires"/>
                        </f:facet>
                      <ice:panelGroup>
-                         <ice:outputText value="#{auctionitemBean.auctionitem.expires}"
+                         <ice:outputText id="expires" value="#{auctionitemBean.auctionitem.expires}"
                                         style="display: inherit;">
                             <s:convertDateTime type="both" dateStyle="full"/>
                         </ice:outputText>
@@ -118,9 +118,9 @@
    			<ice:column>
    			    <f:facet name="header">Action</f:facet>
                 <ice:panelGroup>
-                    <ice:outputText value="LIVE AUCTION"
+                    <ice:outputText id="LiveAuc" value="LIVE AUCTION"
                              rendered="#{not auctionitemBean.expired}"/>                   
-                    <ice:outputText value="EXPIRED"
+                    <ice:outputText id="exAuc" value="EXPIRED"
                                 rendered="#{auctionitemBean.expired}"/>
                 </ice:panelGroup>
             </ice:column>
@@ -137,7 +137,7 @@
 								value="#{auctionitemBean.expandTriangleImage}"
 								style="border: 0px solid;" />
 						</ice:commandLink>
-						<ice:outputText value="#{auctionitemBean.auctionitem.bidCount}" />
+						<ice:outputText id="bidCount" value="#{auctionitemBean.auctionitem.bidCount}" />
 					</ice:panelGrid>
 					<ice:panelGroup id="bidHistoryNested"
 						rendered="#{auctionitemBean.expanded}">
@@ -146,23 +146,23 @@
 							rendered="#{not empty auctionitemBean.auctionitem.bids}">
 							<ice:column id="nestedUser">
 								<f:facet name="header">
-									<ice:outputText value="User" />
+									<ice:outputText id="userHdr" value="User" />
 								</f:facet>
-								<ice:outputText value="#{hist.user}" />
+								<ice:outputText id="userName" value="#{hist.user}" />
 							</ice:column>
 							<ice:column id="nestedBidValue">
 								<f:facet name="header">
-									<ice:outputText value="BidValue" />
+									<ice:outputText id="BidHdr" value="BidValue" />
 								</f:facet>
-								<ice:outputText value="#{hist.bidValue}">
+								<ice:outputText id="bidValue" value="#{hist.bidValue}">
 									<f:convertNumber type="currency" currencySymbol="$" />
 								</ice:outputText>
 							</ice:column>
 							<ice:column id="nestedTime">
 								<f:facet name="header">
-									<ice:outputText value="TimeStamp" />
+									<ice:outputText id="timeHrd" value="TimeStamp" />
 								</f:facet>
-								<ice:outputText value="#{hist.timestamp}">
+								<ice:outputText id="timeStamp" value="#{hist.timestamp}">
 									<s:convertDateTime type="both" dateStyle="full" />
 								</ice:outputText>
 							</ice:column>
@@ -184,7 +184,7 @@
 
 <div id="viewDiv">
         <h3>Selected Items to Create View for</h3>
-<ice:form>
+<ice:form id="selectedItemForm">
   <ice:commandButton value="ClearView" id="clearListId" 
                 actionListener="#{viewManager.clearView}" style=""/>
   <ice:panelGroup id="viewDropTarget"
@@ -193,14 +193,14 @@
                 hoverclass="droptargethover"
                 styleClass="viewDropZone">  
 
-        <ice:panelSeries var="viewItem" value="#{viewManager.viewList}">          
+        <ice:panelSeries id="selectedItmPnlSeries" var="viewItem" value="#{viewManager.viewList}">          
                <ice:panelGroup style="float: left; width: 150px">
                  
-                    <ice:graphicImage width="100" height="100" 
+                    <ice:graphicImage id="selectedImg" width="100" height="100" 
                               value="#{viewItem.imageFile}"/>
-                    <ice:panelGrid columns="2">
-                        <ice:outputText value="#{viewItem.title}"/>
-                        <ice:commandButton image="./xmlhttp/css/xp/css-images/remove.gif"
+                    <ice:panelGrid id="selectedItemGrid" columns="2">
+                        <ice:outputText id="selectedItemTxt" value="#{viewItem.title}"/>
+                        <ice:commandButton id="selectedItemBtn" image="./xmlhttp/css/xp/css-images/remove.gif"
                                      style="height: 25px; width: 15px;"
                                      actionListener="#{viewManager.remove(viewItem)}" />
                          
@@ -210,7 +210,7 @@
 
    </ice:panelGroup>
    <div style="float: left">
-   <s:button value="Create Bookmarkable View" view="/bidView.xhtml" action="#{viewManager.createView}">
+   <s:button id="BookmarkBttn" value="Create Bookmarkable View" view="/bidView.xhtml" action="#{viewManager.createView}">
           <f:param name="item1String" value="#{viewManager.item1String}"/>
           <f:param name="item2String" value="#{viewManager.item2String}"/>
           <f:param name="item3String" value="#{viewManager.item3String}"/>
