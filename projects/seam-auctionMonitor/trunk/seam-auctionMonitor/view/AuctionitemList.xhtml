@@ -23,9 +23,9 @@
     <ice:panelGroup styleClass="edit">
         <ice:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 
-            <h:outputLabel for="searchString">search</h:outputLabel>
+            <h:outputLabel id="searchOut" for="searchString">search</h:outputLabel>
 
-			<ice:selectInputText rows="4" width="200"
+			<ice:selectInputText id="selectInput" rows="4" width="200"
 				                 value="#{itemsList.searchString}"
                                  valueChangeListener="#{itemsList.updateList}"/>
 	        <br/>
@@ -44,7 +44,7 @@
 <div id="resultsDiv">
     <ice:outputText value="No auctionitem exists"
                     rendered="#{empty auctionItemsList}"/>
-    <ice:form>
+    <ice:form id="iceForm">
         <ice:dataTable width="100%" cellspacing="1"
                        id="auctionitemList"
                        var="auctionitemBean"
@@ -66,7 +66,7 @@
                                     value="Price"/>
                        </f:facet>
                      <ice:panelGroup>
-                        <ice:outputText value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}">
+                        <ice:outputText id="price" value="#{auctionitemBean.bid.bidValue}" effect="#{auctionitemBean.bidEffect}">
                             <f:convertNumber type="currency"
                                              currencySymbol="$"/>
                         </ice:outputText>
@@ -78,7 +78,7 @@
                                     value="Bids"/>
                 </f:facet>
                      <ice:panelGroup>
-                         <ice:outputText value="#{auctionitemBean.auctionitem.bidCount}"/>
+                         <ice:outputText id="bids" value="#{auctionitemBean.auctionitem.bidCount}"/>
                     </ice:panelGroup>
             </ice:column>                      
             <ice:column>
@@ -87,7 +87,7 @@
                                     value="Expires"/>
                        </f:facet>
                      <ice:panelGroup>
-                         <ice:outputText value="#{auctionitemBean.auctionitem.expires}"
+                         <ice:outputText id="expires" value="#{auctionitemBean.auctionitem.expires}"
                                         style="display: inherit;">
                             <s:convertDateTime type="both" dateStyle="full"/>
                         </ice:outputText>
@@ -99,24 +99,24 @@
  <!--                    <s:link value="Bid"
                                 action="#{itemBid.selectItem(auctionitemBean)}"
                                 rendered="#{!auctionitemBean.expired}"/> -->
-                    <ice:outputText value="LIVE AUCTION"
+                    <ice:outputText id="LiveAuc" value="LIVE AUCTION"
                              rendered="#{not auctionitemBean.expired}"/>                   
-                    <ice:outputText value="EXPIRED"
+                    <ice:outputText id="exAuc" value="EXPIRED"
                                 rendered="#{auctionitemBean.expired}"/>
                 </ice:panelGroup>
             </ice:column>
             <ice:column>
                <f:facet name="header">Bid History</f:facet>
-               <s:link value="recent bid action" action="#{itemHistory.selectItem(auctionitemBean)}">
+               <s:link id="recentBidLink" value="recent bid action" action="#{itemHistory.selectItem(auctionitemBean)}">
                    <f:param name="auctionitemId" value="#{auctionitemBean.auctionitem.itemId}"/>
                </s:link>
             </ice:column>
         </ice:dataTable>
     </ice:form>
-    <s:link value="More results" action="#{itemsList.nextPage}"
+    <s:link id="moreResultLink" value="More results" action="#{itemsList.nextPage}"
             rendered="#{itemsList.nextPageAvailable}"/>
 </div>
-<s:button value="Create Bookmarkable View" action="#{view.createList()}"
+<s:button id="BookmarkBttn" value="Create Bookmarkable View" action="#{view.createList()}"
          propogation="begin">
          <f:param name="searchString" value="#{itemsList.searchString}"/>
 </s:button>
@@ -128,7 +128,7 @@
    <div class="searchResults" id="bidHistoryResults">
         <ice:outputText value="No bid exists"
                         rendered="#{empty itemHistory.itemBidHistory}"/>
-     <ice:form>
+     <ice:form id="bidListForm">
 		<ice:dataTable id="bidList"
                        var="item"
                        value="#{itemHistory.itemBidHistory}"
