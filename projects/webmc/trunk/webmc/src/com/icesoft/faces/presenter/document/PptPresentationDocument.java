@@ -157,9 +157,15 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
                 }
                 
                 Arrays.sort(generatedFiles, new SlideComparator());                
-                slides = slideCreator(generatedFiles, hashString, false);
+                int beginIndex = ROOT_CONTEXT.length();
+                String slideBaseDirectory = dest.getCanonicalPath()
+                        .substring(beginIndex);
+                String slideMobileDirectory = slideBaseDirectory 
+                        + File.separator + "mobile" + File.separator;
+
+                slides = slideCreator(generatedFiles, slideBaseDirectory, false);
                 Arrays.sort(generatedFilesMobile, new SlideComparator()); 
-                slidesMobile = slideCreator(generatedFilesMobile, hashString, true);                
+                slidesMobile = slideCreator(generatedFilesMobile, slideMobileDirectory, true);                
                 
                 externalConverterFilePages = slides.length;
                 // We can show the navigation controls and set the first slide
@@ -211,13 +217,7 @@ public class PptPresentationDocument extends CommonPresentationDocument implemen
 	    	
 	    }
 	
-	    private Slide[] slideCreator(File[] files, String hashString, boolean mobile){
-	    	String base;
-	    	if(mobile){
-	    		base = hashString + File.separator + "mobile";
-	    	}else{
-	    		base = hashString;
-	    	}
+	    private Slide[] slideCreator(File[] files, String base, boolean mobile){
 	    	Slide[] slidesCreated = new Slide[files.length];
 	        for (int i = 0; i < files.length; i++) {
 	            slidesCreated[i] = new Slide( base + 
