@@ -29,7 +29,7 @@
  * not delete the provisions above, a recipient may use your version of
  * this file under either the MPL or the LGPL License."
  */
-package com.icesoft.faces.async.server;
+package com.icesoft.faces.async.common;
 
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
@@ -37,8 +37,6 @@ import com.icesoft.faces.webapp.http.common.standard.StreamingContentHandler;
 import com.icesoft.faces.webapp.http.core.ViewQueue;
 import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -46,6 +44,9 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AsyncHttpServerAdaptingServlet
 implements Server {

@@ -35,8 +35,6 @@ import com.icesoft.net.messaging.MessageServiceClient;
 import com.icesoft.net.messaging.MessageServiceException;
 import com.icesoft.net.messaging.MessageServiceAdapter;
 import com.icesoft.net.messaging.jms.JMSAdapter;
-import com.icesoft.net.messaging.jms.JMSProviderConfiguration;
-import com.icesoft.net.messaging.jms.JMSProviderConfigurationProperties;
 
 import javax.servlet.ServletContext;
 
@@ -126,7 +124,7 @@ implements ContextEventPublisher {
     }
 
     private void publish(final String message, final String messageType) {
-        if (message != null) {
+        if (messageServiceClient != null && message != null) {
             messageServiceClient.publish(
                 message,
                 messageType,
@@ -158,19 +156,26 @@ implements ContextEventPublisher {
                         exception.getMessage() + "\r\n" +
                     "    Exception cause: " +
                         exception.getCause() + "\r\n\r\n" +
-                    "The icefaces-ahs.jar is included in the deployment, but " +
+                    "The deployment is configured to use ICEfaces AHS, but " +
                         "the JMS topics are not\r\n" +
-                    "configured correctly on the application server. If you " +
-                        "intended to use the\r\n" +
-                    "Asynchronous HTTP Server (AHS), please refer to the " +
-                        "ICEfaces Developer's Guide\r\n" +
-                    "for instructions on how to configure the JMS topics on " +
-                        "the application server.\r\n" +
-                    "If you did not intend to use AHS, please remove the " +
-                        "icefaces-ahs.jar from your\r\n" +
-                    "deployment and try again.\r\n");
+                    "configured correctly on the application server.  Please " +
+                        "refer to the ICEfaces\r\n" +
+                    "Developer's Guide for instructions on how to configure " +
+                        "the JMS topics on the\r\n" +
+                    "application server.\r\n");
             }
-            throw exception;
+            try {
+                messageServiceClient.close();
+            } catch (MessageServiceException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "Failed to close connection " +
+                            "due to some internal error!",
+                        e);
+                }
+            }
+            messageServiceClient = null;
+            return;
         }
         messageServiceClient.addMessageHandler(
             announcementMessageHandler,
@@ -181,7 +186,17 @@ implements ContextEventPublisher {
             if (LOG.isFatalEnabled()) {
                 LOG.fatal("Failed to start message delivery!", exception);
             }
-            throw exception;
+            try {
+                messageServiceClient.close();
+            } catch (MessageServiceException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(
+                        "Failed to close connection " +
+                            "due to some internal error!",
+                        e);
+                }
+            }
+            messageServiceClient = null;
         }
     }
 

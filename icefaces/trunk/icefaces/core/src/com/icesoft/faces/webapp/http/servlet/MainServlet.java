@@ -64,7 +64,7 @@ public class MainServlet extends HttpServlet {
                 }
             };
             monitorRunner = new MonitorRunner(configuration.getAttributeAsLong("monitorRunnerInterval", 10000));
-            setUpMessageServiceClient();
+            setUpMessageServiceClient(configuration);
             RenderManager.setServletConfig(servletConfig);
             PseudoServlet resourceServer = new BasicAdaptingServlet(new ResourceServer(configuration, mimeTypeMatcher, localFileLocator));
             PseudoServlet sessionDispatcher = new SessionDispatcher(configuration, context) {
@@ -121,8 +121,24 @@ public class MainServlet extends HttpServlet {
         }
     }
 
-    private void setUpMessageServiceClient() {
-        if (!isAsyncHttpServiceAvailable() || !isJMSAvailable()) {
+    private void setUpMessageServiceClient(final Configuration configuration) {
+        String blockingRequestHandler =
+            configuration.getAttribute(
+                "blockingRequestHandler",
+                configuration.getAttributeAsBoolean(
+                    "async.server",
+                    false) ?
+                        "icefaces-ahs" : "icefaces");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Blocking Request Handler: " + blockingRequestHandler);
+        }
+        boolean isJMSAvailable = isJMSAvailable();
+        if (LOG.isInfoEnabled()) {
+            LOG.info("JMS API available: " + isJMSAvailable);
+        }
+        if (!blockingRequestHandler.equalsIgnoreCase("icefaces-ahs") ||
+            !isJMSAvailable) {
+
             return;
         }
         try {
