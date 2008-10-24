@@ -36,18 +36,17 @@ package com.icesoft.applications.faces.auctionMonitor.beans;
 import com.icesoft.applications.faces.auctionMonitor.ChatState;
 import com.icesoft.applications.faces.auctionMonitor.Message;
 import com.icesoft.applications.faces.auctionMonitor.MessageLog;
+import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.DisposableBean;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.icefaces.x.core.push.SessionRenderer;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Bean class used to store user information, as well as local information for
