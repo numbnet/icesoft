@@ -41,7 +41,7 @@ public class PanelTooltip extends PanelPopup{
     
     private String hideOn;
     
-    private UIComponent tooltipSrcComponent;
+    private transient UIComponent tooltipSrcComponent;
     
     private String styleClass = null;
     
