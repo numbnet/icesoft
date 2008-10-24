@@ -104,7 +104,10 @@ public class PanelTooltip extends PanelPopup{
             return false;
         }
     }
-
+    
+    /**
+     * @deprecated 
+     */
     public UIComponent getTooltipSrcComponent() {
         if (tooltipSrcComponent != null) {
             return tooltipSrcComponent;
@@ -113,6 +116,9 @@ public class PanelTooltip extends PanelPopup{
         return vb != null ? (UIComponent) vb.getValue(getFacesContext()) : null;
     }
 
+    /**
+     * @deprecated 
+     */    
     public void setTooltipSrcComponent(UIComponent tooltipSrcComponent) {
         this.tooltipSrcComponent = tooltipSrcComponent;
     }
