@@ -75,7 +75,7 @@ public class MainSessionBoundServlet implements Server {
         if (configuration.getAttributeAsBoolean("concurrentDOMViews", false)) {
             viewServlet = new MultiViewServer(session, sessionID, sessionMonitor, views, allUpdatedViews, configuration, resourceDispatcher);
             if (messageService == null) {
-                disposeViews = new RequestVerifier(sessionID, new DisposeViews(sessionID, views));
+                disposeViews = new DisposeViews(sessionID, views);
                 handler = null;
             } else {
                 disposeViews = OKServer;
