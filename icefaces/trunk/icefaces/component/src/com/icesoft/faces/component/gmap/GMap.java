@@ -28,13 +28,13 @@ public class GMap extends UIPanel{
 
 
     private Boolean locateAddress ;
-    private boolean initilized = false;
+    private transient boolean initilized = false;
     private String address;
     private String type;
     private String style = null;
     private String styleClass = null;
     private String renderedOnUserRole = null;
-    private boolean jsLibraryLoaded = false;
+    private transient boolean jsLibraryLoaded = false;
     
     public String getRendererType() {
         return DEFAULT_RENDERER_TYPE;

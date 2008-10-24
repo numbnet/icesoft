@@ -34,8 +34,8 @@ public class OutputResource extends UIComponentBase {
 	private String styleClass;
 	private String renderedOnUserRole;
 	private Boolean attachment;
-	private int lastResourceHashCode;	
-	String path;
+	private transient int lastResourceHashCode;	
+	transient String path;
 	private Boolean shared;
 
 	public static final String TYPE_IMAGE = "image";
