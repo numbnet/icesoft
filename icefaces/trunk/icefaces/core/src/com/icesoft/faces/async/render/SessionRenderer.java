@@ -1,7 +1,4 @@
-package org.icefaces.x.core.push;
-
-import com.icesoft.faces.async.render.OnDemandRenderer;
-import com.icesoft.faces.async.render.RenderManager;
+package com.icesoft.faces.async.render;
 
 /**
  * <p>

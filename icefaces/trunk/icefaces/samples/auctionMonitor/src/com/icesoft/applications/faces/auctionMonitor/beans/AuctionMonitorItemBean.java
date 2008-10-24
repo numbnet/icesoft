@@ -33,17 +33,17 @@
 
 package com.icesoft.applications.faces.auctionMonitor.beans;
 
-import org.icefaces.x.core.push.SessionRenderer;
-
 import com.icesoft.applications.faces.auctionMonitor.AuctionState;
 import com.icesoft.applications.faces.auctionMonitor.stubs.ItemType;
+import com.icesoft.faces.async.render.SessionRenderer;
 import com.icesoft.faces.context.effects.Effect;
 import com.icesoft.faces.context.effects.Highlight;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.util.Calendar;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Class used to represent a single item within the auction This class handles
