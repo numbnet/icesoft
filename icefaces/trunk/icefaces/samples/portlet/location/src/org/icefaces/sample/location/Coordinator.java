@@ -32,7 +32,7 @@
  */
 package org.icefaces.sample.location;
 
-import org.icefaces.x.core.push.SessionRenderer;
+import com.icesoft.faces.async.render.SessionRenderer;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
