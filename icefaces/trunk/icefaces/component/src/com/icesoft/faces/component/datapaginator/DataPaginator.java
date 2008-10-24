@@ -1075,7 +1075,7 @@ public class DataPaginator extends HtmlPanelGroup implements ActionSource {
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-    private Boolean modelResultSet = null;
+    private transient Boolean modelResultSet = null;
 
     public boolean isModelResultSet() {
 

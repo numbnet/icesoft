@@ -85,7 +85,7 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     private static String DEFAULT_XAXIS_TITLE = "Default X title";
     private static String DEFAULT_DATA = "20, 30, 40";
     static String ICE_CHART_COMPONENT = "iceChartComponent";
-    private int imageCounter = 0;
+    private transient int imageCounter = 0;
     private String width;
     private String height;
 
@@ -610,7 +610,7 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     public Object saveState(FacesContext context) {
         Object values[] = new Object[24];
         values[0] = super.saveState(context);
-        values[1] = new Integer(imageCounter);
+//        values[1] = new Integer(imageCounter);
         values[2] = width;
         values[3] = height;
         values[4] = render ? Boolean.TRUE : Boolean.FALSE;
@@ -643,7 +643,7 @@ public class OutputChart extends HtmlCommandButton implements Serializable {
     public void restoreState(FacesContext context, Object state) {
         Object values[] = (Object[]) state;
         super.restoreState(context, values[0]);
-        imageCounter = ((Integer) values[1]).intValue();
+//        imageCounter = ((Integer) values[1]).intValue();
         width = (String) values[2];
         height = (String) values[3];
         render = ((Boolean) values[4]).booleanValue();

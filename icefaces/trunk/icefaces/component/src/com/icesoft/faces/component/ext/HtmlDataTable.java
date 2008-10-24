@@ -319,7 +319,7 @@ public class HtmlDataTable
         }
     }
 
-    private int colNumber = 0;
+    private transient int colNumber = 0;
 
     public int getColNumber() {
         return colNumber;
