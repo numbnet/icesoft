@@ -71,7 +71,8 @@ public class OutputResource extends UIComponentBase {
 		    }
 		    return null;
 		}
-		resource = (Resource) vb.getValue(getFacesContext());
+		final Resource resource = (Resource) vb.getValue(getFacesContext());
+		final String fileName = getFileName();
 		if( resource != null ){
 			int newResourceHashCode = resource.hashCode();
 			if( lastResourceHashCode != newResourceHashCode ){
