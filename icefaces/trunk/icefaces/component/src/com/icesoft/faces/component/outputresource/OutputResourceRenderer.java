@@ -51,7 +51,12 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 							
 				if( outputResource.getImage() != null ){
 					Element img = domContext.createElement(HTML.IMG_ELEM);
-					img.setAttribute(HTML.SRC_ATTR, outputResource.getImage());
+					String image = outputResource.getImage();
+					if (image != null) {
+    					img.setAttribute(HTML.SRC_ATTR, facesContext.
+    					        getApplication().getViewHandler()
+    	                        .getResourceURL(facesContext, image));
+					}
 					resource.appendChild(img);
 					img.setAttribute(HTML.ALT_ATTR, outputResource.getLabel());
 				}
