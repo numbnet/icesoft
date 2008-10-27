@@ -34,17 +34,20 @@ package com.icesoft.faces.context;
 
 import com.icesoft.faces.application.ViewHandlerProxy;
 import com.icesoft.faces.el.ELContextImpl;
+import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.core.ResourceDispatcher;
-import com.icesoft.faces.util.CoreUtils;
 import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
+import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
+import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jvnet.fastinfoset.FastInfosetException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -65,6 +68,8 @@ import javax.faces.render.RenderKit;
 import javax.faces.render.RenderKitFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -104,7 +109,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     private Collection cssRuleURIs = new ArrayList();
     private ResourceDispatcher resourceDispatcher;
     private ELContext elContext;
-    private boolean compressDOM = false;
+    private DocumentStore documentStore;
 
     public BridgeFacesContext(Request request, final String viewIdentifier, String sessionID, final View view, final Configuration configuration, ResourceDispatcher resourceDispatcher, final SessionDispatcher.Monitor sessionMonitor) throws Exception {
         setCurrentInstance(this);
@@ -121,9 +126,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         this.sessionID = sessionID;
         this.view = view;
         this.configuration = configuration;
-        this.compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
         this.application = ((ApplicationFactory) FactoryFinder.getFactory(FactoryFinder.APPLICATION_FACTORY)).getApplication();
         this.resourceDispatcher = resourceDispatcher;
+        this.documentStore = configuration.getAttributeAsBoolean("compressDOM", false) ? new FastInfosetDocumentStore() : (DocumentStore) new ReferenceDocumentStore();
         this.switchToNormalMode();
     }
 
@@ -264,41 +269,16 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         return responseWriter = new DOMResponseWriter(this, domSerializer, configuration, jsCodeURIs, cssRuleURIs);
     }
 
-    public void switchToNormalMode() {
-        try {
-            externalContext.switchToNormalMode();
-            domSerializer = new NormalModeSerializer(this, externalContext.getWriter("UTF-8"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void switchToNormalMode() throws Exception {
+        externalContext.switchToNormalMode();
+        domSerializer = new SaveCurrentDocument(new NormalModeSerializer(this, externalContext.getWriter("UTF-8")));
     }
 
-    public void switchToPushMode() {
+    public void switchToPushMode() throws Exception {
         //collect bundles put by Tag components when the page is parsed
         bundles = externalContext.collectBundles();
         externalContext.switchToPushMode();
-
-        // Jira #1330.
-        // Normally, just masking a null object just leads to
-        // a bunch of further null testing later. Except, at the time of writing,
-        // a) there is no (well, not much of a) later, and
-        // b) For the problem at hand, there's no easy way to create a Noop responseWriter
-        //
-        // The problem arises when Seam uses a Get request to logout. A Seam link tag
-        // is written with the actionMethod hack to get the Identity object to logout.
-        // As a result of the Get, a new ViewRoot is created, and in our code, the
-        // createAndSetResponseWriter method is not called until the renderResponse phase,
-        // but when the result of a Seam actionMethod hack is a redirect, renderResponse
-        // is not called, and the responseWriter will not have a value.
-        //
-        // Trying to create a Noop DomResponseWriter is problematic since the constructor
-        // of DRW does lots of initialization which needs something more than can
-        // be faked. Look in the initialize method in the DOMResponseWriter class
-        //
-        if (responseWriter != null) {
-            Document document = ((DOMResponseWriter) responseWriter).getDocument();
-            domSerializer = new PushModeSerializer(configuration, document, view, this, viewNumber);
-        }
+        domSerializer = new SaveCurrentDocument(new PushModeSerializer(documentStore, view, this, viewNumber));
     }
 
     public UIViewRoot getViewRoot() {
@@ -335,7 +315,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
      * associated with a single user.
      */
     public String getViewNumber() {
-        return viewNumber;                                       
+        return viewNumber;
     }
 
     /**
@@ -409,9 +389,9 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
 
         // if we're doing state management, we always clear the viewRoot between requests.
-        if (CoreUtils.isJSFStateSaving() ) {
+        if (CoreUtils.isJSFStateSaving()) {
             this.viewRoot = null;
-        } 
+        }
 
         //Spring Web Flow 2 releases the FacesContext in between lifecycle
         //phases
@@ -420,9 +400,6 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         } else {
             //clear the request map except when we have SWF2
             externalContext.release();
-            if (null != responseWriter && compressDOM) {
-                ((DOMResponseWriter) responseWriter).release();
-            }
         }
         // #2807 release thread locals
         setCurrentInstance(null);
@@ -432,9 +409,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         externalContext.dispose();
     }
 
-    public void applyBrowserDOMChanges() {
-        if (responseWriter == null) return;
-        Document document = ((DOMResponseWriter) responseWriter).getDocument();
+    public void applyBrowserDOMChanges() throws IOException {
+        Document document = documentStore.load();
         if (document == null) return;
         Map parameters = externalContext.getRequestParameterValuesMap();
 
@@ -513,7 +489,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
 
     public URI loadCSSRules(Resource resource, ResourceLinker.Handler linkerHandler) {
-    	String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
+        String uri = resourceDispatcher.registerResource(resource, linkerHandler).toString();
         if (!cssRuleURIs.contains(uri)) {
             cssRuleURIs.add(uri);
         }
@@ -521,15 +497,15 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public URI registerResource(Resource resource) {
-    	return registerResource(resource, null);
+        return registerResource(resource, null);
     }
 
     public URI registerResource(Resource resource, ResourceLinker.Handler linkerHandler) {
-    	if( resource == null ){
-    		log.warn("Cannot register a null resource");
-    		return null;
-    	}        
-    	return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
+        if (resource == null) {
+            log.warn("Cannot register a null resource");
+            return null;
+        }
+        return resolve(resourceDispatcher.registerResource(resource, linkerHandler).toString());
     }
 
     //adapting deprecated methods to current API
@@ -702,6 +678,65 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
 
         public void withOptions(Options options) throws IOException {
             resource.withOptions(options);
+        }
+    }
+
+    public static interface DocumentStore {
+        void save(Document document) throws IOException;
+
+        Document load() throws IOException;
+    }
+
+    private static class ReferenceDocumentStore implements DocumentStore {
+        private Document document;
+
+        public void save(Document document) {
+            this.document = document;
+        }
+
+        public Document load() {
+            return document;
+        }
+    }
+
+    private static class FastInfosetDocumentStore implements DocumentStore {
+        private byte[] data = new byte[0];
+
+        public void save(Document document) throws IOException {
+            DOMDocumentSerializer serializer = new DOMDocumentSerializer();
+            ByteArrayOutputStream out = new ByteArrayOutputStream(10000);
+            serializer.setOutputStream(out);
+            serializer.serialize(document);
+
+            data = out.toByteArray();
+        }
+
+        public Document load() throws IOException {
+            if (data.length == 0) return null;
+
+            Document document = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
+            try {
+                DOMDocumentParser parser = new DOMDocumentParser();
+                ByteArrayInputStream in = new ByteArrayInputStream(data);
+                parser.parse(document, in);
+            } catch (FastInfosetException e) {
+                throw new IOException(e.getMessage());
+            }
+
+            return document;
+        }
+    }
+
+    private class SaveCurrentDocument implements DOMSerializer {
+        private final DOMSerializer serializer;
+
+        public SaveCurrentDocument(DOMSerializer serializer) {
+            this.serializer = serializer;
+        }
+
+        public void serialize(Document document) throws IOException {
+            serializer.serialize(document);
+            documentStore.save(document);
         }
     }
 }
