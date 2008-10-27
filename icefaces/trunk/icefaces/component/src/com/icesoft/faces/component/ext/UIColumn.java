@@ -58,9 +58,12 @@ public class UIColumn extends javax.faces.component.UIColumn {
     private String style = null;
     private String styleClass = null;
     private String groupOn = null;
+    
+    // Temporary state, within a single render, for grouping
     private transient String previousGroupValue = null;
-    private int groupCount = 1;
+    private transient int groupCount;
     private transient Element groupedTd;
+    
     // binding
     private String binding = null;
 

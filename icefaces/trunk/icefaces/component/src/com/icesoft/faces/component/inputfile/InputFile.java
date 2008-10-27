@@ -619,7 +619,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[32];
+        Object values[] = new Object[33];
         values[0] = super.saveState(context);
         values[1] = disabled;
         values[2] = style;
@@ -652,6 +652,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         values[29] = onfocus;
         values[30] = accept;
         values[31] = onblur;
+        values[32] = buttonClass;
         return ((Object) (values));
     }
 
@@ -693,6 +694,7 @@ public class InputFile extends UICommand implements Serializable, FileUploadComp
         onfocus = (String)values[29];
         accept = (String)values[30];
         onblur = (String)values[31];
+        buttonClass = (String)values[32];
     }
 
     /**
