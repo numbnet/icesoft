@@ -12,6 +12,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Comparator;
+import java.util.Arrays;
 import javax.faces.component.UIComponent;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -36,6 +38,42 @@ public class CompPropsUtils {
             }
         }
     }
+    
+    public static Field[] getStateFieldsForComponent(UIComponent comp) {
+        Field[] fields = comp.getClass().getDeclaredFields();
+        Arrays.sort(fields, FIELD_NAME_COMPARATOR);
+        ArrayList fieldsArrayList = new ArrayList(fields.length);
+//System.out.println("Collecting all fields");
+        for(int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+//System.out.println("Potential: " + field.getName());
+            int modifiers = field.getModifiers();
+            if (Modifier.isStatic(modifiers) ||
+                Modifier.isTransient(modifiers) ||
+                Modifier.isFinal(modifiers)) {
+                continue;
+            }
+            if (!Modifier.isPublic(modifiers)) {
+                field.setAccessible(true);
+            }
+//System.out.println("                              USED");
+            fieldsArrayList.add(field);
+        }
+        Field[] relevantFields = new Field[fieldsArrayList.size()];
+        fieldsArrayList.toArray(relevantFields);
+        return relevantFields;
+    }
+    
+    private static class FieldNameComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            Field f1 = (Field) o1;
+            Field f2 = (Field) o2;
+            return f1.getName().compareTo(f2.getName());
+        }
+    }
+    private static final Comparator FIELD_NAME_COMPARATOR = new FieldNameComparator();
+    
+
 
     public static Method[] describe_useRef_method(UIComponent uiComponent) {
 
