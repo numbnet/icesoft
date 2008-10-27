@@ -156,12 +156,13 @@ public class GMapDirection extends UIPanel{
         textualDivId = (String)values[3];
         locale = (String)values[4];
         locateAddress = (Boolean)values[5];
-        textualDivClientId = (String)values[6];       
+        textualDivClientId = (String)values[6];
+        initilized = ((Boolean) values[7]).booleanValue();
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[7];
+            values = new Object[8];
         }
         values[0] = super.saveState(context);
         values[1] = to;
@@ -170,6 +171,7 @@ public class GMapDirection extends UIPanel{
         values[4] = locale;
         values[5] = locateAddress;  
         values[6] = textualDivClientId;
+        values[7] = Boolean.valueOf(initilized);
         return values;
     }
 
