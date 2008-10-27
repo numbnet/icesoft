@@ -3,18 +3,12 @@ package com.icesoft.faces.context;
 import com.icesoft.faces.util.DOMUtils;
 import com.icesoft.faces.webapp.command.Reload;
 import com.icesoft.faces.webapp.command.UpdateElements;
-import com.icesoft.faces.webapp.http.common.Configuration;
 import com.icesoft.faces.webapp.http.common.Response;
-import com.icesoft.faces.webapp.http.common.ResponseHandler;
 import com.icesoft.faces.webapp.http.common.standard.NoCacheContentHandler;
-import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
-import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -24,36 +18,20 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public class PushModeSerializer implements DOMSerializer {
-    private Document oldDocument;
-    private byte[] domBytes;
+    private BridgeFacesContext.DocumentStore store;
     private View view;
     private BridgeFacesContext context;
     private String viewNumber;
-    private boolean compressDOM = false;
 
-    public PushModeSerializer(Configuration configuration, Document currentDocument, View view, BridgeFacesContext context, String viewNumber) {
-        this.oldDocument = currentDocument;
+    public PushModeSerializer(BridgeFacesContext.DocumentStore store, View view, BridgeFacesContext context, String viewNumber) {
+        this.store = store;
         this.view = view;
         this.context = context;
         this.viewNumber = viewNumber;
-        this.compressDOM = configuration.getAttributeAsBoolean("compressDOM", false);
-        compactDOM();
     }
 
     public void serialize(final Document document) throws IOException {
-        if (compressDOM && (null != domBytes)) {
-            DOMDocumentParser parser = new DOMDocumentParser();
-            ByteArrayInputStream byteIn = new ByteArrayInputStream(domBytes);
-            oldDocument = DOMResponseWriter.DOCUMENT_BUILDER.newDocument();
-            try {
-                parser.parse(oldDocument, byteIn);
-                //parser retains reference to DOM, causes memory leak
-                parser = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        Node[] changed = DOMUtils.domDiff(oldDocument, document);
+        Node[] changed = DOMUtils.domDiff(store.load(), document);
         HashMap depthMaps = new HashMap();
         for (int i = 0; i < changed.length; i++) {
             Element changeRoot =
@@ -116,24 +94,6 @@ public class PushModeSerializer implements DOMSerializer {
             } else {
                 view.put(new UpdateElements(elements));
             }
-        }
-
-        oldDocument = document;
-        compactDOM();
-    }
-
-    void compactDOM() {
-        if (compressDOM) {
-            DOMDocumentSerializer serializer = new DOMDocumentSerializer();
-            ByteArrayOutputStream byteOut = new ByteArrayOutputStream(10000);
-            serializer.setOutputStream(byteOut);
-            try {
-                serializer.serialize(oldDocument);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            domBytes = byteOut.toByteArray();
-            oldDocument = null;
         }
     }
 

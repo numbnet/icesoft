@@ -176,7 +176,7 @@ public class View implements CommandQueue {
         };
     }
 
-    private void makeCurrent() {
+    private void makeCurrent() throws Exception {
         acquireLifecycleLock();
         installThreadLocals();
         facesContext.injectBundles();
