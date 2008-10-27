@@ -78,16 +78,20 @@ public class GMapLatLng extends UIPanel{
         super.restoreState(context, values[0]);
         latitude = (String)values[1];
         longitude = (String)values[2];
+        localeLat = (String)values[3];
+        localeLng = (String)values[4];
     }
 
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[3];
+            values = new Object[5];
         }
         values[0] = super.saveState(context);
         values[1] = latitude;
         values[2] = longitude;
+        values[3] = localeLat;
+        values[4] = localeLng;        
         return values;
     }
 

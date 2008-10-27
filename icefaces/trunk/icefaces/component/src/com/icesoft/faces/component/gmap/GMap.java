@@ -4,24 +4,19 @@ import java.beans.Beans;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.faces.component.UICommand;
 import javax.faces.component.UIPanel;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.w3c.dom.Element;
-
 import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.ext.taglib.Util;
-import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.context.effects.JavascriptContext;
-import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
 public class GMap extends UIPanel{
 	public static final String COMPONENET_TYPE = "com.icesoft.faces.GMap";
     public static final String DEFAULT_RENDERER_TYPE = "com.icesoft.faces.GMapRenderer";
-    private String DEFAULT_LONGITUDE = "-101.162109375";
-    private String DEFAULT_LATITUDE = "56.46249048388979";
+    private static final String DEFAULT_LONGITUDE = "-101.162109375";
+    private static final String DEFAULT_LATITUDE = "56.46249048388979";
     private String longitude;
     private String latitude;
     private Integer zoomLevel;
@@ -301,11 +296,12 @@ public class GMap extends UIPanel{
         style = (String)values[6];
         latitude = (String)values[7];
         address = (String)values[8];
+        locateAddress = (Boolean)values[9];
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[9];
+            values = new Object[10];
         }
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
@@ -316,6 +312,7 @@ public class GMap extends UIPanel{
         values[6] = style;
         values[7] = latitude;
         values[8] = address;
+        values[9] = locateAddress;        
         return values;
     }
 }
