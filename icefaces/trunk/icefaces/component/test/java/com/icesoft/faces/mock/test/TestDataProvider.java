@@ -5,8 +5,11 @@ package com.icesoft.faces.mock.test;
 
 import com.icesoft.faces.mock.test.data.MockDataList;
 import com.icesoft.faces.mock.test.data.MockDataObject;
-import com.sun.faces.mock.MockMethodBinding;
+import com.icesoft.faces.mock.test.data.MockMethodBinding;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.reflect.Array;
 
 /**
  *
@@ -42,7 +45,7 @@ public class TestDataProvider {
         Boolean.FALSE,
         new com.icesoft.faces.context.effects.Move(),
         new MockDataObject("objectValue"),        
-        new MockMethodBinding(),
+        new MockMethodBinding("#{mock.methodBinding}"),
         9,
         new Integer(99),
         new java.util.Date(System.currentTimeMillis()),
@@ -92,5 +95,123 @@ public class TestDataProvider {
         return -1;
     }
     
+    public static Object getSimpleTestObject(Class clazz, boolean bVal)
+        throws InstantiationException, IllegalAccessException {
+        
+        if (clazz.isPrimitive()) {
+            return getPrimitiveTestObject(clazz, bVal);
+        }
+        if (clazz.isArray()) {
+            final int len = 13;
+            Class elementClass = clazz.getComponentType();
+            Object element = getSimpleTestObject(elementClass, bVal);
+            Object array = Array.newInstance(elementClass, len);
+            for(int i = 0; i < len; i++) {
+                Array.set(array, i, element);
+            }
+            return array;
+        }
+        if (String.class.equals(clazz)) {
+            // Portlet.namespace requires String that's valid id
+            return "String" + counter++;
+        }
+        if (Object.class.equals(clazz)) {
+            return "Object" + counter++;
+        }
+        if (javax.faces.el.MethodBinding.class.equals(clazz)) {
+            return new MockMethodBinding("#{mock.methodBinding}");
+        }
+        if (javax.faces.convert.Converter.class.equals(clazz)) {
+            javax.faces.convert.NumberConverter converter =
+                new javax.faces.convert.NumberConverter();
+            converter.setMaxIntegerDigits(counter++);
+        }
+        if (com.icesoft.faces.utils.UpdatableProperty.class.equals(clazz)) {
+            return new com.icesoft.faces.utils.UpdatableProperty("Test" + counter++);
+        }
+        if (java.io.File.class.equals(clazz)) {
+            return new java.io.File("File" + counter++);
+        }
+        if (java.net.URI.class.equals(clazz)) {
+            java.net.URI uri = null;
+            try {
+                uri = new java.net.URI("http://host/uri" + counter++); 
+            }
+            catch(Exception e) {
+                throw new InstantiationException("URI is invalid: " + e.getMessage());
+            }
+            return uri;
+        }
+        if (com.icesoft.faces.context.effects.Effect.class.equals(clazz)) {
+            com.icesoft.faces.context.effects.Pulsate effect =
+                new com.icesoft.faces.context.effects.Pulsate(); 
+            effect.setDuration((float) (counter++ % 10));
+            return effect;
+        }
+        if (com.icesoft.faces.context.effects.CurrentStyle.class.equals(clazz)) {
+            com.icesoft.faces.context.effects.CurrentStyle cs =
+                new com.icesoft.faces.context.effects.CurrentStyle("iceCssStyleClass" + counter++); 
+            return cs;
+        }
+        if (com.icesoft.faces.component.outputchart.ChartResource.class.equals(clazz)) {
+            com.icesoft.faces.component.outputchart.ChartResource cr =
+                new com.icesoft.faces.component.outputchart.ChartResource(new byte[] {0, 1, 0, 1}); 
+            return cr;
+        }
+        if (com.icesoft.faces.context.Resource.class.equals(clazz)) {
+            com.icesoft.faces.context.Resource cr =
+                new com.icesoft.faces.context.ByteArrayResource(
+                    new byte[] {0, 1, 2, 4}); 
+            return cr;
+        }
+        //com.icesoft.faces.component.outputchart.ChartResource
+        if (javax.faces.component.UIComponent.class.isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException("Invalid to save/restore UIComponent");
+        }
+        if (List.class.equals(clazz)) {
+            List list = new ArrayList();
+            list.add("List" + counter++);
+            return list;
+        }
+        if (java.util.Map.class.equals(clazz)) {
+            java.util.Map map = new HashMap();
+            map.put("Map", new Integer(counter++));
+            return map;
+        }
+        if (Number.class.isAssignableFrom(clazz) || Boolean.class.equals(clazz)) {
+            return getPrimitiveTestObject(clazz, bVal);
+        }
+        return clazz.newInstance();
+    }
     
+    private static Object getPrimitiveTestObject(Class clazz, boolean bVal) {
+//System.out.println("getPrimitiveTestObject()  clazz: " + clazz);
+        if (clazz.equals(Boolean.TYPE) || clazz.equals(Boolean.class)) {
+            return Boolean.valueOf(bVal);
+        }
+        else if (clazz.equals(Byte.TYPE) || clazz.equals(Byte.class)) {
+            return Byte.valueOf( (byte) (0xFF & counter++) );
+        }
+        else if (clazz.equals(Character.TYPE) || clazz.equals(Character.class)) {
+            return Character.valueOf( (char) (0xFFFF & counter++) );
+        }
+        else if (clazz.equals(Double.TYPE) || clazz.equals(Double.class)) {
+            return Double.valueOf( ((double)counter++) / 3.0d );
+        }
+        else if (clazz.equals(Float.TYPE) || clazz.equals(Float.class)) {
+            return Float.valueOf( ((float)counter++) / 5.0f );
+        }
+        else if (clazz.equals(Integer.TYPE) || clazz.equals(Integer.class)) {
+            return Integer.valueOf(counter++);
+        }
+        else if (clazz.equals(Long.TYPE) || clazz.equals(Long.class)) {
+            return Long.valueOf((long)counter++);
+        }
+        else if (clazz.equals(Short.TYPE) || clazz.equals(Short.class)) {
+            return Short.valueOf( (short) (0xFFFF & counter++) );
+        }
+        return new Integer(counter++);
+    }
+    
+    private static int counter = 23; // a prime example of a non-default value :)
 }
