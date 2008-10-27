@@ -127,7 +127,7 @@ public class GMapMarker extends UIPanel{
 		this.latitude = latitude;
 	}
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

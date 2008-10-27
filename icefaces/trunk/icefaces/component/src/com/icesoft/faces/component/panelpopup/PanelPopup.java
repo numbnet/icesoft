@@ -293,7 +293,7 @@ public class PanelPopup extends HtmlPanelGroup {
 		this.modal = Boolean.valueOf(modal);
 	}
 
-        private Object values[];
+    private transient Object values[];
 	/*
 	 * (non-Javadoc)
 	 * 

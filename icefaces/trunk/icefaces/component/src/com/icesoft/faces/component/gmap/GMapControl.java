@@ -68,7 +68,7 @@ public class GMapControl extends UIPanel{
                 "Ice.GoogleMap.removeControl('"+ mapId +"', '"+ localName +"');");
     }
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

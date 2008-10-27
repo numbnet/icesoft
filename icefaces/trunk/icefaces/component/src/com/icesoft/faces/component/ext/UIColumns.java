@@ -214,7 +214,7 @@ public class UIColumns extends UISeries {
 
     }
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

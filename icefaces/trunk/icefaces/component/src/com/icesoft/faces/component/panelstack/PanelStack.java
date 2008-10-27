@@ -171,7 +171,7 @@ public class PanelStack extends HtmlPanelGroup {
         return Util.getQualifiedStyleClass(this, CSS_DEFAULT.PANEL_STACK_COL);
     }
 
-    private Object values[];
+    private transient Object values[];
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>
