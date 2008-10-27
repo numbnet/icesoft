@@ -302,15 +302,17 @@ public class PanelPopup extends HtmlPanelGroup {
 	public Object saveState(FacesContext context) {
 
             if(values == null){
-                values = new Object[11];
+                values = new Object[9];
             }
 		values[0] = super.saveState(context);
-		values[5] = styleClass;
-		values[6] = style;
-		values[7] = resizable;
-		values[8] = modal;
-		values[9] = title;
-                values[10] = autoPosition;
+		values[1] = styleClass;
+		values[2] = style;
+		values[3] = resizable;
+		values[4] = modal;
+		values[5] = title;
+        values[6] = autoPosition;
+        values[7] = clientOnly;  
+        values[8] = autoCentre;            
 		return ((Object) (values));
 	}
 
@@ -323,12 +325,15 @@ public class PanelPopup extends HtmlPanelGroup {
 	public void restoreState(FacesContext context, Object state) {
 		Object values[] = (Object[]) state;
 		super.restoreState(context, values[0]);
-		styleClass = (String) values[5];
-		style = (String) values[6];
-		resizable = (Boolean) values[7];
-		modal = (Boolean) values[8];
-		title = (String) values[9];
-                autoPosition = (String)values[10];
+		styleClass = (String) values[1];
+		style = (String) values[2];
+		resizable = (Boolean) values[3];
+		modal = (Boolean) values[4];
+		title = (String) values[5];
+		autoPosition = (String)values[6];
+        clientOnly = (Boolean)values[7]; 
+        autoCentre = (Boolean)values[8]; 
+        
 	}
 
 	private String title = null;
