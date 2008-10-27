@@ -137,7 +137,7 @@ public class Tree extends UICommand implements NamingContainer {
     public static final String ID_PREFIX = "n-";
 
     // private attributes
-    private DefaultMutableTreeNode navigatedNode;
+    transient private DefaultMutableTreeNode navigatedNode;
     private String navigationEventType;
     // images
     private String imageDir;
@@ -162,7 +162,7 @@ public class Tree extends UICommand implements NamingContainer {
     private String hideRootNode;
     private String hideNavigation;
 
-    private DefaultMutableTreeNode currentNode;
+    transient private DefaultMutableTreeNode currentNode;
     private String nodePath;
     private String title;
 
