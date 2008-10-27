@@ -42,4 +42,14 @@ public class SwitchOff extends Effect {
     public String getFunctionName() {
         return "Effect.SwitchOff";
     }
+
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof SwitchOff)) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -43,4 +43,14 @@ public class BlindDown extends Effect {
     public String getFunctionName() {
         return "Effect.BlindDown";
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof BlindDown)) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -43,4 +43,13 @@ public class BlindUp extends Effect {
         return "Effect.BlindUp";
     }
 
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof BlindUp)) {
+            return false;
+        }
+        return true;
+    }
 }

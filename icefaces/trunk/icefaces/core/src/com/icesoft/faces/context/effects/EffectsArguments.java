@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.*;
@@ -133,5 +135,22 @@ public class EffectsArguments implements Serializable{
         sb.append("});");
         
         return sb.toString();
+    }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof EffectsArguments)) {
+            return false;
+        }
+        EffectsArguments ea = (EffectsArguments) obj;
+        if (!CoreUtils.objectsEqual(map, ea.map)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(parameter, ea.parameter)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(options, ea.options)) {
+            return false;
+        }
+        return true;
     }
  }

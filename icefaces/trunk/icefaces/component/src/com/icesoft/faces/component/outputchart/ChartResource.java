@@ -21,4 +21,14 @@ public class ChartResource extends ByteArrayResource implements Serializable {
         }
         return String.valueOf("CHART"+digest);
     }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ChartResource)) {
+            return false;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        return true;
+    }
 }

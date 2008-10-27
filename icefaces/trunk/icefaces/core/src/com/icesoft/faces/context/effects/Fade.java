@@ -112,4 +112,20 @@ public class Fade extends Effect {
         return EffectHashCode.FADE * from * to;
     }
 
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Fade)) {
+            return false;
+        }
+        Fade effect = (Fade) obj;
+        if (from != effect.from) {
+            return false;
+        }
+        if (to != effect.to) {
+            return false;
+        }
+        return true;
+    }
 }

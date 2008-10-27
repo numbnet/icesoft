@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,5 +77,17 @@ public class EffectQueue extends Effect {
         return effects;
     }
 
-
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof EffectQueue)) {
+            return false;
+        }
+        EffectQueue effect = (EffectQueue) obj;
+        if (!CoreUtils.objectsEqual(effects, effect.effects)) {
+            return false;
+        }
+        return true;
+    }
 }

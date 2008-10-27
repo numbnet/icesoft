@@ -35,6 +35,7 @@ package com.icesoft.faces.context.effects;
 
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
+import com.icesoft.faces.util.CoreUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -58,7 +59,7 @@ public class CurrentStyle implements Serializable {
     /**
      * Name of field used to send CSS Updated
      */
-    public static String CSS_UPDATE_FIELD = "icefacesCssUpdates";
+    public static final String CSS_UPDATE_FIELD = "icefacesCssUpdates";
     /**
      * String uploaded
      */
@@ -72,12 +73,12 @@ public class CurrentStyle implements Serializable {
     /**
      * Constant for visible  = true
      */
-    private static String DISPLAY_ON = "display:block;";
+    private static final String DISPLAY_ON = "display:block;";
 
     /**
      * Constant for visible =false
      */
-    private static String DISPLAY_OFF = "display:none;";
+    private static final String DISPLAY_OFF = "display:none;";
 
     private static final Log log = LogFactory.getLog(CurrentStyle.class);
 
@@ -324,5 +325,18 @@ public class CurrentStyle implements Serializable {
             }
         }
     }
-
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CurrentStyle)) {
+            return false;
+        }
+        CurrentStyle cs = (CurrentStyle) obj;
+        if (!CoreUtils.objectsEqual(cssString, cs.cssString)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(lastCssString, cs.lastCssString)) {
+            return false;
+        }
+        return true;
+    }
 }

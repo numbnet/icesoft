@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * script.aculo.us Shrink effect
  * Shrink an element to nothing
@@ -61,5 +63,19 @@ public class Shrink extends Effect {
 
     public String getFunctionName() {
         return "Effect.Shrink";
+    }
+
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Shrink)) {
+            return false;
+        }
+        Shrink effect = (Shrink) obj;
+        if (!CoreUtils.objectsEqual(direction, effect.direction)) {
+            return false;
+        }
+        return true;
     }
 }

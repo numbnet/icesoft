@@ -41,4 +41,13 @@ public class DropOut extends Effect {
     public String getFunctionName() {
         return "Effect.DropOut";
     }
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof DropOut)) {
+            return false;
+        }
+        return true;
+    }
 }

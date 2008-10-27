@@ -42,4 +42,14 @@ public class Puff extends Effect {
     public String getFunctionName() {
         return "Effect.Puff";
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Puff)) {
+            return false;
+        }
+        return true;
+    }
 }

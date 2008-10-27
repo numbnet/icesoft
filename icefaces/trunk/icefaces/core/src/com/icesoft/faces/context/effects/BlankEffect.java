@@ -41,4 +41,14 @@ public class BlankEffect extends Effect {
     public String getFunctionName() {
         return "blankEffect";
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof BlankEffect)) {
+            return false;
+        }
+        return true;
+    }
 }

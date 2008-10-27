@@ -42,4 +42,14 @@ public class Shake extends Effect {
     public String getFunctionName() {
         return "Effect.Shake";
     }
+
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Shake)) {
+            return false;
+        }
+        return true;
+    }
 }

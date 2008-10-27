@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 import java.io.Serializable;
 
 /**
@@ -423,5 +425,60 @@ public abstract class Effect implements Serializable{
         }
         return r;
     }
-
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Effect)) {
+            return false;
+        }
+        Effect effect = (Effect) obj;
+        if (!CoreUtils.objectsEqual(ea, effect.ea)) {
+            return false;
+        }
+        if (queued != effect.queued) {
+            return false;
+        }
+        if (queueEnd != effect.queueEnd) {
+            return false;
+        }
+        if (fired != effect.fired) {
+            return false;
+        }
+        if (transitory != effect.transitory) {
+            return false;
+        }
+        if (duration != effect.duration) {
+            return false;
+        }
+        if (fps != effect.fps) {
+            return false;
+        }
+        if (from != effect.from) {
+            return false;
+        }
+        if (to != effect.to) {
+            return false;
+        }
+        if (sync != effect.sync) {
+            return false;
+        }
+        if (delay != effect.delay) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(queue, effect.queue)) {
+            return false;
+        }
+        if (submit != effect.submit) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(id, effect.id)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(sequence, effect.sequence)) {
+            return false;
+        }
+        if (sequenceId != effect.sequenceId) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -42,4 +42,14 @@ public class SlideDown extends Effect {
     public String getFunctionName() {
         return "Effect.SlideDown";
     }
+
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof SlideDown)) {
+            return false;
+        }
+        return true;
+    }
 }

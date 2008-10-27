@@ -42,4 +42,14 @@ public class SlideUp extends Effect {
     public String getFunctionName() {
         return "Effect.SlideUp";
     }
+
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof SlideUp)) {
+            return false;
+        }
+        return true;
+    }
 }
