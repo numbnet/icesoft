@@ -607,7 +607,7 @@ public class HtmlInputText
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[27];
+        Object values[] = new Object[28];
         values[0] = super.saveState(context);
         values[1] = partialSubmit;
         values[2] = enabledOnUserRole;
@@ -633,6 +633,7 @@ public class HtmlInputText
         values[24] = currentStyle;
         values[25] = visible;
         values[26] = autocomplete;
+        values[27] = Boolean.valueOf(focus);
         return ((Object) (values));
     }
 
@@ -668,6 +669,7 @@ public class HtmlInputText
         currentStyle = (CurrentStyle) values[24];
         visible = (Boolean) values[25];
         autocomplete = (String) values[26];
+        focus = ((Boolean) values[27]).booleanValue();
     }
 
 

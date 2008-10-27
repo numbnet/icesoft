@@ -639,7 +639,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[31];
+        Object values[] = new Object[32];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = styleClass;
@@ -669,6 +669,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         values[28] = visible;
         values[29] = dir;
         values[30] = lang;
+        values[31] = nospan;
         return ((Object) (values));
     }
 
@@ -707,6 +708,7 @@ public class HtmlOutputText extends javax.faces.component.html.HtmlOutputText {
         visible = (Boolean) values[28];
         dir = (String) values[29];
         lang = (String) values [30];
+        nospan = (Boolean) values [31];
     }
         
       private java.lang.String dir;

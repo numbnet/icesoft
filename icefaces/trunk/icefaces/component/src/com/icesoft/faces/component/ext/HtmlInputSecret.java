@@ -491,7 +491,7 @@ public class HtmlInputSecret extends HtmlInputText {
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[21];
+        Object values[] = new Object[22];
         values[0] = super.saveState(context);
         values[1] = onkeyupeffect;
         values[2] = styleClass;
@@ -511,6 +511,7 @@ public class HtmlInputSecret extends HtmlInputText {
         values[18] = effect;
         values[19] = visible;
         values[20] = autocomplete;
+        values[21] = Boolean.valueOf(focus);
         return ((Object) (values));
     }
 
@@ -539,5 +540,6 @@ public class HtmlInputSecret extends HtmlInputText {
         effect = (Effect) values[18];
         visible = (Boolean) values[19];
         autocomplete = (String) values[20];
+        focus = ((Boolean) values[21]).booleanValue();
     }
 }
