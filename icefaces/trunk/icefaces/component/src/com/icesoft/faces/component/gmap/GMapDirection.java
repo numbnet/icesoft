@@ -154,16 +154,22 @@ public class GMapDirection extends UIPanel{
         to = (String)values[1];
         from = (String)values[2];
         textualDivId = (String)values[3];
+        locale = (String)values[4];
+        locateAddress = (Boolean)values[5];
+        textualDivClientId = (String)values[6];       
     }
 
     public Object saveState(FacesContext context) {
         if(values == null){
-            values = new Object[4];
+            values = new Object[7];
         }
         values[0] = super.saveState(context);
         values[1] = to;
         values[2] = from;
         values[3] = textualDivId;
+        values[4] = locale;
+        values[5] = locateAddress;  
+        values[6] = textualDivClientId;
         return values;
     }
 

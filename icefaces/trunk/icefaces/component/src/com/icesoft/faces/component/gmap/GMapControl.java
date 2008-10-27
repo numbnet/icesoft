@@ -73,15 +73,19 @@ public class GMapControl extends UIPanel{
         values = (Object[])state;
         super.restoreState(context, values[0]);
         name = (String)values[1];
+        localName = (String)values[2]; 
+        position = (String)values[3];        
     }
 
     public Object saveState(FacesContext context) {
 
         if(values == null){
-            values = new Object[2];
+            values = new Object[4];
         }
         values[0] = super.saveState(context);
         values[1] = name;
+        values[2] = localName;  
+        values[3] = position;          
         return values;
     }
     
