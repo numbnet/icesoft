@@ -234,7 +234,7 @@ public class PanelPositioned extends UISeries {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] values = new Object[10];
+        Object[] values = new Object[12];
         values[0] = super.saveState(context);
         values[1] = styleClass;
         values[2] = style;
@@ -245,6 +245,8 @@ public class PanelPositioned extends UISeries {
         values[7] = constraint;
         values[8] = enabledOnUserRole;
         values[9] = overlap;
+        values[10] = disabled ? Boolean.TRUE : Boolean.FALSE;
+        values[11] = disabledSet ? Boolean.TRUE : Boolean.FALSE;     
         return values;
     }
 
@@ -260,6 +262,8 @@ public class PanelPositioned extends UISeries {
         constraint = (String)state[7];
         enabledOnUserRole = (String)state[8];
         overlap = (String)state[9];
+        disabled = ((Boolean) state[10]).booleanValue();
+        disabledSet = ((Boolean) state[11]).booleanValue();     
     }
 
     //Array type support added to the component

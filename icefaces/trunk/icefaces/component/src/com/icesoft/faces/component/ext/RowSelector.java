@@ -389,7 +389,7 @@ public class RowSelector extends UIPanel {
     }
 
     public Object saveState(FacesContext context) {
-        Object[] state = new Object[12];
+        Object[] state = new Object[13];
         state[0] = super.saveState(context);
         state[1] = value;
         state[2] = multiple;
@@ -402,6 +402,8 @@ public class RowSelector extends UIPanel {
         state[9] = saveAttachedState(context, selectionListener);
         state[10] = saveAttachedState(context, selectionAction);
         state[11] = immediate;
+        state[12] = styleClass;        
+        
         return state;
     }
 
@@ -421,9 +423,10 @@ public class RowSelector extends UIPanel {
         selectionAction = (MethodBinding)
             restoreAttachedState(context, state[10]);
         immediate = (Boolean)state[11];
+        styleClass = (String)state[12];        
     }
     
-    String styleClass;
+    private String styleClass;
     /**
      * <p>Set the value of the <code>styleClass</code> property.</p>
      */

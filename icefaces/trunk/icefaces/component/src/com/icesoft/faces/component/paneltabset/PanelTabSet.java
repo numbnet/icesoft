@@ -574,7 +574,7 @@ public class PanelTabSet
     * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
     */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[33];
+        Object values[] = new Object[35];
         values[0] = super.saveState(context);
         values[1] = _selectedIndex.saveState(this);
         values[2] = _bgcolor;
@@ -607,7 +607,9 @@ public class PanelTabSet
         values[29] = partialSubmit;
         values[30] = renderedOnUserRole;
         values[31] = visible;
-        values[32] = saveAttachedState(context, listenerList);        
+        values[32] = saveAttachedState(context, listenerList);   
+        values[33] = immediate;   
+        values[34] = border_set ? Boolean.TRUE : Boolean.FALSE;;  
         return ((Object) (values));
     }
 
@@ -658,7 +660,8 @@ public class PanelTabSet
                 listenerList = restoredListenerList;
             }            
         }
-   
+        immediate = (Boolean)values[33];
+        border_set = ((Boolean) values[34]).booleanValue();        
     }
 
     public Object saveSeriesState(FacesContext facesContext) {

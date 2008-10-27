@@ -134,7 +134,7 @@ public class PanelLayout extends javax.faces.component.UIComponentBase {
 
         this._styleClass = _styleClass;
     }
-    private Object[] _values;
+    private transient Object[] _values;
 
     public Object saveState(FacesContext _context) {
         if (_values == null) {
