@@ -78,8 +78,8 @@ public class TreeNode extends UIComponentBase implements NamingContainer {
         this.tree = trunk;
     }
 
-    private DefaultMutableTreeNode mutable;
-    private Tree tree;
+    private transient DefaultMutableTreeNode mutable;
+    private transient Tree tree;
     /**
      * The name for the content facet of the TreeNode
      */
@@ -121,7 +121,11 @@ public class TreeNode extends UIComponentBase implements NamingContainer {
      * @return parent tree
      */
     public Tree getTree() {
-        return tree;
+        UIComponent component = getParent();
+        while (component != null && !(component instanceof Tree)) {
+            component = component.getParent();
+        }
+        return (Tree) component;
     }
 
     /**
@@ -143,20 +147,5 @@ public class TreeNode extends UIComponentBase implements NamingContainer {
      */
     public UIComponent getIcon() {
         return (UIComponent) getFacet(FACET_ICON);
-    }
-
-    public Object saveState(FacesContext context) {
-        Object values[] = new Object[3];
-        values[0] = super.saveState(context);
-        values[1] = mutable;
-        values[2] = tree;
-        return values;
-    }
-
-    public void restoreState(FacesContext context, Object state) {
-        Object values[] = (Object[]) state;
-        super.restoreState(context, values[0]);
-        mutable = (DefaultMutableTreeNode) values[1];
-        tree = (Tree) values[2];
     }
 }
