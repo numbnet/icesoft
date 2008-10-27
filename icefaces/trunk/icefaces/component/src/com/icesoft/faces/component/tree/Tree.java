@@ -767,7 +767,7 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[28];
+        Object values[] = new Object[26];
         values[0] = super.saveState(context);
         values[1] = title;        
         values[2] = navigationEventType;
@@ -792,8 +792,8 @@ public class Tree extends UICommand implements NamingContainer {
         values[21] = style;
         values[22] = hideRootNode;
         values[23] = hideNavigation;
-        values[25] = nodePath;
-        values[26] = savedChildren;
+        values[24] = nodePath;
+        values[25] = savedChildren;
 
 
         return (values);
