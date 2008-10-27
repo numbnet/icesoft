@@ -20,11 +20,18 @@ public class PortletRequestAttributes implements RequestAttributes {
         return request.getAttributeNames();
     }
 
+    /*ICE-2990 resulted in ICE-3694 so need to catch useless NPE here*/
     public void removeAttribute(String name) {
-        request.removeAttribute(name);
+    	try{
+    		request.removeAttribute(name);
+    	}catch(Exception e){    		
+    	}
     }
 
     public void setAttribute(String name, Object value) {
-        request.setAttribute(name, value);
+    	try{
+    		request.setAttribute(name, value);
+    	}catch(Exception e){    		
+    	}
     }
 }
