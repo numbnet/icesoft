@@ -11,8 +11,8 @@
     </target>
 
     <target name="copy.info">
-        <mkdir dir="${info.dir}"/>
-        <copy file="info.xml" tofile="${info.dir}/info.xml"/>
+        <!-- mkdir dir="${info.dir}"/>
+        <copy file="info.xml" tofile="${info.dir}/info.xml"/ -->
     </target>
 
     <target name="copy.module">

@@ -62,11 +62,11 @@
 
     <target name="assemble-module" depends="assemble-installer">
 
-        <mkdir dir="${build.dir}/info"/>
+        <!-- mkdir dir="${build.dir}/info"/ -->
 
-        <copy todir="${build.dir}/info">
+        <!-- copy todir="${build.dir}/info">
             <fileset file="info/**"/>
-        </copy>
+        </copy -->
 
         <mkdir dir="${build.dir}/module"/>
 

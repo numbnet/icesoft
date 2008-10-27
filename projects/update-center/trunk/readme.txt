@@ -1,6 +1,6 @@
 Building Update Center modules
 
-1) Build Glassfish + AHS versions of the apps (AHS, Auction Monitor, Component Showcase, and WebMC) for whatever version of ICEfaces you need to test against.  For now, we're assuming the 1.7.1 tag in the repository.  We have dedicated Glassfish builds for all the apps but currently don't have any way to include icefaces-ahs.jar into the WEB-INF/lib directory of the three examples.  So you either have to do this manually or modify the build targets appropriately.
+1) Build Glassfish + AHS versions of the apps (AHS, Auction Monitor, Component Showcase, and WebMC) for whatever version of ICEfaces you need to test against.  The current method is to download the official binary version of ICEfaces (so that the output in the console shows the correct product info) and build against that.  We have dedicated Glassfish builds for all the apps but currently don't have any way to include icefaces-ahs.jar into the WEB-INF/lib directory of the three examples.  So you either have to do this manually or modify the build targets appropriately.
 
 To the etc/build-common.xml file change:
 
@@ -53,9 +53,9 @@ ant clean -Dahs="true" glassfishv2
 
 2) Build Update Center modules (ossrepo/projects/update-center/trunk/)
 
-The Update Center module has a top-level build file that assemble and gather everything that you need together. First, modify the common.properties file and change the icefaces.root property points at your 1.7.1 tag directory.
+The Update Center module has a top-level build file that assemble and gather everything that you need together. First, modify the common.properties file and change the icefaces.root property points at your 1.7.2 tag directory.
 
-icefaces.root=<yourpath>/icefaces/tags/icefaces-1.7.1/icefaces
+icefaces.root=<yourpath>/icefaces/tags/icefaces-1.7.2/icefaces
 
 You also need to change:
 
