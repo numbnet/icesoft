@@ -41,7 +41,7 @@ public class GMapGeoXml extends UIPanel{
 		this.url = url;
 	}
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

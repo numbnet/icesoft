@@ -245,7 +245,7 @@ public class PanelTab
         return v != null ? v.booleanValue() : false;
     }
 
-    private Object values[];
+    private transient Object values[];
     /* (non-Javadoc)
      * @see javax.faces.component.StateHolder#saveState(javax.faces.context.FacesContext)
      */

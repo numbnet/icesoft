@@ -241,7 +241,7 @@ public class PanelBorder
         this.style = style;
     }
 
-    private Object values[];
+    private transient Object values[];
     /**
      * <p>Gets the state of the instance as a <code>Serializable</code>
      * Object.</p>

@@ -198,7 +198,7 @@ public class ApplyEffect extends UIComponentBase {
         }
     }
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
             
         values = (Object[])state;

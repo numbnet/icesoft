@@ -364,7 +364,7 @@ public class PanelTooltip extends PanelPopup{
         return boolVal != null ? boolVal.booleanValue() : "show".equals(getTooltipInfo().getState());
     }
 
-    private Object states[];
+    private transient Object states[];
 
     public void restoreState(FacesContext context, Object state) {
         states = (Object[])state;

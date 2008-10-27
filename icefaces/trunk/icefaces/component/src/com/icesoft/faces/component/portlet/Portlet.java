@@ -92,7 +92,7 @@ public class Portlet extends UINamingContainer {
         this.styleClass = styleClass;
     }
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

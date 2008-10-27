@@ -480,7 +480,7 @@ public class MenuItem extends MenuItemBase {
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-    private Object states[];
+    private transient Object states[];
     public Object saveState(FacesContext context){
         if(states == null){
             states = new Object[14];

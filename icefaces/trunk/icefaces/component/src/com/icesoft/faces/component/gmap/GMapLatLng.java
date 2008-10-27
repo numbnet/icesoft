@@ -71,7 +71,7 @@ public class GMapLatLng extends UIPanel{
 			getAttributes().put("latLngScript", script);
 		}
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
 
         values = (Object[])state;

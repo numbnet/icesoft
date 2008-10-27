@@ -52,7 +52,7 @@ public class GMapLatLngs extends UIPanel{
 		this.value = value;
 	}
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;        
         super.restoreState(context, values[0]);

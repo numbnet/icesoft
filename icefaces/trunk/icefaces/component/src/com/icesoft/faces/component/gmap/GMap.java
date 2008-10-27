@@ -289,7 +289,7 @@ public class GMap extends UIPanel{
                 CSS_DEFAULT.GMAP_TXT_TD);
     }    
             
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
         super.restoreState(context, values[0]);

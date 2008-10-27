@@ -33,7 +33,7 @@ public class ColumnGroup extends UIPanel{
         return vb != null ? (String) vb.getValue(getFacesContext()) : null;
     }
 
-    private Object values[];
+    private transient Object values[];
     public void restoreState(FacesContext context, Object state) {
         values = (Object[])state;
          super.restoreState(context, values[0]);
