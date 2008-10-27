@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * Set the opacity of an HTML element
  */
@@ -86,5 +88,25 @@ public class Opacity extends Effect {
      */
     public String getFunctionName() {
         return "new Effect.Opacity";
+    }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Opacity)) {
+            return false;
+        }
+        Opacity effect = (Opacity) obj;
+        if (from != effect.from) {
+            return false;
+        }
+        if (to != effect.to) {
+            return false;
+        }
+        if (value != effect.value) {
+            return false;
+        }
+        return true;
     }
 }

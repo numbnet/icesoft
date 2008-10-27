@@ -42,4 +42,14 @@ public class Fold extends Effect {
     public String getFunctionName() {
         return "Effect.Fold";
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Fold)) {
+            return false;
+        }
+        return true;
+    }
 }

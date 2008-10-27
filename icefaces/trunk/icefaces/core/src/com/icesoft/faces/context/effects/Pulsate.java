@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * Pulsate or flash an HTML element
  */
@@ -88,4 +90,17 @@ public class Pulsate extends Effect {
         return EffectHashCode.PULSTATE * ((int) duration * 100);
     }
 
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Pulsate)) {
+            return false;
+        }
+        Pulsate effect = (Pulsate) obj;
+        if (duration != effect.duration) {
+            return false;
+        }
+        return true;
+    }
 }

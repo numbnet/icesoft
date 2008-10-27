@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * The highlight effect will change the background color of an HTML element and
  * then transition the color back its original state
@@ -94,5 +96,17 @@ public class Highlight extends Effect {
         return EffectHashCode.HIGHLIGHT * value;
     }
 
-
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Highlight)) {
+            return false;
+        }
+        Highlight effect = (Highlight) obj;
+        if (!CoreUtils.objectsEqual(startColor, effect.startColor)) {
+            return false;
+        }
+        return true;
+    }
 }

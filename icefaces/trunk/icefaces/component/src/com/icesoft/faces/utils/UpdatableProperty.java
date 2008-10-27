@@ -44,6 +44,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import java.io.Serializable;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * There are some UIComponent properties which we want to set based on
  *  both user interactions and from changing ValueBinding values. If
@@ -282,5 +284,34 @@ public class UpdatableProperty implements Serializable {
 //System.out.println("  setSubmittedInLocalValue: " + setSubmittedInLocalValue);
 //System.out.println("  value: " + value);
 //System.out.println("  setLocalValueInValueBinding: " + setLocalValueInValueBinding);
+    }
+    
+    public boolean equals(Object obj) {
+        if (!(obj instanceof UpdatableProperty)) {
+            return false;
+        }
+        UpdatableProperty up = (UpdatableProperty) obj;
+        if (haveSavedValue != up.haveSavedValue) {
+            return false;
+        }
+        if (setSubmittedInLocalValue != up.setSubmittedInLocalValue) {
+            return false;
+        }
+        if (setLocalValueInValueBinding != up.setLocalValueInValueBinding) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(name, up.name)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(savedValue, up.savedValue)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(submittedValue, up.submittedValue)) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(value, up.value)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -114,4 +114,21 @@ public class Appear extends Effect {
         int to = (int) (this.to * 100);
         return EffectHashCode.APPEAR * from * to;
     }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Appear)) {
+            return false;
+        }
+        Appear effect = (Appear) obj;
+        if (from != effect.from) {
+            return false;
+        }
+        if (to != effect.to) {
+            return false;
+        }
+        return true;
+    }
 }

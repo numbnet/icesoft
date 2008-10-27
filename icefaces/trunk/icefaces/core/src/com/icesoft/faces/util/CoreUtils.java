@@ -189,4 +189,17 @@ public class CoreUtils {
     public static boolean isJSFStateSaving() {
         return jsfStateSaving;
     }
+    
+    public static boolean objectsEqual(Object ob1, Object ob2) {
+        if (ob1 == null && ob2 == null) {
+            return true;
+        }
+        else if (ob1 == null && ob2 != null) {
+            return false;
+        }
+        else if (ob1 != null && ob2 == null) {
+            return false;
+        }
+        return ob1.equals(ob2);
+    }
 }

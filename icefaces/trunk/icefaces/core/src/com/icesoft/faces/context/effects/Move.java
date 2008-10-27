@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * Move an HTML element to a new position. Moves can be absolute or relative.
  * Relative moves an element from it current position, absolute moves it from
@@ -139,5 +141,25 @@ public class Move extends Effect {
     public int hasCode() {
         return EffectHashCode.MOVE * (x * 1) * (y * 2) +
                ("relative".equals(mode) ? 1 : 2);
+    }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Move)) {
+            return false;
+        }
+        Move effect = (Move) obj;
+        if (x != effect.x) {
+            return false;
+        }
+        if (y != effect.y) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(mode, effect.mode)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * script.aculo.us grow effect
  * Grow an Element from nothing to its full size.
@@ -63,5 +65,19 @@ public class Grow extends Effect {
 
     public String getFunctionName() {
         return "Effect.Grow";
+    }
+    
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Grow)) {
+            return false;
+        }
+        Grow effect = (Grow) obj;
+        if (!CoreUtils.objectsEqual(direction, effect.direction)) {
+            return false;
+        }
+        return true;
     }
 }

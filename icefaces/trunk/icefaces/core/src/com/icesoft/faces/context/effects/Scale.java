@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.context.effects;
 
+import com.icesoft.faces.util.CoreUtils;
+
 /**
  * script.aculo.us scale effect
  *
@@ -146,4 +148,35 @@ public class Scale extends Effect {
         return toString("id", null);
     }
 
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof Scale)) {
+            return false;
+        }
+        Scale effect = (Scale) obj;
+        if (scaleX != effect.scaleX) {
+            return false;
+        }
+        if (scaleY != effect.scaleY) {
+            return false;
+        }
+        if (scaleContent != effect.scaleContent) {
+            return false;
+        }
+        if (scaleFromCenter != effect.scaleFromCenter) {
+            return false;
+        }
+        if (!CoreUtils.objectsEqual(scaleMode, effect.scaleMode)) {
+            return false;
+        }
+        if (scaleFrom != effect.scaleFrom) {
+            return false;
+        }
+        if (scaleTo != effect.scaleTo) {
+            return false;
+        }
+        return true;
+    }
 }
