@@ -156,7 +156,7 @@ public class HtmlDataTable
      * Object.</p>
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[9];
+        Object values[] = new Object[15];
         values[0] = super.saveState(context);
         values[1] = renderedOnUserRole;
         values[2] = columnWidths;
@@ -166,6 +166,12 @@ public class HtmlDataTable
         values[6] = scrollHeight;
         values[7] = scrollFooter;
         values[8] = clientOnly;
+        values[9] = headerClassesArray;
+        values[10] = resizable;
+        values[11] = resizableTblColumnsWidth;
+        values[12] = Integer.valueOf(resizableTblColumnsWidthIndex);
+        values[13] = scrollable;
+        values[14] = Boolean.valueOf(isResizableColumnWidthsSet);
         return ((Object) (values));
     }
 
@@ -184,6 +190,12 @@ public class HtmlDataTable
         scrollHeight = (String)values[6];
         scrollFooter = (Boolean)values[7];
         clientOnly = (Boolean)values[8];
+        headerClassesArray = (String[]) values[9];
+        resizable = (Boolean) values[10];
+        resizableTblColumnsWidth = (String[]) values[11];
+        resizableTblColumnsWidthIndex = ((Integer) values[12]).intValue();
+        scrollable = (Boolean) values[13];
+        isResizableColumnWidthsSet = ((Boolean) values[14]).booleanValue();
     }
 
     public String getComponentType() {
