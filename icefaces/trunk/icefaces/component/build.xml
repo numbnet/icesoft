@@ -215,7 +215,7 @@
     <target name="compile-tests" depends="junit-present, compile" description="Compile the test code" if="junit.present">
         
         <mkdir dir="${test.classes.dir}"/>
-        <javac destdir="${test.classes.dir}" excludes="**/package.html" debug="true" deprecation="true" optimize="false">
+        <javac destdir="${test.classes.dir}" excludes="**/package.html" debug="true" optimize="false">
             <src>
                 <pathelement location="test/java" />
                 <pathelement location="../component-metadata/target/generated-sources/testbeaninfo/main/java"/>
