@@ -610,7 +610,7 @@ public class HtmlCommandLink
      * @return Object values[]
      */
     public Object saveState(FacesContext context) {
-        Object values[] = new Object[20];
+        Object values[] = new Object[23];
         values[0] = super.saveState(context);
         values[1] = enabledOnUserRole;
         values[2] = renderedOnUserRole;
@@ -628,6 +628,9 @@ public class HtmlCommandLink
         values[17] = currentStyle;
         values[18] = visible;
         values[19] = styleClass;
+        values[20] = disabled;
+        values[21] = Boolean.valueOf(focus);
+        values[22] = partialSubmit;
         return ((Object) (values));
     }
 
@@ -657,6 +660,9 @@ public class HtmlCommandLink
         currentStyle = (CurrentStyle) values[17];
         visible = (Boolean) values[18];
         styleClass = (String) values[19];
+        disabled = (Boolean) values[20];
+        focus = ((Boolean) values[21]).booleanValue();
+        partialSubmit = (Boolean) values[22];
     }
 }
    
