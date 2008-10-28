@@ -236,6 +236,7 @@ System.out.println("normalRules()    field: " + field.getName());
                     return "["+i+"]" + (msg.startsWith("[") ? "" : " :: ") + msg;
                 }
             }
+            return null;
         }
         if (!storedValue.equals(restoredValue)) {
             return "Stored value was " + storedValue + ", but restored value is " + restoredValue;
