@@ -33,6 +33,8 @@
 
 package com.icesoft.faces.component.inputfile;
 
+import com.icesoft.faces.util.CoreUtils;
+
 import java.io.Serializable;
 
 public class FileInfo implements Cloneable, Serializable {
@@ -177,7 +179,8 @@ public class FileInfo implements Cloneable, Serializable {
         if (size != fileInfo.size) return false;
         if (contentType != null ? !contentType.equals(fileInfo.contentType) : fileInfo.contentType != null)
             return false;
-        if (exception != null ? !exception.equals(fileInfo.exception) : fileInfo.exception != null) return false;
+//        if (exception != null ? !exception.equals(fileInfo.exception) : fileInfo.exception != null) return false;
+        if (!CoreUtils.throwablesEqual(exception, fileInfo.exception)) return false;
         if (fileName != null ? !fileName.equals(fileInfo.fileName) : fileInfo.fileName != null) return false;
         if (physicalPath != null ? !physicalPath.equals(fileInfo.physicalPath) : fileInfo.physicalPath != null)
             return false;
