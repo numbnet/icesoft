@@ -164,4 +164,37 @@ public class FileInfo implements Cloneable, Serializable {
             ",\n  size=" + size +
             "\n}";        
     }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FileInfo fileInfo = (FileInfo) o;
+
+        if (percent != fileInfo.percent) return false;
+        if (postUpload != fileInfo.postUpload) return false;
+        if (preUpload != fileInfo.preUpload) return false;
+        if (size != fileInfo.size) return false;
+        if (contentType != null ? !contentType.equals(fileInfo.contentType) : fileInfo.contentType != null)
+            return false;
+        if (exception != null ? !exception.equals(fileInfo.exception) : fileInfo.exception != null) return false;
+        if (fileName != null ? !fileName.equals(fileInfo.fileName) : fileInfo.fileName != null) return false;
+        if (physicalPath != null ? !physicalPath.equals(fileInfo.physicalPath) : fileInfo.physicalPath != null)
+            return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (int) (size ^ (size >>> 32));
+        result = 31 * result + (fileName != null ? fileName.hashCode() : 0);
+        result = 31 * result + (contentType != null ? contentType.hashCode() : 0);
+        result = 31 * result + (physicalPath != null ? physicalPath.hashCode() : 0);
+        result = 31 * result + percent;
+        result = 31 * result + (exception != null ? exception.hashCode() : 0);
+        result = 31 * result + (preUpload ? 1 : 0);
+        result = 31 * result + (postUpload ? 1 : 0);
+        return result;
+    }
 }
