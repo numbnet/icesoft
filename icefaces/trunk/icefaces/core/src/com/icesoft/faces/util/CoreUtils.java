@@ -202,4 +202,20 @@ public class CoreUtils {
         }
         return ob1.equals(ob2);
     }
+
+    public static boolean throwablesEqual(Throwable th1, Throwable th2) {
+        if (th1 == null && th2 == null) return true;
+        if (th1 == null || th2 == null) return false;
+
+        if (!th1.getMessage().equals(th2.getMessage())) return false;
+
+        StackTraceElement[] st1 = th1.getStackTrace();
+        StackTraceElement[] st2 = th2.getStackTrace();
+        if (st1.length != st2.length) return false;
+
+        for (int i = 0; i < st1.length; i++) {
+            if (!st1[i].equals(st2[i])) return false;
+        }
+        return true;
+    }
 }
