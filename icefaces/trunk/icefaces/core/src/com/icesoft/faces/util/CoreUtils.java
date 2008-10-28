@@ -194,10 +194,7 @@ public class CoreUtils {
         if (ob1 == null && ob2 == null) {
             return true;
         }
-        else if (ob1 == null && ob2 != null) {
-            return false;
-        }
-        else if (ob1 != null && ob2 == null) {
+        if (ob1 == null || ob2 == null) {
             return false;
         }
         return ob1.equals(ob2);
@@ -206,6 +203,7 @@ public class CoreUtils {
     public static boolean throwablesEqual(Throwable th1, Throwable th2) {
         if (th1 == null && th2 == null) return true;
         if (th1 == null || th2 == null) return false;
+        if (th1.getClass() != th2.getClass()) return false;
 
         if (!th1.getMessage().equals(th2.getMessage())) return false;
 
