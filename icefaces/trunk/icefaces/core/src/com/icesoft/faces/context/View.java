@@ -18,7 +18,6 @@ import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.faces.lifecycle.Lifecycle;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,10 +31,11 @@ public class View implements CommandQueue {
         }
     };
     private final Page lifecycleExecutedPage = new Page() {
+        private String lastPath;
+
         private final ResponseHandler lifecycleResponseHandler = new NoCacheContentHandler("text/html", "UTF-8") {
             public void respond(Response response) throws Exception {
                 super.respond(response);
-                com.icesoft.util.SeamUtilities.removeSeamDebugPhaseListener(lifecycle);
                 facesContext.switchToNormalMode();
                 LifecycleExecutor.getLifecycleExecutor(facesContext).apply(facesContext);
                 facesContext.switchToPushMode();
@@ -43,37 +43,44 @@ public class View implements CommandQueue {
         };
 
         public void serve(Request request) throws Exception {
-            if (facesContext != null) {
-                facesContext.dispose();
+            String path = request.getURI().getPath();
+            boolean reloded = path.equals(lastPath);
+            lastPath = path;
+            //reuse FacesContext on reload -- this preserves the ViewRoot in case forward navigation rules were executed           
+            if (reloded) {
+                facesContext.reload(request);
+            } else {
+                if (facesContext != null) {
+                    facesContext.dispose();
+                }
+                facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor);
             }
-            facesContext = new BridgeFacesContext(request, viewIdentifier, sessionID, View.this, configuration, resourceDispatcher, sessionMonitor);
+
             makeCurrent();
             request.respondWith(lifecycleResponseHandler);
         }
     };
     private Page page = lifecycleExecutedPage;
-    private ReentrantLock queueLock = new ReentrantLock();
-    private ReentrantLock lifecycleLock = new ReentrantLock();
+    private final ReentrantLock queueLock = new ReentrantLock();
+    private final ReentrantLock lifecycleLock = new ReentrantLock();
     private BridgeFacesContext facesContext;
     private PersistentFacesState persistentFacesState;
     private Command currentCommand = NOOP;
-    private String viewIdentifier;
-    private Collection viewListeners = new ArrayList();
-    private String sessionID;
-    private Configuration configuration;
-    private SessionDispatcher.Monitor sessionMonitor;
-    private ResourceDispatcher resourceDispatcher;
+    private final String viewIdentifier;
+    private final Collection viewListeners = new ArrayList();
+    private final String sessionID;
+    private final Configuration configuration;
+    private final SessionDispatcher.Monitor sessionMonitor;
+    private final ResourceDispatcher resourceDispatcher;
     private Runnable dispose;
-    private Lifecycle lifecycle;
-    private ViewQueue allServedViews;
+    private final ViewQueue allServedViews;
 
-    public View(final String viewIdentifier, String sessionID, HttpSession session, Request request, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher, Lifecycle lifecycle) throws Exception {
+    public View(final String viewIdentifier, String sessionID, HttpSession session, final ViewQueue allServedViews, final Configuration configuration, final SessionDispatcher.Monitor sessionMonitor, ResourceDispatcher resourceDispatcher) throws Exception {
         this.sessionID = sessionID;
         this.configuration = configuration;
         this.viewIdentifier = viewIdentifier;
         this.sessionMonitor = sessionMonitor;
         this.resourceDispatcher = resourceDispatcher;
-        this.lifecycle = lifecycle;
         this.allServedViews = allServedViews;
         this.persistentFacesState = new PersistentFacesState(this, viewListeners, configuration);
         ContextEventRepeater.viewNumberRetrieved(session, sessionID, Integer.parseInt(viewIdentifier));

@@ -6,16 +6,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import javax.faces.FactoryFinder;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class SingleViewServer implements Server {
-    private final static LifecycleFactory LIFECYCLE_FACTORY = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-    private Lifecycle lifecycle = LIFECYCLE_FACTORY.getLifecycle(LIFECYCLE_FACTORY.DEFAULT_LIFECYCLE);
-
     private static final String viewNumber = "1";
     private Map views;
     private String sessionID;
@@ -43,7 +37,7 @@ public class SingleViewServer implements Server {
             if (views.containsKey(viewNumber)) {
                 view = (View) views.get(viewNumber);
             } else {
-                view = new View(viewNumber, sessionID, session, request, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+                view = new View(viewNumber, sessionID, session, allUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
                 views.put(viewNumber, view);
             }
         }

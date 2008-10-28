@@ -6,16 +6,10 @@ import com.icesoft.faces.webapp.http.common.Request;
 import com.icesoft.faces.webapp.http.common.Server;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 
-import javax.faces.FactoryFinder;
-import javax.faces.lifecycle.Lifecycle;
-import javax.faces.lifecycle.LifecycleFactory;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class MultiViewServer implements Server {
-    private final static LifecycleFactory LIFECYCLE_FACTORY = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-    private Lifecycle lifecycle = LIFECYCLE_FACTORY.getLifecycle(LIFECYCLE_FACTORY.DEFAULT_LIFECYCLE);
-
     private int viewCount = 0;
     private Map views;
     private ViewQueue asynchronouslyUpdatedViews;
@@ -44,10 +38,10 @@ public class MultiViewServer implements Server {
                 if (views.containsKey(viewIdentifier)) {
                     view = (View) views.get(viewIdentifier);
                 } else {
-                    view = createView(request);
+                    view = createView();
                 }
             } else {
-                view = createView(request);
+                view = createView();
             }
         }
 
@@ -59,9 +53,9 @@ public class MultiViewServer implements Server {
         }
     }
 
-    private View createView(Request request) throws Exception {
+    private View createView() throws Exception {
         String viewNumber = String.valueOf(++viewCount);
-        View view = new View(viewNumber, sessionID, session, request, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher, lifecycle);
+        View view = new View(viewNumber, sessionID, session, asynchronouslyUpdatedViews, configuration, sessionMonitor, resourceDispatcher);
         views.put(viewNumber, view);
         return view;
     }
