@@ -31,79 +31,8 @@
  *
  */
 
-Ice.isValidID = function(id) {
-    return /^\w[\w\-\:]*$/.test(id);
-};
-
 //todo: implement focus management!
 var currentFocus;
-Ice.Focus = new Object();
-Ice.Focus.userInterupt = false;
-
-Ice.Focus.userInterupt = function (e) {
-    if (window.logger)
-        window.logger.debug('Interup pressed');
-    if (Ice.Focus.userInterupt == false) {
-        if (window.logger)
-            window.logger.debug('User action. Set focus will be ignored.');
-        Ice.Focus.userInterupt = true;
-    }
-
-}
-
-Ice.Focus.setFocus = function(id) {
-    // This delay is required for focusing newly rendered components on IE 
-    // ICE-1247
-    window.setTimeout("Ice.Focus.setFocusNow('" + id + "');", 100);
-};
-
-Ice.Focus.setFocusNow = function(id) {
-    if ((Ice.Focus.userInterupt == false) && (id != '') && (id != 'undefined') && Ice.isValidID(id)) {
-        try {
-            id.asExtendedElement().focus();
-            setFocus(id);
-            var ele = document.getElementById(id);
-            if (ele) {
-                ele.focus();
-            } else {
-                if (window.logger)
-                    window.logger.info('Cannot set focus, no element for id [' + id + "]");
-            }
-            if (window.logger)
-                window.logger.debug('Focus Set on [' + id + "]");
-        } catch(e) {
-            if (window.logger)
-                window.logger.info('Cannot set focus, no element for id [' + id + ']', e);
-        }
-    } else {
-        if (window.logger)
-            window.logger.debug('Focus interupted. Not Set on [' + id + ']');
-    }
-};
-
-
-document.onKeyDown = function(listener) {
-    var previousListener = document.onkeydown;
-    document.onkeydown = previousListener != null ? function(e) {
-        listener(Ice.EventModel.Event.adaptToKeyEvent(e));
-        previousListener(e);
-    } : function(e) {
-        listener(Ice.EventModel.Event.adaptToKeyEvent(e));
-    };
-};
-
-document.onMouseDown = function(listener) {
-    var previousListener = document.onmousedown;
-    document.onmousedown = previousListener != null ? function(e) {
-        listener(e);
-        previousListener(e);
-    } : function(e) {
-        listener(e);
-    };
-};
-
-document.onKeyDown(Ice.Focus.userInterupt);
-document.onMouseDown(Ice.Focus.userInterupt);
 
 function setFocus(id) {
     currentFocus = id;
@@ -112,5 +41,32 @@ function setFocus(id) {
 window.onScroll(function() {
     currentFocus = null;
     window.focus();
+});
+
+[ Ice.Focus = new Object ].as(function(This) {
+    function isValidID(id) {
+        return /^\w[\w\-\:]*$/.test(id);
+    }
+
+    This.setFocus = (function(id) {
+        if (id && isValidID(id)) {
+            try {
+                id.asExtendedElement().focus();
+                setFocus(id);
+                var e = document.getElementById(id);
+                if (e) {
+                    e.focus();
+                } else {
+                    logger.info('Cannot set focus, no element for id [' + id + "]");
+                }
+                logger.debug('Focus Set on [' + id + "]");
+            } catch(e) {
+                logger.info('Cannot set focus, no element for id [' + id + ']', e);
+            }
+        } else {
+            logger.debug('Focus interupted. Not Set on [' + id + ']');
+        }
+        //ICE-1247 -- delay required for focusing newly rendered components in IE
+    }).delayFor(100);
 });
 
