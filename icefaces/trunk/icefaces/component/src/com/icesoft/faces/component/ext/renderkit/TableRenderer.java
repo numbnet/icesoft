@@ -547,8 +547,10 @@ public class TableRenderer
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         Element root = (Element) domContext.getRootNode();
-
-        if (isScrollable(uiComponent)) {
+        Element originalRoot = root;
+        
+        boolean scrollable = isScrollable(uiComponent); 
+        if (scrollable) {
         	Element hdrTbl = this.getScrollableHeaderTableElement(root);
         	hdrTbl.setAttribute(HTML.CLASS_ATTR, Util.getQualifiedStyleClass(uiComponent,
                     CSS_DEFAULT.TABLE_SCRL_HDR_TBL));
@@ -570,7 +572,8 @@ public class TableRenderer
         HtmlDataTable uiData = (HtmlDataTable) uiComponent;
         uiData.ensureFirstRowInRange(); // ICE-2783
         int rowIndex = uiData.getFirst();
-        if (uiData.getRowCount() == 0) {
+        int rowCount = uiData.getRowCount(); 
+        if (rowCount == 0) {
             Element tr = (Element) domContext.createElement(HTML.TR_ELEM);
             tBody.appendChild(tr);
             int cols = getNumberOfChildColumns(uiData);
@@ -582,7 +585,7 @@ public class TableRenderer
             domContext.stepOver();
             return;
         }
-        if (uiData.getRowCount() >=0 && uiData.getRowCount() <= rowIndex) {
+        if (rowCount >=0 && rowCount <= rowIndex) {
             domContext.stepOver();
             return;
         }
@@ -621,7 +624,9 @@ public class TableRenderer
             hiddenInputNode = rowSelectedField;
             rowSelectionFunctionName = "Ice.tableRowClicked";
         }
-
+        
+        List columnWidthList = getColumnWidthsAsList(uiComponent);
+        Boolean isResizable = null;
         String columnStyles[] = getColumnStyleClasses(uiComponent);
         int columnStyleIndex;
         int columnStylesMaxIndex = columnStyles.length - 1;
@@ -664,15 +669,16 @@ public class TableRenderer
                }
             }
             int colNumber = 1;
-            StringTokenizer columnWitdths =
-                    getColumnWidths(uiData);
+            Iterator columnWidths = null;
+            if (columnWidthList != null) {
+                columnWidths = columnWidthList.iterator();
+            }
             while (childs.hasNext()) {
-                  String width = "100%";
-                if (isScrollable(uiComponent) &&
-                        columnWitdths != null &&
-                        columnWitdths.hasMoreTokens()) {
-                        width = columnWitdths.nextToken();
-
+                String width = "100%";
+                if (scrollable &&
+                    columnWidths != null &&
+                    columnWidths.hasNext()) {
+                    width = (String) columnWidths.next();
                 }
                 UIComponent nextChild = (UIComponent) childs.next();
                 if (nextChild.isRendered()) {
@@ -690,7 +696,10 @@ public class TableRenderer
                                 if (iceColumn.groupFound()) {
                                     Element groupedTd = iceColumn.getGroupedTd();
                                     groupedTd.setAttribute(HTML.ROWSPAN_ATTR, String.valueOf(iceColumn.getGroupCount()));
-                                    if (uiData.isResizable() && childs.hasNext()) {
+                                    if (isResizable == null) { // Lazily get this once
+                                        isResizable = Boolean.valueOf(uiData.isResizable());
+                                    }
+                                    if (isResizable.booleanValue() && childs.hasNext()) {
                                         Element eTd = domContext.createElement(HTML.TD_ELEM);
                                         eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
                                         Element img = domContext.createElement(HTML.IMG_ELEM);
@@ -719,7 +728,7 @@ public class TableRenderer
                                        columnStyleIndex, td, colNumber++,
                                        uiComponent);
 
-                        if (isScrollable(uiComponent) && width != null)  {
+                        if (scrollable && width != null)  {
                             td.setAttribute("style", "width:" + width +
                             ";overflow:hidden;");
                         }
@@ -746,7 +755,10 @@ public class TableRenderer
                         // if column styles exist, then apply the appropriate one
 
 
-                        if (uiData.isResizable() && childs.hasNext()) {
+                        if (isResizable == null) { // Lazily get this once
+                            isResizable = Boolean.valueOf(uiData.isResizable());
+                        }
+                        if (isResizable.booleanValue() && childs.hasNext()) {
                             Element eTd = domContext.createElement(HTML.TD_ELEM);
                             eTd.setAttribute(HTML.CLASS_ATTR, "iceDatTblBlkTd");
                             Element img = domContext.createElement(HTML.IMG_ELEM);
@@ -763,7 +775,7 @@ public class TableRenderer
                         Node oldCursorParent = domContext.getCursorParent();
                         domContext.setCursorParent(td);
                         domContext.streamWrite(facesContext, uiComponent,
-                                               domContext.getRootNode(), td);
+                                               originalRoot, td);
 
 
                         encodeParentAndChildren(facesContext, nextChild);
@@ -784,7 +796,7 @@ public class TableRenderer
             countOfRowsDisplayed++;
             if ((numberOfRowsToDisplay > 0 &&
                     countOfRowsDisplayed >= numberOfRowsToDisplay) ||
-                    (uiData.getRowCount() >=0 && rowIndex >= uiData.getRowCount())) {
+                    (rowCount >=0 && rowIndex >= rowCount)) {
                     break;
             }
 
