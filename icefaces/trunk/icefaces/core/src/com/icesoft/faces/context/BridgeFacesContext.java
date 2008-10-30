@@ -217,23 +217,14 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
     }
 
     public RenderKit getRenderKit() {
-
-        // Have to figure out why this has changed in behaviour
-
-//        if (!CoreUtils.isJSFStateSaving() )  {
-//            UIViewRoot viewRoot = getViewRoot();
-//            if (null == viewRoot) {
-//                return (null);
-//            }
-//            String renderKitId = viewRoot.getRenderKitId();
-//            if (null == renderKitId) {
-//                return (null);
-//            }
-//        }
-
-        String renderKitId = getApplication().getDefaultRenderKitId();
-//        String renderKitId = getApplication().getViewHandler().
-//                calculateRenderKitId(this);
+        UIViewRoot viewRoot = getViewRoot();
+        if (null == viewRoot) {
+            return (null);
+        }
+        String renderKitId = viewRoot.getRenderKitId();
+        if (null == renderKitId) {
+            return (null);
+        }
 
         RenderKitFactory renderKitFactory = (RenderKitFactory)
                 FactoryFinder.getFactory(FactoryFinder.RENDER_KIT_FACTORY);
