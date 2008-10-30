@@ -453,6 +453,22 @@ public class TableRenderer extends DomBasicRenderer {
         }
         return null;
     }
+    
+    protected List getColumnWidthsAsList(UIComponent uiComponent) {
+        StringTokenizer st = getColumnWidths(uiComponent);
+        if (st == null) {
+            return null;
+        }
+        int count = st.countTokens();
+        if (count == 0) {
+            return null;
+        }
+        List columnWidths = new ArrayList(count);
+        while (st.hasMoreTokens()) {
+            columnWidths.add(st.nextToken());
+        }
+        return columnWidths;
+    }
 
     protected Element getScrollableHeaderTableElement(Element root) {
         // First table in first div path : table/tr/td/div/div0/table
