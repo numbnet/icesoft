@@ -60,8 +60,9 @@ public class PanelCollapsible extends UICommand {
     public boolean isExpanded() {
         ValueBinding vb = getValueBinding("expanded");
         if (vb != null) {
-            if (vb.getValue(getFacesContext()) != null) {
-                return ((Boolean) vb.getValue(getFacesContext())).booleanValue();
+            Boolean exp = (Boolean) vb.getValue(getFacesContext()); 
+            if (exp != null) {
+                return exp.booleanValue();
             }
         }
         Object value = getAttributes().get(getMatureClientId());
