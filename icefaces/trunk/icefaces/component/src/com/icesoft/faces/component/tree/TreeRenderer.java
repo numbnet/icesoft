@@ -103,10 +103,10 @@ public class TreeRenderer extends DomBasicRenderer {
         if (pathToExpandedNode != null &&
             !pathToExpandedNode.equalsIgnoreCase("")) {
             try {
+                treeComponent.setPathToExpandedNode(pathToExpandedNode);
                 // get the node that was expanded/contracted
                 DefaultMutableTreeNode navigatedNode =
-                        treeComponent.getNodeAtPathsEnd(pathToExpandedNode);
-                treeComponent.setNavigatedNode(navigatedNode);
+                        treeComponent.getNavigatedNode();
                 IceUserObject userObject =
                         (IceUserObject) navigatedNode.getUserObject();
                 if (userObject != null) {
