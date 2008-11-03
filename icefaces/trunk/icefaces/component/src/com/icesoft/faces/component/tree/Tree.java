@@ -161,7 +161,8 @@ public class Tree extends UICommand implements NamingContainer {
     private String style;
     private String hideRootNode;
     private String hideNavigation;
-
+    private String pathToExpandedNode;
+    
     transient private DefaultMutableTreeNode currentNode;
     private String nodePath;
     private String title;
@@ -733,6 +734,9 @@ public class Tree extends UICommand implements NamingContainer {
      * @return DefaultMutableTreeNode navigatedNode
      */
     public DefaultMutableTreeNode getNavigatedNode() {
+        if (pathToExpandedNode != null) {
+            return getNodeAtPathsEnd(pathToExpandedNode);
+        }
         return navigatedNode;
     }
 
@@ -740,6 +744,7 @@ public class Tree extends UICommand implements NamingContainer {
      * @param navigatedNode
      */
     public void setNavigatedNode(DefaultMutableTreeNode navigatedNode) {
+        pathToExpandedNode = null;
         this.navigatedNode = navigatedNode;
     }
 
@@ -767,7 +772,7 @@ public class Tree extends UICommand implements NamingContainer {
      */
     public Object saveState(FacesContext context) {
 
-        Object values[] = new Object[26];
+        Object values[] = new Object[27];
         values[0] = super.saveState(context);
         values[1] = title;        
         values[2] = navigationEventType;
@@ -794,7 +799,8 @@ public class Tree extends UICommand implements NamingContainer {
         values[23] = hideNavigation;
         values[24] = nodePath;
         values[25] = savedChildren;
-
+        values[26] = pathToExpandedNode;        
+        
 
         return (values);
 
@@ -835,6 +841,7 @@ public class Tree extends UICommand implements NamingContainer {
         hideNavigation = (String) values[23];
         nodePath = (String) values[24];
         savedChildren = (Map) values[25];
+        pathToExpandedNode = (String) values[26];        
     }
 
 
@@ -1299,6 +1306,14 @@ public class Tree extends UICommand implements NamingContainer {
         while (kids.hasNext()) {
             saveChildState((UIComponent) kids.next(), context);
         }
+    }
+
+    String getPathToExpandedNode() {
+        return pathToExpandedNode;
+    }
+
+    void setPathToExpandedNode(String pathToExpandedNode) {
+        this.pathToExpandedNode = pathToExpandedNode;
     }
 }
 
