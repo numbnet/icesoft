@@ -43,6 +43,7 @@ import com.icesoft.faces.webapp.http.portlet.PortletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.ServletExternalContext;
 import com.icesoft.faces.webapp.http.servlet.SessionDispatcher;
 import com.icesoft.jasper.Constants;
+import com.icesoft.util.SeamUtilities;
 import com.sun.xml.fastinfoset.dom.DOMDocumentParser;
 import com.sun.xml.fastinfoset.dom.DOMDocumentSerializer;
 import org.apache.commons.logging.Log;
@@ -371,7 +372,8 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
         responseComplete = false;
 
         // if we're doing state management, we always clear the viewRoot between requests.
-        if (CoreUtils.isJSFStateSaving()) {
+        // Don't erase saved viewRoot if half state saving TEMPORARY
+        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() ) {
             this.viewRoot = null;
         }
 
@@ -562,7 +564,7 @@ public class BridgeFacesContext extends FacesContext implements ResourceRegistry
                 externalContext.update((HttpServletRequest) request, (HttpServletResponse) response);
                 //#2139 Don't insert a false postback key if state saving is configured,
                 // as this will overwrite the real state saving key
-                if (!CoreUtils.isJSFStateSaving()) {
+                if (!CoreUtils.isJSFStateSaving() || SeamUtilities.isSeamEnvironment() ) {
                     externalContext.insertPostbackKey();
                 }
             }

@@ -228,7 +228,8 @@ public class PersistentFacesState implements Serializable {
                     ((BridgeExternalContext) facesContext.getExternalContext()).removeSeamAttributes();
                 }
                 //Seam appears to need ViewState set during push
-                requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
+                // see below
+//                requestParameterMap.put("javax.faces.ViewState", "ajaxpush");
 
                 // If state saving is turned on, we need to insert the saved state
                 // restoration key for this user into the request map for JSF.
@@ -236,7 +237,7 @@ public class PersistentFacesState implements Serializable {
                 // cause the JSF lifecycle to run, which we want to do for
                 // consistency.
                 String postback;
-                if (CoreUtils.isJSFStateSaving() && stateRestorationId != null) {
+                if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() && stateRestorationId != null) {
                     postback = stateRestorationId;
                 } else{
                     postback = "not reload";
