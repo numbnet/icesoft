@@ -34,7 +34,12 @@
 
 <renderer>
 	<description>
-		<![CDATA[<p>Renders a UIComponent that represents a single column of data within a parent <code>UIData</code> component.</p>]]>
+		<![CDATA[<p>The difference between the <code>UIColumns</code> and the 
+		<code>UIColumn</code> is that the UIColumn renders just a single "td" element, 
+		while the <code>UIColumns</code> can render as much TDs as the length of 
+		the dataModel. <br/> Like the data table the datamodel can be used through 
+		the <code>vale</code> and <code>var</code> attributes.  		      
+		</p>]]>
 	</description>
 
 	<component-family>javax.faces.Columns</component-family>
