@@ -164,12 +164,11 @@ public class D2DViewHandler extends ViewHandler {
         }
         renderResponse(context);
 
-        // Not sure this is still necessary. 
-        if ( CoreUtils.isJSFStateSaving() ) {
-            StateManager stateMgr = context.getApplication().getStateManager();
-            stateMgr.saveSerializedView(context);
-            // JSF 1.1 removes transient components here, but I don't think that 1.2 does
-        }
+//        if ( CoreUtils.isJSFStateSaving() ) {
+//            StateManager stateMgr = context.getApplication().getStateManager();
+//            stateMgr.saveSerializedView(context);
+//             JSF 1.1 removes transient components here, but I don't think that 1.2 does
+//        }
     }
 
 
@@ -269,7 +268,8 @@ public class D2DViewHandler extends ViewHandler {
             }
         }
 
-        if (CoreUtils.isJSFStateSaving()) {
+        // Do 1/2 state saving if Seam environment. TEMPORARY 
+        if (CoreUtils.isJSFStateSaving() && !SeamUtilities.isSeamEnvironment() ) {
 
             System.out.println("Going to restore view! ");
             String renderKitId =
@@ -751,6 +751,10 @@ public class D2DViewHandler extends ViewHandler {
             log.debug("Saved serialized state in: " + (System.nanoTime()-start)/1e9f + "seconds");
         }
 
+        if (SeamUtilities.isSeamEnvironment()) {
+            return;
+        } 
+
         Object [] structureAndState = new Object[2];
         structureAndState[0] = sv.getStructure();
         structureAndState[1] = sv.getState();
@@ -933,8 +937,9 @@ public class D2DViewHandler extends ViewHandler {
         } catch (NumberFormatException e) {
             reloadInterval = reloadIntervalDefault * 1000;
         }
-        CoreUtils.setJSFStateSaving( Boolean.valueOf(jsfStateManagementParameter).booleanValue() || SeamUtilities.isSeamEnvironment());
-        if (CoreUtils.isJSFStateSaving()) {
+        CoreUtils.setJSFStateSaving( Boolean.valueOf(jsfStateManagementParameter).booleanValue() ||
+                                     SeamUtilities.isSeamEnvironment());
+        if (!CoreUtils.isJSFStateSaving()) {
             log.debug("JSF State Management not provided");
         }
         parametersInitialized = true;
