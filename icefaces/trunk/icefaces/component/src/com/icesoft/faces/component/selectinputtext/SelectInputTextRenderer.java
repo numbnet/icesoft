@@ -180,7 +180,6 @@ public class SelectInputTextRenderer extends DomBasicInputRenderer {
 //        renderAttribute(uiComponent, input, HTML.READONLY_ATTR,
 //                        HTML.READONLY_ATTR);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 
