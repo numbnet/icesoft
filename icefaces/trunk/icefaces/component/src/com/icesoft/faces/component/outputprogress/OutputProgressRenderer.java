@@ -85,7 +85,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 

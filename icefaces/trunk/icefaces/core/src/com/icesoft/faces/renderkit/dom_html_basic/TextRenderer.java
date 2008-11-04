@@ -120,7 +120,6 @@ public class TextRenderer extends DomBasicInputRenderer {
             renderCurrentValue(uiComponent, currentValue, domContext,
                                requiresContainingSpan);
         }
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     /**

@@ -123,6 +123,5 @@ public class TextareaRenderer
         String mousedownScript = (String)component.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
         root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript,"this.focus;"));
         domContext.stepOver();
-        domContext.streamWrite(facesContext, component);
     }
 }

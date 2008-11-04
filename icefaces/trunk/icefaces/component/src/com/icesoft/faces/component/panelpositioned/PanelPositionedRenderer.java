@@ -122,7 +122,6 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
             if (!Beans.isDesignTime()) {
                 DOMContext.removeChildrenByTagName(root, HTML.DIV_ELEM);
             }
-            domContext.streamWrite(facesContext, uiComponent);
         } catch (Exception e) {
             log.error("Encode Begin", e);
         }
@@ -174,8 +173,6 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
             JavascriptContext.addJavascriptCall(facesContext, call);
         }
         DOMContext.getDOMContext(facesContext, uiComponent).stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
-
     }
 
 
@@ -212,9 +209,6 @@ public class PanelPositionedRenderer extends DomBasicRenderer {
                             UIComponent nextChild = (UIComponent) childs.next();
                             if (nextChild.isRendered()) {
                                 domContext.setCursorParent(root);
-                                domContext.streamWrite(facesContext, uiComponent,
-                                                       root,
-                                                       root);
                                 encodeParentAndChildren(facesContext, nextChild);
                                 String childId =
                                         nextChild.getClientId(facesContext);

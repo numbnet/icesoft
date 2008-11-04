@@ -161,7 +161,6 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         }
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     private int getBorderSize(UIComponent uiComponent) {
@@ -343,7 +342,6 @@ public class SelectManyCheckboxListRenderer extends MenuRenderer {
         rootNode.appendChild(label);
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     protected void addJavaScript(FacesContext facesContext,

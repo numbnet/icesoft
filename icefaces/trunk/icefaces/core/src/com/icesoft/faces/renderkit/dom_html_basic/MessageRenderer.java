@@ -171,7 +171,6 @@ public class MessageRenderer extends DomBasicRenderer {
             root.removeAttribute(HTML.STYLE_ATTR);
         }
         root.appendChild(text);
-        domContext.streamWrite(facesContext, uiComponent);
         domContext.stepOver();
     }
 

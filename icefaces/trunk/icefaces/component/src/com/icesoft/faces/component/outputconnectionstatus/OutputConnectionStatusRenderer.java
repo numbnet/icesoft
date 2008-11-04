@@ -99,7 +99,6 @@ public class OutputConnectionStatusRenderer extends DomBasicRenderer {
         }
 
         domContext.stepOver();
-        domContext.streamWrite(context, uiComponent);
     }
 
     public Element getNextNode(DOMContext domContext, String classString,

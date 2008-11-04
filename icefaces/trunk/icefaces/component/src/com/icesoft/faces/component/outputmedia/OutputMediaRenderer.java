@@ -158,7 +158,6 @@ public class OutputMediaRenderer extends DomBasicRenderer {
         object.appendChild(embed);
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     private void setElementAttr(Element element, String elementAttrName, UIComponent component, String componentAttrName) {

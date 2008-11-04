@@ -330,7 +330,6 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
                     DataPaginator.FACET_LAST);
         
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
     
     protected void handleFacet(FacesContext facesContext,
@@ -352,8 +351,6 @@ public class DataPaginatorRenderer extends DomBasicRenderer {
             td.setAttribute(HTML.CLASS_ATTR, scrollButtonCellClass);
             tr.appendChild(td);
             domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, scroller,
-                                   domContext.getRootNode(), td);
             renderFacet(facesContext, scroller, facetComp, facetName);
         }
     }

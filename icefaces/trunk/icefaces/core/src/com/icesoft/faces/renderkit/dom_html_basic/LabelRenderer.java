@@ -134,7 +134,6 @@ public class LabelRenderer extends DomBasicInputRenderer {
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 

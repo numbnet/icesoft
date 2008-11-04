@@ -61,8 +61,5 @@ public class MenuItemSeparatorRenderer extends MenuItemRendererBase {
             hr = domContext.createElement("hr");
             root.appendChild(hr);
         }
-
-        domContext.streamWrite(facesContext, uiComponent);
-
     }
 }

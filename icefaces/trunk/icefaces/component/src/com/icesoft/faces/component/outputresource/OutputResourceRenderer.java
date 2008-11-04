@@ -8,7 +8,6 @@ import javax.faces.context.FacesContext;
 import org.w3c.dom.Element;
 
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.ResourceRegistry;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicInputRenderer;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
 
@@ -76,7 +75,6 @@ public class OutputResourceRenderer extends DomBasicInputRenderer {
 	        }
 			
 			domContext.stepOver();
-			domContext.streamWrite(facesContext, uiComponent);
 		}
 		
 	}

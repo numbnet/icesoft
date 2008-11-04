@@ -868,7 +868,6 @@ public class MenuItemRenderer extends MenuItemRendererBase {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         super.encodeEnd(facesContext, uiComponent);
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 
