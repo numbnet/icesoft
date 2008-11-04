@@ -40,7 +40,8 @@ public class InputTextRenderer extends BaseRenderer{
                 writer, 
                 uiComponent, 
                 new String[0]);
-        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);              
+        writer.writeAttribute(HTML.NAME_ATTR, clientId, null);   
+        writer.writeAttribute(HTML.TYPE_ATTR, "text", null);        
         Object styleClass = uiComponent.getAttributes().get("styleClass");
         if (styleClass != null) {
             writer.writeAttribute(HTML.CLASS_ATTR, styleClass, null);
