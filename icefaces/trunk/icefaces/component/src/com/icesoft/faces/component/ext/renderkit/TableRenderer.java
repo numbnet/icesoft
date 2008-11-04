@@ -408,8 +408,6 @@ public class TableRenderer
                             String.valueOf(getNumberOfChildColumns(uiComponent)));
             th.setAttribute("scope", "colgroup");
             domContext.setCursorParent(th);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), th);
             encodeParentAndChildren(facesContext, headerFacet);
             if (isScrollable(uiComponent)) {
                 tr.appendChild(scrollBarSpacer(domContext, facesContext));
@@ -483,8 +481,6 @@ public class TableRenderer
         if (nextFacet != null) {
             resetFacetChildId(nextFacet);
             domContext.setCursorParent(cursorParent);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), cursorParent);
             encodeParentAndChildren(facesContext, nextFacet);
         }
     }
@@ -523,9 +519,6 @@ public class TableRenderer
                 }
                 //th.setAttribute("colgroup", "col");
                 domContext.setCursorParent(th);
-                domContext.streamWrite(facesContext, uiComponent,
-                                       domContext.getRootNode(), th);
-
                 encodeParentAndChildren(facesContext, headerFacet);
                 domContext.setCursorParent(oldParent);
             }
@@ -774,10 +767,6 @@ public class TableRenderer
 
                         Node oldCursorParent = domContext.getCursorParent();
                         domContext.setCursorParent(td);
-                        domContext.streamWrite(facesContext, uiComponent,
-                                               originalRoot, td);
-
-
                         encodeParentAndChildren(facesContext, nextChild);
                         domContext.setCursorParent(oldCursorParent);
 
@@ -804,7 +793,6 @@ public class TableRenderer
         }
         uiData.setRowIndex(-1);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     private void encodeColumns(FacesContext facesContext, UIComponent columns,

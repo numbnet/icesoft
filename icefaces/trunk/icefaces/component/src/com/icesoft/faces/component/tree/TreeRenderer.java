@@ -33,10 +33,8 @@
 
 package com.icesoft.faces.component.tree;
 
-import com.icesoft.faces.component.CSS_DEFAULT;
 import com.icesoft.faces.component.InvalidComponentTypeException;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
-import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -180,9 +178,6 @@ public class TreeRenderer extends DomBasicRenderer {
         DOMContext.removeChildren(rootDomNode);
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
 
-        // startNode is used in conjunction with endNode as an alternative to streamWrite method
-        domContext.startNode(facesContext, treeComponent, rootDomNode);
-
         domContext.stepInto(uiComponent);
 
     }
@@ -267,13 +262,6 @@ public class TreeRenderer extends DomBasicRenderer {
                     .setAttribute(HTML.CLASS_ATTR, treeComponent.getTreeRowStyleClass());
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
-            // startNode is used in conjunction with endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, treeNodeDiv);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
             encodeNode(facesContext, treeComponent, current, treeNodeDiv,
                        domContext, treeComponentRootNode, treeNode,
                        parentDOMNode);
@@ -294,14 +282,7 @@ public class TreeRenderer extends DomBasicRenderer {
                     .getClientId(facesContext) + "-d-rt"));
             parentDOMNode.appendChild(treeNodeDiv);
             domContext.setCursorParent(treeNodeDiv);
-            // startNode is used in conjunction with endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, treeNodeDiv);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-                       
-        }
+       }
         // iterate child nodes
         int childCount = current.getChildCount();
         if (childCount > 0 &&
@@ -313,14 +294,6 @@ public class TreeRenderer extends DomBasicRenderer {
                     .getAttribute(HTML.ID_ATTR) + "-c"));
 
             treeNodeDiv.appendChild(childDiv);
-            
-            // this method is used in conjunction with endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, childDiv);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
             // recurse children
             DefaultMutableTreeNode next;
             for (int i = 0; i < childCount; i++) {
@@ -329,15 +302,7 @@ public class TreeRenderer extends DomBasicRenderer {
                                           false, childDiv,
                                           treeComponentRootNode, treeNode);
             }
-            // endNode is used in conjunction with startNode as an alternative to streamWrite method
-            try {
-                domContext.endNode(facesContext, treeComponent, childDiv);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
         }
-
     }
 
     /**
@@ -439,15 +404,6 @@ public class TreeRenderer extends DomBasicRenderer {
             treeNodeDiv.appendChild(verticalLine);
             space = domContext.createTextNode(" ");
             treeNodeDiv.appendChild(space);
-  
-            // startNode is used in conjunction with endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, verticalLine);
-                domContext.endNode(facesContext, treeComponent, verticalLine);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-
         }
 
         if (isBranchNode && !hideNavigation) {
@@ -526,15 +482,6 @@ public class TreeRenderer extends DomBasicRenderer {
             iconImage.setAttribute(HTML.ALT_ATTR, "");
 
             navAnchor.appendChild(iconImage);
-            // use startNode and endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, navAnchor);
-                domContext.startNode(facesContext, treeComponent, iconImage);
-                domContext.endNode(facesContext, treeComponent, iconImage);
-                domContext.endNode(facesContext, treeComponent, navAnchor);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
 
         } else { // this is a leaf node
             Element lineImage = domContext.createElement(HTML.IMG_ELEM);
@@ -554,14 +501,6 @@ public class TreeRenderer extends DomBasicRenderer {
                 lineImage.setAttribute(HTML.SRC_ATTR,
                                        treeComponent.getLineMiddleImage());
             }
-
-            // use startNode and endNode as an alternative to streamWrite method
-            try {
-                domContext.startNode(facesContext, treeComponent, lineImage);
-                domContext.endNode(facesContext, treeComponent, lineImage);
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
         }
 
         String pathToNode = TreeRenderer.getPathAsString(currentNode,
@@ -576,13 +515,6 @@ public class TreeRenderer extends DomBasicRenderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // use endNode as an alternative to streamWrite method
-        try {
-            domContext.endNode(facesContext, treeComponent, treeNodeDiv);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
     }
 
     /**
@@ -669,10 +601,6 @@ public class TreeRenderer extends DomBasicRenderer {
         imageLoaderDiv.appendChild(tree_line_middle_node);
         imageLoaderDiv.appendChild(tree_nav_bottom_open);
         imageLoaderDiv.appendChild(tree_nav_top_close);
-
-        // use endNode as an alternative to streamWrite method
-        // close the root node
-        domContext.endNode(facesContext, uiComponent, rootNode);
 
         Element hiddenTreeExpand = domContext.createElement(HTML.INPUT_ELEM);
         hiddenTreeExpand.setAttribute(HTML.TYPE_ATTR, "hidden");

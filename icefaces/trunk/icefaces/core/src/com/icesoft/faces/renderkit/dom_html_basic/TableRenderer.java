@@ -190,8 +190,6 @@ public class TableRenderer extends DomBasicRenderer {
                             String.valueOf(getNumberOfChildColumns(uiData)));
             th.setAttribute("scope", "colgroup");
             domContext.setCursorParent(th);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), th);
             encodeParentAndChildren(facesContext, headerFacet);
         }
 
@@ -225,8 +223,6 @@ public class TableRenderer extends DomBasicRenderer {
                 if (nextFacet != null) {
                     resetFacetChildId(nextFacet);
                     domContext.setCursorParent(th);
-                    domContext.streamWrite(facesContext, uiComponent,
-                                           domContext.getRootNode(), th);
                     encodeParentAndChildren(facesContext, nextFacet);
                 }
             }
@@ -350,8 +346,6 @@ public class TableRenderer extends DomBasicRenderer {
                     Iterator childrenOfThisColumn =
                             nextColumn.getChildren().iterator();
                     domContext.setCursorParent(td);
-                    domContext.streamWrite(facesContext, uiComponent,
-                                           domContext.getRootNode(), td);
                     while (childrenOfThisColumn.hasNext()) {
                         UIComponent nextChild =
                                 (UIComponent) childrenOfThisColumn.next();
@@ -374,7 +368,6 @@ public class TableRenderer extends DomBasicRenderer {
         // reset the underlying UIData component  
         uiData.setRowIndex(-1);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     // this method is overridden in the subclass

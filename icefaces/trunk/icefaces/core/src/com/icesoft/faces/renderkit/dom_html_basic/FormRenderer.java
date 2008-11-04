@@ -238,13 +238,6 @@ public class FormRenderer extends DomBasicRenderer {
                 }
             } 
         }
-
-        try {
-            domContext.startNode(facesContext, uiComponent, root);
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
         domContext.stepInto(uiComponent);
     }
 
@@ -274,7 +267,6 @@ public class FormRenderer extends DomBasicRenderer {
         }
         
         domContext.stepOver();
-        domContext.endNode(facesContext, uiComponent, domContext.getRootNode());
     }
 
 

@@ -41,12 +41,6 @@ public class PortletRenderer extends DomBasicRenderer {
 
         PassThruAttributeRenderer.renderHtmlAttributes(facesContext, uiComponent, passThruAttributes);
         facesContext.getApplication().getViewHandler().writeState(facesContext);
-
-        try {
-            domContext.startNode(facesContext, uiComponent, root);
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
         domContext.stepInto(uiComponent);
     }
 
