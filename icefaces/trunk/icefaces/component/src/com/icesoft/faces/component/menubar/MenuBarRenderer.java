@@ -96,9 +96,6 @@ public class MenuBarRenderer extends DomBasicRenderer {
         domContext.stepInto(uiComponent);
         
         trailingEncodeBegin(facesContext, uiComponent);
-
-        domContext.streamWrite(facesContext, uiComponent,
-                               domContext.getRootNode(), menuDiv);
     }
 
     /**
@@ -123,7 +120,6 @@ public class MenuBarRenderer extends DomBasicRenderer {
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent);
         super.encodeEnd(facesContext, uiComponent);
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 }

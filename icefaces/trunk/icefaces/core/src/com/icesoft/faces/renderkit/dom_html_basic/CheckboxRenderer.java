@@ -167,7 +167,6 @@ public class CheckboxRenderer extends DomBasicInputRenderer {
             }
         }
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

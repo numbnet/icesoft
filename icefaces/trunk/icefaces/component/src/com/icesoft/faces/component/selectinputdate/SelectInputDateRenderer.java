@@ -84,9 +84,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * <p> The SelectInputDateRenderer class is an ICEfaces D2D renderer for the
  * SelectInputDate component. Note: This class originally was derived from the
@@ -552,7 +549,6 @@ public class SelectInputDateRenderer
 
         // steps to the position where the next sibling should be rendered
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     private void writeMonthYearHeader(DOMContext domContext,
@@ -692,7 +688,6 @@ public class SelectInputDateRenderer
         tr.appendChild(td);
 
         domContext.setCursorParent(td);
-        domContext.streamWrite(facesContext, component, domContext.getRootNode(), td);
 
         HtmlSelectOneMenu dropDown = new HtmlSelectOneMenu();
         dropDown.setId(component.getId() + SELECT_MONTH);
@@ -740,7 +735,6 @@ public class SelectInputDateRenderer
         tr.appendChild(td);
 
         domContext.setCursorParent(td);
-        domContext.streamWrite(facesContext, component, domContext.getRootNode(), td);
 
         HtmlSelectOneMenu dropDown = new HtmlSelectOneMenu();
         dropDown.setId(component.getId() + SELECT_YEAR);
@@ -1017,8 +1011,6 @@ public class SelectInputDateRenderer
         } else {
             // set cursor to render into the td
             domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, component,
-                                   domContext.getRootNode(), td);
             writeLink(content, component, facesContext, valueForLink,
                       styleClass, imgSrc, td, timeKeeper,
                       months, weekdaysLong);

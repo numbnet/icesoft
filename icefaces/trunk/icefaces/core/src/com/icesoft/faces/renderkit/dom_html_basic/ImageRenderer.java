@@ -88,8 +88,6 @@ public class ImageRenderer extends DomBasicRenderer {
         root.setAttribute("alt", altAttribute);
         
         domContext.stepOver();
-
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     public void encodeChildren(FacesContext facesContext,

@@ -34,7 +34,6 @@
 package com.icesoft.faces.component.paneltabset;
 
 import com.icesoft.faces.component.CSS_DEFAULT;
-import com.icesoft.faces.component.ext.taglib.Util;
 import com.icesoft.faces.component.panelseries.UISeries;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.context.DOMContext;
@@ -319,7 +318,6 @@ public class PanelTabSetRenderer
             // append the empty TextNode table data to our table row Element tr1
             tabsTableRow.appendChild(td);
 
-            domContext.streamWrite(facesContext, tabSet);
             // steps to the position where the next sibling should be rendered
             domContext.stepOver();
 
@@ -422,8 +420,6 @@ public class PanelTabSetRenderer
 
             // steps to the position where the next sibling should be rendered
             domContext.stepOver();
-            domContext.streamWrite(facesContext, tabSet);
-
         }
     }
 
@@ -883,8 +879,6 @@ public class PanelTabSetRenderer
         // this will cause the renderChild method to append the child nodes
         // to the new table data Element
         domContext.setCursorParent(td);
-        domContext.streamWrite(facesContext, tabSet, domContext.getRootNode(),
-                               td);
         int tabIdx = 0;
         if (uiList.getValue() != null) {
             int rowIndex = uiList.getFirst();

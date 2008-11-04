@@ -82,8 +82,6 @@ public class GroupRenderer extends DomBasicRenderer {
         Element rootSpan = (Element) domContext.getRootNode();
         LocalEffectEncoder
                 .encodeLocalEffects(uiComponent, rootSpan, facesContext);
-        domContext.streamWrite(facesContext, uiComponent,
-                               domContext.getRootNode(), rootSpan);
         domContext.stepInto(uiComponent);
     }
 
@@ -104,7 +102,6 @@ public class GroupRenderer extends DomBasicRenderer {
         }
         // set the cursor here since nothing happens in encodeEnd
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     public void encodeEnd(FacesContext facesContext, UIComponent uiComponent)

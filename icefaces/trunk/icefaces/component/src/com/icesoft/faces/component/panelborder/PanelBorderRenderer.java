@@ -121,7 +121,6 @@ public class PanelBorderRenderer extends DomBasicRenderer {
 
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     private void renderPanel(FacesContext facesContext, List facets,
@@ -328,8 +327,6 @@ public class PanelBorderRenderer extends DomBasicRenderer {
 
         DOMContext domContext =
                 DOMContext.getDOMContext(facesContext, panelBorder);
-        domContext.streamWrite(facesContext, panelBorder,
-                               domContext.getRootNode(), td);
         CustomComponentUtils.renderChild(facesContext, component);
     }
 }

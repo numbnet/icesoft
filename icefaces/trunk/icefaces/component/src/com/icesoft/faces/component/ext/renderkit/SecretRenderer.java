@@ -126,7 +126,6 @@ public class SecretRenderer
         //fix for ICE-2514
         String mousedownScript = (String)uiComponent.getAttributes().get(HTML.ONMOUSEDOWN_ATTR);
         root.setAttribute(HTML.ONMOUSEDOWN_ATTR, combinedPassThru(mousedownScript, "this.focus();"));
-        domContext.streamWrite(facesContext, uiComponent);
     }  
 
     public void decode(FacesContext facesContext, UIComponent uiComponent) {

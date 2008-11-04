@@ -409,8 +409,6 @@ public class MenuRenderer extends DomBasicInputRenderer {
         domContext.stepInto(uiComponent);
         renderOptions(facesContext, uiComponent);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
-
     }
 
     public String getEventType(UIComponent uiComponent) {

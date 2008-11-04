@@ -37,7 +37,6 @@ import com.icesoft.faces.component.ext.renderkit.GroupRenderer;
 import com.icesoft.faces.component.util.CustomComponentUtils;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
-import com.icesoft.faces.context.effects.CurrentStyle;
 import com.icesoft.faces.context.effects.JavascriptContext;
 import com.icesoft.faces.context.effects.LocalEffectEncoder;
 import com.icesoft.faces.renderkit.dom_html_basic.HTML;
@@ -48,7 +47,6 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -190,10 +188,6 @@ public class PanelPopupRenderer extends GroupRenderer {
 			domContext.setCursorParent(headerTd);
 
 			UIComponent header = panelPopup.getHeader();
-
-			domContext.streamWrite(facesContext, uiComponent, domContext
-					.getRootNode(), headerTd);
-
 			CustomComponentUtils.renderChild(facesContext, header);
 		}
 
@@ -213,9 +207,6 @@ public class PanelPopupRenderer extends GroupRenderer {
 			domContext.setCursorParent(bodyTd);
 
 			UIComponent body = panelPopup.getBody();
-
-			domContext.streamWrite(facesContext, uiComponent, domContext
-					.getRootNode(), bodyTd);
 
 			CustomComponentUtils.renderChild(facesContext, body);
 		}
@@ -238,7 +229,6 @@ public class PanelPopupRenderer extends GroupRenderer {
 
 		panelPopup.applyStyle(facesContext, root);
 		domContext.stepOver();
-		domContext.streamWrite(facesContext, uiComponent);
 
 		// Rebroadcast Javascript to survive refresh
 		if (dndType != null) {

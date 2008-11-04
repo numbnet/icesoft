@@ -72,7 +72,6 @@ public class HiddenRenderer extends DomBasicInputRenderer {
         if (currentValue != null) {
             root.setAttribute("value", currentValue);
         }
-        domContext.streamWrite(facesContext, uiComponent);
     }
 }
 

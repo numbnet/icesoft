@@ -33,7 +33,6 @@
 
 package com.icesoft.faces.component.outputchart;
 
-import com.icesoft.faces.component.ext.renderkit.FormRenderer;
 import com.icesoft.faces.component.ExtendedAttributeConstants;
 import com.icesoft.faces.context.DOMContext;
 import com.icesoft.faces.renderkit.dom_html_basic.DomBasicRenderer;
@@ -95,7 +94,6 @@ public class OutputChartRenderer extends DomBasicRenderer {
             outputChart.generateClientSideImageMap(domContext, map);
             td.appendChild(map);
         }
-        domContext.streamWrite(facesContext, uiComponent);
         domContext.stepOver();
     }
 }

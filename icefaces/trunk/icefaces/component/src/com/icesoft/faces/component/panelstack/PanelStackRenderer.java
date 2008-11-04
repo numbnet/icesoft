@@ -113,13 +113,10 @@ public class PanelStackRenderer extends DomBasicRenderer {
         }
 
         if (childToRender != null) {
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
             CustomComponentUtils.renderChild(facesContext, childToRender);
         }
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
         facesContext.getExternalContext().getRequestMap().put(PanelStack.LAST_SELECTED_PANEL + uiComponent.getClientId(facesContext), selectedPanel);
     }
 

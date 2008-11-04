@@ -156,8 +156,6 @@ public class GroupRenderer
 
             CurrentStyle.apply(facesContext, uiComponent, null, extraStyle);
             MenuPopupHelper.renderMenuPopupHandler(facesContext, uiComponent, rootSpan);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), rootSpan);
             domContext.stepInto(uiComponent);
             // domContext.stepOver();
         } catch (Exception e) {

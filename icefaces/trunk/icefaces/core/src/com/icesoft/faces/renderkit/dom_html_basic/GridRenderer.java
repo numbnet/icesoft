@@ -100,8 +100,6 @@ public class GridRenderer extends DomBasicRenderer {
                             String.valueOf(
                                     getConvertedColumnAttribute(uiComponent)));
             domContext.setCursorParent(th);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), th);
             encodeParentAndChildren(facesContext, headerFacet);
         }
     }
@@ -128,8 +126,6 @@ public class GridRenderer extends DomBasicRenderer {
                             String.valueOf(
                                     getConvertedColumnAttribute(uiComponent)));
             domContext.setCursorParent(td);
-            domContext.streamWrite(facesContext, uiComponent,
-                                   domContext.getRootNode(), td);
             encodeParentAndChildren(facesContext, footerFacet);
         }
     }
@@ -209,8 +205,6 @@ public class GridRenderer extends DomBasicRenderer {
                     }
     
                     domContext.setCursorParent(td);
-                    domContext.streamWrite(facesContext, uiComponent,
-                                           domContext.getRootNode(), td);
                     encodeParentAndChildren(facesContext, nextChild);
                     columnIndex++;
                 }
@@ -218,7 +212,6 @@ public class GridRenderer extends DomBasicRenderer {
         }
         renderFooterFacet(facesContext, uiComponent, domContext);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     // this method is overridden in the subclass

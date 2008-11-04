@@ -131,7 +131,6 @@ public class OutputStyleRenderer extends DomBasicRenderer {
 
             }
             domContext.stepOver();
-            domContext.streamWrite(facesContext, uiComponent);
         } catch (Exception e) {
             log.error("Error in OutputStyleRenderer", e);
         }

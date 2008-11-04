@@ -213,7 +213,6 @@ public class RadioRenderer extends SelectManyCheckboxListRenderer {
         rootNode.appendChild(label);
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     protected void addJavaScript(FacesContext facesContext,

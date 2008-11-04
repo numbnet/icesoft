@@ -175,7 +175,6 @@ public class CommandLinkRenderer extends DomBasicRenderer {
         validateParameters(facesContext, uiComponent, UICommand.class);
         DOMContext domContext = DOMContext.getDOMContext(facesContext, uiComponent);
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
 

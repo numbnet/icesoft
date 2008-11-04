@@ -154,7 +154,6 @@ public class ButtonRenderer extends DomBasicRenderer {
         }
 
         domContext.stepOver();
-        domContext.streamWrite(facesContext, uiComponent);
     }
 
     /**
