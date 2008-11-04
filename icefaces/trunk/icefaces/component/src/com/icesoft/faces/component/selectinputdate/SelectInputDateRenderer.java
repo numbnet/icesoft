@@ -342,10 +342,8 @@ public class SelectInputDateRenderer
                     return ;
                 }
                 
-                if (!domContext.isStreamWriting()) {
-                    Text br = domContext.createTextNode("<br/>");
-                    root.appendChild(br);
-                }
+                Text br = domContext.createTextNode("<br/>");
+                root.appendChild(br);
                 
                 Element calendarDiv = domContext.createElement(HTML.DIV_ELEM);
                 calendarDiv

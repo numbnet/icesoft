@@ -314,12 +314,7 @@ public class PanelTabSetRenderer
             Element td = domContext.createElement(HTML.TD_ELEM);
             String className = tabSet.getSpacerClass();
             td.setAttribute(HTML.CLASS_ATTR, className);
-            Text text = null;
-            if (domContext.isStreamWriting()) {
-                text = domContext.createTextNode(" ");
-            } else {
-                text = domContext.createTextNode("&#160;");
-            }
+            Text text = domContext.createTextNode("&#160;");
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1
             tabsTableRow.appendChild(td);
@@ -403,12 +398,7 @@ public class PanelTabSetRenderer
 
             String className = tabSet.getSpacerClass();
             td.setAttribute(HTML.CLASS_ATTR, className);
-            Text text;
-            if (domContext.isStreamWriting()) {
-                text = domContext.createTextNode(" ");
-            } else {
-                text = domContext.createTextNode("&#160;");
-            }
+            Text text = domContext.createTextNode("&#160;");
 
             td.appendChild(text);
             // append the empty TextNode table data to our table row Element tr1

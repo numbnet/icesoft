@@ -55,10 +55,6 @@ public class MessageRenderer extends DomBasicRenderer {
 
         DOMContext domContext =
                 DOMContext.attachDOMContext(facesContext, uiComponent);
-        if (domContext.isStreamWriting()) {
-            writeStream(facesContext, uiComponent);
-            return;
-        }
         
         FacesMessage facesMessage =
                 getSingleMessage(facesContext, (UIMessage) uiComponent);

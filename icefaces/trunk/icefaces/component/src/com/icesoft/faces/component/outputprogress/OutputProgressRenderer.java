@@ -94,9 +94,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
                                Text percentageText,
                                Element fillBar) {
         String space = "&nbsp;";
-        if (domContext.isStreamWriting()) {
-            space = "";
-        }
 
         OutputProgress progressBar = (OutputProgress) uiComponent;
 
@@ -179,9 +176,6 @@ public class OutputProgressRenderer extends DomBasicInputRenderer {
     private void buildLayout(Element table, UIComponent uiComponent,
                              DOMContext domContext) {
         String space = "&nbsp;";
-        if (domContext.isStreamWriting()) {
-            space = "";
-        }
         Node node = table.getFirstChild();
         Element tbody = domContext.createElement(HTML.TBODY_ELEM);
         if (node != null) {

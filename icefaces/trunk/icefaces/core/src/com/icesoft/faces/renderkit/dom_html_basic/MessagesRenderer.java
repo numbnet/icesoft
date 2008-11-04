@@ -73,10 +73,6 @@ public class MessagesRenderer extends DomBasicRenderer {
             domContext =
                 DOMContext.getDOMContext(facesContext, uiComponent); 
         }
-        if (domContext.isStreamWriting()) {
-            writeStream(facesContext, uiComponent);
-            return;
-        }
 
         // retrieve the messages
         Iterator messagesIterator = null;

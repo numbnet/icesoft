@@ -735,9 +735,6 @@ public class SelectInputDate
      */
     public Object getValue() {
         if (super.getValue() == null) {
-            if (DOMResponseWriter.isStreamWriting()) {
-                return new Date();
-            }
             return null;
         } else {
             return super.getValue();
