@@ -56,7 +56,7 @@ function iceSubmitPartial(form, component, evt) {
         query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
     if (Ice.InputFileIdPostUpload)
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
-    if (Ice.Menu.menuContext != null)
+    if (Ice.Menu != null && Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
     if(Ice.FCKeditorUtility) 
         Ice.FCKeditorUtility.saveAll();          
@@ -85,7 +85,7 @@ function iceSubmit(aForm, aComponent, anEvent) {
         query.add('ice.inputFile.preUpload', Ice.InputFileIdPreUpload);
     if (Ice.InputFileIdPostUpload)
         query.add('ice.inputFile.postUpload', Ice.InputFileIdPostUpload);
-    if (Ice.Menu.menuContext != null)
+    if (Ice.Menu != null && Ice.Menu.menuContext != null)
         query.add('ice.menuContext', Ice.Menu.menuContext);
     if(Ice.FCKeditorUtility) 
         Ice.FCKeditorUtility.saveAll();    
