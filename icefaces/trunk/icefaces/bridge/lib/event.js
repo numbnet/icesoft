@@ -127,7 +127,8 @@
     This.Netscape.Event = This.Event.subclass({
     //todo: rename to 'triggeringElement'
         target: function() {
-            return this.event.target ? Element.adaptToElement(this.event.target) : null;
+            //event.currrentTarget workaround for BlackBerry
+            return this.event.currentTarget ? Element.adaptToElement(this.event.currentTarget) : null;
         },
 
         cancelBubbling: function() {
