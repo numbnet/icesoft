@@ -128,7 +128,10 @@
     //todo: rename to 'triggeringElement'
         target: function() {
             //event.currrentTarget workaround for BlackBerry
-            return this.event.currentTarget ? Element.adaptToElement(this.event.currentTarget) : null;
+            if (window.blackberry)  {
+                return this.event.currentTarget ? Element.adaptToElement(this.event.currentTarget) : null;
+            }
+            return this.event.target ? Element.adaptToElement(this.event.target) : null;
         },
 
         cancelBubbling: function() {
