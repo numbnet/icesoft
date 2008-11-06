@@ -56,7 +56,11 @@
                 //alternative way of looking up the frame
                 this.historyFrame = id.asElement().contentWindow;
             }
-            if (this.historyFrame.location.hash.length > 0) this.reload();
+            try {
+                if (this.historyFrame.location.hash.length > 0) this.reload();
+            } catch (e) {
+                this.logger.error("History frame reload failed: " + e);
+            }
         },
 
         synchronize: function() {
